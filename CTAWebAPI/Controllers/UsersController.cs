@@ -3,9 +3,11 @@ using CTADBL.BaseClassesRepositories;
 using CTADBL.Entities;
 using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+
 
 namespace CTAWebAPI.Controllers
 {
@@ -23,11 +25,20 @@ namespace CTAWebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            UserRepository userRepo = new UserRepository(_info.ConnectionString);
-            IEnumerable<User> users = userRepo.GetAllUser();
-            //var sendArray = users.ToArray();
-            //return Ok(sendArray);
-            return Ok(users);
+            #region Get Users
+            try
+            {
+                UserRepository userRepo = new UserRepository(_info.ConnectionString);
+                IEnumerable<User> users = userRepo.GetAllUser();
+                //var sendArray = users.ToArray();
+                //return Ok(sendArray);
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            } 
+            #endregion
         }
     }
 }
