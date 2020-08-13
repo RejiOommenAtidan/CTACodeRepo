@@ -48,7 +48,8 @@ namespace CTAWebAPI
             }
 
             app.UseRouting();
-            app.UseCors(options => options.WithOrigins(origins));
+            //Allow any header add for header related issues 
+            app.UseCors(options => options.WithOrigins(origins).AllowAnyHeader());
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -21,7 +21,31 @@ import './styles/styles.scss';
 
 //#region AXIOS Common Items
 axios.defaults.baseURL = process.env.REACT_APP_APIURL;
-axios.defaults.headers.common['sAPIKey'] = process.env.REACT_APP_APIKEY;
+// axios.defaults.headers.common['sAPIKey'] = process.env.REACT_APP_APIKEY;
+//#endregion
+
+
+//#region Headers Adding at interceptions
+// res.setHeader("Access-Control-Allow-Headers",
+//   "Access-Control-Allow-Headers, 
+//   Origin, 
+//   Accept, 
+//   X-Requested-With, 
+//   Content-Type, 
+//   Access-Control-Request-Method, 
+//   Access-Control-Request-Headers, 
+//   Authorization,
+//   username")
+// res.setHeader('Cache-Control', 'no-cache');
+// next();
+// axios.interceptors.request.use(function (config) {
+//   // Do something before request is sent
+//   config.setHeader("Access-Control-Allow-Headers","Access-Control-Allow-Headers,Origin, Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization,username");
+//   return config;
+// }, function (error) {
+//   // Do something with request error
+//   return Promise.reject(error);
+// });
 //#endregion
 
 //#region Configure Store

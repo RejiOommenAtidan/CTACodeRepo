@@ -60,6 +60,9 @@ namespace CTADBL.QueryBuilder
         public MySqlCommand GetInsertCommand()
         {
             var table = GetTableName();
+            //var key = GetKeyField();
+            //if (key == null)
+            //    throw new Exception("No Key attribute was found.");
             if (String.IsNullOrEmpty(table))
                 throw new Exception("No Table attribute was found.");
             var query = String.Format("INSERT INTO {0} SELECT {1}",
@@ -73,8 +76,11 @@ namespace CTADBL.QueryBuilder
             var properties = _item.GetType().GetProperties();
             foreach (var propertyInfo in properties)
             {
-                var property = GetSqlValue(_item, propertyInfo);
-                sb.Append(GetFormattedInsertField(propertyInfo, property));
+                //if (propertyInfo!=key)
+                //{
+                    var property = GetSqlValue(_item, propertyInfo);
+                    sb.Append(GetFormattedInsertField(propertyInfo, property));
+                //}
             }
             var query = sb.ToString();
             return query.Remove(query.Length - 1);

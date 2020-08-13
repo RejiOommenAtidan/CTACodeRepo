@@ -10,7 +10,6 @@ import CDropdown from "@coreui/react/src/dropdown/CDropdown";
 import CDropdownToggle from "@coreui/react/src/dropdown/CDropdownToggle";
 import CDropdownMenu from "@coreui/react/src/dropdown/CDropdownMenu";
 import CDropdownItem from "@coreui/react/src/dropdown/CDropdownItem";
-// const [isOpen, setIsOpen] = useState(false);
 const Header = () => (
   <div>
     <CNavbar expandable="sm" color="info" light={false}>
@@ -20,6 +19,9 @@ const Header = () => (
       <CNavbarNav>
         <CNav variant="pills">
           <CNavItem><CNavLink to="/dashboard">Dashboard</CNavLink></CNavItem>
+        </CNav>
+        <CNav variant="pills">
+          <CNavItem><CNavLink to="/create">Add</CNavLink></CNavItem>
         </CNav>
       </CNavbarNav>
       <CNavbarNav className="ml-auto">
