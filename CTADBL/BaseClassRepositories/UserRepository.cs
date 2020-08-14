@@ -39,7 +39,7 @@ namespace CTADBL.BaseClassesRepositories
         public User GetUserById(string id)
         {
             // PARAMETERIZED QUERIES!
-            using (var command = new MySqlCommand("SELECT * FROM Categories WHERE CategoryID = @id"))
+            using (var command = new MySqlCommand("SELECT * FROM ctauser WHERE user_id = @id"))
             {
                 //command.Parameters.Add(new ObjectParameter("id", id));
                 command.Parameters.AddWithValue("id", id);

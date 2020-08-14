@@ -1,8 +1,6 @@
 ﻿using CTADBL.BaseClasses;
 using CTADBL.BaseClassesRepositories;
 using CTADBL.Entities;
-using CTAWebAPI.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,21 +23,14 @@ namespace CTAWebAPI.Controllers
             _info = info;
         }
         [HttpGet]
-        public IActionResult Get()
+        [Route("[action]")]
+        public IActionResult GetUsers()
         {
             #region Get Users
             try
             {
-                //if (id==null) {
-                //    return BadRequest("Id Cannot be null");
-                //}
                 UserRepository userRepo = new UserRepository(_info.ConnectionString);
                 IEnumerable<User> users = userRepo.GetAllUser();
-                //var sendArray = users.ToArray();
-                //return Ok(sendArray);
-                //4** - BadRequest
-                //BadRequest
-                //5**
                 return Ok(users);
             }
             catch (Exception ex)
@@ -48,12 +39,29 @@ namespace CTAWebAPI.Controllers
             } 
             #endregion
         }
-        [AllowAnonymous]
+        [HttpGet("GetUser/userID={userID}")]
+        [Route("[action]")]
+        public IActionResult GetUser(string userID)
+        {
+            #region Get User
+            try
+            {
+                UserRepository userRepo = new UserRepository(_info.ConnectionString);
+                User fetchedUser = userRepo.GetUserById(userID);
+                return Ok(fetchedUser);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        //[AllowAnonymous]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddUser(User user)
         {
-            #region Get Users
+            #region Add User
             try
             {
                 if (ModelState.IsValid)
@@ -79,6 +87,86 @@ namespace CTAWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
+        }
+        //[AllowAnonymous]
+        [HttpPost("EditUser/{userID}")]
+        [Route("[action]")]
+        public IActionResult EditUser(string userID,[FromBody]User user)
+        {
+            #region Add User
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (user == null)
+                    {
+                        return BadRequest("User object cannot be NULL");
+                    }
+                    if (UserExists(userID))
+                    {
+                        UserRepository userRepository = new UserRepository(_info.ConnectionString);                   
+                        userRepository.Update(user);
+                        return Ok("User with ID: " + userID + " updated Successfully");
+                    }
+                    else
+                    {
+                        return BadRequest("User with ID:" + userID + " does not exist");
+                    }
+
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    return BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult DeleteUser([FromBody] string userID)
+        {
+            #region Delete User
+            try
+            {
+                if (UserExists(userID))
+                {
+                    UserRepository userRepository = new UserRepository(_info.ConnectionString);
+                    User fetchedUser = userRepository.GetUserById(userID);
+                    userRepository.Delete(fetchedUser);
+                    return Ok("User with ID: " + userID + " removed Successfully");
+                }
+                else
+                {
+                    return BadRequest("User with ID: " + userID + " does not exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        private bool UserExists(string userID) {
+            try {
+                UserRepository userRepository = new UserRepository(_info.ConnectionString);
+                User fetchedUser = userRepository.GetUserById(userID);
+                if (fetchedUser != null)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Exception in User Exists Function, Exception Message: "+ex.Message);
+            }
         }
     }
 }
