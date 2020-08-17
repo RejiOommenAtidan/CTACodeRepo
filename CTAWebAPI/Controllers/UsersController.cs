@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text.Json;
 
 namespace CTAWebAPI.Controllers
 {
@@ -89,7 +89,7 @@ namespace CTAWebAPI.Controllers
             #endregion
         }
         //[AllowAnonymous]
-        [HttpPost("EditUser/{userID}")]
+        [HttpPost("EditUser/userID={userID}")]
         [Route("[action]")]
         public IActionResult EditUser(string userID,[FromBody]User user)
         {
@@ -104,7 +104,8 @@ namespace CTAWebAPI.Controllers
                     }
                     if (UserExists(userID))
                     {
-                        UserRepository userRepository = new UserRepository(_info.ConnectionString);                   
+                        UserRepository userRepository = new UserRepository(_info.ConnectionString);
+                        //user.User_Id
                         userRepository.Update(user);
                         return Ok("User with ID: " + userID + " updated Successfully");
                     }
@@ -112,7 +113,6 @@ namespace CTAWebAPI.Controllers
                     {
                         return BadRequest("User with ID:" + userID + " does not exist");
                     }
-
                 }
                 else
                 {
@@ -131,22 +131,32 @@ namespace CTAWebAPI.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteUser([FromBody] string userID)
+        public IActionResult DeleteUser(object body)
         {
             #region Delete User
             try
             {
-                if (UserExists(userID))
+                //TODO: check for string sending 
+                string userID = JsonSerializer.Serialize(body);
+
+                if (!string.IsNullOrEmpty(userID))
                 {
-                    UserRepository userRepository = new UserRepository(_info.ConnectionString);
-                    User fetchedUser = userRepository.GetUserById(userID);
-                    userRepository.Delete(fetchedUser);
-                    return Ok("User with ID: " + userID + " removed Successfully");
+                    if (UserExists(userID))
+                    {
+                        UserRepository userRepository = new UserRepository(_info.ConnectionString);
+                        User fetchedUser = userRepository.GetUserById(userID);
+                        userRepository.Delete(fetchedUser);
+                        return Ok("User with ID: " + userID + " removed Successfully");
+                    }
+                    else
+                    {
+                        return BadRequest("User with ID: " + userID + " does not exist");
+                    }
                 }
-                else
-                {
-                    return BadRequest("User with ID: " + userID + " does not exist");
+                else {
+                    return BadRequest("User Id Cannot be null");
                 }
+
             }
             catch (Exception ex)
             {

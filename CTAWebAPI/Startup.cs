@@ -34,6 +34,7 @@ namespace CTAWebAPI
             services.AddSingleton(config);
             #endregion
 
+
             services.AddControllers();
         }
 

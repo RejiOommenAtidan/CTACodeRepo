@@ -1,65 +1,39 @@
-// //#region require Section
-// import dotenv from 'dotenv'
-// const a = require('dotenv').config()
-// console.log(a);
-// console.log(process.env.REACT_APP_PAYPAL_CLIENT_ID_SANDBOX);
-// const aa = dotenv.config()
-// console.log(process.env.REACT_APP_PAYPAL_CLIENT_ID_SANDBOX);
-// //#endregion
+import React, { Component } from 'react';
+import { HashRouter, Route, Switch } from 'react-router-dom';
+import './scss/style.scss';
 
-//#region Imports
-import "@babel/polyfill";
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import AppRouter from './routers/AppRouter';
-import configureStore from './store/configureStore';
-import axios from 'axios';
-import 'normalize.css/normalize.css';
-import './styles/styles.scss';
-//#endregion
+const loading = (
+  <div className="pt-3 text-center">
+    <div className="sk-spinner sk-spinner-pulse"></div>
+  </div>
+)
 
-//#region AXIOS Common Items
-axios.defaults.baseURL = process.env.REACT_APP_APIURL;
-// axios.defaults.headers.common['sAPIKey'] = process.env.REACT_APP_APIKEY;
-//#endregion
+// Containers
+const TheLayout = React.lazy(() => import('./containers/TheLayout'));
 
+// Pages
+const Login = React.lazy(() => import('./views/pages/login/Login'));
+const Register = React.lazy(() => import('./views/pages/register/Register'));
+const Page404 = React.lazy(() => import('./views/pages/page404/Page404'));
+const Page500 = React.lazy(() => import('./views/pages/page500/Page500'));
 
-//#region Headers Adding at interceptions
-// res.setHeader("Access-Control-Allow-Headers",
-//   "Access-Control-Allow-Headers, 
-//   Origin, 
-//   Accept, 
-//   X-Requested-With, 
-//   Content-Type, 
-//   Access-Control-Request-Method, 
-//   Access-Control-Request-Headers, 
-//   Authorization,
-//   username")
-// res.setHeader('Cache-Control', 'no-cache');
-// next();
-// axios.interceptors.request.use(function (config) {
-//   // Do something before request is sent
-//   config.setHeader("Access-Control-Allow-Headers","Access-Control-Allow-Headers,Origin, Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization,username");
-//   return config;
-// }, function (error) {
-//   // Do something with request error
-//   return Promise.reject(error);
-// });
-//#endregion
+class App extends Component {
 
-//#region Configure Store
-const store = configureStore();
-//#endregion
+  render() {
+    return (
+      <HashRouter>
+          <React.Suspense fallback={loading}>
+            <Switch>
+              <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} />
+              <Route exact path="/register" name="Register Page" render={props => <Register {...props}/>} />
+              <Route exact path="/404" name="Page 404" render={props => <Page404 {...props}/>} />
+              <Route exact path="/500" name="Page 500" render={props => <Page500 {...props}/>} />
+              <Route path="/" name="Home" render={props => <TheLayout {...props}/>} />
+            </Switch>
+          </React.Suspense>
+      </HashRouter>
+    );
+  }
+}
 
-//#region Make JSX using Client Side Routing in JSX & Enable Store
-const jsx = (
-  <Provider store={store}>
-    <AppRouter />
-  </Provider>
-);
-//#endregion
-
-//#region Render JSX
-ReactDOM.render(jsx, document.getElementById('app'));
-//#endregion
+export default App;
