@@ -14,7 +14,14 @@ const routes = [
       { path: 'adduser', element: <AddView /> },
       { path: 'edituser', element: <EditView /> },
       { path: 'manageuser', element: <DashboardView /> },
-      { path: '*', element: <Navigate to="/404" /> }
+      { path: '/', element: <DashboardView /> }
+    ]
+  },
+  {
+    path: '/',
+    element: <DashboardLayout />,
+    children: [
+      { path: '', element: <DashboardView /> }
     ]
   }
 ];
