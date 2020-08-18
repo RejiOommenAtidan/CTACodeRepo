@@ -2,12 +2,14 @@ import React from 'react';
 import {
   Container,
   Grid,
-  makeStyles
+  Typography,
+  makeStyles,
+  Breadcrumbs,
+  Link
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 
 import Manage from './Manage';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,6 +29,13 @@ const Dashboard = () => {
       title="Dashboard"
     >
       <Container maxWidth={false}>
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link color="inherit" href="/app/manageuser" >
+          Home
+        </Link>
+       
+        <Typography color="textPrimary">Manage User</Typography>
+      </Breadcrumbs>
         <Manage/>
       </Container>
     </Page>

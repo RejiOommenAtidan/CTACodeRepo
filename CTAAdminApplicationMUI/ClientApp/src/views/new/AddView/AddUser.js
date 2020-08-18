@@ -4,7 +4,10 @@ import React from 'react';
 // import { Formik } from 'formik';
 import Input from '@material-ui/core/Input';
 import { withStyles } from '@material-ui/core/styles';
-import theme from '../../../theme/theme/theme'
+import theme from '../../../theme/theme/theme';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
+
 import {
   Box,
   Button,
@@ -38,6 +41,7 @@ const useStyles = (theme) => ({
   },
   formControl: {
     margin: theme.spacing(0.5),
+    
     width:'100%'
   },
   paper: {
@@ -45,11 +49,11 @@ const useStyles = (theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
-  textField: {
+  /*textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     marginBottom: theme.spacing(1)
-  },
+  },*/
   // selectField: {
   //   marginLeft: theme.spacing(1),
   //   marginRight: theme.spacing(1),
@@ -73,7 +77,10 @@ const MenuProps = {
   },
 };
 const roles = ["Trainee Software Developer", "Software Developer"];
-
+function handleClick(event) {
+  event.preventDefault();
+  console.info('You clicked a breadcrumb.');
+}
 class RegisterView extends React.Component {
 
   constructor(props) {
@@ -145,6 +152,7 @@ class RegisterView extends React.Component {
           : theme.typography.fontWeightMedium,
     };
   }
+  
   render() {
     const { classes } = this.props;
     const handleChange = (event) => {
@@ -154,7 +162,7 @@ class RegisterView extends React.Component {
     return (
       <Page
         className={classes.root}
-        title="Register"
+        title="Add User"
       >
         <Box
           display="flex"
@@ -162,6 +170,7 @@ class RegisterView extends React.Component {
           height="100%"
           justifyContent="center"
         >
+          
           <Container maxWidth="lg" disableGutters={true}>
             <Grid container className={classes.box}>
               <h1>Add User</h1>
@@ -172,7 +181,7 @@ class RegisterView extends React.Component {
                     label="Username"
                     id="username"
                     onChange={this.onUsernameChange}
-                    variant="outlined"
+                   // variant="outlined"
                     size="small"
                     fullWidth
                     className={classes.textField}
@@ -184,7 +193,7 @@ class RegisterView extends React.Component {
                     label="Fullname"
                     id="fullname"
                     onChange={this.onFullnameChange}
-                    variant="outlined"
+                   // variant="outlined"
                     size="small"
                     fullWidth
                     className={classes.textField}
@@ -196,7 +205,7 @@ class RegisterView extends React.Component {
                     label="Email"
                     id="email"
                     onChange={this.onEmailChange}
-                    variant="outlined"
+                   // variant="outlined"
                     size="small"
                     type="email"
                     fullWidth
@@ -209,7 +218,7 @@ class RegisterView extends React.Component {
                     label="Password"
                     id="password"
                     onChange={this.onPasswordChange}
-                    variant="outlined"
+                    //variant="outlined"
                     size="small"
                     type="password"
                     fullWidth
@@ -222,7 +231,7 @@ class RegisterView extends React.Component {
                     label="Confirm Password"
                     id="confirm_password"
                     onChange={this.onConfirmPasswordChange}
-                    variant="outlined"
+                  //  variant="outlined"
                     size="small"
                     type="password"
                     fullWidth
@@ -231,7 +240,7 @@ class RegisterView extends React.Component {
                     margin='normal'
                   />
                   </FormControl>
-                  <FormControl variant="outlined" className={classes.formControl}>
+                  <FormControl  className={classes.formControl}>
                   <InputLabel id="region-label">Region</InputLabel>
                   <Select
                     label="Region"
@@ -241,7 +250,7 @@ class RegisterView extends React.Component {
                     fullWidth
                     className={classes.textField}
                     value={this.state.region}
-                    variant="outlined"
+                  //  variant="outlined"
                   >
                     <MenuItem value="">
                       <em>None</em>
@@ -250,7 +259,7 @@ class RegisterView extends React.Component {
                     <MenuItem value={"Pune"}>Pune</MenuItem>
                   </Select>
                   </FormControl>
-                  <FormControl variant="outlined" className={classes.formControl}>
+                  <FormControl className={classes.formControl}>
                   <InputLabel id="status-label">Status</InputLabel>
                   <Select
                     label="Status"
@@ -260,7 +269,7 @@ class RegisterView extends React.Component {
                     fullWidth
                     className={classes.textField}
                     value={this.state.status}
-                    variant="outlined"
+                //    variant="outlined"
                   >
                     <MenuItem value="">
                       <em>None</em>
@@ -282,8 +291,8 @@ class RegisterView extends React.Component {
                     renderValue={(selected) => selected.join(', ')}
                     MenuProps={MenuProps}
                     fullWidth
-                    className={classes.textField}
-                    variant="outlined"
+                  //  className={classes.textField}
+                  //  variant="outlined"
                   >
                     {roles.map((name) => (
                       <MenuItem key={name} value={name}>
