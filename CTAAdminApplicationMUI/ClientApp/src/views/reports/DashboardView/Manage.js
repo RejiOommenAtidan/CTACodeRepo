@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -13,7 +13,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
+// import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -22,10 +22,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
-
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { red } from '@material-ui/core/colors';
+import axios from 'axios';
 
 
 const theme = createMuiTheme({
@@ -40,15 +40,20 @@ const theme = createMuiTheme({
     },
   },
 });
-function createData(name, email, role, status, region ) {
-  return { name, email, role, status, region};
+
+
+function createData(name, email, role, status, region) {
+  return { name, email, role, status, region };
 }
 
-const rows = [
-  createData('Malay Doshi', 'malay.doshi@atidan.com', 'Trainee Software Developer', 'Active', 'Mumbai'),
-  createData('Aayush Pandya', 'aayush.pandya@atidan.com', 'Trainee Software Developer', 'Active', 'Mumbai')
+// let rows = [
+//   createData('Malay Doshi', 'malay.doshi@atidan.com', 'Trainee Software Developer', 'Active', 'Mumbai'),
+//   createData('Aayush Pandya', 'aayush.pandya@atidan.com', 'Trainee Software Developer', 'Active', 'Mumbai')
+// ];
 
-];
+
+let rows=[];
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -93,8 +98,8 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell  padding="checkbox">
-          
+        <TableCell padding="checkbox">
+
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
@@ -118,10 +123,10 @@ function EnhancedTableHead(props) {
           </TableCell>
         ))}
         <TableCell align="center">
-           Edit
+          Edit
           </TableCell>
-          <TableCell align="center" >
-           Delete
+        <TableCell align="center" >
+          Delete
           </TableCell>
       </TableRow>
     </TableHead>
@@ -146,13 +151,13 @@ const useToolbarStyles = makeStyles((theme) => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark,
+      },
   title: {
     flex: '1 1 100%',
   },
@@ -173,10 +178,10 @@ const EnhancedTableToolbar = (props) => {
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h2" id="tableTitle" component="div">
-          Manage User
-        </Typography>
-      )}
+          <Typography className={classes.title} variant="h2" id="tableTitle" component="div">
+            Manage Users
+          </Typography>
+        )}
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
@@ -185,12 +190,12 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+          <Tooltip title="Filter list">
+            <IconButton aria-label="filter list">
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        )}
     </Toolbar>
   );
 };
@@ -224,6 +229,42 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable() {
+
+  const [userData, setuserData] = useState([]);
+  useEffect(() => {
+    axios.get(`http://localhost:52013/api/Users/GetUsers`)
+      .then(resp => {
+        if (resp.status === 200) {
+          console.log(resp.data);
+          // setuserData({userData});
+          // console.log(userData);
+          rows=resp.data;
+          console.log(rows);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          //The request was made and the server responded 
+          //with a status code that falls out of the range of 2xx OR in 4XX to 5XX range
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received 
+          //`error.request` is an instance of XMLHttpRequest in the browser 
+          //and an instance of http.ClientRequest in node.js
+          console.warn(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //always executed
+        //console.log(release); => udefined
+      });
+  }, []);
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -308,45 +349,45 @@ export default function EnhancedTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.fullname);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
-                     
+
                     >
                       <TableCell padding="checkbox">
-                        
+
                       </TableCell>
                       <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.name}
+                        {row.fullname}
                       </TableCell>
                       <TableCell align="center">{row.email}</TableCell>
                       <TableCell align="center">{row.role}</TableCell>
                       <TableCell align="center">{row.status}</TableCell>
                       <TableCell align="center">{row.region}</TableCell>
                       <TableCell align="center">
-                      
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        className={classes.button}
-                        startIcon={<EditIcon />}
-                        href= '/app/edituser'
+
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          className={classes.button}
+                          startIcon={<EditIcon />}
+                          href='/app/edituser'
                         >
-                        Edit
+                          Edit
                     </Button>
-               
+
                       </TableCell>
                       <TableCell align="center">
-                      <ThemeProvider theme={theme}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        startIcon={<DeleteIcon />}
-                        >
-                        Delete
+                        <ThemeProvider theme={theme}>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            className={classes.button}
+                            startIcon={<DeleteIcon />}
+                          >
+                            Delete
                     </Button></ThemeProvider>
                       </TableCell>
                     </TableRow>

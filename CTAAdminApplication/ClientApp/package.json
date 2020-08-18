@@ -1,19 +1,7 @@
 {
-  "name": "@coreui/coreui-free-react-admin-template",
+  "name": "cta",
   "version": "3.1.0",
-  "description": "CoreUI React Open Source Bootstrap 4 Admin Template",
-  "author": {
-    "name": "CoreUI",
-    "url": "https://coreui.io",
-    "github": "https://github.com/coreui",
-    "twitter": "https://twitter.com/core_ui"
-  },
-  "contributors": [
-    {
-      "name": "CoreUI Team",
-      "url": "https://github.com/orgs/coreui/people"
-    }
-  ],
+  "description": "CTA Frontend",
   "homepage": ".",
   "copyright": "Copyright 2017-2020 creativeLabs Łukasz Holeczek",
   "license": "MIT",

@@ -142,7 +142,7 @@ export default class UserList extends React.Component {
     axios.get(`/Users/GetUsers`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data)
+          console.log(resp.data);
           this.setState({
             dataAPI: resp.data,
             loadingProp: false
@@ -242,7 +242,7 @@ export default class UserList extends React.Component {
         show={this.state.modal}
         onClose={this.closeModal}
       >
-        <CModalHeader closeButton>Delete User {this.state.selectedUser} ?</CModalHeader>
+        <CModalHeader closeButton>Delete User ?</CModalHeader>
         <CModalBody>
           Are you sure you want to delete this user ?
         </CModalBody>

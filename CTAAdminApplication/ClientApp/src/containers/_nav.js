@@ -12,22 +12,26 @@ export default [
   //     text: 'NEW',
   //   }
   // },
-  {
-    _tag: 'CSidebarNavTitle',
-    _children: ['User']
-  },
-  {
-    _tag: 'CSidebarNavItem',
-    name: 'User List',
-    to: '/userlist',
+  // {
+  {  _tag: 'CSidebarNavDropdown',
+    name: 'Manager Users',
     icon: 'cil-people',
-  },
-  {
-    _tag: 'CSidebarNavItem',
-    name: 'Add User',
-    to: '/adduser',
-    icon: 'cil-user-follow',
-  },
+    _children: [
+  
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'User List',
+            to: '/userlist',
+            icon: 'cil-people',
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Add User',
+            to: '/adduser',
+            icon: 'cil-user-follow',
+          },
+    ]
+  }
   // {
   //   _tag: 'CSidebarNavTitle',
   //   _children: ['Components']
