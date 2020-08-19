@@ -20,14 +20,18 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+// import { useNavigate } from 'react-router-dom';
+import Chip from '@material-ui/core/Chip';
+import { useNavigate } from 'react-router-dom';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+// function a(){const naviagate = useNavigate();}
 
-
+// const history = useHistory();
 
 
 // const handleClickOpen = () => {
@@ -36,7 +40,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 //   // });
 // };
 
-
+// const initiateNav = ()=>{
+//   let navigate = useNavigate();
+// };
 
 const useStyles = (theme) => ({
   root: {
@@ -98,7 +104,9 @@ class EnhancedTable extends React.Component {
   options = {
     filterType: 'checkbox',
     selectableRows: false,
-    jumpToPage: true
+    jumpToPage: true,
+    rowsPerPage:5,
+    rowsPerPageOptions:[5,10,20,30]
   };
   state = {
     dataAPI: [],
@@ -107,10 +115,17 @@ class EnhancedTable extends React.Component {
     selectedUser: ''
   };
 
+  editClick(user_Id){
+    // alert(user_Id);
+    //TODO: remove usage of window.location
+    window.location = 'editUser/'+user_Id.toString();
+  }
+
   deleteClick(user_Id) {
     console.log(user_Id)
     this.setState({
-      modal: true
+      modal: true,
+      selectedUser: user_Id
     });
   }
 
@@ -161,7 +176,19 @@ class EnhancedTable extends React.Component {
       label: "Status",
       options: {
         filter: true,
-        sort: true
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          // console.log(value,tableMeta)
+          return (
+            <Chip
+              size="small"
+              label={value}
+              color={value==="Active"?'primary':'secondary'} 
+              variant="outlined"
+            >
+            </Chip>
+          )
+        }
       }
     },
     {
@@ -177,7 +204,7 @@ class EnhancedTable extends React.Component {
               variant="outlined"
               color="primary"
               startIcon={<EditOutlinedIcon />}
-              onClick={()=>{alert(tableMeta.rowData[0])}}
+              onClick={() => { this.editClick(tableMeta.rowData[0]) }}
             >Edit
             </Button>
           )
@@ -192,16 +219,15 @@ class EnhancedTable extends React.Component {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
-            <ThemeProvider theme={theme}>
-              <Button
-                variant="outlined"
-                color="secondary"
-                size="small"
-                endIcon={<DeleteOutlinedIcon />}
-                onClick={()=>{this.deleteClick(tableMeta.rowData[0])}}
-              >Delete
-              </Button>
-            </ThemeProvider>
+
+            <Button
+              variant="outlined"
+              color="secondary"
+              size="small"
+              endIcon={<DeleteOutlinedIcon />}
+              onClick={() => { this.deleteClick(tableMeta.rowData[0]) }}
+            >Delete
+            </Button>
           )
         }
       }
@@ -215,50 +241,46 @@ class EnhancedTable extends React.Component {
     });
   };
 
+  deleteCallAPI = () => {
 
-  // deleteUser = ()=>{
-  //   console.log(this.state.selectedUser);
-  //   // this.props.startAddUser(user);
-  //   const config = { headers: {"Content-Type": "application/json"} };
-
-  //   var userID = this.state.selectedUser.toString();
-  //   // let data ={'userID':userID}
-  //   // data = JSON.stringify(data);
-  //   // console.log(data)
-  //   // userID  =JSON.stringify(userID);
-  //   axios.post(`/Users/DeleteUser`,userID,config)
-  //     .then(resp => {
-  //       if (resp.status === 200) {
-  //         console.log(resp.data);
-  //         // console.log(this.props);
-  //         this.closeModal();
-  //         this.props.history.push(`/`)
-  //       }
-  //     })
-  //     .catch(error => {
-  //       if (error.response) {
-  //         //The request was made and the server responded 
-  //         //with a status code that falls out of the range of 2xx OR in 4XX to 5XX range
-  //         console.error(error.response.data);
-  //         console.error(error.response.status);
-  //         console.error(error.response.headers);
-  //       } else if (error.request) {
-  //         // The request was made but no response was received 
-  //         //`error.request` is an instance of XMLHttpRequest in the browser 
-  //         //and an instance of http.ClientRequest in node.js
-  //         console.warn(error.request);
-  //       } else {
-  //         // Something happened in setting up the request that triggered an Error
-  //         console.error('Error', error.message);
-  //       }
-  //       console.log(error.config);
-  //     })
-  //     .then(release => {
-  //       //always executed
-  //       //console.log(release); => udefined
-  //     });
-  //   this.props.history.push('/userlist');
-  // };
+    console.log(this.state.selectedUser);
+    const config = { headers: { "Content-Type": "application/json" } };
+    var userID = this.state.selectedUser.toString();
+    axios.post(`http://localhost:52013/api/Users/DeleteUser`, userID, config)
+      .then(resp => {
+        if (resp.status === 200) {
+          console.log(resp.data);
+          this.handleClose();
+          //TODO: remove window.location
+          // this.props.history.push(`/`)
+          window.location = window.location
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          //The request was made and the server responded 
+          //with a status code that falls out of the range of 2xx OR in 4XX to 5XX range
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received 
+          //`error.request` is an instance of XMLHttpRequest in the browser 
+          //and an instance of http.ClientRequest in node.js
+          console.warn(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //always executed
+        //console.log(release); => udefined
+      });
+      // window.location = window.location
+    // this.props.history.push('/manageuser');
+  };
   componentDidMount(prevProps) {
     axios.get(`http://localhost:52013/api/Users/GetUsers`)
       .then(resp => {
@@ -330,53 +352,55 @@ class EnhancedTable extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <Page
-        className={classes.root}
-        title="Register"
-      >
-        <Box
-          display="flex"
-          flexDirection="column"
-          height="100%"
-          justifyContent="center"
+      <ThemeProvider theme={theme}>
+        <Page
+          className={classes.root}
+          title="Register"
         >
-          <Container maxWidth="lg" disableGutters={true}>
-            <h1>User List</h1>
-            <Grid container className={classes.box}>
-              <Grid item xs={12}>
-                <MUIDataTable
-                  data={this.state.dataAPI}
-                  columns={this.columns}
-                  options={this.options}
-                />
+          <Box
+            display="flex"
+            flexDirection="column"
+            height="100%"
+            justifyContent="center"
+          >
+            <Container maxWidth="lg" disableGutters={true}>
+              <h1>User List</h1>
+              <Grid container className={classes.box}>
+                <Grid item xs={12}>
+                  <MUIDataTable
+                    data={this.state.dataAPI}
+                    columns={this.columns}
+                    options={this.options}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-            <Dialog
-              open={this.state.modal}
-              TransitionComponent={Transition}
-              keepMounted
-              onClose={this.handleClose}
+              <Dialog
+                open={this.state.modal}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={this.handleClose}
               // aria-labelledby="alert-dialog-slide-title"
               // aria-describedby="alert-dialog-slide-description"
-            >
-              <DialogTitle id="alert-dialog-slide-title">{"Use Google's location service?"}</DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-slide-description">
-                  Are you sure to delete user {this.state.selectedUser}
+              >
+                <DialogTitle id="alert-dialog-slide-title">Confirm Operation</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+                    Are you sure to you want to delete selected user ?
           </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={this.handleClose} color="primary">
-                  Disagree
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleClose} color="default">
+                    No
           </Button>
-                <Button onClick={this.handleClose} color="primary">
-                  Agree
+                  <Button onClick={this.deleteCallAPI} color="secondary">
+                    Yes
           </Button>
-              </DialogActions>
-            </Dialog>
-          </Container>
-        </Box>
-      </Page>
+                </DialogActions>
+              </Dialog>
+            </Container>
+          </Box>
+        </Page>
+      </ThemeProvider>
     );
   }
 }

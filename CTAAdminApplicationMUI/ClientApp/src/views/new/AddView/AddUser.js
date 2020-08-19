@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import theme from '../../../theme/theme/theme';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
+import axios from 'axios'
 
 import {
   Box,
@@ -138,11 +139,46 @@ class RegisterView extends React.Component {
       email: this.state.email,
       password: this.state.password,
       confirm_password: this.state.confirm_password,
-      role: this.state.role,
+      role: (this.state.role).join(),
       region: this.state.region,
       status: this.state.status
     };
     console.log(user);
+    axios.post(`http://localhost:52013/api/Users/AddUser`,user)
+      .then(resp => {
+        if (resp.status === 200) {
+          console.log(resp.data);
+          // console.log(this.props);
+          window.location = '/app/manageuser';
+          // var user = resp.data;
+          // window.location.reload();
+          // dispatch(addUser({
+          //   user
+          // }));
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          //The request was made and the server responded 
+          //with a status code that falls out of the range of 2xx OR in 4XX to 5XX range
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received 
+          //`error.request` is an instance of XMLHttpRequest in the browser 
+          //and an instance of http.ClientRequest in node.js
+          console.warn(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //always executed
+        //console.log(release); => udefined
+      });
   };
   getStyles(name, role, theme) {
     return {
@@ -173,8 +209,9 @@ class RegisterView extends React.Component {
           
           <Container maxWidth="lg" disableGutters={true}>
             <Grid container className={classes.box}>
-              <h1>Add User</h1>
+              
               <form className={classes.root} noValidate autoComplete="off" className={classes.box}>
+              <h1>Add User</h1>
                 <Grid item xs={6}>
                 <FormControl variant="outlined" className={classes.formControl}>
                   <TextField
@@ -237,7 +274,7 @@ class RegisterView extends React.Component {
                     fullWidth
                     className={classes.textField}
                     value={this.state.confirm_password}
-                    margin='normal'
+                    // margin='normal'
                   />
                   </FormControl>
                   <FormControl  className={classes.formControl}>
@@ -305,7 +342,9 @@ class RegisterView extends React.Component {
                 </Grid>
                 <Grid item xs={6} ></Grid>
                 &nbsp;&nbsp;&nbsp;
+                <br/>
                 <Button variant="outlined" color="primary" onClick={this.onSubmit}>Save</Button>
+                &nbsp;<Button variant="outlined" onClick={()=>{window.location="http://localhost:3000/app/manageuser"}}>Cancel</Button>
               </form>
             </Grid>
           </Container>

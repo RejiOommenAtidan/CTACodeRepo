@@ -1,22 +1,22 @@
 import React from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
+// import { Link as RouterLink, useNavigate } from 'react-router-dom';
+// import * as Yup from 'yup';
+// import { Formik } from 'formik';
 import Input from '@material-ui/core/Input';
 import { withStyles } from '@material-ui/core/styles';
-import theme from '../../../theme/theme/theme'
+import theme from '../../../theme/theme/theme';
+// import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+// import Link from '@material-ui/core/Link';
+import axios from 'axios'
 import {
   Box,
   Button,
   Checkbox,
   Container,
-  FormHelperText,
   TextField,
-  Typography,
-  makeStyles,
   InputLabel,
   ListItemText,
-  Contain, Grid
+  Grid
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -30,12 +30,16 @@ const useStyles = (theme) => ({
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3),
     flexGrow: 1,
+    'label + &': {
+      marginTop: theme.spacing(3)
+    }
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
   formControl: {
     margin: theme.spacing(0.5),
+    
     width:'100%'
   },
   paper: {
@@ -43,11 +47,11 @@ const useStyles = (theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
-  textField: {
+  /*textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     marginBottom: theme.spacing(1)
-  },
+  },*/
   // selectField: {
   //   marginLeft: theme.spacing(1),
   //   marginRight: theme.spacing(1),
@@ -71,12 +75,12 @@ const MenuProps = {
   },
 };
 const roles = ["Trainee Software Developer", "Software Developer"];
-
 class RegisterView extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      user_id: props.user ? props.user.user_id : '',
       username: props.user ? props.user.username : '',
       fullname: props.user ? props.user.fullname : '',
       email: props.user ? props.user.email : '',
@@ -121,19 +125,120 @@ class RegisterView extends React.Component {
     // console.log(status);
     this.setState(() => ({ status }));
   };
+  componentDidMount(prevProps) {
+    // console.log(this.state.user)
+    // console.log(this.props.match.params.user_Id);
+    // let a = this.props.match.params.user_Id;
+    // a = a.toString();
+
+    let userID = (window.location.href).split('editUser/')[1];
+    // let c = window.location.search.split('editUser/')
+    // console.log(typeof(c));
+    // const queryString = window.location.search;
+    // console.log(queryString);
+    axios.get(`http://localhost:52013/api/Users/GetUser/userID=`+userID)
+      .then(resp => {
+        if (resp.status === 200) {
+          // console.log(resp.data)
+          let splitResult = (resp.data.role).split(',');
+          this.setState(prevState => ({
+            // user: {
+            //   ...prevState.user,
+            //   // user_id:resp.data.user_Id,
+            // username: resp.data.username,
+            // fullname: resp.data.fullname,
+            // email: resp.data.email,
+            // password: resp.data.password,
+            // confirm_password: resp.data.confirm_Password,
+            // role: resp.data.role,
+            // region: resp.data.region,
+            // status: resp.data.status,
+            user_id: resp.data.user_Id,
+            username: resp.data.username,
+            fullname: resp.data.fullname,
+            email: resp.data.email,
+            password: resp.data.password,
+            confirm_password: resp.data.confirm_Password,
+            role: splitResult,
+            region: resp.data.region,
+            status: resp.data.status
+          }));
+          // console.log(this.state.user);
+            // window.location = '/userlist';
+      // window.location = window.location
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          //The request was made and the server responded 
+          //with a status code that falls out of the range of 2xx OR in 4XX to 5XX range
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received 
+          //`error.request` is an instance of XMLHttpRequest in the browser 
+          //and an instance of http.ClientRequest in node.js
+          console.warn(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //always executed
+        //console.log(release); => udefined
+      });
+      // window.location = '/userlist';
+  }
+
+
   onSubmit = (e) => {
     e.preventDefault();
     let user = {
+      user_id : this.state.user_id,
       username: this.state.username,
       fullname: this.state.fullname,
       email: this.state.email,
       password: this.state.password,
       confirm_password: this.state.confirm_password,
-      role: this.state.role,
+      role: (this.state.role).join(),
       region: this.state.region,
       status: this.state.status
     };
     console.log(user);
+    let userID = (window.location.href).split('editUser/')[1];
+    axios.post(`http://localhost:52013/api/Users/EditUser/userID=` + userID, user)
+      .then(resp => {
+        if (resp.status === 200) {
+          console.log(resp.data);
+          // console.log(this.props);
+          window.location = '/app/manageuser';
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          //The request was made and the server responded 
+          //with a status code that falls out of the range of 2xx OR in 4XX to 5XX range
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received 
+          //`error.request` is an instance of XMLHttpRequest in the browser 
+          //and an instance of http.ClientRequest in node.js
+          console.warn(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //always executed
+        //console.log(release); => udefined
+      });
   };
   getStyles(name, role, theme) {
     return {
@@ -143,6 +248,7 @@ class RegisterView extends React.Component {
           : theme.typography.fontWeightMedium,
     };
   }
+  
   render() {
     const { classes } = this.props;
     const handleChange = (event) => {
@@ -152,7 +258,7 @@ class RegisterView extends React.Component {
     return (
       <Page
         className={classes.root}
-        title="Register"
+        title="Add User"
       >
         <Box
           display="flex"
@@ -160,17 +266,19 @@ class RegisterView extends React.Component {
           height="100%"
           justifyContent="center"
         >
+          
           <Container maxWidth="lg" disableGutters={true}>
             <Grid container className={classes.box}>
-              <h1>Edit User</h1>
+              
               <form className={classes.root} noValidate autoComplete="off" className={classes.box}>
+              <h1>Edit User</h1>
                 <Grid item xs={6}>
                 <FormControl variant="outlined" className={classes.formControl}>
                   <TextField
                     label="Username"
                     id="username"
                     onChange={this.onUsernameChange}
-                    variant="outlined"
+                   // variant="outlined"
                     size="small"
                     fullWidth
                     className={classes.textField}
@@ -182,7 +290,7 @@ class RegisterView extends React.Component {
                     label="Fullname"
                     id="fullname"
                     onChange={this.onFullnameChange}
-                    variant="outlined"
+                   // variant="outlined"
                     size="small"
                     fullWidth
                     className={classes.textField}
@@ -194,7 +302,7 @@ class RegisterView extends React.Component {
                     label="Email"
                     id="email"
                     onChange={this.onEmailChange}
-                    variant="outlined"
+                   // variant="outlined"
                     size="small"
                     type="email"
                     fullWidth
@@ -207,7 +315,7 @@ class RegisterView extends React.Component {
                     label="Password"
                     id="password"
                     onChange={this.onPasswordChange}
-                    variant="outlined"
+                    //variant="outlined"
                     size="small"
                     type="password"
                     fullWidth
@@ -220,14 +328,52 @@ class RegisterView extends React.Component {
                     label="Confirm Password"
                     id="confirm_password"
                     onChange={this.onConfirmPasswordChange}
-                    variant="outlined"
+                  //  variant="outlined"
                     size="small"
                     type="password"
                     fullWidth
                     className={classes.textField}
                     value={this.state.confirm_password}
-                    margin='normal'
+                    // margin='normal'
                   />
+                  </FormControl>
+                  <FormControl  className={classes.formControl}>
+                  <InputLabel id="region-label">Region</InputLabel>
+                  <Select
+                    label="Region"
+                    labelId="region-label"
+                    id="region"
+                    onChange={this.onRegionChange}
+                    fullWidth
+                    className={classes.textField}
+                    value={this.state.region}
+                  //  variant="outlined"
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={"Mumbai"}>Mumbai</MenuItem>
+                    <MenuItem value={"Pune"}>Pune</MenuItem>
+                  </Select>
+                  </FormControl>
+                  <FormControl className={classes.formControl}>
+                  <InputLabel id="status-label">Status</InputLabel>
+                  <Select
+                    label="Status"
+                    labelId="status-label"
+                    id="status"
+                    onChange={this.onStatusChange}
+                    fullWidth
+                    className={classes.textField}
+                    value={this.state.status}
+                //    variant="outlined"
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={"Active"}>Active</MenuItem>
+                    <MenuItem value={"Inactive"}>Inactive</MenuItem>
+                  </Select>
                   </FormControl>
                   <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel id="role-label">Role</InputLabel>
@@ -242,8 +388,8 @@ class RegisterView extends React.Component {
                     renderValue={(selected) => selected.join(', ')}
                     MenuProps={MenuProps}
                     fullWidth
-                    className={classes.textField}
-                    variant="outlined"
+                  //  className={classes.textField}
+                  //  variant="outlined"
                   >
                     {roles.map((name) => (
                       <MenuItem key={name} value={name}>
@@ -253,48 +399,13 @@ class RegisterView extends React.Component {
                     ))}
                   </Select>
                   </FormControl>
-                  <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel id="region-label">Region</InputLabel>
-                  <Select
-                    label="Region"
-                    labelId="region-label"
-                    id="region"
-                    onChange={this.onRegionChange}
-                    fullWidth
-                    className={classes.textField}
-                    value={this.state.region}
-                    variant="outlined"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={"Mumbai"}>Mumbai</MenuItem>
-                    <MenuItem value={"Pune"}>Pune</MenuItem>
-                  </Select>
-                  </FormControl>
-                  <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel id="status-label">Status</InputLabel>
-                  <Select
-                    label="Status"
-                    labelId="status-label"
-                    id="status"
-                    onChange={this.onStatusChange}
-                    fullWidth
-                    className={classes.textField}
-                    value={this.state.status}
-                    variant="outlined"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={"Active"}>Active</MenuItem>
-                    <MenuItem value={"Inactive"}>Inactive</MenuItem>
-                  </Select>
-                  </FormControl>
                 </Grid>
                 <Grid item xs={6} ></Grid>
                 &nbsp;&nbsp;&nbsp;
+                <br/>
                 <Button variant="outlined" color="primary" onClick={this.onSubmit}>Save</Button>
+                &nbsp;<Button variant="outlined" onClick={()=>{window.location="http://localhost:3000/app/manageuser"}}>Cancel</Button>
+                
               </form>
             </Grid>
           </Container>
