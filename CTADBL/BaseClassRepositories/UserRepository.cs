@@ -65,6 +65,24 @@ namespace CTADBL.BaseClassesRepositories
             }
         }
 
+        public User GetUserUsingSP(string userID)
+        {
+            try
+            {
+                // PARAMETERIZED QUERIES!
+                using (var command = new MySqlCommand("CALL spGetUserByUserID(@inputUser_id)"))
+                {
+                    command.Parameters.AddWithValue("inputUser_id", userID);
+                    return GetRecord(command);
+                }
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
 
 
         #endregion

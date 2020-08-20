@@ -75,6 +75,23 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
+        [HttpGet("GetUserUsingSP/userID={userID}")]
+        [Route("[action]")]
+        public IActionResult GetUserUsingSP(string userID)
+        {
+            #region Get User
+            try
+            {
+                UserRepository userRepo = new UserRepository(_info.ConnectionString);
+                User fetchedUser = userRepo.GetUserUsingSP(userID);
+                return Ok(fetchedUser);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
         //[AllowAnonymous]
         [HttpPost]
         [Route("[action]")]
