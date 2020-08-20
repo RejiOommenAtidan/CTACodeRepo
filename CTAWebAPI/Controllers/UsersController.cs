@@ -17,16 +17,20 @@ namespace CTAWebAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        #region Constructor
         private readonly DBConnectionInfo _info;
         public UsersController(DBConnectionInfo info)
         {
             _info = info;
-        }
+        } 
+        #endregion
+
+        #region Get Calls
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetUsers()
         {
-            #region Get Users
+            #region Get All Users
             try
             {
                 UserRepository userRepo = new UserRepository(_info.ConnectionString);
@@ -36,7 +40,7 @@ namespace CTAWebAPI.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            } 
+            }
             #endregion
         }
 
@@ -44,7 +48,7 @@ namespace CTAWebAPI.Controllers
         [Route("[action]")]
         public IActionResult GetUsersUsingSP()
         {
-            #region Get Users
+            #region Get Users using SP call
             try
             {
                 UserRepository userRepo = new UserRepository(_info.ConnectionString);
@@ -62,7 +66,7 @@ namespace CTAWebAPI.Controllers
         [Route("[action]")]
         public IActionResult GetUser(string userID)
         {
-            #region Get User
+            #region Get Single User
             try
             {
                 UserRepository userRepo = new UserRepository(_info.ConnectionString);
@@ -75,11 +79,12 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
+
         [HttpGet("GetUserUsingSP/userID={userID}")]
         [Route("[action]")]
         public IActionResult GetUserUsingSP(string userID)
         {
-            #region Get User
+            #region Get Single User Using SP
             try
             {
                 UserRepository userRepo = new UserRepository(_info.ConnectionString);
@@ -92,6 +97,10 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
+        #endregion
+
+        #region Add Call
+        //TODO: Tell
         //[AllowAnonymous]
         [HttpPost]
         [Route("[action]")]
@@ -124,12 +133,14 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
-        //[AllowAnonymous]
+        #endregion
+
+        #region Edit Call
         [HttpPost("EditUser/userID={userID}")]
         [Route("[action]")]
-        public IActionResult EditUser(string userID,[FromBody]User user)
+        public IActionResult EditUser(string userID, [FromBody] User user)
         {
-            #region Add User
+            #region Edit User
             try
             {
                 if (ModelState.IsValid)
@@ -164,7 +175,9 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
+        #endregion
 
+        #region Delete Call
         [HttpPost]
         [Route("[action]")]
         public IActionResult DeleteUser(object body)
@@ -172,7 +185,7 @@ namespace CTAWebAPI.Controllers
             #region Delete User
             try
             {
-                //TODO: check for string sending 
+                //TODO: check for correct way of sending string from body
                 string userID = JsonSerializer.Serialize(body);
 
                 if (!string.IsNullOrEmpty(userID))
@@ -189,7 +202,8 @@ namespace CTAWebAPI.Controllers
                         return BadRequest("User with ID: " + userID + " does not exist");
                     }
                 }
-                else {
+                else
+                {
                     return BadRequest("User Id Cannot be null");
                 }
 
@@ -199,9 +213,14 @@ namespace CTAWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
-        }
-        private bool UserExists(string userID) {
-            try {
+        } 
+        #endregion
+
+        #region Check if Exists
+        private bool UserExists(string userID)
+        {
+            try
+            {
                 UserRepository userRepository = new UserRepository(_info.ConnectionString);
                 User fetchedUser = userRepository.GetUserById(userID);
                 if (fetchedUser != null)
@@ -211,8 +230,9 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception in User Exists Function, Exception Message: "+ex.Message);
+                throw new Exception("Exception in User Exists Function, Exception Message: " + ex.Message);
             }
-        }
+        } 
+        #endregion
     }
 }

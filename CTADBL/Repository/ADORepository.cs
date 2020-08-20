@@ -6,15 +6,22 @@ namespace CTADBL.Repository
 {
     public abstract class ADORepository<T> where T : class
     {
+        #region Constructor
         private static MySqlConnection _connection;
         public ADORepository(string connectionString)
         {
             _connection = new MySqlConnection(connectionString);
         }
+        #endregion
+
+        #region Generic Populate Record
         public virtual T PopulateRecord(MySqlDataReader reader)
         {
             return null;
         }
+        #endregion
+
+        #region Generic Get Record/Records
         protected IEnumerable<T> GetRecords(MySqlCommand command)
         {
             var list = new List<T>();
@@ -68,6 +75,9 @@ namespace CTADBL.Repository
             }
             return record;
         }
+        #endregion
+
+        #region Generic SP Call
         protected IEnumerable<T> ExecuteStoredProc(MySqlCommand command)
         {
             var list = new List<T>();
@@ -97,6 +107,9 @@ namespace CTADBL.Repository
             }
             return list;
         }
+        #endregion
+
+        #region Generic Execute Command Call
         protected void ExecuteCommand(MySqlCommand command)
         {
             command.Connection = _connection;
@@ -110,6 +123,7 @@ namespace CTADBL.Repository
             {
                 _connection.Close();
             }
-        }
+        } 
+        #endregion
     }
 }

@@ -43,14 +43,17 @@ namespace CTAWebAPI
         {
             //Get Origins & Use between Routing & Authorization
             var origins = Configuration["AllowedOrigins"].Split(";");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseRouting();
-            //Allow any header add for header related issues 
+
+            //Allow any header added for header related issues 
             app.UseCors(options => options.WithOrigins(origins).AllowAnyHeader());
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

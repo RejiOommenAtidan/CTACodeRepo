@@ -6,6 +6,7 @@ namespace CTADBL.BaseClasses
     [Table("ctauser")]
     public class User
     {
+        #region User Properties
         [Key]
         public int User_Id { get; set; }
         public string Username { get; set; }
@@ -15,6 +16,7 @@ namespace CTADBL.BaseClasses
         public string Confirm_Password { get; set; }
         public string Role { get; set; }
         public string Region { get; set; }
-        public string Status { get; set; }
+        public string Status { get; set; } 
+        #endregion
     }
 }

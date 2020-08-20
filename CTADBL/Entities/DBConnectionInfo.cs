@@ -4,7 +4,7 @@ namespace CTADBL.Entities
 {
     public class DBConnectionInfo
     {
-        #region Single Prop Connection String
+        #region Connection String Prop
         public string ConnectionString { get; set; }
         #endregion
     }

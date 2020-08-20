@@ -8,26 +8,37 @@ namespace CTADBL.BaseClassesRepositories
 {
     public class UserRepository : ADORepository<User>
     {
+        #region Constructor
         public UserRepository(string connectionString) : base(connectionString)
         {
         }
+        #endregion
+
+        #region User Add Call
         public void Add(User user)
         {
             var builder = new SqlQueryBuilder<User>(user);
             ExecuteCommand(builder.GetInsertCommand());
         }
+        #endregion
+
+        #region Update User Call
         public void Update(User user)
         {
             var builder = new SqlQueryBuilder<User>(user);
             ExecuteCommand(builder.GetUpdateCommand());
         }
+        #endregion
+
+        #region Delete User Call
         public void Delete(User user)
         {
             var builder = new SqlQueryBuilder<User>(user);
             ExecuteCommand(builder.GetDeleteCommand());
         }
+        #endregion
 
-        #region Get
+        #region Get User/Users Call (SP & Normal)
         public IEnumerable<User> GetAllUser()
         {
             // DBAs across the country are having strokes over this next command!
@@ -36,6 +47,7 @@ namespace CTADBL.BaseClassesRepositories
                 return GetRecords(command);
             }
         }
+
         public User GetUserById(string id)
         {
             // PARAMETERIZED QUERIES!
@@ -49,20 +61,12 @@ namespace CTADBL.BaseClassesRepositories
 
         public IEnumerable<User> GetUsersUsingSP()
         {
-            try
-            {
                 // PARAMETERIZED QUERIES!
                 using (var command = new MySqlCommand("CALL spGetAllUsers()"))
                 {
                     //command.Parameters.AddWithValue("id", id);
                     return GetRecords(command);
                 }
-            }
-            catch (System.Exception ex)
-            {
-
-                throw ex;
-            }
         }
 
         public User GetUserUsingSP(string userID)
@@ -82,15 +86,14 @@ namespace CTADBL.BaseClassesRepositories
                 throw ex;
             }
         }
-
-
-
         #endregion
+
+        #region Populate User Records
         public override User PopulateRecord(MySqlDataReader reader)
-        {            
+        {
             return new User
             {
-                User_Id = (int) reader["user_id"],
+                User_Id = (int)reader["user_id"],
                 //User_Id = reader.GetInt32(0),
                 Username = reader.GetString(1),
                 Fullname = reader.GetString(2),
@@ -101,6 +104,7 @@ namespace CTADBL.BaseClassesRepositories
                 Region = reader.GetString(7),
                 Status = reader.GetString(8)
             };
-        }
+        } 
+        #endregion
     }
 }
