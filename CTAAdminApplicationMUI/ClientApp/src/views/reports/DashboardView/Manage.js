@@ -3,7 +3,8 @@ import {
   Box,
   Container,
   Grid,
-  Button
+  Button,
+  Typography
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
@@ -105,27 +106,29 @@ class EnhancedTable extends React.Component {
     filterType: 'checkbox',
     selectableRows: false,
     jumpToPage: true,
-    rowsPerPage:5,
-    rowsPerPageOptions:[5,10,20,30]
+    rowsPerPage: 5,
+    rowsPerPageOptions: [5, 10, 20, 30]
   };
   state = {
     dataAPI: [],
     loadingProp: true,
     modal: false,
-    selectedUser: ''
+    selectedUser: '',
+    selectedUserName:''
   };
 
-  editClick(user_Id){
+  editClick(user_Id) {
     // alert(user_Id);
     //TODO: remove usage of window.location
-    window.location = 'editUser/'+user_Id.toString();
+    window.location = 'editUser/' + user_Id.toString();
   }
 
-  deleteClick(user_Id) {
+  deleteClick(user_Id,userName) {
     console.log(user_Id)
     this.setState({
       modal: true,
-      selectedUser: user_Id
+      selectedUser: user_Id,
+      selectedUserName: userName
     });
   }
 
@@ -183,7 +186,7 @@ class EnhancedTable extends React.Component {
             <Chip
               size="small"
               label={value}
-              color={value==="Active"?'primary':'secondary'} 
+              color={value === "Active" ? 'primary' : 'secondary'}
               variant="outlined"
             >
             </Chip>
@@ -225,7 +228,7 @@ class EnhancedTable extends React.Component {
               color="secondary"
               size="small"
               endIcon={<DeleteOutlinedIcon />}
-              onClick={() => { this.deleteClick(tableMeta.rowData[0]) }}
+              onClick={() => { this.deleteClick(tableMeta.rowData[0],tableMeta.rowData[1]) }}
             >Delete
             </Button>
           )
@@ -237,7 +240,9 @@ class EnhancedTable extends React.Component {
 
   handleClose = () => {
     this.setState({
-      modal: false
+      modal: false,
+      selectedUser: '',
+      selectedUserName:''
     });
   };
 
@@ -278,7 +283,7 @@ class EnhancedTable extends React.Component {
         //always executed
         //console.log(release); => udefined
       });
-      // window.location = window.location
+    // window.location = window.location
     // this.props.history.push('/manageuser');
   };
   componentDidMount(prevProps) {
@@ -364,7 +369,7 @@ class EnhancedTable extends React.Component {
             justifyContent="center"
           >
             <Container maxWidth="lg" disableGutters={true}>
-              <h1>User List</h1>
+              <Typography variant="h4" gutterBottom>User List</Typography>
               <Grid container className={classes.box}>
                 <Grid item xs={12}>
                   <MUIDataTable
@@ -385,7 +390,7 @@ class EnhancedTable extends React.Component {
                 <DialogTitle id="alert-dialog-slide-title">Confirm Operation</DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-slide-description">
-                    Are you sure to you want to delete selected user ?
+                  Are you sure you want to delete user {this.state.selectedUserName} ?
           </DialogContentText>
                 </DialogContent>
                 <DialogActions>

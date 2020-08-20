@@ -46,6 +46,27 @@ namespace CTADBL.BaseClassesRepositories
                 return GetRecord(command);
             }
         }
+
+        public IEnumerable<User> GetUsersUsingSP()
+        {
+            try
+            {
+                // PARAMETERIZED QUERIES!
+                using (var command = new MySqlCommand("CALL spGetAllUsers()"))
+                {
+                    //command.Parameters.AddWithValue("id", id);
+                    return GetRecords(command);
+                }
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+
+
         #endregion
         public override User PopulateRecord(MySqlDataReader reader)
         {            

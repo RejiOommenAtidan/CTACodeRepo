@@ -7,7 +7,8 @@ import { withStyles } from '@material-ui/core/styles';
 import theme from '../../../theme/theme/theme';
 // import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 // import Link from '@material-ui/core/Link';
-import axios from 'axios'
+import axios from 'axios';
+import { ThemeProvider } from '@material-ui/styles';
 import {
   Box,
   Button,
@@ -16,7 +17,8 @@ import {
   TextField,
   InputLabel,
   ListItemText,
-  Grid
+  Grid,
+  Typography
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -39,8 +41,8 @@ const useStyles = (theme) => ({
   },
   formControl: {
     margin: theme.spacing(0.5),
-    
-    width:'100%'
+
+    width: '100%'
   },
   paper: {
     padding: theme.spacing(2),
@@ -136,7 +138,7 @@ class RegisterView extends React.Component {
     // console.log(typeof(c));
     // const queryString = window.location.search;
     // console.log(queryString);
-    axios.get(`http://localhost:52013/api/Users/GetUser/userID=`+userID)
+    axios.get(`http://localhost:52013/api/Users/GetUser/userID=` + userID)
       .then(resp => {
         if (resp.status === 200) {
           // console.log(resp.data)
@@ -164,8 +166,8 @@ class RegisterView extends React.Component {
             status: resp.data.status
           }));
           // console.log(this.state.user);
-            // window.location = '/userlist';
-      // window.location = window.location
+          // window.location = '/userlist';
+          // window.location = window.location
         }
       })
       .catch(error => {
@@ -190,14 +192,14 @@ class RegisterView extends React.Component {
         //always executed
         //console.log(release); => udefined
       });
-      // window.location = '/userlist';
+    // window.location = '/userlist';
   }
 
 
   onSubmit = (e) => {
     e.preventDefault();
     let user = {
-      user_id : this.state.user_id,
+      user_id: this.state.user_id,
       username: this.state.username,
       fullname: this.state.fullname,
       email: this.state.email,
@@ -248,7 +250,7 @@ class RegisterView extends React.Component {
           : theme.typography.fontWeightMedium,
     };
   }
-  
+
   render() {
     const { classes } = this.props;
     const handleChange = (event) => {
@@ -256,161 +258,165 @@ class RegisterView extends React.Component {
     };
 
     return (
-      <Page
-        className={classes.root}
-        title="Add User"
-      >
-        <Box
-          display="flex"
-          flexDirection="column"
-          height="100%"
-          justifyContent="center"
+      <ThemeProvider theme={theme}>
+        <Page
+          className={classes.root}
+          title="Add User"
         >
-          
-          <Container maxWidth="lg" disableGutters={true}>
-            <Grid container className={classes.box}>
-              
-              <form className={classes.root} noValidate autoComplete="off" className={classes.box}>
-              <h1>Edit User</h1>
-                <Grid item xs={6}>
-                <FormControl variant="outlined" className={classes.formControl}>
-                  <TextField
-                    label="Username"
-                    id="username"
-                    onChange={this.onUsernameChange}
-                   // variant="outlined"
-                    size="small"
-                    fullWidth
-                    className={classes.textField}
-                    value={this.state.username}
-                  />
-                  </FormControl>
-                  <FormControl variant="outlined" className={classes.formControl}>
-                  <TextField
-                    label="Fullname"
-                    id="fullname"
-                    onChange={this.onFullnameChange}
-                   // variant="outlined"
-                    size="small"
-                    fullWidth
-                    className={classes.textField}
-                    value={this.state.fullname}
-                  />
-                  </FormControl>
-                  <FormControl variant="outlined" className={classes.formControl}>
-                  <TextField
-                    label="Email"
-                    id="email"
-                    onChange={this.onEmailChange}
-                   // variant="outlined"
-                    size="small"
-                    type="email"
-                    fullWidth
-                    className={classes.textField}
-                    value={this.state.email}
-                  />
-                  </FormControl>
-                  <FormControl variant="outlined" className={classes.formControl}>
-                  <TextField
-                    label="Password"
-                    id="password"
-                    onChange={this.onPasswordChange}
-                    //variant="outlined"
-                    size="small"
-                    type="password"
-                    fullWidth
-                    className={classes.textField}
-                    value={this.state.password}
-                  />
-                  </FormControl>
-                  <FormControl variant="outlined" className={classes.formControl}>
-                  <TextField
-                    label="Confirm Password"
-                    id="confirm_password"
-                    onChange={this.onConfirmPasswordChange}
-                  //  variant="outlined"
-                    size="small"
-                    type="password"
-                    fullWidth
-                    className={classes.textField}
-                    value={this.state.confirm_password}
-                    // margin='normal'
-                  />
-                  </FormControl>
-                  <FormControl  className={classes.formControl}>
-                  <InputLabel id="region-label">Region</InputLabel>
-                  <Select
-                    label="Region"
-                    labelId="region-label"
-                    id="region"
-                    onChange={this.onRegionChange}
-                    fullWidth
-                    className={classes.textField}
-                    value={this.state.region}
-                  //  variant="outlined"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={"Mumbai"}>Mumbai</MenuItem>
-                    <MenuItem value={"Pune"}>Pune</MenuItem>
-                  </Select>
-                  </FormControl>
-                  <FormControl className={classes.formControl}>
-                  <InputLabel id="status-label">Status</InputLabel>
-                  <Select
-                    label="Status"
-                    labelId="status-label"
-                    id="status"
-                    onChange={this.onStatusChange}
-                    fullWidth
-                    className={classes.textField}
-                    value={this.state.status}
-                //    variant="outlined"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={"Active"}>Active</MenuItem>
-                    <MenuItem value={"Inactive"}>Inactive</MenuItem>
-                  </Select>
-                  </FormControl>
-                  <FormControl variant="outlined" className={classes.formControl}>
-                  <InputLabel id="role-label">Role</InputLabel>
-                  <Select
-                    label="Role"
-                    labelId="role-label"
-                    id="role"
-                    onChange={handleChange}
-                    multiple
-                    value={this.state.role}
-                    input={<Input />}
-                    renderValue={(selected) => selected.join(', ')}
-                    MenuProps={MenuProps}
-                    fullWidth
-                  //  className={classes.textField}
-                  //  variant="outlined"
-                  >
-                    {roles.map((name) => (
-                      <MenuItem key={name} value={name}>
-                        <Checkbox checked={this.state.role.indexOf(name) > -1} />
-                        <ListItemText primary={name} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6} ></Grid>
+          <Box
+            display="flex"
+            flexDirection="column"
+            height="100%"
+            justifyContent="center"
+          >
+
+            <Container maxWidth="lg" disableGutters={true}>
+
+              <Grid container className={classes.box}>
+                <Typography variant="h4" gutterBottom>Edit User</Typography>
+
+                <form className={classes.root} noValidate autoComplete="off" className={classes.box}>
+
+                  <Grid item xs={6}>
+                    <FormControl variant="outlined" className={classes.formControl}>
+                      <TextField
+                        label="Username"
+                        id="username"
+                        onChange={this.onUsernameChange}
+                        // variant="outlined"
+                        size="small"
+                        fullWidth
+                        className={classes.textField}
+                        value={this.state.username}
+                      />
+                    </FormControl>
+                    <FormControl variant="outlined" className={classes.formControl}>
+                      <TextField
+                        label="Fullname"
+                        id="fullname"
+                        onChange={this.onFullnameChange}
+                        // variant="outlined"
+                        size="small"
+                        fullWidth
+                        className={classes.textField}
+                        value={this.state.fullname}
+                      />
+                    </FormControl>
+                    <FormControl variant="outlined" className={classes.formControl}>
+                      <TextField
+                        label="Email"
+                        id="email"
+                        onChange={this.onEmailChange}
+                        // variant="outlined"
+                        size="small"
+                        type="email"
+                        fullWidth
+                        className={classes.textField}
+                        value={this.state.email}
+                      />
+                    </FormControl>
+                    <FormControl variant="outlined" className={classes.formControl}>
+                      <TextField
+                        label="Password"
+                        id="password"
+                        onChange={this.onPasswordChange}
+                        //variant="outlined"
+                        size="small"
+                        type="password"
+                        fullWidth
+                        className={classes.textField}
+                        value={this.state.password}
+                      />
+                    </FormControl>
+                    <FormControl variant="outlined" className={classes.formControl}>
+                      <TextField
+                        label="Confirm Password"
+                        id="confirm_password"
+                        onChange={this.onConfirmPasswordChange}
+                        //  variant="outlined"
+                        size="small"
+                        type="password"
+                        fullWidth
+                        className={classes.textField}
+                        value={this.state.confirm_password}
+                      // margin='normal'
+                      />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id="region-label">Region</InputLabel>
+                      <Select
+                        label="Region"
+                        labelId="region-label"
+                        id="region"
+                        onChange={this.onRegionChange}
+                        fullWidth
+                        className={classes.textField}
+                        value={this.state.region}
+                      //  variant="outlined"
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={"Mumbai"}>Mumbai</MenuItem>
+                        <MenuItem value={"Pune"}>Pune</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id="status-label">Status</InputLabel>
+                      <Select
+                        label="Status"
+                        labelId="status-label"
+                        id="status"
+                        onChange={this.onStatusChange}
+                        fullWidth
+                        className={classes.textField}
+                        value={this.state.status}
+                      //    variant="outlined"
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={"Active"}>Active</MenuItem>
+                        <MenuItem value={"Inactive"}>Inactive</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <FormControl variant="outlined" className={classes.formControl}>
+                      <InputLabel id="role-label">Role</InputLabel>
+                      <Select
+                        label="Role"
+                        labelId="role-label"
+                        id="role"
+                        onChange={handleChange}
+                        multiple
+                        value={this.state.role}
+                        input={<Input />}
+                        renderValue={(selected) => selected.join(', ')}
+                        MenuProps={MenuProps}
+                        fullWidth
+                      //  className={classes.textField}
+                      //  variant="outlined"
+                      >
+                        {roles.map((name) => (
+                          <MenuItem key={name} value={name}>
+                            <Checkbox checked={this.state.role.indexOf(name) > -1} />
+                            <ListItemText primary={name} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6} ></Grid>
                 &nbsp;&nbsp;&nbsp;
-                <br/>
-                <Button variant="outlined" color="primary" onClick={this.onSubmit}>Save</Button>
-                &nbsp;<Button variant="outlined" onClick={()=>{window.location="http://localhost:3000/app/manageuser"}}>Cancel</Button>
-                
-              </form>
-            </Grid>
-          </Container>
-        </Box>
-      </Page>
+                <br />
+                  <Button variant="outlined" color="primary" onClick={this.onSubmit}>Save</Button>
+                &nbsp;<Button variant="outlined" onClick={() => { window.location = "http://localhost:3000/app/manageuser" }}>Cancel</Button>
+
+                </form>
+              </Grid>
+            </Container>
+          </Box>
+        </Page>
+      </ThemeProvider>
     )
   }
 }
