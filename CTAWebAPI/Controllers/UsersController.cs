@@ -216,7 +216,7 @@ namespace CTAWebAPI.Controllers
         } 
         #endregion
 
-        #region Check if Exists
+        #region Check if User Exists
         private bool UserExists(string userID)
         {
             try

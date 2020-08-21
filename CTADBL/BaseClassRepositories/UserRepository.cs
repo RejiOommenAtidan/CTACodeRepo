@@ -62,10 +62,10 @@ namespace CTADBL.BaseClassesRepositories
         public IEnumerable<User> GetUsersUsingSP()
         {
                 // PARAMETERIZED QUERIES!
-                using (var command = new MySqlCommand("CALL spGetAllUsers()"))
+                using (var command = new MySqlCommand("spGetAllUsers"))
                 {
                     //command.Parameters.AddWithValue("id", id);
-                    return GetRecords(command);
+                    return ExecuteStoredProc(command);
                 }
         }
 
@@ -104,7 +104,7 @@ namespace CTADBL.BaseClassesRepositories
                 Region = reader.GetString(7),
                 Status = reader.GetString(8)
             };
-        } 
+        }
         #endregion
     }
 }
