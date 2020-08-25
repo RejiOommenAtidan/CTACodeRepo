@@ -27,7 +27,7 @@ namespace CTADBL.BaseClassRepositories
         public GreenbookPayment GetPaymentById(string id)
         {
             // PARAMETERIZED QUERIES!
-            using (var command = new MySqlCommand("SELECT * FROM ctauser WHERE greenbookid = @id"))
+            using (var command = new MySqlCommand("SELECT * FROM greenbookpayment WHERE greenbookid = @id"))
             {
                 //command.Parameters.Add(new ObjectParameter("id", id));
                 command.Parameters.AddWithValue("id", id);
@@ -46,7 +46,7 @@ namespace CTADBL.BaseClassRepositories
                 EmployementYears = (int)reader["employementyears"],
                 ExtraDonation = (int)reader["extradonation"],
                 Name = (string)reader["name"],
-                NummberOfYears = (int)reader["numberofyears"],
+                NumberOfYears = (int)reader["numberofyears"],
                 TibetianAssociation = (string)reader["tibetianassociation"],
                 TotalDue = (int)reader["totaldue"],
                 YearOfLastPayment = (int)reader["yearoflastpayment"]

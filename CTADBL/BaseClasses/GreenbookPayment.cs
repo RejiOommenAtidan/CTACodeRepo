@@ -15,7 +15,7 @@ namespace CTADBL.BaseClasses
         public string Name { get; set; }
         public string TibetianAssociation { get; set; }
         public int YearOfLastPayment { get; set; }
-        public int NummberOfYears { get; set; }
+        public int NumberOfYears { get; set; }
         public int EmployementYears { get; set; }
         public int TotalDue { get; set; }
         public int ExtraDonation { get; set; }
