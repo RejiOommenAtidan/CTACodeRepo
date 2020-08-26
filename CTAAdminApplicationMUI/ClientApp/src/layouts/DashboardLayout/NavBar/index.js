@@ -20,34 +20,18 @@ import {
   ShoppingBag as ShoppingBagIcon,
   User as UserIcon,
   UserPlus as UserPlusIcon,
-  Users as UsersIcon
+  Users as UsersIcon,
+  
 } from 'react-feather';
 import NavItem from './NavItem';
-
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
   jobTitle: 'Senior Developer',
   name: 'Katarina Smith'
 };
 
-/*const items = [
-  
-  {
-    href: '/app/manageuser',
-    icon: UsersIcon,
-    title: 'Manage User'
-  },
-  {
-    href: '/app/manageuser2',
-    icon: UsersIcon,
-    title: 'Manage User 2'
-  },
-  {
-    href: '/app/adduser',
-    icon: UserPlusIcon,
-    title: 'Add User'
-  }
-];*/
+
 const items = [
   
   {
@@ -60,6 +44,11 @@ const items = [
     href: '/app/adduser',
     icon: UserPlusIcon,
     title: 'Add User'
+  },
+  {
+    href: '/app/madeb',
+    icon: MenuBookIcon,
+    title: 'Madeb'
   }
 ];
 const useStyles = makeStyles(() => ({

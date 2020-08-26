@@ -5,6 +5,7 @@ import DashboardLayout from 'src/layouts/DashboardLayout';
 import DashboardView from 'src/views/reports/DashboardView';
 import AddView from 'src/views/new/AddView';
 import EditView from 'src/views/edit/EditView';
+import MadebView from 'src/views/madeb/MadebView';
 
 const routes = [
   {
@@ -14,6 +15,7 @@ const routes = [
       { path: 'adduser', element: <AddView /> },
       { path: 'edituser/:user_Id', element: <EditView /> },
       { path: 'manageuser', element: <DashboardView /> },
+      { path: 'madeb', element: <MadebView /> },
       { path: '/', element: <DashboardView /> }
     ]
   },
