@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
-import { Header, Input, Button, ThemeProvider, Text } from 'react-native-elements';
+import { Header, Input, Button, Text } from 'react-native-elements';
 
 
 
@@ -47,26 +47,25 @@ export default function App() {
     console.log(payment.greenbookID)
   },[payment.greenbookID]);
   return (
-    <View>
-      <ThemeProvider>
+    <ScrollView>
         <Header
           leftComponent={{ icon: 'menu', color: '#fff' }}
           centerComponent={{ text: 'CTA DEMO', style: { color: '#fff' } }}
           rightComponent={{ icon: 'home', color: '#fff' }}
         />
-        <ScrollView>
-          <View style={{ alignItems: 'center' }}>
+        
+          <View style={{ alignItems: 'center'}}>
             <Text h1 >Payment</Text>
             <Input
               placeholder='Enter GreenBook Number'
-              leftIcon={{ type: 'font-awesome', name: 'user' }}
+              leftIcon={{ type: 'font-awesome', name: 'id-card' }}
               label='GreenBook Number'
               value={payment.greenbookID.toString()}
               onChangeText={value=>setPayment({...payment,greenbookID:value})}
             />
             <Input
               placeholder='Date of Birth'
-              leftIcon={{ type: 'font-awesome', name: 'user' }}
+              leftIcon={{ type: 'font-awesome', name: 'calendar' }}
               label='Date of Birth'
               value={payment.dateOfBirth.toString()}
               onChangeText={value=>setPayment({...payment,dateOfBirth:value})}
@@ -80,28 +79,28 @@ export default function App() {
             />
             <Input
               placeholder='Enter Tibetian Association'
-              leftIcon={{ type: 'font-awesome', name: 'user' }}
+              leftIcon={{ type: 'font-awesome', name: 'map-marker' }}
               label='Tibetian Association'
               value={payment.tibetianAssociation.toString()}
               onChangeText={value=>setPayment({...payment,tibetianAssociation:value})}
             />
             <Input
               placeholder='Enter the year of last payment'
-              leftIcon={{ type: 'font-awesome', name: 'user' }}
+              leftIcon={{ type: 'font-awesome', name: 'calendar' }}
               label='Year of last payment'
               value={payment.yearOfLastPayment.toString()}
               onChangeText={value=>setPayment({...payment,yearOfLastPayment:value})}
             />
             <Input
               placeholder='Enter the number of years'
-              leftIcon={{ type: 'font-awesome', name: 'user' }}
+              leftIcon={{ type: 'font-awesome', name: 'calendar' }}
               label='Number of years you want to pay for '
               value={payment.numberOfYears.toString()}
               onChangeText={value=>setPayment({...payment,numberOfYears:value})}
             />
             <Input
               placeholder='Enter your employement years'
-              leftIcon={{ type: 'font-awesome', name: 'user' }}
+              leftIcon={{ type: 'font-awesome', name: 'briefcase' }}
               label='How many years you were employed'
               value={payment.employementYears.toString()}
               onChangeText={value=>setPayment({...payment,employementYears:value})}
@@ -120,13 +119,9 @@ export default function App() {
               value={payment.extraDonation.toString()}
               onChangeText={value=>setPayment({...payment,extraDonation:value})}
             />
-            <View>
-              <Button title="Pay" type="outline" />
-            </View>
+              <Button title="Pay" type="outline"  />
           </View>
         </ScrollView>
-      </ThemeProvider>
-    </View>
   );
 }
 
