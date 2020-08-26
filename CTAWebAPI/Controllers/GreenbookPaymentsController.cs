@@ -21,6 +21,7 @@ namespace CTAWebAPI.Controllers
             _info = info;
         }
         #endregion
+
         #region Get Payments
         [HttpGet("GetPayment/paymentID={paymentID}")]
         [Route("[action]")]
