@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace CTAWebAPI.Controllers
 {
@@ -30,7 +30,7 @@ namespace CTAWebAPI.Controllers
             #region Get Payments
             try
             {
-                GreenbookPaymentRepository  greenbookPaymentRepository= new GreenbookPaymentRepository(_info.ConnectionString);
+                GreenbookPaymentRepository greenbookPaymentRepository = new GreenbookPaymentRepository(_info.ConnectionString);
                 GreenbookPayment fetchedPayment = greenbookPaymentRepository.GetPaymentById(paymentID);
                 return Ok(fetchedPayment);
                 //return Ok("");
@@ -39,7 +39,42 @@ namespace CTAWebAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-          
+
+            #endregion
+        }
+        #endregion
+
+        #region Edit Payment
+        [HttpPost("EditPayment/paymentID={paymentID}")]
+        [Route("[action]")]
+        public IActionResult EditPayment(string paymentID, [FromBody] GreenbookPayment greenbookPayment)
+        {
+            #region Edit Payment
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (greenbookPayment == null)
+                    {
+                        return BadRequest("Payment object cannot be NULL");
+                    }
+
+                    GreenbookPaymentRepository greenbookPaymentRepository = new GreenbookPaymentRepository(_info.ConnectionString);
+                    greenbookPaymentRepository.Update(greenbookPayment);
+                    return Ok(greenbookPayment);
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    return BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
             #endregion
         }
         #endregion
