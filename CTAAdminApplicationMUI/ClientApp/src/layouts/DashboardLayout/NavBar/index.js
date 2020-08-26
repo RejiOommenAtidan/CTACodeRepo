@@ -27,8 +27,8 @@ import NavItem from './NavItem';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith'
+  jobTitle: 'Mumbai, India ',
+  name: 'Katrina Smith'
 };
 
 

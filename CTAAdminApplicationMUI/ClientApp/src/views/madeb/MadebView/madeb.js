@@ -134,6 +134,8 @@ class RegisterView extends React.Component {
                                 <MenuItem value={'abroad'}>Abroad</MenuItem>
                             </Select>
                         </FormControl>
+                       <br/>
+                       <br/> 
                     </Grid>
                     <Grid item xs={6}>
                     </Grid>
@@ -158,11 +160,16 @@ class RegisterView extends React.Component {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <FormControl className={classes.formControl}>
-                                <TextField
-                                    id="date"
-                                    label="Received Date"
-                                    value='16-07-2020'
-                                />
+                            <TextField
+                                id="date"
+                                label="Received Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
                             </FormControl>
                         </Grid>
 
@@ -257,11 +264,16 @@ class RegisterView extends React.Component {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <FormControl className={classes.formControl}>
-                                <TextField
-                                    id="date"
-                                    label="Received Date"
-                                    value='16-07-2020'
-                                />
+                            <TextField
+                                id="date"
+                                label="Received Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
                             </FormControl>
                         </Grid>
 
@@ -389,11 +401,16 @@ class RegisterView extends React.Component {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <FormControl className={classes.formControl}>
-                                <TextField
-                                    id="date"
-                                    label="Received Date"
-                                    value='16-07-2020'
-                                />
+                            <TextField
+                                id="date"
+                                label="Received Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
                             </FormControl>
                         </Grid>
 
@@ -499,6 +516,458 @@ class RegisterView extends React.Component {
                     </Grid>
                 </div>
                 )}
+                {this.state.currentSelection ==="full" && 
+                (
+                    <div>
+                    <Typography variant="h4" >Book Full</Typography>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="number"
+                                    label="Form Number"
+                                    type="number"
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    value='43131'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Received Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>
+
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel id="auth-label"> Authority</InputLabel>
+                                <Select
+                                    labelId="auth-label"
+                                    id="authority"
+                                    //value={}
+                                    // onChange={handleChange}
+                                    label="Authority"
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    <MenuItem value={1}>Mundgod</MenuItem>
+                                    <MenuItem value={2}>Shimla</MenuItem>
+                                    <MenuItem value={3}>Paris</MenuItem>
+                                    <MenuItem value={4}>Dekyiling</MenuItem>
+                                    <MenuItem value={5}>BTS, Bir</MenuItem>
+                                    <MenuItem value={6}>Leh</MenuItem>
+                                    <MenuItem value={7}>Boudha</MenuItem>
+                                    <MenuItem value={8}>Jorpati</MenuItem>
+                                    <MenuItem value={9}>Boston</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="name"
+                                    label="Name"
+
+
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="IdentId"
+                                    label="GB ID"
+
+                                    type='number'
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="fname"
+                                    label="Father's Name"
+                                    
+
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                     id="sfn"
+                                     label="Saney Form No"
+                                     type='number'
+                                    
+
+
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="cgb"
+                                    label="Current GB Sno"
+
+                                    type="number"
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                        <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="pgb"
+                                    label="Previous GB Sno"
+
+                                    type="number"
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                </div>
+                )}
+                {this.state.currentSelection ==="brief" && 
+                (
+                    <div>
+                    <Typography variant="h4" >Brief GB</Typography>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="number"
+                                    label="Form Number"
+                                    type="number"
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    value='43131'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Received Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>
+
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel id="auth-label"> Authority</InputLabel>
+                                <Select
+                                    labelId="auth-label"
+                                    id="authority"
+                                    //value={}
+                                    // onChange={handleChange}
+                                    label="Authority"
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    <MenuItem value={1}>Mundgod</MenuItem>
+                                    <MenuItem value={2}>Shimla</MenuItem>
+                                    <MenuItem value={3}>Paris</MenuItem>
+                                    <MenuItem value={4}>Dekyiling</MenuItem>
+                                    <MenuItem value={5}>BTS, Bir</MenuItem>
+                                    <MenuItem value={6}>Leh</MenuItem>
+                                    <MenuItem value={7}>Boudha</MenuItem>
+                                    <MenuItem value={8}>Jorpati</MenuItem>
+                                    <MenuItem value={9}>Boston</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="name"
+                                    label="Name"
+
+
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="IdentId"
+                                    label="GB ID"
+
+                                    type='number'
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="fname"
+                                    label="Father's Name"
+                                    
+
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                     id="rno"
+                                     label="Reciept No"
+                                     type='number'
+                                    
+
+
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="cgb"
+                                    label="Current GB Sno"
+
+                                    type="number"
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                        <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="pgb"
+                                    label="Previous GB Sno"
+
+                                    type="number"
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                </div>
+                )}
+                {this.state.currentSelection ==="abroad" && 
+                (
+                    <div>
+                    <Typography variant="h4" >Abroad</Typography>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="number"
+                                    label="Form Number"
+                                    type="number"
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    value='43131'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Received Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>
+
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel id="auth-label"> Authority</InputLabel>
+                                <Select
+                                    labelId="auth-label"
+                                    id="authority"
+                                    //value={}
+                                    // onChange={handleChange}
+                                    label="Authority"
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    <MenuItem value={1}>Mundgod</MenuItem>
+                                    <MenuItem value={2}>Shimla</MenuItem>
+                                    <MenuItem value={3}>Paris</MenuItem>
+                                    <MenuItem value={4}>Dekyiling</MenuItem>
+                                    <MenuItem value={5}>BTS, Bir</MenuItem>
+                                    <MenuItem value={6}>Leh</MenuItem>
+                                    <MenuItem value={7}>Boudha</MenuItem>
+                                    <MenuItem value={8}>Jorpati</MenuItem>
+                                    <MenuItem value={9}>Boston</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="name"
+                                    label="Name"
+
+
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="alias"
+                                    label="Alias"
+
+
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="IdentId"
+                                    label="GB ID"
+
+                                    type='number'
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="fname"
+                                    label="Father's Name"
+                                    
+
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                     id="rno"
+                                     label="Reciept No"
+                                     type='number'
+                                    
+
+
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="sfn"
+                                    label="Saney Form No"
+                                    type='number'
+
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="cgb"
+                                    label="Current GB Sno"
+
+                                    type="number"
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                        <FormControl className={classes.formControl}>
+                                <TextField
+                                    id="pgb"
+                                    label="Previous GB Sno"
+
+                                    type="number"
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                </div>
+                )}
+                
+                  <Button variant="outlined" color="primary" >Save</Button>
+                &nbsp;<Button variant="outlined" >Cancel</Button>
 
             </Grid>
         )
