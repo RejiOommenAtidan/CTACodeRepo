@@ -84,13 +84,20 @@ const MenuProps = {
 
 
 class RegisterView extends React.Component {
-
-    state={
-        currentSelection:'new'
-    };
+    constructor(props){
+        super(props);
+        this.state = {
+            currentSelection: 'new'
+        };
+    }
     
+
     handleDropDownChange = (event) => {
-        this.setState
+        // console.log(event.target.value);
+        let currentSelection = event.target.value;
+        //setState is async in nature
+        this.setState({currentSelection:currentSelection},()=>{console.log(this.state.currentSelection);});
+        
     }
 
     render() {
@@ -102,12 +109,9 @@ class RegisterView extends React.Component {
         };*/
 
         return (
-
             <Grid container spacing={3}>
                 <Typography variant="h2" >Manage Madeb</Typography>
-
                 <Grid container spacing={3}>
-
                     <Grid item xs={6}>
                         <FormControl className={classes.formControl}>
                             <InputLabel id="madeb-label"> Madeb</InputLabel>
@@ -115,11 +119,12 @@ class RegisterView extends React.Component {
                                 labelId="madeb-label"
                                 id="madeb"
                                 //value={madeb}
-                                //onChange={handleChange}
+                                value={this.state.currentSelection}
+                                onChange={this.handleDropDownChange}
                                 label="Madeb"
                             >
                                 <MenuItem value="">
-                                    <em>None</em>
+                                <em>None</em>
                                 </MenuItem>
                                 <MenuItem value={'new'}>Sarso Madeb</MenuItem>
                                 <MenuItem value={'edit'}>Norchoe Madeb</MenuItem>
@@ -131,14 +136,12 @@ class RegisterView extends React.Component {
                         </FormControl>
                     </Grid>
                     <Grid item xs={6}>
-
                     </Grid>
                 </Grid>
-
-                <div>
+                {this.state.currentSelection ==="new" && 
+                (<div>
                     <Typography variant="h4" >Sarso Madeb</Typography>
                     <Grid container spacing={3}>
-
                         <Grid item xs={12} sm={6}>
                             <FormControl className={classes.formControl}>
                                 <TextField
@@ -158,10 +161,7 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="date"
                                     label="Received Date"
-
-
                                     value='16-07-2020'
-
                                 />
                             </FormControl>
                         </Grid>
@@ -197,10 +197,7 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="name"
                                     label="Name"
-
-
-                                //value='Aayush Pandya'
-
+                                    //value='Aayush Pandya'
                                 />
                             </FormControl>
                         </Grid>
@@ -210,10 +207,7 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="fname"
                                     label="Father's Name"
-
-
-                                //value='Aayush Pandya'
-
+                                    //value='Aayush Pandya'
                                 />
                             </FormControl>
                         </Grid>
@@ -224,9 +218,7 @@ class RegisterView extends React.Component {
                                     id="sfn"
                                     label="Saney Form No"
                                     type='number'
-
-                                //value='Aayush Pandya'
-
+                                    //value='Aayush Pandya'
                                 />
                             </FormControl>
                         </Grid>
@@ -236,16 +228,16 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="da"
                                     label="Document attached"
-
-
-                                //value='Aayush Pandya'
-
+                                    //value='Aayush Pandya'
                                 />
                             </FormControl>
                         </Grid>
                     </Grid>
                 </div>
+                )}
 
+                {this.state.currentSelection ==="edit" && 
+                (
                 <div>
                     <Typography variant="h4" >Norchoe Madeb</Typography>
                     <Grid container spacing={3}>
@@ -268,10 +260,7 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="date"
                                     label="Received Date"
-
-
                                     value='16-07-2020'
-
                                 />
                             </FormControl>
                         </Grid>
@@ -307,9 +296,7 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="name"
                                     label="Name"
-
-
-                                //value='Aayush Pandya'
+                                    //value='Aayush Pandya'
 
                                 />
                             </FormControl>
@@ -320,10 +307,8 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="IdentId"
                                     label="Identity ID"
-
                                     type='number'
-                                //value='Aayush Pandya'
-
+                                    //value='Aayush Pandya'
                                 />
                             </FormControl>
                         </Grid>
@@ -333,10 +318,7 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="change-field"
                                     label="Change field"
-
-
-                                //value='Aayush Pandya'
-
+                                    //value='Aayush Pandya'
                                 />
                             </FormControl>
                         </Grid>
@@ -346,10 +328,7 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="da"
                                     label="Document attached"
-
-
-                                //value='Aayush Pandya'
-
+                                    //value='Aayush Pandya'
                                 />
                             </FormControl>
                         </Grid>
@@ -359,10 +338,8 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="rn"
                                     label="Reciept Number"
-
                                     type="number"
-                                //value='Aayush Pandya'
-
+                                    //value='Aayush Pandya'
                                 />
                             </FormControl>
                         </Grid>
@@ -377,7 +354,7 @@ class RegisterView extends React.Component {
                                     label="Status"
                                 >
                                     <MenuItem value="">
-                                        <em>None</em>
+                                    <em>None</em>
                                     </MenuItem>
                                     <MenuItem value={1}>Approved</MenuItem>
                                     <MenuItem value={2}>Rejected</MenuItem>
@@ -388,7 +365,11 @@ class RegisterView extends React.Component {
                         </Grid>
                     </Grid>
                 </div>
+                )}
 
+                
+                {this.state.currentSelection ==="lost" && 
+                (
                 <div>
                     <Typography variant="h4" >Bhorlak Madeb</Typography>
                     <Grid container spacing={3}>
@@ -411,10 +392,7 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="date"
                                     label="Received Date"
-
-
                                     value='16-07-2020'
-
                                 />
                             </FormControl>
                         </Grid>
@@ -430,7 +408,7 @@ class RegisterView extends React.Component {
                                     label="Region"
                                 >
                                     <MenuItem value="">
-                                        <em>None</em>
+                                    <em>None</em>
                                     </MenuItem>
                                     <MenuItem value={1}>Mundgod</MenuItem>
                                     <MenuItem value={2}>Shimla</MenuItem>
@@ -450,10 +428,7 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="name"
                                     label="Name"
-
-
-                                //value='Aayush Pandya'
-
+                                    //value='Aayush Pandya'
                                 />
                             </FormControl>
                         </Grid>
@@ -463,10 +438,8 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="IdentId"
                                     label="Identity ID"
-
                                     type='number'
-                                //value='Aayush Pandya'
-
+                                    //value='Aayush Pandya'
                                 />
                             </FormControl>
                         </Grid>
@@ -477,9 +450,7 @@ class RegisterView extends React.Component {
                                     id="book-sr"
                                     label="Book S.no"
                                     type="number"
-
-                                //value='Aayush Pandya'
-
+                                    //value='Aayush Pandya'
                                 />
                             </FormControl>
                         </Grid>
@@ -489,10 +460,7 @@ class RegisterView extends React.Component {
                                 <TextField
                                     id="da"
                                     label="Document attached"
-
-
-                                //value='Aayush Pandya'
-
+                                    //value='Aayush Pandya'
                                 />
                             </FormControl>
                         </Grid>
@@ -520,17 +488,18 @@ class RegisterView extends React.Component {
                                     label="Status"
                                 >
                                     <MenuItem value="">
-                                        <em>None</em>
+                                    <em>None</em>
                                     </MenuItem>
                                     <MenuItem value={1}>Approved</MenuItem>
                                     <MenuItem value={2}>Rejected</MenuItem>
                                     <MenuItem value={3}>Cancel</MenuItem>
-
                                 </Select>
                             </FormControl>
                         </Grid>
                     </Grid>
                 </div>
+                )}
+
             </Grid>
         )
     }

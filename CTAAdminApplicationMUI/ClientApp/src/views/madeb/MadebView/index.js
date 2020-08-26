@@ -36,6 +36,7 @@ const Main = () => {
 
                     <Typography color="textPrimary">Madeb</Typography>
                 </Breadcrumbs>
+                <br />
                 <Madeb />
             </Container>
         </Page>
