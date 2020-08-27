@@ -142,7 +142,7 @@ class RegisterView extends React.Component {
                 </Grid>
                 {this.state.currentSelection ==="new" && 
                 (<div>
-                    <Typography variant="h4" >Sarso Madeb</Typography>
+                    <Typography variant="h4" >Madeb Entry Form For Fresh Issue</Typography>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                             <FormControl className={classes.formControl}>
@@ -239,6 +239,56 @@ class RegisterView extends React.Component {
                                 />
                             </FormControl>
                         </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Issue Action Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel id="issue-label"> Issue Action</InputLabel>
+                                <Select
+                                    labelId="issue-label"
+                                    id="authority"
+                                    //value={}
+                                    // onChange={handleChange}
+                                    label="Issue Action"
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    <MenuItem value={1}>On Progress</MenuItem>
+                                    <MenuItem value={2}>Issued</MenuItem>
+                                    <MenuItem value={3}>Rejected</MenuItem>
+                                    <MenuItem value={4}>Double</MenuItem>
+                                    <MenuItem value={5}>Cancel</MenuItem>
+                                  
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Return Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>
                     </Grid>
                 </div>
                 )}
@@ -246,7 +296,7 @@ class RegisterView extends React.Component {
                 {this.state.currentSelection ==="edit" && 
                 (
                 <div>
-                    <Typography variant="h4" >Norchoe Madeb</Typography>
+                    <Typography variant="h4" >Madeb Entry Form For Changes</Typography>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                             <FormControl className={classes.formControl}>
@@ -375,6 +425,34 @@ class RegisterView extends React.Component {
                                 </Select>
                             </FormControl>
                         </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Reject Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Return Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>
                     </Grid>
                 </div>
                 )}
@@ -383,7 +461,7 @@ class RegisterView extends React.Component {
                 {this.state.currentSelection ==="lost" && 
                 (
                 <div>
-                    <Typography variant="h4" >Bhorlak Madeb</Typography>
+                    <Typography variant="h4" >Madeb Entry Form for Lost</Typography>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                             <FormControl className={classes.formControl}>
@@ -513,13 +591,40 @@ class RegisterView extends React.Component {
                                 </Select>
                             </FormControl>
                         </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Reject Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>  <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Return Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>
                     </Grid>
                 </div>
                 )}
                 {this.state.currentSelection ==="full" && 
                 (
                     <div>
-                    <Typography variant="h4" >Book Full</Typography>
+                    <Typography variant="h4" >Madeb Entry Form For Book Full</Typography>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                             <FormControl className={classes.formControl}>
@@ -654,13 +759,63 @@ class RegisterView extends React.Component {
                                 />
                             </FormControl>
                         </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Reject Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel id="issue-label"> Issue Action</InputLabel>
+                                <Select
+                                    labelId="issue-label"
+                                    id="authority"
+                                    //value={}
+                                    // onChange={handleChange}
+                                    label="Issue Action"
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    <MenuItem value={1}>On Progress</MenuItem>
+                                    <MenuItem value={2}>Issued</MenuItem>
+                                    <MenuItem value={3}>Rejected</MenuItem>
+                                    <MenuItem value={4}>Double</MenuItem>
+                                    <MenuItem value={5}>Cancel</MenuItem>
+                                  
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Return Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>
                     </Grid>
                 </div>
                 )}
                 {this.state.currentSelection ==="brief" && 
                 (
                     <div>
-                    <Typography variant="h4" >Brief GB</Typography>
+                    <Typography variant="h4" >Madeb Entry Form For Brief GB</Typography>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                             <FormControl className={classes.formControl}>
@@ -774,6 +929,22 @@ class RegisterView extends React.Component {
 
                             <FormControl className={classes.formControl}>
                                 <TextField
+                                     id="rno"
+                                     label="Saney Form No"
+                                     type='number'
+                                    
+
+
+                                //value='Aayush Pandya'
+
+                                />
+                            </FormControl>
+                        </Grid>
+                        
+                        <Grid item xs={12} sm={6}>
+
+                            <FormControl className={classes.formControl}>
+                                <TextField
                                     id="cgb"
                                     label="Current GB Sno"
 
@@ -795,13 +966,63 @@ class RegisterView extends React.Component {
                                 />
                             </FormControl>
                         </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Reject Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel id="issue-label"> Issue Action</InputLabel>
+                                <Select
+                                    labelId="issue-label"
+                                    id="authority"
+                                    //value={}
+                                    // onChange={handleChange}
+                                    label="Issue Action"
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    <MenuItem value={1}>On Progress</MenuItem>
+                                    <MenuItem value={2}>Issued</MenuItem>
+                                    <MenuItem value={3}>Rejected</MenuItem>
+                                    <MenuItem value={4}>Double</MenuItem>
+                                    <MenuItem value={5}>Cancel</MenuItem>
+                                  
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Return Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>
                     </Grid>
                 </div>
                 )}
                 {this.state.currentSelection ==="abroad" && 
                 (
                     <div>
-                    <Typography variant="h4" >Abroad</Typography>
+                    <Typography variant="h4" >Madeb Entry Form For Abroad</Typography>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                             <FormControl className={classes.formControl}>
@@ -960,6 +1181,56 @@ class RegisterView extends React.Component {
                                 //value='Aayush Pandya'
 
                                 />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Reject Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel id="issue-label"> Issue Action</InputLabel>
+                                <Select
+                                    labelId="issue-label"
+                                    id="authority"
+                                    //value={}
+                                    // onChange={handleChange}
+                                    label="Issue Action"
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    <MenuItem value={1}>On Progress</MenuItem>
+                                    <MenuItem value={2}>Issued</MenuItem>
+                                    <MenuItem value={3}>Rejected</MenuItem>
+                                    <MenuItem value={4}>Double</MenuItem>
+                                    <MenuItem value={5}>Cancel</MenuItem>
+                                  
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl className={classes.formControl}>
+                            <TextField
+                                id="date"
+                                label="Return Date"
+                                type="date"
+                                defaultValue="2020-08-27"
+                                className={classes.textField}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                            />
                             </FormControl>
                         </Grid>
                     </Grid>

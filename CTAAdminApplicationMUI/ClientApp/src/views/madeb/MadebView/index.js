@@ -11,6 +11,7 @@ import Page from 'src/components/Page';
 import Madeb from './madeb';
 
 
+
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: theme.palette.background.dark,
@@ -37,6 +38,7 @@ const Main = () => {
                     <Typography color="textPrimary">Madeb</Typography>
                 </Breadcrumbs>
                 <br />
+               
                 <Madeb />
             </Container>
         </Page>
