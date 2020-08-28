@@ -1,0 +1,89 @@
+.no-messages-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  h2 {
+    font-size: .95em;
+    margin-top: 12px;
+  }
+}
+
+.icon-wrapper {
+  width: 72px;
+  height: 72px;
+  position: relative;
+  animation: portal-chat-no-messages-icon 2s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 48px;
+  width: 48px * 1.5;
+  height: 48px * 1.5;
+  line-height: 48px * 1.5;
+  text-align: center;
+  padding: 0px;
+  flex-shrink: 0;
+  &:nth-child(2) {
+    font-size: 42px;
+    left: -6px;
+    top: -4px;
+  }
+}
+
+.dots {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  span {
+    display: block;
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    top: 46%;
+    left: 20px;
+    margin-left: -2px;
+    margin-top: -2px;
+    animation: portal-chat-no-messages-dots 1.3s linear 4;
+    &:nth-child(2) {
+      left: 30px;
+      animation-delay: 0.1s;
+    }
+    &:nth-child(3) {
+      left: 40px;
+      animation-delay: 0.2s;
+    }
+  }
+}
+
+// Demo animations
+@keyframes portal-chat-no-messages-icon {
+  0%, 50% {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+  50%, 100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes portal-chat-no-messages-dots {
+  0%, 60%, 100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+
+  30% {
+    transform: translateY(-8px);
+    opacity: .2;
+  }
+}

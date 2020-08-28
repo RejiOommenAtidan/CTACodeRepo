@@ -1,0 +1,48 @@
+.portal-calendar-page {
+  height: 100%;
+  min-height: 100%;
+  padding: 16px;
+  flex-wrap: nowrap;
+}
+
+.portal-calendar-page__column {
+  display: flex;
+  z-index: 1;
+  align-items: center;
+}
+
+.portal-calendar-page__calendar {
+  flex: 1 1 auto;
+}
+
+.portal-calendar-page__background {
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 110%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    animation: portal-calendar-page__background 15s ease-out forwards 1;
+  }
+}
+
+$i : 0;
+@while $i <= 11 {
+  .portal-calendar-page__background-month-#{$i}:before {
+    background-image: url(../../../../assets/images/calendar/#{$i+1}.jpg);
+  }
+  $i : $i + 1;
+}
+
+@keyframes portal-calendar-page__background {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-8%);
+  }
+}

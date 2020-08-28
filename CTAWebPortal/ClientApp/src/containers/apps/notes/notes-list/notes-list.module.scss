@@ -1,0 +1,19 @@
+.portal-thread-list__item {
+  cursor: pointer;
+  height: 80px;
+  padding: 0 16px;
+  button {
+    transition: opacity .3s;
+    opacity: 0;
+  }
+  &:hover button {
+    opacity: 1;
+  }
+}
+
+.portal-thread-list__item__text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.9em;
+}

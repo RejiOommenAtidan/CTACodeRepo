@@ -1,0 +1,128 @@
+.portal-profile {
+  overflow: hidden;
+  &:before {
+    animation: portal-profile-before  .6s ease-out forwards 1;
+    animation-delay: .2s;
+  }
+  &:after {
+    animation: portal-profile-after  .4s ease-out  forwards 1;
+    animation-delay: .4s;
+  }
+}
+.panel {
+  animation: portal-login 1s forwards 1;
+  animation-delay: 0.6s;
+  transform: translateY(20px);
+  opacity: 0;
+}
+.portal-profile__header {
+  transform: translateY(80px);
+  opacity: 0;
+  animation: portal-profile 1s forwards 1;
+  animation-delay: .5s;
+  width: 100%;
+  padding: 200px 0px 24px;
+  @media (max-width: 600px) {
+    padding-top: 24px;
+  }
+  h1, h3 {
+    color: #fff;
+  }
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  max-height: 100%;
+  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
+}
+.portal-profile__header-avatar {
+  width: 80px;
+  border: 8px solid #fff;
+  margin-right: 16px;
+  border-radius: 50%;
+  box-shadow: none;
+  animation: portal-profile__header-avatar 1s forwards 1;
+  animation-delay: 1.2s;
+
+  [dir='rtl'] & {
+    margin-left: 16px;
+    margin-right: 0;
+  }
+}
+.portal-profile__content {
+  padding-bottom: 48px;
+  opacity: 0;
+  transform: translateY(80px);
+  animation: portal-profile 1s forwards 1;
+  animation-delay: .8s;
+}
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.card-content {
+  padding: 8px;
+}
+.card-actions {
+  padding: 24px;
+}
+
+@keyframes portal-profile-before {
+  0% {
+    width: 160px;
+    height: 160px;
+    opacity: 0;
+  }
+  100% {
+    width: 75vw;
+    height: 75vw;
+    opacity: 1;
+  }
+}
+
+@keyframes portal-profile-after {
+  0% {
+    width: 160px;
+    height: 160px;
+    opacity: 0;
+  }
+  100% {
+    width: 35vw;
+    height: 35vw;
+    opacity: 1;
+  }
+}
+
+@keyframes portal-profile {
+  0% {
+    transform: translateY(80px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes portal-login {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes portal-profile__header-avatar {
+  0% {
+    box-shadow: none;
+  }
+  100% {
+    box-shadow: 0px 4px 8px rgba(0,0,0,.2), 0px 0px 0 15vw rgba(0, 0, 0, .15), 0px 0px 0 30vw rgba(0, 0, 0, .1), 0px 0px 0 45vw rgba(0, 0, 0, .05);
+  }
+}

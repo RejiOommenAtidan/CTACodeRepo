@@ -1,0 +1,40 @@
+.layout-tabbed-wrapper {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: row;
+  place-content: stretch center;
+  align-items: center;
+}
+
+.layout-tabbed-main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 960px) {
+  .layout-tabbed-main {
+    width: 80%;
+  }
+}
+
+.layout-tabbed-content-wrapper {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  z-index: 1101;
+  box-shadow: 0 7px 8px -4px rgba(0,0,0,.2), 0 12px 17px 2px rgba(0,0,0,.14), 0 5px 22px 4px rgba(0,0,0,.12);
+}
+
+.layout-tabbed-content {
+  height: 100%;
+  margin: 0;
+  min-width: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
