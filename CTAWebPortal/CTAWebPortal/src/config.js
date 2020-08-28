@@ -35,11 +35,16 @@ const iconStyle = {
 };
 
 export const menuItems = [{
+  title: 'Master Page',
+  href: '/',
+  icon: <DashboardIcon style={iconStyle} />
+}, 
+{  
   title: 'Dashboards',
   icon: <HomeIcon style={iconStyle} />,
   children: [{
     title: 'Analytics',
-    href: '/',
+    href: '/dashboard/analytics',
     icon: <DashboardIcon style={iconStyle} />
   }, {
     title: 'Ecommerce',

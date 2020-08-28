@@ -15,8 +15,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 
 // Portal components
-import logoImage from '../../../assets/images/portal-logo.png';
-
+//import logoImage from '../../../assets/images/portal-logo.png';
+import logoImage from '../../../assets/images/ctalogo.png';
 // Actions
 import { toggleSidenav } from '../../../actions/layout.actions';
 
@@ -52,7 +52,7 @@ const Sidenav = (props) => {
             <img src={logoImage} className={scss['portal-toolbar-brand']} alt="logo" />
             {layout.currentLayout !== 'compact' && layout.currentLayout !== 'funky' &&
               <Typography variant="title" color="inherit" noWrap>
-                Portal
+                CTA Chatrel
               </Typography>
             }
           </Toolbar>
