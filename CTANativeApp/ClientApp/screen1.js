@@ -6,6 +6,8 @@ import { View, ScrollView } from 'react-native';
 import { Header, Input, Button, Text } from 'react-native-elements';
 // import AppEdit from './screen2'
 
+import DatePicker from 'react-native-datepicker'
+
 
 export default function App() {
   const [payment, setPayment] = useState(
@@ -31,24 +33,23 @@ export default function App() {
       },
       body: JSON.stringify(payment)
     })
-    .then(response=>response.json())
-    .then((json)=>
-    {
-      console.log(json);
-      setPayment({
-        dateOfBirth: json.dateOfBirth,
-        employementYears: json.employementYears,
-        extraDonation: json.extraDonation,
-        greenbookID: json.greenbookID,
-        name: json.name,
-        numberOfYears: json.numberOfYears,
-        tibetianAssociation: json.tibetianAssociation,
-        totalDue: json.totalDue,
-        yearOfLastPayment: json.yearOfLastPayment
-      });
-    })
-    .catch((error) => console.error(error))
-    .finally(() => { });
+      .then(response => response.json())
+      .then((json) => {
+        console.log(json);
+        setPayment({
+          dateOfBirth: json.dateOfBirth,
+          employementYears: json.employementYears,
+          extraDonation: json.extraDonation,
+          greenbookID: json.greenbookID,
+          name: json.name,
+          numberOfYears: json.numberOfYears,
+          tibetianAssociation: json.tibetianAssociation,
+          totalDue: json.totalDue,
+          yearOfLastPayment: json.yearOfLastPayment
+        });
+      })
+      .catch((error) => console.error(error))
+      .finally(() => { });
   };
   useEffect(() => {
     const response = fetch('http://localhost:52013/api/GreenbookPayments/GetPayment/paymentID=2')
@@ -91,12 +92,30 @@ export default function App() {
           value={payment.greenbookID}
           onChangeText={value => setPayment({ ...payment, greenbookID: parseInt(value) })}
         />
-        <Input
-          placeholder='Date of Birth'
-          leftIcon={{ type: 'font-awesome', name: 'calendar' }}
-          label='Date of Birth'
-          value={payment.dateOfBirth.toString()}
-          onChangeText={value => setPayment({ ...payment, dateOfBirth: value })}
+
+        <DatePicker
+          // style={{width: 200}}
+          date={payment.dateOfBirth}
+          mode="date"
+          placeholder="Select Date"
+          format="YYYY-MM-DD"
+          minDate="2019-05-01"
+          maxDate="2020-06-01"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              position: 'absolute',
+              left: 0,
+              top: 4,
+              marginLeft: 0
+            },
+            dateInput: {
+              marginLeft: 36
+            }
+            // ... You can check the source to find the other keys.
+          }}
+          onDateChange={(date) => { setPayment({ ...payment, dateOfBirth: date }) }}
         />
         <Input
           placeholder='Enter your Name'
@@ -110,6 +129,7 @@ export default function App() {
           leftIcon={{ type: 'font-awesome', name: 'map-marker' }}
           label='Tibetian Association'
           value={payment.tibetianAssociation.toString()}
+          // keyboardType="email-address"
           onChangeText={value => setPayment({ ...payment, tibetianAssociation: value })}
         />
         <Input
