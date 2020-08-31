@@ -32,15 +32,18 @@ import { menuItems } from '../../../config';
 import themes from '../../../themes';
 
 function setTitle(items, currentPath) {
+  console.log(currentPath );
   for (let i = 0; i < items.length; i += 1) {
     if (items[i].href && items[i].href === currentPath) {
       return items[i].title;
     }
-
+    
     if (items[i].children) {
       const result = setTitle(items[i].children, currentPath);
       if (result) {
+        
         return result;
+        
       }
     }
   }
@@ -110,7 +113,9 @@ class ContentToolbar extends React.Component {
           <MenuIcon />
         </IconButton>
         <Typography variant="title" color="inherit" noWrap>
-          {setTitle(menuItems, location.pathname) || 'Route Not Found'}
+          {
+          setTitle(menuItems, location.pathname) || 'Route Not Found'
+          }
         </Typography>
         <span className="portal-flex" />
         <IconButton

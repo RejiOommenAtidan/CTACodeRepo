@@ -59,6 +59,11 @@ const AsyncNotFound = asyncComponent(() => import('./containers/not-found/not-fo
 const AsyncTypography = asyncComponent(() => import('./containers/pages/typography.component'));
 const AsyncColors = asyncComponent(() => import('./containers/pages/colors.component'));
 
+const AsyncMasterPage = asyncComponent(() => import('./containers/master/masterpage.component'));
+
+
+
+
 const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
   <Route
     {...rest}
@@ -122,7 +127,8 @@ export default ({ childProps, layout }) => {
 
   return (
     <Switch>
-      <AppRoute path="/" exact component={AsyncAnalyticsDashboard} props={childProps} layout={activeLayout} />
+      <AppRoute path="/" exact component={AsyncMasterPage} props={childProps} layout={activeLayout} />
+      <AppRoute path="/dashboard/analytics" exact component={AsyncAnalyticsDashboard} props={childProps} layout={activeLayout} />
       <AppRoute path="/dashboards/ecommerce" exact component={AsyncEcommerceDashboard} props={childProps} layout={activeLayout} />
       <AppRoute path="/dashboards/crypto" exact component={AsyncCryptoDashboard} props={childProps} layout={activeLayout} />
       <AppRoute path="/dashboards/project" exact component={AsyncProjectDashboard} props={childProps} layout={activeLayout} />

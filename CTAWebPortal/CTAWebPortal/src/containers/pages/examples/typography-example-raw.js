@@ -1,5 +1,5 @@
 /*eslint no-useless-escape: 0*/
-export default `import React from 'react';
+export default `import  React from 'react';
 import Typography from '@material-ui/core/Typography';
 
 const style = {
