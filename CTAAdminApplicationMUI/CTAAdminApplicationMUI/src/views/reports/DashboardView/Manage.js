@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -8,7 +9,7 @@ import {
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import theme from '../../../theme/theme/theme'
 import Page from 'src/components/Page';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
@@ -21,31 +22,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
-// import { useNavigate } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
-import { useNavigate } from 'react-router-dom';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-// function a(){const naviagate = useNavigate();}
-
-// const history = useHistory();
-
-
-// const handleClickOpen = () => {
-//   // this.setState({
-//   //   modal: true
-//   // });
-// };
-
-// const initiateNav = ()=>{
-//   let navigate = useNavigate();
-// };
-
-const useStyles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     height: '100%',
@@ -91,48 +75,27 @@ const useStyles = (theme) => ({
     },
   }
 
-});
+}));
 
+export default function EnhancedTable() {
+  const classes = useStyles();
+  const navigate = useNavigate();
 
+  const [dataAPI, setdataAPI] = useState([]);
+  // const [loadingProp, setloadingProp] = useState(true);
+  const [modal, setmodal] = useState(false);
+  const [selectedUser, setselectedUser] = useState('');
+  const [selectedUserName, setselectedUserName] = useState('');
 
-
-
-
-class EnhancedTable extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  options = {
+  const options = {
     filterType: 'checkbox',
     selectableRows: false,
     jumpToPage: true,
     rowsPerPage: 5,
     rowsPerPageOptions: [5, 10, 20, 30]
   };
-  state = {
-    dataAPI: [],
-    loadingProp: true,
-    modal: false,
-    selectedUser: '',
-    selectedUserName:''
-  };
 
-  editClick(user_Id) {
-    // alert(user_Id);
-    //TODO: remove usage of window.location
-    window.location = 'editUser/' + user_Id.toString();
-  }
-
-  deleteClick(user_Id,userName) {
-    console.log(user_Id)
-    this.setState({
-      modal: true,
-      selectedUser: user_Id,
-      selectedUserName: userName
-    });
-  }
-
-  columns = [
+  const columns = [
     {
       name: "user_Id",
       label: "User ID",
@@ -181,7 +144,6 @@ class EnhancedTable extends React.Component {
         filter: true,
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
-          // console.log(value,tableMeta)
           return (
             <Chip
               size="small"
@@ -207,7 +169,7 @@ class EnhancedTable extends React.Component {
               variant="outlined"
               color="primary"
               startIcon={<EditOutlinedIcon />}
-              onClick={() => { this.editClick(tableMeta.rowData[0]) }}
+              onClick={() => { editClick(tableMeta.rowData[0]) }}
             >Edit
             </Button>
           )
@@ -228,7 +190,7 @@ class EnhancedTable extends React.Component {
               color="secondary"
               size="small"
               endIcon={<DeleteOutlinedIcon />}
-              onClick={() => { this.deleteClick(tableMeta.rowData[0],tableMeta.rowData[1]) }}
+              onClick={() => { deleteClick(tableMeta.rowData[0], tableMeta.rowData[1]) }}
             >Delete
             </Button>
           )
@@ -237,179 +199,129 @@ class EnhancedTable extends React.Component {
     }
   ];
 
+  const editClick = (user_Id) => {
+    // //TODO: remove usage of window.location
+    // window.location = 'editUser/' + user_Id.toString();
+    //Done
+    navigate('/app/editUser/'+user_Id.toString());
+  }
 
-  handleClose = () => {
-    this.setState({
-      modal: false,
-      selectedUser: '',
-      selectedUserName:''
-    });
+  const deleteClick = (user_Id, userName) => {
+    console.log(user_Id)
+    setmodal(true);
+    setselectedUser(user_Id);
+    setselectedUserName(userName);
   };
 
-  deleteCallAPI = () => {
+  const handleClose = () => {
+    setmodal(false);
+    setselectedUser('');
+    setselectedUserName('');
+  };
 
-    console.log(this.state.selectedUser);
+  const deleteCallAPI = () => {
+    // console.log(this.state.selectedUser);
     const config = { headers: { "Content-Type": "application/json" } };
-    var userID = this.state.selectedUser.toString();
-    axios.post(`http://localhost:52013/api/Users/DeleteUser`, userID, config)
+    var userID = selectedUser.toString();
+    axios.post(`/Users/DeleteUser`, userID, config)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
-          this.handleClose();
+          handleClose();
           //TODO: remove window.location
           // this.props.history.push(`/`)
           window.location = window.location
+          // navigate('/app/manageuser',{ replace: true });
         }
       })
       .catch(error => {
         if (error.response) {
-          //The request was made and the server responded 
-          //with a status code that falls out of the range of 2xx OR in 4XX to 5XX range
           console.error(error.response.data);
           console.error(error.response.status);
           console.error(error.response.headers);
         } else if (error.request) {
-          // The request was made but no response was received 
-          //`error.request` is an instance of XMLHttpRequest in the browser 
-          //and an instance of http.ClientRequest in node.js
           console.warn(error.request);
         } else {
-          // Something happened in setting up the request that triggered an Error
           console.error('Error', error.message);
         }
         console.log(error.config);
       })
       .then(release => {
-        //always executed
         //console.log(release); => udefined
       });
-    // window.location = window.location
-    // this.props.history.push('/manageuser');
   };
-  componentDidMount(prevProps) {
-    axios.get(`http://localhost:52013/api/Users/GetUsers`)
+
+  useEffect(() => {
+    axios.get(`/Users/GetUsers`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
-          this.setState({
-            dataAPI: resp.data,
-            loadingProp: false
-          });
+          setdataAPI(resp.data)
         }
       })
       .catch(error => {
         if (error.response) {
-          //The request was made and the server responded 
-          //with a status code that falls out of the range of 2xx OR in 4XX to 5XX range
           console.error(error.response.data);
           console.error(error.response.status);
           console.error(error.response.headers);
         } else if (error.request) {
-          // The request was made but no response was received 
-          //`error.request` is an instance of XMLHttpRequest in the browser 
-          //and an instance of http.ClientRequest in node.js
           console.warn(error.request);
         } else {
-          // Something happened in setting up the request that triggered an Error
           console.error('Error', error.message);
         }
         console.log(error.config);
       })
       .then(release => {
-        //always executed
         //console.log(release); => udefined
       });
-  }
-  componentWillReceiveProps() {
-    axios.get(`http://localhost:52013/api/Users/GetUsers`)
-      .then(resp => {
-        if (resp.status === 200) {
-          console.log(resp.data)
-          this.setState({
-            dataAPI: resp.data,
-            loadingProp: false
-          });
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          //The request was made and the server responded 
-          //with a status code that falls out of the range of 2xx OR in 4XX to 5XX range
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received 
-          //`error.request` is an instance of XMLHttpRequest in the browser 
-          //and an instance of http.ClientRequest in node.js
-          console.warn(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //always executed
-        //console.log(release); => udefined
-      });
-  }
-  render() {
-    const { classes } = this.props;
-    return (
-      <ThemeProvider theme={theme}>
-        <Page
-          className={classes.root}
-          title="Register"
+  }, []);
+  return (
+    <ThemeProvider theme={theme}>
+      <Page
+        className={classes.root}
+        title="Register"
+      >
+        <Box
+          display="flex"
+          flexDirection="column"
+          height="100%"
+          justifyContent="center"
         >
-          <Box
-            display="flex"
-            flexDirection="column"
-            height="100%"
-            justifyContent="center"
-          >
-            <Container maxWidth="lg" disableGutters={true}>
-              <Typography variant="h4" gutterBottom>User List</Typography>
-              <Grid container className={classes.box}>
-                <Grid item xs={12}>
-                  <MUIDataTable
-                    data={this.state.dataAPI}
-                    columns={this.columns}
-                    options={this.options}
-                  />
-                </Grid>
+          <Container maxWidth="lg" disableGutters={true}>
+            <Typography variant="h4" gutterBottom>User List</Typography>
+            <Grid container className={classes.box}>
+              <Grid item xs={12}>
+                <MUIDataTable
+                  data={dataAPI}
+                  columns={columns}
+                  options={options}
+                />
               </Grid>
-              <Dialog
-                open={this.state.modal}
-                TransitionComponent={Transition}
-                keepMounted
-                onClose={this.handleClose}
-              // aria-labelledby="alert-dialog-slide-title"
-              // aria-describedby="alert-dialog-slide-description"
-              >
-                <DialogTitle id="alert-dialog-slide-title">Confirm Operation</DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-slide-description">
-                  Are you sure you want to delete user {this.state.selectedUserName} ?
+            </Grid>
+            <Dialog
+              open={modal}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={handleClose}
+            >
+              <DialogTitle id="alert-dialog-slide-title">Confirm Operation</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                  Are you sure you want to delete user {selectedUserName} ?
           </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={this.handleClose} color="default">
-                    No
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="default">
+                  No
           </Button>
-                  <Button onClick={this.deleteCallAPI} color="secondary">
-                    Yes
+                <Button onClick={deleteCallAPI} color="secondary">
+                  Yes
           </Button>
-                </DialogActions>
-              </Dialog>
-            </Container>
-          </Box>
-        </Page>
-      </ThemeProvider>
-    );
-  }
+              </DialogActions>
+            </Dialog>
+          </Container>
+        </Box>
+      </Page>
+    </ThemeProvider>
+  );
 }
-
-
-export default withStyles(useStyles(theme))(EnhancedTable)
-// export default RegisterView

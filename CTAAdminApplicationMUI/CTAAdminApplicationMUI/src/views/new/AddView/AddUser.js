@@ -1,15 +1,8 @@
-import React from 'react';
-// import { Link as RouterLink, useNavigate } from 'react-router-dom';
-// import * as Yup from 'yup';
-// import { Formik } from 'formik';
+import React,{useState} from 'react';
 import Input from '@material-ui/core/Input';
-import { withStyles } from '@material-ui/core/styles';
-import theme from '../../../theme/theme/theme';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from '@material-ui/core/Link';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
-// import theme from '../../../theme/theme/theme'
 
 import {
   Box,
@@ -21,7 +14,6 @@ import {
   makeStyles,
   InputLabel,
   ListItemText,
-  Contain,
   Grid
 } from '@material-ui/core';
 import Page from 'src/components/Page';
@@ -29,7 +21,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-const useStyles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     height: '100%',
@@ -53,22 +45,11 @@ const useStyles = (theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
-  /*textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },*/
-  // selectField: {
-  //   marginLeft: theme.spacing(1),
-  //   marginRight: theme.spacing(1),
-  //   marginBottom: theme.spacing(2)
-  // },
   box: {
     marginBottom: theme.spacing(1.5),
     marginTop: theme.spacing(1.5)
   }
-
-});
+}));
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -80,126 +61,94 @@ const MenuProps = {
     },
   },
 };
-const roles = ["Trainee Software Developer", "Software Developer"];
-function handleClick(event) {
-  event.preventDefault();
-  console.info('You clicked a breadcrumb.');
-}
-class RegisterView extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: props.user ? props.user.username : '',
-      fullname: props.user ? props.user.fullname : '',
-      email: props.user ? props.user.email : '',
-      password: props.user ? props.user.password : '',
-      confirm_password: props.user ? props.user.confirm_password : '',
-      role: props.user ? props.user.role : [],
-      region: props.user ? props.user.region : '',
-      status: props.user ? props.user.status : '',
-      error: '',
-    };
-  }
-  onUsernameChange = (e) => {
+const roles = ["Trainee Software Developer", "Software Developer"];
+
+export default function RegisterView() {
+  const classes = useStyles();
+  const navigate = useNavigate();
+  const [username, setusername] = useState('');
+  const [fullname, setfullname] = useState('');
+  const [email, setemail] = useState('');
+  const [password, setpassword] = useState('');
+  const [confirm_password, setconfirm_password] = useState('');
+  const [role, setrole] = useState([]);
+  const [region, setregion] = useState('');
+  const [status, setstatus] = useState('');
+
+  const onUsernameChange = (e) => {
     const username = e.target.value;
-    this.setState(() => ({ username }));
+    setusername(username);
   };
-  onFullnameChange = (e) => {
+  const onFullnameChange = (e) => {
     const fullname = e.target.value;
-    this.setState(() => ({ fullname }));
+    setfullname(fullname);
   };
-  onEmailChange = (e) => {
+  const onEmailChange = (e) => {
     const email = e.target.value;
-    this.setState(() => ({ email }));
+    setemail(email)
   };
-  onPasswordChange = (e) => {
+  const onPasswordChange = (e) => {
     const password = e.target.value;
-    this.setState(() => ({ password }));
+    setpassword(password);
   };
-  onConfirmPasswordChange = (e) => {
+  const onConfirmPasswordChange = (e) => {
     const confirm_password = e.target.value;
-    this.setState(() => ({ confirm_password }));
+    setconfirm_password(confirm_password);
   };
-  onRoleChange = (e) => {
+  const onRoleChange = (e) => {
     const role = e.target.value;
-    this.setState(() => ({ role }));
+    setrole(role);
   };
-  onRegionChange = (e) => {
+  const onRegionChange = (e) => {
     const region = e.target.value;
-    this.setState(() => ({ region }));
+    setregion(region);
   };
-  onStatusChange = (e) => {
+  const onStatusChange = (e) => {
     const status = e.target.value;
-    // console.log(status);
-    this.setState(() => ({ status }));
+    setstatus(status);
   };
-  onSubmit = (e) => {
+
+  const onSubmit = (e) => {
     e.preventDefault();
     let user = {
-      username: this.state.username,
-      fullname: this.state.fullname,
-      email: this.state.email,
-      password: this.state.password,
-      confirm_password: this.state.confirm_password,
-      role: (this.state.role).join(),
-      region: this.state.region,
-      status: this.state.status
+      username: username,
+      fullname: fullname,
+      email: email,
+      password: password,
+      confirm_password: confirm_password,
+      role: (role).join(),
+      region: region,
+      status: status
     };
     console.log(user);
-    axios.post(`http://localhost:52013/api/Users/AddUser`, user)
+    axios.post(`/Users/AddUser`, user)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
-          // console.log(this.props);
-          window.location = '/app/manageuser';
-          // var user = resp.data;
-          // window.location.reload();
-          // dispatch(addUser({
-          //   user
-          // }));
+          // window.location = '/app/manageuser';
+          navigate('/app/manageuser')
         }
       })
       .catch(error => {
         if (error.response) {
-          //The request was made and the server responded 
-          //with a status code that falls out of the range of 2xx OR in 4XX to 5XX range
           console.error(error.response.data);
           console.error(error.response.status);
           console.error(error.response.headers);
         } else if (error.request) {
-          // The request was made but no response was received 
-          //`error.request` is an instance of XMLHttpRequest in the browser 
-          //and an instance of http.ClientRequest in node.js
           console.warn(error.request);
         } else {
-          // Something happened in setting up the request that triggered an Error
           console.error('Error', error.message);
         }
         console.log(error.config);
       })
       .then(release => {
-        //always executed
         //console.log(release); => udefined
       });
   };
-  getStyles(name, role, theme) {
-    return {
-      fontWeight:
-        role.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
-    };
-  }
 
-  render() {
-    const { classes } = this.props;
-    const handleChange = (event) => {
-      this.setState({ role: event.target.value });
-    };
-
-    return (
-      <ThemeProvider theme={theme}>
+  return (
+    <ThemeProvider>
         <Page
           className={classes.root}
           title="Add User"
@@ -221,63 +170,58 @@ class RegisterView extends React.Component {
                       <TextField
                         label="Username"
                         id="username"
-                        onChange={this.onUsernameChange}
-                        // variant="outlined"
+                        onChange={onUsernameChange}
                         size="small"
                         fullWidth
                         className={classes.textField}
-                        value={this.state.username}
+                        value={username}
                       />
                     </FormControl>
                     <FormControl variant="outlined" className={classes.formControl}>
                       <TextField
                         label="Fullname"
                         id="fullname"
-                        onChange={this.onFullnameChange}
-                        // variant="outlined"
+                        onChange={onFullnameChange}
                         size="small"
                         fullWidth
                         className={classes.textField}
-                        value={this.state.fullname}
+                        value={fullname}
                       />
                     </FormControl>
                     <FormControl variant="outlined" className={classes.formControl}>
                       <TextField
                         label="Email"
                         id="email"
-                        onChange={this.onEmailChange}
-                        // variant="outlined"
+                        onChange={onEmailChange}
                         size="small"
                         type="email"
                         fullWidth
                         className={classes.textField}
-                        value={this.state.email}
+                        value={email}
                       />
                     </FormControl>
                     <FormControl variant="outlined" className={classes.formControl}>
                       <TextField
                         label="Password"
                         id="password"
-                        onChange={this.onPasswordChange}
-                        //variant="outlined"
+                        onChange={onPasswordChange}
                         size="small"
                         type="password"
                         fullWidth
                         className={classes.textField}
-                        value={this.state.password}
+                        value={password}
                       />
                     </FormControl>
                     <FormControl variant="outlined" className={classes.formControl}>
                       <TextField
                         label="Confirm Password"
                         id="confirm_password"
-                        onChange={this.onConfirmPasswordChange}
-                        //  variant="outlined"
+                        onChange={onConfirmPasswordChange}
                         size="small"
                         type="password"
                         fullWidth
                         className={classes.textField}
-                        value={this.state.confirm_password}
+                        value={confirm_password}
                       // margin='normal'
                       />
                     </FormControl>
@@ -287,11 +231,10 @@ class RegisterView extends React.Component {
                         label="Region"
                         labelId="region-label"
                         id="region"
-                        onChange={this.onRegionChange}
+                        onChange={onRegionChange}
                         fullWidth
                         className={classes.textField}
-                        value={this.state.region}
-                      //  variant="outlined"
+                        value={region}
                       >
                         <MenuItem value="">
                           <em>None</em>
@@ -306,11 +249,10 @@ class RegisterView extends React.Component {
                         label="Status"
                         labelId="status-label"
                         id="status"
-                        onChange={this.onStatusChange}
+                        onChange={onStatusChange}
                         fullWidth
                         className={classes.textField}
-                        value={this.state.status}
-                      //    variant="outlined"
+                        value={status}
                       >
                         <MenuItem value="">
                           <em>None</em>
@@ -325,19 +267,17 @@ class RegisterView extends React.Component {
                         label="Role"
                         labelId="role-label"
                         id="role"
-                        onChange={handleChange}
+                        onChange={onRoleChange}
                         multiple
-                        value={this.state.role}
+                        value={role}
                         input={<Input />}
                         renderValue={(selected) => selected.join(', ')}
                         MenuProps={MenuProps}
                         fullWidth
-                      //  className={classes.textField}
-                      //  variant="outlined"
                       >
                         {roles.map((name) => (
                           <MenuItem key={name} value={name}>
-                            <Checkbox checked={this.state.role.indexOf(name) > -1} />
+                            <Checkbox checked={role.indexOf(name) > -1} />
                             <ListItemText primary={name} />
                           </MenuItem>
                         ))}
@@ -347,16 +287,13 @@ class RegisterView extends React.Component {
                   <Grid item xs={6} ></Grid>
                 &nbsp;&nbsp;&nbsp;
                 <br />
-                  <Button variant="outlined" color="primary" onClick={this.onSubmit}>Save</Button>
-                &nbsp;<Button variant="outlined" onClick={() => { window.location = "http://localhost:3000/app/manageuser" }}>Cancel</Button>
+                  <Button variant="outlined" color="primary" onClick={onSubmit}>Save</Button>
+                &nbsp;<Button variant="outlined" onClick={() => { navigate('/app/manageuser') }}>Cancel</Button>
                 </form>
               </Grid>
             </Container>
           </Box>
         </Page>
       </ThemeProvider>
-    )
-  }
+  )
 }
-export default withStyles(useStyles(theme))(RegisterView)
-// export default RegisterView

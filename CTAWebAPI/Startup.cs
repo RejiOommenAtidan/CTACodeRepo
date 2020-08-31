@@ -34,14 +34,13 @@ namespace CTAWebAPI
             services.AddSingleton(config);
             #endregion
 
-
             services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //Get Origins & Use between Routing & Authorization
+            //Get Origins & Use it between Routing & Authorization
             var origins = Configuration["AllowedOrigins"].Split(";");
 
             if (env.IsDevelopment())

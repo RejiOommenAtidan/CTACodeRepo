@@ -1,12 +1,7 @@
-import React from 'react';
-// import { Link as RouterLink, useNavigate } from 'react-router-dom';
-// import * as Yup from 'yup';
-// import { Formik } from 'formik';
+import React, { useState, useEffect } from 'react';
 import Input from '@material-ui/core/Input';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import theme from '../../../theme/theme/theme';
-// import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-// import Link from '@material-ui/core/Link';
 import axios from 'axios';
 import { ThemeProvider } from '@material-ui/styles';
 import {
@@ -24,8 +19,10 @@ import Page from 'src/components/Page';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import { useNavigate } from 'react-router-dom';
 
-const useStyles = (theme) => ({
+
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     height: '100%',
@@ -49,22 +46,12 @@ const useStyles = (theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
-  /*textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },*/
-  // selectField: {
-  //   marginLeft: theme.spacing(1),
-  //   marginRight: theme.spacing(1),
-  //   marginBottom: theme.spacing(2)
-  // },
   box: {
     marginBottom: theme.spacing(1.5),
     marginTop: theme.spacing(1.5)
   }
 
-});
+}));
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -76,349 +63,278 @@ const MenuProps = {
     },
   },
 };
+
 const roles = ["Trainee Software Developer", "Software Developer"];
-class RegisterView extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      user_id: props.user ? props.user.user_id : '',
-      username: props.user ? props.user.username : '',
-      fullname: props.user ? props.user.fullname : '',
-      email: props.user ? props.user.email : '',
-      password: props.user ? props.user.password : '',
-      confirm_password: props.user ? props.user.confirm_password : '',
-      role: props.user ? props.user.role : [],
-      region: props.user ? props.user.region : '',
-      status: props.user ? props.user.status : '',
-      error: '',
-    };
-  }
-  onUsernameChange = (e) => {
+
+export default function EditUser() {
+  const classes = useStyles();
+  const navigate = useNavigate();
+
+  const [user_id, setuser_id] = useState('');
+  const [username, setusername] = useState('');
+  const [fullname, setfullname] = useState('');
+  const [email, setemail] = useState('');
+  const [password, setpassword] = useState('');
+  const [confirm_password, setconfirm_password] = useState('');
+  const [role, setrole] = useState([]);
+  const [region, setregion] = useState('');
+  const [status, setstatus] = useState('');
+
+  const onUsernameChange = (e) => {
     const username = e.target.value;
-    this.setState(() => ({ username }));
+    setusername(username);
   };
-  onFullnameChange = (e) => {
+  const onFullnameChange = (e) => {
     const fullname = e.target.value;
-    this.setState(() => ({ fullname }));
+    setfullname(fullname);
   };
-  onEmailChange = (e) => {
+  const onEmailChange = (e) => {
     const email = e.target.value;
-    this.setState(() => ({ email }));
+    setemail(email)
   };
-  onPasswordChange = (e) => {
+  const onPasswordChange = (e) => {
     const password = e.target.value;
-    this.setState(() => ({ password }));
+    setpassword(password);
   };
-  onConfirmPasswordChange = (e) => {
+  const onConfirmPasswordChange = (e) => {
     const confirm_password = e.target.value;
-    this.setState(() => ({ confirm_password }));
+    setconfirm_password(confirm_password);
   };
-  onRoleChange = (e) => {
+  const onRoleChange = (e) => {
     const role = e.target.value;
-    this.setState(() => ({ role }));
+    setrole(role);
   };
-  onRegionChange = (e) => {
+  const onRegionChange = (e) => {
     const region = e.target.value;
-    this.setState(() => ({ region }));
+    setregion(region);
   };
-  onStatusChange = (e) => {
+  const onStatusChange = (e) => {
     const status = e.target.value;
-    // console.log(status);
-    this.setState(() => ({ status }));
+    setstatus(status);
   };
-  componentDidMount(prevProps) {
-    // console.log(this.state.user)
-    // console.log(this.props.match.params.user_Id);
-    // let a = this.props.match.params.user_Id;
-    // a = a.toString();
 
+  useEffect(() => {
     let userID = (window.location.href).split('editUser/')[1];
-    // let c = window.location.search.split('editUser/')
-    // console.log(typeof(c));
-    // const queryString = window.location.search;
-    // console.log(queryString);
-    axios.get(`http://localhost:52013/api/Users/GetUser/userID=` + userID)
+    axios.get(`/Users/GetUser/userID=` + userID)
       .then(resp => {
         if (resp.status === 200) {
-          // console.log(resp.data)
           let splitResult = (resp.data.role).split(',');
-          this.setState(prevState => ({
-            // user: {
-            //   ...prevState.user,
-            //   // user_id:resp.data.user_Id,
-            // username: resp.data.username,
-            // fullname: resp.data.fullname,
-            // email: resp.data.email,
-            // password: resp.data.password,
-            // confirm_password: resp.data.confirm_Password,
-            // role: resp.data.role,
-            // region: resp.data.region,
-            // status: resp.data.status,
-            user_id: resp.data.user_Id,
-            username: resp.data.username,
-            fullname: resp.data.fullname,
-            email: resp.data.email,
-            password: resp.data.password,
-            confirm_password: resp.data.confirm_Password,
-            role: splitResult,
-            region: resp.data.region,
-            status: resp.data.status
-          }));
-          // console.log(this.state.user);
-          // window.location = '/userlist';
-          // window.location = window.location
+          setuser_id(resp.data.user_Id);
+          setusername(resp.data.username);
+          setfullname(resp.data.fullname);
+          setemail(resp.data.email);
+          setpassword(resp.data.password);
+          setconfirm_password(resp.data.confirm_Password);
+          setrole(splitResult);
+          setregion(resp.data.region);
+          setstatus(resp.data.status);
         }
       })
       .catch(error => {
         if (error.response) {
-          //The request was made and the server responded 
-          //with a status code that falls out of the range of 2xx OR in 4XX to 5XX range
           console.error(error.response.data);
           console.error(error.response.status);
           console.error(error.response.headers);
         } else if (error.request) {
-          // The request was made but no response was received 
-          //`error.request` is an instance of XMLHttpRequest in the browser 
-          //and an instance of http.ClientRequest in node.js
           console.warn(error.request);
         } else {
-          // Something happened in setting up the request that triggered an Error
           console.error('Error', error.message);
         }
         console.log(error.config);
       })
       .then(release => {
-        //always executed
         //console.log(release); => udefined
       });
-    // window.location = '/userlist';
-  }
+  }, []);
 
-
-  onSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     let user = {
-      user_id: this.state.user_id,
-      username: this.state.username,
-      fullname: this.state.fullname,
-      email: this.state.email,
-      password: this.state.password,
-      confirm_password: this.state.confirm_password,
-      role: (this.state.role).join(),
-      region: this.state.region,
-      status: this.state.status
+      user_id: user_id,
+      username: username,
+      fullname: fullname,
+      email: email,
+      password: password,
+      confirm_password: confirm_password,
+      role: role.join(),
+      region: region,
+      status: status
     };
     console.log(user);
     let userID = (window.location.href).split('editUser/')[1];
-    axios.post(`http://localhost:52013/api/Users/EditUser/userID=` + userID, user)
+    console.log(userID);
+    axios.post(`/Users/EditUser/userID=` + userID, user)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
-          // console.log(this.props);
-          window.location = '/app/manageuser';
+          navigate('/app/manageuser');
         }
       })
       .catch(error => {
         if (error.response) {
-          //The request was made and the server responded 
-          //with a status code that falls out of the range of 2xx OR in 4XX to 5XX range
           console.error(error.response.data);
           console.error(error.response.status);
           console.error(error.response.headers);
         } else if (error.request) {
-          // The request was made but no response was received 
-          //`error.request` is an instance of XMLHttpRequest in the browser 
-          //and an instance of http.ClientRequest in node.js
           console.warn(error.request);
         } else {
-          // Something happened in setting up the request that triggered an Error
           console.error('Error', error.message);
         }
         console.log(error.config);
       })
       .then(release => {
-        //always executed
         //console.log(release); => udefined
       });
   };
-  getStyles(name, role, theme) {
-    return {
-      fontWeight:
-        role.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
-    };
-  }
-
-  render() {
-    const { classes } = this.props;
-    const handleChange = (event) => {
-      this.setState({ role: event.target.value });
-    };
-
-    return (
-      <ThemeProvider theme={theme}>
-        <Page
-          className={classes.root}
-          title="Add User"
+  return (
+    <ThemeProvider theme={theme}>
+      <Page
+        className={classes.root}
+        title="Edit User"
+      >
+        <Box
+          display="flex"
+          flexDirection="column"
+          height="100%"
+          justifyContent="center"
         >
-          <Box
-            display="flex"
-            flexDirection="column"
-            height="100%"
-            justifyContent="center"
-          >
+          <Container maxWidth="lg" disableGutters={true}>
 
-            <Container maxWidth="lg" disableGutters={true}>
+            <Grid container className={classes.box}>
+              <Typography variant="h4" gutterBottom>Edit User</Typography>
 
-              <Grid container className={classes.box}>
-                <Typography variant="h4" gutterBottom>Edit User</Typography>
+              <form className={classes.root} noValidate autoComplete="off" className={classes.box}>
 
-                <form className={classes.root} noValidate autoComplete="off" className={classes.box}>
-
-                  <Grid item xs={6}>
-                    <FormControl variant="outlined" className={classes.formControl}>
-                      <TextField
-                        label="Username"
-                        id="username"
-                        onChange={this.onUsernameChange}
-                        // variant="outlined"
-                        size="small"
-                        fullWidth
-                        className={classes.textField}
-                        value={this.state.username}
-                      />
-                    </FormControl>
-                    <FormControl variant="outlined" className={classes.formControl}>
-                      <TextField
-                        label="Fullname"
-                        id="fullname"
-                        onChange={this.onFullnameChange}
-                        // variant="outlined"
-                        size="small"
-                        fullWidth
-                        className={classes.textField}
-                        value={this.state.fullname}
-                      />
-                    </FormControl>
-                    <FormControl variant="outlined" className={classes.formControl}>
-                      <TextField
-                        label="Email"
-                        id="email"
-                        onChange={this.onEmailChange}
-                        // variant="outlined"
-                        size="small"
-                        type="email"
-                        fullWidth
-                        className={classes.textField}
-                        value={this.state.email}
-                      />
-                    </FormControl>
-                    <FormControl variant="outlined" className={classes.formControl}>
-                      <TextField
-                        label="Password"
-                        id="password"
-                        onChange={this.onPasswordChange}
-                        //variant="outlined"
-                        size="small"
-                        type="password"
-                        fullWidth
-                        className={classes.textField}
-                        value={this.state.password}
-                      />
-                    </FormControl>
-                    <FormControl variant="outlined" className={classes.formControl}>
-                      <TextField
-                        label="Confirm Password"
-                        id="confirm_password"
-                        onChange={this.onConfirmPasswordChange}
-                        //  variant="outlined"
-                        size="small"
-                        type="password"
-                        fullWidth
-                        className={classes.textField}
-                        value={this.state.confirm_password}
-                      // margin='normal'
-                      />
-                    </FormControl>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel id="region-label">Region</InputLabel>
-                      <Select
-                        label="Region"
-                        labelId="region-label"
-                        id="region"
-                        onChange={this.onRegionChange}
-                        fullWidth
-                        className={classes.textField}
-                        value={this.state.region}
-                      //  variant="outlined"
-                      >
-                        <MenuItem value="">
-                          <em>None</em>
+                <Grid item xs={6}>
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <TextField
+                      label="Username"
+                      id="username"
+                      onChange={onUsernameChange}
+                      size="small"
+                      fullWidth
+                      className={classes.textField}
+                      value={username}
+                    />
+                  </FormControl>
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <TextField
+                      label="Fullname"
+                      id="fullname"
+                      onChange={onFullnameChange}
+                      size="small"
+                      fullWidth
+                      className={classes.textField}
+                      value={fullname}
+                    />
+                  </FormControl>
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <TextField
+                      label="Email"
+                      id="email"
+                      onChange={onEmailChange}
+                      size="small"
+                      type="email"
+                      fullWidth
+                      className={classes.textField}
+                      value={email}
+                    />
+                  </FormControl>
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <TextField
+                      label="Password"
+                      id="password"
+                      onChange={onPasswordChange}
+                      size="small"
+                      type="password"
+                      fullWidth
+                      className={classes.textField}
+                      value={password}
+                    />
+                  </FormControl>
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <TextField
+                      label="Confirm Password"
+                      id="confirm_password"
+                      onChange={onConfirmPasswordChange}
+                      size="small"
+                      type="password"
+                      fullWidth
+                      className={classes.textField}
+                      value={confirm_password}
+                    // margin='normal'
+                    />
+                  </FormControl>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel id="region-label">Region</InputLabel>
+                    <Select
+                      label="Region"
+                      labelId="region-label"
+                      id="region"
+                      onChange={onRegionChange}
+                      fullWidth
+                      className={classes.textField}
+                      value={region}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={"Mumbai"}>Mumbai</MenuItem>
+                      <MenuItem value={"Pune"}>Pune</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel id="status-label">Status</InputLabel>
+                    <Select
+                      label="Status"
+                      labelId="status-label"
+                      id="status"
+                      onChange={onStatusChange}
+                      fullWidth
+                      className={classes.textField}
+                      value={status}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={"Active"}>Active</MenuItem>
+                      <MenuItem value={"Inactive"}>Inactive</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel id="role-label">Role</InputLabel>
+                    <Select
+                      label="Role"
+                      labelId="role-label"
+                      id="role"
+                      onChange={onRoleChange}
+                      multiple
+                      value={role}
+                      input={<Input />}
+                      renderValue={(selected) => selected.join(', ')}
+                      MenuProps={MenuProps}
+                      fullWidth
+                    >
+                      {roles.map((name) => (
+                        <MenuItem key={name} value={name}>
+                          <Checkbox checked={role.indexOf(name) > -1} />
+                          <ListItemText primary={name} />
                         </MenuItem>
-                        <MenuItem value={"Mumbai"}>Mumbai</MenuItem>
-                        <MenuItem value={"Pune"}>Pune</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel id="status-label">Status</InputLabel>
-                      <Select
-                        label="Status"
-                        labelId="status-label"
-                        id="status"
-                        onChange={this.onStatusChange}
-                        fullWidth
-                        className={classes.textField}
-                        value={this.state.status}
-                      //    variant="outlined"
-                      >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={"Active"}>Active</MenuItem>
-                        <MenuItem value={"Inactive"}>Inactive</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <FormControl variant="outlined" className={classes.formControl}>
-                      <InputLabel id="role-label">Role</InputLabel>
-                      <Select
-                        label="Role"
-                        labelId="role-label"
-                        id="role"
-                        onChange={handleChange}
-                        multiple
-                        value={this.state.role}
-                        input={<Input />}
-                        renderValue={(selected) => selected.join(', ')}
-                        MenuProps={MenuProps}
-                        fullWidth
-                      //  className={classes.textField}
-                      //  variant="outlined"
-                      >
-                        {roles.map((name) => (
-                          <MenuItem key={name} value={name}>
-                            <Checkbox checked={this.state.role.indexOf(name) > -1} />
-                            <ListItemText primary={name} />
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={6} ></Grid>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={6} ></Grid>
                 &nbsp;&nbsp;&nbsp;
                 <br />
-                  <Button variant="outlined" color="primary" onClick={this.onSubmit}>Save</Button>
-                &nbsp;<Button variant="outlined" onClick={() => { window.location = "http://localhost:3000/app/manageuser" }}>Cancel</Button>
-
-                </form>
-              </Grid>
-            </Container>
-          </Box>
-        </Page>
-      </ThemeProvider>
-    )
-  }
+                <Button variant="outlined" color="primary" onClick={onSubmit}>Save</Button>
+                &nbsp;<Button variant="outlined" onClick={() => { navigate('/app/manageuser') }}>Cancel</Button>
+              </form>
+            </Grid>
+          </Container>
+        </Box>
+      </Page>
+    </ThemeProvider>
+  );
 }
-export default withStyles(useStyles(theme))(RegisterView)
-// export default RegisterView

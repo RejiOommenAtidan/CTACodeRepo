@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Container,
-  Grid,
   makeStyles,
   Breadcrumbs,
   Link,
@@ -22,21 +21,19 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const classes = useStyles();
-
   return (
     <Page
       className={classes.root}
       title="Add User"
     >
       <Container maxWidth={false}>
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link color="inherit" href="/app/manageuser" >
-          Home
-        </Link>
-       
-        <Typography color="textPrimary">Add User</Typography>
-      </Breadcrumbs>
-        <AddUser/>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" href="/app/manageuser" >
+            Home
+          </Link>
+          <Typography color="textPrimary">Add User</Typography>
+        </Breadcrumbs>
+        <AddUser />
       </Container>
     </Page>
   );

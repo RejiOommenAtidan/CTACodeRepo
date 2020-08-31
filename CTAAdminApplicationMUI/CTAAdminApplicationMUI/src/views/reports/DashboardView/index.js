@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Container,
-  Grid,
   Typography,
   makeStyles,
   Breadcrumbs,
@@ -29,14 +28,14 @@ const Dashboard = () => {
       title="Dashboard"
     >
       <Container maxWidth={false}>
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link color="inherit" href="/app/manageuser" >
-          Home
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" href="/app/manageuser" >
+            Home
         </Link>
-       
-        <Typography color="textPrimary">Manage User</Typography>
-      </Breadcrumbs>
-        <Manage/>
+
+          <Typography color="textPrimary">Manage User</Typography>
+        </Breadcrumbs>
+        <Manage />
       </Container>
     </Page>
   );
