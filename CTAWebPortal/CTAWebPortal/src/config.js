@@ -44,11 +44,16 @@ const iconStyle = {
   fontSize: 16
 };
 
-export const menuItems = [{
-  title: 'Master Page',
-  href: '/',
-  icon: <HomeIcon style={iconStyle} />
-}, 
+export const menuItems = [
+//   {
+//   title: 'Master Page',
+//   href: '/',
+//   icon: <HomeIcon style={iconStyle} />
+// }, 
+{
+  title: 'MADEB',
+  type: 'header'
+},
 {  
   title: 'Manage Madeb',
   icon: <DashboardIcon style={iconStyle} />,
@@ -60,35 +65,40 @@ export const menuItems = [{
     title: 'List Madeb',
     href: '/madeb/list',
     icon: <ListIcon style={iconStyle} />
-  } ,{
-    title: 'Sarso Madeb',
-    href: '/madeb/sarso',
-    icon: <AddIcon style={iconStyle} />
-  },
-  {
-    title: 'Norchoe Madeb',
-    href: '/madeb/norchoe',
-    icon: <EditIcon style={iconStyle} />
-  },
-  {
-    title: 'Bhorlak Madeb',
-    href: '/madeb/bhorlak',
-    icon: <HelpIcon style={iconStyle} />
-  },{
-    title: 'Book Full',
-    href: '/madeb/bookfull',
-    icon: <BookIcon style={iconStyle} />
-  },{
-    title: 'Brief GB',
-    href: '/madeb/briefgb',
-    icon: <InfoIcon style={iconStyle} />
-  },{
-    title: 'Abroad',
-    href: '/madeb/abroad',
-    icon: <FlightIcon style={iconStyle} />
-  },
+  }
 ]
-}/*,
+},
+{
+  title: 'MADEB OPERATIONS',
+  type: 'header'
+},
+{
+  title: 'Sarso Madeb',
+  href: '/madeb/sarso',
+  icon: <AddIcon style={iconStyle} />
+},
+{
+  title: 'Norchoe Madeb',
+  href: '/madeb/norchoe',
+  icon: <EditIcon style={iconStyle} />
+},
+{
+  title: 'Bhorlak Madeb',
+  href: '/madeb/bhorlak',
+  icon: <HelpIcon style={iconStyle} />
+},{
+  title: 'Book Full',
+  href: '/madeb/bookfull',
+  icon: <BookIcon style={iconStyle} />
+},{
+  title: 'Brief GB',
+  href: '/madeb/briefgb',
+  icon: <InfoIcon style={iconStyle} />
+},{
+  title: 'Abroad',
+  href: '/madeb/abroad',
+  icon: <FlightIcon style={iconStyle} />
+},/*,
 {  
   title: 'Dashboards',
   icon: <HomeIcon style={iconStyle} />,

@@ -71,7 +71,7 @@ const Abroad = (props) => {
                 variant="raised" color="primary"
                 className={classes.button}
                 onClick={handleClickOpen}
-            >Add Madeb
+            >Add Sarso Madeb
             </Button>
             <Table aria-label="simple table" >
                 <TableHead>
@@ -121,7 +121,7 @@ const Abroad = (props) => {
                 </TableBody>}
             </Table>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Add Madeb</DialogTitle>
+                <DialogTitle id="form-dialog-title">Add Sarso Madeb</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         <div>
