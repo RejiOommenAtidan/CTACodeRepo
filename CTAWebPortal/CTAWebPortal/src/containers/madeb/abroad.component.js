@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import TableRow from '@material-ui/core/TableRow';
 // import Delete from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+//import EmailIcon from '@material-ui/icons/Email';
 import IconButton from '@material-ui/core/IconButton';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -54,11 +55,14 @@ const styles = theme => ({
 
 
 const rows = [
-    { form: 2100, rdate: "06-08-2018", region: "Paris", name: "Lhakpa Dolma", alias: "Chungthak Tahwasampa", id: 7648981, fname: "Dhongyal", receipt: "2904", sanay: "71", pgid: "0", cgid: "0", ias: "2012-01-01", status: "Rejected", rejectdate: "2012-01-01", returndate: "28-09-2019" },
-    { form: 2116, rdate: "30-07-2018", region: "Paris", name: "Sonam Chodon", alias: "Tenzin Dolkar Tsang", id: 1808510, fname: "Thoesam", receipt: "2971", sanay: "0", pgid: "0", cgid: "29116", ias: "2012-01-01", status: "Rejected", rejectdate: "2018-08-16", returndate: "28-09-2019" },
-    { form: 2100, rdate: "30-07-2018", region: "Paris", name: "Lhakpa Dolma", alias: "Chungthak Tahwasampa", id: 7648981, fname: "Dhongyal", receipt: "2904", sanay: "71", pgid: "0", cgid: "0", ias: "2012-01-01", status: "Rejected", rejectdate: "2012-01-01", returndate: "28-09-2019" },
-    { form: 2100, rdate: "30-07-2018", region: "Paris", name: "Lhakpa Dolma", alias: "Chungthak Tahwasampa", id: 7648981, fname: "Dhongyal", receipt: "2904", sanay: "71", pgid: "0", cgid: "0", ias: "2012-01-01", status: "Rejected", rejectdate: "2012-01-01", returndate: "28-09-2019" },
-    { form: 2100, rdate: "30-07-2018", region: "Paris", name: "Lhakpa Dolma", alias: "Chungthak Tahwasampa", id: 7648981, fname: "Dhongyal", receipt: "2904", sanay: "71", pgid: "0", cgid: "0", ias: "2012-01-01", status: "Rejected", rejectdate: "2012-01-01", returndate: "28-09-2019" }
+    {form:2100 , rdate:"06-08-2018" , region:"Paris",  name:"Lhakpa Dolma" ,alias:"Chungthak Tahwasampa",id:7648981, fname:"Dhongyal", receipt:"2904",sanay:"71",pgid:"0",cgid:"0",ias:"2012-01-01", status:"Rejected",rejectdate:"2012-01-01",returndate:"28-09-2019"},
+    {form:2116 , rdate:"30-07-2018" , region:"Paris",  name:"Sonam Chodon" ,alias:"Tenzin Dolkar Tsang",id:1808510, fname:"Thoesam", receipt:"2971",sanay:"0",pgid:"0",cgid:"29116",ias:"2012-01-01", status:"Rejected",rejectdate:"2018-08-16",returndate:"28-09-2019"},
+    {form:2100 , rdate:"30-07-2018" , region:"Paris",  name:"Lhakpa Dolma" ,alias:"Chungthak Tahwasampa",id:7648981, fname:"Dhongyal", receipt:"2904",sanay:"71",pgid:"0",cgid:"0",ias:"2012-01-01", status:"Rejected",rejectdate:"2012-01-01",returndate:"28-09-2019"},
+    {form:2100 , rdate:"30-07-2018" , region:"Paris",  name:"Lhakpa Dolma" ,alias:"Chungthak Tahwasampa",id:7648981, fname:"Dhongyal", receipt:"2904",sanay:"71",pgid:"0",cgid:"0",ias:"2012-01-01", status:"Rejected",rejectdate:"2012-01-01",returndate:"28-09-2019"},
+    {form:2100 , rdate:"30-07-2018" , region:"Paris",  name:"Lhakpa Dolma" ,alias:"Chungthak Tahwasampa",id:7648981, fname:"Dhongyal", receipt:"2904",sanay:"71",pgid:"0",cgid:"0",ias:"2012-01-01", status:"Rejected",rejectdate:"2012-01-01",returndate:"28-09-2019"}
+
+
+
 ];
 const Abroad = (props) => {
     const { classes } = props;
@@ -116,31 +120,37 @@ const Abroad = (props) => {
                     {rows.map((row) => (
                         <TableRow key={row.name}>
 
-                            <TableCell padding="none" component="th" scope="row">{row.form}</TableCell>
-                            <TableCell padding="none">{row.rdate}</TableCell>
-                            <TableCell padding="none">{row.region}</TableCell>
-                            <TableCell padding="none">{row.name}</TableCell>
-                            <TableCell padding="none">{row.alias}</TableCell>
-                            <TableCell padding="none">{row.id}</TableCell>
-                            <TableCell padding="none">{row.fname}</TableCell>
-                            <TableCell padding="none" >{row.sanay}</TableCell>
-                            <TableCell padding="none">{row.receipt}</TableCell>
-                            <TableCell padding="none">{row.pgid}</TableCell>
-                            <TableCell padding="none">{row.cgid}</TableCell>
-                            <TableCell padding="none">{row.ias}</TableCell>
-                            <TableCell padding="none">{row.status}</TableCell>
-                            <TableCell padding="none">{row.rejectdate}</TableCell>
-                            <TableCell padding="none">{row.returndate}</TableCell>
-                            <TableCell padding="none">
-                                <IconButton aria-label="Email">
-                                    <EmailIcon />
-                                </IconButton>
-                            </TableCell>
-                            <TableCell padding="none">
-                                <IconButton color="primary" aria-label="Delete">
-                                    <EditIcon />
-                                </IconButton>
-                            </TableCell>
+<TableCell padding="none" component="th" scope="row">
+                        {row.form}
+                    </TableCell>
+                    <TableCell padding="none">{row.rdate}</TableCell>
+                    <TableCell padding="none">{row.region}</TableCell>
+                    <TableCell padding="none">{row.name}</TableCell>
+                    <TableCell padding="none">{row.alias}</TableCell>
+                    <TableCell padding="none">
+
+                           {row.id}
+             
+                    </TableCell>
+                    <TableCell padding="none">{row.fname}</TableCell>
+                    <TableCell padding="none" >{row.sanay}</TableCell>
+                    <TableCell padding="none">{row.receipt}</TableCell>
+                    <TableCell padding="none">{row.pgid}</TableCell>
+                    <TableCell padding="none">{row.cgid}</TableCell>
+                    <TableCell padding="none">{row.ias}</TableCell>
+                    <TableCell padding="none">{row.status}</TableCell>
+                    <TableCell padding="none">{row.rejectdate}</TableCell>
+                    <TableCell padding="none">{row.returndate}</TableCell>
+                    <TableCell padding="none">
+                         <IconButton  aria-label="Email">
+                            <EmailIcon />
+                        </IconButton>
+                    </TableCell>
+                    <TableCell  padding="none">
+                        <IconButton color="primary" aria-label="Delete">
+                            <EditIcon />
+                        </IconButton>
+                    </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>}

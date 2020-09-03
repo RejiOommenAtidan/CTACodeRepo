@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import TableRow from '@material-ui/core/TableRow';
 import Delete from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import EmailIcon from '@material-ui/icons/Email';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -49,12 +50,11 @@ const styles = theme => ({
 });
 
 const rows = [
-    { form: 23131, type: "Sarso", rdate: "12-07-2020", region: "Delhi", gbno: "", name: "Aayush", saney: "21", receipt: "", status: "Approved", statusdate: "07-08-2020" },
-    { form: 43212, type: "Narchoe", rdate: "21-03-2020", region: "Mumbai", gbno: "9865347", name: "Malay", saney: "", receipt: "46381", status: "Reject", statusdate: "06-04-2020" },
-    { form: 12324, type: "Bhorlak", rdate: "18-01-2019", region: "Zurich", gbno: "4563217", name: "Reji", saney: "", receipt: "78954", status: "", statusdate: "17-03-2019" },
-    { form: 21345, type: "Book Full", rdate: "03-05-2017", region: "Chicago", gbno: "7895412", name: "Pankaj", saney: "4", receipt: "", status: "Issued", statusdate: "21-06-2017" },
-    { form: 39213, type: "Brief GB", rdate: "13-08-2018", region: "Dharamsala", gbno: "4578621", name: "Abcdef", saney: "31", receipt: "54316", status: "Issued", statusdate: "07-09-2018" },
-    { form: 41234, type: "Abroad", rdate: "21-09-2019", region: "New York", gbno: "7895462", name: "Qwerty", saney: "71", receipt: "23241", status: "Issued", statusdate: "28-09-2019" }
+    {form:41234 , rdate:"21-09-2019" , region:"New York",  name:"Qwerty" ,id:21323, bsno: 71 ,da: "RC" ,  receipt:"15-09-2019", status:"Issued",rejectdate:"28-09-2019",returndate:"28-09-2019"},
+   {form:41234 , rdate:"21-09-2019" , region:"New York",  name:"Qwerty" ,id:21323, bsno: 71 ,da: "RC" , receipt:"15-09-2019", status:"Issued",rejectdate:"28-09-2019",returndate:"28-09-2019"},
+   {form:41234 , rdate:"21-09-2019" , region:"New York",  name:"Qwerty" ,id:21323, bsno: 71 ,da: "RC" , receipt:"15-09-2019", status:"Issued",rejectdate:"28-09-2019",returndate:"28-09-2019"},
+   {form:41234 , rdate:"21-09-2019" , region:"New York",  name:"Qwerty" ,id:21323, bsno: 71 ,da: "RC" , receipt:"15-09-2019", status:"Issued",rejectdate:"28-09-2019",returndate:"28-09-2019"},
+   {form:41234 , rdate:"21-09-2019" , region:"New York",  name:"Qwerty" ,id:21323, bsno: 71 ,da: "RC" , receipt:"15-09-2019", status:"Issued",rejectdate:"28-09-2019",returndate:"28-09-2019"}
 ];
 const Abroad = (props) => {
     const { classes } = props;
@@ -122,27 +122,32 @@ const Abroad = (props) => {
                     {rows.map((row) => (
                         <TableRow key={row.name}>
                             <TableCell padding="none" component="th" scope="row">
-                                {row.form}
-                            </TableCell>
-                            <TableCell padding="none">{row.type}</TableCell>
-                            <TableCell padding="none">{row.rdate}</TableCell>
-                            <TableCell padding="none">{row.region}</TableCell>
-                            <TableCell padding="none">{row.gbno}</TableCell>
-                            <TableCell padding="none">{row.name}</TableCell>
-                            <TableCell padding="none" style={{ alignItems: 'center' }}>{row.saney}</TableCell>
-                            <TableCell padding="none">{row.receipt}</TableCell>
-                            <TableCell padding="none">{row.status}</TableCell>
-                            <TableCell padding="none">{row.statusdate}</TableCell>
-                            <TableCell padding="none">
-                                <IconButton color="primary" aria-label="Delete">
-                                    <EditIcon onClick={handleEmailClickOpen}/>
-                                </IconButton>
-                            </TableCell>
-                            <TableCell padding="none">
-                                <IconButton color="secondary" aria-label="Delete">
-                                    <Delete />
-                                </IconButton>
-                            </TableCell>
+                        {row.form}
+                    </TableCell>
+                    <TableCell padding="none">{row.rdate}</TableCell>
+                    <TableCell padding="none">{row.region}</TableCell>
+                    <TableCell padding="none">{row.name}</TableCell>
+                    <TableCell padding="none">
+
+                           {row.id}
+             
+                    </TableCell>
+                    <TableCell padding="none">{row.bsno}</TableCell>
+                    <TableCell padding="none" >{row.da}</TableCell>
+                    <TableCell padding="none">{row.receipt}</TableCell>
+                    <TableCell padding="none">{row.status}</TableCell>
+                    <TableCell padding="none">{row.rejectdate}</TableCell>
+                    <TableCell padding="none">{row.returndate}</TableCell>
+                    <TableCell padding="none">
+                         <IconButton  aria-label="Email">
+                            <EmailIcon />
+                        </IconButton>
+                    </TableCell>
+                    <TableCell  padding="none">
+                        <IconButton color="primary" aria-label="Edit">
+                            <EditIcon onClick={handleEditClickOpen} />
+                        </IconButton>
+                    </TableCell>
 
                         </TableRow>
                     ))}
