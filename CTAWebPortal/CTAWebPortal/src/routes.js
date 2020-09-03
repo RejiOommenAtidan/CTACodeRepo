@@ -11,55 +11,33 @@ import Tabbed from './layouts/layout-tabbed/layout-tabbed.component';
 import NoLayout from './layouts/layout-none/layout-none.component';
 
 // DASHBOARD ROUTE
-const AsyncAnalyticsDashboard = asyncComponent(() => import('./containers/dashboards/analytics/analytics.component'));
-const AsyncEcommerceDashboard = asyncComponent(() => import('./containers/dashboards/ecommerce/ecommerce.component'));
-const AsyncCryptoDashboard = asyncComponent(() => import('./containers/dashboards/crypto/crypto.component'));
-const AsyncProjectDashboard = asyncComponent(() => import('./containers/dashboards/project/project.component'));
-const AsyncTheming = asyncComponent(() => import('./containers/theming/theming.component'));
 
-// APP ROUTES
-const AsyncEmailApp = asyncComponent(() => import('./containers/apps/email/email.component'));
-const AsyncTodoApp = asyncComponent(() => import('./containers/apps/todo/todo.component'));
-const AsyncMapsApp = asyncComponent(() => import('./containers/apps/maps/maps.component'));
-const AsyncNotesApp = asyncComponent(() => import('./containers/apps/notes/notes.component'));
-const AsyncContactsApp = asyncComponent(() => import('./containers/apps/contacts/contacts.component'));
-const AsyncChatApp = asyncComponent(() => import('./containers/apps/chat/chat.component'));
-const AsyncCalendarApp = asyncComponent(() => import('./containers/apps/calendar/calendar.component'));
+
+
 
 // EXAMPLE ROUTES
-const AsyncAutocompleteExample = asyncComponent(() => import('./containers/elements/autocomplete/autocomplete.component'));
-const AsyncSelectionControlsExample = asyncComponent(() => import('./containers/elements/selection-controls/selection-controls.component'));
-const AsyncPickerExample = asyncComponent(() => import('./containers/elements/picker/picker.component'));
-const AsyncSelectExample = asyncComponent(() => import('./containers/elements/select/select.component'));
-const AsyncTextFieldExample = asyncComponent(() => import('./containers/elements/text-field/text-field.component'));
-const AsyncAppBarExample = asyncComponent(() => import('./containers/elements/app-bar/app-bar.component'));
-const AsyncMenuExample = asyncComponent(() => import('./containers/elements/menu/menu.component'));
-const AsyncListExample = asyncComponent(() => import('./containers/elements/list/list.component'));
-const AsyncCardExample = asyncComponent(() => import('./containers/elements/card/card.component'));
-const AsyncPaperExample = asyncComponent(() => import('./containers/elements/paper/paper.component'));
-const AsyncAvatarExample = asyncComponent(() => import('./containers/elements/avatars/avatars.component'));
-const AsyncSteppersExample = asyncComponent(() => import('./containers/elements/steppers/steppers.component'));
-const AsyncButtonExample = asyncComponent(() => import('./containers/elements/button/button.component'));
-const AsyncProgressExample = asyncComponent(() => import('./containers/elements/progress/progress.component'));
+
 
 // AUTHENTICATION ROUTES
 const AsyncLogin = asyncComponent(() => import('./containers/authentication/login/login.component'));
-const AsyncRegister = asyncComponent(() => import('./containers/authentication/register/register.component'));
-const AsyncProfile = asyncComponent(() => import('./containers/authentication/profile/profile.component'));
-const AsyncLock = asyncComponent(() => import('./containers/authentication/lock/lock.component'));
-const AsyncForgot = asyncComponent(() => import('./containers/authentication/forgot-password/forgot-password.component'));
 
 // ERROR ROUTES
-const AsyncError404 = asyncComponent(() => import('./containers/errors/404.component'));
-const AsyncError500 = asyncComponent(() => import('./containers/errors/500.component'));
 
-const AsyncNotFound = asyncComponent(() => import('./containers/not-found/not-found.component'));
 
-// PAGES ROUTES
-const AsyncTypography = asyncComponent(() => import('./containers/pages/typography.component'));
-const AsyncColors = asyncComponent(() => import('./containers/pages/colors.component'));
+
 
 const AsyncMasterPage = asyncComponent(() => import('./containers/master/masterpage.component'));
+const AsyncAddMadebPage = asyncComponent(() => import('./containers/madeb/addmadeb.component'));
+const AsyncListMadebPage = asyncComponent(() => import('./containers/madeb/listmadeb.component'));
+
+
+
+const AsyncSarsoMadebPage = asyncComponent(() => import('./containers/madeb/sarsomadeb.component'));
+const AsyncNorchoeMadebPage = asyncComponent(() => import('./containers/madeb/norchoemadeb.component'));
+const AsyncBhorlakMadebPage = asyncComponent(() => import('./containers/madeb/bhorlakmadeb.component'));
+const AsyncBookFullPage = asyncComponent(() => import('./containers/madeb/bookfull.component'));
+const AsyncBriefGBPage = asyncComponent(() => import('./containers/madeb/briefgb.component'));
+const AsyncAbroadPage = asyncComponent(() => import('./containers/madeb/abroad.component'));
 
 
 
@@ -125,44 +103,21 @@ export default ({ childProps, layout }) => {
     activeLayout = ClassicLayout;
   }
 
+ 
+
   return (
     <Switch>
       <AppRoute path="/" exact component={AsyncMasterPage} props={childProps} layout={activeLayout} />
-      <AppRoute path="/dashboard/analytics" exact component={AsyncAnalyticsDashboard} props={childProps} layout={activeLayout} />
-      <AppRoute path="/dashboards/ecommerce" exact component={AsyncEcommerceDashboard} props={childProps} layout={activeLayout} />
-      <AppRoute path="/dashboards/crypto" exact component={AsyncCryptoDashboard} props={childProps} layout={activeLayout} />
-      <AppRoute path="/dashboards/project" exact component={AsyncProjectDashboard} props={childProps} layout={activeLayout} />
-      <AppRoute path="/theming" exact component={AsyncTheming} props={childProps} layout={activeLayout} />
-      <AppRoute path="/apps/email" exact component={AsyncEmailApp} props={childProps} layout={activeLayout} />
-      <AppRoute path="/apps/todo" exact component={AsyncTodoApp} props={childProps} layout={activeLayout} />
-      <AppRoute path="/apps/maps" exact component={AsyncMapsApp} props={childProps} layout={activeLayout} />
-      <AppRoute path="/apps/notes" exact component={AsyncNotesApp} props={childProps} layout={activeLayout} />
-      <AppRoute path="/apps/contacts" exact component={AsyncContactsApp} props={childProps} layout={activeLayout} />
-      <AppRoute path="/apps/chat" exact component={AsyncChatApp} props={childProps} layout={activeLayout} />
-      <AppRoute path="/apps/calendar" exact component={AsyncCalendarApp} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/autocomplete" exact component={AsyncAutocompleteExample} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/selection-controls" exact component={AsyncSelectionControlsExample} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/picker" exact component={AsyncPickerExample} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/selects" exact component={AsyncSelectExample} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/text-fields" exact component={AsyncTextFieldExample} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/app-bar" exact component={AsyncAppBarExample} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/menu" exact component={AsyncMenuExample} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/list" exact component={AsyncListExample} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/cards" exact component={AsyncCardExample} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/paper" exact component={AsyncPaperExample} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/avatars" exact component={AsyncAvatarExample} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/steppers" exact component={AsyncSteppersExample} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/buttons" exact component={AsyncButtonExample} props={childProps} layout={activeLayout} />
-      <AppRoute path="/elements/progress" exact component={AsyncProgressExample} props={childProps} layout={activeLayout} />
+      <AppRoute path="/madeb/add" exact component={AsyncAddMadebPage} props={childProps} layout={activeLayout} />
+      <AppRoute path="/madeb/list" exact component={AsyncListMadebPage} props={childProps} layout={activeLayout} />
+      <AppRoute path="/madeb/sarso" exact component={AsyncSarsoMadebPage} props={childProps} layout={activeLayout} />
+      <AppRoute path="/madeb/norchoe" exact component={AsyncNorchoeMadebPage} props={childProps} layout={activeLayout} />
+      <AppRoute path="/madeb/bhorlak" exact component={AsyncBhorlakMadebPage} props={childProps} layout={activeLayout} />
+      <AppRoute path="/madeb/bookfull" exact component={AsyncBookFullPage} props={childProps} layout={activeLayout} />
+      <AppRoute path="/madeb/briefgb" exact component={AsyncBriefGBPage} props={childProps} layout={activeLayout} />
+      <AppRoute path="/madeb/abroad" exact component={AsyncAbroadPage} props={childProps} layout={activeLayout} />
+     
       <AppRoute path="/login" exact component={AsyncLogin} props={childProps} layout={NoLayout} />
-      <AppRoute path="/register" exact component={AsyncRegister} props={childProps} layout={NoLayout} />
-      <AppRoute path="/profile" exact component={AsyncProfile} props={childProps} layout={activeLayout} />
-      <AppRoute path="/lock" exact component={AsyncLock} props={childProps} layout={NoLayout} />
-      <AppRoute path="/forgot-password" exact component={AsyncForgot} props={childProps} layout={NoLayout} />
-      <AppRoute path="/errors/404" exact component={AsyncError404} props={childProps} layout={NoLayout} />
-      <AppRoute path="/errors/500" exact component={AsyncError500} props={childProps} layout={NoLayout} />
-      <AppRoute path="/pages/typography" exact component={AsyncTypography} props={childProps} layout={activeLayout} />
-      <AppRoute path="/pages/colors" exact component={AsyncColors} props={childProps} layout={activeLayout} />
-      <AppRoute component={AsyncNotFound} layout={activeLayout} />
+  
     </Switch>);
 };

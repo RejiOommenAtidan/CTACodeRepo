@@ -2,7 +2,7 @@ import React from 'react';
 
 import HomeIcon from '@material-ui/icons/Home';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+/*import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -19,7 +19,17 @@ import PersonIcon from '@material-ui/icons/Person';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import FaceIcon from '@material-ui/icons/Face';
 import ChatIcon from '@material-ui/icons/Chat';
-import DateRangeIcon from '@material-ui/icons/DateRange';
+import DateRangeIcon from '@material-ui/icons/DateRange';*/
+
+
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import ListIcon from '@material-ui/icons/List';
+import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import HelpIcon from '@material-ui/icons/Help';
+import BookIcon from '@material-ui/icons/Book';
+import InfoIcon from '@material-ui/icons/Info';
+import FlightIcon from '@material-ui/icons/Flight';
 
 import themes from './themes';
 
@@ -37,8 +47,48 @@ const iconStyle = {
 export const menuItems = [{
   title: 'Master Page',
   href: '/',
-  icon: <DashboardIcon style={iconStyle} />
+  icon: <HomeIcon style={iconStyle} />
 }, 
+{  
+  title: 'Manage Madeb',
+  icon: <DashboardIcon style={iconStyle} />,
+  children: [{
+    title: 'Add Madeb',
+    href: '/madeb/add',
+    icon: <PlaylistAddIcon style={iconStyle} />
+  }, {
+    title: 'List Madeb',
+    href: '/madeb/list',
+    icon: <ListIcon style={iconStyle} />
+  } ,{
+    title: 'Sarso Madeb',
+    href: '/madeb/sarso',
+    icon: <AddIcon style={iconStyle} />
+  },
+  {
+    title: 'Norchoe Madeb',
+    href: '/madeb/norchoe',
+    icon: <EditIcon style={iconStyle} />
+  },
+  {
+    title: 'Bhorlak Madeb',
+    href: '/madeb/bhorlak',
+    icon: <HelpIcon style={iconStyle} />
+  },{
+    title: 'Book Full',
+    href: '/madeb/bookfull',
+    icon: <BookIcon style={iconStyle} />
+  },{
+    title: 'Brief GB',
+    href: '/madeb/briefgb',
+    icon: <InfoIcon style={iconStyle} />
+  },{
+    title: 'Abroad',
+    href: '/madeb/abroad',
+    icon: <FlightIcon style={iconStyle} />
+  },
+]
+}/*,
 {  
   title: 'Dashboards',
   icon: <HomeIcon style={iconStyle} />,
@@ -203,4 +253,4 @@ export const menuItems = [{
     title: '500',
     href: '/errors/500'
   }]
-}];
+}*/];
