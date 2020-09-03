@@ -29,6 +29,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+import Icon from '@material-ui/core/Icon';
+import SearchIcon from '@material-ui/icons/Search';
+
 
 const styles = theme => ({
     button: {
@@ -66,34 +69,46 @@ const Abroad = (props) => {
         setOpen(false);
     };
     return (
-        <div style={{ paddingLeft: 20 }}>
-            <Button
-                variant="raised" color="primary"
-                className={classes.button}
-                onClick={handleClickOpen}
-            >Add Brief GB Madeb
+        <div style={{ padding: 20 }}>
+
+
+            <Grid container spacing={3} direction="row" alignItems="center">
+                <Grid item xs={6}>
+                    <Button>
+                        <Icon
+                            className="fa fa-plus-circle"
+                            style={{ fontSize: 30 }}
+                            onClick={handleClickOpen}
+                        />&nbsp;Add Brief GB Madeb
     </Button>
-
-
+                </Grid>
+                <Grid item xs={6} style={{ textAlign: "right" }}>
+                    <TextField
+                        id="input-with-icon-grid"
+                        label={<SearchIcon />}
+                        style={{ marginBottom: 20 }}
+                    />
+                </Grid>
+            </Grid>
             <Table aria-label="simple table" >
                 <TableHead>
                     <TableRow>
-                    <TableCell padding="none">Form No</TableCell>
-                    <TableCell padding="none" >Received Date</TableCell>
-                    <TableCell  padding="none">Region</TableCell>
-                    <TableCell padding="none" >Name</TableCell>
-                    <TableCell padding="none" >GB ID</TableCell>
-                    <TableCell padding="none">Father's Name</TableCell>
-                    <TableCell padding="none">Receipt No</TableCell>
-                    <TableCell padding="none">Saney Form No</TableCell>
-                    <TableCell padding="none" >Current GB S.no</TableCell>
-                    <TableCell  padding="none"> Previous GB S.no</TableCell>
-                    <TableCell  padding="none">Issue Action Date</TableCell>
-                    <TableCell  padding="none">Issue Action</TableCell>
-                    <TableCell padding="none" >Reject Date</TableCell>
-                    <TableCell padding="none" >Return Date</TableCell>
-                    <TableCell padding="none" >Email</TableCell>
-                    <TableCell padding="none" >Edit</TableCell>
+                        <TableCell padding="none">Form No</TableCell>
+                        <TableCell padding="none" >Received Date</TableCell>
+                        <TableCell padding="none">Region</TableCell>
+                        <TableCell padding="none" >Name</TableCell>
+                        <TableCell padding="none" >GB ID</TableCell>
+                        <TableCell padding="none">Father's Name</TableCell>
+                        <TableCell padding="none">Receipt No</TableCell>
+                        <TableCell padding="none">Saney Form No</TableCell>
+                        <TableCell padding="none" >Current GB S.no</TableCell>
+                        <TableCell padding="none"> Previous GB S.no</TableCell>
+                        <TableCell padding="none">Issue Action Date</TableCell>
+                        <TableCell padding="none">Issue Action</TableCell>
+                        <TableCell padding="none" >Reject Date</TableCell>
+                        <TableCell padding="none" >Return Date</TableCell>
+                        <TableCell padding="none" >Email</TableCell>
+                        <TableCell padding="none" >Edit</TableCell>
 
                     </TableRow>
                 </TableHead>
@@ -129,223 +144,223 @@ const Abroad = (props) => {
                 </TableBody>}
             </Table>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Add Brief GB Madeb</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                <div>
-                <Typography variant="h4" >Madeb Entry Form For Brief GB</Typography>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6}>
-                        <FormControl className={classes.formControl}>
-                            <TextField
-                                id="number"
-                                label="Form Number"
-                                type="number"
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                                value='43131'
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <FormControl className={classes.formControl}>
-                            <TextField
-                                id="date"
-                                label="Received Date"
-                                type="date"
-                                defaultValue="2020-08-27"
-                                className={classes.textField}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        </FormControl>
-                    </Grid>
+                <DialogTitle id="form-dialog-title">Add Brief GB Madeb</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        <div>
+                            <Typography variant="h4" >Madeb Entry Form For Brief GB</Typography>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="number"
+                                            label="Form Number"
+                                            type="number"
+                                            InputProps={{
+                                                readOnly: true,
+                                            }}
+                                            value='43131'
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="date"
+                                            label="Received Date"
+                                            type="date"
+                                            defaultValue="2020-08-27"
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </FormControl>
+                                </Grid>
 
-                    <Grid item xs={12} sm={6}>
-                        <FormControl className={classes.formControl}>
-                            <InputLabel id="auth-label">Authority</InputLabel>
-                            <Select
-                                labelId="auth-label"
-                                id="authority"
-                                //value={}
-                                // onChange={handleChange}
-                                label="Authority"
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={1}>Mundgod</MenuItem>
-                                <MenuItem value={2}>Shimla</MenuItem>
-                                <MenuItem value={3}>Paris</MenuItem>
-                                <MenuItem value={4}>Dekyiling</MenuItem>
-                                <MenuItem value={5}>BTS, Bir</MenuItem>
-                                <MenuItem value={6}>Leh</MenuItem>
-                                <MenuItem value={7}>Boudha</MenuItem>
-                                <MenuItem value={8}>Jorpati</MenuItem>
-                                <MenuItem value={9}>Boston</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <InputLabel id="auth-label">Authority</InputLabel>
+                                        <Select
+                                            labelId="auth-label"
+                                            id="authority"
+                                            //value={}
+                                            // onChange={handleChange}
+                                            label="Authority"
+                                        >
+                                            <MenuItem value="">
+                                                <em>None</em>
+                                            </MenuItem>
+                                            <MenuItem value={1}>Mundgod</MenuItem>
+                                            <MenuItem value={2}>Shimla</MenuItem>
+                                            <MenuItem value={3}>Paris</MenuItem>
+                                            <MenuItem value={4}>Dekyiling</MenuItem>
+                                            <MenuItem value={5}>BTS, Bir</MenuItem>
+                                            <MenuItem value={6}>Leh</MenuItem>
+                                            <MenuItem value={7}>Boudha</MenuItem>
+                                            <MenuItem value={8}>Jorpati</MenuItem>
+                                            <MenuItem value={9}>Boston</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
 
-                        <FormControl className={classes.formControl}>
-                            <TextField
-                                id="name"
-                                label="Name"
-
-
-                            //value='Aayush Pandya'
-
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-
-                        <FormControl className={classes.formControl}>
-                            <TextField
-                                id="IdentId"
-                                label="GB ID"
-
-                                type='number'
-                            //value='Aayush Pandya'
-
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-
-                        <FormControl className={classes.formControl}>
-                            <TextField
-                                id="fname"
-                                label="Father's Name"
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="name"
+                                            label="Name"
 
 
-                            //value='Aayush Pandya'
+                                        //value='Aayush Pandya'
 
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
 
-                        <FormControl className={classes.formControl}>
-                            <TextField
-                                id="rno"
-                                label="Reciept No"
-                                type='number'
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="IdentId"
+                                            label="GB ID"
+
+                                            type='number'
+                                        //value='Aayush Pandya'
+
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="fname"
+                                            label="Father's Name"
 
 
+                                        //value='Aayush Pandya'
 
-                            //value='Aayush Pandya'
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
 
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-
-                        <FormControl className={classes.formControl}>
-                            <TextField
-                                id="rno"
-                                label="Saney Form No"
-                                type='number'
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="rno"
+                                            label="Reciept No"
+                                            type='number'
 
 
 
-                            //value='Aayush Pandya'
+                                        //value='Aayush Pandya'
 
-                            />
-                        </FormControl>
-                    </Grid>
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
 
-                    <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="rno"
+                                            label="Saney Form No"
+                                            type='number'
 
-                        <FormControl className={classes.formControl}>
-                            <TextField
-                                id="cgb"
-                                label="Current GB Sno"
 
-                                type="number"
-                            //value='Aayush Pandya'
 
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <FormControl className={classes.formControl}>
-                            <TextField
-                                id="pgb"
-                                label="Previous GB Sno"
+                                        //value='Aayush Pandya'
 
-                                type="number"
-                            //value='Aayush Pandya'
+                                        />
+                                    </FormControl>
+                                </Grid>
 
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <FormControl className={classes.formControl}>
-                            <TextField
-                                id="date"
-                                label="Reject Date"
-                                type="date"
-                                defaultValue="2020-08-27"
-                                className={classes.textField}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <FormControl className={classes.formControl}>
-                            <InputLabel id="issue-label"> Issue Action</InputLabel>
-                            <Select
-                                labelId="issue-label"
-                                id="authority"
-                                //value={}
-                                // onChange={handleChange}
-                                label="Issue Action"
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={1}>On Progress</MenuItem>
-                                <MenuItem value={2}>Issued</MenuItem>
-                                <MenuItem value={3}>Rejected</MenuItem>
-                                <MenuItem value={4}>Double</MenuItem>
-                                <MenuItem value={5}>Cancel</MenuItem>
+                                <Grid item xs={12} sm={6}>
 
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <FormControl className={classes.formControl}>
-                            <TextField
-                                id="date"
-                                label="Return Date"
-                                type="date"
-                                defaultValue="2020-08-27"
-                                className={classes.textField}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        </FormControl>
-                    </Grid>
-                </Grid>
-            </div>
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                    Cancel
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="cgb"
+                                            label="Current GB Sno"
+
+                                            type="number"
+                                        //value='Aayush Pandya'
+
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="pgb"
+                                            label="Previous GB Sno"
+
+                                            type="number"
+                                        //value='Aayush Pandya'
+
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="date"
+                                            label="Reject Date"
+                                            type="date"
+                                            defaultValue="2020-08-27"
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <InputLabel id="issue-label"> Issue Action</InputLabel>
+                                        <Select
+                                            labelId="issue-label"
+                                            id="authority"
+                                            //value={}
+                                            // onChange={handleChange}
+                                            label="Issue Action"
+                                        >
+                                            <MenuItem value="">
+                                                <em>None</em>
+                                            </MenuItem>
+                                            <MenuItem value={1}>On Progress</MenuItem>
+                                            <MenuItem value={2}>Issued</MenuItem>
+                                            <MenuItem value={3}>Rejected</MenuItem>
+                                            <MenuItem value={4}>Double</MenuItem>
+                                            <MenuItem value={5}>Cancel</MenuItem>
+
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="date"
+                                            label="Return Date"
+                                            type="date"
+                                            defaultValue="2020-08-27"
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
+                        </div>
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Cancel
       </Button>
-                <Button onClick={handleClose} color="primary">
-                    Save
+                    <Button onClick={handleClose} color="primary">
+                        Save
       </Button>
-            </DialogActions>
-        </Dialog>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };

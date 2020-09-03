@@ -1,8 +1,8 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Demo from '../../components/demo.component';
+// import Paper from '@material-ui/core/Paper';
+// import Demo from '../../components/demo.component';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -31,6 +31,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 
+import Icon from '@material-ui/core/Icon';
+import SearchIcon from '@material-ui/icons/Search';
 const styles = theme => ({
     button: {
         margin: theme.spacing.unit
@@ -67,14 +69,27 @@ const Abroad = (props) => {
         setOpen(false);
     };
     return (
-        <div style={{ paddingLeft: 20 }}>
+        <div style={{ padding: 20 }}>
 
-            <Button
-                variant="raised" color="primary"
-                className={classes.button}
-                onClick={handleClickOpen}
-            >Add Book Full Madeb
+
+            <Grid container spacing={3} direction="row" alignItems="center">
+                <Grid item xs={6}>
+                    <Button>
+                        <Icon
+                            className="fa fa-plus-circle"
+                            style={{ fontSize: 30 }}
+                            onClick={handleClickOpen}
+                        />&nbsp;Add Book Full Madeb
 </Button>
+                </Grid>
+                <Grid item xs={6} style={{ textAlign: "right" }}>
+                    <TextField
+                        id="input-with-icon-grid"
+                        label={<SearchIcon />}
+                        style={{ marginBottom: 20 }}
+                    />
+                </Grid>
+            </Grid>
 
             <Table aria-label="simple table" >
                 <TableHead>
