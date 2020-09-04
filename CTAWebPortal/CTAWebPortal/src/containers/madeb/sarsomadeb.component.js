@@ -24,6 +24,10 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Input from '@material-ui/core/Input';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Icon from '@material-ui/core/Icon';
+
+import Chip from '@material-ui/core/Chip';
+
+// import Pagination from '@material-ui/lab/Pagination';
 import {
     TextField,
     Typography,
@@ -43,6 +47,21 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
+
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+
+
+const getBadge = (status) => {
+    switch (status) {
+      case 'Approved': return "primary"
+      case 'Reject': return "secondary"
+      case 'Issued': return "primary"
+      case 'Rejected': return "secondary"
+      default: return 'primary'
+    }
+  }
 
 const styles = theme => ({
     button: {
@@ -69,11 +88,10 @@ const styles = theme => ({
 });
 
 const rows = [
-
-    {form:35979 , rdate:"09-08-2018" , region:"Mundgod",  name:"Tenzin Choezin" ,fname:"Passang Dorjee", saney:"1",da:"RC", iad:"15-09-2019", ia:"Issued",returndate:"28-09-2019"},
-    {form:35980 , rdate:"10-08-2018" , region:"Shimla",  name:"Thupten Chodak" ,fname:"Dhondup Tsering", saney:"0",da:"RC", iad:"15-09-2019", ia:"Issued",returndate:"28-09-2019"},
+    {form:35979 , rdate:"09-08-2018" , region:"Mundgod",  name:"Tenzin Choezin" ,fname:"Passang Dorjee", saney:"71",da:"RC", iad:"15-09-2019", ia:"Issued",returndate:"28-09-2019"},
+    {form:35980 , rdate:"10-08-2018" , region:"Shimla",  name:"Thupten Chodak" ,fname:"Dhondup Tsering", saney:"0",da:"RC", iad:"15-09-2019", ia:"Reject",returndate:"28-09-2019"},
     {form:35979 , rdate:"09-08-2018" , region:"Mundgod",  name:"Tenzin Choezin" ,fname:"Passang Dorjee", saney:"71",da:"SB and BC", iad:"15-09-2019", ia:"Issued",returndate:"28-09-2019"},
-    {form:35980 , rdate:"10-08-2018" , region:"Shimla",  name:"Thupten Chodak" ,fname:"Dhondup Tsering", saney:"0",da:"RC", iad:"15-09-2019", ia:"Issued",returndate:"28-09-2019"},
+    {form:35980 , rdate:"10-08-2018" , region:"Shimla",  name:"Thupten Chodak" ,fname:"Dhondup Tsering", saney:"0",da:"RC", iad:"15-09-2019", ia:"Reject",returndate:"28-09-2019"},
     {form:35979 , rdate:"09-08-2018" , region:"Mundgod",  name:"Tenzin Choezin" ,fname:"Passang Dorjee", saney:"71",da:"PRC", iad:"15-09-2019", ia:"Issued",returndate:"28-09-2019"}
 ];
 const Abroad = (props) => {
@@ -109,6 +127,7 @@ const Abroad = (props) => {
     //     setPage(0);
     // };
     return (
+        
         <div style={{ padding: 20 }}>
             <Grid container spacing={3} direction="row" alignItems="center">
                 <Grid item xs={6}>
@@ -149,29 +168,35 @@ const Abroad = (props) => {
 
                     {rows.map((row) => (
                         <TableRow key={row.name}>
-                           
-                    <TableCell padding="none" component="th" scope="row">
-                        {row.form}
-                    </TableCell>
-                    <TableCell padding="none">{row.rdate}</TableCell>
-                    <TableCell padding="none">{row.region}</TableCell>
-                    <TableCell padding="none">{row.name}</TableCell>
-                    <TableCell padding="none">{row.fname}</TableCell>
-                    <TableCell padding="none">{row.saney}</TableCell>
-                    <TableCell padding="none" >{row.da}</TableCell>
-                    <TableCell padding="none">{row.iad}</TableCell>
-                    <TableCell padding="none">{row.ia}</TableCell>
-                    <TableCell padding="none">{row.returndate}</TableCell>
-                    <TableCell padding="none">
-                         <IconButton  aria-label="Email">
-                            <EmailIcon onClick={handleEmailClickOpen} />
-                        </IconButton>
-                    </TableCell>
-                    <TableCell  padding="none">
-                        <IconButton color="primary" aria-label="Delete">
-                            <EditIcon onClick={handleEditClickOpen}/>
-                        </IconButton>
-                    </TableCell>
+                            <TableCell padding="none" component="th" scope="row">
+                                {row.form}
+                            </TableCell>
+                            <TableCell padding="none">{row.rdate}</TableCell>
+                            <TableCell padding="none">{row.region}</TableCell>
+                            <TableCell padding="none">{row.name}</TableCell>
+                            <TableCell padding="none">{row.fname}</TableCell>
+                            <TableCell padding="none">{row.saney}</TableCell>
+                            <TableCell padding="none" >{row.da}</TableCell>
+                            <TableCell padding="none">{row.iad}</TableCell>
+                            <TableCell padding="none">
+                            <Chip
+                                variant="outlined"
+                                size="small"
+                                color={getBadge(row.ia)}
+                                label={row.ia}
+                            />
+                            </TableCell>
+                            <TableCell padding="none">{row.returndate}</TableCell>
+                            <TableCell padding="none">
+                                <IconButton aria-label="Email">
+                                    <EmailIcon onClick={handleEmailClickOpen} />
+                                </IconButton>
+                            </TableCell>
+                            <TableCell padding="none">
+                                <IconButton color="primary" aria-label="Delete">
+                                    <EditIcon onClick={handleEditClickOpen} />
+                                </IconButton>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>}
@@ -284,7 +309,7 @@ const Abroad = (props) => {
                                             id="date"
                                             label="Issue Action Date"
                                             type="date"
-                                            defaultValue="2020-27-08"
+                                            defaultValue="2020-08-27"
                                             className={classes.textField}
                                             InputLabelProps={{
                                                 shrink: true,
@@ -551,12 +576,15 @@ const Abroad = (props) => {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl className={classes.formControl}>
-                                        <TextField
-                                            id="name"
-                                            value='Sarso case no: 35981 Name: Thupten Chodak Postal address:'
-                                        />
-                                    </FormControl>
+                                    
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <Card className={classes.root}>
+                                        <CardContent>
+                                            <Typography>Email Message</Typography> 
+                                        </CardContent>
+                                        </Card>        
+ 
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={classes.formControl}>

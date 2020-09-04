@@ -12,7 +12,11 @@ import Button from '@material-ui/core/Button';
 import TableRow from '@material-ui/core/TableRow';
 import Delete from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+
+import Chip from '@material-ui/core/Chip';
+
 import EmailIcon from '@material-ui/icons/Email';
+
 import IconButton from '@material-ui/core/IconButton';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -50,11 +54,20 @@ const styles = theme => ({
     }
 });
 
+const getBadge = (status) => {
+    switch (status) {
+      case 'Approved': return "primary"
+      case 'Reject': return "secondary"
+      case 'Issued': return "primary"
+      case 'Rejected': return "secondary"
+      default: return 'primary'
+    }
+  }
 
 const rows = [
     {form:2100 , rdate:"06-08-2018" , region:"Paris",  name:"Lhakpa Dolma" ,id:7648981, fname:"Dhongyal", sanay:"71",pgid:"0",cgid:"0",ias:"2012-01-01", status:"Rejected",rejectdate:"2012-01-01",returndate:"28-09-2019"},
-    {form:2100 , rdate:"06-08-2018" , region:"Paris",  name:"Lhakpa Dolma" ,id:7648981, fname:"Dhongyal", sanay:"71",pgid:"0",cgid:"0",ias:"2012-01-01", status:"Rejected",rejectdate:"2012-01-01",returndate:"28-09-2019"},
-    {form:2100 , rdate:"06-08-2018" , region:"Paris",  name:"Lhakpa Dolma" ,id:7648981, fname:"Dhongyal", sanay:"71",pgid:"0",cgid:"0",ias:"2012-01-01", status:"Rejected",rejectdate:"2012-01-01",returndate:"28-09-2019"},
+    {form:2100 , rdate:"06-08-2018" , region:"Paris",  name:"Lhakpa Dolma" ,id:7648981, fname:"Dhongyal", sanay:"71",pgid:"0",cgid:"0",ias:"2012-01-01", status:"Approved",rejectdate:"2012-01-01",returndate:"28-09-2019"},
+    {form:2100 , rdate:"06-08-2018" , region:"Paris",  name:"Lhakpa Dolma" ,id:7648981, fname:"Dhongyal", sanay:"71",pgid:"0",cgid:"0",ias:"2012-01-01", status:"Approved",rejectdate:"2012-01-01",returndate:"28-09-2019"},
     {form:2100 , rdate:"06-08-2018" , region:"Paris",  name:"Lhakpa Dolma" ,id:7648981, fname:"Dhongyal", sanay:"71",pgid:"0",cgid:"0",ias:"2012-01-01", status:"Rejected",rejectdate:"2012-01-01",returndate:"28-09-2019"}
 ];
 const Abroad = (props) => {
@@ -65,6 +78,20 @@ const Abroad = (props) => {
     };
     const handleClose = () => {
         setOpen(false);
+    };
+    const [emailPage, setEmailPage] = React.useState(false);
+    const [editPage, setEditPage] = React.useState(false);
+    const handleEmailClickOpen = () => {
+        setEmailPage(true);
+    };
+    const handleEmailClose = () => {
+        setEmailPage(false);
+    };
+    const handleEditClickOpen = () => {
+        setEditPage(true);
+    };
+    const handleEditClose = () => {
+        setEditPage(false);
     };
     return (
         <div style={{ padding: 20 }}>
@@ -113,7 +140,7 @@ const Abroad = (props) => {
 
                     {rows.map((row) => (
                         <TableRow key={row.name}>
-                           <TableCell padding="none" component="th" scope="row">
+                        <TableCell padding="none" component="th" scope="row">
                         {row.form}
                     </TableCell>
                     <TableCell padding="none">{row.rdate}</TableCell>
@@ -121,9 +148,9 @@ const Abroad = (props) => {
                     <TableCell padding="none">{row.name}</TableCell>
                     
                     <TableCell padding="none">
-
+<a href="#">
                            {row.id}
-             
+                           </a> 
                     </TableCell>
                     <TableCell padding="none">{row.fname}</TableCell>
                     <TableCell padding="none" >{row.sanay}</TableCell>
@@ -131,7 +158,14 @@ const Abroad = (props) => {
                     <TableCell padding="none">{row.cgid}</TableCell>
                     <TableCell padding="none">{row.pgid}</TableCell>
                     <TableCell padding="none">{row.ias}</TableCell>
-                    <TableCell padding="none">{row.status}</TableCell>
+                    <TableCell padding="none">
+                    <Chip
+                                variant="outlined"
+                                size="small"
+                                color={getBadge(row.status)}
+                                label={row.status}
+                            />
+                    </TableCell>
                     <TableCell padding="none">{row.rejectdate}</TableCell>
                     <TableCell padding="none">{row.returndate}</TableCell>
                     <TableCell padding="none">
@@ -140,8 +174,8 @@ const Abroad = (props) => {
                         </IconButton>
                     </TableCell>
                     <TableCell  padding="none">
-                        <IconButton color="primary" aria-label="Edit">
-                            <EditIcon />
+                        <IconButton color="primary" aria-label="Delete">
+                            <EditIcon onClick={handleEditClickOpen}/>
                         </IconButton>
                     </TableCell>
 
@@ -293,6 +327,20 @@ const Abroad = (props) => {
                                     <FormControl className={classes.formControl}>
                                         <TextField
                                             id="date"
+                                            label="Issue Date"
+                                            type="date"
+                                            defaultValue="2005-03-30"
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="date"
                                             label="Reject Date"
                                             type="date"
                                             defaultValue="2020-08-27"
@@ -348,6 +396,214 @@ const Abroad = (props) => {
                         Cancel
       </Button>
                     <Button onClick={handleClose} color="primary">
+                        Save
+      </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog open={editPage} onClose={handleEditClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Edit Book Full Madeb</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        <div>
+                            <Typography variant="h4" >Edit Madeb Entry Form For Book Full</Typography>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="number"
+                                            label="Form Number"
+                                            type="number"
+                                            InputProps={{
+                                                readOnly: true,
+                                            }}
+                                            value='67'
+
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="date"
+                                            label="Received Date"
+                                            type="date"
+                                            defaultValue="2017-06-27"
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </FormControl>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <InputLabel id="auth-label">Authority</InputLabel>
+                                        <Select
+                                            labelId="auth-label"
+                                            id="authority"
+                                            value={10}
+                                            // onChange={handleChange}
+                                            label="Authority"
+                                        >
+                                            <MenuItem value="">
+                                                <em>None</em>
+                                            </MenuItem>
+                                            <MenuItem value={1}>Mundgod</MenuItem>
+                                            <MenuItem value={2}>Shimla</MenuItem>
+                                            <MenuItem value={3}>Paris</MenuItem>
+                                            <MenuItem value={4}>Dekyiling</MenuItem>
+                                            <MenuItem value={5}>BTS, Bir</MenuItem>
+                                            <MenuItem value={6}>Leh</MenuItem>
+                                            <MenuItem value={7}>Boudha</MenuItem>
+                                            <MenuItem value={8}>Jorpati</MenuItem>
+                                            <MenuItem value={9}>Boston</MenuItem>
+                                            <MenuItem value={10}>Dharamsala</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="name"
+                                            label="Name"
+                                            value='Tsetan Dolma'
+
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="IdentId"
+                                            label="GB ID"
+                                            type='number'
+                                            value='6204889'
+
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="fname"
+                                            label="Father's Name"
+                                            value='Late Choedak'
+
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="sfn"
+                                            label="Saney Form No"
+                                            type='number'
+                                            value='1'
+
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="cgb"
+                                            label="Current GB Sno"
+                                            type="number"
+                                            value='0'
+
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="pgb"
+                                            label="Previous GB Sno"
+                                            type="number"
+                                            value='0'
+
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="date"
+                                            label="Issue Date"
+                                            type="date"
+                                            defaultValue="2005-03-30"
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="date"
+                                            label="Reject Date"
+                                            type="date"
+                                            defaultValue="2020-08-27"
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <InputLabel id="issue-label">Issue Action</InputLabel>
+                                        <Select
+                                            labelId="issue-label"
+                                            id="authority"
+                                            value={2}
+                                            // onChange={handleChange}
+                                            label="Issue Action"
+                                        >
+                                            <MenuItem value="">
+                                                <em>None</em>
+                                            </MenuItem>
+                                            <MenuItem value={1}>On Progress</MenuItem>
+                                            <MenuItem value={2}>Issued</MenuItem>
+                                            <MenuItem value={3}>Rejected</MenuItem>
+                                            <MenuItem value={4}>Double</MenuItem>
+                                            <MenuItem value={5}>Cancel</MenuItem>
+
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="date"
+                                            label="Return Date"
+                                            type="date"
+                                            defaultValue="2020-08-27"
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
+                        </div>
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleEditClose} color="primary">
+                        Cancel
+      </Button>
+                    <Button onClick={handleEditClose} color="primary">
                         Save
       </Button>
                 </DialogActions>
