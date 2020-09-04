@@ -14,7 +14,6 @@ import Delete from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import EmailIcon from '@material-ui/icons/Email';
 import IconButton from '@material-ui/core/IconButton';
-import Chip from '@material-ui/core/Chip';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -24,7 +23,6 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 
 import { withStyles } from '@material-ui/core/styles';
 
-// import { Link } from '@material-ui/core';
 
 import Icon from '@material-ui/core/Icon';
 import SearchIcon from '@material-ui/icons/Search';
@@ -56,42 +54,13 @@ const styles = theme => ({
 });
 
 const rows = [
-    // { form: 41234, rdate: "21-09-2019", region: "New York", name: "Qwerty", id: "Abcda", change: "71", da: "RC", receipt: "15-09-2019", status: "Issued", rejectdate: "28-09-2019", returndate: "28-09-2019" },
-    // { form: 41234, rdate: "21-09-2019", region: "New York", name: "Qwerty", id: "Abcda", change: "71", da: "RC", receipt: "15-09-2019", status: "Issued", rejectdate: "28-09-2019", returndate: "28-09-2019" },
-    // { form: 41234, rdate: "21-09-2019", region: "New York", name: "Qwerty", id: "Abcda", change: "71", da: "RC", receipt: "15-09-2019", status: "Issued", rejectdate: "28-09-2019", returndate: "28-09-2019" },
-    // { form: 41234, rdate: "21-09-2019", region: "New York", name: "Qwerty", id: "Abcda", change: "71", da: "RC", receipt: "15-09-2019", status: "Issued", rejectdate: "28-09-2019", returndate: "28-09-2019" },
-    // { form: 41234, rdate: "21-09-2019", region: "New York", name: "Qwerty", id: "Abcda", change: "71", da: "RC", receipt: "15-09-2019", status: "Issued", rejectdate: "28-09-2019", returndate: "28-09-2019" },
-    // { form: 41234, rdate: "21-09-2019", region: "New York", name: "Qwerty", id: "Abcda", change: "71", da: "RC", receipt: "15-09-2019", status: "Issued", rejectdate: "28-09-2019", returndate: "28-09-2019" }
-
-    {form:16806 , rdate:"01-08-2018" , region:"Shimla",  name:"Tenzin namgyal" ,id:"6766082", change:"Fathers name",da:"RC and IC",
- receipt: 41506, status:"Approved",rejectdate:"28-09-2019",returndate:"28-09-2019"},
- 
-{form:16808 , rdate:"09-08-2018" , region:"Mundgod",  name:"Kunga" ,id:"7587035", change:"DOB, Mothers name and Address",da:"RC and SLC",
- receipt: 23657, status:"Approved",rejectdate:"12-09-2019",returndate:"21-05-2019"},
-
- {form: 16809 , rdate:" 03-08-2018" , region:" Dharamsala",  name:" Jamyang" ,id:"7471373", change:" BP and Phayul",da:" SEP and ORC",
- receipt: 27839, status:"Approved",rejectdate:"07-04-2020",returndate:"21-05-2020"},
-
- {form:16810 , rdate:"06-08-2018" , region:"Dalhousie",  name:"Ako Dolma" ,id:"4070343", change:"DOB",da:"RC and SLC",
- receipt: 22157, status:"Reject",rejectdate:"12-09-2019",returndate:"21-05-2019"},
-
- {form: 16811 , rdate:"06-08-2018" , region:"Dalhousie",  name:"Choedon" ,id:"5658351", change:"DOB",da:"RC",
- receipt: 23657, status:"Reject",rejectdate:"30-09-2019",returndate:"05-10-2019"},
+    { form: 41234, rdate: "21-09-2019", region: "New York", name: "Qwerty", id: "Abcda", change: "71", da: "RC", receipt: "15-09-2019", status: "Issued", rejectdate: "28-09-2019", returndate: "28-09-2019" },
+    { form: 41234, rdate: "21-09-2019", region: "New York", name: "Qwerty", id: "Abcda", change: "71", da: "RC", receipt: "15-09-2019", status: "Issued", rejectdate: "28-09-2019", returndate: "28-09-2019" },
+    { form: 41234, rdate: "21-09-2019", region: "New York", name: "Qwerty", id: "Abcda", change: "71", da: "RC", receipt: "15-09-2019", status: "Issued", rejectdate: "28-09-2019", returndate: "28-09-2019" },
+    { form: 41234, rdate: "21-09-2019", region: "New York", name: "Qwerty", id: "Abcda", change: "71", da: "RC", receipt: "15-09-2019", status: "Issued", rejectdate: "28-09-2019", returndate: "28-09-2019" },
+    { form: 41234, rdate: "21-09-2019", region: "New York", name: "Qwerty", id: "Abcda", change: "71", da: "RC", receipt: "15-09-2019", status: "Issued", rejectdate: "28-09-2019", returndate: "28-09-2019" },
+    { form: 41234, rdate: "21-09-2019", region: "New York", name: "Qwerty", id: "Abcda", change: "71", da: "RC", receipt: "15-09-2019", status: "Issued", rejectdate: "28-09-2019", returndate: "28-09-2019" }
 ];
-
-const getBadge = (status) => {
-    switch (status) {
-      case 'Approved': return "primary"
-      case 'Reject': return "secondary"
-      case 'Issued': return "primary"
-      case 'Rejected': return "secondary"
-      default: return 'primary'
-    }
-  }
-
-
-
-
 const Abroad = (props) => {
     const { classes } = props;
     const [open, setOpen] = React.useState(false);
@@ -164,22 +133,11 @@ const Abroad = (props) => {
                             <TableCell padding="none">{row.rdate}</TableCell>
                             <TableCell padding="none">{row.region}</TableCell>
                             <TableCell padding="none">{row.name}</TableCell>
-                            <TableCell padding="none">
-                            <a href="#">
-                            {row.id}
-                            </a>
-                            </TableCell>
+                            <TableCell padding="none">{row.id}</TableCell>
                             <TableCell padding="none">{row.change}</TableCell>
                             <TableCell padding="none" >{row.da}</TableCell>
                             <TableCell padding="none">{row.receipt}</TableCell>
-                            <TableCell padding="none">
-                            <Chip
-                                variant="outlined"
-                                size="small"
-                                color={getBadge(row.status)}
-                                label={row.status}
-                            />
-                            </TableCell>
+                            <TableCell padding="none">{row.status}</TableCell>
                             <TableCell padding="none">{row.rejectdate}</TableCell>
                             <TableCell padding="none">{row.returndate}</TableCell>
                             <TableCell padding="none">
