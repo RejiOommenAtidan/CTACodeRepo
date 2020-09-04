@@ -17,7 +17,8 @@ import { withStyles } from '@material-ui/core/styles';
 import themeStyles from './login.theme.style';
 import scss from './login.module.scss';
 
-import logoImage from '../../../assets/images/portal-logo.png';
+//import logoImage from '../../../assets/images/portal-logo.png';
+import logoImage from '../../../assets/images/logo.jfif';
 
 const Login = (props) => {
   const {
@@ -48,18 +49,13 @@ const Login = (props) => {
               <CardContent className={scss['signup-content']}>
                 <img src={logoImage} className={scss['signup-logo']} alt="logo" />
                 <Typography variant="headline" component="h2" gutterBottom>
-                  Portal Admin Panel
+                  CTA Admin Portal
                 </Typography>
                 <Typography component="p" gutterBottom>
-                  Welcome to our admin panel. Please login using the form or register for a new account using the button below.
-                </Typography>
-                <Typography component="p" gutterBottom>
-                  Portal is an amazing and easy to use Admin template. If you have any questions feel free to contact us in our support forum.
+                  Welcome to our CTA admin portal. Please login using the form .
                 </Typography>
               </CardContent>
-              <CardActions>
-                <Button fullWidth href="/register" color="secondary" variant="raised">Create an account</Button>
-              </CardActions>
+             
             </Card>
           </Grid>
           <Grid
@@ -70,7 +66,7 @@ const Login = (props) => {
             <Card className={scss.card}>
               <CardContent>
                 <TextField
-                  label="Email Address"
+                  label="Username"
                   fullWidth
                 />
                 <TextField
@@ -82,7 +78,7 @@ const Login = (props) => {
               </CardContent>
               <CardActions className={scss['login-actions']}>
                 <Button href="/login" color="primary" variant="raised">Login</Button>
-                <Button href="/forgot-password">Forgot Password</Button>
+                
               </CardActions>
             </Card>
           </Grid>

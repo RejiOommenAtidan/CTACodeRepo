@@ -26,7 +26,7 @@ const AsyncLogin = asyncComponent(() => import('./containers/authentication/logi
 
 
 
-const AsyncMasterPage = asyncComponent(() => import('./containers/master/masterpage.component'));
+const AsyncHomePage = asyncComponent(() => import('./containers/home/homepage.component'));
 const AsyncAddMadebPage = asyncComponent(() => import('./containers/madeb/addmadeb.component'));
 const AsyncListMadebPage = asyncComponent(() => import('./containers/madeb/listmadeb.component'));
 
@@ -107,7 +107,7 @@ export default ({ childProps, layout }) => {
 
   return (
     <Switch>
-      <AppRoute path="/" exact component={AsyncMasterPage} props={childProps} layout={activeLayout} />
+      <AppRoute path="/" exact component={AsyncHomePage} props={childProps} layout={activeLayout} />
       <AppRoute path="/madeb/add" exact component={AsyncAddMadebPage} props={childProps} layout={activeLayout} />
       <AppRoute path="/madeb/list" exact component={AsyncListMadebPage} props={childProps} layout={activeLayout} />
       <AppRoute path="/madeb/sarso" exact component={AsyncSarsoMadebPage} props={childProps} layout={activeLayout} />

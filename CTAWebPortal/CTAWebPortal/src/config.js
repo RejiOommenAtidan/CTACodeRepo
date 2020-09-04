@@ -45,11 +45,11 @@ const iconStyle = {
 };
 
 export const menuItems = [
-//   {
-//   title: 'Master Page',
-//   href: '/',
-//   icon: <HomeIcon style={iconStyle} />
-// }, 
+   {
+   title: 'Home',
+    href: '/',
+  icon: <HomeIcon style={iconStyle} />
+}, 
 {
   title: 'MADEB',
   type: 'header'
@@ -98,6 +98,20 @@ export const menuItems = [
   title: 'Abroad',
   href: '/madeb/abroad',
   icon: <FlightIcon style={iconStyle} />
+},
+{  
+  title: 'Manage Roles',
+  icon: <DashboardIcon style={iconStyle} />,
+  children: [{
+    title: 'Add Madeb',
+    href: '/madeb/add',
+    icon: <PlaylistAddIcon style={iconStyle} />
+  }, {
+    title: 'List Madeb',
+    href: '/madeb/list',
+    icon: <ListIcon style={iconStyle} />
+  }
+]
 },/*,
 {  
   title: 'Dashboards',
