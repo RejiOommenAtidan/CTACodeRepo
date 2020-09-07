@@ -36,6 +36,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+
+
 const styles = theme => ({
     button: {
         margin: theme.spacing.unit
@@ -170,7 +175,7 @@ const Abroad = (props) => {
                             <TableCell padding="none">{row.returndate}</TableCell>
                             <TableCell padding="none">
                                 <IconButton aria-label="Email">
-                                    <EmailIcon />
+                                    <EmailIcon onClick={handleEmailClickOpen}/>
                                 </IconButton>
                             </TableCell>
                             <TableCell padding="none">
@@ -656,6 +661,72 @@ const Abroad = (props) => {
                         Save
       </Button>
                 </DialogActions>
+            </Dialog>
+            <Dialog open={emailPage} onClose={handleEmailClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Email</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        <div>
+                            <Typography variant="h4" >Madeb Entry Form For Fresh Issue - Email Page</Typography>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="number"
+                                            label="Email"
+                                            type="email"
+                                            InputProps={{
+                                                readOnly: true
+                                            }}
+                                            value='dataunit@tibet.net'
+
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="date"
+                                            label="Enter Destination"
+                                            type="text"
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="name"
+
+                                            value='Abroad case no: 2100 Name: Lhakpa Dolma'
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <Card className={classes.root}>
+                                        <CardContent>
+                                            <Typography>Abroad case no: 2100 Name: Lhakpa Dolma Postal Code:</Typography> 
+                                        </CardContent>
+                                        </Card>        
+ 
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <Button onClick={handleEmailClose} color="primary">
+                                            Send Email
+                                        </Button>
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
+                        </div>
+                    </DialogContentText>
+                </DialogContent>
             </Dialog>
         </div>
     );
