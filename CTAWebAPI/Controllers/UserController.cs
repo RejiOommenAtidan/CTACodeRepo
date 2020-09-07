@@ -150,6 +150,10 @@ namespace CTAWebAPI.Controllers
                     {
                         return BadRequest("User object cannot be NULL");
                     }
+                    if (Id!=user.Id.ToString()) 
+                    {
+                        return BadRequest("ID's ain't Matching");
+                    }
                     if (UserExists(Id))
                     {
                         UserRepository userRepository = new UserRepository(_info.ConnectionString);
