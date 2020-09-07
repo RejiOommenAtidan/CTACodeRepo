@@ -145,9 +145,17 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (userID == null)
+                    {
+                        return BadRequest("User Param ID cannot be NULL");
+                    }
                     if (user == null)
                     {
                         return BadRequest("User object cannot be NULL");
+                    }
+                    if (userID != user.User_Id.ToString())
+                    {
+                        return BadRequest("ID's ain't Matching");
                     }
                     if (UserExists(userID))
                     {
