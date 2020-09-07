@@ -1,10 +1,10 @@
-using CTADBL.BaseClasses;
+﻿using CTADBL.BaseClasses;
 using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 
-namespace CTADBL.BaseClassesRepositories
+namespace CTADBL.BaseClassRepositories
 {
     public class UserRepository : ADORepository<User>
     {
@@ -14,7 +14,7 @@ namespace CTADBL.BaseClassesRepositories
         }
         #endregion
 
-        #region User Add Call
+        #region Add User
         public void Add(User user)
         {
             var builder = new SqlQueryBuilder<User>(user);
@@ -22,7 +22,7 @@ namespace CTADBL.BaseClassesRepositories
         }
         #endregion
 
-        #region Update User Call
+        #region Update User
         public void Update(User user)
         {
             var builder = new SqlQueryBuilder<User>(user);
@@ -30,7 +30,7 @@ namespace CTADBL.BaseClassesRepositories
         }
         #endregion
 
-        #region Delete User Call
+        #region Delete User
         public void Delete(User user)
         {
             var builder = new SqlQueryBuilder<User>(user);
@@ -38,52 +38,38 @@ namespace CTADBL.BaseClassesRepositories
         }
         #endregion
 
-        #region Get User/Users Call (SP & Normal)
-        public IEnumerable<User> GetAllUser()
+        #region Get User/Users
+        public IEnumerable<User> GetAllUsers()
         {
-            // DBAs across the country are having strokes over this next command!
-            using (var command = new MySqlCommand("SELECT * FROM ctauser"))
+            string sql = @"SELECT `Id`,
+                            `sUsername`,
+                            `sFullName`,
+                            `sOffice`,
+                            `sPassword`,
+                            `nUserRightsId`,
+                            IF(nActive, 1, 0) nActive
+                        FROM `tbluser`;";
+            using (var command = new MySqlCommand(sql))
             {
                 return GetRecords(command);
             }
         }
 
-        public User GetUserById(string id)
+        public User GetUserById(string Id)
         {
-            // PARAMETERIZED QUERIES!
-            using (var command = new MySqlCommand("SELECT * FROM ctauser WHERE user_id = @id"))
+            string sql = @"SELECT `Id`,
+                            `sUsername`,
+                            `sFullName`,
+                            `sOffice`,
+                            `sPassword`,
+                            `nUserRightsId`,
+                            IF(nActive, 1, 0) nActive
+                        FROM `tbluser`
+                        WHERE Id =@Id";
+            using (var command = new MySqlCommand(sql))
             {
-                //command.Parameters.Add(new ObjectParameter("id", id));
-                command.Parameters.AddWithValue("id", id);
+                command.Parameters.AddWithValue("Id", Id);
                 return GetRecord(command);
-            }
-        }
-
-        public IEnumerable<User> GetUsersUsingSP()
-        {
-                // PARAMETERIZED QUERIES!
-                using (var command = new MySqlCommand("spGetAllUsers"))
-                {
-                    //command.Parameters.AddWithValue("id", id);
-                    return ExecuteStoredProc(command);
-                }
-        }
-
-        public User GetUserUsingSP(string userID)
-        {
-            try
-            {
-                // PARAMETERIZED QUERIES!
-                using (var command = new MySqlCommand("CALL spGetUserByUserID(@inputUser_id)"))
-                {
-                    command.Parameters.AddWithValue("inputUser_id", userID);
-                    return GetRecord(command);
-                }
-            }
-            catch (System.Exception ex)
-            {
-
-                throw ex;
             }
         }
         #endregion
@@ -93,16 +79,13 @@ namespace CTADBL.BaseClassesRepositories
         {
             return new User
             {
-                User_Id = (int)reader["user_id"],
-                //User_Id = reader.GetInt32(0),
-                Username = reader.GetString(1),
-                Fullname = reader.GetString(2),
-                Email = reader.GetString(3),
-                Password = reader.GetString(4),
-                Confirm_Password = reader.GetString(5),
-                Role = reader.GetString(6),
-                Region = reader.GetString(7),
-                Status = reader.GetString(8)
+                Id = (int)reader["Id"],
+                sUsername= (string)reader["sUsername"],
+                sFullname= (string)reader["sFullName"],
+                sOffice= (string)reader["sOffice"],
+                sPassword = (string)reader["sPassword"],
+                nUserRightsId= (int)reader["nUserRightsId"],
+                nActive= (int)reader["nActive"]
             };
         }
         #endregion
