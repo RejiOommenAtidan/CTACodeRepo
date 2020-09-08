@@ -30,7 +30,7 @@ namespace CTAWebAPI.Controllers
             #region Get Users using SP call
             try
             {
-                 MemberCommitteeVMRepository memberCommitteeVMRepository= new MemberCommitteeVMRepository(_info.ConnectionString);
+                 MemberCommitteeVMRepository memberCommitteeVMRepository= new MemberCommitteeVMRepository(_info.sConnectionString);
                 IEnumerable<MemberCommitteeVM> memberCommitttee = memberCommitteeVMRepository.InnerJoin();
                 return Ok(memberCommitttee);
                 //return Ok("");
@@ -49,7 +49,7 @@ namespace CTAWebAPI.Controllers
             #region Transaction Example
             try
             {
-                MemberCommitteeVMRepository memberCommitteeVMRepository = new MemberCommitteeVMRepository(_info.ConnectionString);
+                MemberCommitteeVMRepository memberCommitteeVMRepository = new MemberCommitteeVMRepository(_info.sConnectionString);
                 memberCommitteeVMRepository.Transaction();
                 return Ok("Transaction Success");
             }

@@ -6,7 +6,7 @@ namespace CTADBL.BaseClasses
     [Table("tblRecentlySearchedGB")]
     public class RecentlySearchedGB
     {
-        #region Recently Searched GB
+        #region Recently Searched GB Properties
         [Key]
         public int ID { get; set; }
         public int nGBID { get; set; }

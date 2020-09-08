@@ -30,7 +30,7 @@ namespace CTAWebAPI.Controllers
             #region Get Recently Searched GB's
             try
             {
-                RecentlySearchedGBRepository recentRepo = new RecentlySearchedGBRepository(_info.ConnectionString);
+                RecentlySearchedGBRepository recentRepo = new RecentlySearchedGBRepository(_info.sConnectionString);
                 IEnumerable<RecentlySearchedGB> recentGBs = recentRepo.GetAllRecentlySearchedGB();
                 return Ok(recentGBs);
             }

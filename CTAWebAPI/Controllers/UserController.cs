@@ -32,7 +32,7 @@ namespace CTAWebAPI.Controllers
             #region Get All Users
             try
             {
-                UserRepository userRepository = new UserRepository(_info.ConnectionString);
+                UserRepository userRepository = new UserRepository(_info.sConnectionString);
                 IEnumerable<User> allUsers = userRepository.GetAllUsers();
                 return Ok(allUsers);
             }
@@ -68,7 +68,7 @@ namespace CTAWebAPI.Controllers
             #region Get Single User
             try
             {
-                UserRepository userRepository = new UserRepository(_info.ConnectionString);
+                UserRepository userRepository = new UserRepository(_info.sConnectionString);
                 User singleuser = userRepository.GetUserById(Id);
                 return Ok(singleuser);
             }
@@ -112,7 +112,7 @@ namespace CTAWebAPI.Controllers
                     {
                         return BadRequest("User object cannot be NULL");
                     }
-                    UserRepository userRepository = new UserRepository(_info.ConnectionString);
+                    UserRepository userRepository = new UserRepository(_info.sConnectionString);
                     userRepository.Add(user);
                     return Ok(user);
                 }
@@ -156,7 +156,7 @@ namespace CTAWebAPI.Controllers
                     }
                     if (UserExists(Id))
                     {
-                        UserRepository userRepository = new UserRepository(_info.ConnectionString);
+                        UserRepository userRepository = new UserRepository(_info.sConnectionString);
                         userRepository.Update(user);
                         return Ok("User with ID: " + Id + " updated Successfully");
                     }
@@ -196,7 +196,7 @@ namespace CTAWebAPI.Controllers
                 {
                     if (UserExists(Id))
                     {
-                        UserRepository userRepository = new UserRepository(_info.ConnectionString);
+                        UserRepository userRepository = new UserRepository(_info.sConnectionString);
                         User fetchedUser = userRepository.GetUserById(Id);
                         userRepository.Delete(fetchedUser);
                         return Ok("User with ID: " + Id + " removed Successfully");
@@ -225,7 +225,7 @@ namespace CTAWebAPI.Controllers
         {
             try
             {
-                UserRepository userRepository = new UserRepository(_info.ConnectionString);
+                UserRepository userRepository = new UserRepository(_info.sConnectionString);
                 User fetchedUser = userRepository.GetUserById(Id);
                 if (fetchedUser != null)
                     return true;
