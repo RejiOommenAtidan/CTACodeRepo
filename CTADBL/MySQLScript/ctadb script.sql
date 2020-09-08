@@ -473,29 +473,29 @@ INSERT INTO `lstCountry` (`sCountryID`, `sCountry`) VALUES ('AF','Afghanistan'),
 
 CREATE TABLE `lstoccupation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `OccupationDesc` text NOT NULL,
-  `OccupationDescTibetan` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `sOccupationDesc` text NOT NULL,
+  `ssOccupationDescTibetan` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Aged', 'རྒས་ཁོགས།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Domestic Work', 'ནང་ལས།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Farmer', 'ཞིང་པ།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Retired', 'རྒས་ཡོལ།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Self Employed', 'རང་འཚོ།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Wage Earner', 'ཉི་གླ།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Salaried Job', 'གླ་ཡོད་ལས་རིགས།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Student', 'སློབ་ཕྲུག');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Housewife', 'ནང་གི་ཨ་མ།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Business', 'ཚོང་ལས།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Professional', 'ཆེད་ལས་པ།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Monk', 'གྲྭ་པ།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('[No Entry]', '');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Not Employed', 'ལས་མེད།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Minor', 'བྱིས་པ།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Tantric Yana', 'སྔགས་པ།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Nomad', 'འབྲོག་པ།');
-INSERT INTO `ctadb`.`lstoccupation` (`OccupationDesc`, `OccupationDescTibetan`) VALUES ('Nun', 'བཙུན་མ།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Aged', 'རྒས་ཁོགས།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Domestic Work', 'ནང་ལས།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Farmer', 'ཞིང་པ།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Retired', 'རྒས་ཡོལ།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Self Employed', 'རང་འཚོ།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Wage Earner', 'ཉི་གླ།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Salaried Job', 'གླ་ཡོད་ལས་རིགས།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Student', 'སློབ་ཕྲུག');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Housewife', 'ནང་གི་ཨ་མ།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Business', 'ཚོང་ལས།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Professional', 'ཆེད་ལས་པ།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Monk', 'གྲྭ་པ།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('[No Entry]', '');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Not Employed', 'ལས་མེད།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Minor', 'བྱིས་པ།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Tantric Yana', 'སྔགས་པ།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Nomad', 'འབྲོག་པ།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Nun', 'བཙུན་མ།');
 
 CREATE TABLE `lstProvince` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -552,32 +552,33 @@ INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`) VALUES ('Admin');
 
 CREATE TABLE `tblUser` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `_Id` int(11) DEFAULT NULL,
   `sUsername` text NOT NULL,
   `sFullName` text NOT NULL,
   `sOffice` text NOT NULL,
   `sPassword` text NOT NULL,
   `nUserRightsId` int(11) NOT NULL,
   `nActive` tinyint(1) NOT NULL,
-  `sEnteredDateTime` text DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
-  `sUpdatedDateTime` text DEFAULT NULL,
+  `dtUpdated` datetime DEFAULT NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `sEnteredDateTime`, `nEnteredBy`, `sUpdatedDateTime`, `nUpdatedBy`) 
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
 	VALUES ('pankaj', 'Pankaj Gupta', 'TCRC Office', 'pankaj123', '5', '0',Null,1,Null,1);
 
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `sEnteredDateTime`, `nEnteredBy`, `sUpdatedDateTime`, `nUpdatedBy`) 
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
 	VALUES ('reji', 'Reji Oommen', 'TCRC Office', 'reji123', '5', '0',Null,1,Null,1);
 
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `sEnteredDateTime`, `nEnteredBy`, `sUpdatedDateTime`, `nUpdatedBy`) 
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
 	VALUES ('malay', 'Malay', 'TCRC Office', 'malay123', '5', '0',Null,1,Null,1);
 
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `sEnteredDateTime`, `nEnteredBy`, `sUpdatedDateTime`, `nUpdatedBy`) 
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
 	VALUES ('aayush', 'Aayush', 'TCRC Office', 'aayush123', '5', '0',Null,1,Null,1);
 	
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `sEnteredDateTime`, `nEnteredBy`, `sUpdatedDateTime`, `nUpdatedBy`)
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
 	VALUES ('rajen', 'Rajen', 'TCRC Office', 'rajen123', '5', '0',Null,1,Null,1);
 
 
@@ -619,10 +620,10 @@ CREATE TABLE `lnkGBRelation` (
   `sGBID` varchar(255) DEFAULT NULL,
   `sGBIDRelation` varchar(255) DEFAULT NULL,
   `nRelationID` int(11) NOT NULL,
-	`sEnteredDateTime` text DEFAULT NULL,
-	`nEnteredBy` int(11) Not NULL,
-	`sUpdatedDateTime` text DEFAULT NULL,
-	`nUpdatedBy` int(11) Not NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -637,7 +638,7 @@ CREATE TABLE `tblRecentlySearchedGB` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `nGBID` int(11) NOT NULL,
   `nUserID` int(11) NOT NULL,
-  `sEnteredDateTime` text DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
@@ -645,6 +646,7 @@ CREATE TABLE `tblRecentlySearchedGB` (
 
 CREATE TABLE `tblMadeb` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `_Id` int(11) DEFAULT NULL,
   `nFormNumber` int(11) NOT NULL,
   `sGBID` varchar(255) DEFAULT NULL,
   `nMadebTypeID` varchar(255) DEFAULT NULL,
@@ -667,9 +669,9 @@ CREATE TABLE `tblMadeb` (
   `sApprovedReject` varchar(200) DEFAULT NULL,
   `dtReject` date DEFAULT NULL,
   `dtReturnEmail` date NOT NULL,
-  `sEnteredDateTime` text DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
-  `sUpdatedDateTime` text DEFAULT NULL,
+  `dtUpdated` datetime DEFAULT NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`),
   KEY `nAuthRegionID` (`nAuthRegionID`)
@@ -677,6 +679,7 @@ CREATE TABLE `tblMadeb` (
 
 CREATE TABLE `tblGreenBook` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `_Id` int(11) DEFAULT NULL,
   `sGBID` varchar(255) DEFAULT NULL,
   `nAuthRegionID` int(11) NOT NULL,
   
@@ -729,8 +732,9 @@ CREATE TABLE `tblGreenBook` (
   `sPaidUntil` text NOT NULL,
 
   `sEnteredDateTime` text DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
-  `sUpdatedDateTime` text DEFAULT NULL,
+  `dtUpdated` datetime DEFAULT NULL,
   `nUpdatedBy` int(11) Not NULL,
   
   `TibetanName` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -746,14 +750,16 @@ CREATE TABLE `tblGreenBook` (
 
 CREATE TABLE `tblGivenGBID` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `_Id` int(11) DEFAULT NULL,
   `nGivenGBId` int(11) NOT NULL,
   `nFormNo` int(11) NOT NULL,
   `dtDate` date NOT NULL,
   `nGivenOrNot` tinyint(1) NOT NULL,
   `nActive` tinyint(1) NOT NULL,
   `sEnteredDateTime` text DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
-  `sUpdatedDateTime` text DEFAULT NULL,
+  `dtUpdated` datetime DEFAULT NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`id`),
   KEY `nGivenGBId` (`nGivenGBId`)
@@ -763,10 +769,12 @@ CREATE TABLE `tblGivenGBID` (
 
 CREATE TABLE `tblActionLogger` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sActionType` varchar(255) DEFAULT NULL,
   `sModuleName` varchar(255) DEFAULT NULL,
   `sEventName` varchar(255) DEFAULT NULL,
   `sDescription` varchar(255) DEFAULT NULL,
   `sEnteredDateTime` text DEFAULT NULL,
+  `dtEntered` DateTime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
