@@ -1,5 +1,5 @@
 ﻿using CTADBL.BaseClasses;
-using CTADBL.BaseClassesRepositories;
+using CTADBL.BaseClassRepositories;
 using CTADBL.Entities;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;

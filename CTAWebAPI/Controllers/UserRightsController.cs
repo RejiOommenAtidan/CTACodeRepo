@@ -34,7 +34,7 @@ namespace CTAWebAPI.Controllers
             #region Get All UserRights
             try
             {
-                UserRightsRepository userRightsRepo = new UserRightsRepository(_info.ConnectionString);
+                UserRightsRepository userRightsRepo = new UserRightsRepository(_info.sConnectionString);
                 IEnumerable<UserRights> userrights = userRightsRepo.GetAllUserRights();
                 return Ok(userrights);
             }
@@ -52,7 +52,7 @@ namespace CTAWebAPI.Controllers
             #region Get Single UserRight
             try
             {
-                UserRightsRepository userRightsRepo = new UserRightsRepository(_info.ConnectionString);
+                UserRightsRepository userRightsRepo = new UserRightsRepository(_info.sConnectionString);
                 UserRights fetchedUser = userRightsRepo.GetUserRightsById(ID);
                 return Ok(fetchedUser);
             }
@@ -80,7 +80,7 @@ namespace CTAWebAPI.Controllers
                     {
                         return BadRequest("UserRights object cannot be NULL");
                     }
-                    UserRightsRepository userRightsRepo = new UserRightsRepository(_info.ConnectionString);
+                    UserRightsRepository userRightsRepo = new UserRightsRepository(_info.sConnectionString);
                     userRightsRepo.Add(userrights);
                     return Ok(userrights);
                 }
@@ -116,7 +116,7 @@ namespace CTAWebAPI.Controllers
                     }
                     if (UserRightsExists(ID))
                     {
-                        UserRightsRepository userRightsRepository = new UserRightsRepository(_info.ConnectionString);
+                        UserRightsRepository userRightsRepository = new UserRightsRepository(_info.sConnectionString);
                         //user.User_Id
                         userRightsRepository.Update(userrights);
                         return Ok("UserRights with ID: " + ID + " updated Successfully");
@@ -157,7 +157,7 @@ namespace CTAWebAPI.Controllers
                 {
                     if (UserRightsExists(ID))
                     {
-                        UserRightsRepository userRightsRepository = new UserRightsRepository(_info.ConnectionString);
+                        UserRightsRepository userRightsRepository = new UserRightsRepository(_info.sConnectionString);
                         UserRights fetchedUser = userRightsRepository.GetUserRightsById(ID);
                         userRightsRepository.Delete(fetchedUser);
                         return Ok("UserRights with ID: " + ID + " removed Successfully");
@@ -186,7 +186,7 @@ namespace CTAWebAPI.Controllers
         {
             try
             {
-                UserRightsRepository userRightsRepository = new UserRightsRepository(_info.ConnectionString);
+                UserRightsRepository userRightsRepository = new UserRightsRepository(_info.sConnectionString);
                 UserRights fetchedUser = userRightsRepository.GetUserRightsById(ID);
                 if (fetchedUser != null)
                     return true;

@@ -34,7 +34,7 @@ namespace CTAWebAPI.Controllers
             #region Get All TypeIssued
             try
             {
-                TypeIssuedRepository typeIssuedRepo = new TypeIssuedRepository(_info.ConnectionString);
+                TypeIssuedRepository typeIssuedRepo = new TypeIssuedRepository(_info.sConnectionString);
                 IEnumerable<TypeIssued> typeissued = typeIssuedRepo.GetAllTypeIssued();
                 return Ok(typeissued);
             }
@@ -52,7 +52,7 @@ namespace CTAWebAPI.Controllers
             #region Get Single TypeIssued
             try
             {
-                TypeIssuedRepository typeIssuedRepo = new TypeIssuedRepository(_info.ConnectionString);
+                TypeIssuedRepository typeIssuedRepo = new TypeIssuedRepository(_info.sConnectionString);
                 TypeIssued fetchedtypeissued = typeIssuedRepo.GetTypeIssuedById(ID);
                 return Ok(fetchedtypeissued);
             }
@@ -80,7 +80,7 @@ namespace CTAWebAPI.Controllers
                     {
                         return BadRequest("TypeIssued object cannot be NULL");
                     }
-                    TypeIssuedRepository typeIssuedRepo = new TypeIssuedRepository(_info.ConnectionString);
+                    TypeIssuedRepository typeIssuedRepo = new TypeIssuedRepository(_info.sConnectionString);
                     typeIssuedRepo.Add(typeissued);
                     return Ok(typeissued);
                 }
@@ -116,7 +116,7 @@ namespace CTAWebAPI.Controllers
                     }
                     if (TypeIssuedExists(ID))
                     {
-                        TypeIssuedRepository typeIssuedRepository = new TypeIssuedRepository(_info.ConnectionString);
+                        TypeIssuedRepository typeIssuedRepository = new TypeIssuedRepository(_info.sConnectionString);
                         //user.User_Id
                         typeIssuedRepository.Update(typeissued);
                         return Ok("TypeIssued with ID: " + ID + " updated Successfully");
@@ -157,7 +157,7 @@ namespace CTAWebAPI.Controllers
                 {
                     if (TypeIssuedExists(ID))
                     {
-                        TypeIssuedRepository typeIssuedRepository = new TypeIssuedRepository(_info.ConnectionString);
+                        TypeIssuedRepository typeIssuedRepository = new TypeIssuedRepository(_info.sConnectionString);
                         TypeIssued fetchedTypeIssued = typeIssuedRepository.GetTypeIssuedById(ID);
                         typeIssuedRepository.Delete(fetchedTypeIssued);
                         return Ok("TypeIssued with ID: " + ID + " removed Successfully");
@@ -186,7 +186,7 @@ namespace CTAWebAPI.Controllers
         {
             try
             {
-                TypeIssuedRepository typeIssuedRepository = new TypeIssuedRepository(_info.ConnectionString);
+                TypeIssuedRepository typeIssuedRepository = new TypeIssuedRepository(_info.sConnectionString);
                 TypeIssued fetchedTypeIssued = typeIssuedRepository.GetTypeIssuedById(ID);
                 if (fetchedTypeIssued != null)
                     return true;
