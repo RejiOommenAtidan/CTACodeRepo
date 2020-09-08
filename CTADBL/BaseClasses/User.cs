@@ -1,12 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CTADBL.BaseClasses
 {
     [Table("tbluser")]
-    public class User
+    public class User : CommonProps
     {
-        #region User Properties
+        #region User Properties 
         [Key]
         public int Id { get; set; }
         public string sUsername { get; set; }
@@ -15,10 +16,7 @@ namespace CTADBL.BaseClasses
         public string sPassword { get; set; }
         public int nUserRightsId { get; set; }
         public int nActive { get; set; }
-        //public string sEnteredDateTime { get; set; }
-        //public int nEnteredBy { get; set; }
-        //public string sUpdatedDateTime { get; set; }
-        //public int nUpdatedBy { get; set; }
+        public DateTime dtDOB { get; set; }
         #endregion
     }
 }
