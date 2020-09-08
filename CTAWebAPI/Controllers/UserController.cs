@@ -94,10 +94,12 @@ namespace CTAWebAPI.Controllers
         //    catch (Exception ex)
         //    {
         //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        //    }
+        //    }+		this	{CTAWebAPI.Controllers.UserController}	CTAWebAPI.Controllers.UserController
+
         //    #endregion
         //}
         #endregion
+
 
         #region Add Call
         [HttpPost]
