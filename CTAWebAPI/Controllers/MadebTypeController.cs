@@ -7,45 +7,43 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
+
 
 namespace CTAWebAPI.Controllers
 {
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
+    //[APIKeyAuth]
     [ApiController]
-    public class CountryController : ControllerBase
+    public class MadebTypeController : ControllerBase
     {
         private readonly DBConnectionInfo _info;
-        private readonly CountryRepository countryRepository;
+        private readonly MadebTypeRepository madebTypeRepository;
 
-        #region Constructor
-
-        public CountryController(DBConnectionInfo info)
+        public MadebTypeController (DBConnectionInfo info)
         {
             _info = info;
-            countryRepository = new CountryRepository(_info.sConnectionString);
+            madebTypeRepository = new MadebTypeRepository(_info.sConnectionString);
         }
-        #endregion
 
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetCountries()
+        public IActionResult GetMadebTypes()
         {
-            #region Get All Countries
+            #region Get All MadebTypes
             try
             {
-                IEnumerable<Country> countries = countryRepository.GetAllCountries();
-                if(countries != null)
+                IEnumerable<MadebType> madebType = madebTypeRepository.GetAllMadebTypes();
+
+                if (madebType != null)
                 {
-                    return Ok(countries);
+                    return Ok(madebType);
                 }
                 else
                 {
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
-                
             }
             catch (Exception ex)
             {
@@ -53,28 +51,27 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
-
-        public IActionResult GetCountryById(string Id)
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetMadebTypeById(string Id)
         {
-            #region Get Country by Id
             try
             {
-                Country country = countryRepository.GetCountryById(Id);
-                if (country != null)
+                MadebType madebType = madebTypeRepository.GetMadebTypeById(Id);
+                if(madebType != null)
                 {
-                    return Ok(country);
+                    return Ok(madebType);
                 }
                 else
                 {
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
-
+                    
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-            #endregion
         }
 
         #endregion
@@ -82,22 +79,15 @@ namespace CTAWebAPI.Controllers
         #region Add Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult AddCountry(Country country)
+        public IActionResult AddMadebType(MadebType madebType)
         {
-            #region Add User
+            #region Add MadebType
             try
             {
                 if (ModelState.IsValid)
                 {
-                    
-                    /* IF model is valid, do we reach this condition ? */
-                    //if (country == null)
-                    //{
-                    //    return BadRequest("Country cannot be NULL");
-                    //}
-
-                    countryRepository.Add(country);
-                    return Ok(country);
+                    madebTypeRepository.Add(madebType);
+                    return Ok(madebType);
                 }
                 else
                 {
@@ -116,32 +106,34 @@ namespace CTAWebAPI.Controllers
         #endregion
 
         #region Edit Call
-        [HttpPost("EditCountry/CountryID={ID}")] /* Are we to match table id*/
+        [HttpPost("EditMadebType/madebTypeID={madebTypeID}")]
         [Route("[action]")]
-        public IActionResult EditCountry(string ID, [FromBody] Country countryToUpdate)
+        public IActionResult EditMadebType(string madebTypeID, [FromBody] MadebType madebTypeToUpdate)
         {
-            #region Edit User
+            #region Edit MadebType
             try
             {
-                Country country = countryRepository.GetCountryById(ID);
-                if(country != null && ID == countryToUpdate.ID.ToString())
+                MadebType madebType = madebTypeRepository.GetMadebTypeById(madebTypeID);
+                if (madebType != null && madebTypeToUpdate != null && madebTypeID == madebTypeToUpdate.Id.ToString())
                 {
+
                     if (ModelState.IsValid)
                     {
-                        countryRepository.Update(countryToUpdate);
-                        return Ok(String.Format("Country with ID: {0} updated Successfully", ID));
+                        madebTypeRepository.Update(madebTypeToUpdate);
+                        return Ok(String.Format("Madeb Type with ID: {0} updated Successfully", madebTypeID));
                     }
                     else
                     {
                         var errors = ModelState.Select(x => x.Value.Errors)
-                                   .Where(y => y.Count > 0)
-                                   .ToList();
+                               .Where(y => y.Count > 0)
+                               .ToList();
                         return BadRequest(errors);
                     }
                 }
                 else
                 {
-                    return BadRequest(String.Format("Country with ID: {0} does not exist", ID));
+                    return BadRequest("Madeb Type Update data invalid. Try again.");
+                   
                 }
             }
             catch (Exception ex)
@@ -155,27 +147,27 @@ namespace CTAWebAPI.Controllers
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteCountry(Country countryToDelete)
+        public IActionResult DeleteMadebType(MadebType madebTypeToDelete)
         {
-            #region Delete AuthRegion
+            #region Delete MadebType
             try
             {
-                Country country = countryRepository.GetCountryById(countryToDelete.ID.ToString());
-                if (country != null && countryToDelete != null)
+                MadebType madebType = madebTypeRepository.GetMadebTypeById(madebTypeToDelete.Id.ToString());
+                if (madebTypeToDelete != null && madebType != null)
                 {
-                    if (country.sCountry == countryToDelete.sCountry && country.sCountryID == countryToDelete.sCountryID)
+                    if (madebType.sMadebType == madebTypeToDelete.sMadebType)
                     {
-                        countryRepository.Delete(countryToDelete);// Delete method should return boolean for success.
-                        return Ok(string.Format("Region with ID: {0} deleted successfully", countryToDelete.ID));
+                        madebTypeRepository.Delete(madebTypeToDelete);// Delete method should return boolean for success.
+                        return Ok(String.Format("Madeb Type with ID: {0} deleted successfully", madebTypeToDelete.Id));
                     }
                     else
                     {
-                        return BadRequest(string.Format("Region with ID: {0} does not exists", countryToDelete.ID));
+                        return BadRequest(String.Format("Madeb Type with Id: {0} does not contain Madeb type {1}", madebTypeToDelete.Id, madebTypeToDelete.sMadebType));
                     }
                 }
                 else
                 {
-                    return BadRequest("Cannot delete 'null' region.");
+                    return BadRequest(String.Format("Madeb Type record with Id {0} not found.", madebTypeToDelete.Id));
                 }
 
             }
@@ -186,6 +178,5 @@ namespace CTAWebAPI.Controllers
             #endregion
         }
         #endregion
-
     }
 }

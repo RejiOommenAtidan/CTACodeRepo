@@ -37,7 +37,15 @@ namespace CTAWebAPI.Controllers
             try
             {
                 IEnumerable<AuthRegion> authRegions = authRegionRepository.GetAllAuthRegions();
-                return Ok(authRegions);
+                if(authRegions != null)
+                {
+                    return Ok(authRegions);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -45,6 +53,27 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
+
+        public IActionResult GetAuthRegionById(string Id)
+        {
+            try
+            {
+                AuthRegion authRegion = authRegionRepository.GetAuthRegionById(Id);
+                if (authRegion != null)
+                {
+                    return Ok(authRegion);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         #endregion
 
         #region Add Call
@@ -52,7 +81,7 @@ namespace CTAWebAPI.Controllers
         [Route("[action]")]
         public IActionResult AddAuthRegion(AuthRegion authRegion)
         {
-            #region Add User
+            #region Add AuthRegion
             try
             {
                 if (ModelState.IsValid)
@@ -88,38 +117,30 @@ namespace CTAWebAPI.Controllers
         [Route("[action]")]
         public IActionResult EditAuthRegion(string RegionID, [FromBody] AuthRegion regionToUpdate)
         {
-            #region Edit User
+            #region Edit AuthRegion
             try
             {
-                if (ModelState.IsValid)
+                AuthRegion region = authRegionRepository.GetAuthRegionById(RegionID);
+                if (region != null && regionToUpdate != null && RegionID == regionToUpdate.ID.ToString())
                 {
-                    if (regionToUpdate == null)
-                    {
-                        return BadRequest("AuthRegion object cannot be NULL");
-                    }
 
-                    if (RegionID != regionToUpdate.ID.ToString())
-                    {
-                        return BadRequest("AuthRegion ID does not match");
-                    }
-
-                    AuthRegion region = authRegionRepository.GetAuthRegionById(RegionID);
-                    if(region != null) // Checks if region exists with this ID.
+                    if (ModelState.IsValid)
                     {
                         authRegionRepository.Update(regionToUpdate);
                         return Ok(String.Format("Region with ID: {0} updated Successfully", RegionID));
                     }
                     else
                     {
-                        return BadRequest(String.Format("Region with ID: {0} does not exist", RegionID));
+                        var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                        return BadRequest(errors);
                     }
                 }
                 else
                 {
-                    var errors = ModelState.Select(x => x.Value.Errors)
-                               .Where(y => y.Count > 0)
-                               .ToList();
-                    return BadRequest(errors);
+                    return BadRequest("AuthRegion Update data invalid. Try again.");
+                    //return BadRequest(String.Format("Region with ID: {0} does not exist", RegionID));
                 }
             }
             catch (Exception ex)
@@ -139,7 +160,7 @@ namespace CTAWebAPI.Controllers
             try
             {
                 AuthRegion region = authRegionRepository.GetAuthRegionById(regionToDelete.ID.ToString());
-                if(region != null)
+                if(region != null && regionToDelete != null)
                 {
                     if(region.sAuthRegion == regionToDelete.sAuthRegion && region.sCountryID == regionToDelete.sCountryID)
                     {

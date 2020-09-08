@@ -7,45 +7,40 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 
 namespace CTAWebAPI.Controllers
 {
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
+    //[APIKeyAuth]
     [ApiController]
-    public class CountryController : ControllerBase
+    public class OccupationController : ControllerBase
     {
         private readonly DBConnectionInfo _info;
-        private readonly CountryRepository countryRepository;
-
-        #region Constructor
-
-        public CountryController(DBConnectionInfo info)
+        private readonly OccupationRepository occupationRepository;
+        public OccupationController(DBConnectionInfo info)
         {
             _info = info;
-            countryRepository = new CountryRepository(_info.sConnectionString);
+            occupationRepository = new OccupationRepository(_info.sConnectionString);
         }
-        #endregion
 
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetCountries()
+        public IActionResult GetOccupations()
         {
-            #region Get All Countries
+            #region Get All Occupations
             try
             {
-                IEnumerable<Country> countries = countryRepository.GetAllCountries();
-                if(countries != null)
+                IEnumerable<Occupation> occupation = occupationRepository.GetAllOccupations();
+                if (occupation != null)
                 {
-                    return Ok(countries);
+                    return Ok(occupation);
                 }
                 else
                 {
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
-                
             }
             catch (Exception ex)
             {
@@ -53,16 +48,16 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
-
-        public IActionResult GetCountryById(string Id)
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetOccupationById(string Id)
         {
-            #region Get Country by Id
             try
             {
-                Country country = countryRepository.GetCountryById(Id);
-                if (country != null)
+                Occupation occupation = occupationRepository.GetOccupationById(Id);
+                if (occupation != null)
                 {
-                    return Ok(country);
+                    return Ok(occupation);
                 }
                 else
                 {
@@ -74,30 +69,21 @@ namespace CTAWebAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-            #endregion
         }
-
         #endregion
 
         #region Add Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult AddCountry(Country country)
+        public IActionResult AddOccupation(Occupation occupation)
         {
-            #region Add User
+            #region Add Occupation
             try
             {
                 if (ModelState.IsValid)
                 {
-                    
-                    /* IF model is valid, do we reach this condition ? */
-                    //if (country == null)
-                    //{
-                    //    return BadRequest("Country cannot be NULL");
-                    //}
-
-                    countryRepository.Add(country);
-                    return Ok(country);
+                    occupationRepository.Add(occupation);
+                    return Ok(occupation);
                 }
                 else
                 {
@@ -116,32 +102,32 @@ namespace CTAWebAPI.Controllers
         #endregion
 
         #region Edit Call
-        [HttpPost("EditCountry/CountryID={ID}")] /* Are we to match table id*/
+        [HttpPost("EditOccupation/occupationId={occupationId}")]
         [Route("[action]")]
-        public IActionResult EditCountry(string ID, [FromBody] Country countryToUpdate)
+        public IActionResult EditOccupation(string occupationId, [FromBody] Occupation occupationToUpdate)
         {
-            #region Edit User
+            #region Edit Occupation
             try
             {
-                Country country = countryRepository.GetCountryById(ID);
-                if(country != null && ID == countryToUpdate.ID.ToString())
+                Occupation occupation = occupationRepository.GetOccupationById(occupationId);
+                if (occupation != null && occupationToUpdate != null && occupationId == occupationToUpdate.Id.ToString())
                 {
                     if (ModelState.IsValid)
                     {
-                        countryRepository.Update(countryToUpdate);
-                        return Ok(String.Format("Country with ID: {0} updated Successfully", ID));
+                        occupationRepository.Update(occupationToUpdate);
+                        return Ok(String.Format("Occupation with ID: {0} updated Successfully", occupationId));
                     }
                     else
                     {
                         var errors = ModelState.Select(x => x.Value.Errors)
-                                   .Where(y => y.Count > 0)
-                                   .ToList();
+                               .Where(y => y.Count > 0)
+                               .ToList();
                         return BadRequest(errors);
                     }
                 }
                 else
                 {
-                    return BadRequest(String.Format("Country with ID: {0} does not exist", ID));
+                    return BadRequest("Occupation Update data invalid. Try again.");
                 }
             }
             catch (Exception ex)
@@ -155,27 +141,27 @@ namespace CTAWebAPI.Controllers
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteCountry(Country countryToDelete)
+        public IActionResult DeleteOccupation(Occupation occupationToDelete)
         {
-            #region Delete AuthRegion
+            #region Delete Occupation
             try
             {
-                Country country = countryRepository.GetCountryById(countryToDelete.ID.ToString());
-                if (country != null && countryToDelete != null)
+                Occupation occupation = occupationRepository.GetOccupationById(occupationToDelete.Id.ToString());
+                if (occupationToDelete != null && occupation != null)
                 {
-                    if (country.sCountry == countryToDelete.sCountry && country.sCountryID == countryToDelete.sCountryID)
+                    if (occupation.sOccupationDesc == occupationToDelete.sOccupationDesc && occupation.sOccupationDescTibetan == occupationToDelete.sOccupationDescTibetan)
                     {
-                        countryRepository.Delete(countryToDelete);// Delete method should return boolean for success.
-                        return Ok(string.Format("Region with ID: {0} deleted successfully", countryToDelete.ID));
+                        occupationRepository.Delete(occupationToDelete);// Delete method should return boolean for success.
+                        return Ok(String.Format("Occupation with ID: {0} deleted successfully", occupationToDelete.Id));
                     }
                     else
                     {
-                        return BadRequest(string.Format("Region with ID: {0} does not exists", countryToDelete.ID));
+                        return BadRequest(String.Format("Occupation Delete request could not be carried out. Try again."));
                     }
                 }
                 else
                 {
-                    return BadRequest("Cannot delete 'null' region.");
+                    return BadRequest(String.Format("Occupation record with Id {0} not found.", occupationToDelete.Id));
                 }
 
             }
@@ -186,6 +172,5 @@ namespace CTAWebAPI.Controllers
             #endregion
         }
         #endregion
-
     }
 }
