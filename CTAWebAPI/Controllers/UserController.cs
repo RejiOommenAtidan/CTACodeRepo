@@ -12,6 +12,7 @@ using System.Text.Json;
 namespace CTAWebAPI.Controllers
 {
     [EnableCors("AllowOrigin")]
+    //[APIKeyAuth]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
