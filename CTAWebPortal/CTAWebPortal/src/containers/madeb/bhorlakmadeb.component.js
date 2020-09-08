@@ -23,7 +23,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Chip from '@material-ui/core/Chip';
 
-
 import Icon from '@material-ui/core/Icon';
 import SearchIcon from '@material-ui/icons/Search';
 import {
@@ -33,6 +32,11 @@ import {
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+
 
 const getBadge = (status) => {
     switch (status) {
@@ -166,7 +170,7 @@ const Abroad = (props) => {
                     <TableCell padding="none">{row.returndate}</TableCell>
                     <TableCell padding="none">
                          <IconButton  aria-label="Email">
-                            <EmailIcon />
+                            <EmailIcon onClick={handleEmailClickOpen}/>
                         </IconButton>
                     </TableCell>
                     <TableCell  padding="none">
@@ -566,6 +570,72 @@ const Abroad = (props) => {
                         Save
           </Button>
                 </DialogActions>
+            </Dialog>
+            <Dialog open={emailPage} onClose={handleEmailClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Email</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        <div>
+                            <Typography variant="h4" >Madeb Entry Form For Fresh Issue - Email Page</Typography>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="number"
+                                            label="Email"
+                                            type="email"
+                                            InputProps={{
+                                                readOnly: true
+                                            }}
+                                            value='dataunit@tibet.net'
+
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="date"
+                                            label="Enter Destination"
+                                            type="text"
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <TextField
+                                            id="name"
+
+                                            value='Bhorlak case no: 41234 Name: Tenzin Dadon'
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <Card className={classes.root}>
+                                        <CardContent>
+                                            <Typography>Bhorlak case no: 41234 Name: Tenzin Dadon Postal address:</Typography> 
+                                        </CardContent>
+                                        </Card>        
+ 
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={classes.formControl}>
+                                        <Button onClick={handleEmailClose} color="primary">
+                                            Send Email
+                                        </Button>
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
+                        </div>
+                    </DialogContentText>
+                </DialogContent>
             </Dialog>
         </div>
     );

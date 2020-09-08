@@ -55,13 +55,13 @@ import CardContent from '@material-ui/core/CardContent';
 
 const getBadge = (status) => {
     switch (status) {
-      case 'Approved': return "primary"
-      case 'Reject': return "secondary"
-      case 'Issued': return "primary"
-      case 'Rejected': return "secondary"
-      default: return 'primary'
+        case 'Approved': return "primary"
+        case 'Reject': return "secondary"
+        case 'Issued': return "primary"
+        case 'Rejected': return "secondary"
+        default: return 'primary'
     }
-  }
+}
 
 const styles = theme => ({
     button: {
@@ -88,11 +88,11 @@ const styles = theme => ({
 });
 
 const rows = [
-    {form:35979 , rdate:"09-08-2018" , region:"Mundgod",  name:"Tenzin Choezin" ,fname:"Passang Dorjee", saney:"71",da:"RC", iad:"15-09-2019", ia:"Issued",returndate:"28-09-2019"},
-    {form:35980 , rdate:"10-08-2018" , region:"Shimla",  name:"Thupten Chodak" ,fname:"Dhondup Tsering", saney:"0",da:"RC", iad:"15-09-2019", ia:"Reject",returndate:"28-09-2019"},
-    {form:35979 , rdate:"09-08-2018" , region:"Mundgod",  name:"Tenzin Choezin" ,fname:"Passang Dorjee", saney:"71",da:"SB and BC", iad:"15-09-2019", ia:"Issued",returndate:"28-09-2019"},
-    {form:35980 , rdate:"10-08-2018" , region:"Shimla",  name:"Thupten Chodak" ,fname:"Dhondup Tsering", saney:"0",da:"RC", iad:"15-09-2019", ia:"Reject",returndate:"28-09-2019"},
-    {form:35979 , rdate:"09-08-2018" , region:"Mundgod",  name:"Tenzin Choezin" ,fname:"Passang Dorjee", saney:"71",da:"PRC", iad:"15-09-2019", ia:"Issued",returndate:"28-09-2019"}
+    { form: 35979, rdate: "09-08-2018", region: "Mundgod", name: "Tenzin Choezin", fname: "Passang Dorjee", saney: "71", da: "RC", iad: "15-09-2019", ia: "Issued", returndate: "28-09-2019" },
+    { form: 35980, rdate: "10-08-2018", region: "Shimla", name: "Thupten Chodak", fname: "Dhondup Tsering", saney: "0", da: "RC", iad: "15-09-2019", ia: "Reject", returndate: "28-09-2019" },
+    { form: 35979, rdate: "09-08-2018", region: "Mundgod", name: "Tenzin Choezin", fname: "Passang Dorjee", saney: "71", da: "SB and BC", iad: "15-09-2019", ia: "Issued", returndate: "28-09-2019" },
+    { form: 35980, rdate: "10-08-2018", region: "Shimla", name: "Thupten Chodak", fname: "Dhondup Tsering", saney: "0", da: "RC", iad: "15-09-2019", ia: "Reject", returndate: "28-09-2019" },
+    { form: 35979, rdate: "09-08-2018", region: "Mundgod", name: "Tenzin Choezin", fname: "Passang Dorjee", saney: "71", da: "PRC", iad: "15-09-2019", ia: "Issued", returndate: "28-09-2019" }
 ];
 const Abroad = (props) => {
     const { classes } = props;
@@ -127,7 +127,7 @@ const Abroad = (props) => {
     //     setPage(0);
     // };
     return (
-        
+
         <div style={{ padding: 20 }}>
             <Grid container spacing={3} direction="row" alignItems="center">
                 <Grid item xs={6}>
@@ -179,12 +179,12 @@ const Abroad = (props) => {
                             <TableCell padding="none" >{row.da}</TableCell>
                             <TableCell padding="none">{row.iad}</TableCell>
                             <TableCell padding="none">
-                            <Chip
-                                variant="outlined"
-                                size="small"
-                                color={getBadge(row.ia)}
-                                label={row.ia}
-                            />
+                                <Chip
+                                    variant="outlined"
+                                    size="small"
+                                    color={getBadge(row.ia)}
+                                    label={row.ia}
+                                />
                             </TableCell>
                             <TableCell padding="none">{row.returndate}</TableCell>
                             <TableCell padding="none">
@@ -531,7 +531,7 @@ const Abroad = (props) => {
           </Button>
                 </DialogActions>
             </Dialog>
-            
+
             <Dialog open={emailPage} onClose={handleEmailClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Email</DialogTitle>
                 <DialogContent>
@@ -570,21 +570,19 @@ const Abroad = (props) => {
                                     <FormControl className={classes.formControl}>
                                         <TextField
                                             id="name"
-
                                             value='Sarso case no: 35981 Name: Thupten Chodak'
                                         />
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    
+
                                 </Grid>
                                 <Grid item xs={12} sm={12}>
                                     <Card className={classes.root}>
                                         <CardContent>
-                                            <Typography>Email Message</Typography> 
+                                            <Typography>Sarso case no: 35981 Name: Thupten Chodak Postal address:</Typography>
                                         </CardContent>
-                                        </Card>        
- 
+                                    </Card>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={classes.formControl}>

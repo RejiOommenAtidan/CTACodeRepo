@@ -558,23 +558,27 @@ CREATE TABLE `tblUser` (
   `sPassword` text NOT NULL,
   `nUserRightsId` int(11) NOT NULL,
   `nActive` tinyint(1) NOT NULL,
+  `sEnteredDateTime` text DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `sUpdatedDateTime` text DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`) 
-	VALUES ('pankaj', 'Pankaj Gupta', 'TCRC Office', 'pankaj123', '5', '0');
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `sEnteredDateTime`, `nEnteredBy`, `sUpdatedDateTime`, `nUpdatedBy`) 
+	VALUES ('pankaj', 'Pankaj Gupta', 'TCRC Office', 'pankaj123', '5', '0',Null,1,Null,1);
 
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`) 
-	VALUES ('reji', 'Reji Oommen', 'TCRC Office', 'reji123', '5', '0');
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `sEnteredDateTime`, `nEnteredBy`, `sUpdatedDateTime`, `nUpdatedBy`) 
+	VALUES ('reji', 'Reji Oommen', 'TCRC Office', 'reji123', '5', '0',Null,1,Null,1);
 
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`) 
-	VALUES ('malay', 'Malay', 'TCRC Office', 'malay123', '5', '0');
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `sEnteredDateTime`, `nEnteredBy`, `sUpdatedDateTime`, `nUpdatedBy`) 
+	VALUES ('malay', 'Malay', 'TCRC Office', 'malay123', '5', '0',Null,1,Null,1);
 
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`) 
-	VALUES ('aayush', 'Aayush', 'TCRC Office', 'aayush123', '5', '0');
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `sEnteredDateTime`, `nEnteredBy`, `sUpdatedDateTime`, `nUpdatedBy`) 
+	VALUES ('aayush', 'Aayush', 'TCRC Office', 'aayush123', '5', '0',Null,1,Null,1);
 	
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`) 
-	VALUES ('rajen', 'Rajen', 'TCRC Office', 'rajen123', '5', '0');
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `sEnteredDateTime`, `nEnteredBy`, `sUpdatedDateTime`, `nUpdatedBy`)
+	VALUES ('rajen', 'Rajen', 'TCRC Office', 'rajen123', '5', '0',Null,1,Null,1);
 
 
 
@@ -615,6 +619,10 @@ CREATE TABLE `lnkGBRelation` (
   `sGBID` varchar(255) DEFAULT NULL,
   `sGBIDRelation` varchar(255) DEFAULT NULL,
   `nRelationID` int(11) NOT NULL,
+	`sEnteredDateTime` text DEFAULT NULL,
+	`nEnteredBy` int(11) Not NULL,
+	`sUpdatedDateTime` text DEFAULT NULL,
+	`nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -629,6 +637,8 @@ CREATE TABLE `tblRecentlySearchedGB` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `nGBID` int(11) NOT NULL,
   `nUserID` int(11) NOT NULL,
+  `sEnteredDateTime` text DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -750,6 +760,16 @@ CREATE TABLE `tblGivenGBID` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 -- select nGivenGBId from ctadb.tblGivenGBID order by nGivenGBId desc limit 0,1;
+
+CREATE TABLE `tblActionLogger` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sModuleName` varchar(255) DEFAULT NULL,
+  `sEventName` varchar(255) DEFAULT NULL,
+  `sDescription` varchar(255) DEFAULT NULL,
+  `sEnteredDateTime` text DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 -- 
 -- GreenBook By GBID

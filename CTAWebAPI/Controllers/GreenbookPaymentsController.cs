@@ -30,7 +30,7 @@ namespace CTAWebAPI.Controllers
             #region Get Payments
             try
             {
-                GreenbookPaymentRepository greenbookPaymentRepository = new GreenbookPaymentRepository(_info.ConnectionString);
+                GreenbookPaymentRepository greenbookPaymentRepository = new GreenbookPaymentRepository(_info.sConnectionString);
                 GreenbookPayment fetchedPayment = greenbookPaymentRepository.GetPaymentById(paymentID);
                 return Ok(fetchedPayment);
                 //return Ok("");
@@ -59,7 +59,7 @@ namespace CTAWebAPI.Controllers
                         return BadRequest("Payment object cannot be NULL");
                     }
 
-                    GreenbookPaymentRepository greenbookPaymentRepository = new GreenbookPaymentRepository(_info.ConnectionString);
+                    GreenbookPaymentRepository greenbookPaymentRepository = new GreenbookPaymentRepository(_info.sConnectionString);
                     greenbookPaymentRepository.Update(greenbookPayment);
                     return Ok(greenbookPayment);
                 }
