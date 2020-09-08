@@ -25,7 +25,7 @@ namespace CTAWebAPI.Controllers
         public AuthRegionController(DBConnectionInfo info)
         {
             _info = info;
-            authRegionRepository = new AuthRegionRepository(_info.ConnectionString);
+            authRegionRepository = new AuthRegionRepository(_info.sConnectionString);
         }
         #endregion
 

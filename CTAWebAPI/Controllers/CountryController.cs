@@ -24,7 +24,7 @@ namespace CTAWebAPI.Controllers
         public CountryController(DBConnectionInfo info)
         {
             _info = info;
-            countryRepository = new CountryRepository(_info.ConnectionString);
+            countryRepository = new CountryRepository(_info.sConnectionString);
         }
         #endregion
 
