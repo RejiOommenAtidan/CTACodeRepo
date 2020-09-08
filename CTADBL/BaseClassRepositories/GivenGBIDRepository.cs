@@ -23,7 +23,7 @@ namespace CTADBL.BaseClassRepositories
         }
         #endregion
 
-        #region Update User Call
+        #region Update Call
         public void Update(GivenGBID gbid)
         {
             var builder = new SqlQueryBuilder<GivenGBID>(gbid);
@@ -31,7 +31,7 @@ namespace CTADBL.BaseClassRepositories
         }
         #endregion
 
-        #region Delete User Call
+        #region Delete Call
         public void Delete(GivenGBID gbid)
         {
             var builder = new SqlQueryBuilder<GivenGBID>(gbid);
@@ -39,7 +39,7 @@ namespace CTADBL.BaseClassRepositories
         }
         #endregion
 
-        #region Get User/Users Call
+        #region Get Given GBID/GBIDs Call
         public IEnumerable<GivenGBID> GetAllGivenGBID()
         {
             string sql = @"SELECT `Id`,
@@ -81,7 +81,7 @@ namespace CTADBL.BaseClassRepositories
         }
         #endregion
 
-        #region Populate User Records
+        #region Populate Given GBID Records
         public override GivenGBID PopulateRecord(MySqlDataReader reader)
         {
             return new GivenGBID

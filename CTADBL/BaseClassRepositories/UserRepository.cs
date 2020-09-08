@@ -14,7 +14,7 @@ namespace CTADBL.BaseClassRepositories
         }
         #endregion
 
-        #region Add User
+        #region Add Call
         public void Add(User user)
         {
             var builder = new SqlQueryBuilder<User>(user);
@@ -22,7 +22,7 @@ namespace CTADBL.BaseClassRepositories
         }
         #endregion
 
-        #region Update User
+        #region Update Call
         public void Update(User user)
         {
             var builder = new SqlQueryBuilder<User>(user);
@@ -30,7 +30,7 @@ namespace CTADBL.BaseClassRepositories
         }
         #endregion
 
-        #region Delete User
+        #region Delete Call
         public void Delete(User user)
         {
             var builder = new SqlQueryBuilder<User>(user);

@@ -30,7 +30,7 @@ namespace CTAWebAPI
             #region Code for DI Purpose using DBConnection class
             services.AddSingleton<IConfiguration>(Configuration);
             var config = new DBConnectionInfo();
-            config.ConnectionString = Configuration.GetConnectionString("myconn");
+            config.sConnectionString = Configuration.GetConnectionString("myconn");
             services.AddSingleton(config);
             #endregion
 

@@ -13,7 +13,7 @@ namespace CTADBL.BaseClassRepositories
         }
         #endregion
 
-        #region Get Recently Searched GB
+        #region Get Recently Searched GBs
         public IEnumerable<RecentlySearchedGB> GetAllRecentlySearchedGB()
         {
             string sql = @"SELECT `ID`,

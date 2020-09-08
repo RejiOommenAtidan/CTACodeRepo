@@ -33,7 +33,7 @@ namespace CTAWebAPI.Controllers
             #region Get All Users
             try
             {
-                DemoUserRepository userRepo = new DemoUserRepository(_info.ConnectionString);
+                DemoUserRepository userRepo = new DemoUserRepository(_info.sConnectionString);
                 IEnumerable<DemoUser> users = userRepo.GetAllUser();
                 return Ok(users);
             }
@@ -51,7 +51,7 @@ namespace CTAWebAPI.Controllers
             #region Get Users using SP call
             try
             {
-                DemoUserRepository userRepo = new DemoUserRepository(_info.ConnectionString);
+                DemoUserRepository userRepo = new DemoUserRepository(_info.sConnectionString);
                 IEnumerable<DemoUser> users = userRepo.GetUsersUsingSP();
                 return Ok(users);
             }
@@ -69,7 +69,7 @@ namespace CTAWebAPI.Controllers
             #region Get Single User
             try
             {
-                DemoUserRepository userRepo = new DemoUserRepository(_info.ConnectionString);
+                DemoUserRepository userRepo = new DemoUserRepository(_info.sConnectionString);
                 DemoUser fetchedUser = userRepo.GetUserById(userID);
                 return Ok(fetchedUser);
             }
@@ -87,7 +87,7 @@ namespace CTAWebAPI.Controllers
             #region Get Single User Using SP
             try
             {
-                DemoUserRepository userRepo = new DemoUserRepository(_info.ConnectionString);
+                DemoUserRepository userRepo = new DemoUserRepository(_info.sConnectionString);
                 DemoUser fetchedUser = userRepo.GetUserUsingSP(userID);
                 return Ok(fetchedUser);
             }
@@ -115,7 +115,7 @@ namespace CTAWebAPI.Controllers
                     {
                         return BadRequest("User object cannot be NULL");
                     }
-                    DemoUserRepository userRepo = new DemoUserRepository(_info.ConnectionString);
+                    DemoUserRepository userRepo = new DemoUserRepository(_info.sConnectionString);
                     userRepo.Add(user);
                     return Ok(user);
                 }
@@ -159,7 +159,7 @@ namespace CTAWebAPI.Controllers
                     }
                     if (UserExists(userID))
                     {
-                        DemoUserRepository userRepository = new DemoUserRepository(_info.ConnectionString);
+                        DemoUserRepository userRepository = new DemoUserRepository(_info.sConnectionString);
                         //user.User_Id
                         userRepository.Update(user);
                         return Ok("User with ID: " + userID + " updated Successfully");
@@ -200,7 +200,7 @@ namespace CTAWebAPI.Controllers
                 {
                     if (UserExists(userID))
                     {
-                        DemoUserRepository userRepository = new DemoUserRepository(_info.ConnectionString);
+                        DemoUserRepository userRepository = new DemoUserRepository(_info.sConnectionString);
                         DemoUser fetchedUser = userRepository.GetUserById(userID);
                         userRepository.Delete(fetchedUser);
                         return Ok("User with ID: " + userID + " removed Successfully");
@@ -229,7 +229,7 @@ namespace CTAWebAPI.Controllers
         {
             try
             {
-                DemoUserRepository userRepository = new DemoUserRepository(_info.ConnectionString);
+                DemoUserRepository userRepository = new DemoUserRepository(_info.sConnectionString);
                 DemoUser fetchedUser = userRepository.GetUserById(userID);
                 if (fetchedUser != null)
                     return true;
