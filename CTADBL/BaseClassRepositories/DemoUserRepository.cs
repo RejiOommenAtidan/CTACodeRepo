@@ -4,7 +4,7 @@ using CTADBL.Repository;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 
-namespace CTADBL.BaseClassesRepositories
+namespace CTADBL.BaseClassRepositories
 {
     public class DemoUserRepository : ADORepository<DemoUser>
     {
