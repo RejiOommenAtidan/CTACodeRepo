@@ -474,7 +474,7 @@ INSERT INTO `lstCountry` (`sCountryID`, `sCountry`) VALUES ('AF','Afghanistan'),
 CREATE TABLE `lstoccupation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sOccupationDesc` text NOT NULL,
-  `ssOccupationDescTibetan` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `sOccupationDescTibetan` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
