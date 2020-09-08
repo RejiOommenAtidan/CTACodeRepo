@@ -7,13 +7,20 @@ namespace CTADBL.BaseClasses
     public class RecentlySearchedGB
     {
         #region Recently Searched GB Properties
-        [Key]
-        public int ID { get; set; }
-        public int nGBID { get; set; }
-        public int nUserID { get; set; }
-        public string sEnteredDateTime { get; set; }
-        public int nEnteredBy { get; set; }
+        private int _ID;
+        private int _nGBID;
+        private int _nUserID;
+        private string _sEnteredDateTime;
+        private int _nEnteredBy;
         #endregion
 
+        #region Public recently Searched GB properties
+        [Key]
+        public int ID { get { return _ID; } set { _ID = value; } }
+        public int nGBID { get { return _nGBID; } set { _nGBID = value; } }
+        public int nUserID { get { return _nUserID; } set { _nUserID = value; } }
+        public string sEnteredDateTime { get { return _sEnteredDateTime; } set { _sEnteredDateTime = value; } }
+        public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
+        #endregion
     }
 }
