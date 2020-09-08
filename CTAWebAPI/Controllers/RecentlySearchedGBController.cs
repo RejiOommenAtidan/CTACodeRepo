@@ -10,6 +10,7 @@ using System.Collections.Generic;
 namespace CTAWebAPI.Controllers
 {
     [EnableCors("AllowOrigin")]
+    //[APIKeyAuth]
     [Route("api/[controller]")]
     [ApiController]
     public class RecentlySearchedGBController : ControllerBase

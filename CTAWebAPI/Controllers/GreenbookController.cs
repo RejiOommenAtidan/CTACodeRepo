@@ -12,14 +12,14 @@ using System.Text.Json;
 namespace CTAWebAPI.Controllers
 {
     [EnableCors("AllowOrigin")]
-    //[APIKeyAuth]
     [Route("api/[controller]")]
+    //[APIKeyAuth]
     [ApiController]
-    public class GivenGBIDController : ControllerBase
+    public class GreenbookController : ControllerBase
     {
         #region Constructor
         private readonly DBConnectionInfo _info;
-        public GivenGBIDController(DBConnectionInfo info)
+        public GreenbookController(DBConnectionInfo info)
         {
             _info = info;
         }
@@ -28,14 +28,14 @@ namespace CTAWebAPI.Controllers
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetGivenGBIDs()
+        public IActionResult GetMadebs()
         {
-            #region Get Given GBIDs
+            #region Get All Madebs
             try
             {
-                GivenGBIDRepository givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
-                IEnumerable<GivenGBID> givenGBIDs = givenGBIDRepository.GetAllGivenGBID();
-                return Ok(givenGBIDs);
+                MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
+                IEnumerable<Madeb> madebs = madebRepository.GetAllMadebs();
+                return Ok(madebs);
             }
             catch (Exception ex)
             {
@@ -44,16 +44,16 @@ namespace CTAWebAPI.Controllers
             #endregion
         }
 
-        [HttpGet("GetGivenGBID/givenGBID={Id}")]
+        [HttpGet("GetMadeb/Id={Id}")]
         [Route("[action]")]
-        public IActionResult GetGivenGBID(string Id)
+        public IActionResult GetMadeb(string Id)
         {
-            #region Get Given GBID
+            #region Get Madeb
             try
             {
-                GivenGBIDRepository givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
-                GivenGBID givenGBID = givenGBIDRepository.GetGivenGBID(Id);
-                return Ok(givenGBID);
+                MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
+                Madeb fetchedMadeb = madebRepository.GetMadebById(Id);
+                return Ok(fetchedMadeb);
             }
             catch (Exception ex)
             {
@@ -66,20 +66,20 @@ namespace CTAWebAPI.Controllers
         #region Add Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult AddUser(GivenGBID givenGBID)
+        public IActionResult AddMadeb(Madeb madeb)
         {
-            #region Add Given GBID
+            #region Add Madeb
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (givenGBID == null)
+                    if (madeb == null)
                     {
-                        return BadRequest("GBID object cannot be NULL");
+                        return BadRequest("Madeb object cannot be NULL");
                     }
-                    GivenGBIDRepository givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
-                    givenGBIDRepository.Add(givenGBID);
-                    return Ok(givenGBID);
+                    MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
+                    madebRepository.Add(madeb);
+                    return Ok(madeb);
                 }
                 else
                 {
@@ -98,37 +98,36 @@ namespace CTAWebAPI.Controllers
         #endregion
 
         #region Edit Call
-        [HttpPost("EditGivenGBID/givenGBID={Id}")]
+        [HttpPost("EditMadeb/Id={Id}")]
         [Route("[action]")]
-        public IActionResult EditUser(string Id, [FromBody] GivenGBID givenGBID)
+        public IActionResult EditMadeb(string Id, [FromBody] Madeb madeb)
         {
-            #region Edit User
+            #region Edit Madeb
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (givenGBID == null)
-                    {
-                        return BadRequest("GBID object cannot be NULL");
-                    }
-
                     if (Id == null)
                     {
-                        return BadRequest("GBID param cannot be NULL");
+                        return BadRequest("Madeb Param ID cannot be NULL");
                     }
-                    if (Id != givenGBID.Id.ToString())
+                    if (madeb == null)
+                    {
+                        return BadRequest("Madeb object cannot be NULL");
+                    }
+                    if (Id != madeb.Id.ToString())
                     {
                         return BadRequest("ID's ain't Matching");
                     }
-                    if (GBIDExists(Id))
+                    if (MadebExists(Id))
                     {
-                        GivenGBIDRepository givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
-                        givenGBIDRepository.Update(givenGBID);
-                        return Ok("GB with ID: " + Id + " updated Successfully");
+                        MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
+                        madebRepository.Update(madeb);
+                        return Ok("Madeb with ID: " + Id + " updated Successfully");
                     }
                     else
                     {
-                        return BadRequest("GB with ID:" + Id + " does not exist");
+                        return BadRequest("Madeb with ID:" + Id + " does not exist");
                     }
                 }
                 else
@@ -150,9 +149,9 @@ namespace CTAWebAPI.Controllers
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteGBID(object body)
+        public IActionResult DeleteMadeb(object body)
         {
-            #region Delete GBID
+            #region Delete User
             try
             {
                 //TODO: check for correct way of sending string from body
@@ -160,21 +159,21 @@ namespace CTAWebAPI.Controllers
 
                 if (!string.IsNullOrEmpty(Id))
                 {
-                    if (GBIDExists(Id))
+                    if (MadebExists(Id))
                     {
-                        GivenGBIDRepository givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
-                        GivenGBID fetchedGBID = givenGBIDRepository.GetGivenGBID(Id);
-                        givenGBIDRepository.Delete(fetchedGBID);
-                        return Ok("GB with ID: " + Id + " removed Successfully");
+                        MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
+                        Madeb fetchedMadeb = madebRepository.GetMadebById(Id);
+                        madebRepository.Delete(fetchedMadeb);
+                        return Ok("Madeb with ID: " + Id + " removed Successfully");
                     }
                     else
                     {
-                        return BadRequest("GB with ID: " + Id + " does not exist");
+                        return BadRequest("Madeb with ID: " + Id + " does not exist");
                     }
                 }
                 else
                 {
-                    return BadRequest("GB Id Cannot be null");
+                    return BadRequest("Madeb Id Cannot be null");
                 }
 
             }
@@ -186,21 +185,21 @@ namespace CTAWebAPI.Controllers
         }
         #endregion
 
-        #region Check if GBID Exists
-        private bool GBIDExists(string Id)
+        #region Check if Madeb Exists
+        private bool MadebExists(string Id)
         {
             try
             {
-                GivenGBIDRepository givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
-                GivenGBID fetchedGBId = givenGBIDRepository.GetGivenGBID(Id);
-                if (fetchedGBId != null)
+                MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
+                Madeb fetchedMadeb = madebRepository.GetMadebById(Id);
+                if (fetchedMadeb != null)
                     return true;
                 else
                     return false;
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception in GBID Exists Function, Exception Message: " + ex.Message);
+                throw new Exception("Exception in Madeb Exists Function, Exception Message: " + ex.Message);
             }
         }
         #endregion
