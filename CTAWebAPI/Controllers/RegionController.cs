@@ -16,29 +16,29 @@ namespace CTAWebAPI.Controllers
     [Route("api/[controller]")]
     //[APIKeyAuth]
     [ApiController]
-    public class UserRightsController : ControllerBase
+    public class RegionController : ControllerBase
     {
         #region Constructor
         private readonly DBConnectionInfo _info;
-        private readonly UserRightsRepository  _userRightsRepository;
-        public UserRightsController(DBConnectionInfo info)
+        private readonly RegionRepository _regionRepository;
+        public RegionController(DBConnectionInfo info)
         {
             _info = info;
-            _userRightsRepository = new UserRightsRepository(_info.sConnectionString);
+            _regionRepository = new RegionRepository(_info.sConnectionString);
         }
         #endregion
 
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetUserRights()
+        public IActionResult GetRegion()
         {
-            #region Get All UserRights
+            #region Get All Region
             try
             {
                
-                IEnumerable<UserRights> userrights = _userRightsRepository.GetAllUserRights();
-                return Ok(userrights);
+                IEnumerable<Region> region = _regionRepository.GetAllRegion();
+                return Ok(region);
             }
             catch (Exception ex)
             {
@@ -46,17 +46,17 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
-        
-        [HttpGet("GetUserRight/ID={ID}")]
+
+        [HttpGet("GetRegion/ID={ID}")]
         [Route("[action]")]
-        public IActionResult GetUserRight(string ID)
+        public IActionResult GetRegion(string ID)
         {
             #region Get Single UserRight
             try
             {
-              
-                UserRights fetchedUserRights = _userRightsRepository.GetUserRightsById(ID);
-                return Ok(fetchedUserRights);
+       
+                Region fetchedRegion = _regionRepository.GetRegionById(ID);
+                return Ok(fetchedRegion);
             }
             catch (Exception ex)
             {
@@ -71,20 +71,20 @@ namespace CTAWebAPI.Controllers
         //[AllowAnonymous]
         [HttpPost]
         [Route("[action]")]
-        public IActionResult AddUserRights(UserRights userrights)
+        public IActionResult AddRegion(Region region)
         {
-            #region Add UserRights
+            #region Add Region
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (userrights == null)
+                    if (region == null)
                     {
-                        return BadRequest("UserRights object cannot be NULL");
+                        return BadRequest("Region object cannot be NULL");
                     }
 
-                    _userRightsRepository.Add(userrights);
-                    return Ok(userrights);
+                    _regionRepository.Add(region);
+                    return Ok(region);
                 }
                 else
                 {
@@ -103,29 +103,29 @@ namespace CTAWebAPI.Controllers
         #endregion
 
         #region Edit Call
-        [HttpPost("EditUserRights/ID={ID}")]
+        [HttpPost("EditRegion/ID={ID}")]
         [Route("[action]")]
-        public IActionResult EditUserRights(string ID, [FromBody] UserRights userrights)
+        public IActionResult EditRegion(string ID, [FromBody] Region region)
         {
-            #region Edit UserRights
+            #region Edit Region
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (userrights == null)
+                    if (region == null)
                     {
-                        return BadRequest("UserRights object cannot be NULL");
+                        return BadRequest("Region object cannot be NULL");
                     }
-                    if (UserRightsExists(ID))
+                    if (RegionExists(ID))
                     {
 
                         //user.User_Id
-                        _userRightsRepository.Update(userrights);
-                        return Ok("UserRights with ID: " + ID + " updated Successfully");
+                        _regionRepository.Update(region);
+                        return Ok("Region with ID: " + ID + " updated Successfully");
                     }
                     else
                     {
-                        return BadRequest("UserRights with ID:" + ID + " does not exist");
+                        return BadRequest("Region with ID:" + ID + " does not exist");
                     }
                 }
                 else
@@ -147,9 +147,9 @@ namespace CTAWebAPI.Controllers
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteUserRights(object body)
+        public IActionResult DeleteRegion(object body)
         {
-            #region Delete UserRights
+            #region Delete Region
             try
             {
                 //TODO: check for correct way of sending string from body
@@ -157,21 +157,21 @@ namespace CTAWebAPI.Controllers
 
                 if (!string.IsNullOrEmpty(ID))
                 {
-                    if (UserRightsExists(ID))
+                    if (RegionExists(ID))
                     {
-                       
-                        UserRights fetchedUser = _userRightsRepository.GetUserRightsById(ID);
-                        _userRightsRepository.Delete(fetchedUser);
-                        return Ok("UserRights with ID: " + ID + " removed Successfully");
+                        
+                        Region fetchedRegion = _regionRepository.GetRegionById(ID);
+                        _regionRepository.Delete(fetchedRegion);
+                        return Ok("Region with ID: " + ID + " removed Successfully");
                     }
                     else
                     {
-                        return BadRequest("UserRights with ID: " + ID + " does not exist");
+                        return BadRequest("Region with ID: " + ID + " does not exist");
                     }
                 }
                 else
                 {
-                    return BadRequest("UserRights Id Cannot be null");
+                    return BadRequest("Region Id Cannot be null");
                 }
 
             }
@@ -183,21 +183,21 @@ namespace CTAWebAPI.Controllers
         }
         #endregion
 
-        #region Check if UserRights Exists
-        private bool UserRightsExists(string ID)
+        #region Check if Region Exists
+        private bool RegionExists(string ID)
         {
             try
             {
-               
-                UserRights fetchedUser = _userRightsRepository.GetUserRightsById(ID);
-                if (fetchedUser != null)
+             
+                Region fetchedRegion = _regionRepository.GetRegionById(ID);
+                if (fetchedRegion != null)
                     return true;
                 else
                     return false;
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception in UserRights Exists Function, Exception Message: " + ex.Message);
+                throw new Exception("Exception in Region Exists Function, Exception Message: " + ex.Message);
             }
         }
         #endregion
