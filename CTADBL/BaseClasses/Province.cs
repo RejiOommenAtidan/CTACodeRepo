@@ -8,7 +8,7 @@ using System.Text;
 namespace CTADBL.BaseClasses
 {
     [Table("lstprovince")]
-    public class Province
+    public class Province : CommonProps
     {
         private int _id;
         private string _province;

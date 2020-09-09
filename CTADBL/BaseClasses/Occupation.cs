@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace CTADBL.BaseClasses
 {
     [Table("lstoccupation")]
-    public class Occupation
+    public class Occupation : CommonProps
     {
         private int _id;
         private string _occupationDesc;

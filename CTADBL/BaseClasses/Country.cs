@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace CTADBL.BaseClasses
 {
     [Table ("lstcountry")]
-    public class Country
+    public class Country : CommonProps
     {
         private int _id;
         private string _countryId;

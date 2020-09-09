@@ -17,11 +17,11 @@ namespace CTAWebAPI.Controllers
     public class OccupationController : ControllerBase
     {
         private readonly DBConnectionInfo _info;
-        private readonly OccupationRepository occupationRepository;
+        private readonly OccupationRepository _occupationRepository;
         public OccupationController(DBConnectionInfo info)
         {
             _info = info;
-            occupationRepository = new OccupationRepository(_info.sConnectionString);
+            _occupationRepository = new OccupationRepository(_info.sConnectionString);
         }
 
         #region Get Calls
@@ -32,7 +32,7 @@ namespace CTAWebAPI.Controllers
             #region Get All Occupations
             try
             {
-                IEnumerable<Occupation> occupation = occupationRepository.GetAllOccupations();
+                IEnumerable<Occupation> occupation = _occupationRepository.GetAllOccupations();
                 if (occupation != null)
                 {
                     return Ok(occupation);
@@ -54,7 +54,7 @@ namespace CTAWebAPI.Controllers
         {
             try
             {
-                Occupation occupation = occupationRepository.GetOccupationById(Id);
+                Occupation occupation = _occupationRepository.GetOccupationById(Id);
                 if (occupation != null)
                 {
                     return Ok(occupation);
@@ -82,7 +82,7 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    occupationRepository.Add(occupation);
+                    _occupationRepository.Add(occupation);
                     return Ok(occupation);
                 }
                 else
@@ -109,12 +109,12 @@ namespace CTAWebAPI.Controllers
             #region Edit Occupation
             try
             {
-                Occupation occupation = occupationRepository.GetOccupationById(occupationId);
+                Occupation occupation = _occupationRepository.GetOccupationById(occupationId);
                 if (occupation != null && occupationToUpdate != null && occupationId == occupationToUpdate.Id.ToString())
                 {
                     if (ModelState.IsValid)
                     {
-                        occupationRepository.Update(occupationToUpdate);
+                        _occupationRepository.Update(occupationToUpdate);
                         return Ok(String.Format("Occupation with ID: {0} updated Successfully", occupationId));
                     }
                     else
@@ -146,12 +146,12 @@ namespace CTAWebAPI.Controllers
             #region Delete Occupation
             try
             {
-                Occupation occupation = occupationRepository.GetOccupationById(occupationToDelete.Id.ToString());
+                Occupation occupation = _occupationRepository.GetOccupationById(occupationToDelete.Id.ToString());
                 if (occupationToDelete != null && occupation != null)
                 {
                     if (occupation.sOccupationDesc == occupationToDelete.sOccupationDesc && occupation.sOccupationDescTibetan == occupationToDelete.sOccupationDescTibetan)
                     {
-                        occupationRepository.Delete(occupationToDelete);// Delete method should return boolean for success.
+                        _occupationRepository.Delete(occupationToDelete);// Delete method should return boolean for success.
                         return Ok(String.Format("Occupation with ID: {0} deleted successfully", occupationToDelete.Id));
                     }
                     else

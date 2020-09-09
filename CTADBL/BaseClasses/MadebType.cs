@@ -8,7 +8,7 @@ using System.Text;
 namespace CTADBL.BaseClasses
 {
     [Table("lstmadebtype")]
-    public class MadebType
+    public class MadebType : CommonProps
     {
         private int _id;
         private string _madebType;

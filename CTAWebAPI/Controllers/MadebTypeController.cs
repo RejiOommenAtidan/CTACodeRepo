@@ -18,12 +18,12 @@ namespace CTAWebAPI.Controllers
     public class MadebTypeController : ControllerBase
     {
         private readonly DBConnectionInfo _info;
-        private readonly MadebTypeRepository madebTypeRepository;
+        private readonly MadebTypeRepository _madebTypeRepository;
 
         public MadebTypeController (DBConnectionInfo info)
         {
             _info = info;
-            madebTypeRepository = new MadebTypeRepository(_info.sConnectionString);
+            _madebTypeRepository = new MadebTypeRepository(_info.sConnectionString);
         }
 
         #region Get Calls
@@ -34,7 +34,7 @@ namespace CTAWebAPI.Controllers
             #region Get All MadebTypes
             try
             {
-                IEnumerable<MadebType> madebType = madebTypeRepository.GetAllMadebTypes();
+                IEnumerable<MadebType> madebType = _madebTypeRepository.GetAllMadebTypes();
 
                 if (madebType != null)
                 {
@@ -57,7 +57,7 @@ namespace CTAWebAPI.Controllers
         {
             try
             {
-                MadebType madebType = madebTypeRepository.GetMadebTypeById(Id);
+                MadebType madebType = _madebTypeRepository.GetMadebTypeById(Id);
                 if(madebType != null)
                 {
                     return Ok(madebType);
@@ -86,7 +86,7 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    madebTypeRepository.Add(madebType);
+                    _madebTypeRepository.Add(madebType);
                     return Ok(madebType);
                 }
                 else
@@ -113,13 +113,13 @@ namespace CTAWebAPI.Controllers
             #region Edit MadebType
             try
             {
-                MadebType madebType = madebTypeRepository.GetMadebTypeById(madebTypeID);
+                MadebType madebType = _madebTypeRepository.GetMadebTypeById(madebTypeID);
                 if (madebType != null && madebTypeToUpdate != null && madebTypeID == madebTypeToUpdate.Id.ToString())
                 {
 
                     if (ModelState.IsValid)
                     {
-                        madebTypeRepository.Update(madebTypeToUpdate);
+                        _madebTypeRepository.Update(madebTypeToUpdate);
                         return Ok(String.Format("Madeb Type with ID: {0} updated Successfully", madebTypeID));
                     }
                     else
@@ -152,12 +152,12 @@ namespace CTAWebAPI.Controllers
             #region Delete MadebType
             try
             {
-                MadebType madebType = madebTypeRepository.GetMadebTypeById(madebTypeToDelete.Id.ToString());
+                MadebType madebType = _madebTypeRepository.GetMadebTypeById(madebTypeToDelete.Id.ToString());
                 if (madebTypeToDelete != null && madebType != null)
                 {
                     if (madebType.sMadebType == madebTypeToDelete.sMadebType)
                     {
-                        madebTypeRepository.Delete(madebTypeToDelete);// Delete method should return boolean for success.
+                        _madebTypeRepository.Delete(madebTypeToDelete);// Delete method should return boolean for success.
                         return Ok(String.Format("Madeb Type with ID: {0} deleted successfully", madebTypeToDelete.Id));
                     }
                     else

@@ -17,14 +17,14 @@ namespace CTAWebAPI.Controllers
     public class CountryController : ControllerBase
     {
         private readonly DBConnectionInfo _info;
-        private readonly CountryRepository countryRepository;
+        private readonly CountryRepository _countryRepository;
 
         #region Constructor
 
         public CountryController(DBConnectionInfo info)
         {
             _info = info;
-            countryRepository = new CountryRepository(_info.sConnectionString);
+            _countryRepository = new CountryRepository(_info.sConnectionString);
         }
         #endregion
 
@@ -36,7 +36,7 @@ namespace CTAWebAPI.Controllers
             #region Get All Countries
             try
             {
-                IEnumerable<Country> countries = countryRepository.GetAllCountries();
+                IEnumerable<Country> countries = _countryRepository.GetAllCountries();
                 if(countries != null)
                 {
                     return Ok(countries);
@@ -59,7 +59,7 @@ namespace CTAWebAPI.Controllers
             #region Get Country by Id
             try
             {
-                Country country = countryRepository.GetCountryById(Id);
+                Country country = _countryRepository.GetCountryById(Id);
                 if (country != null)
                 {
                     return Ok(country);
@@ -96,7 +96,7 @@ namespace CTAWebAPI.Controllers
                     //    return BadRequest("Country cannot be NULL");
                     //}
 
-                    countryRepository.Add(country);
+                    _countryRepository.Add(country);
                     return Ok(country);
                 }
                 else
@@ -123,12 +123,12 @@ namespace CTAWebAPI.Controllers
             #region Edit User
             try
             {
-                Country country = countryRepository.GetCountryById(ID);
+                Country country = _countryRepository.GetCountryById(ID);
                 if(country != null && ID == countryToUpdate.ID.ToString())
                 {
                     if (ModelState.IsValid)
                     {
-                        countryRepository.Update(countryToUpdate);
+                        _countryRepository.Update(countryToUpdate);
                         return Ok(String.Format("Country with ID: {0} updated Successfully", ID));
                     }
                     else
@@ -160,12 +160,12 @@ namespace CTAWebAPI.Controllers
             #region Delete AuthRegion
             try
             {
-                Country country = countryRepository.GetCountryById(countryToDelete.ID.ToString());
+                Country country = _countryRepository.GetCountryById(countryToDelete.ID.ToString());
                 if (country != null && countryToDelete != null)
                 {
                     if (country.sCountry == countryToDelete.sCountry && country.sCountryID == countryToDelete.sCountryID)
                     {
-                        countryRepository.Delete(countryToDelete);// Delete method should return boolean for success.
+                        _countryRepository.Delete(countryToDelete);// Delete method should return boolean for success.
                         return Ok(string.Format("Region with ID: {0} deleted successfully", countryToDelete.ID));
                     }
                     else

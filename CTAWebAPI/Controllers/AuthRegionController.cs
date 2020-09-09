@@ -17,14 +17,14 @@ namespace CTAWebAPI.Controllers
     public class AuthRegionController : ControllerBase
     {
         private readonly DBConnectionInfo _info;
-        private readonly AuthRegionRepository authRegionRepository;
+        private readonly AuthRegionRepository _authRegionRepository;
 
         #region Constructor
 
         public AuthRegionController(DBConnectionInfo info)
         {
             _info = info;
-            authRegionRepository = new AuthRegionRepository(_info.sConnectionString);
+            _authRegionRepository = new AuthRegionRepository(_info.sConnectionString);
         }
         #endregion
 
@@ -36,7 +36,7 @@ namespace CTAWebAPI.Controllers
             #region Get All AuthRegions
             try
             {
-                IEnumerable<AuthRegion> authRegions = authRegionRepository.GetAllAuthRegions();
+                IEnumerable<AuthRegion> authRegions = _authRegionRepository.GetAllAuthRegions();
                 if(authRegions != null)
                 {
                     return Ok(authRegions);
@@ -58,7 +58,7 @@ namespace CTAWebAPI.Controllers
         {
             try
             {
-                AuthRegion authRegion = authRegionRepository.GetAuthRegionById(Id);
+                AuthRegion authRegion = _authRegionRepository.GetAuthRegionById(Id);
                 if (authRegion != null)
                 {
                     return Ok(authRegion);
@@ -93,7 +93,7 @@ namespace CTAWebAPI.Controllers
                     //    return BadRequest("User object cannot be NULL");
                     //}
 
-                    authRegionRepository.Add(authRegion);
+                    _authRegionRepository.Add(authRegion);
                     return Ok(authRegion);
                 }
                 else
@@ -120,13 +120,13 @@ namespace CTAWebAPI.Controllers
             #region Edit AuthRegion
             try
             {
-                AuthRegion region = authRegionRepository.GetAuthRegionById(RegionID);
+                AuthRegion region = _authRegionRepository.GetAuthRegionById(RegionID);
                 if (region != null && regionToUpdate != null && RegionID == regionToUpdate.ID.ToString())
                 {
 
                     if (ModelState.IsValid)
                     {
-                        authRegionRepository.Update(regionToUpdate);
+                        _authRegionRepository.Update(regionToUpdate);
                         return Ok(String.Format("Region with ID: {0} updated Successfully", RegionID));
                     }
                     else
@@ -159,12 +159,12 @@ namespace CTAWebAPI.Controllers
             #region Delete AuthRegion
             try
             {
-                AuthRegion region = authRegionRepository.GetAuthRegionById(regionToDelete.ID.ToString());
+                AuthRegion region = _authRegionRepository.GetAuthRegionById(regionToDelete.ID.ToString());
                 if(region != null && regionToDelete != null)
                 {
                     if(region.sAuthRegion == regionToDelete.sAuthRegion && region.sCountryID == regionToDelete.sCountryID)
                     {
-                        authRegionRepository.Delete(regionToDelete);// Delete method should return boolean for success.
+                        _authRegionRepository.Delete(regionToDelete);// Delete method should return boolean for success.
                         return Ok(string.Format("Region with ID: {0} deleted successfully", regionToDelete.ID));
                     }
                     else

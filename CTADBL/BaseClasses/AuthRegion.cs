@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace CTADBL.BaseClasses
 {
     [Table ("lstauthregion")]
-    public class AuthRegion
+    public class AuthRegion : CommonProps
     {
         private int _id;
         private string _authRegion;

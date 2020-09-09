@@ -17,11 +17,11 @@ namespace CTAWebAPI.Controllers
     [ApiController]
     public class ProvinceController : Controller
     {
-        private readonly ProvinceRepository provinceRepository;
+        private readonly ProvinceRepository _provinceRepository;
 
         public ProvinceController (DBConnectionInfo info)
         {
-            provinceRepository = new ProvinceRepository(info.sConnectionString);
+            _provinceRepository = new ProvinceRepository(info.sConnectionString);
         }
 
         #region Get Calls
@@ -32,7 +32,7 @@ namespace CTAWebAPI.Controllers
             #region Get All Provinces
             try
             {
-                IEnumerable<Province> provinces = provinceRepository.GetAllProvinces();
+                IEnumerable<Province> provinces = _provinceRepository.GetAllProvinces();
                 if(provinces != null)
                 {
                     return Ok(provinces);
@@ -55,7 +55,7 @@ namespace CTAWebAPI.Controllers
         {
             try
             {
-                Province province = provinceRepository.GetProvinceById(Id);
+                Province province = _provinceRepository.GetProvinceById(Id);
                 if (province != null)
                 {
                     return Ok(province);
@@ -85,7 +85,7 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    provinceRepository.Add(province);
+                    _provinceRepository.Add(province);
                     return Ok(province);
                 }
                 else
@@ -113,13 +113,13 @@ namespace CTAWebAPI.Controllers
             #region Edit Province
             try
             {
-                Province province = provinceRepository.GetProvinceById(provinceID);
+                Province province = _provinceRepository.GetProvinceById(provinceID);
                 if (province != null && provinceToUpdate != null && provinceID == provinceToUpdate.Id.ToString())
                 {
 
                     if (ModelState.IsValid)
                     {
-                        provinceRepository.Update(provinceToUpdate);
+                        _provinceRepository.Update(provinceToUpdate);
                         return Ok(String.Format("Province with ID: {0} updated Successfully", provinceID));
                     }
                     else
@@ -152,12 +152,12 @@ namespace CTAWebAPI.Controllers
             #region Delete Province
             try
             {
-                Province province = provinceRepository.GetProvinceById(provinceToDelete.Id.ToString());
+                Province province = _provinceRepository.GetProvinceById(provinceToDelete.Id.ToString());
                 if (provinceToDelete != null && province != null)
                 {
                     if (province.sProvince == provinceToDelete.sProvince)
                     {
-                        provinceRepository.Delete(provinceToDelete);// Delete method should return boolean for success.
+                        _provinceRepository.Delete(provinceToDelete);// Delete method should return boolean for success.
                         return Ok(String.Format("Province with ID: {0} deleted successfully", provinceToDelete.Id));
                     }
                     else
