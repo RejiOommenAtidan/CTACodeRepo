@@ -7,46 +7,46 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CTADBL.BaseClasses
 {
-    [Table ("lstcountry")]
-    public class Country
+    [Table("lstoccupation")]
+    public class Occupation
     {
         private int _id;
-        private string _countryId;
-        private string _country;
+        private string _occupationDesc;
+        private string _occupationDescTibetan;
 
         [Key]
-        public int ID 
-        { 
+        public int Id
+        {
             get
             {
                 return _id;
             }
-            set 
-            {
-                _id = value;
-            } 
-        }
-        public string sCountryID 
-        { 
-            get 
-            {
-                return _countryId;
-            } 
             set
             {
-                _countryId = value;
-            } 
+                _id = value;
+            }
         }
         [NotNull]
-        public string sCountry 
-        { 
+        public string sOccupationDesc
+        {
             get
             {
-                return _country;
+                return _occupationDesc;
             }
             set
             {
-                _country = value;
+                _occupationDesc = value;
+            }
+        }
+        public string sOccupationDescTibetan
+        {
+            get
+            {
+                return _occupationDescTibetan;
+            }
+            set
+            {
+                _occupationDescTibetan = value;
             }
         }
     }

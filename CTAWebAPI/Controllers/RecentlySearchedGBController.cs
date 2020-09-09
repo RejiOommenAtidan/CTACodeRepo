@@ -17,9 +17,11 @@ namespace CTAWebAPI.Controllers
     {
         #region Constructor
         private readonly DBConnectionInfo _info;
+        private readonly RecentlySearchedGBRepository _recentlySearchedGBRepository;
         public RecentlySearchedGBController(DBConnectionInfo info)
         {
             _info = info;
+            _recentlySearchedGBRepository = new RecentlySearchedGBRepository(_info.sConnectionString);
         }
         #endregion
 
@@ -31,8 +33,7 @@ namespace CTAWebAPI.Controllers
             #region Get Recently Searched GB's
             try
             {
-                RecentlySearchedGBRepository recentRepo = new RecentlySearchedGBRepository(_info.sConnectionString);
-                IEnumerable<RecentlySearchedGB> recentGBs = recentRepo.GetAllRecentlySearchedGB();
+                IEnumerable<RecentlySearchedGB> recentGBs = _recentlySearchedGBRepository.GetAllRecentlySearchedGB();
                 return Ok(recentGBs);
             }
             catch (Exception ex)

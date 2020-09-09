@@ -19,9 +19,11 @@ namespace CTAWebAPI.Controllers
     {
         #region Constructor
         private readonly DBConnectionInfo _info;
+        private readonly DemoUserRepository _demoUserRepository;
         public DemoUserController(DBConnectionInfo info)
         {
             _info = info;
+            _demoUserRepository = new DemoUserRepository(_info.sConnectionString);
         } 
         #endregion
 
@@ -33,8 +35,8 @@ namespace CTAWebAPI.Controllers
             #region Get All Users
             try
             {
-                DemoUserRepository userRepo = new DemoUserRepository(_info.sConnectionString);
-                IEnumerable<DemoUser> users = userRepo.GetAllUser();
+                
+                IEnumerable<DemoUser> users = _demoUserRepository.GetAllUser();
                 return Ok(users);
             }
             catch (Exception ex)
@@ -51,8 +53,7 @@ namespace CTAWebAPI.Controllers
             #region Get Users using SP call
             try
             {
-                DemoUserRepository userRepo = new DemoUserRepository(_info.sConnectionString);
-                IEnumerable<DemoUser> users = userRepo.GetUsersUsingSP();
+                IEnumerable<DemoUser> users = _demoUserRepository.GetUsersUsingSP();
                 return Ok(users);
             }
             catch (Exception ex)
@@ -69,8 +70,7 @@ namespace CTAWebAPI.Controllers
             #region Get Single User
             try
             {
-                DemoUserRepository userRepo = new DemoUserRepository(_info.sConnectionString);
-                DemoUser fetchedUser = userRepo.GetUserById(userID);
+                DemoUser fetchedUser = _demoUserRepository.GetUserById(userID);
                 return Ok(fetchedUser);
             }
             catch (Exception ex)
@@ -87,8 +87,8 @@ namespace CTAWebAPI.Controllers
             #region Get Single User Using SP
             try
             {
-                DemoUserRepository userRepo = new DemoUserRepository(_info.sConnectionString);
-                DemoUser fetchedUser = userRepo.GetUserUsingSP(userID);
+                
+                DemoUser fetchedUser = _demoUserRepository.GetUserUsingSP(userID);
                 return Ok(fetchedUser);
             }
             catch (Exception ex)
@@ -115,8 +115,8 @@ namespace CTAWebAPI.Controllers
                     {
                         return BadRequest("User object cannot be NULL");
                     }
-                    DemoUserRepository userRepo = new DemoUserRepository(_info.sConnectionString);
-                    userRepo.Add(user);
+
+                    _demoUserRepository.Add(user);
                     return Ok(user);
                 }
                 else
@@ -159,9 +159,8 @@ namespace CTAWebAPI.Controllers
                     }
                     if (UserExists(userID))
                     {
-                        DemoUserRepository userRepository = new DemoUserRepository(_info.sConnectionString);
-                        //user.User_Id
-                        userRepository.Update(user);
+
+                        _demoUserRepository.Update(user);
                         return Ok("User with ID: " + userID + " updated Successfully");
                     }
                     else
@@ -200,9 +199,9 @@ namespace CTAWebAPI.Controllers
                 {
                     if (UserExists(userID))
                     {
-                        DemoUserRepository userRepository = new DemoUserRepository(_info.sConnectionString);
-                        DemoUser fetchedUser = userRepository.GetUserById(userID);
-                        userRepository.Delete(fetchedUser);
+                        
+                        DemoUser fetchedUser = _demoUserRepository.GetUserById(userID);
+                        _demoUserRepository.Delete(fetchedUser);
                         return Ok("User with ID: " + userID + " removed Successfully");
                     }
                     else
@@ -229,8 +228,7 @@ namespace CTAWebAPI.Controllers
         {
             try
             {
-                DemoUserRepository userRepository = new DemoUserRepository(_info.sConnectionString);
-                DemoUser fetchedUser = userRepository.GetUserById(userID);
+                DemoUser fetchedUser = _demoUserRepository.GetUserById(userID);
                 if (fetchedUser != null)
                     return true;
                 else
