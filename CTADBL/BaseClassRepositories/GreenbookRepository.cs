@@ -231,9 +231,9 @@ namespace CTADBL.BaseClassRepositories
                 TBUMothersName = (string)reader["TBUMothersName"],
                 TBUSpouseName = (string)reader["TBUSpouseName"],
                 //Common Props
-                sEnteredDateTime = (string)reader["sEnteredDateTime"],
+                dtEntered = (DateTime)reader["dtEntered"],
                 nEnteredBy = (int)reader["nEnteredBy"],
-                sUpdatedDateTime = (string)reader["sUpdatedDateTime"],
+                dtUpdated = (DateTime)reader["dtUpdated"],
                 nUpdatedBy = (int)reader["nUpdatedBy"]
             };
         }

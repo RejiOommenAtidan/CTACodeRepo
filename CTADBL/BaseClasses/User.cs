@@ -15,7 +15,6 @@ namespace CTADBL.BaseClasses
         private string _sPassword;
         private int _nUserRightsId;
         private int _nActive;
-        private DateTime _dtDOB;
         #endregion
 
         #region Public Common Properties
@@ -27,7 +26,6 @@ namespace CTADBL.BaseClasses
         public string sPassword { get { return _sPassword; } set { _sPassword = value; } }
         public int nUserRightsId { get { return _nUserRightsId; } set { _nUserRightsId = value; } }
         public int nActive { get { return _nActive; } set { _nActive = value; } }
-        public DateTime dtDOB { get { return _dtDOB; } set { _dtDOB = value; } }
         #endregion
     }
 }

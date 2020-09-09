@@ -1,18 +1,21 @@
-﻿namespace CTADBL.BaseClasses
+﻿using System;
+
+namespace CTADBL.BaseClasses
 {
     public class CommonProps
     {
         #region Private Common Properties
-        private string _sEnteredDateTime;
+        private DateTime _dtEntered;
         private int _nEnteredBy;
-        private string _sUpdatedDateTime;
+        private DateTime _dtUpdated;
         private int _nUpdatedBy;
         #endregion
 
         #region Public Common Properties
-        public string sEnteredDateTime { get { return _sEnteredDateTime; } set { _sEnteredDateTime = value; } }
+        public DateTime dtEntered { get { return (_dtEntered == null) ? DateTime.Now : _dtEntered;  } set { _dtEntered = value; } }
         public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
-        public string sUpdatedDateTime { get { return _sUpdatedDateTime; } set { _sUpdatedDateTime = value; } }
+        //NOTE: protected so no body can set it 
+        public DateTime dtUpdated { get { return (_dtUpdated == null) ? DateTime.Now : _dtUpdated; } set { _dtUpdated = DateTime.Now; } }
         public int nUpdatedBy { get { return _nUpdatedBy; } set { _nUpdatedBy = value; } }
         #endregion
     }
