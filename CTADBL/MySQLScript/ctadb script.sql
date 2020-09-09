@@ -4,6 +4,10 @@ CREATE TABLE `lstRegion` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sRegion_name` varchar(100) DEFAULT NULL,
   `sRegion_code` varchar(5) DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -243,6 +247,10 @@ CREATE TABLE `lstAuthRegion` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `sAuthRegion` text NOT NULL,
   `sCountryID` text NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -420,6 +428,10 @@ CREATE TABLE `lstCountry` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `sCountryID` text DEFAULT NULL,
   `sCountry` text DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -475,6 +487,10 @@ CREATE TABLE `lstoccupation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sOccupationDesc` text NOT NULL,
   `sOccupationDescTibetan` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -500,6 +516,10 @@ INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`
 CREATE TABLE `lstProvince` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sProvince` text NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -513,6 +533,10 @@ CREATE TABLE `lstQualification` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sQualificationID` varchar(1) NOT NULL DEFAULT '',
   `sQualification` varchar(50) DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -528,6 +552,10 @@ INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`) VA
 CREATE TABLE `lstTypeIssued` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sTypeIssued` text NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -540,6 +568,10 @@ INSERT INTO `ctadb`.`lstTypeIssued` (`sTypeIssued`) VALUES ('Cancel');
 CREATE TABLE `lstUserRights` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sUserRightsName` text NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -586,6 +618,10 @@ INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`,
 CREATE TABLE `lstRelation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sRelation` text NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -600,6 +636,10 @@ INSERT INTO `ctadb`.`lstRelation` (`sRelation`) VALUES ('FemaleChild');
 CREATE TABLE `lstMadebType` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sMadebType` text NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
