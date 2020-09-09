@@ -19,9 +19,11 @@ namespace CTAWebAPI.Controllers
     {
         #region Constructor
         private readonly DBConnectionInfo _info;
+        private readonly GivenGBIDRepository _givenGBIDRepository;
         public GivenGBIDController(DBConnectionInfo info)
         {
             _info = info;
+            _givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
         }
         #endregion
 
@@ -33,8 +35,7 @@ namespace CTAWebAPI.Controllers
             #region Get Given GBIDs
             try
             {
-                GivenGBIDRepository givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
-                IEnumerable<GivenGBID> givenGBIDs = givenGBIDRepository.GetAllGivenGBID();
+                IEnumerable<GivenGBID> givenGBIDs = _givenGBIDRepository.GetAllGivenGBID();
                 return Ok(givenGBIDs);
             }
             catch (Exception ex)
@@ -51,8 +52,7 @@ namespace CTAWebAPI.Controllers
             #region Get Given GBID
             try
             {
-                GivenGBIDRepository givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
-                GivenGBID givenGBID = givenGBIDRepository.GetGivenGBID(Id);
+                GivenGBID givenGBID = _givenGBIDRepository.GetGivenGBID(Id);
                 return Ok(givenGBID);
             }
             catch (Exception ex)
@@ -77,8 +77,7 @@ namespace CTAWebAPI.Controllers
                     {
                         return BadRequest("GBID object cannot be NULL");
                     }
-                    GivenGBIDRepository givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
-                    givenGBIDRepository.Add(givenGBID);
+                    _givenGBIDRepository.Add(givenGBID);
                     return Ok(givenGBID);
                 }
                 else
@@ -122,8 +121,7 @@ namespace CTAWebAPI.Controllers
                     }
                     if (GBIDExists(Id))
                     {
-                        GivenGBIDRepository givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
-                        givenGBIDRepository.Update(givenGBID);
+                        _givenGBIDRepository.Update(givenGBID);
                         return Ok("GB with ID: " + Id + " updated Successfully");
                     }
                     else
@@ -162,9 +160,8 @@ namespace CTAWebAPI.Controllers
                 {
                     if (GBIDExists(Id))
                     {
-                        GivenGBIDRepository givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
-                        GivenGBID fetchedGBID = givenGBIDRepository.GetGivenGBID(Id);
-                        givenGBIDRepository.Delete(fetchedGBID);
+                        GivenGBID fetchedGBID = _givenGBIDRepository.GetGivenGBID(Id);
+                        _givenGBIDRepository.Delete(fetchedGBID);
                         return Ok("GB with ID: " + Id + " removed Successfully");
                     }
                     else
@@ -191,8 +188,7 @@ namespace CTAWebAPI.Controllers
         {
             try
             {
-                GivenGBIDRepository givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
-                GivenGBID fetchedGBId = givenGBIDRepository.GetGivenGBID(Id);
+                GivenGBID fetchedGBId = _givenGBIDRepository.GetGivenGBID(Id);
                 if (fetchedGBId != null)
                     return true;
                 else

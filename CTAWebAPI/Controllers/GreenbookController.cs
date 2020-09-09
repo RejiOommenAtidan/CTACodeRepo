@@ -19,23 +19,24 @@ namespace CTAWebAPI.Controllers
     {
         #region Constructor
         private readonly DBConnectionInfo _info;
+        private readonly GreenbookRepository _greenbookRepository;
         public GreenbookController(DBConnectionInfo info)
         {
             _info = info;
+            _greenbookRepository = new GreenbookRepository(_info.sConnectionString);
         }
         #endregion
 
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetMadebs()
+        public IActionResult GetGreenbooks()
         {
-            #region Get All Madebs
+            #region Get All Greenbooks
             try
             {
-                MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
-                IEnumerable<Madeb> madebs = madebRepository.GetAllMadebs();
-                return Ok(madebs);
+                IEnumerable<Greenbook> greenbooks = _greenbookRepository.GetAllGreenBooks();
+                return Ok(greenbooks);
             }
             catch (Exception ex)
             {
@@ -44,16 +45,15 @@ namespace CTAWebAPI.Controllers
             #endregion
         }
 
-        [HttpGet("GetMadeb/Id={Id}")]
+        [HttpGet("GetGreenbook/Id={Id}")]
         [Route("[action]")]
-        public IActionResult GetMadeb(string Id)
+        public IActionResult GetGreenbook(string Id)
         {
-            #region Get Madeb
+            #region Get Greenbook
             try
             {
-                MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
-                Madeb fetchedMadeb = madebRepository.GetMadebById(Id);
-                return Ok(fetchedMadeb);
+                Greenbook fetchedGreenbook = _greenbookRepository.GetGreenboookById(Id);
+                return Ok(fetchedGreenbook);
             }
             catch (Exception ex)
             {
@@ -66,20 +66,19 @@ namespace CTAWebAPI.Controllers
         #region Add Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult AddMadeb(Madeb madeb)
+        public IActionResult AddGreenbook(Greenbook greenbook)
         {
-            #region Add Madeb
+            #region Add Greenbook
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (madeb == null)
+                    if (greenbook == null)
                     {
-                        return BadRequest("Madeb object cannot be NULL");
+                        return BadRequest("Greenbook object cannot be NULL");
                     }
-                    MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
-                    madebRepository.Add(madeb);
-                    return Ok(madeb);
+                    _greenbookRepository.Add(greenbook);
+                    return Ok(greenbook);
                 }
                 else
                 {
@@ -98,36 +97,35 @@ namespace CTAWebAPI.Controllers
         #endregion
 
         #region Edit Call
-        [HttpPost("EditMadeb/Id={Id}")]
+        [HttpPost("EditGreenbook/Id={Id}")]
         [Route("[action]")]
-        public IActionResult EditMadeb(string Id, [FromBody] Madeb madeb)
+        public IActionResult EditGreenbook(string Id, [FromBody] Greenbook greenbook)
         {
-            #region Edit Madeb
+            #region Edit Greenbook
             try
             {
                 if (ModelState.IsValid)
                 {
                     if (Id == null)
                     {
-                        return BadRequest("Madeb Param ID cannot be NULL");
+                        return BadRequest("Greenbook Param ID cannot be NULL");
                     }
-                    if (madeb == null)
+                    if (greenbook == null)
                     {
-                        return BadRequest("Madeb object cannot be NULL");
+                        return BadRequest("Greenbook object cannot be NULL");
                     }
-                    if (Id != madeb.Id.ToString())
+                    if (Id != greenbook.Id.ToString())
                     {
                         return BadRequest("ID's ain't Matching");
                     }
-                    if (MadebExists(Id))
+                    if (GreenbookExists(Id))
                     {
-                        MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
-                        madebRepository.Update(madeb);
-                        return Ok("Madeb with ID: " + Id + " updated Successfully");
+                        _greenbookRepository.Update(greenbook);
+                        return Ok("Greenbook with ID: " + Id + " updated Successfully");
                     }
                     else
                     {
-                        return BadRequest("Madeb with ID:" + Id + " does not exist");
+                        return BadRequest("Greenbook with ID:" + Id + " does not exist");
                     }
                 }
                 else
@@ -149,9 +147,9 @@ namespace CTAWebAPI.Controllers
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteMadeb(object body)
+        public IActionResult DeleteGreenbook(object body)
         {
-            #region Delete User
+            #region Delete Greenbook
             try
             {
                 //TODO: check for correct way of sending string from body
@@ -159,21 +157,20 @@ namespace CTAWebAPI.Controllers
 
                 if (!string.IsNullOrEmpty(Id))
                 {
-                    if (MadebExists(Id))
+                    if (GreenbookExists(Id))
                     {
-                        MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
-                        Madeb fetchedMadeb = madebRepository.GetMadebById(Id);
-                        madebRepository.Delete(fetchedMadeb);
-                        return Ok("Madeb with ID: " + Id + " removed Successfully");
+                        Greenbook greenbook = _greenbookRepository.GetGreenboookById(Id);
+                        _greenbookRepository.Delete(greenbook);
+                        return Ok("Greenbook with ID: " + Id + " removed Successfully");
                     }
                     else
                     {
-                        return BadRequest("Madeb with ID: " + Id + " does not exist");
+                        return BadRequest("Greenbook with ID: " + Id + " does not exist");
                     }
                 }
                 else
                 {
-                    return BadRequest("Madeb Id Cannot be null");
+                    return BadRequest("Greenbook Id Cannot be null");
                 }
 
             }
@@ -185,21 +182,20 @@ namespace CTAWebAPI.Controllers
         }
         #endregion
 
-        #region Check if Madeb Exists
-        private bool MadebExists(string Id)
+        #region Check if Greenbook Exists
+        private bool GreenbookExists(string Id)
         {
             try
             {
-                MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
-                Madeb fetchedMadeb = madebRepository.GetMadebById(Id);
-                if (fetchedMadeb != null)
+                Greenbook fetchedGreenbook = _greenbookRepository.GetGreenboookById(Id);
+                if (fetchedGreenbook != null)
                     return true;
                 else
                     return false;
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception in Madeb Exists Function, Exception Message: " + ex.Message);
+                throw new Exception("Exception in Greenbook Exists Function, Exception Message: " + ex.Message);
             }
         }
         #endregion

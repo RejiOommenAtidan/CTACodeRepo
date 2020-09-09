@@ -19,9 +19,11 @@ namespace CTAWebAPI.Controllers
     {
         #region Constructor
         private readonly DBConnectionInfo _info;
+        private readonly MadebRepository _madebRepository;
         public MadebController(DBConnectionInfo info)
         {
             _info = info;
+            _madebRepository = new MadebRepository(_info.sConnectionString);
         }
         #endregion
 
@@ -33,8 +35,7 @@ namespace CTAWebAPI.Controllers
             #region Get All Madebs
             try
             {
-                MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
-                IEnumerable<Madeb> madebs = madebRepository.GetAllMadebs();
+                IEnumerable<Madeb> madebs = _madebRepository.GetAllMadebs();
                 return Ok(madebs);
             }
             catch (Exception ex)
@@ -51,8 +52,7 @@ namespace CTAWebAPI.Controllers
             #region Get Madeb
             try
             {
-                MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
-                Madeb madeb = madebRepository.GetMadebById(Id);
+                Madeb madeb = _madebRepository.GetMadebById(Id);
                 return Ok(madeb);
             }
             catch (Exception ex)
@@ -78,8 +78,7 @@ namespace CTAWebAPI.Controllers
                         return BadRequest("Madeb object cannot be NULL");
                     }
 
-                    MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
-                    madebRepository.Add(madeb);
+                    _madebRepository.Add(madeb);
                     return Ok(madeb);
                 }
                 else
@@ -122,8 +121,7 @@ namespace CTAWebAPI.Controllers
                     }
                     if (MadebExists(Id))
                     {
-                        MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
-                        madebRepository.Update(madeb);
+                        _madebRepository.Update(madeb);
                         return Ok("Madeb with ID: " + Id + " updated Successfully");
                     }
                     else
@@ -162,9 +160,8 @@ namespace CTAWebAPI.Controllers
                 {
                     if (MadebExists(Id))
                     {
-                        MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
-                        Madeb fetchedMadeb = madebRepository.GetMadebById(Id);
-                        madebRepository.Delete(fetchedMadeb);
+                        Madeb fetchedMadeb = _madebRepository.GetMadebById(Id);
+                        _madebRepository.Delete(fetchedMadeb);
                         return Ok("Madeb with ID: " + Id + " removed Successfully");
                     }
                     else
@@ -191,8 +188,7 @@ namespace CTAWebAPI.Controllers
         {
             try
             {
-                MadebRepository madebRepository = new MadebRepository(_info.sConnectionString);
-                Madeb fetchedMadeb = madebRepository.GetMadebById(Id);
+                Madeb fetchedMadeb = _madebRepository.GetMadebById(Id);
                 if (fetchedMadeb != null)
                     return true;
                 else
