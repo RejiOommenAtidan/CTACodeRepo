@@ -2,6 +2,7 @@
 using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 
 namespace CTADBL.BaseClassRepositories
@@ -42,12 +43,17 @@ namespace CTADBL.BaseClassRepositories
         public IEnumerable<User> GetAllUsers()
         {
             string sql = @"SELECT `Id`,
+                            `_Id`,
                             `sUsername`,
                             `sFullName`,
                             `sOffice`,
                             `sPassword`,
                             `nUserRightsId`,
-                            IF(nActive, 1, 0) nActive
+                            IF(nActive, 1, 0) nActive,
+                            `dtEntered`,
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
                         FROM `tbluser`;";
             using (var command = new MySqlCommand(sql))
             {
@@ -58,12 +64,17 @@ namespace CTADBL.BaseClassRepositories
         public User GetUserById(string Id)
         {
             string sql = @"SELECT `Id`,
+                            `_Id`,
                             `sUsername`,
                             `sFullName`,
                             `sOffice`,
                             `sPassword`,
                             `nUserRightsId`,
-                            IF(nActive, 1, 0) nActive
+                            IF(nActive, 1, 0) nActive,
+                            `dtEntered`,
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
                         FROM `tbluser`
                         WHERE Id =@Id";
             using (var command = new MySqlCommand(sql))
@@ -77,16 +88,24 @@ namespace CTADBL.BaseClassRepositories
         #region Populate User Records
         public override User PopulateRecord(MySqlDataReader reader)
         {
-            return new User
-            {
-                Id = (int)reader["Id"],
-                sUsername= (string)reader["sUsername"],
-                sFullname= (string)reader["sFullName"],
-                sOffice= (string)reader["sOffice"],
-                sPassword = (string)reader["sPassword"],
-                nUserRightsId= (int)reader["nUserRightsId"],
-                nActive= (int)reader["nActive"]
-            };
+            //DBNull a = (DBNull)reader["dtEntered"];
+            //var b = typeof(a);
+            User user = new User();
+
+            user.Id = (int)reader["Id"];
+            user.sUsername = (string)reader["sUsername"];
+            user.sFullname = (string)reader["sFullName"];
+            user.sOffice = (string)reader["sOffice"];
+            user.sPassword = (string)reader["sPassword"];
+            user.nUserRightsId = (int)reader["nUserRightsId"];
+            user.nActive = (int)reader["nActive"];
+            //Common Properties
+            user.dtEntered = (DateTime)reader["dtEntered"];
+            user.nEnteredBy = (int)reader["nEnteredBy"];
+            user.dtUpdated = (DateTime)reader["dtUpdated"];
+            user.nUpdatedBy = (int)reader["nUpdatedBy"];
+            
+            return user;
         }
         #endregion
     }

@@ -12,9 +12,10 @@ namespace CTADBL.BaseClasses
         #endregion
 
         #region Public Common Properties
-        public DateTime dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
+        public DateTime dtEntered { get { return (_dtEntered == null) ? DateTime.Now : _dtEntered;  } set { _dtEntered = value; } }
         public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
-        public DateTime dtUpdated { get { return _dtUpdated; } set { _dtUpdated = value; } }
+        //NOTE: protected so no body can set it 
+        public DateTime dtUpdated { get { return (_dtUpdated == null) ? DateTime.Now : _dtUpdated; } set { _dtUpdated = DateTime.Now; } }
         public int nUpdatedBy { get { return _nUpdatedBy; } set { _nUpdatedBy = value; } }
         #endregion
     }
