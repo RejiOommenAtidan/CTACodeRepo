@@ -23,6 +23,7 @@ namespace CTAWebAPI.Controllers
         public DemoUserController(DBConnectionInfo info)
         {
             _info = info;
+            _demoUserRepository = new DemoUserRepository(_info.sConnectionString);
         } 
         #endregion
 
