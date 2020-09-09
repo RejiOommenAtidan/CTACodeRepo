@@ -144,9 +144,9 @@ namespace CTADBL.BaseClassRepositories
                 dtReject = (DateTime)reader["dtReject"],
                 dtReturnEmail = (DateTime)reader["dtReturnEmail"],
                 //Common Props
-                sEnteredDateTime = (string)reader["sEnteredDateTime"],
+                dtEntered = (DateTime)reader["dtEntered"],
                 nEnteredBy = (int)reader["nEnteredBy"],
-                sUpdatedDateTime = (string)reader["sUpdatedDateTime"],
+                dtUpdated = (DateTime)reader["dtUpdated"],
                 nUpdatedBy = (int)reader["nUpdatedBy"]
             };
         }

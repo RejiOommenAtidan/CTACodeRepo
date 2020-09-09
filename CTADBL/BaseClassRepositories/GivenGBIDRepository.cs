@@ -94,8 +94,8 @@ namespace CTADBL.BaseClassRepositories
                 nGivenGBId=(int)reader["nGivenGBId"],
                 nGivenOrNot=(int)reader["nGivenOrNot"],
                 nUpdatedBy=(int)reader["nUpdatedBy"],
-                sEnteredDateTime=(string)reader["sEnteredDateTime"],
-                sUpdatedDateTime = (string)reader["sUpdatedDateTime"]
+                dtEntered=(DateTime)reader["dtEntered"],
+                dtUpdated = (DateTime)reader["dtUpdated"]
             };
         }
         #endregion
