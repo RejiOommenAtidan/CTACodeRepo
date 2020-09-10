@@ -813,7 +813,6 @@ CREATE TABLE `tblActionLogger` (
   `sModuleName` varchar(255) DEFAULT NULL,
   `sEventName` varchar(255) DEFAULT NULL,
   `sDescription` varchar(255) DEFAULT NULL,
-  `sEnteredDateTime` text DEFAULT NULL,
   `dtEntered` DateTime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   PRIMARY KEY (`id`)
