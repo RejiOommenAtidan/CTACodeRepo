@@ -30,7 +30,13 @@ namespace CTADBL.QueryBuilder
         }
         private SqlString GetSqlValue(T item, PropertyInfo propertyInfo)
         {
-            return new SqlString(propertyInfo.GetValue(item).ToString());
+            /* Changes by Rajen */
+
+            var value = propertyInfo.GetValue(item);
+            return new SqlString(value == null ? "NULL" : value.ToString());
+            
+            /* Changes by Rajen */
+            //return new SqlString(propertyInfo.GetValue(item).ToString());
         }
         private string GetKeyFieldName()
         {
@@ -95,9 +101,24 @@ namespace CTADBL.QueryBuilder
                 result = String.Format("'{0}' as {1},", property.Value, propertyInfo.Name);
             }
             // datetime
-            else if (propertyInfo.PropertyType == typeof(DateTime))
+            else if (propertyInfo.PropertyType == typeof(DateTime?) || propertyInfo.PropertyType == typeof(DateTime))
             {
-                result = String.Format("'{0:u}' as {1},", property.Value, propertyInfo.Name);
+                /* Begin Changes by Rajen*/
+                
+                var str = "NULL";
+                if (property.Value != "NULL")
+                {
+                    str = DateTime.Parse(property.Value).ToString("yyyy-MM-dd HH:mm:ss");
+                    result = String.Format("'{0}' as {1},", str, propertyInfo.Name);
+                }
+                else
+                {
+                    result = String.Format("{0} as {1},", str, propertyInfo.Name);
+                }
+                
+                /* End Changes by Rajen */
+
+                //result = String.Format("'{0:u}' as {1},", property.Value, propertyInfo.Name);
             }
             return result;
         }
@@ -140,9 +161,24 @@ namespace CTADBL.QueryBuilder
                 result = String.Format("{0}='{1}',", propertyInfo.Name, property.Value);
             }
             // datetime
-            else if (propertyInfo.PropertyType == typeof(DateTime))
+            else if (propertyInfo.PropertyType == typeof(DateTime) || propertyInfo.PropertyType == typeof(DateTime?))
             {
-                result = String.Format("{0}='{1:u}',", propertyInfo.Name, property.Value);
+                /* Begin Changes by Rajen */
+
+                var str = "NULL";
+                if (property.Value != "NULL")
+                {
+                    str = DateTime.Parse(property.Value).ToString("yyyy-MM-dd HH:mm:ss");
+                    result = String.Format("{0}='{1}',", propertyInfo.Name, str);
+                }
+                else
+                {
+                    result = String.Format("{0}={1},", propertyInfo.Name, str);
+                }
+
+                /* End Changes by Rajen */
+
+                //result = String.Format("{0}='{1:}',", propertyInfo.Name, property.Value);
             }
             return result;
         }

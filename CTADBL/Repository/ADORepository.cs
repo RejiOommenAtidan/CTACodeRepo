@@ -111,14 +111,14 @@ namespace CTADBL.Repository
         #endregion
 
         #region Generic Execute Command Call
-        protected void ExecuteCommand(MySqlCommand command)
+        protected int ExecuteCommand(MySqlCommand command)
         {
             command.Connection = _connection;
             command.CommandType = CommandType.Text;
             _connection.Open();
             try
             {
-                command.ExecuteNonQuery();
+                return command.ExecuteNonQuery();
             }
             finally
             {

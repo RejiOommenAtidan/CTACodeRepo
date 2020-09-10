@@ -85,6 +85,8 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    province.dtEntered = DateTime.Now;
+                    //province.dtUpdated = DateTime.Now;
                     _provinceRepository.Add(province);
                     return Ok(province);
                 }
@@ -119,6 +121,9 @@ namespace CTAWebAPI.Controllers
 
                     if (ModelState.IsValid)
                     {
+                        provinceToUpdate.dtEntered = province.dtEntered;
+                        //provinceToUpdate.nEnteredBy = province.nEnteredBy;
+                        provinceToUpdate.dtUpdated = DateTime.Now;
                         _provinceRepository.Update(provinceToUpdate);
                         return Ok(String.Format("Province with ID: {0} updated Successfully", provinceID));
                     }
