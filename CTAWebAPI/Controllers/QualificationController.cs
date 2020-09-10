@@ -16,29 +16,29 @@ namespace CTAWebAPI.Controllers
     [Route("api/[controller]")]
     //[APIKeyAuth]
     [ApiController]
-    public class UserRightsController : ControllerBase
+    public class QualificationController : ControllerBase
     {
         #region Constructor
         private readonly DBConnectionInfo _info;
-        private readonly UserRightsRepository  _userRightsRepository;
-        public UserRightsController(DBConnectionInfo info)
+        private readonly QualificationRepository _qualificationRepository;
+        public QualificationController(DBConnectionInfo info)
         {
             _info = info;
-            _userRightsRepository = new UserRightsRepository(_info.sConnectionString);
+             _qualificationRepository = new QualificationRepository(_info.sConnectionString);
         }
         #endregion
 
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetUserRights()
+        public IActionResult GetQualification()
         {
-            #region Get All UserRights
+            #region Get All Qualification
             try
             {
-               
-                IEnumerable<UserRights> userrights = _userRightsRepository.GetAllUserRights();
-                return Ok(userrights);
+                QualificationRepository qualificationRepo = new QualificationRepository(_info.sConnectionString);
+                IEnumerable<Qualification> qualification = qualificationRepo.GetAllQualification();
+                return Ok(qualification);
             }
             catch (Exception ex)
             {
@@ -46,17 +46,17 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
-        
-        [HttpGet("GetUserRight/ID={ID}")]
+
+        [HttpGet("GetQualification/ID={ID}")]
         [Route("[action]")]
-        public IActionResult GetUserRight(string ID)
+        public IActionResult GetQualification(string ID)
         {
-            #region Get Single UserRight
+            #region Get Single Qualification
             try
             {
-              
-                UserRights fetchedUserRights = _userRightsRepository.GetUserRightsById(ID);
-                return Ok(fetchedUserRights);
+                QualificationRepository qualificationRepo = new QualificationRepository(_info.sConnectionString);
+                Qualification fetchedQualification = qualificationRepo.GetQualificationById(ID);
+                return Ok(fetchedQualification);
             }
             catch (Exception ex)
             {
@@ -71,20 +71,20 @@ namespace CTAWebAPI.Controllers
         //[AllowAnonymous]
         [HttpPost]
         [Route("[action]")]
-        public IActionResult AddUserRights(UserRights userrights)
+        public IActionResult AddQualification(Qualification qualification)
         {
-            #region Add UserRights
+            #region Add Qualification
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (userrights == null)
+                    if (qualification == null)
                     {
-                        return BadRequest("UserRights object cannot be NULL");
+                        return BadRequest("Qualification object cannot be NULL");
                     }
 
-                    _userRightsRepository.Add(userrights);
-                    return Ok(userrights);
+                    _qualificationRepository.Add(qualification);
+                    return Ok(qualification);
                 }
                 else
                 {
@@ -103,29 +103,29 @@ namespace CTAWebAPI.Controllers
         #endregion
 
         #region Edit Call
-        [HttpPost("EditUserRights/ID={ID}")]
+        [HttpPost("EditQualification/ID={ID}")]
         [Route("[action]")]
-        public IActionResult EditUserRights(string ID, [FromBody] UserRights userrights)
+        public IActionResult EditQualification(string ID, [FromBody] Qualification qualification)
         {
-            #region Edit UserRights
+            #region Edit Qualification
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (userrights == null)
+                    if (qualification == null)
                     {
-                        return BadRequest("UserRights object cannot be NULL");
+                        return BadRequest("Qualification object cannot be NULL");
                     }
-                    if (UserRightsExists(ID))
+                    if (QualificationExists(ID))
                     {
 
                         //user.User_Id
-                        _userRightsRepository.Update(userrights);
-                        return Ok("UserRights with ID: " + ID + " updated Successfully");
+                        _qualificationRepository.Update(qualification);
+                        return Ok("Qualification with ID: " + ID + " updated Successfully");
                     }
                     else
                     {
-                        return BadRequest("UserRights with ID:" + ID + " does not exist");
+                        return BadRequest("Qualification with ID:" + ID + " does not exist");
                     }
                 }
                 else
@@ -147,9 +147,9 @@ namespace CTAWebAPI.Controllers
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteUserRights(object body)
+        public IActionResult DeleteQualification(object body)
         {
-            #region Delete UserRights
+            #region Delete Qualification
             try
             {
                 //TODO: check for correct way of sending string from body
@@ -157,21 +157,21 @@ namespace CTAWebAPI.Controllers
 
                 if (!string.IsNullOrEmpty(ID))
                 {
-                    if (UserRightsExists(ID))
+                    if (QualificationExists(ID))
                     {
                        
-                        UserRights fetchedUser = _userRightsRepository.GetUserRightsById(ID);
-                        _userRightsRepository.Delete(fetchedUser);
-                        return Ok("UserRights with ID: " + ID + " removed Successfully");
+                        Qualification fetchedQualification = _qualificationRepository.GetQualificationById(ID);
+                        _qualificationRepository.Delete(fetchedQualification);
+                        return Ok("Qualification with ID: " + ID + " removed Successfully");
                     }
                     else
                     {
-                        return BadRequest("UserRights with ID: " + ID + " does not exist");
+                        return BadRequest("Qualification with ID: " + ID + " does not exist");
                     }
                 }
                 else
                 {
-                    return BadRequest("UserRights Id Cannot be null");
+                    return BadRequest("Qualification Id Cannot be null");
                 }
 
             }
@@ -183,21 +183,21 @@ namespace CTAWebAPI.Controllers
         }
         #endregion
 
-        #region Check if UserRights Exists
-        private bool UserRightsExists(string ID)
+        #region Check if Qualification Exists
+        private bool QualificationExists(string ID)
         {
             try
             {
                
-                UserRights fetchedUser = _userRightsRepository.GetUserRightsById(ID);
-                if (fetchedUser != null)
+                Qualification fetchedQualification = _qualificationRepository.GetQualificationById(ID);
+                if (fetchedQualification != null)
                     return true;
                 else
                     return false;
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception in UserRights Exists Function, Exception Message: " + ex.Message);
+                throw new Exception("Exception in Qualification Exists Function, Exception Message: " + ex.Message);
             }
         }
         #endregion

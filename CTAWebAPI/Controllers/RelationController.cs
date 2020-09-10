@@ -16,29 +16,29 @@ namespace CTAWebAPI.Controllers
     [Route("api/[controller]")]
     //[APIKeyAuth]
     [ApiController]
-    public class UserRightsController : ControllerBase
+    public class RelationController : ControllerBase
     {
         #region Constructor
         private readonly DBConnectionInfo _info;
-        private readonly UserRightsRepository  _userRightsRepository;
-        public UserRightsController(DBConnectionInfo info)
+        private readonly RelationRepository _relationRepository;
+        public RelationController(DBConnectionInfo info)
         {
             _info = info;
-            _userRightsRepository = new UserRightsRepository(_info.sConnectionString);
+            _relationRepository = new RelationRepository(_info.sConnectionString);
         }
         #endregion
 
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetUserRights()
+        public IActionResult GetRelation()
         {
-            #region Get All UserRights
+            #region Get All Relation
             try
             {
-               
-                IEnumerable<UserRights> userrights = _userRightsRepository.GetAllUserRights();
-                return Ok(userrights);
+                RelationRepository relationRepo = new RelationRepository(_info.sConnectionString);
+                IEnumerable<Relation> relation = relationRepo.GetAllRelation();
+                return Ok(relation);
             }
             catch (Exception ex)
             {
@@ -46,17 +46,17 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
-        
-        [HttpGet("GetUserRight/ID={ID}")]
+
+        [HttpGet("GetRelation/ID={ID}")]
         [Route("[action]")]
-        public IActionResult GetUserRight(string ID)
+        public IActionResult GetRelation(string ID)
         {
-            #region Get Single UserRight
+            #region Get Single Relation
             try
             {
               
-                UserRights fetchedUserRights = _userRightsRepository.GetUserRightsById(ID);
-                return Ok(fetchedUserRights);
+                Relation fetchedRelation = _relationRepository.GetRelationById(ID);
+                return Ok(fetchedRelation);
             }
             catch (Exception ex)
             {
@@ -71,20 +71,20 @@ namespace CTAWebAPI.Controllers
         //[AllowAnonymous]
         [HttpPost]
         [Route("[action]")]
-        public IActionResult AddUserRights(UserRights userrights)
+        public IActionResult AddRelation(Relation relation)
         {
-            #region Add UserRights
+            #region Add Relation
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (userrights == null)
+                    if (relation == null)
                     {
-                        return BadRequest("UserRights object cannot be NULL");
+                        return BadRequest("Relation object cannot be NULL");
                     }
 
-                    _userRightsRepository.Add(userrights);
-                    return Ok(userrights);
+                    _relationRepository.Add(relation);
+                    return Ok(relation);
                 }
                 else
                 {
@@ -103,29 +103,29 @@ namespace CTAWebAPI.Controllers
         #endregion
 
         #region Edit Call
-        [HttpPost("EditUserRights/ID={ID}")]
+        [HttpPost("EditRelation/ID={ID}")]
         [Route("[action]")]
-        public IActionResult EditUserRights(string ID, [FromBody] UserRights userrights)
+        public IActionResult EditRelation(string ID, [FromBody] Relation relation)
         {
-            #region Edit UserRights
+            #region Edit Relation
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (userrights == null)
+                    if (relation == null)
                     {
-                        return BadRequest("UserRights object cannot be NULL");
+                        return BadRequest("Relation object cannot be NULL");
                     }
-                    if (UserRightsExists(ID))
+                    if (RelationExists(ID))
                     {
 
                         //user.User_Id
-                        _userRightsRepository.Update(userrights);
-                        return Ok("UserRights with ID: " + ID + " updated Successfully");
+                        _relationRepository.Update(relation);
+                        return Ok("Relation with ID: " + ID + " updated Successfully");
                     }
                     else
                     {
-                        return BadRequest("UserRights with ID:" + ID + " does not exist");
+                        return BadRequest("Relation with ID:" + ID + " does not exist");
                     }
                 }
                 else
@@ -147,9 +147,9 @@ namespace CTAWebAPI.Controllers
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteUserRights(object body)
+        public IActionResult DeleteRelation(object body)
         {
-            #region Delete UserRights
+            #region Delete Relation
             try
             {
                 //TODO: check for correct way of sending string from body
@@ -157,21 +157,21 @@ namespace CTAWebAPI.Controllers
 
                 if (!string.IsNullOrEmpty(ID))
                 {
-                    if (UserRightsExists(ID))
+                    if (RelationExists(ID))
                     {
                        
-                        UserRights fetchedUser = _userRightsRepository.GetUserRightsById(ID);
-                        _userRightsRepository.Delete(fetchedUser);
-                        return Ok("UserRights with ID: " + ID + " removed Successfully");
+                        Relation fetchedRelation = _relationRepository.GetRelationById(ID);
+                        _relationRepository.Delete(fetchedRelation);
+                        return Ok("Relation with ID: " + ID + " removed Successfully");
                     }
                     else
                     {
-                        return BadRequest("UserRights with ID: " + ID + " does not exist");
+                        return BadRequest("Relation with ID: " + ID + " does not exist");
                     }
                 }
                 else
                 {
-                    return BadRequest("UserRights Id Cannot be null");
+                    return BadRequest("Relation Id Cannot be null");
                 }
 
             }
@@ -183,21 +183,21 @@ namespace CTAWebAPI.Controllers
         }
         #endregion
 
-        #region Check if UserRights Exists
-        private bool UserRightsExists(string ID)
+        #region Check if Relation Exists
+        private bool RelationExists(string ID)
         {
             try
             {
                
-                UserRights fetchedUser = _userRightsRepository.GetUserRightsById(ID);
-                if (fetchedUser != null)
+                Relation fetchedRelation = _relationRepository.GetRelationById(ID);
+                if (fetchedRelation != null)
                     return true;
                 else
                     return false;
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception in UserRights Exists Function, Exception Message: " + ex.Message);
+                throw new Exception("Exception in Relation Exists Function, Exception Message: " + ex.Message);
             }
         }
         #endregion

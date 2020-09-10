@@ -5,21 +5,21 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace CTADBL.BaseClasses
 {
-    [Table("lstuserrights")]
-    public class UserRights 
+    [Table("lstrelation")]
+    public class Relation
     {
-        #region Private UserRights Properties 
+       
+        #region Private Relation Properties 
         private int _Id;
-        private string _sUserRightsName;
-
+        private string _sRelation;
         #endregion
 
         #region Public Common Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
-        public string sUserRightsName { get { return _sUserRightsName; } set { _sUserRightsName = value; } }
-       
-        #endregion
+        public string sRelation { get { return _sRelation; } set { _sRelation = value; } }
+        
 
-     }
+        #endregion
+    }
 }

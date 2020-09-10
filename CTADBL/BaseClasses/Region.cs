@@ -6,20 +6,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CTADBL.BaseClasses
 {
     [Table("lstuserrights")]
-    public class UserRights 
+    public class Region
     {
-        #region Private UserRights Properties 
+       
+        
+        #region Private Region Properties 
         private int _Id;
-        private string _sUserRightsName;
+        private string _sRegion_name;
+        private string _sRegion_code;
 
         #endregion
 
         #region Public Common Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
-        public string sUserRightsName { get { return _sUserRightsName; } set { _sUserRightsName = value; } }
-       
-        #endregion
+        public string sRegion_name { get { return _sRegion_name; } set { _sRegion_name = value; } }
+        public string sRegion_code { get { return _sRegion_code; } set { _sRegion_code = value; } }
 
-     }
+        #endregion
+    }
 }
