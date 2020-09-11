@@ -742,7 +742,7 @@ CREATE TABLE `tblGreenBook` (
   
   `sOldGreenBKNo` varchar(255) DEFAULT NULL,
   `sFstGreenBkNo` varchar(255) DEFAULT NULL,
-  `dtFormDate` text DEFAULT NULL,
+  `dtFormDate` date DEFAULT NULL,
 
   `sFathersName` varchar(255) DEFAULT NULL,
   `sFathersID` varchar(255) DEFAULT NULL,
