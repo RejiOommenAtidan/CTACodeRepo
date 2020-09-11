@@ -6,7 +6,9 @@ import {
   Container,
   Grid,
   Button,
-  Typography
+  Typography,
+  FormControl,
+  TextField
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
@@ -81,12 +83,24 @@ const useStyles = makeStyles((theme) => ({
 export default function EnhancedTable() {
   const classes = useStyles();
   const navigate = useNavigate();
-
+  const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   // const [loadingProp, setloadingProp] = useState(true);
   const [modal, setmodal] = useState(false);
   const [selectedUser, setselectedUser] = useState('');
   const [selectedUserName, setselectedUserName] = useState('');
+
+  //VAR
+  const [countryID, setCountryID] = React.useState('');
+  const [countryName, setCountryName] = React.useState('');
+  const [countryPK, setCountryPK] = React.useState(0);
+
+  const handleEditClickOpen = () => {
+    setEditModal(true);
+  };
+  const handleEditClickClose = () => {
+    setEditModal(false);
+  };
 
   const options = {
     filterType: 'checkbox',
@@ -103,8 +117,8 @@ export default function EnhancedTable() {
       options: {
         filter: true,
         sort: true,
-        
-       
+
+
       }
     },
     {
@@ -123,7 +137,7 @@ export default function EnhancedTable() {
         sort: true
       }
     },
-   
+
     {
       name: "edit",
       label: "Edit",
@@ -137,7 +151,7 @@ export default function EnhancedTable() {
               variant="outlined"
               color="primary"
               startIcon={<EditOutlinedIcon />}
-              onClick={() => { editClick(tableMeta.rowData[0]) }}
+              onClick={() => { editClick(tableMeta.rowData) }}
             >Edit
             </Button>
           )
@@ -167,12 +181,50 @@ export default function EnhancedTable() {
     }
   ];
 
-  const editClick = (user_Id) => {
+  const editClick = (countryObj) => {
     // //TODO: remove usage of window.location
     // window.location = 'editUser/' + user_Id.toString();
     //Done
-    navigate('/app/editUser/'+user_Id.toString());
+    // navigate('/app/editUser/' + user_Id.toString());
+    // console.log(user_Id);
+    setCountryPK(countryObj[0]);
+    setCountryID(countryObj[1]);
+    setCountryName(countryObj[2]);
+    setEditModal(true);
   }
+
+  const editAPICall = ()=>{
+    let CountryID = countryPK;
+    let countryToUpdate = {
+      ID : countryPK,
+      sCountryID: countryID,
+      sCountry: countryName,
+    };
+    axios.post(`/Country/EditCountry/CountryID=` + CountryID,countryToUpdate)
+      .then(resp => {
+        if (resp.status === 200) {
+          console.log(resp.data);
+          setEditModal(false);
+          //navigate('')
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  };
+
 
   const deleteClick = (user_Id, userName) => {
     console.log(user_Id)
@@ -243,6 +295,7 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Page
@@ -290,6 +343,46 @@ export default function EnhancedTable() {
           </Container>
         </Box>
       </Page>
+      <Dialog open={editModal} onClose={handleEditClickClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Country</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <div>
+              <Grid container>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+                      id="id_countryId"
+                      label="Country ID"
+                      type="text"
+                      InputProps={{
+                        readOnly: true
+                      }}
+                      value={countryID}
+
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} >
+                  <FormControl className={classes.formControl}>
+                    <TextField
+                      id="id_CountryName"
+                      label="Country Name"
+                      type="text"
+                      value={countryName}
+                      onChange={(e)=>{setCountryName(e.target.value)}}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleEditClickClose} color="primary">Cancel</Button>
+          <Button onClick={editAPICall} color="primary">Save</Button>
+        </DialogActions>
+      </Dialog>
     </ThemeProvider>
   );
 }
