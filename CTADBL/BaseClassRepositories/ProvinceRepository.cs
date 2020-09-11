@@ -15,26 +15,26 @@ namespace CTADBL.BaseClassRepositories
         }
 
         #region Province Add Call
-        public void Add(Province province)
+        public int Add(Province province)
         {
             var builder = new SqlQueryBuilder<Province>(province);
-            ExecuteCommand(builder.GetInsertCommand());
+            return ExecuteCommand(builder.GetInsertCommand());
         }
         #endregion
 
         #region Province Update Call
-        public void Update(Province province)
+        public int Update(Province province)
         {
             var builder = new SqlQueryBuilder<Province>(province);
-            ExecuteCommand(builder.GetUpdateCommand());
+            return ExecuteCommand(builder.GetUpdateCommand());
         }
         #endregion
 
         #region Province Delete Call
-        public void Delete(Province province)
+        public int Delete(Province province)
         {
             var builder = new SqlQueryBuilder<Province>(province);
-            ExecuteCommand(builder.GetDeleteCommand());
+            return ExecuteCommand(builder.GetDeleteCommand());
         }
         #endregion
 
@@ -59,7 +59,7 @@ namespace CTADBL.BaseClassRepositories
         #region Populate Province Records
         public override Province PopulateRecord(MySqlDataReader reader)
         {
-            //reader.get
+           
             int colIndex1 = reader.GetOrdinal("dtEntered");
             int colIndex2 = reader.GetOrdinal("dtUpdated");
 
@@ -71,7 +71,7 @@ namespace CTADBL.BaseClassRepositories
             }
             if (!reader.IsDBNull(colIndex2))
             {
-                dtUpdated = (DateTime)reader["dtEntered"];
+                dtUpdated = (DateTime)reader["dtUpdated"];
             }
 
             return new Province

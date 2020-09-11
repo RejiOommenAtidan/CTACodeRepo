@@ -19,26 +19,26 @@ namespace CTADBL.BaseClassRepositories
 
 
         #region Occupation Add Call
-        public void Add(Occupation occupation)
+        public int Add(Occupation occupation)
         {
             var builder = new SqlQueryBuilder<Occupation>(occupation);
-            ExecuteCommand(builder.GetInsertCommand());
+            return ExecuteCommand(builder.GetInsertCommand());
         }
         #endregion
 
         #region Occupation Update Call
-        public void Update(Occupation occupation)
+        public int Update(Occupation occupation)
         {
             var builder = new SqlQueryBuilder<Occupation>(occupation);
-            ExecuteCommand(builder.GetUpdateCommand());
+            return ExecuteCommand(builder.GetUpdateCommand());
         }
         #endregion
 
         #region Occupation Delete Call
-        public void Delete(Occupation occupation)
+        public int Delete(Occupation occupation)
         {
             var builder = new SqlQueryBuilder<Occupation>(occupation);
-            ExecuteCommand(builder.GetDeleteCommand());
+            return ExecuteCommand(builder.GetDeleteCommand());
         }
         #endregion
 
@@ -46,14 +46,14 @@ namespace CTADBL.BaseClassRepositories
         public IEnumerable<Occupation> GetAllOccupations()
         {
             // DBAs across the country are having strokes over this next command!
-            using (var command = new MySqlCommand("SELECT Id, sOccupationDesc, sOccupationDescTibetan FROM lstoccupation"))
+            using (var command = new MySqlCommand("SELECT Id, sOccupationDesc, sOccupationDescTibetan, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstoccupation"))
             {
                 return GetRecords(command);
             }
         }
         public Occupation GetOccupationById(string id)
         {
-            using (var command = new MySqlCommand("SELECT ID,  sOccupationDesc, sOccupationDescTibetan FROM lstoccupation WHERE ID = @id"))
+            using (var command = new MySqlCommand("SELECT ID,  sOccupationDesc, sOccupationDescTibetan, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstoccupation WHERE ID = @id"))
             {
                 command.Parameters.AddWithValue("id", id);
                 return GetRecord(command);
@@ -64,17 +64,31 @@ namespace CTADBL.BaseClassRepositories
         #region Populate Occupation Records
         public override Occupation PopulateRecord(MySqlDataReader reader)
         {
-            return new Occupation
+            int colIndex1 = reader.GetOrdinal("dtEntered");
+            int colIndex2 = reader.GetOrdinal("dtUpdated");
+
+            DateTime? dtEntered = null;
+            DateTime? dtUpdated = null;
+            if (!reader.IsDBNull(colIndex1))
             {
-                Id = (int)reader["Id"],
-                sOccupationDesc = (string)reader["sOccupationDesc"],
-                sOccupationDescTibetan = (string)reader["sOccupationDescTibetan"]
-            };
+                dtEntered = (DateTime)reader["dtEntered"];
+            }
+            if (!reader.IsDBNull(colIndex2))
+            {
+                dtUpdated = (DateTime)reader["dtUpdated"];
+            }
+
+            return new Occupation
+                {
+                    Id = (int)reader["Id"],
+                    sOccupationDesc = (string)reader["sOccupationDesc"],
+                    sOccupationDescTibetan = (string)reader["sOccupationDescTibetan"],
+                    dtEntered = dtEntered,
+                    nEnteredBy = (int)reader["nEnteredBy"],
+                    dtUpdated = dtUpdated,
+                    nUpdatedBy = (int)reader["nUpdatedBy"]
+                };
         }
         #endregion
-
-
     }
-
-
 }

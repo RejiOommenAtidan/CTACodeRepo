@@ -86,8 +86,19 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _madebTypeRepository.Add(madebType);
-                    return Ok(madebType);
+                    madebType.dtEntered = DateTime.Now;
+                    madebType.dtUpdated = DateTime.Now;
+
+                    /* TO DO: Catch User ID and update the following properties
+                     * nEnteredBy
+                     * nUpdatedBy
+                     */
+
+                    int inserted = _madebTypeRepository.Add(madebType);
+                    if(inserted > 0)
+                        return Ok(madebType);
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while inserting the record.");
                 }
                 else
                 {
@@ -119,8 +130,18 @@ namespace CTAWebAPI.Controllers
 
                     if (ModelState.IsValid)
                     {
-                        _madebTypeRepository.Update(madebTypeToUpdate);
-                        return Ok(String.Format("Madeb Type with ID: {0} updated Successfully", madebTypeID));
+                        madebTypeToUpdate.dtEntered = madebType.dtEntered;
+                        madebTypeToUpdate.dtUpdated = DateTime.Now;
+                        
+                        /*To Do:
+                        ===> countryToUpdate.nUpdatedBy =  //catch current user id here
+                        */
+                        
+                        int updated = _madebTypeRepository.Update(madebTypeToUpdate);
+                        if(updated > 0)
+                            return Ok(String.Format("Madeb Type with ID: {0} updated Successfully", madebTypeID));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while updating the record.");
                     }
                     else
                     {
@@ -157,8 +178,11 @@ namespace CTAWebAPI.Controllers
                 {
                     if (madebType.sMadebType == madebTypeToDelete.sMadebType)
                     {
-                        _madebTypeRepository.Delete(madebTypeToDelete);// Delete method should return boolean for success.
-                        return Ok(String.Format("Madeb Type with ID: {0} deleted successfully", madebTypeToDelete.Id));
+                        int deleted = _madebTypeRepository.Delete(madebTypeToDelete);
+                        if(deleted > 0)
+                            return Ok(String.Format("Madeb Type with ID: {0} deleted successfully", madebTypeToDelete.Id));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while deleting the record.");
                     }
                     else
                     {
