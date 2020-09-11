@@ -93,11 +93,10 @@ namespace CTAWebAPI.Controllers
                      * nUpdatedBy
                      */
                     
-                    int insertId = _provinceRepository.Add(province);
-                    if(insertId > 0)
+                    int inserted = _provinceRepository.Add(province);
+                    if(inserted > 0)
                     {
-                        Province addedProvince = _provinceRepository.GetProvinceById(insertId.ToString());
-                        return Ok(addedProvince);
+                        return Ok(province);
                     }
                     else 
                     {
@@ -143,8 +142,8 @@ namespace CTAWebAPI.Controllers
                         //to uncomment later
                         //provinceToUpdate.nEnteredBy = //catch current user id here;
 
-                        int success = _provinceRepository.Update(provinceToUpdate);
-                        if(success > 0)
+                        int updated = _provinceRepository.Update(provinceToUpdate);
+                        if(updated > 0)
                         {
                             Province updatedProvince = _provinceRepository.GetProvinceById(provinceID);
                             return Ok(String.Format("Province with ID: {0} updated Successfully", provinceID));
@@ -189,8 +188,8 @@ namespace CTAWebAPI.Controllers
                 {
                     if (province.sProvince == provinceToDelete.sProvince)
                     {
-                        int success = _provinceRepository.Delete(provinceToDelete);// Delete method should return boolean for success.
-                        if (success > 0)
+                        int deleted = _provinceRepository.Delete(provinceToDelete);// Delete method should return boolean for success.
+                        if (deleted > 0)
                             return Ok(String.Format("Province with ID: {0} deleted successfully", provinceToDelete.Id));
                         else
                             return StatusCode(StatusCodes.Status500InternalServerError);
