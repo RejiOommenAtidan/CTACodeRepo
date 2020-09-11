@@ -25,6 +25,8 @@ import {
 } from 'react-feather';
 import NavItem from './NavItem';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
+import PublicIcon from '@material-ui/icons/Public';
+
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
   jobTitle: 'Mumbai, India ',
@@ -49,7 +51,13 @@ const items = [
     href: '/app/madeb',
     icon: MenuBookIcon,
     title: 'Madeb'
-  }
+  },
+  {
+    href: '/country',
+    icon: PublicIcon,
+    title: 'Country'
+  },
+ 
 ];
 const useStyles = makeStyles(() => ({
   mobileDrawer: {

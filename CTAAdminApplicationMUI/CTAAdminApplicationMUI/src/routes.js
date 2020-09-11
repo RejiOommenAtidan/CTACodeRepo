@@ -4,6 +4,7 @@ import DashboardView from 'src/views/reports/DashboardView';
 import AddView from 'src/views/new/AddView';
 import EditView from 'src/views/edit/EditView';
 import MadebView from 'src/views/madeb/MadebView';
+import CountryView from 'src/views/master/country';
 
 const appRoutes = [
   {
@@ -21,7 +22,7 @@ const appRoutes = [
     path: '/',
     element: <DashboardLayout />,
     children: [
-      { path: '', element: <DashboardView /> }
+      { path: 'country', element: <CountryView /> }
     ]
   }
 ];
