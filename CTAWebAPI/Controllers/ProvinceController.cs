@@ -86,9 +86,25 @@ namespace CTAWebAPI.Controllers
                 if (ModelState.IsValid)
                 {
                     province.dtEntered = DateTime.Now;
-                    //province.dtUpdated = DateTime.Now;
-                    _provinceRepository.Add(province);
-                    return Ok(province);
+                    province.dtUpdated = DateTime.Now;
+
+                    /* TO DO: Catch User ID and update the following properties
+                     * nEnteredBy
+                     * nUpdatedBy
+                     */
+                    
+                    int insertId = _provinceRepository.Add(province);
+                    if(insertId > 0)
+                    {
+                        Province addedProvince = _provinceRepository.GetProvinceById(insertId.ToString());
+                        return Ok(addedProvince);
+                    }
+                    else 
+                    {
+                        string error = "Error encountered with insert.";
+                        return StatusCode(StatusCodes.Status500InternalServerError, error);
+                    }
+                    
                 }
                 else
                 {
@@ -122,10 +138,21 @@ namespace CTAWebAPI.Controllers
                     if (ModelState.IsValid)
                     {
                         provinceToUpdate.dtEntered = province.dtEntered;
-                        //provinceToUpdate.nEnteredBy = province.nEnteredBy;
                         provinceToUpdate.dtUpdated = DateTime.Now;
-                        _provinceRepository.Update(provinceToUpdate);
-                        return Ok(String.Format("Province with ID: {0} updated Successfully", provinceID));
+
+                        //to uncomment later
+                        //provinceToUpdate.nEnteredBy = //catch current user id here;
+
+                        int success = _provinceRepository.Update(provinceToUpdate);
+                        if(success > 0)
+                        {
+                            Province updatedProvince = _provinceRepository.GetProvinceById(provinceID);
+                            return Ok(String.Format("Province with ID: {0} updated Successfully", provinceID));
+                        }
+                        else
+                        {
+                            return StatusCode(StatusCodes.Status500InternalServerError);
+                        }
                     }
                     else
                     {
@@ -162,8 +189,11 @@ namespace CTAWebAPI.Controllers
                 {
                     if (province.sProvince == provinceToDelete.sProvince)
                     {
-                        _provinceRepository.Delete(provinceToDelete);// Delete method should return boolean for success.
-                        return Ok(String.Format("Province with ID: {0} deleted successfully", provinceToDelete.Id));
+                        int success = _provinceRepository.Delete(provinceToDelete);// Delete method should return boolean for success.
+                        if (success > 0)
+                            return Ok(String.Format("Province with ID: {0} deleted successfully", provinceToDelete.Id));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError);
                     }
                     else
                     {

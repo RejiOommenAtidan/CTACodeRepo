@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text.Json;
 
 namespace CTAWebAPI.Controllers
@@ -53,7 +54,8 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
-
+        [HttpGet]
+        [Route("[action]")]
         public IActionResult GetCountryById(string Id)
         {
             #region Get Country by Id
@@ -89,15 +91,26 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    
+
                     /* IF model is valid, do we reach this condition ? */
                     //if (country == null)
                     //{
                     //    return BadRequest("Country cannot be NULL");
                     //}
 
-                    _countryRepository.Add(country);
-                    return Ok(country);
+                    country.dtEntered = DateTime.Now;
+                    country.dtUpdated = DateTime.Now;
+                    
+                    /* TO DO: Catch User ID and update the following properties
+                     * nEnteredBy
+                     * nUpdatedBy
+                     */
+
+                    int inserted = _countryRepository.Add(country);
+                    if (inserted > 0)
+                        return Ok(country);
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while inserting the record.");
                 }
                 else
                 {
@@ -128,8 +141,16 @@ namespace CTAWebAPI.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        _countryRepository.Update(countryToUpdate);
-                        return Ok(String.Format("Country with ID: {0} updated Successfully", ID));
+                        countryToUpdate.dtEntered = country.dtEntered;
+                        //to uncomment later
+                        //countryToUpdate.nUpdatedBy =  //catch current user id here
+                        countryToUpdate.dtUpdated = DateTime.Now;
+                        int updated = _countryRepository.Update(countryToUpdate);
+                        if (updated > 0)
+                            return Ok(String.Format("Country with ID: {0} updated Successfully", ID));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while updating the record.");
+
                     }
                     else
                     {
@@ -165,8 +186,12 @@ namespace CTAWebAPI.Controllers
                 {
                     if (country.sCountry == countryToDelete.sCountry && country.sCountryID == countryToDelete.sCountryID)
                     {
-                        _countryRepository.Delete(countryToDelete);// Delete method should return boolean for success.
-                        return Ok(string.Format("Region with ID: {0} deleted successfully", countryToDelete.ID));
+                        int deleted = _countryRepository.Delete(countryToDelete);// Delete method should return boolean for success.
+                        if(deleted > 0)
+                            return Ok(string.Format("Region with ID: {0} deleted successfully", countryToDelete.ID));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while deleting the record.");
+
                     }
                     else
                     {

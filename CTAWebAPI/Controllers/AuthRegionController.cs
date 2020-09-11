@@ -54,6 +54,8 @@ namespace CTAWebAPI.Controllers
             #endregion
         }
 
+        [HttpGet]
+        [Route("[action]")]
         public IActionResult GetAuthRegionById(string Id)
         {
             try
@@ -92,9 +94,19 @@ namespace CTAWebAPI.Controllers
                     //{
                     //    return BadRequest("User object cannot be NULL");
                     //}
+                    authRegion.dtEntered = DateTime.Now;
+                    authRegion.dtUpdated = DateTime.Now;
 
-                    _authRegionRepository.Add(authRegion);
-                    return Ok(authRegion);
+                    /* TO DO: Catch User ID and update the following properties
+                     * nEnteredBy
+                     * nUpdatedBy
+                     */
+
+                    int insert = _authRegionRepository.Add(authRegion);
+                    if (insert > 0)
+                        return Ok(authRegion);
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while inserting the record.");
                 }
                 else
                 {
@@ -126,8 +138,15 @@ namespace CTAWebAPI.Controllers
 
                     if (ModelState.IsValid)
                     {
-                        _authRegionRepository.Update(regionToUpdate);
-                        return Ok(String.Format("Region with ID: {0} updated Successfully", RegionID));
+                        regionToUpdate.dtEntered = region.dtEntered;
+                        //to uncomment later
+                        //regionToUpdate.nEnteredBy = // catch current user id here
+                        regionToUpdate.dtUpdated = DateTime.Now;
+                        int updated = _authRegionRepository.Update(regionToUpdate);
+                        if(updated > 0)
+                            return Ok(String.Format("Region with ID: {0} updated Successfully", RegionID));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while updating the record.");
                     }
                     else
                     {
@@ -164,8 +183,11 @@ namespace CTAWebAPI.Controllers
                 {
                     if(region.sAuthRegion == regionToDelete.sAuthRegion && region.sCountryID == regionToDelete.sCountryID)
                     {
-                        _authRegionRepository.Delete(regionToDelete);// Delete method should return boolean for success.
-                        return Ok(string.Format("Region with ID: {0} deleted successfully", regionToDelete.ID));
+                        int deleted = _authRegionRepository.Delete(regionToDelete);// Delete method should return boolean for success.
+                        if(deleted > 0)
+                            return Ok(string.Format("Region with ID: {0} deleted successfully", regionToDelete.ID));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while deleting the record.");
                     }
                     else
                     {

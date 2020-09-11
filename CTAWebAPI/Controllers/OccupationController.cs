@@ -82,8 +82,19 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _occupationRepository.Add(occupation);
-                    return Ok(occupation);
+                    occupation.dtEntered = DateTime.Now;
+                    occupation.dtUpdated = DateTime.Now;
+                    
+                    /* TO DO: Catch User ID and update the following properties
+                     * nEnteredBy
+                     * nUpdatedBy
+                     */
+
+                    int inserted = _occupationRepository.Add(occupation);
+                    if (inserted > 0)
+                        return Ok(occupation);
+                    else
+                        return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while inserting the record.");
                 }
                 else
                 {
@@ -114,8 +125,19 @@ namespace CTAWebAPI.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        _occupationRepository.Update(occupationToUpdate);
-                        return Ok(String.Format("Occupation with ID: {0} updated Successfully", occupationId));
+                        occupationToUpdate.dtEntered = occupation.dtEntered;
+                        occupationToUpdate.dtUpdated = DateTime.Now;
+                            
+
+                        /*To Do:
+                        ===> occupationToUpdate.nUpdatedBy =  //catch current user id here
+                        */
+
+                        int updated = _occupationRepository.Update(occupationToUpdate);
+                        if(updated > 0)
+                            return Ok(String.Format("Occupation with ID: {0} updated Successfully", occupationId));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while updating the record.");
                     }
                     else
                     {
@@ -151,8 +173,11 @@ namespace CTAWebAPI.Controllers
                 {
                     if (occupation.sOccupationDesc == occupationToDelete.sOccupationDesc && occupation.sOccupationDescTibetan == occupationToDelete.sOccupationDescTibetan)
                     {
-                        _occupationRepository.Delete(occupationToDelete);// Delete method should return boolean for success.
-                        return Ok(String.Format("Occupation with ID: {0} deleted successfully", occupationToDelete.Id));
+                        int deleted = _occupationRepository.Delete(occupationToDelete);
+                        if(deleted > 0)
+                            return Ok(String.Format("Occupation with ID: {0} deleted successfully", occupationToDelete.Id));
+                        else
+                            return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while deleting the record.");
                     }
                     else
                     {
