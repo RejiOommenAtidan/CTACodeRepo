@@ -78,10 +78,8 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (relation == null)
-                    {
-                        return BadRequest("Relation object cannot be NULL");
-                    }
+                    relation.dtEntered = DateTime.Now;
+                    relation.dtUpdated = DateTime.Now;
 
                     _relationRepository.Add(relation);
                     return Ok(relation);
@@ -112,13 +110,12 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (relation == null)
-                    {
-                        return BadRequest("Relation object cannot be NULL");
-                    }
+                    
                     if (RelationExists(ID))
                     {
-
+                        Relation fetchedrelation = _relationRepository.GetRelationById(ID);
+                        relation.dtEntered = fetchedrelation.dtEntered;
+                        relation.dtUpdated = DateTime.Now;
                         //user.User_Id
                         _relationRepository.Update(relation);
                         return Ok("Relation with ID: " + ID + " updated Successfully");
@@ -147,26 +144,26 @@ namespace CTAWebAPI.Controllers
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteRelation(object body)
+        public IActionResult DeleteRelation(Relation  relation)
         {
             #region Delete Relation
             try
             {
                 //TODO: check for correct way of sending string from body
-                string ID = JsonSerializer.Serialize(body);
+                string relationId = relation.Id.ToString();
 
-                if (!string.IsNullOrEmpty(ID))
+                if (!string.IsNullOrEmpty(relationId))
                 {
-                    if (RelationExists(ID))
+                    if (RelationExists(relationId))
                     {
                        
-                        Relation fetchedRelation = _relationRepository.GetRelationById(ID);
+                        Relation fetchedRelation = _relationRepository.GetRelationById(relationId);
                         _relationRepository.Delete(fetchedRelation);
-                        return Ok("Relation with ID: " + ID + " removed Successfully");
+                        return Ok("Relation with ID: " + relationId + " removed Successfully");
                     }
                     else
                     {
-                        return BadRequest("Relation with ID: " + ID + " does not exist");
+                        return BadRequest("Relation with ID: " + relationId + " does not exist");
                     }
                 }
                 else

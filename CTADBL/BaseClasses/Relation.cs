@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CTADBL.BaseClasses
 {
     [Table("lstrelation")]
-    public class Relation
+    public class Relation : CommonProps
     {
        
         #region Private Relation Properties 

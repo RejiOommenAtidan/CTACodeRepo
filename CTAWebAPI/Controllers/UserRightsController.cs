@@ -47,7 +47,7 @@ namespace CTAWebAPI.Controllers
             #endregion
         }
         
-        [HttpGet("GetUserRight/ID={ID}")]
+        [HttpGet("GetUserRights/ID={ID}")]
         [Route("[action]")]
         public IActionResult GetUserRight(string ID)
         {
@@ -78,10 +78,8 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (userrights == null)
-                    {
-                        return BadRequest("UserRights object cannot be NULL");
-                    }
+                    userrights.dtEntered = DateTime.Now;
+                    userrights.dtUpdated = DateTime.Now;
 
                     _userRightsRepository.Add(userrights);
                     return Ok(userrights);
@@ -112,13 +110,12 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (userrights == null)
-                    {
-                        return BadRequest("UserRights object cannot be NULL");
-                    }
+                   
                     if (UserRightsExists(ID))
                     {
-
+                        UserRights fetcheduserrights = _userRightsRepository.GetUserRightsById(ID);
+                        userrights.dtEntered = fetcheduserrights.dtEntered;
+                        userrights.dtUpdated = DateTime.Now;
                         //user.User_Id
                         _userRightsRepository.Update(userrights);
                         return Ok("UserRights with ID: " + ID + " updated Successfully");
@@ -147,26 +144,26 @@ namespace CTAWebAPI.Controllers
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteUserRights(object body)
+        public IActionResult DeleteUserRights(UserRights userRights)
         {
             #region Delete UserRights
             try
             {
-                //TODO: check for correct way of sending string from body
-                string ID = JsonSerializer.Serialize(body);
 
-                if (!string.IsNullOrEmpty(ID))
+
+                string userRightsId = userRights.Id.ToString();        
+                if (!string.IsNullOrEmpty(userRightsId))
                 {
-                    if (UserRightsExists(ID))
+                    if (UserRightsExists(userRightsId))
                     {
                        
-                        UserRights fetchedUser = _userRightsRepository.GetUserRightsById(ID);
+                        UserRights fetchedUser = _userRightsRepository.GetUserRightsById(userRightsId);
                         _userRightsRepository.Delete(fetchedUser);
-                        return Ok("UserRights with ID: " + ID + " removed Successfully");
+                        return Ok("UserRights with ID: " + userRightsId + " removed Successfully");
                     }
                     else
                     {
-                        return BadRequest("UserRights with ID: " + ID + " does not exist");
+                        return BadRequest("UserRights with ID: " + userRightsId + " does not exist");
                     }
                 }
                 else

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CTADBL.BaseClasses
 {
     [Table("lstqualification")]
-    public class Qualification
+    public class Qualification : CommonProps
     {
 
         #region Private Qualification Properties 

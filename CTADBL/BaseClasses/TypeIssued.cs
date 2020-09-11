@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CTADBL.BaseClasses
 {
     [Table("lsttypeissued")]
-    public class TypeIssued
+    public class TypeIssued : CommonProps
     {
 
         #region Private TypeIssued Properties 

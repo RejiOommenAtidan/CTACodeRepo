@@ -78,10 +78,8 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (typeissued == null)
-                    {
-                        return BadRequest("TypeIssued object cannot be NULL");
-                    }
+                    typeissued.dtEntered = DateTime.Now;
+                    typeissued.dtUpdated = DateTime.Now;
 
                     _typedIssuedRepository.Add(typeissued);
                     return Ok(typeissued);
@@ -112,13 +110,13 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (typeissued == null)
-                    {
-                        return BadRequest("TypeIssued object cannot be NULL");
-                    }
+                    
                     if (TypeIssuedExists(ID))
                     {
 
+                        TypeIssued fetchedtypeissued = _typedIssuedRepository.GetTypeIssuedById(ID);
+                        typeissued.dtEntered = fetchedtypeissued.dtEntered;
+                        typeissued.dtUpdated = DateTime.Now;
                         //user.User_Id
                         _typedIssuedRepository.Update(typeissued);
                         return Ok("TypeIssued with ID: " + ID + " updated Successfully");
@@ -147,26 +145,25 @@ namespace CTAWebAPI.Controllers
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteTypeIssued(object body)
+        public IActionResult DeleteTypeIssued(TypeIssued typeissued)
         {
             #region Delete TypeIssued
             try
             {
                 //TODO: check for correct way of sending string from body
-                string ID = JsonSerializer.Serialize(body);
-
-                if (!string.IsNullOrEmpty(ID))
+                string typeIssuedId = typeissued.Id.ToString();
+                if (!string.IsNullOrEmpty(typeIssuedId))
                 {
-                    if (TypeIssuedExists(ID))
+                    if (TypeIssuedExists(typeIssuedId))
                     {
                         
-                        TypeIssued fetchedTypeIssued = _typedIssuedRepository.GetTypeIssuedById(ID);
+                        TypeIssued fetchedTypeIssued = _typedIssuedRepository.GetTypeIssuedById(typeIssuedId);
                         _typedIssuedRepository.Delete(fetchedTypeIssued);
-                        return Ok("TypeIssued with ID: " + ID + " removed Successfully");
+                        return Ok("TypeIssued with ID: " + typeIssuedId + " removed Successfully");
                     }
                     else
                     {
-                        return BadRequest("TypeIssued with ID: " + ID + " does not exist");
+                        return BadRequest("TypeIssued with ID: " + typeIssuedId + " does not exist");
                     }
                 }
                 else

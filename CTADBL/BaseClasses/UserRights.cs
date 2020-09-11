@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CTADBL.BaseClasses
 {
     [Table("lstuserrights")]
-    public class UserRights 
+    public class UserRights : CommonProps
     {
         #region Private UserRights Properties 
         private int _Id;

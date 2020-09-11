@@ -78,10 +78,8 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (qualification == null)
-                    {
-                        return BadRequest("Qualification object cannot be NULL");
-                    }
+                    qualification.dtEntered = DateTime.Now;
+                    qualification.dtUpdated = DateTime.Now;
 
                     _qualificationRepository.Add(qualification);
                     return Ok(qualification);
@@ -112,13 +110,12 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (qualification == null)
-                    {
-                        return BadRequest("Qualification object cannot be NULL");
-                    }
+                    
                     if (QualificationExists(ID))
                     {
-
+                        Qualification fetchedqualification = _qualificationRepository.GetQualificationById(ID);
+                        qualification.dtEntered = fetchedqualification.dtEntered;
+                        qualification.dtUpdated = DateTime.Now;
                         //user.User_Id
                         _qualificationRepository.Update(qualification);
                         return Ok("Qualification with ID: " + ID + " updated Successfully");
@@ -147,26 +144,26 @@ namespace CTAWebAPI.Controllers
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteQualification(object body)
+        public IActionResult DeleteQualification(Qualification qualification)
         {
             #region Delete Qualification
             try
             {
                 //TODO: check for correct way of sending string from body
-                string ID = JsonSerializer.Serialize(body);
+                string qualificationId = qualification.Id.ToString();
 
-                if (!string.IsNullOrEmpty(ID))
+                if (!string.IsNullOrEmpty(qualificationId))
                 {
-                    if (QualificationExists(ID))
+                    if (QualificationExists(qualificationId))
                     {
                        
-                        Qualification fetchedQualification = _qualificationRepository.GetQualificationById(ID);
+                        Qualification fetchedQualification = _qualificationRepository.GetQualificationById(qualificationId);
                         _qualificationRepository.Delete(fetchedQualification);
-                        return Ok("Qualification with ID: " + ID + " removed Successfully");
+                        return Ok("Qualification with ID: " + qualificationId + " removed Successfully");
                     }
                     else
                     {
-                        return BadRequest("Qualification with ID: " + ID + " does not exist");
+                        return BadRequest("Qualification with ID: " + qualificationId + " does not exist");
                     }
                 }
                 else

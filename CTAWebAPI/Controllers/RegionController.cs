@@ -78,10 +78,8 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (region == null)
-                    {
-                        return BadRequest("Region object cannot be NULL");
-                    }
+                    region.dtEntered = DateTime.Now;
+                    region.dtUpdated = DateTime.Now;
 
                     _regionRepository.Add(region);
                     return Ok(region);
@@ -112,13 +110,12 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (region == null)
-                    {
-                        return BadRequest("Region object cannot be NULL");
-                    }
+                   
                     if (RegionExists(ID))
                     {
-
+                        Region fetchedregion = _regionRepository.GetRegionById(ID);
+                        region.dtEntered = fetchedregion.dtEntered;
+                        region.dtUpdated = DateTime.Now;
                         //user.User_Id
                         _regionRepository.Update(region);
                         return Ok("Region with ID: " + ID + " updated Successfully");
@@ -147,26 +144,26 @@ namespace CTAWebAPI.Controllers
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteRegion(object body)
+        public IActionResult DeleteRegion(Region region)
         {
             #region Delete Region
             try
             {
                 //TODO: check for correct way of sending string from body
-                string ID = JsonSerializer.Serialize(body);
 
-                if (!string.IsNullOrEmpty(ID))
+                string regionId = region.Id.ToString();
+                if (!string.IsNullOrEmpty(regionId))
                 {
-                    if (RegionExists(ID))
+                    if (RegionExists(regionId))
                     {
                         
-                        Region fetchedRegion = _regionRepository.GetRegionById(ID);
+                        Region fetchedRegion = _regionRepository.GetRegionById(regionId);
                         _regionRepository.Delete(fetchedRegion);
-                        return Ok("Region with ID: " + ID + " removed Successfully");
+                        return Ok("Region with ID: " + regionId + " removed Successfully");
                     }
                     else
                     {
-                        return BadRequest("Region with ID: " + ID + " does not exist");
+                        return BadRequest("Region with ID: " + regionId + " does not exist");
                     }
                 }
                 else

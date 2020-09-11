@@ -86,7 +86,7 @@ export default function EnhancedTable() {
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   // const [loadingProp, setloadingProp] = useState(true);
-  const [modal, setmodal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [selectedUser, setselectedUser] = useState('');
   const [selectedUserName, setselectedUserName] = useState('');
 
@@ -172,7 +172,7 @@ export default function EnhancedTable() {
               color="secondary"
               size="small"
               endIcon={<DeleteOutlinedIcon />}
-              onClick={() => { deleteClick(tableMeta.rowData[0], tableMeta.rowData[1]) }}
+              onClick={() => { deleteClick(tableMeta.rowData) }}
             >Delete
             </Button>
           )
@@ -205,7 +205,7 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           console.log(resp.data);
           setEditModal(false);
-          //navigate('')
+          window.location=window.location;
         }
       })
       .catch(error => {
@@ -226,32 +226,34 @@ export default function EnhancedTable() {
   };
 
 
-  const deleteClick = (user_Id, userName) => {
-    console.log(user_Id)
-    setmodal(true);
-    setselectedUser(user_Id);
-    setselectedUserName(userName);
+  const deleteClick = (countryObj) => {
+ 
+    setDeleteModal(true);
+    setCountryPK(countryObj[0]);
+    setCountryID(countryObj[1]);
+    setCountryName(countryObj[2]);
   };
 
   const handleClose = () => {
-    setmodal(false);
+    setDeleteModal(false);
     setselectedUser('');
     setselectedUserName('');
   };
 
   const deleteCallAPI = () => {
     // console.log(this.state.selectedUser);
-    const config = { headers: { "Content-Type": "application/json" } };
-    var userID = selectedUser.toString();
-    axios.post(`/Users/DeleteUser`, userID, config)
+    let CountryID = countryPK;
+    let countryToDelete = {
+      ID : countryPK,
+      sCountryID: countryID,
+      sCountry: countryName,
+    };
+    axios.post(`/Country/DeleteCountry/`,countryToDelete)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
-          handleClose();
-          //TODO: remove window.location
-          // this.props.history.push(`/`)
-          window.location = window.location
-          // navigate('/app/manageuser',{ replace: true });
+          setEditModal(false);
+          window.location=window.location;
         }
       })
       .catch(error => {
@@ -320,7 +322,7 @@ export default function EnhancedTable() {
               </Grid>
             </Grid>
             <Dialog
-              open={modal}
+              open={deleteModal}
               TransitionComponent={Transition}
               keepMounted
               onClose={handleClose}
@@ -328,7 +330,7 @@ export default function EnhancedTable() {
               <DialogTitle id="alert-dialog-slide-title">Confirm Operation</DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-slide-description">
-                  Are you sure you want to delete user {selectedUserName} ?
+                  Are you sure you want to delete country {countryName} ?
           </DialogContentText>
               </DialogContent>
               <DialogActions>

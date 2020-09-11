@@ -1,8 +1,10 @@
 ﻿using CTADBL.BaseClasses;
 using CTADBL.QueryBuilder;
 using CTADBL.Repository;
-using MySql.Data.MySqlClient;
+
 using System.Collections.Generic;
+using MySql.Data.MySqlClient;
+using System;
 
 namespace CTADBL.BaseClassRepositories
 {
@@ -66,12 +68,29 @@ namespace CTADBL.BaseClassRepositories
         #region Populate UserRights Records
         public override UserRights PopulateRecord(MySqlDataReader reader)
         {
+            int colIndex1 = reader.GetOrdinal("dtEntered");
+            int colIndex2 = reader.GetOrdinal("dtUpdated");
+
+            DateTime? dtEntered = null;
+            DateTime? dtUpdated = null;
+            if (!reader.IsDBNull(colIndex1))
+            {
+                dtEntered = (DateTime)reader["dtEntered"];
+            }
+            if (!reader.IsDBNull(colIndex2))
+            {
+                dtUpdated = (DateTime)reader["dtUpdated"];
+            }
+
             return new UserRights
             {
                 Id = (int)reader["Id"],
-                
-                sUserRightsName = (string)reader["sUserRightsName"]
-              
+                sUserRightsName = (string)reader["sUserRightsName"],
+                nEnteredBy = (int)reader["nEnteredBy"],
+                nUpdatedBy = (int)reader["nUpdatedBy"],
+                dtEntered = dtEntered,
+                dtUpdated = dtUpdated
+
             };
         }
         #endregion

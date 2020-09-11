@@ -3,7 +3,7 @@ using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
-
+using System;
 namespace CTADBL.BaseClassRepositories
 {
     public class QualificationRepository : ADORepository<Qualification>
@@ -66,13 +66,29 @@ namespace CTADBL.BaseClassRepositories
         #region Populate Qualification Records
         public override Qualification PopulateRecord(MySqlDataReader reader)
         {
+            int colIndex1 = reader.GetOrdinal("dtEntered");
+            int colIndex2 = reader.GetOrdinal("dtUpdated");
+
+            DateTime? dtEntered = null;
+            DateTime? dtUpdated = null;
+            if (!reader.IsDBNull(colIndex1))
+            {
+                dtEntered = (DateTime)reader["dtEntered"];
+            }
+            if (!reader.IsDBNull(colIndex2))
+            {
+                dtUpdated = (DateTime)reader["dtUpdated"];
+            }
             return new Qualification
             {
                 Id = (int)reader["Id"],
 
                 sQualificationID = (string)reader["sQualificationID"],
-
-                sQualification = (string)reader["sQualification"]
+                sQualification = (string)reader["sQualification"],
+                nEnteredBy = (int)reader["nEnteredBy"],
+                nUpdatedBy = (int)reader["nUpdatedBy"],
+                dtEntered = dtEntered,
+                dtUpdated = dtUpdated
 
             };
         }

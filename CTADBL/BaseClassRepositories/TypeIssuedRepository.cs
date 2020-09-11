@@ -4,6 +4,8 @@ using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
+using MySql.Data.MySqlClient;
+using System;
 
 namespace CTADBL.BaseClassRepositories
 {
@@ -67,12 +69,28 @@ namespace CTADBL.BaseClassRepositories
         #region Populate TypeIssued Records
         public override TypeIssued PopulateRecord(MySqlDataReader reader)
         {
+            int colIndex1 = reader.GetOrdinal("dtEntered");
+            int colIndex2 = reader.GetOrdinal("dtUpdated");
+
+            DateTime? dtEntered = null;
+            DateTime? dtUpdated = null;
+            if (!reader.IsDBNull(colIndex1))
+            {
+                dtEntered = (DateTime)reader["dtEntered"];
+            }
+            if (!reader.IsDBNull(colIndex2))
+            {
+                dtUpdated = (DateTime)reader["dtUpdated"];
+            }
             return new TypeIssued
             {
                 Id = (int)reader["Id"],
 
-                sTypeIssued = (string)reader["sTypeIssued"]
-
+                sTypeIssued = (string)reader["sTypeIssued"],
+                 nEnteredBy = (int)reader["nEnteredBy"],
+                nUpdatedBy = (int)reader["nUpdatedBy"],
+                dtEntered = dtEntered,
+                dtUpdated = dtUpdated
             };
         }
         #endregion
