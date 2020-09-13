@@ -26,7 +26,7 @@ namespace CTADBL.BaseClasses
                 _id = value;
             } 
         }
-        [NotNull]
+        [Required]
         public string sAuthRegion 
         { 
             get 
@@ -38,6 +38,7 @@ namespace CTADBL.BaseClasses
                 _authRegion = value;
             } 
         }
+        [Required]
         public string sCountryID 
         { 
             get 

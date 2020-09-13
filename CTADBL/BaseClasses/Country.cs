@@ -26,6 +26,7 @@ namespace CTADBL.BaseClasses
                 _id = value;
             } 
         }
+        [Required]
         public string sCountryID 
         { 
             get 
@@ -37,7 +38,7 @@ namespace CTADBL.BaseClasses
                 _countryId = value;
             } 
         }
-        [NotNull]
+        [Required]
         public string sCountry 
         { 
             get
