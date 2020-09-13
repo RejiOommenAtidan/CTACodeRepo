@@ -203,9 +203,19 @@ export default function EnhancedTable() {
     axios.post(`/Country/EditCountry/CountryID=` + CountryID,countryToUpdate)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
+          //console.log(resp.data);
           setEditModal(false);
-          window.location=window.location;
+          setdataAPI(dataAPI.map((data) => {
+            if(data.id === countryPK){
+              return {
+                ...data,
+                ...countryToUpdate
+              };
+            }
+            else{
+              return data;
+            }
+          }));
         }
       })
       .catch(error => {

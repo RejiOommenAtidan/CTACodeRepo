@@ -9,6 +9,7 @@ namespace CTADBL.BaseClasses
     {
         #region Private Greenbook Properties
         private int _Id;
+        private int __Id;
         private string _sGBID;
         private int _nAuthRegionID;
         private string _sFirstName;
@@ -54,6 +55,7 @@ namespace CTADBL.BaseClasses
         private string _sBookIssued;
         private DateTime _dtValidityDate;
         private string _sPaidUntil;
+        private string _sEnteredDateTime;
         private string _TibetanName;
         private string _TBUPlaceOfBirth;
         private string _TBUOriginVillage;
@@ -65,6 +67,7 @@ namespace CTADBL.BaseClasses
         #region Public Greenbook Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
+        public int _id { get { return __Id; } set { __Id = value; } }
         public string sGBID { get { return _sGBID; } set { _sGBID = value; } }
         public int nAuthRegionID { get { return _nAuthRegionID; } set { _nAuthRegionID = value; } }
         public string sFirstName { get { return _sFirstName; } set { _sFirstName = value; } }
@@ -109,6 +112,7 @@ namespace CTADBL.BaseClasses
         public DateTime dtDeceased { get { return _dtDeceased; } set { _dtDeceased = value; } }
         public string sBookIssued { get { return _sBookIssued; } set { _sBookIssued = value; } }
         public DateTime dtValidityDate { get { return _dtValidityDate; } set { _dtValidityDate = value; } }
+        public string sEnteredDateTime { get { return _sEnteredDateTime; } set { _sEnteredDateTime = value; } }
         public string sPaidUntil { get { return _sPaidUntil; } set { _sPaidUntil = value; } }
         public string TibetanName { get { return _TibetanName; } set { _TibetanName = value; } }
         public string TBUPlaceOfBirth { get { return _TBUPlaceOfBirth; } set { _TBUPlaceOfBirth = value; } }

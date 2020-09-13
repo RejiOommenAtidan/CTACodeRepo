@@ -1,13 +1,14 @@
 ﻿using CTADBL.BaseClasses;
 using CTADBL.BaseClassRepositories;
 using CTADBL.Entities;
+using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
+using System.Reflection;
 
 namespace CTAWebAPI.Controllers
 {
@@ -36,10 +37,31 @@ namespace CTAWebAPI.Controllers
             try
             {
                 IEnumerable<Madeb> madebs = _madebRepository.GetAllMadebs();
+
+                #region Information Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 2);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 1);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = currentMethodName + " Method Called";
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                #endregion
+
                 return Ok(madebs);
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 2);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 3);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = "Exception in " + currentMethodName;
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -53,10 +75,31 @@ namespace CTAWebAPI.Controllers
             try
             {
                 Madeb madeb = _madebRepository.GetMadebById(Id);
+
+                #region Information Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 2);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 1);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = currentMethodName + " Method Called";
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                #endregion
+
                 return Ok(madeb);
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 2);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 3);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = "Exception in " + currentMethodName;
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -73,12 +116,20 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (madeb == null)
-                    {
-                        return BadRequest("Madeb object cannot be NULL");
-                    }
-
+                    madeb.dtEntered = DateTime.Now;
+                    madeb.dtUpdated = DateTime.Now;
                     _madebRepository.Add(madeb);
+
+                    #region Information Logging 
+                    string sActionType = Enum.GetName(typeof(Operations), 1);
+                    string sModuleName = (GetType().Name).Replace("Controller", "");
+                    string sEventName = Enum.GetName(typeof(LogLevels), 1);
+                    string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                    string sDescription = currentMethodName + " Method Called";
+                    CTALogger logger = new CTALogger(_info);
+                    logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, madeb.nEnteredBy);
+                    #endregion
+
                     return Ok(madeb);
                 }
                 else
@@ -91,6 +142,16 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 1);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 3);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = "Exception in " + currentMethodName;
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, madeb.nEnteredBy);
+                #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -111,16 +172,27 @@ namespace CTAWebAPI.Controllers
                     {
                         return BadRequest("Madeb Param ID cannot be NULL");
                     }
-                    if (madeb == null)
-                    {
-                        return BadRequest("Madeb object cannot be NULL");
-                    }
+
                     if (Id != madeb.Id.ToString())
                     {
-                        return BadRequest("ID's ain't Matching");
+                        return BadRequest("Madeb ID's ain't Matching");
                     }
                     if (MadebExists(Id))
                     {
+                        Madeb fetchedMadeb = _madebRepository.GetMadebById(Id);
+                        madeb.dtEntered = fetchedMadeb.dtEntered;
+                        madeb.dtUpdated = DateTime.Now;
+
+                        #region Alert Logging 
+                        string sActionType = Enum.GetName(typeof(Operations), 3);
+                        string sModuleName = (GetType().Name).Replace("Controller", "");
+                        string sEventName = Enum.GetName(typeof(LogLevels), 2);
+                        string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                        string sDescription = currentMethodName + " Method Called";
+                        CTALogger logger = new CTALogger(_info);
+                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, madeb.nEnteredBy);
+                        #endregion
+
                         _madebRepository.Update(madeb);
                         return Ok("Madeb with ID: " + Id + " updated Successfully");
                     }
@@ -139,6 +211,16 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 3);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 3);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = "Exception in " + currentMethodName;
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, madeb.nEnteredBy);
+                #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -148,25 +230,34 @@ namespace CTAWebAPI.Controllers
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteMadeb(object body)
+        public IActionResult DeleteMadeb(Madeb madeb)
         {
-            #region Delete User
+            #region Delete Madeb
             try
             {
-                //TODO: check for correct way of sending string from body
-                string Id = JsonSerializer.Serialize(body);
-
-                if (!string.IsNullOrEmpty(Id))
+                string madebID = madeb.Id.ToString();
+                if (!string.IsNullOrEmpty(madebID))
                 {
-                    if (MadebExists(Id))
+                    if (MadebExists(madebID))
                     {
-                        Madeb fetchedMadeb = _madebRepository.GetMadebById(Id);
+                        Madeb fetchedMadeb = _madebRepository.GetMadebById(madebID);
                         _madebRepository.Delete(fetchedMadeb);
-                        return Ok("Madeb with ID: " + Id + " removed Successfully");
+
+                        #region Alert Logging 
+                        string sActionType = Enum.GetName(typeof(Operations), 4);
+                        string sModuleName = (GetType().Name).Replace("Controller", "");
+                        string sEventName = Enum.GetName(typeof(LogLevels), 2);
+                        string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                        string sDescription = currentMethodName + " Method Called";
+                        CTALogger logger = new CTALogger(_info);
+                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, madeb.nEnteredBy);
+                        #endregion
+
+                        return Ok("Madeb with ID: " + madebID + " removed Successfully");
                     }
                     else
                     {
-                        return BadRequest("Madeb with ID: " + Id + " does not exist");
+                        return BadRequest("Madeb with ID: " + madebID + " does not exist");
                     }
                 }
                 else
@@ -177,6 +268,16 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 4);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 3);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = "Exception in " + currentMethodName;
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, madeb.nEnteredBy);
+                #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
