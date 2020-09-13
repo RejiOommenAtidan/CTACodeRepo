@@ -1,4 +1,3 @@
-//Hi
 import React from 'react';
 import {
   Container,
@@ -9,7 +8,7 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 
-import Country from './country';
+import CountryList from './countryList';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,11 +31,10 @@ const Dashboard = () => {
         <Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/app/manageuser" >
             Home
-        </Link>
-
+          </Link>
           <Typography color="textPrimary"> Country</Typography>
         </Breadcrumbs>
-        <Country />
+        <CountryList />
       </Container>
     </Page>
   );
