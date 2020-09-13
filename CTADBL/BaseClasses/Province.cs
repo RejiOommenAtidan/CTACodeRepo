@@ -25,7 +25,7 @@ namespace CTADBL.BaseClasses
                 _id = value;
             }
         }
-        [NotNull]
+        [Required]
         public string sProvince
         {
             get
