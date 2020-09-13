@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CTADBL.BaseClasses
@@ -9,6 +8,7 @@ namespace CTADBL.BaseClasses
     {
         #region Private User Properties 
         private int _Id;
+        private int? __Id;
         private string _sUsername;
         private string _sFullname;
         private string _sOffice;
@@ -20,6 +20,7 @@ namespace CTADBL.BaseClasses
         #region Public Common Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
+        public int? _id { get { return __Id; } set { __Id = value; } }
         public string sUsername { get { return _sUsername; } set { _sUsername = value; } }
         public string sFullname { get { return _sFullname; } set { _sFullname = value; } }
         public string sOffice { get { return _sOffice; } set { _sOffice = value; } }

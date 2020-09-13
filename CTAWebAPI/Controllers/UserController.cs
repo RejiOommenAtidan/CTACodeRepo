@@ -1,13 +1,14 @@
 ﻿using CTADBL.BaseClasses;
 using CTADBL.BaseClassRepositories;
 using CTADBL.Entities;
+using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
+using System.Reflection;
 
 namespace CTAWebAPI.Controllers
 {
@@ -32,14 +33,35 @@ namespace CTAWebAPI.Controllers
         [Route("[action]")]
         public IActionResult GetUsers()
         {
-            #region Get All Users
+            #region Get Users
             try
             {
                 IEnumerable<User> allUsers = _userRepository.GetAllUsers();
+
+                #region Information Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 2);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels),1);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = currentMethodName + " Method Called";
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType,sModuleName,sEventName,sDescription);
+                #endregion
+
                 return Ok(allUsers);
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 2);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 3);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = "Exception in "+currentMethodName;
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -49,14 +71,35 @@ namespace CTAWebAPI.Controllers
         [Route("[action]")]
         public IActionResult GetUser(string Id)
         {
-            #region Get Single User
+            #region Get User
             try
             {
-                User singleuser = _userRepository.GetUserById(Id);
-                return Ok(singleuser);
+                User user = _userRepository.GetUserById(Id);
+
+                #region Information Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 2);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 1);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = currentMethodName + " Method Called";
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                #endregion
+
+                return Ok(user);
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 2);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 3);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = "Exception in " + currentMethodName;
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -73,11 +116,20 @@ namespace CTAWebAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (user == null)
-                    {
-                        return BadRequest("User object cannot be NULL");
-                    }
+                    user.dtEntered = DateTime.Now;
+                    user.dtUpdated = DateTime.Now;
                     _userRepository.Add(user);
+
+                    #region Information Logging 
+                    string sActionType = Enum.GetName(typeof(Operations), 1);
+                    string sModuleName = (GetType().Name).Replace("Controller", "");
+                    string sEventName = Enum.GetName(typeof(LogLevels), 1);
+                    string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                    string sDescription = currentMethodName + " Method Called";
+                    CTALogger logger = new CTALogger(_info);
+                    logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,user.nEnteredBy);
+                    #endregion
+
                     return Ok(user);
                 }
                 else
@@ -90,6 +142,16 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 1);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 3);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = "Exception in " + currentMethodName;
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,user.nEnteredBy);
+                #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -110,17 +172,29 @@ namespace CTAWebAPI.Controllers
                     {
                         return BadRequest("User Param ID cannot be NULL");
                     }
-                    if (user == null)
+
+                    if (Id != user.Id.ToString())
                     {
-                        return BadRequest("User object cannot be NULL");
+                        return BadRequest("User ID's ain't Matching");
                     }
-                    if (Id!=user.Id.ToString()) 
-                    {
-                        return BadRequest("ID's ain't Matching");
-                    }
+
                     if (UserExists(Id))
                     {
+                        User fetchedUser = _userRepository.GetUserById(Id);
+                        user.dtEntered = fetchedUser.dtEntered;
+                        user.dtUpdated = DateTime.Now;
                         _userRepository.Update(user);
+
+                        #region Alert Logging 
+                        string sActionType = Enum.GetName(typeof(Operations), 3);
+                        string sModuleName = (GetType().Name).Replace("Controller", "");
+                        string sEventName = Enum.GetName(typeof(LogLevels), 2);
+                        string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                        string sDescription = currentMethodName + " Method Called";
+                        CTALogger logger = new CTALogger(_info);
+                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,user.nEnteredBy);
+                        #endregion
+
                         return Ok("User with ID: " + Id + " updated Successfully");
                     }
                     else
@@ -138,44 +212,72 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 3);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 3);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = "Exception in " + currentMethodName;
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,user.nEnteredBy);
+                #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
         }
-        #endregion
+        #endregion 
 
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteUser(object body)
+        public IActionResult DeleteUser(User user)
         {
             #region Delete User
             try
             {
-                //TODO: check for correct way of sending string from body
-                string Id = JsonSerializer.Serialize(body);
-
-                if (!string.IsNullOrEmpty(Id))
+                string userID = user.Id.ToString();
+                if (!string.IsNullOrEmpty(userID))
                 {
-                    if (UserExists(Id))
+                    if (UserExists(userID))
                     {
-                        User fetchedUser = _userRepository.GetUserById(Id);
+                        User fetchedUser = _userRepository.GetUserById(userID);
                         _userRepository.Delete(fetchedUser);
-                        return Ok("User with ID: " + Id + " removed Successfully");
+
+                        #region Alert Logging 
+                        string sActionType = Enum.GetName(typeof(Operations), 4);
+                        string sModuleName = (GetType().Name).Replace("Controller", "");
+                        string sEventName = Enum.GetName(typeof(LogLevels), 2);
+                        string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                        string sDescription = currentMethodName + " Method Called";
+                        CTALogger logger = new CTALogger(_info);
+                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,user.nEnteredBy);
+                        #endregion
+
+                        return Ok("User with ID: " + userID + " removed Successfully");
                     }
                     else
                     {
-                        return BadRequest("User with ID: " + Id + " does not exist");
+                        return BadRequest("User with ID: " + userID + " does not exist");
                     }
                 }
                 else
                 {
                     return BadRequest("User Id Cannot be null");
                 }
-
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 4);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 3);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = "Exception in " + currentMethodName;
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,user.nEnteredBy);
+                #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
