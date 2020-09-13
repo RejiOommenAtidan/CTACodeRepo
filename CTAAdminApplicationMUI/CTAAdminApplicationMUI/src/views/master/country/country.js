@@ -27,6 +27,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import Chip from '@material-ui/core/Chip';
 
+import IconButton from '@material-ui/core/IconButton';
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -87,6 +90,7 @@ export default function EnhancedTable() {
   const [dataAPI, setdataAPI] = useState([]);
   // const [loadingProp, setloadingProp] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [addModal, setAddModal] = useState(false);
   const [selectedUser, setselectedUser] = useState('');
   const [selectedUserName, setselectedUserName] = useState('');
 
@@ -100,6 +104,12 @@ export default function EnhancedTable() {
   };
   const handleEditClickClose = () => {
     setEditModal(false);
+  };
+  const handleAddClickOpen = () => {
+    setAddModal(true);
+  };
+  const handleAddClickClose = () => {
+    setAddModal(false);
   };
 
   const options = {
@@ -234,8 +244,39 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   };
+  const addAPICall = ()=>{
+  
+    let countryToAdd = {
+      sCountryID: countryID,
+      sCountry: countryName,
+    };
+    axios.post(`/Country/AddCountry/`,countryToAdd)
+      .then(resp => {
+        if (resp.status === 200) {
+          console.log(resp.data);
+          setAddModal(false);
+          window.location=window.location;
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  };
 
 
+  
   const deleteClick = (countryObj) => {
  
     setDeleteModal(true);
@@ -321,7 +362,56 @@ export default function EnhancedTable() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Country</Typography>
+            <Typography variant="h4" gutterBottom>Country 
+             <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="span"
+                size="large"
+                //onClick={addClick()}
+                onClick={() => { setAddModal(true) }}
+             >
+               <AddCircleIcon />
+              </IconButton>
+            </Typography>
+            <Dialog open={addModal} onClose={handleAddClickClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Add Country</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <div>
+              <Grid container>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+                      id="id_countryId"
+                      label="Country ID"
+                      type="text"
+                      onChange={(e)=>{setCountryID(e.target.value)}}
+                      
+
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} >
+                  <FormControl className={classes.formControl}>
+                    <TextField
+                      id="id_CountryName"
+                      label="Country Name"
+                      type="text"
+                      
+                      onChange={(e)=>{setCountryName(e.target.value)}}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleAddClickClose} color="primary">Cancel</Button>
+          <Button onClick={addAPICall} color="primary">Save</Button>
+        </DialogActions>
+      </Dialog>
             <Grid container className={classes.box}>
               <Grid item xs={12}>
                 <MUIDataTable
