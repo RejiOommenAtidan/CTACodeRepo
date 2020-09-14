@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace CTADBL.BaseClasses
 {
-    [Table("lstuserrights")]
+    [Table("lstregion")]
     public class Region : CommonProps
     {
        
