@@ -1,6 +1,6 @@
 // hi
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -9,16 +9,17 @@ import {
   Typography,
   FormControl,
   TextField
+  
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-import theme from '../../../theme/theme/theme'
-import Page from 'src/components/Page';
+//import theme from '../../../theme/theme/theme'
+//import Page from 'src/components/Page';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import MUIDataTable from "mui-datatables";
-import { ThemeProvider } from '@material-ui/styles';
+//import { ThemeProvider } from '@material-ui/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -39,8 +40,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+const useStyles = makeStyles(() => ({
+  /*root: {
     backgroundColor: theme.palette.background.dark,
     height: '100%',
     paddingBottom: theme.spacing(3),
@@ -84,12 +85,12 @@ const useStyles = makeStyles((theme) => ({
       main: '#11cb5f',
     },
   }
-
+*/
 }));
 
 export default function EnhancedTable() {
   const classes = useStyles();
-  const navigate = useNavigate();
+ // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   // const [loadingProp, setloadingProp] = useState(true);
@@ -360,11 +361,8 @@ export default function EnhancedTable() {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Page
-        className={classes.root}
-        title="Country"
-      >
+
+      
         <Box
           display="flex"
           flexDirection="column"
@@ -414,9 +412,9 @@ export default function EnhancedTable() {
             />}
           </Container>
         </Box>
-      </Page>
+   
 
 
-    </ThemeProvider>
+          
   );
 }

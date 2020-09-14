@@ -7,7 +7,7 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-import Page from 'src/components/Page';
+
 
 import Country from './country';
 
@@ -24,10 +24,7 @@ const Dashboard = () => {
   const classes = useStyles();
 
   return (
-    <Page
-      className={classes.root}
-      title="Country"
-    >
+   
       <Container maxWidth={false}>
         <Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/app/manageuser" >
@@ -38,7 +35,7 @@ const Dashboard = () => {
         </Breadcrumbs>
         <Country />
       </Container>
-    </Page>
+
   );
 };
 

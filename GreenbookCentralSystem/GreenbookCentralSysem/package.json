@@ -24,6 +24,7 @@
     "@material-ui/lab": "4.0.0-alpha.53",
     "@material-ui/pickers": "3.2.10",
     "apexcharts": "3.19.0",
+    "axios": "^0.20.0",
     "chart.js": "2.9.3",
     "clsx": "1.1.0",
     "date-fns": "2.9.0",

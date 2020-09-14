@@ -259,7 +259,7 @@ const store = configureStore();
 class App extends Component {
   render() {
     return (
-      <Provider store={store}>
+      <Provider store={store}>  
         <BrowserRouter >
           <ScrollToTop>
             <Routes />
