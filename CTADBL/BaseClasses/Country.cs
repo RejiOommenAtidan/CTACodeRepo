@@ -27,6 +27,7 @@ namespace CTADBL.BaseClasses
             } 
         }
         [Required]
+        [StringLength(2, ErrorMessage = "CountryID should be of 2 characters")]
         public string sCountryID 
         { 
             get 
