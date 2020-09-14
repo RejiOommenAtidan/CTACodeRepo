@@ -29,7 +29,7 @@ const PageError505 = lazy(() => import('./example-pages/PageError505'));
 //My pages
 const Home = lazy(() => import('./views/home'));
 const Country = lazy(() => import('./views/master/country'));
-const NewEntry = lazy(() => import('./views/newentry/'));
+const NewEntry = lazy(() => import('./views/transactions/newentry/newentry'));
 
 
 const Routes = () => {
@@ -141,7 +141,6 @@ const Routes = () => {
                 '/Home',
                 '/Country',
                 '/NewEntry'
-               
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
