@@ -1,15 +1,10 @@
-// hi
 import React, { useEffect, useState } from 'react';
-//import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Container,
   Grid,
   Button,
-  Typography,
-  FormControl,
-  TextField
-  
+  Typography
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
@@ -20,60 +15,49 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import MUIDataTable from "mui-datatables";
 //import { ThemeProvider } from '@material-ui/styles';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import Chip from '@material-ui/core/Chip';
 
+import Slide from '@material-ui/core/Slide';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 // Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
 
-
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const useStyles = makeStyles(() => ({
-  /*root: {
-    backgroundColor: theme.palette.background.dark,
+const useStyles = makeStyles({
+  root: {
     height: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
+    paddingBottom: 3,
+    paddingTop: 3,
     flexGrow: 1,
     'label + &': {
-      marginTop: theme.spacing(3)
+      marginTop: 3
     }
   },
   selectEmpty: {
-    marginTop: theme.spacing(2),
+    marginTop: 1.5,
   },
   formControl: {
-    margin: theme.spacing(0.5),
+    margin: 2,
     width: '100%'
   },
   paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
+    padding: 2,
+    textAlign: 'center'
   },
   textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1)
+    marginTop: 0.25,
+    marginBottom: 0.25
   },
   box: {
-    marginBottom: theme.spacing(1.5),
-    marginTop: theme.spacing(1.5)
+    marginBottom: 1.5,
+    marginTop: 1.5
   },
   button: {
-    margin: theme.spacing(1),
+    margin: 1,
   },
   palette: {
     primary: {
@@ -85,18 +69,14 @@ const useStyles = makeStyles(() => ({
       main: '#11cb5f',
     },
   }
-*/
-}));
+});
 
 export default function EnhancedTable() {
   const classes = useStyles();
- // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
-  // const [loadingProp, setloadingProp] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
-
 
   //VAR
   const [countryID, setCountryID] = React.useState('');
@@ -361,8 +341,6 @@ export default function EnhancedTable() {
   }, []);
 
   return (
-
-      
         <Box
           display="flex"
           flexDirection="column"
@@ -370,7 +348,7 @@ export default function EnhancedTable() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Country
+            <Typography variant="h4" gutterBottom>New Entry
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -411,10 +389,6 @@ export default function EnhancedTable() {
               deleteAPICall={deleteAPICall}
             />}
           </Container>
-        </Box>
-   
-
-
-          
+        </Box>  
   );
 }
