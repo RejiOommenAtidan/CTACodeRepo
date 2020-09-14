@@ -8,7 +8,7 @@ import MarkunreadTwoToneIcon from '@material-ui/icons/MarkunreadTwoTone';
 
 const SidebarFooter = () => {
   return (
-    <>
+    <>{/*
       <div className="app-sidebar--footer">
         <ul>
           <li>
@@ -39,7 +39,7 @@ const SidebarFooter = () => {
             </Tooltip>
           </li>
         </ul>
-      </div>
+    </div> */}
     </>
   );
 };

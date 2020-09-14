@@ -15,7 +15,7 @@ import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 //import theme from '../../../theme/theme/theme'
-
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import MUIDataTable from "mui-datatables";
@@ -39,7 +39,24 @@ import { AddDialog, DeleteDialog, EditDialog } from './dialog';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+const getMuiTheme = () => createMuiTheme({
+  overrides: {
+    MUIDataTableBodyCell: {
+      root: {
+        backgroundColor: "#FFF",
+        width: "50px"
+      }
 
+    },
+    MuiTableCell: {
+      root: {
+          padding: '0px',
+          paddingLeft: '30px',
+         
+      }
+  },
+  }
+})
 const useStyles = makeStyles(() => ({
   /*root: {
     backgroundColor: theme.palette.background.dark,
@@ -121,9 +138,11 @@ export default function EnhancedTable() {
     textLabels: {
       body: {
         noMatch: "Loading..."
-      }
+      },
+     
     },
-    filterType: 'checkbox',
+    filter:false,
+    viewColumns:false,
     selectableRows: false,
     jumpToPage: true,
     rowsPerPage: 5,
@@ -364,11 +383,9 @@ export default function EnhancedTable() {
             </Typography>
             <Grid container className={classes.box}>
               <Grid item xs={12}>
-                <MUIDataTable
-                  data={dataAPI}
-                  columns={columns}
-                  options={options}
-                />
+              <MuiThemeProvider theme={getMuiTheme}>
+        <MUIDataTable  data={dataAPI} columns={columns} options={options} />
+      </MuiThemeProvider>
               </Grid>
             </Grid>
             {addModal && <AddDialog

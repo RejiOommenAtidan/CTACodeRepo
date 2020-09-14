@@ -16,43 +16,12 @@ const Footer = (props) => {
           'app-footer--shadow': footerShadow,
           'app-footer--opacity-bg': footerBgTransparent
         })}>
-        <div className="app-footer--first">
-          <List
-            component="div"
-            className="nav-neutral-primary d-flex align-items-center">
-            <ListItem
-              className="rounded-sm"
-              button
-              component={NavLink}
-              to="/DashboardAnalytics">
-              <span>Analytics</span>
-            </ListItem>
-            <ListItem
-              className="rounded-sm"
-              button
-              component={NavLink}
-              to="/DashboardStatistics">
-              <span>Statistics</span>
-            </ListItem>
-            <ListItem
-              className="rounded-sm"
-              button
-              component={NavLink}
-              to="/Overview">
-              <span>Overview</span>
-            </ListItem>
-          </List>
-        </div>
+        
         <div className="app-footer--second">
-          <span>Bamburgh React Admin Dashboard with Material-UI PRO</span> ©
-          2020 - crafted with <span className="text-danger px-1">❤</span> by{' '}
-          <a
-            href="https://uifort.com"
-            target="_blank"
-            title="UiFort.com"
-            rel="noopener noreferrer">
-            UiFort.com
-          </a>
+           CTA
+           ©
+          2020 
+          
         </div>
       </div>
     </>

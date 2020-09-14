@@ -13,47 +13,46 @@ import { setSidebarToggleMobile } from '../../reducers/ThemeOptions';
 import SidebarUserbox from '../SidebarUserbox';
 
 import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
-import VerifiedUserTwoToneIcon from '@material-ui/icons/VerifiedUserTwoTone';
-import RoomTwoToneIcon from '@material-ui/icons/RoomTwoTone';
-import CameraAltTwoToneIcon from '@material-ui/icons/CameraAltTwoTone';
-import CollectionsTwoToneIcon from '@material-ui/icons/CollectionsTwoTone';
-import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
-import BusinessCenterTwoToneIcon from '@material-ui/icons/BusinessCenterTwoTone';
-import AssessmentTwoToneIcon from '@material-ui/icons/AssessmentTwoTone';
-import MoveToInboxTwoToneIcon from '@material-ui/icons/MoveToInboxTwoTone';
-import BallotTwoToneIcon from '@material-ui/icons/BallotTwoTone';
-import SettingsTwoToneIcon from '@material-ui/icons/SettingsTwoTone';
-import DepartureBoardTwoToneIcon from '@material-ui/icons/DepartureBoardTwoTone';
-import LibraryBooksTwoToneIcon from '@material-ui/icons/LibraryBooksTwoTone';
-import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
-import DevicesOtherTwoToneIcon from '@material-ui/icons/DevicesOtherTwoTone';
-import LinkTwoToneIcon from '@material-ui/icons/LinkTwoTone';
 
-import SecurityTwoToneIcon from '@material-ui/icons/SecurityTwoTone';
-import CameraTwoToneIcon from '@material-ui/icons/CameraTwoTone';
 
 import ListIcon from '@material-ui/icons/List';
+import HomeIcon from '@material-ui/icons/Home';
+import AppsIcon from '@material-ui/icons/Apps';
+import SearchIcon from '@material-ui/icons/Search';
+import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import FormatListNumberedRtlIcon from '@material-ui/icons/FormatListNumberedRtl';
+import PrintIcon from '@material-ui/icons/Print';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import PeopleIcon from '@material-ui/icons/People';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import PaymentIcon from '@material-ui/icons/Payment';
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+
 
 const SidebarMenu = (props) => {
   const { setSidebarToggleMobile, sidebarUserbox } = props;
 
   const toggleSidebarMobile = () => setSidebarToggleMobile(false);
 
-  const [dashboardOpen, setDashboardOpen] = useState(false);
-  const toggleDashboard = (event) => {
-    setDashboardOpen(!dashboardOpen);
+  const [madebOpen, setMadebOpen] = useState(false);
+  const toggleMadeb = (event) => {
+    setMadebOpen(!madebOpen);
     event.preventDefault();
   };
 
-  const [elementsOpen, setElementsOpen] = useState(false);
-  const toggleElements = (event) => {
-    setElementsOpen(!elementsOpen);
+  const [mastersOpen, setMastersOpen] = useState(false);
+  const toggleMasters = (event) => {
+    setMastersOpen(!mastersOpen);
     event.preventDefault();
   };
 
-  const [pagesOpen, setPagesOpen] = useState(false);
-  const togglePages = (event) => {
-    setPagesOpen(!pagesOpen);
+  const [usersOpen, setUsersOpen] = useState(false);
+  const toggleUsers = (event) => {
+    setUsersOpen(!usersOpen);
     event.preventDefault();
   };
 
@@ -148,7 +147,7 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/Home">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <HomeIcon />
                 </span>
                 Home
                
@@ -161,7 +160,7 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/Overview">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <SearchIcon />
                 </span>
                 Search
                 
@@ -170,8 +169,8 @@ const SidebarMenu = (props) => {
             <li>
               <a
                 href="#/"
-                onClick={toggleDashboard}
-                className={clsx({ active: dashboardOpen })}>
+                onClick={toggleMadeb}
+                className={clsx({ active: madebOpen })}>
                 <span className="sidebar-icon">
                   <ListIcon />
                 </span>
@@ -180,7 +179,7 @@ const SidebarMenu = (props) => {
                   <ChevronRightTwoToneIcon />
                 </span>
               </a>
-              <Collapse in={dashboardOpen}>
+              <Collapse in={madebOpen}>
                 <ul>
                   <li>
                     <NavLink
@@ -230,17 +229,17 @@ const SidebarMenu = (props) => {
             <li>
               <a
                 href="#/"
-                onClick={toggleDashboard}
-                className={clsx({ active: dashboardOpen })}>
+                onClick={toggleMasters}
+                className={clsx({ active: mastersOpen })}>
                 <span className="sidebar-icon">
-                  <ListIcon />
+                  <AppsIcon />
                 </span>
                 <span className="sidebar-item-label">Masters</span>
                 <span className="sidebar-icon-indicator">
                   <ChevronRightTwoToneIcon />
                 </span>
               </a>
-              <Collapse in={dashboardOpen}>
+              <Collapse in={mastersOpen}>
                 <ul>
                   <li>
                     <NavLink
@@ -294,7 +293,7 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/Overview">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <FormatListNumberedIcon />
                 </span>
                 Give GB Number
                
@@ -307,7 +306,7 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/NewEntry">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <AddBoxIcon />
                 </span>
                 New Entry
                 
@@ -320,7 +319,7 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/Overview">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <FormatListNumberedRtlIcon />
                 </span>
                 Give Serial Number
                 
@@ -333,7 +332,7 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/Overview">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <PrintIcon />
                 </span>
                 Print
                 
@@ -346,7 +345,7 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/Overview">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <MenuBookIcon />
                 </span>
                 Issue Book
                 
@@ -359,7 +358,7 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/Overview">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <ListAltIcon />
                 </span>
                 Make List
                 
@@ -368,17 +367,17 @@ const SidebarMenu = (props) => {
             <li>
               <a
                 href="#/"
-                onClick={toggleDashboard}
-                className={clsx({ active: dashboardOpen })}>
+                onClick={toggleUsers}
+                className={clsx({ active: usersOpen })}>
                 <span className="sidebar-icon">
-                  <ListIcon />
+                  <PeopleIcon />
                 </span>
                 <span className="sidebar-item-label">Users</span>
                 <span className="sidebar-icon-indicator">
                   <ChevronRightTwoToneIcon />
                 </span>
               </a>
-              <Collapse in={dashboardOpen}>
+              <Collapse in={usersOpen}>
                 <ul>
                   <li>
                     <NavLink
@@ -405,7 +404,7 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/Overview">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <EditIcon />
                 </span>
                 Edit
                 
@@ -418,7 +417,7 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/Overview">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <DeleteIcon />
                 </span>
                 Delete
                 
@@ -431,7 +430,7 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/Overview">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <PaymentIcon />
                 </span>
                 Payment
                 
@@ -444,7 +443,7 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/Overview">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <AssessmentIcon />
                 </span>
                 Reports
                 
@@ -457,7 +456,7 @@ const SidebarMenu = (props) => {
                 className="nav-link-simple"
                 to="/Overview">
                 <span className="sidebar-icon">
-                  <BallotTwoToneIcon />
+                  <VpnKeyIcon />
                 </span>
                 Change Password
                 

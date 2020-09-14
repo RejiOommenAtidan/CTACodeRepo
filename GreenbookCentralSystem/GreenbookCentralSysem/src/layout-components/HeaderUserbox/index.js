@@ -81,7 +81,7 @@ const HeaderUserbox = () => {
 
         <div className="d-none d-xl-block pl-2">
           <div className="font-weight-bold pt-2 line-height-1">Emma Taylor</div>
-          <span className="text-black-50">Senior Accountant</span>
+          <span className="text-black-50">Admin</span>
         </div>
         <span className="pl-1 pl-xl-3">
           <FontAwesomeIcon icon={['fas', 'angle-down']} className="opacity-5" />

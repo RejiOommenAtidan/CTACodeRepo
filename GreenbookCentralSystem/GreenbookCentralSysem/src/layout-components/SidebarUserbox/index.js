@@ -19,7 +19,8 @@ const SidebarUserbox = () => {
 
   return (
     <>
-      <div className="app-sidebar--userbox">
+      {/*
+        <div className="app-sidebar--userbox">
         <Box className="card-tr-actions">
           <Button
             variant="text"
@@ -125,7 +126,8 @@ const SidebarUserbox = () => {
           className="btn-userbox">
           View profile
         </Button>
-      </div>
+          </div> 
+         */ }
     </>
   );
 };
