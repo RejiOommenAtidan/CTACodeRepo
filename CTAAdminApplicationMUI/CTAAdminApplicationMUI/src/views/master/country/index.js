@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import Page from 'src/components/Page';
 
-import CountryList from './countryList';
+import Country from './country';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +34,7 @@ const Dashboard = () => {
           </Link>
           <Typography color="textPrimary"> Country</Typography>
         </Breadcrumbs>
-        <CountryList />
+        <Country />
       </Container>
     </Page>
   );
