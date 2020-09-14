@@ -29,14 +29,10 @@ import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
 import DevicesOtherTwoToneIcon from '@material-ui/icons/DevicesOtherTwoTone';
 import LinkTwoToneIcon from '@material-ui/icons/LinkTwoTone';
 
-//my icons
-import HomeIcon from '@material-ui/icons/Home';
-import SearchIcon from '@material-ui/icons/Search';
-import ListIcon from '@material-ui/icons/List';
-
-
 import SecurityTwoToneIcon from '@material-ui/icons/SecurityTwoTone';
 import CameraTwoToneIcon from '@material-ui/icons/CameraTwoTone';
+
+import ListIcon from '@material-ui/icons/List';
 
 const SidebarMenu = (props) => {
   const { setSidebarToggleMobile, sidebarUserbox } = props;
@@ -144,32 +140,31 @@ const SidebarMenu = (props) => {
       <PerfectScrollbar>
         {sidebarUserbox && <SidebarUserbox />}
         <div className="sidebar-navigation">
-          {/*<div className="sidebar-header">
-            <span>Navigation menu</span>
-          </div>*/}
-          <ul>  
+          <ul>
             <li>
               <NavLink
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="#">
+                to="/Home">
                 <span className="sidebar-icon">
-                  <HomeIcon />
+                  <BallotTwoToneIcon />
                 </span>
                 Home
+               
               </NavLink>
             </li>
             <li>
               <NavLink
-              
+                activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
                 to="/Overview">
                 <span className="sidebar-icon">
-                  <SearchIcon />
+                  <BallotTwoToneIcon />
                 </span>
                 Search
+                
               </NavLink>
             </li>
             <li>
@@ -264,7 +259,7 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardAnalytics">
+                      to="/Country">
                       Country
                     </NavLink>
                   </li>
@@ -294,90 +289,80 @@ const SidebarMenu = (props) => {
             </li>
             <li>
               <NavLink
+                activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="#">
+                to="/Overview">
                 <span className="sidebar-icon">
-                  <SearchIcon />
+                  <BallotTwoToneIcon />
                 </span>
                 Give GB Number
+               
               </NavLink>
             </li>
             <li>
               <NavLink
+                activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="#">
+                to="/Overview">
                 <span className="sidebar-icon">
-                  <SearchIcon />
+                  <BallotTwoToneIcon />
                 </span>
                 New Entry
+                
               </NavLink>
             </li>
             <li>
               <NavLink
+                activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="#">
+                to="/Overview">
                 <span className="sidebar-icon">
-                  <SearchIcon />
+                  <BallotTwoToneIcon />
                 </span>
                 Give Serial Number
+                
               </NavLink>
             </li>
             <li>
               <NavLink
+                activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="#">
+                to="/Overview">
                 <span className="sidebar-icon">
-                  <SearchIcon />
+                  <BallotTwoToneIcon />
                 </span>
                 Print
+                
               </NavLink>
             </li>
             <li>
               <NavLink
+                activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="#">
+                to="/Overview">
                 <span className="sidebar-icon">
-                  <SearchIcon />
+                  <BallotTwoToneIcon />
                 </span>
                 Issue Book
+                
               </NavLink>
             </li>
             <li>
               <NavLink
+                activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="#">
+                to="/Overview">
                 <span className="sidebar-icon">
-                  <SearchIcon />
+                  <BallotTwoToneIcon />
                 </span>
                 Make List
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="#">
-                <span className="sidebar-icon">
-                  <SearchIcon />
-                </span>
-                Edit
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="#">
-                <span className="sidebar-icon">
-                  <SearchIcon />
-                </span>
-               Delete
+                
               </NavLink>
             </li>
             <li>
@@ -409,46 +394,77 @@ const SidebarMenu = (props) => {
                       Manage Roles
                     </NavLink>
                   </li>
-                  
+                 
                 </ul>
               </Collapse>
             </li>
             <li>
               <NavLink
+                activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="#">
+                to="/Overview">
                 <span className="sidebar-icon">
-                  <SearchIcon />
+                  <BallotTwoToneIcon />
                 </span>
-               Payment
+                Edit
+                
               </NavLink>
             </li>
             <li>
               <NavLink
+                activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="#">
+                to="/Overview">
                 <span className="sidebar-icon">
-                  <SearchIcon />
+                  <BallotTwoToneIcon />
                 </span>
-               Reports
+                Delete
+                
               </NavLink>
             </li>
             <li>
               <NavLink
+                activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="#">
+                to="/Overview">
                 <span className="sidebar-icon">
-                  <SearchIcon />
+                  <BallotTwoToneIcon />
                 </span>
-               Change Password
+                Payment
+                
               </NavLink>
             </li>
-           
+            <li>
+              <NavLink
+                activeClassName="active"
+                onClick={toggleSidebarMobile}
+                className="nav-link-simple"
+                to="/Overview">
+                <span className="sidebar-icon">
+                  <BallotTwoToneIcon />
+                </span>
+                Reports
+                
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                activeClassName="active"
+                onClick={toggleSidebarMobile}
+                className="nav-link-simple"
+                to="/Overview">
+                <span className="sidebar-icon">
+                  <BallotTwoToneIcon />
+                </span>
+                Change Password
+                
+              </NavLink>
+            </li>
+            
           </ul>
-          
         </div>
       </PerfectScrollbar>
     </>

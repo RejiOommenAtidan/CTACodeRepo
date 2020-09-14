@@ -45,9 +45,7 @@ const SidebarHeader = (props) => {
               />
             </div>
             <div className="app-sidebar-logo--text">
-              <span>General</span>
-
-              <b>bamburgh</b>
+             <span style={{color: "white"}}><h2>CTA Portal</h2></span>
             </div>
           </NavLink>
         </div>
