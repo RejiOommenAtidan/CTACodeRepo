@@ -137,6 +137,7 @@ export default function EnhancedTable() {
       options: {
         filter: true,
         sort: true,
+        display:false
       }
     },
     {
@@ -163,38 +164,17 @@ export default function EnhancedTable() {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
-            <Button
-              size="small"
-              variant="outlined"
-              color="primary"
-              startIcon={<EditOutlinedIcon />}
+            <IconButton color="primary" aria-label="upload picture" component="span"
               onClick={() => { editClick(tableMeta.rowData) }}
-            >Edit
-            </Button>
+            >
+              <EditOutlinedIcon/>
+              </IconButton>
+            
           )
         }
       }
     },
-    {
-      name: "delete",
-      label: "Delete",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            <Button
-              variant="outlined"
-              color="secondary"
-              size="small"
-              endIcon={<DeleteOutlinedIcon />}
-              onClick={() => { deleteClick(tableMeta.rowData) }}
-            >Delete
-            </Button>
-          )
-        }
-      }
-    }
+   
   ];
 
   const editClick = (tableRowArray) => {

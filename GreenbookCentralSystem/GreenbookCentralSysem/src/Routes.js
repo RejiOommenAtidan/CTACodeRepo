@@ -29,7 +29,7 @@ const PageError505 = lazy(() => import('./example-pages/PageError505'));
 //My pages
 const Home = lazy(() => import('./views/home'));
 const Country = lazy(() => import('./views/master/country'));
-const NewEntry = lazy(() => import('./views/newentry/'));
+//const NewEntry = lazy(() => import('./views/newentry/'));
 
 
 const Routes = () => {
@@ -140,7 +140,7 @@ const Routes = () => {
               path={[
                 '/Home',
                 '/Country',
-                '/NewEntry'
+            
                
               ]}>
               <LeftSidebar>
@@ -156,7 +156,7 @@ const Routes = () => {
                       component={Home}
                     />
                      <Route path="/Country" component={Country} />
-                     <Route path="/NewEntry" component={NewEntry} />
+                   
                   </motion.div>
                 </Switch>
               </LeftSidebar>
