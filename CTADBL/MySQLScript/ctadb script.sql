@@ -770,12 +770,6 @@ CREATE TABLE `tblGreenBook` (
   `sBookIssued` varchar(255) DEFAULT NULL,
   `dtValidityDate` date NOT NULL,
   `sPaidUntil` text NOT NULL,
-
-  `sEnteredDateTime` text DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) Not NULL,
   
   `TibetanName` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `TBUPlaceOfBirth` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -783,6 +777,12 @@ CREATE TABLE `tblGreenBook` (
   `TBUFathersName` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `TBUMothersName` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `TBUSpouseName` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  
+  `sEnteredDateTime` text DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
 
   PRIMARY KEY (`id`),
   KEY `nAuthRegionID` (`nAuthRegionID`)
