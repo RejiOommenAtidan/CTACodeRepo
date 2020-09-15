@@ -192,6 +192,7 @@ export default function UserRights() {
           return (
             <IconButton color="primary" aria-label="upload picture" component="span"
               onClick={() => { editClick(tableMeta.rowData) }}
+              style={{padding:'5px'}}
             >
               <EditOutlinedIcon/>
               </IconButton>
