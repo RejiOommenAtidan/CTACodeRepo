@@ -120,6 +120,9 @@ export default function EnhancedTable() {
   const [countryName, setCountryName] = React.useState('');
   const [countryPK, setCountryPK] = React.useState(0);
   const [countryObj, setCountryObj] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [dataChanged, setDataChanged] = useState(false);
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -145,8 +148,19 @@ export default function EnhancedTable() {
     viewColumns:false,
     selectableRows: false,
     jumpToPage: true,
-    rowsPerPage: 5,
-    rowsPerPageOptions: [5, 10, 20, 30]
+    rowsPerPage: rowsPerPage,
+    rowsPerPageOptions: [5, 10, 20, 30],
+    onChangePage: (number) => {
+      setCurrentPage(number + 1);
+      console.log('Current Page No.', number + 1)
+    },
+    onChangeRowsPerPage: (rows) => {
+      console.log("Rows per page:", rows)
+    },
+    onTableChange: (action, tableState) => {
+      console.log("Action:", action, "\ntableState:", tableState, "Data Changed:", dataChanged);
+      
+    }
   };
 
   const columns = [
@@ -220,7 +234,30 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          window.location = window.location;
+          axios.get(`/Country/GetCountries`)
+            .then(resp => {
+              if (resp.status === 200) {
+                console.log(resp.data);
+                setdataAPI(resp.data);
+                setDataChanged(true);
+              }
+            })
+            .catch(error => {
+              if (error.response) {
+                console.error(error.response.data);
+                console.error(error.response.status);
+                console.error(error.response.headers);
+              } else if (error.request) {
+                console.warn(error.request);
+              } else {
+                console.error('Error', error.message);
+              }
+              console.log(error.config);
+            })
+            .then(release => {
+              //console.log(release); => udefined
+            });
+          //window.location = window.location;
           // setdataAPI(dataAPI.map((data) => {
           //   console.log(data);
           //   if(data.id === countryObj.id){
@@ -264,7 +301,29 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          window.location = window.location;
+          axios.get(`/Country/GetCountries`)
+            .then(resp => {
+              if (resp.status === 200) {
+                console.log(resp.data);
+                setdataAPI(resp.data)
+              }
+            })
+            .catch(error => {
+              if (error.response) {
+                console.error(error.response.data);
+                console.error(error.response.status);
+                console.error(error.response.headers);
+              } else if (error.request) {
+                console.warn(error.request);
+              } else {
+                console.error('Error', error.message);
+              }
+              console.log(error.config);
+            })
+            .then(release => {
+              //console.log(release); => udefined
+            });
+          //window.location = window.location;
         }
       })
       .catch(error => {
@@ -311,7 +370,29 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           console.log(resp.data);
           setDeleteModal(false);
-          window.location = window.location;
+          axios.get(`/Country/GetCountries`)
+            .then(resp => {
+              if (resp.status === 200) {
+                console.log(resp.data);
+                setdataAPI(resp.data)
+              }
+            })
+            .catch(error => {
+              if (error.response) {
+                console.error(error.response.data);
+                console.error(error.response.status);
+                console.error(error.response.headers);
+              } else if (error.request) {
+                console.warn(error.request);
+              } else {
+                console.error('Error', error.message);
+              }
+              console.log(error.config);
+            })
+            .then(release => {
+              //console.log(release); => udefined
+            });
+          //window.location = window.location;
           // setdataAPI(dataAPI.filter((data) => {
           //   return (data.id !== countryToDelete.ID);
           // }));
