@@ -88,11 +88,27 @@ namespace CTADBL.BaseClassRepositories
         #region Populate User Records
         public override User PopulateRecord(MySqlDataReader reader)
         {
-            //DBNull a = (DBNull)reader["dtEntered"];
-            //var b = typeof(a);
+
+            //reader.get
+            int colIndex1 = reader.GetOrdinal("dtEntered");
+            int colIndex2 = reader.GetOrdinal("dtUpdated");
+
+            DateTime? dtEntered = null;
+            DateTime? dtUpdated = null;
+            if (!reader.IsDBNull(colIndex1))
+            {
+                dtEntered = (DateTime)reader["dtEntered"];
+            }
+            if (!reader.IsDBNull(colIndex2))
+            {
+                dtUpdated = (DateTime)reader["dtUpdated"];
+            }
+
             User user = new User();
 
             user.Id = (int)reader["Id"];
+            //TODO: 
+            //user._id = (int?)reader["_id"];
             user.sUsername = (string)reader["sUsername"];
             user.sFullname = (string)reader["sFullName"];
             user.sOffice = (string)reader["sOffice"];
@@ -100,9 +116,9 @@ namespace CTADBL.BaseClassRepositories
             user.nUserRightsId = (int)reader["nUserRightsId"];
             user.nActive = (int)reader["nActive"];
             //Common Properties
-            user.dtEntered = (DateTime)reader["dtEntered"];
+            user.dtEntered = dtEntered;
             user.nEnteredBy = (int)reader["nEnteredBy"];
-            user.dtUpdated = (DateTime)reader["dtUpdated"];
+            user.dtUpdated = dtUpdated;
             user.nUpdatedBy = (int)reader["nUpdatedBy"];
             
             return user;

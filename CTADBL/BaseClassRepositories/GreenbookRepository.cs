@@ -19,7 +19,7 @@ namespace CTADBL.BaseClassRepositories
         public void Add(Greenbook greenbook)
         {
             var builder = new SqlQueryBuilder<Greenbook>(greenbook);
-            ExecuteCommand(builder.GetInsertCommand());
+            int a =ExecuteCommand(builder.GetInsertCommand());
         }
         #endregion
 
@@ -90,8 +90,9 @@ namespace CTADBL.BaseClassRepositories
                             `sPaidUntil`,
                             `sEnteredDateTime`,
                             `nEnteredBy`,
-                            `sUpdatedDateTime`,
                             `nUpdatedBy`,
+                            `dtEntered`,
+                            `dtUpdated`,
                             `TibetanName`,
                             `TBUPlaceOfBirth`,
                             `TBUOriginVillage`,
@@ -155,8 +156,9 @@ namespace CTADBL.BaseClassRepositories
                             `sPaidUntil`,
                             `sEnteredDateTime`,
                             `nEnteredBy`,
-                            `sUpdatedDateTime`,
                             `nUpdatedBy`,
+                            `dtEntered`,
+                            `dtUpdated`,
                             `TibetanName`,
                             `TBUPlaceOfBirth`,
                             `TBUOriginVillage`,
@@ -176,9 +178,24 @@ namespace CTADBL.BaseClassRepositories
         #region Populate Greenbook Records
         public override Greenbook PopulateRecord(MySqlDataReader reader)
         {
+            int colIndex1 = reader.GetOrdinal("dtEntered");
+            int colIndex2 = reader.GetOrdinal("dtUpdated");
+
+            DateTime? dtEntered = null;
+            DateTime? dtUpdated = null;
+            if (!reader.IsDBNull(colIndex1))
+            {
+                dtEntered = (DateTime)reader["dtEntered"];
+            }
+            if (!reader.IsDBNull(colIndex2))
+            {
+                dtUpdated = (DateTime)reader["dtUpdated"];
+            }
             return new Greenbook
             {
                 Id = (int)reader["Id"],
+                //TODO:
+                //_id= (int)reader["_Id"],
                 sGBID = (string)reader["sGBID"],
                 nAuthRegionID = (int)reader["nAuthRegionID"],
                 sFirstName = (string)reader["sFirstName"],
@@ -186,7 +203,7 @@ namespace CTADBL.BaseClassRepositories
                 sFamilyName = (string)reader["sFamilyName"],
                 sGender = (string)reader["sFamilyName"],
                 dtDOB = (DateTime)reader["dtDOB"],
-                sDOBApprox = (string)reader["dtDOB"],
+                sDOBApprox = (string)reader["sDOBApprox"],
                 sBirthPlace = (string)reader["sBirthPlace"],
                 sBirthCountryID = (string)reader["sBirthCountryID"],
                 sOriginVillage = (string)reader["sOriginVillage"],
@@ -223,6 +240,7 @@ namespace CTADBL.BaseClassRepositories
                 dtDeceased = (DateTime)reader["dtDeceased"],
                 sBookIssued = (string)reader["sBookIssued"],
                 dtValidityDate = (DateTime)reader["dtValidityDate"],
+                sEnteredDateTime = (string)reader["sEnteredDateTime"],
                 sPaidUntil = (string)reader["sPaidUntil"],
                 TibetanName = (string)reader["TibetanName"],
                 TBUPlaceOfBirth = (string)reader["TBUPlaceOfBirth"],
@@ -231,9 +249,9 @@ namespace CTADBL.BaseClassRepositories
                 TBUMothersName = (string)reader["TBUMothersName"],
                 TBUSpouseName = (string)reader["TBUSpouseName"],
                 //Common Props
-                dtEntered = (DateTime)reader["dtEntered"],
+                dtEntered = dtEntered,
                 nEnteredBy = (int)reader["nEnteredBy"],
-                dtUpdated = (DateTime)reader["dtUpdated"],
+                dtUpdated = dtUpdated,
                 nUpdatedBy = (int)reader["nUpdatedBy"]
             };
         }

@@ -43,6 +43,7 @@ namespace CTADBL.BaseClassRepositories
         public IEnumerable<Madeb> GetAllMadebs()
         {
             string sql = @"SELECT `Id`,
+                            `_Id`,
                             `nFormNumber`,
                             `sGBID`,
                             `nMadebTypeID`,
@@ -65,9 +66,9 @@ namespace CTADBL.BaseClassRepositories
                             `sApprovedReject`,
                             `dtReject`,
                             `dtReturnEmail`,
-                            `sEnteredDateTime`,
+                            `dtEntered`,
                             `nEnteredBy`,
-                            `sUpdatedDateTime`,
+                            `dtUpdated`,
                             `nUpdatedBy`
                         FROM `tblmadeb`;";
             using (var command = new MySqlCommand(sql))
@@ -79,6 +80,7 @@ namespace CTADBL.BaseClassRepositories
         public Madeb GetMadebById(string Id)
         {
             string sql = @"SELECT `Id`,
+                            `_Id`,
                             `nFormNumber`,
                             `sGBID`,
                             `nMadebTypeID`,
@@ -101,9 +103,9 @@ namespace CTADBL.BaseClassRepositories
                             `sApprovedReject`,
                             `dtReject`,
                             `dtReturnEmail`,
-                            `sEnteredDateTime`,
+                            `dtEntered`,
                             `nEnteredBy`,
-                            `sUpdatedDateTime`,
+                            `dtUpdated`,
                             `nUpdatedBy`
                         FROM `tblmadeb`
                         WHERE Id=@Id";
@@ -115,12 +117,28 @@ namespace CTADBL.BaseClassRepositories
         }
         #endregion
 
-        #region Populate User Records
+        #region Populate Madeb Records
         public override Madeb PopulateRecord(MySqlDataReader reader)
         {
+            //reader.get
+            int colIndex1 = reader.GetOrdinal("dtEntered");
+            int colIndex2 = reader.GetOrdinal("dtUpdated");
+
+            DateTime? dtEntered = null;
+            DateTime? dtUpdated = null;
+            if (!reader.IsDBNull(colIndex1))
+            {
+                dtEntered = (DateTime)reader["dtEntered"];
+            }
+            if (!reader.IsDBNull(colIndex2))
+            {
+                dtUpdated = (DateTime)reader["dtUpdated"];
+            }
             return new Madeb
             {
                 Id = (int)reader["Id"],
+                //TODO:
+                //_id = (int)reader["_Id"]
                 nFormNumber = (int)reader["nFormNumber"],
                 sGBID = (string)reader["sGBID"],
                 nMadebTypeID = (int)reader["nMadebTypeID"],
@@ -144,13 +162,12 @@ namespace CTADBL.BaseClassRepositories
                 dtReject = (DateTime)reader["dtReject"],
                 dtReturnEmail = (DateTime)reader["dtReturnEmail"],
                 //Common Props
-                dtEntered = (DateTime)reader["dtEntered"],
+                dtEntered = dtEntered,
                 nEnteredBy = (int)reader["nEnteredBy"],
-                dtUpdated = (DateTime)reader["dtUpdated"],
+                dtUpdated = dtUpdated,
                 nUpdatedBy = (int)reader["nUpdatedBy"]
             };
         }
         #endregion
-
     }
 }

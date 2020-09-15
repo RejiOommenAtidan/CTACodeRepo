@@ -1,4 +1,3 @@
-// hi
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -25,11 +24,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
-import Chip from '@material-ui/core/Chip';
-
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-
+// import CountryForm from './countryForm';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -56,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.secondary
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -68,48 +65,46 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1.5)
   },
   button: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(1)
   },
   palette: {
     primary: {
-      // Purple and green play nicely together.
-      main: red[500],
+      main: red[500]
     },
     secondary: {
-      // This is green.A700 as hex.
-      main: '#11cb5f',
-    },
+      main: '#11cb5f'
+    }
   }
-
 }));
 
-export default function EnhancedTable() {
+export default function CountryList() {
+  //CSS Usage Material Style
   const classes = useStyles();
+  //Navigate around App
   const navigate = useNavigate();
-  const [editModal, setEditModal] = React.useState(false);
-  const [dataAPI, setdataAPI] = useState([]);
-  // const [loadingProp, setloadingProp] = useState(true);
+  //EditModal
+  const [editModal, setEditModal] = useState(false);
+  //DeleteModal
   const [deleteModal, setDeleteModal] = useState(false);
+  //AddModal
   const [addModal, setAddModal] = useState(false);
-  const [selectedUser, setselectedUser] = useState('');
-  const [selectedUserName, setselectedUserName] = useState('');
+  //dataFromAPI
+  const [dataAPI, setdataAPI] = useState([]);
 
-  //VAR
+  //CONSTS
   const [countryID, setCountryID] = React.useState('');
   const [countryName, setCountryName] = React.useState('');
   const [countryPK, setCountryPK] = React.useState(0);
 
-  const handleEditClickOpen = () => {
-    setEditModal(true);
-  };
-  const handleEditClickClose = () => {
-    setEditModal(false);
-  };
+  //Click Calls
   const handleAddClickOpen = () => {
     setAddModal(true);
   };
   const handleAddClickClose = () => {
     setAddModal(false);
+  };
+  const handleEditClickClose = () => {
+    setEditModal(false);
   };
 
   const options = {
@@ -119,16 +114,13 @@ export default function EnhancedTable() {
     rowsPerPage: 5,
     rowsPerPageOptions: [5, 10, 20, 30]
   };
-
   const columns = [
     {
       name: "id",
       label: "Sr No.",
       options: {
         filter: true,
-        sort: true,
-
-
+        sort: true
       }
     },
     {
@@ -176,7 +168,6 @@ export default function EnhancedTable() {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
-
             <Button
               variant="outlined"
               color="secondary"
@@ -191,31 +182,37 @@ export default function EnhancedTable() {
     }
   ];
 
+  //Handle click from table Edit Btn
   const editClick = (countryObj) => {
-    // //TODO: remove usage of window.location
-    // window.location = 'editUser/' + user_Id.toString();
-    //Done
-    // navigate('/app/editUser/' + user_Id.toString());
-    // console.log(user_Id);
     setCountryPK(countryObj[0]);
     setCountryID(countryObj[1]);
     setCountryName(countryObj[2]);
     setEditModal(true);
   }
 
-  const editAPICall = ()=>{
+  //On Edit Save
+  const editAPICall = () => {
     let CountryID = countryPK;
     let countryToUpdate = {
-      ID : countryPK,
+      ID: countryPK,
       sCountryID: countryID,
       sCountry: countryName,
     };
-    axios.post(`/Country/EditCountry/CountryID=` + CountryID,countryToUpdate)
+    axios.post(`/Country/EditCountry/CountryID=` + CountryID, countryToUpdate)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setEditModal(false);
-          window.location=window.location;
+          setdataAPI(dataAPI.map((data) => {
+            if (data.id === countryPK) {
+              return {
+                ...data,
+                ...countryToUpdate
+              };
+            }
+            else {
+              return data;
+            }
+          }));
         }
       })
       .catch(error => {
@@ -234,18 +231,16 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = ()=>{
-  
+  const addAPICall = () => {
     let countryToAdd = {
       sCountryID: countryID,
       sCountry: countryName,
     };
-    axios.post(`/Country/AddCountry/`,countryToAdd)
+    axios.post(`/Country/AddCountry/`, countryToAdd)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
-          window.location=window.location;
+          window.location = window.location;
         }
       })
       .catch(error => {
@@ -265,36 +260,30 @@ export default function EnhancedTable() {
       });
   };
 
-
-  
+  //Delete table Click
   const deleteClick = (countryObj) => {
- 
     setDeleteModal(true);
     setCountryPK(countryObj[0]);
     setCountryID(countryObj[1]);
     setCountryName(countryObj[2]);
   };
 
-  const handleClose = () => {
+  //Handle Delete Modal Closing
+  const handleDeleteClose = () => {
     setDeleteModal(false);
-    setselectedUser('');
-    setselectedUserName('');
   };
 
   const deleteCallAPI = () => {
-    // console.log(this.state.selectedUser);
-    let CountryID = countryPK;
     let countryToDelete = {
-      ID : countryPK,
+      ID: countryPK,
       sCountryID: countryID,
       sCountry: countryName,
     };
-    axios.post(`/Country/DeleteCountry/`,countryToDelete)
+    axios.post(`/Country/DeleteCountry/`, countryToDelete)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
-          setEditModal(false);
-          window.location=window.location;
+          setDeleteModal(false);
+          window.location = window.location;
         }
       })
       .catch(error => {
@@ -314,11 +303,11 @@ export default function EnhancedTable() {
       });
   };
 
+  //On Func Load
   useEffect(() => {
     axios.get(`/Country/GetCountries`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setdataAPI(resp.data)
         }
       })
@@ -352,56 +341,52 @@ export default function EnhancedTable() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Country 
+            <Typography variant="h4" gutterBottom>Country
              <IconButton
                 color="primary"
                 aria-label="upload picture"
                 component="span"
                 size="large"
-                //onClick={addClick()}
-                onClick={() => { setAddModal(true) }}
-             >
-               <AddCircleIcon />
+                onClick={handleAddClickOpen}
+              >
+                <AddCircleIcon />
               </IconButton>
             </Typography>
             <Dialog open={addModal} onClose={handleAddClickClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add Country</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            <div>
-              <Grid container>
-                <Grid item xs={12}>
-                  <FormControl className={classes.formControl}>
-                    <TextField
-                      id="id_countryId"
-                      label="Country ID"
-                      type="text"
-                      onChange={(e)=>{setCountryID(e.target.value)}}
-                      
-
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} >
-                  <FormControl className={classes.formControl}>
-                    <TextField
-                      id="id_CountryName"
-                      label="Country Name"
-                      type="text"
-                      
-                      onChange={(e)=>{setCountryName(e.target.value)}}
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </div>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleAddClickClose} color="primary">Cancel</Button>
-          <Button onClick={addAPICall} color="primary">Save</Button>
-        </DialogActions>
-      </Dialog>
+              <DialogTitle id="form-dialog-title">Add Country</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  <div>
+                    <Grid container>
+                      <Grid item xs={12}>
+                        <FormControl className={classes.formControl}>
+                          <TextField
+                            id="id_countryId"
+                            label="Country ID"
+                            type="text"
+                            onChange={(e) => { setCountryID(e.target.value) }}
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12} >
+                        <FormControl className={classes.formControl}>
+                          <TextField
+                            id="id_CountryName"
+                            label="Country Name"
+                            type="text"
+                            onChange={(e) => { setCountryName(e.target.value) }}
+                          />
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                  </div>
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleAddClickClose} color="primary">Cancel</Button>
+                <Button onClick={addAPICall} color="primary">Save</Button>
+              </DialogActions>
+            </Dialog>
             <Grid container className={classes.box}>
               <Grid item xs={12}>
                 <MUIDataTable
@@ -415,7 +400,7 @@ export default function EnhancedTable() {
               open={deleteModal}
               TransitionComponent={Transition}
               keepMounted
-              onClose={handleClose}
+              onClose={handleDeleteClose}
             >
               <DialogTitle id="alert-dialog-slide-title">Confirm Operation</DialogTitle>
               <DialogContent>
@@ -424,7 +409,7 @@ export default function EnhancedTable() {
           </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose} color="default">
+                <Button onClick={handleDeleteClose} color="default">
                   No
           </Button>
                 <Button onClick={deleteCallAPI} color="secondary">
@@ -451,7 +436,6 @@ export default function EnhancedTable() {
                         readOnly: true
                       }}
                       value={countryID}
-
                     />
                   </FormControl>
                 </Grid>
@@ -462,7 +446,7 @@ export default function EnhancedTable() {
                       label="Country Name"
                       type="text"
                       value={countryName}
-                      onChange={(e)=>{setCountryName(e.target.value)}}
+                      onChange={(e) => { setCountryName(e.target.value) }}
                     />
                   </FormControl>
                 </Grid>

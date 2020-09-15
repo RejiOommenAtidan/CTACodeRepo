@@ -1,6 +1,7 @@
 ﻿using CTADBL.BaseClasses;
 using CTADBL.Repository;
 using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 
 namespace CTADBL.BaseClassRepositories
@@ -19,7 +20,7 @@ namespace CTADBL.BaseClassRepositories
             string sql = @"SELECT `ID`,
                             `nGBID`,
                             `nUserID`,
-                            `sEnteredDateTime`,
+                            `dtEntered`,
                             `nEnteredBy`
                         FROM `tblrecentlysearchedgb`;";
             using (var command = new MySqlCommand(sql))
@@ -32,13 +33,19 @@ namespace CTADBL.BaseClassRepositories
         #region Populate Recently Searched GB Records
         public override RecentlySearchedGB PopulateRecord(MySqlDataReader reader)
         {
+            int colIndex1 = reader.GetOrdinal("dtEntered");
+            DateTime? dtEntered = null;
+            if (!reader.IsDBNull(colIndex1))
+            {
+                dtEntered = (DateTime)reader["dtEntered"];
+            }
             return new RecentlySearchedGB
             {
                 ID = (int)reader["ID"],
                 nEnteredBy = (int)reader["nEnteredBy"],
                 nGBID = (int)reader["nGBID"],
                 nUserID = (int)reader["nUserID"],
-                sEnteredDateTime = (string)reader["sEnteredDateTime"]
+                dtEntered = dtEntered
             };
         }
         #endregion

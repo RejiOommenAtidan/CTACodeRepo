@@ -9,6 +9,7 @@ namespace CTADBL.BaseClasses
     {
         #region Private Madeb Properties
         private int _Id;
+        private int __Id;
         private int _nFormNumber;
         private string _sGBID;
         private int _nMadebTypeID;
@@ -36,6 +37,7 @@ namespace CTADBL.BaseClasses
         #region Public Madeb Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
+        public int  _id { get { return _Id; } set { _Id = value; } }
         public int nFormNumber { get { return _nFormNumber; } set { _nFormNumber = value; } }
         public string sGBID { get { return _sGBID; } set { _sGBID = value; } }
         public int nMadebTypeID { get { return _nMadebTypeID; } set { _nMadebTypeID = value; } }

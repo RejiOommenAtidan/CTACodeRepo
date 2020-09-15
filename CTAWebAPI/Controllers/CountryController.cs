@@ -97,7 +97,10 @@ namespace CTAWebAPI.Controllers
                     //{
                     //    return BadRequest("Country cannot be NULL");
                     //}
-
+                    if (_countryRepository.CountryIdExists(country.sCountryID))
+                    {
+                        return StatusCode(StatusCodes.Status400BadRequest, "CountryID already exists.");
+                    }
                     country.dtEntered = DateTime.Now;
                     country.dtUpdated = DateTime.Now;
                     
@@ -139,25 +142,31 @@ namespace CTAWebAPI.Controllers
                 Country country = _countryRepository.GetCountryById(ID);
                 if(country != null && ID == countryToUpdate.ID.ToString())
                 {
-                    if (ModelState.IsValid)
+                    if (country.sCountryID == countryToUpdate.sCountryID)
                     {
-                        countryToUpdate.dtEntered = country.dtEntered;
-                        //to uncomment later
-                        //countryToUpdate.nUpdatedBy =  //catch current user id here
-                        countryToUpdate.dtUpdated = DateTime.Now;
-                        int updated = _countryRepository.Update(countryToUpdate);
-                        if (updated > 0)
-                            return Ok(String.Format("Country with ID: {0} updated Successfully", ID));
+                        if (ModelState.IsValid)
+                        {
+                            countryToUpdate.dtEntered = country.dtEntered;
+                            //to uncomment later
+                            //countryToUpdate.nUpdatedBy =  //catch current user id here
+                            countryToUpdate.dtUpdated = DateTime.Now;
+                            int updated = _countryRepository.Update(countryToUpdate);
+                            if (updated > 0)
+                                return Ok(String.Format("Country with ID: {0} updated Successfully", ID));
+                            else
+                                return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while updating the record.");
+                        }
                         else
-                            return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while updating the record.");
-
+                        {
+                            var errors = ModelState.Select(x => x.Value.Errors)
+                                       .Where(y => y.Count > 0)
+                                       .ToList();
+                            return BadRequest(errors);
+                        }
                     }
                     else
                     {
-                        var errors = ModelState.Select(x => x.Value.Errors)
-                                   .Where(y => y.Count > 0)
-                                   .ToList();
-                        return BadRequest(errors);
+                        return StatusCode(StatusCodes.Status400BadRequest, "CountryID can't be modified.");
                     }
                 }
                 else

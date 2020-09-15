@@ -60,6 +60,23 @@ namespace CTADBL.BaseClassRepositories
         }
         #endregion
 
+        public bool CountryIdExists(string countryId)
+        {
+            using (var command = new MySqlCommand("SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE sCountryID = @id"))
+            {
+                command.Parameters.AddWithValue("id", countryId);
+                Country country = GetRecord(command);
+                if (country != null)// found country
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         #region Populate Country Records
         public override Country PopulateRecord(MySqlDataReader reader)
         {
