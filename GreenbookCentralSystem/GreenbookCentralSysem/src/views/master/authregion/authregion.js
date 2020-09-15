@@ -41,6 +41,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 const getMuiTheme = () => createMuiTheme({
   overrides: {
+    MUIDataTableHeadCell: {
+      root:{
+        color:'blue',
+        fontSize:20
+      }
+    },
     MUIDataTableBodyCell: {
       root: {
         // backgroundColor: "#FFF",
@@ -120,7 +126,7 @@ export default function EnhancedTable() {
   const [authRegion, setAuthRegion] = React.useState('');
   const [authRegionPK, setAuthRegionPK] = React.useState(0);
   const [authRegionObj, setAuthRegionObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
 
