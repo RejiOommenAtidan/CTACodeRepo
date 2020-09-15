@@ -48,6 +48,12 @@ const getMuiTheme = () => createMuiTheme({
       }
 
     },
+    MUIDataTableHeadCell: {
+      root:{
+        color:'blue',
+        fontSize:20
+      }
+    },
     MuiTableCell: {
       root: {
           padding: '0px',

@@ -37,7 +37,7 @@ const LeftSidebar = (props) => {
         <div className="app-main">
           <Header />
           <div className="app-content">
-            <div className="app-content--inner">
+            <div className="app-content--inner" style={{paddingTop:10 }}>
               <div className="app-content--inner__wrapper">{children}</div>
             </div>
             <Footer />
