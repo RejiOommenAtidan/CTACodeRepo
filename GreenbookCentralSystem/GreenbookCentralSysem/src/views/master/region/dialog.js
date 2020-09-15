@@ -24,24 +24,27 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export const EditDialog = (props) => {
   //debugger
-  const [Name, setCountryName] = useState(props.countryObj.countryName);
+  const [Name, setRegion] = useState(props.regionObj.region);
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Country</DialogTitle>
+      <DialogTitle id="form-dialog-title">Region</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <div>
-            <Grid container>
+            <Grid container >
               <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
+                <FormControl className={props.classes.formControl} >
                   <TextField
-                    id="id_countryId"
-                    label="Country ID"
+                 // style={{width:max}}
+
+                
+                    id="id_regionId"
+                    label="Region ID"
                     type="text"
                     InputProps={{
                       readOnly: true
                     }}
-                    value={props.countryObj.countryId}
+                    value={props.regionObj.regionId}
 
                   />
                 </FormControl>
@@ -49,11 +52,11 @@ export const EditDialog = (props) => {
               <Grid item xs={12} >
                 <FormControl className={props.classes.formControl}>
                   <TextField
-                    id="id_CountryName"
-                    label="Country Name"
+                    id="id_Region"
+                    label="Region"
                     type="text"
                     value={Name} // Set country name from local variable Name.
-                    onChange={(e) => { setCountryName(e.target.value) }}
+                    onChange={(e) => { setRegion(e.target.value) }}
                   />
                 </FormControl>
               </Grid>
@@ -63,7 +66,7 @@ export const EditDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })} color="primary">Save</Button>
+        <Button onClick={() => props.editAPICall({ id: props.regionObj.id, sRegion_code: props.regionObj.regionId, sRegion_name: Name })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );
@@ -73,7 +76,7 @@ export const EditDialog = (props) => {
 
 export const DeleteDialog = (props) => {
   console.log("Delete Dialog");
-  return (
+  return ({/*
     <Dialog
       open={props.deleteModal}
       TransitionComponent={Transition}
@@ -94,37 +97,37 @@ export const DeleteDialog = (props) => {
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  */ } );
 
 }
 
 export const AddDialog = (props) => {
   console.log("Add Dialog");
-  const [countryId, setCountryId] = useState('');
-  const [countryName, setCountryName] = useState('');
+  const [regionId, setRegionId] = useState('');
+  const [region, setRegion] = useState('');
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Country</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add Region</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <Grid container>
             <Grid item xs={12}>
               <FormControl className={props.classes.formControl}>
                 <TextField
-                  id="id_countryId"
-                  label="Country ID"
+                  id="id_regionId"
+                  label="Region ID"
                   type="text"
-                  onChange={(e) => { setCountryId(e.target.value) }}
+                  onChange={(e) => { setRegionId(e.target.value) }}
                 />
               </FormControl>
             </Grid>
             <Grid item xs={12} >
               <FormControl className={props.classes.formControl}>
                 <TextField
-                  id="id_CountryName"
-                  label="Country Name"
+                  id="id_Region"
+                  label="Region"
                   type="text"
-                  onChange={(e) => { setCountryName(e.target.value) }}
+                  onChange={(e) => { setRegion(e.target.value) }}
                 />
               </FormControl>
             </Grid>
@@ -134,7 +137,7 @@ export const AddDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.addAPICall({ sCountryID: countryId, sCountry: countryName })} color="primary">Save</Button>
+        <Button onClick={() => props.addAPICall({ sRegionID: regionId, sRegion: region })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );

@@ -244,15 +244,15 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardMonitoring">
+                      to="/Region">
                       Region
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardCommerce">
-                      Authority
+                      to="/AuthRegion">
+                      Authority Region
                     </NavLink>
                   </li>
                   <li>
@@ -265,22 +265,50 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardStatistics">
+                      to="/Occupation">
                       Occupation
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardStatistics">
-                      Provinces
+                      to="/Province">
+                      Province
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/DashboardStatistics">
+                      to="/Qualification">
                       Qualification
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      onClick={toggleSidebarMobile}
+                      to="/Relation">
+                      Relation
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      onClick={toggleSidebarMobile}
+                      to="/MadebType">
+                      Madeb Type
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      onClick={toggleSidebarMobile}
+                      to="/UserRights">
+                      User Rights
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      onClick={toggleSidebarMobile}
+                      to="/TypeIssued">
+                          Type Issued
                     </NavLink>
                   </li>
                 </ul>

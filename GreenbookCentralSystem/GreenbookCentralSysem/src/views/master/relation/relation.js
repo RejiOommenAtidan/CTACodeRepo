@@ -105,7 +105,7 @@ const useStyles = makeStyles(() => ({
 */
 }));
 
-export default function Qualification() {
+export default function Relation() {
   const classes = useStyles();
  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
@@ -116,10 +116,10 @@ export default function Qualification() {
 
 
   //VAR
-  const [qualificationID, setQualificationID] = React.useState('');
-  const [qualification, setQualification] = React.useState('');
-  const [qualificationPK, setQualificationPK] = React.useState(0);
-  const [qualificationObj, setQualificationObj] = useState({});
+  
+  const [relation, setRelation] = React.useState('');
+  const [relationPK, setRelationPK] = React.useState(0);
+  const [relationObj, setRelationObj] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
@@ -173,17 +173,10 @@ export default function Qualification() {
         display:false
       }
     },
+   
     {
-      name: "sQualificationID",
-      label: "Qualification ID",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "sQualification",
-      label: "Qualification",
+      name: "sRelation",
+      label: "Type Issued",
       options: {
         filter: true,
         sort: true
@@ -211,30 +204,30 @@ export default function Qualification() {
   ];
 
   const editClick = (tableRowArray) => {
-    setQualificationPK(tableRowArray[0]);
-    setQualificationID(tableRowArray[1]);
-    setQualification(tableRowArray[2]);
+    setRelationPK(tableRowArray[0]);
+   
+    setRelation(tableRowArray[1]);
     setEditModal(true);
-    setQualificationObj({
+    setRelationObj({
       id: tableRowArray[0],
-      qualificationId: tableRowArray[1],
-      qualification: tableRowArray[2]
+      
+      relation: tableRowArray[1]
     });
   }
 
-  const editAPICall = (qualificationObj) => {
+  const editAPICall = (relationObj) => {
     // let CountryID = countryPK;
     // let countryToUpdate = {
     //   ID : countryPK,
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Qualification/EditQualification/ID=` + qualificationPK, qualificationObj/*QualificationToUpdate*/)
+    axios.post(`/Relation/EditRelation/ID=` + relationPK, relationObj/*RelationToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/Qualification/GetQualification`)
+          axios.get(`/Relation/GetRelation`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -290,18 +283,18 @@ export default function Qualification() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (qualificationObj) => {
+  const addAPICall = (relationObj) => {
 
     // let countryToAdd = {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Qualification/AddQualification/`, qualificationObj)
+    axios.post(`/Relation/AddRelation/`, relationObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/Qualification/GetQualification`)
+          axios.get(`/Relation/GetRelation`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -346,9 +339,9 @@ export default function Qualification() {
   const deleteClick = (tableRowArray) => {
 
     setDeleteModal(true);
-    setQualificationPK(tableRowArray[0]);
-    setQualificationID(tableRowArray[1]);
-    setQualification(tableRowArray[2]);
+    setRelationPK(tableRowArray[0]);
+
+    setRelation(tableRowArray[1]);
   };
 
   const handleClose = () => {
@@ -359,7 +352,7 @@ export default function Qualification() {
   
 
   useEffect(() => {
-    axios.get(`/Qualification/GetQualification`)
+    axios.get(`/Relation/GetRelation`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -393,7 +386,7 @@ export default function Qualification() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Qualification
+            <Typography variant="h4" gutterBottom>Relation
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -420,7 +413,7 @@ export default function Qualification() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              qualificationObj={qualificationObj}
+              relationObj={relationObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
