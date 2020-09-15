@@ -28,7 +28,15 @@ const PageError505 = lazy(() => import('./example-pages/PageError505'));
 
 //My pages
 const Home = lazy(() => import('./views/home'));
+//Master Pages
 const Country = lazy(() => import('./views/master/country'));
+const Qualification = lazy(() => import('./views/master/qualification'));
+const Occupation = lazy(() => import('./views/master/occupation'));
+const Province = lazy(() => import('./views/master/province'));
+const AuthRegion = lazy(() => import('./views/master/authregion'));
+const Region = lazy(() => import('./views/master/region'));
+
+
 const NewEntry = lazy(() => import('./views/transactions/newentry/newentry'));
 
 
@@ -140,7 +148,13 @@ const Routes = () => {
               path={[
                 '/Home',
                 '/Country',
-                '/NewEntry'
+                '/NewEntry',
+                '/Qualification',
+                '/Region',
+                '/Province',
+                '/AuthRegion',
+                '/Occupation',
+
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -156,6 +170,11 @@ const Routes = () => {
                     />
                      <Route path="/Country" component={Country} />
                      <Route path="/NewEntry" component={NewEntry} />
+                     <Route path="/Qualification" component={Qualification} />
+                     <Route path="/Region" component={Region} />
+                     <Route path="/Province" component={Province} />
+                     <Route path="/AuthRegion" component={AuthRegion} />
+                     <Route path="/Occupation" component={Occupation} />
                   </motion.div>
                 </Switch>
               </LeftSidebar>
