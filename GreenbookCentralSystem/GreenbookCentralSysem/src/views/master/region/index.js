@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 
 
-import Country from './country';
+import Region from './region';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,9 +31,9 @@ const Dashboard = () => {
             Home
         </Link>
 
-          <Typography color="textPrimary"> Country</Typography>
+          <Typography color="textPrimary">Region</Typography>
         </Breadcrumbs>
-        <Country />
+        <Region />
       </Container>
 
   );

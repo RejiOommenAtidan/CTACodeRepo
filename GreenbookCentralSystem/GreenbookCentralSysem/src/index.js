@@ -6,7 +6,7 @@ import axios from 'axios'
 
 
 axios.defaults.baseURL = process.env.REACT_APP_APIBASEURL;
-console.log(process.env.REACT_APP_APIBASEURL);
+console.log(process.env.REACT_APP_ROWS_PER_PAGE);
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

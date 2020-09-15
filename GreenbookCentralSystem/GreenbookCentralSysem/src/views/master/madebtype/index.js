@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 
 
-import MadebType from './madebtype';
+import Country from './country';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,13 +27,13 @@ const Dashboard = () => {
    
       <Container maxWidth={false}>
         <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/Home" >
+          <Link color="inherit" href="/app/manageuser" >
             Home
         </Link>
 
-          <Typography color="textPrimary">Madeb Type</Typography>
+          <Typography color="textPrimary"> Country</Typography>
         </Breadcrumbs>
-        <MadebType />
+        <Country />
       </Container>
 
   );

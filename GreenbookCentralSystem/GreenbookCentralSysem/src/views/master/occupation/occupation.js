@@ -43,8 +43,8 @@ const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableBodyCell: {
       root: {
-        // backgroundColor: "#FFF",
-        // width: "50px"
+      //  backgroundColor: "#FFF"
+        
       }
 
     },
@@ -105,7 +105,7 @@ const useStyles = makeStyles(() => ({
 */
 }));
 
-export default function EnhancedTable() {
+export default function Qualification() {
   const classes = useStyles();
  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
@@ -116,10 +116,10 @@ export default function EnhancedTable() {
 
 
   //VAR
-  const [occupationPK, setOccupationPK] = React.useState(0);
-  const [occupationDesc, setOccupationDesc] = React.useState('');
-  const [occupationDescTibetan, setOccupationDescTibetan] = React.useState('');
-  const [occupationObj, setOccupationObj] = useState({});
+  const [qualificationID, setQualificationID] = React.useState('');
+  const [qualification, setQualification] = React.useState('');
+  const [qualificationPK, setQualificationPK] = React.useState(0);
+  const [qualificationObj, setQualificationObj] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
@@ -174,16 +174,16 @@ export default function EnhancedTable() {
       }
     },
     {
-      name: "sOccupationDesc",
-      label: "Occupation",
+      name: "sQualificationID",
+      label: "Qualification ID",
       options: {
         filter: true,
         sort: true
       }
     },
     {
-      name: "sOccupationDescTibetan",
-      label: "Occupation (in Tibetan)",
+      name: "sQualification",
+      label: "Qualification",
       options: {
         filter: true,
         sort: true
@@ -211,30 +211,30 @@ export default function EnhancedTable() {
   ];
 
   const editClick = (tableRowArray) => {
-    setOccupationPK(tableRowArray[0]);
-    setOccupationDesc(tableRowArray[1]);
-    setOccupationDescTibetan(tableRowArray[2]);
+    setQualificationPK(tableRowArray[0]);
+    setQualificationID(tableRowArray[1]);
+    setQualification(tableRowArray[2]);
     setEditModal(true);
-    setOccupationObj({
+    setQualificationObj({
       id: tableRowArray[0],
-      occupationDesc: tableRowArray[1],
-      occupationDescTibetan: tableRowArray[2]
+      qualificationId: tableRowArray[1],
+      qualification: tableRowArray[2]
     });
   }
 
-  const editAPICall = (occupationObj) => {
+  const editAPICall = (qualificationObj) => {
     // let CountryID = countryPK;
     // let countryToUpdate = {
     //   ID : countryPK,
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Occupation/EditOccupation/occupationId=` + occupationPK, occupationObj)
+    axios.post(`/Qualification/EditQualification/ID=` + qualificationPK, qualificationObj/*QualificationToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/Occupation/GetOccupations`)
+          axios.get(`/Qualification/GetQualification`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -290,18 +290,18 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (occupationObj) => {
+  const addAPICall = (qualificationObj) => {
 
     // let countryToAdd = {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Occupation/AddOccupation`, occupationObj)
+    axios.post(`/Qualification/AddQualification/`, qualificationObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/Occupation/GetOccupations`)
+          axios.get(`/Qualification/GetQualification`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -344,10 +344,11 @@ export default function EnhancedTable() {
   };
 
   const deleteClick = (tableRowArray) => {
-    setOccupationPK(tableRowArray[0]);
-    setOccupationDesc(tableRowArray[1]);
-    setOccupationDescTibetan(tableRowArray[2]);
+
     setDeleteModal(true);
+    setQualificationPK(tableRowArray[0]);
+    setQualificationID(tableRowArray[1]);
+    setQualification(tableRowArray[2]);
   };
 
   const handleClose = () => {
@@ -355,67 +356,10 @@ export default function EnhancedTable() {
 
   };
 
-  const deleteAPICall = () => {
-    // console.log(this.state.selectedUser);
-    // let CountryID = countryPK;
-    const occupationToDelete = {
-      ID: occupationPK,
-      sOccupationDesc: occupationDesc,
-      sOccupationDescTibetan: occupationDescTibetan
-    };
-    axios.post(`/Occupation/DeleteOccupation`, occupationToDelete)
-      .then(resp => {
-        console.log(occupationToDelete);
-        if (resp.status === 200) {
-          console.log(resp.data);
-          setDeleteModal(false);
-          axios.get(`/Occupation/GetOccupations`)
-            .then(resp => {
-              if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
-              }
-            })
-            .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
-            })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-          //window.location = window.location;
-          // setdataAPI(dataAPI.filter((data) => {
-          //   return (data.id !== countryToDelete.ID);
-          // }));
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-  };
+  
 
   useEffect(() => {
-    axios.get(`/Occupation/GetOccupations`)
+    axios.get(`/Qualification/GetQualification`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -449,7 +393,7 @@ export default function EnhancedTable() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Occupation
+            <Typography variant="h4" gutterBottom>Qualification
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -476,17 +420,12 @@ export default function EnhancedTable() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              occupationObj={occupationObj}
+              qualificationObj={qualificationObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
             />}
-            {deleteModal && <DeleteDialog
-              deleteModal={deleteModal}
-              occupationDesc={occupationDesc}
-              handleClose={handleClose}
-              deleteAPICall={deleteAPICall}
-            />}
+          
           </Container>
         </Box>
    

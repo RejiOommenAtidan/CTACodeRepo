@@ -24,36 +24,23 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export const EditDialog = (props) => {
   //debugger
-  const [Name, setCountryName] = useState(props.countryObj.countryName);
+  const [Name, setUserRights] = useState(props.userRightsObj.userRights);
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Country</DialogTitle>
+      <DialogTitle id="form-dialog-title">UserRights</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <div>
-            <Grid container>
-              <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_countryId"
-                    label="Country ID"
-                    type="text"
-                    InputProps={{
-                      readOnly: true
-                    }}
-                    value={props.countryObj.countryId}
-
-                  />
-                </FormControl>
-              </Grid>
+            <Grid container >
+              
               <Grid item xs={12} >
                 <FormControl className={props.classes.formControl}>
                   <TextField
-                    id="id_CountryName"
-                    label="Country Name"
+                    id="id_UserRights"
+                    label="UserRights"
                     type="text"
                     value={Name} // Set country name from local variable Name.
-                    onChange={(e) => { setCountryName(e.target.value) }}
+                    onChange={(e) => { setUserRights(e.target.value) }}
                   />
                 </FormControl>
               </Grid>
@@ -63,7 +50,7 @@ export const EditDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })} color="primary">Save</Button>
+        <Button onClick={() => props.editAPICall({ id: props.userRightsObj.id,  sUserRightsName: Name })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );
@@ -73,7 +60,7 @@ export const EditDialog = (props) => {
 
 export const DeleteDialog = (props) => {
   console.log("Delete Dialog");
-  return (
+  return ({/*
     <Dialog
       open={props.deleteModal}
       TransitionComponent={Transition}
@@ -94,37 +81,28 @@ export const DeleteDialog = (props) => {
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  */ } );
 
 }
 
 export const AddDialog = (props) => {
   console.log("Add Dialog");
-  const [countryId, setCountryId] = useState('');
-  const [countryName, setCountryName] = useState('');
+  const [userRightsId, setUserRightsId] = useState('');
+  const [userRights, setUserRights] = useState('');
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Country</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add UserRights</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <Grid container>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_countryId"
-                  label="Country ID"
-                  type="text"
-                  onChange={(e) => { setCountryId(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
+            
             <Grid item xs={12} >
               <FormControl className={props.classes.formControl}>
                 <TextField
-                  id="id_CountryName"
-                  label="Country Name"
+                  id="id_UserRights"
+                  label="UserRights"
                   type="text"
-                  onChange={(e) => { setCountryName(e.target.value) }}
+                  onChange={(e) => { setUserRights(e.target.value) }}
                 />
               </FormControl>
             </Grid>
@@ -134,7 +112,7 @@ export const AddDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.addAPICall({ sCountryID: countryId, sCountry: countryName })} color="primary">Save</Button>
+        <Button onClick={() => props.addAPICall({ sUserRightsName: userRights })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );

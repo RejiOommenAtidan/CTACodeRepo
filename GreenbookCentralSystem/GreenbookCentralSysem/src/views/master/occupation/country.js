@@ -120,7 +120,7 @@ export default function EnhancedTable() {
   const [countryName, setCountryName] = React.useState('');
   const [countryPK, setCountryPK] = React.useState(0);
   const [countryObj, setCountryObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
 

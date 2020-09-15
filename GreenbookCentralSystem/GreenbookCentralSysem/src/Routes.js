@@ -35,6 +35,9 @@ const Occupation = lazy(() => import('./views/master/occupation'));
 const Province = lazy(() => import('./views/master/province'));
 const AuthRegion = lazy(() => import('./views/master/authregion'));
 const Region = lazy(() => import('./views/master/region'));
+const UserRights = lazy(() => import('./views/master/userrights'));
+const TypeIssued = lazy(() => import('./views/master/typeissued'));
+const Relation = lazy(() => import('./views/master/relation'));
 
 
 const NewEntry = lazy(() => import('./views/transactions/newentry/newentry'));
@@ -154,6 +157,9 @@ const Routes = () => {
                 '/Province',
                 '/AuthRegion',
                 '/Occupation',
+                '/UserRights',
+                '/TypeIssued',
+                '/Relation'
 
               ]}>
               <LeftSidebar>
@@ -175,6 +181,9 @@ const Routes = () => {
                      <Route path="/Province" component={Province} />
                      <Route path="/AuthRegion" component={AuthRegion} />
                      <Route path="/Occupation" component={Occupation} />
+                     <Route path="/UserRights" component={UserRights} />
+                     <Route path="/TypeIssued" component={TypeIssued} />
+                     <Route path="/Relation" component={Relation} />
                   </motion.div>
                 </Switch>
               </LeftSidebar>

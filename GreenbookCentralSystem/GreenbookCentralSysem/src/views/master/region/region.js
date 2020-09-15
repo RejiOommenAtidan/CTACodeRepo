@@ -43,8 +43,8 @@ const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableBodyCell: {
       root: {
-        // backgroundColor: "#FFF",
-        // width: "50px"
+      //  backgroundColor: "#FFF"
+        
       }
 
     },
@@ -105,7 +105,7 @@ const useStyles = makeStyles(() => ({
 */
 }));
 
-export default function EnhancedTable() {
+export default function Region() {
   const classes = useStyles();
  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
@@ -116,10 +116,11 @@ export default function EnhancedTable() {
 
 
   //VAR
-  const [province, setProvince] = React.useState('');
-  const [provincePK, setProvincePK] = React.useState(0);
-  const [provinceObj, setProvinceObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [regionID, setRegionID] = React.useState('');
+  const [region, setRegion] = React.useState('');
+  const [regionPK, setRegionPK] = React.useState(0);
+  const [regionObj, setRegionObj] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
 
@@ -173,14 +174,21 @@ export default function EnhancedTable() {
       }
     },
     {
-      name: "sProvince",
-      label: "Province",
+      name: "sRegion_code",
+      label: "Region ID",
       options: {
         filter: true,
         sort: true
       }
     },
-    
+    {
+      name: "sRegion_name",
+      label: "Region",
+      options: {
+        filter: true,
+        sort: true
+      }
+    },
     {
       name: "edit",
       label: "Edit",
@@ -203,30 +211,33 @@ export default function EnhancedTable() {
   ];
 
   const editClick = (tableRowArray) => {
-    setProvincePK(tableRowArray[0]);
-    setProvince(tableRowArray[1]);
-    
+   
+    setRegionPK(tableRowArray[0]);
+    setRegionID(tableRowArray[1]);
+    setRegion(tableRowArray[2]);
     setEditModal(true);
-    setProvinceObj({
+    setRegionObj({
       id: tableRowArray[0],
-      province: tableRowArray[1]
-      
+      regionId: tableRowArray[1],
+      region: tableRowArray[2]
     });
+   
   }
 
-  const editAPICall = (provinceObj) => {
-    // let ProvinceID = provincePK;
-    // let provinceToUpdate = {
-    //   ID : provincePK,
-    //   sProvinceID: provinceID,
-    //   sProvince: provinceName,
+  const editAPICall = (regionObj) => {
+    // let CountryID = countryPK;
+    // let countryToUpdate = {
+    //   ID : countryPK,
+    //   sCountryID: countryID,
+    //   sCountry: countryName,
     // };
-    axios.post(`/Province/EditProvince/ProvinceID=` + provincePK, provinceObj/*provinceToUpdate*/)
+    console.log(regionObj);
+    axios.post(`/Region/EditRegion/ID=` + regionPK, regionObj/*RegionToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          console.log(resp.data);
           setEditModal(false);
-          axios.get(`/Province/GetProvinces`)
+          axios.get(`/Region/GetRegion`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -252,11 +263,11 @@ export default function EnhancedTable() {
           //window.location = window.location;
           // setdataAPI(dataAPI.map((data) => {
           //   console.log(data);
-          //   if(data.id === provinceObj.id){
+          //   if(data.id === countryObj.id){
           //     console.log(data);
           //     return {
           //       ...data,
-          //       ...provinceObj
+          //       ...countryObj
           //     };
           //   }
           //   else{
@@ -282,18 +293,18 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (provinceObj) => {
+  const addAPICall = (regionObj) => {
 
-    // let provinceToAdd = {
-    //   sProvinceID: provinceID,
-    //   sProvince: provinceName,
+    // let countryToAdd = {
+    //   sCountryID: countryID,
+    //   sCountry: countryName,
     // };
-    axios.post(`/Province/AddProvince/`, provinceObj)
+    axios.post(`/Region/AddRegion/`, regionObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/Province/GetProvinces`)
+          axios.get(`/Region/GetRegion`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -338,9 +349,9 @@ export default function EnhancedTable() {
   const deleteClick = (tableRowArray) => {
 
     setDeleteModal(true);
-    setProvincePK(tableRowArray[0]);
-    setProvince(tableRowArray[1]);
-    
+    setRegionPK(tableRowArray[0]);
+    setRegionID(tableRowArray[1]);
+    setRegion(tableRowArray[2]);
   };
 
   const handleClose = () => {
@@ -348,66 +359,10 @@ export default function EnhancedTable() {
 
   };
 
-  const deleteAPICall = () => {
-    // console.log(this.state.selectedUser);
-    // let ProvinceID = provincePK;
-    const provinceToDelete = {
-      ID: provincePK,
-      sProvince: province
-    };
-    axios.post(`/Province/DeleteProvince/`, provinceToDelete)
-      .then(resp => {
-        console.log(provinceToDelete);
-        if (resp.status === 200) {
-          console.log(resp.data);
-          setDeleteModal(false);
-          axios.get(`/Province/GetProvinces`)
-            .then(resp => {
-              if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
-              }
-            })
-            .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
-            })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-          //window.location = window.location;
-          // setdataAPI(dataAPI.filter((data) => {
-          //   return (data.id !== provinceToDelete.ID);
-          // }));
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-  };
+  
 
   useEffect(() => {
-    axios.get(`/Province/GetProvinces`)
+    axios.get(`/Region/GetRegion`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -441,7 +396,7 @@ export default function EnhancedTable() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Province
+            <Typography variant="h4" gutterBottom>Region
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -468,17 +423,12 @@ export default function EnhancedTable() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              provinceObj={provinceObj}
+              regionObj={regionObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
             />}
-            {deleteModal && <DeleteDialog
-              deleteModal={deleteModal}
-              province={province}
-              handleClose={handleClose}
-              deleteAPICall={deleteAPICall}
-            />}
+          
           </Container>
         </Box>
    

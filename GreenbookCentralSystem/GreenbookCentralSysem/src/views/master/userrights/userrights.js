@@ -43,8 +43,8 @@ const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableBodyCell: {
       root: {
-        backgroundColor: "#FFF",
-        width: "50px"
+      //  backgroundColor: "#FFF"
+        
       }
 
     },
@@ -105,7 +105,7 @@ const useStyles = makeStyles(() => ({
 */
 }));
 
-export default function EnhancedTable() {
+export default function UserRights() {
   const classes = useStyles();
  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
@@ -116,10 +116,10 @@ export default function EnhancedTable() {
 
 
   //VAR
-  const [countryID, setCountryID] = React.useState('');
-  const [countryName, setCountryName] = React.useState('');
-  const [countryPK, setCountryPK] = React.useState(0);
-  const [countryObj, setCountryObj] = useState({});
+  
+  const [userRights, setUserRights] = React.useState('');
+  const [userRightsPK, setUserRightsPK] = React.useState(0);
+  const [userRightsObj, setUserRightsObj] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
@@ -173,17 +173,10 @@ export default function EnhancedTable() {
         display:false
       }
     },
+   
     {
-      name: "sCountryID",
-      label: "Country ID",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "sCountry",
-      label: "Country",
+      name: "sUserRightsName",
+      label: "User Rights",
       options: {
         filter: true,
         sort: true
@@ -211,30 +204,30 @@ export default function EnhancedTable() {
   ];
 
   const editClick = (tableRowArray) => {
-    setCountryPK(tableRowArray[0]);
-    setCountryID(tableRowArray[1]);
-    setCountryName(tableRowArray[2]);
+    setUserRightsPK(tableRowArray[0]);
+   
+    setUserRights(tableRowArray[1]);
     setEditModal(true);
-    setCountryObj({
+    setUserRightsObj({
       id: tableRowArray[0],
-      countryId: tableRowArray[1],
-      countryName: tableRowArray[2]
+      
+      userRights: tableRowArray[1]
     });
   }
 
-  const editAPICall = (countryObj) => {
+  const editAPICall = (userRightsObj) => {
     // let CountryID = countryPK;
     // let countryToUpdate = {
     //   ID : countryPK,
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Country/EditCountry/CountryID=` + countryPK, countryObj/*countryToUpdate*/)
+    axios.post(`/UserRights/EditUserRights/ID=` + userRightsPK, userRightsObj/*UserRightsToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/Country/GetCountries`)
+          axios.get(`/UserRights/GetUserRights`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -290,18 +283,18 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (countryObj) => {
+  const addAPICall = (userRightsObj) => {
 
     // let countryToAdd = {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Country/AddCountry/`, countryObj)
+    axios.post(`/UserRights/AddUserRights/`, userRightsObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/Country/GetCountries`)
+          axios.get(`/UserRights/GetUserRights`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -346,9 +339,9 @@ export default function EnhancedTable() {
   const deleteClick = (tableRowArray) => {
 
     setDeleteModal(true);
-    setCountryPK(tableRowArray[0]);
-    setCountryID(tableRowArray[1]);
-    setCountryName(tableRowArray[2]);
+    setUserRightsPK(tableRowArray[0]);
+
+    setUserRights(tableRowArray[1]);
   };
 
   const handleClose = () => {
@@ -356,67 +349,10 @@ export default function EnhancedTable() {
 
   };
 
-  const deleteAPICall = () => {
-    // console.log(this.state.selectedUser);
-    // let CountryID = countryPK;
-    const countryToDelete = {
-      ID: countryPK,
-      sCountryID: countryID,
-      sCountry: countryName,
-    };
-    axios.post(`/Country/DeleteCountry/`, countryToDelete)
-      .then(resp => {
-        console.log(countryToDelete);
-        if (resp.status === 200) {
-          console.log(resp.data);
-          setDeleteModal(false);
-          axios.get(`/Country/GetCountries`)
-            .then(resp => {
-              if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
-              }
-            })
-            .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
-            })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-          //window.location = window.location;
-          // setdataAPI(dataAPI.filter((data) => {
-          //   return (data.id !== countryToDelete.ID);
-          // }));
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-  };
+  
 
   useEffect(() => {
-    axios.get(`/Country/GetCountries`)
+    axios.get(`/UserRights/GetUserRights`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -450,7 +386,7 @@ export default function EnhancedTable() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Country
+            <Typography variant="h4" gutterBottom>User Rights
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -477,17 +413,12 @@ export default function EnhancedTable() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              countryObj={countryObj}
+              userRightsObj={userRightsObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
             />}
-            {deleteModal && <DeleteDialog
-              deleteModal={deleteModal}
-              countryName={countryName}
-              handleClose={handleClose}
-              deleteAPICall={deleteAPICall}
-            />}
+          
           </Container>
         </Box>
    

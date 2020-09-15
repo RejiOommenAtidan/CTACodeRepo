@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 
 
-import Occupation from './occupation';
+import Country from './country';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,13 +27,13 @@ const Dashboard = () => {
    
       <Container maxWidth={false}>
         <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/Home" >
+          <Link color="inherit" href="/app/manageuser" >
             Home
         </Link>
 
-          <Typography color="textPrimary">Occupation</Typography>
+          <Typography color="textPrimary"> Country</Typography>
         </Breadcrumbs>
-        <Occupation />
+        <Country />
       </Container>
 
   );

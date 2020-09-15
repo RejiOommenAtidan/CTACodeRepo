@@ -43,8 +43,8 @@ const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableBodyCell: {
       root: {
-        // backgroundColor: "#FFF",
-        // width: "50px"
+      //  backgroundColor: "#FFF"
+        
       }
 
     },
@@ -105,7 +105,7 @@ const useStyles = makeStyles(() => ({
 */
 }));
 
-export default function EnhancedTable() {
+export default function Relation() {
   const classes = useStyles();
  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
@@ -116,10 +116,11 @@ export default function EnhancedTable() {
 
 
   //VAR
-  const [madebType, setMadebType] = React.useState('');
-  const [madebTypePK, setMadebTypePK] = React.useState(0);
-  const [madebTypeObj, setMadebTypeObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  
+  const [relation, setRelation] = React.useState('');
+  const [relationPK, setRelationPK] = React.useState(0);
+  const [relationObj, setRelationObj] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
 
@@ -172,9 +173,10 @@ export default function EnhancedTable() {
         display:false
       }
     },
+   
     {
-      name: "sMadebType",
-      label: "Madeb Type",
+      name: "sRelation",
+      label: "Type Issued",
       options: {
         filter: true,
         sort: true
@@ -202,28 +204,30 @@ export default function EnhancedTable() {
   ];
 
   const editClick = (tableRowArray) => {
-    setMadebTypePK(tableRowArray[0]);
-    setMadebType(tableRowArray[1]);
+    setRelationPK(tableRowArray[0]);
+   
+    setRelation(tableRowArray[1]);
     setEditModal(true);
-    setMadebTypeObj({
+    setRelationObj({
       id: tableRowArray[0],
-      madebType: tableRowArray[1]
+      
+      relation: tableRowArray[1]
     });
   }
 
-  const editAPICall = (madebTypeObj) => {
-    // let MadebTypeID = madebTypePK;
-    // let madebTypeToUpdate = {
-    //   ID : madebTypePK,
-    //   sMadebTypeID: madebTypeID,
-    //   sMadebType: madebTypeName,
+  const editAPICall = (relationObj) => {
+    // let CountryID = countryPK;
+    // let countryToUpdate = {
+    //   ID : countryPK,
+    //   sCountryID: countryID,
+    //   sCountry: countryName,
     // };
-    axios.post(`/MadebType/EditMadebType/madebTypeID=` + madebTypePK, madebTypeObj)
+    axios.post(`/Relation/EditRelation/ID=` + relationPK, relationObj/*RelationToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/MadebType/GetMadebTypes`)
+          axios.get(`/Relation/GetRelation`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -249,11 +253,11 @@ export default function EnhancedTable() {
           //window.location = window.location;
           // setdataAPI(dataAPI.map((data) => {
           //   console.log(data);
-          //   if(data.id === madebTypeObj.id){
+          //   if(data.id === countryObj.id){
           //     console.log(data);
           //     return {
           //       ...data,
-          //       ...madebTypeObj
+          //       ...countryObj
           //     };
           //   }
           //   else{
@@ -279,18 +283,18 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (madebTypeObj) => {
+  const addAPICall = (relationObj) => {
 
-    // let madebTypeToAdd = {
-    //   sMadebTypeID: madebTypeID,
-    //   sMadebType: madebTypeName,
+    // let countryToAdd = {
+    //   sCountryID: countryID,
+    //   sCountry: countryName,
     // };
-    axios.post(`/MadebType/AddMadebType/`, madebTypeObj)
+    axios.post(`/Relation/AddRelation/`, relationObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/MadebType/GetMadebTypes`)
+          axios.get(`/Relation/GetRelation`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -335,9 +339,9 @@ export default function EnhancedTable() {
   const deleteClick = (tableRowArray) => {
 
     setDeleteModal(true);
-    setMadebTypePK(tableRowArray[0]);
-    setMadebType(tableRowArray[1]);
-    
+    setRelationPK(tableRowArray[0]);
+
+    setRelation(tableRowArray[1]);
   };
 
   const handleClose = () => {
@@ -345,66 +349,10 @@ export default function EnhancedTable() {
 
   };
 
-  const deleteAPICall = () => {
-    // console.log(this.state.selectedUser);
-    // let MadebTypeID = madebTypePK;
-    const madebTypeToDelete = {
-      ID: madebTypePK,
-      sMadebType: madebType
-    };
-    axios.post(`/MadebType/DeleteMadebType`, madebTypeToDelete)
-      .then(resp => {
-        console.log(madebTypeToDelete);
-        if (resp.status === 200) {
-          console.log(resp.data);
-          setDeleteModal(false);
-          axios.get(`/MadebType/GetMadebTypes`)
-            .then(resp => {
-              if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
-              }
-            })
-            .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
-            })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-          //window.location = window.location;
-          // setdataAPI(dataAPI.filter((data) => {
-          //   return (data.id !== madebTypeToDelete.ID);
-          // }));
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-  };
+  
 
   useEffect(() => {
-    axios.get(`/MadebType/GetMadebTypes`)
+    axios.get(`/Relation/GetRelation`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -438,7 +386,7 @@ export default function EnhancedTable() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>MadebType
+            <Typography variant="h4" gutterBottom>Relation
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -465,17 +413,12 @@ export default function EnhancedTable() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              madebTypeObj={madebTypeObj}
+              relationObj={relationObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
             />}
-            {deleteModal && <DeleteDialog
-              deleteModal={deleteModal}
-              madebType={madebType}
-              handleClose={handleClose}
-              deleteAPICall={deleteAPICall}
-            />}
+          
           </Container>
         </Box>
    
