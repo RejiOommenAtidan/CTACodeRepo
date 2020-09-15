@@ -549,6 +549,20 @@ INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`) VA
 INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`) VALUES ('S', 'Senior Secondary');
 INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`) VALUES ('U', '[No Entry]');
 
+CREATE TABLE `lstDOBApprox` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sDOBApproxID` varchar(1) NOT NULL DEFAULT '',
+  `sDOBApproxName` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+INSERT INTO `ctadb`.`lstDOBApprox` (`sDOBApproxID`, `sDOBApproxName`) VALUES ('N', 'Exact DOB');
+INSERT INTO `ctadb`.`lstDOBApprox` (`sDOBApproxID`, `sDOBApproxName`) VALUES ('D', 'Day Approx');
+INSERT INTO `ctadb`.`lstDOBApprox` (`sDOBApproxID`, `sDOBApproxName`) VALUES ('M', 'Month/Year Exact');
+INSERT INTO `ctadb`.`lstDOBApprox` (`sDOBApproxID`, `sDOBApproxName`) VALUES ('Y', '>>Year Only');
+
+
+
 CREATE TABLE `lstTypeIssued` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sTypeIssued` text NOT NULL,
@@ -636,6 +650,8 @@ INSERT INTO `ctadb`.`lstRelation` (`sRelation`) VALUES ('FemaleChild');
 CREATE TABLE `lstMadebType` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sMadebType` text NOT NULL,
+  `sMadebDisplayName` text NOT NULL,
+  `sMadebDisplayKey` text NOT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime DEFAULT NULL,
@@ -643,12 +659,12 @@ CREATE TABLE `lstMadebType` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`) VALUES ('Sarso (New)');
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`) VALUES ('Norchoe (Change)');
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`) VALUES ('Bhorlak (Lost)');
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`) VALUES ('Abroad');
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`) VALUES ('Book Full');
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`) VALUES ('Brief GB');
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Sarso (New)','First Issued','F');
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Norchoe (Change)','Modified Issued','M');
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Bhorlak (Lost)','Lost Issued','L');
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Abroad','Abroad','A');
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Book Full','Book Full','U');
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Brief GB','Brief GB','B');
 
 
 -- -------------------------
@@ -791,7 +807,7 @@ CREATE TABLE `tblGreenBook` (
 CREATE TABLE `tblGivenGBID` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `_Id` int(11) DEFAULT NULL,
-  `nGivenGBId` int(11) NOT NULL,
+  `nGBId` int(11) NOT NULL,
   `nFormNo` int(11) NOT NULL,
   `dtDate` date NOT NULL,
   `nGivenOrNot` tinyint(1) NOT NULL,
@@ -800,11 +816,55 @@ CREATE TABLE `tblGivenGBID` (
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime DEFAULT NULL,
   `nUpdatedBy` int(11) Not NULL,
-  PRIMARY KEY (`id`),
-  KEY `nGivenGBId` (`nGivenGBId`)
+  PRIMARY KEY (`Id`),
+  KEY `nGBId` (`nGBId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
--- select nGivenGBId from ctadb.tblGivenGBID order by nGivenGBId desc limit 0,1;
+-- select nGBId from ctadb.tblGivenGBID order by nGBId desc limit 0,1;
+
+
+CREATE TABLE `tblGreenBookIssued` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `nGBId` int(11) DEFAULT NULL,
+  `dtIssuedDate` date DEFAULT NULL,
+  `sWhyIssued` varchar(10) DEFAULT NULL,
+  `nMadebTypeId` varchar(10) DEFAULT NULL,
+  `nTypeIssuedId` int(11) NOT NULL,
+  `sFormNo` text NOT NULL,
+  `sWhereIssued` int(11) NOT NULL,
+  `nPrinted` tinyint(4) NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
+  `sRemarks` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `nGBId` (`nGBId`)
+) ENGINE=MyISAM AUTO_INCREMENT=176236 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `tblGreenBookSerial` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `nBookNo` int(11) DEFAULT NULL,
+  `nGBId` varchar(255) DEFAULT NULL,
+  `Remarks` text NOT NULL,
+  `dtDate` date DEFAULT NULL,
+  `sName` varchar(200) DEFAULT NULL,
+  `sCountryID` text DEFAULT NULL,
+  `nMadebTypeId` int(11) DEFAULT NULL,
+  `nAuthRegionId` varchar(200) DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=MyISAM AUTO_INCREMENT=44030 DEFAULT CHARSET=latin1;
+
+
+
+
+
+
 
 CREATE TABLE `tblActionLogger` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -817,8 +877,11 @@ CREATE TABLE `tblActionLogger` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+
+
+
 -- 
--- GreenBook By GBID
+-- Store Procedure GreenBook By GBID
 -- 
 
 DROP procedure IF EXISTS `spGetGreenBookByGBID`;
@@ -831,4 +894,3 @@ BEGIN
 END$$
 
 DELIMITER ;
-
