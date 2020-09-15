@@ -43,8 +43,8 @@ const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableBodyCell: {
       root: {
-        backgroundColor: "#FFF",
-        width: "50px"
+        // backgroundColor: "#FFF",
+        // width: "50px"
       }
 
     },
@@ -116,10 +116,9 @@ export default function EnhancedTable() {
 
 
   //VAR
-  const [countryID, setCountryID] = React.useState('');
-  const [countryName, setCountryName] = React.useState('');
-  const [countryPK, setCountryPK] = React.useState(0);
-  const [countryObj, setCountryObj] = useState({});
+  const [province, setProvince] = React.useState('');
+  const [provincePK, setProvincePK] = React.useState(0);
+  const [provinceObj, setProvinceObj] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
@@ -174,21 +173,14 @@ export default function EnhancedTable() {
       }
     },
     {
-      name: "sCountryID",
-      label: "Country ID",
+      name: "sProvince",
+      label: "Province",
       options: {
         filter: true,
         sort: true
       }
     },
-    {
-      name: "sCountry",
-      label: "Country",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
+    
     {
       name: "edit",
       label: "Edit",
@@ -211,30 +203,30 @@ export default function EnhancedTable() {
   ];
 
   const editClick = (tableRowArray) => {
-    setCountryPK(tableRowArray[0]);
-    setCountryID(tableRowArray[1]);
-    setCountryName(tableRowArray[2]);
+    setProvincePK(tableRowArray[0]);
+    setProvince(tableRowArray[1]);
+    
     setEditModal(true);
-    setCountryObj({
+    setProvinceObj({
       id: tableRowArray[0],
-      countryId: tableRowArray[1],
-      countryName: tableRowArray[2]
+      province: tableRowArray[1]
+      
     });
   }
 
-  const editAPICall = (countryObj) => {
-    // let CountryID = countryPK;
-    // let countryToUpdate = {
-    //   ID : countryPK,
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
+  const editAPICall = (provinceObj) => {
+    // let ProvinceID = provincePK;
+    // let provinceToUpdate = {
+    //   ID : provincePK,
+    //   sProvinceID: provinceID,
+    //   sProvince: provinceName,
     // };
-    axios.post(`/Country/EditCountry/CountryID=` + countryPK, countryObj/*countryToUpdate*/)
+    axios.post(`/Province/EditProvince/ProvinceID=` + provincePK, provinceObj/*provinceToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/Country/GetCountries`)
+          axios.get(`/Province/GetProvinces`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -260,11 +252,11 @@ export default function EnhancedTable() {
           //window.location = window.location;
           // setdataAPI(dataAPI.map((data) => {
           //   console.log(data);
-          //   if(data.id === countryObj.id){
+          //   if(data.id === provinceObj.id){
           //     console.log(data);
           //     return {
           //       ...data,
-          //       ...countryObj
+          //       ...provinceObj
           //     };
           //   }
           //   else{
@@ -290,18 +282,18 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (countryObj) => {
+  const addAPICall = (provinceObj) => {
 
-    // let countryToAdd = {
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
+    // let provinceToAdd = {
+    //   sProvinceID: provinceID,
+    //   sProvince: provinceName,
     // };
-    axios.post(`/Country/AddCountry/`, countryObj)
+    axios.post(`/Province/AddProvince/`, provinceObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/Country/GetCountries`)
+          axios.get(`/Province/GetProvinces`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -346,9 +338,9 @@ export default function EnhancedTable() {
   const deleteClick = (tableRowArray) => {
 
     setDeleteModal(true);
-    setCountryPK(tableRowArray[0]);
-    setCountryID(tableRowArray[1]);
-    setCountryName(tableRowArray[2]);
+    setProvincePK(tableRowArray[0]);
+    setProvince(tableRowArray[1]);
+    
   };
 
   const handleClose = () => {
@@ -358,19 +350,18 @@ export default function EnhancedTable() {
 
   const deleteAPICall = () => {
     // console.log(this.state.selectedUser);
-    // let CountryID = countryPK;
-    const countryToDelete = {
-      ID: countryPK,
-      sCountryID: countryID,
-      sCountry: countryName,
+    // let ProvinceID = provincePK;
+    const provinceToDelete = {
+      ID: provincePK,
+      sProvince: province
     };
-    axios.post(`/Country/DeleteCountry/`, countryToDelete)
+    axios.post(`/Province/DeleteProvince/`, provinceToDelete)
       .then(resp => {
-        console.log(countryToDelete);
+        console.log(provinceToDelete);
         if (resp.status === 200) {
           console.log(resp.data);
           setDeleteModal(false);
-          axios.get(`/Country/GetCountries`)
+          axios.get(`/Province/GetProvinces`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -394,7 +385,7 @@ export default function EnhancedTable() {
             });
           //window.location = window.location;
           // setdataAPI(dataAPI.filter((data) => {
-          //   return (data.id !== countryToDelete.ID);
+          //   return (data.id !== provinceToDelete.ID);
           // }));
         }
       })
@@ -416,7 +407,7 @@ export default function EnhancedTable() {
   };
 
   useEffect(() => {
-    axios.get(`/Country/GetCountries`)
+    axios.get(`/Province/GetProvinces`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -450,7 +441,7 @@ export default function EnhancedTable() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Country
+            <Typography variant="h4" gutterBottom>Province
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -477,14 +468,14 @@ export default function EnhancedTable() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              countryObj={countryObj}
+              provinceObj={provinceObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
             />}
             {deleteModal && <DeleteDialog
               deleteModal={deleteModal}
-              countryName={countryName}
+              province={province}
               handleClose={handleClose}
               deleteAPICall={deleteAPICall}
             />}

@@ -24,10 +24,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export const EditDialog = (props) => {
   //debugger
-  const [Name, setCountryName] = useState(props.countryObj.countryName);
+  const [authRegion, setAuthRegion] = useState(props.authRegionObj.authRegion);
+  const [countryID, setCountryID] = useState(props.authRegionObj.countryID);
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Country</DialogTitle>
+      <DialogTitle id="form-dialog-title">Auth Region</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <div>
@@ -38,22 +39,22 @@ export const EditDialog = (props) => {
                     id="id_countryId"
                     label="Country ID"
                     type="text"
-                    InputProps={{
-                      readOnly: true
-                    }}
-                    value={props.countryObj.countryId}
-
+                    // InputProps={{
+                    //   readOnly: true
+                    // }}
+                    value={countryID}
+                    onChange={(e) => { setCountryID(e.target.value) }}
                   />
                 </FormControl>
               </Grid>
               <Grid item xs={12} >
                 <FormControl className={props.classes.formControl}>
                   <TextField
-                    id="id_CountryName"
-                    label="Country Name"
+                    id="id_AuthRegion"
+                    label="Auth Region"
                     type="text"
-                    value={Name} // Set country name from local variable Name.
-                    onChange={(e) => { setCountryName(e.target.value) }}
+                    value={authRegion} // Set Auth Region name 
+                    onChange={(e) => { setAuthRegion(e.target.value) }}
                   />
                 </FormControl>
               </Grid>
@@ -63,7 +64,7 @@ export const EditDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })} color="primary">Save</Button>
+        <Button onClick={() => props.editAPICall({ ID: props.authRegionObj.ID, sCountryID: countryID, sAuthRegion: authRegion })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );
@@ -82,7 +83,7 @@ export const DeleteDialog = (props) => {
       <DialogTitle id="alert-dialog-slide-title">Confirm Operation</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
-          Are you sure you want to delete country {props.countryName} ?
+          Are you sure you want to delete Auth Region {props.authRegion} ?
         </DialogContentText>
       </DialogContent>
       <DialogActions >
@@ -100,8 +101,8 @@ export const DeleteDialog = (props) => {
 
 export const AddDialog = (props) => {
   console.log("Add Dialog");
-  const [countryId, setCountryId] = useState('');
-  const [countryName, setCountryName] = useState('');
+  const [countryID, setCountryID] = useState('');
+  const [authRegion, setAuthRegion] = useState('');
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Country</DialogTitle>
@@ -114,17 +115,17 @@ export const AddDialog = (props) => {
                   id="id_countryId"
                   label="Country ID"
                   type="text"
-                  onChange={(e) => { setCountryId(e.target.value) }}
+                  onChange={(e) => { setCountryID(e.target.value) }}
                 />
               </FormControl>
             </Grid>
             <Grid item xs={12} >
               <FormControl className={props.classes.formControl}>
                 <TextField
-                  id="id_CountryName"
-                  label="Country Name"
+                  id="id_AuthRegion"
+                  label="Auth Region"
                   type="text"
-                  onChange={(e) => { setCountryName(e.target.value) }}
+                  onChange={(e) => { setAuthRegion(e.target.value) }}
                 />
               </FormControl>
             </Grid>
@@ -134,7 +135,7 @@ export const AddDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.addAPICall({ sCountryID: countryId, sCountry: countryName })} color="primary">Save</Button>
+        <Button onClick={() => props.addAPICall({ sCountryID: countryID, sAuthRegion: authRegion })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );

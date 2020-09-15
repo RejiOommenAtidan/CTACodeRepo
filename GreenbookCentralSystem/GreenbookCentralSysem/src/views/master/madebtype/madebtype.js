@@ -43,8 +43,8 @@ const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableBodyCell: {
       root: {
-        backgroundColor: "#FFF",
-        width: "50px"
+        // backgroundColor: "#FFF",
+        // width: "50px"
       }
 
     },
@@ -116,10 +116,9 @@ export default function EnhancedTable() {
 
 
   //VAR
-  const [countryID, setCountryID] = React.useState('');
-  const [countryName, setCountryName] = React.useState('');
-  const [countryPK, setCountryPK] = React.useState(0);
-  const [countryObj, setCountryObj] = useState({});
+  const [madebType, setMadebType] = React.useState('');
+  const [madebTypePK, setMadebTypePK] = React.useState(0);
+  const [madebTypeObj, setMadebTypeObj] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
@@ -174,16 +173,8 @@ export default function EnhancedTable() {
       }
     },
     {
-      name: "sCountryID",
-      label: "Country ID",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
-    {
-      name: "sCountry",
-      label: "Country",
+      name: "sMadebType",
+      label: "Madeb Type",
       options: {
         filter: true,
         sort: true
@@ -211,30 +202,28 @@ export default function EnhancedTable() {
   ];
 
   const editClick = (tableRowArray) => {
-    setCountryPK(tableRowArray[0]);
-    setCountryID(tableRowArray[1]);
-    setCountryName(tableRowArray[2]);
+    setMadebTypePK(tableRowArray[0]);
+    setMadebType(tableRowArray[1]);
     setEditModal(true);
-    setCountryObj({
+    setMadebTypeObj({
       id: tableRowArray[0],
-      countryId: tableRowArray[1],
-      countryName: tableRowArray[2]
+      madebType: tableRowArray[1]
     });
   }
 
-  const editAPICall = (countryObj) => {
-    // let CountryID = countryPK;
-    // let countryToUpdate = {
-    //   ID : countryPK,
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
+  const editAPICall = (madebTypeObj) => {
+    // let MadebTypeID = madebTypePK;
+    // let madebTypeToUpdate = {
+    //   ID : madebTypePK,
+    //   sMadebTypeID: madebTypeID,
+    //   sMadebType: madebTypeName,
     // };
-    axios.post(`/Country/EditCountry/CountryID=` + countryPK, countryObj/*countryToUpdate*/)
+    axios.post(`/MadebType/EditMadebType/madebTypeID=` + madebTypePK, madebTypeObj)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/Country/GetCountries`)
+          axios.get(`/MadebType/GetMadebTypes`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -260,11 +249,11 @@ export default function EnhancedTable() {
           //window.location = window.location;
           // setdataAPI(dataAPI.map((data) => {
           //   console.log(data);
-          //   if(data.id === countryObj.id){
+          //   if(data.id === madebTypeObj.id){
           //     console.log(data);
           //     return {
           //       ...data,
-          //       ...countryObj
+          //       ...madebTypeObj
           //     };
           //   }
           //   else{
@@ -290,18 +279,18 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (countryObj) => {
+  const addAPICall = (madebTypeObj) => {
 
-    // let countryToAdd = {
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
+    // let madebTypeToAdd = {
+    //   sMadebTypeID: madebTypeID,
+    //   sMadebType: madebTypeName,
     // };
-    axios.post(`/Country/AddCountry/`, countryObj)
+    axios.post(`/MadebType/AddMadebType/`, madebTypeObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/Country/GetCountries`)
+          axios.get(`/MadebType/GetMadebTypes`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -346,9 +335,9 @@ export default function EnhancedTable() {
   const deleteClick = (tableRowArray) => {
 
     setDeleteModal(true);
-    setCountryPK(tableRowArray[0]);
-    setCountryID(tableRowArray[1]);
-    setCountryName(tableRowArray[2]);
+    setMadebTypePK(tableRowArray[0]);
+    setMadebType(tableRowArray[1]);
+    
   };
 
   const handleClose = () => {
@@ -358,19 +347,18 @@ export default function EnhancedTable() {
 
   const deleteAPICall = () => {
     // console.log(this.state.selectedUser);
-    // let CountryID = countryPK;
-    const countryToDelete = {
-      ID: countryPK,
-      sCountryID: countryID,
-      sCountry: countryName,
+    // let MadebTypeID = madebTypePK;
+    const madebTypeToDelete = {
+      ID: madebTypePK,
+      sMadebType: madebType
     };
-    axios.post(`/Country/DeleteCountry/`, countryToDelete)
+    axios.post(`/MadebType/DeleteMadebType`, madebTypeToDelete)
       .then(resp => {
-        console.log(countryToDelete);
+        console.log(madebTypeToDelete);
         if (resp.status === 200) {
           console.log(resp.data);
           setDeleteModal(false);
-          axios.get(`/Country/GetCountries`)
+          axios.get(`/MadebType/GetMadebTypes`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -394,7 +382,7 @@ export default function EnhancedTable() {
             });
           //window.location = window.location;
           // setdataAPI(dataAPI.filter((data) => {
-          //   return (data.id !== countryToDelete.ID);
+          //   return (data.id !== madebTypeToDelete.ID);
           // }));
         }
       })
@@ -416,7 +404,7 @@ export default function EnhancedTable() {
   };
 
   useEffect(() => {
-    axios.get(`/Country/GetCountries`)
+    axios.get(`/MadebType/GetMadebTypes`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -450,7 +438,7 @@ export default function EnhancedTable() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Country
+            <Typography variant="h4" gutterBottom>MadebType
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -477,14 +465,14 @@ export default function EnhancedTable() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              countryObj={countryObj}
+              madebTypeObj={madebTypeObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
             />}
             {deleteModal && <DeleteDialog
               deleteModal={deleteModal}
-              countryName={countryName}
+              madebType={madebType}
               handleClose={handleClose}
               deleteAPICall={deleteAPICall}
             />}

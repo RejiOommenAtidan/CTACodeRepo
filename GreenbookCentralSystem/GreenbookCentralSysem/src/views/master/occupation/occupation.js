@@ -43,8 +43,8 @@ const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableBodyCell: {
       root: {
-        backgroundColor: "#FFF",
-        width: "50px"
+        // backgroundColor: "#FFF",
+        // width: "50px"
       }
 
     },
@@ -116,10 +116,10 @@ export default function EnhancedTable() {
 
 
   //VAR
-  const [countryID, setCountryID] = React.useState('');
-  const [countryName, setCountryName] = React.useState('');
-  const [countryPK, setCountryPK] = React.useState(0);
-  const [countryObj, setCountryObj] = useState({});
+  const [occupationPK, setOccupationPK] = React.useState(0);
+  const [occupationDesc, setOccupationDesc] = React.useState('');
+  const [occupationDescTibetan, setOccupationDescTibetan] = React.useState('');
+  const [occupationObj, setOccupationObj] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
@@ -174,16 +174,16 @@ export default function EnhancedTable() {
       }
     },
     {
-      name: "sCountryID",
-      label: "Country ID",
+      name: "sOccupationDesc",
+      label: "Occupation",
       options: {
         filter: true,
         sort: true
       }
     },
     {
-      name: "sCountry",
-      label: "Country",
+      name: "sOccupationDescTibetan",
+      label: "Occupation (in Tibetan)",
       options: {
         filter: true,
         sort: true
@@ -211,30 +211,30 @@ export default function EnhancedTable() {
   ];
 
   const editClick = (tableRowArray) => {
-    setCountryPK(tableRowArray[0]);
-    setCountryID(tableRowArray[1]);
-    setCountryName(tableRowArray[2]);
+    setOccupationPK(tableRowArray[0]);
+    setOccupationDesc(tableRowArray[1]);
+    setOccupationDescTibetan(tableRowArray[2]);
     setEditModal(true);
-    setCountryObj({
+    setOccupationObj({
       id: tableRowArray[0],
-      countryId: tableRowArray[1],
-      countryName: tableRowArray[2]
+      occupationDesc: tableRowArray[1],
+      occupationDescTibetan: tableRowArray[2]
     });
   }
 
-  const editAPICall = (countryObj) => {
+  const editAPICall = (occupationObj) => {
     // let CountryID = countryPK;
     // let countryToUpdate = {
     //   ID : countryPK,
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Country/EditCountry/CountryID=` + countryPK, countryObj/*countryToUpdate*/)
+    axios.post(`/Occupation/EditOccupation/occupationId=` + occupationPK, occupationObj)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/Country/GetCountries`)
+          axios.get(`/Occupation/GetOccupations`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -290,18 +290,18 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (countryObj) => {
+  const addAPICall = (occupationObj) => {
 
     // let countryToAdd = {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Country/AddCountry/`, countryObj)
+    axios.post(`/Occupation/AddOccupation`, occupationObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/Country/GetCountries`)
+          axios.get(`/Occupation/GetOccupations`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -344,11 +344,10 @@ export default function EnhancedTable() {
   };
 
   const deleteClick = (tableRowArray) => {
-
+    setOccupationPK(tableRowArray[0]);
+    setOccupationDesc(tableRowArray[1]);
+    setOccupationDescTibetan(tableRowArray[2]);
     setDeleteModal(true);
-    setCountryPK(tableRowArray[0]);
-    setCountryID(tableRowArray[1]);
-    setCountryName(tableRowArray[2]);
   };
 
   const handleClose = () => {
@@ -359,18 +358,18 @@ export default function EnhancedTable() {
   const deleteAPICall = () => {
     // console.log(this.state.selectedUser);
     // let CountryID = countryPK;
-    const countryToDelete = {
-      ID: countryPK,
-      sCountryID: countryID,
-      sCountry: countryName,
+    const occupationToDelete = {
+      ID: occupationPK,
+      sOccupationDesc: occupationDesc,
+      sOccupationDescTibetan: occupationDescTibetan
     };
-    axios.post(`/Country/DeleteCountry/`, countryToDelete)
+    axios.post(`/Occupation/DeleteOccupation`, occupationToDelete)
       .then(resp => {
-        console.log(countryToDelete);
+        console.log(occupationToDelete);
         if (resp.status === 200) {
           console.log(resp.data);
           setDeleteModal(false);
-          axios.get(`/Country/GetCountries`)
+          axios.get(`/Occupation/GetOccupations`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -416,7 +415,7 @@ export default function EnhancedTable() {
   };
 
   useEffect(() => {
-    axios.get(`/Country/GetCountries`)
+    axios.get(`/Occupation/GetOccupations`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -450,7 +449,7 @@ export default function EnhancedTable() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Country
+            <Typography variant="h4" gutterBottom>Occupation
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -477,14 +476,14 @@ export default function EnhancedTable() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              countryObj={countryObj}
+              occupationObj={occupationObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
             />}
             {deleteModal && <DeleteDialog
               deleteModal={deleteModal}
-              countryName={countryName}
+              occupationDesc={occupationDesc}
               handleClose={handleClose}
               deleteAPICall={deleteAPICall}
             />}
