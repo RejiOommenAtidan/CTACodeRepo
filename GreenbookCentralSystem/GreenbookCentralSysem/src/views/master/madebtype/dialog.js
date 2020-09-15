@@ -24,36 +24,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export const EditDialog = (props) => {
   //debugger
-  const [Name, setCountryName] = useState(props.countryObj.countryName);
+  const [madebType, setMadebType] = useState(props.madebTypeObj.madebType);
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Country</DialogTitle>
+      <DialogTitle id="form-dialog-title">Madeb Type</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <div>
             <Grid container>
-              <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_countryId"
-                    label="Country ID"
-                    type="text"
-                    InputProps={{
-                      readOnly: true
-                    }}
-                    value={props.countryObj.countryId}
-
-                  />
-                </FormControl>
-              </Grid>
               <Grid item xs={12} >
                 <FormControl className={props.classes.formControl}>
                   <TextField
-                    id="id_CountryName"
-                    label="Country Name"
+                    id="id_MadebType"
+                    label="Madeb Type"
                     type="text"
-                    value={Name} // Set country name from local variable Name.
-                    onChange={(e) => { setCountryName(e.target.value) }}
+                    value={madebType} 
+                    onChange={(e) => { setMadebType(e.target.value) }}
                   />
                 </FormControl>
               </Grid>
@@ -63,7 +49,7 @@ export const EditDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })} color="primary">Save</Button>
+        <Button onClick={() => props.editAPICall({ id: props.madebTypeObj.id, sMadebType: madebType })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );
@@ -82,7 +68,7 @@ export const DeleteDialog = (props) => {
       <DialogTitle id="alert-dialog-slide-title">Confirm Operation</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
-          Are you sure you want to delete country {props.countryName} ?
+          Are you sure you want to delete madebType {props.madebType} ?
         </DialogContentText>
       </DialogContent>
       <DialogActions >
@@ -100,41 +86,31 @@ export const DeleteDialog = (props) => {
 
 export const AddDialog = (props) => {
   console.log("Add Dialog");
-  const [countryId, setCountryId] = useState('');
-  const [countryName, setCountryName] = useState('');
+  const [madebType, setMadebType] = useState('');
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Country</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add Madeb Type</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <Grid container>
             <Grid item xs={12}>
               <FormControl className={props.classes.formControl}>
                 <TextField
-                  id="id_countryId"
-                  label="Country ID"
+                  id="id_madebType"
+                  label="Madeb Type"
                   type="text"
-                  onChange={(e) => { setCountryId(e.target.value) }}
+                  onChange={(e) => { setMadebType(e.target.value) }}
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} >
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_CountryName"
-                  label="Country Name"
-                  type="text"
-                  onChange={(e) => { setCountryName(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
+            
           </Grid>
 
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.addAPICall({ sCountryID: countryId, sCountry: countryName })} color="primary">Save</Button>
+        <Button onClick={() => props.addAPICall({sMadebType: madebType })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );

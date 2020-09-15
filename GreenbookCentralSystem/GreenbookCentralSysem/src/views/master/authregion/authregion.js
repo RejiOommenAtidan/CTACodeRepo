@@ -43,8 +43,8 @@ const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableBodyCell: {
       root: {
-        backgroundColor: "#FFF",
-        width: "50px"
+        // backgroundColor: "#FFF",
+        // width: "50px"
       }
 
     },

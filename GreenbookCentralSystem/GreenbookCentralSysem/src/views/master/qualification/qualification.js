@@ -43,8 +43,8 @@ const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableBodyCell: {
       root: {
-      //  backgroundColor: "#FFF"
-        
+        backgroundColor: "#FFF",
+        width: "50px"
       }
 
     },
@@ -120,7 +120,7 @@ export default function Qualification() {
   const [qualification, setQualification] = React.useState('');
   const [qualificationPK, setQualificationPK] = React.useState(0);
   const [qualificationObj, setQualificationObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
 
@@ -222,14 +222,14 @@ export default function Qualification() {
     });
   }
 
-  const editAPICall = (qualificationObj) => {
+  const editAPICall = (countryObj) => {
     // let CountryID = countryPK;
     // let countryToUpdate = {
     //   ID : countryPK,
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Qualification/EditQualification/ID=` + qualificationPK, qualificationObj/*QualificationToUpdate*/)
+    axios.post(`/Qualification/EditQualification/QualificationID=` + qualificationPK, qualificationObj/*QualificationToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
@@ -290,7 +290,7 @@ export default function Qualification() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (qualificationObj) => {
+  const addAPICall = (countryObj) => {
 
     // let countryToAdd = {
     //   sCountryID: countryID,

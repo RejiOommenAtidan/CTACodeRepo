@@ -31,20 +31,17 @@ export const EditDialog = (props) => {
       <DialogContent>
         <DialogContentText>
           <div>
-            <Grid container >
+            <Grid container>
               <Grid item xs={12}>
-                <FormControl className={props.classes.formControl} >
+                <FormControl className={props.classes.formControl}>
                   <TextField
-                 // style={{width:max}}
-
-                
                     id="id_qualificationId"
                     label="Qualification ID"
                     type="text"
                     InputProps={{
                       readOnly: true
                     }}
-                    value={props.qualificationObj.qualificationId}
+                    value={props.qualificationObj.qualificationID}
 
                   />
                 </FormControl>
@@ -76,7 +73,7 @@ export const EditDialog = (props) => {
 
 export const DeleteDialog = (props) => {
   console.log("Delete Dialog");
-  return ({/*
+  return (
     <Dialog
       open={props.deleteModal}
       TransitionComponent={Transition}
@@ -97,37 +94,37 @@ export const DeleteDialog = (props) => {
         </Button>
       </DialogActions>
     </Dialog>
-  */ } );
+  );
 
 }
 
 export const AddDialog = (props) => {
   console.log("Add Dialog");
-  const [qualificationId, setQualificationId] = useState('');
-  const [qualification, setQualification] = useState('');
+  const [countryId, setCountryId] = useState('');
+  const [countryName, setCountryName] = useState('');
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Qualification</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add Country</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <Grid container>
             <Grid item xs={12}>
               <FormControl className={props.classes.formControl}>
                 <TextField
-                  id="id_qualificationId"
-                  label="Qualification ID"
+                  id="id_countryId"
+                  label="Country ID"
                   type="text"
-                  onChange={(e) => { setQualificationId(e.target.value) }}
+                  onChange={(e) => { setCountryId(e.target.value) }}
                 />
               </FormControl>
             </Grid>
             <Grid item xs={12} >
               <FormControl className={props.classes.formControl}>
                 <TextField
-                  id="id_Qualification"
-                  label="Qualification"
+                  id="id_CountryName"
+                  label="Country Name"
                   type="text"
-                  onChange={(e) => { setQualification(e.target.value) }}
+                  onChange={(e) => { setCountryName(e.target.value) }}
                 />
               </FormControl>
             </Grid>
@@ -137,7 +134,7 @@ export const AddDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.addAPICall({ sQualificationID: qualificationId, sQualification: qualification })} color="primary">Save</Button>
+        <Button onClick={() => props.addAPICall({ sCountryID: countryId, sCountry: countryName })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );

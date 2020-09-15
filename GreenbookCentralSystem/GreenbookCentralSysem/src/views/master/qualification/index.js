@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     minHeight: '100%',
-
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3)
   }
 }));
 
@@ -24,7 +25,7 @@ const Dashboard = () => {
 
   return (
    
-      <Container maxWidth={false} >
+      <Container maxWidth={false}>
         <Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/Home" >
             Home

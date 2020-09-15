@@ -43,8 +43,8 @@ const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableBodyCell: {
       root: {
-      //  backgroundColor: "#FFF"
-        
+        // backgroundColor: "#FFF",
+        // width: "50px"
       }
 
     },
@@ -105,7 +105,7 @@ const useStyles = makeStyles(() => ({
 */
 }));
 
-export default function Relation() {
+export default function EnhancedTable() {
   const classes = useStyles();
  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
@@ -116,11 +116,10 @@ export default function Relation() {
 
 
   //VAR
-  
-  const [relation, setRelation] = React.useState('');
-  const [relationPK, setRelationPK] = React.useState(0);
-  const [relationObj, setRelationObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
+  const [madebType, setMadebType] = React.useState('');
+  const [madebTypePK, setMadebTypePK] = React.useState(0);
+  const [madebTypeObj, setMadebTypeObj] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
 
@@ -173,10 +172,9 @@ export default function Relation() {
         display:false
       }
     },
-   
     {
-      name: "sRelation",
-      label: "Type Issued",
+      name: "sMadebType",
+      label: "Madeb Type",
       options: {
         filter: true,
         sort: true
@@ -204,30 +202,28 @@ export default function Relation() {
   ];
 
   const editClick = (tableRowArray) => {
-    setRelationPK(tableRowArray[0]);
-   
-    setRelation(tableRowArray[1]);
+    setMadebTypePK(tableRowArray[0]);
+    setMadebType(tableRowArray[1]);
     setEditModal(true);
-    setRelationObj({
+    setMadebTypeObj({
       id: tableRowArray[0],
-      
-      relation: tableRowArray[1]
+      madebType: tableRowArray[1]
     });
   }
 
-  const editAPICall = (relationObj) => {
-    // let CountryID = countryPK;
-    // let countryToUpdate = {
-    //   ID : countryPK,
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
+  const editAPICall = (madebTypeObj) => {
+    // let MadebTypeID = madebTypePK;
+    // let madebTypeToUpdate = {
+    //   ID : madebTypePK,
+    //   sMadebTypeID: madebTypeID,
+    //   sMadebType: madebTypeName,
     // };
-    axios.post(`/Relation/EditRelation/ID=` + relationPK, relationObj/*RelationToUpdate*/)
+    axios.post(`/MadebType/EditMadebType/madebTypeID=` + madebTypePK, madebTypeObj)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/Relation/GetRelation`)
+          axios.get(`/MadebType/GetMadebTypes`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -253,11 +249,11 @@ export default function Relation() {
           //window.location = window.location;
           // setdataAPI(dataAPI.map((data) => {
           //   console.log(data);
-          //   if(data.id === countryObj.id){
+          //   if(data.id === madebTypeObj.id){
           //     console.log(data);
           //     return {
           //       ...data,
-          //       ...countryObj
+          //       ...madebTypeObj
           //     };
           //   }
           //   else{
@@ -283,18 +279,18 @@ export default function Relation() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (relationObj) => {
+  const addAPICall = (madebTypeObj) => {
 
-    // let countryToAdd = {
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
+    // let madebTypeToAdd = {
+    //   sMadebTypeID: madebTypeID,
+    //   sMadebType: madebTypeName,
     // };
-    axios.post(`/Relation/AddRelation/`, relationObj)
+    axios.post(`/MadebType/AddMadebType/`, madebTypeObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/Relation/GetRelation`)
+          axios.get(`/MadebType/GetMadebTypes`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -339,9 +335,9 @@ export default function Relation() {
   const deleteClick = (tableRowArray) => {
 
     setDeleteModal(true);
-    setRelationPK(tableRowArray[0]);
-
-    setRelation(tableRowArray[1]);
+    setMadebTypePK(tableRowArray[0]);
+    setMadebType(tableRowArray[1]);
+    
   };
 
   const handleClose = () => {
@@ -349,10 +345,66 @@ export default function Relation() {
 
   };
 
-  
+  const deleteAPICall = () => {
+    // console.log(this.state.selectedUser);
+    // let MadebTypeID = madebTypePK;
+    const madebTypeToDelete = {
+      ID: madebTypePK,
+      sMadebType: madebType
+    };
+    axios.post(`/MadebType/DeleteMadebType`, madebTypeToDelete)
+      .then(resp => {
+        console.log(madebTypeToDelete);
+        if (resp.status === 200) {
+          console.log(resp.data);
+          setDeleteModal(false);
+          axios.get(`/MadebType/GetMadebTypes`)
+            .then(resp => {
+              if (resp.status === 200) {
+                console.log(resp.data);
+                setdataAPI(resp.data)
+              }
+            })
+            .catch(error => {
+              if (error.response) {
+                console.error(error.response.data);
+                console.error(error.response.status);
+                console.error(error.response.headers);
+              } else if (error.request) {
+                console.warn(error.request);
+              } else {
+                console.error('Error', error.message);
+              }
+              console.log(error.config);
+            })
+            .then(release => {
+              //console.log(release); => udefined
+            });
+          //window.location = window.location;
+          // setdataAPI(dataAPI.filter((data) => {
+          //   return (data.id !== madebTypeToDelete.ID);
+          // }));
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  };
 
   useEffect(() => {
-    axios.get(`/Relation/GetRelation`)
+    axios.get(`/MadebType/GetMadebTypes`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -386,7 +438,7 @@ export default function Relation() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Relation
+            <Typography variant="h4" gutterBottom>MadebType
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -413,12 +465,17 @@ export default function Relation() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              relationObj={relationObj}
+              madebTypeObj={madebTypeObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
             />}
-          
+            {deleteModal && <DeleteDialog
+              deleteModal={deleteModal}
+              madebType={madebType}
+              handleClose={handleClose}
+              deleteAPICall={deleteAPICall}
+            />}
           </Container>
         </Box>
    

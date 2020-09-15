@@ -43,8 +43,8 @@ const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableBodyCell: {
       root: {
-      //  backgroundColor: "#FFF"
-        
+        // backgroundColor: "#FFF",
+        // width: "50px"
       }
 
     },
@@ -105,7 +105,7 @@ const useStyles = makeStyles(() => ({
 */
 }));
 
-export default function Region() {
+export default function EnhancedTable() {
   const classes = useStyles();
  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
@@ -116,11 +116,10 @@ export default function Region() {
 
 
   //VAR
-  const [regionID, setRegionID] = React.useState('');
-  const [region, setRegion] = React.useState('');
-  const [regionPK, setRegionPK] = React.useState(0);
-  const [regionObj, setRegionObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
+  const [province, setProvince] = React.useState('');
+  const [provincePK, setProvincePK] = React.useState(0);
+  const [provinceObj, setProvinceObj] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
 
@@ -174,21 +173,14 @@ export default function Region() {
       }
     },
     {
-      name: "sRegion_code",
-      label: "Region ID",
+      name: "sProvince",
+      label: "Province",
       options: {
         filter: true,
         sort: true
       }
     },
-    {
-      name: "sRegion_name",
-      label: "Region",
-      options: {
-        filter: true,
-        sort: true
-      }
-    },
+    
     {
       name: "edit",
       label: "Edit",
@@ -211,33 +203,30 @@ export default function Region() {
   ];
 
   const editClick = (tableRowArray) => {
-   
-    setRegionPK(tableRowArray[0]);
-    setRegionID(tableRowArray[1]);
-    setRegion(tableRowArray[2]);
+    setProvincePK(tableRowArray[0]);
+    setProvince(tableRowArray[1]);
+    
     setEditModal(true);
-    setRegionObj({
+    setProvinceObj({
       id: tableRowArray[0],
-      regionId: tableRowArray[1],
-      region: tableRowArray[2]
+      province: tableRowArray[1]
+      
     });
-   
   }
 
-  const editAPICall = (regionObj) => {
-    // let CountryID = countryPK;
-    // let countryToUpdate = {
-    //   ID : countryPK,
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
+  const editAPICall = (provinceObj) => {
+    // let ProvinceID = provincePK;
+    // let provinceToUpdate = {
+    //   ID : provincePK,
+    //   sProvinceID: provinceID,
+    //   sProvince: provinceName,
     // };
-    console.log(regionObj);
-    axios.post(`/Region/EditRegion/ID=` + regionPK, regionObj/*RegionToUpdate*/)
+    axios.post(`/Province/EditProvince/ProvinceID=` + provincePK, provinceObj/*provinceToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
+          //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/Region/GetRegion`)
+          axios.get(`/Province/GetProvinces`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -263,11 +252,11 @@ export default function Region() {
           //window.location = window.location;
           // setdataAPI(dataAPI.map((data) => {
           //   console.log(data);
-          //   if(data.id === countryObj.id){
+          //   if(data.id === provinceObj.id){
           //     console.log(data);
           //     return {
           //       ...data,
-          //       ...countryObj
+          //       ...provinceObj
           //     };
           //   }
           //   else{
@@ -293,18 +282,18 @@ export default function Region() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (regionObj) => {
+  const addAPICall = (provinceObj) => {
 
-    // let countryToAdd = {
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
+    // let provinceToAdd = {
+    //   sProvinceID: provinceID,
+    //   sProvince: provinceName,
     // };
-    axios.post(`/Region/AddRegion/`, regionObj)
+    axios.post(`/Province/AddProvince/`, provinceObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/Region/GetRegion`)
+          axios.get(`/Province/GetProvinces`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -349,9 +338,9 @@ export default function Region() {
   const deleteClick = (tableRowArray) => {
 
     setDeleteModal(true);
-    setRegionPK(tableRowArray[0]);
-    setRegionID(tableRowArray[1]);
-    setRegion(tableRowArray[2]);
+    setProvincePK(tableRowArray[0]);
+    setProvince(tableRowArray[1]);
+    
   };
 
   const handleClose = () => {
@@ -359,10 +348,66 @@ export default function Region() {
 
   };
 
-  
+  const deleteAPICall = () => {
+    // console.log(this.state.selectedUser);
+    // let ProvinceID = provincePK;
+    const provinceToDelete = {
+      ID: provincePK,
+      sProvince: province
+    };
+    axios.post(`/Province/DeleteProvince/`, provinceToDelete)
+      .then(resp => {
+        console.log(provinceToDelete);
+        if (resp.status === 200) {
+          console.log(resp.data);
+          setDeleteModal(false);
+          axios.get(`/Province/GetProvinces`)
+            .then(resp => {
+              if (resp.status === 200) {
+                console.log(resp.data);
+                setdataAPI(resp.data)
+              }
+            })
+            .catch(error => {
+              if (error.response) {
+                console.error(error.response.data);
+                console.error(error.response.status);
+                console.error(error.response.headers);
+              } else if (error.request) {
+                console.warn(error.request);
+              } else {
+                console.error('Error', error.message);
+              }
+              console.log(error.config);
+            })
+            .then(release => {
+              //console.log(release); => udefined
+            });
+          //window.location = window.location;
+          // setdataAPI(dataAPI.filter((data) => {
+          //   return (data.id !== provinceToDelete.ID);
+          // }));
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  };
 
   useEffect(() => {
-    axios.get(`/Region/GetRegion`)
+    axios.get(`/Province/GetProvinces`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -396,7 +441,7 @@ export default function Region() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Region
+            <Typography variant="h4" gutterBottom>Province
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -423,12 +468,17 @@ export default function Region() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              regionObj={regionObj}
+              provinceObj={provinceObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
             />}
-          
+            {deleteModal && <DeleteDialog
+              deleteModal={deleteModal}
+              province={province}
+              handleClose={handleClose}
+              deleteAPICall={deleteAPICall}
+            />}
           </Container>
         </Box>
    
