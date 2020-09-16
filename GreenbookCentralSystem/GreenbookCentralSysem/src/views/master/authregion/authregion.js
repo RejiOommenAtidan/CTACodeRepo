@@ -126,6 +126,7 @@ export default function EnhancedTable() {
   const [authRegion, setAuthRegion] = React.useState('');
   const [authRegionPK, setAuthRegionPK] = React.useState(0);
   const [authRegionObj, setAuthRegionObj] = useState({});
+  const [countryName, setCountryName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
@@ -181,7 +182,16 @@ export default function EnhancedTable() {
     },
     {
       name: "sCountryID",
-      label: "Country ID",
+      label: "Short Name",
+      options: {
+        filter: true,
+        sort: true,
+        display:false
+      }
+    },
+    {
+      name: "sCountry",
+      label: "Country",
       options: {
         filter: true,
         sort: true
@@ -220,12 +230,12 @@ export default function EnhancedTable() {
   const editClick = (tableRowArray) => {
     setAuthRegionPK(tableRowArray[0]);
     setCountryID(tableRowArray[1]);
-    setAuthRegion(tableRowArray[2]);
+    setAuthRegion(tableRowArray[3]);
     setEditModal(true);
     setAuthRegionObj({
       ID: tableRowArray[0],
       countryID: tableRowArray[1],
-      authRegion: tableRowArray[2]
+      authRegion: tableRowArray[3]
     });
   }
 
@@ -355,7 +365,7 @@ export default function EnhancedTable() {
     setDeleteModal(true);
     setAuthRegionPK(tableRowArray[0]);
     setCountryID(tableRowArray[1]);
-    setAuthRegion(tableRowArray[2]);
+    setAuthRegion(tableRowArray[3]);
   };
 
   const handleClose = () => {
@@ -423,7 +433,7 @@ export default function EnhancedTable() {
   };
 
   useEffect(() => {
-    axios.get(`/AuthRegion/GetAuthRegions`)
+    axios.get(`/AuthRegionCountry/GetAllAuthRegionsCountryName`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -457,7 +467,7 @@ export default function EnhancedTable() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Auth Regions
+            <Typography variant="h4" gutterBottom>Authority Regions
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -478,12 +488,14 @@ export default function EnhancedTable() {
             </Grid>
             {addModal && <AddDialog
               addModal={addModal}
+              dataAPI = {dataAPI}
               classes={classes}
               handleAddClickClose={handleAddClickClose}
               addAPICall={addAPICall}
             />}
             {editModal && <EditDialog
               editModal={editModal}
+              dataAPI = {dataAPI}
               authRegionObj={authRegionObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}

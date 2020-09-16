@@ -7,7 +7,8 @@ import {
   Button,
   Typography,
   FormControl,
-  TextField
+  TextField,
+  Select,
 } from '@material-ui/core';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -26,28 +27,36 @@ export const EditDialog = (props) => {
   //debugger
   const [authRegion, setAuthRegion] = useState(props.authRegionObj.authRegion);
   const [countryID, setCountryID] = useState(props.authRegionObj.countryID);
+  const ids = props.dataAPI.map((data) => data.sCountryID);
+  let value ="";
+  ids.forEach(element => {
+    if(element === countryID){
+      value = element;
+    }
+  });
+  const children =  () => { 
+    return (ids.filter((data, index, array) => (array.indexOf(data) == index)).map((filteredData) =>  (<option value={filteredData}>{filteredData}</option>)))};
+  const opts = children();
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Auth Region</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Authority Region</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <div>
             <Grid container>
-              <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_countryId"
-                    label="Country ID"
-                    type="text"
-                    // InputProps={{
-                    //   readOnly: true
-                    // }}
-                  
-                    value={countryID}
-                    onChange={(e) => { setCountryID(e.target.value) }}
-                  />
-                </FormControl>
-              </Grid>
+            <Grid item xs={12}>
+            <FormControl className={props.classes.formControl}>
+              <Select 
+                id="countryID"
+                label="Country ID"
+                native = {true}
+                children = {opts}
+                value = {value}
+                onChange={(e) => { setCountryID(e.target.value) }}
+              >
+              </Select>
+            </FormControl>
+          </Grid>
               <Grid item xs={12} >
                 <FormControl className={props.classes.formControl}>
                   <TextField
@@ -104,22 +113,29 @@ export const AddDialog = (props) => {
   console.log("Add Dialog");
   const [countryID, setCountryID] = useState('');
   const [authRegion, setAuthRegion] = useState('');
+  const ids = props.dataAPI.map((data) => data.sCountryID);
+  const children =  () => { 
+    return (ids.filter((data, index, array) => (array.indexOf(data) == index)).map((filteredData) =>  (<option value={filteredData}>{filteredData}</option>)))};
+  const opts = children();
+  //const opts1 = (<option>CJ</option>);
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Country</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add Authority Region</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <Grid container>
             <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_countryId"
-                  label="Country ID"
-                  type="text"
-                  onChange={(e) => { setCountryID(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
+            <FormControl className={props.classes.formControl}>
+              <Select 
+                id="countryID"
+                label="Country ID"
+                native = {true}
+                children = {opts}
+                onChange={(e) => { setCountryID(e.target.value) }}
+              >
+              </Select>
+            </FormControl>
+          </Grid>
             <Grid item xs={12} >
               <FormControl className={props.classes.formControl}>
                 <TextField
@@ -141,4 +157,13 @@ export const AddDialog = (props) => {
     </Dialog>
   );
 
+}
+
+const Children = (props) => {
+  console.log("Children");
+  return (props.dataAPI.map((data) => {
+    debugger
+    console.log(data);
+    return (<option>{data.sCountryID}</option>)
+  }));
 }
