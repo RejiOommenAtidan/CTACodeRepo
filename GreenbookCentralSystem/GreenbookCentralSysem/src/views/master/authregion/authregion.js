@@ -251,7 +251,7 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/AuthRegion/GetAuthRegions`)
+          axios.get(`/AuthRegionCountry/GetAllAuthRegionsCountryName`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -318,7 +318,7 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/AuthRegion/GetAuthRegions`)
+          axios.get(`/AuthRegionCountry/GetAllAuthRegionsCountryName`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
