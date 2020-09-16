@@ -149,7 +149,7 @@ export default function EnhancedTable() {
       },
      
     },
-    filter:false,
+    filter:true,
     viewColumns:false,
     selectableRows: false,
     jumpToPage: true,
@@ -173,7 +173,7 @@ export default function EnhancedTable() {
       name: "id",
       label: "Sr No.",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         display:false
       }
@@ -183,7 +183,8 @@ export default function EnhancedTable() {
       label: "Madeb Type",
       options: {
         filter: true,
-        sort: true
+        sort: true,
+        filterType: 'textField'
       }
     },
     {

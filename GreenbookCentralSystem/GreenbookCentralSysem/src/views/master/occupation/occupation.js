@@ -150,7 +150,7 @@ export default function EnhancedTable() {
       },
      
     },
-    filter:false,
+    filter:true,
     viewColumns:false,
     selectableRows: false,
     jumpToPage: true,
@@ -174,7 +174,7 @@ export default function EnhancedTable() {
       name: "id",
       label: "Sr No.",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         display:false
       }
@@ -184,15 +184,16 @@ export default function EnhancedTable() {
       label: "Occupation",
       options: {
         filter: true,
-        sort: true
-      }
+        sort: true, 
+        filterType: 'textField'      }
     },
     {
       name: "sOccupationDescTibetan",
       label: "Occupation (in Tibetan)",
       options: {
         filter: true,
-        sort: true
+        sort: true,
+        filterType: 'textField'
       }
     },
     {
