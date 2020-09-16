@@ -111,9 +111,10 @@ export const DeleteDialog = (props) => {
 
 export const AddDialog = (props) => {
   console.log("Add Dialog");
-  const [countryID, setCountryID] = useState('');
-  const [authRegion, setAuthRegion] = useState('');
   const ids = props.dataAPI.map((data) => data.sCountryID);
+  const [countryID, setCountryID] = useState(ids[0]);
+  const [authRegion, setAuthRegion] = useState('');
+  
   const children =  () => { 
     return (ids.filter((data, index, array) => (array.indexOf(data) == index)).map((filteredData) =>  (<option value={filteredData}>{filteredData}</option>)))};
   const opts = children();
