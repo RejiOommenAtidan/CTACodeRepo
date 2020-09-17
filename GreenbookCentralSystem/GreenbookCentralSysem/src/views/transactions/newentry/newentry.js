@@ -11,6 +11,7 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 //import theme from '../../../theme/theme/theme'
 
+import AddIcon from '@material-ui/icons/Add';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import MUIDataTable from "mui-datatables";
@@ -22,6 +23,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 // Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
+import { AddAPhotoOutlined } from '@material-ui/icons';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -42,13 +44,17 @@ const useStyles = makeStyles({
   },
   formControl: {
     margin: 2,
-    width: '100%'
+    width: '95%'
   },
   paper: {
     padding: 2,
     textAlign: 'center'
   },
   textField: {
+    marginTop: 0.15,
+    marginBottom: 0.15
+  },
+  dateField: {
     marginTop: 0.25,
     marginBottom: 0.25
   },
@@ -68,6 +74,23 @@ const useStyles = makeStyles({
       // This is green.A700 as hex.
       main: '#11cb5f',
     },
+  },
+  heading: {
+    fontSize: 15,
+    fontWeight: 10,
+    flexBasis: '33.33%',
+    flexShrink: 0
+  },
+  border: '1px solid rgba(0, 0, 0, .125)',
+  boxShadow: 'none',
+  '&:not(:last-child)': {
+    borderBottom: 0
+  },
+  '&:before': {
+    display: 'none'
+  },
+  '&$expanded': {
+    margin: 'auto'
   }
 });
 
@@ -103,7 +126,7 @@ export default function EnhancedTable() {
         noMatch: "Loading..."
       }
     },
-    filterType: 'checkbox',
+    filterType: 'textField',
     selectableRows: false,
     jumpToPage: true,
     rowsPerPage: 5,
@@ -112,64 +135,44 @@ export default function EnhancedTable() {
 
   const columns = [
     {
-      name: "id",
-      label: "Sr No.",
-      options: {
-        filter: true,
-        sort: true,
-      }
-    },
-    {
-      name: "sCountryID",
-      label: "Country ID",
+      name: "nGBId",
+      label: "Greenbook ID",
       options: {
         filter: true,
         sort: true
       }
     },
     {
-      name: "sCountry",
-      label: "Country",
+      name: "nFormNo",
+      label: "Form Number",
       options: {
         filter: true,
         sort: true
       }
     },
     {
-      name: "edit",
-      label: "Edit",
+      name: "dtDate",
+      label: "Date",
+      options: {
+        filter: true,
+        sort: true
+      }
+    },
+    {
+      name: "gbentry",
+      label: "Greenbook Entry",
       options: {
         filter: false,
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <Button
-              size="small"
               variant="outlined"
               color="primary"
-              startIcon={<EditOutlinedIcon />}
-              onClick={() => { editClick(tableMeta.rowData) }}
-            >Edit
-            </Button>
-          )
-        }
-      }
-    },
-    {
-      name: "delete",
-      label: "Delete",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            <Button
-              variant="outlined"
-              color="secondary"
               size="small"
-              endIcon={<DeleteOutlinedIcon />}
-              onClick={() => { deleteClick(tableMeta.rowData) }}
-            >Delete
+              startIcon={<AddIcon />}
+              onClick={() => { setAddModal(true)}}
+            >Greenbook Entry
             </Button>
           )
         }
@@ -177,146 +180,8 @@ export default function EnhancedTable() {
     }
   ];
 
-  const editClick = (tableRowArray) => {
-    setCountryPK(tableRowArray[0]);
-    setCountryID(tableRowArray[1]);
-    setCountryName(tableRowArray[2]);
-    setEditModal(true);
-    setCountryObj({
-      id: tableRowArray[0],
-      countryId: tableRowArray[1],
-      countryName: tableRowArray[2]
-    });
-  }
-
-  const editAPICall = (countryObj) => {
-    // let CountryID = countryPK;
-    // let countryToUpdate = {
-    //   ID : countryPK,
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
-    // };
-    axios.post(`/Country/EditCountry/CountryID=` + countryPK, countryObj/*countryToUpdate*/)
-      .then(resp => {
-        if (resp.status === 200) {
-          //console.log(resp.data);
-          setEditModal(false);
-          window.location = window.location;
-          // setdataAPI(dataAPI.map((data) => {
-          //   console.log(data);
-          //   if(data.id === countryObj.id){
-          //     console.log(data);
-          //     return {
-          //       ...data,
-          //       ...countryObj
-          //     };
-          //   }
-          //   else{
-          //     console.log(data)
-          //     return data;
-          //   }
-          // }))
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-  };
-  const addAPICall = (countryObj) => {
-
-    // let countryToAdd = {
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
-    // };
-    axios.post(`/Country/AddCountry/`, countryObj)
-      .then(resp => {
-        if (resp.status === 200) {
-          console.log(resp.data);
-          setAddModal(false);
-          window.location = window.location;
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-  };
-
-  const deleteClick = (tableRowArray) => {
-
-    setDeleteModal(true);
-    setCountryPK(tableRowArray[0]);
-    setCountryID(tableRowArray[1]);
-    setCountryName(tableRowArray[2]);
-  };
-
-  const handleClose = () => {
-    setDeleteModal(false);
-
-  };
-
-  const deleteAPICall = () => {
-    // console.log(this.state.selectedUser);
-    // let CountryID = countryPK;
-    const countryToDelete = {
-      ID: countryPK,
-      sCountryID: countryID,
-      sCountry: countryName,
-    };
-    axios.post(`/Country/DeleteCountry/`, countryToDelete)
-      .then(resp => {
-        console.log(countryToDelete);
-        if (resp.status === 200) {
-          console.log(resp.data);
-          setDeleteModal(false);
-          window.location = window.location;
-          // setdataAPI(dataAPI.filter((data) => {
-          //   return (data.id !== countryToDelete.ID);
-          // }));
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-  };
-
   useEffect(() => {
-    axios.get(`/Country/GetCountries`)
+    axios.get(`/GivenGBID/GetGivenGBIDs`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -341,54 +206,39 @@ export default function EnhancedTable() {
   }, []);
 
   return (
-        <Box
-          display="flex"
-          flexDirection="column"
-          height="100%"
-          justifyContent="center"
-        >
-          <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>New Entry
-             <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="span"
-                size="large"
-                //onClick={addClick()}
-                onClick={() => { setAddModal(true) }}
-              >
-                <AddCircleIcon />
-              </IconButton>
-            </Typography>
-            <Grid container className={classes.box}>
-              <Grid item xs={12}>
-                <MUIDataTable
-                  data={dataAPI}
-                  columns={columns}
-                  options={options}
-                />
-              </Grid>
-            </Grid>
-            {addModal && <AddDialog
-              addModal={addModal}
-              classes={classes}
-              handleAddClickClose={handleAddClickClose}
-              addAPICall={addAPICall}
-            />}
-            {editModal && <EditDialog
-              editModal={editModal}
-              countryObj={countryObj}
-              classes={classes}
-              handleEditClickClose={handleEditClickClose}
-              editAPICall={editAPICall}
-            />}
-            {deleteModal && <DeleteDialog
-              deleteModal={deleteModal}
-              countryName={countryName}
-              handleClose={handleClose}
-              deleteAPICall={deleteAPICall}
-            />}
-          </Container>
-        </Box>  
+    <Box
+      display="flex"
+      flexDirection="column"
+      height="100%"
+      justifyContent="center"
+    >
+      <Container maxWidth="lg" disableGutters={true}><br/>
+      <Typography variant="h4" gutterBottom>New Entry</Typography>
+        <Grid container className={classes.box}>
+          <Grid item xs={12}>
+            <MUIDataTable
+              data={dataAPI}
+              columns={columns}
+              options={options}
+            />
+          </Grid>
+        </Grid>
+        {addModal && <AddDialog
+          addModal={addModal}
+          classes={classes}
+          handleAddClickClose={handleAddClickClose}
+        />}
+        {editModal && <EditDialog
+          editModal={editModal}
+          countryObj={countryObj}
+          classes={classes}
+          handleEditClickClose={handleEditClickClose}
+        />}
+        {deleteModal && <DeleteDialog
+          deleteModal={deleteModal}
+          countryName={countryName}
+        />}
+      </Container>
+    </Box>
   );
 }

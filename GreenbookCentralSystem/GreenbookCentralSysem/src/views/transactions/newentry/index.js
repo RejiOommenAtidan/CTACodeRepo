@@ -29,7 +29,7 @@ const Dashboard = () => {
           <Link color="inherit" href="/app/manageuser" >
             Home
           </Link>
-          <Typography color="textPrimary">New Entry</Typography>
+          <Typography color="textPrimary">New Greenbook</Typography>
         </Breadcrumbs>
         <NewEntry />
       </Container>

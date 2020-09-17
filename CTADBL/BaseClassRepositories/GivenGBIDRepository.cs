@@ -44,7 +44,7 @@ namespace CTADBL.BaseClassRepositories
         {
             string sql = @"SELECT `Id`,
                             `_Id`,
-                            `nGivenGBId`,
+                            `nGBId`,
                             `nFormNo`,
                             `dtDate`,
                             IF(nGivenOrNot, 1, 0) nGivenOrNot,
@@ -57,7 +57,6 @@ namespace CTADBL.BaseClassRepositories
             using (var command = new MySqlCommand(sql))
             {
                 return GetRecords(command);
-                //IF(nGivenOrNot, 1, 0) nGivenOrNot,
             }
         }
 
@@ -119,7 +118,7 @@ namespace CTADBL.BaseClassRepositories
                 nActive = (int)reader["nActive"],
                 dtDate = dtDate,
                 nFormNo = (int)reader["nFormNo"],
-                nGivenGBId = (int)reader["nGivenGBId"],
+                nGBId = (int)reader["nGBId"],
                 nGivenOrNot = (int)reader["nGivenOrNot"],
                 //Common Props
                 nEnteredBy = (int)reader["nEnteredBy"],
