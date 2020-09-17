@@ -1,4 +1,4 @@
-// hi
+
 import React, { useEffect, useState } from 'react';
 //import { useNavigate } from 'react-router-dom';
 import {
@@ -8,10 +8,7 @@ import {
   Button,
   Typography,
   FormControl,
-  TextField,
-  Link,
-  Breadcrumbs,
-  
+  TextField
   
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
@@ -33,6 +30,7 @@ import Chip from '@material-ui/core/Chip';
 
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import EmailIcon from '@material-ui/icons/Email';
 
 // Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
@@ -44,33 +42,28 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 const getMuiTheme = () => createMuiTheme({
   overrides: {
-    MUIDataTable: {
-      root: {
-        backgroundColor: "#FF000",
-        fontFamily: 'Heebo,Sans Serif'
-      },
-      paper: {
-        boxShadow: "none"
+    MUIDataTableHeadCell: {
+      root:{
+        color:'blue',
+        fontSize:15
       }
     },
     MUIDataTableBodyCell: {
       root: {
-        //backgroundColor: "#FF0000"
+        // backgroundColor: "#FFF",
+        // width: "50px"
+        
       }
 
-    },
-    MUIDataTableHeadCell: {
-      root:{
-        color:'blue',
-        fontSize:20
-      }
     },
     MuiTableCell: {
       root: {
           padding: '0px',
-          paddingLeft: '30px',
-          fontSize:16,
-          fontFamily: 'Heebo,Sans Serif'
+          paddingLeft: '10px',
+          
+          paddingRight: '10px',
+
+         
       }
   },
   }
@@ -123,7 +116,7 @@ const useStyles = makeStyles(() => ({
 */
 }));
 
-export default function Region() {
+export default function EnhancedTable() {
   const classes = useStyles();
  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
@@ -134,10 +127,18 @@ export default function Region() {
 
 
   //VAR
-  const [regionID, setRegionID] = React.useState('');
-  const [region, setRegion] = React.useState('');
-  const [regionPK, setRegionPK] = React.useState(0);
-  const [regionObj, setRegionObj] = useState({});
+  const [id, setId] = React.useState('');
+  const [formNumber, setFormNumber] = React.useState(0);
+  const [authority, setAuthority] = React.useState(0);
+  const [receivedDate, setReceivedDate] = React.useState('');
+  const [name, setName] = React.useState('');
+  const [fname, setFname] = React.useState('');
+  const [saney, setSaney] = React.useState(0);
+  const [documents, setDocument] = React.useState('');
+  const [issueActionDate, setIssueActionDate] = React.useState('');
+  const [issueAction, setIssueAction] = React.useState(0);
+  const [returnDate, setReturnDate] = React.useState('');
+  const [sarsoObj, setSarsoObj] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
@@ -186,14 +187,14 @@ export default function Region() {
       name: "id",
       label: "Sr No.",
       options: {
-        filter: false ,
+        filter: false,
         sort: true,
         display:false
       }
     },
     {
-      name: "sRegion_code",
-      label: "Region ID",
+      name: "nFormNumber",
+      label: "Form Number",
       options: {
         filter: true,
         sort: true,
@@ -201,12 +202,102 @@ export default function Region() {
       }
     },
     {
-      name: "sRegion_name",
-      label: "Region",
+      name: "dtReceived",
+      label: "Received Date",
       options: {
         filter: true,
         sort: true,
         filterType: 'textField'
+      }
+    },
+    {
+      name: "nAuthRegionID",
+      label: "Authority",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "sName",
+      label: "Name",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "sFathersName",
+      label: "Father's Name",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "nSaneyFormNo",
+      label: "Saney Form No",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "sDocumentAttached",
+      label: "Document attached",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "dtIssueAction",
+      label: "Issue Action Date",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "nType",
+      label: "Issue Action",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "dtReturnEmail",
+      label: "Return Date",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "email",
+      label: "Email",
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return (
+            <IconButton color="primary" aria-label="upload picture" component="span"
+              onClick={() => { editClick(tableMeta.rowData) }}  style={{padding:'5px'}}
+            >
+              <EmailIcon/>
+              </IconButton>
+            
+          )
+        }
       }
     },
     {
@@ -218,7 +309,7 @@ export default function Region() {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <IconButton color="primary" aria-label="upload picture" component="span"
-              onClick={() => { editClick(tableMeta.rowData) }}   style={{padding:'5px'}}
+              onClick={() => { editClick(tableMeta.rowData) }}  style={{padding:'5px'}}
             >
               <EditOutlinedIcon/>
               </IconButton>
@@ -231,33 +322,46 @@ export default function Region() {
   ];
 
   const editClick = (tableRowArray) => {
-   
-    setRegionPK(tableRowArray[0]);
-    setRegionID(tableRowArray[1]);
-    setRegion(tableRowArray[2]);
-    setEditModal(true);
-    setRegionObj({
-      id: tableRowArray[0],
-      regionId: tableRowArray[1],
-      region: tableRowArray[2]
+  setId(tableRowArray[0]);
+  setFormNumber(tableRowArray[1]);
+  setAuthority(tableRowArray[2]);
+  setReceivedDate(tableRowArray[3]);
+  setName(tableRowArray[4]);
+  setFname(tableRowArray[5]);
+  setSaney(tableRowArray[6]);
+  setDocument(tableRowArray[7]);
+  setIssueActionDate(tableRowArray[8]);
+  setIssueAction(tableRowArray[9]);
+  setReturnDate(tableRowArray[10]);
+  setEditModal(true);
+  setSarsoObj({
+    id: tableRowArray[0],
+    nFormNumber: tableRowArray[1],
+    dtReceived: tableRowArray[2],
+    nAuthRegionID: tableRowArray[3],
+    sName: tableRowArray[4],
+    sFathersName    :tableRowArray[5],
+    nSaneyFormNo   :tableRowArray[6],
+    sDocumentAttached  :tableRowArray[7],
+    dtIssueAction  :tableRowArray[8],
+    nType  :tableRowArray[9],
+    dtReturnEmail  :tableRowArray[10]
     });
-   
   }
 
-  const editAPICall = (regionObj) => {
+  const editAPICall = (countryObj) => {
     // let CountryID = countryPK;
     // let countryToUpdate = {
     //   ID : countryPK,
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    console.log(regionObj);
-    axios.post(`/Region/EditRegion/ID=` + regionPK, regionObj/*RegionToUpdate*/)
+    axios.post(`/Madeb/EditMadeb/ID=` + id, sarsoObj/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
+          //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/Region/GetRegion`)
+          axios.get(`/Madeb/GetMadebs`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -313,18 +417,18 @@ export default function Region() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (regionObj) => {
+  const addAPICall = (countryObj) => {
 
     // let countryToAdd = {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Region/AddRegion/`, regionObj)
+    axios.post(`/Country/AddCountry/`, countryObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/Region/GetRegion`)
+          axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -366,23 +470,17 @@ export default function Region() {
       });
   };
 
-  const deleteClick = (tableRowArray) => {
 
-    setDeleteModal(true);
-    setRegionPK(tableRowArray[0]);
-    setRegionID(tableRowArray[1]);
-    setRegion(tableRowArray[2]);
-  };
 
   const handleClose = () => {
     setDeleteModal(false);
 
   };
 
-  
+
 
   useEffect(() => {
-    axios.get(`/Region/GetRegion`)
+    axios.get(`/Madeb/GetMadebs`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -415,16 +513,8 @@ export default function Region() {
           height="100%"
           justifyContent="center"
         >
-           
           <Container maxWidth="lg" disableGutters={true}>
-          <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/Home" >
-            Home
-        </Link>
-
-          <Typography color="textPrimary">Region</Typography>
-        </Breadcrumbs>
-            <Typography variant="h4" gutterBottom>Region
+            <Typography variant="h4" gutterBottom>Sarso Madeb
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -435,7 +525,6 @@ export default function Region() {
               >
                 <AddCircleIcon />
               </IconButton>
-            
             </Typography>
             <Grid container className={classes.box}>
               <Grid item xs={12}>
@@ -452,7 +541,7 @@ export default function Region() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              regionObj={regionObj}
+              sarsoObj={sarsoObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}

@@ -8,10 +8,7 @@ import {
   Button,
   Typography,
   FormControl,
-  TextField,
-  Link,
-  Breadcrumbs,
-  
+  TextField
   
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
@@ -44,33 +41,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 const getMuiTheme = () => createMuiTheme({
   overrides: {
-    MUIDataTable: {
-      root: {
-        backgroundColor: "#FF000",
-        fontFamily: 'Heebo,Sans Serif'
-      },
-      paper: {
-        boxShadow: "none"
-      }
-    },
-    MUIDataTableBodyCell: {
-      root: {
-        //backgroundColor: "#FF0000"
-      }
-
-    },
     MUIDataTableHeadCell: {
       root:{
         color:'blue',
         fontSize:20
       }
     },
+    MUIDataTableBodyCell: {
+      root: {
+        // backgroundColor: "#FFF",
+        // width: "50px"
+      }
+
+    },
     MuiTableCell: {
       root: {
           padding: '0px',
           paddingLeft: '30px',
-          fontSize:16,
-          fontFamily: 'Heebo,Sans Serif'
+         
       }
   },
   }
@@ -123,7 +111,7 @@ const useStyles = makeStyles(() => ({
 */
 }));
 
-export default function Region() {
+export default function EnhancedTable() {
   const classes = useStyles();
  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
@@ -134,10 +122,10 @@ export default function Region() {
 
 
   //VAR
-  const [regionID, setRegionID] = React.useState('');
-  const [region, setRegion] = React.useState('');
-  const [regionPK, setRegionPK] = React.useState(0);
-  const [regionObj, setRegionObj] = useState({});
+  const [countryID, setCountryID] = React.useState('');
+  const [countryName, setCountryName] = React.useState('');
+  const [countryPK, setCountryPK] = React.useState(0);
+  const [countryObj, setCountryObj] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
@@ -186,14 +174,14 @@ export default function Region() {
       name: "id",
       label: "Sr No.",
       options: {
-        filter: false ,
+        filter: false,
         sort: true,
         display:false
       }
     },
     {
-      name: "sRegion_code",
-      label: "Region ID",
+      name: "sCountryID",
+      label: "Country ID",
       options: {
         filter: true,
         sort: true,
@@ -201,8 +189,8 @@ export default function Region() {
       }
     },
     {
-      name: "sRegion_name",
-      label: "Region",
+      name: "sCountry",
+      label: "Country",
       options: {
         filter: true,
         sort: true,
@@ -218,7 +206,7 @@ export default function Region() {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <IconButton color="primary" aria-label="upload picture" component="span"
-              onClick={() => { editClick(tableMeta.rowData) }}   style={{padding:'5px'}}
+              onClick={() => { editClick(tableMeta.rowData) }}  style={{padding:'5px'}}
             >
               <EditOutlinedIcon/>
               </IconButton>
@@ -231,33 +219,30 @@ export default function Region() {
   ];
 
   const editClick = (tableRowArray) => {
-   
-    setRegionPK(tableRowArray[0]);
-    setRegionID(tableRowArray[1]);
-    setRegion(tableRowArray[2]);
+    setCountryPK(tableRowArray[0]);
+    setCountryID(tableRowArray[1]);
+    setCountryName(tableRowArray[2]);
     setEditModal(true);
-    setRegionObj({
+    setCountryObj({
       id: tableRowArray[0],
-      regionId: tableRowArray[1],
-      region: tableRowArray[2]
+      countryId: tableRowArray[1],
+      countryName: tableRowArray[2]
     });
-   
   }
 
-  const editAPICall = (regionObj) => {
+  const editAPICall = (countryObj) => {
     // let CountryID = countryPK;
     // let countryToUpdate = {
     //   ID : countryPK,
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    console.log(regionObj);
-    axios.post(`/Region/EditRegion/ID=` + regionPK, regionObj/*RegionToUpdate*/)
+    axios.post(`/Country/EditCountry/CountryID=` + countryPK, countryObj/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
+          //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/Region/GetRegion`)
+          axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -313,18 +298,18 @@ export default function Region() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (regionObj) => {
+  const addAPICall = (countryObj) => {
 
     // let countryToAdd = {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Region/AddRegion/`, regionObj)
+    axios.post(`/Country/AddCountry/`, countryObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/Region/GetRegion`)
+          axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -369,9 +354,9 @@ export default function Region() {
   const deleteClick = (tableRowArray) => {
 
     setDeleteModal(true);
-    setRegionPK(tableRowArray[0]);
-    setRegionID(tableRowArray[1]);
-    setRegion(tableRowArray[2]);
+    setCountryPK(tableRowArray[0]);
+    setCountryID(tableRowArray[1]);
+    setCountryName(tableRowArray[2]);
   };
 
   const handleClose = () => {
@@ -379,10 +364,67 @@ export default function Region() {
 
   };
 
-  
+  const deleteAPICall = () => {
+    // console.log(this.state.selectedUser);
+    // let CountryID = countryPK;
+    const countryToDelete = {
+      ID: countryPK,
+      sCountryID: countryID,
+      sCountry: countryName,
+    };
+    axios.post(`/Country/DeleteCountry/`, countryToDelete)
+      .then(resp => {
+        console.log(countryToDelete);
+        if (resp.status === 200) {
+          console.log(resp.data);
+          setDeleteModal(false);
+          axios.get(`/Country/GetCountries`)
+            .then(resp => {
+              if (resp.status === 200) {
+                console.log(resp.data);
+                setdataAPI(resp.data)
+              }
+            })
+            .catch(error => {
+              if (error.response) {
+                console.error(error.response.data);
+                console.error(error.response.status);
+                console.error(error.response.headers);
+              } else if (error.request) {
+                console.warn(error.request);
+              } else {
+                console.error('Error', error.message);
+              }
+              console.log(error.config);
+            })
+            .then(release => {
+              //console.log(release); => udefined
+            });
+          //window.location = window.location;
+          // setdataAPI(dataAPI.filter((data) => {
+          //   return (data.id !== countryToDelete.ID);
+          // }));
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  };
 
   useEffect(() => {
-    axios.get(`/Region/GetRegion`)
+    axios.get(`/Country/GetCountries`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -415,16 +457,8 @@ export default function Region() {
           height="100%"
           justifyContent="center"
         >
-           
           <Container maxWidth="lg" disableGutters={true}>
-          <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/Home" >
-            Home
-        </Link>
-
-          <Typography color="textPrimary">Region</Typography>
-        </Breadcrumbs>
-            <Typography variant="h4" gutterBottom>Region
+            <Typography variant="h4" gutterBottom>Country
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -435,7 +469,6 @@ export default function Region() {
               >
                 <AddCircleIcon />
               </IconButton>
-            
             </Typography>
             <Grid container className={classes.box}>
               <Grid item xs={12}>
@@ -452,12 +485,17 @@ export default function Region() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              regionObj={regionObj}
+              countryObj={countryObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
             />}
-          
+            {deleteModal && <DeleteDialog
+              deleteModal={deleteModal}
+              countryName={countryName}
+              handleClose={handleClose}
+              deleteAPICall={deleteAPICall}
+            />}
           </Container>
         </Box>
    
