@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 
 
-import NewEntry from './newentry';
+import Sarso from './sarso';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,15 +24,18 @@ const Dashboard = () => {
   const classes = useStyles();
 
   return (
+   
       <Container maxWidth={false}>
         <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/app/manageuser" >
+          <Link color="inherit" href="/Home" >
             Home
-          </Link>
-          <Typography color="textPrimary">New Greenbook</Typography>
+        </Link>
+
+          <Typography color="textPrimary">Sarso Madeb</Typography>
         </Breadcrumbs>
-        <NewEntry />
+        <Sarso />
       </Container>
+
   );
 };
 

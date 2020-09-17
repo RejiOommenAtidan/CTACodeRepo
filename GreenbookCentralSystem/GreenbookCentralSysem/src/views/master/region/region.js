@@ -8,7 +8,10 @@ import {
   Button,
   Typography,
   FormControl,
-  TextField
+  TextField,
+  Link,
+  Breadcrumbs,
+  
   
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
@@ -41,10 +44,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 const getMuiTheme = () => createMuiTheme({
   overrides: {
+    MUIDataTable: {
+      root: {
+        backgroundColor: "#FF000",
+        fontFamily: 'Heebo,Sans Serif'
+      },
+      paper: {
+        boxShadow: "none"
+      }
+    },
     MUIDataTableBodyCell: {
       root: {
-      //  backgroundColor: "#FFF"
-        
+        //backgroundColor: "#FF0000"
       }
 
     },
@@ -58,7 +69,8 @@ const getMuiTheme = () => createMuiTheme({
       root: {
           padding: '0px',
           paddingLeft: '30px',
-         
+          fontSize:16,
+          fontFamily: 'Heebo,Sans Serif'
       }
   },
   }
@@ -150,7 +162,7 @@ export default function Region() {
       },
      
     },
-    filter:false,
+    filter:true,
     viewColumns:false,
     selectableRows: false,
     jumpToPage: true,
@@ -174,7 +186,7 @@ export default function Region() {
       name: "id",
       label: "Sr No.",
       options: {
-        filter: true,
+        filter: false ,
         sort: true,
         display:false
       }
@@ -184,7 +196,8 @@ export default function Region() {
       label: "Region ID",
       options: {
         filter: true,
-        sort: true
+        sort: true,
+        filterType: 'textField'
       }
     },
     {
@@ -192,7 +205,8 @@ export default function Region() {
       label: "Region",
       options: {
         filter: true,
-        sort: true
+        sort: true,
+        filterType: 'textField'
       }
     },
     {
@@ -401,7 +415,15 @@ export default function Region() {
           height="100%"
           justifyContent="center"
         >
+           
           <Container maxWidth="lg" disableGutters={true}>
+          <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" href="/Home" >
+            Home
+        </Link>
+
+          <Typography color="textPrimary">Region</Typography>
+        </Breadcrumbs>
             <Typography variant="h4" gutterBottom>Region
              <IconButton
                 color="primary"
@@ -413,6 +435,7 @@ export default function Region() {
               >
                 <AddCircleIcon />
               </IconButton>
+            
             </Typography>
             <Grid container className={classes.box}>
               <Grid item xs={12}>

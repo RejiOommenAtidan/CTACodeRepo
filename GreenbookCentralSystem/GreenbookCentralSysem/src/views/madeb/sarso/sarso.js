@@ -1,4 +1,4 @@
-// hi
+
 import React, { useEffect, useState } from 'react';
 //import { useNavigate } from 'react-router-dom';
 import {
@@ -30,6 +30,7 @@ import Chip from '@material-ui/core/Chip';
 
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import EmailIcon from '@material-ui/icons/Email';
 
 // Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
@@ -44,20 +45,24 @@ const getMuiTheme = () => createMuiTheme({
     MUIDataTableHeadCell: {
       root:{
         color:'blue',
-        fontSize:20
+        fontSize:15
       }
     },
     MUIDataTableBodyCell: {
       root: {
         // backgroundColor: "#FFF",
         // width: "50px"
+        
       }
 
     },
     MuiTableCell: {
       root: {
           padding: '0px',
-          paddingLeft: '30px',
+          paddingLeft: '10px',
+          
+          paddingRight: '10px',
+
          
       }
   },
@@ -122,10 +127,18 @@ export default function EnhancedTable() {
 
 
   //VAR
-  const [occupationPK, setOccupationPK] = React.useState(0);
-  const [occupationDesc, setOccupationDesc] = React.useState('');
-  const [occupationDescTibetan, setOccupationDescTibetan] = React.useState('');
-  const [occupationObj, setOccupationObj] = useState({});
+  const [id, setId] = React.useState('');
+  const [formNumber, setFormNumber] = React.useState(0);
+  const [authority, setAuthority] = React.useState(0);
+  const [receivedDate, setReceivedDate] = React.useState('');
+  const [name, setName] = React.useState('');
+  const [fname, setFname] = React.useState('');
+  const [saney, setSaney] = React.useState(0);
+  const [documents, setDocument] = React.useState('');
+  const [issueActionDate, setIssueActionDate] = React.useState('');
+  const [issueAction, setIssueAction] = React.useState(0);
+  const [returnDate, setReturnDate] = React.useState('');
+  const [sarsoObj, setSarsoObj] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
@@ -180,20 +193,111 @@ export default function EnhancedTable() {
       }
     },
     {
-      name: "sOccupationDesc",
-      label: "Occupation",
-      options: {
-        filter: true,
-        sort: true, 
-        filterType: 'textField'      }
-    },
-    {
-      name: "sOccupationDescTibetan",
-      label: "Occupation (in Tibetan)",
+      name: "nFormNumber",
+      label: "Form Number",
       options: {
         filter: true,
         sort: true,
         filterType: 'textField'
+      }
+    },
+    {
+      name: "dtReceived",
+      label: "Received Date",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "nAuthRegionID",
+      label: "Authority",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "sName",
+      label: "Name",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "sFathersName",
+      label: "Father's Name",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "nSaneyFormNo",
+      label: "Saney Form No",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "sDocumentAttached",
+      label: "Document attached",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "dtIssueAction",
+      label: "Issue Action Date",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "nType",
+      label: "Issue Action",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "dtReturnEmail",
+      label: "Return Date",
+      options: {
+        filter: true,
+        sort: true,
+        filterType: 'textField'
+      }
+    },
+    {
+      name: "email",
+      label: "Email",
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return (
+            <IconButton color="primary" aria-label="upload picture" component="span"
+              onClick={() => { editClick(tableMeta.rowData) }}  style={{padding:'5px'}}
+            >
+              <EmailIcon/>
+              </IconButton>
+            
+          )
+        }
       }
     },
     {
@@ -218,30 +322,46 @@ export default function EnhancedTable() {
   ];
 
   const editClick = (tableRowArray) => {
-    setOccupationPK(tableRowArray[0]);
-    setOccupationDesc(tableRowArray[1]);
-    setOccupationDescTibetan(tableRowArray[2]);
-    setEditModal(true);
-    setOccupationObj({
-      id: tableRowArray[0],
-      occupationDesc: tableRowArray[1],
-      occupationDescTibetan: tableRowArray[2]
+  setId(tableRowArray[0]);
+  setFormNumber(tableRowArray[1]);
+  setAuthority(tableRowArray[2]);
+  setReceivedDate(tableRowArray[3]);
+  setName(tableRowArray[4]);
+  setFname(tableRowArray[5]);
+  setSaney(tableRowArray[6]);
+  setDocument(tableRowArray[7]);
+  setIssueActionDate(tableRowArray[8]);
+  setIssueAction(tableRowArray[9]);
+  setReturnDate(tableRowArray[10]);
+  setEditModal(true);
+  setSarsoObj({
+    id: tableRowArray[0],
+    nFormNumber: tableRowArray[1],
+    dtReceived: tableRowArray[2],
+    nAuthRegionID: tableRowArray[3],
+    sName: tableRowArray[4],
+    sFathersName    :tableRowArray[5],
+    nSaneyFormNo   :tableRowArray[6],
+    sDocumentAttached  :tableRowArray[7],
+    dtIssueAction  :tableRowArray[8],
+    nType  :tableRowArray[9],
+    dtReturnEmail  :tableRowArray[10]
     });
   }
 
-  const editAPICall = (occupationObj) => {
+  const editAPICall = (countryObj) => {
     // let CountryID = countryPK;
     // let countryToUpdate = {
     //   ID : countryPK,
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Occupation/EditOccupation/occupationId=` + occupationPK, occupationObj)
+    axios.post(`/Madeb/EditMadeb/ID=` + id, sarsoObj/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/Occupation/GetOccupations`)
+          axios.get(`/Madeb/GetMadebs`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -297,18 +417,18 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (occupationObj) => {
+  const addAPICall = (countryObj) => {
 
     // let countryToAdd = {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Occupation/AddOccupation`, occupationObj)
+    axios.post(`/Country/AddCountry/`, countryObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/Occupation/GetOccupations`)
+          axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -350,79 +470,17 @@ export default function EnhancedTable() {
       });
   };
 
-  const deleteClick = (tableRowArray) => {
-    setOccupationPK(tableRowArray[0]);
-    setOccupationDesc(tableRowArray[1]);
-    setOccupationDescTibetan(tableRowArray[2]);
-    setDeleteModal(true);
-  };
+
 
   const handleClose = () => {
     setDeleteModal(false);
 
   };
 
-  const deleteAPICall = () => {
-    // console.log(this.state.selectedUser);
-    // let CountryID = countryPK;
-    const occupationToDelete = {
-      ID: occupationPK,
-      sOccupationDesc: occupationDesc,
-      sOccupationDescTibetan: occupationDescTibetan
-    };
-    axios.post(`/Occupation/DeleteOccupation`, occupationToDelete)
-      .then(resp => {
-        console.log(occupationToDelete);
-        if (resp.status === 200) {
-          console.log(resp.data);
-          setDeleteModal(false);
-          axios.get(`/Occupation/GetOccupations`)
-            .then(resp => {
-              if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
-              }
-            })
-            .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
-            })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-          //window.location = window.location;
-          // setdataAPI(dataAPI.filter((data) => {
-          //   return (data.id !== countryToDelete.ID);
-          // }));
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-  };
+
 
   useEffect(() => {
-    axios.get(`/Occupation/GetOccupations`)
+    axios.get(`/Madeb/GetMadebs`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -456,7 +514,7 @@ export default function EnhancedTable() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Occupation
+            <Typography variant="h4" gutterBottom>Sarso Madeb
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -483,17 +541,12 @@ export default function EnhancedTable() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              occupationObj={occupationObj}
+              sarsoObj={sarsoObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
             />}
-            {deleteModal && <DeleteDialog
-              deleteModal={deleteModal}
-              occupationDesc={occupationDesc}
-              handleClose={handleClose}
-              deleteAPICall={deleteAPICall}
-            />}
+          
           </Container>
         </Box>
    

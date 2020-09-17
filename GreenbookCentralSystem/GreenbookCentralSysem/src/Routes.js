@@ -28,6 +28,7 @@ const PageError505 = lazy(() => import('./example-pages/PageError505'));
 
 //My pages
 const Home = lazy(() => import('./views/home'));
+
 //Master Pages
 const Country = lazy(() => import('./views/master/country'));
 const Qualification = lazy(() => import('./views/master/qualification'));
@@ -35,11 +36,14 @@ const Occupation = lazy(() => import('./views/master/occupation'));
 const Province = lazy(() => import('./views/master/province'));
 const AuthRegion = lazy(() => import('./views/master/authregion'));
 const Region = lazy(() => import('./views/master/region'));
-
 const TypeIssued = lazy(() => import('./views/master/typeissued'));
 const UserRights = lazy(() => import('./views/master/userrights'));
 const MadebType = lazy(() => import('./views/master/madebtype'));
 const Relation = lazy(() => import('./views/master/relation'));
+
+// Madeb Pages
+const Sarso = lazy(() => import('./views/madeb/sarso'));
+
 
 const NewEntry = lazy(() => import('./views/transactions/newentry/newentry'));
 
@@ -162,6 +166,7 @@ const Routes = () => {
                 '/Relation',
                 '/UserRights',
                 '/TypeIssued',
+                '/Sarso'
 
               ]}>
               <LeftSidebar>
@@ -187,6 +192,7 @@ const Routes = () => {
                      <Route path="/Relation" component={Relation} />
                      <Route path="/UserRights" component={UserRights} />
                      <Route path="/TypeIssued" component={TypeIssued} />
+                     <Route path="/Sarso" component={Sarso} />
                   </motion.div>
                 </Switch>
               </LeftSidebar>
