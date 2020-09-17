@@ -724,7 +724,7 @@ CREATE TABLE `tblMadeb` (
   `sAlias` varchar(200) DEFAULT NULL,
   `sApprovedReject` varchar(200) DEFAULT NULL,
   `dtReject` date DEFAULT NULL,
-  `dtReturnEmail` date NOT NULL,
+  `dtReturnEmail` date DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime DEFAULT NULL,
@@ -840,13 +840,13 @@ CREATE TABLE `tblGreenBookIssued` (
   `sRemarks` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id`),
   KEY `nGBId` (`nGBId`)
-) ENGINE=MyISAM AUTO_INCREMENT=176236 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=176236 DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE `tblGreenBookSerial` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `nBookNo` int(11) DEFAULT NULL,
-  `nGBId` varchar(255) DEFAULT NULL,
+  `sGBId` varchar(255) DEFAULT NULL,
   `Remarks` text NOT NULL,
   `dtDate` date DEFAULT NULL,
   `sName` varchar(200) DEFAULT NULL,
@@ -857,13 +857,33 @@ CREATE TABLE `tblGreenBookSerial` (
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime DEFAULT NULL,
   `nUpdatedBy` int(11) Not NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=44030 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`Id`),
+  KEY `sGBId` (`sGBId`)
+) ENGINE=InnoDB AUTO_INCREMENT=44030 DEFAULT CHARSET=latin1;
 
 
+CREATE TABLE `lnkGBNote` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sGBId` varchar(255) DEFAULT NULL,
+  `sNote` longtext DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  PRIMARY KEY (`Id`),
+  KEY `sGBId` (`sGBId`)
+) ENGINE=InnoDB AUTO_INCREMENT=27870 DEFAULT CHARSET=latin1;
 
 
-
+CREATE TABLE `lnkGBChildren` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sGBIDParent` varchar(255) DEFAULT NULL,
+  `Name` varchar(100) DEFAULT NULL,
+  `DOB` datetime DEFAULT NULL,
+  `Gender` varchar(1) DEFAULT NULL,
+  `ChildID` varchar(50) DEFAULT NULL,
+  `sGBIDChild` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `sGBIDParent` (`sGBIDParent`)
+) ENGINE=InnoDB AUTO_INCREMENT=109498 DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE `tblActionLogger` (
