@@ -150,7 +150,7 @@ export default function TypeIssued() {
       },
      
     },
-    filter:false,
+    filter:true,
     viewColumns:false,
     selectableRows: false,
     jumpToPage: true,
@@ -174,7 +174,7 @@ export default function TypeIssued() {
       name: "id",
       label: "Sr No.",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         display:false
       }
@@ -185,7 +185,8 @@ export default function TypeIssued() {
       label: "Type Issued",
       options: {
         filter: true,
-        sort: true
+        sort: true,
+        filterType: 'textField'
       }
     },
     {

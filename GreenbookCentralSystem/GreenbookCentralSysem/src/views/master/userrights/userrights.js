@@ -150,7 +150,7 @@ export default function UserRights() {
       },
      
     },
-    filter:false,
+    filter:true,
     viewColumns:false,
     selectableRows: false,
     jumpToPage: true,
@@ -174,7 +174,7 @@ export default function UserRights() {
       name: "id",
       label: "Sr No.",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         display:false
       }
@@ -185,7 +185,8 @@ export default function UserRights() {
       label: "User Rights",
       options: {
         filter: true,
-        sort: true
+        sort: true,
+        filterType: 'textField'
       }
     },
     {

@@ -149,7 +149,7 @@ export default function Qualification() {
       },
      
     },
-    filter:false,
+    filter:true,
     viewColumns:false,
     selectableRows: false,
     jumpToPage: true,
@@ -173,7 +173,7 @@ export default function Qualification() {
       name: "id",
       label: "Sr No.",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         display:false
       }
@@ -183,7 +183,8 @@ export default function Qualification() {
       label: "Qualification ID",
       options: {
         filter: true,
-        sort: true
+        sort: true,
+        filterType: 'textField'
       }
     },
     {
@@ -191,7 +192,8 @@ export default function Qualification() {
       label: "Qualification",
       options: {
         filter: true,
-        sort: true
+        sort: true,
+        filterType: 'textField'
       }
     },
     {

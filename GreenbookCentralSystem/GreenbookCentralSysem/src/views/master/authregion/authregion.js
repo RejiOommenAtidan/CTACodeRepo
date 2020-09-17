@@ -151,7 +151,7 @@ export default function EnhancedTable() {
       },
      
     },
-    filter:false,
+    filter:true,
     viewColumns:false,
     selectableRows: false,
     jumpToPage: true,
@@ -175,7 +175,7 @@ export default function EnhancedTable() {
       name: "id",
       label: "Sr No.",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         display:false
       }
@@ -184,7 +184,7 @@ export default function EnhancedTable() {
       name: "sCountryID",
       label: "Short Name",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         display:false
       }
@@ -194,7 +194,8 @@ export default function EnhancedTable() {
       label: "Country",
       options: {
         filter: true,
-        sort: true
+        sort: true,
+        filterType: 'textField'
       }
     },
     {
@@ -202,7 +203,8 @@ export default function EnhancedTable() {
       label: "Auth Region",
       options: {
         filter: true,
-        sort: true
+        sort: true,
+        filterType: 'textField'
       }
     },
     {
@@ -251,7 +253,7 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`/AuthRegion/GetAuthRegions`)
+          axios.get(`/AuthRegionCountry/GetAllAuthRegionsCountryName`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -318,7 +320,7 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/AuthRegion/GetAuthRegions`)
+          axios.get(`/AuthRegionCountry/GetAllAuthRegionsCountryName`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
