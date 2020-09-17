@@ -123,17 +123,34 @@ namespace CTADBL.BaseClassRepositories
             //reader.get
             int colIndex1 = reader.GetOrdinal("dtEntered");
             int colIndex2 = reader.GetOrdinal("dtUpdated");
+            int colIndex3 = reader.GetOrdinal("dtReject");
+            int colIndex4 = reader.GetOrdinal("dtEmailSend");
 
-            DateTime? dtEntered = null;
-            DateTime? dtUpdated = null;
-            if (!reader.IsDBNull(colIndex1))
+            DateTime? dtEntered = (Convert.IsDBNull(reader["dtEntered"]) ? null : (DateTime?)(reader["dtEntered"]));
+            DateTime? dtUpdated = (Convert.IsDBNull(reader["dtUpdated"]) ? null : (DateTime?)(reader["dtUpdated"]));
+
+            //DateTime? dtEntered = null;
+            //DateTime? dtUpdated = null;
+            DateTime? dtReject = null;
+            DateTime? dtEmailSend = null;
+            //if (!reader.IsDBNull(colIndex1))
+            //{
+            //    dtEntered = (DateTime)reader["dtEntered"];
+            //}
+            //if (!reader.IsDBNull(colIndex2))
+            //{
+            //    dtUpdated = (DateTime)reader["dtUpdated"];
+            //}
+            if (!reader.IsDBNull(colIndex3))
             {
-                dtEntered = (DateTime)reader["dtEntered"];
+                dtReject = (DateTime)reader["dtReject"];
             }
-            if (!reader.IsDBNull(colIndex2))
+            if (!reader.IsDBNull(colIndex4))
             {
-                dtUpdated = (DateTime)reader["dtUpdated"];
+                dtEmailSend = (DateTime)reader["dtEmailSend"];
             }
+
+
             return new Madeb
             {
                 Id = (int)reader["Id"],
@@ -156,10 +173,10 @@ namespace CTADBL.BaseClassRepositories
                 nPreviousGBSno = (int)reader["nPreviousGBSno"],
                 nSaneyFormNo = (int)reader["nSaneyFormNo"],
                 nReceiptNo = (int)reader["nReceiptNo"],
-                dtEmailSend = (DateTime)reader["dtEmailSend"],
+                //dtEmailSend = (DateTime)reader["dtEmailSend"],
                 sAlias = (string)reader["sAlias"],
                 sApprovedReject = (string)reader["sApprovedReject"],
-                dtReject = (DateTime)reader["dtReject"],
+                //dtReject = (DateTime)reader["dtReject"],
                 dtReturnEmail = (DateTime)reader["dtReturnEmail"],
                 //Common Props
                 dtEntered = dtEntered,

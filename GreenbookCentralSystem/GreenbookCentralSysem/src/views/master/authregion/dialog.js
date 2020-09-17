@@ -49,7 +49,7 @@ export const EditDialog = (props) => {
               <Select 
                 id="countryID"
                 label="Country ID"
-                native = {true}
+                native = {false}
                 children = {opts}
                 value = {value}
                 onChange={(e) => { setCountryID(e.target.value) }}

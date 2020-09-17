@@ -1,13 +1,14 @@
 ﻿using CTADBL.BaseClasses;
 using CTADBL.BaseClassRepositories;
 using CTADBL.Entities;
+using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Reflection;
 
 namespace CTAWebAPI.Controllers
 {
@@ -18,9 +19,11 @@ namespace CTAWebAPI.Controllers
     public class ProvinceController : Controller
     {
         private readonly ProvinceRepository _provinceRepository;
+        private readonly DBConnectionInfo _info;
 
         public ProvinceController (DBConnectionInfo info)
         {
+            _info = info;
             _provinceRepository = new ProvinceRepository(info.sConnectionString);
         }
 
@@ -35,6 +38,10 @@ namespace CTAWebAPI.Controllers
                 IEnumerable<Province> provinces = _provinceRepository.GetAllProvinces();
                 if(provinces != null)
                 {
+                    #region Information Logging 
+                    CTALogger logger = new CTALogger(_info);
+                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                    #endregion
                     return Ok(provinces);
                 }
                 else
@@ -45,6 +52,10 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -58,6 +69,10 @@ namespace CTAWebAPI.Controllers
                 Province province = _provinceRepository.GetProvinceById(Id);
                 if (province != null)
                 {
+                    #region Information Logging
+                    CTALogger logger = new CTALogger(_info);
+                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                    #endregion
                     return Ok(province);
                 }
                 else
@@ -68,6 +83,10 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                #region Exception Logging
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                #endregion 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -96,6 +115,10 @@ namespace CTAWebAPI.Controllers
                     int inserted = _provinceRepository.Add(province);
                     if(inserted > 0)
                     {
+                        #region Information Logging 
+                        CTALogger logger = new CTALogger(_info);
+                        logger.LogRecord(((Operations)1).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                        #endregion
                         return Ok(province);
                     }
                     else 
@@ -115,6 +138,10 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -145,7 +172,12 @@ namespace CTAWebAPI.Controllers
                         int updated = _provinceRepository.Update(provinceToUpdate);
                         if(updated > 0)
                         {
+                            #region Alert Logging
+                            CTALogger logger = new CTALogger(_info);
+                            logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                            #endregion
                             Province updatedProvince = _provinceRepository.GetProvinceById(provinceID);
+
                             return Ok(String.Format("Province with ID: {0} updated Successfully", provinceID));
                         }
                         else
@@ -169,6 +201,10 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(((Operations)3).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -190,7 +226,14 @@ namespace CTAWebAPI.Controllers
                     {
                         int deleted = _provinceRepository.Delete(provinceToDelete);// Delete method should return boolean for success.
                         if (deleted > 0)
+                        {
+                            #region Alert Logging 
+                            CTALogger logger = new CTALogger(_info);
+                            logger.LogRecord(((Operations)4).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                            #endregion
                             return Ok(String.Format("Province with ID: {0} deleted successfully", provinceToDelete.Id));
+                        }
+                            
                         else
                             return StatusCode(StatusCodes.Status500InternalServerError);
                     }
@@ -207,6 +250,10 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(((Operations)4).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion

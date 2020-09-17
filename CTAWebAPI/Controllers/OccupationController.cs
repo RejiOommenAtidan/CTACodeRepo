@@ -1,12 +1,14 @@
 ﻿using CTADBL.BaseClasses;
 using CTADBL.BaseClassRepositories;
 using CTADBL.Entities;
+using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace CTAWebAPI.Controllers
 {
@@ -35,10 +37,18 @@ namespace CTAWebAPI.Controllers
                 IEnumerable<Occupation> occupation = _occupationRepository.GetAllOccupations();
                 if (occupation != null)
                 {
+                    #region Information Logging 
+                    CTALogger logger = new CTALogger(_info);
+                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                    #endregion
                     return Ok(occupation);
                 }
                 else
                 {
+                    #region Exception Logging 
+                    CTALogger logger = new CTALogger(_info);
+                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                    #endregion
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
             }
@@ -57,10 +67,18 @@ namespace CTAWebAPI.Controllers
                 Occupation occupation = _occupationRepository.GetOccupationById(Id);
                 if (occupation != null)
                 {
+                    #region Information Logging
+                    CTALogger logger = new CTALogger(_info);
+                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                    #endregion
                     return Ok(occupation);
                 }
                 else
                 {
+                    #region Exception Logging
+                    CTALogger logger = new CTALogger(_info);
+                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                    #endregion
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
 
@@ -92,7 +110,14 @@ namespace CTAWebAPI.Controllers
 
                     int inserted = _occupationRepository.Add(occupation);
                     if (inserted > 0)
+                    {
+                        #region Information Logging 
+                        CTALogger logger = new CTALogger(_info);
+                        logger.LogRecord(((Operations)1).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                        #endregion
                         return Ok(occupation);
+                    }
+                    
                     else
                         return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while inserting the record.");
                 }
@@ -106,6 +131,10 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -134,8 +163,14 @@ namespace CTAWebAPI.Controllers
                         */
 
                         int updated = _occupationRepository.Update(occupationToUpdate);
-                        if(updated > 0)
+                        if (updated > 0)
+                        {
+                            #region Alert Logging
+                            CTALogger logger = new CTALogger(_info);
+                            logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                            #endregion
                             return Ok(String.Format("Occupation with ID: {0} updated Successfully", occupationId));
+                        }
                         else
                             return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while updating the record.");
                     }
@@ -154,6 +189,10 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(((Operations)3).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -174,8 +213,14 @@ namespace CTAWebAPI.Controllers
                     if (occupation.sOccupationDesc == occupationToDelete.sOccupationDesc && occupation.sOccupationDescTibetan == occupationToDelete.sOccupationDescTibetan)
                     {
                         int deleted = _occupationRepository.Delete(occupationToDelete);
-                        if(deleted > 0)
+                        if (deleted > 0)
+                        {
+                            #region Alert Logging 
+                            CTALogger logger = new CTALogger(_info);
+                            logger.LogRecord(((Operations)4).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                            #endregion
                             return Ok(String.Format("Occupation with ID: {0} deleted successfully", occupationToDelete.Id));
+                        }
                         else
                             return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while deleting the record.");
                     }
@@ -192,6 +237,10 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(((Operations)4).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
