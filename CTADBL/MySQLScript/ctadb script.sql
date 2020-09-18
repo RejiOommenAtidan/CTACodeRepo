@@ -930,7 +930,7 @@ BEGIN
 	select Id, sOccupationDesc from lstoccupation;
 	select Id, sDOBApproxName from lstDOBApprox;
 	select * from tblMadeb 
-	where nMadebTypeId = 1 and nFormNumber = nFormNumber;
+	where nMadebTypeId = 1 and nFormNumber = nFormNumber
 END$$
 
 DELIMITER ;
@@ -945,6 +945,7 @@ BEGIN
 	select Id, sMadebDisplayName from lstmadebtype;
     select ID, sAuthRegion from lstauthregion;
     select Id, sTypeIssued from lsttypeissued;
+	select 7000 as nFormNumber;
 END$$
 
 DELIMITER ;
