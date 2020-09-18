@@ -921,7 +921,7 @@ DROP procedure IF EXISTS `spGetNewGreenBookDataByFormNo`;
 
 DELIMITER $$
 USE `ctadb`$$
-CREATE PROCEDURE `spGetGreenBookByGBID` (IN nFormNumber int(11))
+CREATE PROCEDURE `spGetNewGreenBookDataByFormNo` (IN nFormNumber int(11))
 BEGIN
 	select ID, sAuthRegion from lstauthregion;
 	select ID, sCountry from lstcountry ;
@@ -930,7 +930,7 @@ BEGIN
 	select Id, sOccupationDesc from lstoccupation;
 	select Id, sDOBApproxName from lstDOBApprox;
 	select * from tblMadeb 
-	where nMadebTypeId = 1 and nFormNumber = nFormNumber
+	where nMadebTypeId = 1 and nFormNumber = nFormNumber;
 END$$
 
 DELIMITER ;
