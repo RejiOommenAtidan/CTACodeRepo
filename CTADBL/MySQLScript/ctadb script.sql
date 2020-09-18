@@ -740,7 +740,8 @@ CREATE TABLE `tblGreenBook` (
   `nAuthRegionID` int(11) NOT NULL,
   
   `sFirstName` varchar(255) DEFAULT NULL,
-  `sSecondName` varchar(255) DEFAULT NULL,
+  `sMiddleName` varchar(255) DEFAULT NULL,
+  `sLastName` varchar(255) DEFAULT NULL,
   `sFamilyName` varchar(255) DEFAULT NULL,
   `sGender` varchar(255) DEFAULT NULL,
   `dtDOB` date NOT NULL,
@@ -911,6 +912,25 @@ USE `ctadb`$$
 CREATE PROCEDURE `spGetGreenBookByGBID` (IN sGBIDIN VARCHAR(255))
 BEGIN
 	SELECT * FROM tblgreenbook where sGBID = sGBIDIN;
+END$$
+
+DELIMITER ;
+
+
+DROP procedure IF EXISTS `spGetNewGreenBookDataByFormNo`;
+
+DELIMITER $$
+USE `ctadb`$$
+CREATE PROCEDURE `spGetGreenBookByGBID` (IN nFormNumber int(11))
+BEGIN
+	select ID, sAuthRegion from lstauthregion;
+	select ID, sCountry from lstcountry ;
+	select Id, sProvince from lstProvince;
+	select Id, sQualification from lstQualification;
+	select Id, sOccupationDesc from lstoccupation;
+	select Id, sDOBApproxName from lstDOBApprox;
+	select * from tblMadeb 
+	where nMadebTypeId = 1 and nFormNumber = nFormNumber
 END$$
 
 DELIMITER ;
