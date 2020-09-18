@@ -724,7 +724,7 @@ CREATE TABLE `tblMadeb` (
   `sAlias` varchar(200) DEFAULT NULL,
   `sApprovedReject` varchar(200) DEFAULT NULL,
   `dtReject` date DEFAULT NULL,
-  `dtReturnEmail` date NOT NULL,
+  `dtReturnEmail` date DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime DEFAULT NULL,
@@ -740,7 +740,8 @@ CREATE TABLE `tblGreenBook` (
   `nAuthRegionID` int(11) NOT NULL,
   
   `sFirstName` varchar(255) DEFAULT NULL,
-  `sSecondName` varchar(255) DEFAULT NULL,
+  `sMiddleName` varchar(255) DEFAULT NULL,
+  `sLastName` varchar(255) DEFAULT NULL,
   `sFamilyName` varchar(255) DEFAULT NULL,
   `sGender` varchar(255) DEFAULT NULL,
   `dtDOB` date NOT NULL,
@@ -840,13 +841,13 @@ CREATE TABLE `tblGreenBookIssued` (
   `sRemarks` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id`),
   KEY `nGBId` (`nGBId`)
-) ENGINE=MyISAM AUTO_INCREMENT=176236 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=176236 DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE `tblGreenBookSerial` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `nBookNo` int(11) DEFAULT NULL,
-  `nGBId` varchar(255) DEFAULT NULL,
+  `sGBId` varchar(255) DEFAULT NULL,
   `Remarks` text NOT NULL,
   `dtDate` date DEFAULT NULL,
   `sName` varchar(200) DEFAULT NULL,
@@ -857,13 +858,33 @@ CREATE TABLE `tblGreenBookSerial` (
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime DEFAULT NULL,
   `nUpdatedBy` int(11) Not NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=44030 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`Id`),
+  KEY `sGBId` (`sGBId`)
+) ENGINE=InnoDB AUTO_INCREMENT=44030 DEFAULT CHARSET=latin1;
 
 
+CREATE TABLE `lnkGBNote` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sGBId` varchar(255) DEFAULT NULL,
+  `sNote` longtext DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  PRIMARY KEY (`Id`),
+  KEY `sGBId` (`sGBId`)
+) ENGINE=InnoDB AUTO_INCREMENT=27870 DEFAULT CHARSET=latin1;
 
 
-
+CREATE TABLE `lnkGBChildren` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sGBIDParent` varchar(255) DEFAULT NULL,
+  `Name` varchar(100) DEFAULT NULL,
+  `DOB` datetime DEFAULT NULL,
+  `Gender` varchar(1) DEFAULT NULL,
+  `ChildID` varchar(50) DEFAULT NULL,
+  `sGBIDChild` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `sGBIDParent` (`sGBIDParent`)
+) ENGINE=InnoDB AUTO_INCREMENT=109498 DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE `tblActionLogger` (
@@ -891,6 +912,41 @@ USE `ctadb`$$
 CREATE PROCEDURE `spGetGreenBookByGBID` (IN sGBIDIN VARCHAR(255))
 BEGIN
 	SELECT * FROM tblgreenbook where sGBID = sGBIDIN;
+END$$
+
+DELIMITER ;
+
+
+DROP procedure IF EXISTS `spGetNewGreenBookDataByFormNo`;
+
+DELIMITER $$
+USE `ctadb`$$
+CREATE PROCEDURE `spGetNewGreenBookDataByFormNo` (IN nFormNumber int(11))
+BEGIN
+	select ID, sAuthRegion from lstauthregion;
+	select ID, sCountry from lstcountry ;
+	select Id, sProvince from lstProvince;
+	select Id, sQualification from lstQualification;
+	select Id, sOccupationDesc from lstoccupation;
+	select Id, sDOBApproxName from lstDOBApprox;
+	select * from tblMadeb 
+	where nMadebTypeId = 1 and nFormNumber = nFormNumber
+END$$
+
+DELIMITER ;
+
+
+DROP procedure IF EXISTS `spGetNewMadebData`;
+
+DELIMITER $$
+USE `ctadb`$$
+CREATE PROCEDURE `spGetNewMadebData` ()
+BEGIN
+	select Id, sMadebDisplayName from lstmadebtype;
+    select ID, sAuthRegion from lstauthregion;
+    select Id, sTypeIssued from lsttypeissued;
+	select 7000 as nFormNumber;
+	-- select IF(IFNULL(nFormNumber,0), IFNULL(nFormNumber,0) + 1,7000) as nFormNumber from tblmadeb order by nFormNumber desc limit 0,1;
 END$$
 
 DELIMITER ;
