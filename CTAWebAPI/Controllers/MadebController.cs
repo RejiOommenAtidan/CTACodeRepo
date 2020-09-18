@@ -5,7 +5,7 @@ using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -390,7 +390,8 @@ namespace CTAWebAPI.Controllers
                     if (MadebExists(madebID))
                     {
                         Madeb fetchedMadeb = _madebRepository.GetMadebById(madebID);
-                        if (JsonConvert.SerializeObject(madeb) == JsonConvert.SerializeObject(fetchedMadeb))
+                        //if (JsonConvert.SerializeObject(madeb) == JsonConvert.SerializeObject(fetchedMadeb))
+                        if(madeb.Id == fetchedMadeb.Id)
                         {
                             _madebRepository.Delete(fetchedMadeb);
                             #region Alert Logging 
