@@ -98,7 +98,15 @@ namespace CTADBL.QueryBuilder
             // string
             if (propertyInfo.PropertyType == typeof(string))
             {
-                result = String.Format("'{0}' as {1},", property.Value, propertyInfo.Name);
+                if(property.Value == "NULL")
+                {
+                    result = String.Format("{0} as {1},", property.Value, propertyInfo.Name);
+                }
+                else
+                {
+                    result = String.Format("'{0}' as {1},", property.Value, propertyInfo.Name);
+                }
+                
             }
             // datetime
             else if (propertyInfo.PropertyType == typeof(DateTime?) || propertyInfo.PropertyType == typeof(DateTime))
@@ -158,7 +166,15 @@ namespace CTADBL.QueryBuilder
             // string
             if (propertyInfo.PropertyType == typeof(string))
             {
-                result = String.Format("{0}='{1}',", propertyInfo.Name, property.Value);
+                
+                if(property.Value == "NULL")
+                {
+                    result = String.Format("{0}={1},", propertyInfo.Name, property.Value);
+                }
+                else
+                {
+                    result = String.Format("{0}='{1}',", propertyInfo.Name, property.Value);
+                }
             }
             // datetime
             else if (propertyInfo.PropertyType == typeof(DateTime) || propertyInfo.PropertyType == typeof(DateTime?))

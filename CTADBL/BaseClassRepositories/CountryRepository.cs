@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using CTADBL.BaseClasses;
 using CTADBL.QueryBuilder;
@@ -98,7 +99,8 @@ namespace CTADBL.BaseClassRepositories
                 ID = (int)reader["ID"],
                 sCountryID = (string)reader["sCountryID"],
                 sCountry = (string)reader["sCountry"],
-                dtEntered = dtEntered,
+                //dtEntered = dtEntered,
+                dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
                 nEnteredBy = (int)reader["nEnteredBy"],
                 dtUpdated = dtUpdated,
                 nUpdatedBy = (int)reader["nUpdatedBy"]
