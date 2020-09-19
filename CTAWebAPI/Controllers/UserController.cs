@@ -21,10 +21,12 @@ namespace CTAWebAPI.Controllers
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly UserRepository _userRepository;
+        private readonly CTALogger _ctaLogger;
         public UserController(DBConnectionInfo info)
         {
             _info = info;
             _userRepository = new UserRepository(_info.sConnectionString);
+            _ctaLogger = new CTALogger(_info);
         }
         #endregion
 
@@ -39,27 +41,15 @@ namespace CTAWebAPI.Controllers
                 IEnumerable<User> allUsers = _userRepository.GetAllUsers();
 
                 #region Information Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 2);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels),1);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = currentMethodName + " Method Called";
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType,sModuleName,sEventName,sDescription);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
                 #endregion
 
                 return Ok(allUsers);
             }
             catch (Exception ex)
             {
-                #region Exception Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 2);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 3);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in "+currentMethodName;
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                #region Exception Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -76,28 +66,16 @@ namespace CTAWebAPI.Controllers
             {
                 User user = _userRepository.GetUserById(Id);
 
-                #region Information Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 2);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 1);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = currentMethodName + " Method Called";
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                #region Information Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
                 #endregion
 
                 return Ok(user);
             }
             catch (Exception ex)
             {
-                #region Exception Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 2);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 3);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                #region Exception Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -120,14 +98,8 @@ namespace CTAWebAPI.Controllers
                     user.dtUpdated = DateTime.Now;
                     _userRepository.Add(user);
 
-                    #region Information Logging 
-                    string sActionType = Enum.GetName(typeof(Operations), 1);
-                    string sModuleName = (GetType().Name).Replace("Controller", "");
-                    string sEventName = Enum.GetName(typeof(LogLevels), 1);
-                    string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                    string sDescription = currentMethodName + " Method Called";
-                    CTALogger logger = new CTALogger(_info);
-                    logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,user.nEnteredBy);
+                    #region Information Logging
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", user.nEnteredBy);
                     #endregion
 
                     return Ok(user);
@@ -142,14 +114,8 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                #region Exception Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 1);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 3);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,user.nEnteredBy);
+                #region Exception Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, user.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -186,13 +152,7 @@ namespace CTAWebAPI.Controllers
                         _userRepository.Update(user);
 
                         #region Alert Logging 
-                        string sActionType = Enum.GetName(typeof(Operations), 3);
-                        string sModuleName = (GetType().Name).Replace("Controller", "");
-                        string sEventName = Enum.GetName(typeof(LogLevels), 2);
-                        string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                        string sDescription = currentMethodName + " Method Called";
-                        CTALogger logger = new CTALogger(_info);
-                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,user.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", user.nEnteredBy);
                         #endregion
 
                         return Ok("User with ID: " + Id + " updated Successfully");
@@ -212,14 +172,8 @@ namespace CTAWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                #region Exception Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 3);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 3);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,user.nEnteredBy);
+                #region Exception Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, user.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -244,14 +198,8 @@ namespace CTAWebAPI.Controllers
                         User fetchedUser = _userRepository.GetUserById(userID);
                         _userRepository.Delete(fetchedUser);
 
-                        #region Alert Logging 
-                        string sActionType = Enum.GetName(typeof(Operations), 4);
-                        string sModuleName = (GetType().Name).Replace("Controller", "");
-                        string sEventName = Enum.GetName(typeof(LogLevels), 2);
-                        string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                        string sDescription = currentMethodName + " Method Called";
-                        CTALogger logger = new CTALogger(_info);
-                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,user.nEnteredBy);
+                        #region Alert Logging
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", user.nEnteredBy);
                         #endregion
 
                         return Ok("User with ID: " + userID + " removed Successfully");
@@ -269,13 +217,7 @@ namespace CTAWebAPI.Controllers
             catch (Exception ex)
             {
                 #region Exception Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 4);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 3);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,user.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, user.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
