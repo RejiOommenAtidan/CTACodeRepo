@@ -27,7 +27,8 @@ export const EditDialog = (props) => {
   //debugger
   const [authRegion, setAuthRegion] = useState(props.authRegionObj.authRegion);
   const [countryID, setCountryID] = useState(props.authRegionObj.countryID);
-  const ids = props.dataAPI.map((data) => data.sCountryID);
+  
+  const ids = props.countryList.map((data) => data.sCountryID);
   let value ="";
   ids.forEach(element => {
     if(element === countryID){
@@ -35,7 +36,7 @@ export const EditDialog = (props) => {
     }
   });
   const children =  () => { 
-    return (ids.filter((data, index, array) => (array.indexOf(data) == index)).map((filteredData) =>  (<option value={filteredData}>{filteredData}</option>)))};
+    return (props.countryList.map((country) =>  (<option value={country.sCountryID}>{country.sCountry}</option>)))};
   const opts = children();
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">

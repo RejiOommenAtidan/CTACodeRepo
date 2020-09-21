@@ -119,7 +119,7 @@ export default function EnhancedTable() {
   // const [loadingProp, setloadingProp] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
-
+  const [countryList, setCountryList] = useState([]);
 
   //VAR
   const [countryID, setCountryID] = React.useState('');
@@ -457,8 +457,31 @@ export default function EnhancedTable() {
       .then(release => {
         //console.log(release); => udefined
       });
+      axios.get(`/Country/GetCountries`)
+      .then(resp => {
+        if (resp.status === 200) {
+          console.log(resp.data);
+          setCountryList(resp.data)
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   }, []);
-
+  
+  
   return (
 
       
@@ -491,6 +514,7 @@ export default function EnhancedTable() {
             {addModal && <AddDialog
               addModal={addModal}
               dataAPI = {dataAPI}
+              countryList = {countryList}
               classes={classes}
               handleAddClickClose={handleAddClickClose}
               addAPICall={addAPICall}
@@ -499,6 +523,7 @@ export default function EnhancedTable() {
               editModal={editModal}
               dataAPI = {dataAPI}
               authRegionObj={authRegionObj}
+              countryList = {countryList}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
