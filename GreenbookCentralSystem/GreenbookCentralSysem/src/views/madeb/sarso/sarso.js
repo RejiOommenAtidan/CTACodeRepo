@@ -104,8 +104,8 @@ const getMuiTheme = () => createMuiTheme({
   },
   }
 })
-const useStyles = makeStyles(() => ({
-  /*root: {
+const useStyles = makeStyles((theme) => ({
+  root: {
     backgroundColor: theme.palette.background.dark,
     height: '100%',
     paddingBottom: theme.spacing(3),
@@ -149,7 +149,7 @@ const useStyles = makeStyles(() => ({
       main: '#11cb5f',
     },
   }
-*/
+
 }));
 
 export default function EnhancedTable() {
@@ -160,7 +160,7 @@ export default function EnhancedTable() {
   // const [loadingProp, setloadingProp] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
-
+  const [selectData, setSelectData] = useState([]);
 
   //VAR
   const [id, setId] = React.useState('');
@@ -303,7 +303,7 @@ export default function EnhancedTable() {
       },
     },
     {
-      field: "madeb.nType",
+      field: "sTypeIssued",
       title: "Issue Action",
       
       cellStyle: {
@@ -352,7 +352,8 @@ export default function EnhancedTable() {
    
   ];
 
-  const editClick = (tableRowArray) => {
+  const editClick = (tableRowArray) => { 
+
   setId(tableRowArray['madeb']['id']);
   setFormNumber(tableRowArray['madeb']['nFormNumber']);
   setAuthority(tableRowArray['sAuthRegion']);
@@ -362,34 +363,34 @@ export default function EnhancedTable() {
   setSaney(tableRowArray['madeb']['nSaneyFormNo']);
   setDocument(tableRowArray['madeb']['sDocumentAttached']);
   setIssueActionDate(tableRowArray['madeb']['dtIssueAction']);
-  setIssueAction(tableRowArray['madeb']['nType']);
+  setIssueAction(tableRowArray['madeb']['nIssuedOrNot']);
   setReturnDate(tableRowArray['madeb']['dtReturnEmail']);
   
   setSarsoObj({
     id: tableRowArray['madeb']['id'],
     nFormNumber: tableRowArray['madeb']['nFormNumber'],
     dtReceived: tableRowArray['madeb']['dtReceived'],
-    nAuthRegionID: tableRowArray['sAuthRegion'],
+    nAuthRegionID: tableRowArray['madeb']['nAuthRegionID'],
     sName: tableRowArray['madeb']['sName'],
     sFathersName    :tableRowArray['madeb']['sFathersName'],
     nSaneyFormNo   :tableRowArray['madeb']['nSaneyFormNo'],
     sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],
     dtIssueAction  :tableRowArray['madeb']['dtIssueAction'],
-    nType  :tableRowArray['madeb']['nType'],
+    nIssuedOrNot  :tableRowArray['madeb']['nIssuedOrNot'],
     dtReturnEmail  :tableRowArray['madeb']['dtReturnEmail']
     });
     //console.log(tableRowArray);
     setEditModal(true);
   }
 
-  const editAPICall = (sarsoObj) => {
+  const editAPICall = (madeb) => {
     // let CountryID = countryPK;
     // let countryToUpdate = {
     //   ID : countryPK,
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Madeb/EditMadeb/ID=` + id, sarsoObj/*countryToUpdate*/)
+    axios.post(`/Madeb/EditMadeb/ID=` + id, madeb/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
@@ -450,15 +451,40 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (sarsoObj) => {
 
-    // let countryToAdd = {
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
-    // };
-    setAddModal(false);
-    /*
-    axios.post(`/Country/AddCountry/`, countryObj)
+
+  const selectDatafunction = () =>{
+    axios.get(`Madeb/GetNewEmptyMadeb`)
+    .then(resp => {
+      if (resp.status === 200) {
+        setSelectData(resp.data);
+        
+       // setdataAPI(resp.data)
+      }
+    })
+    .catch(error => {
+      if (error.response) {
+        console.error(error.response.data);
+        console.error(error.response.status);
+        console.error(error.response.headers);
+      } else if (error.request) {
+        console.warn(error.request);
+      } else {
+        console.error('Error', error.message);
+      }
+      console.log(error.config);
+    })
+    .then(release => {
+      //console.log(release); => udefined
+    });
+  }
+  const addAPICall = (madeb) => {
+
+   
+    console.log(madeb);
+ 
+    
+    axios.post(`/Madeb/AddMadeb/`, madeb)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -502,7 +528,7 @@ export default function EnhancedTable() {
       })
       .then(release => {
         //console.log(release); => udefined
-      });*/
+      });
   };
 
 
@@ -519,7 +545,8 @@ export default function EnhancedTable() {
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
-          setdataAPI(resp.data)
+          setdataAPI(resp.data);
+          selectDatafunction()
         }
       })
       .catch(error => {
@@ -582,7 +609,7 @@ export default function EnhancedTable() {
         icon: AddBox,
         tooltip: 'Add Country',
         isFreeAction: true,
-        onClick: (event) => setAddModal(true)
+        onClick: () => setAddModal(true)
       },
       {
         icon: FilterList,
@@ -595,12 +622,14 @@ export default function EnhancedTable() {
             {addModal && <AddDialog
               addModal={addModal}
               classes={classes}
+              selectData={selectData}
               handleAddClickClose={handleAddClickClose}
               addAPICall={addAPICall}
             />}
             {editModal && <EditDialog
               editModal={editModal}
               sarsoObj={sarsoObj}
+              selectData={selectData}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}

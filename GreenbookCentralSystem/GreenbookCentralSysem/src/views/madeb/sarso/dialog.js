@@ -19,33 +19,99 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
-
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
 export const EditDialog = (props) => {
   //debugger
- 
+  const [snackbarOpen,setSnackbarOpen]=React.useState(false);
+  const snackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarOpen(false);
+  };
+  const handleSubmit = () =>{
+    setMessage("Record Successfully Edited");
+    setAlertType('success');
+    setSnackbarOpen(true)
+  }
+  const [message,setMessage]=React.useState('');
+  const [alertType,setAlertType]=React.useState('');
+
+  const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
+  const [typeIssuedData,settypeIssuedData]= React.useState(props.selectData['typeIssued']);
+
+
+
   const [id, setId] = React.useState(props.sarsoObj.id);
-  const [formNumber, setFormNumber] = React.useState(props.sarsoObj.formNumber);
-  const [authority, setAuthority] = React.useState(props.sarsoObj.authority);
-  const [receivedDate, setReceivedDate] = React.useState(props.sarsoObj.receivedDate);
-  const [name, setName] = React.useState(props.sarsoObj.name);
-  const [fname, setFname] = React.useState(props.sarsoObj.fname);
-  const [saney, setSaney] = React.useState(props.sarsoObj.saney);
-  const [documents, setDocument] = React.useState(props.sarsoObj.documents);
-  const [issueActionDate, setIssueActionDate] = React.useState(props.sarsoObj.issueActionDate);
-  const [issueAction, setIssueAction] = React.useState(props.sarsoObj.issueAction);
-  const [returnDate, setReturnDate] = React.useState(props.sarsoObj.returnDate);
-  console.log(props.sarsoObj);
+  const [formNumber, setFormNumber] = React.useState(props.sarsoObj.nFormNumber);
+  const [authRegionID, setAuthorityId] = React.useState(props.sarsoObj.nAuthRegionID);
+  const [receivedDate, setReceivedDate] = React.useState(props.sarsoObj.dtReceived.split('T')[0]);
+  const [name, setName] = React.useState(props.sarsoObj.sName);
+  const [fname, setFname] = React.useState(props.sarsoObj.sFathersName);
+  const [saney, setSaney] = React.useState(props.sarsoObj.nSaneyFormNo);
+  const [madebType,setMadebType]= React.useState(1);
+  const [documents, setDocument] = React.useState(props.sarsoObj.sDocumentAttached);
+  const [issueActionDate, setIssueActionDate] = React.useState(props.sarsoObj.dtIssueAction.split('T')[0]);
+  const [issueAction, setIssueAction] = React.useState(props.sarsoObj.nIssuedOrNot);
+  const [returnDate, setReturnDate] = React.useState(props.sarsoObj.dtReturnEmail.split('T')[0]);
+  const madeb = {
+      id:id,
+    nFormNumber: formNumber, 
+    nMadebTypeID: madebType,
+    sName: name,
+    sFathersName:fname,
+    nAuthRegionID:authRegionID , 
+    dtReceived:receivedDate,  
+    dtIssueAction:issueActionDate,
+    nIssuedOrNot:issueAction,
+    sDocumentAttached:documents,
+    nSaneyFormNo:saney,
+    dtReturnEmail:returnDate
+
+
+ }
+ const childrenAuthRegion =  () => { 
+    return (authorityData.map((data) => (<option value={data.id}>{data.sAuthRegion}</option> )  ))};  
+    const optsAuthRegion = childrenAuthRegion();
+    let valueAuthRegion =1;
+   // console.log(authorityData);
+    authorityData.forEach(element => {
+    if(element.id === authRegionID){
+        valueAuthRegion = element.id;
+    }
+    
+  });
+
+    const childrenTypeIssued =  () => { 
+      return (typeIssuedData.map((data) =>  (<option value={data.id}>{data.sTypeIssued}</option>)))};
+    const optsTypeIssued = childrenTypeIssued();
+    let valueTypeIssued =1;
+    console.log(issueAction);
+    typeIssuedData.forEach(element => {
+     if(element.id === issueAction){
+        valueTypeIssued = element.id;
+     }
+     
+   });
+
   return (
       
       
-      
+
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Sarso Madeb</DialogTitle>
+      <form onSubmit={handleSubmit}>
       <DialogContent>
         <DialogContentText>
         <div>
@@ -60,7 +126,8 @@ export const EditDialog = (props) => {
                                             InputProps={{
                                                 readOnly: true,
                                             }}
-                                            value='43131'
+                                            value={formNumber}
+                                            onChange={(e) => { setFormNumber(e.target.value) }}
 
                                         />
                                     </FormControl>
@@ -71,11 +138,12 @@ export const EditDialog = (props) => {
                                             id="date"
                                             label="Received Date"
                                             type="date"
-                                            defaultValue="2020-08-27"
+                                            defaultValue={receivedDate}
                                             className={props.classes.textField}
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+                                            onChange={(e) => { setReceivedDate(e.target.value) }}
                                         />
                                     </FormControl>
                                 </Grid>
@@ -86,22 +154,12 @@ export const EditDialog = (props) => {
                                         <Select
                                             labelId="Auth-label"
                                             id="authority"
-                                            //value={}
-                                            // onChange={handleChange}
+                                            value={valueAuthRegion}
+                                            onChange={(e) => { setAuthorityId(e.target.value) }}
                                             label="Authority"
+                                            children={optsAuthRegion}
                                         >
-                                            <MenuItem value="">
-                                                <em>None</em>
-                                            </MenuItem>
-                                            <MenuItem value={1}>Mundgod</MenuItem>
-                                            <MenuItem value={2}>Shimla</MenuItem>
-                                            <MenuItem value={3}>Paris</MenuItem>
-                                            <MenuItem value={4}>Dekyiling</MenuItem>
-                                            <MenuItem value={5}>BTS, Bir</MenuItem>
-                                            <MenuItem value={6}>Leh</MenuItem>
-                                            <MenuItem value={7}>Boudha</MenuItem>
-                                            <MenuItem value={8}>Jorpati</MenuItem>
-                                            <MenuItem value={9}>Boston</MenuItem>
+                                           
                                         </Select>
                                     </FormControl>
                                 </Grid>
@@ -111,7 +169,9 @@ export const EditDialog = (props) => {
                                         <TextField
                                             id="name"
                                             label="Name"
-                                        //value='Aayush Pandya'
+                                            required={true}
+                                        value={name}
+                                        onChange={(e) => { setName(e.target.value) }}
                                         />
                                     </FormControl>
                                 </Grid>
@@ -121,7 +181,8 @@ export const EditDialog = (props) => {
                                         <TextField
                                             id="fname"
                                             label="Father's Name"
-                                        //value='Aayush Pandya'
+                                            value={fname}
+                                            onChange={(e) => { setFname(e.target.value) }}
                                         />
                                     </FormControl>
                                 </Grid>
@@ -132,7 +193,8 @@ export const EditDialog = (props) => {
                                             id="sfn"
                                             label="Saney Form No"
                                             type='number'
-                                        //value='Aayush Pandya'
+                                            value={saney}
+                                            onChange={(e) => { setSaney(e.target.value) }}
                                         />
                                     </FormControl>
                                 </Grid>
@@ -142,7 +204,8 @@ export const EditDialog = (props) => {
                                         <TextField
                                             id="da"
                                             label="Document attached"
-                                        //value='Aayush Pandya'
+                                            value={documents}
+                                            onChange={(e) => { setDocument(e.target.value) }}
                                         />
                                     </FormControl>
                                 </Grid>
@@ -152,11 +215,13 @@ export const EditDialog = (props) => {
                                             id="date"
                                             label="Issue Action Date"
                                             type="date"
-                                            defaultValue="2020-08-27"
+                                            defaultValue={issueActionDate}
                                             className={props.classes.textField}
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+                                            
+                                            onChange={(e) => { setIssueActionDate(e.target.value) }}
                                         />
                                     </FormControl>
                                 </Grid>
@@ -166,18 +231,12 @@ export const EditDialog = (props) => {
                                         <Select
                                             labelId="issue-label"
                                             id="authority"
-                                            //value={}
-                                            // onChange={handleChange}
+                                            value={valueTypeIssued}
+                                             onChange={(e) => { setIssueAction(e.target.value) }}
                                             label="Issue Action"
+                                            children={optsTypeIssued}
                                         >
-                                            <MenuItem value="">
-                                                <em>None</em>
-                                            </MenuItem>
-                                            <MenuItem value={1}>On Progress</MenuItem>
-                                            <MenuItem value={2}>Issued</MenuItem>
-                                            <MenuItem value={3}>Rejected</MenuItem>
-                                            <MenuItem value={4}>Double</MenuItem>
-                                            <MenuItem value={5}>Cancel</MenuItem>
+                                          
 
                                         </Select>
                                     </FormControl>
@@ -188,11 +247,13 @@ export const EditDialog = (props) => {
                                             id="date"
                                             label="Return Date"
                                             type="date"
-                                            defaultValue="2020-08-27"
+                                            defaultValue={returnDate}
                                             className={props.classes.textField}
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+                                            
+                                            onChange={(e) => { setReturnDate(e.target.value) }}
                                         />
                                     </FormControl>
                                 </Grid>
@@ -202,45 +263,71 @@ export const EditDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-      {/*  <Button onClick={() => props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })} color="primary">Save</Button> */}
+
+       {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
+     
+        <Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
+        <Alert  onClose={snackbarClose} severity={alertType}  >
+         {message}
+        </Alert>
+      </Snackbar>
+
+        <Button onClick={() => props.editAPICall(madeb)} color="primary">Save</Button> 
       </DialogActions>
+      </form>
     </Dialog>
 );
 
 
 }
 
-export const DeleteDialog = (props) => {
-  console.log("Delete Dialog");
-  return (
-    <Dialog
-      open={props.deleteModal}
-      TransitionComponent={Transition}
-      keepMounted
-    >
-      <DialogTitle id="alert-dialog-slide-title">Confirm Operation</DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-slide-description">
-          Are you sure you want to delete country {props.countryName} ?
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions >
-        <Button onClick={props.handleClose} color="default">
-          No
-        </Button>
-        <Button onClick={props.deleteAPICall} color="secondary">
-          Yes
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
 
-}
 
 export const AddDialog = (props) => {
-  console.log("Add Dialog");
-  const [countryId, setCountryId] = useState('');
-  const [countryName, setCountryName] = useState('');
+  console.log(props.selectData);
+  const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
+  const [typeIssuedData,settypeIssuedData]= React.useState(props.selectData['typeIssued']);
+
+  const [formNumber, setFormNumber] = React.useState(props.selectData['nFormNumber']);
+  const [id, setId] = React.useState(0);
+  const [madebType,setMadebType]= React.useState(1);
+  const [authority, setAuthority] = React.useState(0);
+  const [receivedDate, setReceivedDate] = React.useState('');
+  const [name, setName] = React.useState('');
+  const [fname, setFname] = React.useState('');
+  const [saney, setSaney] = React.useState(0);
+  const [documents, setDocument] = React.useState('');
+  const [issueActionDate, setIssueActionDate] = React.useState('');
+  const [issueAction, setIssueAction] = React.useState(0);
+  const [returnDate, setReturnDate] = React.useState('');
+
+  const madeb = {
+     nFormNumber: formNumber, 
+     nMadebTypeID: madebType,
+     sName: name,
+     sFathersName:fname,
+     nAuthRegionID:authority , 
+     dtReceived:receivedDate,  
+     dtIssueAction:issueActionDate,
+     nIssuedOrNot:issueAction,
+     sDocumentAttached:documents,
+     nSaneyFormNo:saney,
+     dtReturnEmail:returnDate
+
+
+  }
+  
+ // const idsAuthRegion = authorityData.map((data) => data.sAuthRegion);
+  //const childrenAuthRegion =  () => { 
+   // return (idsAuthRegion.filter((data, index, array) => (array.indexOf(data) == index)).map((filteredData) =>  (<option value={filteredData}>{filteredData}</option>)))};
+  const childrenAuthRegion =  () => { 
+  return (authorityData.map((data) => (<option value={data.id}>{data.sAuthRegion}</option> )  ))};  
+   const optsAuthRegion = childrenAuthRegion();
+
+  const childrenTypeIssued =  () => { 
+    return (typeIssuedData.map((data) =>  (<option value={data.id}>{data.sTypeIssued}</option>)))};
+  const optsTypeIssued = childrenTypeIssued();
+ 
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Madeb Entry Form For Fresh Issue</DialogTitle>
@@ -256,9 +343,10 @@ export const AddDialog = (props) => {
                                            label="Form Number"
                                            type="number"
                                            InputProps={{
-                                               readOnly: true,
+                                               readOnly: false,
                                            }}
-                                           value='43131'
+                                           value={formNumber}
+                                           onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
 
                                        />
                                    </FormControl>
@@ -269,7 +357,7 @@ export const AddDialog = (props) => {
                                            id="date"
                                            label="Received Date"
                                            type="date"
-                                           defaultValue="2020-08-27"
+                                           onChange={(e) => { setReceivedDate(e.target.value) }}
                                            className={props.classes.textField}
                                            InputLabelProps={{
                                                shrink: true,
@@ -287,19 +375,9 @@ export const AddDialog = (props) => {
                                            //value={}
                                            // onChange={handleChange}
                                            label="Authority"
+                                           children = {optsAuthRegion}
+                                           onChange={(e) => { setAuthority(e.target.value) }}
                                        >
-                                           <MenuItem value="">
-                                               <em>None</em>
-                                           </MenuItem>
-                                           <MenuItem value={1}>Mundgod</MenuItem>
-                                           <MenuItem value={2}>Shimla</MenuItem>
-                                           <MenuItem value={3}>Paris</MenuItem>
-                                           <MenuItem value={4}>Dekyiling</MenuItem>
-                                           <MenuItem value={5}>BTS, Bir</MenuItem>
-                                           <MenuItem value={6}>Leh</MenuItem>
-                                           <MenuItem value={7}>Boudha</MenuItem>
-                                           <MenuItem value={8}>Jorpati</MenuItem>
-                                           <MenuItem value={9}>Boston</MenuItem>
                                        </Select>
                                    </FormControl>
                                </Grid>
@@ -310,6 +388,7 @@ export const AddDialog = (props) => {
                                            id="name"
                                            label="Name"
                                        //value='Aayush Pandya'
+                                       onChange={(e) => { setName(e.target.value) }}
                                        />
                                    </FormControl>
                                </Grid>
@@ -320,6 +399,7 @@ export const AddDialog = (props) => {
                                            id="fname"
                                            label="Father's Name"
                                        //value='Aayush Pandya'
+                                       onChange={(e) => { setFname(e.target.value) }}
                                        />
                                    </FormControl>
                                </Grid>
@@ -330,6 +410,7 @@ export const AddDialog = (props) => {
                                            id="sfn"
                                            label="Saney Form No"
                                            type='number'
+                                           onChange={(e) => { setSaney(parseInt(e.target.value)) }}
                                        //value='Aayush Pandya'
                                        />
                                    </FormControl>
@@ -341,6 +422,7 @@ export const AddDialog = (props) => {
                                            id="da"
                                            label="Document attached"
                                        //value='Aayush Pandya'
+                                       onChange={(e) => { setDocument(e.target.value) }}
                                        />
                                    </FormControl>
                                </Grid>
@@ -350,7 +432,7 @@ export const AddDialog = (props) => {
                                            id="date"
                                            label="Issue Action Date"
                                            type="date"
-                                           defaultValue="2020-08-27"
+                                           onChange={(e) => { setIssueActionDate(e.target.value) }}
                                            className={props.classes.textField}
                                            InputLabelProps={{
                                                shrink: true,
@@ -365,17 +447,11 @@ export const AddDialog = (props) => {
                                            labelId="issue-label"
                                            id="authority"
                                            //value={}
-                                           // onChange={handleChange}
+                                           onChange={(e) => { setIssueAction(e.target.value) }}
                                            label="Issue Action"
+                                           children={optsTypeIssued}
                                        >
-                                           <MenuItem value="">
-                                               <em>None</em>
-                                           </MenuItem>
-                                           <MenuItem value={1}>On Progress</MenuItem>
-                                           <MenuItem value={2}>Issued</MenuItem>
-                                           <MenuItem value={3}>Rejected</MenuItem>
-                                           <MenuItem value={4}>Double</MenuItem>
-                                           <MenuItem value={5}>Cancel</MenuItem>
+                                          
 
                                        </Select>
                                    </FormControl>
@@ -386,7 +462,7 @@ export const AddDialog = (props) => {
                                            id="date"
                                            label="Return Date"
                                            type="date"
-                                           defaultValue="2020-08-27"
+                                           onChange={(e) => { setReturnDate(e.target.value) }}
                                            className={props.classes.textField}
                                            InputLabelProps={{
                                                shrink: true,
@@ -401,7 +477,8 @@ export const AddDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.addAPICall({ sCountryID: countryId, sCountry: countryName })} color="primary">Save</Button>
+        
+       <Button onClick={() => props.addAPICall(madeb)} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );
