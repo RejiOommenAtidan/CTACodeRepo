@@ -14,9 +14,8 @@ namespace CTADBL.ViewModels
 	     * select 7000 as nFormNumber;
 	     * 
          */
-        public List<AuthRegion> authRegions { get; set; }
         public List<MadebType> madebTypes { get; set; }
-
+        public List<AuthRegion> authRegions { get; set; }
         public List<TypeIssued> typeIssued { get; set; }
         public int nFormNumber { get; set; }
 

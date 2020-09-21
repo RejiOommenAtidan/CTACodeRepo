@@ -12,6 +12,8 @@ namespace CTADBL.BaseClasses
     {
         private int _id;
         private string _madebType;
+        private string _sMadebDisplayName;
+        private string _sMadebDisplayKey;
 
         [Key]
         public int Id
@@ -35,6 +37,30 @@ namespace CTADBL.BaseClasses
             set
             {
                 _madebType = value;
+            }
+        }
+
+        public string sMadebDisplayName
+        {
+            get
+            {
+                return _sMadebDisplayName;
+            }
+            set
+            {
+                _sMadebDisplayName = value;
+            }
+        }
+
+        public string sMadebDisplayKey
+        {
+            get
+            {
+                return _sMadebDisplayKey;
+            }
+            set
+            {
+                _sMadebDisplayKey = value;
             }
         }
     }
