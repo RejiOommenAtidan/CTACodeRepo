@@ -9,5 +9,6 @@ namespace CTADBL.ViewModels
     {
         public Madeb madeb { get; set; }
         public string sAuthRegion { get; set; }
+        public string sTypeIssued { get; set; }
     }
 }

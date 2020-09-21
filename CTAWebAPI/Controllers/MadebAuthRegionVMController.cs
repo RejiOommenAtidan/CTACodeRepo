@@ -209,14 +209,58 @@ namespace CTAWebAPI.Controllers
             #endregion
         }
 
-        [HttpGet("GetMadebByAuthRegion/authRegion={authRegion}")]
+        [HttpGet("GetMadebsByAuthRegion/authRegion={authRegion}")]
         [Route("[action]")]
-        public IActionResult GetMadebByAuthRegion(int authRegion)
+        public IActionResult GetMadebsByAuthRegion(int authRegion)
         {
             #region Get Madeb
             try
             {
-                IEnumerable <MadebAuthRegionVM> madebs = _madebAuthRegionVMRepository.GetMadebByAuthRegion(authRegion);
+                IEnumerable <MadebAuthRegionVM> madebs = _madebAuthRegionVMRepository.GetMadebsByAuthRegion(authRegion);
+                if (madebs.Count() > 0)
+                {
+                    #region Information Logging 
+                    string sActionType = Enum.GetName(typeof(Operations), 2);
+                    string sModuleName = (GetType().Name).Replace("Controller", "");
+                    string sEventName = Enum.GetName(typeof(LogLevels), 1);
+                    string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                    string sDescription = currentMethodName + " Method Called";
+                    CTALogger logger = new CTALogger(_info);
+                    logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                    #endregion
+
+                    return Ok(madebs);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 2);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 3);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = "Exception in " + currentMethodName;
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+
+        [HttpGet("GetMadebsByIssueAction/issueAction={issueAction}")]
+        [Route("[action]")]
+        public IActionResult GetMadebsByIssueAction(int issueAction)
+        {
+            #region Get Madeb
+            try
+            {
+                IEnumerable<MadebAuthRegionVM> madebs = _madebAuthRegionVMRepository.GetMadebsByIssueAction(issueAction);
                 if (madebs.Count() > 0)
                 {
                     #region Information Logging 
