@@ -37,8 +37,8 @@ namespace CTAWebAPI.Controllers
             #region Get Users using SP call
             try
             {
-                List<MadebNewRecordVM> madebNewRecord = _madebNewRecordVMRepository.GetNewEmptyMadeb();
-                if(madebNewRecord.Count > 0)
+                MadebNewRecordVM madebNewRecord = _madebNewRecordVMRepository.GetNewEmptyMadeb();
+                if(madebNewRecord != null)
                 {
                     return Ok(madebNewRecord);
                 }
