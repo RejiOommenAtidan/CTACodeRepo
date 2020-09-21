@@ -1,4 +1,4 @@
-
+// hi
 import React, { useEffect, useState } from 'react';
 //import { useNavigate } from 'react-router-dom';
 import {
@@ -8,7 +8,9 @@ import {
   Button,
   Typography,
   FormControl,
-  TextField
+  TextField,
+  Breadcrumbs,
+  Link,
   
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
@@ -30,12 +32,14 @@ import Chip from '@material-ui/core/Chip';
 
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-import EmailIcon from '@material-ui/icons/Email';
 
 // Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
-import MaterialTable, { MTableToolbar }  from 'material-table';
+
 import { forwardRef } from 'react';
+
+//import Test2 from './test2';
+import MaterialTable, { MTableToolbar }  from 'material-table';
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -53,25 +57,26 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
+
 const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-};
+    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+    DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+    PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+    ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+    Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+    SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+    ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+  };
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -81,24 +86,20 @@ const getMuiTheme = () => createMuiTheme({
     MUIDataTableHeadCell: {
       root:{
         color:'blue',
-        fontSize:15
+        fontSize:20
       }
     },
     MUIDataTableBodyCell: {
       root: {
         // backgroundColor: "#FFF",
         // width: "50px"
-        
       }
 
     },
     MuiTableCell: {
       root: {
           padding: '0px',
-          paddingLeft: '10px',
-          
-          paddingRight: '10px',
-
+          paddingLeft: '30px',
          
       }
   },
@@ -163,23 +164,16 @@ export default function EnhancedTable() {
 
 
   //VAR
-  const [id, setId] = React.useState('');
-  const [formNumber, setFormNumber] = React.useState(0);
-  const [authority, setAuthority] = React.useState(0);
-  const [receivedDate, setReceivedDate] = React.useState('');
-  const [name, setName] = React.useState('');
-  const [fname, setFname] = React.useState('');
-  const [saney, setSaney] = React.useState(0);
-  const [documents, setDocument] = React.useState('');
-  const [issueActionDate, setIssueActionDate] = React.useState('');
-  const [issueAction, setIssueAction] = React.useState(0);
-  const [returnDate, setReturnDate] = React.useState('');
-  const [sarsoObj, setSarsoObj] = useState({});
+  const [countryID, setCountryID] = React.useState('');
+  const [countryName, setCountryName] = React.useState('');
+  const [countryPK, setCountryPK] = React.useState(0);
+  const [countryObj, setCountryObj] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
 
   const [filtering, setFiltering] = React.useState(false);
+
   const handleEditClickOpen = () => {
     setEditModal(true);
   };
@@ -193,7 +187,7 @@ export default function EnhancedTable() {
     setAddModal(false);
   };
 
-  const options = {
+  /*const options = {
     textLabels: {
       body: {
         noMatch: "Loading..."
@@ -217,184 +211,99 @@ export default function EnhancedTable() {
       console.log("Action:", action, "\ntableState:", tableState, "Data Changed:", dataChanged);
       
     }
-  };
+  };*/
 
   const columns = [
     {
-      field: "madeb.id",
+      field: "id",
       title: "Sr No.",
       hidden:true,
       cellStyle: {
         padding:'5px',
-        
+        paddingLeft:'10px',
+      
+      },
+      export: true
+   
+    },
+    {
+      field: "sCountryID",
+      title: "Country ID",
+      cellStyle: {
+        padding:'5px',
+        paddingLeft:'10px',
+      
+        borderLeft:'0'
       },
     
     },
     {
-      field: "madeb.nFormNumber",
-      title: "Form Number",
-      
-      cellStyle: {
-        padding:'5px',
-        
-      },
-    },
-    {
-      field: "madeb.dtReceived",
-      title: "Received Date",
-      
-      cellStyle: {
-        padding:'5px',
-        
-      },
-    },
-    {
-      field: "sAuthRegion",
-      title: "Authority",
-     
-      cellStyle: {
-        padding:'5px',
-        
-      },
-    },
-    {
-      field: "madeb.sName",
-      title: "Name",
-     
-      cellStyle: {
-        padding:'5px',
-        
-      },
-    },
-    {
-      field: "madeb.sFathersName",
-      title: "Father's Name",
-      
-      cellStyle: {
-        padding:'5px',
-        
-      },
-    },
-    {
-      field: "madeb.nSaneyFormNo",
-      title: "Saney Form No",
-      
-      cellStyle: {
-        padding:'5px',
-        
-      },
-    },
-    {
-      field: "madeb.sDocumentAttached",
-      title: "Document attached",
-      
-      cellStyle: {
-        padding:'5px',
-        
-      },
-    },
-    {
-      field: "madeb.dtIssueAction",
-      title: "Issue Action Date",
-      
-      cellStyle: {
-        padding:'5px',
-        
-      },
-    },
-    {
-      field: "madeb.nType",
-      title: "Issue Action",
-      
-      cellStyle: {
-        padding:'5px',
-        
-      },
-    },
-    {
-      field: "madeb.dtReturnEmail",
-      title: "Return Date",
-      
-      cellStyle: {
-        padding:'5px',
-        
-      },
-          },
-    {
-      field: "email",
-      title: "Email",
-      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => { editClick(rowData) }}  style={{padding:'0px'}}
-    >
-      <EmailIcon/>
-      </IconButton> ,
-      
-      cellStyle: {
-        padding:'5px',
-        
-      },
-    },
-    {
-      field: "edit",
-      title: "Edit",
-      sort: false,
-      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => {editClick(rowData) }}  style={{padding:'0px'}}
-    >
-      <EditOutlinedIcon/>
-      </IconButton> ,
-      
+      field: "sCountry",
+      title: "Country",
       cellStyle: {
         padding:'5px',
         
       },
     },
    
+    {
+      field:'edit',
+      title:'Edit',
+      filtering: false,
+      export: false,
+      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
+      onClick={() => { editClick(rowData) }}  style={{padding:'0px'}}
+    >
+      <EditOutlinedIcon/>
+      </IconButton> ,
+     cellStyle: {
+      padding:'5px', 
+      borderRight:'0',
+      width:'10%'
+    },
+   
+    },
+    {
+      field: "verifiedby",
+      title: "Verified By",
+      export: true,
+      hidden:true,
+    },
+    {
+      field: "reverifiedby",
+      title: "Re-verified By",
+      export: true,
+      hidden:true,
+    },
+   
   ];
 
   const editClick = (tableRowArray) => {
-  setId(tableRowArray['madeb']['id']);
-  setFormNumber(tableRowArray['madeb']['nFormNumber']);
-  setAuthority(tableRowArray['sAuthRegion']);
-  setReceivedDate(tableRowArray['madeb']['dtReceived']);
-  setName(tableRowArray['madeb']['sName']);
-  setFname(tableRowArray['madeb']['sFathersName']);
-  setSaney(tableRowArray['madeb']['nSaneyFormNo']);
-  setDocument(tableRowArray['madeb']['sDocumentAttached']);
-  setIssueActionDate(tableRowArray['madeb']['dtIssueAction']);
-  setIssueAction(tableRowArray['madeb']['nType']);
-  setReturnDate(tableRowArray['madeb']['dtReturnEmail']);
   
-  setSarsoObj({
-    id: tableRowArray['madeb']['id'],
-    nFormNumber: tableRowArray['madeb']['nFormNumber'],
-    dtReceived: tableRowArray['madeb']['dtReceived'],
-    nAuthRegionID: tableRowArray['sAuthRegion'],
-    sName: tableRowArray['madeb']['sName'],
-    sFathersName    :tableRowArray['madeb']['sFathersName'],
-    nSaneyFormNo   :tableRowArray['madeb']['nSaneyFormNo'],
-    sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],
-    dtIssueAction  :tableRowArray['madeb']['dtIssueAction'],
-    nType  :tableRowArray['madeb']['nType'],
-    dtReturnEmail  :tableRowArray['madeb']['dtReturnEmail']
-    });
-    //console.log(tableRowArray);
+    setCountryPK(tableRowArray['id']);
+    setCountryID(tableRowArray['sCountryID']);
+    setCountryName(tableRowArray['sCountry']);
     setEditModal(true);
+    setCountryObj({
+      id: tableRowArray['id'],
+      countryId: tableRowArray['sCountryID'],
+      countryName: tableRowArray['sCountry']
+    });
   }
 
-  const editAPICall = (sarsoObj) => {
+  const editAPICall = (countryObj) => {
     // let CountryID = countryPK;
     // let countryToUpdate = {
     //   ID : countryPK,
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Madeb/EditMadeb/ID=` + id, sarsoObj/*countryToUpdate*/)
+    axios.post(`/Country/EditCountry/CountryID=` + countryPK, countryObj/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`MadebAuthRegionVM/GetMadebs`)
+          axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -450,20 +359,18 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   };
-  const addAPICall = (sarsoObj) => {
+  const addAPICall = (countryObj) => {
 
     // let countryToAdd = {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    setAddModal(false);
-    /*
     axios.post(`/Country/AddCountry/`, countryObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`MadebAuthRegionVM/GetMadebs`)
+          axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -502,20 +409,83 @@ export default function EnhancedTable() {
       })
       .then(release => {
         //console.log(release); => udefined
-      });*/
+      });
   };
 
+  const deleteClick = (tableRowArray) => {
 
+    setDeleteModal(true);
+    setCountryPK(tableRowArray[0]);
+    setCountryID(tableRowArray[1]);
+    setCountryName(tableRowArray[2]);
+  };
 
   const handleClose = () => {
     setDeleteModal(false);
 
   };
 
-
+  const deleteAPICall = () => {
+    // console.log(this.state.selectedUser);
+    // let CountryID = countryPK;
+    const countryToDelete = {
+      ID: countryPK,
+      sCountryID: countryID,
+      sCountry: countryName,
+    };
+    axios.post(`/Country/DeleteCountry/`, countryToDelete)
+      .then(resp => {
+        console.log(countryToDelete);
+        if (resp.status === 200) {
+          console.log(resp.data);
+          setDeleteModal(false);
+          axios.get(`/Country/GetCountries`)
+            .then(resp => {
+              if (resp.status === 200) {
+                console.log(resp.data);
+                setdataAPI(resp.data)
+              }
+            })
+            .catch(error => {
+              if (error.response) {
+                console.error(error.response.data);
+                console.error(error.response.status);
+                console.error(error.response.headers);
+              } else if (error.request) {
+                console.warn(error.request);
+              } else {
+                console.error('Error', error.message);
+              }
+              console.log(error.config);
+            })
+            .then(release => {
+              //console.log(release); => udefined
+            });
+          //window.location = window.location;
+          // setdataAPI(dataAPI.filter((data) => {
+          //   return (data.id !== countryToDelete.ID);
+          // }));
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  };
 
   useEffect(() => {
-    axios.get(`MadebAuthRegionVM/GetMadebs`)
+    axios.get(`/Country/GetCountries`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -547,51 +517,58 @@ export default function EnhancedTable() {
           flexDirection="column"
           height="100%"
           justifyContent="center"
+          style={{paddingTop:'50px'}}
+          
         >
           <Container maxWidth="lg" disableGutters={true}>
-          <MaterialTable style={{padding:'10px', border:'2px solid grey',borderRadius:'10px'}}
-       
-       icons={tableIcons}
-      title="Sarso Madeb"
-    columns={columns}
-    data={dataAPI}        
-    options={{
-      filtering,
-      exportButton: true,
-      exportAllData: true,
-      headerStyle: {
-     
-          padding:'0',
-          paddingLeft:'10px',
-       border:'1px solid lightgrey',
-       
-      },
-     pageSize:'10',
-     pageSizeOptions:[10,50,100],
-     rowStyle: x => {
-      if (x.tableData.id % 2) {
-          return {backgroundColor: "#f2f2f2"}
-      }
-    }
+         {/* <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" href="/Home" >
+            Home
+        </Link>
 
-
+          <Typography color="textPrimary"> Country</Typography>
+  </Breadcrumbs> */}
+            <Grid container className={classes.box} >
+              <Grid item xs={12}>
+           
       
-    }}
-    actions={[
-      {
-        icon: AddBox,
-        tooltip: 'Add Country',
-        isFreeAction: true,
-        onClick: (event) => setAddModal(true)
-      },
-      {
-        icon: FilterList,
-        tooltip: 'Show Filter',
-        isFreeAction: true,
-        onClick: (event) => {setFiltering(currentFilter => !currentFilter)}
-      }
-    ]}
-  />
+        <MaterialTable style={{padding:'10px', border:'2px solid grey',borderRadius:'10px'}}
+       
+         icons={tableIcons}
+        title="Country"
+      columns={columns}
+      data={dataAPI}        
+      options={{
+        filtering,
+        exportButton: true,
+        exportAllData: true,
+        headerStyle: {
+         // backgroundColor: '#3b3e66',
+         // color: '#FFF'
+         fontSize:'18px',
+         paddingLeft:'5px'
+        },
+       
+
+        
+      }}
+      actions={[
+        {
+          icon: AddBox,
+          tooltip: 'Add Country',
+          isFreeAction: true,
+          onClick: (event) => setAddModal(true)
+        },
+        {
+          icon: FilterList,
+          tooltip: 'Show Filter',
+          isFreeAction: true,
+          onClick: (event) => {setFiltering(currentFilter => !currentFilter)}
+        }
+      ]}
+    />
+              </Grid>
+            </Grid>
             {addModal && <AddDialog
               addModal={addModal}
               classes={classes}
@@ -600,12 +577,17 @@ export default function EnhancedTable() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              sarsoObj={sarsoObj}
+              countryObj={countryObj}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
             />}
-          
+            {deleteModal && <DeleteDialog
+              deleteModal={deleteModal}
+              countryName={countryName}
+              handleClose={handleClose}
+              deleteAPICall={deleteAPICall}
+            />}
           </Container>
         </Box>
    

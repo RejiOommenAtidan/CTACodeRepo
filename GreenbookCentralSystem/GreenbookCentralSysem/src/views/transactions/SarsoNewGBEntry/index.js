@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 
 
-import Country from './country';
+import NewEntry from './newentry';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,12 +24,15 @@ const Dashboard = () => {
   const classes = useStyles();
 
   return (
-   
       <Container maxWidth={false}>
-        
-        <Country />
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" href="/app/manageuser" >
+            Home
+          </Link>
+          <Typography color="textPrimary">New Greenbook</Typography>
+        </Breadcrumbs>
+        <NewEntry />
       </Container>
-
   );
 };
 

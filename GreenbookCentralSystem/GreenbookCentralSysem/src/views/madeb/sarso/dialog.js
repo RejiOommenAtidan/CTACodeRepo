@@ -27,8 +27,23 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export const EditDialog = (props) => {
   //debugger
-  const [Name, setCountryName] = useState(props.countryObj.countryName);
+ 
+  const [id, setId] = React.useState(props.sarsoObj.id);
+  const [formNumber, setFormNumber] = React.useState(props.sarsoObj.formNumber);
+  const [authority, setAuthority] = React.useState(props.sarsoObj.authority);
+  const [receivedDate, setReceivedDate] = React.useState(props.sarsoObj.receivedDate);
+  const [name, setName] = React.useState(props.sarsoObj.name);
+  const [fname, setFname] = React.useState(props.sarsoObj.fname);
+  const [saney, setSaney] = React.useState(props.sarsoObj.saney);
+  const [documents, setDocument] = React.useState(props.sarsoObj.documents);
+  const [issueActionDate, setIssueActionDate] = React.useState(props.sarsoObj.issueActionDate);
+  const [issueAction, setIssueAction] = React.useState(props.sarsoObj.issueAction);
+  const [returnDate, setReturnDate] = React.useState(props.sarsoObj.returnDate);
+  console.log(props.sarsoObj);
   return (
+      
+      
+      
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Sarso Madeb</DialogTitle>
       <DialogContent>
@@ -187,10 +202,10 @@ export const EditDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })} color="primary">Save</Button>
+      {/*  <Button onClick={() => props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })} color="primary">Save</Button> */}
       </DialogActions>
     </Dialog>
-  );
+);
 
 
 }
