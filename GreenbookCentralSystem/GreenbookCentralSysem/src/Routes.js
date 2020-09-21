@@ -46,7 +46,7 @@ const Sarso = lazy(() => import('./views/madeb/sarso'));
 
 
 const NewEntry = lazy(() => import('./views/transactions/newentry/newentry'));
-
+const SarsoNewGBEntry = lazy(() => import('./views/transactions/SarsoNewGBEntry/SarsoNewGBEntry'));
 
 const Routes = () => {
   const location = useLocation();
@@ -166,8 +166,8 @@ const Routes = () => {
                 '/Relation',
                 '/UserRights',
                 '/TypeIssued',
-                '/Sarso'
-
+                '/Sarso',
+                '/SarsoNewGBEntry'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -193,6 +193,7 @@ const Routes = () => {
                      <Route path="/UserRights" component={UserRights} />
                      <Route path="/TypeIssued" component={TypeIssued} />
                      <Route path="/Sarso" component={Sarso} />
+                     <Route path="/SarsoNewGBEntry" component={SarsoNewGBEntry} />
                   </motion.div>
                 </Switch>
               </LeftSidebar>

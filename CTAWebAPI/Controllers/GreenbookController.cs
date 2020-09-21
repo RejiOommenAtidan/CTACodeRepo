@@ -1,6 +1,8 @@
 ﻿using CTADBL.BaseClasses;
 using CTADBL.BaseClassRepositories;
 using CTADBL.Entities;
+using CTADBL.ViewModels;
+using CTADBL.ViewModelsRepositories;
 using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -21,10 +23,14 @@ namespace CTAWebAPI.Controllers
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly GreenbookRepository _greenbookRepository;
+        private readonly GetGBDataByFormNumberVMRepository _getGBDataByFormNumberVMRepository;
+        private readonly CTALogger _ctaLogger;
         public GreenbookController(DBConnectionInfo info)
         {
             _info = info;
             _greenbookRepository = new GreenbookRepository(_info.sConnectionString);
+            _getGBDataByFormNumberVMRepository = new GetGBDataByFormNumberVMRepository(_info.sConnectionString);
+            _ctaLogger = new CTALogger(_info);
         }
         #endregion
 
@@ -38,14 +44,8 @@ namespace CTAWebAPI.Controllers
             {
                 IEnumerable<Greenbook> greenbooks = _greenbookRepository.GetAllGreenBooks();
 
-                #region Information Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 2);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 1);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = currentMethodName + " Method Called";
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                #region Information Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
                 #endregion
 
                 return Ok(greenbooks);
@@ -53,13 +53,7 @@ namespace CTAWebAPI.Controllers
             catch (Exception ex)
             {
                 #region Exception Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 2);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 3);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -77,13 +71,7 @@ namespace CTAWebAPI.Controllers
                 Greenbook fetchedGreenbook = _greenbookRepository.GetGreenboookById(Id);
 
                 #region Information Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 2);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 1);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = currentMethodName + " Method Called";
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
                 #endregion
 
                 return Ok(fetchedGreenbook);
@@ -91,13 +79,7 @@ namespace CTAWebAPI.Controllers
             catch (Exception ex)
             {
                 #region Exception Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 2);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 3);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -121,13 +103,7 @@ namespace CTAWebAPI.Controllers
                     _greenbookRepository.Add(greenbook);
 
                     #region Information Logging 
-                    string sActionType = Enum.GetName(typeof(Operations), 1);
-                    string sModuleName = (GetType().Name).Replace("Controller", "");
-                    string sEventName = Enum.GetName(typeof(LogLevels), 1);
-                    string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                    string sDescription = currentMethodName + " Method Called";
-                    CTALogger logger = new CTALogger(_info);
-                    logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, greenbook.nEnteredBy);
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", greenbook.nEnteredBy);
                     #endregion
 
                     return Ok(greenbook);
@@ -143,13 +119,7 @@ namespace CTAWebAPI.Controllers
             catch (Exception ex)
             {
                 #region Exception Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 1);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 3);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, greenbook.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, greenbook.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -185,13 +155,7 @@ namespace CTAWebAPI.Controllers
                         _greenbookRepository.Update(greenbook);
 
                         #region Alert Logging 
-                        string sActionType = Enum.GetName(typeof(Operations), 3);
-                        string sModuleName = (GetType().Name).Replace("Controller", "");
-                        string sEventName = Enum.GetName(typeof(LogLevels), 2);
-                        string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                        string sDescription = currentMethodName + " Method Called";
-                        CTALogger logger = new CTALogger(_info);
-                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, greenbook.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", greenbook.nEnteredBy);
                         #endregion
 
                         return Ok("Greenbook with ID: " + Id + " updated Successfully");
@@ -212,13 +176,7 @@ namespace CTAWebAPI.Controllers
             catch (Exception ex)
             {
                 #region Exception Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 3);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 3);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, greenbook.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, greenbook.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -244,13 +202,7 @@ namespace CTAWebAPI.Controllers
                         _greenbookRepository.Delete(fetchedGreenbook);
 
                         #region Alert Logging 
-                        string sActionType = Enum.GetName(typeof(Operations), 4);
-                        string sModuleName = (GetType().Name).Replace("Controller", "");
-                        string sEventName = Enum.GetName(typeof(LogLevels), 2);
-                        string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                        string sDescription = currentMethodName + " Method Called";
-                        CTALogger logger = new CTALogger(_info);
-                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, greenbook.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", greenbook.nEnteredBy);
                         #endregion
 
                         return Ok("Greenbook with ID: " + greenbookID + " removed Successfully");
@@ -269,13 +221,7 @@ namespace CTAWebAPI.Controllers
             catch (Exception ex)
             {
                 #region Exception Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 4);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 3);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, greenbook.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, greenbook.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -299,6 +245,34 @@ namespace CTAWebAPI.Controllers
             {
                 throw new Exception("Exception in Greenbook Exists Function, Exception Message: " + ex.Message);
             }
+        }
+        #endregion
+
+        #region Get GB Data for New Entry
+        [HttpGet]
+        [Route("[action]/Id={Id:int}")]
+        public IActionResult GetGBDataNewEntry(int Id)
+        {
+            #region Get Data
+            try
+            {
+                GetGBDataByFormNumberVM getGBDataByFormNumberVM = _getGBDataByFormNumberVMRepository.GetGBDataByFormNumber(Id);
+
+                #region Information Logging 
+                  _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                #endregion
+
+                return Ok(getGBDataByFormNumberVM);
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
         }
         #endregion
     }
