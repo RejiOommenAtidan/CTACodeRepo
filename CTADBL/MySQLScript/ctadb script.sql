@@ -666,6 +666,41 @@ INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisp
 INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Book Full','Book Full','U');
 INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Brief GB','Brief GB','B');
 
+use ctadb;
+
+CREATE TABLE `lstFeature` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sFeature` text NOT NULL, 
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('LoginPage');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Home');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Give GB No');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Delete');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Users');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Report');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Edit');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Issue Book');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Make List');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Print');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Give Serial');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('New Entry');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Sarso Madeb');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Norchoe Madeb');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Bhorlak Madeb');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Book full');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Brief GB');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Abroad');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Change');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Search');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Sarso New GB Entry');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Roles Feature Mapping');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('User Roles Manage');
 
 -- -------------------------
 -- --Link Tables------------
@@ -897,6 +932,18 @@ CREATE TABLE `tblActionLogger` (
   `nEnteredBy` int(11) Not NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `tblAuditLog` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `dtEntered` datetime DEFAULT NULL,
+  `nFeatureID` int(11) NOT NULL,
+  `nRegionID` int(11) NOT NULL,
+  `nRecordID` int(11) NOT NULL,
+  `sFieldValuesOld` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `sFieldValuesNew` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 
