@@ -1,4 +1,5 @@
-﻿using CTADBL.BaseClasses;
+﻿using CTADBL.BaseClasses.Masters;
+using CTADBL.BaseClasses.Transactions;
 using CTADBL.ViewModels;
 using MySql.Data.MySqlClient;
 using System;

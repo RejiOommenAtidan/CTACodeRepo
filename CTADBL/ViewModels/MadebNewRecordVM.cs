@@ -1,7 +1,5 @@
-﻿using System;
+﻿using CTADBL.BaseClasses.Masters;
 using System.Collections.Generic;
-using System.Text;
-using CTADBL.BaseClasses;
 
 namespace CTADBL.ViewModels
 {
@@ -18,6 +16,5 @@ namespace CTADBL.ViewModels
         public List<AuthRegion> authRegions { get; set; }
         public List<TypeIssued> typeIssued { get; set; }
         public int nFormNumber { get; set; }
-
     }
 }

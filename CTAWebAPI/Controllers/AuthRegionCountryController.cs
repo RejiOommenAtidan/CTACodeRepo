@@ -1,14 +1,11 @@
-﻿using System;
-using CTADBL.BaseClasses;
-using CTADBL.BaseClassRepositories;
-using CTADBL.ViewModelsRepositories;
+﻿using CTADBL.Entities;
 using CTADBL.ViewModels;
-using CTADBL.Entities;
+using CTADBL.ViewModelsRepositories;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 
 namespace CTAWebAPI.Controllers

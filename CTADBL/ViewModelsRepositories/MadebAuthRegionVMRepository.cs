@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MySql.Data.MySqlClient;
-using System.Data;
-using CTADBL.QueryBuilder;
-using CTADBL.ViewModels;
+﻿using CTADBL.BaseClasses.Transactions;
 using CTADBL.Repository;
-using CTADBL.BaseClasses;
-
+using CTADBL.ViewModels;
+using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace CTADBL.ViewModelsRepositories
 {
@@ -290,7 +287,7 @@ namespace CTADBL.ViewModelsRepositories
 
         #endregion
 
-
+        #endregion
 
         #region Populate Madeb Records
         public override MadebAuthRegionVM PopulateRecord(MySqlDataReader reader)
@@ -335,7 +332,6 @@ namespace CTADBL.ViewModelsRepositories
                 
             };
         }
-        #endregion
         #endregion
     }
 }

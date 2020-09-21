@@ -1,5 +1,5 @@
-﻿using CTADBL.BaseClasses;
-using CTADBL.BaseClassRepositories;
+﻿using CTADBL.BaseClasses.Transactions;
+using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
 using System;
 using System.Runtime.InteropServices;

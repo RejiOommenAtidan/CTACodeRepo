@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CTADBL.BaseClasses;
+﻿using CTADBL.BaseClasses.Transactions;
 
 namespace CTADBL.ViewModels
 {

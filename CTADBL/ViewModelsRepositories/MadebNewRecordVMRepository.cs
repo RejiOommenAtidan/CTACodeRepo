@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MySql.Data.MySqlClient;
-using System.Data;
-using CTADBL.QueryBuilder;
+﻿using CTADBL.BaseClasses.Masters;
 using CTADBL.ViewModels;
-using CTADBL.Repository;
-using CTADBL.BaseClasses;
-using CTADBL.BaseClassRepositories;
+using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace CTADBL.ViewModelsRepositories

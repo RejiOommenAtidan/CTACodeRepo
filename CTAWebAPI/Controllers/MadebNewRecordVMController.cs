@@ -1,15 +1,10 @@
-﻿using CTADBL.ViewModels;
+﻿using CTADBL.Entities;
+using CTADBL.ViewModels;
 using CTADBL.ViewModelsRepositories;
-using CTADBL.Entities;
-using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace CTAWebAPI.Controllers
 {

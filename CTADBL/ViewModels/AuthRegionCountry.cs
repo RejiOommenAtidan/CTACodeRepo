@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CTADBL.ViewModels
+﻿namespace CTADBL.ViewModels
 {
     public class AuthRegionCountry
     {
@@ -10,6 +6,5 @@ namespace CTADBL.ViewModels
         public string sAuthRegion { get; set; }
         public string sCountryID { get; set; }
         public string sCountry { get; set; }
-
     }
 }

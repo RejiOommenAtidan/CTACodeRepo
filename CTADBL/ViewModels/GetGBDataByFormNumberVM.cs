@@ -1,4 +1,5 @@
-﻿using CTADBL.BaseClasses;
+﻿using CTADBL.BaseClasses.Masters;
+using CTADBL.BaseClasses.Transactions;
 using System.Collections.Generic;
 
 namespace CTADBL.ViewModels
