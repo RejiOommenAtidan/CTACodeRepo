@@ -12,6 +12,7 @@ import {
   FormControl,
   TextField
 } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import _ from "lodash/fp";
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
@@ -109,6 +110,13 @@ const useStyles = makeStyles({
   },
   '&$expanded': {
     margin: 'auto'
+  },
+  option: {
+    fontSize: 10,
+    '& > span': {
+      marginRight: 5,
+      fontSize: 16
+    }
   }
 });
 
@@ -119,6 +127,15 @@ export default function EnhancedTable() {
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
+  //Array from API
+  const [lAuthRegion, setlAuthRegion] = useState([]);
+  const [lCountry, setlCountry] = useState([]);
+  const [lDOBApprox, setlDOBApprox] = useState([]);
+  const [lOccupation, setlOccupation] = useState([]);
+  const [lProvince, setlProvince] = useState([]);
+  const [lQualification, setlQualification] = useState([]);
+
   //VARS to track
   const [sGBID, setsGBID] = useState('');
   const [nAuthRegionID, setnAuthRegionID] = useState('');
@@ -173,38 +190,136 @@ export default function EnhancedTable() {
   const [TBUMothersName, setTBUMothersName] = useState('');
   const [TBUSpouseName, setTBUSpouseName] = useState('');
 
-  // useEffect(() => {
-  //   axios.get(`/GivenGBID/GetGivenGBIDs`)
-  //     .then(resp => {
-  //       if (resp.status === 200) {
-  //         console.log(resp.data);
-  //         setdataAPI(resp.data)
-  //       }
-  //     })
-  //     .catch(error => {
-  //       if (error.response) {
-  //         console.error(error.response.data);
-  //         console.error(error.response.status);
-  //         console.error(error.response.headers);
-  //       } else if (error.request) {
-  //         console.warn(error.request);
-  //       } else {
-  //         console.error('Error', error.message);
-  //       }
-  //       console.log(error.config);
-  //     })
-  //     .then(release => {
-  //       //console.log(release); => udefined
-  //     });
-  // }, []);
+  useEffect(() => {
+    axios.get(`/Greenbook/GetGBDataNewEntry/Id=1001`)
+      .then(resp => {
+        if (resp.status === 200) {
+          console.log(resp.data.oMadeb);
+          //Masters
+          setlAuthRegion(resp.data.lAuthRegion);
+          setlCountry(resp.data.lCountry);
+          setlDOBApprox(resp.data.lDOBApprox);
+          setlOccupation(resp.data.lOccupation);
+          setlProvince(resp.data.lProvince);
+          setlQualification(resp.data.lQualification);
+          //Binded Fields
+          setnAuthRegionID(resp.data.oMadeb.nAuthRegionID);
+          //GBID
+          setsGBID(resp.data.oMadeb.sGBID);
+          //Name
+          setsFirstName(resp.data.oMadeb.sName);
+          //Father's name
+          setsFathersName(resp.data.oMadeb.sFathersName);
+          //Docs Attached
+          setsOtherDocuments(resp.data.oMadeb.sFathersName);
+          //Current GB Serial Number
+          setsFstGreenBkNo(resp.data.oMadeb.nCurrentGBSno);
+          //sAlias
+          setsAliasName(resp.data.oMadeb.sAlias);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  }, []);
 
   const { register, handleSubmit, watch, errors } = useForm();
   const onSubmit = () => {
     //Throws Error, Maybe handled by react-hook-forms itself
     //e.preventDefault();
+    let greenbook = {
+      sGBID,
+      nAuthRegionID,
+      sFirstName,
+      sSecondName,
+      sFamilyName,
+      sGender,
+      dtDOB,
+      sDOBApprox,
+      sBirthPlace,
+      sBirthCountryID,
+      sOriginVillage,
+      sOriginProvinceID,
+      sMarried,
+      sOtherDocuments,
+      sResidenceNumber,
+      sQualificationID,
+      sOccupationID,
+      sAliasName,
+      sOldGreenBKNo,
+      sFstGreenBkNo,
+      dtFormDate,
+      sFathersName,
+      sFathersID,
+      sFathersGBID,
+      sMothersName,
+      sMothersID,
+      sMothersGBID,
+      sSpouseName,
+      sSpouseID,
+      sSpouseGBID,
+      nChildrenM,
+      nChildrenF,
+      sAddress1,
+      sAddress2,
+      sCity,
+      sState,
+      sPCode,
+      sCountryID,
+      sEmail,
+      sPhone,
+      sFax,
+      dtDeceased,
+      sBookIssued,
+      dtValidityDate,
+      sPaidUntil,
+      sEnteredDateTime,
+      TibetanName,
+      TBUPlaceOfBirth,
+      TBUOriginVillage,
+      TBUFathersName,
+      TBUMothersName,
+      TBUSpouseName
+    };
+
+    console.info(greenbook);
+
+    // axios.post(`/Greenbbok/AddGreenbook/`, greenbook)
+    //   .then(resp => {
+    //     if (resp.status === 200) {
+    //       alert("Success");
+    //     }
+    //   })
+    //   .catch(error => {
+    //     if (error.response) {
+    //       console.error(error.response.data);
+    //       console.error(error.response.status);
+    //       console.error(error.response.headers);
+    //     } else if (error.request) {
+    //       console.warn(error.request);
+    //     } else {
+    //       console.error('Error', error.message);
+    //     }
+    //     console.log(error.config);
+    //   })
+    //   .then(release => {
+    //     //console.log(release); => udefined
+    //   });
   };
-  
-  console.log(watch("name_sEmail"));
+
+  // console.log(watch("name_sEmail"));
 
   return (
     <Box
@@ -237,9 +352,10 @@ export default function EnhancedTable() {
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_sGBID"
-                          name="GBID"
+                          name="name_GBID"
                           label="Greenbook ID"
                           type="text"
+                          value={sGBID}
                           onChange={(e) => { setsGBID(e.target.value); }}
                           fullWidth
                           margin="normal"
@@ -248,11 +364,12 @@ export default function EnhancedTable() {
                             required: true,
                             maxLength: 9
                           })}
+                          required
                         />
-                        {_.get("GBID.type", errors) === "required" && (
+                        {_.get("name_GBID.type", errors) === "required" && (
                           <p>This field is required</p>
                         )}
-                        {_.get("GBID.type", errors) === "maxLength" && (
+                        {_.get("name_GBID.type", errors) === "maxLength" && (
                           <p>GBID cannot exceed 9 characters</p>
                         )}
                       </FormControl>
@@ -268,10 +385,13 @@ export default function EnhancedTable() {
                           fullWidth
                           margin="normal"
                           required
+                          value={nAuthRegionID}
                         >
-                          <MenuItem value={10}>Aargau</MenuItem>
-                          <MenuItem value={20}>Alberta</MenuItem>
-                          <MenuItem value={30}>Dharamshala</MenuItem>
+                          {lAuthRegion.map((authRegion) => (
+                            <MenuItem key={authRegion.id} value={authRegion.id}>
+                              {authRegion.sAuthRegion}
+                            </MenuItem>
+                          ))}
                         </Select>
                       </FormControl>
                     </Grid>
@@ -285,6 +405,7 @@ export default function EnhancedTable() {
                           fullWidth
                           margin="normal"
                           className={classes.textField}
+                          value={sFirstName}
                           required
                         />
                       </FormControl>
@@ -380,20 +501,46 @@ export default function EnhancedTable() {
                     </Grid>
                     <Grid item xs={12}>
                       <FormControl className={classes.formControl}>
-                        <InputLabel id="id_sBirthCountryID">Birth Country</InputLabel>
-                        <Select
-                          id="id_sBirthCountryID"
-                          label="Birth Country"
-                          type="text"
-                          onChange={(e) => { setsBirthCountryID(e.target.value); }}
-                          fullWidth
-                          margin="normal"
+                        <Autocomplete
+                          //onSelect={(e) => { console.log(e) }}
+                          openOnFocus
+                          clearOnEscape
+                          onChange={
+                            (e, value) => {
+                              if (value !== null) {
+                                console.log(value.id);
+                                setsBirthCountryID(value.id);
+                              }
+                              else {
+                                setsBirthCountryID(0);
+                              }
+                            }
+                          }
+                          id="country-select-demo"
+                          options={lCountry}
+                          classes={{
+                            option: classes.option,
+                          }}
                           className={classes.textField}
-                          required
-                        >
-                          <MenuItem value={"IN"}>India</MenuItem>
-                          <MenuItem value={"AF"}>Afhganistan</MenuItem>
-                        </Select>
+                          autoHighlight
+                          getOptionLabel={(option) => option.sCountry}
+                          renderOption={(option) => (
+                            <React.Fragment>
+                              <span>{option.sCountry}</span>
+                            </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Choose a Birth Country"
+                              variant="standard"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password', // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
                       </FormControl>
                     </Grid>
                     <Grid item xs={12}>
@@ -443,6 +590,7 @@ export default function EnhancedTable() {
                           margin="normal"
                           className={classes.textField}
                           required
+                          value={sFathersName}
                         />
                       </FormControl>
                     </Grid>
@@ -591,8 +739,12 @@ export default function EnhancedTable() {
                             className={classes.textField}
                             required
                           >
-                            <MenuItem value={"IN"}>India</MenuItem>
-                            <MenuItem value={"AF"}>Afganisthan</MenuItem>
+                            {lCountry.map((country) => (
+                              <MenuItem key={country.id} value={country.id}>
+                                {country.sCountry}
+                              </MenuItem>
+                            ))}
+
                           </Select>
                         </FormControl>
                       </Grid>
@@ -640,6 +792,7 @@ export default function EnhancedTable() {
                           fullWidth
                           margin="normal"
                           className={classes.textField}
+                          value={sAliasName}
                         />
                       </FormControl>
                     </Grid>
@@ -687,8 +840,11 @@ export default function EnhancedTable() {
 
                           className={classes.textField}
                         >
-                          <MenuItem value={"IN"}>India</MenuItem>
-                          <MenuItem value={"AF"}>Afhganistan</MenuItem>
+                          {lProvince.map((province) => (
+                            <MenuItem key={province.id} value={province.id}>
+                              {province.sProvince}
+                            </MenuItem>
+                          ))}
                         </Select>
                       </FormControl>
                     </Grid>
@@ -701,7 +857,7 @@ export default function EnhancedTable() {
                           onChange={(e) => { setsFstGreenBkNo(e.target.value); }}
                           fullWidth
                           margin="normal"
-
+                          value={sFstGreenBkNo}
                           className={classes.textField}
                         />
                       </FormControl>
@@ -719,8 +875,11 @@ export default function EnhancedTable() {
 
                           className={classes.textField}
                         >
-                          <MenuItem value={"Grad"}>Graduation</MenuItem>
-                          <MenuItem value={"Mat"}>Matriculation</MenuItem>
+                          {lQualification.map((qualification) => (
+                            <MenuItem key={qualification.id} value={qualification.id}>
+                              {qualification.sQualification}
+                            </MenuItem>
+                          ))}
                         </Select>
                       </FormControl>
                     </Grid>
@@ -733,7 +892,7 @@ export default function EnhancedTable() {
                           onChange={(e) => { setsOtherDocuments(e.target.value); }}
                           fullWidth
                           margin="normal"
-
+                          value={sOtherDocuments}
                           className={classes.textField}
                         />
                       </FormControl>
@@ -778,15 +937,21 @@ export default function EnhancedTable() {
                     </Grid>
                     <Grid item xs={12}>
                       <FormControl className={classes.formControl}>
-                        <TextField
+                        <InputLabel id="id_sDOBApprox">DOB Approx</InputLabel>
+                        <Select
                           id="id_sDOBApprox"
                           label="DOB Approx"
-                          type="text"
                           onChange={(e) => { setsDOBApprox(e.target.value); }}
                           fullWidth
                           margin="normal"
-                          className={classes.textField}
-                        />
+                          required
+                        >
+                          {lDOBApprox.map((DOBApprox) => (
+                            <MenuItem key={DOBApprox.id} value={DOBApprox.id}>
+                              {DOBApprox.sDOBApproxName}
+                            </MenuItem>
+                          ))}
+                        </Select>
                       </FormControl>
                     </Grid>
                     <Grid item xs={12}>
@@ -841,8 +1006,11 @@ export default function EnhancedTable() {
                           margin="normal"
                           className={classes.textField}
                         >
-                          <MenuItem value={"aged"}>Aged</MenuItem>
-                          <MenuItem value={"housewife"}>Housewife</MenuItem>
+                          {lOccupation.map((occupation) => (
+                            <MenuItem key={occupation.id} value={occupation.id}>
+                              {occupation.sOccupationDesc}
+                            </MenuItem>
+                          ))}
                         </Select>
                       </FormControl>
                     </Grid>
@@ -1016,7 +1184,7 @@ export default function EnhancedTable() {
                     </Grid>
                     <Grid item xs={12}>
                       <Button variant="outlined" type="submit" color="primary">Save</Button>
-                      <Button variant="outlined">CanceL</Button>
+                      <Button variant="outlined">Cancel</Button>
                     </Grid>
                   </Grid>
                 </ExpansionPanelDetails>
