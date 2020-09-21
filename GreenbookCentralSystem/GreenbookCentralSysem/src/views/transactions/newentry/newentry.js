@@ -202,9 +202,9 @@ export default function EnhancedTable() {
   const onSubmit = () => {
     //Throws Error, Maybe handled by react-hook-forms itself
     //e.preventDefault();
-
-    alert("In")
   };
+  
+  console.log(watch("name_sEmail"));
 
   return (
     <Box
@@ -244,7 +244,7 @@ export default function EnhancedTable() {
                           fullWidth
                           margin="normal"
                           className={classes.textField}
-                          ref={register({
+                          inputRef={register({
                             required: true,
                             maxLength: 9
                           })}
@@ -998,13 +998,20 @@ export default function EnhancedTable() {
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_sEmail"
+                          name="name_sEmail"
                           label="Email"
                           type="email"
                           onChange={(e) => { setsEmail(e.target.value); }}
                           fullWidth
                           margin="normal"
                           className={classes.textField}
+                          inputRef={register({
+                            required: true
+                          })}
                         />
+                        {_.get("name_sEmail.type", errors) === "required" && (
+                          <p>This field is required</p>
+                        )}
                       </FormControl>
                     </Grid>
                     <Grid item xs={12}>
