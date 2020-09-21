@@ -109,7 +109,7 @@ namespace CTADBL.BaseClassRepositories
                             `dtUpdated`,
                             `nUpdatedBy`
                         FROM `tblmadeb`
-                        WHERE Id=@Id";
+                        WHERE Id=@Id;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("Id", Id);
@@ -186,7 +186,7 @@ namespace CTADBL.BaseClassRepositories
                             `dtUpdated`,
                             `nUpdatedBy`
                         FROM `tblmadeb`
-                        WHERE nFormNumber=@formNumber";
+                        WHERE nFormNumber=@formNumber;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("formNumber", formNumber);
@@ -225,7 +225,7 @@ namespace CTADBL.BaseClassRepositories
                             `dtUpdated`,
                             `nUpdatedBy`
                         FROM `tblmadeb`
-                        WHERE nAuthRegionID=@nAuthRegionID";
+                        WHERE nAuthRegionID=@nAuthRegionID;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("nAuthRegionID", authRegion);

@@ -6,6 +6,8 @@ using System.Data;
 using CTADBL.QueryBuilder;
 using CTADBL.ViewModels;
 using CTADBL.Repository;
+using CTADBL.BaseClasses;
+
 
 namespace CTADBL.ViewModelsRepositories
 {
@@ -18,6 +20,8 @@ namespace CTADBL.ViewModelsRepositories
         #endregion
 
         #region Get Madeb/Madebs
+
+        #region GetAllMadebs
         public IEnumerable<MadebAuthRegionVM> GetAllMadebs()
         {
             string sql = @"SELECT `tblmadeb`.`Id`,
@@ -48,15 +52,19 @@ namespace CTADBL.ViewModelsRepositories
                             `tblmadeb`.`nEnteredBy`,
                             `tblmadeb`.`dtUpdated`,
                             `tblmadeb`.`nUpdatedBy`,
-                            `sAuthRegion`
+                            `sAuthRegion`,
+                            `sTypeIssued`
                         FROM `tblmadeb` 
-                        INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`;";
+                        INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
+                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNot` = `lsttypeissued`.`Id`;";
             using (var command = new MySqlCommand(sql))
             {
                 return GetRecords(command);
             }
         }
+        #endregion
 
+        #region Get Madeb by Id
         public MadebAuthRegionVM GetMadebById(string Id)
         {
             string sql = @"SELECT `tblmadeb`.`Id`,
@@ -87,9 +95,11 @@ namespace CTADBL.ViewModelsRepositories
                             `tblmadeb`.`nEnteredBy`,
                             `tblmadeb`.`dtUpdated`,
                             `tblmadeb`.`nUpdatedBy`,
-                            `sAuthRegion`
+                            `sAuthRegion`,
+                            `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
+                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNot` = `lsttypeissued`.`Id`
                         WHERE `tblmadeb`.`Id`=@Id;";
             using (var command = new MySqlCommand(sql))
             {
@@ -97,6 +107,9 @@ namespace CTADBL.ViewModelsRepositories
                 return GetRecord(command);
             }
         }
+        #endregion
+
+        #region Get Madebs by Madeb Types
         public IEnumerable<MadebAuthRegionVM> GetMadebsByType(int madebType)
         {
             string sql = @"SELECT `tblmadeb`.`Id`,
@@ -127,9 +140,11 @@ namespace CTADBL.ViewModelsRepositories
                             `tblmadeb`.`nEnteredBy`,
                             `tblmadeb`.`dtUpdated`,
                             `tblmadeb`.`nUpdatedBy`,
-                            `sAuthRegion`
+                            `sAuthRegion`,
+                            `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
+                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNot` = `lsttypeissued`.`Id`
                         WHERE nMadebTypeID=@madebType;";
             using (var command = new MySqlCommand(sql))
             {
@@ -137,7 +152,9 @@ namespace CTADBL.ViewModelsRepositories
                 return GetRecords(command);
             }
         }
+        #endregion
 
+        #region Get Madeb by form number
         public MadebAuthRegionVM GetMadebByFormNumber(int formNumber)
         {
             string sql = @"SELECT `tblmadeb`.`Id`,
@@ -168,9 +185,11 @@ namespace CTADBL.ViewModelsRepositories
                             `tblmadeb`.`nEnteredBy`,
                             `tblmadeb`.`dtUpdated`,
                             `tblmadeb`.`nUpdatedBy`,
-                            `sAuthRegion`
+                            `sAuthRegion`,
+                            `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
+                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNot` = `lsttypeissued`.`Id`
                         WHERE nFormNumber=@formNumber";
             using (var command = new MySqlCommand(sql))
             {
@@ -178,8 +197,10 @@ namespace CTADBL.ViewModelsRepositories
                 return GetRecord(command);
             }
         }
+        #endregion
 
-        public IEnumerable<MadebAuthRegionVM> GetMadebByAuthRegion(int authRegion)
+        #region Get Madeb(s) by Authority Region
+        public IEnumerable<MadebAuthRegionVM> GetMadebsByAuthRegion(int authRegion)
         {
             string sql = @"SELECT `tblmadeb`.`Id`,
                             `_Id`,
@@ -209,9 +230,11 @@ namespace CTADBL.ViewModelsRepositories
                             `tblmadeb`.`nEnteredBy`,
                             `tblmadeb`.`dtUpdated`,
                             `tblmadeb`.`nUpdatedBy`,
-                            `sAuthRegion`
+                            `sAuthRegion`,
+                            `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
+                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNot` = `lsttypeissued`.`Id`
                         WHERE nAuthRegionID=@nAuthRegionID;";
             using (var command = new MySqlCommand(sql))
             {
@@ -221,13 +244,60 @@ namespace CTADBL.ViewModelsRepositories
         }
         #endregion
 
+        #region Get Madeb(s) by Issue Action
+        public IEnumerable<MadebAuthRegionVM> GetMadebsByIssueAction(int issueAction)
+        {
+            string sql = @"SELECT `tblmadeb`.`Id`,
+                            `_Id`,
+                            `nFormNumber`,
+                            `sGBID`,
+                            `nMadebTypeID`,
+                            `sName`,
+                            `sFathersName`,
+                            `nAuthRegionID`,
+                            `dtReceived`,
+                            `dtIssueAction`,
+                            `nIssuedOrNot`,
+                            `nType`,
+                            `sChangeField`,
+                            `sOfficeOfTibetan`,
+                            `sDocumentAttached`,
+                            `nCurrentGBSno`,
+                            `nPreviousGBSno`,
+                            `nSaneyFormNo`,
+                            `nReceiptNo`,
+                            `dtEmailSend`,
+                            `sAlias`,
+                            `sApprovedReject`,
+                            `dtReject`,
+                            `dtReturnEmail`,
+                            `tblmadeb`.`dtEntered`,
+                            `tblmadeb`.`nEnteredBy`,
+                            `tblmadeb`.`dtUpdated`,
+                            `tblmadeb`.`nUpdatedBy`,
+                            `sAuthRegion`,
+                            `sTypeIssued`
+                        FROM `tblmadeb` 
+                        INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
+                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNot` = `lsttypeissued`.`Id`
+                        WHERE nIssuedOrNot=@nIssuedOrNot;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("nIssuedOrNot", issueAction);
+                return GetRecords(command);
+            }
+        }
+
+        #endregion
+
+
 
         #region Populate Madeb Records
         public override MadebAuthRegionVM PopulateRecord(MySqlDataReader reader)
         {
             return new MadebAuthRegionVM
             {
-                madeb = new BaseClasses.Madeb
+                madeb = new Madeb
                 {
                     Id = (int)reader["Id"],
                     //TODO:
@@ -260,9 +330,12 @@ namespace CTADBL.ViewModelsRepositories
                     dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]),
                     nUpdatedBy = (int)reader["nUpdatedBy"]
                 },
-                sAuthRegion = (string) reader["sAuthRegion"]
+                sAuthRegion = (string) reader["sAuthRegion"],
+                sTypeIssued = (string) reader["sTypeIssued"]
+                
             };
         }
+        #endregion
         #endregion
     }
 }
