@@ -26,13 +26,7 @@ const Dashboard = () => {
   return (
    
       <Container maxWidth={false}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/Home" >
-            Home
-        </Link>
-
-          <Typography color="textPrimary">Sarso Madeb</Typography>
-        </Breadcrumbs>
+        
         <Sarso />
       </Container>
 
