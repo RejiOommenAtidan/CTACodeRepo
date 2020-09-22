@@ -746,7 +746,7 @@ CREATE TABLE `tblMadeb` (
   `nAuthRegionID` int(11) NOT NULL,
   `dtReceived` date NOT NULL,
   `dtIssueAction` date NOT NULL,
-  `nIssuedOrNot` int(11) NOT NULL,
+  `nIssuedOrNotID` int(11) NOT NULL,
   `nType` int(11) NOT NULL,
   `sChangeField` varchar(200) DEFAULT NULL,
   `sOfficeOfTibetan` varchar(1000) DEFAULT NULL,
