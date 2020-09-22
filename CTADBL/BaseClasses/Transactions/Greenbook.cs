@@ -53,9 +53,9 @@ namespace CTADBL.BaseClasses.Transactions
         private string _sEmail;
         private string _sPhone;
         private string _sFax;
-        private DateTime _dtDeceased;
+        private DateTime? _dtDeceased;
         private string _sBookIssued;
-        private DateTime _dtValidityDate;
+        private DateTime? _dtValidityDate;
         private string _sPaidUntil;
         private string _TibetanName;
         private string _TBUPlaceOfBirth;
@@ -112,9 +112,9 @@ namespace CTADBL.BaseClasses.Transactions
         public string sEmail { get { return _sEmail; } set { _sEmail = value; } }
         public string sPhone { get { return _sPhone; } set { _sPhone = value; } }
         public string sFax { get { return _sFax; } set { _sFax = value; } }
-        public DateTime dtDeceased { get { return _dtDeceased; } set { _dtDeceased = value; } }
+        public DateTime? dtDeceased { get { return _dtDeceased; } set { _dtDeceased = value; } }
         public string sBookIssued { get { return _sBookIssued; } set { _sBookIssued = value; } }
-        public DateTime dtValidityDate { get { return _dtValidityDate; } set { _dtValidityDate = value; } }
+        public DateTime? dtValidityDate { get { return _dtValidityDate; } set { _dtValidityDate = value; } }
         public string sPaidUntil { get { return _sPaidUntil; } set { _sPaidUntil = value; } }
         public string TibetanName { get { return _TibetanName; } set { _TibetanName = value; } }
         public string TBUPlaceOfBirth { get { return _TBUPlaceOfBirth; } set { _TBUPlaceOfBirth = value; } }
