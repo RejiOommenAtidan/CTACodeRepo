@@ -11,7 +11,7 @@ import {
   TextField,
   Breadcrumbs,
   Link,
-  
+
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
@@ -39,7 +39,7 @@ import { AddDialog, DeleteDialog, EditDialog } from './dialog';
 import { forwardRef } from 'react';
 
 //import Test2 from './test2';
-import MaterialTable, { MTableToolbar }  from 'material-table';
+import MaterialTable, { MTableToolbar } from 'material-table';
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -59,24 +59,24 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 
 
 const tableIcons = {
-    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-    DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-    PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-    ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-    SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-    ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-  };
+  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+};
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -84,9 +84,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableHeadCell: {
-      root:{
-        color:'blue',
-        fontSize:20
+      root: {
+        color: 'blue',
+        fontSize: 20
       }
     },
     MUIDataTableBodyCell: {
@@ -98,11 +98,11 @@ const getMuiTheme = () => createMuiTheme({
     },
     MuiTableCell: {
       root: {
-          padding: '0px',
-          paddingLeft: '30px',
-         
+        padding: '0px',
+        paddingLeft: '30px',
+
       }
-  },
+    },
   }
 })
 const useStyles = makeStyles(() => ({
@@ -155,7 +155,7 @@ const useStyles = makeStyles(() => ({
 
 export default function EnhancedTable() {
   const classes = useStyles();
- // const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   // const [loadingProp, setloadingProp] = useState(true);
@@ -217,69 +217,69 @@ export default function EnhancedTable() {
     {
       field: "id",
       title: "Sr No.",
-      hidden:true,
+      hidden: true,
       cellStyle: {
-        padding:'5px',
-        paddingLeft:'10px',
-      
+        padding: '5px',
+        paddingLeft: '10px',
+
       },
       export: true
-   
+
     },
     {
       field: "sCountryID",
       title: "Country ID",
       cellStyle: {
-        padding:'5px',
-        paddingLeft:'10px',
-      
-        borderLeft:'0'
+        padding: '5px',
+        paddingLeft: '10px',
+
+        borderLeft: '0'
       },
-    
+
     },
     {
       field: "sCountry",
       title: "Country",
       cellStyle: {
-        padding:'5px',
-        
+        padding: '5px',
+
       },
     },
-   
+
     {
-      field:'edit',
-      title:'Edit',
+      field: 'edit',
+      title: 'Edit',
       filtering: false,
       export: false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => { editClick(rowData) }}  style={{padding:'0px'}}
-    >
-      <EditOutlinedIcon/>
-      </IconButton> ,
-     cellStyle: {
-      padding:'5px', 
-      borderRight:'0',
-      width:'10%'
-    },
-   
+        onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+      >
+        <EditOutlinedIcon />
+      </IconButton>,
+      cellStyle: {
+        padding: '5px',
+        borderRight: '0',
+        width: '10%'
+      },
+
     },
     {
       field: "verifiedby",
       title: "Verified By",
       export: true,
-      hidden:true,
+      hidden: true,
     },
     {
       field: "reverifiedby",
       title: "Re-verified By",
       export: true,
-      hidden:true,
+      hidden: true,
     },
-   
+
   ];
 
   const editClick = (tableRowArray) => {
-  
+
     setCountryPK(tableRowArray['id']);
     setCountryID(tableRowArray['sCountryID']);
     setCountryName(tableRowArray['sCountry']);
@@ -511,97 +511,89 @@ export default function EnhancedTable() {
 
   return (
 
-      
-        <Box
-          display="flex"
-          flexDirection="column"
-          height="100%"
-          justifyContent="center"
-          style={{paddingTop:'50px'}}
-          
-        >
-          <Container maxWidth="lg" disableGutters={true}>
-         {/* <Breadcrumbs aria-label="breadcrumb">
+
+    <Box
+      display="flex"
+      flexDirection="column"
+      height="100%"
+      justifyContent="center"
+      style={{ paddingTop: '50px' }}
+
+    >
+      <Container maxWidth="lg" disableGutters={true}>
+        {/* <Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/Home" >
             Home
         </Link>
 
           <Typography color="textPrimary"> Country</Typography>
   </Breadcrumbs> */}
-            <Grid container className={classes.box} >
-              <Grid item xs={12}>
-           
-      
-        <MaterialTable style={{padding:'10px', border:'2px solid grey',borderRadius:'10px'}}
-       
-         icons={tableIcons}
-        title="Country"
-      columns={columns}
-      data={dataAPI}        
-      options={{
-        filtering,
-        exportButton: true,
-        exportAllData: true,
-        headerStyle: {
-        backgroundColor: '#3b3e66',
-          color: '#FFF',
-         fontSize:'18px',
-         paddingLeft:'5px',
-       
-         border:'1px solid lightgrey'
-        },
-       pageSize:'10',
-       pageSizeOptions:[10,50,100],
-       rowStyle: x => {
-        if (x.tableData.id % 2) {
-            return {backgroundColor: "#f2f2f2"}
-        }
-      }
+        <Grid container className={classes.box} >
+          <Grid item xs={12}>
 
 
-        
-      }}
-      actions={[
-        {
-          icon: AddBox,
-          tooltip: 'Add Country',
-          isFreeAction: true,
-          onClick: (event) => setAddModal(true)
-        },
-        {
-          icon: FilterList,
-          tooltip: 'Show Filter',
-          isFreeAction: true,
-          onClick: (event) => {setFiltering(currentFilter => !currentFilter)}
-        }
-      ]}
-    />
-              </Grid>
-            </Grid>
-            {addModal && <AddDialog
-              addModal={addModal}
-              classes={classes}
-              handleAddClickClose={handleAddClickClose}
-              addAPICall={addAPICall}
-            />}
-            {editModal && <EditDialog
-              editModal={editModal}
-              countryObj={countryObj}
-              classes={classes}
-              handleEditClickClose={handleEditClickClose}
-              editAPICall={editAPICall}
-            />}
-            {deleteModal && <DeleteDialog
-              deleteModal={deleteModal}
-              countryName={countryName}
-              handleClose={handleClose}
-              deleteAPICall={deleteAPICall}
-            />}
-          </Container>
-        </Box>
-   
-
-
-          
+            <MaterialTable 
+              style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
+              icons={tableIcons}
+              title="Country"
+              columns={columns}
+              data={dataAPI}
+              options={{
+                filtering,
+                exportButton: true,
+                exportAllData: true,
+                headerStyle: {
+                  backgroundColor: '#3b3e66',
+                  color: '#FFF',
+                  fontSize: '18px',
+                  paddingLeft: '5px',
+                  border: '1px solid lightgrey'
+                },
+                pageSize: 10,
+                pageSizeOptions: [10, 50, 100],
+                rowStyle: x => {
+                  if (x.tableData.id % 2) {
+                    return { backgroundColor: "#f2f2f2" }
+                  }
+                }
+              }}
+              actions={[
+                {
+                  icon: AddBox,
+                  tooltip: 'Add Country',
+                  isFreeAction: true,
+                  onClick: (event) => setAddModal(true)
+                },
+                {
+                  icon: FilterList,
+                  tooltip: 'Show Filter',
+                  isFreeAction: true,
+                  onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+                }
+              ]}
+            />
+          </Grid>
+        </Grid>
+        {addModal && <AddDialog
+          addModal={addModal}
+          classes={classes}
+          handleAddClickClose={handleAddClickClose}
+          addAPICall={addAPICall}
+        />}
+        {editModal && <EditDialog
+          editModal={editModal}
+          countryObj={countryObj}
+          classes={classes}
+          handleEditClickClose={handleEditClickClose}
+          editAPICall={editAPICall}
+        />}
+        {deleteModal && <DeleteDialog
+          deleteModal={deleteModal}
+          countryName={countryName}
+          handleClose={handleClose}
+          deleteAPICall={deleteAPICall}
+        />}
+      </Container>
+    </Box>
   );
 }

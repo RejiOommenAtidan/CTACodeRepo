@@ -145,7 +145,7 @@ namespace CTADBL.ViewModelsRepositories
                             _oMadeb.nAuthRegionID = (int)reader["nAuthRegionID"];
                             _oMadeb.dtReceived = (DateTime)reader["dtReceived"];
                             _oMadeb.dtIssueAction = (DateTime)reader["dtIssueAction"];
-                            _oMadeb.nIssuedOrNot = (int)reader["nIssuedOrNot"];
+                            _oMadeb.nIssuedOrNotID = (int)reader["nIssuedOrNotID"];
                             _oMadeb.nType = (int)reader["nType"];
                             _oMadeb.sChangeField = reader.IsDBNull("sChangeField") ? null : (string?)(reader["sChangeField"]);
                             _oMadeb.sOfficeOfTibetan = reader.IsDBNull("sOfficeOfTibetan") ? null : (string?)(reader["sOfficeOfTibetan"]);

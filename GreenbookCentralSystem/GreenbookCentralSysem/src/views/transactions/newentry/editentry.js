@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
+// import { useHistory } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -120,7 +121,8 @@ const useStyles = makeStyles({
   }
 });
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
+    //let history = useHistory()
   const classes = useStyles();
   //Accordion
   const [expanded, setExpanded] = React.useState(false);
@@ -191,31 +193,43 @@ export default function EnhancedTable() {
   const [TBUSpouseName, setTBUSpouseName] = useState('');
 
   useEffect(() => {
-    axios.get(`/Greenbook/GetGBDataNewEntry/Id=1001`)
+      //console.log(history);
+    // axios.get(`/Greenbook/GetGBDataNewEntry/Id=1001`)
+    //   .then(resp => {
+    //     if (resp.status === 200) {
+    //       console.log(resp.data);
+    //       //Masters
+    //       setlAuthRegion(resp.data.lAuthRegion);
+    //       setlCountry(resp.data.lCountry);
+    //       setlDOBApprox(resp.data.lDOBApprox);
+    //       setlOccupation(resp.data.lOccupation);
+    //       setlProvince(resp.data.lProvince);
+    //       setlQualification(resp.data.lQualification);
+    //     }
+    //   })
+    //   .catch(error => {
+    //     if (error.response) {
+    //       console.error(error.response.data);
+    //       console.error(error.response.status);
+    //       console.error(error.response.headers);
+    //     } else if (error.request) {
+    //       console.warn(error.request);
+    //     } else {
+    //       console.error('Error', error.message);
+    //     }
+    //     console.log(error.config);
+    //   })
+    //   .then(release => {
+    //     //console.log(release); => udefined
+    //   });
+
+      //setTimeout(function(){ alert("Hello"); }, 3000);
+
+      //Get Gb Details
+      axios.get(`/Greenbook/GetGreenbook/Id=`+props.match.params.GBID.toString())
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data.oMadeb);
-          //Masters
-          setlAuthRegion(resp.data.lAuthRegion);
-          setlCountry(resp.data.lCountry);
-          setlDOBApprox(resp.data.lDOBApprox);
-          setlOccupation(resp.data.lOccupation);
-          setlProvince(resp.data.lProvince);
-          setlQualification(resp.data.lQualification);
-          //Binded Fields
-          setnAuthRegionID(resp.data.oMadeb.nAuthRegionID);
-          //GBID
-          setsGBID(resp.data.oMadeb.sGBID);
-          //Name
-          setsFirstName(resp.data.oMadeb.sName);
-          //Father's name
-          setsFathersName(resp.data.oMadeb.sFathersName);
-          //Docs Attached
-          setsOtherDocuments(resp.data.oMadeb.sFathersName);
-          //Current GB Serial Number
-          setsFstGreenBkNo(resp.data.oMadeb.nCurrentGBSno);
-          //sAlias
-          setsAliasName(resp.data.oMadeb.sAlias);
+          console.log(resp.data);
         }
       })
       .catch(error => {
@@ -330,7 +344,7 @@ export default function EnhancedTable() {
       justifyContent="center"
     >
       <Container maxWidth="lg" disableGutters={true}><br />
-        <Typography variant="h4" gutterBottom>New Entry</Typography>
+        <Typography variant="h4" gutterBottom>Edit Entry</Typography>
         <form onSubmit={handleSubmit(onSubmit)} className={classes.box}>
           <Grid container className={classes.box}>
 

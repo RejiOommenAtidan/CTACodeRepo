@@ -8,7 +8,9 @@ import {
   Button,
   Typography,
   FormControl,
-  TextField
+  TextField,
+  Breadcrumbs,
+  Link
   
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
@@ -61,7 +63,7 @@ const tableIcons = {
   DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
   Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
   Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+  Filter: forwardRef((props, ref) => <div></div>),
   FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
   LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
   NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
@@ -323,6 +325,9 @@ export default function EnhancedTable() {
     {
       field: "email",
       title: "Email",
+      filtering:false,
+      sort: false,
+      export:false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
       onClick={() => { editClick(rowData) }}  style={{padding:'0px'}}
     >
@@ -338,6 +343,8 @@ export default function EnhancedTable() {
       field: "edit",
       title: "Edit",
       sort: false,
+      export:false,
+      filtering:false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
       onClick={() => {editClick(rowData) }}  style={{padding:'0px'}}
     >
@@ -349,6 +356,22 @@ export default function EnhancedTable() {
         
       },
     },
+    {
+      field:'Verified By',
+      title:'Verified By',
+      sort: false,
+      export:true,
+      filtering:false,
+      hidden:true,
+    },
+    {
+      field:'Re-Verified By',
+      title:'Re-Verified By',
+      sort: false,
+      export:true,
+      filtering:false,
+      hidden:true,
+    }
    
   ];
 
@@ -363,7 +386,7 @@ export default function EnhancedTable() {
   setSaney(tableRowArray['madeb']['nSaneyFormNo']);
   setDocument(tableRowArray['madeb']['sDocumentAttached']);
   setIssueActionDate(tableRowArray['madeb']['dtIssueAction']);
-  setIssueAction(tableRowArray['madeb']['nIssuedOrNot']);
+  setIssueAction(tableRowArray['madeb']['nIssuedOrNotID']);
   setReturnDate(tableRowArray['madeb']['dtReturnEmail']);
   
   setSarsoObj({
@@ -376,7 +399,7 @@ export default function EnhancedTable() {
     nSaneyFormNo   :tableRowArray['madeb']['nSaneyFormNo'],
     sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],
     dtIssueAction  :tableRowArray['madeb']['dtIssueAction'],
-    nIssuedOrNot  :tableRowArray['madeb']['nIssuedOrNot'],
+    nIssuedOrNotID  :tableRowArray['madeb']['nIssuedOrNotID'],
     dtReturnEmail  :tableRowArray['madeb']['dtReturnEmail']
     });
     //console.log(tableRowArray);
@@ -573,10 +596,19 @@ export default function EnhancedTable() {
           display="flex"
           flexDirection="column"
           height="100%"
+          width="100%"
           justifyContent="center"
+          style={{padding:0,width:'100%'}}
         >
-          <Container maxWidth="lg" disableGutters={true}>
-          <MaterialTable style={{padding:'10px', border:'2px solid grey',borderRadius:'10px'}}
+          <Container  style={{padding:0,width:'100%'}} disableGutters={true}>
+          <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" href="/Home" >
+            Home
+        </Link>
+
+          <Typography color="textPrimary">Sarso Madeb</Typography>
+        </Breadcrumbs>
+          <MaterialTable style={{padding:'10px',width:'100%', border:'2px solid grey',borderRadius:'10px'}}
        
        icons={tableIcons}
       title="Sarso Madeb"
@@ -593,8 +625,9 @@ export default function EnhancedTable() {
        border:'1px solid lightgrey',
        
       },
-     pageSize:'10',
+     pageSize:10,
      pageSizeOptions:[10,50,100],
+    
      rowStyle: x => {
       if (x.tableData.id % 2) {
           return {backgroundColor: "#f2f2f2"}
@@ -612,7 +645,7 @@ export default function EnhancedTable() {
         onClick: () => setAddModal(true)
       },
       {
-        icon: FilterList,
+        icon: Search,
         tooltip: 'Show Filter',
         isFreeAction: true,
         onClick: (event) => {setFiltering(currentFilter => !currentFilter)}

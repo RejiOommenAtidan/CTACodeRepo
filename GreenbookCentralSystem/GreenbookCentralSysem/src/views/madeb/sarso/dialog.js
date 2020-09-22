@@ -63,7 +63,7 @@ export const EditDialog = (props) => {
   const [madebType,setMadebType]= React.useState(1);
   const [documents, setDocument] = React.useState(props.sarsoObj.sDocumentAttached);
   const [issueActionDate, setIssueActionDate] = React.useState(props.sarsoObj.dtIssueAction.split('T')[0]);
-  const [issueAction, setIssueAction] = React.useState(props.sarsoObj.nIssuedOrNot);
+  const [issueAction, setIssueAction] = React.useState(props.sarsoObj.nIssuedOrNotID);
   const [returnDate, setReturnDate] = React.useState(props.sarsoObj.dtReturnEmail.split('T')[0]);
   const madeb = {
       id:id,
@@ -74,7 +74,7 @@ export const EditDialog = (props) => {
     nAuthRegionID:authRegionID , 
     dtReceived:receivedDate,  
     dtIssueAction:issueActionDate,
-    nIssuedOrNot:issueAction,
+    nIssuedOrNotID:issueAction,
     sDocumentAttached:documents,
     nSaneyFormNo:saney,
     dtReturnEmail:returnDate
@@ -309,7 +309,7 @@ export const AddDialog = (props) => {
      nAuthRegionID:authority , 
      dtReceived:receivedDate,  
      dtIssueAction:issueActionDate,
-     nIssuedOrNot:issueAction,
+     nIssuedOrNotID:issueAction,
      sDocumentAttached:documents,
      nSaneyFormNo:saney,
      dtReturnEmail:returnDate

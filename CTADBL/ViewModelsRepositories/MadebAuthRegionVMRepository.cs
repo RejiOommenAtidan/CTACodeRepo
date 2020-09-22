@@ -31,7 +31,7 @@ namespace CTADBL.ViewModelsRepositories
                             `nAuthRegionID`,
                             `dtReceived`,
                             `dtIssueAction`,
-                            `nIssuedOrNot`,
+                            `nIssuedOrNotID`,
                             `nType`,
                             `sChangeField`,
                             `sOfficeOfTibetan`,
@@ -53,7 +53,7 @@ namespace CTADBL.ViewModelsRepositories
                             `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
-                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNot` = `lsttypeissued`.`Id`;";
+                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`;";
             using (var command = new MySqlCommand(sql))
             {
                 return GetRecords(command);
@@ -74,7 +74,7 @@ namespace CTADBL.ViewModelsRepositories
                             `nAuthRegionID`,
                             `dtReceived`,
                             `dtIssueAction`,
-                            `nIssuedOrNot`,
+                            `nIssuedOrNotID`,
                             `nType`,
                             `sChangeField`,
                             `sOfficeOfTibetan`,
@@ -96,7 +96,7 @@ namespace CTADBL.ViewModelsRepositories
                             `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
-                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNot` = `lsttypeissued`.`Id`
+                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         WHERE `tblmadeb`.`Id`=@Id;";
             using (var command = new MySqlCommand(sql))
             {
@@ -119,7 +119,7 @@ namespace CTADBL.ViewModelsRepositories
                             `nAuthRegionID`,
                             `dtReceived`,
                             `dtIssueAction`,
-                            `nIssuedOrNot`,
+                            `nIssuedOrNotID`,
                             `nType`,
                             `sChangeField`,
                             `sOfficeOfTibetan`,
@@ -141,7 +141,7 @@ namespace CTADBL.ViewModelsRepositories
                             `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
-                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNot` = `lsttypeissued`.`Id`
+                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         WHERE nMadebTypeID=@madebType;";
             using (var command = new MySqlCommand(sql))
             {
@@ -164,7 +164,7 @@ namespace CTADBL.ViewModelsRepositories
                             `nAuthRegionID`,
                             `dtReceived`,
                             `dtIssueAction`,
-                            `nIssuedOrNot`,
+                            `nIssuedOrNotID`,
                             `nType`,
                             `sChangeField`,
                             `sOfficeOfTibetan`,
@@ -186,7 +186,7 @@ namespace CTADBL.ViewModelsRepositories
                             `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
-                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNot` = `lsttypeissued`.`Id`
+                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         WHERE nFormNumber=@formNumber";
             using (var command = new MySqlCommand(sql))
             {
@@ -209,7 +209,7 @@ namespace CTADBL.ViewModelsRepositories
                             `nAuthRegionID`,
                             `dtReceived`,
                             `dtIssueAction`,
-                            `nIssuedOrNot`,
+                            `nIssuedOrNotID`,
                             `nType`,
                             `sChangeField`,
                             `sOfficeOfTibetan`,
@@ -231,7 +231,7 @@ namespace CTADBL.ViewModelsRepositories
                             `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
-                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNot` = `lsttypeissued`.`Id`
+                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         WHERE nAuthRegionID=@nAuthRegionID;";
             using (var command = new MySqlCommand(sql))
             {
@@ -254,7 +254,7 @@ namespace CTADBL.ViewModelsRepositories
                             `nAuthRegionID`,
                             `dtReceived`,
                             `dtIssueAction`,
-                            `nIssuedOrNot`,
+                            `nIssuedOrNotID`,
                             `nType`,
                             `sChangeField`,
                             `sOfficeOfTibetan`,
@@ -276,11 +276,11 @@ namespace CTADBL.ViewModelsRepositories
                             `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
-                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNot` = `lsttypeissued`.`Id`
-                        WHERE nIssuedOrNot=@nIssuedOrNot;";
+                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
+                        WHERE nIssuedOrNotID=@nIssuedOrNotID;";
             using (var command = new MySqlCommand(sql))
             {
-                command.Parameters.AddWithValue("nIssuedOrNot", issueAction);
+                command.Parameters.AddWithValue("nIssuedOrNotID", issueAction);
                 return GetRecords(command);
             }
         }
@@ -307,7 +307,7 @@ namespace CTADBL.ViewModelsRepositories
                     nAuthRegionID = (int)reader["nAuthRegionID"],
                     dtReceived = (DateTime)reader["dtReceived"],
                     dtIssueAction = (DateTime)reader["dtIssueAction"],
-                    nIssuedOrNot = (int)reader["nIssuedOrNot"],
+                    nIssuedOrNotID = (int)reader["nIssuedOrNotID"],
                     nType = (int)reader["nType"],
                     sChangeField = reader.IsDBNull("sChangeField") ? null : (string?)(reader["sChangeField"]),
                     sOfficeOfTibetan = reader.IsDBNull("sOfficeOfTibetan") ? null : (string?)(reader["sOfficeOfTibetan"]),
