@@ -182,3 +182,374 @@ SELECT
    now(),
     `madeb`.`EnteredBy`
 FROM `greenbookprime`.`madeb`;
+
+
+Insert into ctadb.tblmadeb
+(
+    `tblmadeb`.`_Id`,
+    `tblmadeb`.`nFormNumber`,
+    `tblmadeb`.`sGBID`,
+    `tblmadeb`.`nMadebTypeID`,
+    `tblmadeb`.`sName`,
+    `tblmadeb`.`sFathersName`,
+    `tblmadeb`.`nAuthRegionID`,
+    `tblmadeb`.`dtReceived`,
+    `tblmadeb`.`dtIssueAction`,
+    `tblmadeb`.`nIssuedOrNotID`,
+    `tblmadeb`.`nType`,
+    `tblmadeb`.`sChangeField`,
+    `tblmadeb`.`sOfficeOfTibetan`,
+    `tblmadeb`.`sDocumentAttached`,
+    `tblmadeb`.`nCurrentGBSno`,
+    `tblmadeb`.`nPreviousGBSno`,
+    `tblmadeb`.`nSaneyFormNo`,
+    `tblmadeb`.`nReceiptNo`,
+    `tblmadeb`.`dtEmailSend`,
+    `tblmadeb`.`sAlias`,
+    `tblmadeb`.`sApprovedReject`,
+    `tblmadeb`.`dtReject`,
+    `tblmadeb`.`dtReturnEmail`,
+    `tblmadeb`.`dtEntered`,
+    `tblmadeb`.`nEnteredBy`,
+    `tblmadeb`.`dtUpdated`,
+    `tblmadeb`.`nUpdatedBy`
+
+)
+SELECT 
+`madebchange`.`Id`,
+    `madebchange`.`FormNo`,
+    `madebchange`.`IdentityID`,
+    2,
+    `madebchange`.`Name`,
+    null,
+    `madebchange`.`AuthRegionID`,
+    `madebchange`.`ReceivedDate`,
+    `madebchange`.`IssueActionDate`,
+    `madebchange`.`IssuedOrNot`,
+    `madebchange`.`Type`,
+    `madebchange`.`ChangeField`,
+    null,
+    `madebchange`.`DA`,
+    null,
+    null,
+    null,
+    `madebchange`.`ReceiptNo`,
+    `madebchange`.`Email`,
+    null,
+    `madebchange`.`ApprovedReject`,
+    `madebchange`.`RejectDate`,
+    `madebchange`.`ReturnDate`,
+    now(),
+    `madebchange`.`EnteredBy`,
+    now(),
+    `madebchange`.`EnteredBy`
+FROM `greenbookprime`.`madebchange`;
+
+
+
+Insert into ctadb.tblmadeb
+(
+    `tblmadeb`.`_Id`,
+    `tblmadeb`.`nFormNumber`,
+    `tblmadeb`.`sGBID`,
+    `tblmadeb`.`nMadebTypeID`,
+    `tblmadeb`.`sName`,
+    `tblmadeb`.`sFathersName`,
+    `tblmadeb`.`nAuthRegionID`,
+    `tblmadeb`.`dtReceived`,
+    `tblmadeb`.`dtIssueAction`,
+    `tblmadeb`.`nIssuedOrNotID`,
+    `tblmadeb`.`nType`,
+    `tblmadeb`.`sChangeField`,
+    `tblmadeb`.`sOfficeOfTibetan`,
+    `tblmadeb`.`sDocumentAttached`,
+    `tblmadeb`.`nCurrentGBSno`,
+    `tblmadeb`.`nPreviousGBSno`,
+    `tblmadeb`.`nSaneyFormNo`,
+    `tblmadeb`.`nReceiptNo`,
+    `tblmadeb`.`dtEmailSend`,
+    `tblmadeb`.`sAlias`,
+    `tblmadeb`.`sApprovedReject`,
+    `tblmadeb`.`dtReject`,
+    `tblmadeb`.`dtReturnEmail`,
+    `tblmadeb`.`dtEntered`,
+    `tblmadeb`.`nEnteredBy`,
+    `tblmadeb`.`dtUpdated`,
+    `tblmadeb`.`nUpdatedBy`
+
+)
+SELECT 
+`madeblost`.`Id`,
+    `madeblost`.`FormNo`,
+    `madeblost`.`IdentityID`,
+	3,
+    `madeblost`.`Name`,
+null,
+    `madeblost`.`AuthRegionID`,
+    `madeblost`.`ReceivedDate`,
+    `madeblost`.`IssueActionDate`,
+    `madeblost`.`IssuedOrNot`,
+    `madeblost`.`Type`,
+    `madeblost`.`ChangeField`,
+null,
+    `madeblost`.`DA`,
+null,
+null,
+null,
+    `madeblost`.`ReceiptNo`,
+    `madeblost`.`Email`,
+null,
+    `madeblost`.`ApprovedReject`,
+    `madeblost`.`RejectDate`,
+    `madeblost`.`ReturnDate`,
+   now(),
+    `madeblost`.`EnteredBy`,
+   now(),
+    `madeblost`.`EnteredBy`
+FROM `greenbookprime`.`madeblost`;
+
+
+
+Insert into ctadb.tblmadeb
+(
+    `tblmadeb`.`_Id`,
+    `tblmadeb`.`nFormNumber`,
+    `tblmadeb`.`sGBID`,
+    `tblmadeb`.`nMadebTypeID`,
+    `tblmadeb`.`sName`,
+    `tblmadeb`.`sFathersName`,
+    `tblmadeb`.`nAuthRegionID`,
+    `tblmadeb`.`dtReceived`,
+    `tblmadeb`.`dtIssueAction`,
+    `tblmadeb`.`nIssuedOrNotID`,
+    `tblmadeb`.`nType`,
+    `tblmadeb`.`sChangeField`,
+    `tblmadeb`.`sOfficeOfTibetan`,
+    `tblmadeb`.`sDocumentAttached`,
+    `tblmadeb`.`nCurrentGBSno`,
+    `tblmadeb`.`nPreviousGBSno`,
+    `tblmadeb`.`nSaneyFormNo`,
+    `tblmadeb`.`nReceiptNo`,
+    `tblmadeb`.`dtEmailSend`,
+    `tblmadeb`.`sAlias`,
+    `tblmadeb`.`sApprovedReject`,
+    `tblmadeb`.`dtReject`,
+    `tblmadeb`.`dtReturnEmail`,
+    `tblmadeb`.`dtEntered`,
+    `tblmadeb`.`nEnteredBy`,
+    `tblmadeb`.`dtUpdated`,
+    `tblmadeb`.`nUpdatedBy`
+
+)
+SELECT 
+`abroad`.`Id`,
+    `abroad`.`FormNo`,
+    `abroad`.`GB`,
+4,
+    `abroad`.`Name`,
+    `abroad`.`FathersName`,
+    `abroad`.`AuthRegionID`,
+    `abroad`.`ReceivedDate`,
+    `abroad`.`IssueActionDate`,
+    `abroad`.`IssuedOrNot`,
+    `abroad`.`Type`,
+null,
+    `abroad`.`OOT`,
+null,
+    `abroad`.`CurrentGBSno`,
+    `abroad`.`PreviousGBSno`,
+    `abroad`.`SaneyFormNo`,
+    `abroad`.`ReceiptNo`,
+    `abroad`.`Email`,
+    `abroad`.`Alias`,
+null,
+    `abroad`.`RejectDate`,
+    `abroad`.`ReturnDate`,
+   now(),
+    `abroad`.`EnteredBy`,
+   now(),
+    `abroad`.`EnteredBy`
+FROM `greenbookprime`.`abroad`;
+
+
+
+Insert into ctadb.tblmadeb
+(
+    `tblmadeb`.`_Id`,
+    `tblmadeb`.`nFormNumber`,
+    `tblmadeb`.`sGBID`,
+    `tblmadeb`.`nMadebTypeID`,
+    `tblmadeb`.`sName`,
+    `tblmadeb`.`sFathersName`,
+    `tblmadeb`.`nAuthRegionID`,
+    `tblmadeb`.`dtReceived`,
+    `tblmadeb`.`dtIssueAction`,
+    `tblmadeb`.`nIssuedOrNotID`,
+    `tblmadeb`.`nType`,
+    `tblmadeb`.`sChangeField`,
+    `tblmadeb`.`sOfficeOfTibetan`,
+    `tblmadeb`.`sDocumentAttached`,
+    `tblmadeb`.`nCurrentGBSno`,
+    `tblmadeb`.`nPreviousGBSno`,
+    `tblmadeb`.`nSaneyFormNo`,
+    `tblmadeb`.`nReceiptNo`,
+    `tblmadeb`.`dtEmailSend`,
+    `tblmadeb`.`sAlias`,
+    `tblmadeb`.`sApprovedReject`,
+    `tblmadeb`.`dtReject`,
+    `tblmadeb`.`dtReturnEmail`,
+    `tblmadeb`.`dtEntered`,
+    `tblmadeb`.`nEnteredBy`,
+    `tblmadeb`.`dtUpdated`,
+    `tblmadeb`.`nUpdatedBy`
+
+)
+SELECT 
+`bookfull`.`Id`,
+    `bookfull`.`FormNo`,
+    `bookfull`.`GB`,
+5,
+    `bookfull`.`Name`,
+    `bookfull`.`FathersName`,
+    `bookfull`.`AuthRegionID`,
+    `bookfull`.`ReceivedDate`,
+    `bookfull`.`IssueActionDate`,
+    `bookfull`.`IssuedOrNot`,
+    `bookfull`.`Type`,
+null,
+    `bookfull`.`OOT`,
+null,
+    `bookfull`.`CurrentGBSno`,
+    `bookfull`.`PreviousGBSno`,
+    `bookfull`.`SaneyFormNo`,
+null,
+    `bookfull`.`Email`,
+null,
+null,
+    `bookfull`.`RejectDate`,
+    `bookfull`.`ReturnDate`,
+   now(),
+    `bookfull`.`EnteredBy`,
+   now(),
+    `bookfull`.`EnteredBy`
+FROM `greenbookprime`.`bookfull`;
+
+
+
+Insert into ctadb.tblmadeb
+(
+    `tblmadeb`.`_Id`,
+    `tblmadeb`.`nFormNumber`,
+    `tblmadeb`.`sGBID`,
+    `tblmadeb`.`nMadebTypeID`,
+    `tblmadeb`.`sName`,
+    `tblmadeb`.`sFathersName`,
+    `tblmadeb`.`nAuthRegionID`,
+    `tblmadeb`.`dtReceived`,
+    `tblmadeb`.`dtIssueAction`,
+    `tblmadeb`.`nIssuedOrNotID`,
+    `tblmadeb`.`nType`,
+    `tblmadeb`.`sChangeField`,
+    `tblmadeb`.`sOfficeOfTibetan`,
+    `tblmadeb`.`sDocumentAttached`,
+    `tblmadeb`.`nCurrentGBSno`,
+    `tblmadeb`.`nPreviousGBSno`,
+    `tblmadeb`.`nSaneyFormNo`,
+    `tblmadeb`.`nReceiptNo`,
+    `tblmadeb`.`dtEmailSend`,
+    `tblmadeb`.`sAlias`,
+    `tblmadeb`.`sApprovedReject`,
+    `tblmadeb`.`dtReject`,
+    `tblmadeb`.`dtReturnEmail`,
+    `tblmadeb`.`dtEntered`,
+    `tblmadeb`.`nEnteredBy`,
+    `tblmadeb`.`dtUpdated`,
+    `tblmadeb`.`nUpdatedBy`
+
+)
+SELECT 
+`briefgb`.`Id`,
+    `briefgb`.`FormNo`,
+    `briefgb`.`GB`,
+6,
+    `briefgb`.`Name`,
+    `briefgb`.`FathersName`,
+    `briefgb`.`AuthRegionID`,
+    `briefgb`.`ReceivedDate`,
+    `briefgb`.`IssueActionDate`,
+    `briefgb`.`IssuedOrNot`,
+    `briefgb`.`Type`,
+null,
+    `briefgb`.`OOT`,
+null,
+    `briefgb`.`CurrentGBSno`,
+    `briefgb`.`PreviousGBSno`,
+    `briefgb`.`SaneyFormNo`,
+    `briefgb`.`ReceiptNo`,
+    `briefgb`.`Email`,
+null,
+null,
+    `briefgb`.`RejectDate`,
+    `briefgb`.`ReturnDate`,
+   now(),
+    `briefgb`.`EnteredBy`,
+   now(),
+    `briefgb`.`EnteredBy`
+FROM `greenbookprime`.`briefgb`;
+
+-- Correcting Data
+
+
+-- SELECT * FROM ctadb.tblmadeb where dtReceived = '0000-00-00';
+-- SELECT * FROM ctadb.tblmadeb where dtIssueAction = '0000-00-00';
+-- SELECT * FROM ctadb.tblmadeb where dtEmailSend = '0000-00-00';
+-- SELECT * FROM ctadb.tblmadeb where dtReject = '0000-00-00';
+-- SELECT * FROM ctadb.tblmadeb where dtReturnEmail = '0000-00-00';
+-- SELECT * FROM ctadb.tblmadeb where sName = '';
+-- SELECT * FROM ctadb.tblgreenbook where dtDOB = '0000-00-00';
+-- SELECT * FROM ctadb.tblgreenbook where dtFormDate = '0000-00-00';
+-- SELECT * FROM ctadb.tblgreenbook where dtDeceased = '0000-00-00';
+-- SELECT * FROM ctadb.tblgreenbook where dtValidityDate = '0000-00-00';
+
+use ctadb;
+SET SQL_SAFE_UPDATES=0;
+
+update `tblmadeb` 
+set `dtReceived` = null
+where `dtReceived` =  '0000-00-00';
+ 
+update `tblmadeb` 
+set `dtIssueAction` = null
+where `dtIssueAction` =  '0000-00-00';
+ 
+update `tblmadeb` 
+set `dtEmailSend` = null
+where `dtEmailSend` =  '0000-00-00';
+ 
+update `tblmadeb` 
+set `dtReject` = null
+where `dtReject` = '0000-00-00';
+ 
+update `tblmadeb` 
+set `dtReturnEmail` = null
+where `dtReturnEmail` = '0000-00-00';
+ 
+update `tblmadeb` 
+set `sName` = null
+where `sName` = '';
+ 
+update `tblgreenbook` 
+set `dtDOB` = null
+where `dtDOB` =  '0000-00-00';
+ 
+update `tblgreenbook` 
+set `dtFormDate` = null
+where `dtFormDate` =  '0000-00-00';
+
+update `tblgreenbook` 
+set `dtDeceased` = null
+where `dtDeceased` =  '0000-00-00';
+
+update `tblgreenbook` 
+set `dtValidityDate` = null
+where `dtValidityDate` =  '0000-00-00';
