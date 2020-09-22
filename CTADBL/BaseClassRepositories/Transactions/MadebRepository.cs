@@ -299,7 +299,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 sAlias = reader.IsDBNull("sAlias") ? null : (string?)(reader["sAlias"]),
                 sApprovedReject = reader.IsDBNull("sApprovedReject") ? null : (string?)(reader["sApprovedReject"]),
                 dtReject = reader.IsDBNull("dtReject") ? null : (DateTime?)(reader["dtReject"]),
-                dtReturnEmail = (DateTime)reader["dtReturnEmail"],
+                dtReturnEmail = reader.IsDBNull("dtReturnEmail") ? null : (DateTime?)reader["dtReturnEmail"],
                 //Common Props
                 dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
                 nEnteredBy = (int)reader["nEnteredBy"],
