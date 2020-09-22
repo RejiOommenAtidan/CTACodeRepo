@@ -376,23 +376,45 @@ export default function EnhancedTable() {
                     </Grid>
                     <Grid item xs={12} >
                       <FormControl className={classes.formControl}>
-                        <InputLabel id="id_nAuthRegionID">Authority Region</InputLabel>
-                        <Select
+                        <Autocomplete
+                          openOnFocus
+                          clearOnEscape
+                          onChange={
+                            (e, value) => {
+                              if (value !== null) {
+                                console.log(value.id);
+                                setnAuthRegionID(value.id);
+                              }
+                              else {
+                                setnAuthRegionID(0);
+                              }
+                            }
+                          }
                           id="id_nAuthRegionID"
-                          label="Authority Region"
-                          type="text"
-                          onChange={(e) => { setnAuthRegionID(e.target.value) }}
-                          fullWidth
-                          margin="normal"
-                          required
-                          value={nAuthRegionID}
-                        >
-                          {lAuthRegion.map((authRegion) => (
-                            <MenuItem key={authRegion.id} value={authRegion.id}>
-                              {authRegion.sAuthRegion}
-                            </MenuItem>
-                          ))}
-                        </Select>
+                          options={lAuthRegion}
+                          classes={{
+                            option: classes.option,
+                          }}
+                          className={classes.textField}
+                          autoHighlight
+                          getOptionLabel={(option) => option.sAuthRegion}
+                          renderOption={(option) => (
+                            <React.Fragment>
+                              <span>{option.sAuthRegion}</span>
+                            </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Authority Region"
+                              variant="standard"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password', // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
                       </FormControl>
                     </Grid>
                     <Grid item xs={12}>
@@ -502,7 +524,6 @@ export default function EnhancedTable() {
                     <Grid item xs={12}>
                       <FormControl className={classes.formControl}>
                         <Autocomplete
-                          //onSelect={(e) => { console.log(e) }}
                           openOnFocus
                           clearOnEscape
                           onChange={
@@ -728,24 +749,45 @@ export default function EnhancedTable() {
                     <Grid xs={12} style={{ display: 'flex' }}>
                       <Grid item xs={6}>
                         <FormControl className={classes.formControl}>
-                          <InputLabel id="id_sCountryID">Country</InputLabel>
-                          <Select
+                          <Autocomplete
+                            openOnFocus
+                            clearOnEscape
+                            onChange={
+                              (e, value) => {
+                                if (value !== null) {
+                                  console.log(value.id);
+                                  setsCountryID(value.id);
+                                }
+                                else {
+                                  setsCountryID(0);
+                                }
+                              }
+                            }
                             id="id_sCountryID"
-                            label="Country"
-                            type="text"
-                            onChange={(e) => { setsCountryID(e.target.value); }}
-                            fullWidth
-                            margin="normal"
+                            options={lCountry}
+                            classes={{
+                              option: classes.option,
+                            }}
                             className={classes.textField}
-                            required
-                          >
-                            {lCountry.map((country) => (
-                              <MenuItem key={country.id} value={country.id}>
-                                {country.sCountry}
-                              </MenuItem>
-                            ))}
-
-                          </Select>
+                            autoHighlight
+                            getOptionLabel={(option) => option.sCountry}
+                            renderOption={(option) => (
+                              <React.Fragment>
+                                <span>{option.sCountry}</span>
+                              </React.Fragment>
+                            )}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label="Country"
+                                variant="standard"
+                                inputProps={{
+                                  ...params.inputProps,
+                                  autoComplete: 'new-password', // disable autocomplete and autofill
+                                }}
+                              />
+                            )}
+                          />
                         </FormControl>
                       </Grid>
                       <Grid item xs={6}>
@@ -829,23 +871,45 @@ export default function EnhancedTable() {
                     </Grid>
                     <Grid item xs={12}>
                       <FormControl className={classes.formControl}>
-                        <InputLabel id="id_sOriginProvinceID">Province Name</InputLabel>
-                        <Select
+                        <Autocomplete
+                          openOnFocus
+                          clearOnEscape
+                          onChange={
+                            (e, value) => {
+                              if (value !== null) {
+                                console.log(value.id);
+                                setsOriginProvinceID(value.id);
+                              }
+                              else {
+                                setsOriginProvinceID(0);
+                              }
+                            }
+                          }
                           id="id_sOriginProvinceID"
-                          label="Province Name"
-                          type="text"
-                          onChange={(e) => { setsOriginProvinceID(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-
+                          options={lProvince}
+                          classes={{
+                            option: classes.option,
+                          }}
                           className={classes.textField}
-                        >
-                          {lProvince.map((province) => (
-                            <MenuItem key={province.id} value={province.id}>
-                              {province.sProvince}
-                            </MenuItem>
-                          ))}
-                        </Select>
+                          autoHighlight
+                          getOptionLabel={(option) => option.sProvince}
+                          renderOption={(option) => (
+                            <React.Fragment>
+                              <span>{option.sProvince}</span>
+                            </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Province Name"
+                              variant="standard"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password', // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
                       </FormControl>
                     </Grid>
                     <Grid item xs={12}>
@@ -864,23 +928,45 @@ export default function EnhancedTable() {
                     </Grid>
                     <Grid item xs={12}>
                       <FormControl className={classes.formControl}>
-                        <InputLabel id="id_sQualificationID">Qualification</InputLabel>
-                        <Select
+                        <Autocomplete
+                          openOnFocus
+                          clearOnEscape
+                          onChange={
+                            (e, value) => {
+                              if (value !== null) {
+                                console.log(value.id);
+                                setsQualificationID(value.id);
+                              }
+                              else {
+                                setsQualificationID(0);
+                              }
+                            }
+                          }
                           id="id_sQualificationID"
-                          label="Qualification"
-                          type="text"
-                          onChange={(e) => { setsQualificationID(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-
+                          options={lQualification}
+                          classes={{
+                            option: classes.option,
+                          }}
                           className={classes.textField}
-                        >
-                          {lQualification.map((qualification) => (
-                            <MenuItem key={qualification.id} value={qualification.id}>
-                              {qualification.sQualification}
-                            </MenuItem>
-                          ))}
-                        </Select>
+                          autoHighlight
+                          getOptionLabel={(option) => option.sQualification}
+                          renderOption={(option) => (
+                            <React.Fragment>
+                              <span>{option.sQualification}</span>
+                            </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Qualification"
+                              variant="standard"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password', // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
                       </FormControl>
                     </Grid>
                     <Grid item xs={12}>
@@ -937,21 +1023,45 @@ export default function EnhancedTable() {
                     </Grid>
                     <Grid item xs={12}>
                       <FormControl className={classes.formControl}>
-                        <InputLabel id="id_sDOBApprox">DOB Approx</InputLabel>
-                        <Select
+                        <Autocomplete
+                          openOnFocus
+                          clearOnEscape
+                          onChange={
+                            (e, value) => {
+                              if (value !== null) {
+                                console.log(value.id);
+                                setsDOBApprox(value.id);
+                              }
+                              else {
+                                setsDOBApprox(0);
+                              }
+                            }
+                          }
                           id="id_sDOBApprox"
-                          label="DOB Approx"
-                          onChange={(e) => { setsDOBApprox(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          required
-                        >
-                          {lDOBApprox.map((DOBApprox) => (
-                            <MenuItem key={DOBApprox.id} value={DOBApprox.id}>
-                              {DOBApprox.sDOBApproxName}
-                            </MenuItem>
-                          ))}
-                        </Select>
+                          options={lDOBApprox}
+                          classes={{
+                            option: classes.option,
+                          }}
+                          className={classes.textField}
+                          autoHighlight
+                          getOptionLabel={(option) => option.sDOBApproxName}
+                          renderOption={(option) => (
+                            <React.Fragment>
+                              <span>{option.sDOBApproxName}</span>
+                            </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="DOB Approx"
+                              variant="standard"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password', // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
                       </FormControl>
                     </Grid>
                     <Grid item xs={12}>
@@ -996,22 +1106,45 @@ export default function EnhancedTable() {
                     </Grid>
                     <Grid item xs={12}>
                       <FormControl className={classes.formControl}>
-                        <InputLabel id="id_sOccupationID">Occupation</InputLabel>
-                        <Select
+                        <Autocomplete
+                          openOnFocus
+                          clearOnEscape
+                          onChange={
+                            (e, value) => {
+                              if (value !== null) {
+                                console.log(value.id);
+                                setsOccupationID(value.id);
+                              }
+                              else {
+                                setsOccupationID(0);
+                              }
+                            }
+                          }
                           id="id_sOccupationID"
-                          label="Occupation"
-                          type="text"
-                          onChange={(e) => { setsOccupationID(e.target.value); }}
-                          fullWidth
-                          margin="normal"
+                          options={lOccupation}
+                          classes={{
+                            option: classes.option,
+                          }}
                           className={classes.textField}
-                        >
-                          {lOccupation.map((occupation) => (
-                            <MenuItem key={occupation.id} value={occupation.id}>
-                              {occupation.sOccupationDesc}
-                            </MenuItem>
-                          ))}
-                        </Select>
+                          autoHighlight
+                          getOptionLabel={(option) => option.sOccupationDesc}
+                          renderOption={(option) => (
+                            <React.Fragment>
+                              <span>{option.sOccupationDesc}</span>
+                            </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Occupation"
+                              variant="standard"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password', // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
                       </FormControl>
                     </Grid>
                     <Grid item xs={12}>
