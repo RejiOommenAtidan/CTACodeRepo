@@ -8,7 +8,9 @@ import {
   Button,
   Typography,
   FormControl,
-  TextField
+  TextField,
+  Breadcrumbs,
+  Link
   
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
@@ -576,6 +578,13 @@ export default function EnhancedTable() {
           justifyContent="center"
         >
           <Container maxWidth="lg" disableGutters={true}>
+          <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" href="/Home" >
+            Home
+        </Link>
+
+          <Typography color="textPrimary">Sarso Madeb</Typography>
+        </Breadcrumbs>
           <MaterialTable style={{padding:'10px', border:'2px solid grey',borderRadius:'10px'}}
        
        icons={tableIcons}
@@ -593,8 +602,9 @@ export default function EnhancedTable() {
        border:'1px solid lightgrey',
        
       },
-     pageSize:'10',
+     pageSize:10,
      pageSizeOptions:[10,50,100],
+    
      rowStyle: x => {
       if (x.tableData.id % 2) {
           return {backgroundColor: "#f2f2f2"}
