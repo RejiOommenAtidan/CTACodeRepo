@@ -44,10 +44,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
         public IEnumerable<Greenbook> GetAllGreenBooks()
         {
             string sql = @"SELECT `Id`,
+                            `_Id`,
                             `sGBID`,
                             `nAuthRegionID`,
                             `sFirstName`,
-                            `sSecondName`,
+                            `sMiddleName`,
+                            `sLastName`,
                             `sFamilyName`,
                             `sGender`,
                             `dtDOB`,
@@ -110,6 +112,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         public Greenbook GetGreenboookById(string Id)
         {
             string sql = @"SELECT `Id`,
+                            `_Id`,
                             `sGBID`,
                             `nAuthRegionID`,
                             `sFirstName`,
@@ -180,70 +183,70 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Populate Greenbook Records
         public override Greenbook PopulateRecord(MySqlDataReader reader)
         {
-            Greenbook g = new Greenbook();
-            g.Id = (int)reader["Id"];
-            //TODO:
-            //_id= (int)reader["_Id"];
-            g.sGBID = (string)reader["sGBID"];
-            g.nAuthRegionID = (int)reader["nAuthRegionID"];
-            g.sFirstName = (string)reader["sFirstName"];
-            g.sMiddleName = reader.IsDBNull("sMiddleName") ? null : (string)reader["sMiddleName"];
-            g.sLastName = reader.IsDBNull("sLastName") ? null : (string)reader["sLastName"];
-            g.sFamilyName = reader.IsDBNull("sFamilyName") ? null : (string)reader["sFamilyName"];
-            g.sGender = (string)reader["sFamilyName"];
-            g.dtDOB = (DateTime)reader["dtDOB"];
-            g.sDOBApprox = (string)reader["sDOBApprox"];
-            g.sBirthPlace = (string)reader["sBirthPlace"];
-            g.sBirthCountryID = (string)reader["sBirthCountryID"];
-            g.sOriginVillage = (string)reader["sOriginVillage"];
-            g.sOriginProvinceID = (string)reader["sOriginProvinceID"];
-            g.sMarried = (string)reader["sMarried"];
-            g.sOtherDocuments = (string)reader["sOtherDocuments"];
-            g.sResidenceNumber = (string)reader["sResidenceNumber"];
-            g.sQualificationID = (string)reader["sQualificationID"];
-            g.sOccupationID = (string)reader["sOccupationID"];
-            g.sAliasName = (string)reader["sAliasName"];
-            g.sOldGreenBKNo = (string)reader["sOldGreenBKNo"];
-            g.sFstGreenBkNo = (string)reader["sFstGreenBkNo"];
-            g.dtFormDate = (DateTime)reader["dtFormDate"];
-            g.sFathersName = (string)reader["sFathersName"];
-            g.sFathersID = (string)reader["sFathersID"];
-            g.sFathersGBID = (string)reader["sFathersGBID"];
-            g.sMothersName = (string)reader["sMothersName"];
-            g.sMothersID = (string)reader["sMothersID"];
-            g.sMothersGBID = (string)reader["sMothersGBID"];
-            g.sSpouseName = (string)reader["sSpouseName"];
-            g.sSpouseID = (string)reader["sSpouseID"];
-            g.sSpouseGBID = (string)reader["sSpouseGBID"];
-            g.nChildrenM = (int)reader["nChildrenM"];
-            g.nChildrenF = (int)reader["nChildrenF"];
-            g.sAddress1 = (string)reader["sAddress1"];
-            g.sAddress2 = (string)reader["sAddress2"];
-            g.sCity = (string)reader["sAddress2"];
-            g.sState = (string)reader["sState"];
-            g.sPCode = (string)reader["sPCode"];
-            g.sCountryID = (string)reader["sCountryID"];
-            g.sEmail = (string)reader["sEmail"];
-            g.sPhone = (string)reader["sPhone"];
-            g.sFax = (string)reader["sFax"];
-            g.dtDeceased = reader.IsDBNull("dtDeceased") ? null : (DateTime?)(reader["dtDeceased"]);
-            g.sBookIssued = reader.IsDBNull("sBookIssued") ? null : (string)reader["sBookIssued"];
-            g.dtValidityDate = reader.IsDBNull("dtValidityDate") ? null : (DateTime?)(reader["dtValidityDate"]);
-            g.sEnteredDateTime = (string)reader["sEnteredDateTime"];
-            g.sPaidUntil = (string)reader["sPaidUntil"];
-            g.TibetanName = (string)reader["TibetanName"];
-            g.TBUPlaceOfBirth = (string)reader["TBUPlaceOfBirth"];
-            g.TBUOriginVillage = (string)reader["TBUOriginVillage"];
-            g.TBUFathersName = (string)reader["TBUFathersName"];
-            g.TBUMothersName = (string)reader["TBUMothersName"];
-            g.TBUSpouseName = (string)reader["TBUSpouseName"];
+            Greenbook greenbook = new Greenbook();
+            greenbook.Id = (int)reader["Id"];
+            //Checkout
+            greenbook._id = reader.IsDBNull("_Id") ? null : (int?)reader["_Id"];
+            greenbook.sGBID = reader.IsDBNull("sGBID") ? null : (string)reader["sGBID"];
+            greenbook.nAuthRegionID = (int)reader["nAuthRegionID"];
+            greenbook.sFirstName = reader.IsDBNull("sFirstName") ? null : (string)reader["sFirstName"];
+            greenbook.sMiddleName = reader.IsDBNull("sMiddleName") ? null : (string)reader["sMiddleName"];
+            greenbook.sLastName = reader.IsDBNull("sLastName") ? null : (string)reader["sLastName"];
+            greenbook.sFamilyName = reader.IsDBNull("sFamilyName") ? null : (string)reader["sFamilyName"];
+            greenbook.sGender = reader.IsDBNull("sGender") ? null : (string)reader["sGender"];
+            greenbook.dtDOB = reader.IsDBNull("dtDOB") ? null : (DateTime?)(reader["dtDOB"]);
+            greenbook.sDOBApprox = reader.IsDBNull("sDOBApprox") ? null : (string)reader["sDOBApprox"];
+            greenbook.sBirthPlace = reader.IsDBNull("sBirthPlace") ? null : (string)reader["sBirthPlace"];
+            greenbook.sBirthCountryID = reader.IsDBNull("sBirthCountryID") ? null : (string)reader["sBirthCountryID"];
+            greenbook.sOriginVillage = reader.IsDBNull("sOriginVillage") ? null : (string)reader["sOriginVillage"];
+            greenbook.sOriginProvinceID = reader.IsDBNull("sOriginProvinceID") ? null : (string)reader["sOriginProvinceID"];
+            greenbook.sMarried = reader.IsDBNull("sMarried") ? null : (string)reader["sMarried"];
+            greenbook.sOtherDocuments = (string)reader["sOtherDocuments"];
+            greenbook.sResidenceNumber = reader.IsDBNull("sResidenceNumber") ? null : (string)reader["sResidenceNumber"];
+            greenbook.sQualificationID = reader.IsDBNull("sQualificationID") ? null : (string)reader["sQualificationID"];
+            greenbook.sOccupationID = reader.IsDBNull("sOccupationID") ? null : (string)reader["sOccupationID"];
+            greenbook.sAliasName = (string)reader["sAliasName"];
+            greenbook.sOldGreenBKNo = reader.IsDBNull("sOldGreenBKNo") ? null : (string)reader["sOldGreenBKNo"];
+            greenbook.sFstGreenBkNo = reader.IsDBNull("sFstGreenBkNo") ? null : (string)reader["sFstGreenBkNo"];
+            greenbook.dtFormDate = reader.IsDBNull("dtFormDate") ? null : (DateTime?)(reader["dtFormDate"]);
+            greenbook.sFathersName = reader.IsDBNull("sFathersName") ? null : (string)reader["sFathersName"];
+            greenbook.sFathersID = reader.IsDBNull("sFathersID") ? null : (string)reader["sFathersID"];
+            greenbook.sFathersGBID = reader.IsDBNull("sFathersGBID") ? null : (string)reader["sFathersGBID"];
+            greenbook.sMothersName = reader.IsDBNull("sMothersName") ? null : (string)reader["sMothersName"];
+            greenbook.sMothersID = reader.IsDBNull("sMothersID") ? null : (string)reader["sMothersID"];
+            greenbook.sMothersGBID = reader.IsDBNull("sMothersGBID") ? null : (string)reader["sMothersGBID"];
+            greenbook.sSpouseName = reader.IsDBNull("sSpouseName") ? null : (string)reader["sSpouseName"];
+            greenbook.sSpouseID = reader.IsDBNull("sSpouseID") ? null : (string)reader["sSpouseID"];
+            greenbook.sSpouseGBID = reader.IsDBNull("sSpouseGBID") ? null : (string)reader["sSpouseGBID"];
+            greenbook.nChildrenM = (int)reader["nChildrenM"];
+            greenbook.nChildrenF = (int)reader["nChildrenF"];
+            greenbook.sAddress1 = reader.IsDBNull("sAddress1") ? null : (string)reader["sAddress1"];
+            greenbook.sAddress2 = reader.IsDBNull("sAddress2") ? null : (string)reader["sAddress2"];
+            greenbook.sCity = reader.IsDBNull("sCity") ? null : (string)reader["sCity"];
+            greenbook.sState = reader.IsDBNull("sState") ? null : (string)reader["sState"];
+            greenbook.sPCode = reader.IsDBNull("sPCode") ? null : (string)reader["sPCode"];
+            greenbook.sCountryID = reader.IsDBNull("sCountryID") ? null : (string)reader["sCountryID"];
+            greenbook.sEmail = reader.IsDBNull("sEmail") ? null : (string)reader["sEmail"];
+            greenbook.sPhone = reader.IsDBNull("sPhone") ? null : (string)reader["sPhone"];
+            greenbook.sFax = reader.IsDBNull("sFax") ? null : (string)reader["sFax"];
+            greenbook.dtDeceased = reader.IsDBNull("dtDeceased") ? null : (DateTime?)(reader["dtDeceased"]);
+            greenbook.sBookIssued = reader.IsDBNull("sBookIssued") ? null : (string)reader["sBookIssued"];
+            greenbook.dtValidityDate = reader.IsDBNull("dtValidityDate") ? null : (DateTime?)(reader["dtValidityDate"]);
+            greenbook.sPaidUntil = (string)reader["sPaidUntil"];
+            greenbook.TibetanName = (string)reader["TibetanName"];
+            greenbook.TBUPlaceOfBirth = (string)reader["TBUPlaceOfBirth"];
+            greenbook.TBUOriginVillage = (string)reader["TBUOriginVillage"];
+            greenbook.TBUFathersName = (string)reader["TBUFathersName"];
+            greenbook.TBUMothersName = (string)reader["TBUMothersName"];
+            greenbook.TBUSpouseName = (string)reader["TBUSpouseName"];
+            greenbook.sEnteredDateTime = reader.IsDBNull("sEnteredDateTime") ? null : (string)reader["sEnteredDateTime"];
             //Common Props
-            g.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
-            g.nEnteredBy = (int)reader["nEnteredBy"];
-            g.dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]);
-            g.nUpdatedBy = (int)reader["nUpdatedBy"];
+            greenbook.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
+            greenbook.nEnteredBy = (int)reader["nEnteredBy"];
+            greenbook.dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]);
+            greenbook.nUpdatedBy = (int)reader["nUpdatedBy"];
 
-            return g;
+            return greenbook;
         }
         #endregion
     }
