@@ -352,7 +352,7 @@ export default function EnhancedTable() {
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_sGBID"
-                          name="name_GBID"
+                          name="name_sGBID"
                           label="Greenbook ID"
                           type="text"
                           value={sGBID}
@@ -366,10 +366,10 @@ export default function EnhancedTable() {
                           })}
                           required
                         />
-                        {_.get("name_GBID.type", errors) === "required" && (
+                        {_.get("name_sGBID.type", errors) === "required" && (
                           <p>This field is required</p>
                         )}
-                        {_.get("name_GBID.type", errors) === "maxLength" && (
+                        {_.get("name_sGBID.type", errors) === "maxLength" && (
                           <p>GBID cannot exceed 9 characters</p>
                         )}
                       </FormControl>
