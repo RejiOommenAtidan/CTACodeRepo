@@ -363,7 +363,7 @@ export default function EnhancedTable() {
   setSaney(tableRowArray['madeb']['nSaneyFormNo']);
   setDocument(tableRowArray['madeb']['sDocumentAttached']);
   setIssueActionDate(tableRowArray['madeb']['dtIssueAction']);
-  setIssueAction(tableRowArray['madeb']['nIssuedOrNot']);
+  setIssueAction(tableRowArray['madeb']['nIssuedOrNotID']);
   setReturnDate(tableRowArray['madeb']['dtReturnEmail']);
   
   setSarsoObj({
@@ -376,7 +376,7 @@ export default function EnhancedTable() {
     nSaneyFormNo   :tableRowArray['madeb']['nSaneyFormNo'],
     sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],
     dtIssueAction  :tableRowArray['madeb']['dtIssueAction'],
-    nIssuedOrNot  :tableRowArray['madeb']['nIssuedOrNot'],
+    nIssuedOrNotID  :tableRowArray['madeb']['nIssuedOrNotID'],
     dtReturnEmail  :tableRowArray['madeb']['dtReturnEmail']
     });
     //console.log(tableRowArray);
