@@ -21,6 +21,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -71,7 +72,7 @@ export const EditDialog = (props) => {
     nMadebTypeID: madebType,
     sName: name,
     sFathersName:fname,
-    nAuthRegionID:authRegionID , 
+    authorityData:authRegionID , 
     dtReceived:receivedDate,  
     dtIssueAction:issueActionDate,
     nIssuedOrNotID:issueAction,
@@ -81,14 +82,13 @@ export const EditDialog = (props) => {
 
 
  }
- const childrenAuthRegion =  () => { 
-    return (authorityData.map((data) => (<option value={data.id}>{data.sAuthRegion}</option> )  ))};  
-    const optsAuthRegion = childrenAuthRegion();
-    let valueAuthRegion =1;
-   // console.log(authorityData);
+
+
+    let valueAuthRegion =[];
     authorityData.forEach(element => {
     if(element.id === authRegionID){
-        valueAuthRegion = element.id;
+        valueAuthRegion = element;
+        console.log(valueAuthRegion);
     }
     
   });
@@ -97,7 +97,7 @@ export const EditDialog = (props) => {
       return (typeIssuedData.map((data) =>  (<option value={data.id}>{data.sTypeIssued}</option>)))};
     const optsTypeIssued = childrenTypeIssued();
     let valueTypeIssued =1;
-    console.log(issueAction);
+   // console.log(issueAction);
     typeIssuedData.forEach(element => {
      if(element.id === issueAction){
         valueTypeIssued = element.id;
@@ -150,17 +150,47 @@ export const EditDialog = (props) => {
 
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
-                                        <InputLabel id="Auth-label"> Authority</InputLabel>
-                                        <Select
-                                            labelId="Auth-label"
-                                            id="authority"
-                                            value={valueAuthRegion}
-                                            onChange={(e) => { setAuthorityId(e.target.value) }}
-                                            label="Authority"
-                                            children={optsAuthRegion}
-                                        >
-                                           
-                                        </Select>
+                                    <Autocomplete
+                                    openOnFocus
+                                    clearOnEscape
+                                    onChange={  
+                                        (e, value) => {
+                                        if (value !== null) {
+                                            console.log(value.id);
+                                            setAuthorityId(value.id);
+                                        }
+                                        else {
+                                            setAuthorityId(0);
+                                        }
+                                        }
+                                    }
+                                   value={valueAuthRegion} 
+                                    
+                                    id="id_nAuthorityId"
+                                    options={authorityData}
+                                  /*  classes={{
+                                        option: classes.option,
+                                    }}
+                                    className={classes.textField}*/
+                                    autoHighlight
+                                    getOptionLabel={(option) => option.sAuthRegion}
+                                    renderOption={(option) => (
+                                        <React.Fragment>
+                                        <span>{option.sAuthRegion}</span>
+                                        </React.Fragment>
+                                    )}
+                                    renderInput={(params) => (
+                                        <TextField
+                                        {...params}
+                                        label="Authority"
+                                        variant="standard"
+                                        inputProps={{
+                                            ...params.inputProps,
+                                autoComplete: 'new-password', // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -368,17 +398,46 @@ export const AddDialog = (props) => {
 
                                <Grid item xs={12} sm={6}>
                                    <FormControl className={props.classes.formControl}>
-                                       <InputLabel id="Auth-label"> Authority</InputLabel>
-                                       <Select
-                                           labelId="Auth-label"
-                                           id="authority"
-                                           //value={}
-                                           // onChange={handleChange}
-                                           label="Authority"
-                                           children = {optsAuthRegion}
-                                           onChange={(e) => { setAuthority(e.target.value) }}
-                                       >
-                                       </Select>
+                                   <Autocomplete
+                                    openOnFocus
+                                    clearOnEscape
+                                    onChange={  
+                                        (e, value) => {
+                                        if (value !== null) {
+                                            console.log(value.id);
+                                            setAuthority(value.id);
+                                        }
+                                        else {
+                                            setAuthority(0);
+                                        }
+                                        }
+                                    }
+                                    
+                                    id="id_nAuthorityId"
+                                    options={authorityData}
+                                  /*  classes={{
+                                        option: classes.option,
+                                    }}
+                                    className={classes.textField}*/
+                                    autoHighlight
+                                    getOptionLabel={(option) => option.sAuthRegion}
+                                    renderOption={(option) => (
+                                        <React.Fragment>
+                                        <span>{option.sAuthRegion}</span>
+                                        </React.Fragment>
+                                    )}
+                                    renderInput={(params) => (
+                                        <TextField
+                                        {...params}
+                                        label="Authority"
+                                        variant="standard"
+                                        inputProps={{
+                                            ...params.inputProps,
+                                autoComplete: 'new-password', // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
                                    </FormControl>
                                </Grid>
                                <Grid item xs={12} sm={6}>

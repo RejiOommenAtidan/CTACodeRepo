@@ -29,7 +29,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import Chip from '@material-ui/core/Chip';
-
+import Moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
@@ -155,6 +155,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable() {
+  Moment.locale('en');
   const classes = useStyles();
  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
@@ -235,7 +236,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.nFormNumber",
       title: "Form Number",
-      
+      filterPlaceholder:'Search..',
       cellStyle: {
         padding:'5px',
         
@@ -244,7 +245,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReceived",
       title: "Received Date",
-      
+      render: rowData => Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD'),
       cellStyle: {
         padding:'5px',
         
@@ -298,7 +299,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtIssueAction",
       title: "Issue Action Date",
-      
+      render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
       cellStyle: {
         padding:'5px',
         
@@ -316,7 +317,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReturnEmail",
       title: "Return Date",
-      
+      render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
       cellStyle: {
         padding:'5px',
         
@@ -600,6 +601,7 @@ export default function EnhancedTable() {
           justifyContent="center"
           style={{padding:0,width:'100%'}}
         >
+          
           <Container  style={{padding:0,width:'100%'}} disableGutters={true}>
           <Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/Home" >
