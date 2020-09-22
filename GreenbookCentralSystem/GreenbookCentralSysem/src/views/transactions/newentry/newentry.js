@@ -140,7 +140,7 @@ export default function EnhancedTable() {
   const [sGBID, setsGBID] = useState('');
   const [nAuthRegionID, setnAuthRegionID] = useState('');
   const [sFirstName, setsFirstName] = useState('');
-  const [sSecondName, setsSecondName] = useState('');
+  const [sMiddleName, setsMiddleName] = useState('');
   const [sFamilyName, setsFamilyName] = useState('');
   const [sGender, setsGender] = useState('');
   const [dtDOB, setdtDOB] = useState(new Date());
@@ -167,8 +167,8 @@ export default function EnhancedTable() {
   const [sSpouseName, setsSpouseName] = useState('');
   const [sSpouseID, setsSpouseID] = useState('');
   const [sSpouseGBID, setsSpouseGBID] = useState('');
-  const [nChildrenM, setnChildrenM] = useState('');
-  const [nChildrenF, setnChildrenF] = useState('');
+  const [nChildrenM, setnChildrenM] = useState(0);
+  const [nChildrenF, setnChildrenF] = useState(0);
   const [sAddress1, setsAddress1] = useState('');
   const [sAddress2, setsAddress2] = useState('');
   const [sCity, setsCity] = useState('');
@@ -243,7 +243,7 @@ export default function EnhancedTable() {
       sGBID,
       nAuthRegionID,
       sFirstName,
-      sSecondName,
+      sMiddleName,
       sFamilyName,
       sGender,
       dtDOB,
@@ -294,29 +294,30 @@ export default function EnhancedTable() {
       TBUSpouseName
     };
 
-    console.info(greenbook);
+    console.info(JSON.stringify(greenbook));
 
-    // axios.post(`/Greenbbok/AddGreenbook/`, greenbook)
-    //   .then(resp => {
-    //     if (resp.status === 200) {
-    //       alert("Success");
-    //     }
-    //   })
-    //   .catch(error => {
-    //     if (error.response) {
-    //       console.error(error.response.data);
-    //       console.error(error.response.status);
-    //       console.error(error.response.headers);
-    //     } else if (error.request) {
-    //       console.warn(error.request);
-    //     } else {
-    //       console.error('Error', error.message);
-    //     }
-    //     console.log(error.config);
-    //   })
-    //   .then(release => {
-    //     //console.log(release); => udefined
-    //   });
+    axios.post(`/Greenbook/AddGreenbook/`, greenbook)
+      .then(resp => {
+        if (resp.status === 200) {
+          alert("Success");
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+          // console.error(error.response.errors);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   };
 
   // console.log(watch("name_sEmail"));
@@ -435,10 +436,10 @@ export default function EnhancedTable() {
                     <Grid item xs={12}>
                       <FormControl className={classes.formControl}>
                         <TextField
-                          id="id_sSecondName"
-                          label="Second Name"
+                          id="id_sMiddleName"
+                          label="Middle Name"
                           type="text"
-                          onChange={(e) => { setsSecondName(e.target.value); }}
+                          onChange={(e) => { setsMiddleName(e.target.value); }}
                           fullWidth
                           margin="normal"
 
@@ -530,10 +531,10 @@ export default function EnhancedTable() {
                             (e, value) => {
                               if (value !== null) {
                                 console.log(value.id);
-                                setsBirthCountryID(value.id);
+                                setsBirthCountryID(value.id.toString());
                               }
                               else {
-                                setsBirthCountryID(0);
+                                setsBirthCountryID("0");
                               }
                             }
                           }
@@ -756,10 +757,10 @@ export default function EnhancedTable() {
                               (e, value) => {
                                 if (value !== null) {
                                   console.log(value.id);
-                                  setsCountryID(value.id);
+                                  setsCountryID(value.id.toString());
                                 }
                                 else {
-                                  setsCountryID(0);
+                                  setsCountryID("0");
                                 }
                               }
                             }
@@ -849,6 +850,7 @@ export default function EnhancedTable() {
                             fullWidth
                             margin="normal"
                             className={classes.textField}
+                            onChange={(e)=>{setsGender(e.target.value)}}
                           >
                             <MenuItem value={"Male"}>Male</MenuItem>
                             <MenuItem value={"Female"}>Female</MenuItem>
@@ -878,10 +880,10 @@ export default function EnhancedTable() {
                             (e, value) => {
                               if (value !== null) {
                                 console.log(value.id);
-                                setsOriginProvinceID(value.id);
+                                setsOriginProvinceID(value.id.toString());
                               }
                               else {
-                                setsOriginProvinceID(0);
+                                setsOriginProvinceID("0");
                               }
                             }
                           }
@@ -935,10 +937,10 @@ export default function EnhancedTable() {
                             (e, value) => {
                               if (value !== null) {
                                 console.log(value.id);
-                                setsQualificationID(value.id);
+                                setsQualificationID(value.id.toString());
                               }
                               else {
-                                setsQualificationID(0);
+                                setsQualificationID("0");
                               }
                             }
                           }
@@ -1030,10 +1032,10 @@ export default function EnhancedTable() {
                             (e, value) => {
                               if (value !== null) {
                                 console.log(value.id);
-                                setsDOBApprox(value.id);
+                                setsDOBApprox(value.id.toString());
                               }
                               else {
-                                setsDOBApprox(0);
+                                setsDOBApprox("0");
                               }
                             }
                           }
@@ -1113,7 +1115,7 @@ export default function EnhancedTable() {
                             (e, value) => {
                               if (value !== null) {
                                 console.log(value.id);
-                                setsOccupationID(value.id);
+                                setsOccupationID(value.id.toString());
                               }
                               else {
                                 setsOccupationID(0);
