@@ -116,9 +116,12 @@ export const AddDialog = (props) => {
   const [countryID, setCountryID] = useState(ids[0]);
   const [authRegion, setAuthRegion] = useState('');
   
-  const children =  () => { 
-    return (ids.filter((data, index, array) => (array.indexOf(data) == index)).map((filteredData) =>  (<option value={filteredData}>{filteredData}</option>)))};
-  const opts = children();
+  // const children =  () => { 
+  //   return (ids.filter((data, index, array) => (array.indexOf(data) == index)).map((filteredData) =>  (<option value={filteredData}>{filteredData}</option>)))};
+    const children =  () => { 
+      return (props.countryList.map((country) =>  (<option value={country.sCountryID}>{country.sCountry}</option>)))};
+    
+    const opts = children();
   //const opts1 = (<option>CJ</option>);
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
