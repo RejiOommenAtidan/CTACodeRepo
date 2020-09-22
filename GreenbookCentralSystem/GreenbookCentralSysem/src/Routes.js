@@ -15,6 +15,7 @@ import {
   MinimalLayout,
   PresentationLayout
 } from './layout-blueprints';
+import { Edit } from '@material-ui/icons';
 
 // Example Pages
 
@@ -46,6 +47,7 @@ const Sarso = lazy(() => import('./views/madeb/sarso'));
 
 
 const NewEntry = lazy(() => import('./views/transactions/newentry/newentry'));
+const EditEntry = lazy(() => import('./views/transactions/newentry/editentry'));
 const SarsoNewGBEntry = lazy(() => import('./views/transactions/SarsoNewGBEntry/SarsoNewGBEntry'));
 
 const Routes = () => {
@@ -167,7 +169,8 @@ const Routes = () => {
                 '/UserRights',
                 '/TypeIssued',
                 '/Sarso',
-                '/SarsoNewGBEntry'
+                '/SarsoNewGBEntry',
+                '/EditEntry/:GBID'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -194,6 +197,7 @@ const Routes = () => {
                      <Route path="/TypeIssued" component={TypeIssued} />
                      <Route path="/Sarso" component={Sarso} />
                      <Route path="/SarsoNewGBEntry" component={SarsoNewGBEntry} />
+                     <Route path="/EditEntry/:GBID" component={EditEntry} />
                   </motion.div>
                 </Switch>
               </LeftSidebar>
