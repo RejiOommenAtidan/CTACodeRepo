@@ -497,6 +497,41 @@ null,
     `briefgb`.`EnteredBy`
 FROM `greenbookprime`.`briefgb`;
 
+
+
+Insert into ctadb.tbluser
+(
+    `tbluser`.`Id`,
+    `tbluser`.`_Id`,
+    `tbluser`.`sUsername`,
+    `tbluser`.`sFullName`,
+    `tbluser`.`sOffice`,
+    `tbluser`.`sPassword`,
+    `tbluser`.`nUserRightsId`,
+    `tbluser`.`nActive`,
+    `tbluser`.`dtEntered`,
+    `tbluser`.`nEnteredBy`,
+    `tbluser`.`dtUpdated`,
+    `tbluser`.`nUpdatedBy`
+)
+SELECT 
+	`user`.`id`,
+	`user`.`id`,
+	`user`.`username`,
+	`user`.`name`,
+	`user`.`Office`,
+	`user`.`password`,
+	`user`.`rights`,
+	`user`.`deleteTab`,
+	1,
+	now(),
+	1,
+	now()
+FROM `greenbookprime`.`user`;
+
+
+
+
 -- Correcting Data
 
 
@@ -553,3 +588,69 @@ where `dtDeceased` =  '0000-00-00';
 update `tblgreenbook` 
 set `dtValidityDate` = null
 where `dtValidityDate` =  '0000-00-00';
+
+
+use ctadb;
+DROP table IF EXISTS `tbluser`;
+
+CREATE TABLE `tbluser` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `_Id` int(11) DEFAULT NULL,
+  `sUsername` text NOT NULL,
+  `sFullName` text NOT NULL,
+  `sOffice` text NOT NULL,
+  `sPassword` text NOT NULL,
+  `nUserRightsId` int(11) NOT NULL,
+  `nActive` tinyint(1) NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=MyISAM AUTO_INCREMENT=91 DEFAULT CHARSET=latin1;
+
+
+Insert into ctadb.tbluser
+(
+    `tbluser`.`Id`,
+    `tbluser`.`_Id`,
+    `tbluser`.`sUsername`,
+    `tbluser`.`sFullName`,
+    `tbluser`.`sOffice`,
+    `tbluser`.`sPassword`,
+    `tbluser`.`nUserRightsId`,
+    `tbluser`.`nActive`,
+    `tbluser`.`dtEntered`,
+    `tbluser`.`nEnteredBy`,
+    `tbluser`.`dtUpdated`,
+    `tbluser`.`nUpdatedBy`
+)
+SELECT 
+	`user`.`id`,
+	`user`.`id`,
+	`user`.`username`,
+	`user`.`name`,
+	`user`.`Office`,
+	`user`.`password`,
+	`user`.`rights`,
+	IF(`user`.`deleteTab`=1,0,1),
+	1,
+	now(),
+	1,
+	now()
+FROM `greenbookprime`.`user`;
+
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
+	VALUES ('pankaj', 'Pankaj Gupta', 'TCRC Office', 'pankaj123', '5', '1',1,now(),1,now());
+
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
+	VALUES ('reji', 'Reji Oommen', 'TCRC Office', 'reji123', '5', '1',1,now(),1,now());
+
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
+	VALUES ('malay', 'Malay', 'TCRC Office', 'malay123', '5', '1',1,now(),1,now());
+
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
+	VALUES ('aayush', 'Aayush', 'TCRC Office', 'aayush123', '5', '1',1,now(),1,now());
+	
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('rajen', 'Rajen', 'TCRC Office', 'rajen123', '5', '1',1,now(),1,now());
