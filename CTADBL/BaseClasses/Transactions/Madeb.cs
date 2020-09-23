@@ -15,11 +15,11 @@ namespace CTADBL.BaseClasses.Transactions
         private int _nFormNumber;
         private string? _sGBID;
         private int? _nMadebTypeID;
-        private string _sName;
+        private string? _sName;
         private string? _sFathersName;
         private int _nAuthRegionID;
-        private DateTime _dtReceived;
-        private DateTime _dtIssueAction;
+        private DateTime? _dtReceived;
+        private DateTime? _dtIssueAction;
         private int _nIssuedOrNotID;
         private int _nType;
         private string? _sChangeField;
@@ -43,11 +43,11 @@ namespace CTADBL.BaseClasses.Transactions
         public int nFormNumber { get { return _nFormNumber; } set { _nFormNumber = value; } }
         public string? sGBID { get { return _sGBID; } set { _sGBID = value; } }
         public int? nMadebTypeID { get { return _nMadebTypeID; } set { _nMadebTypeID = value; } }
-        public string sName { get { return _sName; } set { _sName = value; } }
+        public string? sName { get { return _sName; } set { _sName = value; } }
         public string? sFathersName { get { return _sFathersName; } set { _sFathersName = value; } }
         public int nAuthRegionID { get { return _nAuthRegionID; } set { _nAuthRegionID = value; } }
-        public DateTime dtReceived { get { return _dtReceived; } set { _dtReceived = value; } }
-        public DateTime dtIssueAction { get { return _dtIssueAction; } set { _dtIssueAction = value; } }
+        public DateTime? dtReceived { get { return _dtReceived; } set { _dtReceived = value; } }
+        public DateTime? dtIssueAction { get { return _dtIssueAction; } set { _dtIssueAction = value; } }
         public int nIssuedOrNotID { get { return _nIssuedOrNotID; } set { _nIssuedOrNotID = value; } }
         public int nType { get { return _nType; } set { _nType = value; } }
         public string? sChangeField { get { return _sChangeField; } set { _sChangeField = value; } }
