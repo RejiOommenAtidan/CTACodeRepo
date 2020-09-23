@@ -681,11 +681,7 @@ export default function EnhancedTable() {
       <>
        <Grid container spacing={1}>
         <Grid item xs={12}>
-         
-        
-     
-          
-         
+ 
           <Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/Home" >
             Home
