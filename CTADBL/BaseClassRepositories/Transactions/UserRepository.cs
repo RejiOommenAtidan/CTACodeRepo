@@ -76,7 +76,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `dtUpdated`,
                             `nUpdatedBy`
                         FROM `tbluser`
-                        WHERE Id =@Id";
+                        WHERE Id = @Id";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("Id", Id);
