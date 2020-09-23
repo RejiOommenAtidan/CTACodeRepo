@@ -990,8 +990,7 @@ BEGIN
 	select Id, sMadebDisplayName from lstmadebtype;
     select ID, sAuthRegion from lstauthregion;
     select Id, sTypeIssued from lsttypeissued;
-	select 7000 as nFormNumber;
-	-- select IF(IFNULL(nFormNumber,0), IFNULL(nFormNumber,0) + 1,7000) as nFormNumber from tblmadeb order by nFormNumber desc limit 0,1;
+	select IF(IFNULL(nFormNumber,0), IFNULL(nFormNumber,0) + 1,7000) as nFormNumber from tblmadeb order by nFormNumber desc limit 0,1;
 END$$
 
 DELIMITER ;
