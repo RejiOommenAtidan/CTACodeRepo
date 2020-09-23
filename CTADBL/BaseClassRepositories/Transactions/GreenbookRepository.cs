@@ -102,7 +102,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `TBUFathersName`,
                             `TBUMothersName`,
                             `TBUSpouseName`
-                        FROM `tblgreenbook`;";
+                        FROM `tblgreenbook`
+                        ORDER BY Id ASC
+                        LIMIT 500;";
             using (var command = new MySqlCommand(sql))
             {
                 return GetRecords(command);

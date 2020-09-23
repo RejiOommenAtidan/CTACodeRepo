@@ -49,6 +49,7 @@ const Norchoe = lazy(() => import('./views/madeb/norchoe'));
 const BookFull = lazy(() => import('./views/madeb/bookfull'));
 
 //Greenbook Pages
+const Greenbook = lazy(() => import('./views/transactions/greenbook/greenbook'));
 const NewEntry = lazy(() => import('./views/transactions/newentry/newentry'));
 const EditEntry = lazy(() => import('./views/transactions/newentry/editentry'));
 const SarsoNewGBEntry = lazy(() => import('./views/transactions/SarsoNewGBEntry/SarsoNewGBEntry'));
@@ -175,6 +176,7 @@ const Routes = () => {
                 '/Sarso',
                 '/Norchoe',
                 '/BookFull',
+                '/Greenbooks',
                 '/SarsoNewGBEntry',
                 '/EditEntry/:GBID'
               ]}>
@@ -205,6 +207,7 @@ const Routes = () => {
                      <Route path="/Sarso" component={Sarso} />
                      <Route path="/Norchoe" component={Norchoe} />
                      <Route path="/BookFull" component={BookFull} />
+                     <Route path="/Greenbooks" component={Greenbook} />
                      <Route path="/SarsoNewGBEntry" component={SarsoNewGBEntry} />
                      <Route path="/EditEntry/:GBID" component={EditEntry} />
                   </motion.div>
