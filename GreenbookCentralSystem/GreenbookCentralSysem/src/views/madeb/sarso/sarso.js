@@ -10,7 +10,8 @@ import {
   FormControl,
   TextField,
   Breadcrumbs,
-  Link
+  Link,
+  Paper
   
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
@@ -235,10 +236,18 @@ export default function EnhancedTable() {
     },
     {
       field: "madeb.nFormNumber",
-      title: "Form Number",
+      title: "Form No.",
       filterPlaceholder:'Search..',
+      headerStyle: {
+        padding:'0px',
+        width:'7%',
+        textAlign:'left'
+      },
       cellStyle: {
-        padding:'5px',
+       // padding:'0px',
+        padding:'10px',
+        width:'7%',
+        textAlign:'left'
         
       },
     },
@@ -246,8 +255,16 @@ export default function EnhancedTable() {
       field: "madeb.dtReceived",
       title: "Received Date",
       render: rowData => Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD'),
+      headerStyle: {
+        padding:'0px',
+        width:'9%',
+        textAlign:'left'
+      },
       cellStyle: {
-        padding:'5px',
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'9%',
+        textAlign:'left'
         
       },
     },
@@ -255,8 +272,16 @@ export default function EnhancedTable() {
       field: "sAuthRegion",
       title: "Authority",
      
+      headerStyle: {
+        padding:'0px',
+        width:'10%',
+        textAlign:'left'
+      },
       cellStyle: {
-        padding:'5px',
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'10%',
+        textAlign:'left'
         
       },
     },
@@ -264,8 +289,16 @@ export default function EnhancedTable() {
       field: "madeb.sName",
       title: "Name",
      
+      headerStyle: {
+        padding:'0px',
+        width:'15%',
+        textAlign:'left'
+      },
       cellStyle: {
-        padding:'5px',
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'15%',
+        textAlign:'left'
         
       },
     },
@@ -273,15 +306,23 @@ export default function EnhancedTable() {
       field: "madeb.sFathersName",
       title: "Father's Name",
       
+      headerStyle: {
+        padding:'0px',
+        width:'15%',
+        textAlign:'left'
+      },
       cellStyle: {
-        padding:'5px',
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'15%',
+        textAlign:'left'
         
       },
     },
     {
       field: "madeb.nSaneyFormNo",
       title: "Saney Form No",
-      
+      hidden:true,
       cellStyle: {
         padding:'5px',
         
@@ -289,19 +330,35 @@ export default function EnhancedTable() {
     },
     {
       field: "madeb.sDocumentAttached",
-      title: "Document attached",
+      title: "Document Att.",
       
+      headerStyle: {
+        padding:'0px',
+        width:'10%',
+        textAlign:'left'
+      },
       cellStyle: {
-        padding:'5px',
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'10%',
+        textAlign:'left'
         
       },
     },
     {
       field: "madeb.dtIssueAction",
-      title: "Issue Action Date",
+      title: "Issue Action Dt.",
       render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
+      headerStyle: {
+        padding:'0px',
+        width:'10%',
+        textAlign:'left'
+      },
       cellStyle: {
-        padding:'5px',
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'10%',
+        textAlign:'left'
         
       },
     },
@@ -309,8 +366,16 @@ export default function EnhancedTable() {
       field: "sTypeIssued",
       title: "Issue Action",
       
+      headerStyle: {
+        padding:'0px',
+        width:'9%',
+        textAlign:'left'
+      },
       cellStyle: {
-        padding:'5px',
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'9%',
+        textAlign:'left'
         
       },
     },
@@ -318,8 +383,16 @@ export default function EnhancedTable() {
       field: "madeb.dtReturnEmail",
       title: "Return Date",
       render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
+      headerStyle: {
+        padding:'0px',
+        width:'8%',
+        textAlign:'left'
+      },
       cellStyle: {
-        padding:'5px',
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'8%',
+        textAlign:'left'
         
       },
           },
@@ -335,8 +408,15 @@ export default function EnhancedTable() {
       <EmailIcon/>
       </IconButton> ,
       
+      headerStyle: {
+        padding:'0px',
+        width:'1%',
+        textAlign:'center'
+      },
       cellStyle: {
-        padding:'5px',
+        padding:'0px',
+        width:'1%',
+        textAlign:'center'
         
       },
     },
@@ -351,9 +431,15 @@ export default function EnhancedTable() {
     >
       <EditOutlinedIcon/>
       </IconButton> ,
-      
+      headerStyle: {
+        padding:'0px',
+        width:'1%',
+        textAlign:'center'
+      },
       cellStyle: {
-        padding:'5px',
+        padding:'0px',
+        width:'1%',
+        textAlign:'center'
         
       },
     },
@@ -592,17 +678,14 @@ export default function EnhancedTable() {
 
   return (
 
-      
-        <Box
-          display="flex"
-          flexDirection="column"
-          height="100%"
-          width="100%"
-          justifyContent="center"
-          style={{padding:0,width:'100%'}}
-        >
+      <>
+       <Grid container spacing={1}>
+        <Grid item xs={12}>
+         
+        
+     
           
-          <Container  style={{padding:0,width:'100%'}} disableGutters={true}>
+         
           <Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/Home" >
             Home
@@ -627,16 +710,16 @@ export default function EnhancedTable() {
        border:'1px solid lightgrey',
        
       },
-     pageSize:10,
-     pageSizeOptions:[10,50,100],
+     pageSize:15,
+     pageSizeOptions:[10,15,20,50,100],
     
      rowStyle: x => {
       if (x.tableData.id % 2) {
           return {backgroundColor: "#f2f2f2"}
       }
-    }
-
-
+     
+    },
+  
       
     }}
     actions={[
@@ -670,9 +753,9 @@ export default function EnhancedTable() {
               editAPICall={editAPICall}
             />}
           
-          </Container>
-        </Box>
-   
+          </Grid>
+        </Grid>
+            </>
 
 
           
