@@ -921,6 +921,16 @@ CREATE TABLE `lnkGBChildren` (
   KEY `sGBIDParent` (`sGBIDParent`)
 ) ENGINE=InnoDB AUTO_INCREMENT=109498 DEFAULT CHARSET=latin1;
 
+CREATE TABLE `lnkFeatureUserRights` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `nFeatureID` int(11) Not NULL,
+  `nUserRightsID` int(11) Not NULL,
+  `nRights` tinyint(1) NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
 
 CREATE TABLE `tblActionLogger` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
