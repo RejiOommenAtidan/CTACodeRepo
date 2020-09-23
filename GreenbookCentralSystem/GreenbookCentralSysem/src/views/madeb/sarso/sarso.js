@@ -36,7 +36,8 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
 
 // Local import
-import { AddDialog, DeleteDialog, EditDialog } from './dialog';
+import { AddDialog,  EditDialog } from './dialog';
+import {EmailDialog} from '../email';
 import MaterialTable, { MTableToolbar }  from 'material-table';
 import { forwardRef } from 'react';
 
@@ -160,6 +161,7 @@ export default function EnhancedTable() {
   const classes = useStyles();
  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
+  const [emailModal, setEmailModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   // const [loadingProp, setloadingProp] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -178,7 +180,9 @@ export default function EnhancedTable() {
   const [issueActionDate, setIssueActionDate] = React.useState('');
   const [issueAction, setIssueAction] = React.useState(0);
   const [returnDate, setReturnDate] = React.useState('');
+  const [rejectDate, setRejectDate] = React.useState('');
   const [sarsoObj, setSarsoObj] = useState({});
+  const [emailInObj, setEmailInObj] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
@@ -195,6 +199,14 @@ export default function EnhancedTable() {
   };
   const handleAddClickClose = () => {
     setAddModal(false);
+  };
+
+  const handleEmailClickOpen = () => {
+    setEmailModal(true);
+  };
+  const handleEmailClickClose = () => {
+    
+    setEmailModal(false);
   };
 
   const options = {
@@ -395,7 +407,25 @@ export default function EnhancedTable() {
         textAlign:'left'
         
       },
-          },
+    },
+    {
+      field: "madeb.dtReject",
+      title: "Reject Date",
+      render: rowData => Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD'),
+      headerStyle: {
+        padding:'0px',
+        width:'8%',
+        textAlign:'left'
+      },
+      cellStyle: {
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'8%',
+        textAlign:'left'
+        
+      },
+    },
+
     {
       field: "email",
       title: "Email",
@@ -403,7 +433,7 @@ export default function EnhancedTable() {
       sort: false,
       export:false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => { editClick(rowData) }}  style={{padding:'0px'}}
+      onClick={() => { emailClick(rowData) }}  style={{padding:'0px'}}
     >
       <EmailIcon/>
       </IconButton> ,
@@ -427,7 +457,7 @@ export default function EnhancedTable() {
       export:false,
       filtering:false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => {editClick(rowData) }}  style={{padding:'0px'}}
+      onClick={() => {  editClick(rowData) }}  style={{padding:'0px'}}
     >
       <EditOutlinedIcon/>
       </IconButton> ,
@@ -462,37 +492,52 @@ export default function EnhancedTable() {
    
   ];
 
-  const editClick = (tableRowArray) => { 
-
-  setId(tableRowArray['madeb']['id']);
-  setFormNumber(tableRowArray['madeb']['nFormNumber']);
-  setAuthority(tableRowArray['sAuthRegion']);
-  setReceivedDate(tableRowArray['madeb']['dtReceived']);
-  setName(tableRowArray['madeb']['sName']);
-  setFname(tableRowArray['madeb']['sFathersName']);
-  setSaney(tableRowArray['madeb']['nSaneyFormNo']);
-  setDocument(tableRowArray['madeb']['sDocumentAttached']);
-  setIssueActionDate(tableRowArray['madeb']['dtIssueAction']);
-  setIssueAction(tableRowArray['madeb']['nIssuedOrNotID']);
-  setReturnDate(tableRowArray['madeb']['dtReturnEmail']);
+  const emailClick = (tableRowArray) => { 
+   
+    setId(tableRowArray['madeb']['id']);
+    setFormNumber(tableRowArray['madeb']['nFormNumber']);
+    setName(tableRowArray['madeb']['sName']);
   
-  setSarsoObj({
-    id: tableRowArray['madeb']['id'],
-    nFormNumber: tableRowArray['madeb']['nFormNumber'],
-    dtReceived: tableRowArray['madeb']['dtReceived'],
-    nAuthRegionID: tableRowArray['madeb']['nAuthRegionID'],
-    sName: tableRowArray['madeb']['sName'],
-    sFathersName    :tableRowArray['madeb']['sFathersName'],
-    nSaneyFormNo   :tableRowArray['madeb']['nSaneyFormNo'],
-    sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],
-    dtIssueAction  :tableRowArray['madeb']['dtIssueAction'],
-    nIssuedOrNotID  :tableRowArray['madeb']['nIssuedOrNotID'],
-    dtReturnEmail  :tableRowArray['madeb']['dtReturnEmail']
+    setEmailInObj({
+        id: tableRowArray['madeb']['id'],
+        nFormNumber: tableRowArray['madeb']['nFormNumber'],
+        sName: tableRowArray['madeb']['sName'],
+        madebName:'Sarso'
     });
-    //console.log(tableRowArray);
-    setEditModal(true);
+    
+    setEmailModal(true);
   }
-
+  const editClick = (tableRowArray) => { 
+ 
+    setId(tableRowArray['madeb']['id']);
+    setFormNumber(tableRowArray['madeb']['nFormNumber']);
+    setAuthority(tableRowArray['sAuthRegion']);
+    setReceivedDate(tableRowArray['madeb']['dtReceived']);
+    setName(tableRowArray['madeb']['sName']);
+    setFname(tableRowArray['madeb']['sFathersName']);
+    setSaney(tableRowArray['madeb']['nSaneyFormNo']);
+    setDocument(tableRowArray['madeb']['sDocumentAttached']);
+    setIssueActionDate(tableRowArray['madeb']['dtIssueAction']);
+    setIssueAction(tableRowArray['madeb']['nIssuedOrNotID']);
+    setReturnDate(tableRowArray['madeb']['dtReturnEmail']);
+    
+    setSarsoObj({
+      id: tableRowArray['madeb']['id'],
+      nFormNumber: tableRowArray['madeb']['nFormNumber'],
+      dtReceived: tableRowArray['madeb']['dtReceived'],
+      nAuthRegionID: tableRowArray['madeb']['nAuthRegionID'],
+      sName: tableRowArray['madeb']['sName'],
+      sFathersName    :tableRowArray['madeb']['sFathersName'],
+      nSaneyFormNo   :tableRowArray['madeb']['nSaneyFormNo'],
+      sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],
+      dtIssueAction  :tableRowArray['madeb']['dtIssueAction'],
+      nIssuedOrNotID  :tableRowArray['madeb']['nIssuedOrNotID'],
+      dtReturnEmail  :tableRowArray['madeb']['dtReturnEmail']
+      });
+     
+      console.log(sarsoObj);
+      setEditModal(true);
+    }
   const editAPICall = (madeb) => {
     // let CountryID = countryPK;
     // let countryToUpdate = {
@@ -500,6 +545,8 @@ export default function EnhancedTable() {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
+    console.log(madeb);
+    
     axios.post(`/Madeb/EditMadeb/ID=` + id, madeb/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
@@ -591,7 +638,8 @@ export default function EnhancedTable() {
   const addAPICall = (madeb) => {
 
    
-    console.log(madeb);
+    console.log('added');
+    console.log('madeb');
  
     
     axios.post(`/Madeb/AddMadeb/`, madeb)
@@ -602,7 +650,7 @@ export default function EnhancedTable() {
           axios.get(`MadebAuthRegionVM/GetMadebs`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
+                //console.log(resp.data);
                 setdataAPI(resp.data)
               }
             })
@@ -654,7 +702,7 @@ export default function EnhancedTable() {
     axios.get(`MadebAuthRegionVM/GetMadebs`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
+          //console.log(resp.data);
           setdataAPI(resp.data);
           selectDatafunction()
         }
@@ -721,7 +769,7 @@ export default function EnhancedTable() {
     actions={[
       {
         icon: AddBox,
-        tooltip: 'Add Country',
+        tooltip: 'Add Sarso Madeb',
         isFreeAction: true,
         onClick: () => setAddModal(true)
       },
@@ -747,6 +795,14 @@ export default function EnhancedTable() {
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
+            />}
+            {emailModal && <EmailDialog
+              emailModal={emailModal}
+              emailInObj={emailInObj}
+              //selectData={selectData}
+              classes={classes}
+              handleEmailClickClose={handleEmailClickClose}
+              //emailAPICall={emailAPICall}
             />}
           
           </Grid>

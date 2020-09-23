@@ -10,7 +10,8 @@ import {
   TextField,
   InputLabel,
   MenuItem,
-  Select
+  Select,
+  TextareaAutosize
 } from '@material-ui/core';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -31,6 +32,120 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
+  export const EmailDialog = (props) => {
+  
+    const [id, setId] = React.useState(props.sarsoEmailObj.id);
+    const [formNumber, setFormNumber] = React.useState(props.sarsoEmailObj.nFormNumber);
+    const [name, setName] = React.useState(props.sarsoEmailObj.sName);
+    const [recipient, setRecipient] = React.useState('');
+    const [sender, setSender] = React.useState('dataunit@tibet.net');
+    const [subject, setSubject] = React.useState('Sarso case no: '+formNumber.toString()+'  Name: '+ name);
+    const [body, setBody] = React.useState('Sarso case no:'+formNumber.toString()+' \nName: '+ name +'\nPostal Address:');
+    
+
+    const emailObj = {
+      id:id,
+      nFormNumber: formNumber,
+      sName: name,
+      sender:sender,
+      recipient:recipient,
+      subject:subject,
+      body:body
+
+      
+   }
+    return (
+        
+        
+  
+      <Dialog open={props.emailModal} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Email Sarso Madeb</DialogTitle>
+        
+        <DialogContent>
+          <DialogContentText>
+          <div>
+                             
+                              <Grid container spacing={3}>
+                                  <Grid item xs={12}>
+                                      <FormControl className={props.classes.formControl}>
+                                          <TextField
+                                              id="sender"
+                                              label="Sender"
+                                              type="text"   
+                                              InputProps={{
+                                                  readOnly: false,
+                                              }} 
+                                             // className={props.classes.textField}
+                                              value={sender}
+                                              onChange={(e) => { setSender(e.target.value) }}
+  
+                                          />
+                                      </FormControl>
+                                  </Grid>
+                                  <Grid item xs={12}>
+                                      <FormControl className={props.classes.formControl}>
+                                          <TextField
+                                              id="recipient"
+                                              label="Recipient"
+                                              type="email"
+                                              
+                                             
+                                            
+                                              onChange={(e) => { setRecipient(e.target.value) }}
+                                          />
+                                      </FormControl>
+                                  </Grid>
+                                  <Grid item xs={12}>
+  
+                                      <FormControl className={props.classes.formControl}>
+                                          <TextField
+                                              id="subject"
+                                              label="Subject"
+                                              //required={true}
+                                           
+                                          value={subject}
+                                          onChange={(e) => { setSubject(e.target.value) }}
+                                          />
+                                      </FormControl>
+                                  </Grid>
+                                <Grid item xs={12}>
+                                 <InputLabel shrink>Message</InputLabel>
+                                    <TextareaAutosize
+                                    aria-label="minimum height"
+                                    //rowsMin={5}
+                                    //className={props.classes.textField}
+                                    label="Message"            
+                                    value={body}
+                                    style={ { width:'100%', height:200} }
+                                    placeholder="Minimum 3 rows"
+                                    //onChange={console.log('change')}
+                                    />
+                                </Grid>
+                                                        
+                              </Grid>
+                          </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleEmailClickClose} color="primary">Cancel</Button>
+  
+         {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
+       
+          {/*<Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
+          <Alert  onClose={snackbarClose} severity={alertType}  >
+           {message}
+          </Alert>
+        </Snackbar>*/}
+  
+          <Button onClick={() =>  console.log(emailObj)} color="primary">Save</Button> 
+        </DialogActions>
+    
+      </Dialog>
+  );
+  
+  
+  }
+  
 export const EditDialog = (props) => {
   //debugger
   const [snackbarOpen,setSnackbarOpen]=React.useState(false);
@@ -66,19 +181,22 @@ export const EditDialog = (props) => {
   const [issueActionDate, setIssueActionDate] = React.useState(props.sarsoObj.dtIssueAction.split('T')[0]);
   const [issueAction, setIssueAction] = React.useState(props.sarsoObj.nIssuedOrNotID);
   const [returnDate, setReturnDate] = React.useState(props.sarsoObj.dtReturnEmail.split('T')[0]);
+  //const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject.split('T')[0]);
+  const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject);
   const madeb = {
-      id:id,
+    id:id,
     nFormNumber: formNumber, 
     nMadebTypeID: madebType,
     sName: name,
     sFathersName:fname,
-    authorityData:authRegionID , 
+    nAuthRegionID:authRegionID , 
     dtReceived:receivedDate,  
     dtIssueAction:issueActionDate,
     nIssuedOrNotID:issueAction,
     sDocumentAttached:documents,
     nSaneyFormNo:saney,
-    dtReturnEmail:returnDate
+    dtReturnEmail:returnDate,
+    dtReject:rejectDate
 
 
  }
@@ -93,14 +211,13 @@ export const EditDialog = (props) => {
     
   });
 
-    const childrenTypeIssued =  () => { 
-      return (typeIssuedData.map((data) =>  (<option value={data.id}>{data.sTypeIssued}</option>)))};
-    const optsTypeIssued = childrenTypeIssued();
-    let valueTypeIssued =1;
+
+    let valueTypeIssued =[];
    // console.log(issueAction);
     typeIssuedData.forEach(element => {
      if(element.id === issueAction){
-        valueTypeIssued = element.id;
+        valueTypeIssued = element;
+        console.log(element);
      }
      
    });
@@ -257,18 +374,47 @@ export const EditDialog = (props) => {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
-                                        <InputLabel id="issue-label"> Issue Action</InputLabel>
-                                        <Select
-                                            labelId="issue-label"
-                                            id="authority"
-                                            value={valueTypeIssued}
-                                             onChange={(e) => { setIssueAction(e.target.value) }}
-                                            label="Issue Action"
-                                            children={optsTypeIssued}
-                                        >
-                                          
-
-                                        </Select>
+                                    <Autocomplete
+                                    openOnFocus
+                                    clearOnEscape
+                                    onChange={  
+                                        (e, value) => {
+                                        if (value !== null) {
+                                            console.log(value.id);
+                                            setIssueAction(value.id);
+                                        }
+                                        else {
+                                            setIssueAction(0);
+                                        }
+                                        }
+                                    }
+                                   value={valueTypeIssued} 
+                                    
+                                    id="id_nIssuedOrNotId"
+                                    options={typeIssuedData}
+                                  /*  classes={{
+                                        option: classes.option,
+                                    }}
+                                    className={classes.textField}*/
+                                    autoHighlight
+                                    getOptionLabel={(option) => option.sTypeIssued}
+                                    renderOption={(option) => (
+                                        <React.Fragment>
+                                        <span>{option.sTypeIssued}</span>
+                                        </React.Fragment>
+                                    )}
+                                    renderInput={(params) => (
+                                        <TextField
+                                        {...params}
+                                        label="Issue Action"
+                                        variant="standard"
+                                        inputProps={{
+                                            ...params.inputProps,
+                                autoComplete: 'new-password', // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -284,6 +430,22 @@ export const EditDialog = (props) => {
                                             }}
                                             
                                             onChange={(e) => { setReturnDate(e.target.value) }}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
+                                        <TextField
+                                            id="date"
+                                            label="Reject Date"
+                                            type="date"
+                                            defaultValue={rejectDate}
+                                            className={props.classes.textField}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            
+                                            onChange={(e) => { setRejectDate(e.target.value) }}
                                         />
                                     </FormControl>
                                 </Grid>
@@ -316,7 +478,7 @@ export const EditDialog = (props) => {
 export const AddDialog = (props) => {
   console.log(props.selectData);
   const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
-  const [typeIssuedData,settypeIssuedData]= React.useState(props.selectData['typeIssued']);
+
 
   const [formNumber, setFormNumber] = React.useState(props.selectData['nFormNumber']);
   const [id, setId] = React.useState(0);
@@ -327,9 +489,7 @@ export const AddDialog = (props) => {
   const [fname, setFname] = React.useState('');
   const [saney, setSaney] = React.useState(0);
   const [documents, setDocument] = React.useState('');
-  const [issueActionDate, setIssueActionDate] = React.useState('');
-  const [issueAction, setIssueAction] = React.useState(0);
-  const [returnDate, setReturnDate] = React.useState('');
+
 
   const madeb = {
      nFormNumber: formNumber, 
@@ -338,25 +498,15 @@ export const AddDialog = (props) => {
      sFathersName:fname,
      nAuthRegionID:authority , 
      dtReceived:receivedDate,  
-     dtIssueAction:issueActionDate,
-     nIssuedOrNotID:issueAction,
+
      sDocumentAttached:documents,
-     nSaneyFormNo:saney,
-     dtReturnEmail:returnDate
+     nSaneyFormNo:saney
+  
 
 
   }
   
- // const idsAuthRegion = authorityData.map((data) => data.sAuthRegion);
-  //const childrenAuthRegion =  () => { 
-   // return (idsAuthRegion.filter((data, index, array) => (array.indexOf(data) == index)).map((filteredData) =>  (<option value={filteredData}>{filteredData}</option>)))};
-  const childrenAuthRegion =  () => { 
-  return (authorityData.map((data) => (<option value={data.id}>{data.sAuthRegion}</option> )  ))};  
-   const optsAuthRegion = childrenAuthRegion();
 
-  const childrenTypeIssued =  () => { 
-    return (typeIssuedData.map((data) =>  (<option value={data.id}>{data.sTypeIssued}</option>)))};
-  const optsTypeIssued = childrenTypeIssued();
  
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
@@ -485,50 +635,9 @@ export const AddDialog = (props) => {
                                        />
                                    </FormControl>
                                </Grid>
-                               <Grid item xs={12} sm={6}>
-                                   <FormControl className={props.classes.formControl}>
-                                       <TextField
-                                           id="date"
-                                           label="Issue Action Date"
-                                           type="date"
-                                           onChange={(e) => { setIssueActionDate(e.target.value) }}
-                                           className={props.classes.textField}
-                                           InputLabelProps={{
-                                               shrink: true,
-                                           }}
-                                       />
-                                   </FormControl>
-                               </Grid>
-                               <Grid item xs={12} sm={6}>
-                                   <FormControl className={props.classes.formControl}>
-                                       <InputLabel id="issue-label"> Issue Action</InputLabel>
-                                       <Select
-                                           labelId="issue-label"
-                                           id="authority"
-                                           //value={}
-                                           onChange={(e) => { setIssueAction(e.target.value) }}
-                                           label="Issue Action"
-                                           children={optsTypeIssued}
-                                       >
-                                          
-
-                                       </Select>
-                                   </FormControl>
-                               </Grid>
-                               <Grid item xs={12} sm={6}>
-                                   <FormControl className={props.classes.formControl}>
-                                       <TextField
-                                           id="date"
-                                           label="Return Date"
-                                           type="date"
-                                           onChange={(e) => { setReturnDate(e.target.value) }}
-                                           className={props.classes.textField}
-                                           InputLabelProps={{
-                                               shrink: true,
-                                           }}
-                                       />
-                                   </FormControl>
-                               </Grid>
+                              
+                             
+                            
                            </Grid>
                        </div>
 
