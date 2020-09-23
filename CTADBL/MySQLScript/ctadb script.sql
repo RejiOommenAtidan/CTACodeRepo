@@ -596,7 +596,8 @@ INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`) VALUES ('Edit');
 INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`) VALUES ('Admin');
 
 
-CREATE TABLE `tblUser` (
+
+CREATE TABLE `tbluser` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `_Id` int(11) DEFAULT NULL,
   `sUsername` text NOT NULL,
@@ -606,26 +607,13 @@ CREATE TABLE `tblUser` (
   `nUserRightsId` int(11) NOT NULL,
   `nActive` tinyint(1) NOT NULL,
   `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) Not NULL,
+  `nEnteredBy` int(11) NOT NULL,
   `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) Not NULL,
+  `nUpdatedBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-	VALUES ('pankaj', 'Pankaj Gupta', 'TCRC Office', 'pankaj123', '5', '0',Null,1,Null,1);
 
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-	VALUES ('reji', 'Reji Oommen', 'TCRC Office', 'reji123', '5', '0',Null,1,Null,1);
-
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-	VALUES ('malay', 'Malay', 'TCRC Office', 'malay123', '5', '0',Null,1,Null,1);
-
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-	VALUES ('aayush', 'Aayush', 'TCRC Office', 'aayush123', '5', '0',Null,1,Null,1);
-	
-INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
-	VALUES ('rajen', 'Rajen', 'TCRC Office', 'rajen123', '5', '0',Null,1,Null,1);
 
 
 
