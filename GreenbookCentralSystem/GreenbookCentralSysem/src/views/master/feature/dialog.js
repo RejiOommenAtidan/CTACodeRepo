@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
-  Box,
-  Container,
   Grid,
   Button,
-  Typography,
   FormControl,
   TextField
 } from '@material-ui/core';
@@ -24,10 +21,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export const EditDialog = (props) => {
   //debugger
-  const [Name, setCountryName] = useState(props.countryObj.countryName);
+  const [sFeature, setsFeature] = useState(props.featureObj.sFeature);
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Country</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Feature</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <div>
@@ -35,25 +32,11 @@ export const EditDialog = (props) => {
               <Grid item xs={12}>
                 <FormControl className={props.classes.formControl}>
                   <TextField
-                    id="id_countryId"
-                    label="Country ID"
+                    id="id_sFeature"
+                    label="Feature"
                     type="text"
-                    InputProps={{
-                      readOnly: true
-                    }}
-                    value={props.countryObj.countryId}
-
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} >
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_CountryName"
-                    label="Country Name"
-                    type="text"
-                    value={Name} // Set country name from local variable Name.
-                    onChange={(e) => { setCountryName(e.target.value) }}
+                    value={sFeature}
+                    onChange={(e) => { setsFeature(e.target.value) }}
                   />
                 </FormControl>
               </Grid>
@@ -63,16 +46,14 @@ export const EditDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })} color="primary">Save</Button>
+        <Button onClick={() => props.editAPICall({ id: props.featureObj.id, sFeature: sFeature })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );
-
-
 }
 
 export const DeleteDialog = (props) => {
-  console.log("Delete Dialog");
+  //console.log("Delete Dialog");
   return (
     <Dialog
       open={props.deleteModal}
@@ -82,7 +63,7 @@ export const DeleteDialog = (props) => {
       <DialogTitle id="alert-dialog-slide-title">Confirm Operation</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
-          Are you sure you want to delete country {props.countryName} ?
+          Are you sure you want to delete Feature {props.sFeature} ?
         </DialogContentText>
       </DialogContent>
       <DialogActions >
@@ -95,48 +76,37 @@ export const DeleteDialog = (props) => {
       </DialogActions>
     </Dialog>
   );
-
 }
 
 export const AddDialog = (props) => {
-  console.log("Add Dialog");
-  const [countryId, setCountryId] = useState('');
-  const [countryName, setCountryName] = useState('');
+  //console.log("Add Dialog");
+
+  const [sFeature, setsFeature] = useState('');
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Country</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add Feature</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <Grid container>
             <Grid item xs={12}>
               <FormControl className={props.classes.formControl}>
                 <TextField
-                  id="id_countryId"
-                  label="Country ID"
+                  autoFocus
+                  id="id_sFeature"
+                  label="Feature"
                   type="text"
-                  onChange={(e) => { setCountryId(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} >
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_CountryName"
-                  label="Country Name"
-                  type="text"
-                  onChange={(e) => { setCountryName(e.target.value) }}
+                  value={sFeature} // Set country name from local variable Name.
+                  onChange={(e) => { setsFeature(e.target.value) }}
                 />
               </FormControl>
             </Grid>
           </Grid>
-
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.addAPICall({ sCountryID: countryId, sCountry: countryName })} color="primary">Save</Button>
+        <Button onClick={() => props.addAPICall({ sFeature: sFeature })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );
-
 }

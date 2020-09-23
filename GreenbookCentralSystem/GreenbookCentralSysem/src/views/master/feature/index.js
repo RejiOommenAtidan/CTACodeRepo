@@ -2,14 +2,12 @@
 import React from 'react';
 import {
   Container,
-  Typography,
   makeStyles,
-  Breadcrumbs,
-  Link
+
 } from '@material-ui/core';
 
 
-import Country from './country';
+import Feature from './feature';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,17 +18,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverFeature = () => {
   const classes = useStyles();
 
   return (
-   
-      <Container maxWidth={false}>
-        
-        <Country />
-      </Container>
-
+    <Container maxWidth={false}>
+      <Feature />
+    </Container>
   );
 };
 
-export default Dashboard;
+export default CoverFeature;
