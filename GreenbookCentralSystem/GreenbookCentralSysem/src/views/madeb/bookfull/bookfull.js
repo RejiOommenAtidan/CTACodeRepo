@@ -620,15 +620,9 @@ export default function EnhancedTable() {
   return (
 
       
-        <Box
-          display="flex"
-          flexDirection="column"
-          height="100%"
-          width="100%"
-          justifyContent="center"
-          style={{padding:0,width:'100%'}}
-        >
-          <Container  style={{padding:0,width:'100%'}} disableGutters={true}>
+    <>
+    <Grid container spacing={1}>
+     <Grid item xs={12}>
           <Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/Home" >
             Home
@@ -697,8 +691,9 @@ export default function EnhancedTable() {
               editAPICall={editAPICall}
             />}
           
-          </Container>
-        </Box>
+          </Grid>
+        </Grid>
+            </>
    
 
 

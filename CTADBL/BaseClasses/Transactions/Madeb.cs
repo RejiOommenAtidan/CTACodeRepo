@@ -18,8 +18,8 @@ namespace CTADBL.BaseClasses.Transactions
         private string? _sName;
         private string? _sFathersName;
         private int _nAuthRegionID;
-        private DateTime? _dtReceived;
-        private DateTime? _dtIssueAction;
+        private DateTime? _dtReceived = null;
+        private DateTime? _dtIssueAction = null;
         private int _nIssuedOrNotID;
         private int _nType;
         private string? _sChangeField;
@@ -33,7 +33,7 @@ namespace CTADBL.BaseClasses.Transactions
         private string? _sAlias;
         private string? _sApprovedReject;
         private DateTime? _dtReject = null;
-        private DateTime? _dtReturnEmail;
+        private DateTime? _dtReturnEmail = null;
         #endregion
 
         #region Public Madeb Properties
