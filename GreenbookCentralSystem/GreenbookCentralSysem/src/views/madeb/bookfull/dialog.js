@@ -456,10 +456,10 @@ export const AddDialog = (props) => {
   const [saney, setSaney] = React.useState(0);
   const [currentGBSno, setCurrentGBSNo] = useState('');
   const [previousGBSno, setPreviousGBSNo] = useState('');
-  const [issueActionDate, setIssueActionDate] = React.useState('');
-  const [issueAction, setIssueAction] = React.useState(0);
-  const [returnDate, setReturnDate] = React.useState('');
-  const [rejectDate, setRejectDate] = useState('');
+//   const [issueActionDate, setIssueActionDate] = React.useState('');
+//   const [issueAction, setIssueAction] = React.useState(0);
+//   const [returnDate, setReturnDate] = React.useState('');
+//   const [rejectDate, setRejectDate] = useState('');
   let valueAuthRegion = [];
   let valueTypeIssued = [];
   const madeb = {
@@ -473,11 +473,11 @@ export const AddDialog = (props) => {
     sFathersName:fname,
     nSaneyFormNo:saney,
     nCurrentGBSno: currentGBSno,
-    nPreviousGBSno: previousGBSno,
-    dtIssueAction:issueActionDate,
-    dtReject: rejectDate,
-    nIssuedOrNotID:issueAction,
-    dtReturnEmail:returnDate
+    nPreviousGBSno: previousGBSno
+    // dtIssueAction:issueActionDate,
+    // dtReject: rejectDate,
+    // nIssuedOrNotID:issueAction,
+    // dtReturnEmail:returnDate
  }
 console.log("Madeb Object in Add dialog", madeb);
 
@@ -564,7 +564,7 @@ console.log("Madeb Object in Add dialog", madeb);
                                           }
                                         }
                                       }
-                                     value={valueAuthRegion} 
+                                     //value={valueAuthRegion} 
                                      id="id_nAuthorityId"
                                      options={authorityData}
                                      autoHighlight
@@ -668,7 +668,7 @@ console.log("Madeb Object in Add dialog", madeb);
                                     </FormControl>
                                 </Grid>
 
-                                <Grid item xs={12} sm={6}>
+                                {/* <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
                                             id="date"
@@ -683,7 +683,7 @@ console.log("Madeb Object in Add dialog", madeb);
                                             onChange={(e) => { setIssueActionDate(e.target.value) }}
                                         />
                                     </FormControl>
-                                </Grid>
+                                </Grid> */}
                                 {/* <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <InputLabel id="issue-label"> Issue Action</InputLabel>
@@ -700,7 +700,7 @@ console.log("Madeb Object in Add dialog", madeb);
                                         </Select>
                                     </FormControl>
                                 </Grid> */}
-                                <Grid item xs={12} sm={6}>
+                                {/* <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                     <Autocomplete
                                       openOnFocus
@@ -716,7 +716,7 @@ console.log("Madeb Object in Add dialog", madeb);
                                           }
                                         }
                                       }
-                                     value={valueTypeIssued} 
+                                     //value={valueTypeIssued} 
                                      id="id_nTypeIssued"
                                      options={typeIssuedData}
                                      autoHighlight
@@ -755,8 +755,8 @@ console.log("Madeb Object in Add dialog", madeb);
                                             onChange={(e) => { setRejectDate(e.target.value) }}
                                         />
                                     </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
+                                </Grid> */}
+                                {/* <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
                                             id="date"
@@ -771,7 +771,7 @@ console.log("Madeb Object in Add dialog", madeb);
                                             onChange={(e) => { setReturnDate(e.target.value) }}
                                         />
                                     </FormControl>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </div>
         </DialogContentText>

@@ -566,6 +566,7 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
+          selectDatafunction();
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
             .then(resp => {
               if (resp.status === 200) {
@@ -583,7 +584,7 @@ export default function EnhancedTable() {
               } else {
                 console.error('Error', error.message);
               }
-              console.log(error.config);
+              console.log(error.message);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -601,7 +602,7 @@ export default function EnhancedTable() {
         } else {
           console.error('Error', error.message);
         }
-        console.log(error.config);
+        console.log(error.message);
       })
       .then(release => {
         //console.log(release); => udefined

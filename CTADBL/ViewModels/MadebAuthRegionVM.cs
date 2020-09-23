@@ -4,8 +4,41 @@ namespace CTADBL.ViewModels
 {
     public class MadebAuthRegionVM 
     {
-        public Madeb madeb { get; set; }
-        public string sAuthRegion { get; set; }
-        public string sTypeIssued { get; set; }
+        private string? _sTypeIssued;
+        private string _sAuthRegion;
+        private Madeb _madeb;
+        public Madeb madeb
+        {
+            get
+            {
+                return _madeb;
+            }
+            set
+            {
+                _madeb = value;
+            }
+        }
+        public string sAuthRegion
+        {
+            get
+            {
+                return _sAuthRegion;
+            }
+            set
+            {
+                _sAuthRegion = value;
+            }
+        }
+        public string? sTypeIssued
+        {
+            get
+            {
+                return _sTypeIssued;
+            }
+            set
+            {
+                _sTypeIssued = value;
+            }
+        }
     }
 }

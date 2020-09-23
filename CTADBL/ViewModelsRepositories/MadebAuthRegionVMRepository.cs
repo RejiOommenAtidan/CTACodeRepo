@@ -58,7 +58,7 @@ namespace CTADBL.ViewModelsRepositories
                             `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
-                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`;";
+                        LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`;";
             using (var command = new MySqlCommand(sql))
             {
                 return GetRecords(command);
@@ -101,7 +101,7 @@ namespace CTADBL.ViewModelsRepositories
                             `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
-                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
+                        LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         WHERE `tblmadeb`.`Id`=@Id;";
             using (var command = new MySqlCommand(sql))
             {
@@ -146,7 +146,7 @@ namespace CTADBL.ViewModelsRepositories
                             `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
-                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
+                        LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         WHERE nMadebTypeID=@madebType;";
             using (var command = new MySqlCommand(sql))
             {
@@ -191,7 +191,7 @@ namespace CTADBL.ViewModelsRepositories
                             `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
-                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
+                        LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         WHERE nFormNumber=@formNumber";
             using (var command = new MySqlCommand(sql))
             {
@@ -236,7 +236,7 @@ namespace CTADBL.ViewModelsRepositories
                             `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
-                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
+                        LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         WHERE nAuthRegionID=@nAuthRegionID;";
             using (var command = new MySqlCommand(sql))
             {
@@ -281,7 +281,7 @@ namespace CTADBL.ViewModelsRepositories
                             `sTypeIssued`
                         FROM `tblmadeb` 
                         INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
-                        INNER JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
+                        LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         WHERE nIssuedOrNotID=@nIssuedOrNotID;";
             using (var command = new MySqlCommand(sql))
             {
@@ -338,7 +338,7 @@ namespace CTADBL.ViewModelsRepositories
                 //    nUpdatedBy = (int)reader["nUpdatedBy"]
                 //},
                 sAuthRegion = (string) reader["sAuthRegion"],
-                sTypeIssued = (string) reader["sTypeIssued"]
+                sTypeIssued = reader.IsDBNull("sTypeIssued") ? null : (string?)(reader["sTypeIssued"])
                 
             };
         }
