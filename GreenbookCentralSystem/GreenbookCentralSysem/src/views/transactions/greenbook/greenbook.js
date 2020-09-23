@@ -305,7 +305,7 @@ export default function GBList(props) {
             <MaterialTable
               style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
               icons={tableIcons}
-              title="Country"
+              title="Greenbook"
               columns={columns}
               data={dataAPI}
               options={{

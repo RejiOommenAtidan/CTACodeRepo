@@ -245,7 +245,7 @@ export default function EnhancedTable() {
     {
       field: "edit",
       title: "Edit",
-      sort: false,
+      sorting: false,
       export: false,
       filtering: false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
