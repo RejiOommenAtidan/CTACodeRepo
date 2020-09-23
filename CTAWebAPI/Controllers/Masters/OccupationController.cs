@@ -35,7 +35,7 @@ namespace CTAWebAPI.Controllers.Masters
             try
             {
                 IEnumerable<Occupation> occupation = _occupationRepository.GetAllOccupations();
-                if (occupation != null)
+                if (occupation.Count() > 0)
                 {
                     #region Information Logging 
                     CTALogger logger = new CTALogger(_info);

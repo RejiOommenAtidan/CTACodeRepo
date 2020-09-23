@@ -36,7 +36,7 @@ namespace CTAWebAPI.Controllers.Masters
             try
             {
                 IEnumerable<Province> provinces = _provinceRepository.GetAllProvinces();
-                if(provinces != null)
+                if(provinces.Count() > 0)
                 {
                     #region Information Logging 
                     CTALogger logger = new CTALogger(_info);

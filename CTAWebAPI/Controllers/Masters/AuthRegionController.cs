@@ -39,7 +39,7 @@ namespace CTAWebAPI.Controllers.Masters
             try
             {
                 IEnumerable<AuthRegion> authRegions = _authRegionRepository.GetAllAuthRegions();
-                if(authRegions != null)
+                if(authRegions.Count() > 0 )
                 {
                     #region Information Logging 
                     CTALogger logger = new CTALogger(_info);

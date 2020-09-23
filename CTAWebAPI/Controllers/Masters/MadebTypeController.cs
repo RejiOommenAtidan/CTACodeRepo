@@ -37,7 +37,7 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 IEnumerable<MadebType> madebType = _madebTypeRepository.GetAllMadebTypes();
 
-                if (madebType != null)
+                if (madebType.Count() > 0)
                 {
                     #region Information Logging 
                     CTALogger logger = new CTALogger(_info);

@@ -36,6 +36,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import Moment from 'moment';
 //import { ThemeProvider } from '@material-ui/styles';
 import MaterialTable, { MTableToolbar }  from 'material-table';
 import { forwardRef } from 'react';
@@ -244,12 +245,13 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReceived",
       title: "Received Date",
-      type: 'date',
-      dateSetting: {locale: 'en-GB'},
+      // type: 'date',
+      // dateSetting: {locale: 'en-GB'},
       cellStyle: {
         padding:'5px',
         
       },
+      render: rowData => Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD'),
     },
     {
       field: "sAuthRegion",
@@ -336,12 +338,13 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtIssueAction",
       title: "Issue Action Date",
-      type: 'date',
-      dateSetting: {locale: 'en-GB'},
+      // type: 'date',
+      // dateSetting: {locale: 'en-GB'},
       cellStyle: {
         padding:'5px',
         
       },
+      render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
     },
     {
       field: "sTypeIssued",
@@ -355,27 +358,53 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReject",
       title: "Reject Date",
-      type: 'date',
-      dateSetting: {locale: 'en-GB'},
+      // type: 'date',
+      // dateSetting: {locale: 'en-GB'},
       cellStyle: {
         padding:'5px',
         
       },
+      render: rowData => Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD'),
     },
     {
       field: "madeb.dtReturnEmail",
       title: "Return Date",
-      type: 'date',
-      dateSetting: {locale: 'en-GB'},
+      //type: 'date',
+      //dateSetting: {locale: 'en-IN'},
       cellStyle: {
         padding:'5px',
+        
+      },
+      render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
+    },
+    {
+      field: "email",
+      title: "Email",
+      filtering:false,
+      sorting: false,
+      export:false,
+      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
+      onClick={() => { editClick(rowData) }}  style={{padding:'0px'}}
+    >
+      <EmailIcon/>
+      </IconButton> ,
+      
+      headerStyle: {
+        padding:'0px',
+        width:'1%',
+        textAlign:'center'
+      },
+      cellStyle: {
+        padding:'0px',
+        width:'1%',
+        textAlign:'center'
         
       },
     },
     {
       field: "edit",
       title: "Edit",
-      sort: false,
+      sorting: false,
       export:false,
       filtering:false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
@@ -418,8 +447,8 @@ export default function EnhancedTable() {
     sGBID: tableRowArray['madeb']['sGBID'],
     sFathersName: tableRowArray['madeb']['sFathersName'],
     nSaneyFormNo: tableRowArray['madeb']['nSaneyFormNo'],
-    nCurrentGBSNo: tableRowArray['madeb']['nCurrentGBSNo'],
-    nPreviousGBSNo: tableRowArray['madeb']['nPreviousGBSNo'],    
+    nCurrentGBSno: tableRowArray['madeb']['nCurrentGBSno'],
+    nPreviousGBSno: tableRowArray['madeb']['nPreviousGBSno'],   
     dtIssueAction: tableRowArray['madeb']['dtIssueAction'],
     nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
     dtReject: tableRowArray['madeb']['dtReject'],
@@ -436,12 +465,14 @@ export default function EnhancedTable() {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    axios.post(`/Madeb/EditMadeb/ID=` + id, madeb)
+    console.log(madeb);
+    debugger
+    axios.post(`/Madeb/EditMadeb/Id=` + madeb.id, madeb)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`MadebAuthRegionVM/GetMadebs`)
+          axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -529,13 +560,13 @@ export default function EnhancedTable() {
    
     console.log(madeb);
  
-    
+    debugger
     axios.post(`/Madeb/AddMadeb/`, madeb)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`MadebAuthRegionVM/GetMadebs`)
+          axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -663,7 +694,7 @@ export default function EnhancedTable() {
     actions={[
       {
         icon: AddBox,
-        tooltip: 'Add Country',
+        tooltip: 'Add Book Full Madeb',
         isFreeAction: true,
         onClick: () => setAddModal(true)
       },
@@ -677,18 +708,18 @@ export default function EnhancedTable() {
   />
             {addModal && <AddDialog
               addModal={addModal}
-              classes={classes}
               selectData={selectData}
+              classes={classes}
               handleAddClickClose={handleAddClickClose}
               addAPICall={addAPICall}
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              bookFullObj={bookFullObj}
               selectData={selectData}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
+              bookFullObj={bookFullObj}
             />}
           
           </Grid>
