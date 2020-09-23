@@ -41,13 +41,14 @@ const TypeIssued = lazy(() => import('./views/master/typeissued'));
 const UserRights = lazy(() => import('./views/master/userrights'));
 const MadebType = lazy(() => import('./views/master/madebtype'));
 const Relation = lazy(() => import('./views/master/relation'));
+const Feature = lazy(() => import('./views/master/feature'));
 
 // Madeb Pages
 const Sarso = lazy(() => import('./views/madeb/sarso'));
 const Norchoe = lazy(() => import('./views/madeb/norchoe'));
 const BookFull = lazy(() => import('./views/madeb/bookfull'));
 
-
+//Greenbook Pages
 const NewEntry = lazy(() => import('./views/transactions/newentry/newentry'));
 const EditEntry = lazy(() => import('./views/transactions/newentry/editentry'));
 const SarsoNewGBEntry = lazy(() => import('./views/transactions/SarsoNewGBEntry/SarsoNewGBEntry'));
@@ -168,6 +169,7 @@ const Routes = () => {
                 '/Occupation',
                 '/MadebType',
                 '/Relation',
+                '/Feature',
                 '/UserRights',
                 '/TypeIssued',
                 '/Sarso',
@@ -197,6 +199,7 @@ const Routes = () => {
                      <Route path="/Occupation" component={Occupation} />
                      <Route path="/MadebType" component={MadebType} />
                      <Route path="/Relation" component={Relation} />
+                     <Route path="/Feature" component={Feature} />
                      <Route path="/UserRights" component={UserRights} />
                      <Route path="/TypeIssued" component={TypeIssued} />
                      <Route path="/Sarso" component={Sarso} />

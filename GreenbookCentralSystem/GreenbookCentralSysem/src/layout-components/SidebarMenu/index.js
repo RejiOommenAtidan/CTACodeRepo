@@ -150,7 +150,7 @@ const SidebarMenu = (props) => {
                   <HomeIcon />
                 </span>
                 Home
-               
+
               </NavLink>
             </li>
             <li>
@@ -163,7 +163,7 @@ const SidebarMenu = (props) => {
                   <SearchIcon />
                 </span>
                 Search
-                
+
               </NavLink>
             </li>
             <li>
@@ -290,6 +290,13 @@ const SidebarMenu = (props) => {
                       Relation
                     </NavLink>
                   </li>
+                  <li>
+                    <NavLink
+                      onClick={toggleSidebarMobile}
+                      to="/Feature">
+                      Feature
+                    </NavLink>
+                  </li>
                   {/*<li>
                     <NavLink
                       onClick={toggleSidebarMobile}
@@ -297,12 +304,12 @@ const SidebarMenu = (props) => {
                       Madeb Type
                     </NavLink>
                   </li>*/}
-                 
+
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/TypeIssued">
-                          Type Issued
+                      Type Issued
                     </NavLink>
                   </li>
                 </ul>
@@ -318,7 +325,6 @@ const SidebarMenu = (props) => {
                   <FormatListNumberedIcon />
                 </span>
                 Give GB Number
-               
               </NavLink>
             </li>
             <li>
@@ -331,7 +337,7 @@ const SidebarMenu = (props) => {
                   <AddBoxIcon />
                 </span>
                 New Entry
-                
+
               </NavLink>
             </li>
             <li>
@@ -344,7 +350,7 @@ const SidebarMenu = (props) => {
                   <FormatListNumberedRtlIcon />
                 </span>
                 Give Serial Number
-                
+
               </NavLink>
             </li>
             <li>
@@ -357,7 +363,7 @@ const SidebarMenu = (props) => {
                   <PrintIcon />
                 </span>
                 Print
-                
+
               </NavLink>
             </li>
             <li>
@@ -370,7 +376,7 @@ const SidebarMenu = (props) => {
                   <MenuBookIcon />
                 </span>
                 Issue Book
-                
+
               </NavLink>
             </li>
             <li>
@@ -383,7 +389,7 @@ const SidebarMenu = (props) => {
                   <ListAltIcon />
                 </span>
                 Make List
-                
+
               </NavLink>
             </li>
             <li>
@@ -422,7 +428,7 @@ const SidebarMenu = (props) => {
                       User Roles
                     </NavLink>
                   </li>
-                 
+
                 </ul>
               </Collapse>
             </li>
@@ -436,7 +442,7 @@ const SidebarMenu = (props) => {
                   <EditIcon />
                 </span>
                 Edit
-                
+
               </NavLink>
             </li>
             <li>
@@ -449,7 +455,7 @@ const SidebarMenu = (props) => {
                   <DeleteIcon />
                 </span>
                 Delete
-                
+
               </NavLink>
             </li>
             <li>
@@ -462,7 +468,7 @@ const SidebarMenu = (props) => {
                   <PaymentIcon />
                 </span>
                 Payment
-                
+
               </NavLink>
             </li>
             <li>
@@ -475,7 +481,7 @@ const SidebarMenu = (props) => {
                   <AssessmentIcon />
                 </span>
                 Reports
-                
+
               </NavLink>
             </li>
             <li>
@@ -488,10 +494,10 @@ const SidebarMenu = (props) => {
                   <VpnKeyIcon />
                 </span>
                 Change Password
-                
+
               </NavLink>
             </li>
-            
+
           </ul>
         </div>
       </PerfectScrollbar>
