@@ -634,23 +634,272 @@ SELECT
 	`user`.`password`,
 	`user`.`rights`,
 	IF(`user`.`deleteTab`=1,0,1),
-	1,
 	now(),
 	1,
-	now()
+	now(),
+	1
 FROM `greenbookprime`.`user`;
 
 INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-	VALUES ('pankaj', 'Pankaj Gupta', 'TCRC Office', 'pankaj123', '5', '1',1,now(),1,now());
+	VALUES ('pankaj', 'Pankaj Gupta', 'TCRC Office', 'pankaj123', '5', '1',now(),1,now(),1);
 
 INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-	VALUES ('reji', 'Reji Oommen', 'TCRC Office', 'reji123', '5', '1',1,now(),1,now());
+	VALUES ('reji', 'Reji Oommen', 'TCRC Office', 'reji123', '5', '1',now(),1,now(),1);
 
 INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-	VALUES ('malay', 'Malay', 'TCRC Office', 'malay123', '5', '1',1,now(),1,now());
+	VALUES ('malay', 'Malay', 'TCRC Office', 'malay123', '5', '1',now(),1,now(),1);
 
 INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-	VALUES ('aayush', 'Aayush', 'TCRC Office', 'aayush123', '5', '1',1,now(),1,now());
+	VALUES ('aayush', 'Aayush', 'TCRC Office', 'aayush123', '5', '1',now(),1,now(),1);
 	
 INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `nActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
-	VALUES ('rajen', 'Rajen', 'TCRC Office', 'rajen123', '5', '1',1,now(),1,now());
+	VALUES ('rajen', 'Rajen', 'TCRC Office', 'rajen123', '5', '1',now(),1,now(),1);
+	
+
+DROP table IF EXISTS `lnkFeatureUserRights`;
+
+CREATE TABLE `lnkFeatureUserRights` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `nFeatureID` int(11) Not NULL,
+  `nUserRightsID` int(11) Not NULL,
+  `nRights` tinyint(1) NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+	VALUES (	1	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	2	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	3	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	4	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	5	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	6	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	7	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	8	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	9	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	10	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	11	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	12	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	13	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	14	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	15	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	16	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	17	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	18	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	19	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	20	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	21	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	22	,	5	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	23	,	5	,	TRUE	,now(),1);
+
+
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	1	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	2	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	3	,	4	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	4	,	4	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	5	,	4	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	6	,	4	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	7	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	8	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	9	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	10	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	11	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	12	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	13	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	14	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	15	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	16	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	17	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	18	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	19	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	20	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	21	,	4	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	22	,	4	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	23	,	4	,	FALSE	,now(),1);
+
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	1	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	2	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	3	,	3	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	4	,	3	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	5	,	3	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	6	,	3	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	7	,	3	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	8	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	9	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	10	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	11	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	12	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	13	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	14	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	15	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	16	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	17	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	18	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	19	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	20	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	21	,	3	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	22	,	3	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	23	,	3	,	FALSE	,now(),1);
+
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	1	,	2	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	2	,	2	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	3	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	4	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	5	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	6	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	7	,	2	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	8	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	9	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	10	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	11	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	12	,	2	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	13	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	14	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	15	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	16	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	17	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	18	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	19	,	2	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	20	,	2	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	21	,	2	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	22	,	2	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	23	,	2	,	FALSE	,now(),1);
+
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	1	,	1	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	2	,	1	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	3	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	4	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	5	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	6	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	7	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	8	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	9	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	10	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	11	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	12	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	13	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	14	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	15	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	16	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	17	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	18	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	19	,	1	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	20	,	1	,	TRUE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	21	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	22	,	1	,	FALSE	,now(),1);
+INSERT INTO `ctadb`.`lnkfeatureuserrights` (`nFeatureID`,`nUserRightsID`,`nRights`,`dtEntered`,`nEnteredBy`)
+VALUES (	23	,	1	,	FALSE	,now(),1);
