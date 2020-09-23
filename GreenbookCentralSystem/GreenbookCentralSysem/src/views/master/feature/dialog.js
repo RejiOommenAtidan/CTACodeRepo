@@ -32,6 +32,7 @@ export const EditDialog = (props) => {
               <Grid item xs={12}>
                 <FormControl className={props.classes.formControl}>
                   <TextField
+                    autoFocus
                     id="id_sFeature"
                     label="Feature"
                     type="text"
