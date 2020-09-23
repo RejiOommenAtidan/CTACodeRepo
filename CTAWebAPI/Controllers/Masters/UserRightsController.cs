@@ -1,13 +1,14 @@
 ﻿using CTADBL.BaseClasses.Masters;
 using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.Entities;
+using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Reflection;
 namespace CTAWebAPI.Controllers.Masters
 {
     [EnableCors("AllowOrigin")]
@@ -19,10 +20,12 @@ namespace CTAWebAPI.Controllers.Masters
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly UserRightsRepository  _userRightsRepository;
+        private readonly CTALogger _ctaLogger;
         public UserRightsController(DBConnectionInfo info)
         {
             _info = info;
             _userRightsRepository = new UserRightsRepository(_info.sConnectionString);
+            _ctaLogger = new CTALogger(_info);
         }
         #endregion
 
@@ -36,10 +39,18 @@ namespace CTAWebAPI.Controllers.Masters
             {
                
                 IEnumerable<UserRights> userrights = _userRightsRepository.GetAllUserRights();
+                #region Information Logging 
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                #endregion
                 return Ok(userrights);
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -54,10 +65,16 @@ namespace CTAWebAPI.Controllers.Masters
             {
               
                 UserRights fetchedUserRights = _userRightsRepository.GetUserRightsById(ID);
+                #region Information Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                #endregion
                 return Ok(fetchedUserRights);
             }
             catch (Exception ex)
             {
+                #region Exception Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -78,8 +95,10 @@ namespace CTAWebAPI.Controllers.Masters
                 {
                     userrights.dtEntered = DateTime.Now;
                     userrights.dtUpdated = DateTime.Now;
-
                     _userRightsRepository.Add(userrights);
+                    #region Information Logging
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", userrights.nEnteredBy);
+                    #endregion
                     return Ok(userrights);
                 }
                 else
@@ -92,6 +111,9 @@ namespace CTAWebAPI.Controllers.Masters
             }
             catch (Exception ex)
             {
+                #region Exception Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, userrights.nEnteredBy);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -116,6 +138,10 @@ namespace CTAWebAPI.Controllers.Masters
                         userrights.dtUpdated = DateTime.Now;
                         //user.User_Id
                         _userRightsRepository.Update(userrights);
+
+                        #region Alert Logging 
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", userrights.nEnteredBy);
+                        #endregion
                         return Ok("UserRights with ID: " + ID + " updated Successfully");
                     }
                     else
