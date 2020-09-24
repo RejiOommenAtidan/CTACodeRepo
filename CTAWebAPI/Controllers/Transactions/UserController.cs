@@ -243,5 +243,49 @@ namespace CTAWebAPI.Controllers.Transactions
             }
         }
         #endregion
+
+        #region Auth User
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult AuthenticateUser(User userFromUI)
+        {
+            #region Authenticate User
+            try
+            {
+                #region Params Check
+                if (userFromUI.sUsername == null)
+                    return BadRequest("Username cannot be NULL");
+                if (userFromUI.sPassword == null)
+                    return BadRequest("Password cannot be NULL");
+                #endregion
+
+                #region DB Fetch
+                User userFromDB = _userRepository.GetUserByUsername(userFromUI.sUsername);
+                if (userFromDB == null)
+                {
+                    return NotFound("User With Username " + userFromUI.sUsername + " Not Found");
+                }
+                #endregion
+
+                #region Equality Check
+                //Password Equals Check
+                //Confirm Case Sensitive Password (Equals)
+                if (userFromUI.sPassword.Equals(userFromDB.sPassword))
+                    return Ok(userFromDB);
+                else
+                    return Unauthorized("Incorrect Password");
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
     }
 }

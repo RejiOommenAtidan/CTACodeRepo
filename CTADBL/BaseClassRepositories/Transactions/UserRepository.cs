@@ -4,6 +4,7 @@ using CTADBL.Repository;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace CTADBL.BaseClassRepositories.Transactions
 {
@@ -83,32 +84,38 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 return GetRecord(command);
             }
         }
+
+        public User GetUserByUsername(string sUsername)
+        {
+            string sql = @"SELECT `Id`,
+                            `_Id`,
+                            `sUsername`,
+                            `sFullName`,
+                            `sOffice`,
+                            `sPassword`,
+                            `nUserRightsId`,
+                            IF(nActive, 1, 0) nActive,
+                            `dtEntered`,
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
+                        FROM `tbluser`
+                        WHERE sUsername = @sUsername;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sUsername", sUsername);
+                return GetRecord(command);
+            }
+        }
         #endregion
 
         #region Populate User Records
         public override User PopulateRecord(MySqlDataReader reader)
         {
-
-            //reader.get
-            int colIndex1 = reader.GetOrdinal("dtEntered");
-            int colIndex2 = reader.GetOrdinal("dtUpdated");
-
-            DateTime? dtEntered = null;
-            DateTime? dtUpdated = null;
-            if (!reader.IsDBNull(colIndex1))
-            {
-                dtEntered = (DateTime)reader["dtEntered"];
-            }
-            if (!reader.IsDBNull(colIndex2))
-            {
-                dtUpdated = (DateTime)reader["dtUpdated"];
-            }
-
             User user = new User();
-
             user.Id = (int)reader["Id"];
             //TODO: 
-            //user._id = (int?)reader["_id"];
+            //user._id = reader.IsDBNull("_Id") ? null : (int?)(reader["_Id"]);
             user.sUsername = (string)reader["sUsername"];
             user.sFullname = (string)reader["sFullName"];
             user.sOffice = (string)reader["sOffice"];
@@ -116,9 +123,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
             user.nUserRightsId = (int)reader["nUserRightsId"];
             user.nActive = (int)reader["nActive"];
             //Common Properties
-            user.dtEntered = dtEntered;
+            user.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
             user.nEnteredBy = (int)reader["nEnteredBy"];
-            user.dtUpdated = dtUpdated;
+            user.dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]);
             user.nUpdatedBy = (int)reader["nUpdatedBy"];
             
             return user;
