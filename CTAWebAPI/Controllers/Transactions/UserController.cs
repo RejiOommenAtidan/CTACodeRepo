@@ -253,10 +253,10 @@ namespace CTAWebAPI.Controllers.Transactions
             try
             {
                 #region Params Check
-                if (userFromUI.sUsername == null)
-                    return BadRequest("Username cannot be NULL");
-                if (userFromUI.sPassword == null)
-                    return BadRequest("Password cannot be NULL");
+                if (string.IsNullOrEmpty(userFromUI.sUsername))
+                    return BadRequest("Username cannot be NULL OR Empty");
+                if (string.IsNullOrEmpty(userFromUI.sPassword))
+                    return BadRequest("Password cannot be NULL OR Empty");
                 #endregion
 
                 #region DB Fetch
