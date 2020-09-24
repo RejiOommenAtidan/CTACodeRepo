@@ -881,12 +881,13 @@ SELECT
 	`ident_bookissued`.`IssuedOrNot`,
 	`ident_bookissued`.`FormNo`,
 	`ident_bookissued`.`WhereIssued`,
+	`ident_bookissued`.`WhereIssued`,
 	`ident_bookissued`.`Printed`,
+	`ident_bookissued`.`Remarks`,
 	`ident_bookissued`.`Entered`,
 	`ident_bookissued`.`EnteredBy`,
 	`ident_bookissued`.`Entered`,
-	`ident_bookissued`.`EnteredBy`,
-	`ident_bookissued`.`Remarks`
+	`ident_bookissued`.`EnteredBy`
 FROM `greenbookprime`.`ident_bookissued`;
 
 SET SQL_SAFE_UPDATES=0;
@@ -894,3 +895,4 @@ UPDATE ctadb.tblgreenbookissued a
 INNER JOIN ctadb.lstmadebtype b 
 	ON a.sWhyIssued = b.sMadebDisplayKey
 SET a.nMadebTypeId = b.Id;
+

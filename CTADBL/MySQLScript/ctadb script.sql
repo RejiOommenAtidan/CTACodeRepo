@@ -854,14 +854,15 @@ CREATE TABLE `tblGreenBookIssued` (
   `sWhyIssued` varchar(10) DEFAULT NULL,
   `nMadebTypeId` varchar(10) DEFAULT NULL,
   `nTypeIssuedId` int(11) NOT NULL,
-  `sFormNo` text NOT NULL,
+  `sFormNumber` text NOT NULL,
   `sWhereIssued` int(11) NOT NULL,
+  `nAuthRegionId` int(11) DEFAULT NULL,
   `nPrinted` tinyint(4) NOT NULL,
+  `sRemarks` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime DEFAULT NULL,
   `nUpdatedBy` int(11) Not NULL,
-  `sRemarks` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id`),
   KEY `nGBId` (`nGBId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=176236 DEFAULT CHARSET=latin1;
@@ -990,6 +991,7 @@ BEGIN
 	select Id, sMadebDisplayName from lstmadebtype;
     select ID, sAuthRegion from lstauthregion;
     select Id, sTypeIssued from lsttypeissued;
+	-- select 7000 as nFormNumber;
 	select IF(IFNULL(nFormNumber,0), IFNULL(nFormNumber,0) + 1,7000) as nFormNumber from tblmadeb order by nFormNumber desc limit 0,1;
 END$$
 
