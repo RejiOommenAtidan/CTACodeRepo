@@ -240,7 +240,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
         public Object GetFormsWithoutGBId()
         {
-            string sql = @"SELECT tblmadeb.nFormNumber 
+            string sql = @"SELECT tblmadeb.nFormNumber, tblmadeb.dtReceived
                            FROM tblmadeb 
                            WHERE tblmadeb.nFormNumber 
                            NOT IN (SELECT nFormNo 
@@ -255,7 +255,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 DataSet ds = new DataSet();
                 mySqlDataAdapter.Fill(ds);
                 DataTableCollection tables = ds.Tables;
-                var forms = tables[0].AsEnumerable().Select(row => new { nFormNumber = row.Field<int>("nFormNumber") }).ToList();
+                var forms = tables[0].AsEnumerable().Select(row => new { 
+                    nFormNumber = row.Field<int>("nFormNumber"), 
+                    dtReceived = row.Field<DateTime?>("dtReceived") }).ToList();
                 return forms;
             }
         }
@@ -266,37 +268,36 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Populate Madeb Records
         public override Madeb PopulateRecord(MySqlDataReader reader)
         {
-            //reader.get
-            int colIndex1 = reader.GetOrdinal("dtEntered");
-            int colIndex2 = reader.GetOrdinal("dtUpdated");
-            int colIndex3 = reader.GetOrdinal("dtReject");
-            int colIndex4 = reader.GetOrdinal("dtEmailSend");
+            //int colIndex1 = reader.GetOrdinal("dtEntered");
+            //int colIndex2 = reader.GetOrdinal("dtUpdated");
+            //int colIndex3 = reader.GetOrdinal("dtReject");
+            //int colIndex4 = reader.GetOrdinal("dtEmailSend");
 
-            DateTime? dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
+            //DateTime? dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
 
-            //DateTime? dtEntered = (Convert.IsDBNull(reader["dtEntered"]) ? null : (DateTime?)(reader["dtEntered"]));
-            DateTime? dtUpdated = (Convert.IsDBNull(reader["dtUpdated"]) ? null : (DateTime?)(reader["dtUpdated"]));
+            ////DateTime? dtEntered = (Convert.IsDBNull(reader["dtEntered"]) ? null : (DateTime?)(reader["dtEntered"]));
+            //DateTime? dtUpdated = (Convert.IsDBNull(reader["dtUpdated"]) ? null : (DateTime?)(reader["dtUpdated"]));
 
-            //DateTime? dtEntered = null;
-            //DateTime? dtUpdated = null;
-            DateTime? dtReject = null;
-            DateTime? dtEmailSend = null;
-            //if (!reader.IsDBNull(colIndex1))
+            ////DateTime? dtEntered = null;
+            ////DateTime? dtUpdated = null;
+            //DateTime? dtReject = null;
+            //DateTime? dtEmailSend = null;
+            ////if (!reader.IsDBNull(colIndex1))
+            ////{
+            ////    dtEntered = (DateTime)reader["dtEntered"];
+            ////}
+            ////if (!reader.IsDBNull(colIndex2))
+            ////{
+            ////    dtUpdated = (DateTime)reader["dtUpdated"];
+            ////}
+            //if (!reader.IsDBNull(colIndex3))
             //{
-            //    dtEntered = (DateTime)reader["dtEntered"];
+            //    dtReject = (DateTime)reader["dtReject"];
             //}
-            //if (!reader.IsDBNull(colIndex2))
+            //if (!reader.IsDBNull(colIndex4))
             //{
-            //    dtUpdated = (DateTime)reader["dtUpdated"];
+            //    dtEmailSend = (DateTime)reader["dtEmailSend"];
             //}
-            if (!reader.IsDBNull(colIndex3))
-            {
-                dtReject = (DateTime)reader["dtReject"];
-            }
-            if (!reader.IsDBNull(colIndex4))
-            {
-                dtEmailSend = (DateTime)reader["dtEmailSend"];
-            }
 
 
             return new Madeb

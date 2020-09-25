@@ -88,7 +88,7 @@ namespace CTAWebAPI.Controllers.Transactions
         public IActionResult GetRandomGBID()
         {
             #region Get Random GB ID
-            int randomGBID = _givenGBIDRepository.GetRandomGBID2();
+            int randomGBID = _givenGBIDRepository.GetRandomGBID();
             return Ok(randomGBID);
             #endregion
         }
@@ -236,6 +236,43 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             #endregion
         }
+
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult DeleteGBID(int GBID)
+        {
+            try
+            {
+                if(GBID > 0)
+                {
+                    int rowsAffected = _givenGBIDRepository.DeleteGBID(GBID);
+                    if (rowsAffected > 0)
+                    {
+                        #region Alert Logging
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                        #endregion
+                        return Ok(String.Format("Deleted GBID {0} successfully.", GBID));
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status403Forbidden);
+                    }
+                }
+                else
+                {
+                    return BadRequest("Bad Request. No such GBID");
+                }
+            }
+            catch(Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                #endregion
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            
+        }
+
         #endregion
 
         #region Check if Given GBID Exists

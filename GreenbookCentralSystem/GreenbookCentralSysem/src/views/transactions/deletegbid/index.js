@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 
 
-import GivenGBID from './givengbid';
+import DeleteGBID from './deletegbid';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +26,7 @@ const Dashboard = () => {
    
       <Container maxWidth={false}>
         
-        <GivenGBID/>
+        <DeleteGBID />
       </Container>
 
   );

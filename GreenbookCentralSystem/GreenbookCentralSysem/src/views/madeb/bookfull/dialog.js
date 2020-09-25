@@ -446,6 +446,11 @@ export const AddDialog = (props) => {
       props.addAPICall(madeb);
     }
 
+    const formPopulate = (value) => {
+      console.log("Value in GBID: ", value);
+
+    }
+
   console.log(props.selectData);
   const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
   const [typeIssuedData,settypeIssuedData]= React.useState(props.selectData['typeIssued']);
@@ -458,7 +463,7 @@ export const AddDialog = (props) => {
   const [name, setName] = React.useState('');
   const [gbId, setGbId] = useState('');
   const [fname, setFname] = React.useState('');
-  const [saney, setSaney] = React.useState(0);
+  const [saney, setSaney] = React.useState();
   const [currentGBSno, setCurrentGBSNo] = useState('');
   const [previousGBSno, setPreviousGBSNo] = useState('');
 //   const [issueActionDate, setIssueActionDate] = React.useState('');
@@ -596,6 +601,18 @@ console.log("Madeb Object in Add dialog", madeb);
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
+                                            id="GBID"
+                                            label="GBID"
+                                            //required={true}
+                                        value={gbId}
+                                        onChange={(e) => { setGbId(e.target.value) }}
+                                        onBlur={(e) => {formPopulate(e.target.value)}}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
+                                        <TextField
                                           id="name"
                                           label="Name"
                                           name="sName"
@@ -615,17 +632,7 @@ console.log("Madeb Object in Add dialog", madeb);
                                         )}
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="GBID"
-                                            label="GBID"
-                                            //required={true}
-                                        value={gbId}
-                                        onChange={(e) => { setGbId(e.target.value) }}
-                                        />
-                                    </FormControl>
-                                </Grid>
+                                
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField

@@ -24,7 +24,8 @@ import { Label } from '@material-ui/icons';
 
 export const AssignDialog = (props) => {
   console.log("Props object: \n", props);
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     console.log("Handle submit called");
     props.handleAssignGBID();
 
@@ -37,47 +38,35 @@ export const AssignDialog = (props) => {
           <DialogContent>
             <DialogContentText>
               <Grid container spacing={3}>
+                
                 <Grid item xs={12} sm={6}>
-                <FormControl className={props.classes.formControl}>
-                  <label>
-                    Form Number:
-                  </label>
-                </FormControl>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="number"
+                      label="Form Number"
+                      //type="number"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      value={props.nFormNumber}
+                    />
+                  </FormControl>
+                </Grid>
+              
+                <Grid item xs={12} sm={6}>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="gbid"
+                      label="Green Book ID"
+                      //type="number"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      value={props.randomGBID}
+                    />
+                  </FormControl>
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="number"
-                    label="Form Number"
-                    //type="number"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    value={props.nFormNumber}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl className={props.classes.formControl}>
-                  <label>
-                    GBID:
-                  </label>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="gbid"
-                    label="Green Book ID"
-                    //type="number"
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                    value={props.randomGBID}
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
 
             </DialogContentText>
           </DialogContent>

@@ -53,7 +53,8 @@ const Greenbook = lazy(() => import('./views/transactions/greenbook/greenbook'))
 const NewEntry = lazy(() => import('./views/transactions/newentry/newentry'));
 const EditEntry = lazy(() => import('./views/transactions/newentry/editentry'));
 const SarsoNewGBEntry = lazy(() => import('./views/transactions/SarsoNewGBEntry/SarsoNewGBEntry'));
-const GivenGBID = lazy(() => import('./views/transactions/givengbid/givengbid'));
+const GivenGBID = lazy(() => import('./views/transactions/givengbid'));
+const DeleteGBID = lazy(() => import('./views/transactions/deletegbid'));
 
 const Routes = () => {
   const location = useLocation();
@@ -180,6 +181,7 @@ const Routes = () => {
                 '/Greenbooks',
                 '/SarsoNewGBEntry',
                 '/GivenGBID',
+                '/DeleteGBID',
                 '/EditEntry/:GBID'
               ]}>
               <LeftSidebar>
@@ -212,6 +214,7 @@ const Routes = () => {
                      <Route path="/Greenbooks" component={Greenbook} />
                      <Route path="/SarsoNewGBEntry" component={SarsoNewGBEntry} />
                      <Route path="/GivenGBID" component={GivenGBID} />
+                     <Route path="/DeleteGBID" component={DeleteGBID} />
                      <Route path="/EditEntry/:GBID" component={EditEntry} />
                   </motion.div>
                 </Switch>

@@ -28,6 +28,10 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
         #endregion
 
+
+
+
+
         #region Update Call
         public void Update(GivenGBID gbid)
         {
@@ -37,11 +41,40 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Delete Call
+        
         public void Delete(GivenGBID gbid)
         {
+            #region Delete by passing object
             var builder = new SqlQueryBuilder<GivenGBID>(gbid);
             ExecuteCommand(builder.GetDeleteCommand());
+            #endregion
         }
+
+        public int DeleteGBID(int gbid)
+        {
+            #region Delete by passing id using stored procedure
+            try
+            {
+                using (var command = new MySqlCommand(""))
+                {
+                    command.Connection = _connection;
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("sGBIDIN", gbid);
+                    _connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    _connection.Close();
+                    return rowsAffected;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 0;
+            }
+            #endregion
+        }
+
+
         #endregion
 
         #region Get Given GBID/GBIDs Call
@@ -89,86 +122,36 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
 
-        #region
 
+
+
+        #region Get Random GBID
         public int GetRandomGBID()
         {
-            List<int> gbids = null;
-            string sql = @"select tblgivengbid.nGBId FROM tblgivengbid";
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            using (var command = new MySqlCommand(sql))
-            {
-                command.Connection = _connection;
-                command.CommandType = CommandType.Text;
-                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
-                DataSet ds = new DataSet();
-                mySqlDataAdapter.Fill(ds);
-                DataTableCollection tables = ds.Tables;
-                gbids = tables[0].AsEnumerable().Select(row => row.Field<int>("nGBId")).ToList();
-                
-            }
             Random random = new Random();
-
+            string sql = @"select tblgivengbid.nGBId FROM tblgivengbid WHERE nGBID=@nGBID";
             int randomgbid = 0;
-            bool found = false;
-            while (!found)
+            bool unused = false;
+            while (!unused)
             {
-                randomgbid = random.Next(999999, 10000000);
-                foreach (int gbid in gbids)
+                using (var command = new MySqlCommand(sql))
                 {
-                    if(gbid == randomgbid)
+                    randomgbid = random.Next(999999, 10000000);
+                    command.Connection = _connection;
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.AddWithValue("nGBID", randomgbid);
+                    _connection.Open();
+                    var result = command.ExecuteScalar();
+                    if(result == null)
                     {
-                        break;
+                        unused = true;
                     }
                 }
-                found = true;
-            }
-            watch.Stop();
-            long time = watch.ElapsedMilliseconds;
-            return randomgbid;
-        }
-
-        #endregion
-
-        public int GetRandomGBID2()
-        {
-            List<int> gbids = null;
-            Random random = new Random();
-            int randomgbid = random.Next(999999, 10000000);
-            string sql = @"select tblgivengbid.nGBId FROM tblgivengbid WHERE nGBID=@nGBID";
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            using (var command = new MySqlCommand(sql))
-            {
-                command.Connection = _connection;
-                command.CommandType = CommandType.Text;
-                command.Parameters.AddWithValue("nGBID", randomgbid);
-                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
-                DataSet ds = new DataSet();
-                int rows = mySqlDataAdapter.Fill(ds);
-                //DataTableCollection tables = ds.Tables;
-                //gbids = tables[0].AsEnumerable().Select(row => row.Field<int>("nGBId")).ToList();
-
             }
             
-
-            //int randomgbid = 0;
-            //bool found = false;
-            //while (!found)
-            //{
-            //    randomgbid = random.Next(999999, 10000000);
-            //    foreach (int gbid in gbids)
-            //    {
-            //        if (gbid == randomgbid)
-            //        {
-            //            break;
-            //        }
-            //    }
-            //    found = true;
-            //}
-            watch.Stop();
-            long time = watch.ElapsedMilliseconds;
             return randomgbid;
         }
+        #endregion
 
 
         #region Populate Given GBID Records

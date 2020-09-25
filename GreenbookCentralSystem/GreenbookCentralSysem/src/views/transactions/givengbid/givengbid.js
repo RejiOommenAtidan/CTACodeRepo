@@ -3,6 +3,8 @@ import {Box, Container, Grid, Button, Typography, FormControl, TextField, Breadc
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable, { MTableToolbar }  from 'material-table';
+import Moment from 'moment';
+
 import IconButton from '@material-ui/core/IconButton';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 import AddBox from '@material-ui/icons/AddBox';
@@ -126,17 +128,17 @@ export default function GiveGBId(){
         
       },
     },
-    // {
-    //   field: "madeb.dtReceived",
-    //   title: "Received Date",
-    //   // type: 'date',
-    //   // dateSetting: {locale: 'en-GB'},
-    //   cellStyle: {
-    //     padding:'5px',
+    {
+      field: "dtReceived",
+      title: "Received Date",
+      // type: 'date',
+      // dateSetting: {locale: 'en-GB'},
+      cellStyle: {
+        padding:'5px',
         
-    //   },
-    //   render: rowData => Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD'),
-    // },
+      },
+      render: rowData =>  Moment(rowData['dtReceived']).format('YYYY-MM-DD'),
+    },
     // {
     //   field: "sAuthRegion",
     //   title: "Authority",
@@ -157,7 +159,7 @@ export default function GiveGBId(){
     // },
     {
       field: "edit",
-      title: "Edit",
+      title: "Assign",
       sorting: false,
       export:false,
       filtering:false,
@@ -205,7 +207,7 @@ export default function GiveGBId(){
   };
 
   const handleAssignGBID = () => {
-    setLoading(true);
+    //setLoading(true);
     const gbidObj = {
       nGBId: randomGBID,
       nFormNo: nFormNumber,
@@ -213,15 +215,16 @@ export default function GiveGBId(){
       nActive: 1
     }
     console.log("GBID Object:\n" , gbidObj);
-    debugger
+    
     axios.post(`GivenGBID/AddGivenGBID`, gbidObj)
       .then(resp => {
         if (resp.status === 200) {
+          console.log("Added record to givengbid table");
           setAssignModal(false);
           axios.get(`Madeb/GetFormsWithoutGBId`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
+                console.log("Added record & reload.", resp.data);
                 setdataAPI(resp.data);
                 setLoading(false);
               }
@@ -235,12 +238,13 @@ export default function GiveGBId(){
       })
       .catch((error) => {
         console.log(error);
-      })
-  }
+      });
+  };
 
   useEffect(() => {
     axios.get(`Madeb/GetFormsWithoutGBId`)
       .then(resp => {
+        debugger
         if (resp.status === 200) {
           console.log(resp.data);
           setdataAPI(resp.data);
