@@ -852,13 +852,13 @@ CREATE TABLE `tblGreenBookIssued` (
   `nGBId` int(11) DEFAULT NULL,
   `dtIssuedDate` date DEFAULT NULL,
   `sWhyIssued` varchar(10) DEFAULT NULL,
-  `nMadebTypeId` varchar(10) DEFAULT NULL,
+  `nMadebTypeId` int(11) DEFAULT NULL,
   `nTypeIssuedId` int(11) NOT NULL,
   `sFormNumber` text NOT NULL,
-  `sWhereIssued` int(11) NOT NULL,
+  `nWhereIssued` int(11) NOT NULL,
   `nAuthRegionId` int(11) DEFAULT NULL,
   `nPrinted` tinyint(4) NOT NULL,
-  `sRemarks` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `sRemarks` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime DEFAULT NULL,
@@ -993,6 +993,19 @@ BEGIN
     select Id, sTypeIssued from lsttypeissued;
 	-- select 7000 as nFormNumber;
 	select IF(IFNULL(nFormNumber,0), IFNULL(nFormNumber,0) + 1,7000) as nFormNumber from tblmadeb order by nFormNumber desc limit 0,1;
+END$$
+
+DELIMITER ;
+
+
+DROP procedure IF EXISTS `spDeleteGreenBook`;
+
+DELIMITER $$
+USE `ctadb`$$
+CREATE PROCEDURE `spDeleteGreenBook` (IN sGBIDIN VARCHAR(255))
+BEGIN
+	DELETE FROM `ctadb`.`tblgreenbook` WHERE `tblgreenbook`.`sGBID``= sGBIDIN
+	
 END$$
 
 DELIMITER ;

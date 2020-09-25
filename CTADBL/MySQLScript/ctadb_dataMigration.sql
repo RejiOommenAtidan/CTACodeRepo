@@ -896,3 +896,10 @@ INNER JOIN ctadb.lstmadebtype b
 	ON a.sWhyIssued = b.sMadebDisplayKey
 SET a.nMadebTypeId = b.Id;
 
+UPDATE ctadb.tblgreenbookissued 
+SET nAuthRegionId = null
+WHERE nWhereIssued = 0;
+
+UPDATE ctadb.tblgreenbookissued 
+SET sRemarks = null
+WHERE sRemarks = '';
