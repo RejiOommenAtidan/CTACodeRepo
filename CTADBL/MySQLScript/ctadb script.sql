@@ -997,15 +997,13 @@ END$$
 
 DELIMITER ;
 
-
 DROP procedure IF EXISTS `spDeleteGreenBook`;
 
 DELIMITER $$
-USE `ctadb`$$
+
 CREATE PROCEDURE `spDeleteGreenBook` (IN sGBIDIN VARCHAR(255))
 BEGIN
-	DELETE FROM `ctadb`.`tblgreenbook` WHERE `tblgreenbook`.`sGBID``= sGBIDIN
-	
-END$$
+	delete from `tblgreenbook` WHERE `tblgreenbook`.`sGBID`= sGBIDIN;
+END
 
 DELIMITER ;
