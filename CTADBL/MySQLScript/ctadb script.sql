@@ -1007,3 +1007,38 @@ BEGIN
 END
 
 DELIMITER ;
+
+
+DROP procedure IF EXISTS `spGetUserAuthorization`;
+
+DELIMITER $$
+USE `ctadb`$$
+CREATE PROCEDURE `spGetUserAuthorization` (IN nUserIdIN int(11))
+BEGIN
+	 SELECT `Id`,
+		 `sUsername`,
+		 `sFullName`,
+		 `sOffice`,
+		 `nUserRightsId`,
+		 IF(nActive, 1, 0) nActive
+	 FROM `tbluser`
+	 WHERE 
+		`Id` = nUserIdIN
+		AND 
+		nActive = 1;
+	 
+	SELECT `Id`,
+		 `sUserRightsName`
+	 FROM `lstuserrights`
+	 WHERE Id IN (Select `nUserRightsId` from tblUser where Id = nUserIdIN);
+	 
+	  
+	SELECT `Id`,
+		 `nFeatureID`,
+		 `nUserRightsID`,
+		 `nRights`
+	 FROM `lnkfeatureuserrights`
+	 WHERE nUserRightsID IN (Select `nUserRightsId` from tblUser where Id = nUserIdIN) and nRights=1;
+END
+
+DELIMITER ;
