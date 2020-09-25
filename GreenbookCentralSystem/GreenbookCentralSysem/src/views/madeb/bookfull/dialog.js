@@ -449,7 +449,22 @@ export const AddDialog = (props) => {
     const formPopulate = (value) => {
       console.log("Value in GBID: ", value);
 
-    }
+    /* Need Greenbook record by passing GBID
+     * from Greenbook controller. 
+     * Must talk to Malay.
+    */
+      
+    //   axios.post(`GivenGBID/AddGivenGBID`, gbidObj)
+    //   .then(resp => {
+    //     if (resp.status === 200) {
+    //       console.log("Added record to givengbid table");
+    //       setAssignModal(false);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    // };
 
   console.log(props.selectData);
   const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
