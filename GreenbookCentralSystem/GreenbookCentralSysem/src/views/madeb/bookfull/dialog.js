@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useForm } from "react-hook-form";
+import _ from "lodash/fp";
 
 import {
   Box,
@@ -90,7 +92,7 @@ export const EditDialog = (props) => {
     nIssuedOrNotID:issueAction,
     dtReturnEmail:returnDate
  }
-console.log("Madeb Object received in dialog", madeb);
+console.log("Madeb Edit Object received in dialog", madeb);
 //  const childrenAuthRegion =  () => { 
 //         return (authorityData.map((data) => (<option value={data.id}>{data.sAuthRegion}</option> )  ))
 //     };  
@@ -425,6 +427,8 @@ console.log("Madeb Object received in dialog", madeb);
 
 
 export const AddDialog = (props) => {
+  const { register, handleSubmit, watch, errors } = useForm();
+
     const [message,setMessage]=React.useState('');
     const [alertType,setAlertType]=React.useState('');
     const [snackbarOpen,setSnackbarOpen]=React.useState(false);
@@ -435,10 +439,11 @@ export const AddDialog = (props) => {
   
       setSnackbarOpen(false);
     };
-    const handleSubmit = () =>{
+    const handleSnackBarSubmit = () =>{
       setMessage("Record Successfully Edited");
       setAlertType('success');
-      setSnackbarOpen(true)
+      setSnackbarOpen(true);
+      props.addAPICall(madeb);
     }
 
   console.log(props.selectData);
@@ -495,7 +500,7 @@ console.log("Madeb Object in Add dialog", madeb);
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Book Full Madeb</DialogTitle>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(handleSnackBarSubmit)}>
       <DialogContent>
         <DialogContentText>
         <div>
@@ -591,12 +596,23 @@ console.log("Madeb Object in Add dialog", madeb);
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
-                                            id="name"
-                                            label="Name"
-                                            required={true}
-                                        value={name}
-                                        onChange={(e) => { setName(e.target.value) }}
+                                          id="name"
+                                          label="Name"
+                                          name="sName"
+                                          //required={true}
+                                          value={name}
+                                          onChange={(e) => { setName(e.target.value) }}
+                                          inputRef={register({
+                                            required: true,
+                                            maxLength: 20
+                                          })}
                                         />
+                                        {_.get("sName.type", errors) === "required" && (
+                                          <span style={{color: 'red'}}>This field is required</span>
+                                        )}
+                                        {_.get("sName.type", errors) === "maxLength" && (
+                                          <p>First name cannot exceed 20 characters</p>
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -604,7 +620,7 @@ console.log("Madeb Object in Add dialog", madeb);
                                         <TextField
                                             id="GBID"
                                             label="GBID"
-                                            required={true}
+                                            //required={true}
                                         value={gbId}
                                         onChange={(e) => { setGbId(e.target.value) }}
                                         />
@@ -643,7 +659,7 @@ console.log("Madeb Object in Add dialog", madeb);
                                             id="currentGBSno"
                                             label="Current GB SNo."
                                             type='number'
-                                            required={true}
+                                            //required={true}
                                         value={currentGBSno}
                                         onChange={(e) => { 
                                             setCurrentGBSNo(parseInt(e.target.value));
@@ -658,7 +674,7 @@ console.log("Madeb Object in Add dialog", madeb);
                                             id="previousGBSno"
                                             label="Previous GB SNo"
                                             type='number'
-                                            required={true}
+                                            //required={true}
                                         value={previousGBSno}
                                         onChange={(e) => { 
                                             setPreviousGBSNo(parseInt(e.target.value));
@@ -787,7 +803,7 @@ console.log("Madeb Object in Add dialog", madeb);
         </Alert>
       </Snackbar>
 
-        <Button onClick={() => props.addAPICall(madeb)} color="primary">Save</Button> 
+        <Button type="submit" color="primary">Save</Button> 
       </DialogActions>
       </form>
     </Dialog>

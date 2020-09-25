@@ -5,14 +5,18 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace CTADBL.BaseClassRepositories.Transactions
 {
     public class MadebRepository : ADORepository<Madeb>
     {
+
+        private static MySqlConnection _connection;
         #region Constructor
         public MadebRepository(string connectionString) : base(connectionString)
         {
+            _connection = new MySqlConnection(connectionString);
         }
         #endregion
 
@@ -233,6 +237,28 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
         }
 
+
+        public Object GetFormsWithoutGBId()
+        {
+            string sql = @"SELECT tblmadeb.nFormNumber 
+                           FROM tblmadeb 
+                           WHERE tblmadeb.nFormNumber 
+                           NOT IN (SELECT nFormNo 
+                                   FROM tblgivengbid) 
+                           AND tblmadeb.nMadebTypeID = 1 
+                           ORDER BY tblmadeb.nFormNumber DESC";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Connection = _connection;
+                command.CommandType = CommandType.Text;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var forms = tables[0].AsEnumerable().Select(row => new { nFormNumber = row.Field<int>("nFormNumber") }).ToList();
+                return forms;
+            }
+        }
 
 
         #endregion

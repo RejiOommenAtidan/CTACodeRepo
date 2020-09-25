@@ -282,6 +282,15 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetFormsWithoutGBId()
+        {
+            Object forms = _madebRepository.GetFormsWithoutGBId();
+            return Ok(forms);
+        }
+
+
 
         #endregion
 
