@@ -82,6 +82,17 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             #endregion
         }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetRandomGBID()
+        {
+            #region Get Random GB ID
+            int randomGBID = _givenGBIDRepository.GetRandomGBID2();
+            return Ok(randomGBID);
+            #endregion
+        }
+
         #endregion
 
         #region Add Call
@@ -94,6 +105,10 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
+                    /* Changed by Rajen*/
+                    givenGBID.dtDate = DateTime.Now;
+                    /* Changed by Rajen*/
+
                     givenGBID.dtEntered = DateTime.Now;
                     givenGBID.dtUpdated = DateTime.Now;
                     _givenGBIDRepository.Add(givenGBID);

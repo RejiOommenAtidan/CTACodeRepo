@@ -585,6 +585,7 @@ export default function EnhancedTable() {
                 console.error('Error', error.message);
               }
               console.log(error.message);
+              console.log(error.config);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -603,6 +604,7 @@ export default function EnhancedTable() {
           console.error('Error', error.message);
         }
         console.log(error.message);
+        console.log(error.config);
       })
       .then(release => {
         //console.log(release); => udefined
