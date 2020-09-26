@@ -49,32 +49,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             ExecuteCommand(builder.GetDeleteCommand());
             #endregion
         }
-
-        public int DeleteGBID(int gbid)
-        {
-            #region Delete by passing id using stored procedure
-            try
-            {
-                using (var command = new MySqlCommand(""))
-                {
-                    command.Connection = _connection;
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("sGBIDIN", gbid);
-                    _connection.Open();
-                    int rowsAffected = command.ExecuteNonQuery();
-                    _connection.Close();
-                    return rowsAffected;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return 0;
-            }
-            #endregion
-        }
-
-
+        
         #endregion
 
         #region Get Given GBID/GBIDs Call

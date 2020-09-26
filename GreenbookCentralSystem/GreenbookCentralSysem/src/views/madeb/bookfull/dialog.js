@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import ReactDOM from "react-dom";
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import axios from 'axios';
 
 import {
   Box,
@@ -446,25 +448,44 @@ export const AddDialog = (props) => {
       props.addAPICall(madeb);
     }
 
+    const handleChangeGBID = (value) => {
+      setGbId(value);
+      setName('');
+      setFname('');
+    }
     const formPopulate = (value) => {
       console.log("Value in GBID: ", value);
+      const gbid = value;
 
     /* Need Greenbook record by passing GBID
      * from Greenbook controller. 
      * Must talk to Malay.
     */
       
-    //   axios.post(`GivenGBID/AddGivenGBID`, gbidObj)
-    //   .then(resp => {
-    //     if (resp.status === 200) {
-    //       console.log("Added record to givengbid table");
-    //       setAssignModal(false);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    // };
+       axios.get(`Greenbook/GetGreenbook/sGBID=`+ gbid)
+       .then(resp => {
+         if (resp.status === 200) {
+           console.log("Got gb record\n", resp.data);
+           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
+           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
+           const lname = resp.data.sLastName ? resp.data.sLastName : '';
+           setName( `${name} ${mname} ${lname}`);
+           setFname(resp.data.sFathersName);
+          //  setCurrentGBSNo(resp.data.sOldGreenBKNo);
+          //  setPreviousGBSNo(resp.data.sFstGreenBkNo);
+         }
+         else{
+           setName('');
+           setFname('');
+           console.log(resp);
+         }
+       })
+       .catch((error) => {
+         setName('');
+         setName('');
+         console.log(error);
+       });
+     };
 
   console.log(props.selectData);
   const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
@@ -504,6 +525,7 @@ export const AddDialog = (props) => {
     // nIssuedOrNotID:issueAction,
     // dtReturnEmail:returnDate
  }
+ const btnstyles = {background:'none', border:'none', cursor: 'pointer', color: 'blue'};
 console.log("Madeb Object in Add dialog", madeb);
 
  // const idsAuthRegion = authorityData.map((data) => data.sAuthRegion);
@@ -533,10 +555,10 @@ console.log("Madeb Object in Add dialog", madeb);
                                             label="Form Number"
                                             type="number"
                                             InputProps={{
-                                                readOnly: true,
+                                                readOnly: true
                                             }}
                                             value={formNumber}
-                                            //onChange={(e) => { setFormNumber(parsee.target.value) }}
+                                            //onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
 
                                         />
                                     </FormControl>
@@ -544,35 +566,25 @@ console.log("Madeb Object in Add dialog", madeb);
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
-                                            id="date"
-                                            label="Received Date"
-                                            type="date"
-                                            defaultValue={receivedDate}
-                                            className={props.classes.textField}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            onChange={(e) => { setReceivedDate(e.target.value) }}
+                                          id="date"
+                                          name="dtDate"
+                                          label="Received Date"
+                                          type="date"
+                                          defaultValue={receivedDate}
+                                          className={props.classes.textField}
+                                          InputLabelProps={{
+                                              shrink: true,
+                                          }}
+                                          onChange={(e) => { setReceivedDate(e.target.value) }}
+                                          inputRef={register({
+                                            required: true
+                                          })}
                                         />
+                                        {_.get("dtDate.type", errors) === "required" && (
+                                          <span style={{color: 'red'}}>This field is required</span>
+                                        )}
                                     </FormControl>
                                 </Grid>
-
-                                {/* <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                        <InputLabel id="Auth-label">Authority Region</InputLabel>
-                                        <Select
-                                            labelId="Auth-label"
-                                            id="authority"
-                                            value={valueAuthRegion}
-                                            onChange={(e) => { setAuthorityId(e.target.value) }}
-                                            label="Authority"
-                                            children={optsAuthRegion}
-                                        >
-                                           
-                                        </Select>
-                                    </FormControl>
-                                </Grid> */}
-
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                     <Autocomplete
@@ -616,14 +628,25 @@ console.log("Madeb Object in Add dialog", madeb);
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
-                                            id="GBID"
-                                            label="GBID"
-                                            //required={true}
-                                        value={gbId}
-                                        onChange={(e) => { setGbId(e.target.value) }}
-                                        onBlur={(e) => {formPopulate(e.target.value)}}
+                                          id="GBID"
+                                          label="GBID"
+                                          //required={true}
+                                          name="sGBID"
+                                          value={gbId}
+                                          onChange={(e) => { handleChangeGBID(e.target.value) }}
+                                          //onBlur={(e) => {formPopulate(e.target.value)}}
+                                          inputRef={register({
+                                            required: true
+                                          })}
                                         />
+                                        {_.get("sGBID.type", errors) === "required" && (
+                                          <span style={{color: 'red'}}>This field is required</span>
+                                        )}
+                                        
+                                        
                                     </FormControl>
+                                    <button type='button' style={btnstyles} onClick={() => formPopulate(gbId)}>Get Details</button>
+
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
@@ -635,16 +658,13 @@ console.log("Madeb Object in Add dialog", madeb);
                                           value={name}
                                           onChange={(e) => { setName(e.target.value) }}
                                           inputRef={register({
-                                            required: true,
-                                            maxLength: 20
+                                            required: true
                                           })}
                                         />
                                         {_.get("sName.type", errors) === "required" && (
                                           <span style={{color: 'red'}}>This field is required</span>
                                         )}
-                                        {_.get("sName.type", errors) === "maxLength" && (
-                                          <p>First name cannot exceed 20 characters</p>
-                                        )}
+                                        
                                     </FormControl>
                                 </Grid>
                                 
@@ -677,17 +697,25 @@ console.log("Madeb Object in Add dialog", madeb);
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="currentGBSno"
-                                            label="Current GB SNo."
-                                            type='number'
-                                            //required={true}
+                                      <TextField
+                                        id="currentGBSno"
+                                        label="Current GB SNo."
+                                        type='number'
+                                        name='nCurrentGBSno'
+                                        //required={true}
                                         value={currentGBSno}
                                         onChange={(e) => { 
-                                            setCurrentGBSNo(parseInt(e.target.value));
-                                            console.log("Value of currentGB changed to:", parseInt(e.target.value));
+                                          setCurrentGBSNo(parseInt(e.target.value));
+                                          console.log("Value of currentGB changed to:", parseInt(e.target.value));
                                         }}
-                                        />
+                                        inputRef={register({
+                                          required: true
+                                        })}
+                                      />
+                                      {_.get("nCurrentGBSno.type", errors) === "required" && (
+                                        <span style={{color: 'red'}}>This field is required</span>
+                                      )}
+                                       
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -706,110 +734,7 @@ console.log("Madeb Object in Add dialog", madeb);
                                     </FormControl>
                                 </Grid>
 
-                                {/* <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="date"
-                                            label="Issue Action Date"
-                                            type="date"
-                                            defaultValue={issueActionDate}
-                                            className={props.classes.textField}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            
-                                            onChange={(e) => { setIssueActionDate(e.target.value) }}
-                                        />
-                                    </FormControl>
-                                </Grid> */}
-                                {/* <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                        <InputLabel id="issue-label"> Issue Action</InputLabel>
-                                        <Select
-                                            labelId="issue-label"
-                                            id="authority"
-                                            value={valueTypeIssued}
-                                             onChange={(e) => { setIssueAction(e.target.value) }}
-                                            label="Issue Action"
-                                            children={optsTypeIssued}
-                                        >
-                                          
-
-                                        </Select>
-                                    </FormControl>
-                                </Grid> */}
-                                {/* <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                    <Autocomplete
-                                      openOnFocus
-                                      clearOnEscape
-                                      onChange={  
-                                        (e, value) => {
-                                          if (value !== null) {
-                                            console.log(value.id);
-                                            setIssueAction(value.id);
-                                          }
-                                          else {
-                                            setIssueAction(0);
-                                          }
-                                        }
-                                      }
-                                     //value={valueTypeIssued} 
-                                     id="id_nTypeIssued"
-                                     options={typeIssuedData}
-                                     autoHighlight
-                                     getOptionLabel={(option) => option.sTypeIssued}
-                                     renderOption={(option) => (
-                                       <React.Fragment>
-                                         <span>{option.sTypeIssued}</span>
-                                       </React.Fragment>
-                                     )}
-                                     renderInput={(params) => (
-                                       <TextField
-                                         {...params}
-                                         label="Type Issued"
-                                         variant="standard"
-                                         inputProps={{
-                                           ...params.inputProps,
-                                           autoComplete: 'new-password', // disable autocomplete and autofill
-                                         }}
-                                        />
-                                      )}
-                                    />
-                                  </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="reject_date"
-                                            label="Reject Date"
-                                            type="date"
-                                            defaultValue={rejectDate}
-                                            className={props.classes.textField}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            
-                                            onChange={(e) => { setRejectDate(e.target.value) }}
-                                        />
-                                    </FormControl>
-                                </Grid> */}
-                                {/* <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="date"
-                                            label="Return Date"
-                                            type="date"
-                                            defaultValue={returnDate}
-                                            className={props.classes.textField}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            
-                                            onChange={(e) => { setReturnDate(e.target.value) }}
-                                        />
-                                    </FormControl>
-                                </Grid> */}
+                                
                             </Grid>
                         </div>
         </DialogContentText>

@@ -86,6 +86,33 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             #endregion
         }
+
+
+        [HttpGet("GetGreenbook/sGBID={sGBID}")]
+        [Route("[action]")]
+        public IActionResult GetGreenbookByGBID(string sGBID)
+        {
+            #region Get GreenBook by GBID
+            try
+            {
+                Greenbook gb = _greenbookRepository.GetGreenbookByGBID(sGBID);
+                #region Information Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                #endregion
+
+                return Ok(gb);
+            }
+            catch(Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+
         #endregion
 
         #region Add Call
@@ -227,6 +254,44 @@ namespace CTAWebAPI.Controllers.Transactions
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
+        }
+        #endregion
+
+        #region Delete GreenBook by passing GB Id.
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult DeleteGreenBook(string sGBID)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(sGBID))
+                {
+                    int rowsAffected = _greenbookRepository.DeleteGreenBook(sGBID);
+                    if (rowsAffected > 0)
+                    {
+                        #region Alert Logging
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                        #endregion
+                        return Ok(String.Format("Deleted GreenBook with id {0} successfully.", sGBID));
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status403Forbidden);
+                    }
+                }
+                else
+                {
+                    return BadRequest("Bad Request. No such GreenBook Id.");
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                #endregion
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
         }
         #endregion
 

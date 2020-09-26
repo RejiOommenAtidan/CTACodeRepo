@@ -8,11 +8,14 @@ using System.Data;
 
 namespace CTADBL.BaseClassRepositories.Transactions
 {
+    
     public class GreenbookRepository : ADORepository<Greenbook>
     {
+        private static MySqlConnection _connection;
         #region Constructor
         public GreenbookRepository(string connectionString) : base(connectionString)
         {
+            _connection = new MySqlConnection(connectionString);
         }
         #endregion
 
@@ -39,6 +42,35 @@ namespace CTADBL.BaseClassRepositories.Transactions
             ExecuteCommand(builder.GetDeleteCommand());
         }
         #endregion
+
+
+        /* Changes by Rajen */
+        #region Delete Green Book Stored Procedure
+        public int DeleteGreenBook(string sGBID)
+        {
+            #region Delete by passing id using stored procedure
+            try
+            {
+                using (var command = new MySqlCommand("spDeleteGreenBook"))
+                {
+                    command.Connection = _connection;
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("sGBIDIN", sGBID);
+                    _connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    _connection.Close();
+                    return rowsAffected;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 0;
+            }
+            #endregion
+        }
+        #endregion
+        /* Changes by Rajen */
 
         #region Get Green Book/Books
         public IEnumerable<Greenbook> GetAllGreenBooks()
@@ -180,6 +212,80 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 return GetRecord(command);
             }
         }
+        #endregion
+
+        #region Get GreenBook by passing GreenBook Id.
+
+        public Greenbook GetGreenbookByGBID (string sGBID)
+        {
+            string sql = @"SELECT `Id`,
+                            `_Id`,
+                            `sGBID`,
+                            `nAuthRegionID`,
+                            `sFirstName`,
+                            `sMiddleName`,
+                            `sLastName`,
+                            `sFamilyName`,
+                            `sGender`,
+                            `dtDOB`,
+                            `sDOBApprox`,
+                            `sBirthPlace`,
+                            `sBirthCountryID`,
+                            `sOriginVillage`,
+                            `sOriginProvinceID`,
+                            `sMarried`,
+                            `sOtherDocuments`,
+                            `sResidenceNumber`,
+                            `sQualificationID`,
+                            `sOccupationID`,
+                            `sAliasName`,
+                            `sOldGreenBKNo`,
+                            `sFstGreenBkNo`,
+                            `dtFormDate`,
+                            `sFathersName`,
+                            `sFathersID`,
+                            `sFathersGBID`,
+                            `sMothersName`,
+                            `sMothersID`,
+                            `sMothersGBID`,
+                            `sSpouseName`,
+                            `sSpouseID`,
+                            `sSpouseGBID`,
+                            `nChildrenM`,
+                            `nChildrenF`,
+                            `sAddress1`,
+                            `sAddress2`,
+                            `sCity`,
+                            `sState`,
+                            `sPCode`,
+                            `sCountryID`,
+                            `sEmail`,
+                            `sPhone`,
+                            `sFax`,
+                            `dtDeceased`,
+                            `sBookIssued`,
+                            `dtValidityDate`,
+                            `sPaidUntil`,
+                            `sEnteredDateTime`,
+                            `nEnteredBy`,
+                            `nUpdatedBy`,
+                            `dtEntered`,
+                            `dtUpdated`,
+                            `TibetanName`,
+                            `TBUPlaceOfBirth`,
+                            `TBUOriginVillage`,
+                            `TBUFathersName`,
+                            `TBUMothersName`,
+                            `TBUSpouseName`
+                        FROM `tblgreenbook`
+                        WHERE sGBID=@sGBID;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                return GetRecord(command);
+            }
+        }
+
         #endregion
 
         #region Populate Greenbook Records
