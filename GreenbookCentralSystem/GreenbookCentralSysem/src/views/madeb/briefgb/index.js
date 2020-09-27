@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 
 
-import BookFull from './bookfull';
+import BriefGB from './briefgb';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +26,7 @@ const Dashboard = () => {
    
       <Container maxWidth={false}>
         
-        <BookFull />
+        <BriefGB />
       </Container>
 
   );

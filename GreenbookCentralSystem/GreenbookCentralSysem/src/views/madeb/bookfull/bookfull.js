@@ -251,7 +251,7 @@ export default function EnhancedTable() {
         padding:'5px',
         
       },
-      render: rowData => Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD'),
+      render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD') : undefined,
     },
     {
       field: "sAuthRegion",
@@ -459,15 +459,9 @@ export default function EnhancedTable() {
   }
 
   const editAPICall = (madeb) => {
-    // let CountryID = countryPK;
-    // let countryToUpdate = {
-    //   ID : countryPK,
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
-    // };
     console.log(madeb);
     debugger
-    axios.post(`/Madeb/EditMadeb/Id=` + madeb.id, madeb)
+    axios.post(`Madeb/EditMadeb/Id=` + madeb.id, madeb)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
@@ -561,7 +555,7 @@ export default function EnhancedTable() {
     console.log(madeb);
  
     debugger
-    axios.post(`/Madeb/AddMadeb/`, madeb)
+    axios.post(`Madeb/AddMadeb/`, madeb)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);

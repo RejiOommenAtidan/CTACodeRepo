@@ -47,6 +47,7 @@ const Feature = lazy(() => import('./views/master/feature'));
 const Sarso = lazy(() => import('./views/madeb/sarso'));
 const Norchoe = lazy(() => import('./views/madeb/norchoe'));
 const BookFull = lazy(() => import('./views/madeb/bookfull'));
+const BriefGB = lazy(() => import('./views/madeb/briefgb'));
 
 //Greenbook Pages
 const Greenbook = lazy(() => import('./views/transactions/greenbook/greenbook'));
@@ -178,6 +179,7 @@ const Routes = () => {
                 '/Sarso',
                 '/Norchoe',
                 '/BookFull',
+                '/BriefGB',
                 '/Greenbooks',
                 '/SarsoNewGBEntry',
                 '/GivenGBID',
@@ -211,6 +213,7 @@ const Routes = () => {
                      <Route path="/Sarso" component={Sarso} />
                      <Route path="/Norchoe" component={Norchoe} />
                      <Route path="/BookFull" component={BookFull} />
+                     <Route path="/BriefGB" component={BriefGB} />
                      <Route path="/Greenbooks" component={Greenbook} />
                      <Route path="/SarsoNewGBEntry" component={SarsoNewGBEntry} />
                      <Route path="/GivenGBID" component={GivenGBID} />

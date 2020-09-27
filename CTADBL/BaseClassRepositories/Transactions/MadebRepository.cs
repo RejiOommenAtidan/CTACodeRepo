@@ -321,7 +321,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 nCurrentGBSno = reader.IsDBNull("nCurrentGBSno") ? null : (int?)(reader["nCurrentGBSno"]),
                 nPreviousGBSno = reader.IsDBNull("nPreviousGBSno") ? null : (int?)(reader["nPreviousGBSno"]),
                 nSaneyFormNo = reader.IsDBNull("nSaneyFormNo") ? null : (int?)(reader["nSaneyFormNo"]),
-                nReceiptNo = reader.IsDBNull("nCurrentGBSno") ? null : (int?)(reader["nCurrentGBSno"]),
+                nReceiptNo = reader.IsDBNull("nReceiptNo") ? null : (int?)(reader["nReceiptNo"]),
                 dtEmailSend = reader.IsDBNull("dtEmailSend") ? null : (DateTime?)(reader["dtEmailSend"]),
                 sAlias = reader.IsDBNull("sAlias") ? null : (string?)(reader["sAlias"]),
                 sApprovedReject = reader.IsDBNull("sApprovedReject") ? null : (string?)(reader["sApprovedReject"]),
