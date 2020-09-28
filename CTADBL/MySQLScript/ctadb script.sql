@@ -648,6 +648,7 @@ CREATE TABLE `lstMadebStatus` (
 INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`) VALUES ('Approved');
 INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`) VALUES ('Rejected');
 INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`) VALUES ('Cancelled');
+INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`) VALUES ('Closed');
 
 CREATE TABLE `lstMadebType` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
