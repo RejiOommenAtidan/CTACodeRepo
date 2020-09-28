@@ -426,7 +426,7 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="/Home">
+                      to="/Users">
                       Add/Edit
                     </NavLink>
                   </li>

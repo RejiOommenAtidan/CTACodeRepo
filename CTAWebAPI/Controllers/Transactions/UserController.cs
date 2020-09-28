@@ -35,6 +35,7 @@ namespace CTAWebAPI.Controllers.Transactions
         private readonly CTALogger _ctaLogger;
         private readonly AppSettings _appSettings;
         private readonly UserRightsRepository _userRightsRepository;
+        private readonly UsersVMRepository _usersVMRepository;
         //string role ="";
         public UserController(DBConnectionInfo info, IOptions<AppSettings> appSettings)
         {
@@ -45,6 +46,7 @@ namespace CTAWebAPI.Controllers.Transactions
             _userVMRepository = new UserVMRepository(_info.sConnectionString);
             _appSettings = appSettings.Value;
             _userRightsRepository = new UserRightsRepository(_info.sConnectionString);
+            _usersVMRepository = new UsersVMRepository(_info.sConnectionString);
         }
         #endregion
 
@@ -59,6 +61,32 @@ namespace CTAWebAPI.Controllers.Transactions
             try
             {
                 IEnumerable<User> allUsers = _userRepository.GetAllUsers();
+
+                #region Information Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                #endregion
+
+                return Ok(allUsers);
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetAllUsers()
+        {
+            #region Get All Users for User Manage Screen
+            try
+            {
+                IEnumerable<UsersVM> allUsers = _usersVMRepository.GetUsersWithUserRightsName();
 
                 #region Information Logging 
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
