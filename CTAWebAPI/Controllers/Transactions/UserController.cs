@@ -321,6 +321,7 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             catch (Exception ex)
             {
+                //TODO: ex.Message || ex.StackTrace
                 #region Exception Logging
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
                 #endregion
