@@ -326,19 +326,21 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Change Password
-        [HttpPost]
-        [Route("[action]")]
-        public IActionResult ChangePassword(ChangePasswordVM changePasswordVM)
+        //[HttpPost]
+        //[Route("[action]")]
+        private IActionResult ChangePassword(ChangePasswordVM changePasswordVM)
         {
             #region Change Password
             try
             {
                 if (ModelState.IsValid)
                 {
-                    //Check for NULLS & Quotes for params 
-                    //Fetch user from DB
-                    // replace password & update dtUpdated
-                    //return success
+                    //  Check for NULLS & Quotes for params 
+                    //  Fetch user from DB
+                    //  Check for password in old & new
+                    //  replace password & update dtUpdated, if no issues
+                    //  Log, under edit levels for user
+                    //  return success
 
 
                     //if (UserExists(Id))
