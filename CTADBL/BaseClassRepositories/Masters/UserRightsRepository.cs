@@ -49,19 +49,22 @@ namespace CTADBL.BaseClassRepositories.Masters
             }
         }
 
-        public UserRights GetUserRightsById(string id)
+        public UserRights GetUserRightsById(string Id)
         {
-            // PARAMETERIZED QUERIES!
-            using (var command = new MySqlCommand("SELECT * FROM lstuserrights WHERE Id = @id"))
+            string sql = @"SELECT `Id`,
+                            `sUserRightsName`,
+                            `dtEntered`,
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
+                        FROM `lstuserrights`
+                        WHERE Id= @Id;";
+            using (var command = new MySqlCommand(sql))
             {
-                //command.Parameters.Add(new ObjectParameter("id", id));
-                command.Parameters.AddWithValue("id", id);
+                command.Parameters.AddWithValue("Id", Id);
                 return GetRecord(command);
             }
         }
-
-
-
         #endregion
 
         #region Populate UserRights Records

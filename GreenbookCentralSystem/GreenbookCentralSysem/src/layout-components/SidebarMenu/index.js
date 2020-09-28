@@ -31,6 +31,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PaymentIcon from '@material-ui/icons/Payment';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { authenticationService } from '../../auth/_services';
+
+const currentUser = authenticationService.currentUserValue;
 
 
 const SidebarMenu = (props) => {
@@ -290,13 +293,14 @@ const SidebarMenu = (props) => {
                       Relation
                     </NavLink>
                   </li>
-                  <li>
+                  {(currentUser.lFeatureUserrights.find(x=>x.nFeatureID===3))!==undefined 
+                    && <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/Feature">
                       Feature
                     </NavLink>
-                  </li>
+                  </li>}
                   {/*<li>
                     <NavLink
                       onClick={toggleSidebarMobile}

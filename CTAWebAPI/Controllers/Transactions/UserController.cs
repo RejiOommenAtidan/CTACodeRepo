@@ -1,4 +1,5 @@
 ﻿using CTADBL.BaseClasses.Transactions;
+using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
 using CTADBL.ViewModels;
@@ -33,18 +34,23 @@ namespace CTAWebAPI.Controllers.Transactions
         private readonly UserVMRepository _userVMRepository;
         private readonly CTALogger _ctaLogger;
         private readonly AppSettings _appSettings;
+        private readonly UserRightsRepository _userRightsRepository;
+        //string role ="";
         public UserController(DBConnectionInfo info, IOptions<AppSettings> appSettings)
         {
             _info = info;
             _userRepository = new UserRepository(_info.sConnectionString);
+            //role = _userRightsRepository.GetUserRightsById("1").sUserRightsName;
             _ctaLogger = new CTALogger(_info);
             _userVMRepository = new UserVMRepository(_info.sConnectionString);
             _appSettings = appSettings.Value;
+            _userRightsRepository = new UserRightsRepository(_info.sConnectionString);
         }
         #endregion
 
         #region Get Calls
-        //[Authorize(Roles = Role.Admin)]
+        //[Authorize(Roles = User)]
+        //[Authorize(Roles = Role.Admin,)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetUsers()
