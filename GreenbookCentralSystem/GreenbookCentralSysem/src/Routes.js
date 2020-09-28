@@ -7,6 +7,8 @@ import { ThemeProvider } from '@material-ui/styles';
 
 import MuiTheme from './theme';
 
+import {PrivateRoute} from './auth/_components/PrivateRoute';
+
 // Layout Blueprints
 
 import {
@@ -207,7 +209,8 @@ const Routes = () => {
                      <Route path="/Occupation" component={Occupation} />
                      <Route path="/MadebType" component={MadebType} />
                      <Route path="/Relation" component={Relation} />
-                     <Route path="/Feature" component={Feature} />
+                     <PrivateRoute path="/Feature" feature={3} component={Feature} />
+                     {/*<Route path="/Feature" component={Feature} />*/}
                      <Route path="/UserRights" component={UserRights} />
                      <Route path="/TypeIssued" component={TypeIssued} />
                      <Route path="/Sarso" component={Sarso} />

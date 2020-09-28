@@ -187,7 +187,7 @@ export default function EnhancedTable() {
     axios.get(`/GivenGBID/GetGivenGBIDs`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(typeof(resp.data[0].dtDate));
+          //console.log(typeof(resp.data[0].dtDate));
           setdataAPI(resp.data)
         }
       })

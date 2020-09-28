@@ -1,23 +1,60 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useForm } from "react-hook-form";
+import _ from "lodash/fp";
+import { authenticationService } from '../../../auth/_services';
+import { useHistory } from 'react-router-dom';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import {
   Grid,
   InputAdornment,
-  FormControlLabel,
-  Checkbox,
+  // FormControlLabel,
+  // Checkbox,
   Button,
   TextField
 } from '@material-ui/core';
 
-import MailOutlineTwoToneIcon from '@material-ui/icons/MailOutlineTwoTone';
+// import MailOutlineTwoToneIcon from '@material-ui/icons/MailOutlineTwoTone';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 
-export default function LivePreviewExample() {
-  const [checked1, setChecked1] = useState(true);
+export default function LogingPage() {
+  let history = useHistory()
+  const { register, handleSubmit, watch, errors } = useForm();
+  // const [checked1, setChecked1] = useState(true);
+  const [sUsername, setsUsername] = useState(null);
+  const [sPassword, setsPassword] = useState(null)
+  // const handleChange1 = (event) => {
+  //   setChecked1(event.target.checked);
+  // };
 
-  const handleChange1 = (event) => {
-    setChecked1(event.target.checked);
+  useEffect(() => {
+    // redirect to home if already logged in
+    //console.log(authenticationService.currentUserValue);
+    if (authenticationService.currentUserValue) {
+      history.push('/Home');
+    }
+  }, []);
+
+  const onSubmit = () => {
+    //e.preventDefault();
+    let user = {
+      sUsername,
+      sPassword
+    };
+    console.info(user);
+    authenticationService.login(sUsername, sPassword).then(
+      user => {
+        // const { from } = this.props.location.state || { from: { pathname: "/" } };
+        history.push('/Home');
+        console.log(user);
+      },
+      error => {
+          authenticationService.logout();
+          window.location.reload(true);
+        //console.error(error);
+      }
+    );
   };
 
   return (
@@ -28,14 +65,16 @@ export default function LivePreviewExample() {
             <div className="app-content--inner d-flex align-items-center">
               <div className="flex-grow-1 w-100 d-flex align-items-center">
                 <div className="bg-composed-wrapper--content py-5">
-                  <Grid item md={10} lg={8} xl={4} className="mx-auto">
-                    <div className="text-center">
-                      <h1 className="display-4 mb-1 font-weight-bold">Login</h1>
-                      <p className="font-size-lg mb-0 text-black-50">
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <Grid item md={10} lg={8} xl={4} className="mx-auto">
+                      <div className="text-center">
+                        <h1 className="display-4 mb-1 font-weight-bold">CTA Login</h1>
+                        <br />
+                        {/*<p className="font-size-lg mb-0 text-black-50">
                         Fill in the fields below to login to your account
-                      </p>
-                    </div>
-                    <div className="text-center py-4 rounded bg-secondary my-4">
+                      </p>*/}
+                      </div>
+                      {/*<div className="text-center py-4 rounded bg-secondary my-4">
                       <Button
                         className="m-2 btn-pill px-4 font-weight-bold btn-google"
                         size="small">
@@ -59,40 +98,60 @@ export default function LivePreviewExample() {
                     </div>
                     <div className="text-center text-black-50 mb-4">
                       or sign in with credentials
-                    </div>
-                    <div>
-                      <div className="mb-4">
-                        <TextField
-                          fullWidth
-                          variant="outlined"
-                          id="textfield-email"
-                          label="Email address"
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <MailOutlineTwoToneIcon />
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <TextField
-                          fullWidth
-                          variant="outlined"
-                          id="textfield-password"
-                          label="Password"
-                          type="password"
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <LockTwoToneIcon />
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                      </div>
-                      <div className="d-flex justify-content-between align-items-center font-size-md">
+                    </div>*/}
+                      <div>
+                        <div className="mb-4">
+                          <TextField
+                            autoFocus
+                            fullWidth
+                            variant="outlined"
+                            type="text"
+                            label="Username"
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <PermIdentityIcon />
+                                </InputAdornment>
+                              )
+                            }}
+                            id="id_sUsername"
+                            name="name_sUsername"
+                            value={sUsername}
+                            onChange={(e) => { setsUsername(e.target.value); }}
+                            inputRef={register({
+                              required: true
+                            })}
+                          />
+                          {_.get("name_sUsername.type", errors) === "required" && (
+                            <p>Username is required</p>
+                          )}
+                        </div>
+                        <div className="mb-3">
+                          <TextField
+                            fullWidth
+                            variant="outlined"
+                            label="Password"
+                            type="password"
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <LockTwoToneIcon />
+                                </InputAdornment>
+                              )
+                            }}
+                            value={sPassword}
+                            onChange={(e) => { setsPassword(e.target.value); }}
+                            id="id_sPassword"
+                            name="name_sPassword"
+                            inputRef={register({
+                              required: true
+                            })}
+                          />
+                          {_.get("name_sPassword.type", errors) === "required" && (
+                            <p>Password is required</p>
+                          )}
+                        </div>
+                        {/*<div className="d-flex justify-content-between align-items-center font-size-md">
                         <FormControlLabel
                           control={
                             <Checkbox
@@ -112,13 +171,13 @@ export default function LivePreviewExample() {
                             Recover password
                           </a>
                         </div>
-                      </div>
-                      <div className="text-center py-4">
-                        <Button className="btn-second font-weight-bold w-50 my-2"  href="/Home">
-                          Sign in
+                        </div>*/}
+                        <div className="text-center py-4">
+                          <Button className="btn-second font-weight-bold w-50 my-2" type="submit">
+                            Login
                         </Button>
-                      </div>
-                      <div className="text-center text-black-50 mt-3">
+                        </div>
+                        {/*<div className="text-center text-black-50 mt-3">
                         Don't have an account?{' '}
                         <a
                           href="#/"
@@ -126,9 +185,10 @@ export default function LivePreviewExample() {
                           className="text-first">
                           Sign up
                         </a>
+                      </div>*/}
                       </div>
-                    </div>
-                  </Grid>
+                    </Grid>
+                  </form>
                 </div>
               </div>
             </div>

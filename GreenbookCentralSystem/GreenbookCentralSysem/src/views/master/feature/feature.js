@@ -1,6 +1,10 @@
 
 import React, { useEffect, useState } from 'react';
 //import { useNavigate } from 'react-router-dom';
+
+import {authenticationService} from '../../../auth/_services';
+import { useHistory } from 'react-router-dom';
+
 import {
   Grid,
   Typography,
@@ -150,6 +154,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable() {
   Moment.locale('en');
+  let history = useHistory()
   const classes = useStyles();
   // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
@@ -425,6 +430,13 @@ export default function EnhancedTable() {
   const handleClose = () => {
     setDeleteModal(false);
   };
+
+  useEffect(() => {
+    //Use === instead of ==
+    if (authenticationService.currentUserValue===null) {
+      history.push('/Login');
+    }
+  }, []);
 
   useEffect(() => {
     axios.get(`Feature/GetFeatures`)

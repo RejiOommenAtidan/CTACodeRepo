@@ -13,6 +13,9 @@ import {
   ButtonGroup,  MenuItem
 } from '@material-ui/core';
 
+import { useHistory } from 'react-router-dom';
+
+import {authenticationService} from '../../auth/_services';
 import avatar7 from '../../assets/images/avatars/avatar7.jpg';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -47,6 +50,7 @@ const StyledBadge = withStyles({
 })(Badge);
 
 const HeaderUserbox = () => {
+  let history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -56,6 +60,12 @@ const HeaderUserbox = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const logUserOut = ()=>{
+    setAnchorEl(null);
+    authenticationService.logout();
+    history.push('/Login');
+  }
 
   return (
     <>
@@ -85,8 +95,7 @@ const HeaderUserbox = () => {
             <MenuItem className="pr-5 px-3 text-dark" onClick={handleClose}>
               Change Password
             </MenuItem>
-            
-            <MenuItem className="pr-5 px-3 text-danger" onClick={handleClose}>
+            <MenuItem className="pr-5 px-3 text-danger" onClick={logUserOut}>
               Logout
             </MenuItem>
           </div>

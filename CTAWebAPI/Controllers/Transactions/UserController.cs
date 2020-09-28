@@ -1,14 +1,23 @@
 ﻿using CTADBL.BaseClasses.Transactions;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
+using CTADBL.ViewModels;
+using CTADBL.ViewModelsRepositories;
+using CTAWebAPI.Helpers;
 using CTAWebAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
+using System.Text;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
@@ -21,12 +30,16 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly UserRepository _userRepository;
+        private readonly UserVMRepository _userVMRepository;
         private readonly CTALogger _ctaLogger;
-        public UserController(DBConnectionInfo info)
+        private readonly AppSettings _appSettings;
+        public UserController(DBConnectionInfo info, IOptions<AppSettings> appSettings)
         {
             _info = info;
             _userRepository = new UserRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
+            _userVMRepository = new UserVMRepository(_info.sConnectionString);
+            _appSettings = appSettings.Value;
         }
         #endregion
 
@@ -245,6 +258,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Auth User
+        [AllowAnonymous]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AuthenticateUser(User userFromUI)
@@ -259,22 +273,44 @@ namespace CTAWebAPI.Controllers.Transactions
                     return BadRequest("Password cannot be NULL OR Empty");
                 #endregion
 
-                #region DB Fetch
+                #region Equality Check
                 User userFromDB = _userRepository.GetUserByUsername(userFromUI.sUsername);
                 if (userFromDB == null)
                 {
-                    return NotFound("User With Username " + userFromUI.sUsername + " Not Found");
+                    return NotFound("User Not Found with Username: "+userFromUI.sUsername);
                 }
-                #endregion
-
-                #region Equality Check
-                //Password Equals Check
-                //Confirm Case Sensitive Password (Equals)
+                //Note: Equals is Case Sensitive
                 if (userFromUI.sPassword.Equals(userFromDB.sPassword))
-                    return Ok(userFromDB);
+                {
+                    #region Generating UserVM
+                    UserVM userVMFromDB = _userVMRepository.AuthenticateUser(userFromDB.Id);
+                    if (userVMFromDB == null)
+                    {
+                        return BadRequest("UserVM Generation Failed");
+                    }
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var key = Encoding.ASCII.GetBytes(_appSettings.sSecret);
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
+                    new Claim(ClaimTypes.Name, userVMFromDB.oUser.Id.ToString()),
+                    new Claim(ClaimTypes.Role, userVMFromDB.oUserRights.sUserRightsName)
+                        }),
+                        Expires = DateTime.UtcNow.AddDays(7),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    //WriteToken
+                    userVMFromDB.sJWTToken = tokenHandler.WriteToken(token);
+                    //Make Password NULL
+                    userVMFromDB.oUser.sPassword =null;
+                    return Ok(userVMFromDB);
+                    #endregion
+                }
                 else
                     return Unauthorized("Incorrect Password");
-                #endregion
+                #endregion        
             }
             catch (Exception ex)
             {
