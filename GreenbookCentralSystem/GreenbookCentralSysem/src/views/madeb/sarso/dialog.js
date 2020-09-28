@@ -23,7 +23,8 @@ import Slide from '@material-ui/core/Slide';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
+import { useForm } from "react-hook-form";
+import _ from "lodash/fp";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -32,119 +33,7 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
-  export const EmailDialog = (props) => {
-  
-    const [id, setId] = React.useState(props.sarsoEmailObj.id);
-    const [formNumber, setFormNumber] = React.useState(props.sarsoEmailObj.nFormNumber);
-    const [name, setName] = React.useState(props.sarsoEmailObj.sName);
-    const [recipient, setRecipient] = React.useState('');
-    const [sender, setSender] = React.useState('dataunit@tibet.net');
-    const [subject, setSubject] = React.useState('Sarso case no: '+formNumber.toString()+'  Name: '+ name);
-    const [body, setBody] = React.useState('Sarso case no:'+formNumber.toString()+' \nName: '+ name +'\nPostal Address:');
-    
 
-    const emailObj = {
-      id:id,
-      nFormNumber: formNumber,
-      sName: name,
-      sender:sender,
-      recipient:recipient,
-      subject:subject,
-      body:body
-
-      
-   }
-    return (
-        
-        
-  
-      <Dialog open={props.emailModal} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Email Sarso Madeb</DialogTitle>
-        
-        <DialogContent>
-          <DialogContentText>
-          <div>
-                             
-                              <Grid container spacing={3}>
-                                  <Grid item xs={12}>
-                                      <FormControl className={props.classes.formControl}>
-                                          <TextField
-                                              id="sender"
-                                              label="Sender"
-                                              type="text"   
-                                              InputProps={{
-                                                  readOnly: false,
-                                              }} 
-                                             // className={props.classes.textField}
-                                              value={sender}
-                                              onChange={(e) => { setSender(e.target.value) }}
-  
-                                          />
-                                      </FormControl>
-                                  </Grid>
-                                  <Grid item xs={12}>
-                                      <FormControl className={props.classes.formControl}>
-                                          <TextField
-                                              id="recipient"
-                                              label="Recipient"
-                                              type="email"
-                                              
-                                             
-                                            
-                                              onChange={(e) => { setRecipient(e.target.value) }}
-                                          />
-                                      </FormControl>
-                                  </Grid>
-                                  <Grid item xs={12}>
-  
-                                      <FormControl className={props.classes.formControl}>
-                                          <TextField
-                                              id="subject"
-                                              label="Subject"
-                                              //required={true}
-                                           
-                                          value={subject}
-                                          onChange={(e) => { setSubject(e.target.value) }}
-                                          />
-                                      </FormControl>
-                                  </Grid>
-                                <Grid item xs={12}>
-                                 <InputLabel shrink>Message</InputLabel>
-                                    <TextareaAutosize
-                                    aria-label="minimum height"
-                                    //rowsMin={5}
-                                    //className={props.classes.textField}
-                                    label="Message"            
-                                    value={body}
-                                    style={ { width:'100%', height:200} }
-                                    placeholder="Minimum 3 rows"
-                                    //onChange={console.log('change')}
-                                    />
-                                </Grid>
-                                                        
-                              </Grid>
-                          </div>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={props.handleEmailClickClose} color="primary">Cancel</Button>
-  
-         {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
-       
-          {/*<Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
-          <Alert  onClose={snackbarClose} severity={alertType}  >
-           {message}
-          </Alert>
-        </Snackbar>*/}
-  
-          <Button onClick={() =>  console.log(emailObj)} color="primary">Save</Button> 
-        </DialogActions>
-    
-      </Dialog>
-  );
-  
-  
-  }
   
 export const EditDialog = (props) => {
   //debugger
@@ -172,17 +61,17 @@ export const EditDialog = (props) => {
   const [id, setId] = React.useState(props.sarsoObj.id);
   const [formNumber, setFormNumber] = React.useState(props.sarsoObj.nFormNumber);
   const [authRegionID, setAuthorityId] = React.useState(props.sarsoObj.nAuthRegionID);
-  const [receivedDate, setReceivedDate] = React.useState(props.sarsoObj.dtReceived.split('T')[0]);
+  const [receivedDate, setReceivedDate] = React.useState(props.sarsoObj.dtReceived ? (props.sarsoObj.dtReceived).split('T')[0] : undefined);
   const [name, setName] = React.useState(props.sarsoObj.sName);
   const [fname, setFname] = React.useState(props.sarsoObj.sFathersName);
   const [saney, setSaney] = React.useState(props.sarsoObj.nSaneyFormNo);
   const [madebType,setMadebType]= React.useState(1);
   const [documents, setDocument] = React.useState(props.sarsoObj.sDocumentAttached);
-  const [issueActionDate, setIssueActionDate] = React.useState(props.sarsoObj.dtIssueAction.split('T')[0]);
+  const [issueActionDate, setIssueActionDate] = React.useState(props.sarsoObj.dtIssueAction ? (props.sarsoObj.dtIssueAction).split('T')[0] : undefined);
   const [issueAction, setIssueAction] = React.useState(props.sarsoObj.nIssuedOrNotID);
-  const [returnDate, setReturnDate] = React.useState(props.sarsoObj.dtReturnEmail.split('T')[0]);
+  const [returnDate, setReturnDate] = React.useState(props.sarsoObj.dtReturnEmail ? (props.sarsoObj.dtReturnEmail).split('T')[0] : undefined);
   //const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject.split('T')[0]);
-  const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject);
+  const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject ? (props.sarsoObj.dtReject).split('T')[0] : undefined);
   const madeb = {
     id:id,
     nFormNumber: formNumber, 
@@ -241,7 +130,7 @@ export const EditDialog = (props) => {
                                             label="Form Number"
                                             type="number"
                                             InputProps={{
-                                                readOnly: true,
+                                                readOnly: false,
                                             }}
                                             value={formNumber}
                                             onChange={(e) => { setFormNumber(e.target.value) }}
@@ -316,7 +205,7 @@ export const EditDialog = (props) => {
                                         <TextField
                                             id="name"
                                             label="Name"
-                                            required={true}
+                                           
                                         value={name}
                                         onChange={(e) => { setName(e.target.value) }}
                                         />
@@ -476,7 +365,10 @@ export const EditDialog = (props) => {
 
 
 export const AddDialog = (props) => {
-  console.log(props.selectData);
+  //console.log(props.selectData);
+  
+
+  
   const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
 
 
@@ -501,16 +393,17 @@ export const AddDialog = (props) => {
 
      sDocumentAttached:documents,
      nSaneyFormNo:saney
-  
-
-
   }
-  
+  const { register, handleSubmit, watch, errors } = useForm();
+  const onSubmit = data => {
+    props.addAPICall(madeb);
+  };
 
  
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Madeb Entry Form For Fresh Issue</DialogTitle>
+      <form onSubmit={handleSubmit(onSubmit)}>
       <DialogContent>
         <DialogContentText>
         <div>
@@ -519,9 +412,15 @@ export const AddDialog = (props) => {
                                <Grid item xs={12} sm={6}>
                                    <FormControl className={props.classes.formControl}>
                                        <TextField
-                                           id="number"
+                                           id="form_number"
                                            label="Form Number"
+                                           
                                            type="number"
+                                           name='form_number'
+                                           inputRef={register({
+                                            required: true,
+                                            min:0
+                                          })}
                                            InputProps={{
                                                readOnly: false,
                                            }}
@@ -529,20 +428,35 @@ export const AddDialog = (props) => {
                                            onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
 
                                        />
+                                           {_.get("form_number.type", errors) === "required" && (
+                                                <p>This field is required</p>
+                                            )}
+                                            {/*_.get("form_number.type", errors) === "maxLength" && (
+                                                <p>First name cannot exceed 20 characters</p>
+                                            )*/}
+                                         
                                    </FormControl>
                                </Grid>
                                <Grid item xs={12} sm={6}>
                                    <FormControl className={props.classes.formControl}>
                                        <TextField
-                                           id="date"
+                                           id="id_receivedDate"
                                            label="Received Date"
                                            type="date"
+                                           name="name_receivedDate"
+                                           
+                                           inputRef={register({
+                                            required: true
+                                          })}
                                            onChange={(e) => { setReceivedDate(e.target.value) }}
                                            className={props.classes.textField}
                                            InputLabelProps={{
                                                shrink: true,
                                            }}
                                        />
+                                        {_.get("name_receivedDate.type", errors) === "required" && (
+                                                <p>This field is required</p>
+                                            )}
                                    </FormControl>
                                </Grid>
 
@@ -562,7 +476,9 @@ export const AddDialog = (props) => {
                                         }
                                         }
                                     }
-                                    
+                                    inputRef={register({
+                                        required: true
+                                      })}
                                     id="id_nAuthorityId"
                                     options={authorityData}
                                   /*  classes={{
@@ -581,13 +497,21 @@ export const AddDialog = (props) => {
                                         {...params}
                                         label="Authority"
                                         variant="standard"
+                                        
+                                        inputRef={register({
+                                            required: true
+                                          })}
+                                          name="name_authority"
                                         inputProps={{
                                             ...params.inputProps,
                                 autoComplete: 'new-password', // disable autocomplete and autofill
                               }}
                             />
+                            
                           )}
-                        />
+                        />  {_.get("name_authority.type", errors) === "required" && (
+                            <p>This field is required</p>
+                        )}
                                    </FormControl>
                                </Grid>
                                <Grid item xs={12} sm={6}>
@@ -596,10 +520,18 @@ export const AddDialog = (props) => {
                                        <TextField
                                            id="name"
                                            label="Name"
-                                       //value='Aayush Pandya'
+                                           
+                                           name='name'
+                                           inputRef={register({
+                                            required: true
+                                          })}
                                        onChange={(e) => { setName(e.target.value) }}
                                        />
-                                   </FormControl>
+                                       {_.get("name.type", errors) === "required" && (
+                                            <p>This field is required</p>
+                                        )}
+                                    
+                                    </FormControl>
                                </Grid>
                                <Grid item xs={12} sm={6}>
 
@@ -607,21 +539,40 @@ export const AddDialog = (props) => {
                                        <TextField
                                            id="fname"
                                            label="Father's Name"
+                                           name="name_fname"
+                                           
+                                           inputRef={register({
+                                            required: true,
+                                       
+                                            pattern: /^[A-Za-z]+$/i
+                                          })}
                                        //value='Aayush Pandya'
                                        onChange={(e) => { setFname(e.target.value) }}
                                        />
+                                          {_.get("name_fname.type", errors) === "required" && (
+                                            <p>This field is required</p>
+                                        )}
+                                       
+                                        {_.get("name_fname.type", errors) === "pattern" && (
+                                            <p>Alphabetical characters only</p>
+                                        )}
                                    </FormControl>
                                </Grid>
                                <Grid item xs={12} sm={6}>
 
                                    <FormControl className={props.classes.formControl}>
                                        <TextField
-                                           id="sfn"
+                                           id="saney"
                                            label="Saney Form No"
                                            type='number'
+
                                            onChange={(e) => { setSaney(parseInt(e.target.value)) }}
+                                       
+                                          name="name_saney"
                                        //value='Aayush Pandya'
                                        />
+                                 
+                                            
                                    </FormControl>
                                </Grid>
                                <Grid item xs={12} sm={6}>
@@ -630,9 +581,19 @@ export const AddDialog = (props) => {
                                        <TextField
                                            id="da"
                                            label="Document attached"
+                                           
+                                           name="name_da"
                                        //value='Aayush Pandya'
+                                       inputRef={register({
+                                        required: true
+                              
+                                      })}
                                        onChange={(e) => { setDocument(e.target.value) }}
                                        />
+                                       {_.get("name_da.type", errors) === "required" && (
+                                                <p>This field is required</p>
+                                            )}
+                                        
                                    </FormControl>
                                </Grid>
                               
@@ -646,8 +607,10 @@ export const AddDialog = (props) => {
       <DialogActions>
         <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
         
-       <Button onClick={() => props.addAPICall(madeb)} color="primary">Save</Button>
+      
+       <Button type="submit"  color="primary">Save</Button>
       </DialogActions>
+      </form>
     </Dialog>
   );
 

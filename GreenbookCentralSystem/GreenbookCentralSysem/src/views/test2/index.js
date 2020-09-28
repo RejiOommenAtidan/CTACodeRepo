@@ -5,9 +5,11 @@ import {
   Typography,
   makeStyles,
   Breadcrumbs,
-  Link
+  Link,
+  Button
 } from '@material-ui/core';
 
+import {Alerts} from '../alerts';
 
 import Country from './country';
 
@@ -22,12 +24,29 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const classes = useStyles();
-
+  
+  
+  const alertObj={
+    alertMessage:'Record Successfully Edited',
+    alertType:'success'
+  }
+  const [snackbar,setSnackbar]=React.useState(false);
+  const snackbarOpen = () => {
+    console.log('alert');
+    setSnackbar(true);
+  }
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
   return (
    
       <Container maxWidth={false}>
-       
-        <Country />
+        <Button  type='submit' onClick={snackbarOpen} color="primary">Save</Button> 
+       { snackbar && <Alerts
+       alertObj={alertObj}
+       snackbar={snackbar}
+       snackbarClose={snackbarClose}
+       /> }
       </Container>
 
   );

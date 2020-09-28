@@ -261,6 +261,63 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 return forms;
             }
         }
+        public Object GetMadebforIssueBook(string sGBId)
+        {
+            string sql = @"SELECT 
+                            `Id`,
+                            `_Id`,
+                            `nFormNumber`,
+                            `sGBID`,
+                            `nMadebTypeID`,
+                            `sName`,
+                            `sFathersName`,
+                            `nAuthRegionID`,
+                            `dtReceived`,
+                            `dtIssueAction`,
+                            `nIssuedOrNotID`,
+                            `nType`,
+                            `sChangeField`,
+                            `sOfficeOfTibetan`,
+                            `sDocumentAttached`,
+                            `nCurrentGBSno`,
+                            `nPreviousGBSno`,
+                            `nSaneyFormNo`,
+                            `nReceiptNo`,
+                            `dtEmailSend`,
+                            `sAlias`,
+                            `sApprovedReject`,
+                            `dtReject`,
+                            `dtReturnEmail`,
+                            `dtEntered`,
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
+                        FROM `tblmadeb` WHERE `nIssuedOrNotID` !=2 AND `sGBID` = @sGBId ORDER BY `Id` DESC";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBId", sGBId);
+                command.Connection = _connection;
+                command.CommandType = CommandType.Text;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var forms = tables[0].AsEnumerable().Select(row => new {
+                    Id = row.Field<int>("Id"),
+                    sGBID = row.Field<string>("sGBID"),
+                    dtReceived = row.Field<DateTime>("dtReceived"),
+                    nMadebTypeID = row.Field<int>("nMadebTypeID"),
+                    nAuthRegionID = row.Field<int>("nAuthRegionID"),
+                    nFormNumber = row.Field<int>("nFormNumber"),
+                    nIssuedOrNotID = row.Field<int>("nIssuedOrNotID"),
+
+
+
+
+                }).ToList();
+                return forms;
+            }
+        }
 
 
         #endregion

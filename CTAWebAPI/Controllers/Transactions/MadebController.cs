@@ -299,6 +299,15 @@ namespace CTAWebAPI.Controllers.Transactions
             
         }
 
+        [HttpGet("GetMadebforIssueBook/GBId={GBId}")]
+        [Route("[action]")]
+        public IActionResult GetMadebforIssueBook(string GBId)
+        {
+            Object forms = _madebRepository.GetMadebforIssueBook(GBId);
+            return Ok(forms);
+        }
+
+
 
 
         #endregion

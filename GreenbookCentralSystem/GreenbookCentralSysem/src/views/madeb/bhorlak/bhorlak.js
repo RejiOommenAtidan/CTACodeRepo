@@ -176,18 +176,14 @@ export default function EnhancedTable() {
   const [authority, setAuthority] = React.useState(0);
   const [receivedDate, setReceivedDate] = React.useState('');
   const [name, setName] = React.useState('');
-  
-  const [gbId, setGbId] = React.useState('');
-  const [receiptNo, setReceiptNo] = React.useState(0);
-  const [changeField, setChangeField] = React.useState('');
-  const [status, setStatus] = React.useState('');
-  
+  const [fname, setFname] = React.useState('');
+  const [saney, setSaney] = React.useState(0);
   const [documents, setDocument] = React.useState('');
   const [issueActionDate, setIssueActionDate] = React.useState('');
   const [issueAction, setIssueAction] = React.useState(0);
   const [returnDate, setReturnDate] = React.useState('');
   const [rejectDate, setRejectDate] = React.useState('');
-  const [norchoeObj, setNorchoeObj] = useState({});
+  const [bhorlakObj, setBhorlakObj] = useState({});
   const [emailInObj, setEmailInObj] = useState({});
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
@@ -353,9 +349,9 @@ export default function EnhancedTable() {
       },
     },
     {
-      field: "madeb.sChangeField",
-      title: "Change Field",
-      hidden:true,
+      field: "madeb.nCurrentGBSno",
+      title: "Book Serial",
+      hidden:false,
       headerStyle: {
         padding:'0px',
         width:'15%',
@@ -385,42 +381,6 @@ export default function EnhancedTable() {
         textAlign:'left'
         
       },
-    },
-    {
-      field: "madeb.nReceiptNo",
-      title: "Receipt No.",
-      
-      headerStyle: {
-        padding:'0px',
-        width:'10%',
-        textAlign:'left'
-      },
-      cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'10%',
-        textAlign:'left'
-        
-      },
-      
-    },
-    {
-      field: "madeb.sApprovedReject",
-      title: "Receipt No.",
-      
-      headerStyle: {
-        padding:'0px',
-        width:'10%',
-        textAlign:'left'
-      },
-      cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'10%',
-        textAlign:'left'
-        
-      },
-  
     },
     {
       field: "madeb.dtIssueAction",
@@ -571,7 +531,7 @@ export default function EnhancedTable() {
         id: tableRowArray['madeb']['id'],
         nFormNumber: tableRowArray['madeb']['nFormNumber'],
         sName: tableRowArray['madeb']['sName'],
-        madebName:'Norchoe'
+        madebName:'Bhorlak'
     });
     
     setEmailModal(true);
@@ -583,18 +543,14 @@ export default function EnhancedTable() {
     setAuthority(tableRowArray['sAuthRegion']);
     setReceivedDate(tableRowArray['madeb']['dtReceived']);
     setName(tableRowArray['madeb']['sName']);
-
-    setGbId(tableRowArray['madeb']['sFathersName']);
-    setReceiptNo(tableRowArray['madeb']['nReceiptNo']);
-    setChangeField(tableRowArray['madeb']['sChangeField']);
-    setStatus(tableRowArray['madeb']['sApprovedReject'])
-
+    setFname(tableRowArray['madeb']['sFathersName']);
+    setSaney(tableRowArray['madeb']['nSaneyFormNo']);
     setDocument(tableRowArray['madeb']['sDocumentAttached']);
     setIssueActionDate(tableRowArray['madeb']['dtIssueAction']);
     setIssueAction(tableRowArray['madeb']['nIssuedOrNotID']);
     setReturnDate(tableRowArray['madeb']['dtReturnEmail']);
     
-    setNorchoeObj({
+    setBhorlakObj({
       id: tableRowArray['madeb']['id'],
       nFormNumber: tableRowArray['madeb']['nFormNumber'],
       dtReceived: tableRowArray['madeb']['dtReceived'],
@@ -608,7 +564,7 @@ export default function EnhancedTable() {
       dtReturnEmail  :tableRowArray['madeb']['dtReturnEmail']
       });
      
-      console.log(norchoeObj);
+      console.log(bhorlakObj);
       setEditModal(true);
     }
   const editAPICall = (madeb) => {
@@ -628,7 +584,7 @@ export default function EnhancedTable() {
           setAlertMessage('Record Successfully Edited');
           setAlertType('success');
           snackbarOpen();
-          axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=2`)
+          axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=3`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -732,7 +688,7 @@ export default function EnhancedTable() {
           setAlertType('success');
           snackbarOpen();
           selectDatafunction();
-          axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=2`)
+          axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=3`)
             .then(resp => {
               if (resp.status === 200) {
                 //console.log(resp.data);
@@ -790,7 +746,7 @@ export default function EnhancedTable() {
 
 
   useEffect(() => {
-    axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=2`)
+    axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=3`)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
@@ -826,12 +782,12 @@ export default function EnhancedTable() {
             Home
         </Link>
 
-          <Typography color="textPrimary">Norchoe Madeb</Typography>
+          <Typography color="textPrimary">Bhorlak Madeb</Typography>
         </Breadcrumbs>
           <MaterialTable style={{padding:'10px',width:'100%', border:'2px solid grey',borderRadius:'10px'}}
        
        icons={tableIcons}
-      title="Norchoe Madeb"
+      title="Bhorlak Madeb"
     columns={columns}
     data={dataAPI}        
     options={{
@@ -860,7 +816,7 @@ export default function EnhancedTable() {
     actions={[
       {
         icon: AddBox,
-        tooltip: 'Add Norchoe Madeb',
+        tooltip: 'Add Bhorlak Madeb',
         isFreeAction: true,
         onClick: () => setAddModal(true)
       },
@@ -881,7 +837,7 @@ export default function EnhancedTable() {
             />}
             {editModal && <EditDialog
               editModal={editModal}
-              norchoeObj={norchoeObj}
+              bhorlakObj={bhorlakObj}
               selectData={selectData}
               classes={classes}
               handleEditClickClose={handleEditClickClose}

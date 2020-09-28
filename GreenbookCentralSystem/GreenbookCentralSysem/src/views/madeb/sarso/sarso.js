@@ -38,6 +38,8 @@ import EmailIcon from '@material-ui/icons/Email';
 // Local import
 import { AddDialog,  EditDialog } from './dialog';
 import {EmailDialog} from '../email';
+import {Alerts} from '../../alerts';
+
 import MaterialTable, { MTableToolbar }  from 'material-table';
 import { forwardRef } from 'react';
 
@@ -188,6 +190,21 @@ export default function EnhancedTable() {
   const [dataChanged, setDataChanged] = useState(false);
 
   const [filtering, setFiltering] = React.useState(false);
+ //Alert
+ const [alertMessage, setAlertMessage] = useState("");
+ const [alertType, setAlertType] = useState("");
+  const alertObj={
+    alertMessage:alertMessage,
+    alertType:alertType
+  }
+  const [snackbar,setSnackbar]=React.useState(false);
+  const snackbarOpen = () => {
+    console.log('alert');
+    setSnackbar(true);
+  }
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
   const handleEditClickOpen = () => {
     setEditModal(true);
   };
@@ -360,7 +377,8 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtIssueAction",
       title: "Issue Action Dt.",
-      render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
+      render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD') : '',
+     // render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
       headerStyle: {
         padding:'0px',
         width:'10%',
@@ -394,7 +412,8 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReturnEmail",
       title: "Return Date",
-      render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
+      //render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
+      render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD') : '',
       headerStyle: {
         padding:'0px',
         width:'8%',
@@ -411,7 +430,9 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReject",
       title: "Reject Date",
-      render: rowData => Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD'),
+      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD') : '',
+     
+    
       headerStyle: {
         padding:'0px',
         width:'8%',
@@ -552,15 +573,20 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
-          axios.get(`MadebAuthRegionVM/GetMadebs`)
+          setAlertMessage('Record Successfully Edited');
+          setAlertType('success');
+          snackbarOpen();
+          axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=1`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
                 setdataAPI(resp.data);
+                
                 setDataChanged(true);
               }
             })
             .catch(error => {
+
               if (error.response) {
                 console.error(error.response.data);
                 console.error(error.response.status);
@@ -593,6 +619,9 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
+        setAlertMessage('Error! '+error.message);
+              setAlertType('error');
+               snackbarOpen();
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -647,7 +676,11 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`MadebAuthRegionVM/GetMadebs`)
+          setAlertMessage('Record Successfully Added');
+          setAlertType('success');
+          snackbarOpen();
+          selectDatafunction();
+          axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=1`)
             .then(resp => {
               if (resp.status === 200) {
                 //console.log(resp.data);
@@ -655,6 +688,9 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
+              setAlertMessage('Error! '+error.message);
+              setAlertType('error');
+               snackbarOpen();
               if (error.response) {
                 console.error(error.response.data);
                 console.error(error.response.status);
@@ -673,6 +709,9 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
+        setAlertMessage('Error! '+error.message);
+              setAlertType('error');
+               snackbarOpen();
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -699,7 +738,7 @@ export default function EnhancedTable() {
 
 
   useEffect(() => {
-    axios.get(`MadebAuthRegionVM/GetMadebs`)
+    axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=1`)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
@@ -804,6 +843,11 @@ export default function EnhancedTable() {
               handleEmailClickClose={handleEmailClickClose}
               //emailAPICall={emailAPICall}
             />}
+            { snackbar && <Alerts
+       alertObj={alertObj}
+       snackbar={snackbar}
+       snackbarClose={snackbarClose}
+       /> }
           
           </Grid>
         </Grid>

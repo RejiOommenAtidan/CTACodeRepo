@@ -58,20 +58,20 @@ export const EditDialog = (props) => {
 
 
 
-  const [id, setId] = React.useState(props.norchoeObj.id);
-  const [formNumber, setFormNumber] = React.useState(props.norchoeObj.nFormNumber);
-  const [authRegionID, setAuthorityId] = React.useState(props.norchoeObj.nAuthRegionID);
-  const [receivedDate, setReceivedDate] = React.useState(props.norchoeObj.dtReceived ? (props.norchoeObj.dtReceived).split('T')[0] : undefined);
-  const [name, setName] = React.useState(props.norchoeObj.sName);
-  const [fname, setFname] = React.useState(props.norchoeObj.sFathersName);
-  const [saney, setSaney] = React.useState(props.norchoeObj.nSaneyFormNo);
-  const [madebType,setMadebType]= React.useState(2);
-  const [documents, setDocument] = React.useState(props.norchoeObj.sDocumentAttached);
-  const [issueActionDate, setIssueActionDate] = React.useState(props.norchoeObj.dtIssueAction ? (props.norchoeObj.dtIssueAction).split('T')[0] : undefined);
-  const [issueAction, setIssueAction] = React.useState(props.norchoeObj.nIssuedOrNotID);
-  const [returnDate, setReturnDate] = React.useState(props.norchoeObj.dtReturnEmail ? (props.norchoeObj.dtReturnEmail).split('T')[0] : undefined);
-  //const [rejectDate, setRejectDate] = React.useState(props.norchoeObj.dtReject.split('T')[0]);
-  const [rejectDate, setRejectDate] = React.useState(props.norchoeObj.dtReject ? (props.norchoeObj.dtReject).split('T')[0] : undefined);
+  const [id, setId] = React.useState(props.abroadObj.id);
+  const [formNumber, setFormNumber] = React.useState(props.abroadObj.nFormNumber);
+  const [authRegionID, setAuthorityId] = React.useState(props.abroadObj.nAuthRegionID);
+  const [receivedDate, setReceivedDate] = React.useState(props.abroadObj.dtReceived ? (props.abroadObj.dtReceived).split('T')[0] : undefined);
+  const [name, setName] = React.useState(props.abroadObj.sName);
+  const [fname, setFname] = React.useState(props.abroadObj.sFathersName);
+  const [saney, setSaney] = React.useState(props.abroadObj.nSaneyFormNo);
+  const [madebType,setMadebType]= React.useState(4);
+  const [documents, setDocument] = React.useState(props.abroadObj.sDocumentAttached);
+  const [issueActionDate, setIssueActionDate] = React.useState(props.abroadObj.dtIssueAction ? (props.abroadObj.dtIssueAction).split('T')[0] : undefined);
+  const [issueAction, setIssueAction] = React.useState(props.abroadObj.nIssuedOrNotID);
+  const [returnDate, setReturnDate] = React.useState(props.abroadObj.dtReturnEmail ? (props.abroadObj.dtReturnEmail).split('T')[0] : undefined);
+  //const [rejectDate, setRejectDate] = React.useState(props.abroadObj.dtReject.split('T')[0]);
+  const [rejectDate, setRejectDate] = React.useState(props.abroadObj.dtReject ? (props.abroadObj.dtReject).split('T')[0] : undefined);
   const madeb = {
     id:id,
     nFormNumber: formNumber, 
@@ -116,7 +116,7 @@ export const EditDialog = (props) => {
       
 
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Edit norchoe Madeb</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Abroad</DialogTitle>
       <form onSubmit={handleSubmit}>
       <DialogContent>
         <DialogContentText>
@@ -374,7 +374,7 @@ export const AddDialog = (props) => {
 
   const [formNumber, setFormNumber] = React.useState(props.selectData['nFormNumber']);
   const [id, setId] = React.useState(0);
-  const [madebType,setMadebType]= React.useState(2);
+  const [madebType,setMadebType]= React.useState(4);
   const [authority, setAuthority] = React.useState(0);
   const [receivedDate, setReceivedDate] = React.useState('');
   const [name, setName] = React.useState('');
@@ -402,7 +402,7 @@ export const AddDialog = (props) => {
  
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Madeb Entry Form For Fresh Issue</DialogTitle>
+      <DialogTitle id="form-dialog-title">Madeb Entry Form For Abroad</DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
       <DialogContent>
         <DialogContentText>
