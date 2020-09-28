@@ -141,9 +141,9 @@ const Routes = () => {
             <Route
               path={[
                 '/Profile',
-                '/Error404',
-                '/Error500',
-                '/Error505'
+                '/PageError404',
+                '/PageError500',
+                '/PageError505'
               ]}>
               <MinimalLayout>
                 <Switch location={location} key={location.pathname}>
