@@ -60,6 +60,7 @@ const EditEntry = lazy(() => import('./views/transactions/newentry/editentry'));
 const SarsoNewGBEntry = lazy(() => import('./views/transactions/SarsoNewGBEntry/SarsoNewGBEntry'));
 const GivenGBID = lazy(() => import('./views/transactions/givengbid'));
 const DeleteGB = lazy(() => import('./views/transactions/deletegb'));
+const ChangePassword = lazy(() => import('./views/change password/index'));
 
 const Routes = () => {
   const location = useLocation();
@@ -190,7 +191,8 @@ const Routes = () => {
                 '/SarsoNewGBEntry',
                 '/GivenGBID',
                 '/DeleteGB',
-                '/EditEntry/:GBID'
+                '/EditEntry/:GBID',
+                '/ChangePassword'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -231,6 +233,7 @@ const Routes = () => {
                      <Route path="/GivenGBID" component={GivenGBID} />
                      <Route path="/DeleteGB" component={DeleteGB} />
                      <Route path="/EditEntry/:GBID" component={EditEntry} />
+                     <Route path="/ChangePassword" component={ChangePassword} />
                   </motion.div>
                 </Switch>
               </LeftSidebar>

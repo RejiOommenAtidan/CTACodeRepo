@@ -501,7 +501,7 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Home">
+                to="/ChangePassword">
                 <span className="sidebar-icon">
                   <VpnKeyIcon />
                 </span>
