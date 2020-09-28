@@ -44,6 +44,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Get Calls
+        //[Authorize(Roles = Role.Admin)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetUsers()
@@ -317,6 +318,61 @@ namespace CTAWebAPI.Controllers.Transactions
                 #region Exception Logging
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
                 #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
+        #region Change Password
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult ChangePassword(ChangePasswordVM changePasswordVM)
+        {
+            #region Change Password
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    //Check for NULLS & Quotes for params 
+                    //Fetch user from DB
+                    // replace password & update dtUpdated
+                    //return success
+
+
+                    //if (UserExists(Id))
+                    //{
+                    //    User fetchedUser = _userRepository.GetUserById(Id);
+                    //    user.dtEntered = fetchedUser.dtEntered;
+                    //    user.dtUpdated = DateTime.Now;
+                    //    _userRepository.Update(user);
+
+                    //    #region Alert Logging 
+                    //    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", user.nEnteredBy);
+                    //    #endregion
+
+                    //    return Ok("User with ID: " + Id + " updated Successfully");
+                    //}
+                    //else
+                    //{
+                    //    return BadRequest("User with ID:" + Id + " does not exist");
+                    //}
+                    return Ok();
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    return BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                //#region Exception Logging
+                //_ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, user.nEnteredBy);
+                //#endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
