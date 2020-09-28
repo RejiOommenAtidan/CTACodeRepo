@@ -48,8 +48,10 @@ const Feature = lazy(() => import('./views/master/feature'));
 // Madeb Pages
 const Sarso = lazy(() => import('./views/madeb/sarso'));
 const Norchoe = lazy(() => import('./views/madeb/norchoe'));
+const Bhorlak = lazy(() => import('./views/madeb/bhorlak'));
 const BookFull = lazy(() => import('./views/madeb/bookfull'));
 const BriefGB = lazy(() => import('./views/madeb/briefgb'));
+const Abroad = lazy(() => import('./views/madeb/abroad'))
 
 //Greenbook Pages
 const Greenbook = lazy(() => import('./views/transactions/greenbook/greenbook'));
@@ -180,8 +182,10 @@ const Routes = () => {
                 '/TypeIssued',
                 '/Sarso',
                 '/Norchoe',
+                '/Bhorlak',
                 '/BookFull',
                 '/BriefGB',
+                '/Abroad',
                 '/Greenbooks',
                 '/SarsoNewGBEntry',
                 '/GivenGBID',
@@ -213,10 +217,15 @@ const Routes = () => {
                      {/*<Route path="/Feature" component={Feature} />*/}
                      <Route path="/UserRights" component={UserRights} />
                      <Route path="/TypeIssued" component={TypeIssued} />
+           
+                 
                      <Route path="/Sarso" component={Sarso} />
                      <Route path="/Norchoe" component={Norchoe} />
+                     <Route path="/Bhorlak" component={Bhorlak} />
                      <Route path="/BookFull" component={BookFull} />
                      <Route path="/BriefGB" component={BriefGB} />
+                     <Route path="/Abroad" component={Abroad} />
+
                      <Route path="/Greenbooks" component={Greenbook} />
                      <Route path="/SarsoNewGBEntry" component={SarsoNewGBEntry} />
                      <Route path="/GivenGBID" component={GivenGBID} />
