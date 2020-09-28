@@ -877,7 +877,9 @@ CREATE TABLE `tblGreenBookSerial` (
   `sName` varchar(200) DEFAULT NULL,
   `sCountryID` text DEFAULT NULL,
   `nMadebTypeId` int(11) DEFAULT NULL,
-  `nAuthRegionId` varchar(200) DEFAULT NULL,
+  `nFormNumber` int(11) DEFAULT NULL,
+  `sAuthRegion` varchar(200) DEFAULT NULL,
+  `nAuthRegionId` int(11) DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime DEFAULT NULL,
@@ -1012,7 +1014,6 @@ DELIMITER ;
 DROP procedure IF EXISTS `spGetUserAuthorization`;
 
 DELIMITER $$
-USE `ctadb`$$
 CREATE PROCEDURE `spGetUserAuthorization` (IN nUserIdIN int(11))
 BEGIN
 	 SELECT `Id`,
@@ -1036,9 +1037,9 @@ BEGIN
 	SELECT `Id`,
 		 `nFeatureID`,
 		 `nUserRightsID`,
-		 `nRights`
+		  IF(nRights, 1, 0) nRights
 	 FROM `lnkfeatureuserrights`
 	 WHERE nUserRightsID IN (Select `nUserRightsId` from tblUser where Id = nUserIdIN) and nRights=1;
-END
+END$$
 
 DELIMITER ;

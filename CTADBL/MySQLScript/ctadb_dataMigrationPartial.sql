@@ -1,53 +1,43 @@
 ﻿5113724
 
 use ctadb;
-
-INSERT INTO `ctadb`.`tblgivengbid`
+INSERT INTO `ctadb`.`tblgreenbookserial`
 SELECT 
-	`gbnogiven`.`id`,
-	 `gbnogiven`.`id`,
-	`gbnogiven`.`IdentityID`,
-	`gbnogiven`.`formNo`,
-	`gbnogiven`.`date`,
-	`gbnogiven`.`GivenOrNot`,
-	IF(`gbnogiven`.`deleteTab`=1,0,1),
+	`ident_bookserial`.`ID`,
+	`ident_bookserial`.`BookNo`,
+	`ident_bookserial`.`IDNo`,
+	`ident_bookserial`.`Remarks`,
+	`ident_bookserial`.`Date`,
+	`ident_bookserial`.`Name`,
+	`ident_bookserial`.`CountryID`,
+    If(SarsoFormNo is null or SarsoFormNo = 0,
+		If(ChangeFormNo is null or ChangeFormNo = 0,
+			If(LostFormNo is null or LostFormNo = 0,
+				If(Abroad is null or Abroad = 0,
+					If(BookFull is null or BookFull = 0,
+						If(BriefGB is null or BriefGB = 0,Null,
+						6),
+							5),
+								4),
+									3),
+										2),
+											1) as nMadebTypeID,
+	If(SarsoFormNo is null or SarsoFormNo = 0,
+		If(ChangeFormNo is null or ChangeFormNo = 0,
+			If(LostFormNo is null or LostFormNo = 0,
+				If(Abroad is null or Abroad = 0,
+					If(BookFull is null or BookFull = 0,
+						If(BriefGB is null or BriefGB = 0,Null,
+						BriefGB),
+							BookFull),
+								Abroad),
+									LostFormNo),
+										ChangeFormNo),
+											SarsoFormNo) as nFormNumber,
+	`ident_bookserial`.`AuthRegionID`,
+	null,
 	now(),
 	1,
 	now(),
 	1
-FROM `greenbookprime`.`gbnogiven`;
-
-
-INSERT INTO `ctadb`.`tblgreenbookissued`
-SELECT 
-	`ident_bookissued`.`BookIssuedID`,
-	`ident_bookissued`.`IdentityID`,
-	`ident_bookissued`.`IssuedDate`,
-	`ident_bookissued`.`WhyIssued`,
-	null,
-	`ident_bookissued`.`IssuedOrNot`,
-	`ident_bookissued`.`FormNo`,
-	`ident_bookissued`.`WhereIssued`,
-	`ident_bookissued`.`WhereIssued`,
-	`ident_bookissued`.`Printed`,
-	`ident_bookissued`.`Remarks`,
-	`ident_bookissued`.`Entered`,
-	`ident_bookissued`.`EnteredBy`,
-	`ident_bookissued`.`Entered`,
-	`ident_bookissued`.`EnteredBy`
-FROM `greenbookprime`.`ident_bookissued`;
-
-
-SET SQL_SAFE_UPDATES=0;
-UPDATE ctadb.tblgreenbookissued a
-INNER JOIN ctadb.lstmadebtype b 
-	ON a.sWhyIssued = b.sMadebDisplayKey
-SET a.nMadebTypeId = b.Id;
-
-UPDATE ctadb.tblgreenbookissued 
-SET nAuthRegionId = null
-WHERE nWhereIssued = 0;
-
-UPDATE ctadb.tblgreenbookissued 
-SET sRemarks = null
-WHERE sRemarks = '';
+FROM greenbookprime.ident_bookserial;
