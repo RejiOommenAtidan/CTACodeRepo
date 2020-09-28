@@ -635,6 +635,20 @@ INSERT INTO `ctadb`.`lstRelation` (`sRelation`) VALUES ('FemaleChild');
 -- INSERT INTO `ctadb`.`lstRelation` (`sRelation`) VALUES ('Brother');
 -- INSERT INTO `ctadb`.`lstRelation` (`sRelation`) VALUES ('Sister');
 
+CREATE TABLE `lstMadebStatus` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sMadebStatus` text NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`) VALUES ('Approved');
+INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`) VALUES ('Rejected');
+INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`) VALUES ('Cancelled');
+
 CREATE TABLE `lstMadebType` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sMadebType` text NOT NULL,
@@ -746,6 +760,8 @@ CREATE TABLE `tblMadeb` (
   `dtEmailSend` date DEFAULT NULL,
   `sAlias` varchar(200) DEFAULT NULL,
   `sApprovedReject` varchar(200) DEFAULT NULL,
+  `nMadebStatusID` int(11) DEFAULT NULL,
+  `sMadebStatusRemark` varchar(200) DEFAULT NULL,
   `dtReject` date DEFAULT NULL,
   `dtReturnEmail` date DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
