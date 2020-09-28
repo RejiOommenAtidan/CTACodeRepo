@@ -191,35 +191,35 @@ const SidebarMenu = (props) => {
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="#/">
+                      to="/Norchoe">
                       Norchoe Madeb
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="#/">
+                      to="/Bhorlak">
                       Bhorlak Madeb
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="#">
+                      to="/BookFull">
                       Book Full
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="#">
+                      to="/BriefGB">
                       Brief GB
                     </NavLink>
                   </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
-                      to="#">
+                      to="/Abroad">
                       Abroad
                     </NavLink>
                   </li>
@@ -383,7 +383,7 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Home">
+                to="/IssueBook">
                 <span className="sidebar-icon">
                   <MenuBookIcon />
                 </span>

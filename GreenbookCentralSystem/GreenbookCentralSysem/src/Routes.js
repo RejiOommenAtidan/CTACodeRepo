@@ -60,7 +60,10 @@ const EditEntry = lazy(() => import('./views/transactions/newentry/editentry'));
 const SarsoNewGBEntry = lazy(() => import('./views/transactions/SarsoNewGBEntry/SarsoNewGBEntry'));
 const GivenGBID = lazy(() => import('./views/transactions/givengbid'));
 const DeleteGB = lazy(() => import('./views/transactions/deletegb'));
+const IssueBook = lazy(() => import('./views/transactions/issuebook'));
 const ChangePassword = lazy(() => import('./views/change password/index'));
+
+
 
 const Routes = () => {
   const location = useLocation();
@@ -187,6 +190,7 @@ const Routes = () => {
                 '/BookFull',
                 '/BriefGB',
                 '/Abroad',
+                '/IssueBook',
                 '/Greenbooks',
                 '/SarsoNewGBEntry',
                 '/GivenGBID',
@@ -227,6 +231,8 @@ const Routes = () => {
                      <Route path="/BookFull" component={BookFull} />
                      <Route path="/BriefGB" component={BriefGB} />
                      <Route path="/Abroad" component={Abroad} />
+
+                     <Route path="/IssueBook" component={IssueBook} />
 
                      <Route path="/Greenbooks" component={Greenbook} />
                      <Route path="/SarsoNewGBEntry" component={SarsoNewGBEntry} />
