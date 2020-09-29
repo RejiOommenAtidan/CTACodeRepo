@@ -293,14 +293,13 @@ const SidebarMenu = (props) => {
                       Relation
                     </NavLink>
                   </li>
-                  {(currentUser.lFeatureUserrights.find(x=>x.nFeatureID===3))!==undefined 
-                    && <li>
+                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/Feature">
                       Feature
                     </NavLink>
-                  </li>}
+                  </li>
                   {/*<li>
                     <NavLink
                       onClick={toggleSidebarMobile}
