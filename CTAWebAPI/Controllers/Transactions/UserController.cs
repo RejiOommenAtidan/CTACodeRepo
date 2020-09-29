@@ -314,7 +314,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 User userFromDB = _userRepository.GetUserByUsername(userFromUI.sUsername);
                 if (userFromDB == null)
                 {
-                    return NotFound("User Not Found with Username: "+userFromUI.sUsername);
+                    return NotFound("User Not Found with Username: " + userFromUI.sUsername);
                 }
                 //Note: Equals is Case Sensitive
                 if (userFromUI.sPassword.Equals(userFromDB.sPassword))
@@ -341,7 +341,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     //WriteToken
                     userVMFromDB.sJWTToken = tokenHandler.WriteToken(token);
                     //Make Password NULL
-                    userVMFromDB.oUser.sPassword =null;
+                    userVMFromDB.oUser.sPassword = null;
                     return Ok(userVMFromDB);
                     #endregion
                 }
@@ -363,41 +363,48 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Change Password
-        //[HttpPost]
-        //[Route("[action]")]
-        private IActionResult ChangePassword(ChangePasswordVM changePasswordVM)
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult ChangePassword(ChangePasswordVM changePasswordVM)
         {
             #region Change Password
             try
             {
                 if (ModelState.IsValid)
                 {
-                    //  Check for NULLS & Quotes for params 
-                    //  Fetch user from DB
-                    //  Check for password in old & new
-                    //  replace password & update dtUpdated, if no issues
-                    //  Log, under edit levels for user
-                    //  return success
+                    #region Params Check
+                    if (string.IsNullOrEmpty(changePasswordVM.sOldPassword))
+                        return BadRequest("Old Password cannot be NULL OR Empty");
+                    if (string.IsNullOrEmpty(changePasswordVM.sNewPassword))
+                        return BadRequest("New Password cannot be NULL OR Empty");
+                    if (string.IsNullOrEmpty(changePasswordVM.sConfirmNewPassword))
+                        return BadRequest("Confirm New Password cannot be NULL OR Empty");
+                    #endregion
 
+                    User fetchedFromDB = _userRepository.GetUserById(changePasswordVM.nUserId.ToString());
+                    if (fetchedFromDB == null)
+                        return NotFound("User With Id: " + changePasswordVM.nUserId + " Not Found");
 
-                    //if (UserExists(Id))
-                    //{
-                    //    User fetchedUser = _userRepository.GetUserById(Id);
-                    //    user.dtEntered = fetchedUser.dtEntered;
-                    //    user.dtUpdated = DateTime.Now;
-                    //    _userRepository.Update(user);
+                    if (changePasswordVM.sOldPassword.Equals(fetchedFromDB.sPassword))
+                    {
+                        if (changePasswordVM.sNewPassword.Equals(changePasswordVM.sConfirmNewPassword))
+                        {
+                            fetchedFromDB.sPassword = changePasswordVM.sNewPassword;
+                            fetchedFromDB.nUpdatedBy = changePasswordVM.nUserId;
+                            fetchedFromDB.dtUpdated = DateTime.Now;
+                            _userRepository.Update(fetchedFromDB);
 
-                    //    #region Alert Logging 
-                    //    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", user.nEnteredBy);
-                    //    #endregion
+                            #region Alert Logging 
+                            _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", changePasswordVM.nUserId);
+                            #endregion
 
-                    //    return Ok("User with ID: " + Id + " updated Successfully");
-                    //}
-                    //else
-                    //{
-                    //    return BadRequest("User with ID:" + Id + " does not exist");
-                    //}
-                    return Ok();
+                            return Ok("User with Id: " + fetchedFromDB.Id + " Password Updated Successfully");
+                        }
+                        else
+                            return BadRequest("New Password & Coonfirm New Password are Different");
+                    }
+                    else
+                        return BadRequest("Incorrect Old Password");
                 }
                 else
                 {
@@ -409,9 +416,9 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             catch (Exception ex)
             {
-                //#region Exception Logging
-                //_ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, user.nEnteredBy);
-                //#endregion
+                #region Exception Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, changePasswordVM.nUserId);
+                #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }

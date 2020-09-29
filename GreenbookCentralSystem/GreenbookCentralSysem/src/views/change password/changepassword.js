@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from "react-hook-form";
+import React, { useEffect, useState, useRef } from 'react';
+import { useForm, Controller } from "react-hook-form";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Grid, Card, Typography, Container, TextField, FormControl } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import _ from "lodash/fp";
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 // import projectLogo from '../../assets/images/ctalogo.png';
+import { authenticationService } from '../../auth/_services';
 
 const useStyles = makeStyles({
   root: {
@@ -56,26 +58,52 @@ const useStyles = makeStyles({
   }
 });
 
-
-
-
 export default function ChangePassword() {
+  let history = useHistory();
+  let nUserId = authenticationService.currentUserValue.oUser.id;
   const classes = useStyles();
   const { register, handleSubmit, watch, errors } = useForm();
   const [sOldPassword, setsOldPassword] = useState('');
   const [sNewPassword, setsNewPassword] = useState('');
   const [sConfirmNewPassword, setsConfirmNewPassword] = useState('');
+  const password = useRef({});
+  // password.current = watch("name_sNewPassword", "");
+  // console.log(password);
   const onSubmit = () => {
     //Throws Error, Maybe handled by react-hook-forms itself
     //e.preventDefault();
-    let changepassword = {
+    let changePassword = {
+      nUserId,
       sOldPassword,
       sNewPassword,
       sConfirmNewPassword
     };
-    console.info(changepassword);
-    //copy(changepassword);
+    // console.info(changePassword);
+    axios.post(`/User/ChangePassword`, changePassword)
+      .then(resp => {
+        if (resp.status === 200) {
+          //alert("Success");
+          history.push("/Home");
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+          // console.error(error.response.errors);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   };
+
   return (
     <>
       <Container maxWidth="lg" disableGutters={true}><br />
@@ -87,6 +115,7 @@ export default function ChangePassword() {
               <FormControl className={classes.formControl}>
                 <TextField
                   className={classes.textField}
+                  autoFocus
                   name="name_sOldPassword"
                   id="id_sOldPassword"
                   label="Old Password"
@@ -96,34 +125,30 @@ export default function ChangePassword() {
                   fullWidth
                   margin="normal"
                   inputRef={register({
-                    required: true
+                    required: "Old Password Required"
                   })}
                 />
-                {_.get("name_sOldPassword.type", errors) === "required" && (
-                  <p>This field is required</p>
-                )}
+                {errors.name_sOldPassword && <p>{errors.name_sOldPassword.message}</p>}
               </FormControl>
             </Grid>
             {/*New Password*/}
             <Grid item xs={12}>
               <FormControl className={classes.formControl}>
                 <TextField
-                  className={classes.textField}
                   name="name_sNewPassword"
                   id="id_sNewPassword"
                   label="New Password"
                   type="password"
-                  value={sNewPassword}
                   onChange={(e) => { setsNewPassword(e.target.value); }}
+                  value={sNewPassword}
                   fullWidth
+                  className={classes.textField}
                   margin="normal"
                   inputRef={register({
-                    required: true
+                    required: "You must specify a password"
                   })}
                 />
-                {_.get("name_sNewPassword.type", errors) === "required" && (
-                  <p>This field is required</p>
-                )}
+                {errors.name_sNewPassword && <p>{errors.name_sNewPassword.message}</p>}
               </FormControl>
             </Grid>
 
@@ -141,19 +166,19 @@ export default function ChangePassword() {
                   fullWidth
                   margin="normal"
                   inputRef={register({
-                    required: true
+                    required: "Please Confirm the Password",
+                    //validate: value =>  value === sNewPassword || "The passwords do not match"
+                    //validate: value => value === password.current || "The passwords do not match"
                   })}
                 />
-                {_.get("name_sConfirmNewPassword.type", errors) === "required" && (
-                  <p>This field is required</p>
-                )}
+                {errors.name_sConfirmNewPassword && <p> {errors.name_sConfirmNewPassword.message}</p>}
               </FormControl>
             </Grid>
             <br />
             <br /><br />
             <Grid item xs={12}>
               <Button variant="outlined" type="submit" color="primary">Save</Button>&nbsp;
-              <Button variant="outlined">Cancel</Button>
+              <Button variant="outlined" onClick={() => { history.push("/Home") }}>Cancel</Button>
             </Grid>
           </Grid>
         </form>
