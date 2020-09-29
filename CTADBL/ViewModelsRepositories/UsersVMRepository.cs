@@ -20,20 +20,22 @@ namespace CTADBL.ViewModelsRepositories
         public IEnumerable<UsersVM> GetUsersWithUserRightsName()
         {
             string sql = @"SELECT `users`.`Id`,
-                            `users`.`_Id`,
-                            `users`.`sUsername`,
-                            `users`.`sFullName`,
-                            `users`.`sOffice`,
-                            `users`.`sPassword`,
-                            `users`.`nUserRightsId`,
-                            IF(nActive, 1, 0) nActive,
-                            `users`.`dtEntered`,
-                            `users`.`nEnteredBy`,
-                            `users`.`dtUpdated`,
-                            `users`.`nUpdatedBy`,
-                            `userrights`.`sUserRightsName`
+	                        `users`.`_Id`,
+	                        `users`.`sUsername`,
+	                        `users`.`sFullName`,
+	                        `users`.`sOffice`,
+	                        `users`.`sPassword`,
+	                        `users`.`nUserRightsId`,
+	                        IF(nActive, 1, 0) nActive,
+	                        `users`.`dtEntered`,
+	                        `users`.`nEnteredBy`,
+	                        `users`.`dtUpdated`,
+	                        `users`.`nUpdatedBy`,
+	                        `userrights`.`sUserRightsName`
                         FROM tbluser AS users
-                        INNER JOIN lstuserrights AS userrights ON users.nUserRightsId = userrights.Id ORDER BY users.Id;";
+                        INNER JOIN lstuserrights AS userrights ON users.nUserRightsId = userrights.Id 
+                        WHERE `users`.`nActive` = 1
+                        ORDER BY users.Id DESC;";
             using (var command = new MySqlCommand(sql))
             {
                 return GetRecords(command);
