@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+
 import {
   Typography,
   Badge,
@@ -10,12 +12,12 @@ import {
   ListItem,
   Tooltip,
   Divider,
-  ButtonGroup,  MenuItem
+  ButtonGroup, MenuItem
 } from '@material-ui/core';
 
 import { useHistory } from 'react-router-dom';
 
-import {authenticationService} from '../../auth/_services';
+import { authenticationService } from '../../auth/_services';
 import avatar7 from '../../assets/images/avatars/avatar7.jpg';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -61,45 +63,52 @@ const HeaderUserbox = () => {
     setAnchorEl(null);
   };
 
-  const logUserOut = ()=>{
+
+
+  const logUserOut = () => {
     setAnchorEl(null);
     authenticationService.logout();
     history.push('/Login');
   }
 
+  const handleChangePasswordClose = () => {
+    setAnchorEl(null);
+    history.push('/ChangePassword');
+  };
+
   return (
     <>
-     <ButtonGroup
-          variant="contained"
-          className="btn-second m-2"
+      <ButtonGroup
+        variant="contained"
+        className="btn-second m-2"
+        color="primary"
+        aria-label="split button">
+        <Button className="btn-transition-none">{authenticationService.currentUserValue.oUser.sFullname+" ("+authenticationService.currentUserValue.oUserRights.sUserRightsName+")"}</Button>
+        <Button
+          className="btn-transition-none px-2"
           color="primary"
-          aria-label="split button">
-          <Button className="btn-transition-none">Malay Doshi (Admin)</Button>
-          <Button
-            className="btn-transition-none px-2"
-            color="primary"
-            size="small"
-            aria-haspopup="true"
-            onClick={handleClick}>
-            <ArrowDropDownIcon />
-          </Button>
-        </ButtonGroup>
-        <Menu
-          id="simple-menu2"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-          classes={{ list: 'p-0' }}>
-          <div className="p-3">
-            <MenuItem className="pr-5 px-3 text-dark" onClick={handleClose}>
-              Change Password
+          size="small"
+          aria-haspopup="true"
+          onClick={handleClick}>
+          <ArrowDropDownIcon />
+        </Button>
+      </ButtonGroup>
+      <Menu
+        id="simple-menu2"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        classes={{ list: 'p-0' }}>
+        <div className="p-3">
+          <MenuItem className="pr-5 px-3 text-dark" onClick={handleChangePasswordClose}>
+            Change Password
             </MenuItem>
-            <MenuItem className="pr-5 px-3 text-danger" onClick={logUserOut}>
-              Logout
+          <MenuItem className="pr-5 px-3 text-danger" onClick={logUserOut}>
+            Logout
             </MenuItem>
-          </div>
-        </Menu>
+        </div>
+      </Menu>
     </>
   );
 };
