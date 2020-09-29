@@ -38,7 +38,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
 
 
-
+import { AddDialog,  EditDialog } from './dialog';
 import {Alerts} from '../../alerts';
 
 import MaterialTable, { MTableToolbar }  from 'material-table';
@@ -59,6 +59,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import SaveIcon from '@material-ui/icons/Save';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -161,8 +162,11 @@ const useStyles = makeStyles((theme) => ({
 
 
     export const IssueBookTable = (props) => {
-
-
+      const [editModal, setEditModal] = React.useState(false);
+      const [addModal, setAddModal] = React.useState(false);
+      const [selectData, setSelectData] = useState([]);
+      const [saveObj, setSaveObj] = useState([]);
+      const [editObj, setEditObj] = useState([]);
         const hi = () => {
             console.log(props.gbId)
           };
@@ -218,9 +222,10 @@ const useStyles = makeStyles((theme) => ({
     .then(resp => {
       if (resp.status === 200) {
         setHistoryData(resp.data);
-        setHistoryTable(true);
-        console.log(resp.data);
+     //   setHistoryTable(true);
+       // console.log(resp.data);
        // setdataAPI(resp.data)
+       pendingGbId();
       }
     })
     .catch(error => {
@@ -239,7 +244,7 @@ const useStyles = makeStyles((theme) => ({
       //console.log(release); => udefined
     }); 
     
-    pendingGbId();
+   
   }
   const pendingGbId = () =>{
     
@@ -267,12 +272,47 @@ const useStyles = makeStyles((theme) => ({
     .then(release => {
       //console.log(release); => udefined
     }); 
+
+
   }
+const selectDatafunction = () =>{
+    axios.get(`Madeb/GetNewEmptyMadeb`)
+    .then(resp => {
+      if (resp.status === 200) {
+        setSelectData(resp.data);
+        
+       // setdataAPI(resp.data)
+      }
+    })
+    .catch(error => {
+      if (error.response) {
+        console.error(error.response.data);
+        console.error(error.response.status);
+        console.error(error.response.headers);
+      } else if (error.request) {
+        console.warn(error.request);
+      } else {
+        console.error('Error', error.message);
+      }
+      console.log(error.config);
+    })
+    .then(release => {
+      //console.log(release); => udefined
+    });
+  }
+ const saveClick = (row)=>{
+   selectDatafunction();
+   setSaveObj(row);
+   setAddModal(true);
 
- 
-
+ }
+ const hello = ()=>{
+  console.log(selectData);
+  console.log(saveObj);
+}
   useEffect(() => { 
     setGbId(props.gbId);
+
     historyGbId();
    
 
@@ -289,6 +329,7 @@ const useStyles = makeStyles((theme) => ({
        <Grid container spacing={1}>
         <Grid item xs={12}>
                <br/> 
+          {historyTable &&     <>
     <Table className="table table-hover table-striped table-bordered">
                             <thead className="thead-light">
                             <tr>
@@ -338,28 +379,26 @@ const useStyles = makeStyles((theme) => ({
                                 <th > Where </th>
                                 <th > Form No </th>
                                 <th > Issued Yet? </th>    
-                                <th > Remark </th> 
-                                <th >  </th>                           
+                             
+                                <th > Save </th>                           
                             </tr>
                             </thead>
                             <tbody>
-                            {pendingData.map((row, index) => (
+                            {pendingData.map((row1, index) => (
                             <tr>
                              
-                                <th scope="row">{row.dtReceived ? Moment(row.dtIssuedDate).format('YYYY-MM-DD') : ''}</th>
+                                <th scope="row">{row1.dtReceived ? Moment(row1.dtReceived).format('YYYY-MM-DD') : ''}</th>
                                
                              
-                                <th scope="row">{row.nMadebTypeID}</th>
-                                <th scope="row">{row.nAuthRegionID}</th>
+                                <th scope="row">{row1.sMadebDisplayName}</th>
+                                <th scope="row">{row1.sAuthRegion}</th>
                                
-                                <th scope="row">{row.nFormNumber}</th>
-                                <th scope="row">{row.nIssuedOrNotID}</th>
+                                <th scope="row">{row1.nFormNumber}</th>
+                                <th scope="row">{row1.sTypeIssued}</th>
+                                
                                 <th scope="row">
-                                    <TextField id="standard-basic" label="Remark" />
-                                </th>
-                                <th scope="row">
-                                  <IconButton color="primary" aria-label="upload picture" component="span" style={{padding:'0px'}}>
-                                    <EditOutlinedIcon/>
+                                  <IconButton color="primary"   onClick={() => { saveClick(row1) }} aria-label="upload picture" component="span" style={{padding:'0px'}}>
+                                    <SaveIcon/>
                                   </IconButton>
                                 </th>
                                                                     
@@ -369,9 +408,25 @@ const useStyles = makeStyles((theme) => ({
                             ))}
                             </tbody>
                             </Table> 
-                 
-
-                 
+                 </> }
+                            
+                            {addModal && <AddDialog
+            //  addModal={addModal}
+              classes={classes}
+              saveObj={saveObj}
+              selectData={selectData}
+              
+             // handleAddClickClose={handleAddClickClose}
+              //addAPICall={addAPICall}
+            />}
+            {editModal && <EditDialog
+              //editModal={editModal}
+              // saveObj={saveObj}
+              //selectData={selectData}
+              classes={classes}
+             // handleEditClickClose={handleEditClickClose}
+             // editAPICall={editAPICall}
+            />}
             { snackbar && <Alerts
        alertObj={alertObj}
        snackbar={snackbar}

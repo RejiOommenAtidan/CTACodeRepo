@@ -264,7 +264,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         public Object GetMadebforIssueBook(string sGBId)
         {
             string sql = @"SELECT 
-                            `Id`,
+                           `tblmadeb`.`Id`,
                             `_Id`,
                             `nFormNumber`,
                             `sGBID`,
@@ -288,11 +288,18 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sApprovedReject`,
                             `dtReject`,
                             `dtReturnEmail`,
-                            `dtEntered`,
-                            `nEnteredBy`,
-                            `dtUpdated`,
-                            `nUpdatedBy`
-                        FROM `tblmadeb` WHERE `nIssuedOrNotID` !=2 AND `sGBID` = @sGBId ORDER BY `Id` DESC";
+                   `tblmadeb`.`dtEntered`,
+                            `tblmadeb`.`nEnteredBy`,
+                            `tblmadeb`.`dtUpdated`,
+                            `tblmadeb`.`nUpdatedBy`,
+                            `sAuthRegion`,
+                            `sTypeIssued`,
+                            `sMadebDisplayName`
+                        FROM `tblmadeb`
+                         LEFT JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
+                        LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
+                        LEFT JOIN `lstmadebtype` on `tblmadeb`.`nMadebTypeID` = `lstmadebtype`.`Id`
+                        WHERE `nIssuedOrNotID` !=2 AND `sGBID` = @sGBId ORDER BY `Id` DESC";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sGBId", sGBId);
@@ -302,7 +309,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 DataSet ds = new DataSet();
                 mySqlDataAdapter.Fill(ds);
                 DataTableCollection tables = ds.Tables;
-                var forms = tables[0].AsEnumerable().Select(row => new {
+                var forms = tables[0].AsEnumerable().Select(row =>   new {
                     Id = row.Field<int>("Id"),
                     sGBID = row.Field<string>("sGBID"),
                     dtReceived = row.Field<DateTime>("dtReceived"),
@@ -310,7 +317,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                     nAuthRegionID = row.Field<int>("nAuthRegionID"),
                     nFormNumber = row.Field<int>("nFormNumber"),
                     nIssuedOrNotID = row.Field<int>("nIssuedOrNotID"),
-
+                    sAuthRegion = row.Field<string>("sAuthRegion"),
+                    sTypeIssued = row.Field<string>("sTypeIssued"),
+                    sMadebDisplayName = row.Field<string>("sMadebDisplayName"),
 
 
 

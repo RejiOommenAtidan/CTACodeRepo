@@ -270,13 +270,13 @@ export default function EnhancedTable() {
             Home
         </Link>
 
-          <Typography color="textPrimary">IssueBook</Typography>
+          <Typography color="textPrimary">Issue Book</Typography>
         </Breadcrumbs>
         <Grid container spacing={1}>
         <Grid item xs={12} style={{textAlign:'center' }}>
           <Paper elevation={3}  style={{padding:30 }}>  
 
-               <Typography color="textPrimary">Enter Green Book No To Issue Book:</Typography>
+               <Typography color="textPrimary">Enter Green Book Number To Issue Book:</Typography>
                <TextField id="standard-basic" type='number' label="Green Book No." 
                 onChange ={ (e) => {setTempGbId(e.target.value)} }
                 
