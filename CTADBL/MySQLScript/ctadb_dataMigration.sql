@@ -988,3 +988,20 @@ UPDATE ctadb.tblgreenbookserial a
 INNER JOIN ctadb.lstauthregion b 
 	ON a.sAuthRegion = b.sAuthRegion
 SET a.nAuthRegionId = b.Id;
+
+
+INSERT INTO `ctadb`.`tblrecentlysearchedgb`
+(
+    `tblrecentlysearchedgb`.`nGBID`,
+    `tblrecentlysearchedgb`.`nUserID`,
+    `tblrecentlysearchedgb`.`dtEntered`,
+    `tblrecentlysearchedgb`.`nEnteredBy`
+)
+SELECT 
+    `recentlysearchedgb`.`IdentityID`,
+    `recentlysearchedgb`.`UserID`,
+    now(),
+	1
+ FROM `greenbookprime`.`recentlysearchedgb`
+ 
+ 
