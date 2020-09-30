@@ -62,7 +62,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                     int rowsAffected = command.ExecuteNonQuery();
                     _connection.Close();
                     int rows = Convert.ToInt16(command.Parameters["result"].Value);
-                    return rowsAffected;
+                    return rows;
                 }
             }
             catch (Exception ex)
