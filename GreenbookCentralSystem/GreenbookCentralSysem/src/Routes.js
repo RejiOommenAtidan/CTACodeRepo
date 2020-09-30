@@ -7,7 +7,7 @@ import { ThemeProvider } from '@material-ui/styles';
 
 import MuiTheme from './theme';
 
-import {PrivateRoute} from './auth/_components/PrivateRoute';
+import { PrivateRoute } from './auth/_components/PrivateRoute';
 
 // Layout Blueprints
 
@@ -68,6 +68,7 @@ const Users = lazy(() => import('./views/transactions/users/index'));
 
 const PrintPage = lazy(() => import('./views/print'));
 const Print = lazy(() => import('./views/print/print.js'));
+const FeatureUserrights = lazy(() => import('./views/transactions/featureuserrights/index'));
 
 const Routes = () => {
   const location = useLocation();
@@ -165,8 +166,8 @@ const Routes = () => {
                     variants={pageVariants}
                     transition={pageTransition}>
                     <Route path="/PageProfile" component={PageProfile} />
-                    
-                     <Route path="/Print" component={Print} />
+
+                    <Route path="/Print" component={Print} />
                     <Route path="/PageError404" component={PageError404} />
                     <Route path="/PageError500" component={PageError500} />
                     <Route path="/PageError505" component={PageError505} />
@@ -205,7 +206,8 @@ const Routes = () => {
                 '/EditEntry/:GBID',
                 '/ChangePassword',
                 '/Users',
-                '/PrintPage'
+                '/PrintPage',
+                '/FeatureRoles'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -219,38 +221,39 @@ const Routes = () => {
                       path="/Home"
                       component={Home}
                     />
-                     <Route path="/Country" component={Country} />
-                     <Route path="/NewEntry" component={NewEntry} />
-                     <Route path="/Qualification" component={Qualification} />
-                     <Route path="/Region" component={Region} />
-                     <Route path="/Province" component={Province} />
-                     <Route path="/AuthRegion" component={AuthRegion} />
-                     <Route path="/Occupation" component={Occupation} />
-                     <Route path="/MadebType" component={MadebType} />
-                     <Route path="/Relation" component={Relation} />
-                     <PrivateRoute path="/Feature" feature={3} component={Feature} />
-                     {/*<Route path="/Feature" component={Feature} />*/}
-                     <Route path="/UserRights" component={UserRights} />
-                     <Route path="/TypeIssued" component={TypeIssued} />
-                     <Route path="/PrintPage" component={PrintPage} />
-                 
-                     <Route path="/Sarso" component={Sarso} />
-                     <Route path="/Norchoe" component={Norchoe} />
-                     <Route path="/Bhorlak" component={Bhorlak} />
-                     <Route path="/BookFull" component={BookFull} />
-                     <Route path="/BriefGB" component={BriefGB} />
-                     <Route path="/Abroad" component={Abroad} />
+                    <Route path="/Country" component={Country} />
+                    <Route path="/NewEntry" component={NewEntry} />
+                    <Route path="/Qualification" component={Qualification} />
+                    <Route path="/Region" component={Region} />
+                    <Route path="/Province" component={Province} />
+                    <Route path="/AuthRegion" component={AuthRegion} />
+                    <Route path="/Occupation" component={Occupation} />
+                    <Route path="/MadebType" component={MadebType} />
+                    <Route path="/Relation" component={Relation} />
+                    <PrivateRoute path="/Feature" feature={3} component={Feature} />
+                    {/*<Route path="/Feature" component={Feature} />*/}
+                    <Route path="/UserRights" component={UserRights} />
+                    <Route path="/TypeIssued" component={TypeIssued} />
+                    <Route path="/PrintPage" component={PrintPage} />
 
-                     <Route path="/IssueBook" component={IssueBook} />
+                    <Route path="/Sarso" component={Sarso} />
+                    <Route path="/Norchoe" component={Norchoe} />
+                    <Route path="/Bhorlak" component={Bhorlak} />
+                    <Route path="/BookFull" component={BookFull} />
+                    <Route path="/BriefGB" component={BriefGB} />
+                    <Route path="/Abroad" component={Abroad} />
 
-                     <Route path="/Greenbooks" component={Greenbook} />
-                     <Route path="/SarsoNewGBEntry" component={SarsoNewGBEntry} />
-                     <Route path="/GivenGBID" component={GivenGBID} />
-                     <Route path="/DeleteGB" component={DeleteGB} />
-                     <Route path="/GreenBookSerial" component={GreenBookSerial} />
-                     <Route path="/EditEntry/:GBID" component={EditEntry} />
-                     <Route path="/ChangePassword" component={ChangePassword} />
-                     <Route path="/Users" component={Users} />
+                    <Route path="/IssueBook" component={IssueBook} />
+
+                    <Route path="/Greenbooks" component={Greenbook} />
+                    <Route path="/SarsoNewGBEntry" component={SarsoNewGBEntry} />
+                    <Route path="/GivenGBID" component={GivenGBID} />
+                    <Route path="/DeleteGB" component={DeleteGB} />
+                    <Route path="/GreenBookSerial" component={GreenBookSerial} />
+                    <Route path="/EditEntry/:GBID" component={EditEntry} />
+                    <Route path="/ChangePassword" component={ChangePassword} />
+                    <Route path="/Users" component={Users} />
+                    <Route path="/FeatureRoles" component={FeatureUserrights} />
                   </motion.div>
                 </Switch>
               </LeftSidebar>
@@ -258,11 +261,11 @@ const Routes = () => {
 
             <Route
               path={[
-           /*     '/PageCalendar',
-                '/PageChat',
-                '/PageProjects',
-                '/PageFileManager',
-                '/PageProfile'*/
+                /*     '/PageCalendar',
+                     '/PageChat',
+                     '/PageProjects',
+                     '/PageFileManager',
+                     '/PageProfile'*/
               ]}>
               <CollapsedSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -272,7 +275,7 @@ const Routes = () => {
                     exit="out"
                     variants={pageVariants}
                     transition={pageTransition}>
-                {/*    <Route path="/PageCalendar" component={PageCalendar} />
+                    {/*    <Route path="/PageCalendar" component={PageCalendar} />
                     <Route path="/PageChat" component={PageChat} />
                     <Route path="/PageProjects" component={PageProjects} />
                     <Route
