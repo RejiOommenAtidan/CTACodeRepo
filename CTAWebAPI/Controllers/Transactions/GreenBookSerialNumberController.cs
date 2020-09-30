@@ -176,6 +176,109 @@ namespace CTAWebAPI.Controllers.Transactions
 
         #endregion
 
+        #region Add Calls
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult AddGreenBookSerialNumber(GreenBookSerialNumber gbsn)
+        {
+            #region Add GreenbookBook Serial Number
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    gbsn.dtEntered = DateTime.Now;
+                    gbsn.dtUpdated = DateTime.Now;
+                    _greenBookSerialNumberRepository.Add(gbsn);
+
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", gbsn.nEnteredBy);
+                    #endregion
+
+                    return Ok(gbsn);
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    return BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, gbsn.nEnteredBy);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
+        
+
+        #region Edit Call
+        [HttpPost("EditGreenbookSerialNumber/Id={Id}")]
+        [Route("[action]")]
+        public IActionResult EditGreenBookSerialNumber(string Id, [FromBody] GreenBookSerialNumber gbsn)
+        {
+            #region Edit Greenbook
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (Id == null)
+                    {
+                        return BadRequest("Id is NULL");
+                    }
+
+                    if (Id != gbsn.Id.ToString())
+                    {
+                        return BadRequest("Id not matching with Object");
+                    }
+
+                    GreenBookSerialNumber fetch = _greenBookSerialNumberRepository.GetGreenBookSerialNumberById(Convert.ToInt32(Id));
+                    if (fetch != null)
+                    {
+                        gbsn.dtEntered = fetch.dtEntered;
+                        gbsn.dtUpdated = DateTime.Now;
+                        _greenBookSerialNumberRepository.Update(gbsn);
+
+                        #region Alert Logging 
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", gbsn.nEnteredBy);
+                        #endregion
+
+                        return Ok("Greenbook with ID: " + Id + " updated Successfully");
+                    }
+                    else
+                    {
+                        return BadRequest("Greenbook with ID:" + Id + " does not exist");
+                    }
+
+
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    return BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, gbsn.nEnteredBy);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+        
+
 
 
 

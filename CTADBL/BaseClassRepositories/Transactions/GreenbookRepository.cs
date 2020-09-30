@@ -56,9 +56,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
                     command.Connection = _connection;
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("sGBIDIN", sGBID);
+                    command.Parameters.Add("result", MySqlDbType.Int16);
+                    command.Parameters["result"].Direction = ParameterDirection.Output;
                     _connection.Open();
                     int rowsAffected = command.ExecuteNonQuery();
                     _connection.Close();
+                    int rows = Convert.ToInt16(command.Parameters["result"].Value);
                     return rowsAffected;
                 }
             }

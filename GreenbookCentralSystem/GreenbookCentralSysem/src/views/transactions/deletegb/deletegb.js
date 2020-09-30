@@ -33,7 +33,20 @@ export default function GiveGBId(){
     e.preventDefault();
     const gbid = parseInt(document.getElementById("gbid").value);
     console.log("gbid entered", gbid);
-    //axios.post(`GivenGBID/DeleteGBID`, 
+    axios.post(`GreenBook/DeleteGreenBook`, gbid)
+    .then(resp => {
+      if (resp.status === 200) {
+        //setSelectData(resp.data);
+        console.log("GreenBook ID Deleted from GreenBook\n", resp.data);
+
+        
+      // setdataAPI(resp.data)
+      }
+    })
+    .catch(error => {
+      console.log(error.config);
+      console.log(error.message);
+    })
   }
   return (
     <div

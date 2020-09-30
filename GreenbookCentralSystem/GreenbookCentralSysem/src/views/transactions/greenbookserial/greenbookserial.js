@@ -153,7 +153,7 @@ export default () => {
     },
     {
       field: "greenBookSerialNumber.dtDate",
-      title: "Received Date",
+      title: "Date",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
       cellStyle: {
@@ -163,7 +163,7 @@ export default () => {
     },
     {
       field: "greenBookSerialNumber.nBookNo",
-      title: "Receipt No",
+      title: "Book No",
       cellStyle: {
         padding:'5px',
       },
@@ -323,16 +323,18 @@ export default () => {
       sCountryID: tableRowArray['greenBookSerialNumber']['sCountryID'],
       nMadebTypeId: tableRowArray['greenBookSerialNumber']['nMadebTypeId'],
       nFormNumber: tableRowArray['greenBookSerialNumber']['nFormNumber'],
-      nAuthRegionID: tableRowArray['greenBookSerialNumber']['nAuthRegionID'],
+      nAuthRegionId: tableRowArray['greenBookSerialNumber']['nAuthRegionId'],
     });
-      //console.log(tableRowArray);
+      console.log("Table Array: ", tableRowArray);
+      console.log("gbSerialObj: ", gbSerialObj);
+
       setEditModal(true);
   }
 
-  const editAPICall = (madeb) => {
-    console.log(madeb);
+  const editAPICall = (gbSerialObj) => {
+    console.log(gbSerialObj);
     debugger
-    axios.post(`...........` + madeb.id, madeb)
+    axios.post(`GreenBookSerialNumber/EditGreenbookSerialNumber/Id=` + gbSerialObj.id, gbSerialObj)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
