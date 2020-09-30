@@ -28,7 +28,7 @@ const Dashboard = () => {
         <Link color="inherit" href="/app/manageuser" >
           Home
           </Link>
-        <Typography color="textPrimary">Feature User Rights</Typography>
+        <Typography color="textPrimary">Manage Feature Roles</Typography>
       </Breadcrumbs>
       <FeatureUserrights />
     </Container>
