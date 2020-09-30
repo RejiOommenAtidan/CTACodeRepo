@@ -311,7 +311,8 @@ export const SaveDialog = (props) => {
   const [authorityId, setAuthorityId] = React.useState(props.saveObj['nAuthRegionID']);
   const [receivedDate, setReceivedDate] = React.useState(props.saveObj.dtReceived ? (props.saveObj.dtReceived).split('T')[0] : undefined);
   const [gbId, setGbId] = React.useState(parseInt(props.saveObj['sGBID']));
-  const [issuedOrNotId, setIssuedOrNotId] = React.useState(props.saveObj['nIssuedOrNotID']);
+  const [issuedOrNotId, setIssuedOrNotId] = React.useState(props.saveObj['nIssuedOrNotID'] == 0  ?  1 : props.saveObj['nIssuedOrNotID']);
+
   const [printed, setPrinted] = React.useState(0);
   const [remarks, setRemarks] = React.useState('');
   const saveObj ={
