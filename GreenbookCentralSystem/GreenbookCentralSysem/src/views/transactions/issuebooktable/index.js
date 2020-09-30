@@ -38,7 +38,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
 
 
-import { AddDialog,  EditDialog } from './dialog';
+import { SaveDialog,  EditDialog } from './dialog';
 import {Alerts} from '../../alerts';
 
 import MaterialTable, { MTableToolbar }  from 'material-table';
@@ -60,26 +60,8 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import SaveIcon from '@material-ui/icons/Save';
+import { faLeaf } from '@fortawesome/free-solid-svg-icons';
 
-const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <div></div>),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-};
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -163,7 +145,7 @@ const useStyles = makeStyles((theme) => ({
 
     export const IssueBookTable = (props) => {
       const [editModal, setEditModal] = React.useState(false);
-      const [addModal, setAddModal] = React.useState(false);
+      const [saveModal, setSaveModal] = React.useState(false);
       const [selectData, setSelectData] = useState([]);
       const [saveObj, setSaveObj] = useState([]);
       const [editObj, setEditObj] = useState([]);
@@ -301,18 +283,122 @@ const selectDatafunction = () =>{
     });
   }
  const saveClick = (row)=>{
-   selectDatafunction();
+  // selectDatafunction();
    setSaveObj(row);
-   setAddModal(true);
-
+   setSaveModal(true);
+ }
+ const editClick = (row)=>{
+  // selectDatafunction();
+   setEditObj(row);
+   setEditModal(true);
  }
  const hello = ()=>{
   console.log(selectData);
   console.log(saveObj);
 }
+const editModalClose =() =>{
+  setEditModal(false);
+}
+const saveModalClose =() =>{
+  setSaveModal(false);
+}
+
+const saveAPICall = (obj,changeObj) =>{
+  setSaveModal(false);
+  console.log(obj);
+ axios.post(`IssueBook/AddIssueBook`,obj)
+  .then(resp => {
+    if (resp.status === 200) {
+      
+          changeIssueTypeAPICall(changeObj);
+    }
+  })
+  .catch(error => {
+    if (error.response) {
+      console.error(error.response.data);
+      console.error(error.response.status);
+      console.error(error.response.headers);
+    } else if (error.request) {
+      console.warn(error.request);
+    } else {
+      console.error('Error', error.message);
+    }
+    console.log(error.config);
+  })
+  .then(release => {
+    //console.log(release); => udefined
+  }); 
+  
+ 
+}
+
+const changeIssueTypeAPICall = (changeObj) =>{
+
+
+ axios.post(`Madeb/EditMadeb/Id=`+changeObj.id,changeObj)
+  .then(resp => {
+    if (resp.status === 200) {
+      saveModalClose();
+       setAlertMessage('Record Successfully Saved');
+          setAlertType('success');
+          snackbarOpen();
+          historyGbId();
+    }
+  })
+  .catch(error => {
+    if (error.response) {
+      console.error(error.response.data);
+      console.error(error.response.status);
+      console.error(error.response.headers);
+    } else if (error.request) {
+      console.warn(error.request);
+    } else {
+      console.error('Error', error.message);
+    }
+    console.log(error.config);
+  })
+  .then(release => {
+    //console.log(release); => udefined
+  }); 
+  
+ 
+}
+
+const editAPICall = (obj) =>{
+  
+ 
+ axios.post(`IssueBook/EditIssueBook/Id=`+obj.id,obj)
+  .then(resp => {
+    if (resp.status === 200) {
+      editModalClose();
+       setAlertMessage('Record Successfully Edited');
+          setAlertType('success');
+          snackbarOpen();
+          historyGbId();
+    }
+  })
+  .catch(error => {
+    if (error.response) {
+      console.error(error.response.data);
+      console.error(error.response.status);
+      console.error(error.response.headers);
+    } else if (error.request) {
+      console.warn(error.request);
+    } else {
+      console.error('Error', error.message);
+    }
+    console.log(error.config);
+    alert(error.message);
+  })
+  .then(release => {
+    //console.log(release); => udefined
+  }); 
+  
+ 
+}
   useEffect(() => { 
     setGbId(props.gbId);
-
+    selectDatafunction();
     historyGbId();
    
 
@@ -334,7 +420,7 @@ const selectDatafunction = () =>{
                             <thead className="thead-light">
                             <tr>
                                 <th scope="col">SR</th>
-                                <th > BookIssued </th>
+                                <th > Book Issued </th>
                                 <th > Entered </th>
                                 <th > Why </th>
                                 <th > Where </th>
@@ -355,10 +441,11 @@ const selectDatafunction = () =>{
                                 <th scope="row">{row.sMadebDisplayName}</th>
                                 <th scope="row">{row.sAuthRegion}</th>
                                 <th scope="row">{row.sFormNumber}</th>
+                   
                                 <th scope="row">{row.sTypeIssued}</th>
                                 <th scope="row">{row.sRemarks}</th>
                                 <th scope="row">
-                                  <IconButton color="primary" aria-label="upload picture" component="span" style={{padding:'0px'}}>
+                            <IconButton color="primary"  onClick={() => { editClick(row) } } aria-label="upload picture" component="span" style={{padding:'0px'}}>
                                     <EditOutlinedIcon/>
                                   </IconButton>
                                 </th>
@@ -392,9 +479,10 @@ const selectDatafunction = () =>{
                              
                                 <th scope="row">{row1.sMadebDisplayName}</th>
                                 <th scope="row">{row1.sAuthRegion}</th>
-                               
+                             
                                 <th scope="row">{row1.nFormNumber}</th>
-                                <th scope="row">{row1.sTypeIssued}</th>
+                                <th scope="row">{row1.sTypeIssued == null  ?  'On Progress' : row1.sTypeIssued }</th>
+                        
                                 
                                 <th scope="row">
                                   <IconButton color="primary"   onClick={() => { saveClick(row1) }} aria-label="upload picture" component="span" style={{padding:'0px'}}>
@@ -410,22 +498,22 @@ const selectDatafunction = () =>{
                             </Table> 
                  </> }
                             
-                            {addModal && <AddDialog
-            //  addModal={addModal}
-              classes={classes}
-              saveObj={saveObj}
-              selectData={selectData}
-              
-             // handleAddClickClose={handleAddClickClose}
+                            {saveModal && <SaveDialog
+                              saveModal={saveModal}
+                              classes={classes}
+                              saveObj={saveObj}
+                              selectData={selectData}
+                              saveAPICall={saveAPICall}
+                              saveModalClose={saveModalClose}
               //addAPICall={addAPICall}
             />}
             {editModal && <EditDialog
-              //editModal={editModal}
-              // saveObj={saveObj}
-              //selectData={selectData}
+              editModal={editModal}
+              editObj={editObj}
+              selectData={selectData}
               classes={classes}
-             // handleEditClickClose={handleEditClickClose}
-             // editAPICall={editAPICall}
+              editModalClose={editModalClose}
+            editAPICall={editAPICall}
             />}
             { snackbar && <Alerts
        alertObj={alertObj}

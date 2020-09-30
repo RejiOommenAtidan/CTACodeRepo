@@ -35,114 +35,343 @@ function Alert(props) {
 
 
   
-export const EditDialog = (props) => {
-  //debugger
-  const [snackbarOpen,setSnackbarOpen]=React.useState(false);
-  const snackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  export const EditDialog = (props) => {
 
-    setSnackbarOpen(false);
-  };
-  const handleSubmit = () =>{
-    setMessage("Record Successfully Edited");
-    setAlertType('success');
-    setSnackbarOpen(true)
-  }
-  const [message,setMessage]=React.useState('');
-  const [alertType,setAlertType]=React.useState('');
-
-  const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
-  const [typeIssuedData,settypeIssuedData]= React.useState(props.selectData['typeIssued']);
-
-
-
-  const [id, setId] = React.useState(props.sarsoObj.id);
-  const [formNumber, setFormNumber] = React.useState(props.sarsoObj.nFormNumber);
-  const [authRegionID, setAuthorityId] = React.useState(props.sarsoObj.nAuthRegionID);
-  const [receivedDate, setReceivedDate] = React.useState(props.sarsoObj.dtReceived ? (props.sarsoObj.dtReceived).split('T')[0] : undefined);
-  const [name, setName] = React.useState(props.sarsoObj.sName);
-  const [fname, setFname] = React.useState(props.sarsoObj.sFathersName);
-  const [saney, setSaney] = React.useState(props.sarsoObj.nSaneyFormNo);
-  const [madebType,setMadebType]= React.useState(1);
-  const [documents, setDocument] = React.useState(props.sarsoObj.sDocumentAttached);
-  const [issueActionDate, setIssueActionDate] = React.useState(props.sarsoObj.dtIssueAction ? (props.sarsoObj.dtIssueAction).split('T')[0] : undefined);
-  const [issueAction, setIssueAction] = React.useState(props.sarsoObj.nIssuedOrNotID);
-  const [returnDate, setReturnDate] = React.useState(props.sarsoObj.dtReturnEmail ? (props.sarsoObj.dtReturnEmail).split('T')[0] : undefined);
-  //const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject.split('T')[0]);
-  const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject ? (props.sarsoObj.dtReject).split('T')[0] : undefined);
-  const madeb = {
-    id:id,
-    nFormNumber: formNumber, 
-    nMadebTypeID: madebType,
-    sName: name,
-    sFathersName:fname,
-    nAuthRegionID:authRegionID , 
-    dtReceived:receivedDate,  
-    dtIssueAction:issueActionDate,
-    nIssuedOrNotID:issueAction,
-    sDocumentAttached:documents,
-    nSaneyFormNo:saney,
-    dtReturnEmail:returnDate,
-    dtReject:rejectDate
-
-
- }
-
-
-    let valueAuthRegion =[];
-    authorityData.forEach(element => {
-    if(element.id === authRegionID){
-        valueAuthRegion = element;
-        console.log(valueAuthRegion);
-    }
+   const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
+   const [madebData,setMadebData]= React.useState(props.selectData['madebTypes']);
+   const [typeIssuedData,setTypeIssuedData]= React.useState(props.selectData['typeIssued']);
+   
+   const [formNumber, setFormNumber] = React.useState(props.editObj['sFormNumber']);
+   const [id, setId] = React.useState(props.editObj['id']);
+   const [madebType,setMadebType]= React.useState(props.editObj['nMadebTypeId']);
+   const [authorityId, setAuthorityId] = React.useState(props.editObj['nAuthRegionId']);
+   const [issuedDate, setIssuedDate] = React.useState(props.editObj.dtIssuedDate ? (props.editObj.dtIssuedDate).split('T')[0] : undefined);
+   const [enteredDate, setEnteredDate] = React.useState(props.editObj.dtEntered ? (props.editObj.dtEntered).split('T')[0] : undefined);
+   const [gbId, setGbId] = React.useState(parseInt(props.editObj['nGBId']));
+   const [issuedOrNotId, setIssuedOrNotId] = React.useState(props.editObj['nTypeIssuedId']);
+   const [printed, setPrinted] = React.useState(props.editObj['nPrinted']);
+   const [remarks, setRemarks] = React.useState(props.editObj['sRemarks']);
+   const editObj ={
+     id:id,
+     sFormNumber: formNumber, 
+     nMadebTypeId: madebType,
+     nTypeIssuedId: issuedOrNotId,
+     nGBId : gbId,
+     dtIssuedDate:issuedDate,
+     nAuthRegionId:authorityId , 
+     nPrinted:printed,
+     sRemarks:remarks
+  
+   }
+   
+  
+ 
+   let valueAuthRegion =[];
+   authorityData.forEach(element => {
+   
+   if(element.id === authorityId){
+       valueAuthRegion = element;
+   }
+ });
+ 
+   let valueTypeIssued =[];
+   typeIssuedData.forEach(element => {
     
+    if(element.id === issuedOrNotId){
+       valueTypeIssued = element;
+    }
   });
+  let valueMadebType =[];
+  madebData.forEach(element => {
+   
+   if(element.id === madebType){
+     valueMadebType = element;
+   }
+ });
+   return (
+  <>
+ 
+   {
+  <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
+       <DialogTitle id="form-dialog-title">Edit Issue Book Record</DialogTitle>
+       <form>
+       <DialogContent>
+         <DialogContentText>
+         <div>
+                            
+                             <Grid container spacing={3}>
+                                
+                                 <Grid item xs={12} sm={6}>
+                                     <FormControl className={props.classes.formControl}>
+                                         <TextField
+                                             id="date"
+                                             label="Issued Date"
+                                             type="date"
+                                             defaultValue={issuedDate}
+                                             className={props.classes.textField}
+                                             InputLabelProps={{
+                                                 shrink: true,
+                                             }}
+                                             onChange={(e) => { setIssuedDate(e.target.value) }}
+                                         />
+                                     </FormControl>
+                                 </Grid>
+                                 <Grid item xs={12} sm={6}>
+                                     <FormControl className={props.classes.formControl}>
+                                     <Autocomplete
+                                     openOnFocus
+                                     clearOnEscape
+                                     onChange={  
+                                         (e, value) => {
+                                         if (value !== null) {
+                                             console.log(value.id);
+                                             setMadebType(value.id);
+                                         }
+                                         else {
+                                             setMadebType(0);
+                                         }
+                                         }
+                                     }
+                                    value={valueMadebType} 
+                                     
+                                     id="id_madebType"
+                                     options={madebData}
+                   
+                                     autoHighlight
+                                     getOptionLabel={(option) => option.sMadebDisplayName}
+                                     renderOption={(option) => (
+                                         <React.Fragment>
+                                         <span>{option.sMadebDisplayName}</span>
+                                         </React.Fragment>
+                                     )}
+                                     renderInput={(params) => (
+                                         <TextField
+                                         {...params}
+                                         label="Why"
+                                         variant="standard"
+                                         inputProps={{
+                                             ...params.inputProps,
+                                 autoComplete: 'new-password', // disable autocomplete and autofill
+                               }}
+                             />
+                           )}
+                         />
+                                     </FormControl>
+                                 </Grid>            
+                                 <Grid item xs={12} sm={6}>
+                                     <FormControl className={props.classes.formControl}>
+                                     <Autocomplete
+                                     openOnFocus
+                                     clearOnEscape
+                                     onChange={  
+                                         (e, value) => {
+                                         if (value !== null) {
+                                             console.log(value.id);
+                                             setAuthorityId(value.id);
+                                         }
+                                         else {
+                                             setAuthorityId(0);
+                                         }
+                                         }
+                                     }
+                                    value={valueAuthRegion} 
+                                     
+                                     id="id_nAuthorityId"
+                                     options={authorityData}
+                   
+                                     autoHighlight
+                                     getOptionLabel={(option) => option.sAuthRegion}
+                                     renderOption={(option) => (
+                                         <React.Fragment>
+                                         <span>{option.sAuthRegion}</span>
+                                         </React.Fragment>
+                                     )}
+                                     renderInput={(params) => (
+                                         <TextField
+                                         {...params}
+                                         label="Where"
+                                         variant="standard"
+                                         inputProps={{
+                                             ...params.inputProps,
+                                 autoComplete: 'new-password', // disable autocomplete and autofill
+                               }}
+                             />
+                           )}
+                         />
+                                     </FormControl>
+                                 </Grid>
+                                 <Grid item xs={12} sm={6}>
+                                     <FormControl className={props.classes.formControl}>
+                                         <TextField
+                                             id="number"
+                                             label="Form Number"
+                                             type="number"
+                                             InputProps={{
+                                                 readOnly: false,
+                                             }}
+                                             value={formNumber}
+                                             onChange={(e) => { setFormNumber(e.target.value) }}
+ 
+                                         />
+                                     </FormControl>
+                                 </Grid>
+                                 <Grid item xs={12} sm={6}>
+                                     <FormControl className={props.classes.formControl}>
+                                     <Autocomplete
+                                     openOnFocus
+                                     clearOnEscape
+                                     onChange={  
+                                         (e, value) => {
+                                         if (value !== null) {
+                                             console.log(value.id);
+                                             setIssuedOrNotId(value.id);
+                                         }
+                                         else {
+                                             setIssuedOrNotId(0);
+                                         }
+                                         }
+                                     }
+                                    value={valueTypeIssued} 
+                                     
+                                     id="id_nIssuedOrNotId"
+                                     options={typeIssuedData}
+                                   /*  classes={{
+                                         option: classes.option,
+                                     }}
+                                     className={classes.textField}*/
+                                     autoHighlight
+                                     getOptionLabel={(option) => option.sTypeIssued}
+                                     renderOption={(option) => (
+                                         <React.Fragment>
+                                         <span>{option.sTypeIssued}</span>
+                                         </React.Fragment>
+                                     )}
+                                     renderInput={(params) => (
+                                         <TextField
+                                         {...params}
+                                         label="Issue Action"
+                                         variant="standard"
+                                         inputProps={{
+                                             ...params.inputProps,
+                                 autoComplete: 'new-password', // disable autocomplete and autofill
+                               }}
+                             />
+                           )}
+                         />
+                                     </FormControl>
+                                 </Grid>
+                                 <Grid item xs={12} sm={6}>
+                                     <FormControl className={props.classes.formControl}>
+                                         <TextField
+                                             id="remarks"
+                                             label="Remarks"
+                                             type="text"
+                                             InputProps={{
+                                                 readOnly: false,
+                                             }}
+                                             value={remarks}
+                                             onChange={(e) => { setRemarks(e.target.value) }}
+ 
+                                         />
+                                     </FormControl>
+                                 </Grid>
+                             </Grid>
+                         </div>
+         </DialogContentText>
+       </DialogContent>
+       <DialogActions>
+            <Button onClick={() =>props.editModalClose()} color="primary">Cancel</Button>
+ 
+    
+      
+      
+ 
+         <Button onClick={() => props.editAPICall(editObj)} color="primary">Save</Button> 
+       </DialogActions>
+       </form>
+     </Dialog> }
+  </>
+   );
+ 
+ }
+ 
 
 
-    let valueTypeIssued =[];
-   // console.log(issueAction);
-    typeIssuedData.forEach(element => {
-     if(element.id === issueAction){
-        valueTypeIssued = element;
-        console.log(element);
-     }
-     
-   });
 
+export const SaveDialog = (props) => {
+   console.log('dialog');
+  console.log(props.selectData);
+  console.log(props.saveObj);
+  const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
+  const [madebData,setMadebData]= React.useState(props.selectData['madebTypes']);
+  const [typeIssuedData,setTypeIssuedData]= React.useState(props.selectData['typeIssued']);
+  const [formNumber, setFormNumber] = React.useState(props.saveObj['nFormNumber'].toString());
+  const [id, setId] = React.useState(props.saveObj['id']);
+  const [madebType,setMadebType]= React.useState(props.saveObj['nMadebTypeID']);
+  const [authorityId, setAuthorityId] = React.useState(props.saveObj['nAuthRegionID']);
+  const [receivedDate, setReceivedDate] = React.useState(props.saveObj.dtReceived ? (props.saveObj.dtReceived).split('T')[0] : undefined);
+  const [gbId, setGbId] = React.useState(parseInt(props.saveObj['sGBID']));
+  const [issuedOrNotId, setIssuedOrNotId] = React.useState(props.saveObj['nIssuedOrNotID']);
+  const [printed, setPrinted] = React.useState(0);
+  const [remarks, setRemarks] = React.useState('');
+  const saveObj ={
+
+    sFormNumber: formNumber.toString(), 
+    nMadebTypeId: madebType,
+    nTypeIssuedId: issuedOrNotId,
+    nGBId : gbId,
+    dtIssuedDate:receivedDate,
+    nAuthRegionId:authorityId , 
+    nPrinted:printed,
+    sRemarks:remarks
+ 
+  }
+  const changeObj ={
+    id:id,
+    nIssuedOrNotID: 2
+  }
+ 
+
+  let valueAuthRegion =[];
+  authorityData.forEach(element => {
+  
+  if(element.id === authorityId){
+      valueAuthRegion = element;
+  }
+});
+
+  let valueTypeIssued =[];
+  typeIssuedData.forEach(element => {
+   
+   if(element.id === issuedOrNotId){
+      valueTypeIssued = element;
+   }
+ });
+ let valueMadebType =[];
+ madebData.forEach(element => {
+  
+  if(element.id === madebType){
+    valueMadebType = element;
+  }
+});
   return (
-      
-      
+ <>
 
-    <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Edit Sarso Madeb</DialogTitle>
-      <form onSubmit={handleSubmit}>
+  {
+ <Dialog open={props.saveModal} aria-labelledby="form-dialog-title">
+      <DialogTitle id="form-dialog-title">Save Issue Book</DialogTitle>
+      <form>
       <DialogContent>
         <DialogContentText>
         <div>
                            
                             <Grid container spacing={3}>
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="number"
-                                            label="Form Number"
-                                            type="number"
-                                            InputProps={{
-                                                readOnly: false,
-                                            }}
-                                            value={formNumber}
-                                            onChange={(e) => { setFormNumber(e.target.value) }}
-
-                                        />
-                                    </FormControl>
-                                </Grid>
+                               
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
                                             id="date"
-                                            label="Received Date"
+                                            label="Issued Date"
                                             type="date"
                                             defaultValue={receivedDate}
                                             className={props.classes.textField}
@@ -153,7 +382,48 @@ export const EditDialog = (props) => {
                                         />
                                     </FormControl>
                                 </Grid>
-
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
+                                    <Autocomplete
+                                    openOnFocus
+                                    clearOnEscape
+                                    onChange={  
+                                        (e, value) => {
+                                        if (value !== null) {
+                                            console.log(value.id);
+                                            setMadebType(value.id);
+                                        }
+                                        else {
+                                            setMadebType(0);
+                                        }
+                                        }
+                                    }
+                                   value={valueMadebType} 
+                                    
+                                    id="id_madebType"
+                                    options={madebData}
+                  
+                                    autoHighlight
+                                    getOptionLabel={(option) => option.sMadebDisplayName}
+                                    renderOption={(option) => (
+                                        <React.Fragment>
+                                        <span>{option.sMadebDisplayName}</span>
+                                        </React.Fragment>
+                                    )}
+                                    renderInput={(params) => (
+                                        <TextField
+                                        {...params}
+                                        label="Why"
+                                        variant="standard"
+                                        inputProps={{
+                                            ...params.inputProps,
+                                autoComplete: 'new-password', // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
+                                    </FormControl>
+                                </Grid>            
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                     <Autocomplete
@@ -174,10 +444,7 @@ export const EditDialog = (props) => {
                                     
                                     id="id_nAuthorityId"
                                     options={authorityData}
-                                  /*  classes={{
-                                        option: classes.option,
-                                    }}
-                                    className={classes.textField}*/
+                  
                                     autoHighlight
                                     getOptionLabel={(option) => option.sAuthRegion}
                                     renderOption={(option) => (
@@ -188,7 +455,7 @@ export const EditDialog = (props) => {
                                     renderInput={(params) => (
                                         <TextField
                                         {...params}
-                                        label="Authority"
+                                        label="Where"
                                         variant="standard"
                                         inputProps={{
                                             ...params.inputProps,
@@ -200,64 +467,17 @@ export const EditDialog = (props) => {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
-                                            id="name"
-                                            label="Name"
-                                           
-                                        value={name}
-                                        onChange={(e) => { setName(e.target.value) }}
-                                        />
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="fname"
-                                            label="Father's Name"
-                                            value={fname}
-                                            onChange={(e) => { setFname(e.target.value) }}
-                                        />
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="sfn"
-                                            label="Saney Form No"
-                                            type='number'
-                                            value={saney}
-                                            onChange={(e) => { setSaney(e.target.value) }}
-                                        />
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="da"
-                                            label="Document attached"
-                                            value={documents}
-                                            onChange={(e) => { setDocument(e.target.value) }}
-                                        />
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="date"
-                                            label="Issue Action Date"
-                                            type="date"
-                                            defaultValue={issueActionDate}
-                                            className={props.classes.textField}
-                                            InputLabelProps={{
-                                                shrink: true,
+                                            id="number"
+                                            label="Form Number"
+                                            type="number"
+                                            InputProps={{
+                                                readOnly: false,
                                             }}
-                                            
-                                            onChange={(e) => { setIssueActionDate(e.target.value) }}
+                                            value={formNumber}
+                                            onChange={(e) => { setFormNumber(e.target.value) }}
+
                                         />
                                     </FormControl>
                                 </Grid>
@@ -270,10 +490,10 @@ export const EditDialog = (props) => {
                                         (e, value) => {
                                         if (value !== null) {
                                             console.log(value.id);
-                                            setIssueAction(value.id);
+                                            setIssuedOrNotId(value.id);
                                         }
                                         else {
-                                            setIssueAction(0);
+                                            setIssuedOrNotId(0);
                                         }
                                         }
                                     }
@@ -309,32 +529,15 @@ export const EditDialog = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
-                                            id="date"
-                                            label="Return Date"
-                                            type="date"
-                                            defaultValue={returnDate}
-                                            className={props.classes.textField}
-                                            InputLabelProps={{
-                                                shrink: true,
+                                            id="remarks"
+                                            label="Remarks"
+                                            type="text"
+                                            InputProps={{
+                                                readOnly: false,
                                             }}
-                                            
-                                            onChange={(e) => { setReturnDate(e.target.value) }}
-                                        />
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="date"
-                                            label="Reject Date"
-                                            type="date"
-                                            defaultValue={rejectDate}
-                                            className={props.classes.textField}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            
-                                            onChange={(e) => { setRejectDate(e.target.value) }}
+                                            value={remarks}
+                                            onChange={(e) => { setRemarks(e.target.value) }}
+
                                         />
                                     </FormControl>
                                 </Grid>
@@ -343,87 +546,16 @@ export const EditDialog = (props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
+           <Button onClick={() => props.saveModalClose()} color="primary">Cancel</Button>
 
-       {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
+   
      
-        <Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
-        <Alert  onClose={snackbarClose} severity={alertType}  >
-         {message}
-        </Alert>
-      </Snackbar>
+     
 
-        <Button onClick={() => props.editAPICall(madeb)} color="primary">Save</Button> 
+        <Button onClick={() => props.saveAPICall(saveObj,changeObj)} color="primary">Save</Button> 
       </DialogActions>
       </form>
-    </Dialog>
-);
-
-
-}
-
-
-
-export const AddDialog = (props) => {
-  // console.log('dialog');
-    //console.log(props.selectData);
-  //console.log(props.saveObj);
-  const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
-  const [formNumber, setFormNumber] = React.useState(props.saveObj['nFormNumber']);
-  const [id, setId] = React.useState(props.saveObj['id']);
-  const [madebType,setMadebType]= React.useState(props.saveObj['nMadebTypeID']);
-  const [authorityId, setAuthorityId] = React.useState(props.saveObj['nAuthRegionID']);
-  const [receivedDate, setReceivedDate] = React.useState(props.saveObj['dtReceived']);
-  const [gbId, setGbId] = React.useState(parseInt(props.saveObj['sGBID']));
-  const [issuedOrNotId, setIssuedOrNotID] = React.useState(parseInt(props.saveObj['nIssuedOrNotID']));
-  const saveObj ={
-
-    nFormNumber: formNumber, 
-    nMadebTypeID: madebType,
- //   nTypeIssuedId: madebType,
-    nGBId : gbId,
-    dtIssuedDate:receivedDate,
-    nAuthRegionID:authorityId , 
-    
- 
-
-  }
-
-  /*
-  const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
-
-
-  const [formNumber, setFormNumber] = React.useState(props.selectData['nFormNumber']);
-  const [id, setId] = React.useState(0);
-  const [madebType,setMadebType]= React.useState(1);
-  const [authority, setAuthority] = React.useState(0);
-  const [receivedDate, setReceivedDate] = React.useState('');
-  const [name, setName] = React.useState('');
-  const [fname, setFname] = React.useState('');
-  const [saney, setSaney] = React.useState(0);
-  const [documents, setDocument] = React.useState('');
-
-
-  const madeb = {
-     nFormNumber: formNumber, 
-     nMadebTypeID: madebType,
-     sName: name,
-     sFathersName:fname,
-     nAuthRegionID:authority , 
-     dtReceived:receivedDate,  
-
-     sDocumentAttached:documents,
-     nSaneyFormNo:saney
-  }
-  const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = data => {
-    props.addAPICall(madeb);
-  };
-*/
- 
-  return (
- <>
- HI
+    </Dialog> }
  </>
   );
 

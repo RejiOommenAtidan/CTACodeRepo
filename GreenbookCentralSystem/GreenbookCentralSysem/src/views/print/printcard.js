@@ -61,7 +61,7 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
  
 
 
-export const PrintCard = () => {
+export const PrintCard = (props) => {
 
 
 
@@ -70,9 +70,9 @@ export const PrintCard = () => {
     < >
      
      
-    <div style={{display: 'inline-block',fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
-      
-      <table width={345} height={437} border={0} style={{marginLeft: '15px'}}>
+    <div  style={{display: 'inline-block', border: '1px dashed grey', paddingLeft:'10px',fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
+    {console.log(props.data.id)}
+      <table width={345} height={437} border={0}>
         <tbody>
           <tr>
             <td style={{fontSize: '20px', textAlign: 'center', padding: '1em 0 0 0'}}>ལག་ཁྱེར་ཨང་།</td>
@@ -80,7 +80,7 @@ export const PrintCard = () => {
               <table border={0} width={190}>
                 <tbody><tr>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
-                      I
+                      {props.data.id}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
                       N

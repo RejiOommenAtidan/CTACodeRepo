@@ -133,7 +133,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                     Id = row.Field<int>("Id"),
                     nGBId = row.Field<int>("nGBId"),
                     dtIssuedDate = row.Field<DateTime>("dtIssuedDate"),
-                    sWhyIssued = row.Field<string>("sWhyIssued"),
+                    sWhyIssued = row.Field<string?>("sWhyIssued"),
                     nMadebTypeId = row.Field<int?>("nMadebTypeId"),
                     nTypeIssuedId = row.Field<int?>("nTypeIssuedId"),
                     sFormNumber = row.Field<string>("sFormNumber"),

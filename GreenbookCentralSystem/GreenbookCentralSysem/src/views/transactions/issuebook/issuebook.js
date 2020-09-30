@@ -175,7 +175,7 @@ export default function EnhancedTable() {
   const [historyTable, setHistoryTable] = React.useState(false);
 
   const [id, setId] = React.useState('');
-  const [tempGbId, setTempGbId] = React.useState(0);
+  const [tempGbId, setTempGbId] = React.useState(9116519);
   const [gbId, setGbId] = React.useState("");
 
 

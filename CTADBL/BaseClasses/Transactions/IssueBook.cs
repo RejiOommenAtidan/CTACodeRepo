@@ -13,7 +13,7 @@ namespace CTADBL.BaseClasses.Transactions
         private int _Id;
         private int? _nGBId;
         private DateTime? _dtIssuedDate = null;
-        private string _sWhyIssued;
+        private string? _sWhyIssued;
         private int? _nMadebTypeId;
         private int? _nTypeIssuedId;
 
@@ -31,7 +31,7 @@ namespace CTADBL.BaseClasses.Transactions
         public int Id { get { return _Id; } set { _Id = value; } }
         public int? nGBID { get { return _nGBId; } set { _nGBId = value; } }
         public DateTime? dtIssuedDate { get { return _dtIssuedDate; } set { _dtIssuedDate = value; } }
-        public string sWhyIssued { get { return _sWhyIssued; } set { _sWhyIssued = value; } }
+        public string? sWhyIssued { get { return _sWhyIssued; } set { _sWhyIssued = value; } }
         public int? nMadebTypeId { get { return _nMadebTypeId; } set { _nMadebTypeId = value; } }
 
         public int? nTypeIssuedId { get { return _nTypeIssuedId; } set { _nTypeIssuedId = value; } }

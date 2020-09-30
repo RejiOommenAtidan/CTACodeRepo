@@ -58,28 +58,49 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
 import {PrintCard} from './printcard';
-import { Print } from '@material-ui/icons';
+import { CloseOutlined, Print } from '@material-ui/icons';
 
  
 
 
 export default function PrintGreenBook() {
 
-    
-let count=3;
+  const printObj = [
+
+    {id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},{id:9},{id:10}
+
+  ]
+  
+
+const printpreview =() =>{
+
+  window.print();
+
+}
   return (
 
     < >
     
-    <div  style={{marginLeft:'50px' , marginTop:'50px' , fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
-      
-
-        <PrintCard/>
-        <PrintCard/>
-        {count%2==1 && <br/>}
-        <PrintCard/>
-
-     
+    <div  style={{marginLeft:'25px' , marginTop:'30px' , fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
+  
+    {printObj.map((row, index) => (
+            
+            <> 
+             <PrintCard data={row} />
+            {(index+1)%2 == 0 && <br/>
+              
+              
+            }
+    
+            </>
+        
+    ))}
+    {
+     setTimeout(printpreview, 2000) 
+    
+   
+    }
+  
     </div>
   
    </>
