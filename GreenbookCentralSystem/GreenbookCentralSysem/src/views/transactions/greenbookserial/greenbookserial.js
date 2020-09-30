@@ -260,7 +260,9 @@ export default () => {
     axios.get(`GreenBookSerialNumber/GetNewEmptyGreenBookSerialRecord`)
     .then(resp => {
       if (resp.status === 200) {
-        setSelectData("New Record Data\n", resp.data);
+        setSelectData(resp.data);
+        console.log("New Record Data\n", resp.data);
+
         
       // setdataAPI(resp.data)
       }
@@ -311,7 +313,7 @@ export default () => {
 
 
   const editClick = (tableRowArray) => {
-    gbSerialObj({
+    setGBSerialObj({
       id: tableRowArray['greenBookSerialNumber']['id'],
       nBookNo: tableRowArray['greenBookSerialNumber']['nBookNo'],
       sGBID: tableRowArray['greenBookSerialNumber']['sGBID'],
