@@ -135,7 +135,7 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                                 readOnly: true,
                                             }}
                                             value={nFormNumber}
-                                            onChange={(e) => { setFormNumber(e.target.value) }}
+                                            onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
 
                                         />
                                     </FormControl>
@@ -265,7 +265,7 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                         required: true
                                       })}
                                     />
-                                    {_.get("sGBID.type", errors) === "required" && (
+                                    {_.get("nReceiptNo.type", errors) === "required" && (
                                       <span style={{color: 'red'}}>This field is required</span>
                                     )}
                                   </FormControl>
@@ -467,10 +467,6 @@ console.log("Madeb Edit Object received in dialog", madeb);
 
 export const AddDialog = (props) => {
     const { register, handleSubmit, watch, errors } = useForm();
-    
-    
-   
-
     const [message,setMessage]=React.useState('');
     const [alertType,setAlertType]=React.useState('');
     const [snackbarOpen,setSnackbarOpen]=React.useState(false);

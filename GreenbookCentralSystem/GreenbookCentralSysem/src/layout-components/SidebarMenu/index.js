@@ -335,7 +335,7 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Home#">
+                to="/GivenGBID">
                 <span className="sidebar-icon">
                   <FormatListNumberedIcon />
                 </span>
@@ -360,7 +360,7 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Home#">
+                to="/GreenBookSerial">
                 <span className="sidebar-icon">
                   <FormatListNumberedRtlIcon />
                 </span>
