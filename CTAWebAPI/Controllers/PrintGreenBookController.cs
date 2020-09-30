@@ -2,9 +2,13 @@
 using CTADBL.ViewModels;
 using CTADBL.ViewModelsRepositories;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
 
 namespace CTAWebAPI.Controllers
 {
@@ -12,37 +16,35 @@ namespace CTAWebAPI.Controllers
     [Route("api/[controller]")]
     //[APIKeyAuth]
     [ApiController]
-    public class MadebNewRecordVMController : ControllerBase
+    public class PrintGreenBookController : ControllerBase
     {
         #region Constructor
         private readonly DBConnectionInfo _info;
-        private readonly MadebNewRecordVMRepository _madebNewRecordVMRepository;
-        public MadebNewRecordVMController(DBConnectionInfo info)
+        private readonly PrintGreenBookVMRepository _printGreenBookVMRepository;
+
+        public PrintGreenBookController(DBConnectionInfo info)
         {
             _info = info;
-            _madebNewRecordVMRepository = new MadebNewRecordVMRepository(_info.sConnectionString);
+            _printGreenBookVMRepository = new PrintGreenBookVMRepository (_info.sConnectionString);
         }
         #endregion
-
-        #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetNewEmptyMadeb()
+        public IActionResult GetPrintList(int records)
         {
-            #region Get Empty Madeb Record using SP call
+            #region Get Print List
             try
             {
-                MadebNewRecordVM madebNewRecord = _madebNewRecordVMRepository.GetNewEmptyMadeb();
-                if(madebNewRecord != null)
+                IEnumerable<PrintGreenBookVM> printList = _printGreenBookVMRepository.GetPrintList(records);
+
+                if (printList != null && printList.Count() > 0)
                 {
-                    return Ok(madebNewRecord);
+                    return Ok(printList);
                 }
                 else
                 {
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
-                
-                
             }
             catch (Exception ex)
             {
@@ -50,6 +52,5 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
-        #endregion
     }
 }

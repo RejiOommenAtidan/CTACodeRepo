@@ -260,7 +260,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Delete GreenBook by passing GB Id.
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteGreenBook(string sGBID)
+        public IActionResult DeleteGreenBookByGBID(string sGBID)
         {
             try
             {

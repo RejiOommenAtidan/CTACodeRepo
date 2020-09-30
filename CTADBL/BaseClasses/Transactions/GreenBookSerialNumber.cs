@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CTADBL.BaseClasses.Transactions
 {
-    [Table("tblmadeb")]
+    [Table("tblgreenbookserial")]
     public class GreenBookSerialNumber : CommonProps
     {
         #region Private Properties
@@ -24,6 +24,7 @@ namespace CTADBL.BaseClasses.Transactions
         #endregion
 
         #region Public properties
+        [Key]
         public int Id
         {
             get

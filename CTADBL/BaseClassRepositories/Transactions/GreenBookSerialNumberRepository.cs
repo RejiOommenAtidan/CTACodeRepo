@@ -78,6 +78,33 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
         }
 
+        public GreenBookSerialNumber GetGreenBookSerialNumberById(int id)
+        {
+            string sql = @"SELECT `tblgreenbookserial`.`Id`,
+                         `tblgreenbookserial`.`nBookNo`,
+                         `tblgreenbookserial`.`sGBId`,
+                         `tblgreenbookserial`.`Remarks`,
+                         `tblgreenbookserial`.`dtDate`,
+                         `tblgreenbookserial`.`sName`,
+                         `tblgreenbookserial`.`sCountryID`,
+                         `tblgreenbookserial`.`nMadebTypeId`,
+                         `tblgreenbookserial`.`nFormNumber`,
+                         `tblgreenbookserial`.`sAuthRegion`,
+                         `tblgreenbookserial`.`nAuthRegionId`,
+                         `tblgreenbookserial`.`dtEntered`,
+                         `tblgreenbookserial`.`nEnteredBy`,
+                         `tblgreenbookserial`.`dtUpdated`,
+                         `tblgreenbookserial`.`nUpdatedBy`
+                         FROM `tblgreenbookserial`
+                         WHERE `tblgreenbookserial`.`Id` = @id";
+
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("id", id);
+                return GetRecord(command);
+            }
+        }
+
         public GreenBookSerialNumber GetGreenBookSerialNumberBySerialNumber (int serialNumber)
         {
             string sql = @"SELECT `tblgreenbookserial`.`Id`,

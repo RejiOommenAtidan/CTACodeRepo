@@ -7,6 +7,7 @@ namespace CTADBL.ViewModels
     {
         public List<MadebType> madebTypes { get; set; }
         public List<AuthRegion> authRegions { get; set; }
+        public List<Country> countries { get; set; }
         public int nBookNo { get; set; }
     }
 }
