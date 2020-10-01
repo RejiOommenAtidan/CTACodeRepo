@@ -705,24 +705,18 @@ INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Sarso New GB Entry');
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Roles Feature Mapping');
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('User Roles Manage');
 
--- -------------------------
--- --Link Tables------------
--- -------------------------
 
-CREATE TABLE `lnkGBRelation` (
+CREATE TABLE `lstCTAConfig` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `sGBID` varchar(255) DEFAULT NULL,
-  `sGBIDRelation` varchar(255) DEFAULT NULL,
-  `nRelationID` int(11) NOT NULL,
+  `sKey` text NOT NULL,
+  `sValue` text NOT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-
-
+INSERT INTO `ctadb`.`lstCTAConfig` (`sKey`, `sValue`) VALUES ('UITableNumberOfRowsInPage', '20');
+INSERT INTO `ctadb`.`lstCTAConfig` (`sKey`, `sValue`) VALUES ('SelectTotalRecordCount', '1000');
 
 -- -------------------------
 -- --Transactional Tables---
@@ -906,46 +900,13 @@ CREATE TABLE `tblGreenBookSerial` (
 ) ENGINE=InnoDB AUTO_INCREMENT=44030 DEFAULT CHARSET=latin1;
 
 
-CREATE TABLE `lnkGBNote` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `sGBId` varchar(255) DEFAULT NULL,
-  `sNote` longtext DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) Not NULL,
-  PRIMARY KEY (`Id`),
-  KEY `sGBId` (`sGBId`)
-) ENGINE=InnoDB AUTO_INCREMENT=27870 DEFAULT CHARSET=latin1;
-
-
-CREATE TABLE `lnkGBChildren` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `sGBIDParent` varchar(255) DEFAULT NULL,
-  `Name` varchar(100) DEFAULT NULL,
-  `DOB` datetime DEFAULT NULL,
-  `Gender` varchar(1) DEFAULT NULL,
-  `ChildID` varchar(50) DEFAULT NULL,
-  `sGBIDChild` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `sGBIDParent` (`sGBIDParent`)
-) ENGINE=InnoDB AUTO_INCREMENT=109498 DEFAULT CHARSET=latin1;
-
-CREATE TABLE `lnkFeatureUserRights` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `nFeatureID` int(11) Not NULL,
-  `nUserRightsID` int(11) Not NULL,
-  `nRights` tinyint(1) NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) Not NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
-
 CREATE TABLE `tblActionLogger` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sActionType` varchar(255) DEFAULT NULL,
   `sModuleName` varchar(255) DEFAULT NULL,
   `sEventName` varchar(255) DEFAULT NULL,
   `sDescription` varchar(255) DEFAULT NULL,
+  `sStackTrace` varchar(255) DEFAULT NULL,
   `dtEntered` DateTime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   PRIMARY KEY (`id`)
@@ -962,6 +923,73 @@ CREATE TABLE `tblAuditLog` (
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- -------------------------
+-- --Link Tables------------
+-- -------------------------
+
+CREATE TABLE `lnkGBRelation` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sGBID` varchar(255) DEFAULT NULL,
+  `sGBIDRelation` varchar(255) DEFAULT NULL,
+  `nRelationID` int(11) NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `lnkGBDocument` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sGBId` varchar(255) DEFAULT NULL,
+  `sTitle` varchar(255) DEFAULT NULL,
+  `sDocType` varchar(255) DEFAULT NULL,
+  `binFileDoc` longblob DEFAULT NULL,  
+  `sFileExtension` varchar(255) DEFAULT NULL,
+  `nRegisterDate` int(64) DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5843 DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE `lnkGBNote` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sGBId` varchar(255) DEFAULT NULL,
+  `sNote` longtext DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  PRIMARY KEY (`Id`),
+  KEY `sGBId` (`sGBId`)
+) ENGINE=InnoDB AUTO_INCREMENT=27870 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `lnkGBChildren` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sGBIDParent` varchar(255) DEFAULT NULL,
+  `sName` varchar(100) DEFAULT NULL,
+  `dtDOB` datetime DEFAULT NULL,
+  `sGender` varchar(1) DEFAULT NULL,
+  `sChildID` varchar(50) DEFAULT NULL,
+  `sGBIDChild` varchar(100) DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `sGBIDParent` (`sGBIDParent`)
+) ENGINE=InnoDB AUTO_INCREMENT=109498 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `lnkFeatureUserRights` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `nFeatureID` int(11) Not NULL,
+  `nUserRightsID` int(11) Not NULL,
+  `nRights` tinyint(1) NOT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 
@@ -1020,9 +1048,10 @@ DROP procedure IF EXISTS `spDeleteGreenBook`;
 
 DELIMITER $$
 
-CREATE PROCEDURE `spDeleteGreenBook` (IN sGBIDIN VARCHAR(255))
+CREATE PROCEDURE `spDeleteGreenBook`(IN sGBIDIN VARCHAR(255), OUT result INT)
 BEGIN
-	delete from `tblgreenbook` WHERE `tblgreenbook`.`sGBID`= sGBIDIN;
+    DELETE FROM tblgreenbook WHERE tblgreenbook.sGBID = sGBIDIN;
+    SET result = row_count();
 END
 
 DELIMITER ;
@@ -1059,4 +1088,14 @@ BEGIN
 	 WHERE nUserRightsID IN (Select `nUserRightsId` from tblUser where Id = nUserIdIN) and nRights=1;
 END$$
 
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE `spGetNewGreenBookSerialData`()
+BEGIN
+    SELECT Id, sMadebType FROM lstmadebtype;
+    SELECT ID, sAuthRegion FROM lstauthregion;
+    SELECT ID, sCountryID, sCountry FROM lstcountry;
+    SELECT max(nBookNo) + 1 AS nBookNo FROM tblgreenbookserial;
+END$$
 DELIMITER ;

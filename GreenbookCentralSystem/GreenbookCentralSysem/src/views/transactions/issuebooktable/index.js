@@ -433,22 +433,22 @@ const editAPICall = (obj) =>{
                             <tbody>
                             {historyData.map((row, index) => (
                             <tr>
-                                <th scope="row">{index+1}</th>
+                                <td scope="row">{index+1}</td>
                                
-                                <th scope="row">{row.dtIssuedDate ? Moment(row.dtIssuedDate).format('YYYY-MM-DD') : ''}</th>
-                                <th scope="row">{row.dtEntered ? Moment(row.dtEntered).format('YYYY-MM-DD HH:mm:ss') : ''}</th>
+                                <td scope="row">{row.dtIssuedDate ? Moment(row.dtIssuedDate).format('YYYY-MM-DD') : ''}</td>
+                                <td scope="row">{row.dtEntered ? Moment(row.dtEntered).format('YYYY-MM-DD HH:mm:ss') : ''}</td>
                              
-                                <th scope="row">{row.sMadebDisplayName}</th>
-                                <th scope="row">{row.sAuthRegion}</th>
-                                <th scope="row">{row.sFormNumber}</th>
-                   
-                                <th scope="row">{row.sTypeIssued}</th>
-                                <th scope="row">{row.sRemarks}</th>
-                                <th scope="row">
+                                <td scope="row">{row.sMadebDisplayName}</td>
+                                <td scope="row">{row.sAuthRegion}</td>
+                                <td scope="row">{row.sFormNumber}</td>
+                  
+                                <td scope="row">{row.sTypeIssued}</td>
+                                <td scope="row">{row.sRemarks}</td>
+                                <td scope="row">
                             <IconButton color="primary"  onClick={() => { editClick(row) } } aria-label="upload picture" component="span" style={{padding:'0px'}}>
                                     <EditOutlinedIcon/>
                                   </IconButton>
-                                </th>
+                                </td>
                                                                     
                             </tr>
                             
