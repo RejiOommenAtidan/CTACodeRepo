@@ -8,11 +8,15 @@ namespace CTAImageUploadFromFolder
 {
     class Program
     {
+
         static void Main(string[] args)
         {
             string connetionString = null;
             MySqlConnection cnn;
             connetionString = "Server=127.0.0.1;Port=3306;Database=ctadb;Uid=root;allow zero datetime=no";
+            string sLogFolderPath = @"D:\Reji\Chartel\CTAImageFile-DataMigration\CTAImageUploadFromFolder\CTAImageUploadFromFolder\";
+            string sPathPrifix = @"C:\xampp\htdocs\GreenBook\gb\images\";
+
             cnn = new MySqlConnection(connetionString);
             try
             {
@@ -49,7 +53,6 @@ namespace CTAImageUploadFromFolder
                     }
 
                     //Generate Path to find the image
-                    string sPathPrifix = @"C:\xampp\htdocs\GreenBook\gb\images\";
                     string s1stFolder = sGBNum.Substring(0, 2);
                     string s2ndFolder = sGBNum.Substring(2, 2);
                     string sPathWithFileName = s1stFolder + @"\" + s2ndFolder + @"\g" + sGBNum + ".jpg";
@@ -128,7 +131,7 @@ namespace CTAImageUploadFromFolder
                 sbLogging.AppendLine("Number of Images Inserted: " + nInsertedFileCount.ToString());
                 sbLogging.AppendLine("===================================");
 
-                File.AppendAllText(@"D:\Reji\Chartel\CTAImageFile-DataMigration\CTAImageUploadFromFolder\CTAImageUploadFromFolder\" + "log.txt", sbLogging.ToString());
+                File.AppendAllText(sLogFolderPath + "log.txt", sbLogging.ToString());
                 sbLogging.Clear();
             }
             catch (Exception ex)
