@@ -26,8 +26,9 @@ namespace CTAWebAPI.Services
         /// <param name="sModuleName">Module Name</param>
         /// <param name="sEventName">Event Name</param>
         /// <param name="sDescription">Description</param>
+        /// <param name="sStackTrace">Stack Trace</param>
         /// <param name="nEnteredBy">User ID</param>
-        public void LogRecord(string sActionType,string sModuleName,string sEventName,string sDescription, [Optional] int? nEnteredBy)
+        public void LogRecord(string sActionType,string sModuleName,string sEventName,string sDescription, [Optional] string sStackTrace, [Optional] int? nEnteredBy)
         {
             #region Add Record
             try
@@ -35,11 +36,12 @@ namespace CTAWebAPI.Services
                 ActionLogger actionLogger = new ActionLogger()
                 {
                     sActionType = sActionType,
-                    sDescription = sDescription,
+                    sModuleName = sModuleName,
                     sEventName = sEventName,
+                    sDescription = sDescription,
+                    sStackTrace = sStackTrace,
                     dtEntered = DateTime.Now,
-                    nEnteredBy = nEnteredBy,
-                    sModuleName = sModuleName
+                    nEnteredBy = nEnteredBy
                 };
                 _actionLoggerRepository.Add(actionLogger);
             }

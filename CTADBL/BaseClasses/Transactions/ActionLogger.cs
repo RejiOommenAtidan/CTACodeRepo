@@ -13,9 +13,9 @@ namespace CTADBL.BaseClasses.Transactions
         private string _sModuleName;
         private string _sEventName;
         private string _sDescription;    
-        private string _sStackTrace;
+        private string _sStackTrace=null;
         private DateTime? _dtEntered;
-        private int? _nEnteredBy;
+        private int? _nEnteredBy=null;
         #endregion
 
         #region Public Common Properties
