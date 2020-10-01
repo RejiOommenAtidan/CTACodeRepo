@@ -153,6 +153,7 @@ export default function FeatureUserrights() {
   const [sFeature, setsFeature] = React.useState('');
   const [sUserRightsName, setsUserRightsName] = React.useState('');
   const [oLnkObj, setoLnkObj] = useState({});
+  const [isLoading,setIsLoading] = useState(true);
 
 
   const columns = [
@@ -164,7 +165,10 @@ export default function FeatureUserrights() {
         padding: '5px',
         paddingLeft: '10px',
       },
-      export: true
+      export: true,
+      hiddenByColumnsButton:false,
+      removable:true,
+      type:"numeric"
     },
     {
       field: "sFeature",
@@ -183,7 +187,13 @@ export default function FeatureUserrights() {
       },
     },
     {
+      // columnsButton:true,
+      //searchable:false,
+      // hiddenByColumnsButton:true,
+      // hidden:true,
+      // removable:true,
       field: 'edit',
+      tooltip:'Edit Record',
       title: 'Edit',
       filtering: false,
       export: false,
@@ -357,6 +367,7 @@ export default function FeatureUserrights() {
                     if (resp.status === 200) {
                       console.log(resp.data)
                       setlstFeature(resp.data);
+                      setIsLoading(false);
                     }
                   })
                   .catch(error => {
@@ -426,12 +437,24 @@ export default function FeatureUserrights() {
           <Grid item xs={12}>
 
             <MaterialTable
+              //paginationType="normal"
+              //toolbarButtonAlignment="left"
+              isLoading={isLoading}
               style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
               icons={tableIcons}
               title="Feature Roles"
               columns={columns}
               data={dataAPI}
               options={{
+                //loadingType:"linear",
+                //showSelectAllCheckbox:true,
+                //showTextRowsSelected:true,
+                //searchFieldAlignment:"left",
+                //selection:true,
+                tableLayout:"auto",
+                //toolbar:true,
+                padding:"dense",
+                columnsButton:true,
                 filtering,
                 exportButton: true,
                 exportAllData: true,
@@ -453,13 +476,13 @@ export default function FeatureUserrights() {
               actions={[
                 {
                   icon: AddBox,
-                  tooltip: 'Add User',
+                  tooltip: 'Add Feature User right',
                   isFreeAction: true,
                   onClick: (event) => setAddModal(true)
                 },
                 {
                   icon: FilterList,
-                  tooltip: 'Show Filter',
+                  tooltip: 'Toggle Filter',
                   isFreeAction: true,
                   onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
                 }
