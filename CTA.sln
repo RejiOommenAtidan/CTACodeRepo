@@ -10,13 +10,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CTAWebAPI", "CTAWebAPI\CTAW
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CTADBL", "CTADBL\CTADBL.csproj", "{32D2B186-9820-4151-92AD-1DF1683C9904}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CTAAdminApplication", "CTAAdminApplication\CTAAdminApplication.csproj", "{D2407AB2-D772-479A-A28B-142883A0837A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTANativeApp", "CTANativeApp\CTANativeApp.csproj", "{D30EA9FE-47E0-4673-8988-817C9D9BBA64}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CTAAdminApplicationMUI", "CTAAdminApplicationMUI\CTAAdminApplicationMUI.csproj", "{0F0D099B-6A4F-499B-A8FB-739BEDE1B98F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreenbookCentralSysem", "GreenbookCentralSystem\GreenbookCentralSysem.csproj", "{5DBEB305-6C68-4DFD-B093-FFEBBC4108A9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CTAImageUploadFromFolder", "CTAImageUploadFromFolder\CTAImageUploadFromFolder.csproj", "{A14AF69D-39E1-47F2-9951-FB329BF80655}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,22 +30,18 @@ Global
 		{32D2B186-9820-4151-92AD-1DF1683C9904}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32D2B186-9820-4151-92AD-1DF1683C9904}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32D2B186-9820-4151-92AD-1DF1683C9904}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D2407AB2-D772-479A-A28B-142883A0837A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D2407AB2-D772-479A-A28B-142883A0837A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D2407AB2-D772-479A-A28B-142883A0837A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D2407AB2-D772-479A-A28B-142883A0837A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D30EA9FE-47E0-4673-8988-817C9D9BBA64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D30EA9FE-47E0-4673-8988-817C9D9BBA64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D30EA9FE-47E0-4673-8988-817C9D9BBA64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D30EA9FE-47E0-4673-8988-817C9D9BBA64}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0F0D099B-6A4F-499B-A8FB-739BEDE1B98F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0F0D099B-6A4F-499B-A8FB-739BEDE1B98F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0F0D099B-6A4F-499B-A8FB-739BEDE1B98F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0F0D099B-6A4F-499B-A8FB-739BEDE1B98F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5DBEB305-6C68-4DFD-B093-FFEBBC4108A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5DBEB305-6C68-4DFD-B093-FFEBBC4108A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DBEB305-6C68-4DFD-B093-FFEBBC4108A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DBEB305-6C68-4DFD-B093-FFEBBC4108A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A14AF69D-39E1-47F2-9951-FB329BF80655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A14AF69D-39E1-47F2-9951-FB329BF80655}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A14AF69D-39E1-47F2-9951-FB329BF80655}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A14AF69D-39E1-47F2-9951-FB329BF80655}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
