@@ -123,10 +123,17 @@ const useStyles = makeStyles({
   },
   '&$expanded': {
     margin: 'auto'
+  },
+  option: {
+    fontSize: 10,
+    '& > span': {
+      marginRight: 5,
+      fontSize: 16
+    }
   }
 });
 
-export default function Users() {
+export default function FeatureUserrights() {
   Moment.locale('en');
   const [filtering, setFiltering] = React.useState(false);
   let history = useHistory();
@@ -137,20 +144,20 @@ export default function Users() {
   const [addModal, setAddModal] = useState(false);
 
   //VAR
+  const [lstFeature, setlstFeature] = React.useState([]);
   const [lUserRights, setlUserRights] = React.useState([]);
   const [Id, setId] = React.useState('');
-  const [sUsername, setsUsername] = React.useState('');
-  const [sFullname, setsFullname] = React.useState('');
-  const [nUserRightsId, setnUserRightsId] = React.useState('');
+  const [nFeatureID, setnFeatureID] = React.useState(0);
+  const [nUserRightsID, setnUserRightsID] = React.useState(0);
+  const [nRights, setnRights] = React.useState(0);
+  const [sFeature, setsFeature] = React.useState('');
   const [sUserRightsName, setsUserRightsName] = React.useState('');
-  const [sPassword, setsPassword] = React.useState('');
-  const [sOffice, setsOffice] = React.useState('');
-  const [oUserObj, setoUserObj] = useState({});
+  const [oLnkObj, setoLnkObj] = useState({});
 
 
   const columns = [
     {
-      field: "oUser.id",
+      field: "oFeatureUserrights.id",
       title: "Sr No.",
       hidden: true,
       cellStyle: {
@@ -160,8 +167,8 @@ export default function Users() {
       export: true
     },
     {
-      field: "oUser.sUsername",
-      title: "Username",
+      field: "sFeature",
+      title: "Feature",
       cellStyle: {
         padding: '5px',
         paddingLeft: '10px',
@@ -169,22 +176,8 @@ export default function Users() {
       }
     },
     {
-      field: "oUser.sFullname",
-      title: "Fullname",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
       field: "sUserRightsName",
-      title: "Rights",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      field: "oUser.sOffice",
-      title: "Office Name",
+      title: "Role",
       cellStyle: {
         padding: '5px'
       },
@@ -207,13 +200,13 @@ export default function Users() {
     }
   ];
 
-  const addAPICall = (userObj) => {
-    axios.post(`/User/AddUser/`, userObj)
+  const addAPICall = (lnkObj) => {
+    axios.post(`/FeatureUserrights/AddFeatureUserright/`, lnkObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          axios.get(`/User/GetAllUsers`)
+          axios.get(`/FeatureUserrights/GetFeatureUserrightsMapping`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -256,19 +249,16 @@ export default function Users() {
   };
 
 
-
-
-
-  const editAPICall = (userObj) => {
-    axios.post(`/User/EditUser/Id=` + Id, userObj)
+  const editAPICall = (lnkObj) => {
+    axios.post(`/FeatureUserrights/EditFeatureUserright/Id=` + Id, lnkObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setEditModal(false);
-          axios.get(`/User/GetAllUsers`)
+          axios.get(`/FeatureUserrights/GetFeatureUserrightsMapping`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
+                //console.log(resp.data);
                 setdataAPI(resp.data);
               }
             })
@@ -309,24 +299,19 @@ export default function Users() {
 
 
   const editClick = (tableRowArray) => {
-
-    //console.log(tableRowArray);
-    setId(tableRowArray["oUser"]["id"]);
-    setsUsername(tableRowArray["oUser"]["sUsername"]);
-    setsFullname(tableRowArray["oUser"]["sFullname"]);
-    setsPassword(tableRowArray["oUser"]["sPassword"])
-    setnUserRightsId(tableRowArray["oUser"]["nUserRightsId"]);
-    setsUserRightsName(tableRowArray["oUser"]["sUserRightsName"]);
-    setsOffice(tableRowArray["oUser"]["sOffice"]);
-    setoUserObj({
-      id: tableRowArray["oUser"]["id"],
-      sUsername: tableRowArray["oUser"]["sUsername"],
-      sFullname: tableRowArray["oUser"]["sFullname"],
-      sPassword: tableRowArray["oUser"]["sPassword"],
-      nUserRightsId: tableRowArray["oUser"]["nUserRightsId"],
-      sUserRightsName: tableRowArray["oUser"]["sUserRightsName"],
-      sOffice: tableRowArray["oUser"]["sOffice"],
-      lUserRights: lUserRights
+    setId(tableRowArray["oFeatureUserrights"]["id"]);
+    setnFeatureID(tableRowArray["oFeatureUserrights"]["nFeatureID"]);
+    setnUserRightsID(tableRowArray["oFeatureUserrights"]["nUserRightsID"]);
+    setnRights(tableRowArray["oFeatureUserrights"]["nRights"]);
+    setsFeature(tableRowArray["sFeature"]);
+    setsUserRightsName(tableRowArray["sUserRightsName"]);
+    setoLnkObj({
+      id: tableRowArray["oFeatureUserrights"]["id"],
+      nFeatureID: tableRowArray["oFeatureUserrights"]["nFeatureID"],
+      nUserRightsID: tableRowArray["oFeatureUserrights"]["nUserRightsID"],
+      nRights: tableRowArray["oFeatureUserrights"]["nRights"],
+      sFeature: tableRowArray["sFeature"],
+      sUserRightsName: tableRowArray["sUserRightsName"]
     });
     setEditModal(true);
   }
@@ -345,37 +330,69 @@ export default function Users() {
   };
 
 
-  //Get User rights
+
+
+
+  // //Get User rights
+  // useEffect(() => {
+
+  // }, []);
+
   useEffect(() => {
-    axios.get(`/UserRights/GetUserRights`)
+    //#region user rights mapping
+    axios.get(`/FeatureUserrights/GetFeatureUserrightsMapping`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data)
-          setlUserRights(resp.data);
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-  }, []);
-
-  useEffect(() => {
-    axios.get(`/User/GetAllUsers`)
-      .then(resp => {
-        if (resp.status === 200) {
           setdataAPI(resp.data);
+          //#region user rights
+          axios.get(`/UserRights/GetUserRights`)
+            .then(resp => {
+              if (resp.status === 200) {
+                console.log(resp.data);
+                setlUserRights(resp.data);
+                //#region Features
+                axios.get(`/Feature/GetFeatures`)
+                  .then(resp => {
+                    if (resp.status === 200) {
+                      console.log(resp.data)
+                      setlstFeature(resp.data);
+                    }
+                  })
+                  .catch(error => {
+                    if (error.response) {
+                      console.error(error.response.data);
+                      console.error(error.response.status);
+                      console.error(error.response.headers);
+                    } else if (error.request) {
+                      console.warn(error.request);
+                    } else {
+                      console.error('Error', error.message);
+                    }
+                    console.log(error.config);
+                  })
+                  .then(release => {
+                    //console.log(release); => udefined
+                  });
+                //#endregion
+              }
+            })
+            .catch(error => {
+              if (error.response) {
+                console.error(error.response.data);
+                console.error(error.response.status);
+                console.error(error.response.headers);
+              } else if (error.request) {
+                console.warn(error.request);
+              } else {
+                console.error('Error', error.message);
+              }
+              console.log(error.config);
+            })
+            .then(release => {
+              //console.log(release); => udefined
+            });
+          //#endregion
         }
       })
       .catch(error => {
@@ -393,7 +410,7 @@ export default function Users() {
       .then(release => {
         //console.log(release); => udefined
       });
-
+    //#endregion
   }, []);
 
   return (
@@ -404,14 +421,14 @@ export default function Users() {
       justifyContent="center"
     >
       <Container maxWidth="lg" disableGutters={true}><br />
-        <Typography variant="h4" gutterBottom>Users</Typography>
+        <Typography variant="h4" gutterBottom>Feature Roles</Typography>
         <Grid container className={classes.box}>
           <Grid item xs={12}>
 
             <MaterialTable
               style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
               icons={tableIcons}
-              title="Users"
+              title="Feature Roles"
               columns={columns}
               data={dataAPI}
               options={{
@@ -455,11 +472,12 @@ export default function Users() {
           classes={classes}
           handleAddClickClose={handleAddClickClose}
           lUserRights={lUserRights}
+          lstFeature={lstFeature}
           addAPICall={addAPICall}
         />}
         {editModal && <EditDialog
           editModal={editModal}
-          oUserObj={oUserObj}
+          oLnkObj={oLnkObj}
           classes={classes}
           handleEditClickClose={handleEditClickClose}
           editAPICall={editAPICall}

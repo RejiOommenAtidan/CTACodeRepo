@@ -7,10 +7,12 @@ import {
   Typography,
   ExpansionPanel,
   ExpansionPanelSummary,
-  ExpansionPanelDetails
-
+  ExpansionPanelDetails,
+  FormControlLabel,
+  FormGroup
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Switch from '@material-ui/core/Switch';
 
 
 import InputLabel from '@material-ui/core/InputLabel';
@@ -35,17 +37,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export const EditDialog = (props) => {
-  const [lUserRights, setlUserRights] = React.useState(props.oUserObj.lUserRights);
-  const [Id, setId] = React.useState(props.oUserObj.id)
-  const [sUsername, setsUsername] = React.useState(props.oUserObj.sUsername);
-  const [sFullname, setsFullname] = React.useState(props.oUserObj.sFullname);
-  const [nUserRightsId, setnUserRightsId] = React.useState(props.oUserObj.nUserRightsId);
-  const [sUserRightsName, setsUserRightsName] = React.useState(props.oUserObj.sUserRightsName);
-  const [sPassword, setsPassword] = React.useState(props.oUserObj.sPassword);
-  const [sOffice, setsOffice] = React.useState(props.oUserObj.sOffice);
+  const [Id, setId] = React.useState(props.oLnkObj.id)
+  const [nFeatureID, setnFeatureID] = React.useState(props.oLnkObj.nFeatureID);
+  const [nUserRightsId, setnUserRightsId] = React.useState(props.oLnkObj.nUserRightsID);
+  const [nRights, setnRights] = React.useState(props.oLnkObj.nRights);
+  const [sFeature, setsFeature] = React.useState(props.oLnkObj.sFeature);
+  const [sUserRightsName, setsUserRightsName] = React.useState(props.oLnkObj.sUserRightsName);
+  const handleChange = (e) => {
+    //console.log(e);
+    if (nRights === 1) {
+      setnRights(0);
+    }
+    else {
+      setnRights(1);
+    }
+  };
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">User</DialogTitle>
+      <DialogTitle id="form-dialog-title">Mapping</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <div>
@@ -53,65 +62,50 @@ export const EditDialog = (props) => {
               <Grid item xs={12}>
                 <FormControl className={props.classes.formControl}>
                   <TextField
-                    id="id_sUsername"
-                    label="Username"
+                    id="id_sFeature"
+                    label="Feature"
                     type="text"
                     InputProps={{
                       readOnly: true,
-                      disabled:true
+                      disabled: true
                     }}
-                    value={sUsername}
+                    value={sFeature}
                   />
                 </FormControl>
               </Grid>
               <Grid item xs={12} >
                 <FormControl className={props.classes.formControl}>
                   <TextField
-                    id="id_sFullname"
-                    label="Fullname"
+                    id="id_sUserRightsName"
+                    label="Role Name"
                     type="text"
-                    value={sFullname} // Set country name from local variable Name.
-                    onChange={(e) => { setsFullname(e.target.value) }}
+                    InputProps={{
+                      readOnly: true,
+                      disabled: true
+                    }}
+                    value={sUserRightsName}
                   />
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_sPassword"
-                    label="Password"
-                    type="password"
-                    value={sPassword}
-                    onChange={(e) => { setsPassword(e.target.value) }}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
-                <InputLabel id="id_sGender">Rights</InputLabel>
-                  <Select
-                    id="id_nUserRightsId"
-                    label="User Rights"
-                    value={nUserRightsId}
-                    onChange={(e) => { setnUserRightsId(e.target.value) }}
-                  >
-                    {lUserRights.map((right) => (
-                      <MenuItem key={right.id} value={right.id}>
-                        {right.sUserRightsName}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_sOffice"
-                    label="Office Name"
-                    type="text"
-                    value={sOffice}
-                    onChange={(e) => { setsOffice(e.target.value) }}
-                  />
+                  <FormGroup aria-label="position" row>
+                    <FormControlLabel
+                      //value="start"
+                      control=
+                      {
+                        <Switch
+                          color="primary"
+                          name="name_bRights"
+                          id="id_nRights"
+                          checked={nRights === 1 ? true : false}
+                          onChange={handleChange}
+                          size="small"
+                        />}
+                      label="Mapping"
+                      labelPlacement="start"
+                    />
+                  </FormGroup>
                 </FormControl>
               </Grid>
             </Grid>
@@ -123,12 +117,10 @@ export const EditDialog = (props) => {
         <Button onClick={() => {
           props.editAPICall({
             Id,
-            sUsername: props.oUserObj.sUsername,
-            sFullname,
+            nFeatureID,
             nUserRightsId,
-            sPassword,
-            sOffice
-          })
+            nRights
+          });
         }
         } color="primary">Save</Button>
       </DialogActions>
@@ -163,80 +155,142 @@ export const DeleteDialog = (props) => {
 }
 
 export const AddDialog = (props) => {
-  //console.log("Add Dialog");
   const [lUserRights, setlUserRights] = React.useState(props.lUserRights);
-  const [Id, setId] = React.useState('')
-  const [sUsername, setsUsername] = React.useState('');
-  const [sFullname, setsFullname] = React.useState('');
-  const [nUserRightsId, setnUserRightsId] = React.useState('');
+  const [lstFeature, setlstFeature] = React.useState(props.lstFeature);
+  //console.log("Add Dialog");
+
+  const [Id, setId] = React.useState(0)
+  const [nFeatureID, setnFeatureID] = React.useState(0);
+  const [nUserRightsId, setnUserRightsId] = React.useState(0);
+  const [nRights, setnRights] = React.useState(1);
+  const [sFeature, setsFeature] = React.useState('');
   const [sUserRightsName, setsUserRightsName] = React.useState('');
-  const [sPassword, setsPassword] = React.useState('');
-  const [sOffice, setsOffice] = React.useState('');
+
+  const handleChange = (e) => {
+    //console.log(e);
+    if (nRights === 1) {
+      setnRights(0);
+    }
+    else {
+      setnRights(1);
+    }
+  };
+
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add User</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add Mapping</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <Grid container>
             <Grid item xs={12}>
               <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_sUsername"
-                  label="Username"
-                  type="text"
-                  value={sUsername}
-                  onChange={(e) => { setsUsername(e.target.value) }}
+                <Autocomplete
+                  openOnFocus
+                  clearOnEscape
+                  onChange={
+                    (e, value) => {
+                      if (value !== null) {
+                        console.log(value);
+                        setnFeatureID(value.id);
+                        setsFeature(value.sFeature);
+                      }
+                      else {
+                        setnFeatureID(0);
+                        setsFeature("");
+                      }
+                    }
+                  }
+                  id="id_nFeatureID"
+                  options={lstFeature}
+                  classes={{
+                    option: props.classes.option,
+                  }}
+                  className={props.classes.textField}
+                  autoHighlight
+                  getOptionLabel={(option) => option.sFeature}
+                  renderOption={(option) => (
+                    <React.Fragment>
+                      <span>{option.sFeature}</span>
+                    </React.Fragment>
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Feature"
+                      variant="standard"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                      }}
+                    />
+                  )}
                 />
               </FormControl>
             </Grid>
             <Grid item xs={12} >
               <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_sFullname"
-                  label="Fullname"
-                  type="text"
-                  value={sFullname} // Set country name from local variable Name.
-                  onChange={(e) => { setsFullname(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_sPassword"
-                  label="Password"
-                  type="password"
-                  value={sPassword}
-                  onChange={(e) => { setsPassword(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-              <InputLabel id="id_sGender">Rights</InputLabel>
-                <Select
+                <Autocomplete
+                  openOnFocus
+                  clearOnEscape
+                  onChange={
+                    (e, value) => {
+                      if (value !== null) {
+                        console.log(value);
+                        setnUserRightsId(value.id);
+                        setsUserRightsName(value.sUserRightsName);
+                      }
+                      else {
+                        setnUserRightsId(0);
+                        setsUserRightsName("");
+                      }
+                    }
+                  }
                   id="id_nUserRightsId"
-                  label="User Rights"
-                  value={nUserRightsId}
-                  onChange={(e) => { setnUserRightsId(e.target.value) }}
-                >
-                  {lUserRights.map((right) => (
-                    <MenuItem key={right.id} value={right.id}>
-                      {right.sUserRightsName}
-                    </MenuItem>
-                  ))}
-                </Select>
+                  options={lUserRights}
+                  classes={{
+                    option: props.classes.option,
+                  }}
+                  className={props.classes.textField}
+                  autoHighlight
+                  getOptionLabel={(option) => option.sUserRightsName}
+                  renderOption={(option) => (
+                    <React.Fragment>
+                      <span>{option.sUserRightsName}</span>
+                    </React.Fragment>
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Role"
+                      variant="standard"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                      }}
+                    />
+                  )}
+                />
               </FormControl>
             </Grid>
             <Grid item xs={12}>
               <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_sOffice"
-                  label="Office Name"
-                  type="text"
-                  value={sOffice}
-                  onChange={(e) => { setsOffice(e.target.value) }}
-                />
+                <FormGroup aria-label="position" row>
+                  <FormControlLabel
+                    //value="start"
+                    control=
+                    {
+                      <Switch
+                        color="primary"
+                        name="name_bRights"
+                        id="id_nRights"
+                        checked={nRights === 1 ? true : false}
+                        onChange={handleChange}
+                        size="small"
+                      />}
+                    label="Mapping"
+                    labelPlacement="start"
+                  />
+                </FormGroup>
               </FormControl>
             </Grid>
           </Grid>
@@ -247,13 +301,19 @@ export const AddDialog = (props) => {
         <Button onClick={() => {
           props.addAPICall(
             {
-              sUsername,
-              sFullname,
+              nFeatureID,
               nUserRightsId,
-              sPassword,
-              sOffice
+              nRights
             }
           )
+          // console.log(
+          //   Id,
+          //   nFeatureID,
+          //   nUserRightsId,
+          //   nRights,
+          //   sFeature,
+          //   sUserRightsName
+          // )
         }} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
