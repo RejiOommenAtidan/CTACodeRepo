@@ -301,7 +301,7 @@ export default () => {
         padding:'5px',
         
       },
-      render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD') : undefined
+      render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD') : undefined
     },
     {
       field: "sTypeIssued",
@@ -321,7 +321,7 @@ export default () => {
         padding:'5px',
         
       },
-      render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD') : undefined
+      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD') : undefined
     },
     {
       field: "madeb.dtReturnEmail",
@@ -332,7 +332,7 @@ export default () => {
         padding:'5px',
         
       },
-      render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD') : undefined
+      render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD') : ''
     },
     {
       field: "email",
@@ -404,12 +404,15 @@ export default () => {
 
     const editAPICall = (madeb) => {
       console.log(madeb);
+      madeb.dtReject = madeb.dtReject === "" ? null : madeb.dtReject;
+      madeb.dtReceived = madeb.dtReceived === "" ? null : madeb.dtReceived;
+      madeb.dtIssueAction = madeb.dtIssueAction === "" ? null : madeb.dtIssueAction;
+      madeb.dtReturnEmail = madeb.dtReturnEmail === "" ? null : madeb.dtReturnEmail;
       debugger
       axios.post(`Madeb/EditMadeb/Id=` + madeb.id, madeb)
         .then(resp => {
           if (resp.status === 200) {
             //console.log(resp.data);
-            setResult(true);
             setEditModal(false);
             axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=6`)
               .then(resp => {

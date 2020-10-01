@@ -251,7 +251,7 @@ export default function EnhancedTable() {
         padding:'5px',
         
       },
-      render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD') : undefined,
+      render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD') : undefined
     },
     {
       field: "sAuthRegion",
@@ -344,7 +344,7 @@ export default function EnhancedTable() {
         padding:'5px',
         
       },
-      render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
+      render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD') : undefined
     },
     {
       field: "sTypeIssued",
@@ -364,7 +364,7 @@ export default function EnhancedTable() {
         padding:'5px',
         
       },
-      render: rowData => Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD'),
+      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD') : undefined,
     },
     {
       field: "madeb.dtReturnEmail",
@@ -375,7 +375,7 @@ export default function EnhancedTable() {
         padding:'5px',
         
       },
-      render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
+      render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD') : undefined,
     },
     {
       field: "email",
@@ -460,6 +460,11 @@ export default function EnhancedTable() {
 
   const editAPICall = (madeb) => {
     console.log(madeb);
+    madeb.dtReject = madeb.dtReject === "" ? null : madeb.dtReject;
+    madeb.dtReceived = madeb.dtReceived === "" ? null : madeb.dtReceived;
+    madeb.dtIssueAction = madeb.dtIssueAction === "" ? null : madeb.dtIssueAction;
+    madeb.dtReturnEmail = madeb.dtReturnEmail === "" ? null : madeb.dtReturnEmail;
+
     debugger
     axios.post(`Madeb/EditMadeb/Id=` + madeb.id, madeb)
       .then(resp => {
@@ -471,56 +476,18 @@ export default function EnhancedTable() {
               if (resp.status === 200) {
                 console.log(resp.data);
                 setdataAPI(resp.data);
-                setDataChanged(true);
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
               console.log(error.config);
+              console.log(error.message);
             })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-          //window.location = window.location;
-          // setdataAPI(dataAPI.map((data) => {
-          //   console.log(data);
-          //   if(data.id === countryObj.id){
-          //     console.log(data);
-          //     return {
-          //       ...data,
-          //       ...countryObj
-          //     };
-          //   }
-          //   else{
-          //     console.log(data)
-          //     return data;
-          //   }
-          // }))
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
         console.log(error.config);
+        console.log(error.message);
       })
-      .then(release => {
-        //console.log(release); => udefined
-      });
   };
 
 

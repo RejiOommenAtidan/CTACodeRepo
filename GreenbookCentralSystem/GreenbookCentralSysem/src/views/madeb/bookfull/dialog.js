@@ -50,9 +50,10 @@ export const EditDialog = (props) => {
     setSnackbarOpen(false);
   };
   const handleSubmitEditRecord = () =>{
-    setMessage("Record Successfully Edited");
-    setAlertType('success');
-    setSnackbarOpen(true)
+    props.editAPICall(madeb);
+    // setMessage("Record Successfully Edited");
+    // setAlertType('success');
+    // setSnackbarOpen(true)
   }
   debugger
   const [message,setMessage]=React.useState('');
@@ -486,9 +487,9 @@ export const AddDialog = (props) => {
       setSnackbarOpen(false);
     };
     const handleSnackBarSubmit = () =>{
-      setMessage("Record Successfully Edited");
-      setAlertType('success');
-      setSnackbarOpen(true);
+      // setMessage("Record Successfully Edited");
+      // setAlertType('success');
+      // setSnackbarOpen(true);
       props.addAPICall(madeb);
     }
 
@@ -555,8 +556,8 @@ export const AddDialog = (props) => {
   const [gbId, setGbId] = useState('');
   const [fname, setFname] = React.useState('');
   const [saney, setSaney] = React.useState();
-  const [currentGBSno, setCurrentGBSNo] = useState('');
-  const [previousGBSno, setPreviousGBSNo] = useState('');
+  const [currentGBSno, setCurrentGBSNo] = useState(null);
+  const [previousGBSno, setPreviousGBSNo] = useState(null);
 
   let valueAuthRegion = [];
   let valueTypeIssued = [];

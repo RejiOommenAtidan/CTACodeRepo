@@ -433,6 +433,7 @@ export const AddDialog = (props) => {
   const [nMadebTypeId, setMadebTypeId] = React.useState(0);
   const [nFormNumber, setFormNumber] = React.useState(0);
   const [nAuthRegionId, setAuthRegionId] = React.useState(0);
+  const [valueCountryName, setValueCountryName] = React.useState([]);
 
   const gbSerialObj = {
     id,
@@ -464,13 +465,62 @@ export const AddDialog = (props) => {
     }
   });
 
-  let valueCountryName = [];
+  //let valueCountryName = [];
   console.log("Country list\n", countries);
   countries.forEach(element => {
     if(element.sCountryID === sCountryID){
-      valueCountryName = element;
+      setValueCountryName(element);
     }
   });
+
+
+  const formPopulate = (value) => {
+    console.log("Value in GBID: ", value);
+    const gbid = value;
+    const event = new Event('change' , {
+      bubbles: true
+    });
+  /* Need Greenbook record by passing GBID
+   * from Greenbook controller. 
+   * Must talk to Malay.
+  */
+  const sNameElement = document.getElementById("sName");
+     axios.get(`Greenbook/GetGreenbook/sGBID=`+ gbid)
+     .then(resp => {
+       if (resp.status === 200) {
+         console.log("Got gb record\n", resp.data);
+         console.log("Name Element:" , sNameElement);
+         const name = resp.data.sFirstName ? resp.data.sFirstName : '';
+         const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
+         const lname = resp.data.sLastName ? resp.data.sLastName : '';
+         //sNameElement.value=`${name} ${mname} ${lname}`;
+         var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype, "value").set;
+        nativeInputValueSetter.call(sNameElement, `${name} ${mname} ${lname}`);
+        var inputEvent = new Event("input", { bubbles: true });
+        countries.forEach(element => {
+          if(element.sCountryID === resp.data.sCountryID){
+            setValueCountryName(element);
+          }
+        });
+        console.log("Get Details country:", valueCountryName);
+        setName( `${name} ${mname} ${lname}`);
+        sNameElement.dispatchEvent(inputEvent);
+        //  setCurrentGBSNo(resp.data.sOldGreenBKNo);
+        //  setPreviousGBSNo(resp.data.sFstGreenBkNo);
+       }
+       else{
+         setName('');
+         console.log(resp);
+       }
+     })
+     .catch((error) => {
+       setName('');
+       
+       console.log(error);
+     });
+   };
+   const btnstyles = {background:'none', border:'none', cursor: 'pointer', color: 'blue'};
 
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
@@ -527,6 +577,29 @@ export const AddDialog = (props) => {
                                     )}
                                   </FormControl>
                                 </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                  <FormControl className={props.classes.formControl}>
+                                    <TextField
+                                      id="sGBID"
+                                      label="GBID"
+                                      name="sGBID"
+                                      //required={true}
+                                      value={sGBID}
+                                      onChange={(e) => { setGbId(e.target.value) }}
+                                      inputRef={register({
+                                        required: true
+                                      })}
+                                    />
+                                    {_.get("sGBID.type", errors) === "required" && (
+                                      <span style={{color: 'red'}}>This field is required</span>
+                                    )}
+                                  </FormControl>
+                                  <button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button>
+                                </Grid>
+
+
+
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
@@ -539,13 +612,8 @@ export const AddDialog = (props) => {
                                         }}
                                         value={sName}
                                         onChange={(e) => { setName(e.target.value) }}
-                                        inputRef={register({
-                                          required: true
-                                        })}
-                                      />
-                                      {_.get("sName.type", errors) === "required" && (
-                                        <span style={{color: 'red'}}>This field is required</span>
-                                      )}
+                                     
+                                       />
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -587,26 +655,10 @@ export const AddDialog = (props) => {
                                       )}
                                     />
                                   </FormControl>
+                                  
                                 </Grid>
 
-                                <Grid item xs={12} sm={6}>
-                                  <FormControl className={props.classes.formControl}>
-                                    <TextField
-                                      id="sGBID"
-                                      label="GBID"
-                                      name="sGBID"
-                                      //required={true}
-                                      value={sGBID}
-                                      onChange={(e) => { setGbId(e.target.value) }}
-                                      inputRef={register({
-                                        required: true
-                                      })}
-                                    />
-                                    {_.get("sGBID.type", errors) === "required" && (
-                                      <span style={{color: 'red'}}>This field is required</span>
-                                    )}
-                                  </FormControl>
-                                </Grid>
+                                
 
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>

@@ -32,6 +32,8 @@ namespace CTADBL.BaseClasses.Transactions
         private DateTime? _dtEmailSend = null;
         private string? _sAlias;
         private string? _sApprovedReject;
+        private int? _nMadebStatusID;
+        private string? _sMadebStatusRemark;
         private DateTime? _dtReject = null;
         private DateTime? _dtReturnEmail = null;
         #endregion
@@ -60,6 +62,8 @@ namespace CTADBL.BaseClasses.Transactions
         public DateTime? dtEmailSend { get { return _dtEmailSend; } set { _dtEmailSend = value; } }
         public string? sAlias { get { return _sAlias; } set { _sAlias = value; } }
         public string? sApprovedReject { get { return _sApprovedReject; } set { _sApprovedReject = value; } }
+        public int? nMadebStatusID { get { return _nMadebStatusID;  } set { _nMadebStatusID = value; } }
+        public string? sMadebStatusRemark { get { return _sMadebStatusRemark; } set { _sMadebStatusRemark = value;  } }
         public DateTime? dtReject { get { return _dtReject; } set { _dtReject = value; } }
         public DateTime? dtReturnEmail { get { return _dtReturnEmail; } set { _dtReturnEmail = value; } }
         #endregion

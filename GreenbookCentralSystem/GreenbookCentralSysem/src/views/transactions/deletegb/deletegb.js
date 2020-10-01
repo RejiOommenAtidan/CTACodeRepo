@@ -31,21 +31,30 @@ export default function GiveGBId(){
   const handleSubmit = (e) => {
     console.log("Submit Event\n", e);
     e.preventDefault();
-    const gbid = parseInt(document.getElementById("gbid").value);
-    console.log("gbid entered", gbid);
-    axios.post(`GreenBook/DeleteGreenBook`, gbid)
+    //const sGBID = parseInt(document.getElementById("gbid").value);
+    
+    //debugger
+    const element = document.getElementById("gbid");
+    const sGBID = parseInt(element.value);
+    console.log("gbid entered", sGBID);
+    axios.post(`GreenBook/DeleteGreenBookByGBID/?sGBID=`+ sGBID)
     .then(resp => {
       if (resp.status === 200) {
         //setSelectData(resp.data);
         console.log("GreenBook ID Deleted from GreenBook\n", resp.data);
-
         
+        alert(`GreenBook with Id ${sGBID} deleted successfully.`);
+        element.value = '';
+        element.focus();
       // setdataAPI(resp.data)
       }
     })
     .catch(error => {
       console.log(error.config);
       console.log(error.message);
+      alert(`GreenBook with Id ${sGBID} deletion failed.`);
+      element.value = '';
+      element.focus();
     })
   }
   return (
