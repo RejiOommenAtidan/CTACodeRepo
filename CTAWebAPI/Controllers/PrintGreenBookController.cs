@@ -52,5 +52,33 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetGreenBookByGBID(string sGBID)
+        {
+            #region Get Print List
+            try
+            {
+                PrintGreenBookVM printRecord = _printGreenBookVMRepository.GetGreenBookByGBID(sGBID);
+
+                if (printRecord != null )
+                {
+                    return Ok(printRecord);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+
+
+
     }
 }
