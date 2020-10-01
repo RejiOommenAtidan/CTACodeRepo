@@ -1002,6 +1002,44 @@ SELECT
     `recentlysearchedgb`.`UserID`,
     now(),
 	1
- FROM `greenbookprime`.`recentlysearchedgb`
+ FROM `greenbookprime`.`recentlysearchedgb`;
  
- 
+
+INSERT INTO `ctadb`.`lnkgbchildren`
+(`Id`,
+`sGBIDParent`,
+`sName`,
+`dtDOB`,
+`sGender`,
+`sChildID`,
+`sGBIDChild`,
+`dtEntered`,
+`nEnteredBy`
+)
+SELECT 
+	`ident_children`.`ID`,
+	`ident_children`.`ParentID`,
+	`ident_children`.`Name`,
+	`ident_children`.`DOB`,
+	`ident_children`.`Gender`,
+	`ident_children`.`ChildID`,
+	`ident_children`.`ChildIdentityID`,
+	now(),
+	1
+FROM `greenbookprime`.`ident_children`;
+
+
+INSERT INTO `ctadb`.`lnkgbnote`
+(`Id`,
+`sGBId`,
+`sNote`,
+`dtEntered`,
+`nEnteredBy`)
+SELECT `ident_note`.`NoteID`,
+    `ident_note`.`IdentityID`,
+    `ident_note`.`Note`,
+    `ident_note`.`Entered`,
+    `ident_note`.`EnteredBy`
+FROM `greenbookprime`.`ident_note`;
+
+
