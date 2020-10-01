@@ -1002,7 +1002,7 @@ SELECT
     `recentlysearchedgb`.`UserID`,
     now(),
 	1
- FROM `greenbookprime`.`recentlysearchedgb`
+ FROM `greenbookprime`.`recentlysearchedgb`;
  
 
 INSERT INTO `ctadb`.`lnkgbchildren`
