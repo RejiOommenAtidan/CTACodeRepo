@@ -4,6 +4,7 @@ using CTADBL.Repository;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace CTADBL.BaseClassRepositories.Transactions
 {
@@ -47,6 +48,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sModuleName`,
                             `sEventName`,
                             `sDescription`,
+                            `sStackTrace`,
                             `sEnteredDateTime`,
                             `dtEntered`,
                             `nEnteredBy`
@@ -64,6 +66,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sModuleName`,
                             `sEventName`,
                             `sDescription`,
+                            `sStackTrace`,
                             `sEnteredDateTime`,
                             `dtEntered`,
                             `nEnteredBy`
@@ -82,13 +85,14 @@ namespace CTADBL.BaseClassRepositories.Transactions
         {
             return new ActionLogger
             {
-                Id=(int)reader["Id"],
-                dtEntered=(DateTime)reader["dtEntered"],
-                nEnteredBy=(int?)reader["nEnteredBy"],
-                sActionType=(string)reader["sActionType"],
-                sDescription=(string)reader["sDescription"],
-                sEventName= (string)reader["sEventName"],
-                sModuleName=(string)reader["sModuleName"]
+                Id = (int)reader["Id"],
+                sActionType = reader.IsDBNull("sActionType") ? null : (string)(reader["sActionType"]),
+                sModuleName = reader.IsDBNull("sModuleName") ? null : (string)(reader["sModuleName"]),
+                sEventName = reader.IsDBNull("sEventName") ? null : (string)(reader["sEventName"]),
+                sDescription = reader.IsDBNull("sDescription") ? null : (string)(reader["sDescription"]),
+                sStackTrace = reader.IsDBNull("sStackTrace") ? null : (string)(reader["sStackTrace"]),
+                dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
+                nEnteredBy = (int?)reader["nEnteredBy"]
             };
         }
         #endregion
