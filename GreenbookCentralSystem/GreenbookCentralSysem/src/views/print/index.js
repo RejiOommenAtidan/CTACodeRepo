@@ -9,68 +9,69 @@ import {
   Button,
   TextField,
   Paper,
-  Grid
+  Grid,
+  Table,
+  Checkbox,
+  IconButton
 } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import PrintIcon from '@material-ui/icons/Print';
 
-
-
-import Print from './print';
+import PrintPage from './printpage';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
-    minHeight: '100%',
+    height: '100%',
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
+    paddingTop: theme.spacing(3),
+    flexGrow: 1,
+    'label + &': {
+      marginTop: theme.spacing(3)
+    }
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  formControl: {
+    margin: theme.spacing(0.5),
+    width: '100%'
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(1)
+  },
+  box: {
+    marginBottom: theme.spacing(1.5),
+    marginTop: theme.spacing(1.5)
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
+  palette: {
+    primary: {
+      // Purple and green play nicely together.
+      //main: red[500],
+    },
+    secondary: {
+      // This is green.A700 as hex.
+      main: '#11cb5f',
+    },
   }
+
 }));
 
-const Dashboard = () => {
-  const classes = useStyles();
-  
-  
 
-  const [snackbar,setSnackbar]=React.useState(false);
+const Dashboard = () => {
 
   return (
-
-     <Grid container spacing={1}>
-     <Grid item xs={12}>
-
-       <Breadcrumbs aria-label="breadcrumb">
-       <Link color="inherit" href="/Home" >
-         Home
-     </Link>
-
-       <Typography color="textPrimary">Print Green Book</Typography>
-     </Breadcrumbs>
-     <Grid container spacing={1}>
-     <Grid item xs={12} style={{textAlign:'center' }}>
-       <Paper elevation={3}  style={{padding:30 }}>  
-
-            <Typography color="textPrimary">Enter Green Book Number To Print:</Typography>
-            <TextField id="standard-basic" type='number' label="Green Book No." 
-             /*onChange ={ (e) => {setTempGbId(e.target.value)} }*/
-             
-            
-            />
-          { /* <Button   style={{marginTop:8,marginLeft:5 }} type='submit' onClick={searchGbId}  variant="outlined">Show</Button>*/}
-          { /*     <Button   style={{marginTop:8,marginLeft:5 }} type='submit' onClick={()=>{setHistoryTable(true);setGbId(tempGbId.toString());}}  variant="outlined">Show</Button> */}
-          <Button  type='submit'style={{marginTop:8,marginLeft:5 }} onClick={ () => {window.open('/Print')}} color="primary">Save</Button> 
-        {/*  <IssueBookTable
-           gbId={gbId}
-           />
-        */ }
-
-
-       </Paper>
-    
-     </Grid>
-     </Grid>
-   
-       
-       </Grid>
-     </Grid>
+    <PrintPage/>
     
   );
 };

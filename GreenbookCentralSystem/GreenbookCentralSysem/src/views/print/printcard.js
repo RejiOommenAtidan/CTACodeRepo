@@ -67,7 +67,7 @@ export const PrintCard = (props) => {
 
   return (
 
-    < >
+    <>
      
      
     <div  style={{display: 'inline-block', border: '1px dashed grey', paddingLeft:'10px',fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
@@ -80,31 +80,31 @@ export const PrintCard = (props) => {
               <table border={0} width={190}>
                 <tbody><tr>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
-                      {props.data.id}
+                      {props.data.sCountryID[0]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
-                      N
+                    {props.data.sCountryID[1]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
-                      1
+                    {props.data.sGBID[0]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
-                      2
+                    {props.data.sGBID[1]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
-                      3
+                    {props.data.sGBID[2]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
-                      4
+                    {props.data.sGBID[3]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
-                      5
+                    {props.data.sGBID[4]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
-                      6
+                    {props.data.sGBID[5]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
-                      7
+                    {props.data.sGBID[6]}
                     </td>
                   </tr>
                 </tbody></table>
@@ -113,11 +113,11 @@ export const PrintCard = (props) => {
           <tr><td style={{paddingBottom: '150px'}} /></tr>
           <tr>
             <td style={{textAlign: 'left', paddingRight: '5px', fontSize: '21px'}} width="27%" valign="top">མཚན།</td>
-            <td style={{textAlign: 'left', fontSize: '20px'}} valign="top" width="73%">བསྟན་འཛིན་རྣམ་རྒྱལ།</td>
+            <td style={{textAlign: 'left', fontSize: '20px'}} valign="top" width="73%">{props.data.tibetanName}</td>
           </tr>
           <tr>
             <td style={{textAlign: 'left', paddingRight: '5px', fontSize: '21px'}}>སྐྱེས་ལོ་ཟླ་ཚེས།</td>
-            <td style={{textAlign: 'left', fontSize: '20px'}}>༡༩༨༤།༡༠།༡༨</td>
+            <td style={{textAlign: 'left', fontSize: '20px'}}>{props.data.sTibetanDate}</td>
           </tr>
           <tr>
             <td style={{textAlign: 'right', paddingRight: '5px', fontSize: '21px'}} />
@@ -129,17 +129,20 @@ export const PrintCard = (props) => {
           </tr>
           <tr>
             <td style={{textAlign: 'left', paddingRight: '5px', fontSize: '21px'}}>ཕ་ཡུལ།</td>
-            <td style={{textAlign: 'left', fontSize: '20px'}}>དབུས་གཙང་།</td>
+            <td style={{textAlign: 'left', fontSize: '20px'}}>{props.data.tbuOriginVillage}</td>
           </tr>
           <tr>
             <td style={{textAlign: 'left', paddingTop: '25px', paddingRight: '5px', fontSize: '10px'}}>Book S. No.: </td> 
             <td style={{textAlign: 'left', paddingTop: '25px', paddingRight: '5px', fontSize: '10px'}}>
-              043953 -BTS
+            {props.data.nCurrentBookNo + '-' + props.data.sRegion_code}
             </td>
           </tr>
           <tr>
             <td style={{textAlign: 'left', paddingRight: '5px', fontSize: '10px'}}>Pre. Book S. No.: </td> 
-            <td style={{textAlign: 'left', paddingRight: '5px', fontSize: '10px'}}><p style={{fontSize: '1.8em'}}>མེད། </p>
+            <td style={{textAlign: 'left', paddingRight: '5px', fontSize: '10px'}}><p style={{fontSize: '1.8em'}}>
+            
+              {props.data.nPreviousBookNo ? props.data.nPreviousBookNo : 'མེད།'}
+              </p>
             </td>
           </tr>
           <tr><td style={{height: '20px'}} /></tr>

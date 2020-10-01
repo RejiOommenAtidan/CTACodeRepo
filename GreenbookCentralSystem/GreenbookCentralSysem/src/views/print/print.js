@@ -56,52 +56,59 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-
-import {PrintCard} from './printcard';
 import { CloseOutlined, Print } from '@material-ui/icons';
+import {PrintCard} from './printcard';
 
- 
 
 
-export default function PrintGreenBook() {
 
-  const printObj = [
 
-    {id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},{id:9},{id:10}
+export default function PrintGreenBook(props) {
+  const[printObj,setPrintObj]=React.useState([]);
 
-  ]
   
 
 const printpreview =() =>{
 
   window.print();
+  setTimeout(window.close(), 1000);
 
 }
-  return (
 
-    < >
-    
-    <div  style={{marginLeft:'25px' , marginTop:'30px' , fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
+useEffect(() => {
+setPrintObj(JSON.parse(sessionStorage.getItem('printObj')));
+sessionStorage.removeItem("printObj");
+setTimeout(printpreview, 1000);
+}, []);
+return (
+
+    <>
+
+
   
-    {printObj.map((row, index) => (
+    
+
+    <div  style={{     
+    marginLeft:'25px' , marginTop:'30px' , fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
+  
+   { printObj.map((row, index) => (
             
             <> 
+            
              <PrintCard data={row} />
-            {(index+1)%2 == 0 && <br/>
-              
-              
-            }
+            {(index+1)%2 === 0 && <br/>}
     
             </>
         
-    ))}
+    ))} 
     {
-     setTimeout(printpreview, 2000) 
-    
+    //clearTimeout(setTimeout(printpreview, 3000))
+   // clearTimeout(setTimeout(printpreview, 3000))
+    //()
    
     }
   
-    </div>
+  </div>
   
    </>
 
