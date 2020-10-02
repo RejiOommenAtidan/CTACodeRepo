@@ -153,7 +153,6 @@ const SidebarMenu = (props) => {
                   <HomeIcon />
                 </span>
                 Home
-
               </NavLink>
             </li>
             <li>
@@ -161,12 +160,11 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Home">
+                to="/Search">
                 <span className="sidebar-icon">
                   <SearchIcon />
                 </span>
                 Search
-
               </NavLink>
             </li>
             <li>
@@ -352,7 +350,6 @@ const SidebarMenu = (props) => {
                   <AddBoxIcon />
                 </span>
                 New Entry
-
               </NavLink>
             </li>
             <li>
@@ -365,7 +362,6 @@ const SidebarMenu = (props) => {
                   <FormatListNumberedRtlIcon />
                 </span>
                 Give Serial Number
-
               </NavLink>
             </li>
             <li>
@@ -373,12 +369,11 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Home">
+                to="/Print">
                 <span className="sidebar-icon">
                   <PrintIcon />
                 </span>
                 Print
-
               </NavLink>
             </li>
             <li>
@@ -391,7 +386,6 @@ const SidebarMenu = (props) => {
                   <MenuBookIcon />
                 </span>
                 Issue Book
-
               </NavLink>
             </li>
             <li>
@@ -399,12 +393,11 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Home">
+                to="/MakeList">
                 <span className="sidebar-icon">
                   <ListAltIcon />
                 </span>
                 Make List
-
               </NavLink>
             </li>
             <li>
@@ -443,7 +436,6 @@ const SidebarMenu = (props) => {
                       Manage User Rights
                     </NavLink>
                   </li>
-
                 </ul>
               </Collapse>
             </li>
@@ -452,12 +444,11 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Home">
+                to="/Edit">
                 <span className="sidebar-icon">
                   <EditIcon />
                 </span>
                 Edit
-
               </NavLink>
             </li>
             <li>
@@ -465,12 +456,11 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Home">
+                to="/Delete">
                 <span className="sidebar-icon">
                   <DeleteIcon />
                 </span>
                 Delete
-
               </NavLink>
             </li>
             <li>
@@ -478,12 +468,11 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Home">
+                to="/Payments">
                 <span className="sidebar-icon">
                   <PaymentIcon />
                 </span>
                 Payment
-
               </NavLink>
             </li>
             <li>
@@ -491,12 +480,11 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Home">
+                to="/Reports">
                 <span className="sidebar-icon">
                   <AssessmentIcon />
                 </span>
                 Reports
-
               </NavLink>
             </li>
             <li>
@@ -509,10 +497,8 @@ const SidebarMenu = (props) => {
                   <VpnKeyIcon />
                 </span>
                 Change Password
-
               </NavLink>
             </li>
-
           </ul>
         </div>
       </PerfectScrollbar>
