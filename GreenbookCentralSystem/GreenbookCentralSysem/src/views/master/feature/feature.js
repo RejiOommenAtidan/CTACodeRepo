@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {authenticationService} from '../../../auth/_services';
 import {
@@ -35,6 +35,10 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import { storeDataAPI } from 'actions/masters/featureAction';
+
+
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -102,9 +106,12 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+
 export default function EnhancedTable() {
+  const replacement = useSelector(state => state.FeatureReducer.lFeature);
   Moment.locale('en');
   let history = useHistory()
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
@@ -358,6 +365,7 @@ export default function EnhancedTable() {
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
+          dispatch(storeDataAPI(resp.data));
           setdataAPI(resp.data);
         }
       })
@@ -396,7 +404,7 @@ export default function EnhancedTable() {
             icons={tableIcons}
             title="Feature"
             columns={columns}
-            data={dataAPI}
+            data={replacement}
             options={{
               filtering,
               exportButton: true,
