@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import Routes from './Routes';
 import ScrollToTop from './utils/ScrollToTop';
 import './assets/base.scss';
-
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   fab,
@@ -259,7 +258,7 @@ const store = configureStore();
 class App extends Component {
   render() {
     return (
-      <Provider store={store}>  
+      <Provider store={store}>
         <BrowserRouter >
           <ScrollToTop>
             <Routes />

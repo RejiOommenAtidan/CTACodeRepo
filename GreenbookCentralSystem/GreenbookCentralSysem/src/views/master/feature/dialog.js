@@ -1,26 +1,33 @@
-import React, { useState } from 'react';
+//REMOVE: Unnecessary IMPORTS as Well as Unncecessary Code after Working Stuff Out  
+//NOTE: Request to Follow IMPORT Order For Consistency throughout
+//REACT IMPORTS
+//REDUX IMPORTS
+//ROUTING IMPORTS
+//AUTH SERVICE IMPORTS
+//MOMENT IMPORT
+//AXIOS IMPORT
+//MUI IMPORTS
+//MATERIAL-TABLE IMPORT
+//LOCAL IMPORTS
+//ANY OTHER IMPORTS AFTER THESE
 
+//ENSURE SEMICOLON AFTER EACH IMPORT
+
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   Grid,
   Button,
   FormControl,
   TextField
 } from '@material-ui/core';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 export const EditDialog = (props) => {
-  //debugger
   const [sFeature, setsFeature] = useState(props.featureObj.sFeature);
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
@@ -53,8 +60,7 @@ export const EditDialog = (props) => {
   );
 }
 
-export const DeleteDialog = (props) => {
-  //console.log("Delete Dialog");
+{/*export const DeleteDialog = (props) => {
   return (
     <Dialog
       open={props.deleteModal}
@@ -77,10 +83,9 @@ export const DeleteDialog = (props) => {
       </DialogActions>
     </Dialog>
   );
-}
+}*/}
 
 export const AddDialog = (props) => {
-  //console.log("Add Dialog");
 
   const [sFeature, setsFeature] = useState('');
   return (
@@ -96,7 +101,7 @@ export const AddDialog = (props) => {
                   id="id_sFeature"
                   label="Feature"
                   type="text"
-                  value={sFeature} // Set country name from local variable Name.
+                  value={sFeature}
                   onChange={(e) => { setsFeature(e.target.value) }}
                 />
               </FormControl>

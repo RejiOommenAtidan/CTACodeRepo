@@ -1,10 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
-//import { useNavigate } from 'react-router-dom';
-
-import {authenticationService} from '../../../auth/_services';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
+import {authenticationService} from '../../../auth/_services';
 import {
   Grid,
   Typography,
@@ -14,27 +12,14 @@ import {
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-//import theme from '../../../theme/theme/theme'
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-// import MUIDataTable from "mui-datatables";
-//import { ThemeProvider } from '@material-ui/styles';
-// import Dialog from '@material-ui/core/Dialog';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import DialogContent from '@material-ui/core/DialogContent';
-// import DialogContentText from '@material-ui/core/DialogContentText';
-// import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-// import Chip from '@material-ui/core/Chip';
+
 import Moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
-// import AddCircleIcon from "@material-ui/icons/AddCircle";
-import EmailIcon from '@material-ui/icons/Email';
 
-// Local import
-import { AddDialog, DeleteDialog, EditDialog } from './dialog';
-import MaterialTable, { MTableToolbar } from 'material-table';
+
+import { AddDialog,EditDialog } from './dialog';
+import MaterialTable from 'material-table';
 import { forwardRef } from 'react';
 
 import AddBox from '@material-ui/icons/AddBox';
@@ -45,7 +30,6 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 import Clear from '@material-ui/icons/Clear';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import Edit from '@material-ui/icons/Edit';
-// import FilterList from '@material-ui/icons/FilterList';
 import FirstPage from '@material-ui/icons/FirstPage';
 import LastPage from '@material-ui/icons/LastPage';
 import Remove from '@material-ui/icons/Remove';
@@ -73,37 +57,6 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-// const Transition = React.forwardRef(function Transition(props, ref) {
-//   return <Slide direction="up" ref={ref} {...props} />;
-// });
-// const getMuiTheme = () => createMuiTheme({
-//   overrides: {
-//     MUIDataTableHeadCell: {
-//       root: {
-//         color: 'blue',
-//         fontSize: 15
-//       }
-//     },
-//     MUIDataTableBodyCell: {
-//       root: {
-//         // backgroundColor: "#FFF",
-//         // width: "50px"
-
-//       }
-
-//     },
-//     MuiTableCell: {
-//       root: {
-//         padding: '0px',
-//         paddingLeft: '10px',
-
-//         paddingRight: '10px',
-
-
-//       }
-//     },
-//   }
-// })
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -141,11 +94,9 @@ const useStyles = makeStyles((theme) => ({
   },
   palette: {
     primary: {
-      // Purple and green play nicely together.
       main: red[500],
     },
     secondary: {
-      // This is green.A700 as hex.
       main: '#11cb5f',
     },
   }
@@ -156,10 +107,8 @@ export default function EnhancedTable() {
   Moment.locale('en');
   let history = useHistory()
   const classes = useStyles();
-  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
-  // const [loadingProp, setloadingProp] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const [selectData, setSelectData] = useState([]);
@@ -284,16 +233,9 @@ export default function EnhancedTable() {
   }
 
   const editAPICall = (feature) => {
-    // let CountryID = countryPK;
-    // let countryToUpdate = {
-    //   ID : countryPK,
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
-    // };
     axios.post(`/Feature/EditFeature/ID=` + Id, feature/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
           setEditModal(false);
           axios.get(`Feature/GetFeatures`)
             .then(resp => {
@@ -352,32 +294,6 @@ export default function EnhancedTable() {
       });
   };
 
-
-  // const selectDatafunction = () => {
-  //   axios.get(`Madeb/GetNewEmptyMadeb`)
-  //     .then(resp => {
-  //       if (resp.status === 200) {
-  //         setSelectData(resp.data);
-
-  //         // setdataAPI(resp.data)
-  //       }
-  //     })
-  //     .catch(error => {
-  //       if (error.response) {
-  //         console.error(error.response.data);
-  //         console.error(error.response.status);
-  //         console.error(error.response.headers);
-  //       } else if (error.request) {
-  //         console.warn(error.request);
-  //       } else {
-  //         console.error('Error', error.message);
-  //       }
-  //       console.log(error.config);
-  //     })
-  //     .then(release => {
-  //       //console.log(release); => udefined
-  //     });
-  // }
   const addAPICall = (feature) => {
     console.log(feature);
     axios.post(`/Feature/AddFeature/`, feature)
@@ -442,9 +358,8 @@ export default function EnhancedTable() {
     axios.get(`Feature/GetFeatures`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
+          //console.log(resp.data);
           setdataAPI(resp.data);
-          //selectDatafunction()
         }
       })
       .catch(error => {

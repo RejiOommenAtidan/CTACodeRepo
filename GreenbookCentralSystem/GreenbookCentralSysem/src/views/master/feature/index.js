@@ -1,11 +1,8 @@
-//Hi
 import React from 'react';
 import {
   Container,
   makeStyles,
-
 } from '@material-ui/core';
-
 
 import Feature from './feature';
 
@@ -20,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 
 const CoverFeature = () => {
   const classes = useStyles();
-
   return (
     <Container maxWidth={false}>
       <Feature />
