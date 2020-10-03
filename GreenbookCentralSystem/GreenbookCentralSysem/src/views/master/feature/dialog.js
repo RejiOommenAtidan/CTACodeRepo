@@ -11,7 +11,7 @@
 //LOCAL IMPORTS
 //ANY OTHER IMPORTS AFTER THESE
 
-//ENSURE SEMICOLON AFTER EACH IMPORT
+//ENSURE SEMICOLON AFTER EACH IMPORT!!
 
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -28,7 +28,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 export const EditDialog = (props) => {
-  const [sFeature, setsFeature] = useState(props.featureObj.sFeature);
+  const replacement = useSelector(state => state.FeatureReducer.oCurrentFeature);
+  const [sFeature, setsFeature] = useState(replacement.sFeature);
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Feature</DialogTitle>
@@ -54,7 +55,39 @@ export const EditDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.editAPICall({ id: props.featureObj.id, sFeature: sFeature })} color="primary">Save</Button>
+        <Button onClick={() => props.editAPICall({ id: replacement.id, sFeature: sFeature })} color="primary">Save</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+export const AddDialog = (props) => {
+
+  const [sFeature, setsFeature] = useState("");
+  return (
+    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+      <DialogTitle id="form-dialog-title">Add Feature</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          <Grid container>
+            <Grid item xs={12}>
+              <FormControl className={props.classes.formControl}>
+                <TextField
+                  autoFocus
+                  id="id_sFeature"
+                  label="Feature"
+                  type="text"
+                  value={sFeature}
+                  onChange={(e) => { setsFeature(e.target.value) }}
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+        <Button onClick={() => props.addAPICall({ sFeature: sFeature })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );
@@ -84,35 +117,3 @@ export const EditDialog = (props) => {
     </Dialog>
   );
 }*/}
-
-export const AddDialog = (props) => {
-
-  const [sFeature, setsFeature] = useState('');
-  return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Feature</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          <Grid container>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  autoFocus
-                  id="id_sFeature"
-                  label="Feature"
-                  type="text"
-                  value={sFeature}
-                  onChange={(e) => { setsFeature(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.addAPICall({ sFeature: sFeature })} color="primary">Save</Button>
-      </DialogActions>
-    </Dialog>
-  );
-}

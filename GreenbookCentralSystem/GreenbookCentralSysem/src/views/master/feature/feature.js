@@ -36,6 +36,7 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { storeDataAPI } from 'actions/masters/featureAction';
+import { setCurrentSelectedFeature } from 'actions/masters/featureAction';
 
 
 
@@ -117,7 +118,6 @@ export default function EnhancedTable() {
   const [dataAPI, setdataAPI] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
-  const [selectData, setSelectData] = useState([]);
 
   //VAR
   const [Id, setId] = React.useState('');
@@ -228,6 +228,10 @@ export default function EnhancedTable() {
   ];
 
   const editClick = (tableRowArray) => {
+    dispatch(setCurrentSelectedFeature({
+      id: tableRowArray['id'],
+      sFeature: tableRowArray['sFeature'],
+    }));
     console.log(tableRowArray);
     setId(tableRowArray['id']);
     setsFeature(tableRowArray['sFeature']);
@@ -247,6 +251,7 @@ export default function EnhancedTable() {
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
+                dispatch(storeDataAPI(resp.data));
                 setdataAPI(resp.data);
                 setDataChanged(true);
               }
@@ -311,6 +316,7 @@ export default function EnhancedTable() {
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
+                dispatch(storeDataAPI(resp.data));
                 setdataAPI(resp.data)
               }
             })
@@ -440,14 +446,11 @@ export default function EnhancedTable() {
           {addModal && <AddDialog
             addModal={addModal}
             classes={classes}
-            selectData={selectData}
             handleAddClickClose={handleAddClickClose}
             addAPICall={addAPICall}
           />}
           {editModal && <EditDialog
             editModal={editModal}
-            featureObj={featureObj}
-            selectData={selectData}
             classes={classes}
             handleEditClickClose={handleEditClickClose}
             editAPICall={editAPICall}
