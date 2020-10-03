@@ -39,7 +39,7 @@ namespace CTAWebAPI.Controllers.Masters
                 {
                     #region Information Logging 
                     CTALogger logger = new CTALogger(_info);
-                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
                     #endregion
                     return Ok(occupation);
                 }
@@ -47,7 +47,7 @@ namespace CTAWebAPI.Controllers.Masters
                 {
                     #region Exception Logging 
                     CTALogger logger = new CTALogger(_info);
-                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name+", Occupation Count Less Than 0", "No Stacktrace");
                     #endregion
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
@@ -69,7 +69,7 @@ namespace CTAWebAPI.Controllers.Masters
                 {
                     #region Information Logging
                     CTALogger logger = new CTALogger(_info);
-                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
                     #endregion
                     return Ok(occupation);
                 }
@@ -77,7 +77,7 @@ namespace CTAWebAPI.Controllers.Masters
                 {
                     #region Exception Logging
                     CTALogger logger = new CTALogger(_info);
-                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Occupation Not Found", "No Stacktrace");
                     #endregion
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
@@ -113,7 +113,7 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         #region Information Logging 
                         CTALogger logger = new CTALogger(_info);
-                        logger.LogRecord(((Operations)1).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                        logger.LogRecord(((Operations)1).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, occupation.nEnteredBy);
                         #endregion
                         return Ok(occupation);
                     }
@@ -133,7 +133,7 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 #region Exception Logging 
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                logger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace,occupation.nEnteredBy);
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -167,7 +167,7 @@ namespace CTAWebAPI.Controllers.Masters
                         {
                             #region Alert Logging
                             CTALogger logger = new CTALogger(_info);
-                            logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                            logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, occupationToUpdate.nEnteredBy);
                             #endregion
                             return Ok(String.Format("Occupation with ID: {0} updated Successfully", occupationId));
                         }
@@ -191,7 +191,7 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 #region Exception Logging 
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(((Operations)3).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                logger.LogRecord(((Operations)3).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace, occupationToUpdate.nEnteredBy);
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -217,7 +217,7 @@ namespace CTAWebAPI.Controllers.Masters
                         {
                             #region Alert Logging 
                             CTALogger logger = new CTALogger(_info);
-                            logger.LogRecord(((Operations)4).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                            logger.LogRecord(((Operations)4).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, occupationToDelete.nEnteredBy);
                             #endregion
                             return Ok(String.Format("Occupation with ID: {0} deleted successfully", occupationToDelete.Id));
                         }
@@ -239,7 +239,7 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 #region Exception Logging 
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(((Operations)4).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                logger.LogRecord(((Operations)4).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace,occupationToDelete.nEnteredBy);
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }

@@ -1,10 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
-//import { useNavigate } from 'react-router-dom';
-
-import {authenticationService} from '../../../auth/_services';
+import { forwardRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
+import { authenticationService } from '../../../auth/_services';
 import {
   Grid,
   Typography,
@@ -14,29 +12,10 @@ import {
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-//import theme from '../../../theme/theme/theme'
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-// import MUIDataTable from "mui-datatables";
-//import { ThemeProvider } from '@material-ui/styles';
-// import Dialog from '@material-ui/core/Dialog';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import DialogContent from '@material-ui/core/DialogContent';
-// import DialogContentText from '@material-ui/core/DialogContentText';
-// import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-// import Chip from '@material-ui/core/Chip';
-import Moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
-// import AddCircleIcon from "@material-ui/icons/AddCircle";
-import EmailIcon from '@material-ui/icons/Email';
-
-// Local import
-import { AddDialog, DeleteDialog, EditDialog } from './dialog';
-import MaterialTable, { MTableToolbar } from 'material-table';
-import { forwardRef } from 'react';
-
+import { AddDialog, EditDialog } from './dialog';
+import MaterialTable from 'material-table';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -45,13 +24,18 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 import Clear from '@material-ui/icons/Clear';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import Edit from '@material-ui/icons/Edit';
-// import FilterList from '@material-ui/icons/FilterList';
 import FirstPage from '@material-ui/icons/FirstPage';
 import LastPage from '@material-ui/icons/LastPage';
 import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import { storeDataAPI } from 'actions/masters/featureAction';
+import { setCurrentSelectedFeature } from 'actions/masters/featureAction';
+import { aPageSizeArray } from '../../../config/commonConfig';
+import { nPageSize } from '../../../config/commonConfig';
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -73,37 +57,6 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-// const Transition = React.forwardRef(function Transition(props, ref) {
-//   return <Slide direction="up" ref={ref} {...props} />;
-// });
-// const getMuiTheme = () => createMuiTheme({
-//   overrides: {
-//     MUIDataTableHeadCell: {
-//       root: {
-//         color: 'blue',
-//         fontSize: 15
-//       }
-//     },
-//     MUIDataTableBodyCell: {
-//       root: {
-//         // backgroundColor: "#FFF",
-//         // width: "50px"
-
-//       }
-
-//     },
-//     MuiTableCell: {
-//       root: {
-//         padding: '0px',
-//         paddingLeft: '10px',
-
-//         paddingRight: '10px',
-
-
-//       }
-//     },
-//   }
-// })
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -116,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   selectEmpty: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   formControl: {
     margin: theme.spacing(0.5),
@@ -125,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.secondary
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -137,88 +90,52 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1.5)
   },
   button: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(1)
   },
   palette: {
     primary: {
-      // Purple and green play nicely together.
-      main: red[500],
+      main: red[500]
     },
     secondary: {
-      // This is green.A700 as hex.
-      main: '#11cb5f',
-    },
+      main: '#11cb5f'
+    }
   }
-
 }));
 
-export default function EnhancedTable() {
-  Moment.locale('en');
-  let history = useHistory()
+
+export default function Feature() {
+  const dataAPI = useSelector(state => state.FeatureReducer.lFeature);
+  let history = useHistory();
+  const dispatch = useDispatch();
   const classes = useStyles();
-  // const navigate = useNavigate();
+  const [isLoading, setisLoading] = React.useState(true);
   const [editModal, setEditModal] = React.useState(false);
-  const [dataAPI, setdataAPI] = useState([]);
-  // const [loadingProp, setloadingProp] = useState(true);
-  const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
-  const [selectData, setSelectData] = useState([]);
-
-  //VAR
   const [Id, setId] = React.useState('');
-  const [sFeature, setsFeature] = React.useState(0);
-  const [authority, setAuthority] = React.useState(0);
-  const [receivedDate, setReceivedDate] = React.useState('');
-  const [name, setName] = React.useState('');
-  const [fname, setFname] = React.useState('');
-  const [saney, setSaney] = React.useState(0);
-  const [documents, setDocument] = React.useState('');
-  const [issueActionDate, setIssueActionDate] = React.useState('');
-  const [issueAction, setIssueAction] = React.useState(0);
-  const [returnDate, setReturnDate] = React.useState('');
-  const [featureObj, setfeatureObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [dataChanged, setDataChanged] = useState(false);
-
+  const [pageSize, setpageSize] = useState(nPageSize);
+  const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
   const [filtering, setFiltering] = React.useState(false);
-  const handleEditClickOpen = () => {
-    setEditModal(true);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  }
+  const [snackbar, setSnackbar] = React.useState(false);
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  }
+  const snackbarClose = () => {
+    setSnackbar(false);
   };
+
   const handleEditClickClose = () => {
     setEditModal(false);
   };
-  const handleAddClickOpen = () => {
-    setAddModal(true);
-  };
   const handleAddClickClose = () => {
     setAddModal(false);
-  };
-
-  const options = {
-    textLabels: {
-      body: {
-        noMatch: "Loading..."
-      },
-
-    },
-    filter: true,
-    viewColumns: false,
-    selectableRows: false,
-    jumpToPage: true,
-    rowsPerPage: rowsPerPage,
-    rowsPerPageOptions: [5, 10, 20, 30],
-    onChangePage: (number) => {
-      setCurrentPage(number + 1);
-      console.log('Current Page No.', number + 1)
-    },
-    onChangeRowsPerPage: (rows) => {
-      console.log("Rows per page:", rows)
-    },
-    onTableChange: (action, tableState) => {
-      console.log("Action:", action, "\ntableState:", tableState, "Data Changed:", dataChanged);
-
-    }
   };
 
   const columns = [
@@ -273,34 +190,29 @@ export default function EnhancedTable() {
   ];
 
   const editClick = (tableRowArray) => {
-    console.log(tableRowArray);
-    setId(tableRowArray['id']);
-    setsFeature(tableRowArray['sFeature']);
-    setfeatureObj({
+    dispatch(setCurrentSelectedFeature({
       id: tableRowArray['id'],
       sFeature: tableRowArray['sFeature'],
-    });
+    }));
+    console.log(tableRowArray);
+    setId(tableRowArray['id']);
     setEditModal(true);
   }
 
   const editAPICall = (feature) => {
-    // let CountryID = countryPK;
-    // let countryToUpdate = {
-    //   ID : countryPK,
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
-    // };
+    setBackdrop(true);
     axios.post(`/Feature/EditFeature/ID=` + Id, feature/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
+          setBackdrop(false);
           setEditModal(false);
+          setAlertMessage("Record Successfully Edited");
+          setAlertType("success");
+          snackbarOpen();
           axios.get(`Feature/GetFeatures`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data);
-                setDataChanged(true);
+                dispatch(storeDataAPI(resp.data));
               }
             })
             .catch(error => {
@@ -318,24 +230,13 @@ export default function EnhancedTable() {
             .then(release => {
               //console.log(release); => udefined
             });
-          //window.location = window.location;
-          // setdataAPI(dataAPI.map((data) => {
-          //   console.log(data);
-          //   if(data.id === countryObj.id){
-          //     console.log(data);
-          //     return {
-          //       ...data,
-          //       ...countryObj
-          //     };
-          //   }
-          //   else{
-          //     console.log(data)
-          //     return data;
-          //   }
-          // }))
         }
       })
       .catch(error => {
+        setBackdrop(false);
+        setAlertMessage('Error! ' + error.message);
+        setAlertType('error');
+        snackbarOpen();
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -352,44 +253,16 @@ export default function EnhancedTable() {
       });
   };
 
-
-  // const selectDatafunction = () => {
-  //   axios.get(`Madeb/GetNewEmptyMadeb`)
-  //     .then(resp => {
-  //       if (resp.status === 200) {
-  //         setSelectData(resp.data);
-
-  //         // setdataAPI(resp.data)
-  //       }
-  //     })
-  //     .catch(error => {
-  //       if (error.response) {
-  //         console.error(error.response.data);
-  //         console.error(error.response.status);
-  //         console.error(error.response.headers);
-  //       } else if (error.request) {
-  //         console.warn(error.request);
-  //       } else {
-  //         console.error('Error', error.message);
-  //       }
-  //       console.log(error.config);
-  //     })
-  //     .then(release => {
-  //       //console.log(release); => udefined
-  //     });
-  // }
   const addAPICall = (feature) => {
     console.log(feature);
     axios.post(`/Feature/AddFeature/`, feature)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           axios.get(`Feature/GetFeatures`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
+                dispatch(storeDataAPI(resp.data));
               }
             })
             .catch(error => {
@@ -407,7 +280,6 @@ export default function EnhancedTable() {
             .then(release => {
               //console.log(release); => udefined
             });
-          //window.location = window.location;
         }
       })
       .catch(error => {
@@ -427,13 +299,9 @@ export default function EnhancedTable() {
       });
   };
 
-  const handleClose = () => {
-    setDeleteModal(false);
-  };
-
   useEffect(() => {
     //Use === instead of ==
-    if (authenticationService.currentUserValue===null) {
+    if (authenticationService.currentUserValue === null) {
       history.push('/Login');
     }
   }, []);
@@ -442,9 +310,8 @@ export default function EnhancedTable() {
     axios.get(`Feature/GetFeatures`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
-          setdataAPI(resp.data);
-          //selectDatafunction()
+          dispatch(storeDataAPI(resp.data));
+          setisLoading(false);
         }
       })
       .catch(error => {
@@ -465,20 +332,17 @@ export default function EnhancedTable() {
   }, []);
 
   return (
-
     <>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-
           <Breadcrumbs aria-label="breadcrumb">
             <Link color="inherit" href="/Home" >
               Home
-        </Link>
-
+            </Link>
             <Typography color="textPrimary">Feature</Typography>
           </Breadcrumbs>
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
-
+            isLoading={isLoading}
             icons={tableIcons}
             title="Feature"
             columns={columns}
@@ -492,13 +356,8 @@ export default function EnhancedTable() {
                 paddingLeft: '10px',
                 border: '1px solid lightgrey',
               },
-              pageSize: 15,
-              pageSizeOptions: [10, 15, 20, 50, 100],
-              rowStyle: x => {
-                if (x.tableData.id % 2) {
-                  return { backgroundColor: "#f2f2f2" }
-                }
-              }
+              pageSize: pageSize,
+              pageSizeOptions: pageSizeArray
             }}
             actions={[
               {
@@ -518,17 +377,22 @@ export default function EnhancedTable() {
           {addModal && <AddDialog
             addModal={addModal}
             classes={classes}
-            selectData={selectData}
             handleAddClickClose={handleAddClickClose}
             addAPICall={addAPICall}
           />}
           {editModal && <EditDialog
             editModal={editModal}
-            featureObj={featureObj}
-            selectData={selectData}
             classes={classes}
             handleEditClickClose={handleEditClickClose}
             editAPICall={editAPICall}
+          />}
+          {snackbar && <Alerts
+            alertObj={alertObj}
+            snackbar={snackbar}
+            snackbarClose={snackbarClose}
+          />}
+          {backdrop && <BackdropComponent
+            backdrop={backdrop}
           />}
         </Grid>
       </Grid>

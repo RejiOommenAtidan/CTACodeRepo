@@ -71,7 +71,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -97,7 +97,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -123,7 +123,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -148,7 +148,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     _userRepository.Add(user);
 
                     #region Information Logging
-                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", user.nEnteredBy);
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, user.nEnteredBy);
                     #endregion
 
                     return Ok(user);
@@ -164,7 +164,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, user.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, user.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -202,7 +202,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _userRepository.Update(user);
 
                         #region Alert Logging 
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", user.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, user.nEnteredBy);
                         #endregion
 
                         return Ok("User with ID: " + Id + " updated Successfully");
@@ -223,7 +223,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, user.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, user.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -249,7 +249,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _userRepository.Delete(fetchedUser);
 
                         #region Alert Logging
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", user.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, user.nEnteredBy);
                         #endregion
 
                         return Ok("User with ID: " + userID + " removed Successfully");
@@ -267,7 +267,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging 
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, user.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, user.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -353,7 +353,7 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 //TODO: ex.Message || ex.StackTrace
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace,userFromUI.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -395,7 +395,7 @@ namespace CTAWebAPI.Controllers.Transactions
                             _userRepository.Update(fetchedFromDB);
 
                             #region Alert Logging 
-                            _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", changePasswordVM.nUserId);
+                            _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, changePasswordVM.nUserId);
                             #endregion
 
                             return Ok("User with Id: " + fetchedFromDB.Id + " Password Updated Successfully");
@@ -417,7 +417,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, changePasswordVM.nUserId);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, changePasswordVM.nUserId);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);

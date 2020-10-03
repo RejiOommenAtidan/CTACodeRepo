@@ -49,7 +49,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging 
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -75,7 +75,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging  
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -114,7 +114,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     _givenGBIDRepository.Add(givenGBID);
 
                     #region Information Logging 
-                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", givenGBID.nEnteredBy);
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, givenGBID.nEnteredBy);
                     #endregion
 
                     return Ok(givenGBID);
@@ -130,7 +130,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging  
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, givenGBID.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace, givenGBID.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -162,7 +162,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _givenGBIDRepository.Update(givenGBID);
 
                         #region Alert Logging
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", givenGBID.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, givenGBID.nEnteredBy);
                         #endregion
 
                         return Ok("Given GB with ID: " + Id + " updated Successfully");
@@ -183,7 +183,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, givenGBID.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace, givenGBID.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -210,7 +210,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _givenGBIDRepository.Delete(fetchedGBID);
 
                         #region Alert Logging
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", givenGBID.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, givenGBID.nEnteredBy);
                         #endregion
 
                         return Ok("Given GB with ID: " + gbID + " removed Successfully");
@@ -229,7 +229,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging 
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, givenGBID.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace, givenGBID.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);

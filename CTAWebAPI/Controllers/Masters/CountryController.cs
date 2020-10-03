@@ -42,7 +42,7 @@ namespace CTAWebAPI.Controllers.Masters
                 {
                     #region Information Logging 
                     CTALogger logger = new CTALogger(_info);
-                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
                     #endregion
                     return Ok(countries);
                 }
@@ -56,7 +56,7 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 #region Exception Logging 
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace );
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -74,7 +74,7 @@ namespace CTAWebAPI.Controllers.Masters
                 {
                     #region Information Logging
                     CTALogger logger = new CTALogger(_info);
-                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                    logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
                     #endregion
                     return Ok(country);
                 }
@@ -88,7 +88,7 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 #region Exception Logging
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace);
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -130,7 +130,7 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         #region Information Logging 
                         CTALogger logger = new CTALogger(_info);
-                        logger.LogRecord(((Operations)1).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                        logger.LogRecord(((Operations)1).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null,country.nEnteredBy);
                         #endregion
                         return Ok(country);
                     }
@@ -150,7 +150,7 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 #region Exception Logging 
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                logger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace,country.nEnteredBy );
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -182,7 +182,7 @@ namespace CTAWebAPI.Controllers.Masters
                             {
                                 #region Alert Logging
                                 CTALogger logger = new CTALogger(_info);
-                                logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                                logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, countryToUpdate.nEnteredBy);
                                 #endregion
                                 return Ok(String.Format("Country with ID: {0} updated Successfully", ID));
                             }
@@ -212,7 +212,7 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 #region Exception Logging 
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(((Operations)3).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                logger.LogRecord(((Operations)3).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace,countryToUpdate.nEnteredBy);
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -238,7 +238,7 @@ namespace CTAWebAPI.Controllers.Masters
                         {
                             #region Alert Logging 
                             CTALogger logger = new CTALogger(_info);
-                            logger.LogRecord(((Operations)4).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", 1);
+                            logger.LogRecord(((Operations)4).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, countryToDelete.nEnteredBy);
                             #endregion
                             return Ok(string.Format("Region with ID: {0} deleted successfully", countryToDelete.ID));
                         }
@@ -262,7 +262,7 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 #region Exception Logging 
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(((Operations)4).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name, 1);
+                logger.LogRecord(((Operations)4).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace,countryToDelete.nEnteredBy);
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }

@@ -21,8 +21,8 @@ function login(sUsername, sPassword) {
     return axios.post(`/User/AuthenticateUser/`,userFromUI)
         .then(handleResponse)
         .then(user => {
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-            //Remove & then set
+            // Store user details and jwt token in local storage to keep user logged in between page refreshes
+            // Remove & then set
             localStorage.removeItem("currentUser");
             localStorage.setItem("currentUser", JSON.stringify(user));
             currentUserSubject.next(user);
@@ -31,7 +31,7 @@ function login(sUsername, sPassword) {
 }
 
 function logout() {
-    // // remove user from local storage to log user out
+    // Remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     currentUserSubject.next(null);
 }

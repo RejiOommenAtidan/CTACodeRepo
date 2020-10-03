@@ -95,9 +95,9 @@ namespace CTAWebAPI.Controllers.Transactions
                 string sModuleName = (GetType().Name).Replace("Controller", "");
                 string sEventName = Enum.GetName(typeof(LogLevels), 3);
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
+                string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -138,9 +138,9 @@ namespace CTAWebAPI.Controllers.Transactions
                 string sModuleName = (GetType().Name).Replace("Controller", "");
                 string sEventName = Enum.GetName(typeof(LogLevels), 3);
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
+                string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -184,9 +184,9 @@ namespace CTAWebAPI.Controllers.Transactions
                 string sModuleName = (GetType().Name).Replace("Controller", "");
                 string sEventName = Enum.GetName(typeof(LogLevels), 3);
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
+                string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -228,9 +228,9 @@ namespace CTAWebAPI.Controllers.Transactions
                 string sModuleName = (GetType().Name).Replace("Controller", "");
                 string sEventName = Enum.GetName(typeof(LogLevels), 3);
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
+                string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -272,9 +272,9 @@ namespace CTAWebAPI.Controllers.Transactions
                 string sModuleName = (GetType().Name).Replace("Controller", "");
                 string sEventName = Enum.GetName(typeof(LogLevels), 3);
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
+                string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -333,7 +333,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     string currentMethodName = MethodBase.GetCurrentMethod().Name;
                     string sDescription = currentMethodName + " Method Called";
                     CTALogger logger = new CTALogger(_info);
-                    logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, madeb.nEnteredBy);
+                    logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, null, madeb.nEnteredBy);
                     #endregion
 
                     return Ok(madeb);
@@ -353,9 +353,9 @@ namespace CTAWebAPI.Controllers.Transactions
                 string sModuleName = (GetType().Name).Replace("Controller", "");
                 string sEventName = Enum.GetName(typeof(LogLevels), 3);
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
+                string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, madeb.nEnteredBy);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,ex.StackTrace, madeb.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -396,7 +396,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         string currentMethodName = MethodBase.GetCurrentMethod().Name;
                         string sDescription = currentMethodName + " Method Called";
                         CTALogger logger = new CTALogger(_info);
-                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, madeb.nEnteredBy);
+                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, null, madeb.nEnteredBy);
                         #endregion
 
                         
@@ -422,9 +422,9 @@ namespace CTAWebAPI.Controllers.Transactions
                 string sModuleName = (GetType().Name).Replace("Controller", "");
                 string sEventName = Enum.GetName(typeof(LogLevels), 3);
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName;
+                string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, madeb.nEnteredBy);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,ex.StackTrace, madeb.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -459,7 +459,7 @@ namespace CTAWebAPI.Controllers.Transactions
                             string currentMethodName = MethodBase.GetCurrentMethod().Name;
                             string sDescription = currentMethodName + " Method Called";
                             CTALogger logger = new CTALogger(_info);
-                            logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, madeb.nEnteredBy);
+                            logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, null, madeb.nEnteredBy);
                             #endregion
 
                             return Ok("Madeb with ID: " + madebID + " removed Successfully");
@@ -489,7 +489,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
                 string sDescription = "Exception in " + currentMethodName;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, madeb.nEnteredBy);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,ex.StackTrace, madeb.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);

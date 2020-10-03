@@ -6,7 +6,6 @@ import { authenticationService } from '../_services/authentication.service.js';
 export const PrivateRoute = ({ component: Component, roles, feature, ...rest }) => (
     <Route {...rest} render={props => {
         const currentUser = authenticationService.currentUserValue;
-        debugger;
         if (!currentUser) {
             // not logged in so redirect to login page with the return url
             authenticationService.logout();
