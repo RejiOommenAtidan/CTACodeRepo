@@ -177,7 +177,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Add Calls
-        [HttpGet]
+        [HttpPost]
         [Route("[action]")]
         public IActionResult AddGreenBookSerialNumber(GreenBookSerialNumber gbsn)
         {
