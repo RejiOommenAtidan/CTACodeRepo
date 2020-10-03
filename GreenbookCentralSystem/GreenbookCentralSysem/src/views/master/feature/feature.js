@@ -34,6 +34,8 @@ import { storeDataAPI } from 'actions/masters/featureAction';
 import { setCurrentSelectedFeature } from 'actions/masters/featureAction';
 import { aPageSizeArray } from '../../../config/commonConfig';
 import { nPageSize } from '../../../config/commonConfig';
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -106,12 +108,28 @@ export default function Feature() {
   let history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
+  const [isLoading, setisLoading] = React.useState(true);
   const [editModal, setEditModal] = React.useState(false);
   const [addModal, setAddModal] = useState(false);
   const [Id, setId] = React.useState('');
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
   const [filtering, setFiltering] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  }
+  const [snackbar, setSnackbar] = React.useState(false);
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  }
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
 
   const handleEditClickClose = () => {
     setEditModal(false);
@@ -182,10 +200,15 @@ export default function Feature() {
   }
 
   const editAPICall = (feature) => {
+    setBackdrop(true);
     axios.post(`/Feature/EditFeature/ID=` + Id, feature/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
+          setBackdrop(false);
           setEditModal(false);
+          setAlertMessage("Record Successfully Edited");
+          setAlertType("success");
+          snackbarOpen();
           axios.get(`Feature/GetFeatures`)
             .then(resp => {
               if (resp.status === 200) {
@@ -210,6 +233,10 @@ export default function Feature() {
         }
       })
       .catch(error => {
+        setBackdrop(false);
+        setAlertMessage('Error! ' + error.message);
+        setAlertType('error');
+        snackbarOpen();
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -284,6 +311,7 @@ export default function Feature() {
       .then(resp => {
         if (resp.status === 200) {
           dispatch(storeDataAPI(resp.data));
+          setisLoading(false);
         }
       })
       .catch(error => {
@@ -314,6 +342,7 @@ export default function Feature() {
             <Typography color="textPrimary">Feature</Typography>
           </Breadcrumbs>
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+            isLoading={isLoading}
             icons={tableIcons}
             title="Feature"
             columns={columns}
@@ -356,6 +385,14 @@ export default function Feature() {
             classes={classes}
             handleEditClickClose={handleEditClickClose}
             editAPICall={editAPICall}
+          />}
+          {snackbar && <Alerts
+            alertObj={alertObj}
+            snackbar={snackbar}
+            snackbarClose={snackbarClose}
+          />}
+          {backdrop && <BackdropComponent
+            backdrop={backdrop}
           />}
         </Grid>
       </Grid>

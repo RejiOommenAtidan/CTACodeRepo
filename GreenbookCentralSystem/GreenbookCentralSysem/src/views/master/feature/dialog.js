@@ -29,8 +29,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 export const EditDialog = (props) => {
-  const replacement = useSelector(state => state.FeatureReducer.oCurrentFeature);
-  const [sFeature, setsFeature] = useState(replacement.sFeature);
+  const ocurrentfeature = useSelector(state => state.FeatureReducer.oCurrentFeature);
+  const [sFeature, setsFeature] = useState(ocurrentfeature.sFeature);
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Feature</DialogTitle>
@@ -56,14 +56,13 @@ export const EditDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.editAPICall({ id: replacement.id, sFeature: sFeature })} color="primary">Save</Button>
+        <Button onClick={() => props.editAPICall({ id: ocurrentfeature.id, sFeature: sFeature })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );
 }
 
 export const AddDialog = (props) => {
-
   const [sFeature, setsFeature] = useState("");
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
