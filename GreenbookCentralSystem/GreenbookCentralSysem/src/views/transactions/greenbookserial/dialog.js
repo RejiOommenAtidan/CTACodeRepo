@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import axios from 'axios';
 
-import {Box, Container, Grid, Button, Typography, FormControl, TextField, InputLabel, MenuItem, Select} from '@material-ui/core';
+import {Box, Container, Grid, Button, Typography, FormControl, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -354,15 +354,17 @@ export const EditDialog = (props) => {
                                 
                                
                                 
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={12}>
 
                                     <FormControl className={props.classes.formControl}>
-                                        <TextField
+                                        <TextareaAutosize
                                             id="remarks"
                                             name="remarks"
                                             label="Remarks"
                                             type='text'
                                             value={remarks}
+                                            rowsMin={2}
+                                            rowsMax={2}
                                             onChange={(e) => { 
                                                 setRemarks(e.target.value);
                                                 console.log("Value of remarks changed to:", e.target.value);
@@ -370,7 +372,7 @@ export const EditDialog = (props) => {
                                         />
                                     </FormControl>
                                 </Grid>
-                                </Grid>
+                              </Grid>
                         </div>
         </DialogContentText>
       </DialogContent>
@@ -708,9 +710,9 @@ export const AddDialog = (props) => {
                                             id="nFormNumber"
                                             label="Form Number"
                                             type="number"
-                                            InputProps={{
-                                                readOnly: true,
-                                            }}
+                                            // InputProps={{
+                                            //     readOnly: true,
+                                            // }}
                                             value={nFormNumber}
                                             onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
 
@@ -763,14 +765,16 @@ export const AddDialog = (props) => {
                                 
                                
                                 
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={12}>
 
                                     <FormControl className={props.classes.formControl}>
-                                        <TextField
+                                        <TextareaAutosize
                                             id="remarks"
                                             name="remarks"
                                             label="Remarks"
                                             type='text'
+                                            rowsMin={2}
+                                            rowsMax={2}
                                             value={remarks}
                                             onChange={(e) => { 
                                                 setRemarks(e.target.value);

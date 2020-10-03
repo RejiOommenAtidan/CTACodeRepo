@@ -283,10 +283,10 @@ export default () => {
   };
 
 
-  const addAPICall = (madeb) => {
+  const addAPICall = (gbSerialObj) => {
     debugger
-    console.log(madeb);
-    axios.post(`.....................`, madeb)
+    console.log(gbSerialObj);
+    axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, gbSerialObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
