@@ -15,6 +15,7 @@ namespace CTADBL.ViewModels
     public class MakeList
     {
         #region Private Properties
+        
         private string _sFirstName;
         private string? _sMiddleName = null;
         private string? _sLastName = null;

@@ -7,6 +7,7 @@ import Moment from 'moment';
 
 import IconButton from '@material-ui/core/IconButton';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -166,7 +167,7 @@ export default function GiveGBId(){
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
       onClick={() => { assignClick(rowData) }} style={{padding:'0px'}}
     >
-      <EditOutlinedIcon/>
+      <AssignmentTurnedInIcon />
       </IconButton> ,
       
       cellStyle: {
