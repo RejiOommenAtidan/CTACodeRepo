@@ -17,7 +17,7 @@ namespace CTADBL.ViewModelsRepositories
         #endregion
 
         #region Get
-        public IEnumerable<UsersVM> GetUsersWithUserRightsName()
+        public IEnumerable<UsersVM> GetUsersWithUserRightsName(int rows)
         {
             string sql = @"SELECT `users`.`Id`,
 	                        `users`.`_Id`,
@@ -35,9 +35,11 @@ namespace CTADBL.ViewModelsRepositories
                         FROM tbluser AS users
                         INNER JOIN lstuserrights AS userrights ON users.nUserRightsId = userrights.Id 
                         WHERE `users`.`nActive` = 1
-                        ORDER BY users.Id DESC;";
+                        ORDER BY users.Id DESC
+                        LIMIT @rows;";
             using (var command = new MySqlCommand(sql))
             {
+                command.Parameters.AddWithValue("rows", rows);
                 return GetRecords(command);
             }
         }

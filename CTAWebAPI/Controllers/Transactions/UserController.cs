@@ -1,4 +1,5 @@
-﻿using CTADBL.BaseClasses.Transactions;
+﻿using CTADBL.BaseClasses.Masters;
+using CTADBL.BaseClasses.Transactions;
 using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
@@ -32,21 +33,21 @@ namespace CTAWebAPI.Controllers.Transactions
         private readonly DBConnectionInfo _info;
         private readonly UserRepository _userRepository;
         private readonly UserVMRepository _userVMRepository;
+        private readonly CTAConfigRepository _ctaConfigRepository;
         private readonly CTALogger _ctaLogger;
         private readonly AppSettings _appSettings;
         private readonly UserRightsRepository _userRightsRepository;
         private readonly UsersVMRepository _usersVMRepository;
-        //string role ="";
         public UserController(DBConnectionInfo info, IOptions<AppSettings> appSettings)
         {
             _info = info;
             _userRepository = new UserRepository(_info.sConnectionString);
-            //role = _userRightsRepository.GetUserRightsById("1").sUserRightsName;
             _ctaLogger = new CTALogger(_info);
             _userVMRepository = new UserVMRepository(_info.sConnectionString);
             _appSettings = appSettings.Value;
             _userRightsRepository = new UserRightsRepository(_info.sConnectionString);
             _usersVMRepository = new UsersVMRepository(_info.sConnectionString);
+            _ctaConfigRepository = new CTAConfigRepository(_info.sConnectionString);
         }
         #endregion
 
@@ -86,8 +87,11 @@ namespace CTAWebAPI.Controllers.Transactions
             #region Get All Users for User Manage Screen
             try
             {
-                IEnumerable<UsersVM> allUsers = _usersVMRepository.GetUsersWithUserRightsName();
-
+                CTAConfig ctaConfig = _ctaConfigRepository.GetConfigByKey("SelectTotalRecordCount");
+                bool isParsable = int.TryParse(ctaConfig.sValue, out int rows);
+                if (!isParsable)
+                    return BadRequest("Invalid Row Count in Masters Table");
+                IEnumerable<UsersVM> allUsers = _usersVMRepository.GetUsersWithUserRightsName(rows);
                 #region Information Logging 
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
                 #endregion

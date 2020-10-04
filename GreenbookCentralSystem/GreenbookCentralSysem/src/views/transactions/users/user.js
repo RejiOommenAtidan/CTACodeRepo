@@ -3,22 +3,14 @@ import {
   Box,
   Container,
   Grid,
-  Button,
   Typography
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-import MaterialTable, { MTableToolbar } from 'material-table';
-//import theme from '../../../theme/theme/theme;
+import MaterialTable from 'material-table';
 import IconButton from '@material-ui/core/IconButton';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import AddIcon from '@material-ui/icons/Add';
-//import { ThemeProvider } from '@material-ui/styles';
-
-// import Slide from '@material-ui/core/Slide';
-import Moment from 'moment';
-
 // Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
 import { forwardRef } from 'react';
@@ -37,8 +29,6 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-
-import { useHistory } from 'react-router-dom';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -99,11 +89,9 @@ const useStyles = makeStyles({
   },
   palette: {
     primary: {
-      // Purple and green play nicely together.
       main: red[500],
     },
     secondary: {
-      // This is green.A700 as hex.
       main: '#11cb5f',
     },
   },
@@ -127,16 +115,13 @@ const useStyles = makeStyles({
 });
 
 export default function Users() {
-  Moment.locale('en');
+  const [isLoading, setisLoading] = React.useState(true);
   const [filtering, setFiltering] = React.useState(false);
-  let history = useHistory();
   const classes = useStyles();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
-
-  //VAR
   const [lUserRights, setlUserRights] = React.useState([]);
   const [Id, setId] = React.useState('');
   const [sUsername, setsUsername] = React.useState('');
@@ -235,7 +220,6 @@ export default function Users() {
             .then(release => {
               //console.log(release); => udefined
             });
-          //window.location = window.location;
         }
       })
       .catch(error => {
@@ -254,10 +238,6 @@ export default function Users() {
         //console.log(release); => udefined
       });
   };
-
-
-
-
 
   const editAPICall = (userObj) => {
     axios.post(`/User/EditUser/Id=` + Id, userObj)
@@ -306,11 +286,7 @@ export default function Users() {
       });
   };
 
-
-
   const editClick = (tableRowArray) => {
-
-    //console.log(tableRowArray);
     setId(tableRowArray["oUser"]["id"]);
     setsUsername(tableRowArray["oUser"]["sUsername"]);
     setsFullname(tableRowArray["oUser"]["sFullname"]);
@@ -344,14 +320,33 @@ export default function Users() {
     setAddModal(false);
   };
 
-
-  //Get User rights
   useEffect(() => {
     axios.get(`/UserRights/GetUserRights`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data)
           setlUserRights(resp.data);
+          axios.get(`/User/GetAllUsers`)
+            .then(resp => {
+              if (resp.status === 200) {
+                setdataAPI(resp.data);
+                setisLoading(false);
+              }
+            })
+            .catch(error => {
+              if (error.response) {
+                console.error(error.response.data);
+                console.error(error.response.status);
+                console.error(error.response.headers);
+              } else if (error.request) {
+                console.warn(error.request);
+              } else {
+                console.error('Error', error.message);
+              }
+              console.log(error.config);
+            })
+            .then(release => {
+              //console.log(release); => udefined
+            });
         }
       })
       .catch(error => {
@@ -369,31 +364,6 @@ export default function Users() {
       .then(release => {
         //console.log(release); => udefined
       });
-  }, []);
-
-  useEffect(() => {
-    axios.get(`/User/GetAllUsers`)
-      .then(resp => {
-        if (resp.status === 200) {
-          setdataAPI(resp.data);
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-
   }, []);
 
   return (
@@ -409,6 +379,7 @@ export default function Users() {
           <Grid item xs={12}>
 
             <MaterialTable
+              isLoading={isLoading}
               style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
               icons={tableIcons}
               title="Users"
@@ -466,7 +437,6 @@ export default function Users() {
         />}
         {deleteModal && <DeleteDialog
           deleteModal={deleteModal}
-        //countryName={countryName}
         />}
       </Container>
     </Box>
