@@ -7,7 +7,7 @@ namespace CTADBL.BaseClasses.Transactions
     [Table("tblactionlogger")]
     public class ActionLogger
     {
-        #region Private User Properties 
+        #region Private ActionLog Properties 
         private int _Id;
         private string _sActionType;
         private string _sModuleName;
@@ -18,7 +18,7 @@ namespace CTADBL.BaseClasses.Transactions
         private int? _nEnteredBy=null;
         #endregion
 
-        #region Public Common Properties
+        #region Public ActionLog Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
         public string sActionType { get { return _sActionType; } set { _sActionType = value; } }
