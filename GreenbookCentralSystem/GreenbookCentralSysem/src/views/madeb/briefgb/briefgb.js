@@ -28,6 +28,11 @@ import { forwardRef } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
+
+
+//local
+import {EmailDialog} from '../email';
+import {Alerts} from '../../alerts';
 import { AddDialog, EditDialog } from './dialog';
 
 const tableIcons = {
@@ -135,7 +140,7 @@ export default () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const [selectData, setSelectData] = useState([]);
-
+  const [emailModal, setEmailModal] = React.useState(false);
 
   //VAR
   const [id, setId] = React.useState('');
@@ -159,6 +164,31 @@ export default () => {
   const [dataChanged, setDataChanged] = useState(false);
   const [result, setResult] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
+  const [emailInObj, setEmailInObj] = useState({});
+
+
+  // SnackBar Alerts 
+
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const alertObj={
+    alertMessage:alertMessage,
+    alertType:alertType
+  }
+  const [snackbar,setSnackbar]=React.useState(false);
+  const snackbarOpen = () => {
+    console.log('alert');
+    setSnackbar(true);
+  }
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+
+
+  const handleEmailClickClose = () => {
+  
+  setEmailModal(false);
+};
 
   const handleEditClickClose = () => {
     setEditModal(false);
@@ -277,6 +307,24 @@ export default () => {
       },
     },
     {
+      field: "madeb.sApprovedReject",
+      title: "Approved/Rejected",
+      
+      headerStyle: {
+        padding:'0px',
+        width:'10%',
+        textAlign:'left'
+      },
+      cellStyle: {
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'10%',
+        textAlign:'left'
+        
+      },
+  
+    },
+    {
       field:'Verified By',
       title:'Verified By',
       sort: false,
@@ -338,10 +386,10 @@ export default () => {
       field: "email",
       title: "Email",
       filtering:false,
-      sorting: false,
+      sort: false,
       export:false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => { editClick(rowData) }}  style={{padding:'0px'}}
+      onClick={() => { emailClick(rowData) }}  style={{padding:'0px'}}
     >
       <EmailIcon/>
       </IconButton> ,
@@ -380,6 +428,24 @@ export default () => {
       },
     }
   ];
+
+  const emailClick = (tableRowArray) => { 
+   
+    setId(tableRowArray['madeb']['id']);
+    setFormNumber(tableRowArray['madeb']['nFormNumber']);
+    setName(tableRowArray['madeb']['sName']);
+  
+    setEmailInObj({
+        id: tableRowArray['madeb']['id'],
+        nFormNumber: tableRowArray['madeb']['nFormNumber'],
+        sName: tableRowArray['madeb']['sName'],
+        madebName:'Brief GreenBook'
+    });
+    
+    setEmailModal(true);
+  }
+
+
   const editClick = (tableRowArray) => {
     setBriefGBObj({
       id: tableRowArray['madeb']['id'],
@@ -392,7 +458,8 @@ export default () => {
       nReceiptNo: tableRowArray['madeb']['nReceiptNo'],
       nSaneyFormNo: tableRowArray['madeb']['nSaneyFormNo'],
       nCurrentGBSno: tableRowArray['madeb']['nCurrentGBSno'],
-      nPreviousGBSno: tableRowArray['madeb']['nPreviousGBSno'],   
+      nPreviousGBSno: tableRowArray['madeb']['nPreviousGBSno'],
+      sApprovedReject: tableRowArray['madeb']['sApprovedReject'],
       dtIssueAction: tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
       dtReject: tableRowArray['madeb']['dtReject'],
@@ -414,6 +481,9 @@ export default () => {
           if (resp.status === 200) {
             //console.log(resp.data);
             setEditModal(false);
+            setAlertMessage('Record updated successfully.');
+            setAlertType('success');
+            snackbarOpen();
             axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=6`)
               .then(resp => {
                 if (resp.status === 200) {
@@ -434,6 +504,9 @@ export default () => {
         .catch(error => {
           console.log(error.config);
           console.log(error.message);
+          setAlertMessage(`Record updation failed. \nError:${error.message}.` );
+          setAlertType('error');
+          snackbarOpen();
         })
         
     };  
@@ -462,6 +535,9 @@ export default () => {
             console.log(resp.data);
             setAddModal(false);
             selectDatafunction();
+            setAlertMessage('Created new record successfully.');
+            setAlertType('success');
+            snackbarOpen();
             axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=6`)
               .then(resp => {
                 if (resp.status === 200) {
@@ -478,6 +554,9 @@ export default () => {
         .catch(error => {
           console.log(error.message);
           console.log(error.config);
+          setAlertMessage(`Record updation failed. \nError:${error.message}.` );
+          setAlertType('error');
+          snackbarOpen();
         })
     };
   
@@ -566,6 +645,19 @@ export default () => {
               editAPICall={editAPICall}
               briefGBObj={briefGBObj}
             />}
+            {emailModal && <EmailDialog
+              emailModal={emailModal}
+              emailInObj={emailInObj}
+              //selectData={selectData}
+              classes={classes}
+              handleEmailClickClose={handleEmailClickClose}
+              //emailAPICall={emailAPICall}
+            />}
+            { snackbar && <Alerts
+       alertObj={alertObj}
+       snackbar={snackbar}
+       snackbarClose={snackbarClose}
+       /> }
             
         </Grid>
       </Grid>

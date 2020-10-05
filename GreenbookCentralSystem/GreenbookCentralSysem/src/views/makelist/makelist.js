@@ -330,6 +330,7 @@ export default () => {
         classes = {classes}
         makeList = {makeList}
       />)}
+      <br />
       {/* {makeTable && ( */}
         <MaterialTable 
         style={{padding:'10px',width:'100%', border:'2px solid grey',borderRadius:'10px'}}

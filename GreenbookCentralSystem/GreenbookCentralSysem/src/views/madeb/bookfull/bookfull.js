@@ -50,6 +50,8 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
 
 // Local import
+import {EmailDialog} from '../email';
+import {Alerts} from '../../alerts';
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
 
 
@@ -160,6 +162,7 @@ export default function EnhancedTable() {
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const [selectData, setSelectData] = useState([]);
+  const [emailModal, setEmailModal] = React.useState(false);
 
   //VAR
   const [id, setId] = React.useState('');
@@ -180,10 +183,33 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
-
+  const [emailInObj, setEmailInObj] = useState({});
   const [filtering, setFiltering] = React.useState(false);
   
   
+// SnackBar Alerts 
+
+const [alertMessage, setAlertMessage] = useState("");
+const [alertType, setAlertType] = useState("");
+const alertObj={
+  alertMessage:alertMessage,
+  alertType:alertType
+}
+const [snackbar,setSnackbar]=React.useState(false);
+const snackbarOpen = () => {
+  console.log('alert');
+  setSnackbar(true);
+}
+const snackbarClose = () => {
+  setSnackbar(false);
+};
+
+const handleEmailClickClose = () => {
+  
+  setEmailModal(false);
+};
+
+
   const handleEditClickClose = () => {
     setEditModal(false);
   };
@@ -384,7 +410,7 @@ export default function EnhancedTable() {
       sorting: false,
       export:false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => { editClick(rowData) }}  style={{padding:'0px'}}
+      onClick={() => { emailClick(rowData) }}  style={{padding:'0px'}}
     >
       <EmailIcon/>
       </IconButton> ,
@@ -420,6 +446,23 @@ export default function EnhancedTable() {
     }
    
   ];
+
+
+  const emailClick = (tableRowArray) => { 
+   
+    setId(tableRowArray['madeb']['id']);
+    setFormNumber(tableRowArray['madeb']['nFormNumber']);
+    setName(tableRowArray['madeb']['sName']);
+  
+    setEmailInObj({
+        id: tableRowArray['madeb']['id'],
+        nFormNumber: tableRowArray['madeb']['nFormNumber'],
+        sName: tableRowArray['madeb']['sName'],
+        madebName:'Brief GreenBook'
+    });
+    
+    setEmailModal(true);
+  }
 
   const editClick = (tableRowArray) => { 
 
@@ -471,6 +514,9 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
+          setAlertMessage('Record updated successfully.');
+          setAlertType('success');
+          snackbarOpen();
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
             .then(resp => {
               if (resp.status === 200) {
@@ -487,6 +533,9 @@ export default function EnhancedTable() {
       .catch(error => {
         console.log(error.config);
         console.log(error.message);
+        setAlertMessage(`Record updation failed. \nError:${error.message}.` );
+          setAlertType('error');
+          snackbarOpen();
       })
   };
 
@@ -517,16 +566,16 @@ export default function EnhancedTable() {
     });
   }
   const addAPICall = (madeb) => {
-
-   
     console.log(madeb);
- 
     debugger
     axios.post(`Madeb/AddMadeb/`, madeb)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
+          setAlertMessage('Created new record successfully.');
+          setAlertType('success');
+          snackbarOpen();
           selectDatafunction();
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
             .then(resp => {
@@ -536,40 +585,19 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
               console.log(error.message);
               console.log(error.config);
             })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-          //window.location = window.location;
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
         console.log(error.message);
         console.log(error.config);
+        setAlertMessage(`Record creation failed. \nError:${error.message}.` );
+        setAlertType('error');
+        snackbarOpen();
       })
-      .then(release => {
-        //console.log(release); => udefined
-      });
+      
   };
 
 
@@ -685,7 +713,20 @@ export default function EnhancedTable() {
               editAPICall={editAPICall}
               bookFullObj={bookFullObj}
             />}
-          
+            { snackbar && <Alerts
+              alertObj={alertObj}
+              snackbar={snackbar}
+              snackbarClose={snackbarClose}
+              /> 
+            }
+            {emailModal && <EmailDialog
+              emailModal={emailModal}
+              emailInObj={emailInObj}
+              //selectData={selectData}
+              classes={classes}
+              handleEmailClickClose={handleEmailClickClose}
+              //emailAPICall={emailAPICall}
+            />}
           </Grid>
         </Grid>
             </>

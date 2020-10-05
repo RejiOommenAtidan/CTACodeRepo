@@ -43,9 +43,9 @@ namespace CTAWebAPI.Controllers
                 IEnumerable<MakeList> makeList = _makeListRepository.GetMakeListData(parameters);
                 if(makeList != null)
                 {
-                    //#region Information Logging
-                    //_ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, 1);
-                    //#endregion
+                    #region Information Logging
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, 1);
+                    #endregion
                     return Ok(makeList);
                 }
                 else
@@ -69,9 +69,9 @@ namespace CTAWebAPI.Controllers
 
                 if (!String.IsNullOrEmpty(result) && Convert.ToInt32(result) > 0)
                 {
-                    //#region Alert Logging 
-                    //_ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, 1);
-                    //#endregion
+                    #region Alert Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, 1);
+                    #endregion
                     return Ok(string.Format("{0} rows marked as Printed", result));
                 }
                 else
