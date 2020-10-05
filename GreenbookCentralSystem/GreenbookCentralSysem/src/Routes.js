@@ -70,6 +70,7 @@ const Users = lazy(() => import('./views/transactions/users/index'));
 const PrintPage = lazy(() => import('./views/print'));
 const Print = lazy(() => import('./views/print/print.js'));
 const FeatureUserrights = lazy(() => import('./views/transactions/featureuserrights/index'));
+const Search = lazy(() => import('./views/search/index'));
 
 const Routes = () => {
   const location = useLocation();
@@ -209,7 +210,8 @@ const Routes = () => {
                 '/ChangePassword',
                 '/Users',
                 '/PrintPage',
-                '/FeatureRoles'
+                '/FeatureRoles',
+                '/Search'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -257,6 +259,7 @@ const Routes = () => {
                     <Route path="/ChangePassword" component={ChangePassword} />
                     <Route path="/Users" component={Users} />
                     <Route path="/FeatureRoles" component={FeatureUserrights} />
+                    <Route path="/Search" component={Search} />
                   </motion.div>
                 </Switch>
               </LeftSidebar>

@@ -230,7 +230,22 @@ export default function EnhancedTable() {
   //console.log(gbId);
   console.log(bookIssueData);
 }
+const handleSubmit = () =>{
+  //console.log(gbId);
+  setGbId(tempGbId.toString());
+  if(gbId==""){
+    setAlertMessage("Enter Green Book ID");
+    setAlertType("error");
+    snackbarOpen();
+  }
+  else{
+    setHistoryTable(true);
+ 
+  }
+  
+}
 
+ 
  
 
   useEffect(() => { /*
@@ -283,7 +298,7 @@ export default function EnhancedTable() {
                
                />
              { /* <Button   style={{marginTop:8,marginLeft:5 }} type='submit' onClick={searchGbId}  variant="outlined">Show</Button>*/}
-             <Button   style={{marginTop:8,marginLeft:5 }} type='submit' onClick={()=>{setHistoryTable(true);setGbId(tempGbId.toString());}}  variant="outlined">Show</Button>
+             <Button   style={{marginTop:8,marginLeft:5 }} type='submit' onClick={()=>{handleSubmit()}}  variant="outlined">Show</Button>
             
            {/*  <IssueBookTable
               gbId={gbId}

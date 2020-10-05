@@ -22,7 +22,8 @@ namespace CTAImageUploadFromFolder
             {
                 cnn.Open();
 
-                string query = "SELECT sGBID FROM tblGreenBook";
+                //string query = "SELECT sGBID FROM tblGreenBook";
+                string query = "select sGBID from tblgreenbook where sBookIssued like '%2012%'";
                 MySqlCommand cmd = new MySqlCommand(query, cnn);
                 MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
                 DataTable dt = new DataTable("tblGreenBook");
@@ -129,6 +130,7 @@ namespace CTAImageUploadFromFolder
                 sbLogging.AppendLine("Start Process: " + sStartProcess);
                 sbLogging.AppendLine("End Process: " + sEndProcess);
                 sbLogging.AppendLine("Number of Images Inserted: " + nInsertedFileCount.ToString());
+                sbLogging.AppendLine("Number of Images Not found: " + nNotFoundFileCount.ToString());
                 sbLogging.AppendLine("===================================");
 
                 File.AppendAllText(sLogFolderPath + "log.txt", sbLogging.ToString());

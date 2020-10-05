@@ -106,17 +106,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                                       </FormControl>
                                   </Grid>
                                 <Grid item xs={12}>
-                                 <InputLabel shrink>Message</InputLabel>
-                                    <TextareaAutosize
-                                    aria-label="minimum height"
-                                    //rowsMin={5}
-                                    //className={props.classes.textField}
-                                    label="Message"            
-                                    value={body}
-                                    style={ { width:'100%', height:200} }
-                                    placeholder="Minimum 3 rows"
-                                    onChange={(e) => { console.log(e.target.value) }}
-                                    />
+                                <FormControl className={props.classes.formControl}>
+                                          <TextField
+                                              id="message"
+                                              label="Message"
+                                              //required={true}
+                                              multiline
+                                               rowsMax={4}
+                                          value={body}
+                                          onChange={(e) => { setBody(e.target.value) }}
+                                          />
+                                      </FormControl>         
+                             
                                 </Grid>
                                                         
                               </Grid>
