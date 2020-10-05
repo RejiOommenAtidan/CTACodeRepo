@@ -23,7 +23,7 @@ namespace CTAImageUploadFromFolder
                 cnn.Open();
 
                 //string query = "SELECT sGBID FROM tblGreenBook";
-                string query = "select sBookIssued from tblgreenbook where sBookIssued like '%2012%'";
+                string query = "select sGBID from tblgreenbook where sBookIssued like '%2012%'";
                 MySqlCommand cmd = new MySqlCommand(query, cnn);
                 MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
                 DataTable dt = new DataTable("tblGreenBook");
