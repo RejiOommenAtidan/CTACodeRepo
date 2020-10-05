@@ -129,6 +129,7 @@ namespace CTAImageUploadFromFolder
                 sbLogging.AppendLine("Start Process: " + sStartProcess);
                 sbLogging.AppendLine("End Process: " + sEndProcess);
                 sbLogging.AppendLine("Number of Images Inserted: " + nInsertedFileCount.ToString());
+                sbLogging.AppendLine("Number of Images Not found: " + nNotFoundFileCount.ToString());
                 sbLogging.AppendLine("===================================");
 
                 File.AppendAllText(sLogFolderPath + "log.txt", sbLogging.ToString());
