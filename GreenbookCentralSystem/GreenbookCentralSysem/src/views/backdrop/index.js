@@ -5,7 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
+    //Should be greater than 1300 because modal zIndex is 1300
+    zIndex: 1301,
     color: '#fff'
   }
 }));
@@ -17,6 +18,7 @@ export const BackdropComponent = (props) =>{
     <div>
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="primary" value="indeterminate"/>
+        {/*#828282 is for greying the Circular Component*/}
       </Backdrop>
     </div>
   );
