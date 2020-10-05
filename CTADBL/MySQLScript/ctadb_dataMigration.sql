@@ -1043,3 +1043,79 @@ SELECT `ident_note`.`NoteID`,
 FROM `greenbookprime`.`ident_note`;
 
 
+INSERT INTO lnkgbrelation
+(
+sGBID,
+sGBIDRelation,
+nRelationID,
+dtEntered,
+nEnteredBy,
+dtUpdated,
+nUpdatedBy
+)
+SELECT 
+    g.sGBID AS sGBID,
+    f.sGBID AS sGBIDRelation,
+    1 as nRelationID,
+    now(),
+    1,
+    now(),
+    1
+FROM
+    tblgreenbook g
+INNER JOIN tblgreenbook f ON 
+    f.sGBID = g.sFathersGBID and  g.sFathersGBID is not null
+ORDER BY 
+    sGBID;
+	
+
+INSERT INTO lnkgbrelation
+(
+sGBID,
+sGBIDRelation,
+nRelationID,
+dtEntered,
+nEnteredBy,
+dtUpdated,
+nUpdatedBy
+)
+SELECT 
+    g.sGBID AS sGBID,
+    f.sGBID AS sGBIDRelation,
+    2 as nRelationID,
+    now(),
+    1,
+    now(),
+    1
+FROM
+    tblgreenbook g
+INNER JOIN tblgreenbook f ON 
+    f.sGBID = g.sMothersGBID and  g.sMothersGBID is not null
+ORDER BY 
+    sGBID;
+	
+
+INSERT INTO lnkgbrelation
+(
+sGBID,
+sGBIDRelation,
+nRelationID,
+dtEntered,
+nEnteredBy,
+dtUpdated,
+nUpdatedBy
+)
+SELECT 
+    g.sGBID AS sGBID,
+    f.sGBID AS sGBIDRelation,
+    3 as nRelationID,
+    now(),
+    1,
+    now(),
+    1
+FROM
+    tblgreenbook g
+INNER JOIN tblgreenbook f ON 
+    f.sGBID = g.sSpouseGBID and  g.sSpouseGBID is not null
+ORDER BY 
+    sGBID;

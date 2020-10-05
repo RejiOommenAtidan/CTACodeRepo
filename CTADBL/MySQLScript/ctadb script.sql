@@ -1048,10 +1048,9 @@ DROP procedure IF EXISTS `spDeleteGreenBook`;
 
 DELIMITER $$
 
-CREATE PROCEDURE `spDeleteGreenBook`(IN sGBIDIN VARCHAR(255), OUT result INT)
+CREATE PROCEDURE `spDeleteGreenBook` (IN sGBIDIN VARCHAR(255))
 BEGIN
-    DELETE FROM tblgreenbook WHERE tblgreenbook.sGBID = sGBIDIN;
-    SET result = row_count();
+	delete from `tblgreenbook` WHERE `tblgreenbook`.`sGBID`= sGBIDIN;
 END
 
 DELIMITER ;
@@ -1088,14 +1087,4 @@ BEGIN
 	 WHERE nUserRightsID IN (Select `nUserRightsId` from tblUser where Id = nUserIdIN) and nRights=1;
 END$$
 
-DELIMITER ;
-
-DELIMITER $$
-CREATE PROCEDURE `spGetNewGreenBookSerialData`()
-BEGIN
-    SELECT Id, sMadebType FROM lstmadebtype;
-    SELECT ID, sAuthRegion FROM lstauthregion;
-    SELECT ID, sCountryID, sCountry FROM lstcountry;
-    SELECT max(nBookNo) + 1 AS nBookNo FROM tblgreenbookserial;
-END$$
 DELIMITER ;

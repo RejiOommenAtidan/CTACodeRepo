@@ -61,6 +61,7 @@ const SarsoNewGBEntry = lazy(() => import('./views/transactions/SarsoNewGBEntry/
 const GivenGBID = lazy(() => import('./views/transactions/givengbid'));
 const DeleteGB = lazy(() => import('./views/transactions/deletegb'));
 const GreenBookSerial = lazy(() => import('./views/transactions/greenbookserial'));
+const MakeList = lazy(() => import('./views/makelist'));
 const IssueBook = lazy(() => import('./views/transactions/issuebook'));
 const ChangePassword = lazy(() => import('./views/change password/index'));
 
@@ -203,6 +204,7 @@ const Routes = () => {
                 '/GivenGBID',
                 '/DeleteGB',
                 '/GreenBookSerial',
+                '/MakeList',
                 '/EditEntry/:GBID',
                 '/ChangePassword',
                 '/Users',
@@ -250,6 +252,7 @@ const Routes = () => {
                     <Route path="/GivenGBID" component={GivenGBID} />
                     <Route path="/DeleteGB" component={DeleteGB} />
                     <Route path="/GreenBookSerial" component={GreenBookSerial} />
+                    <Route path="/MakeList" component={MakeList} />
                     <Route path="/EditEntry/:GBID" component={EditEntry} />
                     <Route path="/ChangePassword" component={ChangePassword} />
                     <Route path="/Users" component={Users} />

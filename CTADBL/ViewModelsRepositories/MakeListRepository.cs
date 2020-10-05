@@ -44,7 +44,40 @@ namespace CTADBL.ViewModelsRepositories
                 return makeList;
             }
         }
+        #endregion
 
+        #region Set Printed 
+
+        public string SetPrinted(Dictionary<string, dynamic> dict)
+        {
+            string sql = @"UPDATE tblgreenbookissued SET nPrinted = 1 WHERE dtIssuedDate >= @startDate AND dtIssuedDate <= @endDate AND nMadebTypeId = @nMadebTypeId AND nAuthRegionId = @nAuthRegionId AND nPrinted = 0" ;
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("startDate", dict["startDate"]);
+                command.Parameters.AddWithValue("endDate", dict["endDate"]);
+                command.Parameters.AddWithValue("nMadebTypeId", dict["nMadebTypeId"]);
+                command.Parameters.AddWithValue("nAuthRegionId", dict["nAuthRegionId"]);
+                //command.Parameters.AddWithValue("nPrinted", dict["nPrinted"]);
+                command.Connection = _connection;
+                command.CommandType = CommandType.Text;
+                try
+                {
+                    _connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected.ToString();
+                }
+                catch(Exception ex)
+                {
+                    return (ex.Message);
+                }
+                finally
+                {
+                    _connection.Close();
+                }
+                
+                
+            }
+        }
         #endregion
 
 
