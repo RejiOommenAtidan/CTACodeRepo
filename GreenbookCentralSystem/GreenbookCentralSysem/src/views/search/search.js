@@ -7,8 +7,18 @@ import {
   Grid,
   Typography,
   Breadcrumbs,
-  Link
+  Link, Paper,
+  TextField,
+  FormControl,
+  FormControlLabel,
+  Radio,
+  FormLabel,
+  RadioGroup,
+  MenuItem,
+  Select,
+  InputLabel
 } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -115,6 +125,33 @@ export default function Feature() {
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
   const [filtering, setFiltering] = React.useState(false);
+
+
+  const [searchType, setSearchType] = React.useState('simple');
+
+  const handleChange = (event) => {
+    setSearchType(event.target.value);
+  };
+  const [searchField, setSearchField] = React.useState('');
+  const [searchFilter, setSearchFilter] = React.useState('sGBID');
+
+  const [firstName, setFirstName] = React.useState('');
+  const [secondName, setSecondName] = React.useState('');
+  const [familyName, setFamilyName] = React.useState('');
+  const [spouseName, setSpouseName] = React.useState('');
+  const [fatherName, setFatherName] = React.useState('');
+  const [motherName, setMotherName] = React.useState('');
+  const [dob, setDob] = React.useState('');
+  const [city, setCity] = React.useState('');
+  const [state, setState] = React.useState('');
+  const [country, setCountry] = React.useState('');
+  const [gender, setGender] = React.useState('');
+  const [minAge, setMinAge] = React.useState(0);
+  const [maxAge, setMaxAge] = React.useState(0);
+  const [countryData, setCountryData] = React.useState([]);
+
+   
+  
   const [backdrop, setBackdrop] = React.useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -198,7 +235,31 @@ export default function Feature() {
     setId(tableRowArray['id']);
     setEditModal(true);
   }
+  const getCountryData = () => {
+    axios.get(`Country/GetCountries`)
+      .then(resp => {
+        if (resp.status === 200) {
 
+          setCountryData(resp.data);
+          console.log(resp.data)
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  }
   const editAPICall = (feature) => {
     setBackdrop(true);
     axios.post(`/Feature/EditFeature/ID=` + Id, feature/*countryToUpdate*/)
@@ -299,6 +360,46 @@ export default function Feature() {
       });
   };
 
+
+
+  const handleSimpleSearch = (e) => {
+    
+    //setSearchField(e.target.value,console.log(searchField))
+    if (e.target.value.length > 3) {
+      const simpleObj ={
+        sSearchField:e.target.value,
+        sSearchType :searchFilter  
+      } 
+      alert(JSON.stringify(simpleObj))
+    }
+
+  }
+  const complexObj ={
+   
+   
+    sFirstname  :firstName,
+    sSecondname  :secondName,
+    sFamilyname  :familyName,
+    sSpousename:spouseName,
+    sFathername  :fatherName,
+    sMothername  :motherName,
+    dtDOB :dob,
+    sCity :city,
+    sState :state,
+    sCountry   :country,
+    sGender :gender,
+    nFromAge  :minAge,
+    nToAge  :maxAge
+  }
+  const handleComplexSearch = () => {
+    
+    //setSearchField(e.target.value,console.log(searchField))
+
+      
+      alert(JSON.stringify(complexObj))
+
+
+  }
   useEffect(() => {
     //Use === instead of ==
     if (authenticationService.currentUserValue === null) {
@@ -307,39 +408,21 @@ export default function Feature() {
   }, []);
 
   useEffect(() => {
-    axios.get(`Feature/GetFeatures`)
-      .then(resp => {
-        if (resp.status === 200) {
-          dispatch(storeDataAPI(resp.data));
-          setisLoading(false);
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
+
+    getCountryData();
+
   }, []);
 
   return (
     <>
       <Grid container spacing={1}>
-        <Grid item xs={12}>
+
+        <Grid item xs={12} sm={9}>
           <Breadcrumbs aria-label="breadcrumb">
             <Link color="inherit" href="/Home" >
               Home
             </Link>
-            <Typography color="textPrimary">Feature</Typography>
+            <Typography color="textPrimary">Search</Typography>
           </Breadcrumbs>
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
@@ -374,27 +457,283 @@ export default function Feature() {
               }
             ]}
           />
-          {addModal && <AddDialog
-            addModal={addModal}
-            classes={classes}
-            handleAddClickClose={handleAddClickClose}
-            addAPICall={addAPICall}
-          />}
-          {editModal && <EditDialog
-            editModal={editModal}
-            classes={classes}
-            handleEditClickClose={handleEditClickClose}
-            editAPICall={editAPICall}
-          />}
-          {snackbar && <Alerts
-            alertObj={alertObj}
-            snackbar={snackbar}
-            snackbarClose={snackbarClose}
-          />}
-          {backdrop && <BackdropComponent
-            backdrop={backdrop}
-          />}
+
         </Grid>
+        <Grid item xs={12} sm={3}>
+          <Paper style={{ padding: '10px' }}>
+            <Typography color="textPrimary" align="center">Search</Typography>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Search Category</FormLabel>
+              <RadioGroup aria-label="search" name="search" value={searchType} onChange={handleChange}>
+                <FormControlLabel value="simple" control={<Radio />} label="Simple Search" />
+                <FormControlLabel value="complex" control={<Radio />} label="Complex Search" />
+              </RadioGroup>
+            </FormControl>
+
+
+            <Grid container>
+
+              {searchType == 'simple' && <>
+                <Typography color="textPrimary" align="center">Simple Search</Typography>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+                      autoFocus
+                      id="id_searchField"
+                      label="Search Field"
+                      type="text"
+
+                      onChange={handleSimpleSearch}
+                    />
+                  </FormControl>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel id="lbl-SearchFilter">Search Filter</InputLabel>
+                    <Select
+                      labelId="lbl-SearchFilter"
+                      id="searchFilter"
+                      onChange={(e) => { setSearchFilter(e.target.value) }}
+                      value={searchFilter}
+                    >
+                      <MenuItem value="sGBID">GB Number</MenuItem>
+                      <MenuItem value="OldGreenBkNo">Old GB Number</MenuItem>
+                      <MenuItem value="sOldGreenBKNo">First GB Number</MenuItem>
+                      <MenuItem value="sResidenceNumber">Residence Number</MenuItem>
+                      <MenuItem value="sFathersGBID">Father's GB Number</MenuItem>
+                      <MenuItem value="sMothersGBID">Mother's GB Number</MenuItem>
+                      <MenuItem value="sSpouseID">Spouse GB Number</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </>
+              }
+              {searchType == 'complex' && <>
+                <Typography color="textPrimary" align="center">Complex Search</Typography>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+                      autoFocus
+                      id="id_firstName"
+                      label="First Name"
+                      type="text"
+
+                      onChange={(e) => { 
+                              
+                                  if(e.target.value>3){
+                              
+                                      setFirstName(e.target.value);
+                                      handleComplexSearch();
+                                    }
+                        
+                         }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+
+                      id="id_SecondName"
+                      label="Second Name"
+                      type="text"
+
+                      onChange={(e) => { setSecondName(e.target.value) }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+
+                      id="id_FamilyName"
+                      label="Family Name"
+                      type="text"
+
+                      onChange={(e) => { setFamilyName(e.target.value) }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+
+                      id="id_SpouseName"
+                      label="SpouseName"
+                      type="text"
+
+                      onChange={(e) => { setSpouseName(e.target.value) }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+
+                      id="id_FatherName"
+                      label="Father's Name"
+                      type="text"
+
+                      onChange={(e) => { setFatherName(e.target.value) }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+
+                      id="id_MotherName"
+                      label="Mother's Name"
+                      type="text"
+
+                      onChange={(e) => { setMotherName(e.target.value) }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+                      id="date"
+                      label="DOB"
+                      type="date"
+                      // defaultValue="2017-05-24"
+                      className={classes.textField}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+
+                      id="id_city"
+                      label="City/Town"
+                      type="text"
+
+                      onChange={(e) => { setCity(e.target.value) }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+
+                      id="id_state"
+                      label="State"
+                      type="text"
+
+                      onChange={(e) => { setState(e.target.value) }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <Autocomplete
+                      openOnFocus
+                      clearOnEscape
+                      onChange={
+                        (e, value) => {
+                          if (value !== null) {
+                            console.log(value.sCountryID);
+                            setCountry(value.sCountryID);
+                          }
+                          else {
+                            setCountry('');
+                          }
+                        }
+                      }
+
+
+                      id="id_sCountry"
+                      options={countryData}
+                      /*  classes={{
+                            option: classes.option,
+                        }}
+                        className={classes.textField}*/
+                      autoHighlight
+                      getOptionLabel={(option) => option.sCountry}
+                      renderOption={(option) => (
+                        <React.Fragment>
+                          <span>{option.sCountry}</span>
+                        </React.Fragment>
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Country"
+                          variant="standard"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'new-password', // disable autocomplete and autofill
+                          }}
+                        />
+                      )}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel id="lbl_gender">Gender</InputLabel>
+                    <Select
+                      labelId="lbl_gender"
+                      id="id_gender"
+                      onChange={(e) => { setGender(e.target.value) }}
+                    >
+                      <MenuItem value={'M'}>Male</MenuItem>
+                      <MenuItem value={'F'}>Female</MenuItem>
+
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+
+                      id="id_minAge"
+                      label="Min Age"
+                      type="number"
+
+                      onChange={(e) => { setMinAge(e.target.value) }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+
+                      id="id_maxAge"
+                      label="Max Age"
+                      type="number"
+
+                      onChange={(e) => { setMaxAge(e.target.value) }}
+                    />
+                  </FormControl>
+                </Grid>
+              </>}
+            </Grid>
+          </Paper>
+        </Grid>
+        {addModal && <AddDialog
+          addModal={addModal}
+          classes={classes}
+          handleAddClickClose={handleAddClickClose}
+          addAPICall={addAPICall}
+        />}
+        {editModal && <EditDialog
+          editModal={editModal}
+          classes={classes}
+          handleEditClickClose={handleEditClickClose}
+          editAPICall={editAPICall}
+        />}
+        {snackbar && <Alerts
+          alertObj={alertObj}
+          snackbar={snackbar}
+          snackbarClose={snackbarClose}
+        />}
+        {backdrop && <BackdropComponent
+          backdrop={backdrop}
+        />}
+
       </Grid>
     </>
   );

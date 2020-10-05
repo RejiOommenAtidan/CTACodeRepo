@@ -265,7 +265,8 @@ function Alert(props) {
                                          <TextField
                                              id="remarks"
                                              label="Remarks"
-                                             type="text"
+                                             multiline
+                                             rows={4}
                                              InputProps={{
                                                  readOnly: false,
                                              }}
@@ -532,7 +533,8 @@ export const SaveDialog = (props) => {
                                         <TextField
                                             id="remarks"
                                             label="Remarks"
-                                            type="text"
+                                            multiline
+                                            rows={4}
                                             InputProps={{
                                                 readOnly: false,
                                             }}
@@ -540,6 +542,7 @@ export const SaveDialog = (props) => {
                                             onChange={(e) => { setRemarks(e.target.value) }}
 
                                         />
+                                          
                                     </FormControl>
                                 </Grid>
                             </Grid>
