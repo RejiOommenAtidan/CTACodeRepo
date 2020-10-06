@@ -90,13 +90,13 @@ namespace CTAWebAPI.Controllers.Transactions
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("[action]")]
 
-        public IActionResult GetGreenBookVM(string parameter, string value)
+        public IActionResult GetGreenBookVM(SimpleSearchVM simpleSearch)
         {
 
-            if (String.IsNullOrEmpty(parameter) || String.IsNullOrEmpty(value))
+            if (String.IsNullOrEmpty(simpleSearch.sSearchField) || String.IsNullOrEmpty(simpleSearch.sSearchValue))
             {
                 return BadRequest(String.Format(@"Invalid request parameters"));
             }
@@ -104,14 +104,14 @@ namespace CTAWebAPI.Controllers.Transactions
 
             try
             {
-                GreenBookVM greenBook = _greenBookVMRepository.GetGreenbookVMRecord(parameter, value);
+                GreenBookVM greenBook = _greenBookVMRepository.GetGreenbookVMRecord(simpleSearch.sSearchField, simpleSearch.sSearchValue);
                 if(greenBook != null)
                 {
                     return Ok(greenBook);
                 }
                 else
                 {
-                    return NotFound(String.Format(@"No records found for {0} having value {1}", parameter, value));
+                    return NotFound(String.Format(@"No records found for {0} having value {1}", simpleSearch.sSearchField, simpleSearch.sSearchValue));
                 }
             }
             catch(Exception ex)

@@ -36,8 +36,10 @@ namespace CTADBL.ViewModelsRepositories
                 command.Parameters.AddWithValue("nPrinted", dict["nPrinted"]);
                 command.Connection = _connection;
                 command.CommandType = CommandType.Text;
-                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                command.CommandTimeout = 999;
+
                 DataSet ds = new DataSet();
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
                 mySqlDataAdapter.Fill(ds);
                 DataTableCollection tables = ds.Tables;
                 IEnumerable<MakeList> makeList = tables[0].AsEnumerable().Select(row => new MakeList { sFirstName = row.Field<string>("sFirstName"), sMiddleName = row.Field<string>("sMiddleName"), sLastName = row.Field<string>("sLastName"), sAliasName = row.Field<string>("sAliasName"), sFathersName = row.Field<string>("sFathersName"), sCity = row.Field<string>("sCity"), sOldGreenBkNo = row.Field<string>("sOldGreenBkNo"), sGBID = row.Field<string>("sGBID"), sAddress1 = row.Field<string>("sAddress1") }).ToList();
