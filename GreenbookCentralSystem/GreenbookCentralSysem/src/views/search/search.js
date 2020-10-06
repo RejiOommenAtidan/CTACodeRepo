@@ -472,7 +472,7 @@ export default function Feature() {
               <FormLabel component="legend">Search Category</FormLabel>
               <RadioGroup aria-label="search" name="search" value={searchType} onChange={handleChange}>
                 <FormControlLabel value="simple" control={<Radio />} label="Simple Search" />
-                <FormControlLabel value="complex" control={<Radio />} label="Complex Search" />
+                <FormControlLabel value="complex" control={<Radio />} label="Detailed Search" />
               </RadioGroup>
             </FormControl>
             <Grid container>
