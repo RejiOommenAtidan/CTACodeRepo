@@ -308,7 +308,7 @@ const handleSubmit = () =>{
               
          { historyTable &&   
                         <IssueBookTable
-                    gbId={gbId}ssssss
+                    gbId={gbId}
                     />}
                           
 
