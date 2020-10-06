@@ -210,7 +210,7 @@ export default function Feature() {
       },
     },
     {
-      render: rowData => rowData['greenBook']['sFirstName'] +" "+ rowData['greenBook']['sLastName'],
+      render: rowData => rowData['greenBook']['sFirstName'] + " " + rowData['greenBook']['sLastName'],
       //field: "abc",
       title: "Name",
       filterPlaceholder: 'Search..',
@@ -472,15 +472,14 @@ export default function Feature() {
     //setSearchField(e.target.value,console.log(searchField))
     if (e.target.value.length > 3) {
       const simpleObj = {
-        sSearchField: e.target.value,
-        sSearchType: searchFilter
+
+        sSearchField: searchFilter,
+        sSearchType: e.target.value
       }
       //alert(JSON.stringify(simpleObj));
-      axios.post(`Greenbook/GetGreenBookVM`,simpleObj)
+      axios.post(`Greenbook/GetGreenBookVM`, simpleObj)
         .then(resp => {
           if (resp.status === 200) {
-            //console.log(resp.data);
-            //setdataFromAPI(Object.entries(resp.data));
             const mydata = [resp.data]
             console.log(mydata);
             setdataFromAPI(mydata);
