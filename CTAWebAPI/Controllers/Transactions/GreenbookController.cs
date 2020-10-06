@@ -104,7 +104,7 @@ namespace CTAWebAPI.Controllers.Transactions
 
             try
             {
-                GreenBookVM greenBook = _greenBookVMRepository.GetGreenbookVMRecord(simpleSearch.sSearchField, simpleSearch.sSearchValue);
+                IEnumerable<GreenBookVM> greenBook = _greenBookVMRepository.GetGreenbookVMRecord(simpleSearch.sSearchField, simpleSearch.sSearchValue);
                 if(greenBook != null)
                 {
                     return Ok(greenBook);
