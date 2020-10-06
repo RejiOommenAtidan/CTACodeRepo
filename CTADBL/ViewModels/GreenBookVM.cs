@@ -18,7 +18,8 @@ namespace CTADBL.ViewModels
     {
         private Greenbook _greenbook;
         private IEnumerable<GBChildren>? _children = null;
-        private IEnumerable<IssueBook>? _bookIssued = null;
+        private IEnumerable<IssueBook>? _booksIssued = null;
+        private IEnumerable<GBNote>? _gbNotes = null;
         private string _sAuthRegion;
         private string? _sProvince;
         private string? _sQualification;
@@ -26,6 +27,7 @@ namespace CTADBL.ViewModels
         private string? _sFathersGBID;
         private string? _sMothersGBID;
         private string? _sSpouseGBID;
+        //private int? _nAge = null;
 
 
     
@@ -53,15 +55,27 @@ namespace CTADBL.ViewModels
             }
         }
 
-        public IEnumerable<IssueBook>? bookIssued
+        public IEnumerable<IssueBook>? booksIssued
         {
             get
             {
-                return _bookIssued;
+                return _booksIssued;
             }
             set
             {
-                _bookIssued = value;
+                _booksIssued = value;
+            }
+        }
+
+        public IEnumerable<GBNote>? gbNotes
+        {
+            get
+            {
+                return _gbNotes;
+            }
+            set
+            {
+                _gbNotes = value;
             }
         }
 
@@ -142,6 +156,13 @@ namespace CTADBL.ViewModels
             set
             {
                 _sSpouseGBID = value;
+            }
+        }
+        public int? nAge
+        {
+            get
+            {
+                return greenBook.dtDOB.HasValue ? DateTime.Now.Year - greenBook.dtDOB.Value.Year : (int?)null ;
             }
         }
     }
