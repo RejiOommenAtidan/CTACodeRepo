@@ -67,8 +67,8 @@ const ChangePassword = lazy(() => import('./views/change password/index'));
 
 const Users = lazy(() => import('./views/transactions/users/index'));
 
-const PrintPage = lazy(() => import('./views/print'));
-const Print = lazy(() => import('./views/print/print.js'));
+const Print = lazy(() => import('./views/print'));
+const PrintPage = lazy(() => import('./views/print/print.js'));
 const FeatureUserrights = lazy(() => import('./views/transactions/featureuserrights/index'));
 const Search = lazy(() => import('./views/search/index'));
 
@@ -157,7 +157,7 @@ const Routes = () => {
                 '/PageError404',
                 '/PageError500',
                 '/PageError505',
-                '/Print'
+                '/PrintPage'
               ]}>
               <MinimalLayout>
                 <Switch location={location} key={location.pathname}>
@@ -169,7 +169,7 @@ const Routes = () => {
                     transition={pageTransition}>
                     <Route path="/PageProfile" component={PageProfile} />
 
-                    <Route path="/Print" component={Print} />
+                    <Route path="/PrintPage" component={Print} />
                     <Route path="/PageError404" component={PageError404} />
                     <Route path="/PageError500" component={PageError500} />
                     <Route path="/PageError505" component={PageError505} />
@@ -209,7 +209,7 @@ const Routes = () => {
                 '/EditEntry/:GBID',
                 '/ChangePassword',
                 '/Users',
-                '/PrintPage',
+                '/Print',
                 '/FeatureRoles',
                 '/Search'
               ]}>
@@ -238,7 +238,7 @@ const Routes = () => {
                     {/*<Route path="/Feature" component={Feature} />*/}
                     <Route path="/UserRights" component={UserRights} />
                     <Route path="/TypeIssued" component={TypeIssued} />
-                    <Route path="/PrintPage" component={PrintPage} />
+                    <Route path="/Print" component={Print} />
 
                     <Route path="/Sarso" component={Sarso} />
                     <Route path="/Norchoe" component={Norchoe} />

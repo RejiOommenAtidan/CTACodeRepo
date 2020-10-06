@@ -16,7 +16,8 @@ import {
   RadioGroup,
   MenuItem,
   Select,
-  InputLabel
+  InputLabel,
+  Button
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { red } from '@material-ui/core/colors';
@@ -24,7 +25,7 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import IconButton from '@material-ui/core/IconButton';
-import { AddDialog, EditDialog } from './dialog';
+import { ViewDialog } from './dialog';
 import MaterialTable from 'material-table';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -89,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2)
   },
   formControl: {
-    margin: theme.spacing(0.5),
+    margin: theme.spacing(0),
     width: '100%'
   },
   paper: {
@@ -100,11 +101,11 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(0)
   },
   box: {
-    marginBottom: theme.spacing(1.5),
-    marginTop: theme.spacing(1.5)
+    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   button: {
     margin: theme.spacing(1)
@@ -115,6 +116,30 @@ const useStyles = makeStyles((theme) => ({
     },
     secondary: {
       main: '#11cb5f'
+    }
+  },
+  heading: {
+    fontSize: 15,
+    fontWeight: 10,
+    flexBasis: '33.33%',
+    flexShrink: 0
+  },
+  border: '1px solid rgba(0, 0, 0, .125)',
+  boxShadow: 'none',
+  '&:not(:last-child)': {
+    borderBottom: 0
+  },
+  '&:before': {
+    display: 'none'
+  },
+  '&$expanded': {
+    margin: 'auto'
+  },
+  option: {
+    fontSize: 10,
+    '& > span': {
+      marginRight: 5,
+      fontSize: 16
     }
   }
 }));
@@ -127,12 +152,13 @@ export default function Feature() {
   const classes = useStyles();
   const [isLoading, setisLoading] = React.useState(true);
   const [editModal, setEditModal] = React.useState(false);
-  const [addModal, setAddModal] = useState(false);
+  const [viewModal, setViewModal] = useState(false);
   const [Id, setId] = React.useState('');
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
   const [filtering, setFiltering] = React.useState(false);
   const [dataFromAPI, setdataFromAPI] = React.useState([]);
+  const [data, setdata] = React.useState([]);
 
   const [searchType, setSearchType] = React.useState('simple');
 
@@ -178,10 +204,14 @@ export default function Feature() {
   const handleEditClickClose = () => {
     setEditModal(false);
   };
-  const handleAddClickClose = () => {
-    setAddModal(false);
+  const handleViewClickClose = () => {
+    setViewModal(false);
   };
 
+  const viewGb = (rowData) =>{
+      setdata(rowData);
+      setViewModal(true);
+      }
   const columns = [
     {
       field: "id",
@@ -192,7 +222,7 @@ export default function Feature() {
       },
     },
     {
-      render: rowData => rowData['greenBook']['sCountryID'] + rowData['greenBook']['sGBID'],
+      render: rowData => <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={()=>{ viewGb(rowData)}}><span>{rowData['greenBook']['sCountryID'] + rowData['greenBook']['sGBID']}</span></Button> ,
       //field: "greenBook.sGBID",
       title: "GB ID",
       filterPlaceholder: 'Search..',
@@ -424,7 +454,7 @@ export default function Feature() {
     axios.post(`/Feature/AddFeature/`, feature)
       .then(resp => {
         if (resp.status === 200) {
-          setAddModal(false);
+    //      setAddModal(false);
           axios.get(`Feature/GetFeatures`)
             .then(resp => {
               if (resp.status === 200) {
@@ -482,6 +512,7 @@ export default function Feature() {
           if (resp.status === 200) {
             const mydata = [resp.data]
             console.log(mydata);
+           
             setdataFromAPI(mydata);
             setisLoading(false);
           }
@@ -562,7 +593,7 @@ export default function Feature() {
       fatherName.length > 3 || motherName.length > 3 ||
       city.length > 3 || state.length > 3 ||
       dob || country || minAge || maxAge) {
-      alert(JSON.stringify(complexObj));
+      //alert(JSON.stringify(complexObj));
     }
   }, [firstName, secondName, familyName, spouseName, fatherName, motherName, city, state, dob, country, gender, minAge, maxAge]);
 
@@ -600,7 +631,7 @@ export default function Feature() {
                 icon: AddBox,
                 tooltip: 'Add Feature',
                 isFreeAction: true,
-                onClick: () => setAddModal(true)
+      
               },
               {
                 icon: Search,
@@ -872,18 +903,13 @@ export default function Feature() {
             </Grid>
           </Paper>
         </Grid>
-        {addModal && <AddDialog
-          addModal={addModal}
+        {viewModal && <ViewDialog
+          viewModal={viewModal}
           classes={classes}
-          handleAddClickClose={handleAddClickClose}
-          addAPICall={addAPICall}
+          handleViewClickClose={handleViewClickClose}
+          data={data}
         />}
-        {editModal && <EditDialog
-          editModal={editModal}
-          classes={classes}
-          handleEditClickClose={handleEditClickClose}
-          editAPICall={editAPICall}
-        />}
+     
         {snackbar && <Alerts
           alertObj={alertObj}
           snackbar={snackbar}
