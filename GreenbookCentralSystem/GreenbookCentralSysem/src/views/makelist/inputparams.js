@@ -80,7 +80,7 @@ export const InputParams = (props) => {
         <TextField
           id="startDate"
           name="startDate"
-          label="Start Date"
+          label="Date From"
           type="date"
           //defaultValue={dtDate}
           className={props.classes.textField}
@@ -102,7 +102,7 @@ export const InputParams = (props) => {
         <TextField
           id="endDate"
           name="endDate"
-          label="End Date"
+          label="Date To"
           type="date"
           //defaultValue={dtDate}
           className={props.classes.textField}
@@ -149,7 +149,7 @@ export const InputParams = (props) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Madeb Type"
+                  label="Why Issued"
                   variant="standard"
                   className={props.classes.textField}
                   inputProps={{
@@ -192,7 +192,7 @@ export const InputParams = (props) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Authority Region"
+                  label="Where Issued"
                   className={props.classes.textField}
                   variant="standard"
                   inputProps={{
@@ -207,20 +207,19 @@ export const InputParams = (props) => {
 
         <Grid item xs={12} sm={12} md={2}>
           <FormControl >
-            <InputLabel id="Printed">Print Status</InputLabel>
+            <InputLabel id="Printed/Not">Print Status</InputLabel>
             <Select
               onChange={handlePrintStatus}
               style={{ width: 150 }}            
             >
-              <MenuItem value={0}>Not Printed</MenuItem>
               <MenuItem value={1}>Printed</MenuItem>
-              
+              <MenuItem value={0}>Not Printed</MenuItem>
             </Select>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} style={{justifyContent: 'center', display: 'flex' }}>
           <FormControl style={{justifyContent: 'center'}}>
-            <Button type="submit" color="primary" style={{fontSize: '1em'}}>Make List</Button>
+            <Button variant="outlined" type="submit" color="primary" style={{fontSize: '1em'}}>Make List</Button>
           </FormControl>
         </Grid>
         

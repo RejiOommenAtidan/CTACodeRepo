@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import axios from 'axios';
+import {Alerts} from '../../alerts';
 
 import {
   Box,
@@ -220,6 +221,10 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                          {...params}
                                          label="Authority"
                                          variant="standard"
+                                         inputRef={register({
+                                            required: true
+                                          })}
+                                         name="text_authority"
                                          inputProps={{
                                            ...params.inputProps,
                                            autoComplete: 'new-password', // disable autocomplete and autofill
@@ -227,6 +232,9 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                         />
                                       )}
                                     />
+                                    {_.get("text_authority.type", errors) === "required" && (
+                                         <span style={{color: 'red'}}>This field is required</span>
+                                      )}
                                   </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -473,19 +481,27 @@ console.log("Madeb Edit Object received in dialog", madeb);
 export const AddDialog = (props) => {
     const { register, handleSubmit, watch, errors } = useForm();
     
-    
+    // SnackBar Alerts 
+
+   const [alertMessage, setAlertMessage] = useState("");
+   const [alertType, setAlertType] = useState("");
+   const alertObj={
+     alertMessage:alertMessage,
+     alertType:alertType
+   }
+   const [snackbar,setSnackbar]=React.useState(false);
+   const snackbarOpen = () => {
+     console.log('alert');
+     setSnackbar(true);
+   }
+   const snackbarClose = () => {
+     setSnackbar(false);
+   };
+
+
    
 
-    const [message,setMessage]=React.useState('');
-    const [alertType,setAlertType]=React.useState('');
-    const [snackbarOpen,setSnackbarOpen]=React.useState(false);
-    const snackbarClose = (event, reason) => {
-      if (reason === 'clickaway') {
-        return;
-      }
-  
-      setSnackbarOpen(false);
-    };
+   
     const handleSnackBarSubmit = () =>{
       // setMessage("Record Successfully Edited");
       // setAlertType('success');
@@ -533,7 +549,10 @@ export const AddDialog = (props) => {
          else{
            setName('');
            setFname('');
-           console.log(resp);
+           console.log("Not found" , resp);
+           setAlertMessage(`No record found for GB Id: ${gbid}.` );
+           setAlertType('error');
+           snackbarOpen();
          }
        })
        .catch((error) => {
@@ -650,6 +669,7 @@ console.log("Madeb Object in Add dialog", madeb);
                                       }
                                      //value={valueAuthRegion} 
                                      id="id_nAuthorityId"
+                                     name="authority"
                                      options={authorityData}
                                      autoHighlight
                                      getOptionLabel={(option) => option.sAuthRegion}
@@ -663,7 +683,10 @@ console.log("Madeb Object in Add dialog", madeb);
                                          {...params}
                                          label="Authority"
                                          variant="standard"
-                                         name="authority_text"
+                                         inputRef={register({
+                                          required: true
+                                        })}
+                                        name="text_authority"
                                          inputProps={{
                                            ...params.inputProps,
                                            autoComplete: 'new-password', // disable autocomplete and autofill
@@ -673,8 +696,11 @@ console.log("Madeb Object in Add dialog", madeb);
                                         />
                                       )}
                                       
-                                      name="authority"
-                                    />
+                                      
+                                      />
+                                      {_.get("text_authority.type", errors) === "required" && (
+                                         <span style={{color: 'red'}}>This field is required</span>
+                                      )}
                                     
                                   </FormControl>
                                 </Grid>
@@ -787,7 +813,12 @@ console.log("Madeb Object in Add dialog", madeb);
                                         />
                                     </FormControl>
                                 </Grid>
-
+                                { snackbar && <Alerts
+                                   alertObj={alertObj}
+                                  snackbar={snackbar}
+                                  snackbarClose={snackbarClose}
+                                  /> 
+                                }
                                 
                             </Grid>
                         </div>
@@ -798,11 +829,11 @@ console.log("Madeb Object in Add dialog", madeb);
 
        {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
      
-        <Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
+        {/* <Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
         <Alert  onClose={snackbarClose} severity={alertType}  >
          {message}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
         <Button type="submit" color="primary">Save</Button> 
       </DialogActions>

@@ -15,29 +15,24 @@ import Slide from '@material-ui/core/Slide';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import {Alerts} from '../../alerts';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
+
 
 export const EditDialog = (props) => {
   const { register, handleSubmit, watch, errors } = useForm();
 
 
   console.log(props.briefGBObj);
-  const [snackbarOpen,setSnackbarOpen]=React.useState(false);
-  const snackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setSnackbarOpen(false);
-  };
+   
+  
+  
+ 
   const handleSubmitEditRecord = () =>{
     props.editAPICall(madeb);
     
@@ -67,6 +62,7 @@ export const EditDialog = (props) => {
   const [nSaneyFormNo, setSaney] = React.useState(props.briefGBObj.nSaneyFormNo);
   const [nCurrentGBSno, setCurrentGBSNo] = useState(props.briefGBObj.nCurrentGBSno);
   const [nPreviousGBSno, setPreviousGBSNo] = useState(props.briefGBObj.nPreviousGBSno);
+  const [sApprovedReject, setApprovedReject] = useState(props.briefGBObj.sApprovedReject);
   const [dtIssueAction, setIssueActionDate] = React.useState(props.briefGBObj.dtIssueAction ?(props.briefGBObj.dtIssueAction).split('T')[0] : undefined);
   const [dtReject, setRejectDate] = useState(props.briefGBObj.dtReject ? (props.briefGBObj.dtReject).split('T')[0] : undefined);
   const [nIssuedOrNotID, setIssueAction] = React.useState(props.briefGBObj.nIssuedOrNotID);
@@ -87,6 +83,7 @@ export const EditDialog = (props) => {
     nSaneyFormNo,
     nCurrentGBSno,
     nPreviousGBSno,
+    sApprovedReject,
     dtIssueAction,
     dtReject,
     nIssuedOrNotID,
@@ -332,6 +329,22 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                     </FormControl>
                                 </Grid>
 
+                                
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
+                                        <TextField
+                                            id="sApprovedReject"
+                                            name="sApprovedReject"
+                                        label="Approved/Rejected"
+                                        //required={true}
+                                        value={sApprovedReject}
+                                        onChange={(e) => { setApprovedReject(e.target.value) }}
+                                        
+                                      />
+                                      
+                                    </FormControl>
+                                </Grid>
+
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
@@ -439,6 +452,7 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                         />
                                     </FormControl>
                                 </Grid>
+                                
                             </Grid>
                         </div>
         </DialogContentText>
@@ -448,11 +462,11 @@ console.log("Madeb Edit Object received in dialog", madeb);
 
        {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
      
-        <Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
+        {/* <Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
         <Alert  onClose={snackbarClose} severity={alertType}  >
          {message}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
       <Button type="submit" color="primary">Save</Button> 
       </DialogActions>
@@ -467,16 +481,31 @@ console.log("Madeb Edit Object received in dialog", madeb);
 
 export const AddDialog = (props) => {
     const { register, handleSubmit, watch, errors } = useForm();
-    const [message,setMessage]=React.useState('');
-    const [alertType,setAlertType]=React.useState('');
-    const [snackbarOpen,setSnackbarOpen]=React.useState(false);
-    const snackbarClose = (event, reason) => {
-      if (reason === 'clickaway') {
-        return;
-      }
-  
-      setSnackbarOpen(false);
-    };
+    
+
+    // SnackBar Alerts 
+
+   const [alertMessage, setAlertMessage] = useState("");
+   const [alertType, setAlertType] = useState("");
+   const alertObj={
+     alertMessage:alertMessage,
+     alertType:alertType
+   }
+   const [snackbar,setSnackbar]=React.useState(false);
+   const snackbarOpen = () => {
+     console.log('alert');
+     setSnackbar(true);
+   }
+   const snackbarClose = () => {
+     setSnackbar(false);
+   };
+
+
+
+
+
+
+
     const handleSnackBarSubmit = () =>{
       // setMessage("Record Successfully Edited");
       // setAlertType('success');
@@ -524,13 +553,19 @@ export const AddDialog = (props) => {
          else{
            setName('');
            setFname('');
-           console.log(resp);
+           console.log("Not found" , resp);
+           setAlertMessage(`No record found for GB Id: ${gbid}.` );
+          setAlertType('error');
+          snackbarOpen();
          }
        })
        .catch((error) => {
          setName('');
          setName('');
          console.log(error);
+         setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.` );
+          setAlertType('error');
+          snackbarOpen();
        });
      };
 
@@ -809,7 +844,12 @@ export const AddDialog = (props) => {
                                         />
                                     </FormControl>
                                 </Grid>
-
+                                { snackbar && <Alerts
+                                   alertObj={alertObj}
+                                  snackbar={snackbar}
+                                  snackbarClose={snackbarClose}
+                                  /> 
+                                }
                                 
                             </Grid>
                         </div>
@@ -820,11 +860,11 @@ export const AddDialog = (props) => {
 
        {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
      
-        <Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
+        {/* <Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
         <Alert  onClose={snackbarClose} severity={alertType}  >
          {message}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
         <Button type="submit" color="primary">Save</Button> 
       </DialogActions>

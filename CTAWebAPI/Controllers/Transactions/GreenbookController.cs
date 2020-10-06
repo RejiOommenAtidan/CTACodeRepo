@@ -24,12 +24,14 @@ namespace CTAWebAPI.Controllers.Transactions
         private readonly DBConnectionInfo _info;
         private readonly GreenbookRepository _greenbookRepository;
         private readonly GetGBDataByFormNumberVMRepository _getGBDataByFormNumberVMRepository;
+        private GreenBookVMRepository _greenBookVMRepository;
         private readonly CTALogger _ctaLogger;
         public GreenbookController(DBConnectionInfo info)
         {
             _info = info;
             _greenbookRepository = new GreenbookRepository(_info.sConnectionString);
             _getGBDataByFormNumberVMRepository = new GetGBDataByFormNumberVMRepository(_info.sConnectionString);
+            _greenBookVMRepository = new GreenBookVMRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
         }
         #endregion
@@ -87,6 +89,37 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
+
+        [HttpGet]
+        [Route("[action]")]
+
+        public IActionResult GetGreenBookVM(string parameter, string value)
+        {
+
+            if (String.IsNullOrEmpty(parameter) || String.IsNullOrEmpty(value))
+            {
+                return BadRequest(String.Format(@"Invalid request parameters"));
+            }
+
+
+            try
+            {
+                GreenBookVM greenBook = _greenBookVMRepository.GetGreenbookVMRecord(parameter, value);
+                if(greenBook != null)
+                {
+                    return Ok(greenBook);
+                }
+                else
+                {
+                    return NotFound(String.Format(@"No records found for {0} having value {1}", parameter, value));
+                }
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            
+        }
 
         [HttpGet("GetGreenbook/sGBID={sGBID}")]
         [Route("[action]")]
