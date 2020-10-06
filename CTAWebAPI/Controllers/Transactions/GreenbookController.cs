@@ -107,6 +107,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 IEnumerable<GreenBookVM> greenBook = _greenBookVMRepository.GetGreenbookVMRecord(simpleSearch.sSearchField, simpleSearch.sSearchValue);
                 if(greenBook != null)
                 {
+                    var totrec = greenBook.Count();
                     return Ok(greenBook);
                 }
                 else
@@ -120,6 +121,26 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             
         }
+
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult GetDetails(GreenBookVM gvm)
+        {
+            if(gvm == null || !ModelState.IsValid)
+            {
+                return BadRequest("Invalid Data.");
+            }
+            try
+            {
+                GreenBookVM greenBook = _greenBookVMRepository.GetDetails(gvm);
+                return Ok(gvm);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
 
         [HttpGet("GetGreenbook/sGBID={sGBID}")]
         [Route("[action]")]
