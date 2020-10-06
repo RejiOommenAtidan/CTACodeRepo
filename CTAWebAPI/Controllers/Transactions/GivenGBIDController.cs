@@ -21,11 +21,13 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly GivenGBIDRepository _givenGBIDRepository;
+        private readonly MadebRepository _madebRepository;
         private readonly CTALogger _ctaLogger;
         public GivenGBIDController(DBConnectionInfo info)
         {
             _info = info;
             _givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
+            _madebRepository = new MadebRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
         }
         #endregion
@@ -112,6 +114,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     givenGBID.dtEntered = DateTime.Now;
                     givenGBID.dtUpdated = DateTime.Now;
                     _givenGBIDRepository.Add(givenGBID);
+                    _madebRepository.UpdateByFormNo(givenGBID.nFormNo, givenGBID.nGBId.ToString());
 
                     #region Information Logging 
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, givenGBID.nEnteredBy);

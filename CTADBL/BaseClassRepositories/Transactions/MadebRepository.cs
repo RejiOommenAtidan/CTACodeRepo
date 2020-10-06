@@ -34,6 +34,14 @@ namespace CTADBL.BaseClassRepositories.Transactions
             var builder = new SqlQueryBuilder<Madeb>(madeb);
             ExecuteCommand(builder.GetUpdateCommand());
         }
+
+        public void UpdateByFormNo(int nFormNumber, string sGBID)
+        {
+            Madeb madeb = GetMadebByFormNumber(nFormNumber);
+            madeb.sGBID = sGBID;
+            madeb.dtUpdated = DateTime.Now;
+            this.Update(madeb);
+        }
         #endregion
 
         #region Madeb Delete
