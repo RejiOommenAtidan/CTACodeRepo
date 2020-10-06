@@ -46,6 +46,11 @@ import { aPageSizeArray } from '../../config/commonConfig';
 import { nPageSize } from '../../config/commonConfig';
 import { Alerts } from '../alerts/index';
 import { BackdropComponent } from '../backdrop/index';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -66,6 +71,8 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
+
+const ageCoded = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -141,17 +148,17 @@ export default function Feature() {
   const [spouseName, setSpouseName] = React.useState('');
   const [fatherName, setFatherName] = React.useState('');
   const [motherName, setMotherName] = React.useState('');
-  const [dob, setDob] = React.useState('');
+  const [dob, setDob] = React.useState(null);
   const [city, setCity] = React.useState('');
   const [state, setState] = React.useState('');
   const [country, setCountry] = React.useState('');
   const [gender, setGender] = React.useState('');
-  const [minAge, setMinAge] = React.useState(0);
-  const [maxAge, setMaxAge] = React.useState(0);
+  const [minAge, setMinAge] = React.useState('');
+  const [maxAge, setMaxAge] = React.useState('');
   const [countryData, setCountryData] = React.useState([]);
 
-   
-  
+
+
   const [backdrop, setBackdrop] = React.useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -235,31 +242,7 @@ export default function Feature() {
     setId(tableRowArray['id']);
     setEditModal(true);
   }
-  const getCountryData = () => {
-    axios.get(`Country/GetCountries`)
-      .then(resp => {
-        if (resp.status === 200) {
 
-          setCountryData(resp.data);
-          console.log(resp.data)
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-  }
   const editAPICall = (feature) => {
     setBackdrop(true);
     axios.post(`/Feature/EditFeature/ID=` + Id, feature/*countryToUpdate*/)
@@ -363,43 +346,38 @@ export default function Feature() {
 
 
   const handleSimpleSearch = (e) => {
-    
+
     //setSearchField(e.target.value,console.log(searchField))
     if (e.target.value.length > 3) {
-      const simpleObj ={
-        sSearchField:e.target.value,
-        sSearchType :searchFilter  
-      } 
-      alert(JSON.stringify(simpleObj))
+      const simpleObj = {
+        sSearchField: e.target.value,
+        sSearchType: searchFilter
+      }
+      alert(JSON.stringify(simpleObj));
     }
 
   }
-  const complexObj ={
-   
-   
-    sFirstname  :firstName,
-    sSecondname  :secondName,
-    sFamilyname  :familyName,
-    sSpousename:spouseName,
-    sFathername  :fatherName,
-    sMothername  :motherName,
-    dtDOB :dob,
-    sCity :city,
-    sState :state,
-    sCountry   :country,
-    sGender :gender,
-    nFromAge  :minAge,
-    nToAge  :maxAge
+  const complexObj = {
+
+
+    sFirstname: firstName,
+    sSecondname: secondName,
+    sFamilyname: familyName,
+    sSpousename: spouseName,
+    sFathername: fatherName,
+    sMothername: motherName,
+    dtDOB: dob,
+    sCity: city,
+    sState: state,
+    sCountry: country,
+    sGender: gender,
+    nFromAge: minAge,
+    nToAge: maxAge
   }
-  const handleComplexSearch = () => {
-    
-    //setSearchField(e.target.value,console.log(searchField))
-
-      
-      alert(JSON.stringify(complexObj))
-
-
-  }
+  // const handleComplexSearch = () => {
+  //   //setSearchField(e.target.value,console.log(searchField))
+  //   alert(JSON.stringify(complexObj))
+  // }
   useEffect(() => {
     //Use === instead of ==
     if (authenticationService.currentUserValue === null) {
@@ -408,10 +386,38 @@ export default function Feature() {
   }, []);
 
   useEffect(() => {
-
-    getCountryData();
-
+    axios.get(`Country/GetCountries`)
+      .then(resp => {
+        if (resp.status === 200) {
+          setCountryData(resp.data);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   }, []);
+
+  useEffect(() => {
+    if (firstName.length > 3 || secondName.length > 3 || 
+      familyName.length > 3 || spouseName.length > 3 || 
+      fatherName.length > 3 || motherName.length > 3 || 
+      city.length > 3 || state.length > 3 ||
+      dob||country||minAge||maxAge) {
+      alert(JSON.stringify(complexObj));
+    }
+  }, [firstName, secondName, familyName, spouseName, fatherName, motherName, city, state, dob, country, gender,minAge,maxAge]);
 
   return (
     <>
@@ -461,16 +467,14 @@ export default function Feature() {
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper style={{ padding: '10px' }}>
-            <Typography color="textPrimary" align="center">Search</Typography>
+            {/*<Typography color="textPrimary" align="center">Search</Typography>*/}
             <FormControl component="fieldset">
               <FormLabel component="legend">Search Category</FormLabel>
               <RadioGroup aria-label="search" name="search" value={searchType} onChange={handleChange}>
                 <FormControlLabel value="simple" control={<Radio />} label="Simple Search" />
-                <FormControlLabel value="complex" control={<Radio />} label="Complex Search" />
+                <FormControlLabel value="complex" control={<Radio />} label="Detailed Search" />
               </RadioGroup>
             </FormControl>
-
-
             <Grid container>
 
               {searchType == 'simple' && <>
@@ -515,16 +519,7 @@ export default function Feature() {
                       id="id_firstName"
                       label="First Name"
                       type="text"
-
-                      onChange={(e) => { 
-                              
-                                  if(e.target.value>3){
-                              
-                                      setFirstName(e.target.value);
-                                      handleComplexSearch();
-                                    }
-                        
-                         }}
+                      onChange={(e) => { setFirstName(e.target.value); }}
                     />
                   </FormControl>
                 </Grid>
@@ -535,7 +530,6 @@ export default function Feature() {
                       id="id_SecondName"
                       label="Second Name"
                       type="text"
-
                       onChange={(e) => { setSecondName(e.target.value) }}
                     />
                   </FormControl>
@@ -547,7 +541,6 @@ export default function Feature() {
                       id="id_FamilyName"
                       label="Family Name"
                       type="text"
-
                       onChange={(e) => { setFamilyName(e.target.value) }}
                     />
                   </FormControl>
@@ -559,7 +552,6 @@ export default function Feature() {
                       id="id_SpouseName"
                       label="SpouseName"
                       type="text"
-
                       onChange={(e) => { setSpouseName(e.target.value) }}
                     />
                   </FormControl>
@@ -571,7 +563,6 @@ export default function Feature() {
                       id="id_FatherName"
                       label="Father's Name"
                       type="text"
-
                       onChange={(e) => { setFatherName(e.target.value) }}
                     />
                   </FormControl>
@@ -583,23 +574,27 @@ export default function Feature() {
                       id="id_MotherName"
                       label="Mother's Name"
                       type="text"
-
                       onChange={(e) => { setMotherName(e.target.value) }}
                     />
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
-                    <TextField
-                      id="date"
-                      label="DOB"
-                      type="date"
-                      // defaultValue="2017-05-24"
-                      className={classes.textField}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        margin="normal"
+                        id="id_dtDOB"
+                        label="DOB"
+                        format="MM/dd/yyyy"
+                        onChange={(date) => { setDob(date) }}
+                        value={dob}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                        fullWidth
+                        className={classes.dateField}
+                      />
+                    </MuiPickersUtilsProvider>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
@@ -609,7 +604,6 @@ export default function Feature() {
                       id="id_city"
                       label="City/Town"
                       type="text"
-
                       onChange={(e) => { setCity(e.target.value) }}
                     />
                   </FormControl>
@@ -617,11 +611,9 @@ export default function Feature() {
                 <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
                     <TextField
-
                       id="id_state"
                       label="State"
                       type="text"
-
                       onChange={(e) => { setState(e.target.value) }}
                     />
                   </FormControl>
@@ -687,26 +679,46 @@ export default function Feature() {
                 </Grid>
                 <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
-                    <TextField
-
+                  <InputLabel id="lbl_minAge">Min Age</InputLabel>
+                    {/*<TextField
                       id="id_minAge"
                       label="Min Age"
                       type="number"
-
                       onChange={(e) => { setMinAge(e.target.value) }}
-                    />
+                    />*/}
+                    <Select
+                      labelId="lbl_minAge"
+                      id="id_minAge"
+                      onChange={(e) => { setMinAge(e.target.value) }}
+                    >
+                      {
+                        ageCoded.map((singleage)=>{
+                        return <MenuItem value={singleage}>{singleage}</MenuItem>
+                        })
+                      }
+                    </Select>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
-                    <TextField
-
+                  <InputLabel id="lbl_maxAge">Max Age</InputLabel>
+                    {/*<TextField
                       id="id_maxAge"
                       label="Max Age"
                       type="number"
-
                       onChange={(e) => { setMaxAge(e.target.value) }}
-                    />
+                    />*/}
+                    <Select
+                      labelId="lbl_maxAge"
+                      id="id_maxAge"
+                      onChange={(e) => { setMaxAge(e.target.value) }}
+                    >
+                      {
+                        ageCoded.map((singleage)=>{
+                        return <MenuItem value={singleage}>{singleage}</MenuItem>
+                        })
+                      }
+                    </Select>
                   </FormControl>
                 </Grid>
               </>}
@@ -733,7 +745,6 @@ export default function Feature() {
         {backdrop && <BackdropComponent
           backdrop={backdrop}
         />}
-
       </Grid>
     </>
   );
