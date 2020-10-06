@@ -17,6 +17,8 @@ namespace CTADBL.ViewModelsRepositories
         private GBChildrenRepository _gbChildrenRepository;
         private IssueBookRepository _issueBookRepository;
         private GBNoteRepository _gbNoteRepository;
+        private GBDocumentRepository _gbDocumentRepository;
+
         #region Constructor
         public GreenBookVMRepository(string connectionString) : base(connectionString)
         {
@@ -25,6 +27,7 @@ namespace CTADBL.ViewModelsRepositories
             _gbChildrenRepository = new GBChildrenRepository(connectionString);
             _issueBookRepository = new IssueBookRepository(connectionString);
             _gbNoteRepository = new GBNoteRepository(connectionString);
+            _gbDocumentRepository = new GBDocumentRepository(connectionString);
         }
         #endregion
 
@@ -114,6 +117,7 @@ namespace CTADBL.ViewModelsRepositories
             gvm.children = _gbChildrenRepository.GetGBChildrenByGBIDParent(gvm.greenBook.sGBID);
             gvm.booksIssued = _issueBookRepository.GetIssueBookByGbId(Convert.ToInt32(gvm.greenBook.sGBID));
             gvm.gbNotes = _gbNoteRepository.GetGBNoteByGBID(gvm.greenBook.sGBID);
+            gvm.gbDocuments = _gbDocumentRepository.GetGBDocumentsByGBID(gvm.greenBook.sGBID);
             return gvm;
         }
         #endregion
