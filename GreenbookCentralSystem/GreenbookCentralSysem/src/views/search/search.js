@@ -474,7 +474,7 @@ export default function Feature() {
       const simpleObj = {
 
         sSearchField: searchFilter,
-        sSearchType: e.target.value
+        sSearchValue: e.target.value
       }
       //alert(JSON.stringify(simpleObj));
       axios.post(`Greenbook/GetGreenBookVM`, simpleObj)
