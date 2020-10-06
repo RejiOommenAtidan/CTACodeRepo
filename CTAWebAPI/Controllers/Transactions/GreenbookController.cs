@@ -95,8 +95,30 @@ namespace CTAWebAPI.Controllers.Transactions
 
         public IActionResult GetGreenBookVM(string parameter, string value)
         {
-            GreenBookVM greenBook = _greenBookVMRepository.GetGreenbookVMRecord(parameter, value);
-            return Ok(greenBook);
+
+            if (String.IsNullOrEmpty(parameter) || String.IsNullOrEmpty(value))
+            {
+                return BadRequest(String.Format(@"Invalid request parameters"));
+            }
+
+
+            try
+            {
+                GreenBookVM greenBook = _greenBookVMRepository.GetGreenbookVMRecord(parameter, value);
+                if(greenBook != null)
+                {
+                    return Ok(greenBook);
+                }
+                else
+                {
+                    return NotFound(String.Format(@"No records found for {0} having value {1}", parameter, value));
+                }
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            
         }
 
         [HttpGet("GetGreenbook/sGBID={sGBID}")]

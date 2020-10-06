@@ -27,15 +27,24 @@ namespace CTADBL.ViewModelsRepositories
         #region Get GreenBookVM
         public GreenBookVM GetGreenbookVMRecord(string parameter, string value)
         {
-            string sql = @"SELECT gb.sGBID, ar.sAuthRegion, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sGender, gb.dtDOB, gb.sDOBApprox, gb.sBirthPlace, gb.sBirthCountryID, gb.sOriginVillage, pr.sProvince, gb.sMarried, gb.sOtherDocuments, gb.sResidenceNumber, qu.sQualification, occ.sOccupationDesc , gb.sAliasName, gb.sOldGreenBKNo, gb.sFstGreenBkNo,  gb.dtFormDate,  gb.sFathersName, frel.sgbidrelation as sFathersGBID, gb.sMothersName,  mrel.sgbidrelation as sMothersGBID,  gb.sSpouseName, srel.sgbidrelation as sSpouseGBID, gb.nChildrenM, gb.nChildrenF, gb.sAddress1, gb.sAddress2, gb.sCity, gb.sState, gb.sPCode, gb.sCountryID, gb.sEmail, gb.sPhone, gb.sfax, gb.dtDeceased, gb.sBookIssued, gb.dtValidityDate, gb.sPaidUntil, gb.TibetanName, gb.TBUPlaceOfBirth, gb.TBUOriginVillage, gb.TBUFathersName, gb.TBUMothersName, gb.TBUSpouseName  FROM tblgreenbook as gb LEFT JOIN lstauthregion AS ar ON ar.ID = gb.nAuthRegionID LEFT JOIN lstprovince AS pr ON pr.Id = gb.sOriginProvinceID LEFT JOIN lstqualification AS qu ON qu.sQualificationID = gb.sQualificationID LEFT JOIN lstoccupation AS occ ON occ.Id = gb.sOccupationID LEFT JOIN lnkgbrelation AS frel ON gb.sGBID = frel.sGBID and frel.nrelationid = 1  LEFT JOIN lnkgbrelation AS mrel ON gb.sGBID = mrel.sGBID and mrel.nrelationid = 2 LEFT JOIN lnkgbrelation AS srel ON gb.sGBID = srel.sGBID and srel.nrelationid = 3 WHERE gb.";
-            sql += "sGBID = " + value;
-            using (var command = new MySqlCommand(sql))
+            string sql = String.Format(@"SELECT gb.sGBID, ar.sAuthRegion, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sGender, gb.dtDOB, gb.sDOBApprox, gb.sBirthPlace, gb.sBirthCountryID, gb.sOriginVillage, pr.sProvince, gb.sMarried, gb.sOtherDocuments, gb.sResidenceNumber, qu.sQualification, occ.sOccupationDesc , gb.sAliasName, gb.sOldGreenBKNo, gb.sFstGreenBkNo,  gb.dtFormDate,  gb.sFathersName, frel.sgbidrelation as sFathersGBID, gb.sMothersName,  mrel.sgbidrelation as sMothersGBID,  gb.sSpouseName, srel.sgbidrelation as sSpouseGBID, gb.nChildrenM, gb.nChildrenF, gb.sAddress1, gb.sAddress2, gb.sCity, gb.sState, gb.sPCode, gb.sCountryID, gb.sEmail, gb.sPhone, gb.sfax, gb.dtDeceased, gb.sBookIssued, gb.dtValidityDate, gb.sPaidUntil, gb.TibetanName, gb.TBUPlaceOfBirth, gb.TBUOriginVillage, gb.TBUFathersName, gb.TBUMothersName, gb.TBUSpouseName  FROM tblgreenbook as gb LEFT JOIN lstauthregion AS ar ON ar.ID = gb.nAuthRegionID LEFT JOIN lstprovince AS pr ON pr.Id = gb.sOriginProvinceID LEFT JOIN lstqualification AS qu ON qu.sQualificationID = gb.sQualificationID LEFT JOIN lstoccupation AS occ ON occ.Id = gb.sOccupationID LEFT JOIN lnkgbrelation AS frel ON gb.sGBID = frel.sGBID and frel.nrelationid = 1  LEFT JOIN lnkgbrelation AS mrel ON gb.sGBID = mrel.sGBID and mrel.nrelationid = 2 LEFT JOIN lnkgbrelation AS srel ON gb.sGBID = srel.sGBID and srel.nrelationid = 3 WHERE gb.{0} = @value", parameter);
+            //sql += "sGBID = " + value;
+            try
+            {
+                using (var command = new MySqlCommand(sql))
+                {
+
+                    //command.Parameters.AddWithValue("parameter", "gb." + parameter);
+                    command.Parameters.AddWithValue("value", value);
+                    return GetRecord(command);
+                }
+            }
+            catch(Exception ex)
             {
                 
-                //command.Parameters.AddWithValue("parameter", "gb." + parameter);
-                //command.Parameters.AddWithValue("value", value);
-                return GetRecord(command);
+                return null;
             }
+            
         }
         #endregion
 
