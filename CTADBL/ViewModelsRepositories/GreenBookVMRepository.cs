@@ -15,12 +15,14 @@ namespace CTADBL.ViewModelsRepositories
         private static MySqlConnection _connection;
         private GreenbookRepository _greenbookRepository;
         private GBChildrenRepository _gbChildrenRepository;
+        private IssueBookRepository _issueBookRepository;
         #region Constructor
         public GreenBookVMRepository(string connectionString) : base(connectionString)
         {
             _connection = new MySqlConnection(connectionString);
             _greenbookRepository = new GreenbookRepository(connectionString);
             _gbChildrenRepository = new GBChildrenRepository(connectionString);
+            _issueBookRepository = new IssueBookRepository(connectionString);
         }
         #endregion
 
@@ -108,6 +110,7 @@ namespace CTADBL.ViewModelsRepositories
                 sSpouseGBID = reader.IsDBNull("sSpouseGBID") ? null : (string)reader["sSpouseGBID"]
             };
             gvm.children = _gbChildrenRepository.GetGBChildrenByGBIDParent(gvm.greenBook.sGBID);
+            gvm.bookIssued = _issueBookRepository.GetIssueBookByGbId(Convert.ToInt32(gvm.greenBook.sGBID));
             return gvm;
         }
         #endregion

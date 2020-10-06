@@ -18,6 +18,7 @@ namespace CTADBL.ViewModels
     {
         private Greenbook _greenbook;
         private IEnumerable<GBChildren>? _children = null;
+        private IEnumerable<IssueBook>? _bookIssued = null;
         private string _sAuthRegion;
         private string? _sProvince;
         private string? _sQualification;
@@ -49,6 +50,18 @@ namespace CTADBL.ViewModels
             set
             {
                 _children = value;
+            }
+        }
+
+        public IEnumerable<IssueBook>? bookIssued
+        {
+            get
+            {
+                return _bookIssued;
+            }
+            set
+            {
+                _bookIssued = value;
             }
         }
 
