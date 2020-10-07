@@ -123,7 +123,7 @@ namespace CTADBL.ViewModelsRepositories
             string addToSql = "";
             Dictionary<string, dynamic> parameters = detailedSearch.GetType().GetProperties().ToDictionary(prop => prop.Name, prop => prop.GetValue(detailedSearch, null));
 
-            foreach (var item in parameters)
+            foreach (KeyValuePair<string, dynamic> item in parameters)
             {
                 if (item.Value != null)
                 {

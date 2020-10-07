@@ -9,6 +9,7 @@ namespace CTADBL.BaseClasses.Transactions
     {
         #region Private AuditLog Properties 
         private int _Id;
+        private string _sGBID;
         private DateTime? _dtEntered;
         private int? _nFeatureID;
         private int? _nRegionID;
@@ -21,6 +22,7 @@ namespace CTADBL.BaseClasses.Transactions
         #region Public AuditLog Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
+        public string sGBID { get { return _sGBID; } set { _sGBID = value; } }
         public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
         public int? nFeatureID { get { return _nFeatureID; } set { _nFeatureID = value; } }
         public int? nRegionID { get { return _nRegionID; } set { _nRegionID = value; } }
