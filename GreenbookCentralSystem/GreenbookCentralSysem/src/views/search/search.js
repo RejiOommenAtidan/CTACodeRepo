@@ -1,3 +1,5 @@
+import avatar1 from '../../assets/images/avatars/avatar1.jpg';
+
 import React, { useEffect, useState } from 'react';
 import { forwardRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,7 +19,8 @@ import {
   MenuItem,
   Select,
   InputLabel,
-  Button
+  Button,
+  Card
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { red } from '@material-ui/core/colors';
@@ -158,7 +161,7 @@ export default function Feature() {
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
   const [filtering, setFiltering] = React.useState(false);
   const [dataFromAPI, setdataFromAPI] = React.useState([]);
-  const [data, setdata] = React.useState([]);
+  const [sGBID, setsGBID] = React.useState('');
 
   const [searchType, setSearchType] = React.useState('simple');
 
@@ -208,8 +211,8 @@ export default function Feature() {
     setViewModal(false);
   };
 
-  const viewGb = (rowData) =>{
-      setdata(rowData);
+  const viewGb = (sGBID) =>{
+      setsGBID(sGBID);
       setViewModal(true);
       }
   const columns = [
@@ -222,8 +225,9 @@ export default function Feature() {
       },
     },
     {
-      render: rowData => <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={()=>{ viewGb(rowData)}}><span>{rowData['greenBook']['sCountryID'] + rowData['greenBook']['sGBID']}</span></Button> ,
-      //field: "greenBook.sGBID",
+      render: rowData => <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={()=>{ viewGb(rowData['sGBID'])}}><span>{rowData['sCountryID'] + rowData['sGBID']}</span></Button> ,
+    //  render: rowData => <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={()=>{ viewGb(rowData)}}><span>{ rowData['sGBID']}</span></Button> ,
+      //field: "sGBID",
       title: "GB ID",
       filterPlaceholder: 'Search..',
       headerStyle: {
@@ -240,7 +244,7 @@ export default function Feature() {
       },
     },
     {
-      render: rowData => rowData['greenBook']['sFirstName'] + " " + rowData['greenBook']['sLastName'],
+      render: rowData => rowData['sFirstName'] + " " + rowData['sLastName'],
       //field: "abc",
       title: "Name",
       filterPlaceholder: 'Search..',
@@ -258,7 +262,7 @@ export default function Feature() {
       },
     },
     {
-      field: "greenBook.sFamilyName",
+      field: "sFamilyName",
       title: "Family Name",
       filterPlaceholder: 'Search..',
       headerStyle: {
@@ -275,7 +279,7 @@ export default function Feature() {
       },
     },
     {
-      field: "greenBook.dtDOB",
+      field: "dtDOB",
       title: "DOB",
       filterPlaceholder: 'Search..',
       headerStyle: {
@@ -309,7 +313,7 @@ export default function Feature() {
       },
     },
     {
-      field: "greenBook.sFathersName",
+      field: "sFathersName",
       title: "Father's Name",
       filterPlaceholder: 'Search..',
       headerStyle: {
@@ -326,7 +330,7 @@ export default function Feature() {
       },
     },
     {
-      field: "greenBook.sMothersName",
+      field: "sMothersName",
       title: "Mother's Name",
       filterPlaceholder: 'Search..',
       headerStyle: {
@@ -343,7 +347,7 @@ export default function Feature() {
       },
     },
     {
-      field: "greenBook.sCity",
+      field: "sCity",
       title: "City/Town",
       filterPlaceholder: 'Search..',
       headerStyle: {
@@ -358,162 +362,33 @@ export default function Feature() {
         textAlign: 'left'
 
       },
-    },
-    {
-      hidden: true,
-      field: "edit",
-      title: "Edit",
-      sorting: false,
-      export: false,
-      filtering: false,
-      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-        onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
-      >
-        <EditOutlinedIcon />
-      </IconButton>,
-      headerStyle: {
-        padding: '0px',
-        width: '1%',
-        textAlign: 'center'
-      },
-      cellStyle: {
-        padding: '0px',
-        width: '1%',
-        textAlign: 'center'
-
-      },
     }
   ];
 
-  const editClick = (tableRowArray) => {
-    dispatch(setCurrentSelectedFeature({
-      id: tableRowArray['id'],
-      sFeature: tableRowArray['sFeature'],
-    }));
-    console.log(tableRowArray);
-    setId(tableRowArray['id']);
-    setEditModal(true);
+  const openRelationGB = (newsGBID) =>{
+    //handleViewClickClose();
+    
+    //setTimeout(500,console.log(newsGBID));
+    viewGb(newsGBID);
   }
-
-  const editAPICall = (feature) => {
-    setBackdrop(true);
-    axios.post(`/Feature/EditFeature/ID=` + Id, feature/*countryToUpdate*/)
-      .then(resp => {
-        if (resp.status === 200) {
-          setBackdrop(false);
-          setEditModal(false);
-          setAlertMessage("Record Successfully Edited");
-          setAlertType("success");
-          snackbarOpen();
-          axios.get(`Feature/GetFeatures`)
-            .then(resp => {
-              if (resp.status === 200) {
-                dispatch(storeDataAPI(resp.data));
-              }
-            })
-            .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
-            })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-        }
-      })
-      .catch(error => {
-        setBackdrop(false);
-        setAlertMessage('Error! ' + error.message);
-        setAlertType('error');
-        snackbarOpen();
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-  };
-
-  const addAPICall = (feature) => {
-    console.log(feature);
-    axios.post(`/Feature/AddFeature/`, feature)
-      .then(resp => {
-        if (resp.status === 200) {
-    //      setAddModal(false);
-          axios.get(`Feature/GetFeatures`)
-            .then(resp => {
-              if (resp.status === 200) {
-                dispatch(storeDataAPI(resp.data));
-              }
-            })
-            .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
-            })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-  };
-
-
 
   const handleSimpleSearch = (e) => {
 
     //setSearchField(e.target.value,console.log(searchField))
-    if (e.target.value.length > 3) {
+    if (e.target.value.length > 2) {
       const simpleObj = {
 
         sSearchField: searchFilter,
         sSearchValue: e.target.value
       }
       //alert(JSON.stringify(simpleObj));
-      axios.post(`Greenbook/GetGreenBookVM`, simpleObj)
+      axios.post(`Greenbook/GetQuickResult`, simpleObj)
         .then(resp => {
           if (resp.status === 200) {
-            const mydata = [resp.data]
-            console.log(mydata);
+            
+            console.log(resp.data);
            
-            setdataFromAPI(mydata);
+            setdataFromAPI(resp.data);
             setisLoading(false);
           }
         })
@@ -536,7 +411,6 @@ export default function Feature() {
 
   }
   const complexObj = {
-
 
     sFirstname: firstName,
     sSecondname: secondName,
@@ -677,7 +551,7 @@ export default function Feature() {
                       value={searchFilter}
                     >
                       <MenuItem value="sGBID">GB Number</MenuItem>
-                      <MenuItem value="OldGreenBkNo">Old GB Number</MenuItem>
+                      <MenuItem value="sOldGreenBkNo">Old GB Number</MenuItem>
                       <MenuItem value="sOldGreenBKNo">First GB Number</MenuItem>
                       <MenuItem value="sResidenceNumber">Residence Number</MenuItem>
                       <MenuItem value="sFathersGBID">Father's GB Number</MenuItem>
@@ -902,12 +776,36 @@ export default function Feature() {
               </>}
             </Grid>
           </Paper>
+          
+          <Paper style={{ padding: '10px',marginTop:'20px', textAlign:'center' }}>
+            Recent Search
+            <Grid container spacing={4}>
+              <Grid item xs={12} sm={6}>
+                      <Card className="overflow-visible" style={{width:'90%' }}>
+                        <span className="ribbon-horizontal ribbon-horizontal--bottom ribbon-horizontal--danger"><span>1234567</span></span>
+                        <div className="card-img-wrapper">
+                            <img src={avatar1} className="card-img-top rounded" alt="..." />
+                        </div>
+                    </Card>
+               </Grid>
+               <Grid item xs={12} sm={6}>
+                      <Card className="overflow-visible" style={{width:'90%'}}>
+                        <span className="ribbon-horizontal ribbon-horizontal--bottom ribbon-horizontal--danger"><span>1234567</span></span>
+                        <div className="card-img-wrapper">
+                            <img src={avatar1} className="card-img-top rounded" alt="..."   />
+                        </div>
+                    </Card>
+               </Grid>
+            </Grid>          
+
+          </Paper>
         </Grid>
         {viewModal && <ViewDialog
           viewModal={viewModal}
           classes={classes}
           handleViewClickClose={handleViewClickClose}
-          data={data}
+          sGBID={sGBID}
+          openRelationGB={openRelationGB}
         />}
      
         {snackbar && <Alerts

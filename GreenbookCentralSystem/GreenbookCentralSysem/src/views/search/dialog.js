@@ -23,14 +23,16 @@ import avatar4 from '../../assets/images/avatars/avatar4.jpg';
 import avatar5 from '../../assets/images/avatars/avatar5.jpg';
 import avatar6 from '../../assets/images/avatars/avatar6.jpg';
 import avatar7 from '../../assets/images/avatars/avatar7.jpg';
-import stock6 from '../../assets/images/stock-photos/stock-6.jpg';
 
+import stock from '../../assets/images/No_person.jpg';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import EmailIcon from '@material-ui/icons/Email';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Moment from 'moment';
+import axios from 'axios';
 
-
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Grid,
@@ -50,73 +52,118 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+/*const findImg = (obj) =>{
+  var str="";
+  obj.map((row) => {
+     if(obj.sDocType === "Photo Identity"){
+       str= obj.binFileDoc;
+     }
+     return str
+  })
+}*/
 
 export const ViewDialog = (props) => {
   const [sFeature, setsFeature] = useState("");
   const [expanded, setExpanded] = React.useState(false);
+  const [data, setData] = React.useState([]);
+  
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+  
+  
+
+ 
+  useEffect(() => {
+    axios.get(`GreenBook/GetDetailsFromGBID?sGBID=`+props.sGBID)
+      .then(resp => {
+        if (resp.status === 200) {
+          setData(resp.data);
+         console.log(resp.data);
+     
+    
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  }, []);
+ 
+
+
+
+ 
   return (
+    <>
+    {data.length!=0 && 
     <Dialog open={props.viewModal} fullWidth='true'
       maxWidth='xl' aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Feature</DialogTitle>
+    {/*  <DialogTitle id="form-dialog-title">Add Feature</DialogTitle>*/}
       <DialogContent>
         <DialogContentText>
-          {/* 
-          <Grid container className={classes.box}>
-
-          
-          </Grid>*/}
-
-          <Card className="card-box mb-spacing-6-x2">
+        
+        <Card className="card-box mb-spacing-6-x2">
             <Grid container spacing={0}>
               <Grid item xl={5}>
                 <div className="p-4 text-center">
                   <div className="avatar-icon-wrapper rounded-circle mx-auto">
                     <div className="d-block p-0 avatar-icon-wrapper rounded-circle m-0 border-3 border-first">
                       <div className="rounded-circle border-3 border-white overflow-hidden">
-                        <img alt="..." className="img-fluid" src={avatar5} />
+                       {data.gbDocuments.length!=0  && 
+                        <img alt="..." className="img-fluid" style={{width:'100px' }} src={`data:image/gif;base64,${data.gbDocuments[0].binFileDoc}`} /> }
+                        {data.gbDocuments.length==0  &&  
+                        <img alt="..." className="img-fluid" style={{width:'100px' }} src={stock} />}
                       </div>
                     </div>
                   </div>
                   <h4 className="font-size-lg font-weight-bold my-2">
-                    {props.data.greenBook.sFirstName + ' ' + props.data.greenBook.sLastName}
+                    {data.greenBook.sFirstName + ' ' + data.greenBook.sLastName}
                   </h4>
 
 
                   <div className="divider my-4" />
                   <Grid container spacing={1} style={{ textAlign: 'left' }}>
                     <Grid item sm={6}>
-                      Gender : {props.data.greenBook.sGender == 'M' ? 'Male' : 'Female'}
+                      Gender : {data.greenBook.sGender == 'M' ? 'Male' : 'Female'}
                     </Grid>
                     <Grid item sm={6}>
-                      DOB : {props.data.greenBook.dtDOB}
+                      DOB : {data.greenBook.dtDOB ? Moment(data.greenBook.dtDOB).format('DD-MM-YYYY'): ''}
                     </Grid>
                     <Grid item sm={6}>
-                      Age :{props.data.nAge}
+                      Age :{data.nAge}
                     </Grid>
                     <Grid item sm={6}>
-                      Father's Name : {props.data.greenBook.sFathersName}
+                      Father's Name : {data.greenBook.sFathersName}
                     </Grid>
                     <Grid item sm={6}>
-                      Mother's Name : {props.data.greenBook.sMothersName}
+                      Mother's Name : {data.greenBook.sMothersName}
                     </Grid>
                     <Grid item sm={6}>
-                      Family Name : {props.data.greenBook.sFamilyName}
+                      Family Name : {data.greenBook.sFamilyName}
                     </Grid>
                   </Grid>
                   <div className="divider my-4" />
                   <Grid container spacing={1} style={{ textAlign: 'left' }}>
                     <Grid item sm={6}>
-                      Resident: {props.data.greenBook.sAddress2 + props.data.greenBook.sCity + ',' + props.data.greenBook.sState, +',', props.data.greenBook.sCountryID}
+                      Resident: {data.greenBook.sAddress2 + data.greenBook.sCity + ','+ data.sCountry}
                     </Grid>
                     <Grid item sm={6}>
-                      Entered By: {props.data.greenBook.nEnteredBy}
+                      Entered By: {data.sEnteredBy}
                     </Grid>
                     <Grid item sm={6}>
-                      Edited On: {props.data.greenBook.dtUpdated}
+                      Edited On: {data.greenBook.dtUpdated}
                     </Grid>
                   </Grid>
                   <div className="divider my-4" />
@@ -186,47 +233,47 @@ export const ViewDialog = (props) => {
                       <Grid container spacing={2} >
                         <Grid item sm={6}>
                         <FormControl className={props.classes.formControl}>
-                        Address 1: {props.data.greenBook.sAddress1}
+                        Address 1: {data.greenBook.sAddress1}
                            </FormControl>
                         </Grid>
                         <Grid item sm={6}>
                         <FormControl className={props.classes.formControl}>
-                          Address 2 : {props.data.greenBook.sAddress2}
+                          Address 2 : {data.greenBook.sAddress2}
                          </FormControl>
                           </Grid>
                         <Grid item sm={6}>
-                        City : {props.data.greenBook.sCity}
+                        City : {data.greenBook.sCity}
                          
                         </Grid>
                         <Grid item xs={6}>
-                             State : {props.data.greenBook.sState}
+                             State : {data.greenBook.sState}
                                 
                             </Grid>
                         <Grid item sm={6}>
-                             Pin Code : {props.data.greenBook.sPCode}
+                             Pin Code : {data.greenBook.sPCode}
                                
                             </Grid>
                             <Grid item sm={6}>
-                            Country :  {props.data.greenBook.sCountryID}
+                            Country :  {data.sCountry}
                                  
                             </Grid>
                             <Grid item sm={6}>
-                              Fax Number : {props.data.greenBook.sFax}
+                              Fax Number : {data.greenBook.sFax}
                                   
                             </Grid>
                                  
                             <Grid item sm={6}>
-                            Email : {props.data.greenBook.sEmail}
+                            Email : {data.greenBook.sEmail}
                                 
                           </Grid>
                             <Grid item sm={6}>
-                              Phone Number : {props.data.greenBook.sPhone}
+                              Phone Number : {data.greenBook.sPhone}
                             </Grid>
                             <Grid item sm={6}>
-                              Form Date : {props.data.greenBook.dtFormDate}
+                              Form Date : {data.greenBook.dtFormDate}
                             </Grid>
                             <Grid item sm={6}>
-                             Authority Region : {props.data.sAuthRegion}
+                             Authority Region : {data.sAuthRegion}
                                   
                             </Grid>
                       
@@ -253,31 +300,31 @@ export const ViewDialog = (props) => {
                       <Grid item xs={6} >
                         <Grid container spacing={2}>                        
                         <Grid item xs={12}>
-                          Place Of Birth : {props.data.greenBook.sBirthPlace}
+                          Place Of Birth : {data.greenBook.sBirthPlace}
                                   
                           </Grid>
                           <Grid item xs={12}>
-                            Origin Village : {props.data.greenBook.sOriginVillage}
+                            Origin Village : {data.greenBook.sOriginVillage}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          ཕ་ཡུལ། : {props.data.greenBook.tbuPlaceOfBirth}
+                          ཕ་ཡུལ། : {data.greenBook.tbuPlaceOfBirth}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                         Old GB Number : {props.data.greenBook.sOldGreenBKNo}
+                         Old GB Number : {data.greenBook.sOldGreenBKNo}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                         RC Number : {props.data.greenBook.sResidenceNumber}
+                         RC Number : {data.greenBook.sResidenceNumber}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                         Other Documents : {props.data.greenBook.sOtherDocuments}
+                         Other Documents : {data.greenBook.sOtherDocuments}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                         Marital Status : {props.data.greenBook.sMarried}
+                         Marital Status : {data.greenBook.sMarried}
                                 
                           </Grid>
                           
@@ -288,27 +335,27 @@ export const ViewDialog = (props) => {
                       <Grid item xs={6} >
                       <Grid container spacing={2}>  
                       <Grid item xs={12}>
-                          Birth Country : {props.data.greenBook.sBirthCountryID}
+                          Birth Country : {data.greenBook.sBirthCountryID}
                                   
                           </Grid>
                           <Grid item xs={12}>
-                            Province : {props.data.sProvince}
+                            Province : {data.sProvince}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                            First GB number : {props.data.greenBook.sFstGreenBkNo}
+                            First GB number : {data.greenBook.sFstGreenBkNo}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                            Qualification : {props.data.sQualification}
+                            Qualification : {data.sQualification}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                            Deceased: {props.data.greenBook.dtDeceased ? props.data.greenBook.dtDeceased : 'Not Deceased'}
+                            Deceased: {data.greenBook.dtDeceased ? data.greenBook.dtDeceased : 'Not Deceased'}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                         Occupation : {props.data.sOccupationDesc}
+                         Occupation : {data.sOccupationDesc}
                                 
                           </Grid>
                         
@@ -332,34 +379,36 @@ export const ViewDialog = (props) => {
                         <Typography className={props.classes.heading}>Relation Details</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
+                        <div>
+                        <Grid container>
                       <Grid item xs={6} >
                         <Grid container spacing={2}>                        
                         <Grid item xs={12}>
-                          Father's Name : {props.data.greenBook.sFathersName}
+                          Father's Name : {data.greenBook.sFathersName}
                                   
                           </Grid>
                           <Grid item xs={12}>
-                          ཕ་མིང་། : {props.data.greenBook.tbuFathersName}
+                          ཕ་མིང་། : {data.greenBook.tbuFathersName}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Father's Old GB : !!!!!!!!!!!!!
+                          Father's Old GB : {data.greenBook.sFathersID}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Father's GB : {props.data.greenBook.sFathersGBID ?  <Button className="m-2 btn-transparent btn-link btn-link-second" ><span>{props.data.greenBook.sFathersGBID}</span></Button> : ''}
+                          Father's GB : {data.greenBook.sFathersGBID ?  <Button  onClick={()=>props.openRelationGB(data.greenBook.sMothersGBID)} className="m-2 btn-transparent btn-link btn-link-second" ><span>{data.greenBook.sFathersGBID}</span></Button> : ''}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Mother's Name : {props.data.greenBook.sMothersName}
+                          Mother's Name : {data.greenBook.sMothersName}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          མའི་མིང་། : {props.data.greenBook.tbuMothersName}
+                          མའི་མིང་། : {data.greenBook.tbuMothersName}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                         Number of Male Children : {props.data.greenBook.nChildrenM}
+                         Number of Male Children : {data.greenBook.nChildrenM}
                                 
                           </Grid>
                           
@@ -370,41 +419,46 @@ export const ViewDialog = (props) => {
                       <Grid item xs={6} >
                       <Grid container spacing={2}>  
                       <Grid item xs={12}>
-                          Mother's OLD GB : !!!!!!!!!!!!!!!
+                          Mother's OLD GB : {data.greenBook.sMothersID}
                                   
                           </Grid>
                           <Grid item xs={12}>
-                          Mother's GB : {props.data.sMothersGBID}
+                          Mother's GB : {data.greenBook.sMothersGBID ?  <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={()=>props.openRelationGB(data.greenBook.sMothersGBID)} ><span>{data.greenBook.sMothersGBID}</span></Button> : ''}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Spouse Name : {props.data.greenBook.sSpouseName}
+                          Spouse Name : {data.greenBook.sSpouseName}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          ཟ་ཟླའི་མིང་། : {props.data.greenBook.tbuSpouseName}
+                          ཟ་ཟླའི་མིང་། : {data.greenBook.tbuSpouseName}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Spouse Old GB : !!!!!!!!!!!!!!!!!!!!
+                          Spouse Old GB : {data.greenBook.sSpouseID}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Spouse GB : {props.data.greenBook.sSpouseGBID}
+                          Spouse GB :{data.greenBook.sSpouseGBID ?  <Button  onClick={()=>{props.handleViewClickClose();props.openRelationGB(data.greenBook.sMothersGBID)}} className="m-2 btn-transparent btn-link btn-link-second" style={{padding:'0px'}} ><span>{data.greenBook.sSpouseGBID}</span></Button> : ''}
                         
 
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          No of Female Children : {props.data.greenBook.nChildrenF}
+                          No of Female Children : {data.greenBook.nChildrenF}
                                 
                           </Grid>
                         
                       </Grid>
                       </Grid>
-                      <div className="divider my-4" />
-                        <div>
-                      <Table className="table table-hover table-striped table-bordered">
+                      </Grid>
+                     
+                      
+    
+                 
+                     
+                    { data.children.length!=0 &&
+                     <Table className="table table-hover table-striped table-bordered">
                             <thead className="thead-light">
                             <tr>
                                 <th scope="col">Name</th>
@@ -416,12 +470,12 @@ export const ViewDialog = (props) => {
                             </tr>
                             </thead>
                             <tbody>
-                            {props.data.children.map((row, index) => (
+                            {data.children.map((row, index) => (
                             <tr>
                                 <td scope="row">{row.sName}</td>
                                 <td scope="row">{row.dtDOB}</td>
                                 <td scope="row">{row.sGender}</td>
-                                <td scope="row">!!!!!!!!!!!!!</td>
+                                <td scope="row">{row.sChildID}</td>
                                 <td scope="row">{row.id}</td>
                              
                               
@@ -431,9 +485,215 @@ export const ViewDialog = (props) => {
 
                             ))}
                             </tbody>
-                            </Table> 
-                            </div>
-                       
+                            </Table> }
+                   </div>
+  
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel> 
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ExpansionPanel
+                      TransitionProps={{ unmountOnExit: true }}
+                      expanded={expanded === 'panel4'}
+                      onChange={handleAccordionChange('panel4')}
+                    >
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography className={props.classes.heading}>Book Issued Details</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                      { data.booksIssued.length!=0 &&
+                     <Table className="table table-hover table-striped table-bordered " >
+                            <thead className="thead-light" style={{padding:0}}>
+                            <tr>
+                                <th scope="col">Issued Date</th>
+                                <th > Why Issued </th>
+                                <th > Where Issued </th>
+                                <th > Issue Application No </th>
+                                <th > Entered Date </th>
+                                                           
+                            </tr>
+                            </thead>
+                            <tbody style={{padding:0}}>
+                            {data.booksIssued.map((row, index) => (
+                            <tr>
+                                <td scope="row">{row.issueBook.dtIssuedDate  ? Moment(row.issueBook.dtIssuedDate).format('DD-MM-YYYY'): ''}</td>
+                                <td scope="row">{row.sMadebDisplayName}</td>
+                                <td scope="row">{row.sAuthRegion}</td>
+                                <td scope="row">{row.issueBook.sFormNumber}</td>
+                                <td scope="row">{row.issueBook.dtEntered ? Moment(row.issueBook.dtEntered).format('DD-MM-YYYY'): ''}</td>
+                             
+                              
+                                                                    
+                            </tr>
+                            
+
+                            ))}
+                            </tbody>
+                            </Table> }
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel> 
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ExpansionPanel
+                      TransitionProps={{ unmountOnExit: true }}
+                      expanded={expanded === 'panel5'}
+                      onChange={handleAccordionChange('panel5')}
+                    >
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography className={props.classes.heading}>History</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                      { //data.booksIssued.length!=0 &&
+                     <Table className="table table-hover table-striped table-bordered " >
+                            <thead className="thead-light" style={{padding:0}}>
+                            <tr>
+                                <th scope="col">SR No.</th>
+                                <th > Name Of Field</th>
+                                <th > Change From </th>
+                                <th > Changed To </th>
+                                <th > Changed By </th>
+                                <th > Changed At </th>
+                                <th > Changed When </th>
+                 
+                            </tr>
+                            </thead>
+                            {/* 
+                            <tbody style={{padding:0}}>
+                            {data.booksIssued.map((row, index) => (
+                            <tr>
+                                <td scope="row">{row.issueBook.dtIssuedDate  ? Moment(row.issueBook.dtIssuedDate).format('DD-MM-YYYY'): ''}</td>
+                                <td scope="row">{row.sMadebDisplayName}</td>
+                                <td scope="row">{row.sAuthRegion}</td>
+                                <td scope="row">{row.issueBook.sFormNumber}</td>
+                                <td scope="row">{row.issueBook.dtEntered ? Moment(row.issueBook.dtEntered).format('DD-MM-YYYY'): ''}</td>
+                             
+                              
+                                                                    
+                            </tr>
+                            
+
+                            ))}
+                            </tbody>*/}
+                            </Table> }
+
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel> 
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ExpansionPanel
+                      TransitionProps={{ unmountOnExit: true }}
+                      expanded={expanded === 'panel6'}
+                      onChange={handleAccordionChange('panel6')}
+                    >
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography className={props.classes.heading}>Notes</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                      { data.gbNotes.length!=0 &&
+                     <Table className="table table-hover table-striped table-bordered " >
+                            <thead className="thead-light" style={{padding:0}}>
+                            <tr>
+                                <th scope="col">Notes</th>
+                                <th style={{width:'15%'}} > Date</th>
+                                
+                 
+                            </tr>
+                            </thead>
+                            
+                            <tbody style={{padding:0}}>
+                            {data.gbNotes.map((row, index) => (
+                            <tr>
+
+                                <td scope="row">{row.sNote}</td>
+                                <td scope="row">{row.dtEntered ? Moment(row.dtEntered).format('DD-MM-YYYY'): ''}</td>
+                             
+                              
+                                                                    
+                            </tr>
+                            
+
+                            ))}
+                            </tbody>
+                            </Table> }
+
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel> 
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ExpansionPanel
+                      TransitionProps={{ unmountOnExit: true }}
+                      expanded={expanded === 'panel7'}
+                      onChange={handleAccordionChange('panel7')}
+                    >
+                      <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography className={props.classes.heading}>Documents</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                      { data.gbDocuments.length > 0 &&
+                     <Table className="table table-hover table-striped table-bordered " >
+                            <thead className="thead-light" style={{padding:0}}>
+                            <tr>
+                                <th scope="col">Sr No.</th>
+                                <th> Date </th>
+                                <th> Entered By </th>
+                                <th> Title </th>
+                                <th style={{width:'5%'}}> Download </th>
+                                <th style={{width:'5%'}}> Delete </th>
+                               
+                                
+                 
+                            </tr>
+                            </thead>
+                            
+                            <tbody style={{padding:0}}>
+                            {data.gbDocuments.map((row, index) => (
+                            <tr>
+
+                                <td scope="row">{index+1}</td>
+                                <td>{row.dtEntered ? Moment(row.dtEntered).format('DD-MM-YYYY'): ''}</td> 
+                                <td>{row.nEnteredBy}</td>                              
+                            <td>{row.sDocType}</td>        
+                                <td style={{textAlign:'center'}}>
+                                <Button className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
+                                    <span className="btn-wrapper--icon">
+                                    <GetAppIcon/>
+                                    </span>
+                                 </Button>  </td>        
+                                <td>
+                                <Button className="btn-neutral-danger btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
+                                    <span className="btn-wrapper--icon">
+                                    <DeleteForeverIcon/>
+                                    </span>
+                                 </Button>  
+                                </td>        
+                              
+
+                             
+                              
+                                                                    
+                            </tr>
+                            
+
+                            ))}
+                            </tbody>
+                            </Table> }
+
                       </ExpansionPanelDetails>
                     </ExpansionPanel> 
                   </Grid>
@@ -441,15 +701,19 @@ export const ViewDialog = (props) => {
               </Grid>
             </Grid>
           </Card>
-
+                              
+      
 
         </DialogContentText>
       </DialogContent>
+      {/* 
       <DialogActions>
-        <Button onClick={props.handleViewClickClose} color="primary">Cancel</Button>
-        <Button color="primary">Save</Button>
-      </DialogActions>
+        <Button onClick={props.handleViewClickClose} color="primary">Close</Button>
+      
+      </DialogActions>*/}
     </Dialog>
+  }
+  </>
   );
 }
 
