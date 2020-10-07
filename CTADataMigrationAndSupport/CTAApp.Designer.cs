@@ -44,6 +44,7 @@
             this.txtLogFolderPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.progressBarProcess = new System.Windows.Forms.ProgressBar();
+            this.labelRecordCount = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -79,6 +80,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.labelRecordCount);
             this.tabPage2.Controls.Add(this.comboBox1);
             this.tabPage2.Controls.Add(this.label4);
             this.tabPage2.Controls.Add(this.lblResultRelation);
@@ -88,7 +90,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(759, 435);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Relation Dirty Records";
+            this.tabPage2.Text = "Relation Dirty Data";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // comboBox1
@@ -97,7 +99,8 @@
             this.comboBox1.Items.AddRange(new object[] {
             "Father",
             "Mother",
-            "Spouse"});
+            "Spouse",
+            "Children"});
             this.comboBox1.Location = new System.Drawing.Point(47, 42);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(210, 23);
@@ -185,7 +188,7 @@
             this.txtLogFolderPath.Name = "txtLogFolderPath";
             this.txtLogFolderPath.Size = new System.Drawing.Size(639, 23);
             this.txtLogFolderPath.TabIndex = 19;
-            this.txtLogFolderPath.Text = "D:\\Reji\\CTA-Chartel\\CTADataMigrationAndSupport\\";
+            this.txtLogFolderPath.Text = "D:\\Reji\\CTA-Chartel\\CTADataMigrationAndSupport\\Report\\";
             // 
             // label2
             // 
@@ -202,6 +205,14 @@
             this.progressBarProcess.Name = "progressBarProcess";
             this.progressBarProcess.Size = new System.Drawing.Size(763, 23);
             this.progressBarProcess.TabIndex = 20;
+            // 
+            // labelRecordCount
+            // 
+            this.labelRecordCount.AutoSize = true;
+            this.labelRecordCount.Location = new System.Drawing.Point(47, 417);
+            this.labelRecordCount.Name = "labelRecordCount";
+            this.labelRecordCount.Size = new System.Drawing.Size(0, 15);
+            this.labelRecordCount.TabIndex = 4;
             // 
             // CTAApp
             // 
@@ -244,6 +255,7 @@
         private System.Windows.Forms.TextBox txtLogFolderPath;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ProgressBar progressBarProcess;
+        private System.Windows.Forms.Label labelRecordCount;
     }
 }
 
