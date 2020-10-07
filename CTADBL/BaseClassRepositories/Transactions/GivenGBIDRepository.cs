@@ -28,10 +28,6 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
         #endregion
 
-
-
-
-
         #region Update Call
         public void Update(GivenGBID gbid)
         {
@@ -96,10 +92,6 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
         #endregion
 
-
-
-
-
         #region Get Random GBID
         public int GetRandomGBID()
         {
@@ -128,50 +120,25 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
         #endregion
 
-
         #region Populate Given GBID Records
         public override GivenGBID PopulateRecord(MySqlDataReader reader)
         {
-            //reader.get
-            int colIndex1 = reader.GetOrdinal("dtEntered");
-            int colIndex2 = reader.GetOrdinal("dtUpdated");
-            int colIndex3 = reader.GetOrdinal("dtDate");
+            GivenGBID givenGBID = new GivenGBID();
 
-            DateTime? dtEntered = null;
-            DateTime? dtUpdated = null;
-            DateTime? dtDate = null;
+            givenGBID.Id = (int)reader["Id"];
+            givenGBID._id = reader.IsDBNull("_Id") ? null : (int?)(reader["_Id"]);
+            givenGBID.nGBId = (int)reader["nGBId"];
+            givenGBID.nFormNo = (int)reader["nFormNo"];
+            givenGBID.dtDate = reader.IsDBNull("dtDate") ? null : (DateTime?)(reader["dtDate"]);
+            givenGBID.nGivenOrNot = (int)reader["nGivenOrNot"];
+            givenGBID.nActive = (int)reader["nActive"];
+            //Common Props
+            givenGBID.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
+            givenGBID.nEnteredBy = (int)reader["nEnteredBy"];
+            givenGBID.dtUpdated = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
+            givenGBID.nUpdatedBy = (int)reader["nUpdatedBy"];
 
-            if (!reader.IsDBNull(colIndex1))
-            {
-                dtEntered = (DateTime)reader["dtEntered"];
-            }
-
-            if (!reader.IsDBNull(colIndex2))
-            {
-                dtUpdated = (DateTime)reader["dtUpdated"];
-            }
-
-            if (!reader.IsDBNull(colIndex3))
-            {
-                dtDate = (DateTime)reader["dtDate"];
-            }
-
-            return new GivenGBID
-            {
-                Id = (int)reader["Id"],
-                //TODO:
-                //_id = (int?)reader["_id"],
-                nActive = (int)reader["nActive"],
-                dtDate = dtDate,
-                nFormNo = (int)reader["nFormNo"],
-                nGBId = (int)reader["nGBId"],
-                nGivenOrNot = (int)reader["nGivenOrNot"],
-                //Common Props
-                nEnteredBy = (int)reader["nEnteredBy"],
-                nUpdatedBy = (int)reader["nUpdatedBy"],
-                dtEntered = dtEntered,
-                dtUpdated = dtUpdated
-            };
+            return givenGBID;
         }
         #endregion
     }
