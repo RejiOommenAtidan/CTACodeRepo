@@ -122,19 +122,15 @@ namespace CTAWebAPI.Controllers.Transactions
             
         }
 
-
         [HttpPost]
         [Route("[action]")]
 
         public IActionResult GetQuickResult(SimpleSearchVM simpleSearch)
         {
-
             if (String.IsNullOrEmpty(simpleSearch.sSearchField) || String.IsNullOrEmpty(simpleSearch.sSearchValue))
             {
                 return BadRequest(String.Format(@"Invalid request parameters"));
             }
-
-
             try
             {
                 IEnumerable<Object> greenBook = _greenBookVMRepository.GetQuickResult(simpleSearch.sSearchField, simpleSearch.sSearchValue);
@@ -152,8 +148,37 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+
+        public IActionResult GetQuickResultComplex(DetailedSearchVM detailedSearch)
+        {
+            if(detailedSearch == null)
+            {
+                return BadRequest(String.Format(@"Invalid request parameters"));
+            }
+            try
+            {
+                IEnumerable<Object> greenBook = _greenBookVMRepository.GetQuickResultComplex(detailedSearch);
+                if (greenBook != null)
+                {
+                    var totrec = greenBook.Count();
+                    return Ok(greenBook);
+                }
+                else
+                {
+                    return NotFound(String.Format(@"No records found for detailed search"));
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
 
         }
+
 
         [HttpGet]
         [Route("[action]")]
