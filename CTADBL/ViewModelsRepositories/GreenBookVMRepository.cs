@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace CTADBL.ViewModelsRepositories
 {
@@ -66,6 +67,56 @@ namespace CTADBL.ViewModelsRepositories
             gvm.gbDocuments = _gbDocumentRepository.GetGBDocumentsByGBID(gvm.greenBook.sGBID);
             return gvm;
         }
+
+
+        public GreenBookVM GetDetailsFromGBID(string sGBID)
+        {
+            return GetDetails(GetGreenbookVMRecord("sGBID", sGBID).FirstOrDefault());
+        }
+
+        #region Quick Result Approach
+
+        public IEnumerable<Object> GetQuickResult(string parameter, string value)
+        {
+            string operation = parameter == "sGBID" ? "=" : "LIKE";
+            value = parameter == "sGBID" ? value : value + "%";
+            string field = ", gb." + parameter;
+
+            string sql = String.Format(@"SELECT gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, year(curdate()) - year(dtDOB) as Age,  gb.sFathersName, gb.sMothersName, gb.sCity {0} FROM tblgreenbook as gb WHERE gb.{1} {2} @value LIMIT 500", field, parameter, operation);
+
+            using (var command = new MySqlCommand(sql))
+            {
+
+                //command.Parameters.AddWithValue("parameter", "gb." + parameter);
+                command.Parameters.AddWithValue("value", value);
+
+                command.Connection = _connection;
+                command.CommandType = CommandType.Text;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+
+                DataTableCollection tables = ds.Tables;
+                var result = tables[0].AsEnumerable().Select(row => new
+                {
+                    sGBID = row.Field<string>("sGBID"),
+                    sFirstName = row.Field<string>("sFirstName"),
+                    sMiddleName = row.Field<string>("sMiddleName"),
+                    sLastName = row.Field<string>("sLastName"),
+                    sFamilyName = row.Field<string>("sFamilyName"),
+                    dtDOB = row.Field<DateTime>("dtDOB"),
+                    Age = row.Field<int>("Age"),
+                    sFathersName = row.Field<string>("sFathersName"),
+                    sMothersName = row.Field<string>("sMothersName"),
+                    sCity = row.Field<string>("sCity"),
+                    field = row.Field<string>(field.Substring(5)),
+                });
+
+                return result;
+            }
+        }
+        #endregion
+
 
 
         #region Populate Records

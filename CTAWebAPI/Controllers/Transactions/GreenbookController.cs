@@ -122,6 +122,67 @@ namespace CTAWebAPI.Controllers.Transactions
             
         }
 
+
+        [HttpPost]
+        [Route("[action]")]
+
+        public IActionResult GetQuickResult(SimpleSearchVM simpleSearch)
+        {
+
+            if (String.IsNullOrEmpty(simpleSearch.sSearchField) || String.IsNullOrEmpty(simpleSearch.sSearchValue))
+            {
+                return BadRequest(String.Format(@"Invalid request parameters"));
+            }
+
+
+            try
+            {
+                IEnumerable<Object> greenBook = _greenBookVMRepository.GetQuickResult(simpleSearch.sSearchField, simpleSearch.sSearchValue);
+                if (greenBook != null)
+                {
+                    var totrec = greenBook.Count();
+                    return Ok(greenBook);
+                }
+                else
+                {
+                    return NotFound(String.Format(@"No records found for {0} having value {1}", simpleSearch.sSearchField, simpleSearch.sSearchValue));
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetDetailsFromGBID(string sGBID)
+        {
+
+            if (String.IsNullOrEmpty(sGBID))
+            {
+                return BadRequest(String.Format(@"Invalid request parameters"));
+            }
+            try
+            {
+                GreenBookVM greenBook = _greenBookVMRepository.GetDetailsFromGBID(sGBID);
+                if (greenBook != null)
+                {
+                    return Ok(greenBook);
+                }
+                else
+                {
+                    return NotFound(String.Format(@"No records found for sGBID having value {0}", sGBID));
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
         [HttpPost]
         [Route("[action]")]
         public IActionResult GetDetails(GreenBookVM gvm)
