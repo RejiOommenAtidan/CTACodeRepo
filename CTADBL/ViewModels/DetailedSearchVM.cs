@@ -5,13 +5,14 @@ namespace CTADBL.ViewModels
     public class DetailedSearchVM
     {
         #region Private Detailed Properties 
-        private string _sFirstname;
-        private string _sSecondname;
-        private string _sFamilyname;
-        private string _sFathername;
-        private string _sMothername;
-        private string _sSpousename;
-        private DateTime? _dtDOB;
+        private string _sFirstName;
+        private string _sMiddleName;
+        private string _sLastName;
+        private string _sFamilyName;
+        private string _sFatherName;
+        private string _sMotherName;
+        private string _sSpouseName;
+        private string _dtDOB;
         private string _sCity;
         private string _sState;
         private int? _nFromAge;
@@ -22,13 +23,14 @@ namespace CTADBL.ViewModels
         #endregion
 
         #region Public Detailed Props
-        public string sFirstname { get { return _sFirstname; } set { _sFirstname = value; } }
-        public string sSecondname { get { return _sSecondname; } set { _sSecondname = value; } }
-        public string sFamilyname { get { return _sFamilyname; } set { _sFamilyname = value; } }
-        public string sFathername { get { return _sFathername; } set { _sFathername = value; } }
-        public string sMothername { get { return _sMothername; } set { _sMothername = value; } }
-        public string sSpousename { get { return _sSpousename; } set { _sSpousename = value; } }
-        public DateTime? dtDOB { get { return _dtDOB; } set { _dtDOB = value; } }
+        public string sFirstName { get { return _sFirstName; } set { _sFirstName = value; } }
+        public string sMiddleName { get { return _sMiddleName; } set { _sMiddleName = value; } }
+        public string sLastName { get { return _sLastName; } set { _sLastName = value; } }
+        public string sFamilyName { get { return _sFamilyName; } set { _sFamilyName = value; } }
+        public string sFatherName { get { return _sFatherName; } set { _sFatherName = value; } }
+        public string sMotherName { get { return _sMotherName; } set { _sMotherName = value; } }
+        public string sSpouseName { get { return _sSpouseName; } set { _sSpouseName = value; } }
+        public string dtDOB { get { return _dtDOB; } set { _dtDOB = value; } }
         public string sCity { get { return _sCity; } set { _sCity = value; } }
         public string sState { get { return _sState; } set { _sState = value; } }
         public int? nFromAge { get { return _nFromAge; } set { _nFromAge = value; } }

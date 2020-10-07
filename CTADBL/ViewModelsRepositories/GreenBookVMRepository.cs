@@ -38,7 +38,7 @@ namespace CTADBL.ViewModelsRepositories
             string operation = parameter == "sGBID" ? "=" : "LIKE";
             value = parameter == "sGBID" ? value : value + "%";
 
-            string sql = String.Format(@"SELECT gb.sGBID, ar.sAuthRegion, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sGender, gb.dtDOB, gb.sDOBApprox, gb.sBirthPlace, gb.sBirthCountryID,  bctry.sCountry AS sBirthCountry, gb.sOriginVillage, pr.sProvince, gb.sMarried, gb.sOtherDocuments, gb.sResidenceNumber, qu.sQualification, occ.sOccupationDesc , gb.sAliasName, gb.sOldGreenBKNo, gb.sFstGreenBkNo,  gb.dtFormDate,  gb.sFathersName, frel.sgbidrelation as sFathersGBID, gb.sMothersName,  mrel.sgbidrelation as sMothersGBID,  gb.sSpouseName, srel.sgbidrelation as sSpouseGBID, gb.nChildrenM, gb.nChildrenF, gb.sAddress1, gb.sAddress2, gb.sCity, gb.sState, gb.sPCode, gb.sCountryID, ctry.sCountry AS sCountry, gb.sEmail, gb.sPhone, gb.sfax, gb.dtDeceased, gb.sBookIssued, gb.dtValidityDate, gb.sPaidUntil, gb.TibetanName, gb.TBUPlaceOfBirth, gb.TBUOriginVillage, gb.TBUFathersName, gb.TBUMothersName, gb.TBUSpouseName, us.sFullName AS sEnteredBy  FROM tblgreenbook as gb LEFT JOIN lstcountry ctry ON ctry.sCountryID = gb.sCountryID LEFT JOIN lstcountry bctry ON bctry.sCountryID = gb.sBirthCountryID  LEFT JOIN tbluser AS us ON us.Id = gb.nEnteredBy LEFT JOIN lstauthregion AS ar ON ar.ID = gb.nAuthRegionID LEFT JOIN lstprovince AS pr ON pr.Id = gb.sOriginProvinceID LEFT JOIN lstqualification AS qu ON qu.sQualificationID = gb.sQualificationID LEFT JOIN lstoccupation AS occ ON occ.Id = gb.sOccupationID LEFT JOIN lnkgbrelation AS frel ON gb.sGBID = frel.sGBID and frel.nrelationid = 1  LEFT JOIN lnkgbrelation AS mrel ON gb.sGBID = mrel.sGBID and mrel.nrelationid = 2 LEFT JOIN lnkgbrelation AS srel ON gb.sGBID = srel.sGBID and srel.nrelationid = 3 WHERE gb.{0} {1} @value", parameter, operation);
+            string sql = String.Format(@"SELECT gb.sGBID, ar.sAuthRegion, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sGender, gb.dtDOB, gb.sDOBApprox, gb.sBirthPlace, gb.sBirthCountryID,  bctry.sCountry AS sBirthCountry, gb.sOriginVillage, pr.sProvince, gb.sMarried, gb.sOtherDocuments, gb.sResidenceNumber, qu.sQualification, occ.sOccupationDesc , gb.sAliasName, gb.sOldGreenBKNo, gb.sFstGreenBkNo,  gb.dtFormDate,  gb.sFathersName, gb.sFathersID , frel.sgbidrelation as sFathersGBID, gb.sMothersName, gb.sMothersID,  mrel.sgbidrelation as sMothersGBID,  gb.sSpouseName, gb.sSpouseID, srel.sgbidrelation as sSpouseGBID, gb.nChildrenM, gb.nChildrenF, gb.sAddress1, gb.sAddress2, gb.sCity, gb.sState, gb.sPCode, gb.sCountryID, ctry.sCountry AS sCountry, gb.sEmail, gb.sPhone, gb.sfax, gb.dtDeceased, gb.sBookIssued, gb.dtValidityDate, gb.sPaidUntil, gb.TibetanName, gb.TBUPlaceOfBirth, gb.TBUOriginVillage, gb.TBUFathersName, gb.TBUMothersName, gb.TBUSpouseName, us.sFullName AS sEnteredBy  FROM tblgreenbook as gb LEFT JOIN lstcountry ctry ON ctry.sCountryID = gb.sCountryID LEFT JOIN lstcountry bctry ON bctry.sCountryID = gb.sBirthCountryID  LEFT JOIN tbluser AS us ON us.Id = gb.nEnteredBy LEFT JOIN lstauthregion AS ar ON ar.ID = gb.nAuthRegionID LEFT JOIN lstprovince AS pr ON pr.Id = gb.sOriginProvinceID LEFT JOIN lstqualification AS qu ON qu.sQualificationID = gb.sQualificationID LEFT JOIN lstoccupation AS occ ON occ.Id = gb.sOccupationID LEFT JOIN lnkgbrelation AS frel ON gb.sGBID = frel.sGBID and frel.nrelationid = 1  LEFT JOIN lnkgbrelation AS mrel ON gb.sGBID = mrel.sGBID and mrel.nrelationid = 2 LEFT JOIN lnkgbrelation AS srel ON gb.sGBID = srel.sGBID and srel.nrelationid = 3 WHERE gb.{0} {1} @value", parameter, operation);
             
             try
             {
@@ -118,7 +118,65 @@ namespace CTADBL.ViewModelsRepositories
         }
         #endregion
 
+        public IEnumerable<Object> GetQuickResultComplex(DetailedSearchVM detailedSearch)
+        {
+            string addToSql = "";
+            Dictionary<string, dynamic> parameters = detailedSearch.GetType().GetProperties().ToDictionary(prop => prop.Name, prop => prop.GetValue(detailedSearch, null));
 
+            foreach (var item in parameters)
+            {
+                if (item.Value != null)
+                {
+                    if (item.Key == "nFromAge")
+                    {
+                        int year = DateTime.Now.Year - Convert.ToInt32(item.Value);
+                        addToSql += String.Format(@"year(gb.dtDOB) <= {0} and ", year);
+                    }
+                    else if (item.Key == "nToAge")
+                    {
+                        int year = DateTime.Now.Year - Convert.ToInt32(item.Value);
+                        addToSql += String.Format(@"year(gb.dtDOB) >= {0} and ", year);
+                    }
+                    else if(item.Key == "dtDOB")
+                    {
+                        addToSql += String.Format(@"gb.{0} = '{1}' and ", item.Key, item.Value);
+                    }
+                    else
+                    {
+                        addToSql += String.Format(@"gb.{0} LIKE '{1}%' and ", item.Key, item.Value);
+                    }
+                }
+            }
+
+            string sql = String.Format(@"SELECT gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, year(curdate()) - year(dtDOB) as Age,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID  FROM tblgreenbook as gb WHERE {0} 1 = 1 LIMIT 500", addToSql);
+
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Connection = _connection;
+                command.CommandType = CommandType.Text;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var result = tables[0].AsEnumerable().Select(row => new
+                {
+                    sGBID = row.Field<string>("sGBID"),
+                    sFirstName = row.Field<string>("sFirstName"),
+                    sMiddleName = row.Field<string>("sMiddleName"),
+                    sLastName = row.Field<string>("sLastName"),
+                    sFamilyName = row.Field<string>("sFamilyName"),
+                    dtDOB = row.Field<DateTime>("dtDOB"),
+                    Age = row.Field<int>("Age"),
+                    sFathersName = row.Field<string>("sFathersName"),
+                    sMothersName = row.Field<string>("sMothersName"),
+                    sCity = row.Field<string>("sCity"),
+                    sCountryID = row.Field<string>("sCountryID")
+
+                });
+
+                return result;
+            }
+        }
 
         #region Populate Records
         public override GreenBookVM PopulateRecord(MySqlDataReader reader)
@@ -147,8 +205,14 @@ namespace CTADBL.ViewModelsRepositories
                     sFstGreenBkNo = reader.IsDBNull("sFstGreenBkNo") ? null : (string)reader["sFstGreenBkNo"],
                     dtFormDate = reader.IsDBNull("dtFormDate") ? null : (DateTime?)(reader["dtFormDate"]),
                     sFathersName = reader.IsDBNull("sFathersName") ? null : (string)reader["sFathersName"],
+                    sFathersID = reader.IsDBNull("sFathersID") ? null : (string)reader[@"sFathersID"],
+                    sFathersGBID = reader.IsDBNull("sFathersGBID") ? null : (string)reader["sFathersGBID"],
                     sMothersName = reader.IsDBNull("sMothersName") ? null : (string)reader["sMothersName"],
+                    sMothersID = reader.IsDBNull("sMothersID") ? null : (string)reader["sMothersID"],
+                    sMothersGBID = reader.IsDBNull("sMothersGBID") ? null : (string)reader["sMothersGBID"],
                     sSpouseName = reader.IsDBNull("sSpouseName") ? null : (string)reader["sSpouseName"],
+                    sSpouseID = reader.IsDBNull("sSpouseID") ? null : (string)reader["sSpouseID"],
+                    sSpouseGBID = reader.IsDBNull("sSpouseGBID") ? null : (string)reader["sSpouseGBID"],
                     nChildrenM = (int)reader["nChildrenM"],
                     nChildrenF = (int)reader["nChildrenF"],
                     sAddress1 = reader.IsDBNull("sAddress1") ? null : (string)reader["sAddress1"],
