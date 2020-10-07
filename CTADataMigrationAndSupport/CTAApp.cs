@@ -211,14 +211,24 @@ namespace CTADataMigrationAndSupport
         {
             string connetionString = null;
             MySqlConnection cnn;
+            connetionString = txtConnectionString.Text;
+            string sLogFolderPath = txtLogFolderPath.Text;
+            string sPathPrifix = txtImagePath.Text;
+            Int64 nDirtyRecordCount = 0;
+            Int32 nNumberButNotFound = 0;
+            Int32 nStringWithEmpty = 0;
+            Int32 nNotNumberButString = 0;
+            StringBuilder sbLogging = new StringBuilder();
 
             if (comboBox1.SelectedItem == null)
             {
                 lblResultRelation.Text = "Please select Relation";
                 return;
             }
-            else
+
+            else if (comboBox1.SelectedItem.ToString() != "Children")
             {
+
                 lblResultRelation.Text = comboBox1.SelectedItem.ToString();
                 string sSearchColumn = string.Empty;
                 switch (comboBox1.SelectedItem.ToString())
@@ -241,17 +251,10 @@ namespace CTADataMigrationAndSupport
                         // code block
                         lblResultRelation.Text = "Invalid selection!";
                         return;
-                        break;
+                        //break;
                 }
 
-                connetionString = txtConnectionString.Text;
-                string sLogFolderPath = txtLogFolderPath.Text;
-                string sPathPrifix = txtImagePath.Text;
-                Int64 nDirtyRecordCount = 0;
-                Int32 nNumberButNotFound = 0;
-                Int32 nStringWithEmpty = 0;
-                Int32 nNotNumberButString = 0;
-                StringBuilder sbLogging = new StringBuilder();
+                
 
                 cnn = new MySqlConnection(connetionString);
                 try
@@ -368,6 +371,124 @@ namespace CTADataMigrationAndSupport
                 {
                     lblResultRelation.Text += Environment.NewLine + ex.ToString();
                 }
+            }
+            else
+            {
+                cnn = new MySqlConnection(connetionString);
+                try
+                {
+                    cnn.Open();
+                    //string sSearchColumn = string.Empty;
+                    //sSearchColumn = 
+                    string query = "SELECT sGBIDParent FROM lnkgbchildren";
+                    MySqlCommand cmd = new MySqlCommand(query, cnn);
+                    MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
+                    DataTable dt = new DataTable("tblGreenBook");
+                    returnVal.Fill(dt);
+                    string sStartProcess = DateTime.Now.ToString();
+                    if (dt != null || dt.Rows.Count > 0)
+                    {
+                        progressBarProcess.Minimum = 0;
+                        progressBarProcess.Maximum = dt.Rows.Count;
+                        progressBarProcess.Step = 1;
+                    }
+                    else
+                    {
+                        progressBarProcess.Minimum = 0;
+                        progressBarProcess.Maximum = 1;
+                        progressBarProcess.Step = 1;
+                        progressBarProcess.PerformStep();
+                    }
+
+                    //Iterate through Items 
+                    Int64 nRecordCount = 0;
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        progressBarProcess.PerformStep();
+
+                        if (row["sGBIDParent"] == DBNull.Value)
+                        {
+                            continue;
+                        }
+                        //If the sSearchColumn value is numeric
+                        if (Int64.TryParse(row["sGBIDParent"].ToString(), out long longValue))
+                        {
+                            //this is number
+                            query = "select sGBID from tblgreenbook where sGBID = '" + row["sGBIDParent"].ToString() + "'";
+                            MySqlCommand cmdExist = new MySqlCommand(query, cnn);
+                            MySqlDataAdapter returnValExist = new MySqlDataAdapter(query, cnn);
+                            DataTable dtExist = new DataTable("tblGreenBook");
+                            returnValExist.Fill(dtExist);
+
+                            if (dtExist == null || dtExist.Rows.Count <= 0)
+                            {
+                                nDirtyRecordCount++;
+                                nNumberButNotFound++;
+                                lblResultRelation.Text = @"GB Id: " + row["sGBIDParent"].ToString();
+                                sbLogging.AppendLine("Green Book Id: " + row["sGBIDParent"].ToString());
+                                continue;
+                            }
+                        }
+                        else  // this is string
+                        {
+                            if (row["sGBID"].ToString().Trim() == string.Empty)
+                            {
+                                nDirtyRecordCount++;
+                                nStringWithEmpty++;
+                                lblResultRelation.Text = @"GB Id: " + row["sGBIDParent"].ToString();
+                                sbLogging.AppendLine("Green Book Id: " + row["sGBIDParent"].ToString());
+                                continue;
+                            }
+                            else
+                            {
+                                nDirtyRecordCount++;
+                                nNotNumberButString++;
+                                lblResultRelation.Text = @"GB Id: " + row["sGBIDParent"].ToString();
+                                sbLogging.AppendLine("Green Book Id: " + row["sGBIDParent"].ToString());
+                                continue;
+                            }
+                        }
+
+                        nRecordCount++;
+                        labelRecordCount.Text = nRecordCount.ToString() + @"\" + dt.Rows.Count.ToString();
+                        this.Refresh();
+                    }
+                    string sEndProcess = DateTime.Now.ToString();
+
+                    lblResultRelation.Text = @"===================================";
+                    lblResultRelation.Text += Environment.NewLine + "             Summary Count";
+                    lblResultRelation.Text += Environment.NewLine + "===================================";
+                    lblResultRelation.Text += Environment.NewLine + "Start Process: " + sStartProcess;
+                    lblResultRelation.Text += Environment.NewLine + "End Process: " + sEndProcess;
+                    lblResultRelation.Text += Environment.NewLine + "Total Records: " + dt.Rows.Count;
+                    lblResultRelation.Text += Environment.NewLine + "Dirty Records Count for Child: " + nDirtyRecordCount.ToString();
+                    lblResultRelation.Text += Environment.NewLine + "Number But Not found for Child: " + nNumberButNotFound.ToString();
+                    lblResultRelation.Text += Environment.NewLine + "String with Empty for Child: " + nStringWithEmpty.ToString();
+                    lblResultRelation.Text += Environment.NewLine + "Not Number But String for Child: " + nNotNumberButString.ToString();
+                    lblResultRelation.Text += Environment.NewLine + "===================================";
+
+                    sbLogging.AppendLine("===================================");
+                    sbLogging.AppendLine("             Summary Count");
+                    sbLogging.AppendLine("===================================");
+                    sbLogging.AppendLine("Start Process: " + sStartProcess);
+                    sbLogging.AppendLine("End Process: " + sEndProcess);
+                    sbLogging.AppendLine("Total Records: " + dt.Rows.Count);
+                    sbLogging.AppendLine("Dirty Records Count for Child: " + nDirtyRecordCount.ToString());
+                    sbLogging.AppendLine("Number But Not found for Child: " + nNumberButNotFound.ToString());
+                    sbLogging.AppendLine("String with Empty for Child: " + nStringWithEmpty.ToString());
+                    sbLogging.AppendLine("Not Number But String for Child: " + nNotNumberButString.ToString());
+                    sbLogging.AppendLine("===================================");
+
+                    File.AppendAllText(sLogFolderPath + "DirtyRecords-Children-" + Guid.NewGuid().ToString() + ".txt", sbLogging.ToString());
+                    sbLogging.Clear();
+
+
+                    cnn.Close();
+                }
+                catch (Exception ex)
+                {
+                    lblResultRelation.Text += Environment.NewLine + ex.ToString();
+}
             }
         }
     }

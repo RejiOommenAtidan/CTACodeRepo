@@ -1,4 +1,4 @@
-Green Book Id: 37893   sSearchColumn: 5358167
+﻿Green Book Id: 37893   sSearchColumn: 5358167
 Green Book Id: 69969   sSearchColumn: IN7596326
 Green Book Id: 73701   sSearchColumn: 
 Green Book Id: 6415785   sSearchColumn: 
@@ -7071,13 +7071,13 @@ Green Book Id: 3916524   sSearchColumn:
 Green Book Id: 2969476   sSearchColumn: 
 Green Book Id: 5289454   sSearchColumn: 
 Green Book Id: 5113724   sSearchColumn: 
-===================================
+===========================================
              Summary Count
-===================================
+===========================================
 Start Process: 06-10-2020 01:16:39
 End Process: 06-10-2020 02:08:52
 Dirty Records Count for sMothersGBID: 7073
 Number But Not found for sMothersGBID: 176
 String with Empty for sMothersGBID: 5898
 Not Number But String for sMothersGBID: 999
-===================================
+===========================================
