@@ -48,7 +48,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 sFieldValuesNew = reader.IsDBNull("sFieldValuesNew") ? null : (string)reader["sFieldValuesNew"]
             };
             
-            return base.PopulateRecord(reader);
+            return auditLog;
 
         }
 

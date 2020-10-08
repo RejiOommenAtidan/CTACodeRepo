@@ -25,7 +25,7 @@ namespace CTADBL.ViewModelsRepositories
 
         public IEnumerable<MakeList> GetMakeListData(Dictionary<string, dynamic> dict)
         {
-            string sql = @"select  gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sAliasName, gb.sFathersName, gb.sCity, gb.sOldGreenBkNo, gb.sGBID, gb.sAddress1 from tblgreenbook gb INNER JOIN tblgreenbookissued as gbi on CAST(gbi.ngbid AS CHAR) = gb.sgbid where gbi.dtIssuedDate >= @startDate and gbi.dtIssuedDate <= @endDate and gbi.nMadebTypeId = @nMadebTypeId and gbi.nAuthRegionId = @nAuthRegionId and gbi.nPrinted = @nPrinted ;";
+            string sql = @"select  gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sAliasName, gb.sFathersName, gb.sCity, gb.sOldGreenBkNo, gb.sGBID, gb.sAddress1 from tblgreenbook gb INNER JOIN tblgreenbookissued as gbi on CONCAT(gbi.ngbid + '') = gb.sgbid where gbi.dtIssuedDate >= @startDate and gbi.dtIssuedDate <= @endDate and gbi.nMadebTypeId = @nMadebTypeId and gbi.nAuthRegionId = @nAuthRegionId and gbi.nPrinted = @nPrinted ;";
 
             using (var command = new MySqlCommand(sql))
             {

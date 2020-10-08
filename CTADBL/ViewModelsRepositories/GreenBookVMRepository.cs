@@ -19,6 +19,8 @@ namespace CTADBL.ViewModelsRepositories
         private IssueBookVMRepository _issueBookVMRepository;
         private GBNoteRepository _gbNoteRepository;
         private GBDocumentRepository _gbDocumentRepository;
+        private AuditLogVMRepository _auditLogVMRepository;
+        private RecentlySearchedGBRepository _recentlySearchedGBRepository;
 
         #region Constructor
         public GreenBookVMRepository(string connectionString) : base(connectionString)
@@ -29,6 +31,8 @@ namespace CTADBL.ViewModelsRepositories
             _issueBookVMRepository = new IssueBookVMRepository(connectionString);
             _gbNoteRepository = new GBNoteRepository(connectionString);
             _gbDocumentRepository = new GBDocumentRepository(connectionString);
+            _auditLogVMRepository = new AuditLogVMRepository(connectionString);
+            _recentlySearchedGBRepository = new RecentlySearchedGBRepository(connectionString);
         }
         #endregion
 
@@ -65,13 +69,30 @@ namespace CTADBL.ViewModelsRepositories
             gvm.booksIssued = _issueBookVMRepository.GetIssueBookByGbId(Convert.ToInt32(gvm.greenBook.sGBID));
             gvm.gbNotes = _gbNoteRepository.GetGBNoteByGBID(gvm.greenBook.sGBID);
             gvm.gbDocuments = _gbDocumentRepository.GetGBDocumentsByGBID(gvm.greenBook.sGBID);
+            gvm.auditLogs = _auditLogVMRepository.GetAuditLogsByGBID(gvm.greenBook.sGBID);
             return gvm;
         }
 
 
         public GreenBookVM GetDetailsFromGBID(string sGBID)
         {
-            return GetDetails(GetGreenbookVMRecord("sGBID", sGBID).FirstOrDefault());
+            try
+            {
+                GreenBookVM greenBookVM = GetDetails(GetGreenbookVMRecord("sGBID", sGBID).FirstOrDefault());
+                RecentlySearchedGB recentlySearched = new RecentlySearchedGB
+                {
+                    dtEntered = DateTime.Now,
+                    nEnteredBy = 1,
+                    nGBID = Convert.ToInt32(sGBID),
+                    nUserID = 1
+                };
+                _recentlySearchedGBRepository.Add(recentlySearched);
+                return greenBookVM;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         #region Quick Result Approach

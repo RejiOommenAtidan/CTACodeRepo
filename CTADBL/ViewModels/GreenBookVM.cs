@@ -25,6 +25,7 @@ namespace CTADBL.ViewModels
         private IEnumerable<IssueBookVM>? _booksIssued = null;
         private IEnumerable<GBNote>? _gbNotes = null;
         private IEnumerable<GBDocument> _gbDocuments = null;
+        private IEnumerable<AuditLogVM> _auditLogs = null;
         private string _sAuthRegion;
         private string? _sProvince;
         private string? _sQualification;
@@ -98,6 +99,20 @@ namespace CTADBL.ViewModels
                 _gbDocuments = value;
             }
         }
+
+
+        public IEnumerable<AuditLogVM>? auditLogs
+        {
+            get
+            {
+                return _auditLogs;
+            }
+            set
+            {
+                _auditLogs = value;
+            }
+        }
+
 
         public string sAuthRegion
         {
