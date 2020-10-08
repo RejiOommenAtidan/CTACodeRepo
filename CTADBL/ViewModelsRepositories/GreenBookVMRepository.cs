@@ -21,6 +21,7 @@ namespace CTADBL.ViewModelsRepositories
         private GBDocumentRepository _gbDocumentRepository;
         private AuditLogVMRepository _auditLogVMRepository;
         private RecentlySearchedGBRepository _recentlySearchedGBRepository;
+        private GBRelationVMRepository _gbRelationVMRepository;
 
         #region Constructor
         public GreenBookVMRepository(string connectionString) : base(connectionString)
@@ -33,6 +34,7 @@ namespace CTADBL.ViewModelsRepositories
             _gbDocumentRepository = new GBDocumentRepository(connectionString);
             _auditLogVMRepository = new AuditLogVMRepository(connectionString);
             _recentlySearchedGBRepository = new RecentlySearchedGBRepository(connectionString);
+            _gbRelationVMRepository = new GBRelationVMRepository(connectionString);
         }
         #endregion
 
@@ -42,7 +44,7 @@ namespace CTADBL.ViewModelsRepositories
             string operation = parameter == "sGBID" ? "=" : "LIKE";
             value = parameter == "sGBID" ? value : value + "%";
 
-            string sql = String.Format(@"SELECT gb.sGBID, ar.sAuthRegion, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sGender, gb.dtDOB, gb.sDOBApprox, gb.sBirthPlace, gb.sBirthCountryID,  bctry.sCountry AS sBirthCountry, gb.sOriginVillage, pr.sProvince, gb.sMarried, gb.sOtherDocuments, gb.sResidenceNumber, qu.sQualification, occ.sOccupationDesc , gb.sAliasName, gb.sOldGreenBKNo, gb.sFstGreenBkNo,  gb.dtFormDate,  gb.sFathersName, gb.sFathersID , frel.sgbidrelation as sFathersGBID, gb.sMothersName, gb.sMothersID,  mrel.sgbidrelation as sMothersGBID,  gb.sSpouseName, gb.sSpouseID, srel.sgbidrelation as sSpouseGBID, gb.nChildrenM, gb.nChildrenF, gb.sAddress1, gb.sAddress2, gb.sCity, gb.sState, gb.sPCode, gb.sCountryID, ctry.sCountry AS sCountry, gb.sEmail, gb.sPhone, gb.sfax, gb.dtDeceased, gb.sBookIssued, gb.dtValidityDate, gb.sPaidUntil, gb.TibetanName, gb.TBUPlaceOfBirth, gb.TBUOriginVillage, gb.TBUFathersName, gb.TBUMothersName, gb.TBUSpouseName, us.sFullName AS sEnteredBy  FROM tblgreenbook as gb LEFT JOIN lstcountry ctry ON ctry.sCountryID = gb.sCountryID LEFT JOIN lstcountry bctry ON bctry.sCountryID = gb.sBirthCountryID  LEFT JOIN tbluser AS us ON us.Id = gb.nEnteredBy LEFT JOIN lstauthregion AS ar ON ar.ID = gb.nAuthRegionID LEFT JOIN lstprovince AS pr ON pr.Id = gb.sOriginProvinceID LEFT JOIN lstqualification AS qu ON qu.sQualificationID = gb.sQualificationID LEFT JOIN lstoccupation AS occ ON occ.Id = gb.sOccupationID LEFT JOIN lnkgbrelation AS frel ON gb.sGBID = frel.sGBID and frel.nrelationid = 1  LEFT JOIN lnkgbrelation AS mrel ON gb.sGBID = mrel.sGBID and mrel.nrelationid = 2 LEFT JOIN lnkgbrelation AS srel ON gb.sGBID = srel.sGBID and srel.nrelationid = 3 WHERE gb.{0} {1} @value", parameter, operation);
+            string sql = String.Format(@"SELECT gb.sGBID, ar.sAuthRegion, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sGender, gb.dtDOB, gb.sDOBApprox, gb.sBirthPlace, gb.sBirthCountryID,  bctry.sCountry AS sBirthCountry, gb.sOriginVillage, pr.sProvince, gb.sMarried, gb.sOtherDocuments, gb.sResidenceNumber, qu.sQualification, occ.sOccupationDesc , gb.sAliasName, gb.sOldGreenBKNo, gb.sFstGreenBkNo,  gb.dtFormDate, gb.nChildrenM, gb.nChildrenF, gb.sAddress1, gb.sAddress2, gb.sCity, gb.sState, gb.sPCode, gb.sCountryID, ctry.sCountry AS sCountry, gb.sEmail, gb.sPhone, gb.sfax, gb.dtDeceased, gb.sBookIssued, gb.dtValidityDate, gb.sPaidUntil, gb.TibetanName, gb.TBUPlaceOfBirth, gb.TBUOriginVillage, gb.TBUFathersName, gb.TBUMothersName, gb.TBUSpouseName, us.sFullName AS sEnteredBy, doc.binFileDoc AS sPhoto FROM tblgreenbook as gb LEFT JOIN lstcountry ctry ON ctry.sCountryID = gb.sCountryID LEFT JOIN lstcountry bctry ON bctry.sCountryID = gb.sBirthCountryID  LEFT JOIN tbluser AS us ON us.Id = gb.nEnteredBy LEFT JOIN lstauthregion AS ar ON ar.ID = gb.nAuthRegionID LEFT JOIN lstprovince AS pr ON pr.Id = gb.sOriginProvinceID LEFT JOIN lstqualification AS qu ON qu.sQualificationID = gb.sQualificationID LEFT JOIN lstoccupation AS occ ON occ.Id = gb.sOccupationID LEFT JOIN lnkgbdocument AS doc ON gb.sGBId = doc.sGBId WHERE gb.{0} {1} @value", parameter, operation);
             
             try
             {
@@ -65,6 +67,7 @@ namespace CTADBL.ViewModelsRepositories
 
         public GreenBookVM GetDetails(GreenBookVM gvm)
         {
+            gvm.relations = _gbRelationVMRepository.GetRelationsData(gvm.greenBook.sGBID);
             gvm.children = _gbChildrenRepository.GetGBChildrenByGBIDParent(gvm.greenBook.sGBID);
             gvm.booksIssued = _issueBookVMRepository.GetIssueBookByGbId(Convert.ToInt32(gvm.greenBook.sGBID));
             gvm.gbNotes = _gbNoteRepository.GetGBNoteByGBID(gvm.greenBook.sGBID);
@@ -74,7 +77,7 @@ namespace CTADBL.ViewModelsRepositories
         }
 
 
-        public GreenBookVM GetDetailsFromGBID(string sGBID)
+        public GreenBookVM GetDetailsFromGBID(string sGBID, int nUserId)
         {
             try
             {
@@ -82,9 +85,9 @@ namespace CTADBL.ViewModelsRepositories
                 RecentlySearchedGB recentlySearched = new RecentlySearchedGB
                 {
                     dtEntered = DateTime.Now,
-                    nEnteredBy = 1,
+                    nEnteredBy = nUserId,
                     nGBID = Convert.ToInt32(sGBID),
-                    nUserID = 1
+                    nUserID = nUserId
                 };
                 _recentlySearchedGBRepository.Add(recentlySearched);
                 return greenBookVM;
@@ -202,7 +205,12 @@ namespace CTADBL.ViewModelsRepositories
         #region Populate Records
         public override GreenBookVM PopulateRecord(MySqlDataReader reader)
         {
-
+            string? sPhoto = null;
+            if (!reader.IsDBNull("sPhoto"))
+            {
+                byte[] img = (byte[])reader["sPhoto"];
+                sPhoto = Convert.ToBase64String(img);
+            }
             GreenBookVM gvm = new GreenBookVM
             {
                 greenBook =  new Greenbook 
@@ -225,15 +233,15 @@ namespace CTADBL.ViewModelsRepositories
                     sOldGreenBKNo = reader.IsDBNull("sOldGreenBKNo") ? null : (string)reader["sOldGreenBKNo"],
                     sFstGreenBkNo = reader.IsDBNull("sFstGreenBkNo") ? null : (string)reader["sFstGreenBkNo"],
                     dtFormDate = reader.IsDBNull("dtFormDate") ? null : (DateTime?)(reader["dtFormDate"]),
-                    sFathersName = reader.IsDBNull("sFathersName") ? null : (string)reader["sFathersName"],
-                    sFathersID = reader.IsDBNull("sFathersID") ? null : (string)reader[@"sFathersID"],
-                    sFathersGBID = reader.IsDBNull("sFathersGBID") ? null : (string)reader["sFathersGBID"],
-                    sMothersName = reader.IsDBNull("sMothersName") ? null : (string)reader["sMothersName"],
-                    sMothersID = reader.IsDBNull("sMothersID") ? null : (string)reader["sMothersID"],
-                    sMothersGBID = reader.IsDBNull("sMothersGBID") ? null : (string)reader["sMothersGBID"],
-                    sSpouseName = reader.IsDBNull("sSpouseName") ? null : (string)reader["sSpouseName"],
-                    sSpouseID = reader.IsDBNull("sSpouseID") ? null : (string)reader["sSpouseID"],
-                    sSpouseGBID = reader.IsDBNull("sSpouseGBID") ? null : (string)reader["sSpouseGBID"],
+                    //sFathersName = reader.IsDBNull("sFathersName") ? null : (string)reader["sFathersName"],
+                    //sFathersID = reader.IsDBNull("sFathersID") ? null : (string)reader[@"sFathersID"],
+                    //sFathersGBID = reader.IsDBNull("sFathersGBID") ? null : (string)reader["sFathersGBID"],
+                    //sMothersName = reader.IsDBNull("sMothersName") ? null : (string)reader["sMothersName"],
+                    //sMothersID = reader.IsDBNull("sMothersID") ? null : (string)reader["sMothersID"],
+                    //sMothersGBID = reader.IsDBNull("sMothersGBID") ? null : (string)reader["sMothersGBID"],
+                    //sSpouseName = reader.IsDBNull("sSpouseName") ? null : (string)reader["sSpouseName"],
+                    //sSpouseID = reader.IsDBNull("sSpouseID") ? null : (string)reader["sSpouseID"],
+                    //sSpouseGBID = reader.IsDBNull("sSpouseGBID") ? null : (string)reader["sSpouseGBID"],
                     nChildrenM = (int)reader["nChildrenM"],
                     nChildrenF = (int)reader["nChildrenF"],
                     sAddress1 = reader.IsDBNull("sAddress1") ? null : (string)reader["sAddress1"],
@@ -254,18 +262,19 @@ namespace CTADBL.ViewModelsRepositories
                     TBUOriginVillage = (string)reader["TBUOriginVillage"],
                     TBUFathersName = (string)reader["TBUFathersName"],
                     TBUMothersName = (string)reader["TBUMothersName"],
-                    TBUSpouseName = (string)reader["TBUSpouseName"],
+                    TBUSpouseName = (string)reader["TBUSpouseName"]
                 },
                 sAuthRegion = reader.IsDBNull("sAuthRegion") ? null : (string)reader["sAuthRegion"],
                 sProvince = reader.IsDBNull("sProvince") ? null : (string)reader["sProvince"],
                 sQualification = reader.IsDBNull("sQualification") ? null : (string)reader["sQualification"],
                 sOccupationDesc = reader.IsDBNull("sOccupationDesc") ? null : (string)reader["sOccupationDesc"],
-                sFathersGBID = reader.IsDBNull("sFathersGBID") ? null : (string)reader["sFathersGBID"],
-                sMothersGBID = reader.IsDBNull("sMothersGBID") ? null : (string)reader["sMothersGBID"],
-                sSpouseGBID = reader.IsDBNull("sSpouseGBID") ? null : (string)reader["sSpouseGBID"],
+                //sFathersGBID = reader.IsDBNull("sFathersGBID") ? null : (string)reader["sFathersGBID"],
+                //sMothersGBID = reader.IsDBNull("sMothersGBID") ? null : (string)reader["sMothersGBID"],
+                //sSpouseGBID = reader.IsDBNull("sSpouseGBID") ? null : (string)reader["sSpouseGBID"],
                 sBirthCountry = reader.IsDBNull("sBirthCountry") ? null : (string)reader["sBirthCountry"],
                 sCountry = reader.IsDBNull("sCountry") ? null : (string)reader["sCountry"],
-                sEnteredBy = reader.IsDBNull("sEnteredBy") ? null : (string)reader["sEnteredBy"]
+                sEnteredBy = reader.IsDBNull("sEnteredBy") ? null : (string)reader["sEnteredBy"],
+                sPhoto = sPhoto
             };
             //gvm.children = _gbChildrenRepository.GetGBChildrenByGBIDParent(gvm.greenBook.sGBID);
             //gvm.booksIssued = _issueBookRepository.GetIssueBookByGbId(Convert.ToInt32(gvm.greenBook.sGBID));

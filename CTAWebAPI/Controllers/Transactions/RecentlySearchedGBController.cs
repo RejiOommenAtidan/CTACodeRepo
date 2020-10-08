@@ -1,5 +1,7 @@
 ﻿using CTADBL.BaseClasses.Transactions;
 using CTADBL.BaseClassRepositories.Transactions;
+using CTADBL.ViewModels;
+using CTADBL.ViewModelsRepositories;
 using CTADBL.Entities;
 using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Cors;
@@ -20,11 +22,13 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly RecentlySearchedGBRepository _recentlySearchedGBRepository;
+        private readonly RecentlySearchedGBVMRepository _recentlySearchedGBVMRepository;
         private readonly CTALogger _ctaLogger;
         public RecentlySearchedGBController(DBConnectionInfo info)
         {
             _info = info;
             _recentlySearchedGBRepository = new RecentlySearchedGBRepository(_info.sConnectionString);
+            _recentlySearchedGBVMRepository = new RecentlySearchedGBVMRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
         }
         #endregion
@@ -32,12 +36,12 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Get Recently Searched GB's
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetRecentlySearchedGBs()
+        public IActionResult GetRecentlySearchedGBs(int records, int nUserId)
         {
             #region Get Recently Searched GB's
             try
             {
-                IEnumerable<RecentlySearchedGB> recentGBs = _recentlySearchedGBRepository.GetAllRecentlySearchedGB();
+                IEnumerable<RecentlySearchedGBVM> recentGBs = _recentlySearchedGBVMRepository.GetRecentSearches(records, nUserId);
 
                 #region Information Logging
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");

@@ -21,6 +21,7 @@ namespace CTADBL.ViewModels
     public class GreenBookVM
     {
         private Greenbook _greenbook;
+        private IEnumerable<GBRelationVM>? _relations = null;
         private IEnumerable<GBChildren>? _children = null;
         private IEnumerable<IssueBookVM>? _booksIssued = null;
         private IEnumerable<GBNote>? _gbNotes = null;
@@ -36,9 +37,22 @@ namespace CTADBL.ViewModels
         private string? _sBirthCountry;
         private string? _sCountry;
         private string? _sEnteredBy;
+        private string? _sPhoto = null;
         //private int? _nAge = null;
 
 
+
+        public IEnumerable<GBRelationVM>? relations
+        {
+            get
+            {
+                return _relations;
+            }
+            set
+            {
+                _relations = value;
+            }
+        }
 
         public Greenbook greenBook
         {
@@ -227,6 +241,18 @@ namespace CTADBL.ViewModels
             set
             {
                 _sEnteredBy = value;
+            }
+        }
+
+        public string sPhoto
+        {
+            get
+            {
+                return _sPhoto;
+            }
+            set
+            {
+                _sPhoto = value;
             }
         }
 

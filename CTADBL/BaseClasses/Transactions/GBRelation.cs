@@ -14,7 +14,7 @@ namespace CTADBL.BaseClasses.Transactions
         private int _Id;
         private string _sGBID;
         private string _sGBIDRelation;
-        private int? _nRelationID;
+        private int _nRelationID;
         #endregion
 
         #region Public GBRelation Properties
@@ -22,7 +22,7 @@ namespace CTADBL.BaseClasses.Transactions
         public int Id { get { return _Id; } set { _Id = value; } }
         public string sGBID { get { return _sGBID; } set { _sGBID = value; } }
         public string sGBIDRelation { get { return _sGBIDRelation; } set { _sGBIDRelation = value; } }
-        public int? nRelationID { get { return _nRelationID; } set { _nRelationID = value; } }
+        public int nRelationID { get { return _nRelationID; } set { _nRelationID = value; } }
         #endregion
     }
 }

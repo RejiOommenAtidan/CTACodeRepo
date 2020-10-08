@@ -182,7 +182,7 @@ namespace CTAWebAPI.Controllers.Transactions
 
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetDetailsFromGBID(string sGBID)
+        public IActionResult GetDetailsFromGBID(string sGBID, int nUserId)
         {
 
             if (String.IsNullOrEmpty(sGBID))
@@ -191,7 +191,7 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             try
             {
-                GreenBookVM greenBook = _greenBookVMRepository.GetDetailsFromGBID(sGBID);
+                GreenBookVM greenBook = _greenBookVMRepository.GetDetailsFromGBID(sGBID, nUserId);
                 if (greenBook != null)
                 {
                     return Ok(greenBook);

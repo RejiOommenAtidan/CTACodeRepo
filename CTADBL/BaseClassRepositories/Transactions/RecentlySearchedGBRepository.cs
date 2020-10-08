@@ -17,21 +17,27 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Get Recently Searched GBs
-        public IEnumerable<RecentlySearchedGB> GetAllRecentlySearchedGB()
+        public IEnumerable<RecentlySearchedGB> GetRecentlySearchedGB(int records, int nUserId)
         {
             string sql = @"SELECT `ID`,
                             `nGBID`,
                             `nUserID`,
                             `dtEntered`,
                             `nEnteredBy`
-                        FROM `tblrecentlysearchedgb`;";
+                        FROM `tblrecentlysearchedgb`
+                        WHERE nUserID = @nUserId
+                        ORDER BY dtEntered DESC
+                        LIMIT @records ;";
             using (var command = new MySqlCommand(sql))
             {
+                command.Parameters.AddWithValue("nUserId", nUserId);
+                command.Parameters.AddWithValue("records", records);
                 return GetRecords(command);
             }
         }
         #endregion
 
+        
 
         #region Add record
         public void Add(RecentlySearchedGB recentlySearchedGB)
@@ -45,8 +51,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Populate Recently Searched GB Records
         public override RecentlySearchedGB PopulateRecord(MySqlDataReader reader)
         {
+            RecentlySearchedGB recentlySearchedGB = new RecentlySearchedGB
             
-            return new RecentlySearchedGB
             {
                 ID = (int)reader["ID"],
                 nEnteredBy = (int)reader["nEnteredBy"],
@@ -55,6 +61,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"])
 
             };
+
+            return recentlySearchedGB;
         }
         #endregion
     }
