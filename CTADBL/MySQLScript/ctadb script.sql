@@ -715,9 +715,10 @@ CREATE TABLE `lstCTAConfig` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstCTAConfig` (`sKey`, `sValue`) VALUES ('UITableNumberOfRowsInPage', '20');
-INSERT INTO `ctadb`.`lstCTAConfig` (`sKey`, `sValue`) VALUES ('SelectTotalRecordCount', '1000');
-
+INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtEntered`, `nEnteredBy`) VALUES
+(1, 'UITableNumberOfRowsInPage', '20', now(), 1),
+(2, 'SelectTotalRecordCount', '1000', now(), 1),
+(3, 'DateFormat', 'DD-MM-YYYY', now(), 1);
 -- -------------------------
 -- --Transactional Tables---
 -- -------------------------
