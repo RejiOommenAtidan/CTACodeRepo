@@ -16,6 +16,8 @@ import {
 } from '@material-ui/core';
 
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {storeAuthDetails,removeAuthDetails} from "../../actions/userAuthenticateAction";
 
 import { authenticationService } from '../../auth/_services';
 import avatar7 from '../../assets/images/avatars/avatar7.jpg';
@@ -52,7 +54,8 @@ const StyledBadge = withStyles({
 })(Badge);
 
 const HeaderUserbox = () => {
-  let history = useHistory()
+  let history = useHistory();
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -68,6 +71,7 @@ const HeaderUserbox = () => {
   const logUserOut = () => {
     setAnchorEl(null);
     authenticationService.logout();
+    dispatch(removeAuthDetails());
     history.push('/Login');
   }
 

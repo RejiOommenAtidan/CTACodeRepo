@@ -1,6 +1,4 @@
 import { BehaviorSubject } from 'rxjs';
-
-// import config from 'config';
 import axios from 'axios';
 import { handleResponse } from '../_helpers';
 
@@ -25,6 +23,7 @@ function login(sUsername, sPassword) {
             // Remove & then set
             localStorage.removeItem("currentUser");
             localStorage.setItem("currentUser", JSON.stringify(user));
+
             currentUserSubject.next(user);
             return user;
         });

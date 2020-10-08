@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const classes = useStyles();
-
   return (
     <Container maxWidth={false}>
       <Breadcrumbs aria-label="breadcrumb">

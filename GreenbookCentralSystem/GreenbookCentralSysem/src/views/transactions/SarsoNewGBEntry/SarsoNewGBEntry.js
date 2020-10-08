@@ -174,7 +174,7 @@ export default function EnhancedTable() {
               color="primary"
               size="small"
               startIcon={<AddIcon />}
-              onClick={() => { history.push('/NewEntry'); }}
+              onClick={() => {history.push('/NewEntry/'+tableMeta.rowData[1]); }}
             >Greenbook Entry
             </Button>
           )

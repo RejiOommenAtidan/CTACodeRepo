@@ -13,7 +13,7 @@ import { setSidebarToggleMobile } from '../../reducers/ThemeOptions';
 import SidebarUserbox from '../SidebarUserbox';
 
 import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
-
+import { useSelector } from 'react-redux';
 
 import ListIcon from '@material-ui/icons/List';
 import HomeIcon from '@material-ui/icons/Home';
@@ -31,14 +31,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PaymentIcon from '@material-ui/icons/Payment';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import { authenticationService } from '../../auth/_services';
-
-const currentUser = authenticationService.currentUserValue;
-
 
 const SidebarMenu = (props) => {
   const { setSidebarToggleMobile, sidebarUserbox } = props;
-
+  const authUser = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
   const toggleSidebarMobile = () => setSidebarToggleMobile(false);
 
   const [madebOpen, setMadebOpen] = useState(false);
@@ -291,13 +287,13 @@ const SidebarMenu = (props) => {
                       Relation
                     </NavLink>
                   </li>
-                   <li>
+                   {<li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/Feature">
                       Feature
                     </NavLink>
-                  </li>
+                  </li>}
                   {/*<li>
                     <NavLink
                       onClick={toggleSidebarMobile}
@@ -328,7 +324,9 @@ const SidebarMenu = (props) => {
                 Greenbooks
               </NavLink>
             </li>
-            <li>
+            {authUser && (authUser.lFeatureUserrights.find(x=>x.nFeatureID===3))!==undefined
+              &&
+              <li>
               <NavLink
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
@@ -339,19 +337,21 @@ const SidebarMenu = (props) => {
                 </span>
                 Give GB Number
               </NavLink>
-            </li>
+            </li>}
+            {authUser && (authUser.lFeatureUserrights.find(x=>x.nFeatureID===12))!==undefined
+              &&
             <li>
               <NavLink
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/NewEntry">
+                to="/SarsoNewGBEntry">
                 <span className="sidebar-icon">
                   <AddBoxIcon />
                 </span>
-                New Entry
+                Sarso New GB Entry
               </NavLink>
-            </li>
+            </li>}
             <li>
               <NavLink
                 activeClassName="active"
@@ -369,7 +369,7 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Print">
+                to="/PrintPage">
                 <span className="sidebar-icon">
                   <PrintIcon />
                 </span>

@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { authenticationService } from '../../../auth/_services';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {storeAuthDetails,removeAuthDetails} from "../../../actions/userAuthenticateAction";
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
@@ -20,6 +22,7 @@ import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 
 export default function LogingPage() {
   let history = useHistory()
+  const dispatch = useDispatch();
   const { register, handleSubmit, watch, errors } = useForm();
   // const [checked1, setChecked1] = useState(true);
   const [sUsername, setsUsername] = useState(null);
@@ -46,11 +49,12 @@ export default function LogingPage() {
     authenticationService.login(sUsername, sPassword).then(
       user => {
         // const { from } = this.props.location.state || { from: { pathname: "/" } };
+        dispatch(storeAuthDetails(user));
         history.push('/Home');
-        console.log(user);
       },
       error => {
           authenticationService.logout();
+          dispatch(removeAuthDetails());
           window.location.reload(true);
         //console.error(error);
       }

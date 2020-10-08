@@ -9,13 +9,16 @@ export const PrivateRoute = ({ component: Component, roles, feature, ...rest }) 
         if (!currentUser) {
             // not logged in so redirect to login page with the return url
             authenticationService.logout();
-            return <Redirect to={{ pathname: '/Login', state: { from: props.location } }} />
+            return <Redirect  to={{ pathname: '/Login', state: { from: props.location } }} />
         }
 
         // check if route is restricted by role
         if (currentUser.lFeatureUserrights && currentUser.lFeatureUserrights.find(x=>x.nFeatureID===feature)===undefined) {
             //Inside Array is there an object having a specific proerty having a value
-            return <Redirect to={{ pathname: '/Home'}} />
+            //If Has Access then sent to that page
+            //Else Logout & Redirect to Login Page
+            authenticationService.logout();
+            return <Redirect to={{ pathname: '/Login', state: { from: props.location } }} />
         }
 
         // authorised so return component
