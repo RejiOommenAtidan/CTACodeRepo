@@ -19,6 +19,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import MUIDataTable from "mui-datatables";
+
 //import { ThemeProvider } from '@material-ui/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -33,82 +34,66 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 // Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
+import { forwardRef } from 'react';
+import MaterialTable, { MTableToolbar }  from 'material-table';
+import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import FilterList from '@material-ui/icons/FilterList';
+import AddBox from '@material-ui/icons/AddBox';
+import { useHistory } from 'react-router-dom';
+import handleError from "../../../auth/_helpers/handleError";
 
-
+const tableIcons = oTableIcons;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const getMuiTheme = () => createMuiTheme({
-  overrides: {
-    MUIDataTableHeadCell: {
-      root:{
-        color:'blue',
-        fontSize:20
-      }
-    },
-    MUIDataTableBodyCell: {
-      root: {
-        // backgroundColor: "#FFF",
-        // width: "50px"
-      }
 
-    },
-    MuiTableCell: {
-      root: {
-          padding: '0px',
-          paddingLeft: '30px',
-         
-      }
-  },
-  }
-})
 const useStyles = makeStyles(() => ({
-  /*root: {
-    backgroundColor: theme.palette.background.dark,
-    height: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
-    flexGrow: 1,
-    'label + &': {
-      marginTop: theme.spacing(3)
-    }
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  formControl: {
-    margin: theme.spacing(0.5),
-    width: '100%'
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },
-  box: {
-    marginBottom: theme.spacing(1.5),
-    marginTop: theme.spacing(1.5)
-  },
-  button: {
-    margin: theme.spacing(1),
-  },
-  palette: {
-    primary: {
-      // Purple and green play nicely together.
-      main: red[500],
-    },
-    secondary: {
-      // This is green.A700 as hex.
-      main: '#11cb5f',
-    },
-  }
-*/
+//   root: {
+//     backgroundColor: theme.palette.background.dark,
+//     height: '100%',
+//     paddingBottom: theme.spacing(3),
+//     paddingTop: theme.spacing(3),
+//     flexGrow: 1,
+//     'label + &': {
+//       marginTop: theme.spacing(3)
+//     }
+//   },
+//   selectEmpty: {
+//     marginTop: theme.spacing(2),
+//   },
+//   formControl: {
+//     margin: theme.spacing(0.5),
+//     width: '100%'
+//   },
+//   paper: {
+//     padding: theme.spacing(2),
+//     textAlign: 'center',
+//     color: theme.palette.text.secondary,
+//   },
+//   textField: {
+//     marginLeft: theme.spacing(1),
+//     marginRight: theme.spacing(1),
+//     marginBottom: theme.spacing(1)
+//   },
+//   box: {
+//     marginBottom: theme.spacing(1.5),
+//     marginTop: theme.spacing(1.5)
+//   },
+//   button: {
+//     margin: theme.spacing(1),
+//   },
+//   palette: {
+//     primary: {
+//       // Purple and green play nicely together.
+//       main: red[500],
+//     },
+//     secondary: {
+//       // This is green.A700 as hex.
+//       main: '#11cb5f',
+//     },
+//   }
+
 }));
 
 export default function EnhancedTable() {
@@ -126,10 +111,20 @@ export default function EnhancedTable() {
   const [authRegion, setAuthRegion] = React.useState('');
   const [authRegionPK, setAuthRegionPK] = React.useState(0);
   const [authRegionObj, setAuthRegionObj] = useState({});
+  
+
   const [countryName, setCountryName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
+
+  
+  const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
+
+  
+
+  const history = useHistory();
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -144,100 +139,74 @@ export default function EnhancedTable() {
     setAddModal(false);
   };
 
-  const options = {
-    textLabels: {
-      body: {
-        noMatch: "Loading..."
-      },
-     
-    },
-    filter:true,
-    viewColumns:false,
-    selectableRows: false,
-    jumpToPage: true,
-    rowsPerPage: rowsPerPage,
-    rowsPerPageOptions: [5, 10, 20, 30],
-    onChangePage: (number) => {
-      setCurrentPage(number + 1);
-      console.log('Current Page No.', number + 1)
-    },
-    onChangeRowsPerPage: (rows) => {
-      console.log("Rows per page:", rows)
-    },
-    onTableChange: (action, tableState) => {
-      console.log("Action:", action, "\ntableState:", tableState, "Data Changed:", dataChanged);
-      
-    }
-  };
+  
 
   const columns = [
     {
-      name: "id",
-      label: "Sr No.",
-      options: {
-        filter: false,
-        sort: true,
-        display:false
+      field: "id",
+      title: "Sr No.",
+      hidden: true,
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px'
+      },
+      export: true
+    },
+    {
+      field: "sCountryID",
+      title: "Short Name",
+      hidden: true,
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px',
+        borderLeft: '0'
       }
     },
     {
-      name: "sCountryID",
-      label: "Short Name",
-      options: {
-        filter: false,
-        sort: true,
-        display:false
+      field: "sCountry",
+      title: "Country",
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px',
+        borderLeft: '0'
       }
     },
     {
-      name: "sCountry",
-      label: "Country",
-      options: {
-        filter: true,
-        sort: true,
-        filterType: 'textField'
-      }
+      field: "sAuthRegion",
+      title: "Authority Region",
+      cellStyle: {
+        padding: '5px',
+
+      },
     },
     {
-      name: "sAuthRegion",
-      label: "Auth Region",
-      options: {
-        filter: true,
-        sort: true,
-        filterType: 'textField'
-      }
-    },
-    {
-      name: "edit",
-      label: "Edit",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            <IconButton color="primary" aria-label="upload picture" component="span"
-              onClick={() => { editClick(tableMeta.rowData) }}
-              style={{padding:'5px'}}
-            >
-              <EditOutlinedIcon/>
-              </IconButton>
-            
-          )
-        }
-      }
+      field: "edit",
+      title: "Edit",
+      filtering: false,
+      export: false,
+      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
+        onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+      >
+        <EditOutlinedIcon />
+      </IconButton>,
+      cellStyle: {
+        padding: '5px',
+        borderRight: '0',
+        width: '10%'
+      },
     },
    
   ];
 
   const editClick = (tableRowArray) => {
-    setAuthRegionPK(tableRowArray[0]);
-    setCountryID(tableRowArray[1]);
-    setAuthRegion(tableRowArray[3]);
+    setAuthRegionPK(tableRowArray["id"]);
+    setCountryID(tableRowArray["sCountryID"]);
+    setAuthRegion(tableRowArray["sAuthRegion"]);
     setEditModal(true);
     setAuthRegionObj({
-      ID: tableRowArray[0],
-      countryID: tableRowArray[1],
-      authRegion: tableRowArray[3]
+      ID: tableRowArray["id"],
+      countryID: tableRowArray["sCountryID"],
+      authRegion: tableRowArray["sAuthRegion"]
     });
   }
 
@@ -262,51 +231,14 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
+              console.log(error.message);
               console.log(error.config);
             })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-          //window.location = window.location;
-          // setdataAPI(dataAPI.map((data) => {
-          //   console.log(data);
-          //   if(data.id === countryObj.id){
-          //     console.log(data);
-          //     return {
-          //       ...data,
-          //       ...countryObj
-          //     };
-          //   }
-          //   else{
-          //     console.log(data)
-          //     return data;
-          //   }
-          // }))
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
+          console.log(error.message);
+          console.log(error.config);
       });
   };
   const addAPICall = (authRegionObj) => {
@@ -328,15 +260,7 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
+              console.log(error.message);
               console.log(error.config);
             })
             .then(release => {
@@ -346,28 +270,18 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
+        console.log(error.message);
         console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
       });
+      
   };
 
   const deleteClick = (tableRowArray) => {
 
     setDeleteModal(true);
-    setAuthRegionPK(tableRowArray[0]);
-    setCountryID(tableRowArray[1]);
-    setAuthRegion(tableRowArray[3]);
+    setAuthRegionPK(tableRowArray["id"]);
+    setCountryID(tableRowArray["sCountryID"]);
+    setAuthRegion(tableRowArray["sAuthRegion"]);
   };
 
   const handleClose = () => {
@@ -397,41 +311,17 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
               console.log(error.config);
-            })
-            .then(release => {
-              //console.log(release); => udefined
+              console.log(error.message);
             });
-          //window.location = window.location;
-          // setdataAPI(dataAPI.filter((data) => {
-          //   return (data.id !== countryToDelete.ID);
-          // }));
+            
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
+        console.log(error.message);
         console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
       });
+      
   };
 
   useEffect(() => {
@@ -443,20 +333,10 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
+        console.log(error.message);
         console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
       });
+      
       axios.get(`/Country/GetCountries`)
       .then(resp => {
         if (resp.status === 200) {
@@ -465,34 +345,25 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
         console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
+        console.log(error.message);
       });
+      
   }, []);
   
   
   return (
 
       
-        <Box
-          display="flex"
-          flexDirection="column"
-          height="100%"
-          justifyContent="center"
-        >
+        // <Box
+        //   display="flex"
+        //   flexDirection="column"
+        //   height="100%"
+        //   justifyContent="center"
+        //   style={{ paddingTop: '50px' }}
+        // >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Authority Regions
+            {/* <Typography variant="h4" gutterBottom>Authority Regions
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -503,42 +374,59 @@ export default function EnhancedTable() {
               >
                 <AddCircleIcon />
               </IconButton>
-            </Typography>
+            </Typography> */}
             <Grid container className={classes.box}>
               <Grid item xs={12}>
-              <MuiThemeProvider theme={getMuiTheme}>
-        <MUIDataTable  data={dataAPI} columns={columns} options={options} />
-      </MuiThemeProvider>
-              </Grid>
-            </Grid>
-            {addModal && <AddDialog
-              addModal={addModal}
-              dataAPI = {dataAPI}
-              countryList = {countryList}
-              classes={classes}
-              handleAddClickClose={handleAddClickClose}
-              addAPICall={addAPICall}
-            />}
-            {editModal && <EditDialog
-              editModal={editModal}
-              dataAPI = {dataAPI}
-              authRegionObj={authRegionObj}
-              countryList = {countryList}
-              classes={classes}
-              handleEditClickClose={handleEditClickClose}
-              editAPICall={editAPICall}
-            />}
-            {deleteModal && <DeleteDialog
-              deleteModal={deleteModal}
-              authRegion={authRegion}
-              handleClose={handleClose}
-              deleteAPICall={deleteAPICall}
-            />}
-          </Container>
-        </Box>
-   
-
-
-          
+              
+        <MaterialTable 
+          style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
+          icons={tableIcons}
+          title="Authority Regions"  
+          data={dataAPI} 
+          columns={columns} 
+          options={oOptions} 
+          actions={[
+            {
+              icon: AddBox,
+              tooltip: 'Add Authority Region',
+              isFreeAction: true,
+              onClick: (event) => setAddModal(true)
+            },
+            {
+              icon: FilterList,
+              tooltip: 'Show Filter',
+              isFreeAction: true,
+              onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+            }
+          ]}
+        />
+      
+      </Grid>
+    </Grid>
+    {addModal && <AddDialog
+      addModal={addModal}
+      dataAPI = {dataAPI}
+      countryList = {countryList}
+      classes={classes}
+      handleAddClickClose={handleAddClickClose}
+      addAPICall={addAPICall}
+    />}
+    {editModal && <EditDialog
+      editModal={editModal}
+      dataAPI = {dataAPI}
+      authRegionObj={authRegionObj}
+      countryList = {countryList}
+      classes={classes}
+      handleEditClickClose={handleEditClickClose}
+      editAPICall={editAPICall}
+    />}
+    {deleteModal && <DeleteDialog
+      deleteModal={deleteModal}
+      authRegion={authRegion}
+      handleClose={handleClose}
+      deleteAPICall={deleteAPICall}
+    />}
+  </Container>
+  // </Box>
   );
 }

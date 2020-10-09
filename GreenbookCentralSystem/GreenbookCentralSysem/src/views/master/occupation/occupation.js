@@ -11,20 +11,13 @@ import {
   TextField
   
 } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
+
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-//import theme from '../../../theme/theme/theme'
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import MUIDataTable from "mui-datatables";
-//import { ThemeProvider } from '@material-ui/styles';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+
+
+
 import Slide from '@material-ui/core/Slide';
 import Chip from '@material-ui/core/Chip';
 
@@ -33,36 +26,22 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 // Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
+import MaterialTable, { MTableToolbar }  from 'material-table';
+import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import FilterList from '@material-ui/icons/FilterList';
+import AddBox from '@material-ui/icons/AddBox';
+import { useHistory } from 'react-router-dom';
+import handleError from "../../../auth/_helpers/handleError";
 
+
+
+const tableIcons = oTableIcons;
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const getMuiTheme = () => createMuiTheme({
-  overrides: {
-    MUIDataTableHeadCell: {
-      root:{
-        color:'blue',
-        fontSize:20
-      }
-    },
-    MUIDataTableBodyCell: {
-      root: {
-        // backgroundColor: "#FFF",
-        // width: "50px"
-      }
 
-    },
-    MuiTableCell: {
-      root: {
-          padding: '0px',
-          paddingLeft: '30px',
-         
-      }
-  },
-  }
-})
 const useStyles = makeStyles(() => ({
   /*root: {
     backgroundColor: theme.palette.background.dark,
@@ -143,99 +122,73 @@ export default function EnhancedTable() {
     setAddModal(false);
   };
 
-  const options = {
-    textLabels: {
-      body: {
-        noMatch: "Loading..."
-      },
-     
-    },
-    filter:true,
-    viewColumns:false,
-    selectableRows: false,
-    jumpToPage: true,
-    rowsPerPage: rowsPerPage,
-    rowsPerPageOptions: [5, 10, 20, 30],
-    onChangePage: (number) => {
-      setCurrentPage(number + 1);
-      console.log('Current Page No.', number + 1)
-    },
-    onChangeRowsPerPage: (rows) => {
-      console.log("Rows per page:", rows)
-    },
-    onTableChange: (action, tableState) => {
-      console.log("Action:", action, "\ntableState:", tableState, "Data Changed:", dataChanged);
-      
-    }
-  };
+  const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
+  const history = useHistory();
 
   const columns = [
     {
-      name: "id",
-      label: "Sr No.",
-      options: {
-        filter: false,
-        sort: true,
-        display:false
+      field: "id",
+      title: "Sr No.",
+      hidden: true,
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px'
+      },
+      export: true
+    },
+    {
+      field: "sOccupationDesc",
+      title: "Occupation",
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px',
+        borderLeft: '0'
       }
     },
     {
-      name: "sOccupationDesc",
-      label: "Occupation",
-      options: {
-        filter: true,
-        sort: true, 
-        filterType: 'textField'      }
-    },
-    {
-      name: "sOccupationDescTibetan",
-      label: "Occupation (in Tibetan)",
-      options: {
-        filter: true,
-        sort: true,
-        filterType: 'textField'
+      field: "sOccupationDescTibetan",
+      title: "Occupation (in Tibetan)",
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px',
+        borderLeft: '0'
       }
     },
     {
-      name: "edit",
-      label: "Edit",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            <IconButton color="primary" aria-label="upload picture" component="span"
-              onClick={() => { editClick(tableMeta.rowData) }}  style={{padding:'5px'}}
-            >
-              <EditOutlinedIcon/>
-              </IconButton>
-            
-          )
-        }
-      }
+      field: "edit",
+      title: "Edit",
+      filtering: false,
+      export: false,
+      sorting: false,
+      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
+        onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+      >
+        <EditOutlinedIcon />
+      </IconButton>,
+      cellStyle: {
+        padding: '5px',
+        borderRight: '0',
+        width: '10%'
+      },
     },
    
   ];
 
   const editClick = (tableRowArray) => {
-    setOccupationPK(tableRowArray[0]);
-    setOccupationDesc(tableRowArray[1]);
-    setOccupationDescTibetan(tableRowArray[2]);
+    setOccupationPK(tableRowArray["id"]);
+    setOccupationDesc(tableRowArray["sOccupationDesc"]);
+    setOccupationDescTibetan(tableRowArray["sOccupationDescTibetan"]);
     setEditModal(true);
     setOccupationObj({
-      id: tableRowArray[0],
-      occupationDesc: tableRowArray[1],
-      occupationDescTibetan: tableRowArray[2]
+      id: tableRowArray["id"],
+      occupationDesc: tableRowArray["sOccupationDesc"],
+      occupationDescTibetan: tableRowArray["sOccupationDescTibetan"]
     });
   }
 
   const editAPICall = (occupationObj) => {
-    // let CountryID = countryPK;
-    // let countryToUpdate = {
-    //   ID : countryPK,
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
-    // };
+    
     axios.post(`/Occupation/EditOccupation/occupationId=` + occupationPK, occupationObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -250,59 +203,19 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
               console.log(error.config);
-            })
-            .then(release => {
-              //console.log(release); => udefined
+              console.log(error.message);
             });
-          //window.location = window.location;
-          // setdataAPI(dataAPI.map((data) => {
-          //   console.log(data);
-          //   if(data.id === countryObj.id){
-          //     console.log(data);
-          //     return {
-          //       ...data,
-          //       ...countryObj
-          //     };
-          //   }
-          //   else{
-          //     console.log(data)
-          //     return data;
-          //   }
-          // }))
+            
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
+        console.log(error.message);
         console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
       });
+      
   };
   const addAPICall = (occupationObj) => {
-
-    // let countryToAdd = {
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
-    // };
     axios.post(`/Occupation/AddOccupation`, occupationObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -316,44 +229,22 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
               console.log(error.config);
-            })
-            .then(release => {
-              //console.log(release); => udefined
+              console.log(error.message);
             });
-          //window.location = window.location;
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
+        console.log(error.message);
         console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
       });
+      
   };
 
   const deleteClick = (tableRowArray) => {
-    setOccupationPK(tableRowArray[0]);
-    setOccupationDesc(tableRowArray[1]);
-    setOccupationDescTibetan(tableRowArray[2]);
+    setOccupationPK(tableRowArray["id"]);
+    setOccupationDesc(tableRowArray["sOccupationDesc"]);
+    setOccupationDescTibetan(tableRowArray["sOccupationDescTibetan"]);
     setDeleteModal(true);
   };
 
@@ -363,8 +254,7 @@ export default function EnhancedTable() {
   };
 
   const deleteAPICall = () => {
-    // console.log(this.state.selectedUser);
-    // let CountryID = countryPK;
+    
     const occupationToDelete = {
       ID: occupationPK,
       sOccupationDesc: occupationDesc,
@@ -384,40 +274,14 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
+              console.log(error.message);
               console.log(error.config);
-            })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-          //window.location = window.location;
-          // setdataAPI(dataAPI.filter((data) => {
-          //   return (data.id !== countryToDelete.ID);
-          // }));
+            });            
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
+        console.log(error.message);
         console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
       });
   };
 
@@ -430,33 +294,24 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
+        console.log(error.message);
         console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
       });
+      
   }, []);
 
   return (
 
       
-        <Box
-          display="flex"
-          flexDirection="column"
-          height="100%"
-          justifyContent="center"
-        >
+        // <Box
+        //   display="flex"
+        //   flexDirection="column"
+        //   height="100%"
+        //   justifyContent="center"
+        //   style={{ paddingTop: '50px' }}
+        // >
           <Container maxWidth="lg" disableGutters={true}>
-            <Typography variant="h4" gutterBottom>Occupation
+            {/* <Typography variant="h4" gutterBottom>Occupation
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -467,12 +322,33 @@ export default function EnhancedTable() {
               >
                 <AddCircleIcon />
               </IconButton>
-            </Typography>
+            </Typography> */}
             <Grid container className={classes.box}>
               <Grid item xs={12}>
-              <MuiThemeProvider theme={getMuiTheme}>
-        <MUIDataTable  data={dataAPI} columns={columns} options={options} />
-      </MuiThemeProvider>
+              
+        <MaterialTable
+          style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
+          icons={tableIcons}
+          title="Occupation" 
+          data={dataAPI} 
+          columns={columns} 
+          options={oOptions}
+          actions={[
+            {
+              icon: AddBox,
+              tooltip: 'Add Occupation',
+              isFreeAction: true,
+              onClick: (event) => setAddModal(true)
+            },
+            {
+              icon: FilterList,
+              tooltip: 'Show Filter',
+              isFreeAction: true,
+              onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+            }
+          ]}
+        />
+      
               </Grid>
             </Grid>
             {addModal && <AddDialog
@@ -495,7 +371,7 @@ export default function EnhancedTable() {
               deleteAPICall={deleteAPICall}
             />}
           </Container>
-        </Box>
+        // </Box>
    
 
 

@@ -27,7 +27,7 @@ export const EditDialog = (props) => {
   const [province, setProvince] = useState(props.provinceObj.province);
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Province</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Province</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <div>
