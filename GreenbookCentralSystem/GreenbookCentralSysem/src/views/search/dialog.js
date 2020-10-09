@@ -52,6 +52,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { Rowing } from '@material-ui/icons';
 /*const findImg = (obj) =>{
   var str="";
   obj.map((row) => {
@@ -671,11 +672,13 @@ export const ViewDialog = (props) => {
                                 <td>{row.nEnteredBy}</td>                              
                             <td>{row.sDocType}</td>        
                                 <td style={{textAlign:'center'}}>
-                                <Button  download={`data:image/gif;base64,${data.binFileDoc}`} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
-                                    <span className="btn-wrapper--icon">
+                         
+                                 <a href={`data:application/octet-stream;base64,${row.binFileDoc}`} download={row.sDocType+row.sFileExtension} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
+                                   <span className="btn-wrapper--icon">
                                     <GetAppIcon/>
-                                    </span>
-                                 </Button>  </td>        
+                                    </span></a>
+                                 
+                                  </td>        
                                 <td>
                                 <Button className="btn-neutral-danger btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
                                     <span className="btn-wrapper--icon">
