@@ -25,6 +25,7 @@ const useStyles = makeStyles(() => ({
 export default function TypeIssued() {
   const history = useHistory();
   const classes = useStyles();
+  const [isLoading, setisLoading] = React.useState(true);
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -98,6 +99,7 @@ export default function TypeIssued() {
   }
 
   const editAPICall = (typeIssuedObj) => {
+    setisLoading(true);
     axios.post(`/TypeIssued/EditTypeIssued/ID=` + typeIssuedPK, typeIssuedObj/*TypeIssuedToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
@@ -107,6 +109,7 @@ export default function TypeIssued() {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
                 setDataChanged(true);
+                setisLoading(false);
               }
             })
             .catch(error => {
@@ -125,6 +128,7 @@ export default function TypeIssued() {
       });
   };
   const addAPICall = (typeIssuedObj) => {
+    setisLoading(true);
     axios.post(`/TypeIssued/AddTypeIssued/`, typeIssuedObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -132,7 +136,8 @@ export default function TypeIssued() {
           axios.get(`/TypeIssued/GetTypeIssued`)
             .then(resp => {
               if (resp.status === 200) {
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
+                setisLoading(false);
               }
             })
             .catch(error => {
@@ -166,6 +171,7 @@ export default function TypeIssued() {
       .then(resp => {
         if (resp.status === 200) {
           setdataAPI(resp.data);
+          setisLoading(false);
         }
       })
       .catch(error => {
@@ -182,6 +188,7 @@ export default function TypeIssued() {
       <Grid container className={classes.box}>
         <Grid item xs={12}>
           <MaterialTable
+            isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={tableIcons}
             title="Type Issued"

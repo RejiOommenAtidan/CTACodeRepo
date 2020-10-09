@@ -162,6 +162,7 @@ export default function Users() {
   ];
 
   const addAPICall = (userObj) => {
+    setisLoading(true);
     axios.post(`/User/AddUser/`, userObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -169,7 +170,8 @@ export default function Users() {
           axios.get(`/User/GetAllUsers`)
             .then(resp => {
               if (resp.status === 200) {
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
+                setisLoading(false);
               }
             })
             .catch(error => {
@@ -189,6 +191,7 @@ export default function Users() {
   };
 
   const editAPICall = (userObj) => {
+    setisLoading(true);
     axios.post(`/User/EditUser/Id=` + Id, userObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -197,6 +200,7 @@ export default function Users() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
+                setisLoading(false);
               }
             })
             .catch(error => {

@@ -24,6 +24,7 @@ const useStyles = makeStyles(() => ({
 export default function Relation() {
   const history = useHistory();
   const classes = useStyles();
+  const [isLoading, setisLoading] = React.useState(true);
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -98,6 +99,7 @@ export default function Relation() {
   }
 
   const editAPICall = (relationObj) => {
+    setisLoading(true);
     axios.post(`/Relation/EditRelation/ID=` + relationPK, relationObj/*RelationToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
@@ -107,6 +109,7 @@ export default function Relation() {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
                 setDataChanged(true);
+                setisLoading(true);
               }
             })
             .catch(error => {
@@ -125,6 +128,7 @@ export default function Relation() {
       });
   };
   const addAPICall = (relationObj) => {
+    setisLoading(true);
     axios.post(`/Relation/AddRelation/`, relationObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -132,7 +136,8 @@ export default function Relation() {
           axios.get(`/Relation/GetRelation`)
             .then(resp => {
               if (resp.status === 200) {
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
+                setisLoading(false);
               }
             })
             .catch(error => {
@@ -165,7 +170,8 @@ export default function Relation() {
     axios.get(`/Relation/GetRelation`)
       .then(resp => {
         if (resp.status === 200) {
-          setdataAPI(resp.data)
+          setdataAPI(resp.data);
+          setisLoading(false);
         }
       })
       .catch(error => {
@@ -182,6 +188,7 @@ export default function Relation() {
       <Grid container className={classes.box}>
         <Grid item xs={12}>
           <MaterialTable
+            isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={tableIcons}
             title="Relation"
