@@ -34,6 +34,7 @@ export default function Relation() {
   const [relationObj, setRelationObj] = useState({});
   const [dataChanged, setDataChanged] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
 
   const handleEditClickOpen = () => {
     setEditModal(true);

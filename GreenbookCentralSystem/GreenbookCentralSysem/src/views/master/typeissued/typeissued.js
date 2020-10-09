@@ -35,6 +35,7 @@ export default function TypeIssued() {
   const [typeIssuedObj, setTypeIssuedObj] = useState({});
   const [dataChanged, setDataChanged] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
 
   const handleEditClickOpen = () => {
     setEditModal(true);

@@ -85,7 +85,6 @@ const useStyles = makeStyles({
 export default function Users() {
   const history = useHistory();
   const [isLoading, setisLoading] = React.useState(true);
-  const [filtering, setFiltering] = React.useState(false);
   const classes = useStyles();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
@@ -100,6 +99,8 @@ export default function Users() {
   const [sPassword, setsPassword] = React.useState('');
   const [sOffice, setsOffice] = React.useState('');
   const [oUserObj, setoUserObj] = useState({});
+  const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
 
   const columns = [
     {
