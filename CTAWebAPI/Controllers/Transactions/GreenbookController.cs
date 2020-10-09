@@ -90,37 +90,34 @@ namespace CTAWebAPI.Controllers.Transactions
         }
 
 
-        [HttpPost]
-        [Route("[action]")]
+        //[HttpPost]
+        //[Route("[action]")]
 
-        public IActionResult GetGreenBookVM(SimpleSearchVM simpleSearch)
-        {
+        //public IActionResult GetGreenBookVM(SimpleSearchVM simpleSearch)
+        //{
 
-            if (String.IsNullOrEmpty(simpleSearch.sSearchField) || String.IsNullOrEmpty(simpleSearch.sSearchValue))
-            {
-                return BadRequest(String.Format(@"Invalid request parameters"));
-            }
-
-
-            try
-            {
-                IEnumerable<GreenBookVM> greenBook = _greenBookVMRepository.GetGreenbookVMRecord(simpleSearch.sSearchField, simpleSearch.sSearchValue);
-                if(greenBook != null)
-                {
-                    var totrec = greenBook.Count();
-                    return Ok(greenBook);
-                }
-                else
-                {
-                    return NotFound(String.Format(@"No records found for {0} having value {1}", simpleSearch.sSearchField, simpleSearch.sSearchValue));
-                }
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-            
-        }
+        //    if (String.IsNullOrEmpty(simpleSearch.sSearchField) || String.IsNullOrEmpty(simpleSearch.sSearchValue))
+        //    {
+        //        return BadRequest(String.Format(@"Invalid request parameters"));
+        //    }
+        //    try
+        //    {
+        //        IEnumerable<GreenBookVM> greenBook = _greenBookVMRepository.GetGreenbookVMRecord(simpleSearch.sSearchField, simpleSearch.sSearchValue);
+        //        if(greenBook != null)
+        //        {
+        //            var totrec = greenBook.Count();
+        //            return Ok(greenBook);
+        //        }
+        //        else
+        //        {
+        //            return NotFound(String.Format(@"No records found for {0} having value {1}", simpleSearch.sSearchField, simpleSearch.sSearchValue));
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
 
         [HttpPost]
         [Route("[action]")]
@@ -137,6 +134,9 @@ namespace CTAWebAPI.Controllers.Transactions
                 if (greenBook != null)
                 {
                     var totrec = greenBook.Count();
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
                     return Ok(greenBook);
                 }
                 else
@@ -146,6 +146,9 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -165,6 +168,9 @@ namespace CTAWebAPI.Controllers.Transactions
                 if (greenBook != null)
                 {
                     var totrec = greenBook.Count();
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
                     return Ok(greenBook);
                 }
                 else
@@ -174,6 +180,9 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
 
@@ -185,7 +194,7 @@ namespace CTAWebAPI.Controllers.Transactions
         public IActionResult GetDetailsFromGBID(string sGBID, int nUserId)
         {
 
-            if (String.IsNullOrEmpty(sGBID))
+            if (String.IsNullOrEmpty(sGBID) || nUserId < 0)
             {
                 return BadRequest(String.Format(@"Invalid request parameters"));
             }
@@ -194,6 +203,9 @@ namespace CTAWebAPI.Controllers.Transactions
                 GreenBookVM greenBook = _greenBookVMRepository.GetDetailsFromGBID(sGBID, nUserId);
                 if (greenBook != null)
                 {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
                     return Ok(greenBook);
                 }
                 else
@@ -203,29 +215,32 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             catch (Exception ex)
             {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
 
-        [HttpPost]
-        [Route("[action]")]
-        public IActionResult GetDetails(GreenBookVM gvm)
-        {
-            if(gvm == null || !ModelState.IsValid)
-            {
-                return BadRequest("Invalid Data.");
-            }
-            try
-            {
-                GreenBookVM greenBook = _greenBookVMRepository.GetDetails(gvm);
-                return Ok(gvm);
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
+        //[HttpPost]
+        //[Route("[action]")]
+        //public IActionResult GetDetails(GreenBookVM gvm)
+        //{
+        //    if(gvm == null || !ModelState.IsValid)
+        //    {
+        //        return BadRequest("Invalid Data.");
+        //    }
+        //    try
+        //    {
+        //        GreenBookVM greenBook = _greenBookVMRepository.GetDetails(gvm);
+        //        return Ok(gvm);
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
 
 
         [HttpGet("GetGreenbook/sGBID={sGBID}")]

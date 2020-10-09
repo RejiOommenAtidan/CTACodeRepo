@@ -108,7 +108,7 @@ namespace CTADBL.ViewModelsRepositories
             value = value + "%";
             string field = ", gb." + parameter;
 
-            string sql = String.Format(@"SELECT gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, year(curdate()) - year(dtDOB) as Age,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID {0} FROM tblgreenbook as gb WHERE gb.{1} {2} @value LIMIT 500", field, parameter, operation);
+            string sql = String.Format(@"SELECT gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, year(curdate()) - year(dtDOB) as nAge,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID {0} FROM tblgreenbook as gb WHERE gb.{1} {2} @value LIMIT 500", field, parameter, operation);
 
             using (var command = new MySqlCommand(sql))
             {
@@ -131,7 +131,7 @@ namespace CTADBL.ViewModelsRepositories
                     sLastName = row.Field<string>("sLastName"),
                     sFamilyName = row.Field<string>("sFamilyName"),
                     dtDOB = row.Field<DateTime>("dtDOB"),
-                    Age = row.Field<int>("Age"),
+                    nAge = row.Field<int>("nAge"),
                     sFathersName = row.Field<string>("sFathersName"),
                     sMothersName = row.Field<string>("sMothersName"),
                     sCity = row.Field<string>("sCity"),

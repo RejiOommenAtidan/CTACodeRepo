@@ -17,7 +17,7 @@ namespace CTADBL.ViewModels
     public class GBRelationVM
     {
         #region Private props
-        private GBRelation _gbRelation = null;
+        //private GBRelation _gbRelation = null;
         private string _sFathersName;
         private string _sFathersID;
         private string _sFathersGBID;
@@ -34,17 +34,17 @@ namespace CTADBL.ViewModels
         #endregion
 
         #region Public Properties
-        public GBRelation gbRelation
-        {
-            get
-            {
-                return _gbRelation;
-            }
-            set
-            {
-                _gbRelation = value;
-            }
-        }
+        //public GBRelation gbRelation
+        //{
+        //    get
+        //    {
+        //        return _gbRelation;
+        //    }
+        //    set
+        //    {
+        //        _gbRelation = value;
+        //    }
+        //}
 
         public string sFathersName
         {
