@@ -68,7 +68,12 @@ export default function TypeIssued() {
         padding: '5px',
         paddingLeft: '10px',
         borderLeft: '0'
-      }
+      },
+      // customFilterAndSearch: (term, rowData)=>{
+      //   console.log(term);
+      //   //console.log(field);
+      //   //console.log(rowData);
+      // }
     },
     {
       field: 'edit',
