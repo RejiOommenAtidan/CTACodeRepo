@@ -24,6 +24,7 @@ namespace CTAWebAPI.Controllers.Transactions
         private readonly DBConnectionInfo _info;
         private readonly FeatureUserrightsRepository _featureUserrightsRepository;
         private readonly FeatureUserrightsVMRepository _featureUserrightsVMRepository;
+        private readonly FeatureUserrightsUIVMRepository _featureUserrightsUIVMRepository;
         private readonly CTALogger _ctaLogger;
         public FeatureUserrightsController(DBConnectionInfo info)
         {
@@ -31,6 +32,7 @@ namespace CTAWebAPI.Controllers.Transactions
             _featureUserrightsRepository = new FeatureUserrightsRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
             _featureUserrightsVMRepository = new FeatureUserrightsVMRepository(_info.sConnectionString);
+            _featureUserrightsUIVMRepository = new FeatureUserrightsUIVMRepository(_info.sConnectionString);
         }
         #endregion
 
@@ -112,6 +114,32 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             #endregion
         }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetFeatureUserrightsUI()
+        {
+            #region Get Users
+            try
+            {
+                IEnumerable<FeatureUserrightsUIVM> featureUserrightsUI = _featureUserrightsUIVMRepository.GetFeatureUserrightsUI();
+
+                #region Information Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                #endregion
+
+                return Ok(featureUserrightsUI);
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
         #endregion
 
         #region Add Call
@@ -154,6 +182,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Edit Call
+        //TODO: Fix this STUFF
         [HttpPost("EditFeatureUserright/Id={Id}")]
         [Route("[action]")]
         public IActionResult EditFeatureUserright(string Id, [FromBody] FeatureUserrights featureUserright)
@@ -167,16 +196,19 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         return BadRequest("Mapping Param ID cannot be NULL");
                     }
-
+                    
                     if (Id != featureUserright.Id.ToString())
                     {
                         return BadRequest("Mapping ID's ain't Matching");
                     }
 
-                    if (FeatureUserrightExists(Id))
-                    {
-                        FeatureUserrights fetchedFeatureUserright = _featureUserrightsRepository.GetFeatureUserrightsById(Id);
+                    //if (FeatureUserrightExists(Id))
+                    //{
+                        FeatureUserrights fetchedFeatureUserright = _featureUserrightsRepository.GetFeatureUserrightsByFeatureAnduserRighstId(featureUserright.nFeatureID,featureUserright.nUserRightsID);
+                        featureUserright.Id = fetchedFeatureUserright.Id;
+                        featureUserright.nRights = fetchedFeatureUserright.nRights == 1 ? 0 : 1;
                         featureUserright.dtEntered = fetchedFeatureUserright.dtEntered;
+                        featureUserright.nEnteredBy = fetchedFeatureUserright.nEnteredBy;
                         //featureUserright.nEnteredBy;: TODO
                         _featureUserrightsRepository.Update(featureUserright);
 
@@ -185,11 +217,11 @@ namespace CTAWebAPI.Controllers.Transactions
                         #endregion
 
                         return Ok("Mapping with ID: " + Id + " updated Successfully");
-                    }
-                    else
-                    {
-                        return BadRequest("Mapping with ID:" + Id + " does not exist");
-                    }
+                   // }
+                    //else
+                    //{
+                    //    return BadRequest("Mapping with ID:" + Id + " does not exist");
+                    //}
                 }
                 else
                 {
