@@ -5,7 +5,6 @@ import {
   FormControl,
   TextField
 } from '@material-ui/core';
-
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -14,6 +13,103 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
+export const AddDialog = (props) => {
+  const [lUserRights, setlUserRights] = React.useState(props.lUserRights);
+  const [Id, setId] = React.useState('')
+  const [sUsername, setsUsername] = React.useState('');
+  const [sFullname, setsFullname] = React.useState('');
+  const [nUserRightsId, setnUserRightsId] = React.useState('');
+  const [sUserRightsName, setsUserRightsName] = React.useState('');
+  const [sPassword, setsPassword] = React.useState('');
+  const [sOffice, setsOffice] = React.useState('');
+  return (
+    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+      <DialogTitle id="form-dialog-title">Add User</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          <Grid container>
+            <Grid item xs={12}>
+              <FormControl className={props.classes.formControl}>
+                <TextField
+                  id="id_sUsername"
+                  label="Username"
+                  type="text"
+                  value={sUsername}
+                  onChange={(e) => { setsUsername(e.target.value) }}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} >
+              <FormControl className={props.classes.formControl}>
+                <TextField
+                  id="id_sFullname"
+                  label="Fullname"
+                  type="text"
+                  value={sFullname}
+                  onChange={(e) => { setsFullname(e.target.value) }}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl className={props.classes.formControl}>
+                <TextField
+                  id="id_sPassword"
+                  label="Password"
+                  type="password"
+                  value={sPassword}
+                  onChange={(e) => { setsPassword(e.target.value) }}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl className={props.classes.formControl}>
+                <InputLabel id="id_sGender">Rights</InputLabel>
+                <Select
+                  id="id_nUserRightsId"
+                  label="User Rights"
+                  value={nUserRightsId}
+                  onChange={(e) => { setnUserRightsId(e.target.value) }}
+                >
+                  {lUserRights.map((right) => (
+                    <MenuItem key={right.id} value={right.id}>
+                      {right.sUserRightsName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl className={props.classes.formControl}>
+                <TextField
+                  id="id_sOffice"
+                  label="Office Name"
+                  type="text"
+                  value={sOffice}
+                  onChange={(e) => { setsOffice(e.target.value) }}
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+        <Button onClick={() => {
+          props.addAPICall(
+            {
+              sUsername,
+              sFullname,
+              nUserRightsId,
+              sPassword,
+              sOffice
+            }
+          )
+        }} color="primary">Save</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
 
 export const EditDialog = (props) => {
   const [lUserRights, setlUserRights] = React.useState(props.oUserObj.lUserRights);
@@ -112,103 +208,6 @@ export const EditDialog = (props) => {
           })
         }
         } color="primary">Save</Button>
-      </DialogActions>
-    </Dialog>
-  );
-}
-
-export const AddDialog = (props) => {
-  const [lUserRights, setlUserRights] = React.useState(props.lUserRights);
-  const [Id, setId] = React.useState('')
-  const [sUsername, setsUsername] = React.useState('');
-  const [sFullname, setsFullname] = React.useState('');
-  const [nUserRightsId, setnUserRightsId] = React.useState('');
-  const [sUserRightsName, setsUserRightsName] = React.useState('');
-  const [sPassword, setsPassword] = React.useState('');
-  const [sOffice, setsOffice] = React.useState('');
-  return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add User</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          <Grid container>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_sUsername"
-                  label="Username"
-                  type="text"
-                  value={sUsername}
-                  onChange={(e) => { setsUsername(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} >
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_sFullname"
-                  label="Fullname"
-                  type="text"
-                  value={sFullname}
-                  onChange={(e) => { setsFullname(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_sPassword"
-                  label="Password"
-                  type="password"
-                  value={sPassword}
-                  onChange={(e) => { setsPassword(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <InputLabel id="id_sGender">Rights</InputLabel>
-                <Select
-                  id="id_nUserRightsId"
-                  label="User Rights"
-                  value={nUserRightsId}
-                  onChange={(e) => { setnUserRightsId(e.target.value) }}
-                >
-                  {lUserRights.map((right) => (
-                    <MenuItem key={right.id} value={right.id}>
-                      {right.sUserRightsName}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_sOffice"
-                  label="Office Name"
-                  type="text"
-                  value={sOffice}
-                  onChange={(e) => { setsOffice(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => {
-          props.addAPICall(
-            {
-              sUsername,
-              sFullname,
-              nUserRightsId,
-              sPassword,
-              sOffice
-            }
-          )
-        }} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );

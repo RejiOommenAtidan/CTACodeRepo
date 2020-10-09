@@ -6,39 +6,26 @@ import {
   Typography
 } from '@material-ui/core';
 import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import MUIDataTable from "mui-datatables";
 import IconButton from '@material-ui/core/IconButton';
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { AddDialog, EditDialog } from './dialog';
+import { makeStyles } from '@material-ui/core/styles';
+import MaterialTable from 'material-table';
+import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import FilterList from '@material-ui/icons/FilterList';
+import AddBox from '@material-ui/icons/AddBox';
+import handleError from "../../../auth/_helpers/handleError";
+import { useHistory } from 'react-router-dom';
 
-const getMuiTheme = () => createMuiTheme({
-  overrides: {
-    MUIDataTableBodyCell: {
-      root: {
-      }
-    },
-    MUIDataTableHeadCell: {
-      root: {
-        color: 'blue',
-        fontSize: 20
-      }
-    },
-    MuiTableCell: {
-      root: {
-        padding: '0px',
-        paddingLeft: '30px',
-      }
-    },
-  }
-})
+const tableIcons = oTableIcons;
+
 const useStyles = makeStyles(() => ({
 }));
 
 export default function TypeIssued() {
+  const history = useHistory();
   const classes = useStyles();
+  const [isLoading, setisLoading] = React.useState(true);
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -46,9 +33,9 @@ export default function TypeIssued() {
   const [typeIssued, setTypeIssued] = React.useState('');
   const [typeIssuedPK, setTypeIssuedPK] = React.useState(0);
   const [typeIssuedObj, setTypeIssuedObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
+  const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -63,84 +50,62 @@ export default function TypeIssued() {
     setAddModal(false);
   };
 
-  const options = {
-    textLabels: {
-      body: {
-        noMatch: "Loading..."
-      },
-
-    },
-    filter: true,
-    viewColumns: false,
-    selectableRows: false,
-    jumpToPage: true,
-    rowsPerPage: rowsPerPage,
-    rowsPerPageOptions: [5, 10, 20, 30],
-    onChangePage: (number) => {
-      setCurrentPage(number + 1);
-      console.log('Current Page No.', number + 1)
-    },
-    onChangeRowsPerPage: (rows) => {
-      console.log("Rows per page:", rows)
-    },
-    onTableChange: (action, tableState) => {
-      console.log("Action:", action, "\ntableState:", tableState, "Data Changed:", dataChanged);
-
-    }
-  };
-
   const columns = [
     {
-      name: "id",
-      label: "Sr No.",
-      options: {
-        filter: false,
-        sort: true,
-        display: false
-      }
-    },
-
-    {
-      name: "sTypeIssued",
-      label: "Type Issued",
-      options: {
-        filter: true,
-        sort: true,
-        filterType: 'textField'
-      }
+      field: "id",
+      title: "Sr No.",
+      hidden: true,
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px'
+      },
+      export: true
     },
     {
-      name: "edit",
-      label: "Edit",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            <IconButton color="primary" aria-label="upload picture" component="span"
-              onClick={() => { editClick(tableMeta.rowData) }} style={{ padding: '5px' }}
-            >
-              <EditOutlinedIcon />
-            </IconButton>
-
-          )
-        }
+      field: "sTypeIssued",
+      title: "Type Issued",
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px',
+        borderLeft: '0'
+      },
+      // customFilterAndSearch: (term, rowData)=>{
+      //   console.log(term);
+      //   //console.log(field);
+      //   //console.log(rowData);
+      // }
+    },
+    {
+      field: 'edit',
+      title: 'Edit',
+      filtering: false,
+      sorting: false,
+      export: false,
+      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
+        onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+      >
+        <EditOutlinedIcon />
+      </IconButton>,
+      cellStyle: {
+        padding: '5px',
+        borderRight: '0',
+        width: '10%'
       }
     },
-
   ];
 
   const editClick = (tableRowArray) => {
-    setTypeIssuedPK(tableRowArray[0]);
-    setTypeIssued(tableRowArray[1]);
+    setTypeIssuedPK(tableRowArray["id"]);
+    setTypeIssued(tableRowArray["sTypeIssued"]);
     setEditModal(true);
     setTypeIssuedObj({
-      id: tableRowArray[0],
-      typeIssued: tableRowArray[1]
+      id: tableRowArray["id"],
+      typeIssued: tableRowArray["sTypeIssued"]
     });
   }
 
   const editAPICall = (typeIssuedObj) => {
+    setisLoading(true);
     axios.post(`/TypeIssued/EditTypeIssued/ID=` + typeIssuedPK, typeIssuedObj/*TypeIssuedToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
@@ -148,22 +113,13 @@ export default function TypeIssued() {
           axios.get(`/TypeIssued/GetTypeIssued`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
                 setDataChanged(true);
+                setisLoading(false);
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -171,45 +127,27 @@ export default function TypeIssued() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
       });
   };
   const addAPICall = (typeIssuedObj) => {
+    setisLoading(true);
     axios.post(`/TypeIssued/AddTypeIssued/`, typeIssuedObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           axios.get(`/TypeIssued/GetTypeIssued`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
+                setisLoading(false);
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -217,16 +155,7 @@ export default function TypeIssued() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -247,21 +176,12 @@ export default function TypeIssued() {
     axios.get(`/TypeIssued/GetTypeIssued`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
-          setdataAPI(resp.data)
+          setdataAPI(resp.data);
+          setisLoading(false);
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -269,24 +189,33 @@ export default function TypeIssued() {
   }, []);
 
   return (
-
     <Container maxWidth="lg" disableGutters={true}>
-      <Typography variant="h4" gutterBottom>Type Issued
-             <IconButton
-          color="primary"
-          aria-label="upload picture"
-          component="span"
-          size="large"
-          onClick={() => { setAddModal(true) }}
-        >
-          <AddCircleIcon />
-        </IconButton>
-      </Typography>
+      {/*<Typography variant="h4" gutterBottom>Type Issued</Typography>*/}
       <Grid container className={classes.box}>
         <Grid item xs={12}>
-          <MuiThemeProvider theme={getMuiTheme}>
-            <MUIDataTable data={dataAPI} columns={columns} options={options} />
-          </MuiThemeProvider>
+          <MaterialTable
+            isLoading={isLoading}
+            style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
+            icons={tableIcons}
+            title="Type Issued"
+            columns={columns}
+            data={dataAPI}
+            options={oOptions}
+            actions={[
+              {
+                icon: AddBox,
+                tooltip: 'Add TypeIssued',
+                isFreeAction: true,
+                onClick: (event) => setAddModal(true)
+              },
+              {
+                icon: FilterList,
+                tooltip: 'Toggle Filter',
+                isFreeAction: true,
+                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+              }
+            ]}
+          />
         </Grid>
       </Grid>
       {addModal && <AddDialog

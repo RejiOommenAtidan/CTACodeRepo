@@ -13,7 +13,8 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { makeStyles } from '@material-ui/core/styles';
 import FilterList from '@material-ui/icons/FilterList';
 import AddBox from '@material-ui/icons/AddBox';
-
+import handleError from "../../../auth/_helpers/handleError";
+import { useHistory } from 'react-router-dom';
 
 const tableIcons = oTableIcons;
 
@@ -21,7 +22,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function Relation() {
+  const history = useHistory();
   const classes = useStyles();
+  const [isLoading, setisLoading] = React.useState(true);
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -29,10 +32,9 @@ export default function Relation() {
   const [relation, setRelation] = React.useState('');
   const [relationPK, setRelationPK] = React.useState(0);
   const [relationObj, setRelationObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -71,7 +73,7 @@ export default function Relation() {
       field: 'edit',
       title: 'Edit',
       filtering: false,
-      sorting:false,
+      sorting: false,
       export: false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
         onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
@@ -98,6 +100,7 @@ export default function Relation() {
   }
 
   const editAPICall = (relationObj) => {
+    setisLoading(true);
     axios.post(`/Relation/EditRelation/ID=` + relationPK, relationObj/*RelationToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
@@ -107,19 +110,11 @@ export default function Relation() {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
                 setDataChanged(true);
+                setisLoading(true);
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -127,22 +122,14 @@ export default function Relation() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
       });
   };
   const addAPICall = (relationObj) => {
+    setisLoading(true);
     axios.post(`/Relation/AddRelation/`, relationObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -150,20 +137,12 @@ export default function Relation() {
           axios.get(`/Relation/GetRelation`)
             .then(resp => {
               if (resp.status === 200) {
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
+                setisLoading(false);
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -171,16 +150,7 @@ export default function Relation() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -201,20 +171,12 @@ export default function Relation() {
     axios.get(`/Relation/GetRelation`)
       .then(resp => {
         if (resp.status === 200) {
-          setdataAPI(resp.data)
+          setdataAPI(resp.data);
+          setisLoading(false);
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -227,6 +189,7 @@ export default function Relation() {
       <Grid container className={classes.box}>
         <Grid item xs={12}>
           <MaterialTable
+            isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={tableIcons}
             title="Relation"

@@ -45,7 +45,7 @@ export const EditDialog = (props) => {
   const [Name, setRelation] = useState(props.relationObj.relation);
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Relation</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Relation</DialogTitle>
       <DialogContent>
         <DialogContentText>
           <div>
