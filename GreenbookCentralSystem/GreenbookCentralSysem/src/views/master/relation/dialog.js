@@ -11,6 +11,36 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+export const AddDialog = (props) => {
+  const [relationId, setRelationId] = useState('');
+  const [relation, setRelation] = useState('');
+  return (
+    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+      <DialogTitle id="form-dialog-title">Add Relation</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          <Grid container>
+            <Grid item xs={12} >
+              <FormControl className={props.classes.formControl}>
+                <TextField
+                  id="id_Relation"
+                  label="Relation"
+                  type="text"
+                  onChange={(e) => { setRelation(e.target.value) }}
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+        <Button onClick={() => props.addAPICall({ sRelation: relation })} color="primary">Save</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
 export const EditDialog = (props) => {
   const [Name, setRelation] = useState(props.relationObj.relation);
   return (
@@ -38,37 +68,6 @@ export const EditDialog = (props) => {
       <DialogActions>
         <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
         <Button onClick={() => props.editAPICall({ id: props.relationObj.id, sRelation: Name })} color="primary">Save</Button>
-      </DialogActions>
-    </Dialog>
-  );
-}
-
-export const AddDialog = (props) => {
-  console.log("Add Dialog");
-  const [relationId, setRelationId] = useState('');
-  const [relation, setRelation] = useState('');
-  return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Relation</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          <Grid container>
-            <Grid item xs={12} >
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_Relation"
-                  label="Relation"
-                  type="text"
-                  onChange={(e) => { setRelation(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.addAPICall({ sRelation: relation })} color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );

@@ -5,35 +5,18 @@ import {
   Typography
 } from '@material-ui/core';
 import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import MUIDataTable from "mui-datatables";
 import IconButton from '@material-ui/core/IconButton';
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { AddDialog, EditDialog } from './dialog';
+import MaterialTable from 'material-table';
+import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import { makeStyles } from '@material-ui/core/styles';
+import FilterList from '@material-ui/icons/FilterList';
+import AddBox from '@material-ui/icons/AddBox';
 
-const getMuiTheme = () => createMuiTheme({
-  overrides: {
-    MUIDataTableBodyCell: {
-      root: {
-      }
-    },
-    MUIDataTableHeadCell: {
-      root: {
-        color: 'blue',
-        fontSize: 20
-      }
-    },
-    MuiTableCell: {
-      root: {
-        padding: '0px',
-        paddingLeft: '30px',
 
-      }
-    },
-  }
-})
+const tableIcons = oTableIcons;
+
 const useStyles = makeStyles(() => ({
 }));
 
@@ -49,6 +32,7 @@ export default function Relation() {
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
+  const [filtering, setFiltering] = React.useState(false);
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -63,76 +47,53 @@ export default function Relation() {
     setAddModal(false);
   };
 
-  const options = {
-    textLabels: {
-      body: {
-        noMatch: "Loading..."
-      },
-
-    },
-    filter: true,
-    viewColumns: false,
-    selectableRows: false,
-    jumpToPage: true,
-    rowsPerPage: rowsPerPage,
-    rowsPerPageOptions: [5, 10, 20, 30],
-    onChangePage: (number) => {
-      setCurrentPage(number + 1);
-      console.log('Current Page No.', number + 1)
-    },
-    onChangeRowsPerPage: (rows) => {
-      console.log("Rows per page:", rows)
-    },
-    onTableChange: (action, tableState) => {
-      console.log("Action:", action, "\ntableState:", tableState, "Data Changed:", dataChanged);
-    }
-  };
-
   const columns = [
     {
-      name: "id",
-      label: "Sr No.",
-      options: {
-        filter: false,
-        sort: true,
-        display: false
+      field: "id",
+      title: "Sr No.",
+      hidden: true,
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px'
+      },
+      export: true
+    },
+    {
+      field: "sRelation",
+      title: "Relation",
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px',
+        borderLeft: '0'
       }
     },
     {
-      name: "sRelation",
-      label: "Type Issued",
-      options: {
-        filter: true,
-        sort: true,
-        filterType: 'textField'
-      }
-    },
-    {
-      name: "edit",
-      label: "Edit",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            <IconButton color="primary" aria-label="upload picture" component="span"
-              onClick={() => { editClick(tableMeta.rowData) }} style={{ padding: '5px' }}
-            >
-              <EditOutlinedIcon />
-            </IconButton>
-          )
-        }
-      }
+      field: 'edit',
+      title: 'Edit',
+      filtering: false,
+      sorting:false,
+      export: false,
+      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
+        onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+      >
+        <EditOutlinedIcon />
+      </IconButton>,
+      cellStyle: {
+        padding: '5px',
+        borderRight: '0',
+        width: '10%'
+      },
+
     },
   ];
 
   const editClick = (tableRowArray) => {
-    setRelationPK(tableRowArray[0]);
-    setRelation(tableRowArray[1]);
+    setRelationPK(tableRowArray["id"]);
+    setRelation(tableRowArray["sRelation"]);
     setEditModal(true);
     setRelationObj({
-      id: tableRowArray[0],
-      relation: tableRowArray[1]
+      id: tableRowArray["id"],
+      relation: tableRowArray["sRelation"]
     });
   }
 
@@ -144,7 +105,6 @@ export default function Relation() {
           axios.get(`/Relation/GetRelation`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
                 setDataChanged(true);
               }
@@ -186,12 +146,10 @@ export default function Relation() {
     axios.post(`/Relation/AddRelation/`, relationObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           axios.get(`/Relation/GetRelation`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data)
               }
             })
@@ -230,23 +188,19 @@ export default function Relation() {
   };
 
   const deleteClick = (tableRowArray) => {
-
     setDeleteModal(true);
     setRelationPK(tableRowArray[0]);
-
     setRelation(tableRowArray[1]);
   };
 
   const handleClose = () => {
     setDeleteModal(false);
-
   };
 
   useEffect(() => {
     axios.get(`/Relation/GetRelation`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setdataAPI(resp.data)
         }
       })
@@ -269,22 +223,31 @@ export default function Relation() {
 
   return (
     <Container maxWidth="lg" disableGutters={true}>
-      <Typography variant="h4" gutterBottom>Relation
-             <IconButton
-          color="primary"
-          aria-label="upload picture"
-          component="span"
-          size="large"
-          onClick={() => { setAddModal(true) }}
-        >
-          <AddCircleIcon />
-        </IconButton>
-      </Typography>
+      {/*<Typography variant="h4" gutterBottom>Relation</Typography>*/}
       <Grid container className={classes.box}>
         <Grid item xs={12}>
-          <MuiThemeProvider theme={getMuiTheme}>
-            <MUIDataTable data={dataAPI} columns={columns} options={options} />
-          </MuiThemeProvider>
+          <MaterialTable
+            style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
+            icons={tableIcons}
+            title="Relation"
+            columns={columns}
+            data={dataAPI}
+            options={oOptions}
+            actions={[
+              {
+                icon: AddBox,
+                tooltip: 'Add Relation',
+                isFreeAction: true,
+                onClick: (event) => setAddModal(true)
+              },
+              {
+                icon: FilterList,
+                tooltip: 'Toggle Filter',
+                isFreeAction: true,
+                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+              }
+            ]}
+          />
         </Grid>
       </Grid>
       {addModal && <AddDialog
