@@ -25,7 +25,7 @@ namespace CTADBL.ViewModelsRepositories
         #endregion
 
         #region Get Call
-        public IEnumerable<GBRelationVM> GetRelationsData(string sGBID)
+        public GBRelationVM GetRelationsData(string sGBID)
         {
             //string sql = String.Format(@"SELECT gbrl.Id, gbrl.sGBID, gbrl.sGBIDRelation , gbrl.nRelationID, lstrl.sRelation FROM lnkgbrelation AS gbrl INNER JOIN tblgreenbook AS gb ON gb.sGBID = gbrl.sGBID LEFT JOIN lstrelation AS lstrl ON gbrl.nRelationID = lstrl.Id WHERE  gb.sGBID = @sGBID;");
 
@@ -64,7 +64,7 @@ namespace CTADBL.ViewModelsRepositories
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sGBID", sGBID);
-                return GetRecords(command);
+                return GetRecord(command);
             }
         }
         #endregion

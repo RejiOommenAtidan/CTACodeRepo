@@ -102,8 +102,10 @@ namespace CTADBL.ViewModelsRepositories
 
         public IEnumerable<Object> GetQuickResult(string parameter, string value)
         {
-            string operation = parameter == "sGBID" ? "=" : "LIKE";
-            value = parameter == "sGBID" ? value : value + "%";
+            //string operation = parameter == "sGBID" ? "=" : "LIKE";
+            string operation = "LIKE";
+            //value = parameter == "sGBID" ? value : value + "%";
+            value = value + "%";
             string field = ", gb." + parameter;
 
             string sql = String.Format(@"SELECT gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, year(curdate()) - year(dtDOB) as Age,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID {0} FROM tblgreenbook as gb WHERE gb.{1} {2} @value LIMIT 500", field, parameter, operation);
@@ -153,20 +155,38 @@ namespace CTADBL.ViewModelsRepositories
                 {
                     if (item.Key == "nFromAge")
                     {
-                        int year = DateTime.Now.Year - Convert.ToInt32(item.Value);
-                        addToSql += String.Format(@"year(gb.dtDOB) <= {0} and ", year);
+                        //if(item.Value.GetType().ToString() != "System.Int32")
+                        //{
+                        //    continue;
+                        //}
+
+                        if (item.Value > 0)
+                        {
+                            int year = DateTime.Now.Year - Convert.ToInt32(item.Value);
+                            addToSql += String.Format(@"year(gb.dtDOB) <= {0} and ", year);
+                        }
+                        
                     }
                     else if (item.Key == "nToAge")
                     {
-                        int year = DateTime.Now.Year - Convert.ToInt32(item.Value);
-                        addToSql += String.Format(@"year(gb.dtDOB) >= {0} and ", year);
+                        if (item.Value > 0)
+                        {
+                            int year = DateTime.Now.Year - Convert.ToInt32(item.Value);
+                            addToSql += String.Format(@"year(gb.dtDOB) >= {0} and ", year);
+                        }
+                        
                     }
                     else if(item.Key == "dtDOB")
                     {
-                        addToSql += String.Format(@"gb.{0} = '{1}' and ", item.Key, item.Value);
+                        if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                        {
+                            addToSql += String.Format(@"gb.{0} = '{1}' and ", item.Key, item.Value);
+                        }
+                        
                     }
                     else
                     {
+                        if(!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
                         addToSql += String.Format(@"gb.{0} LIKE '{1}%' and ", item.Key, item.Value);
                     }
                 }
