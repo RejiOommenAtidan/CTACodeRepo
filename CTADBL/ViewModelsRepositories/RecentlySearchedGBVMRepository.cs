@@ -25,7 +25,7 @@ namespace CTADBL.ViewModelsRepositories
         #region Get Call
         public IEnumerable<RecentlySearchedGBVM> GetRecentSearches(int records, int nUserId)
         {
-            string sql = @"SELECT `tblrecentlysearchedgb`.`ID`, `tblrecentlysearchedgb`.`nGBID`, `tblrecentlysearchedgb`.`nUserID`, `tblrecentlysearchedgb`.`dtEntered`, `tblrecentlysearchedgb`.`nEnteredBy`, lnkgbdocument.binFileDoc AS sPhoto FROM `tblrecentlysearchedgb` LEFT JOIN lnkgbdocument ON concat (tblrecentlysearchedgb.nGBID, '') = lnkgbdocument.sGBId WHERE tblrecentlysearchedgb.nUserID = @nUserId AND lnkgbdocument.sDocType = 'Photo Identity' ORDER BY dtEntered DESC LIMIT @records;";
+            string sql = @"SELECT `tblrecentlysearchedgb`.`ID`, `tblrecentlysearchedgb`.`nGBID`, `tblrecentlysearchedgb`.`nUserID`, `tblrecentlysearchedgb`.`dtEntered`, `tblrecentlysearchedgb`.`nEnteredBy`, lnkgbdocument.binFileDoc AS sPhoto FROM `tblrecentlysearchedgb` LEFT JOIN lnkgbdocument ON concat (tblrecentlysearchedgb.nGBID, '') = lnkgbdocument.sGBId AND lnkgbdocument.sDocType = 'Photo Identity' WHERE tblrecentlysearchedgb.nUserID = @nUserId  ORDER BY dtEntered DESC LIMIT @records;";
             
             using (var command = new MySqlCommand(sql))
             {

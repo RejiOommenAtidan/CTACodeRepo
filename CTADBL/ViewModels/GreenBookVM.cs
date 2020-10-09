@@ -21,7 +21,7 @@ namespace CTADBL.ViewModels
     public class GreenBookVM
     {
         private Greenbook _greenbook;
-        private IEnumerable<GBRelationVM>? _relations = null;
+        private GBRelationVM? _relations = null;
         private IEnumerable<GBChildren>? _children = null;
         private IEnumerable<IssueBookVM>? _booksIssued = null;
         private IEnumerable<GBNote>? _gbNotes = null;
@@ -42,7 +42,7 @@ namespace CTADBL.ViewModels
 
 
 
-        public IEnumerable<GBRelationVM>? relations
+        public GBRelationVM? relations
         {
             get
             {

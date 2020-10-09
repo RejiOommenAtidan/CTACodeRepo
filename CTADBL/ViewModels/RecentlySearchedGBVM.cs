@@ -9,7 +9,8 @@ namespace CTADBL.ViewModels
     {
         #region Private Properties
         private RecentlySearchedGB _recentlySearchedGB;
-        private string? _sPhoto;
+        private string _sGBID;
+        private string? _sPhoto = null;
         #endregion
 
         #region Public Properties
@@ -22,6 +23,18 @@ namespace CTADBL.ViewModels
             set
             {
                 _recentlySearchedGB = value;
+            }
+        }
+
+        public string sGBID
+        {
+            get
+            {
+                return _sGBID;
+            }
+            set
+            {
+                _sGBID = value;
             }
         }
 
