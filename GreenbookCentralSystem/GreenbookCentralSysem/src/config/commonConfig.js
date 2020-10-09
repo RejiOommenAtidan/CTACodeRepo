@@ -7,7 +7,7 @@ export const oOptions = {
     // tableLayout: "auto",
     // padding: "dense",
     columnsButton: true,
-    filtering,
+    filtering:true,
     exportButton: true,
     exportAllData: true,
     headerStyle: {
