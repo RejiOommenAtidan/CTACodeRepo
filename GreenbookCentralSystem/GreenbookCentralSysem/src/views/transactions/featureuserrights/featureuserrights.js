@@ -3,9 +3,12 @@ import {
   Box,
   Container,
   Grid,
-  Typography
+  Typography,
+  Checkbox,
+  Switch,
+  Button
 } from '@material-ui/core';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
@@ -27,7 +30,12 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { CheckBox } from '@material-ui/icons';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -121,30 +129,72 @@ const useStyles = makeStyles({
 });
 
 export default function FeatureUserrights() {
-  const history  = useHistory();
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const history = useHistory();
   const [filtering, setFiltering] = React.useState(false);
   const classes = useStyles();
-  const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
+  const [mapping, setMapping] = useState([]);
   const [lstFeature, setlstFeature] = React.useState([]);
   const [lUserRights, setlUserRights] = React.useState([]);
-  const [Id, setId] = React.useState('');
-  const [nFeatureID, setnFeatureID] = React.useState(0);
-  const [nUserRightsID, setnUserRightsID] = React.useState(0);
-  const [nRights, setnRights] = React.useState(0);
-  const [sFeature, setsFeature] = React.useState('');
-  const [sUserRightsName, setsUserRightsName] = React.useState('');
-  const [oLnkObj, setoLnkObj] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [columns, setColumns] = useState([]);
-  const handleChange = (e, tableRow) => {
-    console.log(tableRow);
-    // if (nRights === 1) {
-    //   setnRights(0);
-    // }
-    // else {
-    //   setnRights(1);
-    // }
+  const [tableRow, settableRow] = useState([]);
+  const [userightName, setuserightName] = useState("");
+  const [roleID, setroleID] = useState(0);
+  const handleClickOpen = (tableRow, userightName, roleID) => {
+    setOpenDialog(true);
+    settableRow(tableRow);
+    setuserightName(userightName);
+    setroleID(roleID);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+    settableRow([]);
+    setuserightName("");
+    setroleID(0);
+  };
+  const editAPICall = () => {
+    // let myElement = mapping.map(element=>element.sFeature===tableRow["sFeature"]);
+    // console.log(myElement);
+    //console.log(tableRow)
+    //Id
+    //nUserrightsId
+    // console.log(roleID);
+    //nRights
+    setOpenDialog(false);
+    setIsLoading(true);
+    let lnkObj = {
+      Id: 0,
+      nFeatureID: tableRow["nFeatureID"],
+      nUserrightsId: roleID
+    };
+    axios.post(`/FeatureUserrights/EditFeatureUserright/Id=` + lnkObj.Id, lnkObj)
+      .then(resp => {
+        if (resp.status === 200) {
+          console.log(resp.data);
+          axios.get(`/FeatureUserrights/GetFeatureUserrightsUI`)
+            .then(resp => {
+              if (resp.status === 200) {
+                setdataAPI(resp.data);
+                setIsLoading(false);
+              }
+            })
+            .catch(error => {
+              handleError(error, history);
+            })
+            .then(release => {
+              //console.log(release); => udefined
+            });
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   };
 
   {/*const editAPICall = (lnkObj) => {
@@ -226,13 +276,14 @@ export default function FeatureUserrights() {
     axios.get(`/FeatureUserrights/GetFeatureUserrightsMapping`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
-          setdataAPI(resp.data);
+          //console.table(resp.data);
+          setMapping(resp.data);
           //#region user rights
           axios.get(`/UserRights/GetUserRights`)
             .then(resp => {
               if (resp.status === 200) {
                 setlUserRights(resp.data);
+                //console.log(resp.data)
                 //#region Features
                 axios.get(`/Feature/GetFeatures`)
                   .then(resp => {
@@ -259,58 +310,51 @@ export default function FeatureUserrights() {
                             roles.map((role) => {
                               generatedColumns.push(
                                 {
-
-                                  //field: "oFeatureUserrights.nRights",
                                   title: role.sUserRightsName,
                                   cellStyle: {
                                     padding: '5px',
                                     paddingLeft: '10px',
                                     borderLeft: '0'
                                   },
-                                  render: rowData => <CheckBox
+                                  render: rowData => <Checkbox
                                     color="primary"
                                     name="name_bRights"
                                     id="id_nRights"
-                                    checked={1 === 1 ? true : false}
-                                  //onChange={() => { handleChange(rowData) }}
+                                    checked={rowData["n" + (role.sUserRightsName).replace(/\s/g, "")] === 1 ? true : false}
+                                    onChange={() => { handleClickOpen(rowData, role.sUserRightsName, role.id) }}
                                   // size="small"
                                   />
                                 }
                               );
                             });
                             setColumns(generatedColumns);
+                            axios.get(`/FeatureUserrights/GetFeatureUserrightsUI`)
+                              .then(resp => {
+                                if (resp.status === 200) {
+                                  //console.table(resp.data);
+                                  setdataAPI(resp.data);
+                                  setIsLoading(false);
+                                }
+                              })
+                              .catch(error => {
+                                handleError(error, history);
+                              })
+                              .then(release => {
+                                //console.log(release); => udefined
+                              });
                           }
                         })
                         .catch(error => {
-                          if (error.response) {
-                            console.error(error.response.data);
-                            console.error(error.response.status);
-                            console.error(error.response.headers);
-                          } else if (error.request) {
-                            console.warn(error.request);
-                          } else {
-                            console.error('Error', error.message);
-                          }
-                          console.log(error.config);
+                          handleError(error, history);
                         })
                         .then(release => {
                           //console.log(release); => udefined
                         });
                       //#endregion
-                      setIsLoading(false);
                     }
                   })
                   .catch(error => {
-                    if (error.response) {
-                      console.error(error.response.data);
-                      console.error(error.response.status);
-                      console.error(error.response.headers);
-                    } else if (error.request) {
-                      console.warn(error.request);
-                    } else {
-                      console.error('Error', error.message);
-                    }
-                    console.log(error.config);
+                    handleError(error, history);
                   })
                   .then(release => {
                     //console.log(release); => udefined
@@ -319,16 +363,7 @@ export default function FeatureUserrights() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -337,7 +372,7 @@ export default function FeatureUserrights() {
         }
       })
       .catch(error => {
-        handleError(error,history);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -346,12 +381,7 @@ export default function FeatureUserrights() {
   }, []);
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      height="100%"
-      justifyContent="center"
-    >
+    
       <Container maxWidth="lg" disableGutters={true}><br />
         <Typography variant="h4" gutterBottom>Feature Roles</Typography>
         <Grid container className={classes.box}>
@@ -405,7 +435,28 @@ export default function FeatureUserrights() {
             />
           </Grid>
         </Grid>
+
+        <Dialog
+          open={openDialog}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Toggle Mapping"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure to Toggle this mapping ?
+          </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              No
+          </Button>
+            <Button onClick={editAPICall} color="primary" autoFocus>
+              Yes
+          </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
-    </Box>
   );
 }

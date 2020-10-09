@@ -72,6 +72,24 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 return GetRecord(command);
             }
         }
+
+        public FeatureUserrights GetFeatureUserrightsByFeatureAnduserRighstId(int? nFeatureID,int? nUserRightsId)
+        {
+            string sql = @"SELECT `Id`,
+                            `nFeatureID`,
+                            `nUserRightsID`,
+                            IF(nRights, 1, 0) nRights,
+                            `dtEntered`,
+                            `nEnteredBy`
+                        FROM `lnkfeatureuserrights`
+                        WHERE nFeatureID = @nFeatureID AND nUserRightsID=@nUserRightsId;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("nFeatureID", nFeatureID);
+                command.Parameters.AddWithValue("nUserRightsId", nUserRightsId);
+                return GetRecord(command);
+            }
+        }
         #endregion
 
         #region Populate Feature User Rights Records
