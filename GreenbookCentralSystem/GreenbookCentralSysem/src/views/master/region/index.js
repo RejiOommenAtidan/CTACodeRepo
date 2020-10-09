@@ -1,14 +1,8 @@
-//Hi
 import React from 'react';
 import {
   Container,
-  Typography,
-  makeStyles,
-  Breadcrumbs,
-  Link
+  makeStyles
 } from '@material-ui/core';
-
-
 import Region from './region';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,17 +14,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverRegion = () => {
   const classes = useStyles();
-
   return (
-   
-      <Container maxWidth={false}>
-       
-        <Region />
-      </Container>
-
+    <Container maxWidth={false}>
+      {/*<Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" href="/Home" >
+            Home
+          </Link>
+          <Typography color="textPrimary">Region</Typography>
+        </Breadcrumbs>*/}
+      <Region />
+    </Container>
   );
 };
 
-export default Dashboard;
+export default CoverRegion;
