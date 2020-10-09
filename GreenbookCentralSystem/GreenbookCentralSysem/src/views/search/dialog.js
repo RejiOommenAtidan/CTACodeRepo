@@ -64,7 +64,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 export const ViewDialog = (props) => {
   const [sFeature, setsFeature] = useState("");
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState('panel1');
   const [data, setData] = React.useState([]);
   
   const handleAccordionChange = (panel) => (event, isExpanded) => {
@@ -75,11 +75,12 @@ export const ViewDialog = (props) => {
 
  
   useEffect(() => {
-    axios.get(`GreenBook/GetDetailsFromGBID?sGBID=`+props.sGBID)
+    axios.get(`GreenBook/GetDetailsFromGBID?sGBID=`+props.sGBID+`&nUserId=`+JSON.parse(localStorage.getItem("currentUser")).oUser.id)
       .then(resp => {
         if (resp.status === 200) {
           setData(resp.data);
          console.log(resp.data);
+         console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
      
     
         }
@@ -108,7 +109,7 @@ export const ViewDialog = (props) => {
   return (
     <>
     {data.length!=0 && 
-    <Dialog open={props.viewModal} fullWidth='true'
+    <Dialog open={props.viewModal} onEscapeKeyDown={props.handleViewClickClose} fullWidth='true'
       maxWidth='xl' aria-labelledby="form-dialog-title">
     {/*  <DialogTitle id="form-dialog-title">Add Feature</DialogTitle>*/}
       <DialogContent>
@@ -118,12 +119,12 @@ export const ViewDialog = (props) => {
             <Grid container spacing={0}>
               <Grid item xl={5}>
                 <div className="p-4 text-center">
-                  <div className="avatar-icon-wrapper rounded-circle mx-auto">
-                    <div className="d-block p-0 avatar-icon-wrapper rounded-circle m-0 border-3 border-first">
-                      <div className="rounded-circle border-3 border-white overflow-hidden">
-                       {data.gbDocuments.length!=0  && 
-                        <img alt="..." className="img-fluid" style={{width:'100px' }} src={`data:image/gif;base64,${data.gbDocuments[0].binFileDoc}`} /> }
-                        {data.gbDocuments.length==0  &&  
+                  <div className="avatar-icon-wrapper  mx-auto">
+                    <div className="d-block p-0 avatar-icon-wrapper m-0 border-3">
+                      <div className=" border-3 border-white overflow-hidden">
+                       {data.sPhoto!= null  && 
+                        <img alt="..." className="img-fluid" style={{width:'100px' }} src={`data:image/gif;base64,${data.sPhoto}`} /> }
+                        {data.sPhoto == null  &&  
                         <img alt="..." className="img-fluid" style={{width:'100px' }} src={stock} />}
                       </div>
                     </div>
@@ -131,6 +132,10 @@ export const ViewDialog = (props) => {
                   <h4 className="font-size-lg font-weight-bold my-2">
                     {data.greenBook.sFirstName + ' ' + data.greenBook.sLastName}
                   </h4>
+                  <h4 className="font-size-lg font-weight-bold my-2">
+                    {data.greenBook.sCountryID+data.greenBook.sGBID }
+                  </h4>
+
 
 
                   <div className="divider my-4" />
@@ -139,17 +144,17 @@ export const ViewDialog = (props) => {
                       Gender : {data.greenBook.sGender == 'M' ? 'Male' : 'Female'}
                     </Grid>
                     <Grid item sm={6}>
+                      Father's Name : {data.relations.sFathersName}
+                    </Grid>
+                    <Grid item sm={6}>
                       DOB : {data.greenBook.dtDOB ? Moment(data.greenBook.dtDOB).format('DD-MM-YYYY'): ''}
                     </Grid>
                     <Grid item sm={6}>
+                      Mother's Name : {data.relations.sMothersName}
+                    </Grid>
+                    <Grid item sm={6}>
                       Age :{data.nAge}
-                    </Grid>
-                    <Grid item sm={6}>
-                      Father's Name : {data.greenBook.sFathersName}
-                    </Grid>
-                    <Grid item sm={6}>
-                      Mother's Name : {data.greenBook.sMothersName}
-                    </Grid>
+                    </Grid> 
                     <Grid item sm={6}>
                       Family Name : {data.greenBook.sFamilyName}
                     </Grid>
@@ -157,59 +162,50 @@ export const ViewDialog = (props) => {
                   <div className="divider my-4" />
                   <Grid container spacing={1} style={{ textAlign: 'left' }}>
                     <Grid item sm={6}>
-                      Resident: {data.greenBook.sAddress2 + data.greenBook.sCity + ','+ data.sCountry}
+                      Resident: {data.greenBook.sAddress2 ? data.greenBook.sAddress2:''  + data.greenBook.sCity + ','+ data.sCountry}
                     </Grid>
                     <Grid item sm={6}>
                       Entered By: {data.sEnteredBy}
                     </Grid>
                     <Grid item sm={6}>
-                      Edited On: {data.greenBook.dtUpdated}
+                      Edited On: {data.greenBook.dtUpdated ? Moment(data.greenBook.dtUpdated).format('DD-MM-YYYY'): ''}
                     </Grid>
                   </Grid>
                   <div className="divider my-4" />
+                  { data.relations.sFathersGBID != null && data.relations.sMothersGBID != null && data.relations.sSpouseGBID != null &&
                   <div className="font-weight-bold text-uppercase text-black-50 text-center mb-3">
                     Family members
                                     </div>
+                                    
+                                    }
                   <div className="avatar-wrapper-overlap d-flex justify-content-center mb-3">
-                    <Tooltip title="Chelsey Delaney" classes={{ tooltip: "tooltip-danger" }} arrow>
+
+                    { data.relations.sFathersGBID != null &&
+                    <Tooltip title={data.relations.sFathersGBID+' (Father)'} classes={{ tooltip: "tooltip-danger" }} arrow>
                       <div className="avatar-icon-wrapper">
-                        <div className="avatar-icon"><img alt="..." src={avatar1} /></div>
+                        <div className="avatar-icon">
+                          <img alt="..." src={`data:image/gif;base64,${data.relations.sFathersPhoto}`} /></div>
+                      </div>
+                    </Tooltip>
+                      }
+  { data.relations.sMothersGBID != null &&
+                    <Tooltip title={data.relations.sMothersGBID+' (Mother)'} classes={{ tooltip: "tooltip-first" }} arrow>
+                      <div className="avatar-icon-wrapper">
+                        <div className="avatar-icon"><img alt="..." src={`data:image/gif;base64,${data.relations.sMothersPhoto}`} /></div>
                       </div>
 
 
-                    </Tooltip>
-
-                    <Tooltip title="Laibah Santos" classes={{ tooltip: "tooltip-first" }} arrow>
+                    </Tooltip>}
+                    { data.relations.sSpouseGBID != null &&
+                    <Tooltip title={data.relations.sSpouseGBID+' (Spouse)'} classes={{ tooltip: "tooltip-first" }} arrow>
                       <div className="avatar-icon-wrapper">
-                        <div className="avatar-icon"><img alt="..." src={avatar7} /></div>
+                        <div className="avatar-icon"><img alt="..." src={`data:image/gif;base64,${data.relations.sSpousePhoto}`} /></div>
                       </div>
 
 
-                    </Tooltip>
+                    </Tooltip>}
 
-                    <Tooltip title="Ksawery Weber" classes={{ tooltip: "tooltip-second" }} arrow>
-                      <div className="avatar-icon-wrapper">
-                        <div className="avatar-icon"><img alt="..." src={avatar1} /></div>
-                      </div>
-
-
-                    </Tooltip>
-
-                    <Tooltip title="Killian Magana" classes={{ tooltip: "tooltip-info" }} arrow>
-                      <div className="avatar-icon-wrapper">
-                        <div className="avatar-icon"><img alt="..." src={avatar2} /></div>
-                      </div>
-
-
-                    </Tooltip>
-
-                    <Tooltip title="Kean Banks" classes={{ tooltip: "tooltip-success" }} arrow>
-                      <div className="avatar-icon-wrapper">
-                        <div className="avatar-icon"><img alt="..." src={avatar6} /></div>
-                      </div>
-
-
-                    </Tooltip>
+               
                   </div>
 
                 </div>
@@ -227,7 +223,7 @@ export const ViewDialog = (props) => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <Typography className={props.classes.heading}>Contact Information</Typography>
+                        <Typography className="font-size-lg font-weight-bold my-2">Contact Information</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                       <Grid container spacing={2} >
@@ -270,7 +266,7 @@ export const ViewDialog = (props) => {
                               Phone Number : {data.greenBook.sPhone}
                             </Grid>
                             <Grid item sm={6}>
-                              Form Date : {data.greenBook.dtFormDate}
+                              Form Date : {data.greenBook.dtFormDate ? Moment(data.greenBook.dtFormDate).format('DD-MM-YYYY'): ''}
                             </Grid>
                             <Grid item sm={6}>
                              Authority Region : {data.sAuthRegion}
@@ -294,7 +290,7 @@ export const ViewDialog = (props) => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <Typography className={props.classes.heading}>Personal Information</Typography>
+                        <Typography className="font-size-lg font-weight-bold my-2">Personal Information</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                       <Grid item xs={6} >
@@ -335,7 +331,7 @@ export const ViewDialog = (props) => {
                       <Grid item xs={6} >
                       <Grid container spacing={2}>  
                       <Grid item xs={12}>
-                          Birth Country : {data.greenBook.sBirthCountryID}
+                          Birth Country : {data.sBirthCountry}
                                   
                           </Grid>
                           <Grid item xs={12}>
@@ -376,7 +372,7 @@ export const ViewDialog = (props) => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <Typography className={props.classes.heading}>Relation Details</Typography>
+                        <Typography className="font-size-lg font-weight-bold my-2">Relation Details</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                         <div>
@@ -384,7 +380,7 @@ export const ViewDialog = (props) => {
                       <Grid item xs={6} >
                         <Grid container spacing={2}>                        
                         <Grid item xs={12}>
-                          Father's Name : {data.greenBook.sFathersName}
+                          Father's Name : {data.relations.sFathersName}
                                   
                           </Grid>
                           <Grid item xs={12}>
@@ -396,11 +392,11 @@ export const ViewDialog = (props) => {
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Father's GB : {data.greenBook.sFathersGBID ?  <Button  onClick={()=>props.openRelationGB(data.greenBook.sMothersGBID)} className="m-2 btn-transparent btn-link btn-link-second" ><span>{data.greenBook.sFathersGBID}</span></Button> : ''}
+                          Father's GB : {data.relations.sFathersGBID ?  <Button  onClick={()=>props.openRelationGB(data.relations.sFathersGBID)} className="m-2 btn-transparent btn-link btn-link-second" >  <h4 className="font-size-lg font-weight-bold my-2">{data.relations.sFathersGBID}</h4></Button> : ''}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Mother's Name : {data.greenBook.sMothersName}
+                          Mother's Name : {data.relations.sMothersName}
                                 
                           </Grid>
                           <Grid item xs={12}>
@@ -423,11 +419,11 @@ export const ViewDialog = (props) => {
                                   
                           </Grid>
                           <Grid item xs={12}>
-                          Mother's GB : {data.greenBook.sMothersGBID ?  <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={()=>props.openRelationGB(data.greenBook.sMothersGBID)} ><span>{data.greenBook.sMothersGBID}</span></Button> : ''}
+                          Mother's GB : {data.relations.sMothersGBID ?  <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={()=>{props.openRelationGB(data.relations.sMothersGBID)}} >  <h4 className="font-size-lg font-weight-bold my-2">{data.relations.sMothersGBID}</h4></Button> : ''}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Spouse Name : {data.greenBook.sSpouseName}
+                          Spouse Name : {data.relations.sSpouseName}
                                 
                           </Grid>
                           <Grid item xs={12}>
@@ -439,7 +435,7 @@ export const ViewDialog = (props) => {
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Spouse GB :{data.greenBook.sSpouseGBID ?  <Button  onClick={()=>{props.handleViewClickClose();props.openRelationGB(data.greenBook.sMothersGBID)}} className="m-2 btn-transparent btn-link btn-link-second" style={{padding:'0px'}} ><span>{data.greenBook.sSpouseGBID}</span></Button> : ''}
+                          Spouse GB :{data.relations.sSpouseGBID ?  <Button  onClick={()=>{props.openRelationGB(data.relations.sSpouseGBID)}} className="m-2 btn-transparent btn-link btn-link-second" style={{padding:'0px'}} >  <h4 className="font-size-lg font-weight-bold my-2">{data.relations.sSpouseGBID}</h4></Button> : ''}
                         
 
                                 
@@ -476,7 +472,10 @@ export const ViewDialog = (props) => {
                                 <td scope="row">{row.dtDOB}</td>
                                 <td scope="row">{row.sGender}</td>
                                 <td scope="row">{row.sChildID}</td>
-                                <td scope="row">{row.id}</td>
+                                <td scope="row">
+                                 
+                                  {row.sGBIDChild ?  <Button  onClick={()=>props.openRelationGB(row.sGBIDChild)} className="m-2 btn-transparent btn-link btn-link-second" ><span>{row.sGBIDChild}</span></Button> : ''}
+                                </td>
                              
                               
                                                                     
@@ -502,7 +501,7 @@ export const ViewDialog = (props) => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <Typography className={props.classes.heading}>Book Issued Details</Typography>
+                        <Typography className="font-size-lg font-weight-bold my-2">Book Issued Details</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                       { data.booksIssued.length!=0 &&
@@ -548,10 +547,10 @@ export const ViewDialog = (props) => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <Typography className={props.classes.heading}>History</Typography>
+                        <Typography className="font-size-lg font-weight-bold my-2">History</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
-                      { //data.booksIssued.length!=0 &&
+                      { data.auditLogs.length!=0 &&
                      <Table className="table table-hover table-striped table-bordered " >
                             <thead className="thead-light" style={{padding:0}}>
                             <tr>
@@ -565,15 +564,17 @@ export const ViewDialog = (props) => {
                  
                             </tr>
                             </thead>
-                            {/* 
+                            {
                             <tbody style={{padding:0}}>
-                            {data.booksIssued.map((row, index) => (
+                            {data.auditLogs.map((row, index) => (
                             <tr>
-                                <td scope="row">{row.issueBook.dtIssuedDate  ? Moment(row.issueBook.dtIssuedDate).format('DD-MM-YYYY'): ''}</td>
-                                <td scope="row">{row.sMadebDisplayName}</td>
-                                <td scope="row">{row.sAuthRegion}</td>
-                                <td scope="row">{row.issueBook.sFormNumber}</td>
-                                <td scope="row">{row.issueBook.dtEntered ? Moment(row.issueBook.dtEntered).format('DD-MM-YYYY'): ''}</td>
+                                <td scope='row'>{index+1}</td>
+                                <td >{row.sFeature }</td>
+                                <td >{row.auditLogs.sFieldValuesOld}</td>
+                                <td >{row.auditLogs.sFieldValuesNew}</td>
+                                <td >{row.sEnteredBy}</td>
+                                <td >{row.sOffice}</td>
+                                <td >{row.auditLogs.dtEntered ? Moment(row.issueBook.dtEntered).format('DD-MM-YYYY'): ''}</td>
                              
                               
                                                                     
@@ -581,7 +582,7 @@ export const ViewDialog = (props) => {
                             
 
                             ))}
-                            </tbody>*/}
+                            </tbody>}
                             </Table> }
 
                       </ExpansionPanelDetails>
@@ -598,7 +599,7 @@ export const ViewDialog = (props) => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <Typography className={props.classes.heading}>Notes</Typography>
+                        <Typography className="font-size-lg font-weight-bold my-2">Notes</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                       { data.gbNotes.length!=0 &&
@@ -642,7 +643,7 @@ export const ViewDialog = (props) => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <Typography className={props.classes.heading}>Documents</Typography>
+                        <Typography className="font-size-lg font-weight-bold my-2">Documents</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                       { data.gbDocuments.length > 0 &&
@@ -670,7 +671,7 @@ export const ViewDialog = (props) => {
                                 <td>{row.nEnteredBy}</td>                              
                             <td>{row.sDocType}</td>        
                                 <td style={{textAlign:'center'}}>
-                                <Button className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
+                                <Button  download={`data:image/gif;base64,${data.binFileDoc}`} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
                                     <span className="btn-wrapper--icon">
                                     <GetAppIcon/>
                                     </span>
@@ -706,11 +707,11 @@ export const ViewDialog = (props) => {
 
         </DialogContentText>
       </DialogContent>
-      {/* 
+       
       <DialogActions>
         <Button onClick={props.handleViewClickClose} color="primary">Close</Button>
       
-      </DialogActions>*/}
+      </DialogActions>
     </Dialog>
   }
   </>

@@ -1,5 +1,5 @@
 import avatar1 from '../../assets/images/avatars/avatar1.jpg';
-
+import Moment from 'moment';  
 import React, { useEffect, useState } from 'react';
 import { forwardRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -55,6 +55,8 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import stock from '../../assets/images/No_person.jpg';
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -153,7 +155,7 @@ export default function Feature() {
   let history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [isLoading, setisLoading] = React.useState(true);
+  const [isLoading, setisLoading] = React.useState(false);
   const [editModal, setEditModal] = React.useState(false);
   const [viewModal, setViewModal] = useState(false);
   const [Id, setId] = React.useState('');
@@ -161,6 +163,7 @@ export default function Feature() {
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
   const [filtering, setFiltering] = React.useState(false);
   const [dataFromAPI, setdataFromAPI] = React.useState([]);
+  const [recentGBData, setRecentGBData] = React.useState([]);
   const [sGBID, setsGBID] = React.useState('');
 
   const [searchType, setSearchType] = React.useState('simple');
@@ -182,8 +185,8 @@ export default function Feature() {
   const [state, setState] = React.useState('');
   const [country, setCountry] = React.useState('');
   const [gender, setGender] = React.useState('');
-  const [minAge, setMinAge] = React.useState('');
-  const [maxAge, setMaxAge] = React.useState('');
+  const [minAge, setMinAge] = React.useState(0);
+  const [maxAge, setMaxAge] = React.useState(0);
   const [countryData, setCountryData] = React.useState([]);
 
 
@@ -208,11 +211,13 @@ export default function Feature() {
     setEditModal(false);
   };
   const handleViewClickClose = () => {
+    getRecentGB();
     setViewModal(false);
   };
 
-  const viewGb = (sGBID) =>{
-      setsGBID(sGBID);
+  const viewGb = (GBID) =>{
+    console.log(GBID)
+      setsGBID(GBID);
       setViewModal(true);
       }
   const columns = [
@@ -281,6 +286,7 @@ export default function Feature() {
     {
       field: "dtDOB",
       title: "DOB",
+      render: rowData => rowData.dtDOB ? Moment(rowData.dtDOB).format('DD-MM-YYYY'): '',
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '0px',
@@ -296,7 +302,7 @@ export default function Feature() {
       },
     },
     {
-      field: "nAge",
+      field: "age",
       title: "Age",
       filterPlaceholder: 'Search..',
       headerStyle: {
@@ -366,10 +372,8 @@ export default function Feature() {
   ];
 
   const openRelationGB = (newsGBID) =>{
-    //handleViewClickClose();
-    
-    //setTimeout(500,console.log(newsGBID));
-    viewGb(newsGBID);
+    handleViewClickClose();
+    setTimeout(()=>viewGb(newsGBID),0);
   }
 
   const handleSimpleSearch = (e) => {
@@ -408,7 +412,7 @@ export default function Feature() {
           //console.log(release); => udefined
         });
     }
-
+  
   }
   const complexObj = {
 
@@ -416,20 +420,69 @@ export default function Feature() {
     sSecondname: secondName,
     sFamilyname: familyName,
     sSpousename: spouseName,
-    sFathername: fatherName,
-    sMothername: motherName,
+    sFathersname: fatherName,
+    sMothersname: motherName,
     dtDOB: dob,
     sCity: city,
     sState: state,
-    sCountry: country,
+    sCountryID: country,
     sGender: gender,
     nFromAge: minAge,
     nToAge: maxAge
   }
-  // const handleComplexSearch = () => {
+  const getRecentGB =() =>{
+    console.log('recent');
+    axios.get(`RecentlySearchedGB/GetRecentlySearchedGBs?records=20&nUserId=`+JSON.parse(localStorage.getItem("currentUser")).oUser.id)
+    .then(resp => {
+      if (resp.status === 200) {
+        setRecentGBData(resp.data);
+      }
+    })
+    .catch(error => {
+      if (error.response) {
+        console.error(error.response.data);
+        console.error(error.response.status);
+        console.error(error.response.headers);
+      } else if (error.request) {
+        console.warn(error.request);
+      } else {
+        console.error('Error', error.message);
+      }
+      console.log(error.config);
+    })
+    .then(release => {
+      //console.log(release); => udefined
+    });
+  }
+   const handleComplexSearch = () => {
   //   //setSearchField(e.target.value,console.log(searchField))
-  //   alert(JSON.stringify(complexObj))
-  // }
+     //alert(JSON.stringify(complexObj))
+     axios.post(`GreenBook/GetQuickResultComplex`, complexObj)
+     .then(resp => {
+       if (resp.status === 200) {
+         
+         console.log(resp.data);
+        
+         setdataFromAPI(resp.data);
+         setisLoading(false);
+       }
+     })
+     .catch(error => {
+       if (error.response) {
+         console.error(error.response.data);
+         console.error(error.response.status);
+         console.error(error.response.headers);
+       } else if (error.request) {
+         console.warn(error.request);
+       } else {
+         console.error('Error', error.message);
+       }
+       console.log(error.config);
+     })
+     .then(release => {
+       //console.log(release); => udefined
+     });
+   }
   useEffect(() => {
     //Use === instead of ==
     if (authenticationService.currentUserValue === null) {
@@ -438,10 +491,12 @@ export default function Feature() {
   }, []);
 
   useEffect(() => {
+    getRecentGB();
     axios.get(`Country/GetCountries`)
       .then(resp => {
         if (resp.status === 200) {
           setCountryData(resp.data);
+         // 
         }
       })
       .catch(error => {
@@ -462,14 +517,18 @@ export default function Feature() {
   }, []);
 
   useEffect(() => {
+    //console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
     if (firstName.length > 3 || secondName.length > 3 ||
       familyName.length > 3 || spouseName.length > 3 ||
       fatherName.length > 3 || motherName.length > 3 ||
-      city.length > 3 || state.length > 3 ||
-      dob || country || minAge || maxAge) {
-      //alert(JSON.stringify(complexObj));
+      city.length > 3 || state.length > 3 || gender.length == 1 ||
+      dob || country || minAge >0  || maxAge > 0) {
+      //console.log(complexObj);
+      handleComplexSearch();
     }
   }, [firstName, secondName, familyName, spouseName, fatherName, motherName, city, state, dob, country, gender, minAge, maxAge]);
+
+
 
   return (
     <>
@@ -563,7 +622,7 @@ export default function Feature() {
               </>
               }
               {searchType == 'complex' && <>
-                <Typography color="textPrimary" align="center">Complex Search</Typography>
+                <Typography color="textPrimary" align="center">Detailed Search</Typography>
                 <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
                     <TextField
@@ -777,28 +836,39 @@ export default function Feature() {
             </Grid>
           </Paper>
           
+          {recentGBData.length>0 &&
           <Paper style={{ padding: '10px',marginTop:'20px', textAlign:'center' }}>
             Recent Search
             <Grid container spacing={4}>
+             {recentGBData.map((row, index) => (   
+               index<20  &&    
+                 
               <Grid item xs={12} sm={6}>
-                      <Card className="overflow-visible" style={{width:'90%' }}>
-                        <span className="ribbon-horizontal ribbon-horizontal--bottom ribbon-horizontal--danger"><span>1234567</span></span>
+                {/*
+                      <Card className="overflow-visible" style={{width:'90%' ,textAlign:'center'}} >
+                       <span className="ribbon-horizontal ribbon-horizontal--bottom ribbon-horizontal--danger"><span>{row.nGBID}</span></span>
                         <div className="card-img-wrapper">
                             <img src={avatar1} className="card-img-top rounded" alt="..." />
                         </div>
-                    </Card>
-               </Grid>
-               <Grid item xs={12} sm={6}>
-                      <Card className="overflow-visible" style={{width:'90%'}}>
-                        <span className="ribbon-horizontal ribbon-horizontal--bottom ribbon-horizontal--danger"><span>1234567</span></span>
+                    </Card>   
+                    */}
+                     <a disabled="disabled" style={{cursor:'pointer'}} onClick={() => viewGb(row['nGBID'])} >
+                        <Card className="overflow-visible" style={{width:'90%' ,textAlign:'center'}} >
+                       <span className="ribbon-horizontal ribbon-horizontal--bottom ribbon-horizontal--danger"><span>{row.nGBID}</span></span>
                         <div className="card-img-wrapper">
-                            <img src={avatar1} className="card-img-top rounded" alt="..."   />
+                        {row.sPhoto != null  && 
+                        <img src={`data:image/gif;base64,${row.sPhoto}`} className="card-img-top rounded" alt="..." />}
+                        {row.sPhoto == null  &&  
+                        <img alt="..." className="img-fluid" style={{width:'100px' }} src={stock} />}
+                            
                         </div>
-                    </Card>
+                    </Card>  
+                        </a>
                </Grid>
+               ))}
             </Grid>          
 
-          </Paper>
+          </Paper>}
         </Grid>
         {viewModal && <ViewDialog
           viewModal={viewModal}

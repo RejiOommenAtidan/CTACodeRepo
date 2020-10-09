@@ -27,7 +27,7 @@ namespace CTADBL.ViewModelsRepositories
         {
             //string sql = @"SELECT `tblrecentlysearchedgb`.`ID`, `tblrecentlysearchedgb`.`nGBID`, `tblrecentlysearchedgb`.`nUserID`, `tblrecentlysearchedgb`.`dtEntered`, `tblrecentlysearchedgb`.`nEnteredBy`, lnkgbdocument.binFileDoc AS sPhoto FROM `tblrecentlysearchedgb` LEFT JOIN lnkgbdocument ON concat (tblrecentlysearchedgb.nGBID, '') = lnkgbdocument.sGBId AND lnkgbdocument.sDocType = 'Photo Identity' WHERE tblrecentlysearchedgb.nUserID = @nUserId  ORDER BY dtEntered DESC LIMIT @records;";
 
-            string sql = "SELECT myresult.nGBID, myresult.m, doc.binFileDoc AS sPhoto FROM (SELECT nGBID, MAX(id) AS m FROM tblrecentlysearchedgb tr WHERE nUserID = @nUserId GROUP BY nGBID ORDER BY m DESC) AS myresult LEFT JOIN lnkgbdocument doc ON doc.sGBId = CONCAT(myresult.nGBID + '') AND lnkgbdocument.sDocType = 'Photo Identity' ORDER BY myresult.m DESC LIMIT @records ; ";
+            string sql = "SELECT myresult.nGBID, myresult.m, doc.binFileDoc AS sPhoto FROM (SELECT nGBID, MAX(id) AS m FROM tblrecentlysearchedgb tr WHERE nUserID = @nUserId GROUP BY nGBID ORDER BY m DESC) AS myresult LEFT JOIN lnkgbdocument doc ON doc.sGBId = CONCAT(myresult.nGBID + '') AND doc.sDocType = 'Photo Identity' ORDER BY myresult.m DESC LIMIT @records ; ";
 
             using (var command = new MySqlCommand(sql))
             {
