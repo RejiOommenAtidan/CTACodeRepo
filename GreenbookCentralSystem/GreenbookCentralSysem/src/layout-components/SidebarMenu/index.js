@@ -294,14 +294,13 @@ const SidebarMenu = (props) => {
                       Feature
                     </NavLink>
                   </li>}
-                  {/*<li>
+                  <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/MadebType">
                       Madeb Type
                     </NavLink>
-                  </li>*/}
-
+                  </li>
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
