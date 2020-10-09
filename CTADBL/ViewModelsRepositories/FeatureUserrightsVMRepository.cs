@@ -37,11 +37,12 @@ namespace CTADBL.ViewModelsRepositories
 	                        IF(nRights, 1, 0) nRights,
 	                        `link`.`dtEntered`,
 	                        `link`.`nEnteredBy`,
-                            `feature`.`sFeature`,
-                            `userright`.`sUserRightsName`
+	                        `feature`.`sFeature`,
+	                        `userright`.`sUserRightsName`
                         FROM `lnkfeatureuserrights`as link
                         INNER JOIN lstfeature AS feature ON link.nFeatureId = feature.Id
                         INNER JOIN lstuserrights AS userright ON link.nUserRightsID = userright.Id
+                        GROUP BY `userright`.`sUserRightsName`, `feature`.`sFeature`
                         ORDER BY `link`.`Id`;";
             using (var command = new MySqlCommand(sql))
             {

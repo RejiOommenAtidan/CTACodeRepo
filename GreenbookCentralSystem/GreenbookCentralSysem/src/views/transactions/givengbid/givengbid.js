@@ -4,6 +4,8 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable, { MTableToolbar }  from 'material-table';
 import Moment from 'moment';
+import { useSelector,useDispatch } from 'react-redux';
+
 
 import IconButton from '@material-ui/core/IconButton';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
@@ -26,8 +28,9 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import { forwardRef } from 'react';
 import { red } from '@material-ui/core/colors';
 import { assign } from 'lodash';
-
-
+import { authenticationService } from '../../../auth/_services';
+import { useHistory } from 'react-router-dom';
+import {removeAuthDetails} from '../../../actions/userAuthenticateAction';
 //Local
 import {AssignDialog} from './assigndialog';
 
@@ -102,15 +105,17 @@ const tableIcons = {
   
   }));
 
+
 export default function GiveGBId(){
+  const authUser = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
   // Common properties
   const classes = useStyles();
   const [dataAPI, setdataAPI] = useState([]);
   const [randomGBID, setRandomGBID] = useState(0);
   const [nFormNumber, setFormNumber] = useState(0);
   //const [gbidObj, setGBIDObj] = useState({});
-  
-  
+  let history = useHistory();
+  const dispatch = useDispatch();
   
   const [assignModal, setAssignModal] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
@@ -241,6 +246,20 @@ export default function GiveGBId(){
         console.log(error);
       });
   };
+
+
+  // useEffect(() => {
+  //   //Use === instead of ==
+  //   debugger;
+  //   if (authenticationService.currentUserValue === null) {
+  //     history.push('/Login');
+  //   }
+  //   else if(!authUser||authUser.lFeatureUserrights.find(x=>x.nFeatureID===3)===undefined){
+  //     authenticationService.logout();
+  //     dispatch(removeAuthDetails());
+  //   history.push('/Login');
+  //   }
+  // }, []);
 
   useEffect(() => {
     axios.get(`Madeb/GetFormsWithoutGBId`)

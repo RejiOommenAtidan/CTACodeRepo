@@ -2,11 +2,8 @@ import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ClimbingBoxLoader } from 'react-spinners';
-
 import { ThemeProvider } from '@material-ui/styles';
-
 import MuiTheme from './theme';
-
 import { PrivateRoute } from './auth/_components/PrivateRoute';
 
 // Layout Blueprints
@@ -17,14 +14,11 @@ import {
   MinimalLayout,
   PresentationLayout
 } from './layout-blueprints';
-import { Edit } from '@material-ui/icons';
 
 // Example Pages
 
 const PageLogin = lazy(() => import('./example-pages/PageLoginBasic'));
-
 const PageProfile = lazy(() => import('./example-pages/PageProfile'));
-
 const PageError404 = lazy(() => import('./example-pages/PageError404'));
 const PageError500 = lazy(() => import('./example-pages/PageError500'));
 const PageError505 = lazy(() => import('./example-pages/PageError505'));
@@ -64,9 +58,7 @@ const GreenBookSerial = lazy(() => import('./views/transactions/greenbookserial'
 const MakeList = lazy(() => import('./views/makelist'));
 const IssueBook = lazy(() => import('./views/transactions/issuebook'));
 const ChangePassword = lazy(() => import('./views/change password/index'));
-
 const Users = lazy(() => import('./views/transactions/users/index'));
-
 const Print = lazy(() => import('./views/print'));
 const PrintPage = lazy(() => import('./views/print/print.js'));
 const FeatureUserrights = lazy(() => import('./views/transactions/featureuserrights/index'));
@@ -168,7 +160,6 @@ const Routes = () => {
                     variants={pageVariants}
                     transition={pageTransition}>
                     <Route path="/PageProfile" component={PageProfile} />
-
                     <Route path="/PrintPage" component={Print} />
                     <Route path="/PageError404" component={PageError404} />
                     <Route path="/PageError500" component={PageError500} />
@@ -182,7 +173,7 @@ const Routes = () => {
               path={[
                 '/Home',
                 '/Country',
-                '/NewEntry',
+                '/NewEntry/:FORMNO',
                 '/Qualification',
                 '/Region',
                 '/Province',
@@ -220,46 +211,40 @@ const Routes = () => {
                     animate="in"
                     exit="out"
                     variants={pageVariants}
-                    transition={pageTransition}>
-                    <Route
-                      path="/Home"
-                      component={Home}
-                    />
-                    <Route path="/Country" component={Country} />
-                    <Route path="/NewEntry" component={NewEntry} />
-                    <Route path="/Qualification" component={Qualification} />
+                    transition={pageTransition}>               
+                    <Route path="/Home" component={Home} />
                     <Route path="/Region" component={Region} />
-                    <Route path="/Province" component={Province} />
                     <Route path="/AuthRegion" component={AuthRegion} />
+                    <Route path="/Country" component={Country} />
                     <Route path="/Occupation" component={Occupation} />
-                    <Route path="/MadebType" component={MadebType} />
+                    <Route path="/Province" component={Province} />
+                    <Route path="/Qualification" component={Qualification} />
                     <Route path="/Relation" component={Relation} />
-                    <PrivateRoute path="/Feature" feature={3} component={Feature} />
-                    {/*<Route path="/Feature" component={Feature} />*/}
-                    <Route path="/UserRights" component={UserRights} />
+                    <Route path="/Feature" component={Feature} />
                     <Route path="/TypeIssued" component={TypeIssued} />
-                    <Route path="/Print" component={Print} />
-
-                    <Route path="/Sarso" component={Sarso} />
-                    <Route path="/Norchoe" component={Norchoe} />
-                    <Route path="/Bhorlak" component={Bhorlak} />
-                    <Route path="/BookFull" component={BookFull} />
-                    <Route path="/BriefGB" component={BriefGB} />
-                    <Route path="/Abroad" component={Abroad} />
-
-                    <Route path="/IssueBook" component={IssueBook} />
-
+                    <Route path="/MadebType" component={MadebType} />
                     <Route path="/Greenbooks" component={Greenbook} />
-                    <Route path="/SarsoNewGBEntry" component={SarsoNewGBEntry} />
-                    <Route path="/GivenGBID" component={GivenGBID} />
-                    <Route path="/DeleteGB" component={DeleteGB} />
-                    <Route path="/GreenBookSerial" component={GreenBookSerial} />
-                    <Route path="/MakeList" component={MakeList} />
-                    <Route path="/EditEntry/:GBID" component={EditEntry} />
-                    <Route path="/ChangePassword" component={ChangePassword} />
-                    <Route path="/Users" component={Users} />
-                    <Route path="/FeatureRoles" component={FeatureUserrights} />
-                    <Route path="/Search" component={Search} />
+                    {/*Private Routes Go Here*/}
+                    <PrivateRoute path="/GivenGBID" feature={3} component={GivenGBID} />
+                    <PrivateRoute path="/DeleteGB" feature={4} component={DeleteGB} />
+                    <PrivateRoute path="/Users" feature={5} component={Users} />
+                    <PrivateRoute path="/EditEntry/:GBID" feature={7} component={EditEntry} />
+                    <PrivateRoute path="/IssueBook" feature={8} component={IssueBook} />
+                    <PrivateRoute path="/MakeList" feature={9} component={MakeList} />
+                    <PrivateRoute path="/PrintPage" feature={10} component={PrintPage} />
+                    <PrivateRoute path="/GreenBookSerial" feature={11} component={GreenBookSerial} />
+                    <PrivateRoute path="/NewEntry/:FORMNO" feature={12} component={NewEntry} />
+                    <PrivateRoute path="/Sarso" feature={13} component={Sarso} />
+                    <PrivateRoute path="/Norchoe" feature={14} component={Norchoe} />
+                    <PrivateRoute path="/Bhorlak" feature={15} component={Bhorlak} />
+                    <PrivateRoute path="/BookFull" feature={16} component={BookFull} />
+                    <PrivateRoute path="/BriefGB" feature={17} component={BriefGB} />
+                    <PrivateRoute path="/Abroad" feature={18} component={Abroad} />
+                    <PrivateRoute path="/ChangePassword" feature={19} component={ChangePassword} />
+                    <PrivateRoute path="/Search" feature={20} component={Search} />
+                    <PrivateRoute path="/SarsoNewGBEntry" feature={21} component={SarsoNewGBEntry} />
+                    <PrivateRoute path="/FeatureRoles" feature={22} component={FeatureUserrights} />
+                    <PrivateRoute path="/UserRights" feature={23} component={UserRights} />
                   </motion.div>
                 </Switch>
               </LeftSidebar>

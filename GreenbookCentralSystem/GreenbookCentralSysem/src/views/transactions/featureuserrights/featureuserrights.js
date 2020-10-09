@@ -3,24 +3,14 @@ import {
   Box,
   Container,
   Grid,
-  Button,
   Typography
 } from '@material-ui/core';
+import {useHistory} from 'react-router-dom';
+import handleError from '../../../auth/_helpers/handleError';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-import MaterialTable, { MTableToolbar } from 'material-table';
-//import theme from '../../../theme/theme/theme;
-import IconButton from '@material-ui/core/IconButton';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import AddIcon from '@material-ui/icons/Add';
-//import { ThemeProvider } from '@material-ui/styles';
-
-// import Slide from '@material-ui/core/Slide';
-import Moment from 'moment';
-
-// Local import
-import { AddDialog, DeleteDialog, EditDialog } from './dialog';
+import MaterialTable from 'material-table';
 import { forwardRef } from 'react';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -37,8 +27,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-
-import { useHistory } from 'react-router-dom';
+import { CheckBox } from '@material-ui/icons';
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -72,7 +61,7 @@ const useStyles = makeStyles({
     }
   },
   selectEmpty: {
-    marginTop: 1.5,
+    marginTop: 1.5
   },
   formControl: {
     margin: 2,
@@ -95,16 +84,14 @@ const useStyles = makeStyles({
     marginTop: 1.5
   },
   button: {
-    margin: 1,
+    margin: 1
   },
   palette: {
     primary: {
-      // Purple and green play nicely together.
-      main: red[500],
+      main: red[500]
     },
     secondary: {
-      // This is green.A700 as hex.
-      main: '#11cb5f',
+      main: '#11cb5f'
     },
   },
   heading: {
@@ -134,16 +121,11 @@ const useStyles = makeStyles({
 });
 
 export default function FeatureUserrights() {
-  Moment.locale('en');
+  const history  = useHistory();
   const [filtering, setFiltering] = React.useState(false);
-  let history = useHistory();
   const classes = useStyles();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [addModal, setAddModal] = useState(false);
-
-  //VAR
   const [lstFeature, setlstFeature] = React.useState([]);
   const [lUserRights, setlUserRights] = React.useState([]);
   const [Id, setId] = React.useState('');
@@ -153,113 +135,19 @@ export default function FeatureUserrights() {
   const [sFeature, setsFeature] = React.useState('');
   const [sUserRightsName, setsUserRightsName] = React.useState('');
   const [oLnkObj, setoLnkObj] = useState({});
-  const [isLoading,setIsLoading] = useState(true);
-
-
-  const columns = [
-    {
-      field: "oFeatureUserrights.id",
-      title: "Sr No.",
-      hidden: true,
-      cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-      },
-      export: true,
-      hiddenByColumnsButton:false,
-      removable:true,
-      type:"numeric"
-    },
-    {
-      field: "sFeature",
-      title: "Feature",
-      cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
-      }
-    },
-    {
-      field: "sUserRightsName",
-      title: "Role",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      // columnsButton:true,
-      //searchable:false,
-      // hiddenByColumnsButton:true,
-      // hidden:true,
-      // removable:true,
-      field: 'edit',
-      tooltip:'Edit Record',
-      title: 'Edit',
-      filtering: false,
-      export: false,
-      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-        onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
-      >
-        <EditOutlinedIcon />
-      </IconButton>,
-      cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
-      }
-    }
-  ];
-
-  const addAPICall = (lnkObj) => {
-    axios.post(`/FeatureUserrights/AddFeatureUserright/`, lnkObj)
-      .then(resp => {
-        if (resp.status === 200) {
-          console.log(resp.data);
-          setAddModal(false);
-          axios.get(`/FeatureUserrights/GetFeatureUserrightsMapping`)
-            .then(resp => {
-              if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
-              }
-            })
-            .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
-            })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-          //window.location = window.location;
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
+  const [isLoading, setIsLoading] = useState(true);
+  const [columns, setColumns] = useState([]);
+  const handleChange = (e, tableRow) => {
+    console.log(tableRow);
+    // if (nRights === 1) {
+    //   setnRights(0);
+    // }
+    // else {
+    //   setnRights(1);
+    // }
   };
 
-
-  const editAPICall = (lnkObj) => {
+  {/*const editAPICall = (lnkObj) => {
     axios.post(`/FeatureUserrights/EditFeatureUserright/Id=` + Id, lnkObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -268,7 +156,6 @@ export default function FeatureUserrights() {
           axios.get(`/FeatureUserrights/GetFeatureUserrightsMapping`)
             .then(resp => {
               if (resp.status === 200) {
-                //console.log(resp.data);
                 setdataAPI(resp.data);
               }
             })
@@ -304,11 +191,12 @@ export default function FeatureUserrights() {
       .then(release => {
         //console.log(release); => udefined
       });
-  };
+  };*/}
 
 
 
-  const editClick = (tableRowArray) => {
+  {/*const editClick = (tableRowArray) => {
+    //console.log(tableRowArray)
     setId(tableRowArray["oFeatureUserrights"]["id"]);
     setnFeatureID(tableRowArray["oFeatureUserrights"]["nFeatureID"]);
     setnUserRightsID(tableRowArray["oFeatureUserrights"]["nUserRightsID"]);
@@ -331,42 +219,84 @@ export default function FeatureUserrights() {
   };
   const handleEditClickClose = () => {
     setEditModal(false);
-  };
-  const handleAddClickOpen = () => {
-    setAddModal(true);
-  };
-  const handleAddClickClose = () => {
-    setAddModal(false);
-  };
-
-
-
-
-
-  // //Get User rights
-  // useEffect(() => {
-
-  // }, []);
+  };*/}
 
   useEffect(() => {
     //#region user rights mapping
     axios.get(`/FeatureUserrights/GetFeatureUserrightsMapping`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data)
+          console.log(resp.data);
           setdataAPI(resp.data);
           //#region user rights
           axios.get(`/UserRights/GetUserRights`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setlUserRights(resp.data);
                 //#region Features
                 axios.get(`/Feature/GetFeatures`)
                   .then(resp => {
                     if (resp.status === 200) {
-                      console.log(resp.data)
                       setlstFeature(resp.data);
+                      //#region User rights(roles)
+                      axios.get(`/UserRights/GetUserRights`)
+                        .then(resp => {
+                          if (resp.status === 200) {
+                            const roles = resp.data;
+                            const generatedColumns = [];
+                            //Add feature to cols array & then all roles 1 by 1
+                            generatedColumns.push(
+                              {
+                                field: "sFeature",
+                                title: "Feature",
+                                cellStyle: {
+                                  padding: '5px',
+                                  paddingLeft: '10px',
+                                  borderLeft: '0'
+                                }
+                              }
+                            );
+                            roles.map((role) => {
+                              generatedColumns.push(
+                                {
+
+                                  //field: "oFeatureUserrights.nRights",
+                                  title: role.sUserRightsName,
+                                  cellStyle: {
+                                    padding: '5px',
+                                    paddingLeft: '10px',
+                                    borderLeft: '0'
+                                  },
+                                  render: rowData => <CheckBox
+                                    color="primary"
+                                    name="name_bRights"
+                                    id="id_nRights"
+                                    checked={1 === 1 ? true : false}
+                                  //onChange={() => { handleChange(rowData) }}
+                                  // size="small"
+                                  />
+                                }
+                              );
+                            });
+                            setColumns(generatedColumns);
+                          }
+                        })
+                        .catch(error => {
+                          if (error.response) {
+                            console.error(error.response.data);
+                            console.error(error.response.status);
+                            console.error(error.response.headers);
+                          } else if (error.request) {
+                            console.warn(error.request);
+                          } else {
+                            console.error('Error', error.message);
+                          }
+                          console.log(error.config);
+                        })
+                        .then(release => {
+                          //console.log(release); => udefined
+                        });
+                      //#endregion
                       setIsLoading(false);
                     }
                   })
@@ -407,16 +337,7 @@ export default function FeatureUserrights() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error,history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -451,10 +372,10 @@ export default function FeatureUserrights() {
                 //showTextRowsSelected:true,
                 //searchFieldAlignment:"left",
                 //selection:true,
-                tableLayout:"auto",
+                tableLayout: "auto",
                 //toolbar:true,
-                padding:"dense",
-                columnsButton:true,
+                padding: "dense",
+                columnsButton: true,
                 filtering,
                 exportButton: true,
                 exportAllData: true,
@@ -465,21 +386,15 @@ export default function FeatureUserrights() {
                   paddingLeft: '5px',
                   border: '1px solid lightgrey'
                 },
-                pageSize: 10,
+                pageSize: 23,
                 pageSizeOptions: [10, 50, 100],
-                rowStyle: x => {
-                  if (x.tableData.id % 2) {
-                    return { backgroundColor: "#f2f2f2" }
-                  }
-                }
+                // rowStyle: x => {
+                //   if (x.tableData.id % 2) {
+                //     return { backgroundColor: "#f2f2f2" }
+                //   }
+                // }
               }}
               actions={[
-                {
-                  icon: AddBox,
-                  tooltip: 'Add Feature User right',
-                  isFreeAction: true,
-                  onClick: (event) => setAddModal(true)
-                },
                 {
                   icon: FilterList,
                   tooltip: 'Toggle Filter',
@@ -490,25 +405,6 @@ export default function FeatureUserrights() {
             />
           </Grid>
         </Grid>
-        {addModal && <AddDialog
-          addModal={addModal}
-          classes={classes}
-          handleAddClickClose={handleAddClickClose}
-          lUserRights={lUserRights}
-          lstFeature={lstFeature}
-          addAPICall={addAPICall}
-        />}
-        {editModal && <EditDialog
-          editModal={editModal}
-          oLnkObj={oLnkObj}
-          classes={classes}
-          handleEditClickClose={handleEditClickClose}
-          editAPICall={editAPICall}
-        />}
-        {deleteModal && <DeleteDialog
-          deleteModal={deleteModal}
-        //countryName={countryName}
-        />}
       </Container>
     </Box>
   );

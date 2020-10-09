@@ -120,10 +120,11 @@ const useStyles = makeStyles({
   }
 });
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
   const classes = useStyles();
   //Accordion
-  const [expanded, setExpanded] = React.useState(false);
+  //Panel1 set true for Acoordion to be open 
+  const [expanded, setExpanded] = React.useState('panel1');
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
@@ -191,7 +192,7 @@ export default function EnhancedTable() {
   const [TBUSpouseName, setTBUSpouseName] = useState('');
 
   useEffect(() => {
-    axios.get(`/Greenbook/GetGBDataNewEntry/Id=1001`)
+    axios.get(`/Greenbook/GetGBDataNewEntry/Id=` + props.match.params.FORMNO)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data.oMadeb);
@@ -345,7 +346,10 @@ export default function EnhancedTable() {
                   aria-controls="panel1a-content"
                   id="panel1a-header"
                 >
-                  <Typography className={classes.heading}>Greenbook Required Fields</Typography>
+                  <Typography 
+                  className={"font-weight-bold font-size-md mb-1 text-black"}
+                  //className={classes.heading}
+                  >Greenbook Required Fields</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                   <Grid item xs={6}>
@@ -821,7 +825,10 @@ export default function EnhancedTable() {
                   aria-controls="panel1a-content"
                   id="panel1a-header"
                 >
-                  <Typography className={classes.heading}>Basic Personal Information</Typography>
+                  <Typography 
+                  className={"font-weight-bold font-size-md mb-1 text-black"}
+                  //className={classes.heading}
+                  >Basic Personal Information</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                   <Grid item xs={6}>
@@ -850,7 +857,7 @@ export default function EnhancedTable() {
                             fullWidth
                             margin="normal"
                             className={classes.textField}
-                            onChange={(e)=>{setsGender(e.target.value)}}
+                            onChange={(e) => { setsGender(e.target.value) }}
                           >
                             <MenuItem value={"Male"}>Male</MenuItem>
                             <MenuItem value={"Female"}>Female</MenuItem>
@@ -1184,7 +1191,10 @@ export default function EnhancedTable() {
                   aria-controls="panel1a-content"
                   id="panel1a-header"
                 >
-                  <Typography className={classes.heading}>Relation & Contact Details</Typography>
+                  <Typography
+                  className={"font-weight-bold font-size-md mb-1 text-black"} 
+                  //className={classes.heading}
+                  >Relation & Contact Details</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                   <Grid item xs={6}>
@@ -1317,13 +1327,21 @@ export default function EnhancedTable() {
                         )}
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12}>
-                      <Button variant="outlined" type="submit" color="primary">Save</Button>
-                      <Button variant="outlined">Cancel</Button>
-                    </Grid>
+
                   </Grid>
                 </ExpansionPanelDetails>
               </ExpansionPanel>
+              <Grid item xs={12}>
+                <Button
+                  variant="outlined"
+                  type="submit"
+                  color="primary"
+                  style={{ marginRight: "10px" }}>Save</Button>
+                <Button variant="outlined"
+                  onClick={() => { props.history.push('/Home') }}
+                >Cancel
+                      </Button>
+              </Grid>
             </Grid>
           </Grid>
         </form>

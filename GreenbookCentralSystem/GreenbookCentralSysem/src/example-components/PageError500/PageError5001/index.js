@@ -1,13 +1,12 @@
 import React from 'react';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Grid, Button } from '@material-ui/core';
-
+import HomeIcon from '@material-ui/icons/Home';
 import hero6 from '../../../assets/images/hero-bg/hero-4.jpg';
-
 import illustration2 from '../../../assets/images/illustrations/pack4/500.svg';
+import { useHistory } from 'react-router-dom';
 
 export default function LivePreviewExample() {
+  const history = useHistory();
   return (
     <>
       <div className="app-wrapper min-vh-100 bg-white">
@@ -31,7 +30,7 @@ export default function LivePreviewExample() {
                           />
 
                           <h1 className="display-1 mb-3 px-4 font-weight-bold">
-                            500 Internal Server Error
+                            Internal Server Error
                           </h1>
                           <h3 className="font-size-xxl line-height-sm font-weight-light d-block px-3 mb-3 text-black-50">
                             There was an error, please try again later.
@@ -54,29 +53,22 @@ export default function LivePreviewExample() {
                           <div className="bg-composed-wrapper--content text-center p-5">
                             <div className="text-white px-0 px-lg-3 px-xl-5">
                               <h1 className="display-3 mb-4 font-weight-bold">
-                                Bamburgh React Admin Dashboard with Material-UI
-                                PRO
+                                CTA
                               </h1>
                               <p className="font-size-lg mb-0 opacity-8">
-                                Premium admin template powered by the most
-                                popular UI components framework available for
-                                React: Material-UI. Features hundreds of
-                                examples making web development fast and easy.
-                                Start from one of the individual apps included
-                                or from the general dashboard and build
-                                beautiful scalable applications and presentation
-                                websites.
+                                Contact Administrator: admin@cta.com
                               </p>
                               <div className="divider mx-auto border-1 my-5 border-light opacity-2 rounded w-25" />
                               <div>
-                                <Button className="btn-success px-5 font-size-sm font-weight-bold btn-animated-icon text-uppercase rounded shadow-none py-3 hover-scale-sm hover-scale-lg mr-3">
+                                <Button
+                                  className="btn-success px-5 font-size-sm font-weight-bold btn-animated-icon text-uppercase rounded shadow-none py-3 hover-scale-sm hover-scale-lg mr-3"
+                                  onClick={() => { history.push("/Home") }}
+                                >
                                   <span className="btn-wrapper--label">
-                                    See Features List
+                                    Return Home
                                   </span>
                                   <span className="btn-wrapper--icon">
-                                    <FontAwesomeIcon
-                                      icon={['fas', 'arrow-right']}
-                                    />
+                                    <HomeIcon />
                                   </span>
                                 </Button>
                               </div>

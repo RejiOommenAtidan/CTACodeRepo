@@ -122,10 +122,9 @@ const useStyles = makeStyles({
 });
 
 export default function EnhancedTable(props) {
-    //let history = useHistory()
     const classes = useStyles();
     //Accordion
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = React.useState('panel1');
     const handleAccordionChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
@@ -363,7 +362,7 @@ export default function EnhancedTable(props) {
 
         //console.info(JSON.stringify(greenbook));
 
-        axios.post(`/Greenbook/EditGreenbook/Id=`+props.match.params.GBID.toString(), greenbook)
+        axios.post(`/Greenbook/EditGreenbook/Id=` + props.match.params.GBID.toString(), greenbook)
             .then(resp => {
                 if (resp.status === 200) {
                     alert("Success");
@@ -410,7 +409,9 @@ export default function EnhancedTable(props) {
                                     aria-controls="panel1a-content"
                                     id="panel1a-header"
                                 >
-                                    <Typography className={classes.heading}>Greenbook Required Fields</Typography>
+                                    <Typography 
+                                    //className={classes.heading}
+                                    className={"font-weight-bold font-size-md mb-1 text-black"}>Greenbook Required Fields</Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
                                     <Grid item xs={6}>
@@ -905,7 +906,10 @@ export default function EnhancedTable(props) {
                                     aria-controls="panel1a-content"
                                     id="panel1a-header"
                                 >
-                                    <Typography className={classes.heading}>Basic Personal Information</Typography>
+                                    <Typography 
+                                    className={"font-weight-bold font-size-md mb-1 text-black"}
+                                    //className={classes.heading}
+                                    >Basic Personal Information</Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
                                     <Grid item xs={6}>
@@ -1282,7 +1286,10 @@ export default function EnhancedTable(props) {
                                     aria-controls="panel1a-content"
                                     id="panel1a-header"
                                 >
-                                    <Typography className={classes.heading}>Relation & Contact Details</Typography>
+                                    <Typography 
+                                    className={"font-weight-bold font-size-md mb-1 text-black"}
+                                    //className={classes.heading}
+                                    >Relation & Contact Details</Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
                                     <Grid item xs={6}>
@@ -1424,13 +1431,22 @@ export default function EnhancedTable(props) {
                                                 )}
                                             </FormControl>
                                         </Grid>
-                                        <Grid item xs={12}>
-                                            <Button variant="outlined" type="submit" color="primary">Save</Button>
-                                            <Button variant="outlined">Cancel</Button>
-                                        </Grid>
+
                                     </Grid>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
+                            <br />
+                            <Grid item xs={12}>
+                                <Button
+                                    variant="outlined"
+                                    type="submit"
+                                    color="primary"
+                                    style={{ marginRight: "10px" }}
+                                >Save</Button>
+                                <Button variant="outlined"
+                                    onClick={() => { props.history.push('/Home') }}
+                                >Cancel</Button>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </form>

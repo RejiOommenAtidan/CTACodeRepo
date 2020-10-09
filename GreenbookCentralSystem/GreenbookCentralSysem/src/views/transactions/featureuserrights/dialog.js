@@ -32,10 +32,7 @@ import {
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
+  
 export const EditDialog = (props) => {
   const [Id, setId] = React.useState(props.oLnkObj.id)
   const [nFeatureID, setnFeatureID] = React.useState(props.oLnkObj.nFeatureID);
@@ -128,7 +125,7 @@ export const EditDialog = (props) => {
   );
 }
 
-export const DeleteDialog = (props) => {
+{/*export const DeleteDialog = (props) => {
   console.log("Delete Dialog");
   return (
     <Dialog
@@ -152,9 +149,9 @@ export const DeleteDialog = (props) => {
       </DialogActions>
     </Dialog>
   );
-}
+}*/}
 
-export const AddDialog = (props) => {
+{/*export const AddDialog = (props) => {
   const [lUserRights, setlUserRights] = React.useState(props.lUserRights);
   const [lstFeature, setlstFeature] = React.useState(props.lstFeature);
   //console.log("Add Dialog");
@@ -318,4 +315,4 @@ export const AddDialog = (props) => {
       </DialogActions>
     </Dialog>
   );
-}
+}*/}
