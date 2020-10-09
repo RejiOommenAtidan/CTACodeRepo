@@ -1,17 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Grid,
   Button,
   FormControl,
-  TextField,
-  Typography,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails
-
+  TextField
 } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-
 
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -21,18 +14,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 export const EditDialog = (props) => {
   const [lUserRights, setlUserRights] = React.useState(props.oUserObj.lUserRights);
@@ -58,7 +39,7 @@ export const EditDialog = (props) => {
                     type="text"
                     InputProps={{
                       readOnly: true,
-                      disabled:true
+                      disabled: true
                     }}
                     value={sUsername}
                   />
@@ -70,7 +51,7 @@ export const EditDialog = (props) => {
                     id="id_sFullname"
                     label="Fullname"
                     type="text"
-                    value={sFullname} // Set country name from local variable Name.
+                    value={sFullname}
                     onChange={(e) => { setsFullname(e.target.value) }}
                   />
                 </FormControl>
@@ -88,7 +69,7 @@ export const EditDialog = (props) => {
               </Grid>
               <Grid item xs={12}>
                 <FormControl className={props.classes.formControl}>
-                <InputLabel id="id_sGender">Rights</InputLabel>
+                  <InputLabel id="id_sGender">Rights</InputLabel>
                   <Select
                     id="id_nUserRightsId"
                     label="User Rights"
@@ -136,34 +117,7 @@ export const EditDialog = (props) => {
   );
 }
 
-export const DeleteDialog = (props) => {
-  console.log("Delete Dialog");
-  return (
-    <Dialog
-      open={props.deleteModal}
-      TransitionComponent={Transition}
-      keepMounted
-    >
-      <DialogTitle id="alert-dialog-slide-title">Confirm Operation</DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-slide-description">
-          Are you sure you want to delete country {props.countryName} ?
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions >
-        <Button onClick={props.handleClose} color="default">
-          No
-        </Button>
-        <Button onClick={props.deleteAPICall} color="secondary">
-          Yes
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-}
-
 export const AddDialog = (props) => {
-  //console.log("Add Dialog");
   const [lUserRights, setlUserRights] = React.useState(props.lUserRights);
   const [Id, setId] = React.useState('')
   const [sUsername, setsUsername] = React.useState('');
@@ -195,7 +149,7 @@ export const AddDialog = (props) => {
                   id="id_sFullname"
                   label="Fullname"
                   type="text"
-                  value={sFullname} // Set country name from local variable Name.
+                  value={sFullname}
                   onChange={(e) => { setsFullname(e.target.value) }}
                 />
               </FormControl>
@@ -213,7 +167,7 @@ export const AddDialog = (props) => {
             </Grid>
             <Grid item xs={12}>
               <FormControl className={props.classes.formControl}>
-              <InputLabel id="id_sGender">Rights</InputLabel>
+                <InputLabel id="id_sGender">Rights</InputLabel>
                 <Select
                   id="id_nUserRightsId"
                   label="User Rights"
@@ -259,3 +213,29 @@ export const AddDialog = (props) => {
     </Dialog>
   );
 }
+
+{/*export const DeleteDialog = (props) => {
+  console.log("Delete Dialog");
+  return (
+    <Dialog
+      open={props.deleteModal}
+      TransitionComponent={Transition}
+      keepMounted
+    >
+      <DialogTitle id="alert-dialog-slide-title">Confirm Operation</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-slide-description">
+          Are you sure you want to delete country {props.countryName} ?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions >
+        <Button onClick={props.handleClose} color="default">
+          No
+        </Button>
+        <Button onClick={props.deleteAPICall} color="secondary">
+          Yes
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}*/}

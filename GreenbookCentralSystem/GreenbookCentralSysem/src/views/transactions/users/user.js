@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
   Container,
   Grid,
   Typography
@@ -11,8 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 import IconButton from '@material-ui/core/IconButton';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-// Local import
-import { AddDialog, DeleteDialog, EditDialog } from './dialog';
+import { AddDialog, EditDialog } from './dialog';
 import { forwardRef } from 'react';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -49,7 +47,6 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
-
 
 const useStyles = makeStyles({
   root: {
@@ -132,7 +129,6 @@ export default function Users() {
   const [sOffice, setsOffice] = React.useState('');
   const [oUserObj, setoUserObj] = useState({});
 
-
   const columns = [
     {
       field: "oUser.id",
@@ -196,12 +192,10 @@ export default function Users() {
     axios.post(`/User/AddUser/`, userObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           axios.get(`/User/GetAllUsers`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data)
               }
             })
@@ -243,12 +237,10 @@ export default function Users() {
     axios.post(`/User/EditUser/Id=` + Id, userObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setEditModal(false);
           axios.get(`/User/GetAllUsers`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
               }
             })
@@ -367,78 +359,67 @@ export default function Users() {
   }, []);
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      height="100%"
-      justifyContent="center"
-    >
-      <Container maxWidth="lg" disableGutters={true}><br />
-        <Typography variant="h4" gutterBottom>Users</Typography>
-        <Grid container className={classes.box}>
-          <Grid item xs={12}>
-
-            <MaterialTable
-              isLoading={isLoading}
-              style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-              icons={tableIcons}
-              title="Users"
-              columns={columns}
-              data={dataAPI}
-              options={{
-                filtering,
-                exportButton: true,
-                exportAllData: true,
-                headerStyle: {
-                  backgroundColor: '#3b3e66',
-                  color: '#FFF',
-                  fontSize: '18px',
-                  paddingLeft: '5px',
-                  border: '1px solid lightgrey'
-                },
-                pageSize: 10,
-                pageSizeOptions: [10, 50, 100],
-                rowStyle: x => {
-                  if (x.tableData.id % 2) {
-                    return { backgroundColor: "#f2f2f2" }
-                  }
+    <Container maxWidth="lg" disableGutters={true}><br />
+      <Typography variant="h4" gutterBottom>Users</Typography>
+      <Grid container className={classes.box}>
+        <Grid item xs={12}>
+          <MaterialTable
+            isLoading={isLoading}
+            style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
+            icons={tableIcons}
+            title="Users"
+            columns={columns}
+            data={dataAPI}
+            options={{
+              filtering,
+              exportButton: true,
+              exportAllData: true,
+              headerStyle: {
+                backgroundColor: '#3b3e66',
+                color: '#FFF',
+                fontSize: '18px',
+                paddingLeft: '5px',
+                border: '1px solid lightgrey'
+              },
+              pageSize: 10,
+              pageSizeOptions: [10, 50, 100],
+              rowStyle: x => {
+                if (x.tableData.id % 2) {
+                  return { backgroundColor: "#f2f2f2" }
                 }
-              }}
-              actions={[
-                {
-                  icon: AddBox,
-                  tooltip: 'Add User',
-                  isFreeAction: true,
-                  onClick: (event) => setAddModal(true)
-                },
-                {
-                  icon: FilterList,
-                  tooltip: 'Show Filter',
-                  isFreeAction: true,
-                  onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
-                }
-              ]}
-            />
-          </Grid>
+              }
+            }}
+            actions={[
+              {
+                icon: AddBox,
+                tooltip: 'Add User',
+                isFreeAction: true,
+                onClick: (event) => setAddModal(true)
+              },
+              {
+                icon: FilterList,
+                tooltip: 'Show Filter',
+                isFreeAction: true,
+                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+              }
+            ]}
+          />
         </Grid>
-        {addModal && <AddDialog
-          addModal={addModal}
-          classes={classes}
-          handleAddClickClose={handleAddClickClose}
-          lUserRights={lUserRights}
-          addAPICall={addAPICall}
-        />}
-        {editModal && <EditDialog
-          editModal={editModal}
-          oUserObj={oUserObj}
-          classes={classes}
-          handleEditClickClose={handleEditClickClose}
-          editAPICall={editAPICall}
-        />}
-        {deleteModal && <DeleteDialog
-          deleteModal={deleteModal}
-        />}
-      </Container>
-    </Box>
+      </Grid>
+      {addModal && <AddDialog
+        addModal={addModal}
+        classes={classes}
+        handleAddClickClose={handleAddClickClose}
+        lUserRights={lUserRights}
+        addAPICall={addAPICall}
+      />}
+      {editModal && <EditDialog
+        editModal={editModal}
+        oUserObj={oUserObj}
+        classes={classes}
+        handleEditClickClose={handleEditClickClose}
+        editAPICall={editAPICall}
+      />}
+    </Container>
   );
 }

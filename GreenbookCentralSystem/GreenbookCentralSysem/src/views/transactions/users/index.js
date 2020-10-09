@@ -6,8 +6,6 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-
-
 import Users from './user';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,9 +17,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverUsers = () => {
   const classes = useStyles();
-
   return (
     <Container maxWidth={false}>
       <Breadcrumbs aria-label="breadcrumb">
@@ -35,4 +32,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default CoverUsers;

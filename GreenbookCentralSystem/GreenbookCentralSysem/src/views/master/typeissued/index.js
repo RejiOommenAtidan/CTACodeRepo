@@ -1,4 +1,3 @@
-//Hi
 import React from 'react';
 import {
   Container,
@@ -7,8 +6,6 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-
-
 import TypeIssued from './typeissued';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,23 +17,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverTypeIssued = () => {
   const classes = useStyles();
-
   return (
-   
-      <Container maxWidth={false}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/Home" >
-            Home
-        </Link>
-
-          <Typography color="textPrimary">TypeIssued</Typography>
-        </Breadcrumbs>
-        <TypeIssued />
-      </Container>
-
+    <Container maxWidth={false}>
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link color="inherit" href="/Home" >
+          Home
+          </Link>
+        <Typography color="textPrimary">Type Issued</Typography>
+      </Breadcrumbs>
+      <TypeIssued />
+    </Container>
   );
 };
 
-export default Dashboard;
+export default CoverTypeIssued;

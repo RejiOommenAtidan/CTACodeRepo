@@ -1,4 +1,3 @@
-//Hi
 import React from 'react';
 import {
   Container,
@@ -7,7 +6,6 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-
 
 import Relation from './relation';
 
@@ -20,23 +18,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverRelation = () => {
   const classes = useStyles();
-
   return (
-   
-      <Container maxWidth={false}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/Home" >
-            Home
-        </Link>
-
-          <Typography color="textPrimary">Relation</Typography>
-        </Breadcrumbs>
-        <Relation />
-      </Container>
-
+    <Container maxWidth={false}>
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link color="inherit" href="/Home" >
+          Home
+          </Link>
+        <Typography color="textPrimary">Relation</Typography>
+      </Breadcrumbs>
+      <Relation />
+    </Container>
   );
 };
 
-export default Dashboard;
+export default CoverRelation;
