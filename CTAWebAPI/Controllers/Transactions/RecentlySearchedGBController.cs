@@ -38,6 +38,11 @@ namespace CTAWebAPI.Controllers.Transactions
         [Route("[action]")]
         public IActionResult GetRecentlySearchedGBs(int records, int nUserId)
         {
+            if(records < 0 || nUserId < 0)
+            {
+                return BadRequest("Invalid search parameters passed.");
+            }
+            
             #region Get Recently Searched GB's
             try
             {
