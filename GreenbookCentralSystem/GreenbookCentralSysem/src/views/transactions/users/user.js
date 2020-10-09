@@ -11,42 +11,13 @@ import MaterialTable from 'material-table';
 import IconButton from '@material-ui/core/IconButton';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { AddDialog, EditDialog } from './dialog';
-import { forwardRef } from 'react';
 import AddBox from '@material-ui/icons/AddBox';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import Check from '@material-ui/icons/Check';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Clear from '@material-ui/icons/Clear';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import Edit from '@material-ui/icons/Edit';
 import FilterList from '@material-ui/icons/FilterList';
-import FirstPage from '@material-ui/icons/FirstPage';
-import LastPage from '@material-ui/icons/LastPage';
-import Remove from '@material-ui/icons/Remove';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import Search from '@material-ui/icons/Search';
-import ViewColumn from '@material-ui/icons/ViewColumn';
+import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import { useHistory } from 'react-router-dom';
+import handleError from "../../../auth/_helpers/handleError";
 
-const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-};
+const tableIcons = oTableIcons;
 
 const useStyles = makeStyles({
   root: {
@@ -112,6 +83,7 @@ const useStyles = makeStyles({
 });
 
 export default function Users() {
+  const history = useHistory();
   const [isLoading, setisLoading] = React.useState(true);
   const [filtering, setFiltering] = React.useState(false);
   const classes = useStyles();
@@ -174,6 +146,7 @@ export default function Users() {
       field: 'edit',
       title: 'Edit',
       filtering: false,
+      sorting: false,
       export: false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
         onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
@@ -200,16 +173,7 @@ export default function Users() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -217,16 +181,7 @@ export default function Users() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -245,16 +200,7 @@ export default function Users() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -262,16 +208,7 @@ export default function Users() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -325,16 +262,7 @@ export default function Users() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -342,16 +270,7 @@ export default function Users() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -360,7 +279,7 @@ export default function Users() {
 
   return (
     <Container maxWidth="lg" disableGutters={true}><br />
-      <Typography variant="h4" gutterBottom>Users</Typography>
+      {/*<Typography variant="h4" gutterBottom>Users</Typography>*/}
       <Grid container className={classes.box}>
         <Grid item xs={12}>
           <MaterialTable
@@ -370,25 +289,7 @@ export default function Users() {
             title="Users"
             columns={columns}
             data={dataAPI}
-            options={{
-              filtering,
-              exportButton: true,
-              exportAllData: true,
-              headerStyle: {
-                backgroundColor: '#3b3e66',
-                color: '#FFF',
-                fontSize: '18px',
-                paddingLeft: '5px',
-                border: '1px solid lightgrey'
-              },
-              pageSize: 10,
-              pageSizeOptions: [10, 50, 100],
-              rowStyle: x => {
-                if (x.tableData.id % 2) {
-                  return { backgroundColor: "#f2f2f2" }
-                }
-              }
-            }}
+            options={oOptions}
             actions={[
               {
                 icon: AddBox,
@@ -398,7 +299,7 @@ export default function Users() {
               },
               {
                 icon: FilterList,
-                tooltip: 'Show Filter',
+                tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
               }
