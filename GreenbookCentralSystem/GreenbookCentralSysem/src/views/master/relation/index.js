@@ -22,12 +22,12 @@ const CoverRelation = () => {
   const classes = useStyles();
   return (
     <Container maxWidth={false}>
-      <Breadcrumbs aria-label="breadcrumb">
+      {/*<Breadcrumbs aria-label="breadcrumb">
         <Link color="inherit" href="/Home" >
           Home
           </Link>
         <Typography color="textPrimary">Relation</Typography>
-      </Breadcrumbs>
+      </Breadcrumbs>*/}
       <Relation />
     </Container>
   );

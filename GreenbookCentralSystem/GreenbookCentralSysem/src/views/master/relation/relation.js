@@ -13,7 +13,8 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { makeStyles } from '@material-ui/core/styles';
 import FilterList from '@material-ui/icons/FilterList';
 import AddBox from '@material-ui/icons/AddBox';
-
+import handleError from "../../../auth/_helpers/handleError";
+import { useHistory } from 'react-router-dom';
 
 const tableIcons = oTableIcons;
 
@@ -21,6 +22,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function Relation() {
+  const history = useHistory();
   const classes = useStyles();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
@@ -29,8 +31,6 @@ export default function Relation() {
   const [relation, setRelation] = React.useState('');
   const [relationPK, setRelationPK] = React.useState(0);
   const [relationObj, setRelationObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
 
@@ -71,7 +71,7 @@ export default function Relation() {
       field: 'edit',
       title: 'Edit',
       filtering: false,
-      sorting:false,
+      sorting: false,
       export: false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
         onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
@@ -110,16 +110,7 @@ export default function Relation() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -127,16 +118,7 @@ export default function Relation() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -154,16 +136,7 @@ export default function Relation() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -171,16 +144,7 @@ export default function Relation() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -205,16 +169,7 @@ export default function Relation() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
