@@ -26,7 +26,7 @@ export const EditDialog = (props) => {
   //debugger
   const [Name, setQualification] = useState(props.qualificationObj.qualification);
   return (
-    <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Qualification</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -106,7 +106,7 @@ export const AddDialog = (props) => {
   const [qualificationId, setQualificationId] = useState('');
   const [qualification, setQualification] = useState('');
   return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Qualification</DialogTitle>
       <DialogContent>
         <DialogContentText>

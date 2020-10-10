@@ -26,7 +26,7 @@ export const EditDialog = (props) => {
   //debugger
   const [province, setProvince] = useState(props.provinceObj.province);
   return (
-    <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Province</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -88,7 +88,7 @@ export const AddDialog = (props) => {
   console.log("Add Dialog");
   const [province, setProvince] = useState('');
   return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Province</DialogTitle>
       <DialogContent>
         <DialogContentText>

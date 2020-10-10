@@ -16,18 +16,41 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { useForm } from "react-hook-form";
+import _ from "lodash/fp";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 export const EditDialog = (props) => {
+  const { register, handleSubmit, watch, errors } = useForm();
+  const [snackbarOpen,setSnackbarOpen]=React.useState(false);
+  const snackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarOpen(false);
+  };
+  const handleSubmitEditRecord = () =>{
+    //props.editAPICall(madeb);
+    props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })
+  }
   //debugger
   const [Name, setCountryName] = useState(props.countryObj.countryName);
   return (
-    <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Country</DialogTitle>
+      <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
       <DialogContent>
         <DialogContentText>
           <div>
@@ -50,11 +73,20 @@ export const EditDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <TextField
                     id="id_CountryName"
+                    name="sCountry"
                     label="Country Name"
                     type="text"
+                    autoFocus={true}
                     value={Name} // Set country name from local variable Name.
                     onChange={(e) => { setCountryName(e.target.value) }}
-                  />
+                    inputRef={register({
+                      required: true
+                    })}
+                    />
+                    {_.get("sCountry.type", errors) === "required" && (
+                      <span style={{color: 'red'}}>This field is required</span>
+                    )}
+                  
                 </FormControl>
               </Grid>
             </Grid>
@@ -63,8 +95,10 @@ export const EditDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })} color="primary">Save</Button>
+        {/* <Button onClick={() => props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })} color="primary">Save</Button> */}
+        <Button type="submit" color="primary">Save</Button> 
       </DialogActions>
+      </form>
     </Dialog>
   );
 
@@ -103,7 +137,7 @@ export const AddDialog = (props) => {
   const [countryId, setCountryId] = useState('');
   const [countryName, setCountryName] = useState('');
   return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Country</DialogTitle>
       <DialogContent>
         <DialogContentText>

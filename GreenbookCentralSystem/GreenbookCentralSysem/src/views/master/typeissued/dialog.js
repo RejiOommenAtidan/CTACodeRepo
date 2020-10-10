@@ -15,7 +15,7 @@ export const AddDialog = (props) => {
   const [typeIssuedId, setTypeIssuedId] = useState('');
   const [typeIssued, setTypeIssued] = useState('');
   return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Issue Type</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -44,7 +44,7 @@ export const AddDialog = (props) => {
 export const EditDialog = (props) => {
   const [Name, setTypeIssued] = useState(props.typeIssuedObj.typeIssued);
   return (
-    <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Issue Type</DialogTitle>
       <DialogContent>
         <DialogContentText>

@@ -39,10 +39,11 @@ namespace CTADBL.ViewModelsRepositories
         #endregion
 
         #region Get GreenBookVM
-        public IEnumerable<GreenBookVM> GetGreenbookVMRecord(string parameter, string value)
+        public GreenBookVM GetGreenbookVMRecord(string parameter, string value)
         {
-            string operation = parameter == "sGBID" ? "=" : "LIKE";
-            value = parameter == "sGBID" ? value : value + "%";
+            //string operation = parameter == "sGBID" ? "=" : "LIKE";
+            string operation = "=";
+            //value = parameter == "sGBID" ? value : value + "%";
 
             string sql = String.Format(@"SELECT gb.sGBID, ar.sAuthRegion, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sGender, gb.dtDOB, gb.sDOBApprox, gb.sBirthPlace, gb.sBirthCountryID,  bctry.sCountry AS sBirthCountry, gb.sOriginVillage, pr.sProvince, gb.sMarried, gb.sOtherDocuments, gb.sResidenceNumber, qu.sQualification, occ.sOccupationDesc , gb.sAliasName, gb.sOldGreenBKNo, gb.sFstGreenBkNo,  gb.dtFormDate, gb.nChildrenM, gb.nChildrenF, gb.sAddress1, gb.sAddress2, gb.sCity, gb.sState, gb.sPCode, gb.sCountryID, ctry.sCountry AS sCountry, gb.sEmail, gb.sPhone, gb.sfax, gb.dtDeceased, gb.sBookIssued, gb.dtValidityDate, gb.sPaidUntil, gb.TibetanName, gb.TBUPlaceOfBirth, gb.TBUOriginVillage, gb.TBUFathersName, gb.TBUMothersName, gb.TBUSpouseName, us.sFullName AS sEnteredBy, doc.binFileDoc AS sPhoto FROM tblgreenbook as gb LEFT JOIN lstcountry ctry ON ctry.sCountryID = gb.sCountryID LEFT JOIN lstcountry bctry ON bctry.sCountryID = gb.sBirthCountryID  LEFT JOIN tbluser AS us ON us.Id = gb.nEnteredBy LEFT JOIN lstauthregion AS ar ON ar.ID = gb.nAuthRegionID LEFT JOIN lstprovince AS pr ON pr.Id = gb.sOriginProvinceID LEFT JOIN lstqualification AS qu ON qu.sQualificationID = gb.sQualificationID LEFT JOIN lstoccupation AS occ ON occ.Id = gb.sOccupationID LEFT JOIN lnkgbdocument AS doc ON gb.sGBId = doc.sGBId WHERE gb.{0} {1} @value", parameter, operation);
             
@@ -53,7 +54,7 @@ namespace CTADBL.ViewModelsRepositories
 
                     //command.Parameters.AddWithValue("parameter", "gb." + parameter);
                     command.Parameters.AddWithValue("value", value);
-                    return GetRecords(command);
+                    return GetRecord(command);
                 }
             }
             catch(Exception ex)
@@ -81,7 +82,7 @@ namespace CTADBL.ViewModelsRepositories
         {
             try
             {
-                GreenBookVM greenBookVM = GetDetails(GetGreenbookVMRecord("sGBID", sGBID).FirstOrDefault());
+                GreenBookVM greenBookVM = GetDetails(GetGreenbookVMRecord("sGBID", sGBID));
                 RecentlySearchedGB recentlySearched = new RecentlySearchedGB
                 {
                     dtEntered = DateTime.Now,
@@ -105,10 +106,35 @@ namespace CTADBL.ViewModelsRepositories
             //string operation = parameter == "sGBID" ? "=" : "LIKE";
             string operation = "LIKE";
             //value = parameter == "sGBID" ? value : value + "%";
-            value = value + "%";
-            string field = ", gb." + parameter;
-
-            string sql = String.Format(@"SELECT gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, year(curdate()) - year(dtDOB) as nAge,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID {0} FROM tblgreenbook as gb WHERE gb.{1} {2} @value LIMIT 500", field, parameter, operation);
+            value = value.Trim() + "%";
+            string join = String.Empty;
+            string field = String.Empty;
+            string where = String.Empty;
+            switch (parameter)
+            {
+                case "sFathersGBID":
+                    join = String.Format(@"LEFT JOIN lnkgbrelation AS rel ON gb.sGBID = rel.sGBID AND rel.nrelationid = 1");
+                    field = String.Format(@", rel.sGBIDRelation AS {0}", parameter);
+                    where = @"rel.sGBIDRelation";
+                    break;
+                case "sMothersGBID":
+                    join = String.Format(@"LEFT JOIN lnkgbrelation AS rel ON gb.sGBID = rel.sGBID AND rel.nrelationid = 2");
+                    field = String.Format(@", rel.sGBIDRelation AS {0}", parameter);
+                    where = @"rel.sGBIDRelation";
+                    break;
+                case "sSpouseID":
+                    join = String.Format(@"LEFT JOIN lnkgbrelation AS rel ON gb.sGBID = rel.sGBID AND rel.nrelationid = 3");
+                    field = String.Format(@", rel.sGBIDRelation AS {0}", parameter);
+                    where = @"rel.sGBIDRelation";
+                    break;
+                default:
+                    join = String.Empty;
+                    field = ", gb." + parameter;
+                    where = "gb." + parameter;
+                    break;
+            }
+            
+            string sql = String.Format(@"SELECT gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, year(curdate()) - year(dtDOB) as nAge,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID {0} FROM tblgreenbook as gb {1} WHERE {2} {3} @value ORDER BY {2} LIMIT 500", field, join, where, operation);
 
             using (var command = new MySqlCommand(sql))
             {
@@ -137,6 +163,7 @@ namespace CTADBL.ViewModelsRepositories
                     sCity = row.Field<string>("sCity"),
                     sCountryID = row.Field<string>("sCountryID"),
                     searchField = parameter,
+                    searchResult = row.Field<string>(parameter)
                 });
 
                 return result;

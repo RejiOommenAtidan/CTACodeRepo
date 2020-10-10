@@ -27,7 +27,7 @@ export const EditDialog = (props) => {
   const [occupationDesc, setOccupationDesc] = useState(props.occupationObj.occupationDesc);
   const [occupationDescTibetan, setOccupationDescTibetan] = useState(props.occupationObj.occupationDescTibetan);
   return (
-    <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Occupation</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -105,7 +105,7 @@ export const AddDialog = (props) => {
   const [occupationDesc, setOccupationDesc] = useState('');
   const [occupationDescTibetan, setOccupationDescTibetan] = useState('');
   return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Occupation</DialogTitle>
       <DialogContent>
         <DialogContentText>

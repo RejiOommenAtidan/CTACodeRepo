@@ -15,7 +15,7 @@ export const AddDialog = (props) => {
   const [relationId, setRelationId] = useState('');
   const [relation, setRelation] = useState('');
   return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Relation</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -44,7 +44,7 @@ export const AddDialog = (props) => {
 export const EditDialog = (props) => {
   const [Name, setRelation] = useState(props.relationObj.relation);
   return (
-    <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Relation</DialogTitle>
       <DialogContent>
         <DialogContentText>

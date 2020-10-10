@@ -13,20 +13,12 @@ import {
   Link,
 
 } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
+
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-//import theme from '../../../theme/theme/theme'
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import MUIDataTable from "mui-datatables";
-//import { ThemeProvider } from '@material-ui/styles';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+
 import Slide from '@material-ui/core/Slide';
 import Chip from '@material-ui/core/Chip';
 
@@ -35,76 +27,20 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 // Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
-
-import { forwardRef } from 'react';
-
-//import Test2 from './test2';
 import MaterialTable, { MTableToolbar } from 'material-table';
-
-import AddBox from '@material-ui/icons/AddBox';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import Check from '@material-ui/icons/Check';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Clear from '@material-ui/icons/Clear';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import Edit from '@material-ui/icons/Edit';
+import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import FilterList from '@material-ui/icons/FilterList';
-import FirstPage from '@material-ui/icons/FirstPage';
-import LastPage from '@material-ui/icons/LastPage';
-import Remove from '@material-ui/icons/Remove';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import Search from '@material-ui/icons/Search';
-import ViewColumn from '@material-ui/icons/ViewColumn';
+import AddBox from '@material-ui/icons/AddBox';
+import { useHistory } from 'react-router-dom';
+import handleError from "../../../auth/_helpers/handleError";
+import {Alerts} from '../../alerts';
 
-
-const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-};
+const tableIcons = oTableIcons;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const getMuiTheme = () => createMuiTheme({
-  overrides: {
-    MUIDataTableHeadCell: {
-      root: {
-        color: 'blue',
-        fontSize: 20
-      }
-    },
-    MUIDataTableBodyCell: {
-      root: {
-        // backgroundColor: "#FFF",
-        // width: "50px"
-      }
 
-    },
-    MuiTableCell: {
-      root: {
-        padding: '0px',
-        paddingLeft: '30px',
-
-      }
-    },
-  }
-})
 const useStyles = makeStyles(() => ({
   /*root: {
     backgroundColor: theme.palette.background.dark,
@@ -155,10 +91,8 @@ const useStyles = makeStyles(() => ({
 
 export default function EnhancedTable() {
   const classes = useStyles();
-  // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
-  // const [loadingProp, setloadingProp] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
 
@@ -171,8 +105,29 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
-
   const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
+  const history = useHistory();
+  
+
+
+  // SnackBar Alerts 
+
+const [alertMessage, setAlertMessage] = useState("");
+const [alertType, setAlertType] = useState("");
+const alertObj={
+  alertMessage:alertMessage,
+  alertType:alertType
+}
+const [snackbar,setSnackbar]=React.useState(false);
+const snackbarOpen = () => {
+  console.log('alert');
+  setSnackbar(true);
+}
+const snackbarClose = () => {
+  setSnackbar(false);
+};
+
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -187,32 +142,9 @@ export default function EnhancedTable() {
     setAddModal(false);
   };
 
-  /*const options = {
-    textLabels: {
-      body: {
-        noMatch: "Loading..."
-      },
-     
-    },
-    filter:true,
-    viewColumns:false,
-    selectableRows: false,
-    jumpToPage: true,
-    rowsPerPage: rowsPerPage,
-    rowsPerPageOptions: [5, 10, 20, 30],
-    onChangePage: (number) => {
-      setCurrentPage(number + 1);
-      console.log('Current Page No.', number + 1)
-    },
-    onChangeRowsPerPage: (rows) => {
-      console.log("Rows per page:", rows)
-    },
-    onTableChange: (action, tableState) => {
-      console.log("Action:", action, "\ntableState:", tableState, "Data Changed:", dataChanged);
-      
-    }
-  };*/
+  
 
+  
   const columns = [
     {
       field: "id",
@@ -292,17 +224,15 @@ export default function EnhancedTable() {
   }
 
   const editAPICall = (countryObj) => {
-    // let CountryID = countryPK;
-    // let countryToUpdate = {
-    //   ID : countryPK,
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
-    // };
+    
     axios.post(`/Country/EditCountry/CountryID=` + countryPK, countryObj/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
+          setAlertMessage('Record updated successfully.');
+          setAlertType('success');
+          snackbarOpen();
           axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
@@ -326,50 +256,27 @@ export default function EnhancedTable() {
             .then(release => {
               //console.log(release); => udefined
             });
-          //window.location = window.location;
-          // setdataAPI(dataAPI.map((data) => {
-          //   console.log(data);
-          //   if(data.id === countryObj.id){
-          //     console.log(data);
-          //     return {
-          //       ...data,
-          //       ...countryObj
-          //     };
-          //   }
-          //   else{
-          //     console.log(data)
-          //     return data;
-          //   }
-          // }))
+          
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
         console.log(error.config);
+        console.log(error.message);
+        setAlertMessage(`Record updation failed. \nError:${error.message}.` );
+          setAlertType('error');
+          snackbarOpen();
       })
-      .then(release => {
-        //console.log(release); => udefined
-      });
   };
   const addAPICall = (countryObj) => {
 
-    // let countryToAdd = {
-    //   sCountryID: countryID,
-    //   sCountry: countryName,
-    // };
     axios.post(`/Country/AddCountry/`, countryObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
+          setAlertMessage('Created new record successfully.');
+          setAlertType('success');
+          snackbarOpen();
           axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
@@ -389,27 +296,16 @@ export default function EnhancedTable() {
               }
               console.log(error.config);
             })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-          //window.location = window.location;
+            
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
+        console.log(error.message);
         console.log(error.config);
+        setAlertMessage(`Record creation failed. \nError:${error.message}.` );
+        setAlertType('error');
+        snackbarOpen();
       })
-      .then(release => {
-        //console.log(release); => udefined
-      });
   };
 
   const deleteClick = (tableRowArray) => {
@@ -512,14 +408,14 @@ export default function EnhancedTable() {
   return (
 
 
-    <Box
-      display="flex"
-      flexDirection="column"
-      height="100%"
-      justifyContent="center"
-      style={{ paddingTop: '50px' }}
+    // <Box
+    //   display="flex"
+    //   flexDirection="column"
+    //   height="100%"
+    //   justifyContent="center"
+    //   style={{ paddingTop: '50px' }}
 
-    >
+    // >
       <Container maxWidth="lg" disableGutters={true}>
         {/* <Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/Home" >
@@ -538,25 +434,7 @@ export default function EnhancedTable() {
               title="Country"
               columns={columns}
               data={dataAPI}
-              options={{
-                filtering,
-                exportButton: true,
-                exportAllData: true,
-                headerStyle: {
-                  backgroundColor: '#3b3e66',
-                  color: '#FFF',
-                  fontSize: '18px',
-                  paddingLeft: '5px',
-                  border: '1px solid lightgrey'
-                },
-                pageSize: 10,
-                pageSizeOptions: [10, 50, 100],
-                rowStyle: x => {
-                  if (x.tableData.id % 2) {
-                    return { backgroundColor: "#f2f2f2" }
-                  }
-                }
-              }}
+              options={oOptions}
               actions={[
                 {
                   icon: AddBox,
@@ -587,6 +465,12 @@ export default function EnhancedTable() {
           handleEditClickClose={handleEditClickClose}
           editAPICall={editAPICall}
         />}
+        { snackbar && <Alerts
+              alertObj={alertObj}
+              snackbar={snackbar}
+              snackbarClose={snackbarClose}
+              /> 
+            }
         {deleteModal && <DeleteDialog
           deleteModal={deleteModal}
           countryName={countryName}
@@ -594,6 +478,6 @@ export default function EnhancedTable() {
           deleteAPICall={deleteAPICall}
         />}
       </Container>
-    </Box>
+    //</Box>
   );
 }

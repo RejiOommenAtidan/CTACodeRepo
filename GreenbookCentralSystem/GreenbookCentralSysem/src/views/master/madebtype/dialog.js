@@ -26,7 +26,7 @@ export const EditDialog = (props) => {
   //debugger
   const [madebType, setMadebType] = useState(props.madebTypeObj.madebType);
   return (
-    <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Madeb Type</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -61,6 +61,7 @@ export const DeleteDialog = (props) => {
   console.log("Delete Dialog");
   return (
     <Dialog
+    
       open={props.deleteModal}
       TransitionComponent={Transition}
       keepMounted
@@ -88,7 +89,7 @@ export const AddDialog = (props) => {
   console.log("Add Dialog");
   const [madebType, setMadebType] = useState('');
   return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Madeb Type</DialogTitle>
       <DialogContent>
         <DialogContentText>

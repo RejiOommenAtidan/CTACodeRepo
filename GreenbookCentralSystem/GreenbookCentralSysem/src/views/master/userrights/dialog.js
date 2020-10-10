@@ -26,7 +26,7 @@ export const EditDialog = (props) => {
   //debugger
   const [Name, setUserRights] = useState(props.userRightsObj.userRights);
   return (
-    <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">UserRights</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -90,7 +90,7 @@ export const AddDialog = (props) => {
   const [userRightsId, setUserRightsId] = useState('');
   const [userRights, setUserRights] = useState('');
   return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add UserRights</DialogTitle>
       <DialogContent>
         <DialogContentText>

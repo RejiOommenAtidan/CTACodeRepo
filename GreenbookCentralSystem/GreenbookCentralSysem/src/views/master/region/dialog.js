@@ -15,7 +15,7 @@ export const AddDialog = (props) => {
   const [regionId, setRegionId] = useState('');
   const [region, setRegion] = useState('');
   return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Region</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -54,7 +54,7 @@ export const AddDialog = (props) => {
 export const EditDialog = (props) => {
   const [Name, setRegion] = useState(props.regionObj.region);
   return (
-    <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Region</DialogTitle>
       <DialogContent>
         <DialogContentText>

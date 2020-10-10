@@ -39,7 +39,7 @@ export const EditDialog = (props) => {
     return (props.countryList.map((country) =>  (<option value={country.sCountryID}>{country.sCountry}</option>)))};
   const opts = children();
   return (
-    <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Authority Region</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -124,7 +124,7 @@ export const AddDialog = (props) => {
     const opts = children();
   //const opts1 = (<option>CJ</option>);
   return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Authority Region</DialogTitle>
       <DialogContent>
         <DialogContentText>
