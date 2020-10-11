@@ -34,7 +34,7 @@ namespace CTADBL.ViewModelsRepositories
                              gb.dtUpdated,
                              gb.nUpdatedBy FROM tblgreenbookserial AS gb
                              order by gb.nBookNo DESC
-                             LIMIT 10) as gbsn
+                             LIMIT @records) as gbsn
                              LEFT JOIN tblgreenbook AS grbk
                              ON gbsn.sGBId = grbk.sGBID
                              LEFT JOIN lstmadebtype AS md
@@ -46,6 +46,7 @@ namespace CTADBL.ViewModelsRepositories
 
             using (var command = new MySqlCommand(sql))
             {
+                command.Parameters.AddWithValue("records", records);
                 IEnumerable<GreenBookSerialNumberVM> result = GetRecords(command);
                 result = result.OrderBy(a => a.greenBookSerialNumber.nBookNo);
                 //result = result.Reverse();

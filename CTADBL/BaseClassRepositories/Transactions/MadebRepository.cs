@@ -40,6 +40,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             Madeb madeb = GetMadebByFormNumber(nFormNumber);
             madeb.sGBID = sGBID;
             madeb.dtUpdated = DateTime.Now;
+            madeb.dtIssueAction = DateTime.Now;
             this.Update(madeb);
         }
         #endregion
