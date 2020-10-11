@@ -101,13 +101,13 @@ export default function Region() {
 
   const editClick = (tableRowArray) => {
     setRegionPK(tableRowArray["id"]);
-    setRegionID(tableRowArray["sRegion_name"]);
-    setRegion(tableRowArray["sRegion_code"]);
+    setRegionID(tableRowArray["sRegion_code"]);
+    setRegion(tableRowArray["sRegion_name"]);
     setEditModal(true);
     setRegionObj({
       id: tableRowArray["id"],
-      regionId: tableRowArray["sRegion_name"],
-      region: tableRowArray["sRegion_code"]
+      regionId: tableRowArray["sRegion_code"],
+      region: tableRowArray["sRegion_name"]
     });
   }
 
@@ -141,6 +141,7 @@ export default function Region() {
       });
   };
   const addAPICall = (regionObj) => {
+    console.log(regionObj)
     setisLoading(true);
     axios.post(`/Region/AddRegion/`, regionObj)
       .then(resp => {
@@ -171,9 +172,9 @@ export default function Region() {
 
   const deleteClick = (tableRowArray) => {
     setDeleteModal(true);
-    setRegionPK(tableRowArray[0]);
-    setRegionID(tableRowArray[1]);
-    setRegion(tableRowArray[2]);
+    setRegionPK(tableRowArray["id"]);
+    setRegionID(tableRowArray["sRegion_code"]);
+    setRegion(tableRowArray["sRegion_name"]);
   };
 
   const handleClose = () => {

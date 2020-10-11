@@ -17,7 +17,9 @@ namespace CTADBL.BaseClasses.Masters
         #region Public Common Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
+        [Required]
         public string sRegion_name { get { return _sRegion_name; } set { _sRegion_name = value; } }
+        [Required]
         public string sRegion_code { get { return _sRegion_code; } set { _sRegion_code = value; } }
 
         #endregion

@@ -16,18 +16,24 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
-
+import { useForm } from "react-hook-form";
+import _ from "lodash/fp";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export const EditDialog = (props) => {
+  const { register, handleSubmit, watch, errors } = useForm();
+  const handleSubmitEditRecord = () => {
+    props.editAPICall({ id: props.qualificationObj.id, sQualificationID: props.qualificationObj.qualificationId, sQualification: Name })
+  }
   //debugger
   const [Name, setQualification] = useState(props.qualificationObj.qualification);
   return (
     <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Qualification</DialogTitle>
+      <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
       <DialogContent>
         <DialogContentText>
           <div>
@@ -53,11 +59,18 @@ export const EditDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <TextField
                     id="id_Qualification"
+                    name="sQualification"
                     label="Qualification"
                     type="text"
                     value={Name} // Set country name from local variable Name.
                     onChange={(e) => { setQualification(e.target.value) }}
+                    inputRef={register({
+                      required: true
+                    })}
                   />
+                  {_.get("sQualification.type", errors) === "required" && (
+                      <span style={{color: 'red'}}>This field is required</span>
+                  )}
                 </FormControl>
               </Grid>
             </Grid>
@@ -66,8 +79,10 @@ export const EditDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.editAPICall({ id: props.qualificationObj.id, sQualificationID: props.qualificationObj.qualificationId, sQualification: Name })} color="primary">Save</Button>
+        {/* <Button onClick={() => props.editAPICall({ id: props.qualificationObj.id, sQualificationID: props.qualificationObj.qualificationId, sQualification: Name })} color="primary">Save</Button> */}
+        <Button type="submit" color="primary">Save</Button> 
       </DialogActions>
+      </form>
     </Dialog>
   );
 
@@ -102,12 +117,18 @@ export const DeleteDialog = (props) => {
 }
 
 export const AddDialog = (props) => {
+  const { register, handleSubmit, watch, errors } = useForm();
+  const handleSubmitAddRecord = () => {
+    props.addAPICall({ sQualificationID: qualificationId, sQualification: qualification })
+  }
   console.log("Add Dialog");
   const [qualificationId, setQualificationId] = useState('');
   const [qualification, setQualification] = useState('');
+  
   return (
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Qualification</DialogTitle>
+      <form onSubmit={handleSubmit(handleSubmitAddRecord)}>
       <DialogContent>
         <DialogContentText>
           <Grid container>
@@ -125,10 +146,18 @@ export const AddDialog = (props) => {
               <FormControl className={props.classes.formControl}>
                 <TextField
                   id="id_Qualification"
+                  name = "sQualification"
                   label="Qualification"
                   type="text"
+
                   onChange={(e) => { setQualification(e.target.value) }}
+                  inputRef={register({
+                    required: true
+                  })}
                 />
+                {_.get("sQualification.type", errors) === "required" && (
+                      <span style={{color: 'red'}}>This field is required</span>
+                    )}
               </FormControl>
             </Grid>
           </Grid>
@@ -137,8 +166,10 @@ export const AddDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.addAPICall({ sQualificationID: qualificationId, sQualification: qualification })} color="primary">Save</Button>
+        {/* <Button onClick={() => props.addAPICall({ sQualificationID: qualificationId, sQualification: qualification })} color="primary">Save</Button> */}
+        <Button type="submit" color="primary">Save</Button> 
       </DialogActions>
+      </form>
     </Dialog>
   );
 
