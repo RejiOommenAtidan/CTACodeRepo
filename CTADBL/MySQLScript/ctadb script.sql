@@ -1090,3 +1090,49 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+
+DROP procedure IF EXISTS `spGetFeatureUserRights`;
+
+DELIMITER $$
+CREATE PROCEDURE `spGetFeatureUserRights` ()
+BEGIN
+
+	SET @sql = NULL;
+	SELECT
+	  GROUP_CONCAT(DISTINCT
+		CONCAT(
+		  'SUM(CASE WHEN (lfu.nUserRightsID=''',
+		  lfu.nUserRightsID,
+		  ''') THEN lfu.nRights ELSE null END) ''',
+		  ur.sUserRightsName, ''''
+		)
+	  ) INTO @sql
+	FROM
+	  lnkfeatureuserrights lfu
+	LEFT JOIN lstuserrights ur
+		ON ur.Id = lfu.nUserRightsID;
+		
+
+	SET @sql = CONCAT('SELECT lfu.nFeatureID,  
+						lf.sFeature, ', @sql, ' 
+						FROM lnkfeatureuserrights lfu
+						LEFT JOIN lstfeature lf
+								ON lf.Id = lfu.nFeatureID
+						GROUP BY lfu.nFeatureID');
+	-- select @sql;
+
+
+	PREPARE stmt FROM @sql;
+	EXECUTE stmt;
+	DEALLOCATE PREPARE stmt;
+	
+	
+	
+	SELECT Id, sUserRightsName from lstuserrights;
+	
+	SELECT Id, sFeature from lstFeature;
+END$$
+
+DELIMITER ;
