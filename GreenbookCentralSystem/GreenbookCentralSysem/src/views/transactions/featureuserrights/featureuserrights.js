@@ -98,9 +98,6 @@ export default function FeatureUserrights() {
   const classes = useStyles();
   const [dataAPI, setdataAPI] = useState([]);
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [mapping, setMapping] = useState([]);
-  const [lstFeature, setlstFeature] = React.useState([]);
-  const [lUserRights, setlUserRights] = React.useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [columns, setColumns] = useState([]);
   const [tableRow, settableRow] = useState([]);
@@ -140,11 +137,10 @@ export default function FeatureUserrights() {
     axios.post(`/FeatureUserrights/EditFeatureUserright/Id=` + lnkObj.Id, lnkObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
-          axios.get(`/FeatureUserrights/GetFeatureUserrightsUI`)
+          axios.get(`/FeatureUserrights/GetFeatureUserrightsMapping`)
             .then(resp => {
               if (resp.status === 200) {
-                setdataAPI(resp.data);
+                setdataAPI(resp.data.lFeatureUserRightsPivot);
                 setIsLoading(false);
               }
             })
@@ -169,95 +165,44 @@ export default function FeatureUserrights() {
     axios.get(`/FeatureUserrights/GetFeatureUserrightsMapping`)
       .then(resp => {
         if (resp.status === 200) {
-          setMapping(resp.data);
-          //#region user rights
-          axios.get(`/UserRights/GetUserRights`)
-            .then(resp => {
-              if (resp.status === 200) {
-                setlUserRights(resp.data);
-                //#region Features
-                axios.get(`/Feature/GetFeatures`)
-                  .then(resp => {
-                    if (resp.status === 200) {
-                      setlstFeature(resp.data);
-                      //#region User rights(roles)
-                      axios.get(`/UserRights/GetUserRights`)
-                        .then(resp => {
-                          if (resp.status === 200) {
-                            const roles = resp.data;
-                            const generatedColumns = [];
-                            //Add feature to cols array & then all roles 1 by 1
-                            generatedColumns.push(
-                              {
-                                field: "sFeature",
-                                title: "Feature",
-                                cellStyle: {
-                                  padding: '5px',
-                                  paddingLeft: '10px',
-                                  borderLeft: '0'
-                                }
-                              }
-                            );
-                            roles.map((role) => {
-                              generatedColumns.push(
-                                {
-                                  title: role.sUserRightsName,
-                                  cellStyle: {
-                                    padding: '5px',
-                                    paddingLeft: '10px',
-                                    borderLeft: '0'
-                                  },
-                                  render: rowData => <Checkbox
-                                    color="primary"
-                                    name="name_bRights"
-                                    id="id_nRights"
-                                    checked={rowData["n" + (role.sUserRightsName).replace(/\s/g, "")] === 1 ? true : false}
-                                    onChange={() => { handleClickOpen(rowData, role.sUserRightsName, role.id) }}
-                                  />
-                                }
-                              );
-                            });
-                            setColumns(generatedColumns);
-                            axios.get(`/FeatureUserrights/GetFeatureUserrightsUI`)
-                              .then(resp => {
-                                if (resp.status === 200) {
-                                  setdataAPI(resp.data);
-                                  setIsLoading(false);
-                                }
-                              })
-                              .catch(error => {
-                                handleError(error, history);
-                              })
-                              .then(release => {
-                                //console.log(release); => udefined
-                              });
-                          }
-                        })
-                        .catch(error => {
-                          handleError(error, history);
-                        })
-                        .then(release => {
-                          //console.log(release); => udefined
-                        });
-                      //#endregion
-                    }
-                  })
-                  .catch(error => {
-                    handleError(error, history);
-                  })
-                  .then(release => {
-                    //console.log(release); => udefined
-                  });
-                //#endregion
+          const roles = resp.data.lUserRights;
+          const generatedColumns = [];
+          //Add feature to cols array & then all roles 1 by 1
+          generatedColumns.push(
+            {
+              field: "sFeature",
+              title: "Feature",
+              cellStyle: {
+                padding: '5px',
+                paddingLeft: '10px',
+                borderLeft: '0'
               }
-            })
-            .catch(error => {
-              handleError(error, history);
-            })
-            .then(release => {
-              //console.log(release); => udefined
-            });
-          //#endregion
+            }
+          );
+          roles.map((role) => {
+            generatedColumns.push(
+              {
+                align:'center',
+                sorting:false,
+                title: role.sUserRightsName,
+                cellStyle: {
+                  padding: '5px',
+                  paddingLeft: '10px',
+                  borderLeft: '0'
+                },
+                render: rowData => <Checkbox
+                  color="primary"
+                  name="name_nRights"
+                  id="id_nRights"
+                  checked={rowData["aUserRights"][role.id-1] === 1 ? true : false}
+                  onChange={() => { handleClickOpen(rowData, role.sUserRightsName, role.id) }}
+                />
+              }
+            );
+          });
+          setColumns(generatedColumns);
+          setdataAPI(resp.data.lFeatureUserRightsPivot);
+          setIsLoading(false);
         }
       })
       .catch(error => {
@@ -366,7 +311,7 @@ export default function FeatureUserrights() {
       });
   };*/}
 
-  {/*const editClick = (tableRowArray) => {
+{/*const editClick = (tableRowArray) => {
     //console.log(tableRowArray)
     setId(tableRowArray["oFeatureUserrights"]["id"]);
     setnFeatureID(tableRowArray["oFeatureUserrights"]["nFeatureID"]);

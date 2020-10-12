@@ -1,19 +1,20 @@
-﻿using CTADBL.BaseClasses.Transactions;
+﻿using CTADBL.BaseClasses.Masters;
+using System.Collections.Generic;
 
 namespace CTADBL.ViewModels
 {
     public class FeatureUserrightsVM
     {
-        #region Private Properties 
-        private FeatureUserrights _oFeatureUserrights;
-        private string _sUserRightsName;
-        private string _sFeature;
+        #region Private Feature Userrights VM Properties 
+        private List<FeatureUserrightsPivot> _lFeatureUserRightsPivot;
+        private List<UserRights> _lUserRights;
+        private List<Feature> _lFeatures;
         #endregion
 
-        #region Public Props
-        public FeatureUserrights oFeatureUserrights { get { return _oFeatureUserrights; } set { _oFeatureUserrights = value; } }
-        public string sUserRightsName { get { return _sUserRightsName; } set { _sUserRightsName = value; } }
-        public string sFeature { get { return _sFeature; } set { _sFeature = value; } }
+        #region Public Feature Userrights VM Props
+        public List<FeatureUserrightsPivot> lFeatureUserRightsPivot { get { return _lFeatureUserRightsPivot; } set { _lFeatureUserRightsPivot = value; } }
+        public List<UserRights> lUserRights { get { return _lUserRights; } set { _lUserRights = value; } }
+        public List<Feature> lFeatures { get { return _lFeatures; } set { _lFeatures = value; } }
         #endregion
     }
 }

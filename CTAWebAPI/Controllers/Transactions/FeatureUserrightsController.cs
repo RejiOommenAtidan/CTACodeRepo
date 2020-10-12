@@ -24,7 +24,6 @@ namespace CTAWebAPI.Controllers.Transactions
         private readonly DBConnectionInfo _info;
         private readonly FeatureUserrightsRepository _featureUserrightsRepository;
         private readonly FeatureUserrightsVMRepository _featureUserrightsVMRepository;
-        private readonly FeatureUserrightsUIVMRepository _featureUserrightsUIVMRepository;
         private readonly CTALogger _ctaLogger;
         public FeatureUserrightsController(DBConnectionInfo info)
         {
@@ -32,7 +31,6 @@ namespace CTAWebAPI.Controllers.Transactions
             _featureUserrightsRepository = new FeatureUserrightsRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
             _featureUserrightsVMRepository = new FeatureUserrightsVMRepository(_info.sConnectionString);
-            _featureUserrightsUIVMRepository = new FeatureUserrightsUIVMRepository(_info.sConnectionString);
         }
         #endregion
 
@@ -70,13 +68,13 @@ namespace CTAWebAPI.Controllers.Transactions
             #region Get Users
             try
             {
-                IEnumerable<FeatureUserrightsVM> featureuserrights = _featureUserrightsVMRepository.GetFeatureUserrights();
+                FeatureUserrightsVM featureuserrightVM = _featureUserrightsVMRepository.GetFeatureUserrights();
 
                 #region Information Logging 
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
                 #endregion
 
-                return Ok(featureuserrights);
+                return Ok(featureuserrightVM);
             }
             catch (Exception ex)
             {
@@ -108,32 +106,6 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 #region Exception Logging
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace);
-                #endregion
-
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-            #endregion
-        }
-
-        [HttpGet]
-        [Route("[action]")]
-        public IActionResult GetFeatureUserrightsUI()
-        {
-            #region Get Users
-            try
-            {
-                IEnumerable<FeatureUserrightsUIVM> featureUserrightsUI = _featureUserrightsUIVMRepository.GetFeatureUserrightsUI();
-
-                #region Information Logging 
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
-                #endregion
-
-                return Ok(featureUserrightsUI);
-            }
-            catch (Exception ex)
-            {
-                #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
