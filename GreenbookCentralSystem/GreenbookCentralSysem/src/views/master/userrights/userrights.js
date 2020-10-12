@@ -149,6 +149,7 @@ export default function UserRights() {
       }
     },
     {
+      align:"center",
       field: "edit",
       title: "Edit",
       filtering: false,

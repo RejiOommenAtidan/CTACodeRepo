@@ -154,6 +154,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      align:"center",
       field: "edit",
       title: "Edit",
       filtering: false,

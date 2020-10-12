@@ -76,6 +76,7 @@ export default function TypeIssued() {
       // }
     },
     {
+      align:"center",
       field: 'edit',
       title: 'Edit',
       filtering: false,

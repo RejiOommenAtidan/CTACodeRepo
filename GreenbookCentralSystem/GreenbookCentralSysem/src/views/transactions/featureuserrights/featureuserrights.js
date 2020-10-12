@@ -169,14 +169,12 @@ export default function FeatureUserrights() {
     axios.get(`/FeatureUserrights/GetFeatureUserrightsMapping`)
       .then(resp => {
         if (resp.status === 200) {
-          //console.table(resp.data);
           setMapping(resp.data);
           //#region user rights
           axios.get(`/UserRights/GetUserRights`)
             .then(resp => {
               if (resp.status === 200) {
                 setlUserRights(resp.data);
-                //console.log(resp.data)
                 //#region Features
                 axios.get(`/Feature/GetFeatures`)
                   .then(resp => {
@@ -215,7 +213,6 @@ export default function FeatureUserrights() {
                                     id="id_nRights"
                                     checked={rowData["n" + (role.sUserRightsName).replace(/\s/g, "")] === 1 ? true : false}
                                     onChange={() => { handleClickOpen(rowData, role.sUserRightsName, role.id) }}
-                                  // size="small"
                                   />
                                 }
                               );
@@ -224,7 +221,6 @@ export default function FeatureUserrights() {
                             axios.get(`/FeatureUserrights/GetFeatureUserrightsUI`)
                               .then(resp => {
                                 if (resp.status === 200) {
-                                  //console.table(resp.data);
                                   setdataAPI(resp.data);
                                   setIsLoading(false);
                                 }
