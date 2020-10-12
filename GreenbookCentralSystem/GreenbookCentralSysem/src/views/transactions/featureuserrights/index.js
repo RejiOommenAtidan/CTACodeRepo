@@ -6,8 +6,6 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-
-
 import FeatureUserrights from './featureuserrights';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverFeatureUserrights = () => {
   const classes = useStyles();
   return (
     <Container maxWidth={false}>
@@ -34,4 +32,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default CoverFeatureUserrights;

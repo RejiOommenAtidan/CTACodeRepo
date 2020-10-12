@@ -1,38 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Grid,
   Button,
   FormControl,
   TextField,
-  Typography,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
   FormControlLabel,
   FormGroup
 } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import Switch from '@material-ui/core/Switch';
-
-
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
 
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
-  
 export const EditDialog = (props) => {
   const [Id, setId] = React.useState(props.oLnkObj.id)
   const [nFeatureID, setnFeatureID] = React.useState(props.oLnkObj.nFeatureID);
@@ -41,7 +22,6 @@ export const EditDialog = (props) => {
   const [sFeature, setsFeature] = React.useState(props.oLnkObj.sFeature);
   const [sUserRightsName, setsUserRightsName] = React.useState(props.oLnkObj.sUserRightsName);
   const handleChange = (e) => {
-    //console.log(e);
     if (nRights === 1) {
       setnRights(0);
     }
@@ -88,7 +68,6 @@ export const EditDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <FormGroup aria-label="position" row>
                     <FormControlLabel
-                      //value="start"
                       control=
                       {
                         <Switch
