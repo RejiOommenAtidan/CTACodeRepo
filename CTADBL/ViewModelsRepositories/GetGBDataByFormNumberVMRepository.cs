@@ -158,7 +158,7 @@ namespace CTADBL.ViewModelsRepositories
                             _oMadeb.sAlias = reader.IsDBNull("sAlias") ? null : (string?)(reader["sAlias"]);
                             _oMadeb.sApprovedReject = reader.IsDBNull("sApprovedReject") ? null : (string?)(reader["sApprovedReject"]);
                             _oMadeb.dtReject = reader.IsDBNull("dtReject") ? null : (DateTime?)(reader["dtReject"]);
-                            _oMadeb.dtReturnEmail = (DateTime)reader["dtReturnEmail"];
+                            _oMadeb.dtReturnEmail = reader.IsDBNull("dtReturnEmail") ? null : (DateTime?)(reader["dtReturnEmail"]);
                             //Common Prop
                             _oMadeb.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
                             _oMadeb.nEnteredBy = (int)reader["nEnteredBy"];

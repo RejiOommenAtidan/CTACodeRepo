@@ -327,7 +327,7 @@ export default function EnhancedTable() {
       //controls.push("controls2");
    
       sessionStorage.setItem("printObj", JSON.stringify(selected));
-      window.open('/Print');
+      window.open('/PrintPage');
     } 
   useEffect(() => {
 

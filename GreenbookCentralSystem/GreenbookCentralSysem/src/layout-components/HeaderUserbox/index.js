@@ -12,12 +12,16 @@ import {
   ListItem,
   Tooltip,
   Divider,
-  ButtonGroup, MenuItem
+  ButtonGroup,
+  MenuItem,
+  Link,
+  Breadcrumbs
+
 } from '@material-ui/core';
 
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import {storeAuthDetails,removeAuthDetails} from "../../actions/userAuthenticateAction";
+import { storeAuthDetails, removeAuthDetails } from "../../actions/userAuthenticateAction";
 
 import { authenticationService } from '../../auth/_services';
 import avatar7 from '../../assets/images/avatars/avatar7.jpg';
@@ -80,14 +84,30 @@ const HeaderUserbox = () => {
     history.push('/ChangePassword');
   };
 
+  const preventDefault = (event) => {
+    event.preventDefault();
+    history.push("/Home");
+  };
+
   return (
     <>
+      <Breadcrumbs aria-label="breadcrumb">
+
+        <Link
+          color="primary"
+          href="/Home"
+          onClick={preventDefault}
+          underline="hover">
+          Home
+    </Link>
+        <Typography color="textPrimary">Breadcrumb</Typography>
+      </Breadcrumbs>
       <ButtonGroup
         variant="contained"
         className="btn-second m-2"
         color="primary"
         aria-label="split button">
-        <Button className="btn-transition-none">{authenticationService.currentUserValue.oUser.sFullname+" ("+authenticationService.currentUserValue.oUserRights.sUserRightsName+")"}</Button>
+        <Button className="btn-transition-none">{authenticationService.currentUserValue.oUser.sFullname + " (" + authenticationService.currentUserValue.oUserRights.sUserRightsName + ")"}</Button>
         <Button
           className="btn-transition-none px-2"
           color="primary"

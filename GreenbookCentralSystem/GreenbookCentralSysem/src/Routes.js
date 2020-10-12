@@ -160,7 +160,7 @@ const Routes = () => {
                     variants={pageVariants}
                     transition={pageTransition}>
                     <Route path="/PageProfile" component={PageProfile} />
-                    <Route path="/PrintPage" component={Print} />
+                    <Route path="/PrintPage" component={PrintPage} />
                     <Route path="/PageError404" component={PageError404} />
                     <Route path="/PageError500" component={PageError500} />
                     <Route path="/PageError505" component={PageError505} />
@@ -231,7 +231,7 @@ const Routes = () => {
                     <PrivateRoute path="/EditEntry/:GBID" feature={7} component={EditEntry} />
                     <PrivateRoute path="/IssueBook" feature={8} component={IssueBook} />
                     <PrivateRoute path="/MakeList" feature={9} component={MakeList} />
-                    <PrivateRoute path="/PrintPage" feature={10} component={PrintPage} />
+                    <PrivateRoute path="/Print" feature={10} component={Print} />
                     <PrivateRoute path="/GreenBookSerial" feature={11} component={GreenBookSerial} />
                     <PrivateRoute path="/NewEntry/:FORMNO" feature={12} component={NewEntry} />
                     <PrivateRoute path="/Sarso" feature={13} component={Sarso} />

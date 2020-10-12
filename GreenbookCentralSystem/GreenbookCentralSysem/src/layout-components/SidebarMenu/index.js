@@ -368,7 +368,7 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/PrintPage">
+                to="/Print">
                 <span className="sidebar-icon">
                   <PrintIcon />
                 </span>
