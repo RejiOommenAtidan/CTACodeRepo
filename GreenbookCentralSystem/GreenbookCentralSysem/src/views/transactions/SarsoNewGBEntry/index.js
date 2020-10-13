@@ -1,4 +1,3 @@
-//Hi
 import React from 'react';
 import {
   Container,
@@ -7,9 +6,7 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-
-
-import NewEntry from './newentry';
+import SarsoNewGBNewEntry from './SarsoNewGBNewEntry';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,20 +17,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const SarsoNewGBNewEntryCover = () => {
   const classes = useStyles();
-
   return (
-      <Container maxWidth={false}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/app/manageuser" >
-            Home
-          </Link>
-          <Typography color="textPrimary">New Greenbook</Typography>
-        </Breadcrumbs>
-        <NewEntry />
-      </Container>
+    <Container maxWidth={false}>
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link color="inherit" href="/app/manageuser" >
+          Home
+        </Link>
+        <Typography color="textPrimary">Sarso New GB Entry</Typography>
+      </Breadcrumbs>
+      <SarsoNewGBNewEntry />
+    </Container>
   );
 };
 
-export default Dashboard;
+export default SarsoNewGBNewEntryCover;

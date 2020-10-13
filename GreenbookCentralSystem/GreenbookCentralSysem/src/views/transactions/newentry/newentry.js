@@ -26,27 +26,8 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-//import theme from '../../../theme/theme/theme'
-
-import AddIcon from '@material-ui/icons/Add';
-// import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-// import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import MUIDataTable from "mui-datatables";
-//import { ThemeProvider } from '@material-ui/styles';
-
-import Slide from '@material-ui/core/Slide';
-// import IconButton from '@material-ui/core/IconButton';
-// import AddCircleIcon from "@material-ui/icons/AddCircle";
-
-// Local import
-import { AddDialog, DeleteDialog, EditDialog } from './dialog';
-// import { AddAPhotoOutlined } from '@material-ui/icons';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
-
+import { useHistory } from 'react-router-dom';
+import handleError from '../../../auth/_helpers/handleError';
 
 const useStyles = makeStyles({
   root: {
@@ -86,11 +67,9 @@ const useStyles = makeStyles({
   },
   palette: {
     primary: {
-      // Purple and green play nicely together.
       main: red[500],
     },
     secondary: {
-      // This is green.A700 as hex.
       main: '#11cb5f',
     },
   },
@@ -122,6 +101,7 @@ const useStyles = makeStyles({
 
 export default function EnhancedTable(props) {
   const classes = useStyles();
+  const history = useHistory();
   //Accordion
   //Panel1 set true for Acoordion to be open 
   const [expanded, setExpanded] = React.useState('panel1');
@@ -195,7 +175,6 @@ export default function EnhancedTable(props) {
     axios.get(`/Greenbook/GetGBDataNewEntry/Id=` + props.match.params.FORMNO)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data.oMadeb);
           //Masters
           setlAuthRegion(resp.data.lAuthRegion);
           setlCountry(resp.data.lCountry);
@@ -220,16 +199,7 @@ export default function EnhancedTable(props) {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -295,238 +265,446 @@ export default function EnhancedTable(props) {
       TBUSpouseName
     };
 
-    console.info(JSON.stringify(greenbook));
+    //console.info(JSON.stringify(greenbook));
 
     axios.post(`/Greenbook/AddGreenbook/`, greenbook)
       .then(resp => {
         if (resp.status === 200) {
-          alert("Success");
+          history.push("/SarsoNewGBEntry");
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-          // console.error(error.response.errors);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
       });
   };
 
-  // console.log(watch("name_sEmail"));
-
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      height="100%"
-      justifyContent="center"
-    >
-      <Container maxWidth="lg" disableGutters={true}><br />
-        <Typography variant="h4" gutterBottom>New Entry</Typography>
-        <form onSubmit={handleSubmit(onSubmit)} className={classes.box}>
-          <Grid container className={classes.box}>
+    <Container maxWidth="lg" disableGutters={true}><br />
+      <Typography variant="h4" gutterBottom>New Entry</Typography>
+      <form onSubmit={handleSubmit(onSubmit)} className={classes.box}>
+        <Grid container className={classes.box}>
 
-            <Grid item xs={12}>
-              <ExpansionPanel
-                TransitionProps={{ unmountOnExit: true }}
-                expanded={expanded === 'panel1'}
-                onChange={handleAccordionChange('panel1')}
+          <Grid item xs={12}>
+            <ExpansionPanel
+              TransitionProps={{ unmountOnExit: true }}
+              expanded={expanded === 'panel1'}
+              onChange={handleAccordionChange('panel1')}
+            >
+              <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
               >
-                <ExpansionPanelSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography 
+                <Typography
                   className={"font-weight-bold font-size-md mb-1 text-black"}
-                  //className={classes.heading}
-                  >Greenbook Required Fields</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  <Grid item xs={6}>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sGBID"
-                          name="name_sGBID"
-                          label="Greenbook ID"
-                          type="text"
-                          value={sGBID}
-                          onChange={(e) => { setsGBID(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                          inputRef={register({
-                            required: true,
-                            maxLength: 9
-                          })}
-                          required
-                        />
-                        {_.get("name_sGBID.type", errors) === "required" && (
-                          <p>This field is required</p>
-                        )}
-                        {_.get("name_sGBID.type", errors) === "maxLength" && (
-                          <p>GBID cannot exceed 9 characters</p>
-                        )}
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} >
-                      <FormControl className={classes.formControl}>
-                        <Autocomplete
-                          openOnFocus
-                          clearOnEscape
-                          onChange={
-                            (e, value) => {
-                              if (value !== null) {
-                                console.log(value.id);
-                                setnAuthRegionID(value.id);
-                              }
-                              else {
-                                setnAuthRegionID(0);
-                              }
+                //className={classes.heading}
+                >Greenbook Required Fields</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Grid item xs={6}>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sGBID"
+                        name="name_sGBID"
+                        label="Greenbook ID"
+                        type="text"
+                        value={sGBID}
+                        onChange={(e) => { setsGBID(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        inputRef={register({
+                          required: true,
+                          maxLength: 9
+                        })}
+                        required
+                      />
+                      {_.get("name_sGBID.type", errors) === "required" && (
+                        <p>This field is required</p>
+                      )}
+                      {_.get("name_sGBID.type", errors) === "maxLength" && (
+                        <p>GBID cannot exceed 9 characters</p>
+                      )}
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} >
+                    <FormControl className={classes.formControl}>
+                      <Autocomplete
+                        openOnFocus
+                        clearOnEscape
+                        onChange={
+                          (e, value) => {
+                            if (value !== null) {
+                              console.log(value.id);
+                              setnAuthRegionID(value.id);
+                            }
+                            else {
+                              setnAuthRegionID(0);
                             }
                           }
-                          id="id_nAuthRegionID"
-                          options={lAuthRegion}
-                          classes={{
-                            option: classes.option,
-                          }}
-                          className={classes.textField}
-                          autoHighlight
-                          getOptionLabel={(option) => option.sAuthRegion}
-                          renderOption={(option) => (
-                            <React.Fragment>
-                              <span>{option.sAuthRegion}</span>
-                            </React.Fragment>
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Authority Region"
-                              variant="standard"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sFirstName"
-                          label="First Name"
-                          type="text"
-                          onChange={(e) => { setsFirstName(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                          value={sFirstName}
-                          required
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sMiddleName"
-                          label="Middle Name"
-                          type="text"
-                          onChange={(e) => { setsMiddleName(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sFamilyName"
-                          label="Family Name"
-                          type="text"
-                          onChange={(e) => { setsFamilyName(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_TibetanName"
-                          label="Tibetan Name (Tibetan)"
-                          type="text"
-                          onChange={(e) => { setTibetanName(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                          required
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_TBUPlaceOfBirth"
-                          label="Place Of Birth (Tibetan)"
-                          type="text"
-                          onChange={(e) => { setTBUPlaceOfBirth(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                          required
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_TBUOriginVillage"
-                          label="Origin Village (Tibetan)"
-                          type="text"
-                          onChange={(e) => { setTBUOriginVillage(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                          required
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <KeyboardDatePicker
-                            margin="normal"
-                            id="id_dtDOB"
-                            label="DOB"
-                            format="MM/dd/yyyy"
-                            onChange={(date) => { setdtDOB(date) }}
-                            value={dtDOB}
-                            KeyboardButtonProps={{
-                              'aria-label': 'change date',
+                        }
+                        id="id_nAuthRegionID"
+                        options={lAuthRegion}
+                        classes={{
+                          option: classes.option,
+                        }}
+                        className={classes.textField}
+                        autoHighlight
+                        getOptionLabel={(option) => option.sAuthRegion}
+                        renderOption={(option) => (
+                          <React.Fragment>
+                            <span>{option.sAuthRegion}</span>
+                          </React.Fragment>
+                        )}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Authority Region"
+                            variant="standard"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'new-password', // disable autocomplete and autofill
                             }}
-                            fullWidth
-                            className={classes.dateField}
-                            required
                           />
-                        </MuiPickersUtilsProvider>
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sFirstName"
+                        label="First Name"
+                        type="text"
+                        onChange={(e) => { setsFirstName(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        value={sFirstName}
+                        required
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sMiddleName"
+                        label="Middle Name"
+                        type="text"
+                        onChange={(e) => { setsMiddleName(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sFamilyName"
+                        label="Family Name"
+                        type="text"
+                        onChange={(e) => { setsFamilyName(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_TibetanName"
+                        label="Tibetan Name (Tibetan)"
+                        type="text"
+                        onChange={(e) => { setTibetanName(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        required
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_TBUPlaceOfBirth"
+                        label="Place Of Birth (Tibetan)"
+                        type="text"
+                        onChange={(e) => { setTBUPlaceOfBirth(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        required
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_TBUOriginVillage"
+                        label="Origin Village (Tibetan)"
+                        type="text"
+                        onChange={(e) => { setTBUOriginVillage(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        required
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          margin="normal"
+                          id="id_dtDOB"
+                          label="DOB"
+                          format="MM/dd/yyyy"
+                          onChange={(date) => { setdtDOB(date) }}
+                          value={dtDOB}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                          fullWidth
+                          className={classes.dateField}
+                          required
+                        />
+                      </MuiPickersUtilsProvider>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <Autocomplete
+                        openOnFocus
+                        clearOnEscape
+                        onChange={
+                          (e, value) => {
+                            if (value !== null) {
+                              console.log(value.id);
+                              setsBirthCountryID(value.id.toString());
+                            }
+                            else {
+                              setsBirthCountryID("0");
+                            }
+                          }
+                        }
+                        id="country-select-demo"
+                        options={lCountry}
+                        classes={{
+                          option: classes.option,
+                        }}
+                        className={classes.textField}
+                        autoHighlight
+                        getOptionLabel={(option) => option.sCountry}
+                        renderOption={(option) => (
+                          <React.Fragment>
+                            <span>{option.sCountry}</span>
+                          </React.Fragment>
+                        )}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Choose a Birth Country"
+                            variant="standard"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'new-password', // disable autocomplete and autofill
+                            }}
+                          />
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sBirthPlace"
+                        label="Place of Birth"
+                        type="text"
+                        onChange={(e) => { setsBirthPlace(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        required
+                      />
+                    </FormControl>
+                  </Grid>
+                </Grid>
+                <Grid xs={6}>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          margin="normal"
+                          id="id_dtFormDate"
+                          label="Sarso Form Date"
+                          format="MM/dd/yyyy"
+                          onChange={(date) => { setdtFormDate(date) }}
+                          value={dtFormDate}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                          fullWidth
+                          className={classes.dateField}
+                          required
+                        />
+                      </MuiPickersUtilsProvider>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sFathersName"
+                        label="Father's Name"
+                        type="text"
+                        onChange={(e) => { setsFathersName(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        required
+                        value={sFathersName}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_TBUFathersName"
+                        label="Father's Name (Tibetan)"
+                        type="text"
+                        onChange={(e) => { setTBUFathersName(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        required
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sFathersGBID"
+                        label="Father's GB No"
+                        type="text"
+                        onChange={(e) => { setsFathersGBID(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sMothersName"
+                        label="Mother's Name"
+                        type="text"
+                        onChange={(e) => { setsMothersName(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        required
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_TBUMothersName"
+                        label="Mother's Name (Tibetan)"
+                        type="text"
+                        onChange={(e) => { setTBUMothersName(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        required
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sMothersGBID"
+                        label="Mother's GB No"
+                        type="text"
+                        onChange={(e) => { setsMothersGBID(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sAddress1"
+                        label="Address 1"
+                        type="text"
+                        onChange={(e) => { setsAddress1(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        multiline={true}
+                        rows={1}
+                        rowsMax={3}
+                        required
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sAddress2"
+                        label="Address 2"
+                        type="text"
+                        onChange={(e) => { setsAddress2(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        multiline={true}
+                        rows={1}
+                        rowsMax={3}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          id="id_sCity"
+                          label="City"
+                          type="text"
+                          onChange={(e) => { setsCity(e.target.value); }}
+                          fullWidth
+                          margin="normal"
+                          className={classes.textField}
+                        />
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          id="id_sState"
+                          label="State"
+                          type="text"
+                          onChange={(e) => { setsState(e.target.value); }}
+                          fullWidth
+                          margin="normal"
+                          className={classes.textField}
+                          require
+                        />
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                    <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
                         <Autocomplete
                           openOnFocus
@@ -535,14 +713,14 @@ export default function EnhancedTable(props) {
                             (e, value) => {
                               if (value !== null) {
                                 console.log(value.id);
-                                setsBirthCountryID(value.id.toString());
+                                setsCountryID(value.id.toString());
                               }
                               else {
-                                setsBirthCountryID("0");
+                                setsCountryID("0");
                               }
                             }
                           }
-                          id="country-select-demo"
+                          id="id_sCountryID"
                           options={lCountry}
                           classes={{
                             option: classes.option,
@@ -558,7 +736,7 @@ export default function EnhancedTable(props) {
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              label="Choose a Birth Country"
+                              label="Country"
                               variant="standard"
                               inputProps={{
                                 ...params.inputProps,
@@ -569,783 +747,557 @@ export default function EnhancedTable(props) {
                         />
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
                         <TextField
-                          id="id_sBirthPlace"
-                          label="Place of Birth"
+                          id="id_sPCode"
+                          label="Pin Code"
                           type="text"
-                          onChange={(e) => { setsBirthPlace(e.target.value); }}
+                          onChange={(e) => { setsPCode(e.target.value); }}
                           fullWidth
                           margin="normal"
                           className={classes.textField}
-                          required
                         />
                       </FormControl>
                     </Grid>
                   </Grid>
-                  <Grid xs={6}>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <KeyboardDatePicker
-                            margin="normal"
-                            id="id_dtFormDate"
-                            label="Sarso Form Date"
-                            format="MM/dd/yyyy"
-                            onChange={(date) => { setdtFormDate(date) }}
-                            value={dtFormDate}
-                            KeyboardButtonProps={{
-                              'aria-label': 'change date',
-                            }}
-                            fullWidth
-                            className={classes.dateField}
-                            required
-                          />
-                        </MuiPickersUtilsProvider>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sFathersName"
-                          label="Father's Name"
-                          type="text"
-                          onChange={(e) => { setsFathersName(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                          required
-                          value={sFathersName}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_TBUFathersName"
-                          label="Father's Name (Tibetan)"
-                          type="text"
-                          onChange={(e) => { setTBUFathersName(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                          required
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sFathersGBID"
-                          label="Father's GB No"
-                          type="text"
-                          onChange={(e) => { setsFathersGBID(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sMothersName"
-                          label="Mother's Name"
-                          type="text"
-                          onChange={(e) => { setsMothersName(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                          required
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_TBUMothersName"
-                          label="Mother's Name (Tibetan)"
-                          type="text"
-                          onChange={(e) => { setTBUMothersName(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                          required
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sMothersGBID"
-                          label="Mother's GB No"
-                          type="text"
-                          onChange={(e) => { setsMothersGBID(e.target.value); }}
-                          fullWidth
-                          margin="normal"
+                </Grid>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          </Grid>
 
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sAddress1"
-                          label="Address 1"
-                          type="text"
-                          onChange={(e) => { setsAddress1(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                          multiline={true}
-                          rows={1}
-                          rowsMax={3}
-                          required
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sAddress2"
-                          label="Address 2"
-                          type="text"
-                          onChange={(e) => { setsAddress2(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                          multiline={true}
-                          rows={1}
-                          rowsMax={3}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid xs={12} style={{ display: 'flex' }}>
-                      <Grid item xs={6}>
-                        <FormControl className={classes.formControl}>
-                          <TextField
-                            id="id_sCity"
-                            label="City"
-                            type="text"
-                            onChange={(e) => { setsCity(e.target.value); }}
-                            fullWidth
-                            margin="normal"
-                            className={classes.textField}
-                          />
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl className={classes.formControl}>
-                          <TextField
-                            id="id_sState"
-                            label="State"
-                            type="text"
-                            onChange={(e) => { setsState(e.target.value); }}
-                            fullWidth
-                            margin="normal"
-                            className={classes.textField}
-                            require
-                          />
-                        </FormControl>
-                      </Grid>
-                    </Grid>
-                    <Grid xs={12} style={{ display: 'flex' }}>
-                      <Grid item xs={6}>
-                        <FormControl className={classes.formControl}>
-                          <Autocomplete
-                            openOnFocus
-                            clearOnEscape
-                            onChange={
-                              (e, value) => {
-                                if (value !== null) {
-                                  console.log(value.id);
-                                  setsCountryID(value.id.toString());
-                                }
-                                else {
-                                  setsCountryID("0");
-                                }
-                              }
-                            }
-                            id="id_sCountryID"
-                            options={lCountry}
-                            classes={{
-                              option: classes.option,
-                            }}
-                            className={classes.textField}
-                            autoHighlight
-                            getOptionLabel={(option) => option.sCountry}
-                            renderOption={(option) => (
-                              <React.Fragment>
-                                <span>{option.sCountry}</span>
-                              </React.Fragment>
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                label="Country"
-                                variant="standard"
-                                inputProps={{
-                                  ...params.inputProps,
-                                  autoComplete: 'new-password', // disable autocomplete and autofill
-                                }}
-                              />
-                            )}
-                          />
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl className={classes.formControl}>
-                          <TextField
-                            id="id_sPCode"
-                            label="Pin Code"
-                            type="text"
-                            onChange={(e) => { setsPCode(e.target.value); }}
-                            fullWidth
-                            margin="normal"
-                            className={classes.textField}
-                          />
-                        </FormControl>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-            </Grid>
-
-            <Grid item xs={12}>
-              <ExpansionPanel
-                TransitionProps={{ unmountOnExit: true }}
-                expanded={expanded === 'panel2'}
-                onChange={handleAccordionChange('panel2')}
+          <Grid item xs={12}>
+            <ExpansionPanel
+              TransitionProps={{ unmountOnExit: true }}
+              expanded={expanded === 'panel2'}
+              onChange={handleAccordionChange('panel2')}
+            >
+              <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
               >
-                <ExpansionPanelSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography 
+                <Typography
                   className={"font-weight-bold font-size-md mb-1 text-black"}
-                  //className={classes.heading}
-                  >Basic Personal Information</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  <Grid item xs={6}>
-                    <Grid item xs={12}>
+                //className={classes.heading}
+                >Basic Personal Information</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Grid item xs={6}>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sAliasName"
+                        label="Alias Name"
+                        type="text"
+                        onChange={(e) => { setsAliasName(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        value={sAliasName}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                    <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sAliasName"
-                          label="Alias Name"
-                          type="text"
-                          onChange={(e) => { setsAliasName(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                          value={sAliasName}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid xs={12} style={{ display: 'flex' }}>
-                      <Grid item xs={6}>
-                        <FormControl className={classes.formControl}>
-                          <InputLabel id="id_sGender">Gender</InputLabel>
-                          <Select
-                            id="id_sGender"
-                            label="Gender"
-                            type="text"
-                            fullWidth
-                            margin="normal"
-                            className={classes.textField}
-                            onChange={(e) => { setsGender(e.target.value) }}
-                          >
-                            <MenuItem value={"Male"}>Male</MenuItem>
-                            <MenuItem value={"Female"}>Female</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl className={classes.formControl}>
-                          <TextField
-                            id="id_sPaidUntil"
-                            label="Paid Until"
-                            type="text"
-                            onChange={(e) => { setsPaidUntil(e.target.value); }}
-                            fullWidth
-                            margin="normal"
-                            className={classes.textField}
-                          />
-                        </FormControl>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <Autocomplete
-                          openOnFocus
-                          clearOnEscape
-                          onChange={
-                            (e, value) => {
-                              if (value !== null) {
-                                console.log(value.id);
-                                setsOriginProvinceID(value.id.toString());
-                              }
-                              else {
-                                setsOriginProvinceID("0");
-                              }
-                            }
-                          }
-                          id="id_sOriginProvinceID"
-                          options={lProvince}
-                          classes={{
-                            option: classes.option,
-                          }}
-                          className={classes.textField}
-                          autoHighlight
-                          getOptionLabel={(option) => option.sProvince}
-                          renderOption={(option) => (
-                            <React.Fragment>
-                              <span>{option.sProvince}</span>
-                            </React.Fragment>
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Province Name"
-                              variant="standard"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sFstGreenBkNo"
-                          label="First GB Number"
-                          type="text"
-                          onChange={(e) => { setsFstGreenBkNo(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          value={sFstGreenBkNo}
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <Autocomplete
-                          openOnFocus
-                          clearOnEscape
-                          onChange={
-                            (e, value) => {
-                              if (value !== null) {
-                                console.log(value.id);
-                                setsQualificationID(value.id.toString());
-                              }
-                              else {
-                                setsQualificationID("0");
-                              }
-                            }
-                          }
-                          id="id_sQualificationID"
-                          options={lQualification}
-                          classes={{
-                            option: classes.option,
-                          }}
-                          className={classes.textField}
-                          autoHighlight
-                          getOptionLabel={(option) => option.sQualification}
-                          renderOption={(option) => (
-                            <React.Fragment>
-                              <span>{option.sQualification}</span>
-                            </React.Fragment>
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Qualification"
-                              variant="standard"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sDocuments"
-                          label="Other Documents"
-                          type="text"
-                          onChange={(e) => { setsOtherDocuments(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          value={sOtherDocuments}
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <InputLabel id="id_sMarried">Marital Status</InputLabel>
+                        <InputLabel id="id_sGender">Gender</InputLabel>
                         <Select
-                          id="id_sMarried"
-                          label="Marital Status"
+                          id="id_sGender"
+                          label="Gender"
                           type="text"
-                          onChange={(e) => { setsMarried(e.target.value); }}
                           fullWidth
                           margin="normal"
                           className={classes.textField}
+                          onChange={(e) => { setsGender(e.target.value) }}
                         >
-                          <MenuItem value={"Yes"}>Yes</MenuItem>
-                          <MenuItem value={"No"}>No</MenuItem>
+                          <MenuItem value={"Male"}>Male</MenuItem>
+                          <MenuItem value={"Female"}>Female</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <KeyboardDatePicker
-                            margin="normal"
-                            id="id_dtValidityDate"
-                            label="Validity Date"
-                            format="MM/dd/yyyy"
-                            onChange={(date) => { setdtValidityDate(date) }}
-                            value={dtDeceased}
-                            KeyboardButtonProps={{
-                              'aria-label': 'change date',
-                            }}
-                            fullWidth
-                            className={classes.dateField}
-                          />
-                        </MuiPickersUtilsProvider>
+                        <TextField
+                          id="id_sPaidUntil"
+                          label="Paid Until"
+                          type="text"
+                          onChange={(e) => { setsPaidUntil(e.target.value); }}
+                          fullWidth
+                          margin="normal"
+                          className={classes.textField}
+                        />
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <Autocomplete
-                          openOnFocus
-                          clearOnEscape
-                          onChange={
-                            (e, value) => {
-                              if (value !== null) {
-                                console.log(value.id);
-                                setsDOBApprox(value.id.toString());
-                              }
-                              else {
-                                setsDOBApprox("0");
-                              }
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <Autocomplete
+                        openOnFocus
+                        clearOnEscape
+                        onChange={
+                          (e, value) => {
+                            if (value !== null) {
+                              console.log(value.id);
+                              setsOriginProvinceID(value.id.toString());
+                            }
+                            else {
+                              setsOriginProvinceID("0");
                             }
                           }
-                          id="id_sDOBApprox"
-                          options={lDOBApprox}
-                          classes={{
-                            option: classes.option,
-                          }}
-                          className={classes.textField}
-                          autoHighlight
-                          getOptionLabel={(option) => option.sDOBApproxName}
-                          renderOption={(option) => (
-                            <React.Fragment>
-                              <span>{option.sDOBApproxName}</span>
-                            </React.Fragment>
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="DOB Approx"
-                              variant="standard"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sOriginVillage"
-                          label="Origin Village"
-                          type="text"
-                          onChange={(e) => { setsOriginVillage(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sOldGreenBKNo"
-                          label="Old GB Number"
-                          type="text"
-                          onChange={(e) => { setsOldGreenBKNo(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sResidenceNumber"
-                          label="RC Number"
-                          type="text"
-                          onChange={(e) => { setsResidenceNumber(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <Autocomplete
-                          openOnFocus
-                          clearOnEscape
-                          onChange={
-                            (e, value) => {
-                              if (value !== null) {
-                                console.log(value.id);
-                                setsOccupationID(value.id.toString());
-                              }
-                              else {
-                                setsOccupationID(0);
-                              }
-                            }
-                          }
-                          id="id_sOccupationID"
-                          options={lOccupation}
-                          classes={{
-                            option: classes.option,
-                          }}
-                          className={classes.textField}
-                          autoHighlight
-                          getOptionLabel={(option) => option.sOccupationDesc}
-                          renderOption={(option) => (
-                            <React.Fragment>
-                              <span>{option.sOccupationDesc}</span>
-                            </React.Fragment>
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Occupation"
-                              variant="standard"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <KeyboardDatePicker
-                            margin="normal"
-                            id="id_dtDeceased"
-                            label="Deceased Date"
-                            format="MM/dd/yyyy"
-                            onChange={(date) => { setdtDeceased(date) }}
-                            value={dtDeceased}
-                            KeyboardButtonProps={{
-                              'aria-label': 'change date',
-                            }}
-                            fullWidth
-                            className={classes.dateField}
-                          />
-                        </MuiPickersUtilsProvider>
-                      </FormControl>
-                    </Grid>
-                  </Grid>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-            </Grid>
-            {/*Relation Details*/}
-            <Grid item xs={12}>
-              <ExpansionPanel
-                TransitionProps={{ unmountOnExit: true }}
-                expanded={expanded === 'panel3'}
-                onChange={handleAccordionChange('panel3')}
-              >
-                <ExpansionPanelSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography
-                  className={"font-weight-bold font-size-md mb-1 text-black"} 
-                  //className={classes.heading}
-                  >Relation & Contact Details</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  <Grid item xs={6}>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sFathersID"
-                          label="Father's Old GB No"
-                          type="text"
-                          onChange={(e) => { setsFathersID(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sMothersID"
-                          label="Mother's Old GB No"
-                          type="text"
-                          onChange={(e) => { setsMothersID(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sSpouseID"
-                          label="Spouse's Old GB No"
-                          type="text"
-                          onChange={(e) => { setsSpouseID(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sSpouseGBID"
-                          label="Spouse GB No"
-                          type="text"
-                          onChange={(e) => { setsSpouseGBID(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sSpouseName"
-                          label="Spouse Name"
-                          type="text"
-                          onChange={(e) => { setsSpouseName(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_TBUSpouseName"
-                          label="Spouse Name (Tibetan)"
-                          type="text"
-                          onChange={(e) => { setTBUSpouseName(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid xs={12} style={{ display: 'flex' }}>
-                      <Grid item xs={6}>
-                        <FormControl className={classes.formControl}>
-                          <TextField
-                            id="id_sFax"
-                            label="Fax Number"
-                            type="text"
-                            onChange={(e) => { setsFax(e.target.value); }}
-                            fullWidth
-                            margin="normal"
-                            className={classes.textField}
-                          />
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl className={classes.formControl}>
-                          <TextField
-                            id="id_sPhone"
-                            label="Phone Number"
-                            type="text"
-                            onChange={(e) => { setsPhone(e.target.value); }}
-                            fullWidth
-                            margin="normal"
-                            className={classes.textField}
-                          />
-                        </FormControl>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sEmail"
-                          name="name_sEmail"
-                          label="Email"
-                          type="email"
-                          onChange={(e) => { setsEmail(e.target.value); }}
-                          fullWidth
-                          margin="normal"
-                          className={classes.textField}
-                          inputRef={register({
-                            required: true
-                          })}
-                        />
-                        {_.get("name_sEmail.type", errors) === "required" && (
-                          <p>This field is required</p>
+                        }
+                        id="id_sOriginProvinceID"
+                        options={lProvince}
+                        classes={{
+                          option: classes.option,
+                        }}
+                        className={classes.textField}
+                        autoHighlight
+                        getOptionLabel={(option) => option.sProvince}
+                        renderOption={(option) => (
+                          <React.Fragment>
+                            <span>{option.sProvince}</span>
+                          </React.Fragment>
                         )}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Province Name"
+                            variant="standard"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'new-password', // disable autocomplete and autofill
+                            }}
+                          />
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sFstGreenBkNo"
+                        label="First GB Number"
+                        type="text"
+                        onChange={(e) => { setsFstGreenBkNo(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        value={sFstGreenBkNo}
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <Autocomplete
+                        openOnFocus
+                        clearOnEscape
+                        onChange={
+                          (e, value) => {
+                            if (value !== null) {
+                              console.log(value.id);
+                              setsQualificationID(value.id.toString());
+                            }
+                            else {
+                              setsQualificationID("0");
+                            }
+                          }
+                        }
+                        id="id_sQualificationID"
+                        options={lQualification}
+                        classes={{
+                          option: classes.option,
+                        }}
+                        className={classes.textField}
+                        autoHighlight
+                        getOptionLabel={(option) => option.sQualification}
+                        renderOption={(option) => (
+                          <React.Fragment>
+                            <span>{option.sQualification}</span>
+                          </React.Fragment>
+                        )}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Qualification"
+                            variant="standard"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'new-password', // disable autocomplete and autofill
+                            }}
+                          />
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sDocuments"
+                        label="Other Documents"
+                        type="text"
+                        onChange={(e) => { setsOtherDocuments(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        value={sOtherDocuments}
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id="id_sMarried">Marital Status</InputLabel>
+                      <Select
+                        id="id_sMarried"
+                        label="Marital Status"
+                        type="text"
+                        onChange={(e) => { setsMarried(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                      >
+                        <MenuItem value={"Yes"}>Yes</MenuItem>
+                        <MenuItem value={"No"}>No</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+                <Grid item xs={6}>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          margin="normal"
+                          id="id_dtValidityDate"
+                          label="Validity Date"
+                          format="MM/dd/yyyy"
+                          onChange={(date) => { setdtValidityDate(date) }}
+                          value={dtDeceased}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                          fullWidth
+                          className={classes.dateField}
+                        />
+                      </MuiPickersUtilsProvider>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <Autocomplete
+                        openOnFocus
+                        clearOnEscape
+                        onChange={
+                          (e, value) => {
+                            if (value !== null) {
+                              console.log(value.id);
+                              setsDOBApprox(value.id.toString());
+                            }
+                            else {
+                              setsDOBApprox("0");
+                            }
+                          }
+                        }
+                        id="id_sDOBApprox"
+                        options={lDOBApprox}
+                        classes={{
+                          option: classes.option,
+                        }}
+                        className={classes.textField}
+                        autoHighlight
+                        getOptionLabel={(option) => option.sDOBApproxName}
+                        renderOption={(option) => (
+                          <React.Fragment>
+                            <span>{option.sDOBApproxName}</span>
+                          </React.Fragment>
+                        )}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="DOB Approx"
+                            variant="standard"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'new-password', // disable autocomplete and autofill
+                            }}
+                          />
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sOriginVillage"
+                        label="Origin Village"
+                        type="text"
+                        onChange={(e) => { setsOriginVillage(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sOldGreenBKNo"
+                        label="Old GB Number"
+                        type="text"
+                        onChange={(e) => { setsOldGreenBKNo(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sResidenceNumber"
+                        label="RC Number"
+                        type="text"
+                        onChange={(e) => { setsResidenceNumber(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <Autocomplete
+                        openOnFocus
+                        clearOnEscape
+                        onChange={
+                          (e, value) => {
+                            if (value !== null) {
+                              console.log(value.id);
+                              setsOccupationID(value.id.toString());
+                            }
+                            else {
+                              setsOccupationID(0);
+                            }
+                          }
+                        }
+                        id="id_sOccupationID"
+                        options={lOccupation}
+                        classes={{
+                          option: classes.option,
+                        }}
+                        className={classes.textField}
+                        autoHighlight
+                        getOptionLabel={(option) => option.sOccupationDesc}
+                        renderOption={(option) => (
+                          <React.Fragment>
+                            <span>{option.sOccupationDesc}</span>
+                          </React.Fragment>
+                        )}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Occupation"
+                            variant="standard"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'new-password', // disable autocomplete and autofill
+                            }}
+                          />
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          margin="normal"
+                          id="id_dtDeceased"
+                          label="Deceased Date"
+                          format="MM/dd/yyyy"
+                          onChange={(date) => { setdtDeceased(date) }}
+                          value={dtDeceased}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                          fullWidth
+                          className={classes.dateField}
+                        />
+                      </MuiPickersUtilsProvider>
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          </Grid>
+          {/*Relation Details*/}
+          <Grid item xs={12}>
+            <ExpansionPanel
+              TransitionProps={{ unmountOnExit: true }}
+              expanded={expanded === 'panel3'}
+              onChange={handleAccordionChange('panel3')}
+            >
+              <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography
+                  className={"font-weight-bold font-size-md mb-1 text-black"}
+                //className={classes.heading}
+                >Relation & Contact Details</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Grid item xs={6}>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sFathersID"
+                        label="Father's Old GB No"
+                        type="text"
+                        onChange={(e) => { setsFathersID(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sMothersID"
+                        label="Mother's Old GB No"
+                        type="text"
+                        onChange={(e) => { setsMothersID(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sSpouseID"
+                        label="Spouse's Old GB No"
+                        type="text"
+                        onChange={(e) => { setsSpouseID(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sSpouseGBID"
+                        label="Spouse GB No"
+                        type="text"
+                        onChange={(e) => { setsSpouseGBID(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                </Grid>
+                <Grid item xs={6}>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sSpouseName"
+                        label="Spouse Name"
+                        type="text"
+                        onChange={(e) => { setsSpouseName(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_TBUSpouseName"
+                        label="Spouse Name (Tibetan)"
+                        type="text"
+                        onChange={(e) => { setTBUSpouseName(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          id="id_sFax"
+                          label="Fax Number"
+                          type="text"
+                          onChange={(e) => { setsFax(e.target.value); }}
+                          fullWidth
+                          margin="normal"
+                          className={classes.textField}
+                        />
                       </FormControl>
                     </Grid>
-
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          id="id_sPhone"
+                          label="Phone Number"
+                          type="text"
+                          onChange={(e) => { setsPhone(e.target.value); }}
+                          fullWidth
+                          margin="normal"
+                          className={classes.textField}
+                        />
+                      </FormControl>
+                    </Grid>
                   </Grid>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-              <Grid item xs={12}>
-                <Button
-                  variant="outlined"
-                  type="submit"
-                  color="primary"
-                  style={{ marginRight: "10px" }}>Save</Button>
-                <Button variant="outlined"
-                  onClick={() => { props.history.push('/Home') }}
-                >Cancel
-                      </Button>
-              </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sEmail"
+                        name="name_sEmail"
+                        label="Email"
+                        type="email"
+                        onChange={(e) => { setsEmail(e.target.value); }}
+                        fullWidth
+                        margin="normal"
+                        className={classes.textField}
+                        inputRef={register({
+                          required: true
+                        })}
+                      />
+                      {_.get("name_sEmail.type", errors) === "required" && (
+                        <p>This field is required</p>
+                      )}
+                    </FormControl>
+                  </Grid>
+
+                </Grid>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+            <br />
+            <Grid item xs={12}>
+              <Button
+                variant="outlined"
+                type="submit"
+                color="primary"
+                style={{ marginRight: "10px" }}>Save</Button>
+              <Button variant="outlined"
+                onClick={() => { history.push('/SarsoNewGBEntry') }}
+              >Cancel
+              </Button>
             </Grid>
           </Grid>
-        </form>
-      </Container>
-    </Box>
+        </Grid>
+      </form>
+    </Container>
   );
 }
