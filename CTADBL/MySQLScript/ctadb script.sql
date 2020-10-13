@@ -719,6 +719,25 @@ INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtEntered`, `nEnteredBy`) V
 (1, 'UITableNumberOfRowsInPage', '20', now(), 1),
 (2, 'SelectTotalRecordCount', '1000', now(), 1),
 (3, 'DateFormat', 'DD-MM-YYYY', now(), 1);
+
+
+CREATE TABLE `lstChartel` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sChartelKey` text NOT NULL,
+  `nChartelValue` int(11) NOT NULL,
+  `dtChartelFrom` date DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+INSERT INTO `lstChartel` (`Id`, `sChartelKey`, `nChartelValue`, `dtChartelFrom`, `dtEntered`, `nEnteredBy`) VALUES
+(1, 'ChartelAmount', '36', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
+(2, 'ChartelMeal', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
+(3, 'ChartelSalaryAmt', '50', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
+(4, 'ChartelLateFeesPercentage', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
+(5, 'ChartelStartYear', '2011', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1);
+
 -- -------------------------
 -- --Transactional Tables---
 -- -------------------------
@@ -942,6 +961,28 @@ CREATE TABLE `lnkGBRelation` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+CREATE TABLE `lnkgbchartel` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sGBId` varchar(255) DEFAULT NULL,
+  `nChartelAmount` int(11) NOT NULL,
+  `nChartelMeal` int(11) DEFAULT NULL,
+  `nChartelYear` int(11) DEFAULT NULL,
+  `nChartelLateFeesPercentage` int(11) DEFAULT NULL,
+  `nArrearsAmount` int(11) DEFAULT NULL,
+  `dtArrearsFrom` date DEFAULT NULL,
+  `dtArrearsTo` date DEFAULT NULL,
+  `nChartelSalaryAmt` int(11) DEFAULT NULL,
+  `dtChartelSalaryFrom` date DEFAULT NULL,
+  `dtChartelSalaryTo` date DEFAULT NULL,
+  `nChartelBusinessDonationAmt` int(11) DEFAULT NULL,
+  `nChartelTotalAmount` int(11) DEFAULT NULL,
+  `nChartelRecieptNumber` int(11) DEFAULT NULL,
+  `nAuthRegionID` int(11) DEFAULT NULL,
+  `sCountryID` varchar(255) DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=131071 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `lnkGBDocument` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -992,9 +1033,6 @@ CREATE TABLE `lnkFeatureUserRights` (
   `nEnteredBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
-
-
 
 -- 
 -- Store Procedure GreenBook By GBID
@@ -1050,10 +1088,11 @@ DROP procedure IF EXISTS `spDeleteGreenBook`;
 
 DELIMITER $$
 
-CREATE PROCEDURE `spDeleteGreenBook` (IN sGBIDIN VARCHAR(255))
+CREATE PROCEDURE `spDeleteGreenBook`(IN sGBIDIN VARCHAR(255), OUT result INT)
 BEGIN
-	delete from `tblgreenbook` WHERE `tblgreenbook`.`sGBID`= sGBIDIN;
-END
+    DELETE FROM tblgreenbook WHERE tblgreenbook.sGBID = sGBIDIN;
+    SET result = row_count();
+END$$
 
 DELIMITER ;
 
@@ -1136,3 +1175,16 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+
+DROP procedure IF EXISTS `spGetNewGreenBookSerialData`;
+DELIMITER $$
+CREATE PROCEDURE `spGetNewGreenBookSerialData`()
+BEGIN
+    SELECT Id, sMadebType FROM lstmadebtype;
+    SELECT ID, sAuthRegion FROM lstauthregion;
+    SELECT ID, sCountryID, sCountry FROM lstcountry;
+    SELECT max(nBookNo) + 1 AS nBookNo FROM tblgreenbookserial;
+END$$
+DELIMITER ;
+
