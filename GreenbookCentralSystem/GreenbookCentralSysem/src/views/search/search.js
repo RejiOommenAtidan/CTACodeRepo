@@ -20,7 +20,7 @@ import {
   Select,
   InputLabel,
   Button,
-  Card
+  Card,Menu
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { red } from '@material-ui/core/colors';
@@ -150,7 +150,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function Feature() {
+export default function SearchPage() {
   const dataAPI = useSelector(state => state.FeatureReducer.lFeature);
   let history = useHistory();
   const dispatch = useDispatch();
@@ -230,8 +230,24 @@ export default function Feature() {
       },
     },
     {
-      render: rowData => <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={() => { viewGb(rowData['sGBID']) }}><span>{rowData['sCountryID'] + rowData['sGBID']}</span></Button>,
-      //  render: rowData => <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={()=>{ viewGb(rowData)}}><span>{ rowData['sGBID']}</span></Button> ,
+      render: rowData =><div  onContextMenu={(e)=>{handleClick(e)}} style={{ cursor: 'context-menu' }} > <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={() => { alert(JSON.stringify(rowData))/*viewGb(rowData['sGBID'])*/ }}><span>{rowData['sCountryID'] + rowData['sGBID']}</span></Button>
+      <Menu
+      keepMounted
+      open={contextState.mouseY !== null}
+      onClose={()=>{handleClose()}}
+      anchorReference="anchorPosition"
+      anchorPosition={
+        contextState.mouseY !== null && contextState.mouseX !== null
+          ? { top: contextState.mouseY, left: contextState.mouseX }
+          : undefined
+      }
+    >
+      <MenuItem onClick={()=>{handleView(rowData['sGBID'])}}>View</MenuItem>
+      <MenuItem onClick={()=>{handleEdit(rowData['sGBID'])}}>Edit</MenuItem>
+      
+    </Menu>
+    </div>
+      ,
       //field: "sGBID",
       title: "GB ID",
       filterPlaceholder: 'Search..',
@@ -371,6 +387,32 @@ export default function Feature() {
     }
   ];
 
+  const initialState = {
+    mouseX: null,
+    mouseY: null,
+  };
+ 
+  const [contextState, setContextState] = React.useState(initialState);
+  const handleClick = (event) => {
+    event.preventDefault();
+    setContextState({
+      mouseX: event.clientX - 2,
+      mouseY: event.clientY - 4,
+    });
+  };
+
+  const handleClose = () => {
+    setContextState(initialState);
+  };
+
+  const handleView = (sGBID) => {
+    setContextState(initialState);
+    viewGb(sGBID)
+  };
+  const handleEdit = (sGBID) => {
+    setContextState(initialState);
+    history.push("/EditEntry/" + sGBID);
+  };
   const openRelationGB = (newsGBID) => {
     handleViewClickClose();
     setTimeout(() => viewGb(newsGBID), 0);
@@ -541,7 +583,11 @@ export default function Feature() {
             </Link>
             <Typography color="textPrimary">Search</Typography>
           </Breadcrumbs>
-          {dataFromAPI.length != 0 && <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+          {dataFromAPI.length == 0 && 
+          <Paper>  <Typography color="textPrimary" align="center">No records to display </Typography> </Paper>
+          }
+          {dataFromAPI.length != 0 && 
+          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
             icons={tableIcons}
             title="Search"

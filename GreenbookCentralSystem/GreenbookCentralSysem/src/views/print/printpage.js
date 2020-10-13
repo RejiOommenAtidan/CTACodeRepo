@@ -299,7 +299,7 @@ export default function EnhancedTable() {
         .then(resp => {
           if (resp.status === 200) {
             //alert(JSON.stringify(resp.data));
-            setObj(resp.data);
+            setObj(resp.data.reverse());
             
           }
         })

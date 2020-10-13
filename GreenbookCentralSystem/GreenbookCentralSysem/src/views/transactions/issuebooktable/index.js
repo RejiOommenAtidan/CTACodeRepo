@@ -416,6 +416,7 @@ const editAPICall = (obj) =>{
         <Grid item xs={12}>
                <br/> 
           {historyTable &&     <>
+            {historyData.length!=0 &&
     <Table className="table table-hover table-striped table-bordered">
                             <thead className="thead-light">
                             <tr>
@@ -455,8 +456,8 @@ const editAPICall = (obj) =>{
 
                             ))}
                             </tbody>
-                            </Table> 
-
+                            </Table> }
+              {pendingData.length!=0 &&
                 <Table className="table table-hover table-striped table-bordered">
                             <thead className="thead-light">
                             <tr>
@@ -467,7 +468,7 @@ const editAPICall = (obj) =>{
                                 <th > Form No </th>
                                 <th > Issued Yet? </th>    
                              
-                                <th > Save </th>                           
+                                <th > Issue Book </th>                           
                             </tr>
                             </thead>
                             <tbody>
@@ -495,7 +496,7 @@ const editAPICall = (obj) =>{
 
                             ))}
                             </tbody>
-                            </Table> 
+                            </Table> }
                  </> }
                             
                             {saveModal && <SaveDialog

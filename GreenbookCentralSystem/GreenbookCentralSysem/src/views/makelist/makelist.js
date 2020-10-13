@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link, Card, Table} from '@material-ui/core';
+import {Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link, Card, Table, Paper} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
@@ -325,13 +325,17 @@ export default () => {
             <Typography color="textPrimary">GreenBook Serial Number</Typography>
           </Breadcrumbs>
       <br />
+      <Paper style={{padding:'15px',paddingTop:'20px'}}>
+  
       { dataReady && (<InputParams 
         selectData = {selectData}
         classes = {classes}
         makeList = {makeList}
       />)}
       <br />
-      {/* {makeTable && ( */}
+      
+      { dataAPI.length !=0 &&
+      
         <MaterialTable 
         style={{padding:'10px',width:'100%', border:'2px solid grey',borderRadius:'10px'}}
         isLoading = {loading}
@@ -397,7 +401,8 @@ export default () => {
           ]
         }
       />
-      {/* )} */}
+        }
+      </Paper>
         </Grid>
         {/* <Grid item xs={12} sm={12} style={{justifyContent: 'center', display: 'flex' }}>
           <FormControl style={{justifyContent: 'center'}}>
