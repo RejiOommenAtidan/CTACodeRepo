@@ -98,17 +98,13 @@ const useStyles = makeStyles({
   }
 });
 
-export default function EnhancedTable(props) {
+export default function NewEntry(props) {
   const classes = useStyles();
-  const history = useHistory();
-  //Accordion
-  //Panel1 set true for Acoordion to be open 
+  const history = useHistory(); 
   const [expanded, setExpanded] = React.useState('panel1');
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-
-  //Array from API
   const [lAuthRegion, setlAuthRegion] = useState([]);
   const [lCountry, setlCountry] = useState([]);
   const [lDOBApprox, setlDOBApprox] = useState([]);
@@ -116,14 +112,13 @@ export default function EnhancedTable(props) {
   const [lProvince, setlProvince] = useState([]);
   const [lQualification, setlQualification] = useState([]);
 
-  //VARS to track
   const [sGBID, setsGBID] = useState('');
   const [nAuthRegionID, setnAuthRegionID] = useState('');
   const [sFirstName, setsFirstName] = useState('');
   const [sMiddleName, setsMiddleName] = useState('');
   const [sFamilyName, setsFamilyName] = useState('');
   const [sGender, setsGender] = useState('');
-  const [dtDOB, setdtDOB] = useState(new Date());
+  const [dtDOB, setdtDOB] = useState(null);
   const [sDOBApprox, setsDOBApprox] = useState('');
   const [sBirthPlace, setsBirthPlace] = useState('');
   const [sBirthCountryID, setsBirthCountryID] = useState('');
@@ -137,7 +132,7 @@ export default function EnhancedTable(props) {
   const [sAliasName, setsAliasName] = useState('');
   const [sOldGreenBKNo, setsOldGreenBKNo] = useState('');
   const [sFstGreenBkNo, setsFstGreenBkNo] = useState('');
-  const [dtFormDate, setdtFormDate] = useState(new Date());
+  const [dtFormDate, setdtFormDate] = useState(null);
   const [sFathersName, setsFathersName] = useState('');
   const [sFathersID, setsFathersID] = useState('');
   const [sFathersGBID, setsFathersGBID] = useState('');
@@ -158,9 +153,9 @@ export default function EnhancedTable(props) {
   const [sEmail, setsEmail] = useState('');
   const [sPhone, setsPhone] = useState('');
   const [sFax, setsFax] = useState('');
-  const [dtDeceased, setdtDeceased] = useState(new Date());
+  const [dtDeceased, setdtDeceased] = useState(null);
   const [sBookIssued, setsBookIssued] = useState('');
-  const [dtValidityDate, setdtValidityDate] = useState(new Date());
+  const [dtValidityDate, setdtValidityDate] = useState(null);
   const [sPaidUntil, setsPaidUntil] = useState('');
   const [sEnteredDateTime, setsEnteredDateTime] = useState('');
   const [TibetanName, setTibetanName] = useState('');
@@ -207,8 +202,7 @@ export default function EnhancedTable(props) {
 
   const { register, handleSubmit, watch, errors } = useForm();
   const onSubmit = () => {
-    //Throws Error, Maybe handled by react-hook-forms itself
-    //e.preventDefault();
+    //e.preventDefault(); =>Not Required
     let greenbook = {
       sGBID,
       nAuthRegionID,
@@ -264,8 +258,6 @@ export default function EnhancedTable(props) {
       TBUSpouseName
     };
 
-    //console.info(JSON.stringify(greenbook));
-
     axios.post(`/Greenbook/AddGreenbook/`, greenbook)
       .then(resp => {
         if (resp.status === 200) {
@@ -285,7 +277,6 @@ export default function EnhancedTable(props) {
       <Typography variant="h4" gutterBottom>New Entry</Typography>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.box}>
         <Grid container className={classes.box}>
-
           <Grid item xs={12}>
             <ExpansionPanel
               TransitionProps={{ unmountOnExit: true }}
@@ -299,7 +290,6 @@ export default function EnhancedTable(props) {
               >
                 <Typography
                   className={"font-weight-bold font-size-md mb-1 text-black"}
-                //className={classes.heading}
                 >Greenbook Required Fields</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
@@ -366,7 +356,7 @@ export default function EnhancedTable(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password', // disable autocomplete and autofill
+                              autoComplete: 'new-password',
                             }}
                           />
                         )}
@@ -513,7 +503,7 @@ export default function EnhancedTable(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password', // disable autocomplete and autofill
+                              autoComplete: 'new-password',
                             }}
                           />
                         )}
@@ -739,7 +729,7 @@ export default function EnhancedTable(props) {
                               variant="standard"
                               inputProps={{
                                 ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                autoComplete: 'new-password',
                               }}
                             />
                           )}
@@ -778,7 +768,6 @@ export default function EnhancedTable(props) {
               >
                 <Typography
                   className={"font-weight-bold font-size-md mb-1 text-black"}
-                //className={classes.heading}
                 >Basic Personal Information</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
@@ -810,8 +799,8 @@ export default function EnhancedTable(props) {
                           className={classes.textField}
                           onChange={(e) => { setsGender(e.target.value) }}
                         >
-                          <MenuItem value={"Male"}>Male</MenuItem>
-                          <MenuItem value={"Female"}>Female</MenuItem>
+                          <MenuItem value={"M"}>Male</MenuItem>
+                          <MenuItem value={"F"}>Female</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
@@ -820,7 +809,7 @@ export default function EnhancedTable(props) {
                         <TextField
                           id="id_sPaidUntil"
                           label="Paid Until"
-                          type="text"
+                          type="number"
                           onChange={(e) => { setsPaidUntil(e.target.value); }}
                           fullWidth
                           margin="normal"
@@ -922,7 +911,7 @@ export default function EnhancedTable(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password', // disable autocomplete and autofill
+                              autoComplete: 'new-password'
                             }}
                           />
                         )}
@@ -955,8 +944,8 @@ export default function EnhancedTable(props) {
                         margin="normal"
                         className={classes.textField}
                       >
-                        <MenuItem value={"Yes"}>Yes</MenuItem>
-                        <MenuItem value={"No"}>No</MenuItem>
+                        <MenuItem value={"Y"}>Yes</MenuItem>
+                        <MenuItem value={"N"}>No</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -989,7 +978,7 @@ export default function EnhancedTable(props) {
                         onChange={
                           (e, value) => {
                             if (value !== null) {
-                              console.log(value.id);
+                              console.log(value);
                               setsDOBApprox(value.id.toString());
                             }
                             else {
@@ -1017,7 +1006,7 @@ export default function EnhancedTable(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password', // disable autocomplete and autofill
+                              autoComplete: 'new-password'
                             }}
                           />
                         )}
@@ -1046,7 +1035,6 @@ export default function EnhancedTable(props) {
                         onChange={(e) => { setsOldGreenBKNo(e.target.value); }}
                         fullWidth
                         margin="normal"
-
                         className={classes.textField}
                       />
                     </FormControl>
@@ -1072,7 +1060,6 @@ export default function EnhancedTable(props) {
                         onChange={
                           (e, value) => {
                             if (value !== null) {
-                              console.log(value.id);
                               setsOccupationID(value.id.toString());
                             }
                             else {
@@ -1144,7 +1131,6 @@ export default function EnhancedTable(props) {
               >
                 <Typography
                   className={"font-weight-bold font-size-md mb-1 text-black"}
-                //className={classes.heading}
                 >Relation & Contact Details</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>

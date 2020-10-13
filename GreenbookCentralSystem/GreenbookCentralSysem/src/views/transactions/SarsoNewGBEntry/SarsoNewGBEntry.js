@@ -131,7 +131,7 @@ export default function SarsoNewGBEntry() {
         color="primary"
         size="small"
         startIcon={<AddIcon />}
-        onClick={() => { history.push('/NewEntry/' + rowData.nGBId); }}
+        onClick={() => { history.push('/NewEntry/' + rowData.nFormNo); }}
       >Greenbook Entry
       </Button>,
       cellStyle: {

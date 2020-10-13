@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const SarsoNewGBNewEntryCover = () => {
+const CoverSarsoNewGBNewEntry = () => {
   const classes = useStyles();
   return (
     <Container maxWidth={false}>
@@ -32,4 +32,4 @@ const SarsoNewGBNewEntryCover = () => {
   );
 };
 
-export default SarsoNewGBNewEntryCover;
+export default CoverSarsoNewGBNewEntry;
