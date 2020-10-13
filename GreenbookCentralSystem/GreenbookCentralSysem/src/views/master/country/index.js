@@ -1,4 +1,3 @@
-//Hi
 import React from 'react';
 import {
   Container,
@@ -7,8 +6,6 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-
-
 import Country from './country';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,23 +17,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverCountry = () => {
   const classes = useStyles();
-
   return (
-   
-      <Container maxWidth={false}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/Home" >
-            Home
+    <Container maxWidth={false}>
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link color="inherit" href="/Home" >
+          Home
         </Link>
-
-          <Typography color="textPrimary">Occupation</Typography>
-        </Breadcrumbs>
-        <Country />
-      </Container>
+        <Typography color="textPrimary">Country</Typography>
+      </Breadcrumbs>
+      <Country />
+    </Container>
 
   );
 };
 
-export default Dashboard;
+export default CoverCountry;

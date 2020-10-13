@@ -31,7 +31,7 @@ import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 
 export const EditDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall({ id: ocurrentfeature.id, sFeature: sFeature })
   }

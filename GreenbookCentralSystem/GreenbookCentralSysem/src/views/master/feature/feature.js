@@ -24,6 +24,7 @@ import { nPageSize } from '../../../config/commonConfig';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop';
 import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import handleError from '../../../auth/_helpers/handleError';
 
 const tableIcons = oTableIcons;
 
@@ -186,16 +187,7 @@ export default function Feature() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -203,20 +195,7 @@ export default function Feature() {
         }
       })
       .catch(error => {
-        setBackdrop(false);
-        setAlertMessage('Error! ' + error.message);
-        setAlertType('error');
-        snackbarOpen();
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -235,16 +214,7 @@ export default function Feature() {
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -252,16 +222,7 @@ export default function Feature() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -284,16 +245,7 @@ export default function Feature() {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -301,59 +253,57 @@ export default function Feature() {
   }, []);
 
   return (
-    <>
-      <Grid container spacing={1}>
-        <Grid item xs={12}>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link color="inherit" href="/Home" >
-              Home
+    <Grid container spacing={1}>
+      <Grid item xs={12}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link color="inherit" href="/Home" >
+            Home
             </Link>
-            <Typography color="textPrimary">Feature</Typography>
-          </Breadcrumbs>
-          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
-            isLoading={isLoading}
-            icons={tableIcons}
-            title="Feature"
-            columns={columns}
-            data={dataAPI}
-            options={oOptions}
-            actions={[
-              {
-                icon: AddBox,
-                tooltip: 'Add Feature',
-                isFreeAction: true,
-                onClick: () => setAddModal(true)
-              },
-              {
-                icon: Search,
-                tooltip: 'Show Filter',
-                isFreeAction: true,
-                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
-              }
-            ]}
-          />
-          {addModal && <AddDialog
-            addModal={addModal}
-            classes={classes}
-            handleAddClickClose={handleAddClickClose}
-            addAPICall={addAPICall}
-          />}
-          {editModal && <EditDialog
-            editModal={editModal}
-            classes={classes}
-            handleEditClickClose={handleEditClickClose}
-            editAPICall={editAPICall}
-          />}
-          {snackbar && <Alerts
-            alertObj={alertObj}
-            snackbar={snackbar}
-            snackbarClose={snackbarClose}
-          />}
-          {backdrop && <BackdropComponent
-            backdrop={backdrop}
-          />}
-        </Grid>
+          <Typography color="textPrimary">Feature</Typography>
+        </Breadcrumbs>
+        <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+          isLoading={isLoading}
+          icons={tableIcons}
+          title="Feature"
+          columns={columns}
+          data={dataAPI}
+          options={oOptions}
+          actions={[
+            {
+              icon: AddBox,
+              tooltip: 'Add Feature',
+              isFreeAction: true,
+              onClick: () => setAddModal(true)
+            },
+            {
+              icon: Search,
+              tooltip: 'Toggle Filter',
+              isFreeAction: true,
+              onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+            }
+          ]}
+        />
+        {addModal && <AddDialog
+          addModal={addModal}
+          classes={classes}
+          handleAddClickClose={handleAddClickClose}
+          addAPICall={addAPICall}
+        />}
+        {editModal && <EditDialog
+          editModal={editModal}
+          classes={classes}
+          handleEditClickClose={handleEditClickClose}
+          editAPICall={editAPICall}
+        />}
+        {snackbar && <Alerts
+          alertObj={alertObj}
+          snackbar={snackbar}
+          snackbarClose={snackbarClose}
+        />}
+        {backdrop && <BackdropComponent
+          backdrop={backdrop}
+        />}
       </Grid>
-    </>
+    </Grid>
   );
 }

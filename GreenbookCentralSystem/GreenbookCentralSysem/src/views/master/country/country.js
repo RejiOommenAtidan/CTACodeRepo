@@ -1,45 +1,22 @@
-// hi
 import React, { useEffect, useState } from 'react';
-//import { useNavigate } from 'react-router-dom';
 import {
-  Box,
   Container,
-  Grid,
-  Button,
-  Typography,
-  FormControl,
-  TextField,
-  Breadcrumbs,
-  Link,
-
+  Grid
 } from '@material-ui/core';
-
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-
-import Slide from '@material-ui/core/Slide';
-import Chip from '@material-ui/core/Chip';
-
 import IconButton from '@material-ui/core/IconButton';
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-
-// Local import
-import { AddDialog, DeleteDialog, EditDialog } from './dialog';
-import MaterialTable, { MTableToolbar } from 'material-table';
+import { AddDialog, EditDialog } from './dialog';
+import MaterialTable from 'material-table';
 import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import FilterList from '@material-ui/icons/FilterList';
 import AddBox from '@material-ui/icons/AddBox';
 import { useHistory } from 'react-router-dom';
+import { Alerts } from '../../alerts';
 import handleError from "../../../auth/_helpers/handleError";
-import {Alerts} from '../../alerts';
 
 const tableIcons = oTableIcons;
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const useStyles = makeStyles(() => ({
   /*root: {
@@ -95,39 +72,29 @@ export default function EnhancedTable() {
   const [dataAPI, setdataAPI] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
-
-
-  //VAR
   const [countryID, setCountryID] = React.useState('');
   const [countryName, setCountryName] = React.useState('');
   const [countryPK, setCountryPK] = React.useState(0);
   const [countryObj, setCountryObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
-  const history = useHistory();
-  
+  let history = useHistory();
+  const [isLoading, setisLoading] = React.useState(true);
 
-
-  // SnackBar Alerts 
-
-const [alertMessage, setAlertMessage] = useState("");
-const [alertType, setAlertType] = useState("");
-const alertObj={
-  alertMessage:alertMessage,
-  alertType:alertType
-}
-const [snackbar,setSnackbar]=React.useState(false);
-const snackbarOpen = () => {
-  console.log('alert');
-  setSnackbar(true);
-}
-const snackbarClose = () => {
-  setSnackbar(false);
-};
-
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  }
+  const [snackbar, setSnackbar] = React.useState(false);
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  }
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -142,9 +109,6 @@ const snackbarClose = () => {
     setAddModal(false);
   };
 
-  
-
-  
   const columns = [
     {
       field: "id",
@@ -152,11 +116,9 @@ const snackbarClose = () => {
       hidden: true,
       cellStyle: {
         padding: '5px',
-        paddingLeft: '10px',
-
+        paddingLeft: '10px'
       },
       export: true
-
     },
     {
       field: "sCountryID",
@@ -164,22 +126,21 @@ const snackbarClose = () => {
       cellStyle: {
         padding: '5px',
         paddingLeft: '10px',
-
         borderLeft: '0'
       },
-
     },
     {
       field: "sCountry",
       title: "Country",
       cellStyle: {
-        padding: '5px',
-
+        padding: '5px'
       },
     },
 
     {
-      align:"center",
+      sorting: false,
+      filtering: false,
+      align: "center",
       field: 'edit',
       title: 'Edit',
       filtering: false,
@@ -208,11 +169,9 @@ const snackbarClose = () => {
       export: true,
       hidden: true,
     },
-
   ];
 
   const editClick = (tableRowArray) => {
-
     setCountryPK(tableRowArray['id']);
     setCountryID(tableRowArray['sCountryID']);
     setCountryName(tableRowArray['sCountry']);
@@ -225,11 +184,9 @@ const snackbarClose = () => {
   }
 
   const editAPICall = (countryObj) => {
-    
     axios.post(`/Country/EditCountry/CountryID=` + countryPK, countryObj/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
           setEditModal(false);
           setAlertMessage('Record updated successfully.');
           setAlertType('success');
@@ -237,43 +194,30 @@ const snackbarClose = () => {
           axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
                 setDataChanged(true);
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
             });
-          
+
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
-        setAlertMessage(`Record updation failed. \nError:${error.message}.` );
-          setAlertType('error');
-          snackbarOpen();
+        handleError(error, history);
       })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   };
   const addAPICall = (countryObj) => {
-
     axios.post(`/Country/AddCountry/`, countryObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           setAlertMessage('Created new record successfully.');
           setAlertType('success');
@@ -281,36 +225,26 @@ const snackbarClose = () => {
           axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
-            
+            .then(release => {
+              //console.log(release); => udefined
+            });
         }
       })
       .catch(error => {
-        console.log(error.message);
-        console.log(error.config);
-        setAlertMessage(`Record creation failed. \nError:${error.message}.` );
-        setAlertType('error');
-        snackbarOpen();
+        handleError(error, history);
       })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   };
 
   const deleteClick = (tableRowArray) => {
-
     setDeleteModal(true);
     setCountryPK(tableRowArray[0]);
     setCountryID(tableRowArray[1]);
@@ -319,12 +253,9 @@ const snackbarClose = () => {
 
   const handleClose = () => {
     setDeleteModal(false);
-
   };
 
   const deleteAPICall = () => {
-    // console.log(this.state.selectedUser);
-    // let CountryID = countryPK;
     const countryToDelete = {
       ID: countryPK,
       sCountryID: countryID,
@@ -334,26 +265,15 @@ const snackbarClose = () => {
       .then(resp => {
         console.log(countryToDelete);
         if (resp.status === 200) {
-          console.log(resp.data);
           setDeleteModal(false);
           axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data)
               }
             })
             .catch(error => {
-              if (error.response) {
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-              } else if (error.request) {
-                console.warn(error.request);
-              } else {
-                console.error('Error', error.message);
-              }
-              console.log(error.config);
+              handleError(error, history);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -365,16 +285,7 @@ const snackbarClose = () => {
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -385,21 +296,12 @@ const snackbarClose = () => {
     axios.get(`/Country/GetCountries`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
-          setdataAPI(resp.data)
+          setdataAPI(resp.data);
+          setisLoading(false);
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -407,78 +309,66 @@ const snackbarClose = () => {
   }, []);
 
   return (
-
-
-    // <Box
-    //   display="flex"
-    //   flexDirection="column"
-    //   height="100%"
-    //   justifyContent="center"
-    //   style={{ paddingTop: '50px' }}
-
-    // >
-      <Container maxWidth="lg" disableGutters={true}>
-        {/* <Breadcrumbs aria-label="breadcrumb">
+    <Container maxWidth="lg" disableGutters={true}>
+      {/* <Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/Home" >
             Home
         </Link>
 
           <Typography color="textPrimary"> Country</Typography>
-  </Breadcrumbs> */}
-        <Grid container className={classes.box} >
-          <Grid item xs={12}>
-
-
-            <MaterialTable 
-              style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-              icons={tableIcons}
-              title="Country"
-              columns={columns}
-              data={dataAPI}
-              options={oOptions}
-              actions={[
-                {
-                  icon: AddBox,
-                  tooltip: 'Add Country',
-                  isFreeAction: true,
-                  onClick: (event) => setAddModal(true)
-                },
-                {
-                  icon: FilterList,
-                  tooltip: 'Show Filter',
-                  isFreeAction: true,
-                  onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
-                }
-              ]}
-            />
-          </Grid>
+        </Breadcrumbs> */}
+      <Grid container className={classes.box} >
+        <Grid item xs={12}>
+          <MaterialTable
+            isLoading={isLoading}
+            style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
+            icons={tableIcons}
+            title="Country"
+            columns={columns}
+            data={dataAPI}
+            options={oOptions}
+            actions={[
+              {
+                icon: AddBox,
+                tooltip: 'Add Country',
+                isFreeAction: true,
+                onClick: (event) => setAddModal(true)
+              },
+              {
+                icon: FilterList,
+                tooltip: 'Toggle Filter',
+                isFreeAction: true,
+                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+              }
+            ]}
+          />
         </Grid>
-        {addModal && <AddDialog
-          addModal={addModal}
-          classes={classes}
-          handleAddClickClose={handleAddClickClose}
-          addAPICall={addAPICall}
-        />}
-        {editModal && <EditDialog
-          editModal={editModal}
-          countryObj={countryObj}
-          classes={classes}
-          handleEditClickClose={handleEditClickClose}
-          editAPICall={editAPICall}
-        />}
-        { snackbar && <Alerts
-              alertObj={alertObj}
-              snackbar={snackbar}
-              snackbarClose={snackbarClose}
-              /> 
-            }
-        {deleteModal && <DeleteDialog
-          deleteModal={deleteModal}
-          countryName={countryName}
-          handleClose={handleClose}
-          deleteAPICall={deleteAPICall}
-        />}
-      </Container>
-    //</Box>
+      </Grid>
+      {addModal && <AddDialog
+        addModal={addModal}
+        classes={classes}
+        handleAddClickClose={handleAddClickClose}
+        addAPICall={addAPICall}
+      />}
+      {editModal && <EditDialog
+        editModal={editModal}
+        countryObj={countryObj}
+        classes={classes}
+        handleEditClickClose={handleEditClickClose}
+        editAPICall={editAPICall}
+      />}
+      { snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+      {/*{deleteModal && <DeleteDialog
+        deleteModal={deleteModal}
+        countryName={countryName}
+        handleClose={handleClose}
+        deleteAPICall={deleteAPICall}
+      />}*/}
+    </Container>
   );
 }
