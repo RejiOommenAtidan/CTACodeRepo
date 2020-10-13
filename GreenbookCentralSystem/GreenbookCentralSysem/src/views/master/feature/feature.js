@@ -25,6 +25,7 @@ import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop';
 import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
 import handleError from '../../../auth/_helpers/handleError';
+import FilterList from '@material-ui/icons/FilterList';
 
 const tableIcons = oTableIcons;
 
@@ -276,7 +277,7 @@ export default function Feature() {
               onClick: () => setAddModal(true)
             },
             {
-              icon: Search,
+              icon: FilterList,
               tooltip: 'Toggle Filter',
               isFreeAction: true,
               onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
