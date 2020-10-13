@@ -406,7 +406,25 @@ export default function EnhancedTable() {
     },
     {
       field: "madeb.sApprovedReject",
-      title: "Receipt No.",
+      title: "Status",
+      
+      headerStyle: {
+        padding:'0px',
+        width:'10%',
+        textAlign:'left'
+      },
+      cellStyle: {
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'10%',
+        textAlign:'left'
+        
+      },
+  
+    },
+    {
+      field: "madeb.sMadebStatusRemark",
+      title: "Remark",
       
       headerStyle: {
         padding:'0px',

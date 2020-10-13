@@ -109,13 +109,13 @@ export const ViewDialog = (props) => {
  
   return (
     <>
-    {data.length!=0 && 
+         {data.length!=0 && 
     <Dialog open={props.viewModal} onEscapeKeyDown={props.handleViewClickClose} fullWidth='true'
       maxWidth='xl' aria-labelledby="form-dialog-title">
     {/*  <DialogTitle id="form-dialog-title">Add Feature</DialogTitle>*/}
       <DialogContent>
         <DialogContentText>
-        
+
         <Card className="card-box mb-spacing-6-x2">
             <Grid container spacing={0}>
               <Grid item xl={5}>
@@ -182,29 +182,52 @@ export const ViewDialog = (props) => {
                   <div className="avatar-wrapper-overlap d-flex justify-content-center mb-3">
 
                     { data.relations.sFathersGBID != null &&
+                     <a disabled="disabled" style={{cursor:'pointer'}} onClick={()=>props.openRelationGB(data.relations.sFathersGBID)} >
                     <Tooltip title={data.relations.sFathersGBID+' (Father)'} classes={{ tooltip: "tooltip-danger" }} arrow>
                       <div className="avatar-icon-wrapper">
                         <div className="avatar-icon">
-                          <img alt="..." src={`data:image/gif;base64,${data.relations.sFathersPhoto}`} /></div>
+                        {data.relations.sFathersPhoto != null &&
+                          <img alt="..." src={`data:image/gif;base64,${data.relations.sFathersPhoto}`} />}
+                          {data.relations.sFathersPhoto == null &&
+                          <img alt="..." className="img-fluid" style={{width:'100px' }} src={stock} />}  
+                        </div>
                       </div>
                     </Tooltip>
+                    </a>
                       }
   { data.relations.sMothersGBID != null &&
+    <a disabled="disabled" style={{cursor:'pointer'}} onClick={()=>props.openRelationGB(data.relations.sMothersGBID)} >
                     <Tooltip title={data.relations.sMothersGBID+' (Mother)'} classes={{ tooltip: "tooltip-first" }} arrow>
                       <div className="avatar-icon-wrapper">
-                        <div className="avatar-icon"><img alt="..." src={`data:image/gif;base64,${data.relations.sMothersPhoto}`} /></div>
+                      
+                        <div className="avatar-icon">
+                        {data.relations.sMothersPhoto != null &&    
+                          <img alt="..." src={`data:image/gif;base64,${data.relations.sMothersPhoto}`} />}
+                          {data.relations.sMothersPhoto == null &&
+                          <img alt="..." className="img-fluid" style={{width:'100px' }} src={stock} />}  
+                        
+                        </div>
                       </div>
 
 
-                    </Tooltip>}
+                    </Tooltip>
+                    </a>}
                     { data.relations.sSpouseGBID != null &&
+                      <a disabled="disabled" style={{cursor:'pointer'}} onClick={()=>props.openRelationGB(data.relations.sSpouseGBID)} >
                     <Tooltip title={data.relations.sSpouseGBID+' (Spouse)'} classes={{ tooltip: "tooltip-first" }} arrow>
                       <div className="avatar-icon-wrapper">
-                        <div className="avatar-icon"><img alt="..." src={`data:image/gif;base64,${data.relations.sSpousePhoto}`} /></div>
+                        <div className="avatar-icon">
+                        {data.relations.sSpousePhoto != null &&    
+                          <img alt="..." src={`data:image/gif;base64,${data.relations.sSpousePhoto}`} />}
+                          {data.relations.sSpousePhoto == null &&
+                          <img alt="..." className="img-fluid" style={{width:'100px' }} src={stock} />}  
+                          
+                          </div>
                       </div>
 
 
-                    </Tooltip>}
+                    </Tooltip>
+                    </a>}
 
                
                   </div>
@@ -705,8 +728,8 @@ export const ViewDialog = (props) => {
               </Grid>
             </Grid>
           </Card>
-                              
-      
+          
+
 
         </DialogContentText>
       </DialogContent>
@@ -715,8 +738,8 @@ export const ViewDialog = (props) => {
         <Button onClick={props.handleViewClickClose} color="primary">Close</Button>
       
       </DialogActions>
-    </Dialog>
-  }
+    </Dialog>}
+  
   </>
   );
 }

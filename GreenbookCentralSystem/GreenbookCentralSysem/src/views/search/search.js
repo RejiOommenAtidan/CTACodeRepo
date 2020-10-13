@@ -544,7 +544,7 @@ export default function Feature() {
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
             icons={tableIcons}
-            title="Feature"
+            title="Search"
             columns={columns}
             data={dataFromAPI}
             options={{
@@ -560,12 +560,7 @@ export default function Feature() {
               pageSizeOptions: pageSizeArray
             }}
             actions={[
-              {
-                icon: AddBox,
-                tooltip: 'Add Feature',
-                isFreeAction: true,
-      
-              },
+          
               {
                 icon: Search,
                 tooltip: 'Show Filter',
@@ -857,7 +852,7 @@ export default function Feature() {
                        <span className="ribbon-horizontal ribbon-horizontal--bottom ribbon-horizontal--danger"><span>{row.nGBID}</span></span>
                         <div className="card-img-wrapper">
                         {row.sPhoto != null  && 
-                        <img src={`data:image/gif;base64,${row.sPhoto}`} className="card-img-top rounded" alt="..." />}
+                        <img src={`data:image/gif;base64,${row.sPhoto}`} style={{width:'100px' }} className="card-img-top rounded" alt="..." />}
                         {row.sPhoto == null  &&  
                         <img alt="..." className="img-fluid" style={{width:'100px' }} src={stock} />}
                             

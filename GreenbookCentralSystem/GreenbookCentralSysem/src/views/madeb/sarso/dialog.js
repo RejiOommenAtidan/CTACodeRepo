@@ -390,7 +390,7 @@ export const AddDialog = (props) => {
      sFathersName:fname,
      nAuthRegionID:authority , 
      dtReceived:receivedDate,  
-
+     nIssuedOrNotID:1,   
      sDocumentAttached:documents,
      nSaneyFormNo:saney
   }

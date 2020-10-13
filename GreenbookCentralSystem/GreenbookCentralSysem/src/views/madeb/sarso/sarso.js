@@ -332,6 +332,23 @@ export default function EnhancedTable() {
       },
     },
     {
+      field: "madeb.sGBID",
+      title: "GB ID",
+      
+      headerStyle: {
+        padding:'0px',
+        width:'15%',
+        textAlign:'left'
+      },
+      cellStyle: {
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'15%',
+        textAlign:'left'
+        
+      },
+    },
+    {
       field: "madeb.sFathersName",
       title: "Father's Name",
       
