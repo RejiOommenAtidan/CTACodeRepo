@@ -305,7 +305,30 @@ export const SaveDialog = (props) => {
   console.log(props.saveObj);
   const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
   const [madebData,setMadebData]= React.useState(props.selectData['madebTypes']);
-  const [typeIssuedData,setTypeIssuedData]= React.useState(props.selectData['typeIssued']);
+  const [typeIssuedData,setTypeIssuedData]= React.useState([ {
+    "id": 1,
+    "sTypeIssued": "On Progress",
+    "dtEntered": null,
+    "nEnteredBy": 1,
+    "dtUpdated": null,
+    "nUpdatedBy": 1
+},
+{
+    "id": 2,
+    "sTypeIssued": "Issued",
+    "dtEntered": null,
+    "nEnteredBy": 1,
+    "dtUpdated": null,
+    "nUpdatedBy": 1
+},
+{
+    "id": 3,
+    "sTypeIssued": "Rejected",
+    "dtEntered": null,
+    "nEnteredBy": 1,
+    "dtUpdated": null,
+    "nUpdatedBy": 1
+}]);
   const [formNumber, setFormNumber] = React.useState(props.saveObj['nFormNumber'].toString());
   const [id, setId] = React.useState(props.saveObj['id']);
   const [madebType,setMadebType]= React.useState(props.saveObj['nMadebTypeID']);

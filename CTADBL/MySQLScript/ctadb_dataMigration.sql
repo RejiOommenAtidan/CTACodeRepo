@@ -1042,6 +1042,44 @@ SELECT `ident_note`.`NoteID`,
     `ident_note`.`EnteredBy`
 FROM `greenbookprime`.`ident_note`;
 
+INSERT INTO `ctadb`.`lnkgbchartel`
+(`sGBId`,
+`nChartelAmount`,
+`nChartelMeal`,
+`nChartelYear`,
+`nChartelLateFeesPercentage`,
+`nArrearsAmount`,
+`dtArrearsFrom`,
+`dtArrearsTo`,
+`nChartelSalaryAmt`,
+`dtChartelSalaryFrom`,
+`dtChartelSalaryTo`,
+`nChartelBusinessDonationAmt`,
+`nChartelTotalAmount`,
+`nChartelRecieptNumber`,
+`nAuthRegionID`,
+`sCountryID`,
+`dtEntered`,
+`nEnteredBy`)
+SELECT sGBID,
+	36,
+	10,
+	sPaidUntil,
+	null,
+	46,
+	null,
+	null,
+	null,
+	null,
+	null,
+	null,
+	null,
+	null,
+	nAuthRegionID,
+	sCountryID,
+	dtEntered,
+	nEnteredBy 
+FROM ctadb.tblgreenbook WHERE sPaidUntil != '';
 
 INSERT INTO lnkgbrelation
 (
