@@ -31,38 +31,38 @@ import handleError from '../../../auth/_helpers/handleError';
 const useStyles = makeStyles({
   root: {
     height: '100%',
-    paddingBottom: 3,
-    paddingTop: 3,
+    paddingBottom: 0.01875,
+    paddingTop: 0.01875,
     flexGrow: 1,
     'label + &': {
-      marginTop: 3
+      marginTop: 1.5
     }
   },
   selectEmpty: {
-    marginTop: 1.5,
+    marginTop: 0.5,
   },
   formControl: {
-    margin: 2,
+    margin: 0.01875,
     width: '95%'
   },
   paper: {
-    padding: 2,
+    padding: 0.01875,
     textAlign: 'center'
   },
   textField: {
-    marginTop: 0.15,
-    marginBottom: 0.15
+    marginTop: 0.01875,
+    marginBottom: 0.01875
   },
   dateField: {
-    marginTop: 0.25,
-    marginBottom: 0.25
+    marginTop: 0.01875,
+    marginBottom: 0.01875
   },
   box: {
-    marginBottom: 1.5,
-    marginTop: 1.5
+    marginBottom: 0.01875,
+    marginTop: 0.01875
   },
   button: {
-    margin: 1,
+    margin: 0.01875
   },
   palette: {
     primary: {
@@ -202,7 +202,6 @@ export default function NewEntry(props) {
 
   const { register, handleSubmit, watch, errors } = useForm();
   const onSubmit = () => {
-    //e.preventDefault(); =>Not Required
     let greenbook = {
       sGBID,
       nAuthRegionID,
@@ -258,23 +257,24 @@ export default function NewEntry(props) {
       TBUSpouseName
     };
 
-    axios.post(`/Greenbook/AddGreenbook/`, greenbook)
-      .then(resp => {
-        if (resp.status === 200) {
-          history.push("/SarsoNewGBEntry");
-        }
-      })
-      .catch(error => {
-        handleError(error, history);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
+    console.table(greenbook);
+    // axios.post(`/Greenbook/AddGreenbook/`, greenbook)
+    //   .then(resp => {
+    //     if (resp.status === 200) {
+    //       history.push("/SarsoNewGBEntry");
+    //     }
+    //   })
+    //   .catch(error => {
+    //     handleError(error, history);
+    //   })
+    //   .then(release => {
+    //     //console.log(release); => udefined
+    //   });
   };
 
   return (
     <Container maxWidth="lg" disableGutters={true}><br />
-      <Typography variant="h4" gutterBottom>New Entry</Typography>
+      <Typography variant="h5" gutterBottom>New Entry - {sGBID}</Typography>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.box}>
         <Grid container className={classes.box}>
           <Grid item xs={12}>
@@ -289,8 +289,8 @@ export default function NewEntry(props) {
                 id="panel1a-header"
               >
                 <Typography
-                  className={"font-weight-bold font-size-md mb-1 text-black"}
-                >Greenbook Required Fields</Typography>
+                  className={"font-weight-bold font-size-sm mb-1 text-black"}
+                >Personal Information</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid item xs={6}>
@@ -304,7 +304,7 @@ export default function NewEntry(props) {
                         value={sGBID}
                         onChange={(e) => { setsGBID(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         inputRef={register({
                           required: true,
@@ -371,7 +371,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsFirstName(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         value={sFirstName}
                         required
@@ -386,7 +386,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsMiddleName(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
 
                         className={classes.textField}
                       />
@@ -400,7 +400,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsFamilyName(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                       />
                     </FormControl>
@@ -413,7 +413,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setTibetanName(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         required
                       />
@@ -427,7 +427,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setTBUPlaceOfBirth(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         required
                       />
@@ -441,7 +441,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setTBUOriginVillage(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         required
                       />
@@ -451,7 +451,7 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
-                          margin="normal"
+                          margin="dense"
                           id="id_dtDOB"
                           label="DOB"
                           format="MM/dd/yyyy"
@@ -518,7 +518,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsBirthPlace(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         required
                       />
@@ -530,7 +530,7 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
-                          margin="normal"
+                          margin="dense"
                           id="id_dtFormDate"
                           label="Sarso Form Date"
                           format="MM/dd/yyyy"
@@ -554,7 +554,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsFathersName(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         required
                         value={sFathersName}
@@ -569,7 +569,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setTBUFathersName(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         required
                       />
@@ -583,7 +583,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsFathersGBID(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                       />
                     </FormControl>
@@ -596,7 +596,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsMothersName(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         required
                       />
@@ -610,7 +610,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setTBUMothersName(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         required
                       />
@@ -624,7 +624,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsMothersGBID(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
 
                         className={classes.textField}
                       />
@@ -638,7 +638,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsAddress1(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         multiline={true}
                         rows={1}
@@ -655,7 +655,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsAddress2(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         multiline={true}
                         rows={1}
@@ -672,7 +672,7 @@ export default function NewEntry(props) {
                           type="text"
                           onChange={(e) => { setsCity(e.target.value); }}
                           fullWidth
-                          margin="normal"
+                          margin="dense"
                           className={classes.textField}
                         />
                       </FormControl>
@@ -685,7 +685,7 @@ export default function NewEntry(props) {
                           type="text"
                           onChange={(e) => { setsState(e.target.value); }}
                           fullWidth
-                          margin="normal"
+                          margin="dense"
                           className={classes.textField}
                           require
                         />
@@ -744,7 +744,7 @@ export default function NewEntry(props) {
                           type="text"
                           onChange={(e) => { setsPCode(e.target.value); }}
                           fullWidth
-                          margin="normal"
+                          margin="dense"
                           className={classes.textField}
                         />
                       </FormControl>
@@ -767,7 +767,7 @@ export default function NewEntry(props) {
                 id="panel1a-header"
               >
                 <Typography
-                  className={"font-weight-bold font-size-md mb-1 text-black"}
+                  className={"font-weight-bold font-size-sm mb-1 text-black"}
                 >Basic Personal Information</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
@@ -780,7 +780,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsAliasName(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         value={sAliasName}
                       />
@@ -795,7 +795,7 @@ export default function NewEntry(props) {
                           label="Gender"
                           type="text"
                           fullWidth
-                          margin="normal"
+                          margin="dense"
                           className={classes.textField}
                           onChange={(e) => { setsGender(e.target.value) }}
                         >
@@ -812,7 +812,7 @@ export default function NewEntry(props) {
                           type="number"
                           onChange={(e) => { setsPaidUntil(e.target.value); }}
                           fullWidth
-                          margin="normal"
+                          margin="dense"
                           className={classes.textField}
                         />
                       </FormControl>
@@ -869,7 +869,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsFstGreenBkNo(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         value={sFstGreenBkNo}
                         className={classes.textField}
                       />
@@ -926,7 +926,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsOtherDocuments(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         value={sOtherDocuments}
                         className={classes.textField}
                       />
@@ -941,7 +941,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsMarried(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                       >
                         <MenuItem value={"Y"}>Yes</MenuItem>
@@ -955,7 +955,7 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
-                          margin="normal"
+                          margin="dense"
                           id="id_dtValidityDate"
                           label="Validity Date"
                           format="MM/dd/yyyy"
@@ -1021,7 +1021,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsOriginVillage(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                       />
                     </FormControl>
@@ -1034,7 +1034,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsOldGreenBKNo(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                       />
                     </FormControl>
@@ -1047,7 +1047,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsResidenceNumber(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                       />
                     </FormControl>
@@ -1098,7 +1098,7 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
-                          margin="normal"
+                          margin="dense"
                           id="id_dtDeceased"
                           label="Deceased Date"
                           format="MM/dd/yyyy"
@@ -1130,7 +1130,7 @@ export default function NewEntry(props) {
                 id="panel1a-header"
               >
                 <Typography
-                  className={"font-weight-bold font-size-md mb-1 text-black"}
+                  className={"font-weight-bold font-size-sm mb-1 text-black"}
                 >Relation & Contact Details</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
@@ -1143,7 +1143,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsFathersID(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                       />
                     </FormControl>
@@ -1157,7 +1157,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsMothersID(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                       />
                     </FormControl>
@@ -1170,7 +1170,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsSpouseID(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                       />
                     </FormControl>
@@ -1183,7 +1183,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsSpouseGBID(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                       />
                     </FormControl>
@@ -1198,7 +1198,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setsSpouseName(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                       />
                     </FormControl>
@@ -1211,7 +1211,7 @@ export default function NewEntry(props) {
                         type="text"
                         onChange={(e) => { setTBUSpouseName(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                       />
                     </FormControl>
@@ -1225,7 +1225,7 @@ export default function NewEntry(props) {
                           type="text"
                           onChange={(e) => { setsFax(e.target.value); }}
                           fullWidth
-                          margin="normal"
+                          margin="dense"
                           className={classes.textField}
                         />
                       </FormControl>
@@ -1238,7 +1238,7 @@ export default function NewEntry(props) {
                           type="text"
                           onChange={(e) => { setsPhone(e.target.value); }}
                           fullWidth
-                          margin="normal"
+                          margin="dense"
                           className={classes.textField}
                         />
                       </FormControl>
@@ -1253,7 +1253,7 @@ export default function NewEntry(props) {
                         type="email"
                         onChange={(e) => { setsEmail(e.target.value); }}
                         fullWidth
-                        margin="normal"
+                        margin="dense"
                         className={classes.textField}
                         inputRef={register({
                           required: true

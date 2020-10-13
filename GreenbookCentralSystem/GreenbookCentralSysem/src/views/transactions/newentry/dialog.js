@@ -10,8 +10,6 @@ import {
   ExpansionPanelDetails
 
 } from '@material-ui/core';
-
-
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -34,7 +32,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export const EditDialog = (props) => {
-  //debugger
   const [Name, set] = useState(props.countryObj.countryName);
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
@@ -965,7 +962,7 @@ export const AddDialog = (props) => {
                 </ExpansionPanelDetails>
               </ExpansionPanel>
             </Grid>
-            {/* main Grid Closing */}
+            {/* Main Grid Closing */}
           </Grid>
         </DialogContentText>
       </DialogContent>

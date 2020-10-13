@@ -110,6 +110,7 @@ export default function SarsoNewGBEntry() {
       }
     },
     {
+      defaultSort: 'desc',
       field: "dtDate",
       title: "Date",
       cellStyle: {
