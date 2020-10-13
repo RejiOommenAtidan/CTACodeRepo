@@ -27,6 +27,7 @@ import {
 } from '@material-ui/pickers';
 import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
+import { sDateFormat } from '../../../config/commonConfig';
 
 const useStyles = makeStyles({
   root: {
@@ -100,18 +101,14 @@ const useStyles = makeStyles({
 
 export default function NewEntry(props) {
   const classes = useStyles();
-  const history = useHistory(); 
-  const [expanded, setExpanded] = React.useState('panel1');
-  const handleAccordionChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  let history = useHistory();
+  const [expanded, setExpanded] = React.useState('');
   const [lAuthRegion, setlAuthRegion] = useState([]);
   const [lCountry, setlCountry] = useState([]);
   const [lDOBApprox, setlDOBApprox] = useState([]);
   const [lOccupation, setlOccupation] = useState([]);
   const [lProvince, setlProvince] = useState([]);
   const [lQualification, setlQualification] = useState([]);
-
   const [sGBID, setsGBID] = useState('');
   const [nAuthRegionID, setnAuthRegionID] = useState('');
   const [sFirstName, setsFirstName] = useState('');
@@ -157,7 +154,7 @@ export default function NewEntry(props) {
   const [sBookIssued, setsBookIssued] = useState('');
   const [dtValidityDate, setdtValidityDate] = useState(null);
   const [sPaidUntil, setsPaidUntil] = useState('');
-  const [sEnteredDateTime, setsEnteredDateTime] = useState('');
+  // const [sEnteredDateTime, setsEnteredDateTime] = useState('');
   const [TibetanName, setTibetanName] = useState('');
   const [TBUPlaceOfBirth, setTBUPlaceOfBirth] = useState('');
   const [TBUOriginVillage, setTBUOriginVillage] = useState('');
@@ -165,42 +162,12 @@ export default function NewEntry(props) {
   const [TBUMothersName, setTBUMothersName] = useState('');
   const [TBUSpouseName, setTBUSpouseName] = useState('');
 
-  useEffect(() => {
-    axios.get(`/Greenbook/GetGBDataNewEntry/Id=` + props.match.params.FORMNO)
-      .then(resp => {
-        if (resp.status === 200) {
-          //Masters
-          setlAuthRegion(resp.data.lAuthRegion);
-          setlCountry(resp.data.lCountry);
-          setlDOBApprox(resp.data.lDOBApprox);
-          setlOccupation(resp.data.lOccupation);
-          setlProvince(resp.data.lProvince);
-          setlQualification(resp.data.lQualification);
-          //Binded Fields
-          setnAuthRegionID(resp.data.oMadeb.nAuthRegionID);
-          //GBID
-          setsGBID(resp.data.oMadeb.sGBID);
-          //Name
-          setsFirstName(resp.data.oMadeb.sName);
-          //Father's name
-          setsFathersName(resp.data.oMadeb.sFathersName);
-          //Docs Attached
-          setsOtherDocuments(resp.data.oMadeb.sFathersName);
-          //Current GB Serial Number
-          setsFstGreenBkNo(resp.data.oMadeb.nCurrentGBSno);
-          //sAlias
-          setsAliasName(resp.data.oMadeb.sAlias);
-        }
-      })
-      .catch(error => {
-        handleError(error, history);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-  }, []);
+  const handleAccordionChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm();
+
   const onSubmit = () => {
     let greenbook = {
       sGBID,
@@ -248,7 +215,7 @@ export default function NewEntry(props) {
       sBookIssued,
       dtValidityDate,
       sPaidUntil,
-      sEnteredDateTime,
+      // sEnteredDateTime,
       TibetanName,
       TBUPlaceOfBirth,
       TBUOriginVillage,
@@ -271,6 +238,37 @@ export default function NewEntry(props) {
     //     //console.log(release); => udefined
     //   });
   };
+
+  useEffect(() => {
+    axios.get(`/Greenbook/GetGBDataNewEntry/Id=` + props.match.params.FORMNO)
+      .then(resp => {
+        if (resp.status === 200) {
+          //Masters
+          setlAuthRegion(resp.data.lAuthRegion);
+          setlCountry(resp.data.lCountry);
+          setlDOBApprox(resp.data.lDOBApprox);
+          setlOccupation(resp.data.lOccupation);
+          setlProvince(resp.data.lProvince);
+          setlQualification(resp.data.lQualification);
+          //Binded Fields
+          setnAuthRegionID(resp.data.oMadeb.nAuthRegionID);
+          setsGBID(resp.data.oMadeb.sGBID);
+          setsFirstName(resp.data.oMadeb.sName);
+          setsFathersName(resp.data.oMadeb.sFathersName);
+          setsOtherDocuments(resp.data.oMadeb.sDocumentAttached);
+          setsFstGreenBkNo(resp.data.oMadeb.nCurrentGBSno);
+          setsAliasName(resp.data.oMadeb.sAlias);
+          setdtFormDate(resp.data.oMadeb.dtReceived);
+          setExpanded('panel1');
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  }, []);
 
   return (
     <Container maxWidth="lg" disableGutters={true}><br />
@@ -310,29 +308,31 @@ export default function NewEntry(props) {
                           required: true,
                           maxLength: 9
                         })}
-                        required
+                        InputProps={{
+                          readOnly: true
+                        }}
                       />
-                      {_.get("name_sGBID.type", errors) === "required" && (
+                      {/*{_.get("name_sGBID.type", errors) === "required" && (
                         <p>This field is required</p>
                       )}
                       {_.get("name_sGBID.type", errors) === "maxLength" && (
                         <p>GBID cannot exceed 9 characters</p>
-                      )}
+                      )}*/}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12} >
                     <FormControl className={classes.formControl}>
                       <Autocomplete
+                        value={lAuthRegion.find(authRegion => authRegion.id === nAuthRegionID)}
                         openOnFocus
                         clearOnEscape
                         onChange={
                           (e, value) => {
                             if (value !== null) {
-                              console.log(value.id);
-                              setnAuthRegionID(value.id);
+                              setnAuthRegionID(value.id.toString());
                             }
                             else {
-                              setnAuthRegionID(0);
+                              setnAuthRegionID("0");
                             }
                           }
                         }
@@ -451,11 +451,14 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+                          variant="dialog"
+                          openTo="year"
+                          views={["year", "month", "date"]}
                           margin="dense"
                           id="id_dtDOB"
                           label="DOB"
-                          format="MM/dd/yyyy"
-                          onChange={(date) => { setdtDOB(date) }}
+                          format={sDateFormat}
+                          onChange={date => { setdtDOB(date) }}
                           value={dtDOB}
                           KeyboardButtonProps={{
                             'aria-label': 'change date',
@@ -475,11 +478,10 @@ export default function NewEntry(props) {
                         onChange={
                           (e, value) => {
                             if (value !== null) {
-                              console.log(value.id);
-                              setsBirthCountryID(value.id.toString());
+                              setsBirthCountryID(value.sCountryID);
                             }
                             else {
-                              setsBirthCountryID("0");
+                              setsBirthCountryID("");
                             }
                           }
                         }
@@ -530,11 +532,14 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+                          variant="dialog"
+                          openTo="year"
+                          views={["year", "month", "date"]}
                           margin="dense"
                           id="id_dtFormDate"
                           label="Sarso Form Date"
-                          format="MM/dd/yyyy"
-                          onChange={(date) => { setdtFormDate(date) }}
+                          format={sDateFormat}
+                          onChange={date => { setdtFormDate(date) }}
                           value={dtFormDate}
                           KeyboardButtonProps={{
                             'aria-label': 'change date',
@@ -701,11 +706,10 @@ export default function NewEntry(props) {
                           onChange={
                             (e, value) => {
                               if (value !== null) {
-                                console.log(value.id);
-                                setsCountryID(value.id.toString());
+                                setsCountryID(value.sCountryID);
                               }
                               else {
-                                setsCountryID("0");
+                                setsCountryID("");
                               }
                             }
                           }
@@ -809,7 +813,6 @@ export default function NewEntry(props) {
                         <TextField
                           id="id_sPaidUntil"
                           label="Paid Until"
-                          type="number"
                           onChange={(e) => { setsPaidUntil(e.target.value); }}
                           fullWidth
                           margin="dense"
@@ -826,7 +829,6 @@ export default function NewEntry(props) {
                         onChange={
                           (e, value) => {
                             if (value !== null) {
-                              console.log(value.id);
                               setsOriginProvinceID(value.id.toString());
                             }
                             else {
@@ -883,11 +885,10 @@ export default function NewEntry(props) {
                         onChange={
                           (e, value) => {
                             if (value !== null) {
-                              console.log(value.id);
-                              setsQualificationID(value.id.toString());
+                              setsQualificationID(value.sQualificationID);
                             }
                             else {
-                              setsQualificationID("0");
+                              setsQualificationID("");
                             }
                           }
                         }
@@ -955,11 +956,14 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+                          variant="dialog"
+                          openTo="year"
+                          views={["year", "month", "date"]}
                           margin="dense"
                           id="id_dtValidityDate"
                           label="Validity Date"
-                          format="MM/dd/yyyy"
-                          onChange={(date) => { setdtValidityDate(date) }}
+                          format={sDateFormat}
+                          onChange={date => { setdtValidityDate(date) }}
                           value={dtDeceased}
                           KeyboardButtonProps={{
                             'aria-label': 'change date',
@@ -978,11 +982,10 @@ export default function NewEntry(props) {
                         onChange={
                           (e, value) => {
                             if (value !== null) {
-                              console.log(value);
-                              setsDOBApprox(value.id.toString());
+                              setsDOBApprox(value.sDOBApproxID);
                             }
                             else {
-                              setsDOBApprox("0");
+                              setsDOBApprox("");
                             }
                           }
                         }
@@ -1098,11 +1101,14 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+                          variant="dialog"
+                          openTo="year"
+                          views={["year", "month", "date"]}
                           margin="dense"
                           id="id_dtDeceased"
                           label="Deceased Date"
-                          format="MM/dd/yyyy"
-                          onChange={(date) => { setdtDeceased(date) }}
+                          format={sDateFormat}
+                          onChange={date => { setdtDeceased(date) }}
                           value={dtDeceased}
                           KeyboardButtonProps={{
                             'aria-label': 'change date',

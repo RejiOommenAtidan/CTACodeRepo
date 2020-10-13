@@ -1,37 +1,35 @@
-import React, { useState } from 'react';
-import {
-  Grid,
-  Button,
-  FormControl,
-  TextField,
-  Typography,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails
+// import React, { useState } from 'react';
+// import {
+//   Grid,
+//   Button,
+//   FormControl,
+//   TextField,
+//   Typography,
+//   ExpansionPanel,
+//   ExpansionPanelSummary,
+//   ExpansionPanelDetails
+// } from '@material-ui/core';
+// import InputLabel from '@material-ui/core/InputLabel';
+// import Select from '@material-ui/core/Select';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import Dialog from '@material-ui/core/Dialog';
+// import DialogActions from '@material-ui/core/DialogActions';
+// import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogTitle from '@material-ui/core/DialogTitle';
+// import Slide from '@material-ui/core/Slide';
+// import DateFnsUtils from '@date-io/date-fns';
+// import {
+//   MuiPickersUtilsProvider,
+//   KeyboardDatePicker,
+// } from '@material-ui/pickers';
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-} from '@material-ui/core';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
+{/*const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
-});
+});*/}
 
-export const EditDialog = (props) => {
+{/*export const EditDialog = (props) => {
   const [Name, set] = useState(props.countryObj.countryName);
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
@@ -74,10 +72,9 @@ export const EditDialog = (props) => {
       </DialogActions>
     </Dialog>
   );
-}
+}*/}
 
-export const DeleteDialog = (props) => {
-  console.log("Delete Dialog");
+{/*export const DeleteDialog = (props) => {
   return (
     <Dialog
       open={props.deleteModal}
@@ -100,9 +97,9 @@ export const DeleteDialog = (props) => {
       </DialogActions>
     </Dialog>
   );
-}
+}*/}
 
-export const AddDialog = (props) => {
+{/*export const AddDialog = (props) => {
   //Accordion
   const [expanded, setExpanded] = React.useState(false);
   const handleAccordionChange = (panel) => (event, isExpanded) => {
@@ -820,7 +817,7 @@ export const AddDialog = (props) => {
                 </ExpansionPanelDetails>
               </ExpansionPanel>
             </Grid>
-            {/*Relation Details*/}
+
             <Grid item xs={12}>
               <ExpansionPanel
                 TransitionProps={{ unmountOnExit: true }}
@@ -962,7 +959,8 @@ export const AddDialog = (props) => {
                 </ExpansionPanelDetails>
               </ExpansionPanel>
             </Grid>
-            {/* Main Grid Closing */}
+
+
           </Grid>
         </DialogContentText>
       </DialogContent>
@@ -973,5 +971,5 @@ export const AddDialog = (props) => {
       </DialogActions>
     </Dialog>
   );
-}
+}*/}
 

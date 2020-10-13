@@ -27,6 +27,7 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import handleError from '../../../auth/_helpers/handleError';
+import { sDateFormat } from '../../../config/commonConfig';
 
 const useStyles = makeStyles({
     root: {
@@ -101,12 +102,7 @@ const useStyles = makeStyles({
 export default function EditEntry(props) {
     const classes = useStyles();
     let history = useHistory();
-    //Accordion
-    const [expanded, setExpanded] = React.useState('panel1');
-    const handleAccordionChange = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
-    };
-
+    const [expanded, setExpanded] = React.useState('');
     //Array from API
     const [lAuthRegion, setlAuthRegion] = useState([]);
     const [lCountry, setlCountry] = useState([]);
@@ -114,7 +110,6 @@ export default function EditEntry(props) {
     const [lOccupation, setlOccupation] = useState([]);
     const [lProvince, setlProvince] = useState([]);
     const [lQualification, setlQualification] = useState([]);
-
     //VARS to track
     const [Id, setnId] = useState('');
     const [sGBID, setsGBID] = useState('');
@@ -170,6 +165,10 @@ export default function EditEntry(props) {
     const [TBUMothersName, setTBUMothersName] = useState('');
     const [TBUSpouseName, setTBUSpouseName] = useState('');
 
+    const handleAccordionChange = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
+
     useEffect(() => {
         axios.get(`/Greenbook/GetGBDataNewEntry/Id=1001`)
             .then(resp => {
@@ -181,72 +180,72 @@ export default function EditEntry(props) {
                     setlOccupation(resp.data.lOccupation);
                     setlProvince(resp.data.lProvince);
                     setlQualification(resp.data.lQualification);
-                }
-            })
-            .catch(error => {
-                handleError(error, history);
-            })
-            .then(release => {
-                //console.log(release); => udefined
-            });
-
-        //Get GB Details
-        axios.get(`/Greenbook/GetGreenbook/Id=` + props.match.params.GBID.toString())
-            .then(resp => {
-                if (resp.status === 200) {
-                    setnId(resp.data.id);
-                    setsGBID(resp.data.sGBID);
-                    setnAuthRegionID(resp.data.nAuthRegionID);
-                    setsFirstName(resp.data.sFirstName);
-                    setsMiddleName(resp.data.sMiddleName);
-                    setsFamilyName(resp.data.sFamilyName);
-                    setsGender(resp.data.sGender);
-                    setdtDOB(resp.data.dtDOB);
-                    setsDOBApprox(resp.data.sDOBApprox);
-                    setsBirthPlace(resp.data.sBirthPlace);
-                    setsBirthCountryID(resp.data.sBirthCountryID);
-                    setsOriginVillage(resp.data.sOriginVillage);
-                    setsOriginProvinceID(resp.data.sOriginProvinceID);
-                    setsMarried(resp.data.sMarried);
-                    setsOtherDocuments(resp.data.sOtherDocuments);
-                    setsResidenceNumber(resp.data.sResidenceNumber);
-                    setsQualificationID(resp.data.sQualificationID);
-                    setsOccupationID(resp.data.sOccupationID);
-                    setsAliasName(resp.data.sAliasName);
-                    setsOldGreenBKNo(resp.data.sOldGreenBKNo);
-                    setsFstGreenBkNo(resp.data.sFstGreenBkNo);
-                    setdtFormDate(resp.data.dtFormDate);
-                    setsFathersName(resp.data.sFathersName);
-                    setsFathersID(resp.data.sFathersID);
-                    setsFathersGBID(resp.data.sFathersGBID);
-                    setsMothersName(resp.data.sMothersName);
-                    setsMothersID(resp.data.sMothersID);
-                    setsMothersGBID(resp.data.sMothersGBID);
-                    setsSpouseName(resp.data.sSpouseName);
-                    setsSpouseID(resp.data.sSpouseID);
-                    setsSpouseGBID(resp.data.sSpouseGBID);
-                    setnChildrenM(resp.data.nChildrenM);
-                    setnChildrenF(resp.data.nChildrenF);
-                    setsAddress1(resp.data.sAddress1);
-                    setsAddress2(resp.data.sAddress2);
-                    setsCity(resp.data.sCity);
-                    setsState(resp.data.sState);
-                    setsPCode(resp.data.sPCode);
-                    setsCountryID(resp.data.sCountryID);
-                    setsEmail(resp.data.sEmail);
-                    setsPhone(resp.data.sPhone);
-                    setsFax(resp.data.sFax);
-                    setdtDeceased(resp.data.dtDeceased);
-                    setsBookIssued(resp.data.sBookIssued);
-                    setdtValidityDate(resp.data.dtValidityDate);
-                    setsPaidUntil(resp.data.sPaidUntil);
-                    setsEnteredDateTime(resp.data.sEnteredDateTime);
-                    setTibetanName(resp.data.TibetanName);
-                    setTBUPlaceOfBirth(resp.data.TBUPlaceOfBirth);
-                    setTBUOriginVillage(resp.data.TBUOriginVillage);
-                    setTBUFathersName(resp.data.TBUFathersName);
-                    setTBUMothersName(resp.data.TBUMothersName);
-                    setTBUSpouseName(resp.data.TBUSpouseName);
+                    //Get GB Details
+                    axios.get(`/Greenbook/GetGreenbook/Id=` + props.match.params.GBID.toString())
+                        .then(resp => {
+                            if (resp.status === 200) {
+                                setnId(resp.data.id);
+                                setsGBID(resp.data.sGBID);
+                                setnAuthRegionID(resp.data.nAuthRegionID);
+                                setsFirstName(resp.data.sFirstName);
+                                setsMiddleName(resp.data.sMiddleName);
+                                setsFamilyName(resp.data.sFamilyName);
+                                setsGender(resp.data.sGender);
+                                setdtDOB(resp.data.dtDOB);
+                                setsDOBApprox(resp.data.sDOBApprox);
+                                setsBirthPlace(resp.data.sBirthPlace);
+                                setsBirthCountryID(resp.data.sBirthCountryID);
+                                setsOriginVillage(resp.data.sOriginVillage);
+                                setsOriginProvinceID(resp.data.sOriginProvinceID);
+                                setsMarried(resp.data.sMarried);
+                                setsOtherDocuments(resp.data.sOtherDocuments);
+                                setsResidenceNumber(resp.data.sResidenceNumber);
+                                setsQualificationID(resp.data.sQualificationID);
+                                setsOccupationID(resp.data.sOccupationID);
+                                setsAliasName(resp.data.sAliasName);
+                                setsOldGreenBKNo(resp.data.sOldGreenBKNo);
+                                setsFstGreenBkNo(resp.data.sFstGreenBkNo);
+                                setdtFormDate(resp.data.dtFormDate);
+                                setsFathersName(resp.data.sFathersName);
+                                setsFathersID(resp.data.sFathersID);
+                                setsFathersGBID(resp.data.sFathersGBID);
+                                setsMothersName(resp.data.sMothersName);
+                                setsMothersID(resp.data.sMothersID);
+                                setsMothersGBID(resp.data.sMothersGBID);
+                                setsSpouseName(resp.data.sSpouseName);
+                                setsSpouseID(resp.data.sSpouseID);
+                                setsSpouseGBID(resp.data.sSpouseGBID);
+                                setnChildrenM(resp.data.nChildrenM);
+                                setnChildrenF(resp.data.nChildrenF);
+                                setsAddress1(resp.data.sAddress1);
+                                setsAddress2(resp.data.sAddress2);
+                                setsCity(resp.data.sCity);
+                                setsState(resp.data.sState);
+                                setsPCode(resp.data.sPCode);
+                                setsCountryID(resp.data.sCountryID);
+                                setsEmail(resp.data.sEmail);
+                                setsPhone(resp.data.sPhone);
+                                setsFax(resp.data.sFax);
+                                setdtDeceased(resp.data.dtDeceased);
+                                setsBookIssued(resp.data.sBookIssued);
+                                setdtValidityDate(resp.data.dtValidityDate);
+                                setsPaidUntil(resp.data.sPaidUntil);
+                                setsEnteredDateTime(resp.data.sEnteredDateTime);
+                                setTibetanName(resp.data.TibetanName);
+                                setTBUPlaceOfBirth(resp.data.TBUPlaceOfBirth);
+                                setTBUOriginVillage(resp.data.TBUOriginVillage);
+                                setTBUFathersName(resp.data.TBUFathersName);
+                                setTBUMothersName(resp.data.TBUMothersName);
+                                setTBUSpouseName(resp.data.TBUSpouseName);
+                                setExpanded("panel1");
+                            }
+                        })
+                        .catch(error => {
+                            handleError(error, history);
+                        })
+                        .then(release => {
+                            //console.log(release); => udefined
+                        });
                 }
             })
             .catch(error => {
@@ -259,7 +258,6 @@ export default function EditEntry(props) {
 
     const { register, handleSubmit, watch, errors } = useForm();
     const onSubmit = () => {
-        //Throws Error, Maybe handled by react-hook-forms itself
         //e.preventDefault();
         let greenbook = {
             Id,
@@ -316,7 +314,6 @@ export default function EditEntry(props) {
             TBUMothersName,
             TBUSpouseName
         };
-
         axios.post(`/Greenbook/EditGreenbook/Id=` + props.match.params.GBID.toString(), greenbook)
             .then(resp => {
                 if (resp.status === 200) {
@@ -333,7 +330,7 @@ export default function EditEntry(props) {
 
     return (
         <Container maxWidth="lg" disableGutters={true}><br />
-            <Typography variant="h4" gutterBottom>Edit Entry</Typography>
+            <Typography variant="h4" gutterBottom>Edit Greenbook - {sGBID}</Typography>
             <form onSubmit={handleSubmit(onSubmit)} className={classes.box}>
                 <Grid container className={classes.box}>
                     <Grid item xs={12}>
@@ -348,8 +345,7 @@ export default function EditEntry(props) {
                                 id="panel1a-header"
                             >
                                 <Typography
-                                    //className={classes.heading}
-                                    className={"font-weight-bold font-size-md mb-1 text-black"}>Greenbook Required Fields</Typography>
+                                    className={"font-weight-bold font-size-md mb-1 text-black"}>Personal Information</Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
                                 <Grid item xs={6}>
@@ -363,36 +359,38 @@ export default function EditEntry(props) {
                                                 value={sGBID}
                                                 onChange={(e) => { setsGBID(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                                 inputRef={register({
                                                     required: true,
                                                     maxLength: 9
                                                 })}
+                                                InputProps={{
+                                                    readOnly: true
+                                                }}
                                                 required
                                             />
-                                            {_.get("name_sGBID.type", errors) === "required" && (
+                                            {/*{_.get("name_sGBID.type", errors) === "required" && (
                                                 <p>This field is required</p>
                                             )}
                                             {_.get("name_sGBID.type", errors) === "maxLength" && (
                                                 <p>GBID cannot exceed 9 characters</p>
-                                            )}
+                                            )}*/}
                                         </FormControl>
                                     </Grid>
                                     <Grid item xs={12} >
                                         <FormControl className={classes.formControl}>
                                             <Autocomplete
-                                                value={lAuthRegion.find(authRegion => authRegion.id == nAuthRegionID)}
+                                                value={lAuthRegion.find(authRegion => authRegion.id === nAuthRegionID)}
                                                 openOnFocus
                                                 clearOnEscape
                                                 onChange={
                                                     (e, value) => {
                                                         if (value !== null) {
-                                                            console.log(value);
                                                             setnAuthRegionID(value.id);
                                                         }
                                                         else {
-                                                            setnAuthRegionID(0);
+                                                            setnAuthRegionID("0");
                                                         }
                                                     }
                                                 }
@@ -416,7 +414,7 @@ export default function EditEntry(props) {
                                                         variant="standard"
                                                         inputProps={{
                                                             ...params.inputProps,
-                                                            autoComplete: 'new-password', // disable autocomplete and autofill
+                                                            autoComplete: 'new-password'
                                                         }}
                                                     />
                                                 )}
@@ -431,7 +429,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsFirstName(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                                 value={sFirstName}
                                                 required
@@ -446,7 +444,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsMiddleName(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 value={sMiddleName}
                                                 className={classes.textField}
                                             />
@@ -460,7 +458,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsFamilyName(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 value={sFamilyName}
                                                 className={classes.textField}
                                             />
@@ -474,7 +472,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setTibetanName(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 value={TibetanName}
                                                 className={classes.textField}
                                                 required
@@ -489,7 +487,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setTBUPlaceOfBirth(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 value={TBUPlaceOfBirth}
                                                 className={classes.textField}
                                                 required
@@ -504,7 +502,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setTBUOriginVillage(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                                 required
                                                 value={TBUOriginVillage}
@@ -515,10 +513,13 @@ export default function EditEntry(props) {
                                         <FormControl className={classes.formControl}>
                                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                 <KeyboardDatePicker
-                                                    margin="normal"
+                                                    variant="dialog"
+                                                    openTo="year"
+                                                    views={["year", "month", "date"]}
+                                                    margin="dense"
                                                     id="id_dtDOB"
                                                     label="DOB"
-                                                    format="MM/dd/yyyy"
+                                                    format={sDateFormat}
                                                     onChange={(date) => { setdtDOB(date) }}
                                                     value={dtDOB}
                                                     KeyboardButtonProps={{
@@ -540,11 +541,11 @@ export default function EditEntry(props) {
                                                 onChange={
                                                     (e, value) => {
                                                         if (value !== null) {
-                                                            console.log(value.id);
-                                                            setsBirthCountryID(value.id.toString());
+
+                                                            setsBirthCountryID(value.sCountryID);
                                                         }
                                                         else {
-                                                            setsBirthCountryID("0");
+                                                            setsBirthCountryID("");
                                                         }
                                                     }
                                                 }
@@ -568,7 +569,7 @@ export default function EditEntry(props) {
                                                         variant="standard"
                                                         inputProps={{
                                                             ...params.inputProps,
-                                                            autoComplete: 'new-password', // disable autocomplete and autofill
+                                                            autoComplete: 'new-password'
                                                         }}
                                                     />
                                                 )}
@@ -584,7 +585,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsBirthPlace(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                                 required
                                             />
@@ -596,7 +597,10 @@ export default function EditEntry(props) {
                                         <FormControl className={classes.formControl}>
                                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                 <KeyboardDatePicker
-                                                    margin="normal"
+                                                    variant="dialog"
+                                                    openTo="year"
+                                                    views={["year", "month", "date"]}
+                                                    margin="dense"
                                                     id="id_dtFormDate"
                                                     label="Sarso Form Date"
                                                     format="MM/dd/yyyy"
@@ -621,7 +625,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsFathersName(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                                 required
                                                 value={sFathersName}
@@ -637,7 +641,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setTBUFathersName(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                                 required
                                             />
@@ -652,7 +656,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsFathersGBID(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                             />
                                         </FormControl>
@@ -666,7 +670,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsMothersName(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                                 required
                                             />
@@ -681,7 +685,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setTBUMothersName(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                                 required
                                             />
@@ -696,7 +700,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsMothersGBID(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
 
                                                 className={classes.textField}
                                             />
@@ -711,7 +715,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsAddress1(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                                 multiline={true}
                                                 rows={1}
@@ -729,7 +733,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsAddress2(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                                 multiline={true}
                                                 rows={1}
@@ -747,7 +751,7 @@ export default function EditEntry(props) {
                                                     type="text"
                                                     onChange={(e) => { setsCity(e.target.value); }}
                                                     fullWidth
-                                                    margin="normal"
+                                                    margin="dense"
                                                     className={classes.textField}
                                                 />
                                             </FormControl>
@@ -761,7 +765,7 @@ export default function EditEntry(props) {
                                                     type="text"
                                                     onChange={(e) => { setsState(e.target.value); }}
                                                     fullWidth
-                                                    margin="normal"
+                                                    margin="dense"
                                                     className={classes.textField}
                                                     require
                                                 />
@@ -778,11 +782,10 @@ export default function EditEntry(props) {
                                                     onChange={
                                                         (e, value) => {
                                                             if (value !== null) {
-                                                                console.log(value.id);
-                                                                setsCountryID(value.id.toString());
+                                                                setsCountryID(value.sCountryID);
                                                             }
                                                             else {
-                                                                setsCountryID("0");
+                                                                setsCountryID("");
                                                             }
                                                         }
                                                     }
@@ -806,7 +809,7 @@ export default function EditEntry(props) {
                                                             variant="standard"
                                                             inputProps={{
                                                                 ...params.inputProps,
-                                                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                                                autoComplete: 'new-password'
                                                             }}
                                                         />
                                                     )}
@@ -822,7 +825,7 @@ export default function EditEntry(props) {
                                                     type="text"
                                                     onChange={(e) => { setsPCode(e.target.value); }}
                                                     fullWidth
-                                                    margin="normal"
+                                                    margin="dense"
                                                     className={classes.textField}
                                                 />
                                             </FormControl>
@@ -846,7 +849,6 @@ export default function EditEntry(props) {
                             >
                                 <Typography
                                     className={"font-weight-bold font-size-md mb-1 text-black"}
-                                //className={classes.heading}
                                 >Basic Personal Information</Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
@@ -860,7 +862,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsAliasName(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                                 value={sAliasName}
                                             />
@@ -876,12 +878,12 @@ export default function EditEntry(props) {
                                                     label="Gender"
                                                     type="text"
                                                     fullWidth
-                                                    margin="normal"
+                                                    margin="dense"
                                                     className={classes.textField}
                                                     onChange={(e) => { setsGender(e.target.value) }}
                                                 >
-                                                    <MenuItem value={"Male"}>Male</MenuItem>
-                                                    <MenuItem value={"Female"}>Female</MenuItem>
+                                                    <MenuItem value={"M"}>Male</MenuItem>
+                                                    <MenuItem value={"F"}>Female</MenuItem>
                                                 </Select>
                                             </FormControl>
                                         </Grid>
@@ -894,7 +896,7 @@ export default function EditEntry(props) {
                                                     type="text"
                                                     onChange={(e) => { setsPaidUntil(e.target.value); }}
                                                     fullWidth
-                                                    margin="normal"
+                                                    margin="dense"
                                                     className={classes.textField}
                                                 />
                                             </FormControl>
@@ -909,7 +911,6 @@ export default function EditEntry(props) {
                                                 onChange={
                                                     (e, value) => {
                                                         if (value !== null) {
-                                                            console.log(value.id);
                                                             setsOriginProvinceID(value.id.toString());
                                                         }
                                                         else {
@@ -937,7 +938,7 @@ export default function EditEntry(props) {
                                                         variant="standard"
                                                         inputProps={{
                                                             ...params.inputProps,
-                                                            autoComplete: 'new-password', // disable autocomplete and autofill
+                                                            autoComplete: 'new-password'
                                                         }}
                                                     />
                                                 )}
@@ -953,7 +954,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsFstGreenBkNo(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 value={sFstGreenBkNo}
                                                 className={classes.textField}
                                             />
@@ -968,11 +969,10 @@ export default function EditEntry(props) {
                                                 onChange={
                                                     (e, value) => {
                                                         if (value !== null) {
-                                                            console.log(value.id);
-                                                            setsQualificationID(value.id.toString());
+                                                            setsQualificationID(value.sQualificationID);
                                                         }
                                                         else {
-                                                            setsQualificationID("0");
+                                                            setsQualificationID("");
                                                         }
                                                     }
                                                 }
@@ -996,7 +996,7 @@ export default function EditEntry(props) {
                                                         variant="standard"
                                                         inputProps={{
                                                             ...params.inputProps,
-                                                            autoComplete: 'new-password', // disable autocomplete and autofill
+                                                            autoComplete: 'new-password'
                                                         }}
                                                     />
                                                 )}
@@ -1012,7 +1012,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsOtherDocuments(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 value={sOtherDocuments}
                                                 className={classes.textField}
                                             />
@@ -1028,11 +1028,11 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsMarried(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                             >
-                                                <MenuItem value={"Yes"}>Yes</MenuItem>
-                                                <MenuItem value={"No"}>No</MenuItem>
+                                                <MenuItem value={"Y"}>Yes</MenuItem>
+                                                <MenuItem value={"N"}>No</MenuItem>
                                             </Select>
                                         </FormControl>
                                     </Grid>
@@ -1042,7 +1042,10 @@ export default function EditEntry(props) {
                                         <FormControl className={classes.formControl}>
                                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                 <KeyboardDatePicker
-                                                    margin="normal"
+                                                    variant="dialog"
+                                                    openTo="year"
+                                                    views={["year", "month", "date"]}
+                                                    margin="dense"
                                                     id="id_dtValidityDate"
                                                     label="Validity Date"
                                                     format="MM/dd/yyyy"
@@ -1066,11 +1069,10 @@ export default function EditEntry(props) {
                                                 onChange={
                                                     (e, value) => {
                                                         if (value !== null) {
-                                                            console.log(value.id);
-                                                            setsDOBApprox(value.id.toString());
+                                                            setsDOBApprox(value.sDOBApproxID);
                                                         }
                                                         else {
-                                                            setsDOBApprox("0");
+                                                            setsDOBApprox("");
                                                         }
                                                     }
                                                 }
@@ -1094,7 +1096,7 @@ export default function EditEntry(props) {
                                                         variant="standard"
                                                         inputProps={{
                                                             ...params.inputProps,
-                                                            autoComplete: 'new-password', // disable autocomplete and autofill
+                                                            autoComplete: 'new-password'
                                                         }}
                                                     />
                                                 )}
@@ -1110,7 +1112,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsOriginVillage(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                             />
                                         </FormControl>
@@ -1124,7 +1126,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsOldGreenBKNo(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
 
                                                 className={classes.textField}
                                             />
@@ -1139,7 +1141,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsResidenceNumber(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                             />
                                         </FormControl>
@@ -1154,7 +1156,6 @@ export default function EditEntry(props) {
                                                 onChange={
                                                     (e, value) => {
                                                         if (value !== null) {
-                                                            console.log(value.id);
                                                             setsOccupationID(value.id.toString());
                                                         }
                                                         else {
@@ -1182,7 +1183,7 @@ export default function EditEntry(props) {
                                                         variant="standard"
                                                         inputProps={{
                                                             ...params.inputProps,
-                                                            autoComplete: 'new-password', // disable autocomplete and autofill
+                                                            autoComplete: 'new-password'
                                                         }}
                                                     />
                                                 )}
@@ -1193,7 +1194,10 @@ export default function EditEntry(props) {
                                         <FormControl className={classes.formControl}>
                                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                 <KeyboardDatePicker
-                                                    margin="normal"
+                                                    variant="dialog"
+                                                    openTo="year"
+                                                    views={["year", "month", "date"]}
+                                                    margin="dense"
                                                     id="id_dtDeceased"
                                                     label="Deceased Date"
                                                     format="MM/dd/yyyy"
@@ -1226,7 +1230,6 @@ export default function EditEntry(props) {
                             >
                                 <Typography
                                     className={"font-weight-bold font-size-md mb-1 text-black"}
-                                //className={classes.heading}
                                 >Relation & Contact Details</Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
@@ -1240,7 +1243,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsFathersID(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                             />
                                         </FormControl>
@@ -1255,7 +1258,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsMothersID(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                             />
                                         </FormControl>
@@ -1269,7 +1272,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsSpouseID(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                             />
                                         </FormControl>
@@ -1283,7 +1286,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsSpouseGBID(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                             />
                                         </FormControl>
@@ -1299,7 +1302,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setsSpouseName(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                             />
                                         </FormControl>
@@ -1313,7 +1316,7 @@ export default function EditEntry(props) {
                                                 type="text"
                                                 onChange={(e) => { setTBUSpouseName(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                             />
                                         </FormControl>
@@ -1328,7 +1331,7 @@ export default function EditEntry(props) {
                                                     type="text"
                                                     onChange={(e) => { setsFax(e.target.value); }}
                                                     fullWidth
-                                                    margin="normal"
+                                                    margin="dense"
                                                     className={classes.textField}
                                                 />
                                             </FormControl>
@@ -1342,7 +1345,7 @@ export default function EditEntry(props) {
                                                     type="text"
                                                     onChange={(e) => { setsPhone(e.target.value); }}
                                                     fullWidth
-                                                    margin="normal"
+                                                    margin="dense"
                                                     className={classes.textField}
                                                 />
                                             </FormControl>
@@ -1358,7 +1361,7 @@ export default function EditEntry(props) {
                                                 type="email"
                                                 onChange={(e) => { setsEmail(e.target.value); }}
                                                 fullWidth
-                                                margin="normal"
+                                                margin="dense"
                                                 className={classes.textField}
                                                 inputRef={register({
                                                     required: true
@@ -1382,7 +1385,7 @@ export default function EditEntry(props) {
                                 style={{ marginRight: "10px" }}
                             >Save</Button>
                             <Button variant="outlined"
-                                onClick={() => { props.history.push('/Home') }}
+                                onClick={() => { history.push('/Home') }}
                             >Cancel</Button>
                         </Grid>
                     </Grid>
