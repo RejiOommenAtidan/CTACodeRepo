@@ -17,8 +17,7 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 
 export const sSnackbarAddMessage = "Record added successfully";
 export const sSnackbarUpdateMessage = "Record updated successfully";
-
-export const sDateFormat = "dd-MM-yyyy";
+export const sDateFormat = "DD-MM-YYYY";
 export const aPageSizeArray = [10, 15, 20, 30, 50, 70, 100];
 export const nPageSize = 15;
 export const oOptions = {

@@ -9,10 +9,14 @@ import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-import MUIDataTable from "mui-datatables";
 import Moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
+import MaterialTable from 'material-table';
+import { oOptions, oTableIcons,sDateFormat } from '../../../config/commonConfig';
+import FilterList from '@material-ui/icons/FilterList';
+
+const tableIcons = oTableIcons;
 
 const useStyles = makeStyles({
   root: {
@@ -82,69 +86,60 @@ export default function SarsoNewGBEntry() {
   let history = useHistory();
   const classes = useStyles();
   const [dataAPI, setdataAPI] = useState([]);
-
-  const options = {
-    textLabels: {
-      body: {
-        noMatch: "Loading..."
-      }
-    },
-    selectableRows: false,
-    jumpToPage: true,
-    rowsPerPage: 5,
-    rowsPerPageOptions: [5, 10, 20, 30]
-  };
+  const [isLoading, setisLoading] = React.useState(true);
+  const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
 
   const columns = [
     {
-      name: "nGBId",
-      label: "Greenbook ID",
-      options: {
-        filter: true,
-        sort: true
+      field: "nGBId",
+      title: "Greenbook ID",
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px'
+      },
+      export: true
+    },
+    {
+      field: "nFormNo",
+      title: "Form Number",
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px',
+        borderLeft: '0'
       }
     },
     {
-      name: "nFormNo",
-      label: "Form Number",
-      options: {
-        filter: true,
-        sort: true
-      }
+      field: "dtDate",
+      title: "Date",
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px',
+        borderLeft: '0'
+      },
+      render: rowData => Moment(rowData.dtDate).format(sDateFormat)
     },
     {
-      name: "dtDate",
-      label: "Date",
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            Moment(value).format('YYYY-MM-DD')
-          )
-        }
+      align: "center",
+      field: 'gbentry',
+      title: 'Greenbook Entry',
+      filtering: false,
+      sorting: false,
+      export: false,
+      render: rowData => <Button
+        variant="outlined"
+        color="primary"
+        size="small"
+        startIcon={<AddIcon />}
+        onClick={() => { history.push('/NewEntry/' + rowData.nGBId); }}
+      >Greenbook Entry
+      </Button>,
+      cellStyle: {
+        padding: '5px',
+        borderRight: '0',
+        width: '10%'
       }
     },
-    {
-      name: "gbentry",
-      label: "Greenbook Entry",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            <Button
-              variant="outlined"
-              color="primary"
-              size="small"
-              startIcon={<AddIcon />}
-              onClick={() => { history.push('/NewEntry/' + tableMeta.rowData[1]); }}
-            >Greenbook Entry
-            </Button>
-          )
-        }
-      }
-    }
   ];
 
   useEffect(() => {
@@ -152,6 +147,7 @@ export default function SarsoNewGBEntry() {
       .then(resp => {
         if (resp.status === 200) {
           setdataAPI(resp.data);
+          setisLoading(false);
         }
       })
       .catch(error => {
@@ -167,10 +163,22 @@ export default function SarsoNewGBEntry() {
       <Typography variant="h4" gutterBottom>Sarso New GB Entry</Typography>
       <Grid container className={classes.box}>
         <Grid item xs={12}>
-          <MUIDataTable
-            data={dataAPI}
+          <MaterialTable
+            isLoading={isLoading}
+            style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
+            icons={tableIcons}
+            title="Sarso New GB Entry"
             columns={columns}
-            options={options}
+            data={dataAPI}
+            options={oOptions}
+            actions={[
+              {
+                icon: FilterList,
+                tooltip: 'Toggle Filter',
+                isFreeAction: true,
+                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+              }
+            ]}
           />
         </Grid>
       </Grid>
