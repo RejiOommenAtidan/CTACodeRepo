@@ -1,5 +1,5 @@
 import avatar1 from '../../assets/images/avatars/avatar1.jpg';
-import Moment from 'moment';  
+import Moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { forwardRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -215,11 +215,11 @@ export default function Feature() {
     setViewModal(false);
   };
 
-  const viewGb = (GBID) =>{
+  const viewGb = (GBID) => {
     console.log(GBID)
-      setsGBID(GBID);
-      setViewModal(true);
-      }
+    setsGBID(GBID);
+    setViewModal(true);
+  }
   const columns = [
     {
       field: "id",
@@ -230,8 +230,8 @@ export default function Feature() {
       },
     },
     {
-      render: rowData => <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={()=>{ viewGb(rowData['sGBID'])}}><span>{rowData['sCountryID'] + rowData['sGBID']}</span></Button> ,
-    //  render: rowData => <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={()=>{ viewGb(rowData)}}><span>{ rowData['sGBID']}</span></Button> ,
+      render: rowData => <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={() => { viewGb(rowData['sGBID']) }}><span>{rowData['sCountryID'] + rowData['sGBID']}</span></Button>,
+      //  render: rowData => <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={()=>{ viewGb(rowData)}}><span>{ rowData['sGBID']}</span></Button> ,
       //field: "sGBID",
       title: "GB ID",
       filterPlaceholder: 'Search..',
@@ -286,7 +286,7 @@ export default function Feature() {
     {
       field: "dtDOB",
       title: "DOB",
-      render: rowData => rowData.dtDOB ? Moment(rowData.dtDOB).format('DD-MM-YYYY'): '',
+      render: rowData => rowData.dtDOB ? Moment(rowData.dtDOB).format('DD-MM-YYYY') : '',
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '0px',
@@ -371,9 +371,9 @@ export default function Feature() {
     }
   ];
 
-  const openRelationGB = (newsGBID) =>{
+  const openRelationGB = (newsGBID) => {
     handleViewClickClose();
-    setTimeout(()=>viewGb(newsGBID),0);
+    setTimeout(() => viewGb(newsGBID), 0);
   }
 
   const handleSimpleSearch = (e) => {
@@ -389,9 +389,9 @@ export default function Feature() {
       axios.post(`Greenbook/GetQuickResult`, simpleObj)
         .then(resp => {
           if (resp.status === 200) {
-            
+
             console.log(resp.data);
-           
+
             setdataFromAPI(resp.data);
             setisLoading(false);
           }
@@ -412,7 +412,7 @@ export default function Feature() {
           //console.log(release); => udefined
         });
     }
-  
+
   }
   const complexObj = {
 
@@ -430,59 +430,59 @@ export default function Feature() {
     nFromAge: minAge,
     nToAge: maxAge
   }
-  const getRecentGB =() =>{
+  const getRecentGB = () => {
     console.log('recent');
-    axios.get(`RecentlySearchedGB/GetRecentlySearchedGBs?records=20&nUserId=`+JSON.parse(localStorage.getItem("currentUser")).oUser.id)
-    .then(resp => {
-      if (resp.status === 200) {
-        setRecentGBData(resp.data);
-      }
-    })
-    .catch(error => {
-      if (error.response) {
-        console.error(error.response.data);
-        console.error(error.response.status);
-        console.error(error.response.headers);
-      } else if (error.request) {
-        console.warn(error.request);
-      } else {
-        console.error('Error', error.message);
-      }
-      console.log(error.config);
-    })
-    .then(release => {
-      //console.log(release); => udefined
-    });
+    axios.get(`RecentlySearchedGB/GetRecentlySearchedGBs?records=20&nUserId=` + JSON.parse(localStorage.getItem("currentUser")).oUser.id)
+      .then(resp => {
+        if (resp.status === 200) {
+          setRecentGBData(resp.data);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   }
-   const handleComplexSearch = () => {
-  //   //setSearchField(e.target.value,console.log(searchField))
-     //alert(JSON.stringify(complexObj))
-     axios.post(`GreenBook/GetQuickResultComplex`, complexObj)
-     .then(resp => {
-       if (resp.status === 200) {
-         
-         console.log(resp.data);
-        
-         setdataFromAPI(resp.data);
-         setisLoading(false);
-       }
-     })
-     .catch(error => {
-       if (error.response) {
-         console.error(error.response.data);
-         console.error(error.response.status);
-         console.error(error.response.headers);
-       } else if (error.request) {
-         console.warn(error.request);
-       } else {
-         console.error('Error', error.message);
-       }
-       console.log(error.config);
-     })
-     .then(release => {
-       //console.log(release); => udefined
-     });
-   }
+  const handleComplexSearch = () => {
+    //   //setSearchField(e.target.value,console.log(searchField))
+    //alert(JSON.stringify(complexObj))
+    axios.post(`GreenBook/GetQuickResultComplex`, complexObj)
+      .then(resp => {
+        if (resp.status === 200) {
+
+          console.log(resp.data);
+
+          setdataFromAPI(resp.data);
+          setisLoading(false);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  }
   useEffect(() => {
     //Use === instead of ==
     if (authenticationService.currentUserValue === null) {
@@ -496,7 +496,7 @@ export default function Feature() {
       .then(resp => {
         if (resp.status === 200) {
           setCountryData(resp.data);
-         // 
+          // 
         }
       })
       .catch(error => {
@@ -522,7 +522,7 @@ export default function Feature() {
       familyName.length > 3 || spouseName.length > 3 ||
       fatherName.length > 3 || motherName.length > 3 ||
       city.length > 3 || state.length > 3 || gender.length == 1 ||
-      dob || country || minAge >0  || maxAge > 0) {
+      dob || country || minAge > 0 || maxAge > 0) {
       //console.log(complexObj);
       handleComplexSearch();
     }
@@ -541,7 +541,7 @@ export default function Feature() {
             </Link>
             <Typography color="textPrimary">Search</Typography>
           </Breadcrumbs>
-          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+          {dataFromAPI.length != 0 && <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
             icons={tableIcons}
             title="Search"
@@ -560,7 +560,7 @@ export default function Feature() {
               pageSizeOptions: pageSizeArray
             }}
             actions={[
-          
+
               {
                 icon: Search,
                 tooltip: 'Show Filter',
@@ -568,7 +568,7 @@ export default function Feature() {
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
               }
             ]}
-          />
+          />}
 
         </Grid>
         <Grid item xs={12} sm={3}>
@@ -830,16 +830,16 @@ export default function Feature() {
               </>}
             </Grid>
           </Paper>
-          
-          {recentGBData.length>0 &&
-          <Paper style={{ padding: '10px',marginTop:'20px', textAlign:'center' }}>
-            Recent Search
+
+          {recentGBData.length > 0 &&
+            <Paper style={{ padding: '10px', marginTop: '20px', textAlign: 'center' }}>
+              Recent Search
             <Grid container spacing={4}>
-             {recentGBData.map((row, index) => (   
-               index<20  &&    
-                 
-              <Grid item xs={12} sm={6}>
-                {/*
+                {recentGBData.map((row, index) => (
+                  index < 20 &&
+
+                  <Grid item xs={12} sm={6}>
+                    {/*
                       <Card className="overflow-visible" style={{width:'90%' ,textAlign:'center'}} >
                        <span className="ribbon-horizontal ribbon-horizontal--bottom ribbon-horizontal--danger"><span>{row.nGBID}</span></span>
                         <div className="card-img-wrapper">
@@ -847,23 +847,23 @@ export default function Feature() {
                         </div>
                     </Card>   
                     */}
-                     <a disabled="disabled" style={{cursor:'pointer'}} onClick={() => viewGb(row['nGBID'])} >
-                        <Card className="overflow-visible" style={{width:'90%' ,textAlign:'center'}} >
-                       <span className="ribbon-horizontal ribbon-horizontal--bottom ribbon-horizontal--danger"><span>{row.nGBID}</span></span>
+                    <a disabled="disabled" style={{ cursor: 'pointer' }} onClick={() => viewGb(row['nGBID'])} >
+                      <Card className="overflow-visible" style={{ width: '90%', textAlign: 'center' }} >
+                        <span className="ribbon-horizontal ribbon-horizontal--bottom ribbon-horizontal--danger"><span>{row.nGBID}</span></span>
                         <div className="card-img-wrapper">
-                        {row.sPhoto != null  && 
-                        <img src={`data:image/gif;base64,${row.sPhoto}`} style={{width:'100px' }} className="card-img-top rounded" alt="..." />}
-                        {row.sPhoto == null  &&  
-                        <img alt="..." className="img-fluid" style={{width:'100px' }} src={stock} />}
-                            
-                        </div>
-                    </Card>  
-                        </a>
-               </Grid>
-               ))}
-            </Grid>          
+                          {row.sPhoto != null &&
+                            <img src={`data:image/gif;base64,${row.sPhoto}`} style={{ width: '100px' }} className="card-img-top rounded" alt="..." />}
+                          {row.sPhoto == null &&
+                            <img alt="..." className="img-fluid" style={{ width: '100px' }} src={stock} />}
 
-          </Paper>}
+                        </div>
+                      </Card>
+                    </a>
+                  </Grid>
+                ))}
+              </Grid>
+
+            </Paper>}
         </Grid>
         {viewModal && <ViewDialog
           viewModal={viewModal}
@@ -872,7 +872,7 @@ export default function Feature() {
           sGBID={sGBID}
           openRelationGB={openRelationGB}
         />}
-     
+
         {snackbar && <Alerts
           alertObj={alertObj}
           snackbar={snackbar}

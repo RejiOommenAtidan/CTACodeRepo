@@ -455,7 +455,7 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Delete">
+                to="/DeleteGB">
                 <span className="sidebar-icon">
                   <DeleteIcon />
                 </span>
