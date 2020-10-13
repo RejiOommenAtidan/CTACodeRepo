@@ -402,7 +402,7 @@ export const AddDialog = (props) => {
   const { register, handleSubmit, watch, errors } = useForm();
 
 
-  console.log(props.gbSerialObj);
+  console.log("Serial Object\n", props.gbSerialObj);
   const [snackbarOpen,setSnackbarOpen]=React.useState(false);
   const snackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -429,13 +429,14 @@ export const AddDialog = (props) => {
   const [nBookNo, setBookNo] = useState(props.selectData['nBookNo']);
   const [sGBID, setGbId] = useState('');
   const [remarks, setRemarks] = React.useState('');
-  const [dtDate, setDate] = React.useState('');
+  const [dtDate, setDate] = React.useState(new Date(Date.now()).toISOString().substring(0,10));
   const [sName, setName] = React.useState('');
   const [sCountryID, setCountryID] = React.useState('');
   const [nMadebTypeId, setMadebTypeId] = React.useState(0);
   const [nFormNumber, setFormNumber] = React.useState(0);
   const [nAuthRegionId, setAuthRegionId] = React.useState(0);
   const [valueCountryName, setValueCountryName] = React.useState([]);
+  const [valueAuthRegion, setValueAuthRegion] = React.useState([]);
 
   const gbSerialObj = {
     id,
@@ -451,29 +452,30 @@ export const AddDialog = (props) => {
   }
   console.log("gbSerialObj Object received in Add dialog", gbSerialObj);
 
-  let valueAuthRegion = [];
+  // let valueAuthRegion = [];
  
- authRegions.forEach(element => {
-    if(element.id === nAuthRegionId){
-        valueAuthRegion = element;
-    }
-  });
+//  authRegions.forEach(element => {
+//     if(element.id === nAuthRegionId){
+//         valueAuthRegion = element;
+//     }
+//   });
   
-  let valueMadebTypes = [];
-  console.log(nMadebTypeId);
-  madebTypes.forEach(element => {
-    if(element.id === nMadebTypeId){
-      valueMadebTypes = element;
-    }
-  });
+ let valueMadebTypes = [];
+  // //console.log(nMadebTypeId);
+  // madebTypes.forEach(element => {
+  //   if(element.id === nMadebTypeId){
+  //     valueMadebTypes = element;
+  //   }
+  // });
 
   //let valueCountryName = [];
-  console.log("Country list\n", countries);
-  countries.forEach(element => {
-    if(element.sCountryID === sCountryID){
-      setValueCountryName(element);
-    }
-  });
+  // console.log("Country list\n", countries);
+  // countries.forEach(element => {
+  //   if(element.sCountryID === sCountryID){
+  //     valueCountryName = element;
+  //     console.log("valueCountryName variable: ", valueCountryName);
+  //   }
+  // });
 
 
   const formPopulate = (value) => {
@@ -500,12 +502,25 @@ export const AddDialog = (props) => {
           window.HTMLInputElement.prototype, "value").set;
         nativeInputValueSetter.call(sNameElement, `${name} ${mname} ${lname}`);
         var inputEvent = new Event("input", { bubbles: true });
-        countries.forEach(element => {
-          if(element.sCountryID === resp.data.sCountryID){
-            setValueCountryName(element);
-          }
-        });
-        console.log("Get Details country:", valueCountryName);
+        
+        
+        const country = countries.find((x) => x.sCountryID === resp.data.sCountryID);
+        setValueCountryName(country);
+        console.log("Country match: ", country);
+        // countries.forEach(element => {
+        //   if(element.sCountryID === resp.data.sCountryID){
+        //     //valueCountryName = [element];
+        //     setValueCountryName(element);
+        //     console.table("Matched country id: ", element);
+        //     console.log("Country id match: ", element);
+        //     //break;
+        //   }
+        // });
+        //console.log("Get Details country:", valueCountryName);
+        debugger
+        const region  = authRegions.find((x)  => x.id === resp.data.nAuthRegionID)
+        setValueAuthRegion(region);
+        console.log("Auth region" , region);
         setName( `${name} ${mname} ${lname}`);
         sNameElement.dispatchEvent(inputEvent);
         //  setCurrentGBSNo(resp.data.sOldGreenBKNo);
@@ -626,8 +641,10 @@ export const AddDialog = (props) => {
                                       onChange={  
                                         (e, value) => {
                                           if (value !== null) {
+                                            debugger
                                             console.log("Value in Country id:", value.sCountryID);
                                             setCountryID(value.sCountryID);
+                                            setValueCountryName(value);
                                           }
                                           else {
                                             setCountryID('');
@@ -657,11 +674,7 @@ export const AddDialog = (props) => {
                                       )}
                                     />
                                   </FormControl>
-                                  
                                 </Grid>
-
-                                
-
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                     <Autocomplete

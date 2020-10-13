@@ -114,7 +114,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     givenGBID.dtEntered = DateTime.Now;
                     givenGBID.dtUpdated = DateTime.Now;
                     _givenGBIDRepository.Add(givenGBID);
-                    _madebRepository.UpdateByFormNo(givenGBID.nFormNo, givenGBID.nGBId.ToString());
+                    _madebRepository.AddGBIDByFormNo(givenGBID.nFormNo, givenGBID.nGBId.ToString());
 
                     #region Information Logging 
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, givenGBID.nEnteredBy);

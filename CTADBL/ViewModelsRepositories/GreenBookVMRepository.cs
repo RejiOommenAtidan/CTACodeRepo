@@ -122,7 +122,7 @@ namespace CTADBL.ViewModelsRepositories
                     field = String.Format(@", rel.sGBIDRelation AS {0}", parameter);
                     where = @"rel.sGBIDRelation";
                     break;
-                case "sSpouseID":
+                case "sSpouseGBID":
                     join = String.Format(@"LEFT JOIN lnkgbrelation AS rel ON gb.sGBID = rel.sGBID AND rel.nrelationid = 3");
                     field = String.Format(@", rel.sGBIDRelation AS {0}", parameter);
                     where = @"rel.sGBIDRelation";

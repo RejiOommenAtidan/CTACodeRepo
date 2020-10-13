@@ -26,6 +26,7 @@ namespace CTAWebAPI.Controllers.Transactions
         private readonly GreenBookSerialNumberRepository _greenBookSerialNumberRepository;
         private readonly GreenBookSerialNumberVMRepository _greenBookSerialNumberVMRepository;
         private readonly GreenBookSerialNewRecordRepository _greenBookSerialNewRecordRepository;
+        private readonly MadebRepository _madebRepository;
         private readonly CTALogger _ctaLogger;
         #region Constructor
         public GreenBookSerialNumberController(DBConnectionInfo info)
@@ -34,6 +35,7 @@ namespace CTAWebAPI.Controllers.Transactions
             _greenBookSerialNumberRepository = new GreenBookSerialNumberRepository(_info.sConnectionString);
             _greenBookSerialNumberVMRepository = new GreenBookSerialNumberVMRepository(_info.sConnectionString);
             _greenBookSerialNewRecordRepository = new GreenBookSerialNewRecordRepository(_info.sConnectionString);
+            _madebRepository = new MadebRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
         }
         #endregion
@@ -189,6 +191,9 @@ namespace CTAWebAPI.Controllers.Transactions
                     gbsn.dtEntered = DateTime.Now;
                     gbsn.dtUpdated = DateTime.Now;
                     _greenBookSerialNumberRepository.Add(gbsn);
+                    int? nCurrentGBSno = (int?)gbsn.nBookNo;
+                    ////int? nPreviousGBSno = 
+                    _madebRepository.UpdateSerialNumber((int)gbsn.nFormNumber, nCurrentGBSno);
 
                     #region Information Logging 
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, gbsn.nEnteredBy);

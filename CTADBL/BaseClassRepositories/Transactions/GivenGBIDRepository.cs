@@ -62,7 +62,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `nEnteredBy`,
                             `dtUpdated`,
                             `nUpdatedBy`
-                        FROM `tblgivengbid`;";
+                        FROM `tblgivengbid`
+                        ORDER BY nFormNo DESC;";
             using (var command = new MySqlCommand(sql))
             {
                 return GetRecords(command);

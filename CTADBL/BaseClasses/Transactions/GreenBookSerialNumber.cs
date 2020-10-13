@@ -36,7 +36,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _Id = value;
             }
         }
-
+        [Required]
         public int nBookNo
         {
             get
@@ -48,7 +48,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _nBookNo = value;
             }
         }
-
+        [Required]
         public string? sGBID
         {
             get
@@ -72,7 +72,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _Remarks = value;
             }
         }
-
+        [Required]
         public DateTime? dtDate
         {
             get
@@ -108,7 +108,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _sCountryID = value;
             }
         }
-
+        [Required]
         public int? nMadebTypeId
         {
             get
@@ -120,7 +120,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _nMadebTypeId = value;
             }
         }
-
+        [Required]
         public int? nFormNumber
         {
             get
@@ -144,7 +144,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _sAuthRegion = value;
             }
         }
-
+        [Required]
         public int? nAuthRegionId
         {
             get
