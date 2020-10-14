@@ -45,6 +45,16 @@ namespace CTADBL.BaseClassRepositories.Transactions
             this.Update(madeb);
         }
         #endregion
+        #region Update Madeb TypeIssued after IssueBook 
+        public void UpdateTypeIssued(string Id, int nIssuedOrNotID)
+        {
+            Madeb madeb = GetMadebById(Id);
+            madeb.nIssuedOrNotID = nIssuedOrNotID;
+            madeb.dtUpdated = DateTime.Now;
+            madeb.dtIssueAction = DateTime.Now;
+            this.Update(madeb);
+        }
+        #endregion
 
         #region Update Madeb with assigned serial numbers
         public void UpdateSerialNumber(int nFormNumber, int nIssuedOrNotID, int? nCurrentGBSno, int? nPreviousGBSno = null)

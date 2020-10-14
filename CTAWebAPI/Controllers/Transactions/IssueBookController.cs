@@ -23,12 +23,14 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly IssueBookRepository _issueBookRepository;
+        private readonly MadebRepository _madebRepository;
      
         public IssueBookController(DBConnectionInfo info)
         {
             _info = info;
             _issueBookRepository = new IssueBookRepository(_info.sConnectionString);
-          
+            _madebRepository = new MadebRepository(_info.sConnectionString);
+
         }
         #endregion
 
@@ -92,10 +94,11 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Add Call
-        [HttpPost]
         [Route("[action]")]
-        public IActionResult AddIssueBook(IssueBook issueBook)
+        [HttpPost("AddIssueBook/MadebId={MadebId}&nIssuedOrNotID={nIssuedOrNotID:int}")]
+        public IActionResult AddIssueBook(string MadebId , int nIssuedOrNotID, [FromBody] IssueBook issueBook)
         {
+            
             #region Add IssueBook
             try
             {
@@ -104,7 +107,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     issueBook.dtEntered = DateTime.Now;
                     issueBook.dtUpdated = DateTime.Now;
                     _issueBookRepository.Add(issueBook);
-
+                    _madebRepository.UpdateTypeIssued(MadebId, nIssuedOrNotID);
                     #region Information Logging 
                     string sActionType = Enum.GetName(typeof(Operations), 1);
                     string sModuleName = (GetType().Name).Replace("Controller", "");

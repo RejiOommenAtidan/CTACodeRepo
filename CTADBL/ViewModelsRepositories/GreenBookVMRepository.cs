@@ -134,7 +134,7 @@ namespace CTADBL.ViewModelsRepositories
                     break;
             }
             
-            string sql = String.Format(@"SELECT gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, year(curdate()) - year(dtDOB) as nAge,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID {0} FROM tblgreenbook as gb {1} WHERE {2} {3} @value ORDER BY {2} LIMIT 500", field, join, where, operation);
+            string sql = String.Format(@"SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, year(curdate()) - year(dtDOB) as nAge,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID {0} FROM tblgreenbook as gb {1} WHERE {2} {3} @value ORDER BY {2} LIMIT 500", field, join, where, operation);
 
             using (var command = new MySqlCommand(sql))
             {
@@ -151,6 +151,7 @@ namespace CTADBL.ViewModelsRepositories
                 DataTableCollection tables = ds.Tables;
                 var result = tables[0].AsEnumerable().Select(row => new
                 {
+                    Id= row.Field<int>("Id"),
                     sGBID = row.Field<string>("sGBID"),
                     sFirstName = row.Field<string>("sFirstName"),
                     sMiddleName = row.Field<string>("sMiddleName"),
@@ -219,7 +220,7 @@ namespace CTADBL.ViewModelsRepositories
                 }
             }
 
-            string sql = String.Format(@"SELECT gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, year(curdate()) - year(dtDOB) as Age,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID  FROM tblgreenbook as gb WHERE {0} 1 = 1 LIMIT 500", addToSql);
+            string sql = String.Format(@"SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, year(curdate()) - year(dtDOB) as Age,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID  FROM tblgreenbook as gb WHERE {0} 1 = 1 LIMIT 500", addToSql);
 
             using (var command = new MySqlCommand(sql))
             {
@@ -231,6 +232,7 @@ namespace CTADBL.ViewModelsRepositories
                 DataTableCollection tables = ds.Tables;
                 var result = tables[0].AsEnumerable().Select(row => new
                 {
+                    Id = row.Field<int>("Id"),
                     sGBID = row.Field<string>("sGBID"),
                     sFirstName = row.Field<string>("sFirstName"),
                     sMiddleName = row.Field<string>("sMiddleName"),

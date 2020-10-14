@@ -306,11 +306,11 @@ const saveModalClose =() =>{
 const saveAPICall = (obj,changeObj) =>{
   setSaveModal(false);
   console.log(obj);
- axios.post(`IssueBook/AddIssueBook`,obj)
+ axios.post(`IssueBook/AddIssueBook/MadebId=`+changeObj.id+`&nIssuedOrNotID=`+changeObj.nIssuedOrNotID,obj)
   .then(resp => {
     if (resp.status === 200) {
       
-          changeIssueTypeAPICall(changeObj);
+          //changeIssueTypeAPICall(changeObj);
     }
   })
   .catch(error => {

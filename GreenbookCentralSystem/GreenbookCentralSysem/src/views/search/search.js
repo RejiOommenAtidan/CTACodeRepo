@@ -243,7 +243,7 @@ export default function SearchPage() {
       }
     >
       <MenuItem onClick={()=>{handleView(rowData['sGBID'])}}>View</MenuItem>
-      <MenuItem onClick={()=>{handleEdit(rowData['sGBID'])}}>Edit</MenuItem>
+      <MenuItem onClick={()=>{handleEdit(rowData['id'])}}>Edit</MenuItem>
       
     </Menu>
     </div>
@@ -395,6 +395,9 @@ export default function SearchPage() {
   const [contextState, setContextState] = React.useState(initialState);
   const handleClick = (event) => {
     event.preventDefault();
+    var x=window.scrollX;
+    var y=window.scrollY;
+    window.onscroll=()=>{window.scrollTo(x, y);};
     setContextState({
       mouseX: event.clientX - 2,
       mouseY: event.clientY - 4,
@@ -403,15 +406,18 @@ export default function SearchPage() {
 
   const handleClose = () => {
     setContextState(initialState);
+    window.onscroll= () =>{};
   };
 
   const handleView = (sGBID) => {
+    window.onscroll= () =>{};
     setContextState(initialState);
     viewGb(sGBID)
   };
-  const handleEdit = (sGBID) => {
+  const handleEdit = (id) => {
+    window.onscroll= () =>{};
     setContextState(initialState);
-    history.push("/EditEntry/" + sGBID);
+    history.push("/EditEntry/" + id);
   };
   const openRelationGB = (newsGBID) => {
     handleViewClickClose();
