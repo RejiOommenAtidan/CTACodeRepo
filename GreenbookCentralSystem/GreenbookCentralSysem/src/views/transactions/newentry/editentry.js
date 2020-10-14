@@ -905,13 +905,13 @@ export default function EditEntry(props) {
                                     <Grid item xs={12}>
                                         <FormControl className={classes.formControl}>
                                             <Autocomplete
-                                            value={lProvince.find(province => province.id === sOriginProvinceID)}
+                                            value={lProvince.find(province => province.id.toString() === sOriginProvinceID)}
                                                 openOnFocus
                                                 clearOnEscape
                                                 onChange={
                                                     (e, value) => {
                                                         if (value !== null) {
-                                                            setsOriginProvinceID(value.id);
+                                                            setsOriginProvinceID(value.id.toString());
                                                         }
                                                         else {
                                                             setsOriginProvinceID("0");
@@ -1149,13 +1149,13 @@ export default function EditEntry(props) {
                                     <Grid item xs={12}>
                                         <FormControl className={classes.formControl}>
                                             <Autocomplete
-                                            value={lOccupation.find(occupation => occupation.id === sOccupationID)}
+                                            value={lOccupation.find(occupation => occupation.id.toString() === sOccupationID)}
                                                 openOnFocus
                                                 clearOnEscape
                                                 onChange={
                                                     (e, value) => {
                                                         if (value !== null) {
-                                                            setsOccupationID(value.id);
+                                                            setsOccupationID(value.id.toString());
                                                         }
                                                         else {
                                                             setsOccupationID("0");

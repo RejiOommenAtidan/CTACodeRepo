@@ -63,6 +63,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `dtUpdated`,
                             `nUpdatedBy`
                         FROM `tblgivengbid`
+                        WHERE nGivenOrNot = 0
                         ORDER BY nFormNo DESC;";
             using (var command = new MySqlCommand(sql))
             {
