@@ -244,6 +244,7 @@ export default function NewEntry(props) {
       .then(resp => {
         if (resp.status === 200) {
           //Masters
+          debugger;
           setlAuthRegion(resp.data.lAuthRegion);
           setlCountry(resp.data.lCountry);
           setlDOBApprox(resp.data.lDOBApprox);
@@ -299,7 +300,6 @@ export default function NewEntry(props) {
                         name="name_sGBID"
                         label="Greenbook ID"
                         type="text"
-                        value={sGBID}
                         onChange={(e) => { setsGBID(e.target.value); }}
                         fullWidth
                         margin="dense"
@@ -311,6 +311,7 @@ export default function NewEntry(props) {
                         InputProps={{
                           readOnly: true
                         }}
+                        value={sGBID}
                       />
                       {/*{_.get("name_sGBID.type", errors) === "required" && (
                         <p>This field is required</p>
@@ -329,10 +330,10 @@ export default function NewEntry(props) {
                         onChange={
                           (e, value) => {
                             if (value !== null) {
-                              setnAuthRegionID(value.id.toString());
+                              setnAuthRegionID(value.id);
                             }
                             else {
-                              setnAuthRegionID("0");
+                              setnAuthRegionID(0);
                             }
                           }
                         }
@@ -373,8 +374,8 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sFirstName}
                         required
+                        value={sFirstName}
                       />
                     </FormControl>
                   </Grid>
@@ -387,8 +388,8 @@ export default function NewEntry(props) {
                         onChange={(e) => { setsMiddleName(e.target.value); }}
                         fullWidth
                         margin="dense"
-
                         className={classes.textField}
+                        value={sMiddleName}
                       />
                     </FormControl>
                   </Grid>
@@ -402,6 +403,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        value={sFamilyName}
                       />
                     </FormControl>
                   </Grid>
@@ -416,6 +418,7 @@ export default function NewEntry(props) {
                         margin="dense"
                         className={classes.textField}
                         required
+                        value={TibetanName}
                       />
                     </FormControl>
                   </Grid>
@@ -430,6 +433,7 @@ export default function NewEntry(props) {
                         margin="dense"
                         className={classes.textField}
                         required
+                        value={TBUPlaceOfBirth}
                       />
                     </FormControl>
                   </Grid>
@@ -444,6 +448,7 @@ export default function NewEntry(props) {
                         margin="dense"
                         className={classes.textField}
                         required
+                        value={TBUOriginVillage}
                       />
                     </FormControl>
                   </Grid>
@@ -474,6 +479,7 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <Autocomplete
                         openOnFocus
+                        value={lCountry.find(birthCountry => birthCountry.sCountryID === sBirthCountryID)}
                         clearOnEscape
                         onChange={
                           (e, value) => {
@@ -523,6 +529,7 @@ export default function NewEntry(props) {
                         margin="dense"
                         className={classes.textField}
                         required
+                        value={sBirthPlace}
                       />
                     </FormControl>
                   </Grid>
@@ -577,6 +584,7 @@ export default function NewEntry(props) {
                         margin="dense"
                         className={classes.textField}
                         required
+                        value={TBUFathersName}
                       />
                     </FormControl>
                   </Grid>
@@ -590,6 +598,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        value={sFathersGBID}
                       />
                     </FormControl>
                   </Grid>
@@ -604,6 +613,7 @@ export default function NewEntry(props) {
                         margin="dense"
                         className={classes.textField}
                         required
+                        value={sMothersName}
                       />
                     </FormControl>
                   </Grid>
@@ -618,6 +628,7 @@ export default function NewEntry(props) {
                         margin="dense"
                         className={classes.textField}
                         required
+                        value={TBUMothersName}
                       />
                     </FormControl>
                   </Grid>
@@ -630,8 +641,8 @@ export default function NewEntry(props) {
                         onChange={(e) => { setsMothersGBID(e.target.value); }}
                         fullWidth
                         margin="dense"
-
                         className={classes.textField}
+                        value={sMothersGBID}
                       />
                     </FormControl>
                   </Grid>
@@ -649,6 +660,7 @@ export default function NewEntry(props) {
                         rows={1}
                         rowsMax={3}
                         required
+                        value={sAddress1}
                       />
                     </FormControl>
                   </Grid>
@@ -665,6 +677,7 @@ export default function NewEntry(props) {
                         multiline={true}
                         rows={1}
                         rowsMax={3}
+                        value={sAddress2}
                       />
                     </FormControl>
                   </Grid>
@@ -679,6 +692,7 @@ export default function NewEntry(props) {
                           fullWidth
                           margin="dense"
                           className={classes.textField}
+                          value={sCity}
                         />
                       </FormControl>
                     </Grid>
@@ -693,6 +707,7 @@ export default function NewEntry(props) {
                           margin="dense"
                           className={classes.textField}
                           require
+                          value={sState}
                         />
                       </FormControl>
                     </Grid>
@@ -701,6 +716,7 @@ export default function NewEntry(props) {
                     <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
                         <Autocomplete
+                          value={lCountry.find(country => country.sCountryID === sCountryID)}
                           openOnFocus
                           clearOnEscape
                           onChange={
@@ -750,6 +766,7 @@ export default function NewEntry(props) {
                           fullWidth
                           margin="dense"
                           className={classes.textField}
+                          value={sPCode}
                         />
                       </FormControl>
                     </Grid>
@@ -802,6 +819,7 @@ export default function NewEntry(props) {
                           margin="dense"
                           className={classes.textField}
                           onChange={(e) => { setsGender(e.target.value) }}
+                          value={sGender}
                         >
                           <MenuItem value={"M"}>Male</MenuItem>
                           <MenuItem value={"F"}>Female</MenuItem>
@@ -817,6 +835,7 @@ export default function NewEntry(props) {
                           fullWidth
                           margin="dense"
                           className={classes.textField}
+                          value={sPaidUntil}
                         />
                       </FormControl>
                     </Grid>
@@ -824,12 +843,13 @@ export default function NewEntry(props) {
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
+                        value={lProvince.find(province => province.id === sOriginProvinceID)}
                         openOnFocus
                         clearOnEscape
                         onChange={
                           (e, value) => {
                             if (value !== null) {
-                              setsOriginProvinceID(value.id.toString());
+                              setsOriginProvinceID(value.id);
                             }
                             else {
                               setsOriginProvinceID("0");
@@ -872,14 +892,15 @@ export default function NewEntry(props) {
                         onChange={(e) => { setsFstGreenBkNo(e.target.value); }}
                         fullWidth
                         margin="dense"
-                        value={sFstGreenBkNo}
                         className={classes.textField}
+                        value={sFstGreenBkNo}
                       />
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
+                        value={lQualification.find(qualification => qualification.sQualificationID === sQualificationID)}
                         openOnFocus
                         clearOnEscape
                         onChange={
@@ -928,8 +949,8 @@ export default function NewEntry(props) {
                         onChange={(e) => { setsOtherDocuments(e.target.value); }}
                         fullWidth
                         margin="dense"
-                        value={sOtherDocuments}
                         className={classes.textField}
+                        value={sOtherDocuments}
                       />
                     </FormControl>
                   </Grid>
@@ -944,6 +965,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        value={sMarried}
                       >
                         <MenuItem value={"Y"}>Yes</MenuItem>
                         <MenuItem value={"N"}>No</MenuItem>
@@ -964,7 +986,7 @@ export default function NewEntry(props) {
                           label="Validity Date"
                           format={sDateFormat}
                           onChange={date => { setdtValidityDate(date) }}
-                          value={dtDeceased}
+                          value={dtValidityDate}
                           KeyboardButtonProps={{
                             'aria-label': 'change date',
                           }}
@@ -977,6 +999,7 @@ export default function NewEntry(props) {
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
+                        value={lDOBApprox.find(dobapprox => dobapprox.sDOBApproxID === sDOBApprox)}
                         openOnFocus
                         clearOnEscape
                         onChange={
@@ -1026,6 +1049,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        value={sOriginVillage}
                       />
                     </FormControl>
                   </Grid>
@@ -1039,6 +1063,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        value={sOldGreenBKNo}
                       />
                     </FormControl>
                   </Grid>
@@ -1052,21 +1077,23 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        value={sResidenceNumber}
                       />
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
+                        value={lOccupation.find(occupation => occupation.id === sOccupationID)}
                         openOnFocus
                         clearOnEscape
                         onChange={
                           (e, value) => {
                             if (value !== null) {
-                              setsOccupationID(value.id.toString());
+                              setsOccupationID(value.id);
                             }
                             else {
-                              setsOccupationID(0);
+                              setsOccupationID("0");
                             }
                           }
                         }
@@ -1151,6 +1178,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        value={sFathersID}
                       />
                     </FormControl>
                   </Grid>
@@ -1165,6 +1193,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        value={sMothersID}
                       />
                     </FormControl>
                   </Grid>
@@ -1178,6 +1207,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        value={sSpouseID}
                       />
                     </FormControl>
                   </Grid>
@@ -1191,6 +1221,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        value={sSpouseGBID}
                       />
                     </FormControl>
                   </Grid>
@@ -1206,6 +1237,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        value={sSpouseName}
                       />
                     </FormControl>
                   </Grid>
@@ -1219,6 +1251,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        value={TBUSpouseName}
                       />
                     </FormControl>
                   </Grid>
@@ -1233,6 +1266,7 @@ export default function NewEntry(props) {
                           fullWidth
                           margin="dense"
                           className={classes.textField}
+                          value={sFax}
                         />
                       </FormControl>
                     </Grid>
@@ -1246,6 +1280,7 @@ export default function NewEntry(props) {
                           fullWidth
                           margin="dense"
                           className={classes.textField}
+                          value={sPhone}
                         />
                       </FormControl>
                     </Grid>
@@ -1264,6 +1299,7 @@ export default function NewEntry(props) {
                         inputRef={register({
                           required: true
                         })}
+                        value={sEmail}
                       />
                       {_.get("name_sEmail.type", errors) === "required" && (
                         <p>This field is required</p>

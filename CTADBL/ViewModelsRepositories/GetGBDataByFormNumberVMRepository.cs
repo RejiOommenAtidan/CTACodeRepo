@@ -47,7 +47,8 @@ namespace CTADBL.ViewModelsRepositories
                             _lAuthRegion.Add(new AuthRegion()
                             {
                                 ID = (int)reader["ID"],
-                                sAuthRegion = (string)reader["sAuthRegion"]
+                                sAuthRegion = (string)reader["sAuthRegion"],
+                                sCountryID = (string)reader["sCountryID"]
                             });
                         }
 
@@ -62,7 +63,8 @@ namespace CTADBL.ViewModelsRepositories
                             _lCountry.Add(new Country()
                             {
                                 ID = (int)reader["ID"],
-                                sCountry = (string)reader["sCountry"]
+                                sCountry = (string)reader["sCountry"],
+                                sCountryID = (string)reader["sCountryID"]
                             });
                         }
 
@@ -92,7 +94,8 @@ namespace CTADBL.ViewModelsRepositories
                             _lQualification.Add(new Qualification()
                             {
                                 Id = (int)reader["Id"],
-                                sQualification = (string)reader["sQualification"]
+                                sQualification = (string)reader["sQualification"],
+                                sQualificationID = (string)reader["sQualificationID"]
                             });
                         }
 
@@ -122,7 +125,8 @@ namespace CTADBL.ViewModelsRepositories
                             _lDOBApprox.Add(new DOBApprox()
                             {
                                 Id = (int)reader["Id"],
-                                sDOBApproxName = (string)reader["sDOBApproxName"]
+                                sDOBApproxName = (string)reader["sDOBApproxName"],
+                                sDOBApproxID = (string)reader["sDOBApproxID"]
                             });
                         }
 

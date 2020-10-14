@@ -390,7 +390,7 @@ export default function EditEntry(props) {
                                                             setnAuthRegionID(value.id);
                                                         }
                                                         else {
-                                                            setnAuthRegionID("0");
+                                                            setnAuthRegionID(0);
                                                         }
                                                     }
                                                 }
@@ -520,7 +520,7 @@ export default function EditEntry(props) {
                                                     id="id_dtDOB"
                                                     label="DOB"
                                                     format={sDateFormat}
-                                                    onChange={(date) => { setdtDOB(date) }}
+                                                    onChange={date => { setdtDOB(date) }}
                                                     value={dtDOB}
                                                     KeyboardButtonProps={{
                                                         'aria-label': 'change date',
@@ -535,7 +535,7 @@ export default function EditEntry(props) {
                                     <Grid item xs={12}>
                                         <FormControl className={classes.formControl}>
                                             <Autocomplete
-                                                value={lCountry.find(birthCountry => birthCountry.id == sBirthCountryID)}
+                                            value={lCountry.find(birthCountry => birthCountry.sCountryID === sBirthCountryID)}
                                                 openOnFocus
                                                 clearOnEscape
                                                 onChange={
@@ -604,7 +604,7 @@ export default function EditEntry(props) {
                                                     id="id_dtFormDate"
                                                     label="Sarso Form Date"
                                                     format="MM/dd/yyyy"
-                                                    onChange={(date) => { setdtFormDate(date) }}
+                                                    onChange={date => { setdtFormDate(date) }}
                                                     value={dtFormDate}
                                                     KeyboardButtonProps={{
                                                         'aria-label': 'change date',
@@ -776,7 +776,7 @@ export default function EditEntry(props) {
                                         <Grid item xs={6}>
                                             <FormControl className={classes.formControl}>
                                                 <Autocomplete
-                                                    value={lCountry.find(country => country.id == sCountryID)}
+                                                    value={lCountry.find(country => country.sCountryID === sCountryID)}
                                                     openOnFocus
                                                     clearOnEscape
                                                     onChange={
@@ -905,13 +905,13 @@ export default function EditEntry(props) {
                                     <Grid item xs={12}>
                                         <FormControl className={classes.formControl}>
                                             <Autocomplete
-                                                value={lProvince.find(province => province.id == sOriginProvinceID)}
+                                            value={lProvince.find(province => province.id === sOriginProvinceID)}
                                                 openOnFocus
                                                 clearOnEscape
                                                 onChange={
                                                     (e, value) => {
                                                         if (value !== null) {
-                                                            setsOriginProvinceID(value.id.toString());
+                                                            setsOriginProvinceID(value.id);
                                                         }
                                                         else {
                                                             setsOriginProvinceID("0");
@@ -963,7 +963,7 @@ export default function EditEntry(props) {
                                     <Grid item xs={12}>
                                         <FormControl className={classes.formControl}>
                                             <Autocomplete
-                                                value={lQualification.find(qualification => qualification.id == sQualificationID)}
+                                            value={lQualification.find(qualification => qualification.sQualificationID === sQualificationID)}
                                                 openOnFocus
                                                 clearOnEscape
                                                 onChange={
@@ -1049,8 +1049,8 @@ export default function EditEntry(props) {
                                                     id="id_dtValidityDate"
                                                     label="Validity Date"
                                                     format="MM/dd/yyyy"
-                                                    onChange={(date) => { setdtValidityDate(date) }}
-                                                    value={dtDeceased}
+                                                    onChange={date => { setdtValidityDate(date) }}
+                                                    value={dtValidityDate}
                                                     KeyboardButtonProps={{
                                                         'aria-label': 'change date',
                                                     }}
@@ -1063,7 +1063,7 @@ export default function EditEntry(props) {
                                     <Grid item xs={12}>
                                         <FormControl className={classes.formControl}>
                                             <Autocomplete
-                                                value={lDOBApprox.find(dobapprox => dobapprox.id == sDOBApprox)}
+                                            value={lDOBApprox.find(dobapprox => dobapprox.sDOBApproxID === sDOBApprox)}
                                                 openOnFocus
                                                 clearOnEscape
                                                 onChange={
@@ -1149,17 +1149,16 @@ export default function EditEntry(props) {
                                     <Grid item xs={12}>
                                         <FormControl className={classes.formControl}>
                                             <Autocomplete
-                                                value={sOccupationID}
-                                                value={lOccupation.find(occupation => occupation.id == sOccupationID)}
+                                            value={lOccupation.find(occupation => occupation.id === sOccupationID)}
                                                 openOnFocus
                                                 clearOnEscape
                                                 onChange={
                                                     (e, value) => {
                                                         if (value !== null) {
-                                                            setsOccupationID(value.id.toString());
+                                                            setsOccupationID(value.id);
                                                         }
                                                         else {
-                                                            setsOccupationID(0);
+                                                            setsOccupationID("0");
                                                         }
                                                     }
                                                 }
@@ -1201,7 +1200,7 @@ export default function EditEntry(props) {
                                                     id="id_dtDeceased"
                                                     label="Deceased Date"
                                                     format="MM/dd/yyyy"
-                                                    onChange={(date) => { setdtDeceased(date) }}
+                                                    onChange={date => { setdtDeceased(date) }}
                                                     value={dtDeceased}
                                                     KeyboardButtonProps={{
                                                         'aria-label': 'change date',
