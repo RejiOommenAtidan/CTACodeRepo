@@ -13,11 +13,13 @@ namespace CTADBL.ViewModelsRepositories
     public class GreenBookSerialNumberVMRepository : ADORepository<GreenBookSerialNumberVM>
     {
         private GreenBookSerialNumberRepository _greenBookSerialNumberRepository;
+        private MySqlConnection _connection;
 
         #region Constructor
         public GreenBookSerialNumberVMRepository(string connectionString) : base(connectionString)
         {
             _greenBookSerialNumberRepository = new GreenBookSerialNumberRepository(connectionString);
+            _connection = new MySqlConnection(connectionString);
         }
         #endregion
 
@@ -122,6 +124,23 @@ namespace CTADBL.ViewModelsRepositories
             }
         }
         #endregion
+
+
+        public IEnumerable<Object> GetGreenBookSerialNumberAssignList()
+        {
+            string sql = @"SELECT mdb.id, mdb.nFormNumber, mdb.sGBID, mdb.nMadebTypeID, mdb.sName, mdb.dtReceived, au.sAuthRegion, mdbtype.sMadebType FROM tblmadeb AS mdb LEFT JOIN lstauthregion au ON au.ID = mdb.nAuthRegionID LEFT JOIN lstmadebtype mdbtype ON mdbtype.Id = mdb.nMadebTypeID  WHERE mdb.nIssuedOrNotID = 1 AND mdb.sGBId IS NOT NULL ORDER BY mdb.nFormNumber DESC;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Connection = _connection;
+                command.CommandType = CommandType.Text;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var list = tables[0].AsEnumerable().Select(row => new { Id = row.Field<int>("Id"), nFormNumber = row.Field<int>("nFormNumber"), sGBID = row.Field<string>("sGBID"), sName = row.Field<string>("sName"), dtReceived = row.Field<DateTime?>("dtReceived"), sMadebType = row.Field<string>("sMadebType"), sAuthRegion = row.Field<string>("sAuthRegion") }).ToList();
+                return list;
+            }
+        }
 
 
         #region Populate GreenBookSerialVM Records

@@ -19,12 +19,9 @@ import Search from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
-import { AddDialog, EditDialog } from './dialog';
+import { AddDialog } from './dialog';
 
 const tableIcons = oTableIcons;
-
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,20 +71,19 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default () => {
 
+
+export default () => {
   const classes = useStyles();
-  const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [addModal, setAddModal] = useState(false);
   const [selectData, setSelectData] = useState([]);
-
-  const [gbSerialObj, setGBSerialObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [filtering, setFiltering] = React.useState(false);
+  const [addModal, setAddModal] = useState(false);
+  const [gbSerialObj, setGBSerialObj] = useState({});
   oOptions.filtering = filtering;
+
+
   let history = useHistory();
 
   const [alertMessage, setAlertMessage] = useState("");
@@ -97,9 +93,10 @@ export default () => {
     alertType: alertType
   }
 
-  const columns = [
+  const columns =[
+
     {
-      field: "greenBookSerialNumber.id",
+      field: "id",
       title: "Sr No.",
       hidden:true,
       cellStyle: {
@@ -107,39 +104,34 @@ export default () => {
       },
     },
     {
-      field: "greenBookSerialNumber.dtDate",
-      title: "Date",
+      field: "nFormNumber",
+      title: "Form Number",
+      filterPlaceholder: "Search...",
+      cellStyle: {
+        padding:'5px',
+      },
+    },
+    
+    {
+      field: "sGBID",
+      title: "GB Id",
+      cellStyle: {
+        padding:'5px',
+      },
+    },
+    {
+      field: "dtReceived",
+      title: "Received on",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
       cellStyle: {
         padding:'5px',
       },
-      render: rowData => rowData['greenBookSerialNumber']['dtDate'] ? Moment(rowData['greenBookSerialNumber']['dtDate']).format('YYYY-MM-DD') : undefined
+      render: rowData => rowData['dtReceived'] ? Moment(rowData['dtReceived']).format('YYYY-MM-DD') : undefined
     },
-    {
-      field: "greenBookSerialNumber.nBookNo",
-      title: "Book No",
-      cellStyle: {
-        padding:'5px',
-      },
-    },
-    {
-      field: "greenBookSerialNumber.sName",
+    { 
+      field: "sName",
       title: "Name",
-      cellStyle: {
-        padding:'5px',
-      },
-    },
-    {
-      field: "greenBookSerialNumber.sCountryID",
-      title: "Country Code",
-      cellStyle: {
-        padding:'5px',
-      },
-    },
-    {
-      field: "greenBookSerialNumber.sGBID",
-      title: "GB Id",
       cellStyle: {
         padding:'5px',
       },
@@ -152,23 +144,8 @@ export default () => {
       },
     },
     {
-      field: "greenBookSerialNumber.nFormNumber",
-      title: "Form Number",
-      filterPlaceholder: "Search...",
-      cellStyle: {
-        padding:'5px',
-      },
-    },
-    {
       field: "sAuthRegion",
-      title: "Authority",
-      cellStyle: {
-        padding:'5px',
-      },
-    },
-    {
-      field: "greenBookSerialNumber.remarks",
-      title: "Remarks",
+      title: "Authority Region",
       cellStyle: {
         padding:'5px',
       },
@@ -183,8 +160,8 @@ export default () => {
                           color="primary" 
                           aria-label="upload picture" 
                           component="span"
-                          onClick={() => {
-                            editClick(rowData) 
+                           onClick={() => {
+                             addClick(rowData) 
                           }}  
                           style={{padding:'0px'}}
                         >
@@ -194,22 +171,58 @@ export default () => {
         padding:'5px',
       },
     }
+
   ];
 
-  const options = {
-    textLabels: {
-      body: {
-        noMatch: "Loading..."
-      },
-    },
-    loadingType: 'linear',
-    filter:true,
-    viewColumns:false,
-    selectableRows: false,
-    jumpToPage: true,
-    rowsPerPage: rowsPerPage,
-    rowsPerPageOptions: [5, 10, 20, 30],
+
+  const addClick = (tableRowArray) => {
+    setGBSerialObj({
+      id: tableRowArray['id'],
+      nFormNumber: tableRowArray['nFormNumber'],
+      sGBID: tableRowArray['sGBID'],
+      dtReceived: tableRowArray['dtReceived'],
+      sName: tableRowArray['sName'],
+      sMadebType: tableRowArray['sMadebType'],
+      sAuthRegion: tableRowArray['sAuthRegion'],
+      
+    });
+      console.log("Table Array: ", tableRowArray);
+      console.log("gbSerialObj: ", gbSerialObj);
+
+      setAddModal(true);
+  }
+
+
+  const addAPICall = (gbSerialObj) => {
+    debugger
+    setLoading(true);
+    console.log(gbSerialObj);
+    axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, gbSerialObj)
+      .then(resp => {
+        if (resp.status === 200) {
+          console.log(resp.data);
+          setAddModal(false);
+          axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumberAssignList`)
+            .then(resp => {
+              if (resp.status === 200) {
+                console.log(resp.data);
+                setdataAPI(resp.data)
+                selectDatafunction();
+                setLoading(false);
+              }
+            })
+            .catch(error => {
+              console.log(error.message);
+              console.log(error.config);
+            })
+        }
+      })
+      .catch(error => {
+        console.log(error.message);
+        console.log(error.config);
+      })
   };
+
 
   const selectDatafunction = () =>{
     axios.get(`GreenBookSerialNumber/GetNewEmptyGreenBookSerialRecord`)
@@ -226,101 +239,16 @@ export default () => {
       console.log(error.config);
       console.log(error.message);
     })
-  }
-
-
-
-  const handleEditClickClose = () => {
-    setEditModal(false);
   };
+
   const handleAddClickClose = () => {
     setAddModal(false);
   };
 
 
-  const addAPICall = (gbSerialObj) => {
-    debugger
-    console.log(gbSerialObj);
-    axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, gbSerialObj)
-      .then(resp => {
-        if (resp.status === 200) {
-          console.log(resp.data);
-          setAddModal(false);
-          selectDatafunction();
-          axios.get(`GreenBookSerialNumber/GetgreenBookSerialNumbers/?records=10`)
-            .then(resp => {
-              if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
-              }
-            })
-            .catch(error => {
-              console.log(error.message);
-              console.log(error.config);
-            })
-        }
-      })
-      .catch(error => {
-        console.log(error.message);
-        console.log(error.config);
-      })
-  };
-
-
-  const editClick = (tableRowArray) => {
-    setGBSerialObj({
-      id: tableRowArray['greenBookSerialNumber']['id'],
-      nBookNo: tableRowArray['greenBookSerialNumber']['nBookNo'],
-      sGBID: tableRowArray['greenBookSerialNumber']['sGBID'],
-      remarks: tableRowArray['greenBookSerialNumber']['remarks'],
-      dtDate: tableRowArray['greenBookSerialNumber']['dtDate'],
-      sName: tableRowArray['greenBookSerialNumber']['sName'],
-      sCountryID: tableRowArray['greenBookSerialNumber']['sCountryID'],
-      nMadebTypeId: tableRowArray['greenBookSerialNumber']['nMadebTypeId'],
-      nFormNumber: tableRowArray['greenBookSerialNumber']['nFormNumber'],
-      nAuthRegionId: tableRowArray['greenBookSerialNumber']['nAuthRegionId'],
-    });
-      console.log("Table Array: ", tableRowArray);
-      console.log("gbSerialObj: ", gbSerialObj);
-
-      setEditModal(true);
-  }
-
-  const editAPICall = (gbSerialObj) => {
-    console.log(gbSerialObj);
-    debugger
-    axios.post(`GreenBookSerialNumber/EditGreenbookSerialNumber/Id=` + gbSerialObj.id, gbSerialObj)
-      .then(resp => {
-        if (resp.status === 200) {
-          //console.log(resp.data);
-          //setResult(true);
-          setEditModal(false);
-          axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/?records=10`)
-            .then(resp => {
-              if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data);
-                //setDataChanged(true);
-              }
-              else{
-                console.log("Response received:\n", resp);
-              }
-            })
-            .catch(error => {
-              console.log(error.config);
-              console.log(error.message);
-            })
-        }
-      })
-      .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
-      })
-      
-  };  
 
   useEffect(() => {
-    axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/?records=10`)
+    axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumberAssignList`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -335,6 +263,7 @@ export default () => {
         setLoading(false);
       })
   }, []);
+
 
   return (
     <>
@@ -356,12 +285,7 @@ export default () => {
             options={oOptions}
             actions={
               [
-                {
-                  icon: AddBox,
-                  tooltip: 'Add GreenBook Serial Number',
-                  isFreeAction: true,
-                  onClick: () => setAddModal(true)
-                },
+                
                 {
                   icon: Search,
                   tooltip: 'Show Filter',
@@ -371,25 +295,27 @@ export default () => {
               ]
             }
           />
-            {addModal && <AddDialog
+             {addModal && <AddDialog
               addModal={addModal}
               selectData={selectData}
               classes={classes}
+              gbSerialObj = {gbSerialObj}
               handleAddClickClose={handleAddClickClose}
               addAPICall={addAPICall}
             />}
-            {editModal && <EditDialog
+            {/*{editModal && <EditDialog
               editModal={editModal}
               selectData={selectData}
               classes={classes}
               handleEditClickClose={handleEditClickClose}
               editAPICall={editAPICall}
               gbSerialObj={gbSerialObj}
-            />}
+            />} */}
             
         </Grid>
       </Grid>
     </>
-  );
 
+
+  );
 }

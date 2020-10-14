@@ -161,6 +161,33 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 return GetRecords(command);
             }
         }
+
+        public GreenBookSerialNumber GetEarliestGreenBookSerialByGBID(string sGBID)
+        {
+            string sql = @"SELECT grnbk.dtDate
+                            , grnbk.sGBID
+                            , grnbk.nBookNo
+                            , grnbk.nMadebTypeId
+                            FROM 
+                                (SELECT min(dtDate) AS dtDate
+                                    , sGBId 
+                                    FROM `tblgreenbookserial` 
+                                    WHERE sGBId = @sGBID) 
+                                    AS t 
+                                    INNER JOIN tblgreenbookserial grnbk 
+                                    ON t.sgbid = grnbk.sGBId 
+                                        AND t.dtDate = grnbk.dtDate;";
+
+            using (var command =  new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                // Pending work
+            }
+
+            //Pending...
+            return null;
+        }
+
         #endregion
 
         public override GreenBookSerialNumber PopulateRecord(MySqlDataReader reader)

@@ -175,8 +175,44 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             #endregion
         }
+        
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetGreenBookSerialNumberAssignList()
+        {
+            #region Get List of Assignable Serial Number records from Madeb Table.
+            try
+            {
+                Object result = _greenBookSerialNumberVMRepository.GetGreenBookSerialNumberAssignList();
+                if (result != null)
+                {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+
+
 
         #endregion
+
+
+
 
         #region Add Calls
         [HttpPost]
@@ -193,7 +229,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     _greenBookSerialNumberRepository.Add(gbsn);
                     int? nCurrentGBSno = (int?)gbsn.nBookNo;
                     ////int? nPreviousGBSno = 
-                    _madebRepository.UpdateSerialNumber((int)gbsn.nFormNumber, nCurrentGBSno);
+                    _madebRepository.UpdateSerialNumber((int)gbsn.nFormNumber, 2, nCurrentGBSno);
 
                     #region Information Logging 
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, gbsn.nEnteredBy);

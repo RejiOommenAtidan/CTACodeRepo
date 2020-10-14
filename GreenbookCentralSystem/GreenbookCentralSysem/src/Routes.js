@@ -62,6 +62,7 @@ const Users = lazy(() => import('./views/transactions/users/index'));
 const Print = lazy(() => import('./views/print'));
 const PrintPage = lazy(() => import('./views/print/print.js'));
 const FeatureUserrights = lazy(() => import('./views/transactions/featureuserrights/index'));
+const NewGreenBookSerial = lazy(() => import('./views/transactions/newgreenbookserial'));
 const Search = lazy(() => import('./views/search/index'));
 
 const Routes = () => {
@@ -196,6 +197,7 @@ const Routes = () => {
                 '/GivenGBID',
                 '/DeleteGB',
                 '/GreenBookSerial',
+                '/NewGreenBookSerial',
                 '/MakeList',
                 '/EditEntry/:GBID',
                 '/ChangePassword',
@@ -224,6 +226,7 @@ const Routes = () => {
                     <Route path="/TypeIssued" component={TypeIssued} />
                     <Route path="/MadebType" component={MadebType} />
                     <Route path="/Greenbooks" component={Greenbook} />
+                    <Route path="/NewGreenBookSerial" component={NewGreenBookSerial} />
                     {/*Private Routes Go Here*/}
                     <PrivateRoute path="/GivenGBID" feature={3} component={GivenGBID} />
                     <PrivateRoute path="/DeleteGB" feature={4} component={DeleteGB} />
