@@ -28,7 +28,8 @@ import {
 import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
 import { sDateFormatMUIDatepicker } from '../../../config/commonConfig';
-import {BackdropComponent} from '../../backdrop/index';
+import { BackdropComponent } from '../../backdrop/index';
+import { Alerts } from '../../alerts/index';
 
 const useStyles = makeStyles({
   root: {
@@ -225,19 +226,19 @@ export default function NewEntry(props) {
       TBUSpouseName
     };
 
-    console.table(greenbook);
-    axios.post(`/Greenbook/AddGreenbook/`, greenbook)
-      .then(resp => {
-        if (resp.status === 200) {
-          history.push("/SarsoNewGBEntry");
-        }
-      })
-      .catch(error => {
-        handleError(error, history);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
+    alert(greenbook);
+    // axios.post(`/Greenbook/AddGreenbook/`, greenbook)
+    //   .then(resp => {
+    //     if (resp.status === 200) {
+    //       history.push("/SarsoNewGBEntry");
+    //     }
+    //   })
+    //   .catch(error => {
+    //     handleError(error, history);
+    //   })
+    //   .then(release => {
+    //     //console.log(release); => udefined
+    //   });
   };
 
   useEffect(() => {
@@ -307,19 +308,23 @@ export default function NewEntry(props) {
                         className={classes.textField}
                         inputRef={register({
                           required: true,
-                          maxLength: 9
+                          minLength: 7,
+                          maxLength: 7
                         })}
                         InputProps={{
                           readOnly: true
                         }}
                         value={sGBID}
                       />
-                      {/*{_.get("name_sGBID.type", errors) === "required" && (
-                        <p>This field is required</p>
+                      {_.get("name_sGBID.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
+                      {_.get("name_sGBID.type", errors) === "minLength" && (
+                        <span style={{ color: 'red' }}>GBID cannot subceed 7 characters</span>
                       )}
                       {_.get("name_sGBID.type", errors) === "maxLength" && (
-                        <p>GBID cannot exceed 9 characters</p>
-                      )}*/}
+                        <span style={{ color: 'red' }}>GBID cannot exceed 7 characters</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12} >
@@ -375,9 +380,15 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        required
+                        name="name_sFirstName"
+                        inputRef={register({
+                          required: true
+                        })}
                         value={sFirstName}
                       />
+                      {_.get("name_sFirstName.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -412,56 +423,78 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TibetanName"
-                        label="Tibetan Name (Tibetan)"
+                        label="Tibetan Name (Tibetan) མིང་།"
                         type="text"
                         onChange={(e) => { setTibetanName(e.target.value); }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        required
+                        name="name_TibetanName"
                         value={TibetanName}
+                        inputRef={register({
+                          required: true
+                        })}
                       />
+                      {_.get("name_TibetanName.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUPlaceOfBirth"
-                        label="Place Of Birth (Tibetan)"
+                        label="Place Of Birth (Tibetan) སྐྱེས་ཡུལ།"
                         type="text"
                         onChange={(e) => { setTBUPlaceOfBirth(e.target.value); }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        required
+                        inputRef={register({
+                          required: true
+                        })}
+                        name="name_TBUPlaceOfBirth"
                         value={TBUPlaceOfBirth}
                       />
+                      {_.get("name_TBUPlaceOfBirth.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUOriginVillage"
-                        label="Origin Village (Tibetan)"
+                        label="Origin Village (Tibetan) ཕ་ཡུལ།"
                         type="text"
                         onChange={(e) => { setTBUOriginVillage(e.target.value); }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        required
+                        name="name_TBUOriginVillage"
+                        inputRef={register({
+                          required: true
+                        })}
                         value={TBUOriginVillage}
                       />
+                      {_.get("name_TBUOriginVillage.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+                          id="id_dtDOB"
+                          name="name_dtDOB"
                           variant="dialog"
                           openTo="year"
                           views={["year", "month", "date"]}
                           margin="dense"
-                          id="id_dtDOB"
+                          inputRef={register({
+                            required: true
+                          })}
                           label="DOB"
                           format={sDateFormatMUIDatepicker}
                           onChange={date => { setdtDOB(date) }}
@@ -471,9 +504,11 @@ export default function NewEntry(props) {
                           }}
                           fullWidth
                           className={classes.dateField}
-                          required
                         />
                       </MuiPickersUtilsProvider>
+                      {_.get("name_dtDOB.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -529,9 +564,15 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        required
+                        name="name_sBirthPlace"
+                        inputRef={register({
+                          required: true
+                        })}
                         value={sBirthPlace}
                       />
+                      {_.get("name_sBirthPlace.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                 </Grid>
@@ -545,6 +586,7 @@ export default function NewEntry(props) {
                           views={["year", "month", "date"]}
                           margin="dense"
                           id="id_dtFormDate"
+                          name="name_dtFormDate"
                           label="Sarso Form Date"
                           format={sDateFormatMUIDatepicker}
                           onChange={date => { setdtFormDate(date) }}
@@ -552,11 +594,16 @@ export default function NewEntry(props) {
                           KeyboardButtonProps={{
                             'aria-label': 'change date',
                           }}
+                          inputRef={register({
+                            required: true
+                          })}
                           fullWidth
                           className={classes.dateField}
-                          required
                         />
                       </MuiPickersUtilsProvider>
+                      {_.get("name_dtFormDate.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -569,24 +616,36 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        required
+                        inputRef={register({
+                          required: true
+                        })}
                         value={sFathersName}
+                        name="name_sFathersName"
                       />
+                      {_.get("name_sFathersName.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUFathersName"
-                        label="Father's Name (Tibetan)"
+                        label="Father's Name (Tibetan) ཕ་མིང་།"
                         type="text"
                         onChange={(e) => { setTBUFathersName(e.target.value); }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        required
+                        name="name_TBUFathersName"
                         value={TBUFathersName}
+                        inputRef={register({
+                          required: true
+                        })}
                       />
+                      {_.get("name_TBUFathersName.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -613,24 +672,36 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        required
+                        name="name_sMothersName"
                         value={sMothersName}
+                        inputRef={register({
+                          required: true
+                        })}
                       />
+                      {_.get("name_sMothersName.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUMothersName"
-                        label="Mother's Name (Tibetan)"
+                        label="Mother's Name (Tibetan) མ་མིང་།"
                         type="text"
                         onChange={(e) => { setTBUMothersName(e.target.value); }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        required
+                        name="name_TBUMothersName"
                         value={TBUMothersName}
+                        inputRef={register({
+                          required: true
+                        })}
                       />
+                      {_.get("name_TBUMothersName.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -660,9 +731,15 @@ export default function NewEntry(props) {
                         multiline={true}
                         rows={1}
                         rowsMax={3}
-                        required
+                        name="name_sAddress1"
                         value={sAddress1}
+                        inputRef={register({
+                          required: true
+                        })}
                       />
+                      {_.get("name_sAddress1.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -707,9 +784,15 @@ export default function NewEntry(props) {
                           fullWidth
                           margin="dense"
                           className={classes.textField}
-                          require
+                          name="name_sState"
+                          inputRef={register({
+                            required: true
+                          })}
                           value={sState}
                         />
+                        {_.get("name_sState.type", errors) === "required" && (
+                          <span style={{ color: 'red' }}>This field is required</span>
+                        )}
                       </FormControl>
                     </Grid>
                   </Grid>
@@ -717,6 +800,10 @@ export default function NewEntry(props) {
                     <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
                         <Autocomplete
+                          name="name_sCountryID"
+                          // inputRef={register({
+                          //   required: true
+                          // })}
                           value={lCountry.find(country => country.sCountryID === sCountryID)}
                           openOnFocus
                           clearOnEscape
@@ -755,6 +842,9 @@ export default function NewEntry(props) {
                             />
                           )}
                         />
+                        {/*{_.get("name_sCountryID.type", errors) === "required" && (
+                          <span style={{color: 'red'}}>This field is required</span>
+                        )}*/}
                       </FormControl>
                     </Grid>
                     <Grid item xs={6}>
@@ -1290,24 +1380,16 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sEmail"
-                        name="name_sEmail"
                         label="Email"
                         type="email"
                         onChange={(e) => { setsEmail(e.target.value); }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        inputRef={register({
-                          required: true
-                        })}
                         value={sEmail}
                       />
-                      {_.get("name_sEmail.type", errors) === "required" && (
-                        <p>This field is required</p>
-                      )}
                     </FormControl>
                   </Grid>
-
                 </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
