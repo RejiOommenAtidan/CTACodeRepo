@@ -226,19 +226,18 @@ export default function NewEntry(props) {
       TBUSpouseName
     };
 
-    alert(greenbook);
-    // axios.post(`/Greenbook/AddGreenbook/`, greenbook)
-    //   .then(resp => {
-    //     if (resp.status === 200) {
-    //       history.push("/SarsoNewGBEntry");
-    //     }
-    //   })
-    //   .catch(error => {
-    //     handleError(error, history);
-    //   })
-    //   .then(release => {
-    //     //console.log(release); => udefined
-    //   });
+    axios.post(`/Greenbook/AddGreenbook/`, greenbook)
+      .then(resp => {
+        if (resp.status === 200) {
+          history.push("/SarsoNewGBEntry");
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   };
 
   useEffect(() => {
@@ -365,9 +364,16 @@ export default function NewEntry(props) {
                               ...params.inputProps,
                               autoComplete: 'new-password',
                             }}
+                            name="name_nAuthRegionID"
+                            inputRef={register({
+                              required: true
+                            })}
                           />
                         )}
                       />
+                      {_.get("name_nAuthRegionID.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -527,7 +533,7 @@ export default function NewEntry(props) {
                             }
                           }
                         }
-                        id="country-select-demo"
+                        id="id_sBirthCountryID"
                         options={lCountry}
                         classes={{
                           option: classes.option,
@@ -549,9 +555,16 @@ export default function NewEntry(props) {
                               ...params.inputProps,
                               autoComplete: 'new-password',
                             }}
+                            name="name_sBirthCountryID"
+                            inputRef={register({
+                              required: true
+                            })}
                           />
                         )}
                       />
+                      {_.get("name_sBirthCountryID.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -800,10 +813,6 @@ export default function NewEntry(props) {
                     <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
                         <Autocomplete
-                          name="name_sCountryID"
-                          // inputRef={register({
-                          //   required: true
-                          // })}
                           value={lCountry.find(country => country.sCountryID === sCountryID)}
                           openOnFocus
                           clearOnEscape
@@ -839,12 +848,16 @@ export default function NewEntry(props) {
                                 ...params.inputProps,
                                 autoComplete: 'new-password',
                               }}
+                              name="name_sCountryID"
+                              inputRef={register({
+                                required: true
+                              })}
                             />
                           )}
                         />
-                        {/*{_.get("name_sCountryID.type", errors) === "required" && (
-                          <span style={{color: 'red'}}>This field is required</span>
-                        )}*/}
+                        {_.get("name_sCountryID.type", errors) === "required" && (
+                          <span style={{ color: 'red' }}>This field is required</span>
+                        )}
                       </FormControl>
                     </Grid>
                     <Grid item xs={6}>

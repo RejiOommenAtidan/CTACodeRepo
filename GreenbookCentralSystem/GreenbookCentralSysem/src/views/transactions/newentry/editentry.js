@@ -419,9 +419,16 @@ export default function EditEntry(props) {
                                                             ...params.inputProps,
                                                             autoComplete: 'new-password'
                                                         }}
+                                                        name="name_nAuthRegionID"
+                                                        inputRef={register({
+                                                            required: true
+                                                        })}
                                                     />
                                                 )}
                                             />
+                                            {_.get("name_nAuthRegionID.type", errors) === "required" && (
+                                                <span style={{ color: 'red' }}>This field is required</span>
+                                            )}
                                         </FormControl>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -574,7 +581,6 @@ export default function EditEntry(props) {
                                                 onChange={
                                                     (e, value) => {
                                                         if (value !== null) {
-
                                                             setsBirthCountryID(value.sCountryID);
                                                         }
                                                         else {
@@ -582,7 +588,7 @@ export default function EditEntry(props) {
                                                         }
                                                     }
                                                 }
-                                                id="country-select-demo"
+                                                id="id_sBirthCountryID"
                                                 options={lCountry}
                                                 classes={{
                                                     option: classes.option,
@@ -604,9 +610,16 @@ export default function EditEntry(props) {
                                                             ...params.inputProps,
                                                             autoComplete: 'new-password'
                                                         }}
+                                                        name="name_sBirthCountryID"
+                                                        inputRef={register({
+                                                            required: true
+                                                        })}
                                                     />
                                                 )}
                                             />
+                                            {_.get("name_sBirthCountryID.type", errors) === "required" && (
+                                                <span style={{ color: 'red' }}>This field is required</span>
+                                            )}
                                         </FormControl>
                                     </Grid>
                                     <Grid item xs={12}>
@@ -892,9 +905,16 @@ export default function EditEntry(props) {
                                                                 ...params.inputProps,
                                                                 autoComplete: 'new-password'
                                                             }}
+                                                            name="name_sCountryID"
+                                                            inputRef={register({
+                                                                required: true
+                                                            })}
                                                         />
                                                     )}
                                                 />
+                                                {_.get("name_sCountryID.type", errors) === "required" && (
+                                                    <span style={{ color: 'red' }}>This field is required</span>
+                                                )}
                                             </FormControl>
                                         </Grid>
                                         <Grid item xs={6}>
