@@ -27,7 +27,7 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import handleError from '../../../auth/_helpers/handleError';
-import { sDateFormat } from '../../../config/commonConfig';
+import { sDateFormatMUIDatepicker } from '../../../config/commonConfig';
 
 const useStyles = makeStyles({
     root: {
@@ -519,7 +519,7 @@ export default function EditEntry(props) {
                                                     margin="dense"
                                                     id="id_dtDOB"
                                                     label="DOB"
-                                                    format={sDateFormat}
+                                                    format={sDateFormatMUIDatepicker}
                                                     onChange={date => { setdtDOB(date) }}
                                                     value={dtDOB}
                                                     KeyboardButtonProps={{
@@ -603,7 +603,7 @@ export default function EditEntry(props) {
                                                     margin="dense"
                                                     id="id_dtFormDate"
                                                     label="Sarso Form Date"
-                                                    format="MM/dd/yyyy"
+                                                    format={sDateFormatMUIDatepicker}
                                                     onChange={date => { setdtFormDate(date) }}
                                                     value={dtFormDate}
                                                     KeyboardButtonProps={{
@@ -1048,7 +1048,7 @@ export default function EditEntry(props) {
                                                     margin="dense"
                                                     id="id_dtValidityDate"
                                                     label="Validity Date"
-                                                    format="MM/dd/yyyy"
+                                                    format={sDateFormatMUIDatepicker}
                                                     onChange={date => { setdtValidityDate(date) }}
                                                     value={dtValidityDate}
                                                     KeyboardButtonProps={{
@@ -1199,7 +1199,7 @@ export default function EditEntry(props) {
                                                     margin="dense"
                                                     id="id_dtDeceased"
                                                     label="Deceased Date"
-                                                    format="MM/dd/yyyy"
+                                                    format={sDateFormatMUIDatepicker}
                                                     onChange={date => { setdtDeceased(date) }}
                                                     value={dtDeceased}
                                                     KeyboardButtonProps={{

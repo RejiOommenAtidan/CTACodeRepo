@@ -27,7 +27,8 @@ import {
 } from '@material-ui/pickers';
 import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
-import { sDateFormat } from '../../../config/commonConfig';
+import { sDateFormatMUIDatepicker } from '../../../config/commonConfig';
+import {BackdropComponent} from '../../backdrop/index';
 
 const useStyles = makeStyles({
   root: {
@@ -225,18 +226,18 @@ export default function NewEntry(props) {
     };
 
     console.table(greenbook);
-    // axios.post(`/Greenbook/AddGreenbook/`, greenbook)
-    //   .then(resp => {
-    //     if (resp.status === 200) {
-    //       history.push("/SarsoNewGBEntry");
-    //     }
-    //   })
-    //   .catch(error => {
-    //     handleError(error, history);
-    //   })
-    //   .then(release => {
-    //     //console.log(release); => udefined
-    //   });
+    axios.post(`/Greenbook/AddGreenbook/`, greenbook)
+      .then(resp => {
+        if (resp.status === 200) {
+          history.push("/SarsoNewGBEntry");
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   };
 
   useEffect(() => {
@@ -462,7 +463,7 @@ export default function NewEntry(props) {
                           margin="dense"
                           id="id_dtDOB"
                           label="DOB"
-                          format={sDateFormat}
+                          format={sDateFormatMUIDatepicker}
                           onChange={date => { setdtDOB(date) }}
                           value={dtDOB}
                           KeyboardButtonProps={{
@@ -545,7 +546,7 @@ export default function NewEntry(props) {
                           margin="dense"
                           id="id_dtFormDate"
                           label="Sarso Form Date"
-                          format={sDateFormat}
+                          format={sDateFormatMUIDatepicker}
                           onChange={date => { setdtFormDate(date) }}
                           value={dtFormDate}
                           KeyboardButtonProps={{
@@ -984,7 +985,7 @@ export default function NewEntry(props) {
                           margin="dense"
                           id="id_dtValidityDate"
                           label="Validity Date"
-                          format={sDateFormat}
+                          format={sDateFormatMUIDatepicker}
                           onChange={date => { setdtValidityDate(date) }}
                           value={dtValidityDate}
                           KeyboardButtonProps={{
@@ -1134,7 +1135,7 @@ export default function NewEntry(props) {
                           margin="dense"
                           id="id_dtDeceased"
                           label="Deceased Date"
-                          format={sDateFormat}
+                          format={sDateFormatMUIDatepicker}
                           onChange={date => { setdtDeceased(date) }}
                           value={dtDeceased}
                           KeyboardButtonProps={{
