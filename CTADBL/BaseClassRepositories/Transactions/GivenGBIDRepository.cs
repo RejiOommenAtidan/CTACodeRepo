@@ -122,6 +122,20 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
         #endregion
 
+        #region Change Status for nGivenOrNot
+        public int UpdateGivenOrNot(int nGBId)
+        {
+            string sql = @"UPDATE tblgivengbid
+                        SET nGivenOrNot = 1
+                        WHERE nGBId = @nGBId;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("nGBId", nGBId);
+                return ExecuteCommand(command);
+            }
+        }
+        #endregion
+
         #region Populate Given GBID Records
         public override GivenGBID PopulateRecord(MySqlDataReader reader)
         {

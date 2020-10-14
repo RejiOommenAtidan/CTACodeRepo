@@ -25,6 +25,7 @@ namespace CTAWebAPI.Controllers.Transactions
         private readonly GreenbookRepository _greenbookRepository;
         private readonly GetGBDataByFormNumberVMRepository _getGBDataByFormNumberVMRepository;
         private GreenBookVMRepository _greenBookVMRepository;
+        private GivenGBIDRepository _givenGBIDRepository;
         private readonly CTALogger _ctaLogger;
         public GreenbookController(DBConnectionInfo info)
         {
@@ -32,6 +33,7 @@ namespace CTAWebAPI.Controllers.Transactions
             _greenbookRepository = new GreenbookRepository(_info.sConnectionString);
             _getGBDataByFormNumberVMRepository = new GetGBDataByFormNumberVMRepository(_info.sConnectionString);
             _greenBookVMRepository = new GreenBookVMRepository(_info.sConnectionString);
+            _givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
         }
         #endregion
@@ -283,6 +285,16 @@ namespace CTAWebAPI.Controllers.Transactions
                     greenbook.dtEntered = DateTime.Now;
                     greenbook.dtUpdated = DateTime.Now;
                     _greenbookRepository.Add(greenbook);
+
+                    #region Parsing to Int
+                    bool isParsable = int.TryParse(greenbook.sGBID, out int nGBId);
+                    if (!isParsable)
+                        return BadRequest("Cannot Convert GBID to Int " + greenbook.sGBID);
+                    #endregion
+
+                    #region Firing Update Query to Change nGivenOrNot to 1
+                    _givenGBIDRepository.UpdateGivenOrNot(nGBId); 
+                    #endregion
 
                     #region Information Logging 
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, greenbook.nEnteredBy);
