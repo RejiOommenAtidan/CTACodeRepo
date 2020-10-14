@@ -19,6 +19,7 @@ import Search from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { AddDialog } from './dialog';
 
 const tableIcons = oTableIcons;
@@ -165,7 +166,7 @@ export default () => {
                           }}  
                           style={{padding:'0px'}}
                         >
-                          <EditOutlinedIcon/>
+                          <AssignmentTurnedInIcon />
                         </IconButton> ,
       cellStyle: {
         padding:'5px',

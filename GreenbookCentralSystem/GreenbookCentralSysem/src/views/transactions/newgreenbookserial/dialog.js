@@ -218,6 +218,9 @@ export const AddDialog = (props) => {
                                       //required={true}
                                       value={sGBID}
                                       onChange={(e) => { setGbId(e.target.value) }}
+                                      InputProps={{
+                                        readOnly: true
+                                      }}
                                       inputRef={register({
                                         required: true
                                       })}
@@ -237,10 +240,10 @@ export const AddDialog = (props) => {
                                             id="sName"
                                             name="sName"
                                             label="Name"
-                                            //required={true}
-                                            // InputProps={{
-                                            //   readOnly: true
-                                            // }}
+                                            required={true}
+                                            InputProps={{
+                                              readOnly: true
+                                            }}
                                             value={sName}
                                             onChange={(e) => { setName(e.target.value) }}
                                             inputRef={register({
@@ -257,6 +260,7 @@ export const AddDialog = (props) => {
                                     <Autocomplete
                                       openOnFocus
                                       clearOnEscape
+                                      aria-required = {true}
                                       onChange={  
                                         (e, value) => {
                                           if (value !== null) {
@@ -281,9 +285,7 @@ export const AddDialog = (props) => {
                                          <span>{option.sCountry}</span>
                                        </React.Fragment>
                                      )}
-                                     inputRef={register({
-                                      required: true
-                                    })}
+                                     
                                      renderInput={(params) => (
                                        <TextField
                                          {...params}
@@ -300,9 +302,7 @@ export const AddDialog = (props) => {
                                          
                                       )}
                                     />
-                                    {_.get("sCountry_name.type", errors) === "required" && (
-                                      <span style={{color: 'red'}}>This field is required</span>
-                                    )}
+                                    
                                   </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>

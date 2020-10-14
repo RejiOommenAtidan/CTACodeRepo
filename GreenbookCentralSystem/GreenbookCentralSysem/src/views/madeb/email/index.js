@@ -20,6 +20,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import axios from 'axios';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -44,13 +45,27 @@ const Transition = React.forwardRef(function Transition(props, ref) {
       id:id,
       nFormNumber: formNumber,
       sName: name,
-      sender:sender,
-      recipient:recipient,
-      subject:subject,
-      body:body
-
-      
+      sFrom:sender,
+      sReceiver:recipient,
+      sSubject:subject,
+      sBody:body
    }
+
+    const SendEmail = ((emailObj) => {
+      axios.post(`Madeb/SendEmail`, emailObj)
+        .then(resp => {
+            if(resp.status === 200 ){
+              console.log(resp.data);
+              alert("Success.\n" + resp.data);
+              props.handleEmailClickClose();
+          }
+        })
+        .catch(error => {
+            alert(error.message +"\nThere was an error sending your email. Please check your network status or if the email address is correct.");
+        });
+    });
+
+
     return (
         
         
@@ -68,7 +83,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                                           <TextField
                                               id="sender"
                                               label="Sender"
-                                              type="text"   
+                                              type="text"
+                                              required = {true}   
                                               InputProps={{
                                                   readOnly: false,
                                               }} 
@@ -85,7 +101,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                                               id="recipient"
                                               label="Recipient"
                                               type="email"
-                                              
+                                              required = {true}   
                                              
                                             
                                               onChange={(e) => { setRecipient(e.target.value) }}
@@ -98,7 +114,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                                           <TextField
                                               id="subject"
                                               label="Subject"
-                                              //required={true}
+
+                                              required={true}
                                            
                                           value={subject}
                                           onChange={(e) => { setSubject(e.target.value) }}
@@ -110,7 +127,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                                           <TextField
                                               id="message"
                                               label="Message"
-                                              //required={true}
+                                              required={true}
                                               multiline
                                                rowsMax={4}
                                           value={body}
@@ -135,7 +152,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
           </Alert>
         </Snackbar>*/}
   
-          <Button onClick={() =>  console.log(emailOutObj)} color="primary">Save</Button> 
+          <Button onClick={() => SendEmail(emailOutObj)} color="primary">Send</Button> 
         </DialogActions>
     
       </Dialog>

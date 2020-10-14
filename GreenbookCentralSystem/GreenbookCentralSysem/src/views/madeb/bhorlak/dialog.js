@@ -115,7 +115,7 @@ export const EditDialog = (props) => {
       
       
 
-    <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Bhorlak Madeb</DialogTitle>
       <form onSubmit={handleSubmit}>
       <DialogContent>
@@ -401,7 +401,7 @@ export const AddDialog = (props) => {
 
  
   return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Madeb Entry Form For Lost</DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
       <DialogContent>

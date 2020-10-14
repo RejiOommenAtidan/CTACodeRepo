@@ -7,6 +7,9 @@ using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
+using MimeKit.Utils;
+using MailKit.Net.Smtp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -495,6 +498,51 @@ namespace CTAWebAPI.Controllers.Transactions
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
+        }
+        #endregion
+
+        #region Send Email 
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult SendEmail(EmailSent email)
+        {
+            if(email != null)
+            {
+                try
+                {
+                    if (ModelState.IsValid)
+                    {
+                        MimeMessage message = new MimeMessage();
+                        MailboxAddress from = new MailboxAddress("CTA Team", email.sFrom);
+                        MailboxAddress to = new MailboxAddress(email.sName, email.sReceiver);
+
+                        BodyBuilder messageBody = new BodyBuilder();
+                        messageBody.TextBody = email.sBody;
+
+
+                        message.From.Add(from);
+                        message.To.Add(to);
+                        message.Subject = email.sSubject;
+                        message.Body = messageBody.ToMessageBody();
+                        message.Date = DateTime.Now;
+
+                        // Message ready. Now to use smtp client to despatch message
+                        SmtpClient smtpClient = new SmtpClient();
+                        smtpClient.Connect("smtp-mail.outlook.com", 25, false);
+                        smtpClient.Authenticate("rajen.parekh@outlook.com", "");
+                        smtpClient.Send(message);
+                        smtpClient.Disconnect(true);
+                        smtpClient.Dispose();
+                        return Ok("Email sent successfully.");
+                    }
+                }
+                catch(Exception ex)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "There was internal server error sending your email.");
+                }
+            }
+
+            return Ok("hi");
         }
         #endregion
 

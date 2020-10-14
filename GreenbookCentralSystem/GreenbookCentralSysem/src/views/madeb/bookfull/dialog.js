@@ -128,7 +128,7 @@ console.log("Madeb Edit Object received in dialog", madeb);
       
       
 
-    <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Book Full Madeb</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
       <DialogContent>
@@ -608,7 +608,7 @@ console.log("Madeb Object in Add dialog", madeb);
 //   const optsTypeIssued = childrenTypeIssued();
  
   return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+    <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Book Full Madeb</DialogTitle>
       <form onSubmit={handleSubmit(handleSnackBarSubmit)}>
       <DialogContent>
