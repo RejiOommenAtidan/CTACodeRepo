@@ -491,5 +491,200 @@ namespace CTADataMigrationAndSupport
 }
             }
         }
+
+        private void buttonGetChartelNow_Click(object sender, EventArgs e)
+        {
+            string connetionString = null;
+            MySqlConnection cnn;
+            connetionString = txtConnectionString.Text;
+            string sLogFolderPath = txtLogFolderPath.Text;
+            string sPathPrifix = txtImagePath.Text;
+            string sGBId = textBox1.Text;
+            int nPaidUntil = 0;
+            string sName = string.Empty;
+            int nAuthRegionID = 0;
+            string sCountryID = string.Empty;
+            cnn = new MySqlConnection(connetionString);
+            try
+            {
+                cnn.Open();
+
+                //string query = "SELECT sGBID FROM tblGreenBook";
+                string query = "select SUBSTRING(sPaidUntil,1,4) as sPaidUntil, concat(sFirstName , ' ' , sLastName) as sName, nAuthRegionID, sCountryID from tblgreenbook where sPaidUntil != '' and SUBSTRING(sPaidUntil,1,4) REGEXP '^-?[0-9]+$' and sGBId = '" + sGBId + "'";
+                //string query = "select sGBID from tblgreenbook where sGBID = 0000000";
+                MySqlCommand cmd = new MySqlCommand(query, cnn);
+                MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
+                DataTable dt = new DataTable("tblgreenbook");
+                returnVal.Fill(dt);
+
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    //Calculate the chartel pending amount from dt.Rows[0]["sPaidUntil"]
+                    nPaidUntil = Convert.ToInt32(dt.Rows[0]["sPaidUntil"]);
+                    sName = dt.Rows[0]["sName"].ToString();
+                    nAuthRegionID = Convert.ToInt32(dt.Rows[0]["nAuthRegionID"]);
+                    sCountryID = dt.Rows[0]["sCountryID"].ToString();
+                    labelChartelResult.Text = nPaidUntil.ToString();
+                    labelChartelResult.Text = "Total Chartel Balance: $" + getChartelAmount(nPaidUntil) + " from the year " + nPaidUntil.ToString();
+                    DataTable dtChartelPending = getChartelDataTable(nPaidUntil, sName, nAuthRegionID, sCountryID);
+
+                }
+                else
+                {
+                    nPaidUntil = 2011;
+                    labelChartelResult.Text = "Invalid GB Id";
+                }
+
+                cnn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                labelChartelResult.Text += Environment.NewLine + ex.ToString();
+            }
+
+
+        }
+
+        private string getChartelAmount(int nChartelYear)
+        {
+            int nChartelAmount = 36;
+            int nChartelMeal = 10;
+            int nChartelSalaryAmt = 50;
+            int nChartelLateFeesPercentage = 10;
+            int nChartelStartYear = 2011;
+            int nChartelCurrentYear = DateTime.Today.Year;
+            int nChartelPendingYears = 0;
+            decimal nLateFeeCharge = 0;
+            //Calculate
+
+
+            if (nChartelYear < nChartelStartYear)
+            {
+                nChartelYear = 2011;
+            }
+
+            nChartelPendingYears = nChartelCurrentYear - nChartelYear;
+
+            if (nChartelPendingYears > 1)
+            {
+                nLateFeeCharge = (((Convert.ToDecimal(nChartelAmount) + Convert.ToDecimal(nChartelMeal)) * Convert.ToDecimal(nChartelPendingYears)) * 10) / 100;
+            }
+
+            //Int64 nTotalChartelAmount = ((nChartelAmount + nChartelMeal) * nChartelPendingYears) + nLateFeeCharge;
+            decimal nTotalChartelAmount = Math.Round((Convert.ToDecimal(nChartelAmount + nChartelMeal)* Convert.ToDecimal(nChartelPendingYears + 1)) + nLateFeeCharge,2);
+
+            label7.Text = "Calculation : (" + nChartelAmount.ToString() + " + " + nChartelMeal.ToString() + ") * (" + nChartelPendingYears.ToString() + " + 1) + " 
+                + Math.Round(nLateFeeCharge,2).ToString() + " = " + nTotalChartelAmount.ToString("0.00");
+
+
+
+            return nTotalChartelAmount.ToString("0.00");
+        }
+
+        private DataTable getChartelDataTable(int nChartelYear, string sName, int nAuthRegionID, string sCountryID)
+        {
+            int nChartelAmount = 36;
+            int nChartelMeal = 10;
+            int nChartelSalaryAmt = 50;
+            int nChartelLateFeesPercentage = 10;
+            int nChartelStartYear = 2011;
+            int nChartelCurrentYear = DateTime.Today.Year;
+            int nChartelPendingYears = 0;
+            decimal nLateFeeCharge = 0;
+            //Calculate
+
+
+            if (nChartelYear < nChartelStartYear)
+            {
+                nChartelYear = 2011;
+            }
+
+            nChartelPendingYears = nChartelCurrentYear - nChartelYear;
+
+            if (nChartelPendingYears > 1)
+            {
+                nLateFeeCharge = (((Convert.ToDecimal(nChartelAmount) + Convert.ToDecimal(nChartelMeal)) * Convert.ToDecimal(nChartelPendingYears)) * 10) / 100;
+            }
+
+            //Int64 nTotalChartelAmount = ((nChartelAmount + nChartelMeal) * nChartelPendingYears) + nLateFeeCharge;
+            decimal nTotalChartelAmount = Math.Round((Convert.ToDecimal(nChartelAmount + nChartelMeal) * Convert.ToDecimal(nChartelPendingYears + 1)) + nLateFeeCharge, 2);
+
+            label7.Text = "Calculation : (" + nChartelAmount.ToString() + " + " + nChartelMeal.ToString() + ") * (" + nChartelPendingYears.ToString() + " + 1) + "
+                + Math.Round(nLateFeeCharge, 2).ToString() + " = " + nTotalChartelAmount.ToString("0.00");
+
+            DataTable lnkGBChartelPending = GetTable();
+            int countRow = 0;
+            for (int i = 0; i < nChartelPendingYears; i++)
+            {
+
+                double  dLateFee = (((36d + 10d) * 10d) / 100d);
+                lnkGBChartelPending.Rows.Add(
+                    i+1,
+                    sName,
+                    36,
+                    10,
+                    nChartelYear,
+                    dLateFee,
+                    0,
+                    0,
+                    0,
+                    (36d + 10d + dLateFee),
+                    DateTime.Now,
+                    nAuthRegionID,
+                    sCountryID);
+                countRow++;
+                nChartelYear++;
+            }
+            countRow++;
+
+            lnkGBChartelPending.Rows.Add(
+                    countRow,
+                    sName,
+                    36,
+                    10,
+                    nChartelYear,
+                    0,
+                    0,
+                    0,
+                    0,
+                    (36d + 10d + 0),
+                    DateTime.Now,
+                    nAuthRegionID,
+                    sCountryID);
+
+
+            //return nTotalChartelAmount.ToString("0.00");
+            return lnkGBChartelPending;
+        }
+
+        static DataTable GetTable()
+        {
+            //we create a DataTable.
+            //columns, each with a Type.
+            DataTable table = new DataTable();
+            table.Columns.Add("Id", typeof(int));
+            table.Columns.Add("sName", typeof(string));
+            table.Columns.Add("nChartel", typeof(int));
+            table.Columns.Add("nMeal", typeof(int));
+            table.Columns.Add("nYear", typeof(int));
+            table.Columns.Add("nLateFees", typeof(decimal));
+            table.Columns.Add("nChartelSalaryAmt", typeof(int));
+            table.Columns.Add("nBusinessDonation", typeof(int));
+            table.Columns.Add("nAdditionalDonation", typeof(int));
+            table.Columns.Add("nTotalAmount", typeof(decimal));
+            table.Columns.Add("dtPayment", typeof(DateTime));
+            table.Columns.Add("nAuthRegionId", typeof(int));
+            table.Columns.Add("sCountryId", typeof(string));
+
+
+            //// here we add rows.
+            //table.Rows.Add(25, "Drug A", "Disease A", DateTime.Now);
+            //table.Rows.Add(50, "Drug Z", "Problem Z", DateTime.Now);
+            //table.Rows.Add(10, "Drug Q", "Disorder Q", DateTime.Now);
+            //table.Rows.Add(21, "Medicine A", "Diagnosis A", DateTime.Now);
+            return table;
+        }
+
     }
 }

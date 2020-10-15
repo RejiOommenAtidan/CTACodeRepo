@@ -30,24 +30,32 @@
         {
             this.txtConnectionString = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabControlCTA = new System.Windows.Forms.TabControl();
+            this.tabPageRelationDataClincing = new System.Windows.Forms.TabPage();
+            this.labelRecordCount = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.lblResultRelation = new System.Windows.Forms.Label();
             this.btnNoGBID = new System.Windows.Forms.Button();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPageImageMigration = new System.Windows.Forms.TabPage();
             this.lblResult = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnImageMigration = new System.Windows.Forms.Button();
             this.txtImagePath = new System.Windows.Forms.TextBox();
+            this.tabPageCTAChartel = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.labelChartelResult = new System.Windows.Forms.Label();
+            this.buttonGetChartelNow = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.txtLogFolderPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.progressBarProcess = new System.Windows.Forms.ProgressBar();
-            this.labelRecordCount = new System.Windows.Forms.Label();
-            this.tabControl1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabControlCTA.SuspendLayout();
+            this.tabPageRelationDataClincing.SuspendLayout();
+            this.tabPageImageMigration.SuspendLayout();
+            this.tabPageCTAChartel.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtConnectionString
@@ -68,30 +76,39 @@
             this.label1.Text = "DB Connection String";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // tabControl1
+            // tabControlCTA
             // 
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Location = new System.Drawing.Point(10, 88);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(767, 463);
-            this.tabControl1.TabIndex = 16;
+            this.tabControlCTA.Controls.Add(this.tabPageRelationDataClincing);
+            this.tabControlCTA.Controls.Add(this.tabPageImageMigration);
+            this.tabControlCTA.Controls.Add(this.tabPageCTAChartel);
+            this.tabControlCTA.Location = new System.Drawing.Point(10, 88);
+            this.tabControlCTA.Name = "tabControlCTA";
+            this.tabControlCTA.SelectedIndex = 0;
+            this.tabControlCTA.Size = new System.Drawing.Size(767, 463);
+            this.tabControlCTA.TabIndex = 16;
             // 
-            // tabPage2
+            // tabPageRelationDataClincing
             // 
-            this.tabPage2.Controls.Add(this.labelRecordCount);
-            this.tabPage2.Controls.Add(this.comboBox1);
-            this.tabPage2.Controls.Add(this.label4);
-            this.tabPage2.Controls.Add(this.lblResultRelation);
-            this.tabPage2.Controls.Add(this.btnNoGBID);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(759, 435);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Relation Dirty Data";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabPageRelationDataClincing.Controls.Add(this.labelRecordCount);
+            this.tabPageRelationDataClincing.Controls.Add(this.comboBox1);
+            this.tabPageRelationDataClincing.Controls.Add(this.label4);
+            this.tabPageRelationDataClincing.Controls.Add(this.lblResultRelation);
+            this.tabPageRelationDataClincing.Controls.Add(this.btnNoGBID);
+            this.tabPageRelationDataClincing.Location = new System.Drawing.Point(4, 24);
+            this.tabPageRelationDataClincing.Name = "tabPageRelationDataClincing";
+            this.tabPageRelationDataClincing.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageRelationDataClincing.Size = new System.Drawing.Size(759, 435);
+            this.tabPageRelationDataClincing.TabIndex = 1;
+            this.tabPageRelationDataClincing.Text = "Relation Dirty Data";
+            this.tabPageRelationDataClincing.UseVisualStyleBackColor = true;
+            // 
+            // labelRecordCount
+            // 
+            this.labelRecordCount.AutoSize = true;
+            this.labelRecordCount.Location = new System.Drawing.Point(47, 417);
+            this.labelRecordCount.Name = "labelRecordCount";
+            this.labelRecordCount.Size = new System.Drawing.Size(0, 15);
+            this.labelRecordCount.TabIndex = 4;
             // 
             // comboBox1
             // 
@@ -133,19 +150,19 @@
             this.btnNoGBID.UseVisualStyleBackColor = true;
             this.btnNoGBID.Click += new System.EventHandler(this.btnNoGBID_Click);
             // 
-            // tabPage1
+            // tabPageImageMigration
             // 
-            this.tabPage1.Controls.Add(this.lblResult);
-            this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.btnImageMigration);
-            this.tabPage1.Controls.Add(this.txtImagePath);
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(759, 435);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Image Migration";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPageImageMigration.Controls.Add(this.lblResult);
+            this.tabPageImageMigration.Controls.Add(this.label3);
+            this.tabPageImageMigration.Controls.Add(this.btnImageMigration);
+            this.tabPageImageMigration.Controls.Add(this.txtImagePath);
+            this.tabPageImageMigration.Location = new System.Drawing.Point(4, 24);
+            this.tabPageImageMigration.Name = "tabPageImageMigration";
+            this.tabPageImageMigration.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageImageMigration.Size = new System.Drawing.Size(759, 435);
+            this.tabPageImageMigration.TabIndex = 0;
+            this.tabPageImageMigration.Text = "Image Migration";
+            this.tabPageImageMigration.UseVisualStyleBackColor = true;
             // 
             // lblResult
             // 
@@ -182,6 +199,76 @@
             this.txtImagePath.TabIndex = 19;
             this.txtImagePath.Text = "C:\\xampp\\htdocs\\GreenBook\\gb\\images\\";
             // 
+            // tabPageCTAChartel
+            // 
+            this.tabPageCTAChartel.Controls.Add(this.label7);
+            this.tabPageCTAChartel.Controls.Add(this.label6);
+            this.tabPageCTAChartel.Controls.Add(this.labelChartelResult);
+            this.tabPageCTAChartel.Controls.Add(this.buttonGetChartelNow);
+            this.tabPageCTAChartel.Controls.Add(this.textBox1);
+            this.tabPageCTAChartel.Controls.Add(this.label5);
+            this.tabPageCTAChartel.Location = new System.Drawing.Point(4, 24);
+            this.tabPageCTAChartel.Name = "tabPageCTAChartel";
+            this.tabPageCTAChartel.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageCTAChartel.Size = new System.Drawing.Size(759, 435);
+            this.tabPageCTAChartel.TabIndex = 2;
+            this.tabPageCTAChartel.Text = "CTA Chartel";
+            this.tabPageCTAChartel.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(83, 147);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(73, 15);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "Calculation :";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(83, 113);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(520, 15);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Calculation : ((nChartelAmount + nChartelMeal)* (nChartelPendingYears + 1)) + nLa" +
+    "teFeeCharge;";
+            // 
+            // labelChartelResult
+            // 
+            this.labelChartelResult.AutoSize = true;
+            this.labelChartelResult.Location = new System.Drawing.Point(83, 69);
+            this.labelChartelResult.Name = "labelChartelResult";
+            this.labelChartelResult.Size = new System.Drawing.Size(38, 15);
+            this.labelChartelResult.TabIndex = 3;
+            this.labelChartelResult.Text = "label6";
+            // 
+            // buttonGetChartelNow
+            // 
+            this.buttonGetChartelNow.Location = new System.Drawing.Point(243, 20);
+            this.buttonGetChartelNow.Name = "buttonGetChartelNow";
+            this.buttonGetChartelNow.Size = new System.Drawing.Size(75, 23);
+            this.buttonGetChartelNow.TabIndex = 2;
+            this.buttonGetChartelNow.Text = "Chartel Data";
+            this.buttonGetChartelNow.UseVisualStyleBackColor = true;
+            this.buttonGetChartelNow.Click += new System.EventHandler(this.buttonGetChartelNow_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(83, 20);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(153, 23);
+            this.textBox1.TabIndex = 1;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(42, 28);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(35, 15);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "GBId:";
+            // 
             // txtLogFolderPath
             // 
             this.txtLogFolderPath.Location = new System.Drawing.Point(137, 42);
@@ -206,14 +293,6 @@
             this.progressBarProcess.Size = new System.Drawing.Size(763, 23);
             this.progressBarProcess.TabIndex = 20;
             // 
-            // labelRecordCount
-            // 
-            this.labelRecordCount.AutoSize = true;
-            this.labelRecordCount.Location = new System.Drawing.Point(47, 417);
-            this.labelRecordCount.Name = "labelRecordCount";
-            this.labelRecordCount.Size = new System.Drawing.Size(0, 15);
-            this.labelRecordCount.TabIndex = 4;
-            // 
             // CTAApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -222,17 +301,19 @@
             this.Controls.Add(this.progressBarProcess);
             this.Controls.Add(this.txtLogFolderPath);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabControlCTA);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtConnectionString);
             this.Name = "CTAApp";
             this.Text = "CTA Data Support";
             this.Load += new System.EventHandler(this.CTAApp_Load);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.tabControlCTA.ResumeLayout(false);
+            this.tabPageRelationDataClincing.ResumeLayout(false);
+            this.tabPageRelationDataClincing.PerformLayout();
+            this.tabPageImageMigration.ResumeLayout(false);
+            this.tabPageImageMigration.PerformLayout();
+            this.tabPageCTAChartel.ResumeLayout(false);
+            this.tabPageCTAChartel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -241,13 +322,13 @@
         #endregion
         private System.Windows.Forms.TextBox txtConnectionString;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabControl tabControlCTA;
+        private System.Windows.Forms.TabPage tabPageImageMigration;
         private System.Windows.Forms.Label lblResult;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnImageMigration;
         private System.Windows.Forms.TextBox txtImagePath;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPageRelationDataClincing;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblResultRelation;
@@ -256,6 +337,13 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ProgressBar progressBarProcess;
         private System.Windows.Forms.Label labelRecordCount;
+        private System.Windows.Forms.TabPage tabPageCTAChartel;
+        private System.Windows.Forms.Button buttonGetChartelNow;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label labelChartelResult;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
     }
 }
 
