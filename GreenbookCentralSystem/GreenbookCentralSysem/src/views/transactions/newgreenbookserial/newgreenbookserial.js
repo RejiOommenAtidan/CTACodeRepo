@@ -21,6 +21,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { AddDialog } from './dialog';
+import { Assign } from './assign';
 
 const tableIcons = oTableIcons;
 
@@ -173,8 +174,18 @@ export default () => {
       cellStyle: {
         padding:'5px',
       },
+    },
+    {
+      field: "Assign",
+      title: "Assign",
+      sorting: false,
+      export:false,
+      filtering:false,
+      render: rowData => <Assign />,
+      cellStyle: {
+        padding:'5px',
+      },
     }
-
   ];
 
 

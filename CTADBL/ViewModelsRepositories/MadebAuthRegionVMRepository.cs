@@ -308,7 +308,7 @@ namespace CTADBL.ViewModelsRepositories
             return new MadebAuthRegionVM
             {
                 madeb = _madebRepository.PopulateRecord(reader),
-                sAuthRegion = (string) reader["sAuthRegion"],
+                sAuthRegion = reader.IsDBNull("sAuthRegion") ? null : (string) reader["sAuthRegion"],
                 sTypeIssued = reader.IsDBNull("sTypeIssued") ? null : (string?)(reader["sTypeIssued"]),
                 sMadebStatus = reader.IsDBNull("sMadebStatus") ? null : (string?)(reader["sMadebStatus"]),
             };
