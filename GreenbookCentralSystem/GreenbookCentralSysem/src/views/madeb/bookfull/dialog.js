@@ -570,7 +570,7 @@ export const AddDialog = (props) => {
   const [id, setId] = React.useState(0);
   const [madebType,setMadebType]= React.useState(5);
   const [authRegionID, setAuthRegionId] = React.useState(0);
-  const [receivedDate, setReceivedDate] = React.useState('');
+  const [receivedDate, setReceivedDate] = React.useState(new Date(Date.now()).toISOString().substring(0,10));
   const [name, setName] = React.useState('');
   const [gbId, setGbId] = useState('');
   const [fname, setFname] = React.useState('');
@@ -591,7 +591,8 @@ export const AddDialog = (props) => {
     sFathersName:fname,
     nSaneyFormNo:saney,
     nCurrentGBSno: currentGBSno,
-    nPreviousGBSno: previousGBSno
+    nPreviousGBSno: previousGBSno,
+    nIssuedOrNotID:1
  }
  const btnstyles = {background:'none', border:'none', cursor: 'pointer', color: 'blue'};
 console.log("Madeb Object in Add dialog", madeb);
@@ -669,7 +670,6 @@ console.log("Madeb Object in Add dialog", madeb);
                                       }
                                      //value={valueAuthRegion} 
                                      id="id_nAuthorityId"
-                                     name="authority"
                                      options={authorityData}
                                      autoHighlight
                                      getOptionLabel={(option) => option.sAuthRegion}

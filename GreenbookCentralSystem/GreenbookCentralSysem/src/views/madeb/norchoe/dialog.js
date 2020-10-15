@@ -25,6 +25,12 @@ import MuiAlert from '@material-ui/lab/Alert';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import axios from 'axios';
+import {Alerts} from '../../alerts';
+
+
+
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -399,12 +405,66 @@ export const EditDialog = (props) => {
 
 export const AddDialog = (props) => {
   //console.log(props.selectData);
-  
+  // SnackBar Alerts 
+
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const alertObj={
+    alertMessage:alertMessage,
+    alertType:alertType
+  }
+  const btnstyles = {background:'none', border:'none', cursor: 'pointer', color: 'blue'};
+
   const handleChangeGBID = (value) => {
     setGbId(value);
     setName('');
   //  setFname('');
   }
+
+  const formPopulate = (value) => {
+    debugger
+    console.log("Value in GBID: ", value);
+    const gbid = value;
+    const sNameElement = document.getElementById("name");
+    axios.get(`Greenbook/GetBasicDetailsFromGBID/?sGBID=`+ gbid)
+       .then(resp => {
+         if (resp.status === 200) {
+           console.log("Got gb record\n", resp.data);
+           console.log("Name Element:" , sNameElement);
+           const name = resp.data.greenBook.sFirstName ? resp.data.greenBook.sFirstName : '';
+           const mname = resp.data.greenBook.sMiddleName ? resp.data.greenBook.sMiddleName : '';
+           const lname = resp.data.greenBook.sLastName ? resp.data.greenBook.sLastName : '';
+           setName( `${name} ${mname} ${lname}`);
+           const region = authorityData.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
+           
+            setAuthRegion(region);
+
+
+           //sNameElement.value=`${name} ${mname} ${lname}`;
+           var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+            window.HTMLInputElement.prototype, "value").set;
+          nativeInputValueSetter.call(sNameElement, `${name} ${mname} ${lname}`);
+          var inputEvent = new Event("input", { bubbles: true });
+          
+          // setFname(resp.data.sFathersName);
+          sNameElement.dispatchEvent(inputEvent);
+          
+         }
+         else{
+           setName('');
+          //  setFname('');
+           console.log("Not found" , resp);
+           setAlertMessage(`No record found for GB Id: ${gbid}.` );
+           setAlertType('error');
+           //snackbarOpen();
+         }
+       })
+       .catch((error) => {
+         setName('');
+         
+         console.log(error);
+       });
+     };
 
   const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
 
@@ -418,7 +478,7 @@ export const AddDialog = (props) => {
   const [receipt, setReceipt] = React.useState(0);
   const [sChangeField, setChangeField] = React.useState('');
   const [name, setName] = React.useState('');
-
+  const [authRegion, setAuthRegion] = React.useState([]);
   
   const [documents, setDocument] = React.useState('');
 
@@ -517,6 +577,7 @@ export const AddDialog = (props) => {
                                         }
                                         }
                                     }
+                                    value = {authRegion}
                                     inputRef={register({
                                         required: true
                                       })}
@@ -575,7 +636,7 @@ export const AddDialog = (props) => {
                                         
                                         
                                     </FormControl>
-                                    {/*<button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button>*/}
+                                    <button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button>
 
                                 </Grid>
                                <Grid item xs={12} sm={6}>
