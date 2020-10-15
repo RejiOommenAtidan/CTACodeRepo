@@ -11,9 +11,8 @@ import {
 } from '@material-ui/core';
 
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { storeAuthDetails, removeAuthDetails } from "../../actions/userAuthenticateAction";
-import { authenticationService } from '../../auth/_services';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeAuthDetails } from "../../actions/userAuthenticateAction";
 import { withStyles } from '@material-ui/core/styles';
 
 const StyledBadge = withStyles({
@@ -60,7 +59,6 @@ const HeaderUserbox = () => {
 
   const logUserOut = () => {
     setAnchorEl(null);
-    authenticationService.logout();
     dispatch(removeAuthDetails());
     history.push('/Login');
   }
@@ -70,6 +68,9 @@ const HeaderUserbox = () => {
     history.push('/ChangePassword');
   };
 
+  const sFullname = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.sFullname);
+  const sRightsName = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUserRights.sUserRightsName);
+  
   // const preventDefault = (event) => {
   //   event.preventDefault();
   //   history.push("/Home");
@@ -93,7 +94,7 @@ const HeaderUserbox = () => {
         className="btn-second m-2"
         color="primary"
         aria-label="split button">
-        <Button className="btn-transition-none">Welcome, {authenticationService.currentUserValue.oUser.sFullname + " (" + authenticationService.currentUserValue.oUserRights.sUserRightsName + ")"}</Button>
+        <Button className="btn-transition-none">Welcome, {sFullname + " (" + sRightsName + ")"}</Button>
         <Button
           className="btn-transition-none px-2"
           color="primary"

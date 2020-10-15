@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { PersistGate } from 'redux-persist/integration/react'
 import { BrowserRouter } from 'react-router-dom';
-import configureStore from './config/configureStore';
+import { store, persistor } from './config/configureStore';
 import { Provider } from 'react-redux';
 import Routes from './Routes';
 import ScrollToTop from './utils/ScrollToTop';
@@ -254,16 +255,17 @@ library.add(
   faSignOutAlt,
   faLink
 );
-const store = configureStore();
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <BrowserRouter >
-          <ScrollToTop>
-            <Routes />
-          </ScrollToTop>
-        </BrowserRouter>
+        <PersistGate loading={null} persistor={persistor}>
+          <BrowserRouter >
+            <ScrollToTop>
+              <Routes />
+            </ScrollToTop>
+          </BrowserRouter>
+        </PersistGate>
       </Provider>
     );
   }

@@ -1,20 +1,13 @@
 import React, { useState } from 'react';
-
 import clsx from 'clsx';
-
 import { Collapse } from '@material-ui/core';
-
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { connect } from 'react-redux';
-
 import { NavLink } from 'react-router-dom';
 import { setSidebarToggleMobile } from '../../reducers/ThemeOptions';
-
 import SidebarUserbox from '../SidebarUserbox';
-
 import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
 import { useSelector } from 'react-redux';
-
 import ListIcon from '@material-ui/icons/List';
 import HomeIcon from '@material-ui/icons/Home';
 import AppsIcon from '@material-ui/icons/Apps';
@@ -33,8 +26,9 @@ import AssessmentIcon from '@material-ui/icons/Assessment';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 
 const SidebarMenu = (props) => {
-  const { setSidebarToggleMobile, sidebarUserbox } = props;
   const authUser = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
+
+  const { setSidebarToggleMobile, sidebarUserbox } = props;
   const toggleSidebarMobile = () => setSidebarToggleMobile(false);
 
   const [madebOpen, setMadebOpen] = useState(false);
@@ -178,48 +172,60 @@ const SidebarMenu = (props) => {
               </a>
               <Collapse in={madebOpen}>
                 <ul>
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 13)) !== undefined
+                  &&
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/Sarso">
                       Sarso Madeb
                     </NavLink>
-                  </li>
+                  </li>}
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 14)) !== undefined
+                    &&
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/Norchoe">
                       Norchoe Madeb
                     </NavLink>
-                  </li>
+                  </li>}
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 15)) !== undefined
+                    &&
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/Bhorlak">
                       Bhorlak Madeb
                     </NavLink>
-                  </li>
+                  </li>}
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 16)) !== undefined
+                    &&
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/BookFull">
                       Book Full
                     </NavLink>
-                  </li>
+                  </li>}
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 17)) !== undefined
+                    &&
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/BriefGB">
                       Brief GB
                     </NavLink>
-                  </li>
+                  </li>}
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 18)) !== undefined
+                    &&
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/Abroad">
                       Abroad
                     </NavLink>
-                  </li>
+                  </li>}
                 </ul>
               </Collapse>
             </li>
@@ -287,7 +293,7 @@ const SidebarMenu = (props) => {
                       Relation
                     </NavLink>
                   </li>
-                   {<li>
+                  {<li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/Feature">
@@ -323,34 +329,36 @@ const SidebarMenu = (props) => {
                 Greenbooks
               </NavLink>
             </li>
-            {authUser && (authUser.lFeatureUserrights.find(x=>x.nFeatureID===3))!==undefined
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 3)) !== undefined
               &&
               <li>
-              <NavLink
-                activeClassName="active"
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="/GivenGBID">
-                <span className="sidebar-icon">
-                  <FormatListNumberedIcon />
-                </span>
+                <NavLink
+                  activeClassName="active"
+                  onClick={toggleSidebarMobile}
+                  className="nav-link-simple"
+                  to="/GivenGBID">
+                  <span className="sidebar-icon">
+                    <FormatListNumberedIcon />
+                  </span>
                 Give GB Number
               </NavLink>
-            </li>}
-            {authUser && (authUser.lFeatureUserrights.find(x=>x.nFeatureID===12))!==undefined
+              </li>}
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 12)) !== undefined
               &&
-            <li>
-              <NavLink
-                activeClassName="active"
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="/SarsoNewGBEntry">
-                <span className="sidebar-icon">
-                  <AddBoxIcon />
-                </span>
+              <li>
+                <NavLink
+                  activeClassName="active"
+                  onClick={toggleSidebarMobile}
+                  className="nav-link-simple"
+                  to="/SarsoNewGBEntry">
+                  <span className="sidebar-icon">
+                    <AddBoxIcon />
+                  </span>
                 Sarso New GB Entry
               </NavLink>
-            </li>}
+              </li>}
+              {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 11)) !== undefined
+                &&
             <li>
               <NavLink
                 activeClassName="active"
@@ -362,7 +370,9 @@ const SidebarMenu = (props) => {
                 </span>
                 Give Serial Number
               </NavLink>
-            </li>
+            </li>}
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 10)) !== undefined
+                &&
             <li>
               <NavLink
                 activeClassName="active"
@@ -374,7 +384,9 @@ const SidebarMenu = (props) => {
                 </span>
                 Print
               </NavLink>
-            </li>
+            </li>}
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 8)) !== undefined
+              &&
             <li>
               <NavLink
                 activeClassName="active"
@@ -386,7 +398,9 @@ const SidebarMenu = (props) => {
                 </span>
                 Issue Book
               </NavLink>
-            </li>
+            </li>}
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 9)) !== undefined
+              &&
             <li>
               <NavLink
                 activeClassName="active"
@@ -398,7 +412,7 @@ const SidebarMenu = (props) => {
                 </span>
                 Make List
               </NavLink>
-            </li>
+            </li>}
             <li>
               <a
                 href="#/"
@@ -414,27 +428,33 @@ const SidebarMenu = (props) => {
               </a>
               <Collapse in={usersOpen}>
                 <ul>
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 5)) !== undefined
+                  &&
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/Users">
                       Manage Users
                     </NavLink>
-                  </li>
+                  </li>}
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 22)) !== undefined
+                    &&
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/FeatureRoles">
                       Manage Feature Roles
                     </NavLink>
-                  </li>
+                  </li>}
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 23)) !== undefined
+                    &&
                   <li>
                     <NavLink
                       onClick={toggleSidebarMobile}
                       to="/UserRights">
                       Manage User Rights
                     </NavLink>
-                  </li>
+                  </li>}
                 </ul>
               </Collapse>
             </li>
@@ -450,6 +470,8 @@ const SidebarMenu = (props) => {
                 Edit
               </NavLink>
             </li>
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 4)) !== undefined
+              &&
             <li>
               <NavLink
                 activeClassName="active"
@@ -461,7 +483,7 @@ const SidebarMenu = (props) => {
                 </span>
                 Delete
               </NavLink>
-            </li>
+            </li>}
             <li>
               <NavLink
                 activeClassName="active"

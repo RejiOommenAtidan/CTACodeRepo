@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { authenticationService } from '../../../auth/_services';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { storeAuthDetails, removeAuthDetails } from "../../../actions/userAuthenticateAction";
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import {
@@ -16,11 +16,12 @@ import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 import { Alerts } from '../../../views/alerts';
 
 export default function LogingPage() {
+  let LoggedInOrNot = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
   let history = useHistory();
   const dispatch = useDispatch();
   const { register, handleSubmit, errors } = useForm();
-  const [sUsername, setsUsername] = useState(null);
-  const [sPassword, setsPassword] = useState(null);
+  const [sUsername, setsUsername] = useState("");
+  const [sPassword, setsPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const [snackbar, setSnackbar] = React.useState(false);
@@ -38,8 +39,9 @@ export default function LogingPage() {
   };
 
   useEffect(() => {
-    // Redirect to Home if Data Present
-    if (authenticationService.currentUserValue) {
+    debugger;
+    // Redirect to Home if Data Present in Redux
+    if (LoggedInOrNot !== null) {
       history.push('/Home');
     }
   }, []);
@@ -47,9 +49,6 @@ export default function LogingPage() {
   const onSubmit = () => {
     authenticationService.login(sUsername, sPassword).then(
       user => {
-        // setAlertMessage('Login Successful');
-        // setAlertType('success');
-        // snackbarOpen();
         dispatch(storeAuthDetails(user));
         history.push('/Home');
       },
@@ -57,11 +56,9 @@ export default function LogingPage() {
         setAlertMessage("Invalid Username/Password");
         setAlertType('error');
         snackbarOpen();
-        authenticationService.logout();
         dispatch(removeAuthDetails());
-        // setTimeout(()=>{window.location.reload(true);}, 2000);
-        setsUsername("");
         setsPassword("");
+        setsUsername("");
       }
     );
   };

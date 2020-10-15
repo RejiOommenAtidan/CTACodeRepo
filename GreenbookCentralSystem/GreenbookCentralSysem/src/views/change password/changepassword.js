@@ -60,7 +60,9 @@ const useStyles = makeStyles({
 
 export default function ChangePassword() {
   let history = useHistory();
-  let nUserId = authenticationService.currentUserValue.oUser.id;
+  const currentUser = authenticationService.currentUserValue;
+  const oUserAuthUser = JSON.parse(currentUser.UserAuthenticationReducer);
+  let nUserId = oUserAuthUser.oUserAuth.oUser.id;
   const classes = useStyles();
   const { register, handleSubmit, watch, errors } = useForm();
   const [sOldPassword, setsOldPassword] = useState('');

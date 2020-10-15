@@ -7,13 +7,14 @@ import MuiTheme from './theme';
 import { PrivateRoute } from './auth/_components/PrivateRoute';
 
 // Layout Blueprints
-
 import {
   LeftSidebar,
   CollapsedSidebar,
   MinimalLayout,
   PresentationLayout
 } from './layout-blueprints';
+
+
 
 // Example Pages
 
@@ -87,6 +88,7 @@ const Routes = () => {
   };
 
   const SuspenseLoading = () => {
+    
     const [show, setShow] = useState(false);
     useEffect(() => {
       let timeout = setTimeout(() => setShow(true), 300);
@@ -123,6 +125,7 @@ const Routes = () => {
       </>
     );
   };
+  
   return (
     <ThemeProvider theme={MuiTheme}>
       <AnimatePresence>
@@ -228,26 +231,26 @@ const Routes = () => {
                     <Route path="/Greenbooks" component={Greenbook} />
                     <Route path="/NewGreenBookSerial" component={NewGreenBookSerial} />
                     {/*Private Routes Go Here*/}
-                    <PrivateRoute path="/GivenGBID" feature={3} component={GivenGBID} />
-                    <PrivateRoute path="/DeleteGB" feature={4} component={DeleteGB} />
-                    <PrivateRoute path="/Users" feature={5} component={Users} />
-                    <PrivateRoute path="/EditEntry/:GBID" feature={7} component={EditEntry} />
-                    <PrivateRoute path="/IssueBook" feature={8} component={IssueBook} />
-                    <PrivateRoute path="/MakeList" feature={9} component={MakeList} />
-                    <PrivateRoute path="/Print" feature={10} component={Print} />
-                    <PrivateRoute path="/GreenBookSerial" feature={11} component={GreenBookSerial} />
-                    <PrivateRoute path="/NewEntry/:FORMNO" feature={12} component={NewEntry} />
-                    <PrivateRoute path="/Sarso" feature={13} component={Sarso} />
-                    <PrivateRoute path="/Norchoe" feature={14} component={Norchoe} />
+                    <PrivateRoute path="/GivenGBID"  feature={3} component={GivenGBID} />
+                    <PrivateRoute path="/DeleteGB"  feature={4} component={DeleteGB} />
+                    <PrivateRoute path="/Users"  feature={5} component={Users} />
+                    <PrivateRoute path="/EditEntry/:GBID"  feature={7} component={EditEntry} />
+                    <PrivateRoute path="/IssueBook"  feature={8} component={IssueBook} />
+                    <PrivateRoute path="/MakeList"  feature={9} component={MakeList} />
+                    <PrivateRoute path="/Print"  feature={10} component={Print} />
+                    <PrivateRoute path="/GreenBookSerial"  feature={11} component={GreenBookSerial} />
+                    <PrivateRoute path="/NewEntry/:FORMNO"  feature={12} component={NewEntry} />
+                    <PrivateRoute path="/Sarso"  feature={13} component={Sarso} />
+                    <PrivateRoute path="/Norchoe"  feature={14} component={Norchoe} />
                     <PrivateRoute path="/Bhorlak" feature={15} component={Bhorlak} />
-                    <PrivateRoute path="/BookFull" feature={16} component={BookFull} />
-                    <PrivateRoute path="/BriefGB" feature={17} component={BriefGB} />
-                    <PrivateRoute path="/Abroad" feature={18} component={Abroad} />
-                    <PrivateRoute path="/ChangePassword" feature={19} component={ChangePassword} />
-                    <PrivateRoute path="/Search" feature={20} component={Search} />
-                    <PrivateRoute path="/SarsoNewGBEntry" feature={21} component={SarsoNewGBEntry} />
-                    <PrivateRoute path="/FeatureRoles" feature={22} component={FeatureUserrights} />
-                    <PrivateRoute path="/UserRights" feature={23} component={UserRights} />
+                    <PrivateRoute path="/BookFull"  feature={16} component={BookFull} />
+                    <PrivateRoute path="/BriefGB"  feature={17} component={BriefGB} />
+                    <PrivateRoute path="/Abroad"  feature={18} component={Abroad} />
+                    <PrivateRoute path="/ChangePassword"  feature={19} component={ChangePassword} />
+                    <PrivateRoute path="/Search"  feature={20} component={Search} />
+                    <PrivateRoute path="/SarsoNewGBEntry"  feature={21} component={SarsoNewGBEntry} />
+                    <PrivateRoute path="/FeatureRoles"  feature={22} component={FeatureUserrights} />
+                    <PrivateRoute path="/UserRights"  feature={23} component={UserRights} />
                   </motion.div>
                 </Switch>
               </LeftSidebar>

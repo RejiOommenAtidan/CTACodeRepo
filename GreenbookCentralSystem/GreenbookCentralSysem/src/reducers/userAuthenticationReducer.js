@@ -18,3 +18,4 @@ const UserAuthenticationReducer = (state = initialUserAuthState, action) => {
 }
 
 export default UserAuthenticationReducer;
+
