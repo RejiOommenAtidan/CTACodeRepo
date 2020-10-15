@@ -176,6 +176,7 @@ export default function EnhancedTable() {
   const [authority, setAuthority] = React.useState(0);
   const [receivedDate, setReceivedDate] = React.useState('');
   const [name, setName] = React.useState('');
+  
   const [fname, setFname] = React.useState('');
   const [saney, setSaney] = React.useState(0);
   const [documents, setDocument] = React.useState('');
@@ -259,194 +260,148 @@ export default function EnhancedTable() {
       hidden:true,
       cellStyle: {
         padding:'5px',
-        
       },
-    
     },
     {
       field: "madeb.nFormNumber",
-      title: "Form No.",
-      filterPlaceholder:'Search..',
-      headerStyle: {
-        padding:'0px',
-        width:'7%',
-        textAlign:'left'
-      },
+      title: "Form Number",
+      filterPlaceholder: "Search...",
       cellStyle: {
-       // padding:'0px',
-        padding:'10px',
-        width:'7%',
-        textAlign:'left'
-        
+        padding:'5px',
       },
     },
     {
       field: "madeb.dtReceived",
       title: "Received Date",
-      render: rowData => Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD'),
-      headerStyle: {
-        padding:'0px',
-        width:'9%',
-        textAlign:'left'
-      },
+      // type: 'date',
+      // dateSetting: {locale: 'en-GB'},
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'9%',
-        textAlign:'left'
-        
+        padding:'5px',
       },
+      render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD') : undefined
     },
     {
       field: "sAuthRegion",
       title: "Authority",
-     
-      headerStyle: {
-        padding:'0px',
-        width:'10%',
-        textAlign:'left'
-      },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'10%',
-        textAlign:'left'
-        
+        padding:'5px',
       },
     },
     {
       field: "madeb.sName",
       title: "Name",
-     
-      headerStyle: {
-        padding:'0px',
-        width:'15%',
-        textAlign:'left'
-      },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'15%',
-        textAlign:'left'
-        
+        padding:'5px',
+      },
+    },
+    {
+      field: "madeb.sAlias",
+      title: "Alias",
+      cellStyle: {
+        padding:'5px',
+      },
+    },
+    {
+      field: "madeb.sGBID",
+      title: "GB Id",
+      cellStyle: {
+        padding:'5px',
       },
     },
     {
       field: "madeb.sFathersName",
       title: "Father's Name",
-      
-      headerStyle: {
-        padding:'0px',
-        width:'15%',
-        textAlign:'left'
-      },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'15%',
-        textAlign:'left'
-        
+        padding:'5px',
+      },
+    },
+    {
+      field: "madeb.nReceiptNo",
+      title: "Receipt No",
+      cellStyle: {
+        padding:'5px',
       },
     },
     {
       field: "madeb.nSaneyFormNo",
       title: "Saney Form No",
+      cellStyle: {
+        padding:'5px',
+      },
+    },
+    {
+      field: "madeb.nCurrentGBSno",
+      title: "Current GB SNo.",
+      cellStyle: {
+        padding:'5px',
+      },
+    },
+    {
+      field: "madeb.nPreviousGBSno",
+      title: "Previous GB SNo",
+      cellStyle: {
+        padding:'5px',
+      },
+    },
+
+    {
+      field:'Verified By',
+      title:'Verified By',
+      sort: false,
+      export:true,
+      filtering:false,
       hidden:true,
+    },
+    {
+      field:'Re-Verified By',
+      title:'Re-Verified By',
+      sort: false,
+      export:true,
+      filtering:false,
+      hidden:true,
+    },
+    {
+      field: "madeb.dtIssueAction",
+      title: "Issue Action Date",
+      // type: 'date',
+      // dateSetting: {locale: 'en-GB'},
+      cellStyle: {
+        padding:'5px',
+        
+      },
+      render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD') : undefined
+    },
+    {
+      field: "sTypeIssued",
+      title: "Issue Action",
+      
       cellStyle: {
         padding:'5px',
         
       },
     },
     {
-      field: "madeb.sDocumentAttached",
-      title: "Document Att.",
-      
-      headerStyle: {
-        padding:'0px',
-        width:'10%',
-        textAlign:'left'
-      },
+      field: "madeb.dtReject",
+      title: "Reject Date",
+      // type: 'date',
+      // dateSetting: {locale: 'en-GB'},
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'10%',
-        textAlign:'left'
+        padding:'5px',
         
       },
-    },
-    {
-      field: "madeb.dtIssueAction",
-      title: "Issue Action Dt.",
-      render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD') : '',
-     // render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
-      headerStyle: {
-        padding:'0px',
-        width:'10%',
-        textAlign:'left'
-      },
-      cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'10%',
-        textAlign:'left'
-        
-      },
-    },
-    {
-      field: "sTypeIssued",
-      title: "Issue Action",
-      
-      headerStyle: {
-        padding:'0px',
-        width:'9%',
-        textAlign:'left'
-      },
-      cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'9%',
-        textAlign:'left'
-        
-      },
+      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD') : undefined
     },
     {
       field: "madeb.dtReturnEmail",
       title: "Return Date",
-      //render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
-      render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD') : '',
-      headerStyle: {
-        padding:'0px',
-        width:'8%',
-        textAlign:'left'
-      },
+      //type: 'date',
+      //dateSetting: {locale: 'en-IN'},
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'8%',
-        textAlign:'left'
+        padding:'5px',
         
       },
+      render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD') : ''
     },
-    {
-      field: "madeb.dtReject",
-      title: "Reject Date",
-      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD') : '',
-     
-    
-      headerStyle: {
-        padding:'0px',
-        width:'8%',
-        textAlign:'left'
-      },
-      cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'8%',
-        textAlign:'left'
-        
-      },
-    },
-
     {
       field: "email",
       title: "Email",
@@ -474,43 +429,24 @@ export default function EnhancedTable() {
     {
       field: "edit",
       title: "Edit",
-      sort: false,
+      sorting: false,
       export:false,
       filtering:false,
-      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => {  editClick(rowData) }}  style={{padding:'0px'}}
-    >
-      <EditOutlinedIcon/>
-      </IconButton> ,
-      headerStyle: {
-        padding:'0px',
-        width:'1%',
-        textAlign:'center'
-      },
+      render: rowData => <IconButton 
+                          color="primary" 
+                          aria-label="upload picture" 
+                          component="span"
+                          onClick={() => {
+                            editClick(rowData) 
+                          }}  
+                          style={{padding:'0px'}}
+                        >
+                          <EditOutlinedIcon/>
+                        </IconButton> ,
       cellStyle: {
-        padding:'0px',
-        width:'1%',
-        textAlign:'center'
-        
+        padding:'5px',
       },
-    },
-    {
-      field:'Verified By',
-      title:'Verified By',
-      sort: false,
-      export:true,
-      filtering:false,
-      hidden:true,
-    },
-    {
-      field:'Re-Verified By',
-      title:'Re-Verified By',
-      sort: false,
-      export:true,
-      filtering:false,
-      hidden:true,
     }
-   
   ];
 
   const emailClick = (tableRowArray) => { 
@@ -548,6 +484,9 @@ export default function EnhancedTable() {
       dtReceived: tableRowArray['madeb']['dtReceived'],
       nAuthRegionID: tableRowArray['madeb']['nAuthRegionID'],
       sName: tableRowArray['madeb']['sName'],
+      sAlias: tableRowArray['madeb']['sAlias'],
+      sGBID: tableRowArray['madeb']['sGBID'],
+      
       sFathersName    :tableRowArray['madeb']['sFathersName'],
       nSaneyFormNo   :tableRowArray['madeb']['nSaneyFormNo'],
       sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],

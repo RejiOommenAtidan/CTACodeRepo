@@ -350,7 +350,7 @@ export default function EnhancedTable() {
     },
     {
       field: "madeb.nCurrentGBSno",
-      title: "Book Serial",
+      title: "Book Serial No.",
       hidden:false,
       headerStyle: {
         padding:'0px',
@@ -368,6 +368,57 @@ export default function EnhancedTable() {
     {
       field: "madeb.sDocumentAttached",
       title: "Document Att.",
+      
+      headerStyle: {
+        padding:'0px',
+        width:'10%',
+        textAlign:'left'
+      },
+      cellStyle: {
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'10%',
+        textAlign:'left'
+        
+      },
+    },
+    {
+      field: "madeb.nReceiptNo",
+      title: "Receipt No",
+      
+      headerStyle: {
+        padding:'0px',
+        width:'10%',
+        textAlign:'left'
+      },
+      cellStyle: {
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'10%',
+        textAlign:'left'
+        
+      },
+    },
+    {
+      field: "madeb.nMadebStatusID",
+      title: "Status",
+      
+      headerStyle: {
+        padding:'0px',
+        width:'10%',
+        textAlign:'left'
+      },
+      cellStyle: {
+        padding:'0px',
+        paddingLeft:'10px',
+        width:'10%',
+        textAlign:'left'
+        
+      },
+    },
+    {
+      field: "madeb.sMadebStatusRemark",
+      title: "Status Remark",
       
       headerStyle: {
         padding:'0px',
@@ -555,9 +606,9 @@ export default function EnhancedTable() {
       nFormNumber: tableRowArray['madeb']['nFormNumber'],
       dtReceived: tableRowArray['madeb']['dtReceived'],
       nAuthRegionID: tableRowArray['madeb']['nAuthRegionID'],
-      sName: tableRowArray['madeb']['sName'],
-      sFathersName    :tableRowArray['madeb']['sFathersName'],
-      nSaneyFormNo   :tableRowArray['madeb']['nSaneyFormNo'],
+      sGBID: tableRowArray['madeb']['sGBID'],
+      sName    :tableRowArray['madeb']['sName'],
+      nReceiptNo   :tableRowArray['madeb']['nReceiptNo'],
       sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],
       dtIssueAction  :tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID  :tableRowArray['madeb']['nIssuedOrNotID'],

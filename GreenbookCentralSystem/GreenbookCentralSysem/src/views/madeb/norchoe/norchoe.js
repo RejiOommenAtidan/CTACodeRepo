@@ -355,7 +355,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.sChangeField",
       title: "Change Field",
-      hidden:true,
+      hidden:false,
       headerStyle: {
         padding:'0px',
         width:'15%',
@@ -602,7 +602,7 @@ export default function EnhancedTable() {
     setReceivedDate(tableRowArray['madeb']['dtReceived']);
     setName(tableRowArray['madeb']['sName']);
 
-    setGbId(tableRowArray['madeb']['sFathersName']);
+    setGbId(tableRowArray['madeb']['sGBID']);
     setReceiptNo(tableRowArray['madeb']['nReceiptNo']);
     setChangeField(tableRowArray['madeb']['sChangeField']);
     setStatus(tableRowArray['madeb']['sApprovedReject'])
@@ -618,8 +618,9 @@ export default function EnhancedTable() {
       dtReceived: tableRowArray['madeb']['dtReceived'],
       nAuthRegionID: tableRowArray['madeb']['nAuthRegionID'],
       sName: tableRowArray['madeb']['sName'],
-      sFathersName    :tableRowArray['madeb']['sFathersName'],
-      nSaneyFormNo   :tableRowArray['madeb']['nSaneyFormNo'],
+      sChangeField    :tableRowArray['madeb']['sChangeField'],
+      nReceiptNo   :tableRowArray['madeb']['nReceiptNo'],
+      sGBID  :tableRowArray['madeb']['sGBID'],
       sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],
       dtIssueAction  :tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID  :tableRowArray['madeb']['nIssuedOrNotID'],
