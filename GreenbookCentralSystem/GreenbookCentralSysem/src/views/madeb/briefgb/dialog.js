@@ -110,7 +110,7 @@ export const EditDialog = (props) => {
     nSaneyFormNo,
     nCurrentGBSno,
     nPreviousGBSno,
-    sApprovedReject,
+ 
     dtIssueAction,
     dtReject,
     nIssuedOrNotID,
@@ -355,21 +355,7 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                 </Grid>
 
                                 
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="sApprovedReject"
-                                            name="sApprovedReject"
-                                        label="Approved/Rejected"
-                                        //required={true}
-                                        value={sApprovedReject}
-                                        onChange={(e) => { setApprovedReject(e.target.value) }}
-                                        
-                                      />
-                                      
-                                    </FormControl>
-                                </Grid>
-
+                              
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                     <Autocomplete
@@ -419,7 +405,7 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                         label="Status Remarks"
                                         //required={true}
                                         value={sMadebStatusRemark}
-                                        onChange={(e) => { setApprovedReject(e.target.value) }}
+                                        onChange={(e) => { setMadebStatusRemark(e.target.value) }}
                                         
                                       />
                                       
@@ -681,6 +667,7 @@ export const AddDialog = (props) => {
     nSaneyFormNo,
     nCurrentGBSno,
     nPreviousGBSno,
+    nIssuedOrNotID:1,
  }
 
 
@@ -867,7 +854,7 @@ export const AddDialog = (props) => {
                                         required: true
                                       })}
                                     />
-                                    {_.get("sGBID.type", errors) === "required" && (
+                                    {_.get("nReceiptNo.type", errors) === "required" && (
                                       <span style={{color: 'red'}}>This field is required</span>
                                     )}
                                   </FormControl>

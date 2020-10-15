@@ -230,7 +230,7 @@ export default function SearchPage() {
       },
     },
     {
-      render: rowData =><div  onContextMenu={(e)=>{handleClick(e)}} style={{ cursor: 'context-menu' }} > <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={() => { alert(JSON.stringify(rowData))/*viewGb(rowData['sGBID'])*/ }}><span>{rowData['sCountryID'] + rowData['sGBID']}</span></Button>
+      render: rowData =><div  onContextMenu={(e)=>{handleClick(e)}} style={{ cursor: 'context-menu' }} > <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={() => { viewGb(rowData['sGBID'])}}><span>{rowData['sCountryID'] + rowData['sGBID']}</span></Button>
       <Menu
       keepMounted
       open={contextState.mouseY !== null}
@@ -258,7 +258,7 @@ export default function SearchPage() {
       },
       cellStyle: {
         // padding:'0px',
-        padding: '10px',
+        
         width: '7%',
         textAlign: 'left'
 
