@@ -95,7 +95,7 @@ export const AddDialog = (props) => {
           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
           const lname = resp.data.sLastName ? resp.data.sLastName : '';
           const country = countries.find((x) => x.sCountryID === resp.data.sCountryID);
-          const region  = authRegions.find((x)  => x.id === resp.data.nAuthRegionID);
+          const region  = authRegions.find((x)  => x.sAuthRegion === props.gbSerialObj.sAuthRegion);
           const madeb = madebTypes.find((x) => x.sMadebType === props.gbSerialObj.sMadebType )
           setCountryID(country.sCountryID);
           setAuthRegionId(region.id);

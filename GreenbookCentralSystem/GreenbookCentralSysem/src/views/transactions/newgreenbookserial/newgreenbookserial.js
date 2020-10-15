@@ -161,8 +161,10 @@ export default () => {
                           color="primary" 
                           aria-label="upload picture" 
                           component="span"
-                           onClick={() => {
-                             addClick(rowData) 
+                           onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                             addClick(rowData);
                           }}  
                           style={{padding:'0px'}}
                         >
@@ -177,6 +179,7 @@ export default () => {
 
 
   const addClick = (tableRowArray) => {
+
     setGBSerialObj({
       id: tableRowArray['id'],
       nFormNumber: tableRowArray['nFormNumber'],
@@ -191,6 +194,7 @@ export default () => {
       console.log("gbSerialObj: ", gbSerialObj);
 
       setAddModal(true);
+      //alert("Opening modal...");
   }
 
 
@@ -291,10 +295,16 @@ export default () => {
                   icon: Search,
                   tooltip: 'Show Filter',
                   isFreeAction: true,
-                  onClick: (event) => {setFiltering(currentFilter => !currentFilter)}
+                  onClick: (event) => {
+                    setFiltering(currentFilter => !currentFilter)}
                 }
               ]
             }
+            onRowClick= {(event, rowData) => {
+              //alert ("Row clicked");
+              event.preventDefault();
+              event.stopPropagation();
+            }}
           />
              {addModal && <AddDialog
               addModal={addModal}

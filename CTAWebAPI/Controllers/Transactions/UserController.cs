@@ -87,11 +87,14 @@ namespace CTAWebAPI.Controllers.Transactions
             #region Get All Users for User Manage Screen
             try
             {
-                CTAConfig ctaConfig = _ctaConfigRepository.GetConfigByKey("SelectTotalRecordCount");
-                bool isParsable = int.TryParse(ctaConfig.sValue, out int rows);
-                if (!isParsable)
-                    return BadRequest("Invalid Row Count in Masters Table");
-                IEnumerable<UsersVM> allUsers = _usersVMRepository.GetUsersWithUserRightsName(rows);
+                //CTAConfig ctaConfig = _ctaConfigRepository.GetConfigByKey("SelectTotalRecordCount");
+                //bool isParsable = int.TryParse(ctaConfig.sValue, out int rows);
+                //if (!isParsable)
+                //    return BadRequest("Invalid Row Count in Masters Table");
+
+
+                int records = Convert.ToInt32(CTAConfigRepository.GetValue("SelectTotalRecordCount"));
+                IEnumerable<UsersVM> allUsers = _usersVMRepository.GetUsersWithUserRightsName(records);
                 #region Information Logging 
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
                 #endregion

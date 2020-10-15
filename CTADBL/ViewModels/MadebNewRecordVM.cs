@@ -15,6 +15,7 @@ namespace CTADBL.ViewModels
         public List<MadebType> madebTypes { get; set; }
         public List<AuthRegion> authRegions { get; set; }
         public List<TypeIssued> typeIssued { get; set; }
+        public List<MadebStatus> madebStatuses { get; set; }
         public int nFormNumber { get; set; }
     }
 }

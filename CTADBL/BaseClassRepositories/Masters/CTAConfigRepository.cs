@@ -3,17 +3,58 @@ using CTADBL.Repository;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Linq;
 
 namespace CTADBL.BaseClassRepositories.Masters
 {
     public class CTAConfigRepository : ADORepository<CTAConfig>
     {
+
+        private static IEnumerable<CTAConfig> _configs;
+
+
+        public static IEnumerable<CTAConfig> configs
+        {
+            get
+            {
+                return _configs;
+
+            }
+            set
+            {
+                _configs = value;
+            }
+        }
+
         #region Constructor
         public CTAConfigRepository(string connectionString) : base(connectionString)
         {
+            LoadValues();
         }
         #endregion
+
+        private void LoadValues()
+        {
+            string sql = @"SELECT `Id`,
+                                `sKey`,
+                                `sValue`,
+                                `dtEntered`,
+                                `nEnteredBy`
+                            FROM `lstctaconfig`;";
+            using (var command = new MySqlCommand(sql))
+            {
+                configs = GetRecords(command);
+            }
+        }
+
+        public bool UpdateConfiguration(IEnumerable<CTAConfig> configs) 
+        {
+           //to do
+            return true;
+        }
+
 
         #region Get CTAConfig
         public IEnumerable<CTAConfig> GetAllConfig()
@@ -46,6 +87,14 @@ namespace CTADBL.BaseClassRepositories.Masters
             }
         }
 
+        
+        public static dynamic GetValue(string key)
+        {
+            var value = configs.Where(con => con.sKey == key).Select(res => res.sValue).FirstOrDefault();
+            return value;
+        }
+        
+        
         public CTAConfig GetConfigByKey(string sKey)
         {
             string sql = @"SELECT `Id`,

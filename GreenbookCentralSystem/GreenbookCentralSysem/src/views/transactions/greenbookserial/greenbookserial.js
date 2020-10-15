@@ -356,12 +356,12 @@ export default () => {
             options={oOptions}
             actions={
               [
-                {
-                  icon: AddBox,
-                  tooltip: 'Add GreenBook Serial Number',
-                  isFreeAction: true,
-                  onClick: () => setAddModal(true)
-                },
+                // {
+                //   icon: AddBox,
+                //   tooltip: 'Add GreenBook Serial Number',
+                //   isFreeAction: true,
+                //   onClick: () => setAddModal(true)
+                // },
                 {
                   icon: Search,
                   tooltip: 'Show Filter',

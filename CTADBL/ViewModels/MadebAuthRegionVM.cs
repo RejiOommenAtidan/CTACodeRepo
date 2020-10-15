@@ -6,6 +6,7 @@ namespace CTADBL.ViewModels
     {
         private string? _sTypeIssued;
         private string _sAuthRegion;
+        private string _sMadebStatus;
         private Madeb _madeb;
         public Madeb madeb
         {
@@ -38,6 +39,18 @@ namespace CTADBL.ViewModels
             set
             {
                 _sTypeIssued = value;
+            }
+        }
+
+        public string sMadebStatus
+        {
+            get
+            {
+                return _sMadebStatus;
+            }
+            set
+            {
+                _sMadebStatus = value;
             }
         }
     }
