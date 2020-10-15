@@ -5,6 +5,10 @@ import { forwardRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { authenticationService } from '../../auth/_services';
+
+
+
+
 import {
   Grid,
   Typography,
@@ -153,7 +157,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchPage() {
   const dataAPI = useSelector(state => state.FeatureReducer.lFeature);
   let history = useHistory();
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const classes = useStyles();
   const [isLoading, setisLoading] = React.useState(false);
   const [editModal, setEditModal] = React.useState(false);
@@ -478,9 +482,10 @@ export default function SearchPage() {
     nFromAge: minAge,
     nToAge: maxAge
   }
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const getRecentGB = () => {
     console.log('recent');
-    axios.get(`RecentlySearchedGB/GetRecentlySearchedGBs?records=20&nUserId=` + JSON.parse(localStorage.getItem("currentUser")).oUser.id)
+    axios.get(`RecentlySearchedGB/GetRecentlySearchedGBs?records=20&nUserId=` + userId)
       .then(resp => {
         if (resp.status === 200) {
           setRecentGBData(resp.data);
