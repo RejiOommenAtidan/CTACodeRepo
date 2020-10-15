@@ -55,34 +55,7 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
 };
 
-const getMuiTheme = () => createMuiTheme({
-  overrides: {
-    MUIDataTableHeadCell: {
-      root:{
-        color:'blue',
-        fontSize:15
-      }
-    },
-    MUIDataTableBodyCell: {
-      root: {
-        // backgroundColor: "#FFF",
-        // width: "50px"
-        
-      }
 
-    },
-    MuiTableCell: {
-      root: {
-          padding: '0px',
-          paddingLeft: '10px',
-          
-          paddingRight: '10px',
-
-         
-      }
-  },
-  }
-})
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -197,32 +170,7 @@ export default () => {
     setAddModal(false);
   };
 
-  const options = {
-    textLabels: {
-      body: {
-        noMatch: "Loading..."
-      },
-    },
-    loadingType: 'linear',
-    filter:true,
-    viewColumns:false,
-    selectableRows: false,
-    jumpToPage: true,
-    rowsPerPage: rowsPerPage,
-    rowsPerPageOptions: [5, 10, 20, 30],
-    onChangePage: (number) => {
-      setCurrentPage(number + 1);
-      console.log('Current Page No.', number + 1)
-    },
-    onChangeRowsPerPage: (rows) => {
-      console.log("Rows per page:", rows)
-    },
-    onTableChange: (action, tableState) => {
-      console.log("Action:", action, "\ntableState:", tableState, "Data Changed:", dataChanged);
-    }
-  };
-
-
+  
   const columns = [
     {
       field: "madeb.id",

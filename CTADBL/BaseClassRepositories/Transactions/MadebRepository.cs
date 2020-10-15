@@ -29,10 +29,11 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Madeb Update 
-        public void Update(Madeb madeb)
+        public int Update(Madeb madeb)
         {
             var builder = new SqlQueryBuilder<Madeb>(madeb);
-            ExecuteCommand(builder.GetUpdateCommand());
+            int rowsAffected  = ExecuteCommand(builder.GetUpdateCommand());
+            return rowsAffected;
         }
 
         #region Add GBID to Sarso Form
@@ -57,13 +58,14 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Update Madeb with assigned serial numbers
-        public void UpdateSerialNumber(int nFormNumber, int nIssuedOrNotID, int? nCurrentGBSno, int? nPreviousGBSno = null)
+        public void UpdateSerialNumber(string sGBID, int nFormNumber, int nIssuedOrNotID, int? nCurrentGBSno, int? nPreviousGBSno = null)
         {
-            Madeb madeb = GetMadebByFormNumber(nFormNumber);
+            Madeb madeb = GetMadebByGBIDAndFormNumber(sGBID, nFormNumber);
             madeb.nCurrentGBSno = nCurrentGBSno;
             madeb.nPreviousGBSno = nPreviousGBSno;
             madeb.nIssuedOrNotID = nIssuedOrNotID;
-            this.Update(madeb);
+            int rows = this.Update(madeb);
+            
         }
         #endregion
         #endregion
@@ -226,6 +228,47 @@ namespace CTADBL.BaseClassRepositories.Transactions
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("formNumber", formNumber);
+                return GetRecord(command);
+            }
+        }
+
+        public Madeb GetMadebByGBIDAndFormNumber (string sGBID, int nFormNumber)
+        {
+            string sql = @"SELECT `Id`,
+                            `_Id`,
+                            `nFormNumber`,
+                            `sGBID`,
+                            `nMadebTypeID`,
+                            `sName`,
+                            `sFathersName`,
+                            `nAuthRegionID`,
+                            `dtReceived`,
+                            `dtIssueAction`,
+                            `nIssuedOrNotID`,
+                            `nType`,
+                            `sChangeField`,
+                            `sOfficeOfTibetan`,
+                            `sDocumentAttached`,
+                            `nCurrentGBSno`,
+                            `nPreviousGBSno`,
+                            `nSaneyFormNo`,
+                            `nReceiptNo`,
+                            `dtEmailSend`,
+                            `sAlias`,
+                            `sApprovedReject`,
+                            `dtReject`,
+                            `dtReturnEmail`,
+                            `dtEntered`,
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
+                        FROM `tblmadeb`
+                        WHERE sGBID = @sGBID
+                        AND nFormNumber=@nFormNumber;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                command.Parameters.AddWithValue("nFormNumber", nFormNumber);
                 return GetRecord(command);
             }
         }

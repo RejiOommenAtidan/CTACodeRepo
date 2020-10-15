@@ -38,13 +38,15 @@ namespace CTADBL.ViewModelsRepositories
                 List<MadebType> madebTypes = tables[0].AsEnumerable().Select(row => new MadebType { Id = row.Field<int>("Id"), sMadebDisplayName = row.Field<string>("sMadebDisplayName") }).ToList();
                 List<AuthRegion> authRegions = tables[1].AsEnumerable().Select(row => new AuthRegion { ID = row.Field<int>("ID"), sAuthRegion = row.Field<string>("sAuthRegion") }).ToList();
                 List<TypeIssued> typeIssueds = tables[2].AsEnumerable().Select(row => new TypeIssued { Id = row.Field<int>("Id"), sTypeIssued = row.Field<string>("sTypeIssued") }).ToList();
-                var formNumber = Convert.ToInt32(tables[3].Select()[0][0]);
+                List<MadebStatus> madebStatuses = tables[3].AsEnumerable().Select(row => new MadebStatus { Id = row.Field<int>("Id"), sMadebStatus = row.Field<string>("sMadebStatus") }).ToList();
+                var formNumber = Convert.ToInt32(tables[4].Select()[0][0]);
 
                 MadebNewRecordVM madebNewRecord = new MadebNewRecordVM
                 {
                     authRegions = authRegions,
                     madebTypes = madebTypes,
                     typeIssued = typeIssueds,
+                    madebStatuses = madebStatuses,
                     nFormNumber = formNumber
                 };
                 return madebNewRecord;
