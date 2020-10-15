@@ -1,31 +1,19 @@
 import React, { useState } from 'react';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-
 import {
-  Typography,
   Badge,
   Menu,
   Button,
-  List,
-  ListItem,
-  Tooltip,
-  Divider,
   ButtonGroup,
   MenuItem,
   Link,
   Breadcrumbs
-
 } from '@material-ui/core';
 
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { storeAuthDetails, removeAuthDetails } from "../../actions/userAuthenticateAction";
-
 import { authenticationService } from '../../auth/_services';
-import avatar7 from '../../assets/images/avatars/avatar7.jpg';
-
 import { withStyles } from '@material-ui/core/styles';
 
 const StyledBadge = withStyles({
@@ -70,8 +58,6 @@ const HeaderUserbox = () => {
     setAnchorEl(null);
   };
 
-
-
   const logUserOut = () => {
     setAnchorEl(null);
     authenticationService.logout();
@@ -107,7 +93,7 @@ const HeaderUserbox = () => {
         className="btn-second m-2"
         color="primary"
         aria-label="split button">
-        <Button className="btn-transition-none">{authenticationService.currentUserValue.oUser.sFullname + " (" + authenticationService.currentUserValue.oUserRights.sUserRightsName + ")"}</Button>
+        <Button className="btn-transition-none">Welcome, {authenticationService.currentUserValue.oUser.sFullname + " (" + authenticationService.currentUserValue.oUserRights.sUserRightsName + ")"}</Button>
         <Button
           className="btn-transition-none px-2"
           color="primary"
