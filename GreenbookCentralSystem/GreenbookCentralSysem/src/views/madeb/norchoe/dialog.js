@@ -63,8 +63,9 @@ export const EditDialog = (props) => {
   const [authRegionID, setAuthorityId] = React.useState(props.norchoeObj.nAuthRegionID);
   const [receivedDate, setReceivedDate] = React.useState(props.norchoeObj.dtReceived ? (props.norchoeObj.dtReceived).split('T')[0] : undefined);
   const [name, setName] = React.useState(props.norchoeObj.sName);
-  const [fname, setFname] = React.useState(props.norchoeObj.sFathersName);
-  const [saney, setSaney] = React.useState(props.norchoeObj.nSaneyFormNo);
+  const [sGBID, setGbId] = React.useState(props.norchoeObj.sGBID);
+  const [receipt, setReceipt] = React.useState(props.norchoeObj.nReceiptNo);
+  const [sChangeField, setChangeField] = React.useState(props.norchoeObj.sChangeField);
   const [madebType,setMadebType]= React.useState(2);
   const [documents, setDocument] = React.useState(props.norchoeObj.sDocumentAttached);
   const [issueActionDate, setIssueActionDate] = React.useState(props.norchoeObj.dtIssueAction ? (props.norchoeObj.dtIssueAction).split('T')[0] : undefined);
@@ -77,13 +78,16 @@ export const EditDialog = (props) => {
     nFormNumber: formNumber, 
     nMadebTypeID: madebType,
     sName: name,
-    sFathersName:fname,
+    sGBID:sGBID,
+    sChangeField:sChangeField,
+    
     nAuthRegionID:authRegionID , 
     dtReceived:receivedDate,  
+    nReceiptNo:receipt,
     dtIssueAction:issueActionDate,
     nIssuedOrNotID:issueAction,
     sDocumentAttached:documents,
-    nSaneyFormNo:saney,
+  
     dtReturnEmail:returnDate,
     dtReject:rejectDate
 
@@ -197,7 +201,27 @@ export const EditDialog = (props) => {
                             />
                           )}
                         />
+
                                     </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
+                                        <TextField
+                                          id="sGBID"
+                                          label="GBID"
+                                          //required={true}
+                                          name="sGBID"
+                                          value={sGBID}
+                                          onChange={(e) => { setGbId(e.target.value) }}
+                                          //onBlur={(e) => {formPopulate(e.target.value)}}
+                                
+                                        />
+
+                                        
+                                        
+                                    </FormControl>
+                                    {/*<button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button>*/}
+
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
 
@@ -215,25 +239,15 @@ export const EditDialog = (props) => {
 
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
-                                            id="fname"
-                                            label="Father's Name"
-                                            value={fname}
-                                            onChange={(e) => { setFname(e.target.value) }}
+                                            id="sChangeField"
+                                            label="Change Field"
+                                            name="sChangeField"
+                                            value={sChangeField}
+                                            onChange={(e) => { setChangeField(e.target.value) }}
                                         />
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
-
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="sfn"
-                                            label="Saney Form No"
-                                            type='number'
-                                            value={saney}
-                                            onChange={(e) => { setSaney(e.target.value) }}
-                                        />
-                                    </FormControl>
-                                </Grid>
+                               
                                 <Grid item xs={12} sm={6}>
 
                                     <FormControl className={props.classes.formControl}>
@@ -245,6 +259,25 @@ export const EditDialog = (props) => {
                                         />
                                     </FormControl>
                                 </Grid>
+                                <Grid item xs={12} sm={6}>
+                                   <FormControl className={props.classes.formControl}>
+                                       <TextField
+                                           id="receipt"
+                                           label="Receipt Number"
+                                           
+                                           type="number"
+                                           name='receipt'
+                                      
+                                          value={receipt}
+                                           
+                                          
+                                           onChange={(e) => { setReceipt(parseInt(e.target.value)) }}
+
+                                       />
+                                 
+                                         
+                                   </FormControl>
+                               </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
@@ -367,8 +400,12 @@ export const EditDialog = (props) => {
 export const AddDialog = (props) => {
   //console.log(props.selectData);
   
+  const handleChangeGBID = (value) => {
+    setGbId(value);
+    setName('');
+  //  setFname('');
+  }
 
-  
   const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
 
 
@@ -377,9 +414,12 @@ export const AddDialog = (props) => {
   const [madebType,setMadebType]= React.useState(2);
   const [authority, setAuthority] = React.useState(0);
   const [receivedDate, setReceivedDate] = React.useState('');
+  const [sGBID, setGbId] = React.useState('');
+  const [receipt, setReceipt] = React.useState(0);
+  const [sChangeField, setChangeField] = React.useState('');
   const [name, setName] = React.useState('');
-  const [fname, setFname] = React.useState('');
-  const [saney, setSaney] = React.useState(0);
+
+  
   const [documents, setDocument] = React.useState('');
 
 
@@ -387,12 +427,13 @@ export const AddDialog = (props) => {
      nFormNumber: formNumber, 
      nMadebTypeID: madebType,
      sName: name,
-     sFathersName:fname,
+     sGBID,   
      nAuthRegionID:authority , 
      dtReceived:receivedDate,  
-
+     sChangeField:sChangeField,
      sDocumentAttached:documents,
-     nSaneyFormNo:saney
+     nReceiptNo:receipt,
+     nIssuedOrNotID:1,  
   }
   const { register, handleSubmit, watch, errors } = useForm();
   const onSubmit = data => {
@@ -429,7 +470,7 @@ export const AddDialog = (props) => {
 
                                        />
                                            {_.get("form_number.type", errors) === "required" && (
-                                                <p>This field is required</p>
+                                                <span style={{color: 'red'}}>This field is required</span>
                                             )}
                                             {/*_.get("form_number.type", errors) === "maxLength" && (
                                                 <p>First name cannot exceed 20 characters</p>
@@ -455,7 +496,7 @@ export const AddDialog = (props) => {
                                            }}
                                        />
                                         {_.get("name_receivedDate.type", errors) === "required" && (
-                                                <p>This field is required</p>
+                                                <span style={{color: 'red'}}>This field is required</span>
                                             )}
                                    </FormControl>
                                </Grid>
@@ -510,10 +551,33 @@ export const AddDialog = (props) => {
                             
                           )}
                         />  {_.get("name_authority.type", errors) === "required" && (
-                            <p>This field is required</p>
+                            <span style={{color: 'red'}}>This field is required</span>
                         )}
                                    </FormControl>
                                </Grid>
+                               <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
+                                        <TextField
+                                          id="sGBID"
+                                          label="GBID"
+                                          //required={true}
+                                          name="sGBID"
+                                          value={sGBID}
+                                          onChange={(e) => { handleChangeGBID(e.target.value) }}
+                                          //onBlur={(e) => {formPopulate(e.target.value)}}
+                                          inputRef={register({
+                                            required: true
+                                          })}
+                                        />
+                                        {_.get("sGBID.type", errors) === "required" && (
+                                          <span style={{color: 'red'}}>This field is required</span>
+                                        )}
+                                        
+                                        
+                                    </FormControl>
+                                    {/*<button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button>*/}
+
+                                </Grid>
                                <Grid item xs={12} sm={6}>
 
                                    <FormControl className={props.classes.formControl}>
@@ -528,7 +592,7 @@ export const AddDialog = (props) => {
                                        onChange={(e) => { setName(e.target.value) }}
                                        />
                                        {_.get("name.type", errors) === "required" && (
-                                            <p>This field is required</p>
+                                            <span style={{color: 'red'}}>This field is required</span>
                                         )}
                                     
                                     </FormControl>
@@ -537,44 +601,23 @@ export const AddDialog = (props) => {
 
                                    <FormControl className={props.classes.formControl}>
                                        <TextField
-                                           id="fname"
-                                           label="Father's Name"
-                                           name="name_fname"
+                                           id="sChangeField"
+                                           label="Change Field"
+                                           name="sChangeField"
                                            
                                            inputRef={register({
                                             required: true,
-                                       
-                                            pattern: /^[A-Za-z]+$/i
                                           })}
                                        //value='Aayush Pandya'
-                                       onChange={(e) => { setFname(e.target.value) }}
+                                       onChange={(e) => { setChangeField(e.target.value) }}
                                        />
-                                          {_.get("name_fname.type", errors) === "required" && (
-                                            <p>This field is required</p>
+                                          {_.get("sChangeField.type", errors) === "required" && (
+                                            <span style={{color: 'red'}}>This field is required</span>
                                         )}
-                                       
-                                        {_.get("name_fname.type", errors) === "pattern" && (
-                                            <p>Alphabetical characters only</p>
-                                        )}
+                                   
                                    </FormControl>
                                </Grid>
-                               <Grid item xs={12} sm={6}>
-
-                                   <FormControl className={props.classes.formControl}>
-                                       <TextField
-                                           id="saney"
-                                           label="Saney Form No"
-                                           type='number'
-
-                                           onChange={(e) => { setSaney(parseInt(e.target.value)) }}
-                                       
-                                          name="name_saney"
-                                       //value='Aayush Pandya'
-                                       />
-                                 
-                                            
-                                   </FormControl>
-                               </Grid>
+                             
                                <Grid item xs={12} sm={6}>
 
                                    <FormControl className={props.classes.formControl}>
@@ -591,9 +634,36 @@ export const AddDialog = (props) => {
                                        onChange={(e) => { setDocument(e.target.value) }}
                                        />
                                        {_.get("name_da.type", errors) === "required" && (
-                                                <p>This field is required</p>
+                                                <span style={{color: 'red'}}>This field is required</span>
                                             )}
                                         
+                                   </FormControl>
+                               </Grid>
+
+                               <Grid item xs={12} sm={6}>
+                                   <FormControl className={props.classes.formControl}>
+                                       <TextField
+                                           id="receipt"
+                                           label="Receipt Number"
+                                           
+                                           type="number"
+                                           name='receipt'
+                                           inputRef={register({
+                                            required: true,
+                                            min:0
+                                          })}
+                                           
+                                          
+                                           onChange={(e) => { setReceipt(parseInt(e.target.value)) }}
+
+                                       />
+                                           {_.get("receipt.type", errors) === "required" && (
+                                                <span style={{color: 'red'}}>This field is required</span>
+                                            )}
+                                            {/*_.get("form_number.type", errors) === "maxLength" && (
+                                                <p>First name cannot exceed 20 characters</p>
+                                            )*/}
+                                         
                                    </FormControl>
                                </Grid>
                               
