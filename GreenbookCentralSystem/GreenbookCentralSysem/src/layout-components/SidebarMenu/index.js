@@ -19,10 +19,10 @@ import PrintIcon from '@material-ui/icons/Print';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import PeopleIcon from '@material-ui/icons/People';
-import EditIcon from '@material-ui/icons/Edit';
+// import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import PaymentIcon from '@material-ui/icons/Payment';
-import AssessmentIcon from '@material-ui/icons/Assessment';
+// import PaymentIcon from '@material-ui/icons/Payment';
+// import AssessmentIcon from '@material-ui/icons/Assessment';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 
 const SidebarMenu = (props) => {
@@ -157,178 +157,185 @@ const SidebarMenu = (props) => {
                 Search
               </NavLink>
             </li>
-            <li>
-              <a
-                href="#/"
-                onClick={toggleMadeb}
-                className={clsx({ active: madebOpen })}>
-                <span className="sidebar-icon">
-                  <ListIcon />
-                </span>
-                <span className="sidebar-item-label">Madeb</span>
-                <span className="sidebar-icon-indicator">
-                  <ChevronRightTwoToneIcon />
-                </span>
-              </a>
-              <Collapse in={madebOpen}>
-                <ul>
-                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 13)) !== undefined
-                  &&
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/Sarso">
-                      Sarso Madeb
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 13)) !== undefined
+              &&
+              <li>
+                <a
+                  href="#/"
+                  onClick={toggleMadeb}
+                  className={clsx({ active: madebOpen })}>
+                  <span className="sidebar-icon">
+                    <ListIcon />
+                  </span>
+                  <span className="sidebar-item-label">Madeb</span>
+                  <span className="sidebar-icon-indicator">
+                    <ChevronRightTwoToneIcon />
+                  </span>
+                </a>
+                <Collapse in={madebOpen}>
+                  <ul>
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 13)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/Sarso">
+                          Sarso Madeb
                     </NavLink>
-                  </li>}
-                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 14)) !== undefined
-                    &&
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/Norchoe">
-                      Norchoe Madeb
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 14)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/Norchoe">
+                          Norchoe Madeb
                     </NavLink>
-                  </li>}
-                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 15)) !== undefined
-                    &&
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/Bhorlak">
-                      Bhorlak Madeb
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 15)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/Bhorlak">
+                          Bhorlak Madeb
                     </NavLink>
-                  </li>}
-                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 16)) !== undefined
-                    &&
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/BookFull">
-                      Book Full
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 16)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/BookFull">
+                          Book Full
                     </NavLink>
-                  </li>}
-                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 17)) !== undefined
-                    &&
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/BriefGB">
-                      Brief GB
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 17)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/BriefGB">
+                          Brief GB
                     </NavLink>
-                  </li>}
-                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 18)) !== undefined
-                    &&
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/Abroad">
-                      Abroad
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 18)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/Abroad">
+                          Abroad
                     </NavLink>
-                  </li>}
-                </ul>
-              </Collapse>
-            </li>
-            <li>
-              <a
-                href="#/"
-                onClick={toggleMasters}
-                className={clsx({ active: mastersOpen })}>
-                <span className="sidebar-icon">
-                  <AppsIcon />
-                </span>
-                <span className="sidebar-item-label">Masters</span>
-                <span className="sidebar-icon-indicator">
-                  <ChevronRightTwoToneIcon />
-                </span>
-              </a>
-              <Collapse in={mastersOpen}>
-                <ul>
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/Region">
-                      Region
+                      </li>}
+                  </ul>
+                </Collapse>
+              </li>}
+            {/*Give GB Number*/}
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 3)) !== undefined
+              &&
+              <li>
+                <a
+                  href="#/"
+                  onClick={toggleMasters}
+                  className={clsx({ active: mastersOpen })}>
+                  <span className="sidebar-icon">
+                    <AppsIcon />
+                  </span>
+                  <span className="sidebar-item-label">Masters</span>
+                  <span className="sidebar-icon-indicator">
+                    <ChevronRightTwoToneIcon />
+                  </span>
+                </a>
+                <Collapse in={mastersOpen}>
+                  <ul>
+                    <li>
+                      <NavLink
+                        onClick={toggleSidebarMobile}
+                        to="/Region">
+                        Region
                     </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/AuthRegion">
-                      Authority Region
+                    </li>
+                    <li>
+                      <NavLink
+                        onClick={toggleSidebarMobile}
+                        to="/AuthRegion">
+                        Authority Region
                     </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/Country">
-                      Country
+                    </li>
+                    <li>
+                      <NavLink
+                        onClick={toggleSidebarMobile}
+                        to="/Country">
+                        Country
                     </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/Occupation">
-                      Occupation
+                    </li>
+                    <li>
+                      <NavLink
+                        onClick={toggleSidebarMobile}
+                        to="/Occupation">
+                        Occupation
                     </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/Province">
-                      Province
+                    </li>
+                    <li>
+                      <NavLink
+                        onClick={toggleSidebarMobile}
+                        to="/Province">
+                        Province
                     </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/Qualification">
-                      Qualification
+                    </li>
+                    <li>
+                      <NavLink
+                        onClick={toggleSidebarMobile}
+                        to="/Qualification">
+                        Qualification
                     </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/Relation">
-                      Relation
+                    </li>
+                    <li>
+                      <NavLink
+                        onClick={toggleSidebarMobile}
+                        to="/Relation">
+                        Relation
                     </NavLink>
-                  </li>
-                  {<li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/Feature">
-                      Feature
+                    </li>
+                    {<li>
+                      <NavLink
+                        onClick={toggleSidebarMobile}
+                        to="/Feature">
+                        Feature
                     </NavLink>
-                  </li>}
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/MadebType">
-                      Madeb Type
+                    </li>}
+                    <li>
+                      <NavLink
+                        onClick={toggleSidebarMobile}
+                        to="/MadebType">
+                        Madeb Type
                     </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/TypeIssued">
-                      Type Issued
+                    </li>
+                    <li>
+                      <NavLink
+                        onClick={toggleSidebarMobile}
+                        to="/TypeIssued">
+                        Type Issued
                     </NavLink>
-                  </li>
-                </ul>
-              </Collapse>
-            </li>
-            <li>
-              <NavLink
-                activeClassName="active"
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="/Greenbooks">
-                <span className="sidebar-icon">
-                  <FormatListNumberedIcon />
-                </span>
+                    </li>
+                  </ul>
+                </Collapse>
+              </li>}
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 7)) !== undefined
+              &&
+              <li>
+                <NavLink
+                  activeClassName="active"
+                  onClick={toggleSidebarMobile}
+                  className="nav-link-simple"
+                  to="/Greenbooks">
+                  <span className="sidebar-icon">
+                    <FormatListNumberedIcon />
+                  </span>
                 Greenbooks
               </NavLink>
-            </li>
+              </li>}
             {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 3)) !== undefined
               &&
               <li>
@@ -357,108 +364,110 @@ const SidebarMenu = (props) => {
                 Sarso New GB Entry
               </NavLink>
               </li>}
-              {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 11)) !== undefined
-                &&
-            <li>
-              <NavLink
-                activeClassName="active"
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="/GreenBookSerial">
-                <span className="sidebar-icon">
-                  <FormatListNumberedRtlIcon />
-                </span>
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 11)) !== undefined
+              &&
+              <li>
+                <NavLink
+                  activeClassName="active"
+                  onClick={toggleSidebarMobile}
+                  className="nav-link-simple"
+                  to="/GreenBookSerial">
+                  <span className="sidebar-icon">
+                    <FormatListNumberedRtlIcon />
+                  </span>
                 Give Serial Number
               </NavLink>
-            </li>}
+              </li>}
             {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 10)) !== undefined
-                &&
-            <li>
-              <NavLink
-                activeClassName="active"
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="/Print">
-                <span className="sidebar-icon">
-                  <PrintIcon />
-                </span>
+              &&
+              <li>
+                <NavLink
+                  activeClassName="active"
+                  onClick={toggleSidebarMobile}
+                  className="nav-link-simple"
+                  to="/Print">
+                  <span className="sidebar-icon">
+                    <PrintIcon />
+                  </span>
                 Print
               </NavLink>
-            </li>}
+              </li>}
             {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 8)) !== undefined
               &&
-            <li>
-              <NavLink
-                activeClassName="active"
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="/IssueBook">
-                <span className="sidebar-icon">
-                  <MenuBookIcon />
-                </span>
+              <li>
+                <NavLink
+                  activeClassName="active"
+                  onClick={toggleSidebarMobile}
+                  className="nav-link-simple"
+                  to="/IssueBook">
+                  <span className="sidebar-icon">
+                    <MenuBookIcon />
+                  </span>
                 Issue Book
               </NavLink>
-            </li>}
+              </li>}
             {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 9)) !== undefined
               &&
-            <li>
-              <NavLink
-                activeClassName="active"
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="/MakeList">
-                <span className="sidebar-icon">
-                  <ListAltIcon />
-                </span>
+              <li>
+                <NavLink
+                  activeClassName="active"
+                  onClick={toggleSidebarMobile}
+                  className="nav-link-simple"
+                  to="/MakeList">
+                  <span className="sidebar-icon">
+                    <ListAltIcon />
+                  </span>
                 Make List
               </NavLink>
-            </li>}
-            <li>
-              <a
-                href="#/"
-                onClick={toggleUsers}
-                className={clsx({ active: usersOpen })}>
-                <span className="sidebar-icon">
-                  <PeopleIcon />
-                </span>
-                <span className="sidebar-item-label">Users</span>
-                <span className="sidebar-icon-indicator">
-                  <ChevronRightTwoToneIcon />
-                </span>
-              </a>
-              <Collapse in={usersOpen}>
-                <ul>
-                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 5)) !== undefined
-                  &&
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/Users">
-                      Manage Users
+              </li>}
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 3)) !== undefined
+              &&
+              <li>
+                <a
+                  href="#/"
+                  onClick={toggleUsers}
+                  className={clsx({ active: usersOpen })}>
+                  <span className="sidebar-icon">
+                    <PeopleIcon />
+                  </span>
+                  <span className="sidebar-item-label">Users</span>
+                  <span className="sidebar-icon-indicator">
+                    <ChevronRightTwoToneIcon />
+                  </span>
+                </a>
+                <Collapse in={usersOpen}>
+                  <ul>
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 5)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/Users">
+                          Manage Users
                     </NavLink>
-                  </li>}
-                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 22)) !== undefined
-                    &&
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/FeatureRoles">
-                      Manage Feature Roles
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 22)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/FeatureRoles">
+                          Manage Feature Roles
                     </NavLink>
-                  </li>}
-                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 23)) !== undefined
-                    &&
-                  <li>
-                    <NavLink
-                      onClick={toggleSidebarMobile}
-                      to="/UserRights">
-                      Manage User Rights
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 23)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/UserRights">
+                          Manage User Rights
                     </NavLink>
-                  </li>}
-                </ul>
-              </Collapse>
-            </li>
-            <li>
+                      </li>}
+                  </ul>
+                </Collapse>
+              </li>}
+            {/*<li>
               <NavLink
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
@@ -469,22 +478,22 @@ const SidebarMenu = (props) => {
                 </span>
                 Edit
               </NavLink>
-            </li>
+            </li>*/}
             {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 4)) !== undefined
               &&
-            <li>
-              <NavLink
-                activeClassName="active"
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="/DeleteGB">
-                <span className="sidebar-icon">
-                  <DeleteIcon />
-                </span>
+              <li>
+                <NavLink
+                  activeClassName="active"
+                  onClick={toggleSidebarMobile}
+                  className="nav-link-simple"
+                  to="/DeleteGB">
+                  <span className="sidebar-icon">
+                    <DeleteIcon />
+                  </span>
                 Delete
               </NavLink>
-            </li>}
-            <li>
+              </li>}
+            {/*<li>
               <NavLink
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
@@ -495,8 +504,9 @@ const SidebarMenu = (props) => {
                 </span>
                 Payment
               </NavLink>
-            </li>
-            <li>
+            </li>*/}
+
+            {/*<li>
               <NavLink
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
@@ -507,7 +517,7 @@ const SidebarMenu = (props) => {
                 </span>
                 Reports
               </NavLink>
-            </li>
+            </li>*/}
             <li>
               <NavLink
                 activeClassName="active"
