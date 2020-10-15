@@ -28,7 +28,7 @@ import {
 } from '@material-ui/pickers';
 import handleError from '../../../auth/_helpers/handleError';
 import { sDateFormatMUIDatepicker } from '../../../config/commonConfig';
-
+import {IssueBookTable} from '../issuebooktable';
 const useStyles = makeStyles({
   root: {
     height: '100%',
@@ -1483,77 +1483,14 @@ export default function EditEntry(props) {
                 <Typography className="font-weight-bold font-size-md mb-1 text-black">Book Issued Details</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                {/*{data.booksIssued.length != 0 &&
-                                    <Table className="table table-hover table-striped table-bordered " >
-                                        <thead className="thead-light" style={{ padding: 0 }}>
-                                            <tr>
-                                                <th scope="col">Issued Date</th>
-                                                <th > Why Issued </th>
-                                                <th > Where Issued </th>
-                                                <th > Issue Application No </th>
-                                                <th > Entered Date </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody style={{ padding: 0 }}>
-                                            {data.booksIssued.map((row, index) => (
-                                                <tr>
-                                                    <td scope="row">{row.issueBook.dtIssuedDate ? Moment(row.issueBook.dtIssuedDate).format('DD-MM-YYYY') : ''}</td>
-                                                    <td scope="row">{row.sMadebDisplayName}</td>
-                                                    <td scope="row">{row.sAuthRegion}</td>
-                                                    <td scope="row">{row.issueBook.sFormNumber}</td>
-                                                    <td scope="row">{row.issueBook.dtEntered ? Moment(row.issueBook.dtEntered).format('DD-MM-YYYY') : ''}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                            </Table>}*/}
+             
+                    <IssueBookTable
+                    gbId={sGBID}
+                    />
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </Grid>
-          <Grid item xs={12}>
-            <ExpansionPanel
-              TransitionProps={{ unmountOnExit: true }}
-              expanded={expanded === 'panel5'}
-              onChange={handleAccordionChange('panel5')}
-            >
-              <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography className="font-weight-bold font-size-md mb-1 text-black">History</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                {/*{ data.auditLogs.length!=0 &&
-                     <Table className="table table-hover table-striped table-bordered " >
-                            <thead className="thead-light" style={{padding:0}}>
-                            <tr>
-                                <th scope="col">SR No.</th>
-                                <th > Name Of Field</th>
-                                <th > Change From </th>
-                                <th > Changed To </th>
-                                <th > Changed By </th>
-                                <th > Changed At </th>
-                                <th > Changed When </th>
-                            </tr>
-                            </thead>
-                            {
-                            <tbody style={{padding:0}}>
-                            {data.auditLogs.map((row, index) => (
-                            <tr>
-                                <td scope='row'>{index+1}</td>
-                                <td >{row.sFeature }</td>
-                                <td >{row.auditLogs.sFieldValuesOld}</td>
-                                <td >{row.auditLogs.sFieldValuesNew}</td>
-                                <td >{row.sEnteredBy}</td>
-                                <td >{row.sOffice}</td>
-                                <td >{row.auditLogs.dtEntered ? Moment(row.issueBook.dtEntered).format('DD-MM-YYYY'): ''}</td>                             
-                            </tr>
-                            ))}
-                            </tbody>}
-                            </Table> }*/}
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-          </Grid>
+ 
           <Grid item xs={12}>
             <ExpansionPanel
               TransitionProps={{ unmountOnExit: true }}
@@ -1589,57 +1526,7 @@ export default function EditEntry(props) {
             </ExpansionPanel>
           </Grid>
           <Grid item xs={12}>
-            <ExpansionPanel
-              TransitionProps={{ unmountOnExit: true }}
-              expanded={expanded === 'panel7'}
-              onChange={handleAccordionChange('panel7')}
-            >
-              <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography className="font-weight-bold font-size-md mb-1 text-black">Documents</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                {/*{data.gbDocuments.length > 0 &&
-                                    <Table className="table table-hover table-striped table-bordered " >
-                                        <thead className="thead-light" style={{ padding: 0 }}>
-                                            <tr>
-                                                <th scope="col">Sr No.</th>
-                                                <th> Date </th>
-                                                <th> Entered By </th>
-                                                <th> Title </th>
-                                                <th style={{ width: '5%' }}> Download </th>
-                                                <th style={{ width: '5%' }}> Delete </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody style={{ padding: 0 }}>
-                                            {data.gbDocuments.map((row, index) => (
-                                                <tr>
-                                                    <td scope="row">{index + 1}</td>
-                                                    <td>{row.dtEntered ? Moment(row.dtEntered).format('DD-MM-YYYY') : ''}</td>
-                                                    <td>{row.nEnteredBy}</td>
-                                                    <td>{row.sDocType}</td>
-                                                    <td style={{ textAlign: 'center' }}>
-                                                        <a href={`data:application/octet-stream;base64,${row.binFileDoc}`} download={row.sDocType + row.sFileExtension} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
-                                                            <span className="btn-wrapper--icon">
-                                                                <GetAppIcon />
-                                                            </span></a>
-                                                    </td>
-                                                    <td>
-                                                        <Button className="btn-neutral-danger btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
-                                                            <span className="btn-wrapper--icon">
-                                                                <DeleteForeverIcon />
-                                                            </span>
-                                                        </Button>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                            </Table>}*/}
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
+          
             <br />
             <Grid item xs={12}>
               <Button
