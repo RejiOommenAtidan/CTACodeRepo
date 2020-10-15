@@ -144,11 +144,15 @@ namespace CTADBL.ViewModelsRepositories
                             `tblmadeb`.`dtUpdated`,
                             `tblmadeb`.`nUpdatedBy`,
                             `sAuthRegion`,
-                            `sTypeIssued`
+                            `sTypeIssued`, 
+                            `lstmadebstatus`.`sMadebStatus`,
+                            `tblmadeb`.`nMadebStatusID`,
+                            `sMadebStatusRemark`
                         FROM `tblmadeb` 
-                        INNER JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
+                        LEFT JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
                         LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
-                        WHERE nMadebTypeID=@madebType
+                        LEFT JOIN `lstmadebstatus` ON `tblmadeb`.`nMadebStatusID` = `lstmadebstatus`.`ID`
+                        WHERE `nMadebTypeID`= @madebType 
                         ORDER BY `tblmadeb`.`Id` DESC;";
             using (var command = new MySqlCommand(sql))
             {
@@ -305,7 +309,8 @@ namespace CTADBL.ViewModelsRepositories
             {
                 madeb = _madebRepository.PopulateRecord(reader),
                 sAuthRegion = (string) reader["sAuthRegion"],
-                sTypeIssued = reader.IsDBNull("sTypeIssued") ? null : (string?)(reader["sTypeIssued"])
+                sTypeIssued = reader.IsDBNull("sTypeIssued") ? null : (string?)(reader["sTypeIssued"]),
+                sMadebStatus = reader.IsDBNull("sMadebStatus") ? null : (string?)(reader["sMadebStatus"]),
             };
         }
         #endregion

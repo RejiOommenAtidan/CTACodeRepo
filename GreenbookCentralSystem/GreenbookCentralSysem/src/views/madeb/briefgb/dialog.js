@@ -25,6 +25,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
 export const EditDialog = (props) => {
+  
   const { register, handleSubmit, watch, errors } = useForm();
 
 
@@ -42,19 +43,20 @@ export const EditDialog = (props) => {
     
     
   }
-  debugger
+  
   const [message,setMessage]=React.useState('');
   const [alertType,setAlertType]=React.useState('');
 
   const [authRegions,setAuthRegionData]= React.useState(props.selectData['authRegions']);
   const [typeIssuedData,setTypeIssuedData]= React.useState(props.selectData['typeIssued']);
+  const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);
 
   const [madebType,setMadebType]= React.useState(6);
   const [id, setId] = React.useState(props.briefGBObj.id);
   const [nFormNumber, setFormNumber] = React.useState(props.briefGBObj.nFormNumber);
   const [dtReceived, setReceivedDate] = React.useState((props.briefGBObj.dtReceived) ? props.briefGBObj.dtReceived.split('T')[0] : undefined);
   const [nAuthRegionID, setAuthorityId] = React.useState(props.briefGBObj.nAuthRegionID);
-  
+  const [nMadebStatusID, setMadebStatusID] = React.useState(props.briefGBObj.nMadebStatusID);
   const [sName, setName] = React.useState(props.briefGBObj.sName);
   const [sGBID, setGbId] = useState(props.briefGBObj.sGBID);
   const [sFathersName, setFname] = React.useState(props.briefGBObj.sFathersName);
@@ -67,9 +69,34 @@ export const EditDialog = (props) => {
   const [dtReject, setRejectDate] = useState(props.briefGBObj.dtReject ? (props.briefGBObj.dtReject).split('T')[0] : undefined);
   const [nIssuedOrNotID, setIssueAction] = React.useState(props.briefGBObj.nIssuedOrNotID);
   const [dtReturnEmail, setReturnDate] = React.useState(props.briefGBObj.dtReturnEmail ? (props.briefGBObj.dtReturnEmail).split('T')[0] : undefined);
+  const [sMadebStatusRemark, setMadebStatusRemark] = React.useState(props.briefGBObj.sMadebStatusRemark);
+  
+  // Dropdowns
+
+  // const [valueAuthRegion, setValueAuthRegion] = React.useState([]);
+  // const [valueTypeIssued, setValueTypeIssued] = React.useState([]);
+  // const [valueMadebStatus, setValueMadebStatus] = React.useState([]);
+
+   //const region = authRegions.find((x) => x.id === nAuthRegionID);
+   //setValueAuthRegion(region);
   
 
+  // const typeIssued = typeIssuedData.find((x) => x.id === nIssuedOrNotID);
+  // setValueTypeIssued(typeIssued);
   
+  // const madebStatus = madebStatuses.find((x) => x.id === nMadebStatusID);
+  // setValueMadebStatus(madebStatus);
+
+  let valueAuthRegion = [];
+ 
+   authRegions.forEach(element => {
+     if(element.id === nAuthRegionID){
+         valueAuthRegion = element;
+     }
+   });
+
+
+  //object
   const madeb = {
     id:id,
     nMadebTypeID: madebType,
@@ -87,20 +114,16 @@ export const EditDialog = (props) => {
     dtIssueAction,
     dtReject,
     nIssuedOrNotID,
-    dtReturnEmail
+    dtReturnEmail,
+    nMadebStatusID,
+    sMadebStatusRemark
  }
 console.log("Madeb Edit Object received in dialog", madeb);
 //  const childrenAuthRegion =  () => { 
 //         return (authRegions.map((data) => (<option value={data.id}>{data.sAuthRegion}</option> )  ))
 //     };  
 //  const optsAuthRegion = childrenAuthRegion();
- let valueAuthRegion = [];
  
- authRegions.forEach(element => {
-    if(element.id === nAuthRegionID){
-        valueAuthRegion = element;
-    }
-  });
 
     // const childrenTypeIssued =  () => { 
     //   return (typeIssuedData.map((data) =>  (<option value={data.id}>{data.sTypeIssued}</option>)))};
@@ -111,8 +134,10 @@ console.log("Madeb Edit Object received in dialog", madeb);
      if(element.id === nIssuedOrNotID){
         valueTypeIssued = element;
      }
-     
    });
+
+   let valueMadebStatus = [];
+   valueMadebStatus = madebStatuses.find((x) => x.id === nMadebStatusID);
 
   return (
     <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
@@ -347,6 +372,62 @@ console.log("Madeb Edit Object received in dialog", madeb);
 
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
+                                    <Autocomplete
+                                      openOnFocus
+                                      clearOnEscape
+                                      onChange={  
+                                        (e, value) => {
+                                          if (value !== null) {
+                                            console.log(value.id);
+                                            setMadebStatusID(value.id);
+                                          }
+                                          else {
+                                            setMadebStatusID(0);
+                                          }
+                                        }
+                                      }
+                                     value={valueMadebStatus} 
+                                     id="id_nMadebStatusID"
+                                     options={madebStatuses}
+                                     autoHighlight
+                                     getOptionLabel={(option) => option.sMadebStatus}
+                                     renderOption={(option) => (
+                                       <React.Fragment>
+                                         <span>{option.sMadebStatus}</span>
+                                       </React.Fragment>
+                                     )}
+                                     renderInput={(params) => (
+                                       <TextField
+                                         {...params}
+                                         label="Madeb Status"
+                                         variant="standard"
+                                         inputProps={{
+                                           ...params.inputProps,
+                                           autoComplete: 'new-password', // disable autocomplete and autofill
+                                         }}
+                                        />
+                                      )}
+                                    />
+                                  </FormControl>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
+                                        <TextField
+                                            id="sMadebStatusRemark"
+                                            name="sMadebStatusRemark"
+                                        label="Status Remarks"
+                                        //required={true}
+                                        value={sMadebStatusRemark}
+                                        onChange={(e) => { setApprovedReject(e.target.value) }}
+                                        
+                                      />
+                                      
+                                    </FormControl>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
                                         <TextField
                                             id="dtIssueAction"
                                             name="dtIssueAction"
@@ -546,6 +627,7 @@ export const AddDialog = (props) => {
           var inputEvent = new Event("input", { bubbles: true });
           setName( `${name} ${mname} ${lname}`);
           setFname(resp.data.sFathersName);
+          
           sNameElement.dispatchEvent(inputEvent);
           //  setCurrentGBSNo(resp.data.sOldGreenBKNo);
           //  setPreviousGBSNo(resp.data.sFstGreenBkNo);
@@ -577,7 +659,7 @@ export const AddDialog = (props) => {
   const [id, setId] = React.useState(0);
   const [madebType, setMadebType]= React.useState(6);
   const [nAuthRegionID, setAuthRegionId] = React.useState(0);
-  const [dtReceived, setReceivedDate] = React.useState('');
+  const [dtReceived, setReceivedDate] = React.useState(new Date(Date.now()).toISOString().substring(0,10));
   const [sName, setName] = React.useState('');
   const [sGBID, setGbId] = useState('');
   const [sFathersName, setFname] = React.useState('');
@@ -696,20 +778,22 @@ export const AddDialog = (props) => {
                                        <TextField
                                          {...params}
                                          label="Authority"
+                                         name="authority"
                                          variant="standard"
                                          name="authority_text"
                                          inputProps={{
                                            ...params.inputProps,
                                            autoComplete: 'new-password', // disable autocomplete and autofill
                                          }}
-                                         
-                                         
+                                         inputRef={register({
+                                          required: true
+                                        })}
                                         />
                                       )}
-                                      
-                                      name="authority"
                                     />
-                                    
+                                    {_.get("authority.type", errors) === "required" && (
+                                          <span style={{color: 'red'}}>This field is required</span>
+                                        )}
                                   </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -818,13 +902,13 @@ export const AddDialog = (props) => {
                                           setCurrentGBSNo(parseInt(e.target.value));
                                           console.log("Value of currentGB changed to:", parseInt(e.target.value));
                                         }}
-                                        inputRef={register({
-                                          required: true
-                                        })}
+                                        // inputRef={register({
+                                        //   required: true
+                                        // })}
                                       />
-                                      {_.get("nCurrentGBSno.type", errors) === "required" && (
+                                      {/* {_.get("nCurrentGBSno.type", errors) === "required" && (
                                         <span style={{color: 'red'}}>This field is required</span>
-                                      )}
+                                      )} */}
                                        
                                     </FormControl>
                                 </Grid>

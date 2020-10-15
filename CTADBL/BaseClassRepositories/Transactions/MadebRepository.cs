@@ -469,6 +469,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 sApprovedReject = reader.IsDBNull("sApprovedReject") ? null : (string?)(reader["sApprovedReject"]),
                 dtReject = reader.IsDBNull("dtReject") ? null : (DateTime?)(reader["dtReject"]),
                 dtReturnEmail = reader.IsDBNull("dtReturnEmail") ? null : (DateTime?)reader["dtReturnEmail"],
+                nMadebStatusID = reader.IsDBNull("nMadebStatusID") ? null : (int?)(reader["nMadebStatusID"]),
+                sMadebStatusRemark = reader.IsDBNull("sMadebStatusRemark") ? null : (string?)(reader["sMadebStatusRemark"]),
                 //Common Props
                 dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
                 nEnteredBy = (int)reader["nEnteredBy"],

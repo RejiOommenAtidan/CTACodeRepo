@@ -309,6 +309,24 @@ export default () => {
       },
     },
     {
+      field: "sMadebStatus",
+      title: "Status",
+      
+      cellStyle: {
+        padding:'5px',
+        
+      },
+    },
+    {
+      field: "madeb.sMadebStatusRemark",
+      title: "Status Remark",
+      
+      cellStyle: {
+        padding:'5px',
+        
+      },
+    },
+    {
       field: "madeb.dtReject",
       title: "Reject Date",
       // type: 'date',
@@ -330,6 +348,8 @@ export default () => {
       },
       render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD') : ''
     },
+
+
     {
       field: "email",
       title: "Email",
@@ -411,7 +431,9 @@ export default () => {
       dtIssueAction: tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
       dtReject: tableRowArray['madeb']['dtReject'],
-      dtReturnEmail: tableRowArray['madeb']['dtReturnEmail']
+      dtReturnEmail: tableRowArray['madeb']['dtReturnEmail'],
+      nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
+      sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
     });
       //console.log(tableRowArray);
       setEditModal(true);
