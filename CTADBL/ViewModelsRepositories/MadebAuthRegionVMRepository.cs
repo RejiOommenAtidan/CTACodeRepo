@@ -153,7 +153,8 @@ namespace CTADBL.ViewModelsRepositories
                         LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         LEFT JOIN `lstmadebstatus` ON `tblmadeb`.`nMadebStatusID` = `lstmadebstatus`.`ID`
                         WHERE `nMadebTypeID`= @madebType 
-                        ORDER BY `tblmadeb`.`Id` DESC;";
+                        ORDER BY `tblmadeb`.`Id` DESC
+                        LIMIT 1000;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("madebType", madebType);

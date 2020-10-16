@@ -61,6 +61,37 @@ namespace CTADBL.ViewModelsRepositories
         }
         #endregion
 
+        #region Get Basic Personal Details of GreenBook Holder
+        public Object GetPersonalDetailsFromGBID(string sGBID)
+        {
+            string sql = @"SELECT ar.sAuthRegion, gb.nAuthRegionID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sFathersName, gb.sMothersName FROM tblgreenbook as gb LEFT JOIN lstauthregion ar ON ar.ID = gb.nAuthRegionID WHERE gb.sGBID = @sGBID;";
+
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                command.Connection = _connection;
+                command.CommandType = CommandType.Text;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var result = tables[0].AsEnumerable().Select(row => new
+                {
+                    sAuthRegion = row.Field<string>("sAuthRegion"),
+                    nAuthRegionID = row.Field<int>("nAuthRegionID"),
+                    sFirstName = row.Field<string>("sFirstName"),
+                    sMiddleName = row.Field<string>("sMiddleName"),
+                    sLastName = row.Field<string>("sLastName"),
+                    sFamilyName = row.Field<string>("sFamilyName"),
+                    sFathersName = row.Field<string>("sFathersName"),
+                    sMothersName = row.Field<string>("sMothersName")
+                }).FirstOrDefault();
+                return result;
+            }
+        }
+        #endregion
+
+
 
 
         #region Get GreenBookVM with Multiple search paramters.

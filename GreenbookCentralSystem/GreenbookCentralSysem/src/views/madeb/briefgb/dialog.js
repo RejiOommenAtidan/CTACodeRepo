@@ -598,16 +598,16 @@ export const AddDialog = (props) => {
     const sNameElement = document.getElementById("sName");
     const nCurrentGBSnoElement = document.getElementById("nCurrentGBSno");
     const nPreviousGBSnoElement = document.getElementById("nPreviousGBSno");
-    axios.get(`Greenbook/GetBasicDetailsFromGBID/?sGBID=`+ gbid)
+    axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=`+ gbid)
     .then(resp => {
       if (resp.status === 200) {
         console.log("Got gb record\n", resp.data);
         console.log("Name Element:" , sNameElement);
-        const name = resp.data.greenBook.sFirstName ? resp.data.greenBook.sFirstName : '';
-        const mname = resp.data.greenBook.sMiddleName ? resp.data.greenBook.sMiddleName : '';
-        const lname = resp.data.greenBook.sLastName ? resp.data.greenBook.sLastName : '';
+        const name = resp.data.sFirstName ? resp.data.sFirstName : '';
+        const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
+        const lname = resp.data.sLastName ? resp.data.sLastName : '';
         setName( `${name} ${mname} ${lname}`);
-        setFname(resp.data.greenBook.sFathersName);
+        setFname(resp.data.sFathersName);
         const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
         setAuthRegion(region);
         setAuthRegionId(region.id);

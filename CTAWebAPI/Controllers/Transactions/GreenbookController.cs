@@ -257,6 +257,40 @@ namespace CTAWebAPI.Controllers.Transactions
             }
         }
 
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetPersonalDetailsFromGBID(string sGBID)
+        {
+
+            if (String.IsNullOrEmpty(sGBID))
+            {
+                return BadRequest(String.Format(@"Invalid request parameters"));
+            }
+            try
+            {
+                Object greenBook = _greenBookVMRepository.GetPersonalDetailsFromGBID(sGBID);
+                if (greenBook != null)
+                {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
+                    return Ok(greenBook);
+                }
+                else
+                {
+                    return NotFound(String.Format(@"No records found for sGBID having value {0}", sGBID));
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
 
         //[HttpPost]
         //[Route("[action]")]
