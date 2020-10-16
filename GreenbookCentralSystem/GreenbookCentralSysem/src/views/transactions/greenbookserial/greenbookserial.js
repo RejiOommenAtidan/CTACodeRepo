@@ -118,7 +118,7 @@ export default () => {
     },
     {
       field: "greenBookSerialNumber.nBookNo",
-      title: "Book No",
+      title: "Book Serial No",
       cellStyle: {
         padding:'5px',
       },

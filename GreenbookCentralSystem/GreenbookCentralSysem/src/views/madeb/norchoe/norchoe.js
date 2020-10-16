@@ -84,34 +84,7 @@ const tableIcons = {
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const getMuiTheme = () => createMuiTheme({
-  overrides: {
-    MUIDataTableHeadCell: {
-      root:{
-        color:'blue',
-        fontSize:15
-      }
-    },
-    MUIDataTableBodyCell: {
-      root: {
-        // backgroundColor: "#FFF",
-        // width: "50px"
-        
-      }
 
-    },
-    MuiTableCell: {
-      root: {
-          padding: '0px',
-          paddingLeft: '10px',
-          
-          paddingRight: '10px',
-
-         
-      }
-  },
-  }
-})
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -163,15 +136,13 @@ const useStyles = makeStyles((theme) => ({
 export default function EnhancedTable() {
   Moment.locale('en');
   const classes = useStyles();
- // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
   const [emailModal, setEmailModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
-  // const [loadingProp, setloadingProp] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const [selectData, setSelectData] = useState([]);
-
+  const [isLoading, setisLoading] = React.useState(true);
   //VAR
   const [id, setId] = React.useState('');
   const [formNumber, setFormNumber] = React.useState(0);
@@ -815,9 +786,9 @@ export default function EnhancedTable() {
     axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=2`)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
           setdataAPI(resp.data);
-          selectDatafunction()
+          selectDatafunction();
+          setisLoading(false);
         }
       })
       .catch(error => {
@@ -851,7 +822,7 @@ export default function EnhancedTable() {
           <Typography color="textPrimary">Norchoe Madeb</Typography>
         </Breadcrumbs>
           <MaterialTable style={{padding:'10px',width:'100%', border:'2px solid grey',borderRadius:'10px'}}
-       
+          isLoading={isLoading}
        icons={tableIcons}
       title="Norchoe Madeb"
     columns={columns}

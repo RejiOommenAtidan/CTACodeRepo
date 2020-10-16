@@ -43,6 +43,12 @@ const SidebarMenu = (props) => {
     event.preventDefault();
   };
 
+  const [bookSerialOpen, setbookSerialOpen] = useState(false);
+  const toggleBookSerial = (event) => {
+    setbookSerialOpen(!bookSerialOpen);
+    event.preventDefault();
+  };
+
   const [usersOpen, setUsersOpen] = useState(false);
   const toggleUsers = (event) => {
     setUsersOpen(!usersOpen);
@@ -333,7 +339,7 @@ const SidebarMenu = (props) => {
                   <span className="sidebar-icon">
                     <FormatListNumberedIcon />
                   </span>
-                Greenbooks
+                Edit GB
               </NavLink>
               </li>}
             {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 3)) !== undefined
@@ -367,16 +373,50 @@ const SidebarMenu = (props) => {
             {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 11)) !== undefined
               &&
               <li>
-                <NavLink
-                  activeClassName="active"
-                  onClick={toggleSidebarMobile}
-                  className="nav-link-simple"
-                  to="/NewGreenBookSerial">
+                <a
+                  href="#/"
+                  onClick={toggleBookSerial}
+                  className={clsx({ active: bookSerialOpen })}>
                   <span className="sidebar-icon">
-                    <FormatListNumberedRtlIcon />
+                    <AppsIcon />
                   </span>
-                Give Serial Number
+                  <span className="sidebar-item-label">Book Serial Numbers</span>
+                  <span className="sidebar-icon-indicator">
+                    <ChevronRightTwoToneIcon />
+                  </span>
+                </a>
+                <Collapse in={bookSerialOpen}>
+                  <ul>
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 11)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          activeClassName="active"
+                          onClick={toggleSidebarMobile}
+                          className="nav-link-simple"
+                          to="/NewGreenBookSerial">
+                          <span className="sidebar-icon">
+                            <FormatListNumberedRtlIcon />
+                          </span>
+                Give Book Serial Number
               </NavLink>
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 11)) !== undefined
+                      &&
+                      <li>
+                        <NavLink
+                          activeClassName="active"
+                          onClick={toggleSidebarMobile}
+                          className="nav-link-simple"
+                          to="/GreenBookSerial">
+                          <span className="sidebar-icon">
+                            <FormatListNumberedRtlIcon />
+                          </span>
+                  Edit Book Serial Number
+                </NavLink>
+                      </li>}
+                  </ul>
+                </Collapse>
               </li>}
             {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 10)) !== undefined
               &&
