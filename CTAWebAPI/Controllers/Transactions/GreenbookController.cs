@@ -26,6 +26,7 @@ namespace CTAWebAPI.Controllers.Transactions
         private readonly GetGBDataByFormNumberVMRepository _getGBDataByFormNumberVMRepository;
         private GreenBookVMRepository _greenBookVMRepository;
         private GivenGBIDRepository _givenGBIDRepository;
+        private GBRelationRepository _gbRelationRepository;
         private readonly CTALogger _ctaLogger;
         public GreenbookController(DBConnectionInfo info)
         {
@@ -34,6 +35,7 @@ namespace CTAWebAPI.Controllers.Transactions
             _getGBDataByFormNumberVMRepository = new GetGBDataByFormNumberVMRepository(_info.sConnectionString);
             _greenBookVMRepository = new GreenBookVMRepository(_info.sConnectionString);
             _givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
+            _gbRelationRepository = new GBRelationRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
         }
         #endregion
@@ -360,7 +362,66 @@ namespace CTAWebAPI.Controllers.Transactions
                     #endregion
 
                     #region Firing Update Query to Change nGivenOrNot to 1
-                    _givenGBIDRepository.UpdateGivenOrNot(nGBId); 
+                    _givenGBIDRepository.UpdateGivenOrNot(nGBId);
+                    #endregion
+
+                    #region Relations Table Addition
+                    //Father - 1
+                    if (!string.IsNullOrEmpty(greenbook.sFathersGBID)) 
+                    {
+                        Greenbook fatherGB = _greenbookRepository.GetGreenbookByGBID(greenbook.sFathersGBID);
+                        if (fatherGB != null) {
+                            GBRelation fatherRelation = new GBRelation
+                            {
+                                sGBID = greenbook.sGBID,
+                                sGBIDRelation = greenbook.sFathersGBID,
+                                nRelationID = 1,
+                                dtEntered = DateTime.Now,
+                                dtUpdated = DateTime.Now,
+                                nEnteredBy = greenbook.nEnteredBy,
+                                nUpdatedBy = greenbook.nUpdatedBy
+                            };
+                            _gbRelationRepository.Add(fatherRelation);
+                        }
+                    }
+                    //Mother - 2
+                    if (!string.IsNullOrEmpty(greenbook.sMothersGBID))
+                    {
+                        Greenbook motherGB = _greenbookRepository.GetGreenbookByGBID(greenbook.sMothersGBID);
+                        if (motherGB != null)
+                        {
+                            GBRelation motherRelation = new GBRelation
+                            {
+                                sGBID = greenbook.sGBID,
+                                sGBIDRelation = greenbook.sMothersGBID,
+                                nRelationID = 2,
+                                dtEntered = DateTime.Now,
+                                dtUpdated = DateTime.Now,
+                                nEnteredBy = greenbook.nEnteredBy,
+                                nUpdatedBy = greenbook.nUpdatedBy
+                            };
+                            _gbRelationRepository.Add(motherRelation);
+                        }
+                    }
+                    //Spouse - 3
+                    if (!string.IsNullOrEmpty(greenbook.sSpouseGBID))
+                    {
+                        Greenbook spouseGB = _greenbookRepository.GetGreenbookByGBID(greenbook.sSpouseGBID);
+                        if (spouseGB != null)
+                        {
+                            GBRelation spouseRelation = new GBRelation
+                            {
+                                sGBID = greenbook.sGBID,
+                                sGBIDRelation = greenbook.sSpouseGBID,
+                                nRelationID = 3,
+                                dtEntered = DateTime.Now,
+                                dtUpdated = DateTime.Now,
+                                nEnteredBy = greenbook.nEnteredBy,
+                                nUpdatedBy = greenbook.nUpdatedBy
+                            };
+                            _gbRelationRepository.Add(spouseRelation);
+                        }
+                    }
                     #endregion
 
                     #region Information Logging 

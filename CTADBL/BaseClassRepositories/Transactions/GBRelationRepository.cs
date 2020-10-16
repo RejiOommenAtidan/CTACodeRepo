@@ -2,17 +2,15 @@
 using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
 using System.Data;
-
 
 namespace CTADBL.BaseClassRepositories.Transactions
 {
     public class GBRelationRepository : ADORepository<GBRelation>
     {
-        private static MySqlConnection _connection;
+
         #region Constructor
+        private static MySqlConnection _connection;
         public GBRelationRepository(string connectionString) : base(connectionString)
         {
             _connection = new MySqlConnection(connectionString);
@@ -33,5 +31,28 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
         #endregion
 
+        #region Add Call
+        public void Add(GBRelation gbRelation)
+        {
+            var builder = new SqlQueryBuilder<GBRelation>(gbRelation);
+            ExecuteCommand(builder.GetInsertCommand());
+        }
+        #endregion
+
+        #region Update Call
+        public void Update(GBRelation gBRelation)
+        {
+            var builder = new SqlQueryBuilder<GBRelation>(gBRelation);
+            ExecuteCommand(builder.GetUpdateCommand());
+        }
+        #endregion
+
+        #region Delete Call
+        public void Delete(GBRelation gBRelation)
+        {
+            var builder = new SqlQueryBuilder<GBRelation>(gBRelation);
+            ExecuteCommand(builder.GetDeleteCommand());
+        }
+        #endregion
     }
 }
