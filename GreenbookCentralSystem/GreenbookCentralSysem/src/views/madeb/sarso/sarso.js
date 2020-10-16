@@ -59,25 +59,9 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
-const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <div></div>),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-};
+import {oOptions,oTableIcons, sDateFormat} from '../../../config/commonConfig';
+
+const tableIcons = oTableIcons;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -190,6 +174,8 @@ export default function EnhancedTable() {
   const [dataChanged, setDataChanged] = useState(false);
 
   const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
+
  //Alert
  const [alertMessage, setAlertMessage] = useState("");
  const [alertType, setAlertType] = useState("");
@@ -226,31 +212,6 @@ export default function EnhancedTable() {
     setEmailModal(false);
   };
 
-  const options = {
-    textLabels: {
-      body: {
-        noMatch: "Loading..."
-      },
-     
-    },
-    filter:true,
-    viewColumns:false,
-    selectableRows: false,
-    jumpToPage: true,
-    rowsPerPage: rowsPerPage,
-    rowsPerPageOptions: [5, 10, 20, 30],
-    onChangePage: (number) => {
-      setCurrentPage(number + 1);
-      console.log('Current Page No.', number + 1)
-    },
-    onChangeRowsPerPage: (rows) => {
-      console.log("Rows per page:", rows)
-    },
-    onTableChange: (action, tableState) => {
-      console.log("Action:", action, "\ntableState:", tableState, "Data Changed:", dataChanged);
-      
-    }
-  };
 
   const columns = [
     {
@@ -283,10 +244,10 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReceived",
       title: "Received Date",
-      render: rowData => Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD'),
+      render: rowData => Moment(rowData['madeb']['dtReceived']).format(sDateFormat),
       headerStyle: {
         padding:'0px',
-        width:'9%',
+        width:'7%',
         textAlign:'left'
       },
       cellStyle: {
@@ -303,13 +264,13 @@ export default function EnhancedTable() {
      
       headerStyle: {
         padding:'0px',
-        width:'10%',
+        width:'7%',
         textAlign:'left'
       },
       cellStyle: {
         padding:'0px',
         paddingLeft:'10px',
-        width:'10%',
+        width:'7%',
         textAlign:'left'
         
       },
@@ -337,15 +298,14 @@ export default function EnhancedTable() {
       
       headerStyle: {
         padding:'0px',
-        width:'15%',
+        width:'7%',
         textAlign:'left'
       },
       cellStyle: {
         padding:'0px',
         paddingLeft:'10px',
-        width:'15%',
+        width:'7%',
         textAlign:'left'
-        
       },
     },
     {
@@ -394,7 +354,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtIssueAction",
       title: "Issue Action Dt.",
-      render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD') : '',
+      render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : '',
      // render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
       headerStyle: {
         padding:'0px',
@@ -415,7 +375,7 @@ export default function EnhancedTable() {
       
       headerStyle: {
         padding:'0px',
-        width:'9%',
+        width:'11%',
         textAlign:'left'
       },
       cellStyle: {
@@ -430,16 +390,16 @@ export default function EnhancedTable() {
       field: "madeb.dtReturnEmail",
       title: "Return Date",
       //render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
-      render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD') : '',
+      render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : '',
       headerStyle: {
         padding:'0px',
-        width:'8%',
+        width:'12%',
         textAlign:'left'
       },
       cellStyle: {
         padding:'0px',
         paddingLeft:'10px',
-        width:'8%',
+        width:'12%',
         textAlign:'left'
         
       },
@@ -447,7 +407,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReject",
       title: "Reject Date",
-      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD') : '',
+      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : '',
      
     
       headerStyle: {
@@ -468,7 +428,7 @@ export default function EnhancedTable() {
       field: "email",
       title: "Email",
       filtering:false,
-      sort: false,
+      sorting: false,
       export:false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
       onClick={() => { emailClick(rowData) }}  style={{padding:'0px'}}
@@ -491,7 +451,7 @@ export default function EnhancedTable() {
     {
       field: "edit",
       title: "Edit",
-      sort: false,
+      sorting: false,
       export:false,
       filtering:false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
@@ -800,29 +760,7 @@ export default function EnhancedTable() {
       title="Sarso Madeb"
     columns={columns}
     data={dataAPI}        
-    options={{
-      filtering,
-      exportButton: true,
-      exportAllData: true,
-      headerStyle: {
-     
-          padding:'0',
-          paddingLeft:'10px',
-       border:'1px solid lightgrey',
-       
-      },
-     pageSize:15,
-     pageSizeOptions:[10,15,20,50,100],
-    
-     rowStyle: x => {
-      if (x.tableData.id % 2) {
-          return {backgroundColor: "#f2f2f2"}
-      }
-     
-    },
-  
-      
-    }}
+    options={oOptions}
     actions={[
       {
         icon: AddBox,
@@ -832,7 +770,7 @@ export default function EnhancedTable() {
       },
       {
         icon: Search,
-        tooltip: 'Show Filter',
+        tooltip: 'Toggle Filter',
         isFreeAction: true,
         onClick: (event) => {setFiltering(currentFilter => !currentFilter)}
       }

@@ -371,7 +371,7 @@ const SidebarMenu = (props) => {
                   activeClassName="active"
                   onClick={toggleSidebarMobile}
                   className="nav-link-simple"
-                  to="/GreenBookSerial">
+                  to="/NewGreenBookSerial">
                   <span className="sidebar-icon">
                     <FormatListNumberedRtlIcon />
                   </span>

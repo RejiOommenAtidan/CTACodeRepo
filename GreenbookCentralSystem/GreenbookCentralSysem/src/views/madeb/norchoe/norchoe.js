@@ -59,6 +59,8 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
+import {oOptions,oTableIcons, sDateFormat} from '../../../config/commonConfig';
+
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -194,6 +196,7 @@ export default function EnhancedTable() {
   const [dataChanged, setDataChanged] = useState(false);
 
   const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
  //Alert
  const [alertMessage, setAlertMessage] = useState("");
  const [alertType, setAlertType] = useState("");
@@ -540,7 +543,7 @@ export default function EnhancedTable() {
     {
       field: "edit",
       title: "Edit",
-      sort: false,
+      sorting: false,
       export:false,
       filtering:false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
@@ -853,29 +856,7 @@ export default function EnhancedTable() {
       title="Norchoe Madeb"
     columns={columns}
     data={dataAPI}        
-    options={{
-      filtering,
-      exportButton: true,
-      exportAllData: true,
-      headerStyle: {
-     
-          padding:'0',
-          paddingLeft:'10px',
-       border:'1px solid lightgrey',
-       
-      },
-     pageSize:15,
-     pageSizeOptions:[10,15,20,50,100],
-    
-     rowStyle: x => {
-      if (x.tableData.id % 2) {
-          return {backgroundColor: "#f2f2f2"}
-      }
-     
-    },
-  
-      
-    }}
+    options={oOptions}
     actions={[
       {
         icon: AddBox,
