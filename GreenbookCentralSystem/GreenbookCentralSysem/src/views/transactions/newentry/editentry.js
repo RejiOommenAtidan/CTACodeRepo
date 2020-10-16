@@ -722,13 +722,24 @@ export default function EditEntry(props) {
                       <TextField
                         value={sFathersGBID}
                         id="id_sFathersGBID"
+                        name="name_sFathersGBID"
                         label="Father's GB No"
                         type="text"
                         onChange={(e) => { setsFathersGBID(e.target.value); }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        inputRef={register({
+                          minLength: 7,
+                          maxLength: 7
+                        })}
                       />
+                      {_.get("name_sFathersGBID.type", errors) === "minLength" && (
+                        <span style={{ color: 'red' }}>Father's GB ID cannot subceed 7 characters</span>
+                      )}
+                      {_.get("name_sFathersGBID.type", errors) === "maxLength" && (
+                        <span style={{ color: 'red' }}>Father's GB ID cannot exceed 7 characters</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -778,14 +789,24 @@ export default function EditEntry(props) {
                       <TextField
                         value={sMothersGBID}
                         id="id_sMothersGBID"
+                        name="name_sMothersGBID"
                         label="Mother's GB No"
                         type="text"
                         onChange={(e) => { setsMothersGBID(e.target.value); }}
                         fullWidth
                         margin="dense"
-
                         className={classes.textField}
+                        inputRef={register({
+                          minLength: 7,
+                          maxLength: 7
+                        })}
                       />
+                      {_.get("name_sMothersGBID.type", errors) === "minLength" && (
+                        <span style={{ color: 'red' }}>Mother's GB ID cannot subceed 7 characters</span>
+                      )}
+                      {_.get("name_sMothersGBID.type", errors) === "maxLength" && (
+                        <span style={{ color: 'red' }}>Mother's GB ID cannot exceed 7 characters</span>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -1382,13 +1403,24 @@ export default function EditEntry(props) {
                       <TextField
                         value={sSpouseGBID}
                         id="id_sSpouseGBID"
+                        name="name_sSpouseGBID"
                         label="Spouse GB No"
                         type="text"
                         onChange={(e) => { setsSpouseGBID(e.target.value); }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
+                        inputRef={register({
+                          minLength: 7,
+                          maxLength: 7
+                        })}
                       />
+                      {_.get("name_sSpouseGBID.type", errors) === "minLength" && (
+                        <span style={{ color: 'red' }}>Spouse's GB ID No cannot subceed 7 characters</span>
+                      )}
+                      {_.get("name_sSpouseGBID.type", errors) === "maxLength" && (
+                        <span style={{ color: 'red' }}>Spouse's GB No cannot exceed 7 characters</span>
+                      )}
                     </FormControl>
                   </Grid>
                 </Grid>
