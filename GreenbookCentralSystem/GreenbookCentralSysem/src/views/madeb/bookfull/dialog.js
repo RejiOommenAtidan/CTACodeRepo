@@ -670,6 +670,7 @@ console.log("Madeb Object in Add dialog", madeb);
                                           if (value !== null) {
                                             console.log(value.id);
                                             setAuthRegionId(value.id);
+                                            setAuthRegion(value);
                                           }
                                           else {
                                             setAuthRegionId(0);
