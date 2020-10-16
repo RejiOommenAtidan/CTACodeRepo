@@ -123,7 +123,7 @@ export default function SarsoNewGBEntry() {
     {
       align: "center",
       field: 'gbentry',
-      title: 'Greenbook Entry',
+      title: 'GB Entry',
       filtering: false,
       sorting: false,
       export: false,

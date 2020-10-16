@@ -311,6 +311,11 @@ const saveAPICall = (obj,changeObj) =>{
     if (resp.status === 200) {
       
           //changeIssueTypeAPICall(changeObj);
+          saveModalClose();
+       setAlertMessage('Record Successfully Saved');
+          setAlertType('success');
+          snackbarOpen();
+          historyGbId();
     }
   })
   .catch(error => {

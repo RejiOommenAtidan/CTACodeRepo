@@ -694,6 +694,7 @@ export const AddDialog = (props) => {
                                           if (value !== null) {
                                             console.log(value.id);
                                             setAuthRegionId(value.id);
+                                            setAuthRegion(value);
                                           }
                                           else {
                                             setAuthRegionId(0);
