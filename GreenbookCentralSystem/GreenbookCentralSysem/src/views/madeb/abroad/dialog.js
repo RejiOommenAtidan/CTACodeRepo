@@ -538,21 +538,28 @@ export const AddDialog = (props) => {
     const sNameElement = document.getElementById("sName");
     const nCurrentGBSnoElement = document.getElementById("nCurrentGBSno");
     const nPreviousGBSnoElement = document.getElementById("nPreviousGBSno");
-       axios.get(`Greenbook/GetGreenbook/sGBID=`+ gbid)
+       axios.get(`Greenbook/GetBasicDetailsFromGBID/?sGBID=`+ gbid)
        .then(resp => {
          if (resp.status === 200) {
            console.log("Got gb record\n", resp.data);
            console.log("Name Element:" , sNameElement);
-           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
-           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
-           const lname = resp.data.sLastName ? resp.data.sLastName : '';
+           const name = resp.data.greenBook.sFirstName ? resp.data.greenBook.sFirstName : '';
+          const mname = resp.data.greenBook.sMiddleName ? resp.data.greenBook.sMiddleName : '';
+          const lname = resp.data.greenBook.sLastName ? resp.data.greenBook.sLastName : '';
+          setName( `${name} ${mname} ${lname}`);
+          setFname(resp.data.greenBook.sFathersName);
+          const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
+          setAuthRegion(region);
+          setAuthRegionId(region.id);
+           
+           
+           
            //sNameElement.value=`${name} ${mname} ${lname}`;
            var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
             window.HTMLInputElement.prototype, "value").set;
           nativeInputValueSetter.call(sNameElement, `${name} ${mname} ${lname}`);
           var inputEvent = new Event("input", { bubbles: true });
-          setName( `${name} ${mname} ${lname}`);
-          setFname(resp.data.sFathersName);
+          
           sNameElement.dispatchEvent(inputEvent);
           //  setCurrentGBSNo(resp.data.sOldGreenBKNo);
           //  setPreviousGBSNo(resp.data.sFstGreenBkNo);
@@ -584,7 +591,7 @@ export const AddDialog = (props) => {
   const [id, setId] = React.useState(0);
   const [madebType, setMadebType]= React.useState(4);
   const [nAuthRegionID, setAuthRegionId] = React.useState(0);
-  const [dtReceived, setReceivedDate] = React.useState('');
+  const [dtReceived, setReceivedDate] = React.useState(new Date(Date.now()).toISOString().substring(0,10));
   const [sName, setName] = React.useState('');
   const [sAlias, setAlias] = React.useState('');
   const [sGBID, setGbId] = useState('');
@@ -593,6 +600,7 @@ export const AddDialog = (props) => {
   const [nSaneyFormNo, setSaney] = React.useState();
   const [nCurrentGBSno, setCurrentGBSNo] = useState();
   const [nPreviousGBSno, setPreviousGBSNo]  = useState();
+  const [authRegion, setAuthRegion] = React.useState([]);
   
   const madeb = {
     id:id,
@@ -692,7 +700,7 @@ export const AddDialog = (props) => {
                                           }
                                         }
                                       }
-                                     //value={valueAuthRegion} 
+                                     value={authRegion} 
                                      id="id_nAuthorityId"
                                      options={authRegions}
                                      autoHighlight

@@ -486,7 +486,9 @@ export default function EnhancedTable() {
       sName: tableRowArray['madeb']['sName'],
       sAlias: tableRowArray['madeb']['sAlias'],
       sGBID: tableRowArray['madeb']['sGBID'],
-      
+      nReceiptNo: tableRowArray['madeb']['nReceiptNo'],
+      nCurrentGBSno: tableRowArray['madeb']['nCurrentGBSno'],
+      nPreviousGBSno: tableRowArray['madeb']['nPreviousGBSno'],
       sFathersName    :tableRowArray['madeb']['sFathersName'],
       nSaneyFormNo   :tableRowArray['madeb']['nSaneyFormNo'],
       sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],

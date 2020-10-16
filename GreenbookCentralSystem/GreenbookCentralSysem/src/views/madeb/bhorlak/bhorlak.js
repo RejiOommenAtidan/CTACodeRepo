@@ -612,7 +612,8 @@ export default function EnhancedTable() {
       sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],
       dtIssueAction  :tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID  :tableRowArray['madeb']['nIssuedOrNotID'],
-      dtReturnEmail  :tableRowArray['madeb']['dtReturnEmail']
+      dtReturnEmail  :tableRowArray['madeb']['dtReturnEmail'],
+      nCurrentGBSno: tableRowArray['madeb']['nCurrentGBSno']
       });
      
       console.log(bhorlakObj);

@@ -527,21 +527,27 @@ export const AddDialog = (props) => {
     const sNameElement = document.getElementById("sName");
     const nCurrentGBSnoElement = document.getElementById("nCurrentGBSno");
     const nPreviousGBSnoElement = document.getElementById("nPreviousGBSno");
-       axios.get(`Greenbook/GetGreenbook/sGBID=`+ gbid)
+       axios.get(`Greenbook/GetBasicDetailsFromGBID/?sGBID=`+ gbid)
        .then(resp => {
          if (resp.status === 200) {
            console.log("Got gb record\n", resp.data);
            console.log("Name Element:" , sNameElement);
-           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
-           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
-           const lname = resp.data.sLastName ? resp.data.sLastName : '';
+           const name = resp.data.greenBook.sFirstName ? resp.data.greenBook.sFirstName : '';
+          const mname = resp.data.greenBook.sMiddleName ? resp.data.greenBook.sMiddleName : '';
+          const lname = resp.data.greenBook.sLastName ? resp.data.greenBook.sLastName : '';
+          setName( `${name} ${mname} ${lname}`);
+          setFname(resp.data.greenBook.sFathersName);
+          const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
+          setAuthRegion(region);
+          setAuthRegionId(region.id);
+           
+           
            //sNameElement.value=`${name} ${mname} ${lname}`;
            var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
             window.HTMLInputElement.prototype, "value").set;
           nativeInputValueSetter.call(sNameElement, `${name} ${mname} ${lname}`);
           var inputEvent = new Event("input", { bubbles: true });
-          setName( `${name} ${mname} ${lname}`);
-          setFname(resp.data.sFathersName);
+          
           sNameElement.dispatchEvent(inputEvent);
           //  setCurrentGBSNo(resp.data.sOldGreenBKNo);
           //  setPreviousGBSNo(resp.data.sFstGreenBkNo);
@@ -557,13 +563,13 @@ export const AddDialog = (props) => {
        })
        .catch((error) => {
          setName('');
-         setName('');
+         setFname('');
          console.log(error);
        });
      };
 
   console.log(props.selectData);
-  const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
+  const [authRegions,setAuthRegions]= React.useState(props.selectData['authRegions']);
   const [typeIssuedData,settypeIssuedData]= React.useState(props.selectData['typeIssued']);
 
   const [formNumber, setFormNumber] = React.useState(props.selectData['nFormNumber']);
@@ -573,10 +579,12 @@ export const AddDialog = (props) => {
   const [receivedDate, setReceivedDate] = React.useState(new Date(Date.now()).toISOString().substring(0,10));
   const [name, setName] = React.useState('');
   const [gbId, setGbId] = useState('');
-  const [fname, setFname] = React.useState('');
+  const [sFathersName, setFname] = React.useState('');
   const [saney, setSaney] = React.useState();
   const [currentGBSno, setCurrentGBSNo] = useState(null);
   const [previousGBSno, setPreviousGBSNo] = useState(null);
+
+  const [authRegion, setAuthRegion] = React.useState([]);
 
   let valueAuthRegion = [];
   let valueTypeIssued = [];
@@ -588,7 +596,7 @@ export const AddDialog = (props) => {
     nAuthRegionID:authRegionID , 
     sName: name,
     sGBID: gbId,
-    sFathersName:fname,
+    sFathersName:sFathersName,
     nSaneyFormNo:saney,
     nCurrentGBSno: currentGBSno,
     nPreviousGBSno: previousGBSno,
@@ -668,9 +676,9 @@ console.log("Madeb Object in Add dialog", madeb);
                                           }
                                         }
                                       }
-                                     //value={valueAuthRegion} 
+                                     value={authRegion} 
                                      id="id_nAuthorityId"
-                                     options={authorityData}
+                                     options={authRegions}
                                      autoHighlight
                                      getOptionLabel={(option) => option.sAuthRegion}
                                      renderOption={(option) => (
@@ -750,9 +758,10 @@ console.log("Madeb Object in Add dialog", madeb);
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
-                                            id="fname"
+                                            id="sFathersName"
+                                            name="sFathersName"
                                             label="Father's Name"
-                                            value={fname}
+                                            value={sFathersName}
                                             onChange={(e) => { setFname(e.target.value) }}
                                         />
                                     </FormControl>

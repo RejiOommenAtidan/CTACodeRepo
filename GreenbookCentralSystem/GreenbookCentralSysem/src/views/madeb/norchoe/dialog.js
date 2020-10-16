@@ -473,7 +473,7 @@ export const AddDialog = (props) => {
   const [id, setId] = React.useState(0);
   const [madebType,setMadebType]= React.useState(2);
   const [authority, setAuthority] = React.useState(0);
-  const [receivedDate, setReceivedDate] = React.useState('');
+  const [receivedDate, setReceivedDate] = React.useState(new Date(Date.now()).toISOString().substring(0,10));
   const [sGBID, setGbId] = React.useState('');
   const [receipt, setReceipt] = React.useState(0);
   const [sChangeField, setChangeField] = React.useState('');
@@ -545,7 +545,7 @@ export const AddDialog = (props) => {
                                            label="Received Date"
                                            type="date"
                                            name="name_receivedDate"
-                                           
+                                           defaultValue={receivedDate}
                                            inputRef={register({
                                             required: true
                                           })}

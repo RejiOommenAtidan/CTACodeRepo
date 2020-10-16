@@ -610,6 +610,7 @@ export const AddDialog = (props) => {
         setFname(resp.data.greenBook.sFathersName);
         const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
         setAuthRegion(region);
+        setAuthRegionId(region.id);
            //sNameElement.value=`${name} ${mname} ${lname}`;
            var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
             window.HTMLInputElement.prototype, "value").set;
@@ -633,7 +634,7 @@ export const AddDialog = (props) => {
        })
        .catch((error) => {
          setName('');
-         setName('');
+         setFname('');
          console.log(error);
          setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.` );
           setAlertType('error');
