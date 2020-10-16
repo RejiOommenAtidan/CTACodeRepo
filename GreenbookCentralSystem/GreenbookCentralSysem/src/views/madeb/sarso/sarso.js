@@ -364,11 +364,17 @@ export default function EnhancedTable() {
       sorting: false,
       export: false,
       filtering: false,
-      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-        onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
-      >
-        <EditOutlinedIcon />
-      </IconButton>,
+      render: rowData => <>{rowData.madeb.nIssuedOrNotID==2 && <IconButton color="primary" aria-label="upload picture" component="span"
+      onClick={() => {  editClick(rowData) }} disabled style={{padding:'0px'}}
+    >
+      <EditOutlinedIcon/>
+    </IconButton>}
+    {rowData.madeb.nIssuedOrNotID!=2 && <IconButton color="primary" aria-label="upload picture" component="span"
+      onClick={() => {  editClick(rowData) }}  style={{padding:'0px'}}
+    >
+      <EditOutlinedIcon/>
+    </IconButton>}
+    </>,
       headerStyle: {
         padding: '0px',
         width: '1%',
