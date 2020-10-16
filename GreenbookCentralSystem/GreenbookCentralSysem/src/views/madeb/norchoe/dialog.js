@@ -438,7 +438,7 @@ export const AddDialog = (props) => {
            const region = authorityData.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
            
             setAuthRegion(region);
-
+            setAuthRegionId(region.id);
 
            //sNameElement.value=`${name} ${mname} ${lname}`;
            var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
