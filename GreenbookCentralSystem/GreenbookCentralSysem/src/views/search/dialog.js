@@ -71,17 +71,42 @@ export const ViewDialog = (props) => {
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  
-  
+  const userid = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const gbDocumentDelete = (row) =>{
+//http://localhost:52013/api/GBDocument/DeleteGBDocument/
+      axios.post(`/GBDocument/DeleteGBDocument/`,row)
+      .then(resp => {
+        if (resp.status === 200) {
+      console.log('deleted');
+
+
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  }
 
  
   useEffect(() => {
-    axios.get(`GreenBook/GetDetailsFromGBID?sGBID=`+props.sGBID+`&nUserId=`+JSON.parse(localStorage.getItem("currentUser")).oUser.id)
+    axios.get(`GreenBook/GetDetailsFromGBID?sGBID=`+props.sGBID+`&nUserId=`+userid)
       .then(resp => {
         if (resp.status === 200) {
           setData(resp.data);
          console.log(resp.data);
-         console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
+        // console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
      
     
         }
@@ -703,7 +728,7 @@ export const ViewDialog = (props) => {
                                  
                                   </td>        
                                 <td>
-                                <Button className="btn-neutral-danger btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
+                                <Button onClick={()=>gbDocumentDelete(row)} className="btn-neutral-danger btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
                                     <span className="btn-wrapper--icon">
                                     <DeleteForeverIcon/>
                                     </span>

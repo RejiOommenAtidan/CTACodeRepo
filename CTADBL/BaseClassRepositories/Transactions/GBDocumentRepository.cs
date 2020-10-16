@@ -41,6 +41,23 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
             
         }
+
+        public GBDocument GetDocumentById(string id)
+        {
+            using (var command = new MySqlCommand("SELECT * FROM lnkgbdocument WHERE ID = @id"))
+            {
+                command.Parameters.AddWithValue("id", id);
+                return GetRecord(command);
+            }
+        }
+        #endregion
+
+        #region Document Delete Call
+        public int Delete(GBDocument gbdocument)
+        {
+            var builder = new SqlQueryBuilder<GBDocument>(gbdocument);
+            return ExecuteCommand(builder.GetDeleteCommand());
+        }
         #endregion
 
         #region Populate Records
