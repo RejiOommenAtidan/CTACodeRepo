@@ -66,6 +66,7 @@ export const EditDialog = (props) => {
   const [fname, setFname] = React.useState(props.sarsoObj.sFathersName);
   const [saney, setSaney] = React.useState(props.sarsoObj.nSaneyFormNo);
   const [madebType,setMadebType]= React.useState(1);
+  const [sGBID, setGbId] = React.useState(props.sarsoObj.sGBID);
   const [documents, setDocument] = React.useState(props.sarsoObj.sDocumentAttached);
   const [issueActionDate, setIssueActionDate] = React.useState(props.sarsoObj.dtIssueAction ? (props.sarsoObj.dtIssueAction).split('T')[0] : undefined);
   const [issueAction, setIssueAction] = React.useState(props.sarsoObj.nIssuedOrNotID);
@@ -77,6 +78,7 @@ export const EditDialog = (props) => {
     nFormNumber: formNumber, 
     nMadebTypeID: madebType,
     sName: name,
+    sGBID:sGBID,
     sFathersName:fname,
     nAuthRegionID:authRegionID , 
     dtReceived:receivedDate,  

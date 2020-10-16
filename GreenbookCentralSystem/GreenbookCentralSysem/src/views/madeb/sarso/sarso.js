@@ -565,6 +565,7 @@ export default function EnhancedTable() {
       dtReceived: tableRowArray['madeb']['dtReceived'],
       nAuthRegionID: tableRowArray['madeb']['nAuthRegionID'],
       sName: tableRowArray['madeb']['sName'],
+      sGBID  :tableRowArray['madeb']['sGBID'],
       sFathersName    :tableRowArray['madeb']['sFathersName'],
       nSaneyFormNo   :tableRowArray['madeb']['nSaneyFormNo'],
       sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],
