@@ -472,7 +472,7 @@ export const AddDialog = (props) => {
   const [formNumber, setFormNumber] = React.useState(props.selectData['nFormNumber']);
   const [id, setId] = React.useState(0);
   const [madebType,setMadebType]= React.useState(2);
-  const [authority, setAuthority] = React.useState(0);
+  const [nAuthRegionID, setAuthRegionId] = React.useState(0);
   const [receivedDate, setReceivedDate] = React.useState(new Date(Date.now()).toISOString().substring(0,10));
   const [sGBID, setGbId] = React.useState('');
   const [receipt, setReceipt] = React.useState(0);
@@ -488,7 +488,7 @@ export const AddDialog = (props) => {
      nMadebTypeID: madebType,
      sName: name,
      sGBID,   
-     nAuthRegionID:authority , 
+     nAuthRegionID,
      dtReceived:receivedDate,  
      sChangeField:sChangeField,
      sDocumentAttached:documents,
@@ -570,11 +570,11 @@ export const AddDialog = (props) => {
                                         (e, value) => {
                                         if (value !== null) {
                                             console.log(value.id);
-                                            setAuthority(value.id);
+                                            setAuthRegionId(value.id);
                                             setAuthRegion(value);
                                         }
                                         else {
-                                            setAuthority(0);
+                                          setAuthRegionId(0);
                                         }
                                         }
                                     }
