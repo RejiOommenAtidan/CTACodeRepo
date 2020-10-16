@@ -154,7 +154,7 @@ export default () => {
     },
     {
       field: "edit",
-      title: "Edit",
+      title: "Assign",
       sorting: false,
       export:false,
       filtering:false,
@@ -175,17 +175,17 @@ export default () => {
         padding:'5px',
       },
     },
-    {
-      field: "Assign",
-      title: "Assign",
-      sorting: false,
-      export:false,
-      filtering:false,
-      render: rowData => <Assign />,
-      cellStyle: {
-        padding:'5px',
-      },
-    }
+    // {
+    //   field: "Assign",
+    //   title: "Assign",
+    //   sorting: false,
+    //   export:false,
+    //   filtering:false,
+    //   render: rowData => <Assign />,
+    //   cellStyle: {
+    //     padding:'5px',
+    //   },
+    // }
   ];
 
 
