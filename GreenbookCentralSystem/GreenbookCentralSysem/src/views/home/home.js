@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Card } from '@material-ui/core';
 import projectLogo from '../../assets/images/ctalogo.png';
-export default function LivePreviewExample() {
-  // useEffect(()=>{
-  //   window.location.reload(true);
-  // },[]);
+export default function Home() {
   return (
     <>
       <Card className="card-box mb-spacing-6-x2" style={{ textAlign: 'center', padding: 50 }} >

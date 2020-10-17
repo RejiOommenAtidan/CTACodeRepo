@@ -50,7 +50,9 @@ export default function LogingPage() {
     authenticationService.login(sUsername, sPassword).then(
       user => {
         dispatch(storeAuthDetails(user));
-        history.push('/Home');
+        //history.push('/Home');
+        //Using Window.location.reload to /Home for refersh and read proper value from LS
+        window.location.reload("/Home");
       },
       error => {
         setAlertMessage("Invalid Username/Password");

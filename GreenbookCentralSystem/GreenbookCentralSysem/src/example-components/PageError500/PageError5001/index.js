@@ -4,6 +4,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import hero6 from '../../../assets/images/hero-bg/hero-4.jpg';
 import illustration2 from '../../../assets/images/illustrations/pack4/500.svg';
 import { useHistory } from 'react-router-dom';
+import {sAdminEmail} from '../../../config/commonConfig';
 
 export default function LivePreviewExample() {
   const history = useHistory();
@@ -56,7 +57,7 @@ export default function LivePreviewExample() {
                                 CTA
                               </h1>
                               <p className="font-size-lg mb-0 opacity-8">
-                                Contact Administrator: admin@cta.com
+                                Contact Administrator: {sAdminEmail}
                               </p>
                               <div className="divider mx-auto border-1 my-5 border-light opacity-2 rounded w-25" />
                               <div>
