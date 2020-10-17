@@ -9,8 +9,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
 {
     public class GBNoteRepository : ADORepository<GBNote>
     {
-        private static MySqlConnection _connection;
         #region Constructor
+        private static MySqlConnection _connection;
         public GBNoteRepository(string connectionString) : base(connectionString)
         {
             _connection = new MySqlConnection(connectionString);
@@ -36,6 +36,30 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
                 return null;
             }
+        }
+        #endregion
+
+        #region Add Call
+        public void Add(GBNote gbNote)
+        {
+            var builder = new SqlQueryBuilder<GBNote>(gbNote);
+            ExecuteCommand(builder.GetInsertCommand());
+        }
+        #endregion
+
+        #region Update Call
+        public void Update(GBNote gbNote)
+        {
+            var builder = new SqlQueryBuilder<GBNote>(gbNote);
+            ExecuteCommand(builder.GetUpdateCommand());
+        }
+        #endregion
+
+        #region Delete Call
+        public void Delete(GBNote gbNote)
+        {
+            var builder = new SqlQueryBuilder<GBNote>(gbNote);
+            ExecuteCommand(builder.GetDeleteCommand());
         }
         #endregion
 

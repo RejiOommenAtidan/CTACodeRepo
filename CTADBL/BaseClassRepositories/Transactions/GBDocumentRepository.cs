@@ -5,24 +5,20 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Drawing;
 
 namespace CTADBL.BaseClassRepositories.Transactions
 {
     public class GBDocumentRepository : ADORepository<GBDocument>
     {
-        private static MySqlConnection _connection;
-
         #region Constructor
+        private static MySqlConnection _connection;
         public GBDocumentRepository(string connectionString) : base(connectionString)
         {
             _connection = new MySqlConnection(connectionString);
         }
         #endregion
 
-
-        #region
+        #region Get Calls
         public IEnumerable<GBDocument> GetGBDocumentsByGBID(string sGBID)
         {
             string sql = String.Format(@"SELECT Id, sGBID, sTitle, sDocType, binFileDoc, sFileExtension, nRegisterDate, dtEntered, nEnteredBy FROM lnkgbdocument WHERE sGBID = @sGBID AND sDocType != 'Photo Identity'");
@@ -52,14 +48,6 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
         #endregion
 
-        #region Document Delete Call
-        public int Delete(GBDocument gbdocument)
-        {
-            var builder = new SqlQueryBuilder<GBDocument>(gbdocument);
-            return ExecuteCommand(builder.GetDeleteCommand());
-        }
-        #endregion
-
         #region Populate Records
         public override GBDocument PopulateRecord(MySqlDataReader reader)
         {
@@ -83,6 +71,30 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 binFileDoc = binFileDoc
             };
             return document;
+        }
+        #endregion
+
+        #region Add Call
+        public void Add(GBDocument gbdocument)
+        {
+            var builder = new SqlQueryBuilder<GBDocument>(gbdocument);
+            ExecuteCommand(builder.GetInsertCommand());
+        }
+        #endregion
+
+        #region Update Call
+        public void Update(GBDocument gbdocument)
+        {
+            var builder = new SqlQueryBuilder<GBDocument>(gbdocument);
+            ExecuteCommand(builder.GetUpdateCommand());
+        }
+        #endregion
+
+        #region Document Delete Call
+        public int Delete(GBDocument gbdocument)
+        {
+            var builder = new SqlQueryBuilder<GBDocument>(gbdocument);
+            return ExecuteCommand(builder.GetDeleteCommand());
         }
         #endregion
     }

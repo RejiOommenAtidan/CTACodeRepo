@@ -8,7 +8,6 @@ namespace CTADBL.BaseClassRepositories.Transactions
 {
     public class GBRelationRepository : ADORepository<GBRelation>
     {
-
         #region Constructor
         private static MySqlConnection _connection;
         public GBRelationRepository(string connectionString) : base(connectionString)

@@ -6,13 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 
-
 namespace CTADBL.BaseClassRepositories.Transactions
 {
     public class GBChildrenRepository : ADORepository<GBChildren>
     {
-        private static MySqlConnection _connection;
         #region Constructor
+        private static MySqlConnection _connection;
         public GBChildrenRepository(string connectionString) : base(connectionString)
         {
             _connection = new MySqlConnection(connectionString);
@@ -52,6 +51,30 @@ namespace CTADBL.BaseClassRepositories.Transactions
             
             
             return children;
+        }
+        #endregion
+
+        #region Add Call
+        public void Add(GBChildren gBChildren)
+        {
+            var builder = new SqlQueryBuilder<GBChildren>(gBChildren);
+            ExecuteCommand(builder.GetInsertCommand());
+        }
+        #endregion
+
+        #region Update Call
+        public void Update(GBChildren gBChildren)
+        {
+            var builder = new SqlQueryBuilder<GBChildren>(gBChildren);
+            ExecuteCommand(builder.GetUpdateCommand());
+        }
+        #endregion
+
+        #region Delete Call
+        public void Delete(GBChildren gBChildren)
+        {
+            var builder = new SqlQueryBuilder<GBChildren>(gBChildren);
+            ExecuteCommand(builder.GetDeleteCommand());
         }
         #endregion
     }
