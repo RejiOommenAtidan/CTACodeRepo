@@ -320,7 +320,7 @@ export default () => {
   };  
 
   useEffect(() => {
-    axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/?records=10`)
+    axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);

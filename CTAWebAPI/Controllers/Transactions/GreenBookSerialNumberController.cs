@@ -43,9 +43,13 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetGreenBookSerialNumbers(int records = 0)
+        public IActionResult GetGreenBookSerialNumbers(int records = 1000)
         {
             #region Get GreenBookSerialNumbers limit by 'records'.
+            //
+            // To do
+            // Get number of records from config file. Default set at 1000.
+            //
             try
             {
                 IEnumerable<GreenBookSerialNumberVM> result = _greenBookSerialNumberVMRepository.GetGreenBookSerialNumbers(records);
