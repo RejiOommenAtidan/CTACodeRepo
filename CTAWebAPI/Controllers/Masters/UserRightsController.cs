@@ -1,5 +1,7 @@
 ﻿using CTADBL.BaseClasses.Masters;
+using CTADBL.BaseClasses.Transactions;
 using CTADBL.BaseClassRepositories.Masters;
+using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
 using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Cors;
@@ -20,11 +22,15 @@ namespace CTAWebAPI.Controllers.Masters
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly UserRightsRepository  _userRightsRepository;
+        private readonly FeatureRepository _featureRepository;
+        private readonly FeatureUserrightsRepository _featureUserrightsRepository;
         private readonly CTALogger _ctaLogger;
         public UserRightsController(DBConnectionInfo info)
         {
             _info = info;
             _userRightsRepository = new UserRightsRepository(_info.sConnectionString);
+            _featureRepository = new FeatureRepository(_info.sConnectionString);
+            _featureUserrightsRepository = new FeatureUserrightsRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
         }
         #endregion
@@ -86,20 +92,42 @@ namespace CTAWebAPI.Controllers.Masters
         //[AllowAnonymous]
         [HttpPost]
         [Route("[action]")]
-        public IActionResult AddUserRights(UserRights userrights)
+        public IActionResult AddUserRights(UserRights userRights)
         {
             #region Add UserRights
             try
             {
                 if (ModelState.IsValid)
                 {
-                    userrights.dtEntered = DateTime.Now;
-                    userrights.dtUpdated = DateTime.Now;
-                    _userRightsRepository.Add(userrights);
-                    #region Information Logging
-                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, userrights.nEnteredBy);
+                    userRights.dtEntered = DateTime.Now;
+                    userRights.dtUpdated = DateTime.Now;
+                    _userRightsRepository.Add(userRights);
+
+                    #region Get Added Userright for getting Id
+                    UserRights addedUserRight = _userRightsRepository.GetUserRightsByUserRightsName(userRights.sUserRightsName);
                     #endregion
-                    return Ok(userrights);
+
+                    #region Get All Features, Map & Add
+                    IEnumerable<Feature> lFeatures = _featureRepository.GetAllFeatures();
+                    foreach(Feature oFeature in lFeatures)
+                    {
+                        FeatureUserrights lnkFeatureUserrights = new FeatureUserrights
+                        {
+                            nFeatureID = oFeature.Id,
+                            nUserRightsID = addedUserRight.Id,
+                            nRights = 0, //Making Rights Initially to 0
+                            dtEntered = DateTime.Now,
+                            nEnteredBy = userRights.nEnteredBy
+                        };
+                        _featureUserrightsRepository.Add(lnkFeatureUserrights);
+                    }
+                    #endregion
+
+                    #region Information Logging
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, userRights.nEnteredBy);
+                    #endregion
+
+                    return Ok(addedUserRight);
                 }
                 else
                 {
@@ -112,7 +140,7 @@ namespace CTAWebAPI.Controllers.Masters
             catch (Exception ex)
             {
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace, userrights.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace, userRights.nEnteredBy);
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -222,6 +250,5 @@ namespace CTAWebAPI.Controllers.Masters
             }
         }
         #endregion
-
     }
 }

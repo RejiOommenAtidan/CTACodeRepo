@@ -1,46 +1,21 @@
-// hi
 import React, { useEffect, useState } from 'react';
-//import { useNavigate } from 'react-router-dom';
 import {
-  Box,
   Container,
-  Grid,
-  Button,
-  Typography,
-  FormControl,
-  TextField
-  
+  Grid
 } from '@material-ui/core';
-
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-
-import Slide from '@material-ui/core/Slide';
-import Chip from '@material-ui/core/Chip';
-
 import IconButton from '@material-ui/core/IconButton';
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-
-// Local import
-import { AddDialog, DeleteDialog, EditDialog } from './dialog';
-import MaterialTable, { MTableToolbar }  from 'material-table';
+import { AddDialog, EditDialog } from './dialog';
+import MaterialTable from 'material-table';
 import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import FilterList from '@material-ui/icons/FilterList';
 import AddBox from '@material-ui/icons/AddBox';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
 
-
-
 const tableIcons = oTableIcons;
-
-
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const useStyles = makeStyles(() => ({
   /*root: {
@@ -92,22 +67,18 @@ const useStyles = makeStyles(() => ({
 
 export default function UserRights() {
   const classes = useStyles();
- // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
-  // const [loadingProp, setloadingProp] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
-
-
-  //VAR
-  
   const [userRights, setUserRights] = React.useState('');
   const [userRightsPK, setUserRightsPK] = React.useState(0);
   const [userRightsObj, setUserRightsObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
+  const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
+  const history = useHistory();
+  const [isLoading, setisLoading] = React.useState(true);
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -122,11 +93,6 @@ export default function UserRights() {
     setAddModal(false);
   };
 
-  const [filtering, setFiltering] = React.useState(false);
-  oOptions.filtering = filtering;
-  const history = useHistory();
-  
-
   const columns = [
     {
       field: "id",
@@ -138,7 +104,7 @@ export default function UserRights() {
       },
       export: true
     },
-   
+
     {
       field: "sUserRightsName",
       title: "User Rights",
@@ -149,7 +115,7 @@ export default function UserRights() {
       }
     },
     {
-      align:"center",
+      align: "center",
       field: "edit",
       title: "Edit",
       filtering: false,
@@ -166,32 +132,28 @@ export default function UserRights() {
         width: '10%'
       },
     },
-   
+
   ];
 
   const editClick = (tableRowArray) => {
     setUserRightsPK(tableRowArray["id"]);
-   
     setUserRights(tableRowArray["sUserRightsName"]);
     setEditModal(true);
     setUserRightsObj({
       id: tableRowArray["id"],
-      
       userRights: tableRowArray["sUserRightsName"]
     });
   }
 
   const editAPICall = (userRightsObj) => {
-    
+
     axios.post(`/UserRights/EditUserRights/ID=` + userRightsPK, userRightsObj/*UserRightsToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
           setEditModal(false);
           axios.get(`/UserRights/GetUserRights`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
                 setDataChanged(true);
               }
@@ -208,17 +170,14 @@ export default function UserRights() {
       });
   };
   const addAPICall = (userRightsObj) => {
-
     axios.post(`/UserRights/AddUserRights/`, userRightsObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           axios.get(`/UserRights/GetUserRights`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
               }
             })
             .catch(error => {
@@ -234,26 +193,21 @@ export default function UserRights() {
   };
 
   const deleteClick = (tableRowArray) => {
-
     setDeleteModal(true);
     setUserRightsPK(tableRowArray["id"]);
-
     setUserRights(tableRowArray["sUserRightsName"]);
   };
 
   const handleClose = () => {
     setDeleteModal(false);
-
   };
-
-  
 
   useEffect(() => {
     axios.get(`/UserRights/GetUserRights`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
-          setdataAPI(resp.data)
+          setdataAPI(resp.data);
+          setisLoading(false);
         }
       })
       .catch(error => {
@@ -263,16 +217,8 @@ export default function UserRights() {
   }, []);
 
   return (
-
-      
-        // <Box
-        //   display="flex"
-        //   flexDirection="column"
-        //   height="100%"
-        //   justifyContent="center"
-        // >
-          <Container maxWidth="lg" disableGutters={true}>
-            {/* <Typography variant="h4" gutterBottom>User Rights
+    <Container maxWidth="lg" disableGutters={true}>
+      {/* <Typography variant="h4" gutterBottom>User Rights
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -284,53 +230,47 @@ export default function UserRights() {
                 <AddCircleIcon />
               </IconButton>
             </Typography> */}
-            <Grid container className={classes.box}>
-              <Grid item xs={12}>
-              
-        <MaterialTable  
-          style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-          icons={tableIcons}
-          title="Occupation"
-          data={dataAPI} 
-          columns={columns} 
-          options={oOptions}
-          actions={[
-            {
-              icon: AddBox,
-              tooltip: 'Add Occupation',
-              isFreeAction: true,
-              onClick: (event) => setAddModal(true)
-            },
-            {
-              icon: FilterList,
-              tooltip: 'Show Filter',
-              isFreeAction: true,
-              onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
-            }
-          ]} 
-        />
-      
-              </Grid>
-            </Grid>
-            {addModal && <AddDialog
-              addModal={addModal}
-              classes={classes}
-              handleAddClickClose={handleAddClickClose}
-              addAPICall={addAPICall}
-            />}
-            {editModal && <EditDialog
-              editModal={editModal}
-              userRightsObj={userRightsObj}
-              classes={classes}
-              handleEditClickClose={handleEditClickClose}
-              editAPICall={editAPICall}
-            />}
-          
-          </Container>
-        //</Box>
-   
+      <Grid container className={classes.box}>
+        <Grid item xs={12}>
+          <MaterialTable
+            style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
+            isLoading={isLoading}
+            icons={tableIcons}
+            title="User Rights"
+            data={dataAPI}
+            columns={columns}
+            options={oOptions}
+            actions={[
+              {
+                icon: AddBox,
+                tooltip: 'Add User Right',
+                isFreeAction: true,
+                onClick: (event) => setAddModal(true)
+              },
+              {
+                icon: FilterList,
+                tooltip: 'Toggle Filter',
+                isFreeAction: true,
+                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+              }
+            ]}
+          />
 
-
-          
+        </Grid>
+      </Grid>
+      {addModal && <AddDialog
+        addModal={addModal}
+        classes={classes}
+        handleAddClickClose={handleAddClickClose}
+        addAPICall={addAPICall}
+      />}
+      {editModal && <EditDialog
+        editModal={editModal}
+        userRightsObj={userRightsObj}
+        classes={classes}
+        handleEditClickClose={handleEditClickClose}
+        editAPICall={editAPICall}
+      />}
+    </Container>
   );
 }

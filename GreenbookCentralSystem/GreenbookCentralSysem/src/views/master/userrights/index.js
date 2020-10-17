@@ -1,4 +1,3 @@
-//Hi
 import React from 'react';
 import {
   Container,
@@ -7,8 +6,6 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-
-
 import UserRights from './userrights';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,23 +17,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverUserrights = () => {
   const classes = useStyles();
 
   return (
-   
-      <Container maxWidth={false}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link color="inherit" href="/Home" >
-            Home
+    <Container maxWidth={false}>
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link color="inherit" href="/Home" >
+          Home
         </Link>
-
-          <Typography color="textPrimary">UserRights</Typography>
-        </Breadcrumbs>
-        <UserRights />
-      </Container>
-
+        <Typography color="textPrimary">UserRights</Typography>
+      </Breadcrumbs>
+      <UserRights />
+    </Container>
   );
 };
 
-export default Dashboard;
+export default CoverUserrights;

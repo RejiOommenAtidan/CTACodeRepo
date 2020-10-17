@@ -65,6 +65,23 @@ namespace CTADBL.BaseClassRepositories.Masters
                 return GetRecord(command);
             }
         }
+
+        public UserRights GetUserRightsByUserRightsName(string sUserRightsName)
+        {
+            string sql = @"SELECT `Id`,
+                            `sUserRightsName`,
+                            `dtEntered`,
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
+                        FROM `lstuserrights`
+                        WHERE sUserRightsName = @sUserRightsName;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sUserRightsName", sUserRightsName);
+                return GetRecord(command);
+            }
+        }
         #endregion
 
         #region Populate UserRights Records
