@@ -153,9 +153,9 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                             id="nFormNumber"
                                             label="Form Number"
                                             type="number"
-                                            InputProps={{
-                                                readOnly: true,
-                                            }}
+                                            // InputProps={{
+                                            //     readOnly: true,
+                                            // }}
                                             value={nFormNumber}
                                             onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
 
@@ -196,7 +196,7 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                             setAuthorityId(value.id);
                                           }
                                           else {
-                                            setAuthorityId(0);
+                                            setAuthorityId(null);
                                           }
                                         }
                                       }
@@ -219,6 +219,9 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                            ...params.inputProps,
                                            autoComplete: 'new-password', // disable autocomplete and autofill
                                          }}
+                                         inputRef={register({
+                                          required: true
+                                        })}
                                         />
                                       )}
                                     />
@@ -280,34 +283,32 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                       type='number'
                                       value={nReceiptNo}
                                       onChange={(e) => { 
-                                          setReceiptNo(parseInt(e.target.value));
-                                          console.log("Value of Receipt changed to:", e.target.value);
+                                        const val = parseInt(e.target.value);
+                                        val > 0 ? setReceiptNo(val) : setReceiptNo(null);
+                                          console.log("Value of Receipt changed to:", val);
                                       }}
-                                      inputRef={register({
-                                        required: true
-                                      })}
+                                      
                                     />
-                                    {_.get("nReceiptNo.type", errors) === "required" && (
-                                      <span style={{color: 'red'}}>This field is required</span>
-                                    )}
+                                    
                                   </FormControl>
                                 </Grid>
                                 
                                 <Grid item xs={12} sm={6}>
 
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="nSaneyFormNo"
-                                            name="nSaneyFormNo"
-                                            label="Saney Form No"
-                                            type='number'
-                                            value={nSaneyFormNo}
-                                            onChange={(e) => { 
-                                                setSaney(parseInt(e.target.value));
-                                                console.log("Value of saney changed to:", e.target.value);
-                                            }}
-                                        />
-                                    </FormControl>
+                                  <FormControl className={props.classes.formControl}>
+                                    <TextField
+                                      id="nSaneyFormNo"
+                                      name="nSaneyFormNo"
+                                      label="Saney Form No"
+                                      type='number'
+                                      value={nSaneyFormNo}
+                                      onChange={(e) => { 
+                                        const val = parseInt(e.target.value);
+                                        val > 0 ? setSaney(val) : setSaney(null);
+                                        console.log("Value of saney changed to:", e.target.value);
+                                      }}
+                                    />
+                                  </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
@@ -319,16 +320,13 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                           //required={true}
                                           value={nCurrentGBSno}
                                           onChange={(e) => { 
-                                            setCurrentGBSNo(parseInt(e.target.value));
+                                            const val = parseInt(e.target.value);
+                                            val > 0 ? setCurrentGBSNo(val) : setCurrentGBSNo(null);
                                             console.log("Value of currentGB changed to:", parseInt(e.target.value));
                                           }}
-                                          inputRef={register({
-                                            required: true
-                                          })}
+                                          
                                         />
-                                        {_.get("nCurrentGBSno.type", errors) === "required" && (
-                                          <span style={{color: 'red'}}>This field is required</span>
-                                        )}
+                                        
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -340,17 +338,14 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                         type='number'
                                         // required={true}
                                         value={nPreviousGBSno}
-                                        onChange={(e) => { 
-                                          setPreviousGBSNo(parseInt(e.target.value));
+                                        onChange={(e) => {
+                                          const val = parseInt(e.target.value);
+                                          val > 0 ? setPreviousGBSNo(val) : setPreviousGBSNo(null);
                                           console.log("Value of previousGB changed to:", e.target.value);
                                         }}
-                                        // inputRef={register({
-                                        //   required: true
-                                        // })}
+                                        
                                       />
-                                      {/* {_.get("nPreviousGBSno.type", errors) === "required" && (
-                                        <span style={{color: 'red'}}>This field is required</span>
-                                      )} */}
+                                      
                                     </FormControl>
                                 </Grid>
 
@@ -584,8 +579,15 @@ export const AddDialog = (props) => {
       setGbId(value);
       setName('');
       setFname('');
+      setAuthRegion([]);
     }
     const formPopulate = (value) => {
+      if(value === ''){
+        setAlertMessage(`Please enter a valid number...` );
+          setAlertType('error');
+          snackbarOpen();
+          return;
+      }
       console.log("Value in GBID: ", value);
       const gbid = value;
       const event = new Event('change' , {
@@ -626,6 +628,7 @@ export const AddDialog = (props) => {
          else{
            setName('');
            setFname('');
+           setAuthRegion([]);
            console.log("Not found" , resp);
            setAlertMessage(`No record found for GB Id: ${gbid}.` );
           setAlertType('error');
@@ -633,12 +636,30 @@ export const AddDialog = (props) => {
          }
        })
        .catch((error) => {
-         setName('');
-         setFname('');
-         console.log(error);
-         setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.` );
+         if(error.response.status === 404){
+          setName('');
+          setFname('');
+          setAuthRegion([]);
+          console.log("Not found" , error.response.data);
+          setAlertMessage(`${error.response.data}`);
+         setAlertType('warning');
+         snackbarOpen();
+         }
+         else if(error.response.status === 500){
+          setName('');
+          setFname('');
+          setAuthRegion([]);
+          console.log(error);
+          setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.` );
           setAlertType('error');
           snackbarOpen();
+         }
+         else{
+          setName('');
+          setFname('');
+          setAuthRegion([]);
+           console.log(error);
+         }
        });
      };
 
@@ -649,12 +670,12 @@ export const AddDialog = (props) => {
   const [nFormNumber, setFormNumber] = React.useState(props.selectData['nFormNumber']);
   const [id, setId] = React.useState(0);
   const [madebType, setMadebType]= React.useState(6);
-  const [nAuthRegionID, setAuthRegionId] = React.useState(0);
+  const [nAuthRegionID, setAuthRegionId] = React.useState(null);
   const [dtReceived, setReceivedDate] = React.useState(new Date(Date.now()).toISOString().substring(0,10));
   const [sName, setName] = React.useState('');
-  const [sGBID, setGbId] = useState('');
+  const [sGBID, setGbId] = useState();
   const [sFathersName, setFname] = React.useState('');
-  const [nReceiptNo, setReceiptNo] = React.useState(0);
+  const [nReceiptNo, setReceiptNo] = React.useState();
   const [nSaneyFormNo, setSaney] = React.useState();
   const [nCurrentGBSno, setCurrentGBSNo] = useState();
   const [nPreviousGBSno, setPreviousGBSNo]  = useState();
@@ -712,10 +733,11 @@ export const AddDialog = (props) => {
                                             name="nFormNumber"
                                             label="Form Number"
                                             type="number"
-                                            InputProps={{
-                                                readOnly: true
-                                            }}
+                                            // InputProps={{
+                                            //     readOnly: true
+                                            // }}
                                             value={nFormNumber}
+                                            onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
                                         />
                                     </FormControl>
                                 </Grid>
@@ -772,7 +794,6 @@ export const AddDialog = (props) => {
                                        <TextField
                                          {...params}
                                          label="Authority"
-                                         name="authority"
                                          variant="standard"
                                          name="authority_text"
                                          inputProps={{
@@ -785,9 +806,9 @@ export const AddDialog = (props) => {
                                         />
                                       )}
                                     />
-                                    {_.get("authority.type", errors) === "required" && (
+                                    {/* {_.get("authority_text.type", errors) === "required" && (
                                           <span style={{color: 'red'}}>This field is required</span>
-                                        )}
+                                        )} */}
                                   </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -853,35 +874,33 @@ export const AddDialog = (props) => {
                                       label="Receipt No"
                                       type='number'
                                       value={nReceiptNo}
-                                      onChange={(e) => { 
-                                        setReceiptNo(parseInt(e.target.value));
-                                        console.log("Value of Receipt changed to:", e.target.value);
+                                      onChange={(e) => {
+                                        const val = parseInt(e.target.value);
+                                        val > 0 ? setReceiptNo(val) : setReceiptNo(null);
+                                        console.log("Value of Receipt changed to:", val);
                                       }}
-                                      inputRef={register({
-                                        required: true
-                                      })}
+                                      
                                     />
-                                    {_.get("nReceiptNo.type", errors) === "required" && (
-                                      <span style={{color: 'red'}}>This field is required</span>
-                                    )}
+                                    
                                   </FormControl>
                                   </Grid>
                                 
                                 <Grid item xs={12} sm={6}>
 
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="nSaneyFormNo"
-                                            name="nSaneyFormNo"
-                                            label="Saney Form No"
-                                            type='number'
-                                            value={nSaneyFormNo}
-                                            onChange={(e) => { 
-                                                setSaney(parseInt(e.target.value));
-                                                console.log("Value of saney changed to:", parseInt(e.target.value));
-                                            }}
-                                        />
-                                    </FormControl>
+                                  <FormControl className={props.classes.formControl}>
+                                    <TextField
+                                      id="nSaneyFormNo"
+                                      name="nSaneyFormNo"
+                                      label="Saney Form No"
+                                      type='number'
+                                      value={nSaneyFormNo}
+                                      onChange={(e) => {
+                                        const val = parseInt(e.target.value);
+                                        val > 0 ? setSaney(val) : setSaney(null);
+                                        console.log("Value of saney changed to:", val);
+                                      }}
+                                    />
+                                  </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
@@ -892,9 +911,10 @@ export const AddDialog = (props) => {
                                         name='nCurrentGBSno'
                                         //required={true}
                                         value={nCurrentGBSno}
-                                        onChange={(e) => { 
-                                          setCurrentGBSNo(parseInt(e.target.value));
-                                          console.log("Value of currentGB changed to:", parseInt(e.target.value));
+                                        onChange={(e) => {
+                                          const val = parseInt(e.target.value);
+                                          val > 0 ? setCurrentGBSNo(val) : setCurrentGBSNo(null);
+                                          console.log("Value of currentGB changed to:", val);
                                         }}
                                         // inputRef={register({
                                         //   required: true
@@ -915,9 +935,10 @@ export const AddDialog = (props) => {
                                             name='nPreviousGBSno'
                                             //required={true}
                                         value={nPreviousGBSno}
-                                        onChange={(e) => { 
-                                            setPreviousGBSNo(parseInt(e.target.value));
-                                            console.log("Value of previousGB changed to:", parseInt(e.target.value));
+                                        onChange={(e) => {
+                                          const val = parseInt(e.target.value);
+                                          val > 0 ? setPreviousGBSNo(val) : setPreviousGBSNo(null);
+                                          console.log("Value of previousGB changed to:", parseInt(e.target.value));
                                         }}
                                         />
                                     </FormControl>

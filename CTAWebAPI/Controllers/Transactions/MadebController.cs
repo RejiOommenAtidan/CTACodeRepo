@@ -327,8 +327,15 @@ namespace CTAWebAPI.Controllers.Transactions
                 {
                     madeb.dtEntered = DateTime.Now;
                     madeb.dtUpdated = DateTime.Now;
-                    _madebRepository.Add(madeb);
-
+                    string result = _madebRepository.Add(madeb);
+                    if(result == "GBID does not exist.")
+                    {
+                        return NotFound(String.Format("GBID {0} does not exist.", madeb.sGBID));
+                    }
+                    if(result == "Insert Failed")
+                    {
+                        return StatusCode(StatusCodes.Status500InternalServerError, result);
+                    }
                     #region Information Logging 
                     string sActionType = Enum.GetName(typeof(Operations), 1);
                     string sModuleName = (GetType().Name).Replace("Controller", "");
@@ -391,7 +398,15 @@ namespace CTAWebAPI.Controllers.Transactions
                         Madeb fetchedMadeb = _madebRepository.GetMadebById(Id);
                         madeb.dtEntered = fetchedMadeb.dtEntered;
                         madeb.dtUpdated = DateTime.Now;
-                        _madebRepository.Update(madeb);
+                        string result = _madebRepository.Update(madeb);
+                        if (result == "GBID does not exist.")
+                        {
+                            return NotFound(String.Format("GBID {0} does not exist.", madeb.sGBID));
+                        }
+                        if (result == "Update Failed")
+                        {
+                            return StatusCode(StatusCodes.Status500InternalServerError, result);
+                        }
                         #region Alert Logging 
                         string sActionType = Enum.GetName(typeof(Operations), 3);
                         string sModuleName = (GetType().Name).Replace("Controller", "");

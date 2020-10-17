@@ -13,27 +13,53 @@ namespace CTADBL.BaseClassRepositories.Transactions
     {
 
         private static MySqlConnection _connection;
+        private GreenbookRepository _greenbookRepository;
+
         #region Constructor
         public MadebRepository(string connectionString) : base(connectionString)
         {
             _connection = new MySqlConnection(connectionString);
+            _greenbookRepository = new GreenbookRepository(connectionString);
         }
         #endregion
 
         #region Madeb Add
-        public void Add(Madeb madeb)
+        public string Add(Madeb madeb)
         {
+            if (madeb.nMadebTypeID > 1)
+            {
+                // We check if gbid passed, exists.
+                if (!GBIDExists(madeb.sGBID))
+                {
+                    return ("GBID does not exist.");
+                }
+            }
+            madeb.nFormNumber = VerifyAndGetUniqueFormNumber(madeb.nFormNumber);
             var builder = new SqlQueryBuilder<Madeb>(madeb);
-            ExecuteCommand(builder.GetInsertCommand());
+            int rowsAffected = ExecuteCommand(builder.GetInsertCommand());
+            return rowsAffected > 0 ? "Success" : "Insert Failed";
         }
         #endregion
 
         #region Madeb Update 
-        public int Update(Madeb madeb)
+        public string Update(Madeb madeb)
         {
+            if (madeb.nMadebTypeID > 1)
+            {
+                // We check if gbid passed, exists.
+                if (!GBIDExists(madeb.sGBID))
+                {
+                    return ("GBID does not exist.");
+                }
+            }
+            Madeb existingMadeb = GetMadebById(madeb.Id.ToString());
+            if (existingMadeb.nFormNumber != madeb.nFormNumber)
+            {
+                madeb.nFormNumber = VerifyAndGetUniqueFormNumber(madeb.nFormNumber);
+            }
             var builder = new SqlQueryBuilder<Madeb>(madeb);
-            int rowsAffected  = ExecuteCommand(builder.GetUpdateCommand());
-            return rowsAffected;
+            int rowsAffected = ExecuteCommand(builder.GetUpdateCommand());
+            return rowsAffected > 0 ? "Success" : "Update Failed"; ;
         }
 
         #region Add GBID to Sarso Form
@@ -46,6 +72,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             this.Update(madeb);
         }
         #endregion
+
         #region Update Madeb TypeIssued after IssueBook 
         public void UpdateTypeIssued(string Id, int nIssuedOrNotID)
         {
@@ -63,8 +90,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
             Madeb madeb = GetMadebByGBIDAndFormNumber(sGBID, nFormNumber);
             madeb.nCurrentGBSno = nCurrentGBSno;
             madeb.nPreviousGBSno = nPreviousGBSno;
-            int rows = this.Update(madeb);
-            
+            string msg = this.Update(madeb);
+
         }
         #endregion
         #endregion
@@ -157,8 +184,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 return GetRecord(command);
             }
         }
-        
-        public IEnumerable<Madeb> GetMadebsByType(int madebType)
+
+        public IEnumerable<Madeb> GetMadebsByType(int madebType, int limit = 1000)
         {
             string sql = @"SELECT `Id`,
                             `_Id`,
@@ -190,10 +217,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `nEnteredBy`,
                             `dtUpdated`,
                             `nUpdatedBy`
-                        FROM `tblmadeb` WHERE nMadebTypeID=@madebType;";
+                        FROM `tblmadeb` WHERE nMadebTypeID=@madebType
+                        LIMIT @limit;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("madebType", madebType);
+                command.Parameters.AddWithValue("limit", limit);
                 return GetRecords(command);
             }
         }
@@ -239,7 +268,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
         }
 
-        public Madeb GetMadebByGBIDAndFormNumber (string sGBID, int nFormNumber)
+        public Madeb GetMadebByGBIDAndFormNumber(string sGBID, int nFormNumber)
         {
             string sql = @"SELECT `Id`,
                             `_Id`,
@@ -342,8 +371,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 DataSet ds = new DataSet();
                 mySqlDataAdapter.Fill(ds);
                 DataTableCollection tables = ds.Tables;
-                var forms = tables[0].AsEnumerable().Select(row => new { 
-                    nFormNumber = row.Field<int>("nFormNumber"), 
+                var forms = tables[0].AsEnumerable().Select(row => new {
+                    nFormNumber = row.Field<int>("nFormNumber"),
                     dtReceived = row.Field<DateTime?>("dtReceived") }).ToList();
                 return forms;
             }
@@ -398,7 +427,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 DataSet ds = new DataSet();
                 mySqlDataAdapter.Fill(ds);
                 DataTableCollection tables = ds.Tables;
-                var forms = tables[0].AsEnumerable().Select(row =>   new {
+                var forms = tables[0].AsEnumerable().Select(row => new {
                     Id = row.Field<int>("Id"),
                     sGBID = row.Field<string>("sGBID"),
                     dtReceived = row.Field<DateTime>("dtReceived"),
@@ -419,6 +448,42 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
 
         #endregion
+
+
+        #region Helper methods
+
+
+        #region Verify form number uniqueness for insert and updates & return appropriate number
+        public int VerifyAndGetUniqueFormNumber(int nFormNumber)
+        {
+
+            using (var command = new MySqlCommand("spGetFormNumber"))
+            {
+                command.Connection = _connection;
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("formNumberIN", nFormNumber);
+                command.Parameters.Add("@result", MySqlDbType.UInt32);
+                command.Parameters["@result"].Direction = ParameterDirection.Output;
+                _connection.Open();
+                int x = (int)command.ExecuteScalar();
+                return x;
+            }
+        }
+        #endregion
+
+        #region Check if GBID exists in greenbook db
+
+        public bool GBIDExists(string sGBID)
+        {
+            if(_greenbookRepository.GetGreenbookByGBID(sGBID) != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        #endregion
+
 
         #region Populate Madeb Records
         public override Madeb PopulateRecord(MySqlDataReader reader)
@@ -491,6 +556,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 nUpdatedBy = (int)reader["nUpdatedBy"]
             };
         }
+        #endregion
         #endregion
     }
 }

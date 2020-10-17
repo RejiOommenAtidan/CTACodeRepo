@@ -25,7 +25,7 @@ namespace CTADBL.ViewModelsRepositories
 
         #region Get Calls
 
-        public IEnumerable<GreenBookSerialNumberVM> GetGreenBookSerialNumbers(int records = 0)
+        public IEnumerable<GreenBookSerialNumberVM> GetGreenBookSerialNumbers(int records = 1000)
         {
             string sql = @"SELECT md.sMadebType, au.sAuthRegion, concat(grbk.sFirstName, ' ' , IFNULL(grbk.sMiddleName, ''), ' ', IFNULL(grbk.sLastName, '')) as sName, gbsn.*  FROM (SELECT gb.Id, gb.nBookNo, gb.sGBId, gb.Remarks, gb.dtDate, gb.sName, gb.sCountryID, 
                              gb.nMadebTypeId, 
@@ -48,6 +48,11 @@ namespace CTADBL.ViewModelsRepositories
 
             using (var command = new MySqlCommand(sql))
             {
+                //
+                // To do
+                // Get number of records from config file. Default set at 1000.
+                //
+
                 command.Parameters.AddWithValue("records", records);
                 IEnumerable<GreenBookSerialNumberVM> result = GetRecords(command);
                 result = result.OrderBy(a => a.greenBookSerialNumber.nBookNo);

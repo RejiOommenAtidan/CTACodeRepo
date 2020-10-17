@@ -42,12 +42,18 @@ namespace CTADBL.BaseClasses.Transactions
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
         public int?  _id { get { return __Id; } set { __Id = value; } }
+        [Required]
         public int nFormNumber { get { return _nFormNumber; } set { _nFormNumber = value; } }
+        
         public string? sGBID { get { return _sGBID; } set { _sGBID = value; } }
+        [Required]
         public int? nMadebTypeID { get { return _nMadebTypeID; } set { _nMadebTypeID = value; } }
+        [Required]
         public string? sName { get { return _sName; } set { _sName = value; } }
         public string? sFathersName { get { return _sFathersName; } set { _sFathersName = value; } }
+        [Required]
         public int nAuthRegionID { get { return _nAuthRegionID; } set { _nAuthRegionID = value; } }
+        [Required]
         public DateTime? dtReceived { get { return _dtReceived; } set { _dtReceived = value; } }
         public DateTime? dtIssueAction { get { return _dtIssueAction; } set { _dtIssueAction = value; } }
         public int nIssuedOrNotID { get { return _nIssuedOrNotID; } set { _nIssuedOrNotID = value; } }

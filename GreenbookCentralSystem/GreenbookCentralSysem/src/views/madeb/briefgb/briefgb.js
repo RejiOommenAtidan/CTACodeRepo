@@ -383,10 +383,10 @@ export default () => {
       sName: tableRowArray['madeb']['sName'],
       sGBID: tableRowArray['madeb']['sGBID'],
       sFathersName: tableRowArray['madeb']['sFathersName'],
-      nReceiptNo: tableRowArray['madeb']['nReceiptNo'],
-      nSaneyFormNo: tableRowArray['madeb']['nSaneyFormNo'],
-      nCurrentGBSno: tableRowArray['madeb']['nCurrentGBSno'],
-      nPreviousGBSno: tableRowArray['madeb']['nPreviousGBSno'],
+      nReceiptNo: tableRowArray['madeb']['nReceiptNo'] > 0 ? tableRowArray['madeb']['nReceiptNo'] : null,
+      nSaneyFormNo: tableRowArray['madeb']['nSaneyFormNo'] > 0 ? tableRowArray['madeb']['nSaneyFormNo'] : null,
+      nCurrentGBSno: tableRowArray['madeb']['nCurrentGBSno'] > 0 ? tableRowArray['madeb']['nCurrentGBSno'] : null,
+      nPreviousGBSno: tableRowArray['madeb']['nPreviousGBSno']> 0 ? tableRowArray['madeb']['nPreviousGBSno'] : null,
       sApprovedReject: tableRowArray['madeb']['sApprovedReject'],
       dtIssueAction: tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
@@ -405,12 +405,13 @@ export default () => {
     madeb.dtReceived = madeb.dtReceived === "" ? null : madeb.dtReceived;
     madeb.dtIssueAction = madeb.dtIssueAction === "" ? null : madeb.dtIssueAction;
     madeb.dtReturnEmail = madeb.dtReturnEmail === "" ? null : madeb.dtReturnEmail;
-    debugger
+    //debugger
     axios.post(`Madeb/EditMadeb/Id=` + madeb.id, madeb)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setEditModal(false);
+          selectDatafunction();
           setAlertMessage('Record updated successfully.');
           setAlertType('success');
           snackbarOpen();
@@ -432,9 +433,7 @@ export default () => {
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
-        setAlertMessage(`Record updation failed. \nError:${error.message}.`);
+        setAlertMessage(`Madeb Updation Failed. Error:${error.response.data}.`);
         setAlertType('error');
         snackbarOpen();
       })
@@ -482,9 +481,7 @@ export default () => {
         }
       })
       .catch(error => {
-        console.log(error.message);
-        console.log(error.config);
-        setAlertMessage(`Record updation failed. \nError:${error.message}.`);
+        setAlertMessage(`Failed to create new Madeb. Error:${error.response.data}.`);
         setAlertType('error');
         snackbarOpen();
       })
