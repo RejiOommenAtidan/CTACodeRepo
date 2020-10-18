@@ -1,14 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useForm, Controller } from "react-hook-form";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Grid, Card, Typography, Container, TextField, FormControl } from '@material-ui/core';
+import React, { useState, useRef } from 'react';
+import { useForm } from "react-hook-form";
+import { Button, Grid, Typography, Container, TextField, FormControl } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import _ from "lodash/fp";
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-// import projectLogo from '../../assets/images/ctalogo.png';
 import { authenticationService } from '../../auth/_services';
+import handleError from '../../auth/_helpers/handleError';
 
 const useStyles = makeStyles({
   root: {
@@ -64,42 +63,29 @@ export default function ChangePassword() {
   const oUserAuthUser = JSON.parse(currentUser.UserAuthenticationReducer);
   let nUserId = oUserAuthUser.oUserAuth.oUser.id;
   const classes = useStyles();
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm();
   const [sOldPassword, setsOldPassword] = useState('');
   const [sNewPassword, setsNewPassword] = useState('');
   const [sConfirmNewPassword, setsConfirmNewPassword] = useState('');
-  const password = useRef({});
+  // const password = useRef({});
   // password.current = watch("name_sNewPassword", "");
   // console.log(password);
   const onSubmit = () => {
-    //Throws Error, Maybe handled by react-hook-forms itself
-    //e.preventDefault();
     let changePassword = {
       nUserId,
       sOldPassword,
       sNewPassword,
       sConfirmNewPassword
     };
-    // console.info(changePassword);
+
     axios.post(`/User/ChangePassword`, changePassword)
       .then(resp => {
         if (resp.status === 200) {
-          //alert("Success");
           history.push("/Home");
         }
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-          // console.error(error.response.errors);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
+        handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -130,7 +116,7 @@ export default function ChangePassword() {
                     required: "Old Password Required"
                   })}
                 />
-                {errors.name_sOldPassword && <p>{errors.name_sOldPassword.message}</p>}
+                {errors.name_sOldPassword && <span style={{ color: 'red' }}>{errors.name_sOldPassword.message}</span>}
               </FormControl>
             </Grid>
             {/*New Password*/}
@@ -150,7 +136,7 @@ export default function ChangePassword() {
                     required: "You must specify a password"
                   })}
                 />
-                {errors.name_sNewPassword && <p>{errors.name_sNewPassword.message}</p>}
+                {errors.name_sNewPassword && <span style={{ color: 'red' }}>{errors.name_sNewPassword.message}</span>}
               </FormControl>
             </Grid>
 
@@ -173,7 +159,7 @@ export default function ChangePassword() {
                     //validate: value => value === password.current || "The passwords do not match"
                   })}
                 />
-                {errors.name_sConfirmNewPassword && <p> {errors.name_sConfirmNewPassword.message}</p>}
+                {errors.name_sConfirmNewPassword && <span style={{ color: 'red' }}> {errors.name_sConfirmNewPassword.message}</span>}
               </FormControl>
             </Grid>
             <br />
