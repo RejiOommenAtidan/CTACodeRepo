@@ -1189,3 +1189,16 @@ BEGIN
 END$$
 DELIMITER ;
 
+CREATE PROCEDURE `spGetFormNumber`(IN formNumberIN INT, OUT result INT)
+BEGIN
+	DECLARE exist BOOLEAN;
+    
+    
+    SELECT EXISTS (SELECT nFormNumber FROM tblmadeb WHERE nFormNumber = formNumberIN) INTO exist;
+    IF (exist) THEN
+		SELECT MAX(nFormNumber+1) FROM tblmadeb INTO formNumberIN;
+		
+	END IF;
+    SET result = formNumberIN;
+    SELECT result;
+END
