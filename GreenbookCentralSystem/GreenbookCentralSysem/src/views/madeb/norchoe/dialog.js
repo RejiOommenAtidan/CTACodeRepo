@@ -23,7 +23,7 @@ import Slide from '@material-ui/core/Slide';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import _ from "lodash/fp";
 import axios from 'axios';
 import {Alerts} from '../../alerts';
@@ -42,31 +42,51 @@ function Alert(props) {
 
   
 export const EditDialog = (props) => {
+  const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
   //debugger
-  const [snackbarOpen,setSnackbarOpen]=React.useState(false);
-  const snackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setSnackbarOpen(false);
-  };
-  const handleSubmit = () =>{
-    setMessage("Record Successfully Edited");
-    setAlertType('success');
-    setSnackbarOpen(true)
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
   }
-  const [message,setMessage]=React.useState('');
-  const [alertType,setAlertType]=React.useState('');
+  const [snackbar, setSnackbar] = React.useState(false);
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  }
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  const handleSubmitEditRecord = () =>{
+   // alert("Form Submitted.");
 
-  const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
+    props.editAPICall(madeb);
+    
+  
+    
+    
+  }
+  
+
+
+  const handleChangeGBID = (value) => {
+    setGbId(value);
+    setName('');
+    
+    setAuthRegion([]);
+  }
+
+
+  const [authRegions,setAuthRegions]= React.useState(props.selectData['authRegions']);
+  
   const [typeIssuedData,settypeIssuedData]= React.useState(props.selectData['typeIssued']);
 
 
 
   const [id, setId] = React.useState(props.norchoeObj.id);
   const [formNumber, setFormNumber] = React.useState(props.norchoeObj.nFormNumber);
-  const [authRegionID, setAuthorityId] = React.useState(props.norchoeObj.nAuthRegionID);
+
+  const [nAuthRegionID, setAuthRegionId] = React.useState(props.norchoeObj.nAuthRegionID);
   const [receivedDate, setReceivedDate] = React.useState(props.norchoeObj.dtReceived ? (props.norchoeObj.dtReceived).split('T')[0] : undefined);
   const [name, setName] = React.useState(props.norchoeObj.sName);
   const [sGBID, setGbId] = React.useState(props.norchoeObj.sGBID);
@@ -79,6 +99,99 @@ export const EditDialog = (props) => {
   const [returnDate, setReturnDate] = React.useState(props.norchoeObj.dtReturnEmail ? (props.norchoeObj.dtReturnEmail).split('T')[0] : undefined);
   //const [rejectDate, setRejectDate] = React.useState(props.norchoeObj.dtReject.split('T')[0]);
   const [rejectDate, setRejectDate] = React.useState(props.norchoeObj.dtReject ? (props.norchoeObj.dtReject).split('T')[0] : undefined);
+  const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
+  const formPopulate = (value) => {
+    if(value === ''){
+      setAlertMessage(`Please enter a valid number...` );
+        setAlertType('error');
+        snackbarOpen();
+        return;
+    }
+    console.log("Value in GBID: ", value);
+    const gbid = value;
+    const event = new Event('change' , {
+      bubbles: true
+    });
+  /* Need Greenbook record by passing GBID
+   * from Greenbook controller. 
+   * Must talk to Malay.
+  */
+  const sNameElement = document.getElementById("sName");
+  const nCurrentGBSnoElement = document.getElementById("nCurrentGBSno");
+  const nPreviousGBSnoElement = document.getElementById("nPreviousGBSno");
+  axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=`+ gbid)
+  .then(resp => {
+    if (resp.status === 200) {
+      console.log("Got gb record\n", resp.data);
+      console.log("Name Element:" , sNameElement);
+      const name = resp.data.sFirstName ? resp.data.sFirstName : '';
+      const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
+      const lname = resp.data.sLastName ? resp.data.sLastName : '';
+      setName( `${name} ${mname} ${lname}`);
+    
+      clearErrors("sName");
+      //setValue("sName");
+      const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
+      setAuthRegion(region);
+      setAuthRegionId(region.id);
+      setValue("AuthRegion", region, {
+        shouldValidate: true,
+        shouldDirty: true
+      })
+      /*setTimeout(() => setValue("AuthRegion", region,{
+        shouldValidate: true,
+        shouldDirty: true
+      }), 0);*/
+         //sNameElement.value=`${name} ${mname} ${lname}`;
+        //  var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+        //   window.HTMLInputElement.prototype, "value").set;
+        // nativeInputValueSetter.call(sNameElement, `${name} ${mname} ${lname}`);
+        // var inputEvent = new Event("input", { bubbles: true });
+        
+        
+        
+        // sNameElement.dispatchEvent(inputEvent);
+        //  setCurrentGBSNo(resp.data.sOldGreenBKNo);
+        //  setPreviousGBSNo(resp.data.sFstGreenBkNo);
+       }
+       else{
+         setName('');
+      
+         setAuthRegion([]);
+         console.log("Not found" , resp);
+         setAlertMessage(`No record found for GB Id: ${gbid}.` );
+        setAlertType('error');
+        snackbarOpen();
+       }
+     })
+     .catch((error) => {
+       if(error.response.status === 404){
+        setName('');
+      
+        setAuthRegion([]);
+        console.log("Not found" , error.response.data);
+        setAlertMessage(`${error.response.data}`);
+       setAlertType('warning');
+       snackbarOpen();
+       }
+       else if(error.response.status === 500){
+        setName('');
+      setAuthRegion([]);
+        console.log(error);
+        setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.` );
+        setAlertType('error');
+        snackbarOpen();
+       }
+       else{
+        setName('');
+      
+        setAuthRegion([]);
+         console.log(error);
+       }
+     });
+   };
+
+  
   const madeb = {
     id:id,
     nFormNumber: formNumber, 
@@ -87,7 +200,7 @@ export const EditDialog = (props) => {
     sGBID:sGBID,
     sChangeField:sChangeField,
     
-    nAuthRegionID:authRegionID , 
+    nAuthRegionID:nAuthRegionID , 
     dtReceived:receivedDate,  
     nReceiptNo:receipt,
     dtIssueAction:issueActionDate,
@@ -100,10 +213,10 @@ export const EditDialog = (props) => {
 
  }
 
-
+ const btnstyles = {background:'none', border:'none', cursor: 'pointer', color: 'blue'};
     let valueAuthRegion =[];
-    authorityData.forEach(element => {
-    if(element.id === authRegionID){
+    authRegions.forEach(element => {
+    if(element.id === nAuthRegionID){
         valueAuthRegion = element;
         console.log(valueAuthRegion);
     }
@@ -120,14 +233,23 @@ export const EditDialog = (props) => {
      }
      
    });
-
+   useEffect(() => {
+    console.log("Inside useEffect()");
+    const region = props.selectData['authRegions'].find((x) => x.id === nAuthRegionID);
+    setTimeout(() => setValue("AuthRegion", region,{
+      shouldValidate: true,
+      shouldDirty: true
+    }), 0);
+    
+   });
+   
   return (
       
       
 
     <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Norchoe Madeb</DialogTitle>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
       <DialogContent>
         <DialogContentText>
         <div>
@@ -164,52 +286,71 @@ export const EditDialog = (props) => {
                                     </FormControl>
                                 </Grid>
 
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                    <Autocomplete
-                                    openOnFocus
-                                    clearOnEscape
-                                    onChange={  
-                                        (e, value) => {
-                                        if (value !== null) {
-                                            console.log(value.id);
-                                            setAuthorityId(value.id);
-                                        }
-                                        else {
-                                            setAuthorityId(0);
-                                        }
-                                        }
-                                    }
-                                   value={valueAuthRegion} 
-                                    
-                                    id="id_nAuthorityId"
-                                    options={authorityData}
-                                  /*  classes={{
-                                        option: classes.option,
-                                    }}
-                                    className={classes.textField}*/
-                                    autoHighlight
-                                    getOptionLabel={(option) => option.sAuthRegion}
-                                    renderOption={(option) => (
-                                        <React.Fragment>
-                                        <span>{option.sAuthRegion}</span>
-                                        </React.Fragment>
-                                    )}
-                                    renderInput={(params) => (
-                                        <TextField
-                                        {...params}
-                                        label="Authority"
-                                        variant="standard"
-                                        inputProps={{
-                                            ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
-                        />
-
-                                    </FormControl>
-                                </Grid>
+                                
+                               <Grid item xs={12} sm={6}>
+                                 
+                                 <FormControl className={props.classes.formControl}>
+                                 <Controller
+                                    render={props => (
+                                 <Autocomplete
+                                  openOnFocus
+                                  clearOnEscape
+                                  onChange={  
+                                      (e, value) => {
+                                        props.onChange(value);
+                                      if (value !== null) {
+                                          console.log(value.id);
+                                          setAuthRegionId(value.id);
+                                          setAuthRegion(value);
+                                      }
+                                      else {
+                                        setAuthRegionId(null);
+                                        setAuthRegion([]);
+                                      }
+                                      }
+                                  }
+                                  value = {authRegion}
+                                  inputRef={register({
+                                      required: true
+                                    })}
+                                  id="id_nAuthorityId"
+                                  options={authRegions}
+                                /*  classes={{
+                                      option: classes.option,
+                                  }}
+                                  className={classes.textField}*/
+                                  autoHighlight
+                                  getOptionLabel={(option) => option.sAuthRegion}
+                                  renderOption={(option) => (
+                                      <React.Fragment>
+                                      <span>{option.sAuthRegion}</span>
+                                      </React.Fragment>
+                                  )}
+                                  renderInput={(params) => (
+                                      <TextField
+                                      {...params}
+                                      label="Authority"
+                                      variant="standard"
+                                      
+                                      inputRef={register({
+                                          required: true
+                                        })}
+                                        name="name_authority"
+                                      inputProps={{
+                                          ...params.inputProps,
+                              autoComplete: 'new-password', // disable autocomplete and autofill
+                            }}
+                          />
+                          
+                        )}
+                      />  )}
+                      name="AuthRegion"
+                      control={control}
+                      rules={{ required: true }}
+                      />
+                        {errors.AuthRegion && <span style={{color: 'red'}}>Enter Authority Region</span>}
+                                 </FormControl>
+                             </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
@@ -218,7 +359,7 @@ export const EditDialog = (props) => {
                                           //required={true}
                                           name="sGBID"
                                           value={sGBID}
-                                          onChange={(e) => { setGbId(e.target.value) }}
+                                          onChange={(e) => { handleChangeGBID(e.target.value) }}
                                           //onBlur={(e) => {formPopulate(e.target.value)}}
                                 
                                         />
@@ -226,7 +367,7 @@ export const EditDialog = (props) => {
                                         
                                         
                                     </FormControl>
-                                    {/*<button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button>*/}
+                                    {<button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button>}
 
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -385,14 +526,14 @@ export const EditDialog = (props) => {
         <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
 
        {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
-     
-        <Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
-        <Alert  onClose={snackbarClose} severity={alertType}  >
-         {message}
-        </Alert>
-      </Snackbar>
+       { snackbar && <Alerts
+                                   alertObj={alertObj}
+                                  snackbar={snackbar}
+                                  snackbarClose={snackbarClose}
+                                  /> 
+                                }
 
-        <Button onClick={() => props.editAPICall(madeb)} color="primary">Save</Button> 
+        <Button type='submit' color="primary">Save</Button> 
       </DialogActions>
       </form>
     </Dialog>
@@ -413,6 +554,15 @@ export const AddDialog = (props) => {
     alertMessage:alertMessage,
     alertType:alertType
   }
+  const [snackbar,setSnackbar]=React.useState(false);
+  const snackbarOpen = () => {
+    console.log('alert');
+    setSnackbar(true);
+  }
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+
   const btnstyles = {background:'none', border:'none', cursor: 'pointer', color: 'blue'};
 
   const handleChangeGBID = (value) => {
@@ -422,57 +572,87 @@ export const AddDialog = (props) => {
   }
 
   const formPopulate = (value) => {
-    debugger
+    if(value === ''){
+      setAlertMessage(`Please enter a valid number...` );
+        setAlertType('error');
+        snackbarOpen();
+        return;
+    }
     console.log("Value in GBID: ", value);
     const gbid = value;
-    const sNameElement = document.getElementById("name");
-    axios.get(`Greenbook/GetBasicDetailsFromGBID/?sGBID=`+ gbid)
-       .then(resp => {
-         if (resp.status === 200) {
-           console.log("Got gb record\n", resp.data);
-           console.log("Name Element:" , sNameElement);
-           const name = resp.data.greenBook.sFirstName ? resp.data.greenBook.sFirstName : '';
-           const mname = resp.data.greenBook.sMiddleName ? resp.data.greenBook.sMiddleName : '';
-           const lname = resp.data.greenBook.sLastName ? resp.data.greenBook.sLastName : '';
-           setName( `${name} ${mname} ${lname}`);
-           const region = authorityData.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
-           
-            setAuthRegion(region);
-            setAuthRegionId(region.id);
+    const event = new Event('change' , {
+      bubbles: true
+    });
 
-           //sNameElement.value=`${name} ${mname} ${lname}`;
-           var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-            window.HTMLInputElement.prototype, "value").set;
-          nativeInputValueSetter.call(sNameElement, `${name} ${mname} ${lname}`);
-          var inputEvent = new Event("input", { bubbles: true });
-          
-          // setFname(resp.data.sFathersName);
-          sNameElement.dispatchEvent(inputEvent);
-          
-         }
-         else{
-           setName('');
-          //  setFname('');
-           console.log("Not found" , resp);
-           setAlertMessage(`No record found for GB Id: ${gbid}.` );
-           setAlertType('error');
-           //snackbarOpen();
-         }
-       })
-       .catch((error) => {
+ 
+  axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=`+ gbid)
+  .then(resp => {
+    if (resp.status === 200) {
+      console.log("Got gb record\n", resp.data);
+ 
+      const name = resp.data.sFirstName ? resp.data.sFirstName : '';
+      const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
+      const lname = resp.data.sLastName ? resp.data.sLastName : '';
+      setName( `${name} ${mname} ${lname}`);
+
+
+      clearErrors("sName");
+      //setValue("sName");
+      const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
+      setAuthRegion(region);
+      setAuthRegionId(region.id);
+      setValue("AuthRegion", region, {
+        shouldValidate: true,
+        shouldDirty: true
+      })
+        
+       }
+       else{
          setName('');
-         
+  
+         setAuthRegion([]);
+         console.log("Not found" , resp);
+         setAlertMessage(`No record found for GB Id: ${gbid}.` );
+        setAlertType('error');
+        snackbarOpen();
+       }
+     })
+     .catch((error) => {
+       if(error.response.status === 404){
+        setName('');
+    
+        setAuthRegion([]);
+        console.log("Not found" , error.response.data);
+        setAlertMessage(`${error.response.data}`);
+       setAlertType('warning');
+       snackbarOpen();
+       }
+       else if(error.response.status === 500){
+        setName('');
+
+        setAuthRegion([]);
+        console.log(error);
+        setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.` );
+        setAlertType('error');
+        snackbarOpen();
+       }
+       else{
+        setName('');
+
+        setAuthRegion([]);
          console.log(error);
-       });
-     };
+       }
+     });
+   };
 
-  const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
 
+  
+  const [authRegions,setAuthRegions]= React.useState(props.selectData['authRegions']);
 
   const [formNumber, setFormNumber] = React.useState(props.selectData['nFormNumber']);
   const [id, setId] = React.useState(0);
   const [madebType,setMadebType]= React.useState(2);
-  const [nAuthRegionID, setAuthRegionId] = React.useState(0);
+  const [nAuthRegionID, setAuthRegionId] = React.useState(null);
   const [receivedDate, setReceivedDate] = React.useState(new Date(Date.now()).toISOString().substring(0,10));
   const [sGBID, setGbId] = React.useState('');
   const [receipt, setReceipt] = React.useState(0);
@@ -495,7 +675,7 @@ export const AddDialog = (props) => {
      nReceiptNo:receipt,
      nIssuedOrNotID:1,  
   }
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
   const onSubmit = data => {
     props.addAPICall(madeb);
   };
@@ -562,19 +742,24 @@ export const AddDialog = (props) => {
                                </Grid>
 
                                <Grid item xs={12} sm={6}>
+                                 
                                    <FormControl className={props.classes.formControl}>
+                                   <Controller
+                                      render={props => (
                                    <Autocomplete
                                     openOnFocus
                                     clearOnEscape
                                     onChange={  
                                         (e, value) => {
+                                          props.onChange(value);
                                         if (value !== null) {
                                             console.log(value.id);
                                             setAuthRegionId(value.id);
                                             setAuthRegion(value);
                                         }
                                         else {
-                                          setAuthRegionId(0);
+                                          setAuthRegionId(null);
+                                          setAuthRegion([]);
                                         }
                                         }
                                     }
@@ -583,7 +768,7 @@ export const AddDialog = (props) => {
                                         required: true
                                       })}
                                     id="id_nAuthorityId"
-                                    options={authorityData}
+                                    options={authRegions}
                                   /*  classes={{
                                         option: classes.option,
                                     }}
@@ -612,9 +797,12 @@ export const AddDialog = (props) => {
                             />
                             
                           )}
-                        />  {_.get("name_authority.type", errors) === "required" && (
-                            <span style={{color: 'red'}}>This field is required</span>
-                        )}
+                        />  )}
+                        name="AuthRegion"
+                        control={control}
+                        rules={{ required: true }}
+                        />
+                          {errors.AuthRegion && <span style={{color: 'red'}}>Enter Authority Region</span>}
                                    </FormControl>
                                </Grid>
                                <Grid item xs={12} sm={6}>
@@ -646,7 +834,7 @@ export const AddDialog = (props) => {
                                        <TextField
                                            id="name"
                                            label="Name"
-                                           
+                                           value={name}
                                            name='name'
                                            inputRef={register({
                                             required: true
@@ -732,6 +920,12 @@ export const AddDialog = (props) => {
                              
                             
                            </Grid>
+                           { snackbar && <Alerts
+                                   alertObj={alertObj}
+                                  snackbar={snackbar}
+                                  snackbarClose={snackbarClose}
+                                  /> 
+                                }
                        </div>
 
         </DialogContentText>
