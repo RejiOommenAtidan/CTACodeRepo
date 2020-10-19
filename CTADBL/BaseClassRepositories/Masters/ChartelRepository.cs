@@ -72,6 +72,23 @@ namespace CTADBL.BaseClassRepositories.Masters
                 return GetRecord(command);
             }
         }
+
+        public Chartel GetChartelByChartelKey(string sChartelKey)
+        {
+            string sql = @"SELECT `Id`,
+                            `sChartelKey`,
+                            `nChartelValue`,
+                            `dtChartelFrom`,
+                            `dtEntered`,
+                            `nEnteredBy`
+                        FROM `lstchartel`
+                        WHERE sChartelKey = @sChartelKey;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sChartelKey", sChartelKey);
+                return GetRecord(command);
+            }
+        }
         #endregion
 
         #region Populate Chartel Records
