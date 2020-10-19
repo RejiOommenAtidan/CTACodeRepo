@@ -3,7 +3,8 @@ import {
   Grid,
   Typography,
   Breadcrumbs,
-  Link
+  Link,
+  Button
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
@@ -18,7 +19,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import { EmailDialog } from '../email';
 import { Alerts } from '../../alerts';
 import { AddDialog, EditDialog } from './dialog';
-
+import { ViewDialog } from '../../search/dialog';
 import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
 const tableIcons = oTableIcons;
 
@@ -84,7 +85,8 @@ export default function EnhancedTable() {
   const [receivedDate, setReceivedDate] = React.useState('');
   const [authority, setAuthority] = React.useState(0);
   const [name, setName] = React.useState('');
-  const [gbId, setGbId] = useState('');
+
+  const [gbId, setGbId] = React.useState('');
   const [fname, setFname] = React.useState('');
   const [saney, setSaney] = React.useState(0);
   const [currentGBSNo, setCurrentGBSNo] = useState(0);
@@ -101,7 +103,24 @@ export default function EnhancedTable() {
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
   const [isLoading, setisLoading] = React.useState(true);
+//View GB
+const [viewModal, setViewModal] = useState(false);
+const handleViewClickClose = () => {
 
+  setViewModal(false);
+};
+
+const viewGb = (GBID) => {
+  console.log(GBID)
+  setGbId(GBID);
+  setViewModal(true);
+}
+const openRelationGB = (newsGBID) => {
+  handleViewClickClose();
+  setTimeout(() => viewGb(newsGBID), 0);
+} 
+
+//Alert
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const alertObj = {
@@ -181,8 +200,9 @@ export default function EnhancedTable() {
     },
 
     {
-      field: "madeb.sGBID",
-      title: "GB Id",
+     // field: "madeb.sGBID",
+     render:  rowData =>rowData['madeb']['sGBID']? <Button className="m-2 btn-transparent btn-link btn-link-first" onClick={() => { viewGb(rowData['madeb']['sGBID'])}}><span>{rowData['madeb']['sGBID']}</span></Button>:'', 
+     title: "GB Id",
 
       cellStyle: {
         padding: '5px',
@@ -552,6 +572,13 @@ export default function EnhancedTable() {
               }
             ]}
           />
+          {viewModal && <ViewDialog
+          viewModal={viewModal}
+          classes={classes}
+          handleViewClickClose={handleViewClickClose}
+          sGBID={gbId}
+          openRelationGB={openRelationGB}
+        />}
           {addModal && <AddDialog
             addModal={addModal}
             selectData={selectData}

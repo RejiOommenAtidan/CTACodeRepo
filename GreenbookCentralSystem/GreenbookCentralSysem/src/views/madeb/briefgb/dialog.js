@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from "react-dom";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import _ from "lodash/fp";
 import axios from 'axios';
 
@@ -26,8 +26,25 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export const EditDialog = (props) => {
   
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
 
+
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const alertObj={
+    alertMessage:alertMessage,
+    alertType:alertType
+  }
+  const [snackbar,setSnackbar]=React.useState(false);
+  const snackbarOpen = () => {
+    console.log('alert');
+    setSnackbar(true);
+  }
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+
+  const btnstyles = {background:'none', border:'none', cursor: 'pointer', color: 'blue'};
 
   console.log(props.briefGBObj);
    
@@ -35,7 +52,9 @@ export const EditDialog = (props) => {
   
  
   const handleSubmitEditRecord = () =>{
-    props.editAPICall(madeb);
+    alert("Form Submitted.");
+
+    //props.editAPICall(madeb);
     
       // setMessage("Record Successfully Edited");
     // setAlertType('success');
@@ -45,9 +64,9 @@ export const EditDialog = (props) => {
   }
   
   const [message,setMessage]=React.useState('');
-  const [alertType,setAlertType]=React.useState('');
+  //const [alertType,setAlertType]=React.useState('');
 
-  const [authRegions,setAuthRegionData]= React.useState(props.selectData['authRegions']);
+  const [authRegions,setAuthRegions]= React.useState(props.selectData['authRegions']);
   const [typeIssuedData,setTypeIssuedData]= React.useState(props.selectData['typeIssued']);
   const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);
 
@@ -55,7 +74,7 @@ export const EditDialog = (props) => {
   const [id, setId] = React.useState(props.briefGBObj.id);
   const [nFormNumber, setFormNumber] = React.useState(props.briefGBObj.nFormNumber);
   const [dtReceived, setReceivedDate] = React.useState((props.briefGBObj.dtReceived) ? props.briefGBObj.dtReceived.split('T')[0] : undefined);
-  const [nAuthRegionID, setAuthorityId] = React.useState(props.briefGBObj.nAuthRegionID);
+  const [nAuthRegionID, setAuthRegionId] = React.useState(props.briefGBObj.nAuthRegionID);
   const [nMadebStatusID, setMadebStatusID] = React.useState(props.briefGBObj.nMadebStatusID);
   const [sName, setName] = React.useState(props.briefGBObj.sName);
   const [sGBID, setGbId] = useState(props.briefGBObj.sGBID);
@@ -70,7 +89,11 @@ export const EditDialog = (props) => {
   const [nIssuedOrNotID, setIssueAction] = React.useState(props.briefGBObj.nIssuedOrNotID);
   const [dtReturnEmail, setReturnDate] = React.useState(props.briefGBObj.dtReturnEmail ? (props.briefGBObj.dtReturnEmail).split('T')[0] : undefined);
   const [sMadebStatusRemark, setMadebStatusRemark] = React.useState(props.briefGBObj.sMadebStatusRemark);
+  const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
   
+  console.log ("Auth region is " , authRegion.sAuthRegion);
+  //setValue("AuthRegion", authRegion,{shouldValidate: true, shouldDirty: true});
+
   // Dropdowns
 
   // const [valueAuthRegion, setValueAuthRegion] = React.useState([]);
@@ -89,12 +112,6 @@ export const EditDialog = (props) => {
 
   let valueAuthRegion = [];
  
-   authRegions.forEach(element => {
-     if(element.id === nAuthRegionID){
-         valueAuthRegion = element;
-     }
-   });
-
 
   //object
   const madeb = {
@@ -138,7 +155,101 @@ console.log("Madeb Edit Object received in dialog", madeb);
 
    let valueMadebStatus = [];
    valueMadebStatus = madebStatuses.find((x) => x.id === nMadebStatusID);
+   
+   
+   const handleChangeGBID = (value) => {
+    setGbId(value);
+    setName('');
+    setFname('');
+    setAuthRegion([]);
+  }
+   
+   
+   
+   
+   
+  const formPopulate = (value) => {
+    if(value === ''){
+      setAlertMessage(`Please enter a valid number...` );
+        setAlertType('error');
+        snackbarOpen();
+        return;
+    }
+    console.log("Value in GBID: ", value);
+    const gbid = value;
+    const event = new Event('change' , {
+      bubbles: true
+    });
 
+  
+  axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=`+ gbid)
+  .then(resp => {
+    if (resp.status === 200) {
+      console.log("Got gb record\n", resp.data);
+      
+      const name = resp.data.sFirstName ? resp.data.sFirstName : '';
+      const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
+      const lname = resp.data.sLastName ? resp.data.sLastName : '';
+      setName( `${name} ${mname} ${lname}`);
+      setFname(resp.data.sFathersName);
+      clearErrors("sName");
+      const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
+      setAuthRegion(region);
+      setAuthRegionId(region.id);
+      setValue("AuthRegion", region, {
+        shouldValidate: true,
+        shouldDirty: true
+      })
+      
+        
+    }
+    else{
+      setName('');
+      setFname('');
+      setAuthRegion([]);
+      console.log("Not found" , resp);
+      setAlertMessage(`No record found for GB Id: ${gbid}.` );
+      setAlertType('error');
+      snackbarOpen();
+    }
+    })
+     .catch((error) => {
+       if(error.response.status === 404){
+        setName('');
+        setFname('');
+        setAuthRegion([]);
+        console.log("Not found" , error.response.data);
+        setAlertMessage(`${error.response.data}`);
+        setAlertType('warning');
+        snackbarOpen();
+       }
+       else if(error.response.status === 500){
+        setName('');
+        setFname('');
+        setAuthRegion([]);
+        console.log(error);
+        setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.` );
+        setAlertType('error');
+        snackbarOpen();
+       }
+       else{
+        setName('');
+        setFname('');
+        setAuthRegion([]);
+         console.log(error);
+       }
+     });
+   };
+
+   useEffect(() => {
+    console.log("Inside useEffect()");
+    const region = props.selectData['authRegions'].find((x) => x.id === nAuthRegionID);
+    setValue("AuthRegion", region,{
+      shouldValidate: true,
+      shouldDirty: true
+    });
+    
+   });
   return (
     <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Brief GreenBook Madeb</DialogTitle>
@@ -185,67 +296,6 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                    <Autocomplete
-                                      openOnFocus
-                                      clearOnEscape
-                                      onChange={  
-                                        (e, value) => {
-                                          if (value !== null) {
-                                            console.log(value.id);
-                                            setAuthorityId(value.id);
-                                          }
-                                          else {
-                                            setAuthorityId(null);
-                                          }
-                                        }
-                                      }
-                                     value={valueAuthRegion} 
-                                     id="id_nAuthorityId"
-                                     options={authRegions}
-                                     autoHighlight
-                                     getOptionLabel={(option) => option.sAuthRegion}
-                                     renderOption={(option) => (
-                                       <React.Fragment>
-                                         <span>{option.sAuthRegion}</span>
-                                       </React.Fragment>
-                                     )}
-                                     renderInput={(params) => (
-                                       <TextField
-                                         {...params}
-                                         label="Authority"
-                                         variant="standard"
-                                         inputProps={{
-                                           ...params.inputProps,
-                                           autoComplete: 'new-password', // disable autocomplete and autofill
-                                         }}
-                                         inputRef={register({
-                                          required: true
-                                        })}
-                                        />
-                                      )}
-                                    />
-                                  </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="sName"
-                                            name="sName"
-                                        label="Name"
-                                        //required={true}
-                                        value={sName}
-                                        onChange={(e) => { setName(e.target.value) }}
-                                        inputRef={register({
-                                          required: true
-                                        })}
-                                      />
-                                      {_.get("sName.type", errors) === "required" && (
-                                        <span style={{color: 'red'}}>This field is required</span>
-                                      )}
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
                                   <FormControl className={props.classes.formControl}>
                                     <TextField
                                       id="sGBID"
@@ -262,7 +312,85 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                       <span style={{color: 'red'}}>This field is required</span>
                                     )}
                                   </FormControl>
+                                  <button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button>
                                 </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
+                                    <Controller
+                                      render={props => (
+                                        <Autocomplete
+                                          {...props}  
+                                          openOnFocus = {true}
+                                          clearOnEscape
+                                          autoComplete = {true}
+                                          autoHighlight = {true}
+                                          options={authRegions}
+                                          getOptionLabel={(option) => option.sAuthRegion}
+                                          renderOption={(option) => (
+                                            <React.Fragment>
+                                              <span>{option.sAuthRegion}</span>
+                                            </React.Fragment>
+                                          )}
+                                          renderInput={params => (
+                                            <TextField
+                                              {...params} 
+                                              label="Authority"
+                                              variant="standard"
+                                              name="authority_text"
+                                              inputProps={{
+                                                ...params.inputProps,
+                                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                              }}
+                                            />
+                                          )}
+                                          onChange={  
+                                            (e, value) => {
+                                              props.onChange(value);
+                                              //alert ("onChangeFired")
+                                              if (value !== null) {
+                                                console.log(value.id);
+                                                setAuthRegionId(value.id);
+                                                setAuthRegion(value);
+                                              }
+                                              else {
+                                                setAuthRegionId(null);
+                                                setAuthRegion([]);
+                                              }
+                                            }
+                                          }
+                                          value={authRegion}
+                                          
+                                        />
+                                      )}
+                                      name="AuthRegion"
+                                      control={control}
+                                      rules={{ required: true }}
+                                    />
+                                    {errors.AuthRegion && <span style={{color: 'red'}}>Enter Authority Region</span>}
+                                  </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
+                                        <TextField
+                                            id="sName"
+                                            name="sName"
+                                        label="Name"
+                                        //required={true}
+                                        value={sName}
+                                        onChange={(e) => { 
+                                          setName(e.target.value);
+                                          setValue("sName", e.target.value);
+                                       }}
+                                        inputRef={register({
+                                          required: true
+                                        })}
+                                      />
+                                      {_.get("sName.type", errors) === "required" && (
+                                        <span style={{color: 'red'}}>This field is required</span>
+                                      )}
+                                    </FormControl>
+                                </Grid>
+                                
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
@@ -542,7 +670,7 @@ console.log("Madeb Edit Object received in dialog", madeb);
 
 
 export const AddDialog = (props) => {
-    const { register, handleSubmit, watch, errors } = useForm();
+    const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
     
 
     // SnackBar Alerts 
@@ -572,7 +700,8 @@ export const AddDialog = (props) => {
       // setMessage("Record Successfully Edited");
       // setAlertType('success');
       // setSnackbarOpen(true);
-      props.addAPICall(madeb);
+      alert ("Submit form called");
+      //props.addAPICall(madeb);
     }
 
     const handleChangeGBID = (value) => {
@@ -610,18 +739,24 @@ export const AddDialog = (props) => {
         const lname = resp.data.sLastName ? resp.data.sLastName : '';
         setName( `${name} ${mname} ${lname}`);
         setFname(resp.data.sFathersName);
+        clearErrors("sName");
+        //setValue("sName");
         const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
         setAuthRegion(region);
         setAuthRegionId(region.id);
+        setValue("AuthRegion", region, {
+          shouldValidate: true,
+          shouldDirty: true
+        })
            //sNameElement.value=`${name} ${mname} ${lname}`;
-           var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-            window.HTMLInputElement.prototype, "value").set;
-          nativeInputValueSetter.call(sNameElement, `${name} ${mname} ${lname}`);
-          var inputEvent = new Event("input", { bubbles: true });
+          //  var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          //   window.HTMLInputElement.prototype, "value").set;
+          // nativeInputValueSetter.call(sNameElement, `${name} ${mname} ${lname}`);
+          // var inputEvent = new Event("input", { bubbles: true });
           
           
           
-          sNameElement.dispatchEvent(inputEvent);
+          // sNameElement.dispatchEvent(inputEvent);
           //  setCurrentGBSNo(resp.data.sOldGreenBKNo);
           //  setPreviousGBSNo(resp.data.sFstGreenBkNo);
          }
@@ -758,28 +893,32 @@ export const AddDialog = (props) => {
                                             required: true
                                           })}
                                         />
-                                        {_.get("dtDate.type", errors) === "required" && (
-                                          <span style={{color: 'red'}}>This field is required</span>
+                                        {_.get("dtReceived.type", errors) === "required" && (
+                                          <span style={{color: 'red'}}>Enter Date</span>
                                         )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                    <Autocomplete
+                                  <FormControl className={props.classes.formControl}>
+                                    {/* <Autocomplete
                                       openOnFocus
                                       clearOnEscape
+                                      name="sAuthRegion"
                                       onChange={  
                                         (e, value) => {
                                           if (value !== null) {
                                             console.log(value.id);
                                             setAuthRegionId(value.id);
                                             setAuthRegion(value);
+                                            clearErrors("authority_text")
                                           }
                                           else {
                                             setAuthRegionId(0);
+                                            setAuthRegion(value);
                                           }
                                         }
                                       }
+                                      
                                      value={authRegion} 
                                      id="id_nAuthorityId"
                                      options={authRegions}
@@ -792,10 +931,11 @@ export const AddDialog = (props) => {
                                      )}
                                      renderInput={(params) => (
                                        <TextField
-                                         {...params}
+                                         {...params} 
                                          label="Authority"
                                          variant="standard"
                                          name="authority_text"
+                                         onChange={((e) => clearErrors("authority_text") )}
                                          inputProps={{
                                            ...params.inputProps,
                                            autoComplete: 'new-password', // disable autocomplete and autofill
@@ -806,9 +946,57 @@ export const AddDialog = (props) => {
                                         />
                                       )}
                                     />
-                                    {/* {_.get("authority_text.type", errors) === "required" && (
-                                          <span style={{color: 'red'}}>This field is required</span>
-                                        )} */}
+                                   {errors.authority_text && "Authority Region is required." }  */}
+                                   <Controller
+                                      render={props => (
+                                        <Autocomplete
+                                          {...props}  
+                                          openOnFocus = {true}
+                                          clearOnEscape
+                                          autoComplete = {true}
+                                          autoHighlight = {true}
+                                          options={authRegions}
+                                          getOptionLabel={(option) => option.sAuthRegion}
+                                          renderOption={(option) => (
+                                            <React.Fragment>
+                                              <span>{option.sAuthRegion}</span>
+                                            </React.Fragment>
+                                          )}
+                                          renderInput={params => (
+                                            <TextField
+                                              {...params} 
+                                              label="Authority"
+                                              variant="standard"
+                                              name="authority_text"
+                                              inputProps={{
+                                                ...params.inputProps,
+                                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                              }}
+                                            />
+                                          )}
+                                          onChange={  
+                                            (e, value) => {
+                                              props.onChange(value);
+                                              //alert ("onChangeFired")
+                                              if (value !== null) {
+                                                console.log(value.id);
+                                                setAuthRegionId(value.id);
+                                                setAuthRegion(value);
+                                              }
+                                              else {
+                                                setAuthRegionId(null);
+                                                setAuthRegion([]);
+                                              }
+                                            }
+                                          }
+                                          value={authRegion}
+                                        />
+                                      )}
+                                      name="AuthRegion"
+                                      control={control}
+                                      rules={{ required: true }}
+                                    />
+                                    {errors.AuthRegion && <span style={{color: 'red'}}>Enter Authority Region</span>}
                                   </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -826,7 +1014,7 @@ export const AddDialog = (props) => {
                                           })}
                                         />
                                         {_.get("sGBID.type", errors) === "required" && (
-                                          <span style={{color: 'red'}}>This field is required</span>
+                                          <span style={{color: 'red'}}>Enter GreenBook ID</span>
                                         )}
                                         
                                         
@@ -842,14 +1030,19 @@ export const AddDialog = (props) => {
                                           name="sName"
                                           //required={true}
                                           value={sName}
-                                          onChange={(e) => { setName(e.target.value) }}
+                                          onChange={(e) => { 
+                                            setName(e.target.value);
+                                            //clearErrors("sName");
+                                            setValue("sName", e.target.value);
+                                          }}
                                           inputRef={register({
                                             required: true
                                           })}
                                         />
-                                        {_.get("sName.type", errors) === "required" && (
+                                        {/* {_.get("sName.type", errors) === "required" && (
                                           <span style={{color: 'red'}}>This field is required</span>
-                                        )}
+                                        )} */}
+                                        {errors.sName && <span style={{color: 'red'}}>Enter Name</span> }
                                         
                                     </FormControl>
                                 </Grid>

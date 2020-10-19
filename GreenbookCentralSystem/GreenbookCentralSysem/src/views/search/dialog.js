@@ -45,7 +45,8 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
   Typography,
-  Table
+  Table,
+  CircularProgress
 } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -72,6 +73,8 @@ export const ViewDialog = (props) => {
     setExpanded(isExpanded ? panel : false);
   };
   const userid = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+
+  const [progress, setProgress] = useState(0);
   const gbDocumentDelete = (row) =>{
 //http://localhost:52013/api/GBDocument/DeleteGBDocument/
       axios.post(`/GBDocument/DeleteGBDocument/`,row)
@@ -101,6 +104,7 @@ export const ViewDialog = (props) => {
 
  
   useEffect(() => {
+   
     axios.get(`GreenBook/GetDetailsFromGBID?sGBID=`+props.sGBID+`&nUserId=`+userid)
       .then(resp => {
         if (resp.status === 200) {
@@ -126,6 +130,14 @@ export const ViewDialog = (props) => {
       .then(release => {
         //console.log(release); => udefined
       });
+      function tick() {
+        // reset when reaching 100%
+        setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
+    }  const timer = setInterval(tick, 20);
+    return () => {
+        clearInterval(timer);
+    };
+    
   }, []);
  
 
@@ -134,6 +146,18 @@ export const ViewDialog = (props) => {
  
   return (
     <>
+    {data.length==0 && <Dialog open={true} 
+      maxWidth='sm' aria-labelledby="form-dialog-title">
+  
+      <DialogContent>
+        <DialogContentText>
+        <CircularProgress variant="determinate" value={progress} className="m-3 progress-xs" color="primary"/>
+        </DialogContentText>
+      </DialogContent>
+       
+     
+    </Dialog>}
+
          {data.length!=0 && 
     <Dialog open={props.viewModal} onEscapeKeyDown={props.handleViewClickClose} fullWidth='true'
       maxWidth='xl' aria-labelledby="form-dialog-title">
@@ -156,7 +180,7 @@ export const ViewDialog = (props) => {
                     </div>
                   </div>
                   <h4 className="font-size-lg font-weight-bold my-2">
-                    {data.greenBook.sFirstName + ' ' + data.greenBook.sLastName}
+                    {data.greenBook.sFirstName + ' ' + data.greenBook.sLastName ? data.greenBook.sLastName : ""}
                   </h4>
                   <h4 className="font-size-lg font-weight-bold my-2">
                     {data.greenBook.sCountryID+data.greenBook.sGBID }

@@ -233,38 +233,38 @@ export default () => {
   const handleEditClickClose = () => {
     setEditModal(false);
   };
-  const handleAddClickClose = () => {
-    setAddModal(false);
-  };
+  // const handleAddClickClose = () => {
+  //   setAddModal(false);
+  // };
 
 
-  const addAPICall = (gbSerialObj) => {
-    debugger
-    console.log(gbSerialObj);
-    axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, gbSerialObj)
-      .then(resp => {
-        if (resp.status === 200) {
-          console.log(resp.data);
-          setAddModal(false);
-          selectDatafunction();
-          axios.get(`GreenBookSerialNumber/GetgreenBookSerialNumbers/?records=10`)
-            .then(resp => {
-              if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
-              }
-            })
-            .catch(error => {
-              console.log(error.message);
-              console.log(error.config);
-            })
-        }
-      })
-      .catch(error => {
-        console.log(error.message);
-        console.log(error.config);
-      })
-  };
+  // const addAPICall = (gbSerialObj) => {
+  //   debugger
+  //   console.log(gbSerialObj);
+  //   axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, gbSerialObj)
+  //     .then(resp => {
+  //       if (resp.status === 200) {
+  //         console.log(resp.data);
+  //         setAddModal(false);
+  //         selectDatafunction();
+  //         axios.get(`GreenBookSerialNumber/GetgreenBookSerialNumbers/`)
+  //           .then(resp => {
+  //             if (resp.status === 200) {
+  //               console.log(resp.data);
+  //               setdataAPI(resp.data)
+  //             }
+  //           })
+  //           .catch(error => {
+  //             console.log(error.message);
+  //             console.log(error.config);
+  //           })
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log(error.message);
+  //       console.log(error.config);
+  //     })
+  // };
 
 
   const editClick = (tableRowArray) => {
@@ -295,7 +295,7 @@ export default () => {
           //console.log(resp.data);
           //setResult(true);
           setEditModal(false);
-          axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/?records=10`)
+          axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/`)
             .then(resp => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -371,13 +371,13 @@ export default () => {
               ]
             }
           />
-            {addModal && <AddDialog
+            {/* {addModal && <AddDialog
               addModal={addModal}
               selectData={selectData}
               classes={classes}
               handleAddClickClose={handleAddClickClose}
               addAPICall={addAPICall}
-            />}
+            />} */}
             {editModal && <EditDialog
               editModal={editModal}
               selectData={selectData}

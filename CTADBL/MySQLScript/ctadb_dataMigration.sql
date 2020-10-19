@@ -1079,7 +1079,7 @@ SELECT sGBID,
 	sCountryID,
 	dtEntered,
 	nEnteredBy 
-FROM ctadb.tblgreenbook WHERE sPaidUntil != '';
+FROM ctadb.tblgreenbook WHERE sPaidUntil != '' and SUBSTRING(sPaidUntil,1,4) REGEXP '^-?[0-9]+$';
 
 INSERT INTO lnkgbrelation
 (

@@ -3,7 +3,7 @@ import { Box, Container, Grid, Button, Typography, FormControl, TextField, Bread
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import _ from "lodash/fp";
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,7 +26,7 @@ export const InputParams = (props) => {
 
   const selectClasses = selectStyles();
   //validations
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -93,9 +93,10 @@ export const InputParams = (props) => {
                   required: true
                 })}
               />
-              {_.get("startDate.type", errors) === "required" && (
+              {/* {_.get("startDate.type", errors) === "required" && (
                 <span style={{ color: 'red' }}>This field is required</span>
-              )}
+              )} */}
+              {errors.startDate && "Date From is required."}
             </FormControl>
           </Grid>
           <Grid item xs={2}>
@@ -122,53 +123,73 @@ export const InputParams = (props) => {
           </Grid>
           <Grid item xs={2}>
             <FormControl >
-              <Autocomplete
-                openOnFocus
-                clearOnEscape
-                onChange={
-                  (e, value) => {
-                    if (value !== null) {
-                      console.log("Madeb id changed to:", value.id);
-                      setMadebTypeId(value.id);
-                    }
-                    else {
-                      setMadebTypeId(0);
+              <Controller
+                render={props => (
+                  <Autocomplete
+                  {...props}  
+                  openOnFocus
+                  clearOnEscape
+                  autoComplete = {true}
+                  autoHighlight = {true}
+                  onChange={
+                    (e, value) => {
+                      props.onChange(value);
+                      if (value !== null) {
+                        console.log("Madeb id changed to:", value.id);
+                        setMadebTypeId(value.id);
+                      }
+                      else {
+                        setMadebTypeId(0);
+                      }
                     }
                   }
-                }
-                style={{ width: 180 }}
-                value={valueMadebTypes}
-                id="id_nMadebTypeId"
-                options={madebTypes}
-                autoHighlight
-                getOptionLabel={(option) => option.sMadebDisplayName}
-                renderOption={(option) => (
-                  <React.Fragment>
-                    <span>{option.sMadebDisplayName}</span>
-                  </React.Fragment>
-                )}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Why Issued"
-                    variant="standard"
-                    className={props.classes.textField}
-                    inputProps={{
-                      ...params.inputProps,
-                      autoComplete: 'new-password', // disable autocomplete and autofill
-                    }}
+                  style={{ width: 180 }}
+                  value={valueMadebTypes}
+                  id="id_nMadebTypeId"
+                  options={madebTypes}
+                  getOptionLabel={(option) => option.sMadebDisplayName}
+                  renderOption={(option) => (
+                    <React.Fragment>
+                      <span>{option.sMadebDisplayName}</span>
+                    </React.Fragment>
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Why Issued"
+                      variant="standard"
+                      //className={props.classes.textField}
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                      }}
+                    />
+                  )}
                   />
-                )}
-              />
+                  )}
+                  name="Madebs"
+                  control={control}
+                  rules={{ required: true }}
+                />
+                {errors.Madebs && <span style={{color: 'red'}}>Select Madeb Type</span>}
+                
+                
+              
             </FormControl>
           </Grid>
           <Grid item xs={2}>
             <FormControl >
+              <Controller
+               render={props => (
               <Autocomplete
+              {...props}  
                 openOnFocus
                 clearOnEscape
+                autoComplete = {true}
+                  autoHighlight = {true}
                 onChange={
                   (e, value) => {
+                    props.onChange(value);
                     if (value !== null) {
                       console.log("AuthRegion id changed to:", value.id);
                       setAuthRegionId(value.id);
@@ -182,7 +203,7 @@ export const InputParams = (props) => {
                 value={valueAuthRegion}
                 id="id_nAuthorityId"
                 options={authRegions}
-                autoHighlight
+                
                 getOptionLabel={(option) => option.sAuthRegion}
                 renderOption={(option) => (
                   <React.Fragment>
@@ -193,7 +214,7 @@ export const InputParams = (props) => {
                   <TextField
                     {...params}
                     label="Where Issued"
-                    className={props.classes.textField}
+                    //className={props.classes.textField}
                     variant="standard"
                     inputProps={{
                       ...params.inputProps,
@@ -202,18 +223,36 @@ export const InputParams = (props) => {
                   />
                 )}
               />
+              )}
+                  name="AuthRegion"
+                  control={control}
+                  rules={{ required: true }}
+              />
+              {errors.AuthRegion && <span style={{color: 'red'}}>Select Authority Region</span>}
             </FormControl>
           </Grid>
           <Grid item xs={2}>
             <FormControl >
               <InputLabel id="Printed/Not">Print Status</InputLabel>
-              <Select
-                onChange={handlePrintStatus}
-                style={{ width: 180 }}
-              >
-                <MenuItem value={1}>Printed</MenuItem>
-                <MenuItem value={0}>Not Printed</MenuItem>
-              </Select>
+              <Controller
+                render={props => (
+                  <Select
+                    onChange={(event) => {
+                      props.onChange(event.target.value);
+                      handlePrintStatus(event);
+                    }}
+
+                    style={{ width: 180 }}
+                  >
+                    <MenuItem value={1}>Printed</MenuItem>
+                    <MenuItem value={0}>Not Printed</MenuItem>
+                  </Select>
+                )}
+                name="Printed"
+                  control={control}
+                  rules={{ required: true }}
+              />
+              {errors.Printed && <span style={{color: 'red'}}>Select Print Status</span>}
             </FormControl>
           </Grid>
           <Grid item xs={2}>
