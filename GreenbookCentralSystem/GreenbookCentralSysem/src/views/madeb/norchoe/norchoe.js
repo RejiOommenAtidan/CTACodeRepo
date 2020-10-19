@@ -399,7 +399,7 @@ const openRelationGB = (newsGBID) => {
       
     },
     {
-      field: "madeb.sApprovedReject",
+      field: "sMadebStatus",
       title: "Status",
       
       headerStyle: {
@@ -624,7 +624,9 @@ const openRelationGB = (newsGBID) => {
       sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],
       dtIssueAction  :tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID  :tableRowArray['madeb']['nIssuedOrNotID'],
-      dtReturnEmail  :tableRowArray['madeb']['dtReturnEmail']
+      dtReturnEmail  :tableRowArray['madeb']['dtReturnEmail'],
+      nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
+      sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
       });
      
       console.log(norchoeObj);

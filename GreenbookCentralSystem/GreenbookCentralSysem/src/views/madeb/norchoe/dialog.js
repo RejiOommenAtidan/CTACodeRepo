@@ -80,6 +80,7 @@ export const EditDialog = (props) => {
   const [authRegions,setAuthRegions]= React.useState(props.selectData['authRegions']);
   
   const [typeIssuedData,settypeIssuedData]= React.useState(props.selectData['typeIssued']);
+  const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);
 
 
 
@@ -96,6 +97,8 @@ export const EditDialog = (props) => {
   const [documents, setDocument] = React.useState(props.norchoeObj.sDocumentAttached);
   const [issueActionDate, setIssueActionDate] = React.useState(props.norchoeObj.dtIssueAction ? (props.norchoeObj.dtIssueAction).split('T')[0] : undefined);
   const [issueAction, setIssueAction] = React.useState(props.norchoeObj.nIssuedOrNotID);
+  const [nMadebStatusID, setMadebStatusID] = React.useState(props.norchoeObj.nMadebStatusID);
+  const [sMadebStatusRemark, setMadebStatusRemark] = React.useState(props.norchoeObj.sMadebStatusRemark);  
   const [returnDate, setReturnDate] = React.useState(props.norchoeObj.dtReturnEmail ? (props.norchoeObj.dtReturnEmail).split('T')[0] : undefined);
   //const [rejectDate, setRejectDate] = React.useState(props.norchoeObj.dtReject.split('T')[0]);
   const [rejectDate, setRejectDate] = React.useState(props.norchoeObj.dtReject ? (props.norchoeObj.dtReject).split('T')[0] : undefined);
@@ -199,14 +202,14 @@ export const EditDialog = (props) => {
     sName: name,
     sGBID:sGBID,
     sChangeField:sChangeField,
-    
+    sMadebStatusRemark,
     nAuthRegionID:nAuthRegionID , 
     dtReceived:receivedDate,  
     nReceiptNo:receipt,
     dtIssueAction:issueActionDate,
     nIssuedOrNotID:issueAction,
     sDocumentAttached:documents,
-  
+    nMadebStatusID,
     dtReturnEmail:returnDate,
     dtReject:rejectDate
 
@@ -233,6 +236,8 @@ export const EditDialog = (props) => {
      }
      
    });
+   let valueMadebStatus = [];
+   valueMadebStatus = madebStatuses.find((x) => x.id === nMadebStatusID);
    useEffect(() => {
     console.log("Inside useEffect()");
     const region = props.selectData['authRegions'].find((x) => x.id === nAuthRegionID);
@@ -425,6 +430,62 @@ export const EditDialog = (props) => {
                                          
                                    </FormControl>
                                </Grid>
+                                  
+                               <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
+                                    <Autocomplete
+                                      openOnFocus
+                                      clearOnEscape
+                                      onChange={  
+                                        (e, value) => {
+                                          if (value !== null) {
+                                            console.log(value.id);
+                                            setMadebStatusID(value.id);
+                                          }
+                                          else {
+                                            setMadebStatusID(0);
+                                          }
+                                        }
+                                      }
+                                     value={valueMadebStatus} 
+                                     id="id_nMadebStatusID"
+                                     options={madebStatuses}
+                                     autoHighlight
+                                     getOptionLabel={(option) => option.sMadebStatus}
+                                     renderOption={(option) => (
+                                       <React.Fragment>
+                                         <span>{option.sMadebStatus}</span>
+                                       </React.Fragment>
+                                     )}
+                                     renderInput={(params) => (
+                                       <TextField
+                                         {...params}
+                                         label="Madeb Status"
+                                         variant="standard"
+                                         inputProps={{
+                                           ...params.inputProps,
+                                           autoComplete: 'new-password', // disable autocomplete and autofill
+                                         }}
+                                        />
+                                      )}
+                                    />
+                                  </FormControl>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
+                                        <TextField
+                                            id="sMadebStatusRemark"
+                                            name="sMadebStatusRemark"
+                                        label="Status Remarks"
+                                        //required={true}
+                                        value={sMadebStatusRemark}
+                                        onChange={(e) => { setMadebStatusRemark(e.target.value) }}
+                                        
+                                      />
+                                      
+                                    </FormControl>
+                                </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField

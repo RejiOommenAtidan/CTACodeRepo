@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from "react-dom";
-import { useForm } from "react-hook-form";
+import { useForm ,Controller} from "react-hook-form";
 import _ from "lodash/fp";
 import axios from 'axios';
 
@@ -25,35 +25,48 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
 export const EditDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
 
-
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  }
+  const [snackbar, setSnackbar] = React.useState(false);
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  }
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
   console.log(props.bhorlakObj);
    
+  const handleChangeGBID = (value) => {
+    setGbId(value);
+    setName('');
+    
+    setAuthRegion([]);
+  }
+
   
   
  
   const handleSubmitEditRecord = () =>{
     props.editAPICall(madeb);
-    
-      // setMessage("Record Successfully Edited");
-    // setAlertType('success');
-    // setSnackbarOpen(true)
-    
-    
+
   }
-  debugger
-  const [message,setMessage]=React.useState('');
-  const [alertType,setAlertType]=React.useState('');
+
 
   const [authRegions,setAuthRegionData]= React.useState(props.selectData['authRegions']);
   const [typeIssuedData,setTypeIssuedData]= React.useState(props.selectData['typeIssued']);
+  const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);
 
   const [madebType,setMadebType]= React.useState(3);
   const [id, setId] = React.useState(props.bhorlakObj.id);
   const [nFormNumber, setFormNumber] = React.useState(props.bhorlakObj.nFormNumber);
   const [dtReceived, setReceivedDate] = React.useState((props.bhorlakObj.dtReceived) ? props.bhorlakObj.dtReceived.split('T')[0] : undefined);
-  const [nAuthRegionID, setAuthorityId] = React.useState(props.bhorlakObj.nAuthRegionID);
+  const [nAuthRegionID, setAuthRegionId] = React.useState(props.bhorlakObj.nAuthRegionID);
   
   const [sName, setName] = React.useState(props.bhorlakObj.sName);
   const [sGBID, setGbId] = useState(props.bhorlakObj.sGBID);
@@ -61,14 +74,15 @@ export const EditDialog = (props) => {
   const [nReceiptNo, setReceiptNo] = React.useState(props.bhorlakObj.nReceiptNo);
   const [sDocumentAttached, setDocument] = React.useState(props.bhorlakObj.sDocumentAttached);
   const [nCurrentGBSno, setCurrentGBSNo] = useState(props.bhorlakObj.nCurrentGBSno);
-  
+  const [nMadebStatusID, setMadebStatusID] = React.useState(props.bhorlakObj.nMadebStatusID);
+  const [sMadebStatusRemark, setMadebStatusRemark] = React.useState(props.bhorlakObj.sMadebStatusRemark);
   const [sApprovedReject, setApprovedReject] = useState(props.bhorlakObj.sApprovedReject);
   const [dtIssueAction, setIssueActionDate] = React.useState(props.bhorlakObj.dtIssueAction ?(props.bhorlakObj.dtIssueAction).split('T')[0] : undefined);
   const [dtReject, setRejectDate] = useState(props.bhorlakObj.dtReject ? (props.bhorlakObj.dtReject).split('T')[0] : undefined);
   const [nIssuedOrNotID, setIssueAction] = React.useState(props.bhorlakObj.nIssuedOrNotID);
   const [dtReturnEmail, setReturnDate] = React.useState(props.bhorlakObj.dtReturnEmail ? (props.bhorlakObj.dtReturnEmail).split('T')[0] : undefined);
   
-
+  const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
   
   const madeb = {
     id:id,
@@ -80,9 +94,9 @@ export const EditDialog = (props) => {
     sGBID,
     sDocumentAttached,
     nReceiptNo,
- 
+    nMadebStatusID,
     nCurrentGBSno,
-  
+    sMadebStatusRemark,
     sApprovedReject,
     dtIssueAction,
     dtReject,
@@ -94,13 +108,106 @@ console.log("Madeb Edit Object received in dialog", madeb);
 //         return (authRegions.map((data) => (<option value={data.id}>{data.sAuthRegion}</option> )  ))
 //     };  
 //  const optsAuthRegion = childrenAuthRegion();
- let valueAuthRegion = [];
- 
- authRegions.forEach(element => {
+const formPopulate = (value) => {
+  if(value === ''){
+    setAlertMessage(`Please enter a valid number...` );
+      setAlertType('error');
+      snackbarOpen();
+      return;
+  }
+  console.log("Value in GBID: ", value);
+  const gbid = value;
+  const event = new Event('change' , {
+    bubbles: true
+  });
+/* Need Greenbook record by passing GBID
+ * from Greenbook controller. 
+ * Must talk to Malay.
+*/
+const sNameElement = document.getElementById("sName");
+const nCurrentGBSnoElement = document.getElementById("nCurrentGBSno");
+const nPreviousGBSnoElement = document.getElementById("nPreviousGBSno");
+axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=`+ gbid)
+.then(resp => {
+  if (resp.status === 200) {
+    console.log("Got gb record\n", resp.data);
+    console.log("Name Element:" , sNameElement);
+    const name = resp.data.sFirstName ? resp.data.sFirstName : '';
+    const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
+    const lname = resp.data.sLastName ? resp.data.sLastName : '';
+    setName( `${name} ${mname} ${lname}`);
+  
+    clearErrors("sName");
+    //setValue("sName");
+    const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
+    setAuthRegion(region);
+    setAuthRegionId(region.id);
+    setValue("AuthRegion", region, {
+      shouldValidate: true,
+      shouldDirty: true
+    })
+    /*setTimeout(() => setValue("AuthRegion", region,{
+      shouldValidate: true,
+      shouldDirty: true
+    }), 0);*/
+       //sNameElement.value=`${name} ${mname} ${lname}`;
+      //  var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+      //   window.HTMLInputElement.prototype, "value").set;
+      // nativeInputValueSetter.call(sNameElement, `${name} ${mname} ${lname}`);
+      // var inputEvent = new Event("input", { bubbles: true });
+      
+      
+      
+      // sNameElement.dispatchEvent(inputEvent);
+      //  setCurrentGBSNo(resp.data.sOldGreenBKNo);
+      //  setPreviousGBSNo(resp.data.sFstGreenBkNo);
+     }
+     else{
+       setName('');
+    
+       setAuthRegion([]);
+       console.log("Not found" , resp);
+       setAlertMessage(`No record found for GB Id: ${gbid}.` );
+      setAlertType('error');
+      snackbarOpen();
+     }
+   })
+   .catch((error) => {
+     if(error.response.status === 404){
+      setName('');
+    
+      setAuthRegion([]);
+      console.log("Not found" , error.response.data);
+      setAlertMessage(`${error.response.data}`);
+     setAlertType('warning');
+     snackbarOpen();
+     }
+     else if(error.response.status === 500){
+      setName('');
+    setAuthRegion([]);
+      console.log(error);
+      setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.` );
+      setAlertType('error');
+      snackbarOpen();
+     }
+     else{
+      setName('');
+    
+      setAuthRegion([]);
+       console.log(error);
+     }
+   });
+ };
+ const btnstyles = {background:'none', border:'none', cursor: 'pointer', color: 'blue'};
+    let valueAuthRegion =[];
+    authRegions.forEach(element => {
     if(element.id === nAuthRegionID){
         valueAuthRegion = element;
+        console.log(valueAuthRegion);
     }
+    
   });
+
 
     // const childrenTypeIssued =  () => { 
     //   return (typeIssuedData.map((data) =>  (<option value={data.id}>{data.sTypeIssued}</option>)))};
@@ -113,7 +220,18 @@ console.log("Madeb Edit Object received in dialog", madeb);
      }
      
    });
-
+   let valueMadebStatus = [];
+   valueMadebStatus = madebStatuses.find((x) => x.id === nMadebStatusID);
+   useEffect(() => {
+    console.log("Inside useEffect()");
+    const region = props.selectData['authRegions'].find((x) => x.id === nAuthRegionID);
+    setTimeout(() => setValue("AuthRegion", region,{
+      shouldValidate: true,
+      shouldDirty: true
+    }), 0);
+    
+   });
+   
   return (
     <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Bhorlak Madeb</DialogTitle>
@@ -161,23 +279,31 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
+                                    <Controller
+                                    render={props => (
                                     <Autocomplete
                                       openOnFocus
                                       clearOnEscape
                                       onChange={  
                                         (e, value) => {
+                                          props.onChange(value);
                                           if (value !== null) {
                                             console.log(value.id);
-                                            setAuthorityId(value.id);
-                                          }
-                                          else {
-                                            setAuthorityId(0);
-                                          }
+                                            setAuthRegionId(value.id);
+                                            setAuthRegion(value);
+                                        }
+                                        else {
+                                          setAuthRegionId(null);
+                                          setAuthRegion([]);
+                                        }
                                         }
                                       }
-                                     value={valueAuthRegion} 
+                                     value={authRegion} 
                                      id="id_nAuthorityId"
                                      options={authRegions}
+                                     inputRef={register({
+                                      required: true
+                                    })}
                                      autoHighlight
                                      getOptionLabel={(option) => option.sAuthRegion}
                                      renderOption={(option) => (
@@ -194,9 +320,19 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                            ...params.inputProps,
                                            autoComplete: 'new-password', // disable autocomplete and autofill
                                          }}
+                                         inputRef={register({
+                                          required: true
+                                        })}
                                         />
                                       )}
                                     />
+                                    )}
+                                    name="AuthRegion"
+                                    control={control}
+                                    rules={{ required: true }}
+                                    />
+                                      {errors.AuthRegion && <span style={{color: 'red'}}>Enter Authority Region</span>}
+                
                                   </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -225,7 +361,7 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                       name="sGBID"
                                       //required={true}
                                       value={sGBID}
-                                      onChange={(e) => { setGbId(e.target.value) }}
+                                      onChange={(e) => { handleChangeGBID(e.target.value) }}
                                       inputRef={register({
                                         required: true
                                       })}
@@ -234,6 +370,7 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                       <span style={{color: 'red'}}>This field is required</span>
                                     )}
                                   </FormControl>
+                                  {<button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button>}
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
@@ -302,19 +439,59 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                 
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
+                                    <Autocomplete
+                                      openOnFocus
+                                      clearOnEscape
+                                      onChange={  
+                                        (e, value) => {
+                                          if (value !== null) {
+                                            console.log(value.id);
+                                            setMadebStatusID(value.id);
+                                          }
+                                          else {
+                                            setMadebStatusID(0);
+                                          }
+                                        }
+                                      }
+                                     value={valueMadebStatus} 
+                                     id="id_nMadebStatusID"
+                                     options={madebStatuses}
+                                     autoHighlight
+                                     getOptionLabel={(option) => option.sMadebStatus}
+                                     renderOption={(option) => (
+                                       <React.Fragment>
+                                         <span>{option.sMadebStatus}</span>
+                                       </React.Fragment>
+                                     )}
+                                     renderInput={(params) => (
+                                       <TextField
+                                         {...params}
+                                         label="Madeb Status"
+                                         variant="standard"
+                                         inputProps={{
+                                           ...params.inputProps,
+                                           autoComplete: 'new-password', // disable autocomplete and autofill
+                                         }}
+                                        />
+                                      )}
+                                    />
+                                  </FormControl>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
                                         <TextField
-                                            id="sApprovedReject"
-                                            name="sApprovedReject"
-                                        label="Approved/Rejected"
+                                            id="sMadebStatusRemark"
+                                            name="sMadebStatusRemark"
+                                        label="Status Remarks"
                                         //required={true}
-                                        value={sApprovedReject}
-                                        onChange={(e) => { setApprovedReject(e.target.value) }}
+                                        value={sMadebStatusRemark}
+                                        onChange={(e) => { setMadebStatusRemark(e.target.value) }}
                                         
                                       />
                                       
                                     </FormControl>
                                 </Grid>
-
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
@@ -450,7 +627,7 @@ console.log("Madeb Edit Object received in dialog", madeb);
 
 
 export const AddDialog = (props) => {
-    const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
     
 
     // SnackBar Alerts 
@@ -476,10 +653,7 @@ export const AddDialog = (props) => {
 
 
 
-    const handleSnackBarSubmit = () =>{
-      // setMessage("Record Successfully Edited");
-      // setAlertType('success');
-      // setSnackbarOpen(true);
+    const handleAddSubmit = () =>{
       props.addAPICall(madeb);
     }
 
@@ -489,48 +663,45 @@ export const AddDialog = (props) => {
       setFname('');
     }
     const formPopulate = (value) => {
+      if(value === ''){
+        setAlertMessage(`Please enter a valid number...` );
+          setAlertType('error');
+          snackbarOpen();
+          return;
+      }
       console.log("Value in GBID: ", value);
       const gbid = value;
       const event = new Event('change' , {
         bubbles: true
       });
-    /* Need Greenbook record by passing GBID
-     * from Greenbook controller. 
-     * Must talk to Malay.
-    */
-    const sNameElement = document.getElementById("sName");
-    const nCurrentGBSnoElement = document.getElementById("nCurrentGBSno");
-    const nPreviousGBSnoElement = document.getElementById("nPreviousGBSno");
-       axios.get(`Greenbook/GetBasicDetailsFromGBID/?sGBID=`+ gbid)
-       .then(resp => {
-         if (resp.status === 200) {
-           console.log("Got gb record\n", resp.data);
-           console.log("Name Element:" , sNameElement);
-           const name = resp.data.greenBook.sFirstName ? resp.data.greenBook.sFirstName : '';
-           const mname = resp.data.greenBook.sMiddleName ? resp.data.greenBook.sMiddleName : '';
-           const lname = resp.data.greenBook.sLastName ? resp.data.greenBook.sLastName : '';
-           setName( `${name} ${mname} ${lname}`);
-           const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
-           
-            setAuthRegion(region);
-            setAuthRegionId(region.id);
-           
-           
-           
-           
-            //sNameElement.value=`${name} ${mname} ${lname}`;
-           var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-            window.HTMLInputElement.prototype, "value").set;
-          nativeInputValueSetter.call(sNameElement, `${name} ${mname} ${lname}`);
-          var inputEvent = new Event("input", { bubbles: true });
-          setName( `${name} ${mname} ${lname}`);
-          setFname(resp.data.sFathersName);
-          sNameElement.dispatchEvent(inputEvent);
+  
+   
+    axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=`+ gbid)
+    .then(resp => {
+      if (resp.status === 200) {
+        console.log("Got gb record\n", resp.data);
+   
+        const name = resp.data.sFirstName ? resp.data.sFirstName : '';
+        const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
+        const lname = resp.data.sLastName ? resp.data.sLastName : '';
+        setName( `${name} ${mname} ${lname}`);
+        setFname(resp.data.sFathersName);
+  
+        clearErrors("sName");
+        //setValue("sName");
+        const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
+        setAuthRegion(region);
+        setAuthRegionId(region.id);
+        setValue("AuthRegion", region, {
+          shouldValidate: true,
+          shouldDirty: true
+        })
           
          }
          else{
            setName('');
-           setFname('');
+    
+           setAuthRegion([]);
            console.log("Not found" , resp);
            setAlertMessage(`No record found for GB Id: ${gbid}.` );
           setAlertType('error');
@@ -538,14 +709,33 @@ export const AddDialog = (props) => {
          }
        })
        .catch((error) => {
-         setName('');
-         setName('');
-         console.log(error);
-         setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.` );
+         if(error.response.status === 404){
+          setName('');
+      
+          setAuthRegion([]);
+          console.log("Not found" , error.response.data);
+          setAlertMessage(`${error.response.data}`);
+         setAlertType('warning');
+         snackbarOpen();
+         }
+         else if(error.response.status === 500){
+          setName('');
+  
+          setAuthRegion([]);
+          console.log(error);
+          setAlertMessage(`Server error while fetching details for GB Id: ${gbid}.` );
           setAlertType('error');
           snackbarOpen();
+         }
+         else{
+          setName('');
+  
+          setAuthRegion([]);
+           console.log(error);
+         }
        });
      };
+  
 
   console.log(props.selectData);
   const [authRegions,setAuthRegions]= React.useState(props.selectData['authRegions']);
@@ -606,7 +796,7 @@ export const AddDialog = (props) => {
   return (
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Madeb Entry Form For Lost</DialogTitle>
-      <form onSubmit={handleSubmit(handleSnackBarSubmit)}>
+      <form onSubmit={handleSubmit(handleAddSubmit)}>
       <DialogContent>
         <DialogContentText>
         <div>
@@ -650,23 +840,30 @@ export const AddDialog = (props) => {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
+                                    <Controller
+                                      render={props => (
                                     <Autocomplete
                                       openOnFocus
                                       clearOnEscape
                                       onChange={  
                                         (e, value) => {
+                                          props.onChange(value);
                                           if (value !== null) {
                                             console.log(value.id);
                                             setAuthRegionId(value.id);
                                             setAuthRegion(value);
                                           }
                                           else {
-                                            setAuthRegionId(0);
+                                            setAuthRegionId(null);
+                                          setAuthRegion([]);
                                           }
                                         }
                                       }
                                      value = {authRegion} 
                                      id="id_nAuthorityId"
+                                     inputRef={register({
+                                      required: true
+                                    })}
                                      options={authRegions}
                                      autoHighlight
                                      getOptionLabel={(option) => option.sAuthRegion}
@@ -685,14 +882,20 @@ export const AddDialog = (props) => {
                                            ...params.inputProps,
                                            autoComplete: 'new-password', // disable autocomplete and autofill
                                          }}
-                                         
+                                         inputRef={register({
+                                          required: true
+                                        })}
                                          
                                         />
                                       )}
                                       
                                       name="authority"
                                     />
-                                    
+                                      )} 
+                                      name="AuthRegion"
+                                      control={control}
+                                      rules={{ required: true }}/>
+                                         {errors.AuthRegion && <span style={{color: 'red'}}>Enter Authority Region</span>}
                                   </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
