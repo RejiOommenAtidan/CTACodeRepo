@@ -280,6 +280,9 @@ export default () => {
         if(makeListParams.nPrinted === 0){
           setMakeTable(true);
         }
+        else {
+          setMakeTable(false);
+        }
         setLoading(false);
         setMakeListParams(makeListParams);
         console.log("After adding serial number", dataAPI);
@@ -322,7 +325,7 @@ export default () => {
             <Link color="inherit" href="/Home" >
               Home
             </Link>
-            <Typography color="textPrimary">GreenBook Serial Number</Typography>
+            <Typography color="textPrimary">Make List</Typography>
           </Breadcrumbs>
       <br />
       <Paper style={{padding:'15px',paddingTop:'20px'}}>

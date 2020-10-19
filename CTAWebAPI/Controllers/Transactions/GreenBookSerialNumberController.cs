@@ -43,7 +43,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetGreenBookSerialNumbers(int records = 1000)
+        public IActionResult GetGreenBookSerialNumbers(int records = 500)
         {
             #region Get GreenBookSerialNumbers limit by 'records'.
             //
