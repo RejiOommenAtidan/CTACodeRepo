@@ -1,5 +1,4 @@
-﻿using CTADBL.BaseClasses.Masters;
-using CTADBL.BaseClasses.Transactions;
+﻿using CTADBL.BaseClasses.Transactions;
 using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
