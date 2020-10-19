@@ -3,7 +3,8 @@ import {
   Grid,
   Typography,
   Breadcrumbs,
-  Link
+  Link,
+  Button
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
@@ -19,7 +20,7 @@ import MaterialTable from 'material-table';
 import AddBox from '@material-ui/icons/AddBox';
 import Search from '@material-ui/icons/Search';
 import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
-
+import { ViewDialog } from '../../search/dialog';
 const tableIcons = oTableIcons;
 
 const useStyles = makeStyles((theme) => ({
@@ -99,6 +100,25 @@ export default function EnhancedTable() {
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
   const [isLoading, setisLoading] = React.useState(true);
+  const [gbId, setGbId] = React.useState('');
+ //View GB
+const [viewModal, setViewModal] = useState(false);
+const handleViewClickClose = () => {
+
+  setViewModal(false);
+};
+
+const viewGb = (GBID) => {
+  console.log(GBID)
+  setGbId(GBID);
+  setViewModal(true);
+}
+const openRelationGB = (newsGBID) => {
+  handleViewClickClose();
+  setTimeout(() => viewGb(newsGBID), 0);
+} 
+
+//Alert
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const alertObj = {
@@ -182,7 +202,8 @@ export default function EnhancedTable() {
       },
     },
     {
-      field: "madeb.sGBID",
+      //field: "madeb.sGBID",
+      render:  rowData =>rowData['madeb']['sGBID']? <Button className="m-2 btn-transparent btn-link btn-link-first" onClick={() => { viewGb(rowData['madeb']['sGBID'])}}><span>{rowData['madeb']['sGBID']}</span></Button>:'',
       title: "GB Id",
       cellStyle: {
         padding: '5px',
@@ -605,6 +626,13 @@ export default function EnhancedTable() {
               }
             ]}
           />
+          {viewModal && <ViewDialog
+          viewModal={viewModal}
+          classes={classes}
+          handleViewClickClose={handleViewClickClose}
+          sGBID={gbId}
+          openRelationGB={openRelationGB}
+        />}
           {addModal && <AddDialog
             addModal={addModal}
             classes={classes}
