@@ -1568,7 +1568,13 @@ export default function EditEntry(props) {
                 style={{ marginRight: "10px" }}
               >Save</Button>
               <Button variant="outlined"
-                onClick={() => { history.push('/Home') }}
+                onClick={
+                  () => 
+                  { 
+                    props.history.goBack();
+                    // history.push(props.location);
+                  }
+                }
               >Cancel</Button>
             </Grid>
           </Grid>

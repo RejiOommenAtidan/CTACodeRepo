@@ -20,7 +20,7 @@ export const sSnackbarAddMessage = "Record added successfully";
 export const sSnackbarUpdateMessage = "Record updated successfully";
 export const sDateFormat = "DD-MM-YYYY";
 export const sDateFormatMUIDatepicker = "dd-MM-yyyy";
-export const aPageSizeArray = [10, 15, 20, 30, 50, 70, 100];
+export const aPageSizeArray = [5,10, 15, 20, 30, 50, 70, 100];
 export const nPageSize = 15;
 export const oOptions = {
     // loadingType:"linear",

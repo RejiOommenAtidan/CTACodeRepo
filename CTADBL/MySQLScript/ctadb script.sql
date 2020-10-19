@@ -1056,14 +1056,14 @@ DELIMITER $$
 USE `ctadb`$$
 CREATE PROCEDURE `spGetNewGreenBookDataByFormNo` (IN nFormNumberIN int(11))
 BEGIN
-	select ID, sAuthRegion from lstauthregion;
-	select ID, sCountry from lstcountry ;
-	select Id, sProvince from lstProvince;
-	select Id, sQualification from lstQualification;
-	select Id, sOccupationDesc from lstoccupation;
-	select Id, sDOBApproxName from lstDOBApprox;
-	select * from tblMadeb 
-	where nMadebTypeId = 1 and nFormNumber = nFormNumberIN;
+	select ID, sAuthRegion, sCountryID from lstauthregion;
+    select ID, sCountry, sCountryID from lstcountry ;
+    select Id, sProvince from lstProvince;
+    select Id, sQualification, sQualificationID from lstQualification;
+    select Id, sOccupationDesc from lstoccupation;
+    select Id, sDOBApproxID, sDOBApproxName from lstDOBApprox;
+    select * from tblMadeb 
+    where nMadebTypeId = 1 and nFormNumber = nFormNumberIN;
 END$$
 
 DELIMITER ;
@@ -1076,10 +1076,11 @@ USE `ctadb`$$
 CREATE PROCEDURE `spGetNewMadebData` ()
 BEGIN
 	select Id, sMadebDisplayName from lstmadebtype;
-    select ID, sAuthRegion from lstauthregion;
-    select Id, sTypeIssued from lsttypeissued;
-	-- select 7000 as nFormNumber;
-	select IF(IFNULL(nFormNumber,0), IFNULL(nFormNumber,0) + 1,7000) as nFormNumber from tblmadeb order by nFormNumber desc limit 0,1;
+select ID, sAuthRegion from lstauthregion;
+select Id, sTypeIssued from lsttypeissued;
+select Id, sMadebStatus from lstmadebstatus;
+-- select 7000 as nFormNumber;
+select IF(IFNULL(nFormNumber,0), IFNULL(nFormNumber,0) + 1,7000) as nFormNumber from tblmadeb order by nFormNumber desc limit 0,1;
 END$$
 
 DELIMITER ;
@@ -1188,3 +1189,16 @@ BEGIN
 END$$
 DELIMITER ;
 
+CREATE PROCEDURE `spGetFormNumber`(IN formNumberIN INT, OUT result INT)
+BEGIN
+	DECLARE exist BOOLEAN;
+    
+    
+    SELECT EXISTS (SELECT nFormNumber FROM tblmadeb WHERE nFormNumber = formNumberIN) INTO exist;
+    IF (exist) THEN
+		SELECT MAX(nFormNumber+1) FROM tblmadeb INTO formNumberIN;
+		
+	END IF;
+    SET result = formNumberIN;
+    SELECT result;
+END

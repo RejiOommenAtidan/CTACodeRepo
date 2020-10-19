@@ -325,6 +325,13 @@ const SidebarMenu = (props) => {
                         Type Issued
                     </NavLink>
                     </li>
+                    <li>
+                      <NavLink
+                        onClick={toggleSidebarMobile}
+                        to="/Chartel">
+                        Chartel
+                    </NavLink>
+                    </li>
                   </ul>
                 </Collapse>
               </li>}
