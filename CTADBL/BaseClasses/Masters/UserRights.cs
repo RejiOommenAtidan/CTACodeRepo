@@ -17,5 +17,5 @@ namespace CTADBL.BaseClasses.Masters
         public int Id { get { return _Id; } set { _Id = value; } }
         public string sUserRightsName { get { return _sUserRightsName; } set { _sUserRightsName = value; } }
         #endregion
-     }
+    }
 }
