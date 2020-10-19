@@ -284,6 +284,24 @@ const openRelationGB = (newsGBID) => {
       },
     },
     {
+      field: "sMadebStatus",
+      title: "Status",
+
+      cellStyle: {
+        padding: '5px',
+
+      },
+    },
+    {
+      field: "madeb.sMadebStatusRemark",
+      title: "Status Remark",
+
+      cellStyle: {
+        padding: '5px',
+
+      },
+    },
+    {
       field: "madeb.dtReject",
       title: "Reject Date",
       // type: 'date',
@@ -399,7 +417,9 @@ const openRelationGB = (newsGBID) => {
       dtIssueAction: tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
       dtReject: tableRowArray['madeb']['dtReject'],
-      dtReturnEmail: tableRowArray['madeb']['dtReturnEmail']
+      dtReturnEmail: tableRowArray['madeb']['dtReturnEmail'],
+      nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
+      sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
     });
     //console.log(tableRowArray);
     setEditModal(true);

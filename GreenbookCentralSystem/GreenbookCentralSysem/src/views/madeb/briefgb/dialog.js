@@ -244,10 +244,10 @@ console.log("Madeb Edit Object received in dialog", madeb);
    useEffect(() => {
     console.log("Inside useEffect()");
     const region = props.selectData['authRegions'].find((x) => x.id === nAuthRegionID);
-    setValue("AuthRegion", region,{
+    setTimeout(() => setValue("AuthRegion", region,{
       shouldValidate: true,
       shouldDirty: true
-    });
+    }), 0);
     
    });
   return (
@@ -303,7 +303,7 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                       name="sGBID"
                                       //required={true}
                                       value={sGBID}
-                                      onChange={(e) => { setGbId(e.target.value) }}
+                                      onChange={(e) => { handleChangeGBID(e.target.value) }}
                                       inputRef={register({
                                         required: true
                                       })}
@@ -336,7 +336,10 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                               {...params} 
                                               label="Authority"
                                               variant="standard"
-                                              name="authority_text"
+                                              name="sAuthRegionText"
+                                              inputRef={register({
+                                                required: true
+                                              })}
                                               inputProps={{
                                                 ...params.inputProps,
                                                 autoComplete: 'new-password', // disable autocomplete and autofill
@@ -359,7 +362,7 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                             }
                                           }
                                           value={authRegion}
-                                          
+                                          defaultValue={authRegion}
                                         />
                                       )}
                                       name="AuthRegion"
@@ -374,12 +377,12 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                         <TextField
                                             id="sName"
                                             name="sName"
-                                        label="Name"
-                                        //required={true}
-                                        value={sName}
-                                        onChange={(e) => { 
-                                          setName(e.target.value);
-                                          setValue("sName", e.target.value);
+                                            label="Name"
+                                            //required={true}
+                                            value={sName}
+                                            onChange={(e) => { 
+                                            setName(e.target.value);
+                                            setValue("sName", e.target.value);
                                        }}
                                         inputRef={register({
                                           required: true
@@ -642,7 +645,12 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                         />
                                     </FormControl>
                                 </Grid>
-                                
+                                { snackbar && <Alerts
+                                   alertObj={alertObj}
+                                  snackbar={snackbar}
+                                  snackbarClose={snackbarClose}
+                                  /> 
+                                }
                             </Grid>
                         </div>
         </DialogContentText>
@@ -967,7 +975,10 @@ export const AddDialog = (props) => {
                                               {...params} 
                                               label="Authority"
                                               variant="standard"
-                                              name="authority_text"
+                                              name="sAuthRegionText"
+                                              inputRef={register({
+                                                required: true
+                                              })}
                                               inputProps={{
                                                 ...params.inputProps,
                                                 autoComplete: 'new-password', // disable autocomplete and autofill

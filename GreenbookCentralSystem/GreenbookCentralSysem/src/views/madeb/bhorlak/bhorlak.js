@@ -291,7 +291,7 @@ const openRelationGB = (newsGBID) => {
       },
     },
     {
-      field: "madeb.nMadebStatusID",
+      field: "sMadebStatus",
       title: "Status",
       headerStyle: {
         padding: '0px',
@@ -505,7 +505,9 @@ const openRelationGB = (newsGBID) => {
       dtIssueAction: tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
       dtReturnEmail: tableRowArray['madeb']['dtReturnEmail'],
-      nCurrentGBSno: tableRowArray['madeb']['nCurrentGBSno']
+      nCurrentGBSno: tableRowArray['madeb']['nCurrentGBSno'],
+      nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
+      sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
     });
 
     console.log(bhorlakObj);

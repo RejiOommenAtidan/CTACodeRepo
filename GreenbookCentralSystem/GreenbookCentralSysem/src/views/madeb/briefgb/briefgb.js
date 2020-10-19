@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import EmailIcon from '@material-ui/icons/Email';
 //local
 import { EmailDialog } from '../email';
+import { ViewDialog } from '../../search/dialog';
 import { Alerts } from '../../alerts';
 import { AddDialog, EditDialog } from './dialog';
 import { oOptions, oTableIcons, sDateFormat } from 'config/commonConfig';
@@ -102,6 +103,23 @@ export default () => {
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
 
+  //View GB
+  const [viewModal, setViewModal] = useState(false);
+  const handleViewClickClose = () => {
+
+  setViewModal(false);
+    };
+
+  const viewGb = (GBID) => {
+    console.log(GBID)
+    setGBID(GBID);
+    setViewModal(true);
+  }
+  const openRelationGB = (newsGBID) => {
+    handleViewClickClose();
+    setTimeout(() => viewGb(newsGBID), 0);
+  } 
+
 
   // SnackBar Alerts 
 
@@ -174,7 +192,8 @@ export default () => {
       },
     },
     {
-      field: "madeb.sGBID",
+      //field: "madeb.sGBID",
+      render:  rowData =>rowData['madeb']['sGBID']? <Button className="m-2 btn-transparent btn-link btn-link-first" onClick={() => { viewGb(rowData['madeb']['sGBID'])}}><span>{rowData['madeb']['sGBID']}</span></Button>:'', 
       title: "GB Id",
       cellStyle: {
         padding: '5px',
@@ -538,6 +557,13 @@ export default () => {
               ]
             }
           />
+          {viewModal && <ViewDialog
+          viewModal={viewModal}
+          classes={classes}
+          handleViewClickClose={handleViewClickClose}
+          sGBID={sGBID}
+          openRelationGB={openRelationGB}
+          />}
           {addModal && <AddDialog
             addModal={addModal}
             selectData={selectData}
