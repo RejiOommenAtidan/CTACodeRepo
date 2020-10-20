@@ -28,7 +28,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
 import { sDateFormatMUIDatepicker } from '../../../config/commonConfig';
-import { BackdropComponent } from '../../backdrop/index';
+import { BackdropComponent } from '../../backdrop/pageBackDrop';
 import { Alerts } from '../../alerts/index';
 
 const useStyles = makeStyles({
@@ -98,10 +98,17 @@ const useStyles = makeStyles({
       marginRight: 5,
       fontSize: 16
     }
+  },
+  expansionPanel:{
+    backgroundColor:'#4e5287'
+  },
+  expansionHeading:{
+    color:'#ffffff'
   }
 });
 
 export default function NewEntry(props) {
+  const [backdrop, setBackdrop] = React.useState(true);
   const classes = useStyles();
   let history = useHistory();
   const [expanded, setExpanded] = React.useState('');
@@ -245,7 +252,6 @@ export default function NewEntry(props) {
       .then(resp => {
         if (resp.status === 200) {
           //Masters
-          debugger;
           setlAuthRegion(resp.data.lAuthRegion);
           setlCountry(resp.data.lCountry);
           setlDOBApprox(resp.data.lDOBApprox);
@@ -262,6 +268,7 @@ export default function NewEntry(props) {
           setsAliasName(resp.data.oMadeb.sAlias);
           setdtFormDate(resp.data.oMadeb.dtReceived);
           setExpanded('panel1');
+          setBackdrop(false);
         }
       })
       .catch(error => {
@@ -284,12 +291,13 @@ export default function NewEntry(props) {
               onChange={handleAccordionChange('panel1')}
             >
               <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                className={classes.expansionPanel}
               >
                 <Typography
-                  className={"font-weight-bold font-size-sm mb-1 text-black"}
+                  className={classes.expansionHeading}
                 >Personal Information</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
@@ -446,7 +454,8 @@ export default function NewEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUPlaceOfBirth"
@@ -467,7 +476,7 @@ export default function NewEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUOriginVillage"
@@ -487,6 +496,7 @@ export default function NewEntry(props) {
                         <span style={{ color: 'red' }}>This field is required</span>
                       )}
                     </FormControl>
+                  </Grid>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
@@ -517,7 +527,8 @@ export default function NewEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
                         openOnFocus
@@ -567,7 +578,7 @@ export default function NewEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sBirthPlace"
@@ -588,6 +599,7 @@ export default function NewEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
+                </Grid>
                 </Grid>
                 <Grid xs={6}>
                   <Grid item xs={12}>
@@ -619,7 +631,8 @@ export default function NewEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sFathersName"
@@ -640,28 +653,7 @@ export default function NewEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_TBUFathersName"
-                        label="Father's Name (Tibetan) ཕ་མིང་།"
-                        type="text"
-                        onChange={(e) => { setTBUFathersName(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        name="name_TBUFathersName"
-                        value={TBUFathersName}
-                        inputRef={register({
-                          required: true
-                        })}
-                      />
-                      {_.get("name_TBUFathersName.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sFathersGBID"
@@ -686,7 +678,30 @@ export default function NewEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
+                  </Grid>
                   <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_TBUFathersName"
+                        label="Father's Name (Tibetan) ཕ་མིང་།"
+                        type="text"
+                        onChange={(e) => { setTBUFathersName(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        name="name_TBUFathersName"
+                        value={TBUFathersName}
+                        inputRef={register({
+                          required: true
+                        })}
+                      />
+                      {_.get("name_TBUFathersName.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
+                    </FormControl>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sMothersName"
@@ -707,28 +722,7 @@ export default function NewEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_TBUMothersName"
-                        label="Mother's Name (Tibetan) མ་མིང་།"
-                        type="text"
-                        onChange={(e) => { setTBUMothersName(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        name="name_TBUMothersName"
-                        value={TBUMothersName}
-                        inputRef={register({
-                          required: true
-                        })}
-                      />
-                      {_.get("name_TBUMothersName.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sMothersGBID"
@@ -750,6 +744,28 @@ export default function NewEntry(props) {
                       )}
                       {_.get("name_sMothersGBID.type", errors) === "maxLength" && (
                         <span style={{ color: 'red' }}>Mother's GB ID cannot exceed 7 characters</span>
+                      )}
+                    </FormControl>
+                  </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_TBUMothersName"
+                        label="Mother's Name (Tibetan) མ་མིང་།"
+                        type="text"
+                        onChange={(e) => { setTBUMothersName(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        name="name_TBUMothersName"
+                        value={TBUMothersName}
+                        inputRef={register({
+                          required: true
+                        })}
+                      />
+                      {_.get("name_TBUMothersName.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
                       )}
                     </FormControl>
                   </Grid>
@@ -909,12 +925,13 @@ export default function NewEntry(props) {
               onChange={handleAccordionChange('panel2')}
             >
               <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                className={classes.expansionPanel}
               >
                 <Typography
-                  className={"font-weight-bold font-size-sm mb-1 text-black"}
+                  className={classes.expansionHeading}
                 >Basic Personal Information</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
@@ -1284,17 +1301,19 @@ export default function NewEntry(props) {
               onChange={handleAccordionChange('panel3')}
             >
               <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                className={classes.expansionPanel}
               >
                 <Typography
-                  className={"font-weight-bold font-size-sm mb-1 text-black"}
+                  className={classes.expansionHeading}
                 >Relation & Contact Details</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid item xs={6}>
-                  <Grid item xs={12}>
+                <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sFathersID"
@@ -1308,8 +1327,7 @@ export default function NewEntry(props) {
                       />
                     </FormControl>
                   </Grid>
-
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sMothersID"
@@ -1323,21 +1341,23 @@ export default function NewEntry(props) {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
-                        id="id_sSpouseID"
-                        label="Spouse's Old GB No"
+                        id="id_sSpouseName"
+                        label="Spouse Name"
                         type="text"
-                        onChange={(e) => { setsSpouseID(e.target.value); }}
+                        onChange={(e) => { setsSpouseName(e.target.value); }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sSpouseID}
+                        value={sSpouseName}
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sSpouseGBID"
@@ -1362,22 +1382,23 @@ export default function NewEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                </Grid>
-                <Grid item xs={6}>
+                  </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
-                        id="id_sSpouseName"
-                        label="Spouse Name"
+                        id="id_sSpouseID"
+                        label="Spouse's Old GB No"
                         type="text"
-                        onChange={(e) => { setsSpouseName(e.target.value); }}
+                        onChange={(e) => { setsSpouseID(e.target.value); }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sSpouseName}
+                        value={sSpouseID}
                       />
                     </FormControl>
                   </Grid>
+                </Grid>
+                <Grid item xs={6}>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
@@ -1453,7 +1474,10 @@ export default function NewEntry(props) {
             </Grid>
           </Grid>
         </Grid>
-      </form>
+      </form>  
+{backdrop && <BackdropComponent
+  backdrop={backdrop}
+/>}
     </Container>
   );
 }

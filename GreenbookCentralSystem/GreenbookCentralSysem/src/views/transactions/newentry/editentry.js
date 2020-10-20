@@ -29,6 +29,8 @@ import {
 import handleError from '../../../auth/_helpers/handleError';
 import { sDateFormatMUIDatepicker } from '../../../config/commonConfig';
 import {IssueBookTable} from '../issuebooktable';
+import { BackdropComponent } from '../../backdrop/pageBackDrop';
+
 const useStyles = makeStyles({
   root: {
     height: '100%',
@@ -96,10 +98,17 @@ const useStyles = makeStyles({
       marginRight: 5,
       fontSize: 16
     }
+  },
+  expansionPanel:{
+    backgroundColor:'#4e5287'
+  },
+  expansionHeading:{
+    color:'#ffffff'
   }
 });
 
 export default function EditEntry(props) {
+  const [backdrop, setBackdrop] = React.useState(true);
   const classes = useStyles();
   let history = useHistory();
   const [expanded, setExpanded] = React.useState('');
@@ -238,6 +247,7 @@ export default function EditEntry(props) {
                 setTBUMothersName(resp.data.TBUMothersName);
                 setTBUSpouseName(resp.data.TBUSpouseName);
                 setExpanded("panel1");
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -340,12 +350,14 @@ export default function EditEntry(props) {
               onChange={handleAccordionChange('panel1')}
             >
               <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                className={classes.expansionPanel}
               >
                 <Typography
-                  className={"font-weight-bold font-size-md mb-1 text-black"}>Personal Information</Typography>
+                className={classes.expansionHeading}
+                >Personal Information</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid item xs={6}>
@@ -501,7 +513,8 @@ export default function EditEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUPlaceOfBirth"
@@ -522,7 +535,7 @@ export default function EditEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUOriginVillage"
@@ -542,6 +555,7 @@ export default function EditEntry(props) {
                         <span style={{ color: 'red' }}>This field is required</span>
                       )}
                     </FormControl>
+                  </Grid>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
@@ -572,7 +586,8 @@ export default function EditEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
                         value={lCountry.find(birthCountry => birthCountry.sCountryID === sBirthCountryID)}
@@ -622,7 +637,7 @@ export default function EditEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         value={sBirthPlace}
@@ -643,6 +658,7 @@ export default function EditEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
+                </Grid>
                 </Grid>
                 <Grid xs={6}>
                   <Grid item xs={12}>
@@ -674,7 +690,8 @@ export default function EditEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         value={sFathersName}
@@ -696,28 +713,7 @@ export default function EditEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_TBUFathersName"
-                        label="Father's Name (Tibetan) ཕ་མིང་།"
-                        type="text"
-                        onChange={(e) => { setTBUFathersName(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        name="name_TBUFathersName"
-                        value={TBUFathersName}
-                        inputRef={register({
-                          required: true
-                        })}
-                      />
-                      {_.get("name_TBUFathersName.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         value={sFathersGBID}
@@ -742,7 +738,30 @@ export default function EditEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
+                  </Grid>
                   <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_TBUFathersName"
+                        label="Father's Name (Tibetan) ཕ་མིང་།"
+                        type="text"
+                        onChange={(e) => { setTBUFathersName(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        name="name_TBUFathersName"
+                        value={TBUFathersName}
+                        inputRef={register({
+                          required: true
+                        })}
+                      />
+                      {_.get("name_TBUFathersName.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
+                    </FormControl>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sMothersName"
@@ -763,28 +782,7 @@ export default function EditEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_TBUMothersName"
-                        label="Mother's Name (Tibetan) མ་མིང་།"
-                        type="text"
-                        onChange={(e) => { setTBUMothersName(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        name="name_TBUMothersName"
-                        value={TBUMothersName}
-                        inputRef={register({
-                          required: true
-                        })}
-                      />
-                      {_.get("name_TBUMothersName.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         value={sMothersGBID}
@@ -806,6 +804,28 @@ export default function EditEntry(props) {
                       )}
                       {_.get("name_sMothersGBID.type", errors) === "maxLength" && (
                         <span style={{ color: 'red' }}>Mother's GB ID cannot exceed 7 characters</span>
+                      )}
+                    </FormControl>
+                  </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_TBUMothersName"
+                        label="Mother's Name (Tibetan) མ་མིང་།"
+                        type="text"
+                        onChange={(e) => { setTBUMothersName(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        name="name_TBUMothersName"
+                        value={TBUMothersName}
+                        inputRef={register({
+                          required: true
+                        })}
+                      />
+                      {_.get("name_TBUMothersName.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
                       )}
                     </FormControl>
                   </Grid>
@@ -965,12 +985,13 @@ export default function EditEntry(props) {
               onChange={handleAccordionChange('panel2')}
             >
               <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                className={classes.expansionPanel}
               >
                 <Typography
-                  className={"font-weight-bold font-size-md mb-1 text-black"}
+                className={classes.expansionHeading}
                 >Basic Personal Information</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
@@ -1345,17 +1366,19 @@ export default function EditEntry(props) {
               onChange={handleAccordionChange('panel3')}
             >
               <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
+              expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                className={classes.expansionPanel}
               >
                 <Typography
-                  className={"font-weight-bold font-size-md mb-1 text-black"}
+                className={classes.expansionHeading}
                 >Relation & Contact Details</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid item xs={6}>
-                  <Grid item xs={12}>
+                <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         value={sFathersID}
@@ -1369,8 +1392,7 @@ export default function EditEntry(props) {
                       />
                     </FormControl>
                   </Grid>
-
-                  <Grid item xs={12}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         value={sMothersID}
@@ -1383,6 +1405,48 @@ export default function EditEntry(props) {
                         className={classes.textField}
                       />
                     </FormControl>
+                  </Grid>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        value={sSpouseName}
+                        id="id_sSpouseName"
+                        label="Spouse Name"
+                        type="text"
+                        onChange={(e) => { setsSpouseName(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                  <FormControl className={classes.formControl}>
+                    <TextField
+                      value={sSpouseGBID}
+                      id="id_sSpouseGBID"
+                      name="name_sSpouseGBID"
+                      label="Spouse GB No"
+                      type="text"
+                      onChange={(e) => { setsSpouseGBID(e.target.value); }}
+                      fullWidth
+                      margin="dense"
+                      className={classes.textField}
+                      inputRef={register({
+                        minLength: 7,
+                        maxLength: 7
+                      })}
+                    />
+                    {_.get("name_sSpouseGBID.type", errors) === "minLength" && (
+                      <span style={{ color: 'red' }}>Spouse's GB ID No cannot subceed 7 characters</span>
+                    )}
+                    {_.get("name_sSpouseGBID.type", errors) === "maxLength" && (
+                      <span style={{ color: 'red' }}>Spouse's GB No cannot exceed 7 characters</span>
+                    )}
+                  </FormControl>
+                </Grid>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
@@ -1398,47 +1462,8 @@ export default function EditEntry(props) {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        value={sSpouseGBID}
-                        id="id_sSpouseGBID"
-                        name="name_sSpouseGBID"
-                        label="Spouse GB No"
-                        type="text"
-                        onChange={(e) => { setsSpouseGBID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        inputRef={register({
-                          minLength: 7,
-                          maxLength: 7
-                        })}
-                      />
-                      {_.get("name_sSpouseGBID.type", errors) === "minLength" && (
-                        <span style={{ color: 'red' }}>Spouse's GB ID No cannot subceed 7 characters</span>
-                      )}
-                      {_.get("name_sSpouseGBID.type", errors) === "maxLength" && (
-                        <span style={{ color: 'red' }}>Spouse's GB No cannot exceed 7 characters</span>
-                      )}
-                    </FormControl>
-                  </Grid>
                 </Grid>
                 <Grid item xs={6}>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        value={sSpouseName}
-                        id="id_sSpouseName"
-                        label="Spouse Name"
-                        type="text"
-                        onChange={(e) => { setsSpouseName(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                      />
-                    </FormControl>
-                  </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
@@ -1508,11 +1533,14 @@ export default function EditEntry(props) {
               onChange={handleAccordionChange('panel4')}
             >
               <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
+              expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                className={classes.expansionPanel}
               >
-                <Typography className="font-weight-bold font-size-md mb-1 text-black">Book Issued Details</Typography>
+                <Typography 
+                className={classes.expansionHeading}
+                >Book Issued Details</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
              
@@ -1530,11 +1558,14 @@ export default function EditEntry(props) {
               onChange={handleAccordionChange('panel6')}
             >
               <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon />}
+              expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                className={classes.expansionPanel}
               >
-                <Typography className="font-weight-bold font-size-md mb-1 text-black">Notes</Typography>
+                <Typography 
+                className={classes.expansionHeading}
+                >Notes</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 {/*{data.gbNotes.length != 0 &&
@@ -1580,6 +1611,9 @@ export default function EditEntry(props) {
           </Grid>
         </Grid>
       </form>
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
+      />}
     </Container>
   );
 }

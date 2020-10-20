@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Container,
-  Grid
+  Grid,
+  Button
 } from '@material-ui/core';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,8 +11,9 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import MaterialTable from 'material-table';
 import FilterList from '@material-ui/icons/FilterList';
 import handleError from '../../../auth/_helpers/handleError';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import IconButton from '@material-ui/core/IconButton';
+import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
+import Moment from 'moment';
 
 const tableIcons = oTableIcons;
 
@@ -19,6 +21,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function GBList(props) {
+  Moment.locale('en');
   const classes = useStyles();
   let history = useHistory();
   const [dataAPI, setdataAPI] = useState([]);
@@ -28,13 +31,37 @@ export default function GBList(props) {
 
   const columns = [
     {
+
       field: "sGBID",
       title: "Greenbook ID",
       cellStyle: {
         padding: '5px',
         paddingLeft: '10px'
       },
-      export: true
+      export: true,
+      render: rowData => <Button size="small" color="primary"
+        onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+      >
+        {rowData["sGBID"]}
+      </Button>,
+    },
+    {
+      title: "Fullname",
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px'
+      },
+      export: true,
+      render: rowData => rowData["sFirstName"] === null ? "" : rowData["sFirstName"] + " " + rowData["sMiddleName"] === null ? "" : rowData["sMiddleName"] + " " + rowData["sLastName"] === null ? "" : rowData["sLastName"],
+    },
+    {
+      title: "Age",
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px'
+      },
+      export: true,
+      render: rowData => rowData["dtDOB"] === null ? "" : Moment().diff(rowData["dtDOB"],'years')
     },
     {
       field: 'edit',
