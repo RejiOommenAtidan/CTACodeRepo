@@ -38,9 +38,9 @@ export const AddDialog = (props) => {
   const [message,setMessage]=React.useState('');
   const [alertType,setAlertType]=React.useState('');
 
-  const [authRegions, setAuthRegionData]= React.useState(props.selectData['authRegions']);
-  const [madebTypes, setMadebTypesData]= React.useState(props.selectData['madebTypes']);
-  const [countries, setCountriesData] = React.useState(props.selectData['countries']);
+  const [authRegions, setAuthRegions]= React.useState(props.selectData['authRegions']);
+  const [madebTypes, setMadebTypes]= React.useState(props.selectData['madebTypes']);
+  const [countries, setCountries] = React.useState(props.selectData['countries']);
 
   const [id, setId] = React.useState(0);
   const [nBookNo, setBookNo] = useState(props.selectData['nBookNo']);
@@ -97,9 +97,9 @@ export const AddDialog = (props) => {
           const country = countries.find((x) => x.sCountryID === resp.data.sCountryID);
           const region  = authRegions.find((x)  => x.sAuthRegion === props.gbSerialObj.sAuthRegion);
           const madeb = madebTypes.find((x) => x.sMadebType === props.gbSerialObj.sMadebType )
-          setCountryID(country.sCountryID);
-          setAuthRegionId(region.id);
-          setMadebTypeId(madeb.id);
+          country && setCountryID(country.sCountryID);
+          region && setAuthRegionId(region.id);
+          madeb && setMadebTypeId(madeb.id);
           // Handle validation on automatic field set. React fails to do this.
 
           // For name
@@ -155,7 +155,7 @@ export const AddDialog = (props) => {
 
   return (
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Green Book Serial Number</DialogTitle>
+      <DialogTitle id="form-dialog-title">Generate GreenBook Serial Number</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
       <DialogContent>
         <DialogContentText>

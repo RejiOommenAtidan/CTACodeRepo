@@ -151,10 +151,11 @@ export default () => {
       cellStyle: {
         padding:'5px',
       },
+      hidden:true,
     },
     {
       field: "edit",
-      title: "Assign",
+      title: "Generate",
       sorting: false,
       export:false,
       filtering:false,
@@ -289,13 +290,13 @@ export default () => {
             <Link color="inherit" href="/Home" >
               Home
             </Link>
-            <Typography color="textPrimary">GreenBook Serial Number</Typography>
+            <Typography color="textPrimary">Give GreenBook Serial Number</Typography>
           </Breadcrumbs>
           <MaterialTable 
             style={{padding:'10px',width:'100%', border:'2px solid grey',borderRadius:'10px'}}
             isLoading = {loading}
             icons={tableIcons}
-            title="GreenBook Serial Number"
+            title="Give GreenBook Serial Number"
             columns={columns}
             data={dataAPI}        
             options={oOptions}

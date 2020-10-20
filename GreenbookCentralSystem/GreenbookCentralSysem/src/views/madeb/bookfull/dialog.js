@@ -59,8 +59,8 @@ export const EditDialog = (props) => {
   console.log(props.bookFullObj);
   
   const handleSubmitEditRecord = () =>{
-    alert("Form Submitted");
-    //props.editAPICall(madeb);
+    //alert("Form Submitted");
+    props.editAPICall(madeb);
     
   }
   
@@ -671,8 +671,8 @@ export const AddDialog = (props) => {
 
    
     const handleSnackBarSubmit = () =>{
-      alert("Submit form called");
-      //props.addAPICall(madeb);
+      //alert("Submit form called");
+      props.addAPICall(madeb);
     }
 
     const handleChangeGBID = (value) => {

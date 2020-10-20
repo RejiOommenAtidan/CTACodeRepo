@@ -344,13 +344,13 @@ export default () => {
             <Link color="inherit" href="/Home" >
               Home
             </Link>
-            <Typography color="textPrimary">GreenBook Serial Number</Typography>
+            <Typography color="textPrimary">Edit GreenBook Serial Number</Typography>
           </Breadcrumbs>
           <MaterialTable 
             style={{padding:'10px',width:'100%', border:'2px solid grey',borderRadius:'10px'}}
             isLoading = {loading}
             icons={tableIcons}
-            title="GreenBook Serial Number"
+            title="Edit GreenBook Serial Number"
             columns={columns}
             data={dataAPI}        
             options={oOptions}

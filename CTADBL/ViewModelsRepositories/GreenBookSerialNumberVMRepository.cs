@@ -130,7 +130,7 @@ namespace CTADBL.ViewModelsRepositories
 
         public IEnumerable<Object> GetGreenBookSerialNumberAssignList()
         {
-            string sql = @"SELECT mdb.id, mdb.nFormNumber, mdb.sGBID, mdb.nMadebTypeID, mdb.sName, mdb.dtReceived, au.sAuthRegion, mdbtype.sMadebType FROM tblmadeb AS mdb LEFT JOIN lstauthregion au ON au.ID = mdb.nAuthRegionID LEFT JOIN lstmadebtype mdbtype ON mdbtype.Id = mdb.nMadebTypeID  WHERE mdb.nIssuedOrNotID = 1 AND mdb.sGBId IS NOT NULL ORDER BY mdb.nFormNumber DESC;";
+            string sql = @"SELECT mdb.id, mdb.nFormNumber, mdb.sGBID, mdb.nMadebTypeID, mdb.sName, mdb.dtReceived, au.sAuthRegion, mdbtype.sMadebType FROM tblmadeb AS mdb LEFT JOIN lstauthregion au ON au.ID = mdb.nAuthRegionID LEFT JOIN lstmadebtype mdbtype ON mdbtype.Id = mdb.nMadebTypeID LEFT JOIN tblgivengbid on concat(tblgivengbid.ngbid + '')  = mdb.sgbid  WHERE mdb.nIssuedOrNotID = 1 AND tblgivengbid.nGivenOrNot = 1 AND mdb.sGBId IS NOT NULL ORDER BY mdb.dtUpdated DESC;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Connection = _connection;

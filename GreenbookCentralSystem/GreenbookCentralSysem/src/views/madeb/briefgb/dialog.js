@@ -52,9 +52,9 @@ export const EditDialog = (props) => {
   
  
   const handleSubmitEditRecord = () =>{
-    alert("Form Submitted.");
+    //alert("Form Submitted.");
 
-    //props.editAPICall(madeb);
+    props.editAPICall(madeb);
     
       // setMessage("Record Successfully Edited");
     // setAlertType('success');
@@ -708,8 +708,8 @@ export const AddDialog = (props) => {
       // setMessage("Record Successfully Edited");
       // setAlertType('success');
       // setSnackbarOpen(true);
-      alert ("Submit form called");
-      //props.addAPICall(madeb);
+      //alert ("Submit form called");
+      props.addAPICall(madeb);
     }
 
     const handleChangeGBID = (value) => {
