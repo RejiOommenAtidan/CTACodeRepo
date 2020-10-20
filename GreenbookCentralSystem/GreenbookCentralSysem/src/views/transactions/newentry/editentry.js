@@ -15,6 +15,7 @@ import {
   IconButton
 } from '@material-ui/core';
 
+import {AddChildDialog,EditChildDialog} from './dialogChildren';
 import {AddNoteDialog,EditNoteDialog} from './dialogNote';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -137,6 +138,10 @@ export default function EditEntry(props) {
    const [editNoteModal, seteditNoteModal] = useState(false);
    const [oNote, setoNote] = useState({});
 
+   const [addChildModal, setaddChildModal] = useState(false);
+   const [editChildModal, seteditChildModal] = useState(false);
+   const [oChild, setoChild] = useState({});
+
    //Modal Functions
    const handleEditNoteRowClick=(row)=>{
     setoNote({
@@ -162,6 +167,38 @@ export default function EditEntry(props) {
   const editNoteAPICall = (oNote) => {
     seteditNoteModal(false);
   };
+
+
+  const handleEditChildRowClick=(row)=>{
+    setoChild({
+      id:row.id,
+      sName:row.sName,
+      dtDOB:row.dtDOB,
+      sGender:row.sGender,
+      sChildID:row.sChildID,
+      sGBIDChild:row.sGBIDChild
+    });
+    seteditChildModal(true);
+   };
+
+   const handleAddChildClickClose = () => {
+    setaddChildModal(false);
+    };
+   
+    const addChildAPICall = (childObj) => {
+      console.table(childObj);
+    setaddChildModal(false);
+    };
+
+  const handleEditChildClickClose = () => {
+    seteditChildModal(false);
+  };
+   
+  const editChildAPICall = (childObj) => {
+    console.table(childObj);
+    seteditChildModal(false);
+  };
+
 
   //VARS to track
   const [Id, setnId] = useState('');
@@ -627,7 +664,7 @@ export default function EditEntry(props) {
                           margin="dense"
                           id="id_dtDOB"
                           name="name_dtDOB"
-                          label="DOB"
+                          label="Date of Birth"
                           format={sDateFormatMUIDatepicker}
                           onChange={date => { setdtDOB(date) }}
                           value={dtDOB}
@@ -1585,6 +1622,12 @@ export default function EditEntry(props) {
                 </Grid>
                 <Grid xs={12}>
                   {lGBChildren.length != 0 &&
+                    <div>
+                <Typography 
+                align='center' 
+                variant="h6"
+                color="primary"
+                >Children of - {sGBID}</Typography>
                   <Table className="table table-hover table-striped table-bordered " >
                      <thead className="thead-light" style={{ padding: 0 }}>
                         <tr>
@@ -1606,14 +1649,21 @@ export default function EditEntry(props) {
                                  <td scope="row">{row.sChildID}</td>
                                  <td scope="row">{row.sGBIDChild}</td>
                                  <td scope="row">
-                                  <IconButton color="primary"  onClick={() => { console.table(row) } } component="span" style={{padding:'0px'}}>
+                                  <IconButton color="primary"  onClick={() => { handleEditChildRowClick(row) } } component="span" style={{padding:'0px'}}>
                                     <EditOutlinedIcon/>
                                   </IconButton>
                                 </td>
                            </tr>
                         ))}
                   </tbody>
-               </Table>}
+               </Table>
+               </div>}
+               <Button 
+              variant='contained'
+              onClick={()=>{setaddChildModal(true)}}
+            >
+            Add a Child
+          </Button>
                </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
@@ -1655,17 +1705,17 @@ export default function EditEntry(props) {
               >
                 <Typography 
                 className={classes.expansionHeading}
-                >Notes</Typography>
+                >Notes of - {sGBID}</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
               <Grid xs={12}>
               {lGBNote.length != 0 && 
                 <div>
-                <Typography 
+                {/*<Typography 
                 align='center' 
                 variant="h6"
                 color="primary"
-                >Notes of - {sGBID}</Typography>
+                >Notes of - {sGBID}</Typography>*/}
                 <Table className="table table-hover table-striped table-bordered" >
                  <thead className="thead-light" style={{ padding: 0 }}>
                     <tr>
@@ -1781,6 +1831,22 @@ export default function EditEntry(props) {
         handleEditNoteClickClose={handleEditNoteClickClose}
         editNoteAPICall={editNoteAPICall}
       />}
+
+      {addChildModal && <AddChildDialog
+        addChildModal={addChildModal}
+        sGBID={sGBID}
+        classes={classes}
+        handleAddChildClickClose={handleAddChildClickClose}
+        addChildAPICall={addChildAPICall}
+      />}
+      {editChildModal && <EditChildDialog
+        editChildModal={editChildModal}
+        oChild={oChild}
+        classes={classes}
+        handleEditChildClickClose={handleEditChildClickClose}
+        editChildAPICall={editChildAPICall}
+      />}
+
     </Container>
   );
 }

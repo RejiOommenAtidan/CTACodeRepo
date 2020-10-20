@@ -42,7 +42,7 @@ export const AddNoteDialog = (props) => {
                       required: true
                     })}
                     multiline={true}
-                    rows={1}
+                    rows={5}
                     rowsMax={10}
                   />
                   {_.get("name_sNote.type", errors) === "required" && (
@@ -97,7 +97,7 @@ export const EditNoteDialog = (props) => {
                       required: true
                     })}
                     multiline={true}
-                    rows={1}
+                    rows={5}
                     rowsMax={10}
                   />
                   {_.get("name_sNote.type", errors) === "required" && (
