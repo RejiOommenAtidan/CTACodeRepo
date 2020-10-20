@@ -127,14 +127,13 @@ export default function SarsoNewGBEntry() {
       filtering: false,
       sorting: false,
       export: false,
-      render: rowData => <Button
-        variant="outlined"
-        color="primary"
-        size="small"
-        startIcon={<AddIcon />}
-        onClick={() => { history.push('/NewEntry/' + rowData.nFormNo); }}
-      >Greenbook Entry
-      </Button>,
+      render: rowData => 
+           <Button  onClick={() => { history.push('/NewEntry/' + rowData.nFormNo); }} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
+           <span className="btn-wrapper--icon">
+               
+               <AddIcon />
+           </span>
+</Button>,
       cellStyle: {
         padding: '5px',
         borderRight: '0',

@@ -452,7 +452,7 @@ export default function EnhancedTable() {
                            </tbody>
                                   </Table> }
 
-                           { finalPrintTable && 
+                           { selected.length!=0 && 
                            <>
                                       <Typography color="textPrimary">Print List</Typography>      
                                   <Table className="table table-hover table-striped table-bordered"   size={"small"} >
@@ -492,15 +492,11 @@ export default function EnhancedTable() {
        
                                   </tbody>
                                   </Table> 
-                                  </>
+                                  
        
 
 
-
-                           }
-      {
-          showPrintDiv &&
-          <>
+          
             <Typography color="textPrimary">Print Preview</Typography> 
             <Button variant='outlined' onClick={()=>{abcd()}}>Print</Button>
             <div id="toPrint" className="mt4"  style={{     

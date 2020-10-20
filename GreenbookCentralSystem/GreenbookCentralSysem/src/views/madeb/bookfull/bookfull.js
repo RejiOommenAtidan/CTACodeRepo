@@ -562,13 +562,7 @@ const openRelationGB = (newsGBID) => {
     <>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link color="inherit" href="/Home" >
-              Home
-        </Link>
-
-            <Typography color="textPrimary">BookFull Madeb</Typography>
-          </Breadcrumbs>
+         
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
             icons={tableIcons}
