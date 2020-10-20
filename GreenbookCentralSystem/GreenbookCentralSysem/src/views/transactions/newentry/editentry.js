@@ -11,8 +11,12 @@ import {
   ExpansionPanelDetails,
   FormControl,
   TextField,
-  Table
+  Table,
+  IconButton
 } from '@material-ui/core';
+
+import {AddNoteDialog,EditNoteDialog} from './dialogNote';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import _ from "lodash/fp";
 import { red } from '@material-ui/core/colors';
@@ -127,7 +131,37 @@ export default function EditEntry(props) {
    const [lGBChildren, setlGBChildren] = useState([]);
    const [lGBDocument, setlGBDocument] = useState([]);
    const [lGBNote, setlGBNote] = useState([]);
+
+   //Modals
+   const [addNoteModal, setaddNoteModal] = useState(false);
+   const [editNoteModal, seteditNoteModal] = useState(false);
+   const [oNote, setoNote] = useState({});
+
+   //Modal Functions
+   const handleEditNoteRowClick=(row)=>{
+    setoNote({
+      id:row.id,
+      sNote:row.sNote,
+      sGBID:sGBID
+    });
+    seteditNoteModal(true);
+   };
+
+   const handleAddNoteClickClose = () => {
+    setaddNoteModal(false);
+    };
    
+    const addNoteAPICall = (sNote) => {
+    setaddNoteModal(false);
+    };
+
+  const handleEditNoteClickClose = () => {
+    seteditNoteModal(false);
+  };
+   
+  const editNoteAPICall = (oNote) => {
+    seteditNoteModal(false);
+  };
 
   //VARS to track
   const [Id, setnId] = useState('');
@@ -1559,6 +1593,7 @@ export default function EditEntry(props) {
                            <th scope="col">Gender</th>
                            <th scope="col">Old GB Number</th>
                            <th scope="col">GB Number</th>
+                           <th scope="col">Edit</th>
                            {/*<th style={{ width: '15%' }} > Date</th>*/}
                         </tr>
                      </thead>
@@ -1570,6 +1605,11 @@ export default function EditEntry(props) {
                                  <td scope="row">{row.sGender}</td>
                                  <td scope="row">{row.sChildID}</td>
                                  <td scope="row">{row.sGBIDChild}</td>
+                                 <td scope="row">
+                                  <IconButton color="primary"  onClick={() => { console.table(row) } } component="span" style={{padding:'0px'}}>
+                                    <EditOutlinedIcon/>
+                                  </IconButton>
+                                </td>
                            </tr>
                         ))}
                   </tbody>
@@ -1619,12 +1659,19 @@ export default function EditEntry(props) {
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
               <Grid xs={12}>
-              {lGBNote.length != 0 &&
-              <Table className="table table-hover table-striped table-bordered " >
+              {lGBNote.length != 0 && 
+                <div>
+                <Typography 
+                align='center' 
+                variant="h6"
+                color="primary"
+                >Notes of - {sGBID}</Typography>
+                <Table className="table table-hover table-striped table-bordered" >
                  <thead className="thead-light" style={{ padding: 0 }}>
                     <tr>
                        <th scope="col" style={{ width: '70%' }}>Notes</th>
                        <th scope="col">Entered</th>
+                       <th scope="col">Edit</th>
                     </tr>
                  </thead>
                  <tbody style={{ padding: 0 }}>
@@ -1632,10 +1679,24 @@ export default function EditEntry(props) {
                        <tr>
                              <td scope="row">{row.sNote}</td>
                              <td scope="row">{row.dtEntered ? Moment(row.dtEntered).format(sDateFormat) : ''}</td>
+                             <td scope="row">
+                                  <IconButton color="primary"  onClick={()=>{handleEditNoteRowClick(row)}} component="span" style={{padding:'0px'}}>
+                                    <EditOutlinedIcon/>
+                                  </IconButton>
+                                </td>
                        </tr>
                     ))}
+                    <br />
               </tbody>
-           </Table>}
+           </Table>
+           </div>
+          }
+          <Button 
+              variant='contained'
+              onClick={()=>{setaddNoteModal(true)}}
+            >
+            Add a Note
+          </Button>
            </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
@@ -1705,6 +1766,20 @@ export default function EditEntry(props) {
       </form>
       {backdrop && <BackdropComponent
         backdrop={backdrop}
+      />}
+      {addNoteModal && <AddNoteDialog
+        addNoteModal={addNoteModal}
+        sGBID={sGBID}
+        classes={classes}
+        handleAddNoteClickClose={handleAddNoteClickClose}
+        addNoteAPICall={addNoteAPICall}
+      />}
+      {editNoteModal && <EditNoteDialog
+        editNoteModal={editNoteModal}
+        oNote={oNote}
+        classes={classes}
+        handleEditNoteClickClose={handleEditNoteClickClose}
+        editNoteAPICall={editNoteAPICall}
       />}
     </Container>
   );
