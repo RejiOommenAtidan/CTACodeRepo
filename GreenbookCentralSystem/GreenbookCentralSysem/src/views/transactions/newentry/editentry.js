@@ -10,7 +10,8 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
   FormControl,
-  TextField
+  TextField,
+  Table
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import _ from "lodash/fp";
@@ -22,12 +23,13 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DateFnsUtils from '@date-io/date-fns';
+import Moment from 'moment';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import handleError from '../../../auth/_helpers/handleError';
-import { sDateFormatMUIDatepicker } from '../../../config/commonConfig';
+import { sDateFormat, sDateFormatMUIDatepicker } from '../../../config/commonConfig';
 import {IssueBookTable} from '../issuebooktable';
 import { BackdropComponent } from '../../backdrop/pageBackDrop';
 
@@ -108,17 +110,25 @@ const useStyles = makeStyles({
 });
 
 export default function EditEntry(props) {
+  Moment.locale('en');
   const [backdrop, setBackdrop] = React.useState(true);
   const classes = useStyles();
   let history = useHistory();
   const [expanded, setExpanded] = React.useState('');
-  //Array from API
+  //Master List from API
   const [lAuthRegion, setlAuthRegion] = useState([]);
   const [lCountry, setlCountry] = useState([]);
   const [lDOBApprox, setlDOBApprox] = useState([]);
   const [lOccupation, setlOccupation] = useState([]);
   const [lProvince, setlProvince] = useState([]);
   const [lQualification, setlQualification] = useState([]);
+
+   //Linking Lists from API
+   const [lGBChildren, setlGBChildren] = useState([]);
+   const [lGBDocument, setlGBDocument] = useState([]);
+   const [lGBNote, setlGBNote] = useState([]);
+   
+
   //VARS to track
   const [Id, setnId] = useState('');
   const [sGBID, setsGBID] = useState('');
@@ -246,8 +256,24 @@ export default function EditEntry(props) {
                 setTBUFathersName(resp.data.TBUFathersName);
                 setTBUMothersName(resp.data.TBUMothersName);
                 setTBUSpouseName(resp.data.TBUSpouseName);
-                setExpanded("panel1");
-                setBackdrop(false);
+                debugger;
+                axios.get(`/Greenbook/GetGBLinkDataByGBID/sGBID=`+resp.data.sGBID)
+               .then(resp => {
+                  if (resp.status === 200) {
+                     console.log(resp.data)
+                     setlGBChildren(resp.data.lGBChildren);
+                     setlGBDocument(resp.data.lGBDocument);
+                     setlGBNote(resp.data.lGBNote);
+                     setExpanded("panel1");
+                     setBackdrop(false);
+                  }
+               })
+               .catch(error => {
+                  handleError(error, history);
+               })
+               .then(release => {
+                  //console.log(release); => udefined
+               });
               }
             })
             .catch(error => {
@@ -1376,7 +1402,7 @@ export default function EditEntry(props) {
                 >Relation & Contact Details</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                <Grid item xs={6}>
+               <Grid item xs={6}>
                 <Grid xs={12} style={{ display: 'flex' }}>
                   <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
@@ -1406,8 +1432,8 @@ export default function EditEntry(props) {
                       />
                     </FormControl>
                   </Grid>
-                  </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
+                </Grid>
+                <Grid xs={12} style={{ display: 'flex' }}>
                   <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
@@ -1446,9 +1472,9 @@ export default function EditEntry(props) {
                       <span style={{ color: 'red' }}>Spouse's GB No cannot exceed 7 characters</span>
                     )}
                   </FormControl>
-                </Grid>
                   </Grid>
-                  <Grid item xs={12}>
+                </Grid>
+                <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         value={sSpouseID}
@@ -1461,8 +1487,8 @@ export default function EditEntry(props) {
                         className={classes.textField}
                       />
                     </FormControl>
-                  </Grid>
                 </Grid>
+              </Grid>
                 <Grid item xs={6}>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
@@ -1523,6 +1549,32 @@ export default function EditEntry(props) {
                     </FormControl>
                   </Grid>
                 </Grid>
+                <Grid xs={12}>
+                  {lGBChildren.length != 0 &&
+                  <Table className="table table-hover table-striped table-bordered " >
+                     <thead className="thead-light" style={{ padding: 0 }}>
+                        <tr>
+                           <th scope="col">Name</th>
+                           <th scope="col">DOB</th>
+                           <th scope="col">Gender</th>
+                           <th scope="col">Old GB Number</th>
+                           <th scope="col">GB Number</th>
+                           {/*<th style={{ width: '15%' }} > Date</th>*/}
+                        </tr>
+                     </thead>
+                     <tbody style={{ padding: 0 }}>
+                        {lGBChildren.map((row, index) => (
+                           <tr>
+                                 <td scope="row">{row.sName}</td>
+                                 <td scope="row">{row.dtDOB ? Moment(row.dtDOB).format(sDateFormat) : ''}</td>
+                                 <td scope="row">{row.sGender}</td>
+                                 <td scope="row">{row.sChildID}</td>
+                                 <td scope="row">{row.sGBIDChild}</td>
+                           </tr>
+                        ))}
+                  </tbody>
+               </Table>}
+               </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </Grid>
@@ -1543,14 +1595,12 @@ export default function EditEntry(props) {
                 >Book Issued Details</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-             
                     <IssueBookTable
                     gbId={sGBID}
                     />
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </Grid>
- 
           <Grid item xs={12}>
             <ExpansionPanel
               TransitionProps={{ unmountOnExit: true }}
@@ -1568,28 +1618,70 @@ export default function EditEntry(props) {
                 >Notes</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                {/*{data.gbNotes.length != 0 &&
-                                    <Table className="table table-hover table-striped table-bordered " >
-                                        <thead className="thead-light" style={{ padding: 0 }}>
-                                            <tr>
-                                                <th scope="col">Notes</th>
-                                                <th style={{ width: '15%' }} > Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody style={{ padding: 0 }}>
-                                            {data.gbNotes.map((row, index) => (
-                                                <tr>
-                                                    <td scope="row">{row.sNote}</td>
-                                                    <td scope="row">{row.dtEntered ? Moment(row.dtEntered).format('DD-MM-YYYY') : ''}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                            </Table>}*/}
+              <Grid xs={12}>
+              {lGBNote.length != 0 &&
+              <Table className="table table-hover table-striped table-bordered " >
+                 <thead className="thead-light" style={{ padding: 0 }}>
+                    <tr>
+                       <th scope="col" style={{ width: '70%' }}>Notes</th>
+                       <th scope="col">Entered</th>
+                    </tr>
+                 </thead>
+                 <tbody style={{ padding: 0 }}>
+                    {lGBNote.map((row, index) => (
+                       <tr>
+                             <td scope="row">{row.sNote}</td>
+                             <td scope="row">{row.dtEntered ? Moment(row.dtEntered).format(sDateFormat) : ''}</td>
+                       </tr>
+                    ))}
+              </tbody>
+           </Table>}
+           </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </Grid>
           <Grid item xs={12}>
-          
+            <ExpansionPanel
+              TransitionProps={{ unmountOnExit: true }}
+              expanded={expanded === 'panel7'}
+              onChange={handleAccordionChange('panel7')}
+            >
+              <ExpansionPanelSummary
+              expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                className={classes.expansionPanel}
+              >
+                <Typography 
+                className={classes.expansionHeading}
+                >Documents</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+              <Grid xs={12}>
+              {lGBDocument.length != 0 &&
+              <Table className="table table-hover table-striped table-bordered " >
+                 <thead className="thead-light" style={{ padding: 0 }}>
+                    <tr>
+                       <th scope="col" style={{ width: '70%' }}>Title</th>
+                       <th scope="col">Register Date</th>
+                       <th scope="col">Entered By</th>
+                    </tr>
+                 </thead>
+                 <tbody style={{ padding: 0 }}>
+                    {lGBDocument.map((row, index) => (
+                       <tr>
+                             <td scope="row">{row.sTitle}</td>
+                             <td scope="row">{row.nRegisterDate}</td>
+                             <td scope="row">{row.nEnteredBy}</td>
+                       </tr>
+                    ))}
+              </tbody>
+           </Table>}
+           </Grid>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          </Grid>
+          <Grid item xs={12}>
             <br />
             <Grid item xs={12}>
               <Button
