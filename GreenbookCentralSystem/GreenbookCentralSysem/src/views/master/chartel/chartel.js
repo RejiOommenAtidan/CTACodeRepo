@@ -8,10 +8,10 @@ import {
 import axios from 'axios';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import IconButton from '@material-ui/core/IconButton';
-// import { AddDialog, EditDialog } from './dialog';
+import { AddDialog, EditDialog } from './dialog';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons,sDateFormat } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
 import FilterList from '@material-ui/icons/FilterList';
 import AddBox from '@material-ui/icons/AddBox';
 import handleError from "../../../auth/_helpers/handleError";
@@ -93,7 +93,7 @@ export default function Chartel() {
       },
     },
     {
-      align:"center",
+      align: "center",
       field: 'edit',
       title: 'Edit',
       filtering: false,
@@ -118,70 +118,71 @@ export default function Chartel() {
     setnChartelValue(tableRowArray["nChartelValue"]);
     setdtChartelFrom(tableRowArray["dtChartelFrom"]);
     setoChartel({
-      id:tableRowArray["id"],
-      sChartelKey:tableRowArray["sChartelKey"],
-      nChartelValue:tableRowArray["nChartelValue"],
-      dtChartelFrom:tableRowArray["dtChartelFrom"]
+      id: tableRowArray["id"],
+      sChartelKey: tableRowArray["sChartelKey"],
+      nChartelValue: tableRowArray["nChartelValue"],
+      dtChartelFrom: tableRowArray["dtChartelFrom"]
     });
-    //setEditModal(true);
+    setEditModal(true);
   };
 
-  // const editAPICall = (chartelObj) => {
-  //   setisLoading(true);
-  //   axios.post(`/Chartel/EditChartel/ID=` + nChartelPK, chartelObj)
-  //     .then(resp => {
-  //       if (resp.status === 200) {
-  //         setEditModal(false);
-  //         axios.get(`/Chartel/GetAllChartel`)
-  //           .then(resp => {
-  //             if (resp.status === 200) {
-  //               setdataAPI(resp.data);
-  //               setisLoading(false);
-  //             }
-  //           })
-  //           .catch(error => {
-  //             handleError(error, history);
-  //           })
-  //           .then(release => {
-  //             //console.log(release); => udefined
-  //           });
-  //       }
-  //     })
-  //     .catch(error => {
-  //       handleError(error, history);
-  //     })
-  //     .then(release => {
-  //       //console.log(release); => udefined
-  //     });
-  // };
-  // const addAPICall = (typeIssuedObj) => {
-  //   setisLoading(true);
-  //   axios.post(`/TypeIssued/AddTypeIssued/`, typeIssuedObj)
-  //     .then(resp => {
-  //       if (resp.status === 200) {
-  //         setAddModal(false);
-  //         axios.get(`/TypeIssued/GetTypeIssued`)
-  //           .then(resp => {
-  //             if (resp.status === 200) {
-  //               setdataAPI(resp.data);
-  //               setisLoading(false);
-  //             }
-  //           })
-  //           .catch(error => {
-  //             handleError(error, history);
-  //           })
-  //           .then(release => {
-  //             //console.log(release); => udefined
-  //           });
-  //       }
-  //     })
-  //     .catch(error => {
-  //       handleError(error, history);
-  //     })
-  //     .then(release => {
-  //       //console.log(release); => udefined
-  //     });
-  // };
+  const editAPICall = (chartelObj) => {
+    setisLoading(true);
+    axios.post(`/Chartel/EditChartel/ID=` + nChartelPK, chartelObj)
+      .then(resp => {
+        if (resp.status === 200) {
+          setEditModal(false);
+          axios.get(`/Chartel/GetAllChartel`)
+            .then(resp => {
+              if (resp.status === 200) {
+                setdataAPI(resp.data);
+                setisLoading(false);
+              }
+            })
+            .catch(error => {
+              handleError(error, history);
+            })
+            .then(release => {
+              //console.log(release); => udefined
+            });
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  };
+
+  const addAPICall = (chartelObj) => {
+    setisLoading(true);
+    axios.post(`/Chartel/AddChartel`, chartelObj)
+      .then(resp => {
+        if (resp.status === 200) {
+          setAddModal(false);
+          axios.get(`/Chartel/GetAllChartel`)
+            .then(resp => {
+              if (resp.status === 200) {
+                setdataAPI(resp.data);
+                setisLoading(false);
+              }
+            })
+            .catch(error => {
+              handleError(error, history);
+            })
+            .then(release => {
+              //console.log(release); => udefined
+            });
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  };
 
   useEffect(() => {
     axios.get(`/Chartel/GetAllChartel`)
@@ -229,19 +230,19 @@ export default function Chartel() {
           />
         </Grid>
       </Grid>
-      {/*{addModal && <AddDialog
+      {addModal && <AddDialog
         addModal={addModal}
         classes={classes}
         handleAddClickClose={handleAddClickClose}
         addAPICall={addAPICall}
-      />}*/}
-      {/*{editModal && <EditDialog
+      />}
+      {editModal && <EditDialog
         editModal={editModal}
         oChartel={oChartel}
         classes={classes}
         handleEditClickClose={handleEditClickClose}
         editAPICall={editAPICall}
-      />}*/}
+      />}
     </Container>
   );
 }

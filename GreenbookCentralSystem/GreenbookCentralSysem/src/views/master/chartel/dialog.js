@@ -12,46 +12,108 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import { sDateFormatMUIDatepicker } from '../../../config/commonConfig';
 
 export const AddDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm();
   const handleSubmitAddRecord = () => {
-    props.addAPICall({ sTypeIssued: typeIssued });
+    props.addAPICall(
+      {
+        sChartelKey: sChartelKey,
+        nChartelValue: nChartelValue,
+        dtChartelFrom: dtChartelFrom,
+      }
+    );
   }
-  const [typeIssuedId, setTypeIssuedId] = useState('');
-  const [typeIssued, setTypeIssued] = useState('');
+
+  const [sChartelKey, setsChartelKey] = useState("");
+  const [nChartelValue, setnChartelValue] = useState('');
+  const [dtChartelFrom, setdtChartelFrom] = useState(null);
   return (
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Issue Type</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitAddRecord)}>
-      <DialogContent>
-        <DialogContentText>
-          <Grid container>
-            <Grid item xs={12} >
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_TypeIssued"
-                  name = "sTypeIssued"
-                  label="TypeIssued"
-                  type="text"
-                  onChange={(e) => { setTypeIssued(e.target.value) }}
-                  inputRef={register({
-                    required: true
-                  })}
-                />
-                {_.get("sTypeIssued.type", errors) === "required" && (
-                      <span style={{color: 'red'}}>This field is required</span>
-                    )}
-              </FormControl>
+        <DialogContent>
+          <DialogContentText>
+            <Grid container>
+              <Grid item xs={12} >
+                <FormControl className={props.classes.formControl}>
+                  <TextField
+                    id="id_sChartelKey"
+                    name="name_sChartelKey"
+                    label="Chartel Term"
+                    type="text"
+                    value={sChartelKey}
+                    onChange={(e) => { setsChartelKey(e.target.value) }}
+                    inputRef={register({
+                      required: true
+                    })}
+                  />
+                  {_.get("name_sChartelKey.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} >
+                <FormControl className={props.classes.formControl}>
+                  <TextField
+                    id="id_nChartelValue"
+                    name="name_nChartelValue"
+                    label="Value"
+                    type="number"
+                    value={nChartelValue}
+                    onChange={(e) => { setnChartelValue(e.target.value) }}
+                    inputRef={register({
+                      required: true
+                    })}
+                  />
+                </FormControl>
+                {_.get("name_nChartelValue.type", errors) === "required" && (
+                  <span style={{ color: 'red' }}>This field is required</span>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl className={props.classes.formControl}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      id="id_dtChartelFrom"
+                      name="name_dtChartelFrom"
+                      variant="dialog"
+                      openTo="year"
+                      views={["year", "month", "date"]}
+                      margin="dense"
+                      inputRef={register({
+                        required: true
+                      })}
+                      label="Chartel From"
+                      format={sDateFormatMUIDatepicker}
+                      onChange={date => { setdtChartelFrom(date) }}
+                      value={dtChartelFrom}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                      }}
+                      fullWidth
+                      className={props.classes.dateField}
+                    />
+                  </MuiPickersUtilsProvider>
+                  {_.get("name_dtChartelFrom.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
+                </FormControl>
+              </Grid>
             </Grid>
-          </Grid>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.addAPICall({ sTypeIssued: typeIssued })} color="primary">Save</Button> */}
-        <Button type="submit" color="primary">Save</Button> 
-      </DialogActions>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+          {/* <Button onClick={() => props.addAPICall({ sTypeIssued: typeIssued })} color="primary">Save</Button> */}
+          <Button type="submit" color="primary">Save</Button>
+        </DialogActions>
       </form>
     </Dialog>
   );
@@ -60,43 +122,98 @@ export const AddDialog = (props) => {
 export const EditDialog = (props) => {
   const { register, handleSubmit, errors } = useForm();
   const handleSubmitEditRecord = () => {
-    props.editAPICall({ id: props.typeIssuedObj.id, sTypeIssued: Name });
+    props.editAPICall(
+      {
+        id: props.oChartel.id,
+        sChartelKey: sChartelKey,
+        nChartelValue: nChartelValue,
+        dtChartelFrom: dtChartelFrom
+      }
+    );
   }
-  const [Name, setTypeIssued] = useState(props.typeIssuedObj.typeIssued);
+  const [sChartelKey, setsChartelKey] = useState(props.oChartel.sChartelKey);
+  const [nChartelValue, setnChartelValue] = useState(props.oChartel.nChartelValue);
+  const [dtChartelFrom, setdtChartelFrom] = useState(props.oChartel.dtChartelFrom);
   return (
     <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Edit Issue Type</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Chartel</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
-      <DialogContent>
-        <DialogContentText>
-          <div>
-            <Grid container >
-              <Grid item xs={12} >
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_TypeIssued"
-                    name="sTypeIssued"
-                    label="TypeIssued"
-                    type="text"
-                    value={Name}
-                    onChange={(e) => { setTypeIssued(e.target.value) }}
-                    inputRef={register({
-                      required: true
-                    })}
-                  />
-                  {_.get("sTypeIssued.type", errors) === "required" && (
-                      <span style={{color: 'red'}}>This field is required</span>
+        <DialogContent>
+          <DialogContentText>
+            <div>
+              <Grid container >
+                <Grid item xs={12} >
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="id_sChartelKey"
+                      name="name_sChartelKey"
+                      label="Chartel Term"
+                      type="text"
+                      value={sChartelKey}
+                      onChange={(e) => { setsChartelKey(e.target.value) }}
+                      InputProps={{
+                        readOnly: true,
+                        disabled: true
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} >
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="id_nChartelValue"
+                      name="name_nChartelValue"
+                      label="Value"
+                      type="number"
+                      value={nChartelValue}
+                      onChange={(e) => { setnChartelValue(e.target.value) }}
+                      inputRef={register({
+                        required: true
+                      })}
+                    />
+                  </FormControl>
+                  {_.get("name_nChartelValue.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
                   )}
-                </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={props.classes.formControl}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        id="id_dtChartelFrom"
+                        name="name_dtChartelFrom"
+                        variant="dialog"
+                        openTo="year"
+                        views={["year", "month", "date"]}
+                        margin="dense"
+                        inputRef={register({
+                          required: true
+                        })}
+                        label="Chartel From"
+                        format={sDateFormatMUIDatepicker}
+                        onChange={date => { setdtChartelFrom(date) }}
+                        value={dtChartelFrom}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                        fullWidth
+                        className={props.classes.dateField}
+                      />
+                    </MuiPickersUtilsProvider>
+                    {_.get("name_dtChartelFrom.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                  </FormControl>
+                </Grid>
               </Grid>
-            </Grid>
-          </div>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.editAPICall({ id: props.typeIssuedObj.id, sTypeIssued: Name })} color="primary">Save</Button> */}
-      </DialogActions>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
+          {/* <Button onClick={() => props.editAPICall({ id: props.typeIssuedObj.id, sTypeIssued: Name })} color="primary">Save</Button> */}
+          <Button type="submit" color="primary">Save</Button>
+        </DialogActions>
       </form>
     </Dialog>
   );
