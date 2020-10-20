@@ -360,7 +360,7 @@ const SidebarMenu = (props) => {
                   <span className="sidebar-icon">
                     <FormatListNumberedIcon />
                   </span>
-                Give GB Number
+                Give GB ID
               </NavLink>
               </li>}
             {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 12)) !== undefined

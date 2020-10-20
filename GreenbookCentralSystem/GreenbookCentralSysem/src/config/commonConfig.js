@@ -35,16 +35,22 @@ export const oOptions = {
     headerStyle: {
         backgroundColor: '#3b3e66',
         color: '#FFF',
-        fontSize: '18px',
-        paddingLeft: '5px',
+        fontSize: '15px',
+        padding: '10px',
         border: '1px solid lightgrey'
+        
     },
     pageSize: nPageSize,
     pageSizeOptions: aPageSizeArray,
     rowStyle: x => {
+      
         if (x.tableData.id % 2) {
-            return { backgroundColor: "#f2f2f2" }
+            return { backgroundColor: "#f2f2f2",padding:'0' }
         }
+        else{
+            return {padding:'0' }
+        }
+        
     }
 };
 

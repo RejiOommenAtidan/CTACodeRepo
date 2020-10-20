@@ -113,6 +113,7 @@ export default function GiveGBId(){
   const [dataAPI, setdataAPI] = useState([]);
   const [randomGBID, setRandomGBID] = useState(0);
   const [nFormNumber, setFormNumber] = useState(0);
+  const [dtReceived, setReceivedDate] = useState('');
   //const [gbidObj, setGBIDObj] = useState({});
   let history = useHistory();
   const dispatch = useDispatch();
@@ -165,7 +166,7 @@ export default function GiveGBId(){
     // },
     {
       field: "edit",
-      title: "Assign",
+      title: "Generate",
       sorting: false,
       export:false,
       filtering:false,
@@ -200,6 +201,8 @@ export default function GiveGBId(){
           console.log(resp.data);
           setRandomGBID(resp.data);
           setFormNumber(rowData['nFormNumber']);
+          setReceivedDate(rowData['dtReceived']);
+
           setAssignModal(true);
         }
       })
@@ -329,6 +332,7 @@ export default function GiveGBId(){
               assignModal = {assignModal}
               nFormNumber = {nFormNumber}
               randomGBID = {randomGBID}
+              dtReceived={dtReceived}
               classes={classes}
               handleDialogClose={handleDialogClose}
               handleAssignGBID = {handleAssignGBID}

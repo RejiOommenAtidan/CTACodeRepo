@@ -33,7 +33,7 @@ export const AssignDialog = (props) => {
   return(
     <div>
       <Dialog open={props.assignModal} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Assign Green Book ID</DialogTitle>
+        <DialogTitle id="form-dialog-title">Generate GreenBook ID</DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent>
             <DialogContentText>
@@ -52,7 +52,25 @@ export const AssignDialog = (props) => {
                     />
                   </FormControl>
                 </Grid>
-              
+                <Grid item xs={12} sm={6}>
+                                    <FormControl className={props.classes.formControl}>
+                                        <TextField
+                                            id="dtReceived"
+                                            name="dtReceived"
+                                            label="Received Date"
+                                            type="date"
+                                            defaultValue={props.dtReceived.split('T')[0]}
+                                            className={props.classes.textField}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            InputProps={{
+                                              readOnly: true,
+                                            }}
+                                          />
+                                         
+                                    </FormControl>
+                                </Grid>      
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
@@ -72,7 +90,7 @@ export const AssignDialog = (props) => {
           </DialogContent>
           <DialogActions>
             <Button onClick={props.handleDialogClose} color="primary">Cancel</Button>
-            <Button type="submit" color="primary">Assign</Button> 
+            <Button type="submit" color="primary">Submit</Button> 
           </DialogActions>
         </form>
       </Dialog>
