@@ -28,6 +28,7 @@ namespace CTAWebAPI.Controllers.Transactions
         private GivenGBIDRepository _givenGBIDRepository;
         private GBRelationRepository _gbRelationRepository;
         private readonly CTALogger _ctaLogger;
+        private readonly AuditLogRepository _auditLogRepository;
         public GreenbookController(DBConnectionInfo info)
         {
             _info = info;
@@ -37,6 +38,7 @@ namespace CTAWebAPI.Controllers.Transactions
             _givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
             _gbRelationRepository = new GBRelationRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
+            _auditLogRepository = new AuditLogRepository(_info.sConnectionString);
         }
         #endregion
 
