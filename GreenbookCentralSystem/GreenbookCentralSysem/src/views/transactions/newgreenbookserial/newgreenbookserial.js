@@ -3,6 +3,7 @@ import {Box, Container, Grid, Button, Typography, FormControl, TextField, Breadc
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 //import theme from '../../../theme/theme/theme'
 
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -110,15 +111,30 @@ export default () => {
       title: "Form Number",
       filterPlaceholder: "Search...",
       cellStyle: {
-        padding:'5px',
+        padding: '5px',
+        paddingLeft:'10px',
+        width: '10%'
       },
+      headerStyle:{
+        padding:'5px',
+        width: '15%'
+        
+      },
+      
     },
     
     {
       field: "sGBID",
-      title: "GB Id",
+      title: "  GB Id",
       cellStyle: {
-        padding:'5px',
+        padding: '5px',
+        paddingLeft:'5px',
+        width: '10%'
+      },
+      headerStyle:{
+        padding:'8px',
+        width: '15%',
+        
       },
     },
     {
@@ -128,6 +144,7 @@ export default () => {
       // dateSetting: {locale: 'en-GB'},
       cellStyle: {
         padding:'5px',
+        width: '15%'
       },
       render: rowData => rowData['dtReceived'] ? Moment(rowData['dtReceived']).format('YYYY-MM-DD') : undefined
     },
@@ -136,6 +153,7 @@ export default () => {
       title: "Name",
       cellStyle: {
         padding:'5px',
+        width: '20%'
       },
     },
     {
@@ -143,6 +161,7 @@ export default () => {
       title: "Madeb Type",
       cellStyle: {
         padding:'5px',
+        width: '15%'
       },
     },
     {
@@ -150,8 +169,9 @@ export default () => {
       title: "Authority Region",
       cellStyle: {
         padding:'5px',
+        width: '15%'
       },
-      hidden:true,
+      
     },
     {
       field: "edit",
@@ -159,7 +179,17 @@ export default () => {
       sorting: false,
       export:false,
       filtering:false,
-      render: rowData => <IconButton 
+       render: rowData => 
+//<Button onClick={(e) => {
+//                                e.preventDefault();
+//                                e.stopPropagation();
+//                                 addClick(rowData);
+//                              }}   className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
+//       <span className="btn-wrapper--icon">
+//         <CreateNewFolderIcon />
+//       </span>
+// </Button>,
+      <IconButton 
                           color="primary" 
                           aria-label="upload picture" 
                           component="span"
@@ -170,10 +200,12 @@ export default () => {
                           }}  
                           style={{padding:'0px'}}
                         >
-                          <AssignmentTurnedInIcon />
+                          <CreateNewFolderIcon />
                         </IconButton> ,
       cellStyle: {
-        padding:'5px',
+        padding: '0px',
+        paddingLeft:'15px',
+        width: '15%'
       },
     },
     // {
