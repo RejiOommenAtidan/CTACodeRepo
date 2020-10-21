@@ -1,9 +1,9 @@
 ﻿using CTADBL.BaseClasses.Masters;
+using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 
@@ -11,9 +11,7 @@ namespace CTADBL.BaseClassRepositories.Masters
 {
     public class CTAConfigRepository : ADORepository<CTAConfig>
     {
-
         private static IEnumerable<CTAConfig> _configs;
-
 
         public static IEnumerable<CTAConfig> configs
         {
@@ -49,12 +47,11 @@ namespace CTADBL.BaseClassRepositories.Masters
             }
         }
 
-        public bool UpdateConfiguration(IEnumerable<CTAConfig> configs) 
+        public bool UpdateConfiguration(IEnumerable<CTAConfig> configs)
         {
-           //to do
+            //to do
             return true;
         }
-
 
         #region Get CTAConfig
         public IEnumerable<CTAConfig> GetAllConfig()
@@ -87,14 +84,12 @@ namespace CTADBL.BaseClassRepositories.Masters
             }
         }
 
-        
         public static dynamic GetValue(string key)
         {
             var value = configs.Where(con => con.sKey == key).Select(res => res.sValue).FirstOrDefault();
             return value;
         }
-        
-        
+
         public CTAConfig GetConfigByKey(string sKey)
         {
             string sql = @"SELECT `Id`,
@@ -122,6 +117,30 @@ namespace CTADBL.BaseClassRepositories.Masters
             ctaConfig.nEnteredBy = (int)reader["nEnteredBy"];
             ctaConfig.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]); ;
             return ctaConfig;
+        }
+        #endregion
+
+        #region Add Call
+        public void Add(CTAConfig ctaConfig)
+        {
+            var builder = new SqlQueryBuilder<CTAConfig>(ctaConfig);
+            ExecuteCommand(builder.GetInsertCommand());
+        }
+        #endregion
+
+        #region Update Call
+        public void Update(CTAConfig ctaConfig)
+        {
+            var builder = new SqlQueryBuilder<CTAConfig>(ctaConfig);
+            ExecuteCommand(builder.GetUpdateCommand());
+        }
+        #endregion
+
+        #region Delete Call
+        public void Delete(CTAConfig ctaConfig)
+        {
+            var builder = new SqlQueryBuilder<CTAConfig>(ctaConfig);
+            ExecuteCommand(builder.GetDeleteCommand());
         }
         #endregion
     }

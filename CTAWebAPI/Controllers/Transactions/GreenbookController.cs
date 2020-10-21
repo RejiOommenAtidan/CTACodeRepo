@@ -67,7 +67,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging 
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -170,7 +170,7 @@ namespace CTAWebAPI.Controllers.Transactions
 
         public IActionResult GetQuickResultComplex(DetailedSearchVM detailedSearch)
         {
-            if(detailedSearch == null)
+            if (detailedSearch == null)
             {
                 return BadRequest(String.Format(@"Invalid request parameters"));
             }
@@ -336,7 +336,7 @@ namespace CTAWebAPI.Controllers.Transactions
 
                 return Ok(gb);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 #region Exception Logging 
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
@@ -375,10 +375,11 @@ namespace CTAWebAPI.Controllers.Transactions
 
                     #region Relations Table Addition
                     //Father - 1
-                    if (!string.IsNullOrEmpty(greenbook.sFathersGBID)) 
+                    if (!string.IsNullOrEmpty(greenbook.sFathersGBID))
                     {
                         Greenbook fatherGB = _greenbookRepository.GetGreenbookByGBID(greenbook.sFathersGBID);
-                        if (fatherGB != null) {
+                        if (fatherGB != null)
+                        {
                             GBRelation fatherRelation = new GBRelation
                             {
                                 sGBID = greenbook.sGBID,
@@ -627,7 +628,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 GetGBDataByFormNumberVM getGBDataByFormNumberVM = _getGBDataByFormNumberVMRepository.GetGBDataByFormNumber(Id);
 
                 #region Information Logging 
-                  _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
                 #endregion
 
                 return Ok(getGBDataByFormNumberVM);
@@ -635,7 +636,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging 
-                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -653,7 +654,7 @@ namespace CTAWebAPI.Controllers.Transactions
             try
             {
                 IEnumerable<GBChildren> lGBChildren = _gbChildrenRepository.GetGBChildrenByGBIDParent(sGBID);
-                IEnumerable<GBDocument> lGetGBDocument = _gbDocumentRepository.GetGBDocumentsByGBID(sGBID);
+                IEnumerable<GBDocument> lGetGBDocument = _gbDocumentRepository.GetAllGBDocumentsByGBID(sGBID);
                 IEnumerable<GBNote> lGBNote = _gbNoteRepository.GetGBNoteByGBID(sGBID);
 
                 GBLnkVM lnkGbVM = new GBLnkVM
@@ -679,6 +680,387 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             #endregion
         }
+        #endregion
+
+        #region Note Part
+
+        #region Check if GBNote Exists
+        private bool GBNoteExists(string Id)
+        {
+            try
+            {
+                GBNote fetchedGBNote = _gbNoteRepository.GetGBNoteById(Id);
+                if (fetchedGBNote != null)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Exception in GB Note Exists Function, Exception Message: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region Add Note
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult AddNote(GBNote gBNote)
+        {
+            #region Add Note
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    gBNote.dtEntered = DateTime.Now;
+                    _gbNoteRepository.Add(gBNote);
+
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBNote.nEnteredBy);
+                    #endregion
+
+                    #region Get All Notes for Current GB ID to display in UI
+                    IEnumerable<GBNote> notes = _gbNoteRepository.GetGBNoteByGBID(gBNote.sGBID);
+                    #endregion
+
+                    return Ok(notes);
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    return BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, gBNote.nEnteredBy);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
+        #region Edit Note
+        [HttpPost("EditNote/Id={Id}")]
+        [Route("[action]")]
+        public IActionResult EditNote(string Id, [FromBody] GBNote gBNote)
+        {
+            #region Edit Note
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (Id == null)
+                    {
+                        return BadRequest("Note Param ID cannot be NULL");
+                    }
+
+                    if (Id != gBNote.Id.ToString())
+                    {
+                        return BadRequest("Note ID's ain't Matching");
+                    }
+                    if (GBNoteExists(Id))
+                    {
+                        GBNote fetchedGBNote = _gbNoteRepository.GetGBNoteById(Id);
+                        gBNote.dtEntered = fetchedGBNote.dtEntered;
+                        _gbNoteRepository.Update(gBNote);
+
+                        #region Alert Logging 
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBNote.nEnteredBy);
+                        #endregion
+
+                        #region Get All Notes for Current GB ID to display in UI
+                        IEnumerable<GBNote> notes = _gbNoteRepository.GetGBNoteByGBID(gBNote.sGBID);
+                        #endregion
+
+                        return Ok(notes);
+                    }
+                    else
+                    {
+                        return BadRequest("GB Note with ID:" + Id + " does not exist");
+                    }
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    return BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, gBNote.nEnteredBy);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
+        #endregion
+
+        #region Child Part
+
+        #region Add Child
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult AddChild(GBChildren gBChildren)
+        {
+            #region Add Child
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(gBChildren.sGBIDChild);
+                    if (fetchedGB == null)
+                    {
+                        return BadRequest("Child with GBID: " + gBChildren.sGBIDChild + " Doesn't Exists");
+                    }
+                    gBChildren.dtEntered = DateTime.Now;
+                    _gbChildrenRepository.Add(gBChildren);
+
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBChildren.nEnteredBy);
+                    #endregion
+
+                    #region Get All Children for Current GB ID to display in UI
+                    IEnumerable<GBChildren> children = _gbChildrenRepository.GetGBChildrenByGBIDParent(gBChildren.sGBIDParent);
+                    #endregion
+
+                    return Ok(children);
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    return BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, gBChildren.nEnteredBy);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
+        #region Edit Child
+        [HttpPost("EditChild/Id={Id}")]
+        [Route("[action]")]
+        public IActionResult EditChild(string Id, [FromBody] GBChildren gBChild)
+        {
+            #region Edit Note
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (Id == null)
+                    {
+                        return BadRequest("Child Param ID cannot be NULL");
+                    }
+
+                    if (Id != gBChild.Id.ToString())
+                    {
+                        return BadRequest("Child ID's ain't Matching");
+                    }
+                    if (GBChildrenExists(Id))
+                    {
+                        GBChildren fetchedGBChild = _gbChildrenRepository.GetGBChildrenById(Id);
+                        gBChild.dtEntered = fetchedGBChild.dtEntered;
+                        _gbChildrenRepository.Update(gBChild);
+
+                        #region Alert Logging 
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBChild.nEnteredBy);
+                        #endregion
+
+                        #region Get All Notes for Current GB ID to display in UI
+                        IEnumerable<GBChildren> children = _gbChildrenRepository.GetGBChildrenByGBIDParent(gBChild.sGBIDParent);
+                        #endregion
+
+                        return Ok(children);
+                    }
+                    else
+                    {
+                        return BadRequest("Child with ID:" + Id + " does not exist");
+                    }
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    return BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, gBChild.nEnteredBy);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
+        #region Check if GBChild Exists
+        private bool GBChildrenExists(string Id)
+        {
+            try
+            {
+                GBChildren fetchedGBChildren = _gbChildrenRepository.GetGBChildrenById(Id);
+                if (fetchedGBChildren != null)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Exception in GB Children Exists Function, Exception Message: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region Document Part
+
+        #region Add Document
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult AddDocument(GBDocument gBDocument)
+        {
+            #region Add Document
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    gBDocument.dtEntered = DateTime.Now;
+                    _gbDocumentRepository.Add(gBDocument);
+
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBDocument.nEnteredBy);
+                    #endregion
+
+                    #region Get All Documents for Current GB ID to display in UI
+                    IEnumerable<GBDocument> documents = _gbDocumentRepository.GetAllGBDocumentsByGBID(gBDocument.sGBID);
+                    #endregion
+
+                    return Ok(documents);
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    return BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, gBDocument.nEnteredBy);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
+        #region Edit Document
+        [HttpPost("EditDocument/Id={Id}")]
+        [Route("[action]")]
+        public IActionResult EditDocument(string Id, [FromBody] GBDocument gBDocument)
+        {
+            #region Edit Document
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (Id == null)
+                    {
+                        return BadRequest("Document Param ID cannot be NULL");
+                    }
+
+                    if (Id != gBDocument.Id.ToString())
+                    {
+                        return BadRequest("Document ID's ain't Matching");
+                    }
+                    if (GBDocumentExists(Id))
+                    {
+                        GBDocument fetchedGBDocument = _gbDocumentRepository.GetDocumentById(Id);
+                        gBDocument.dtEntered = fetchedGBDocument.dtEntered;
+                        _gbDocumentRepository.Update(gBDocument);
+
+                        #region Alert Logging 
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBDocument.nEnteredBy);
+                        #endregion
+
+                        #region Get All Documents for Current GB ID to display in UI
+                        IEnumerable<GBDocument> documents = _gbDocumentRepository.GetAllGBDocumentsByGBID(gBDocument.sGBID);
+                        #endregion
+
+                        return Ok(documents);
+                    }
+                    else
+                    {
+                        return BadRequest("Document with ID:" + Id + " does not exist");
+                    }
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    return BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, gBDocument.nEnteredBy);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
+        #region Check if GBChild Exists
+        private bool GBDocumentExists(string Id)
+        {
+            try
+            {
+                GBDocument fetchedGBDocument = _gbDocumentRepository.GetDocumentById(Id);
+                if (fetchedGBDocument != null)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Exception in GB Document Exists Function, Exception Message: " + ex.Message);
+            }
+        }
+        #endregion
+
         #endregion
     }
 }

@@ -15,6 +15,7 @@ import {
   IconButton
 } from '@material-ui/core';
 
+import {AddDocumentDialog,EditDocumentDialog} from './dialogDocument';
 import {AddChildDialog,EditChildDialog} from './dialogChildren';
 import {AddNoteDialog,EditNoteDialog} from './dialogNote';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -133,16 +134,22 @@ export default function EditEntry(props) {
    const [lGBDocument, setlGBDocument] = useState([]);
    const [lGBNote, setlGBNote] = useState([]);
 
-   //Modals
+   //Note
    const [addNoteModal, setaddNoteModal] = useState(false);
    const [editNoteModal, seteditNoteModal] = useState(false);
    const [oNote, setoNote] = useState({});
-
+  
+   //Child
    const [addChildModal, setaddChildModal] = useState(false);
    const [editChildModal, seteditChildModal] = useState(false);
    const [oChild, setoChild] = useState({});
 
-   //Modal Functions
+   //Document
+   const [addDocumentModal, setaddDocumentModal] = useState(false);
+   const [editDocumentModal, seteditDocumentModal] = useState(false);
+   const [oDocument, setoDocument] = useState({});
+
+   //Modal Functions - Note
    const handleEditNoteRowClick=(row)=>{
     setoNote({
       id:row.id,
@@ -157,7 +164,23 @@ export default function EditEntry(props) {
     };
    
     const addNoteAPICall = (sNote) => {
-    setaddNoteModal(false);
+    let noteObj = {
+      sGBID:sGBID,
+      sNote:sNote
+    };
+    axios.post(`/Greenbook/AddNote`, noteObj)
+      .then(resp => {
+        if (resp.status === 200) {
+          setlGBNote(resp.data);
+          setaddNoteModal(false);
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
     };
 
   const handleEditNoteClickClose = () => {
@@ -165,13 +188,27 @@ export default function EditEntry(props) {
   };
    
   const editNoteAPICall = (oNote) => {
-    seteditNoteModal(false);
+    axios.post(`/Greenbook/EditNote/Id=`+oNote.id, oNote)
+      .then(resp => {
+        if (resp.status === 200) {
+          setlGBNote(resp.data);
+          seteditNoteModal(false);
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   };
 
 
+  //Modal Functions - Child
   const handleEditChildRowClick=(row)=>{
     setoChild({
       id:row.id,
+      sGBIDParent:row.sGBIDParent,
       sName:row.sName,
       dtDOB:row.dtDOB,
       sGender:row.sGender,
@@ -186,8 +223,19 @@ export default function EditEntry(props) {
     };
    
     const addChildAPICall = (childObj) => {
-      console.table(childObj);
-    setaddChildModal(false);
+    axios.post(`/Greenbook/AddChild`, childObj)
+      .then(resp => {
+        if (resp.status === 200) {
+          setlGBChildren(resp.data);
+          setaddChildModal(false);
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
     };
 
   const handleEditChildClickClose = () => {
@@ -195,10 +243,77 @@ export default function EditEntry(props) {
   };
    
   const editChildAPICall = (childObj) => {
-    console.table(childObj);
-    seteditChildModal(false);
+    axios.post(`/Greenbook/EditChild/Id=`+childObj.id, childObj)
+      .then(resp => {
+        if (resp.status === 200) {
+          setlGBChildren(resp.data);
+          seteditChildModal(false);  
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   };
 
+
+  //Modal Functions  - Document
+  const handleEditDocumentRowClick=(row)=>{
+    setoDocument({
+      id:row.id,
+      sGBID: row.sGBID,
+      sTitle: row.sTitle,
+      sDocType: row.sDocType,
+      binFileDoc: row.binFileDoc,
+      sFileExtension: row.sFileExtension,
+      nRegisterDate: row.nRegisterDate
+    });
+    seteditDocumentModal(true);
+   };
+
+   const handleAddDocumentClickClose = () => {
+    setaddDocumentModal(false);
+    };
+   
+    const addDocumentAPICall = (documentObject) => {
+    //console.log(documentObject);
+    axios.post(`/Greenbook/AddDocument`, documentObject)
+      .then(resp => {
+        if (resp.status === 200) {
+          setlGBDocument(resp.data);
+          setaddDocumentModal(false);
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+    };
+
+  const handleEditDocumentClickClose = () => {
+    seteditDocumentModal(false);
+  };
+   
+  const editDocumentAPICall = (documentObject) => {
+    console.log(documentObject);
+    axios.post(`/Greenbook/EditDocument/Id=`+documentObject.id, documentObject)
+      .then(resp => {
+        if (resp.status === 200) {
+          setlGBDocument(resp.data);
+          seteditDocumentModal(false);
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+  };
 
   //VARS to track
   const [Id, setnId] = useState('');
@@ -331,7 +446,7 @@ export default function EditEntry(props) {
                 axios.get(`/Greenbook/GetGBLinkDataByGBID/sGBID=`+resp.data.sGBID)
                .then(resp => {
                   if (resp.status === 200) {
-                     console.log(resp.data)
+                     //console.log(resp.data)
                      setlGBChildren(resp.data.lGBChildren);
                      setlGBDocument(resp.data.lGBDocument);
                      setlGBNote(resp.data.lGBNote);
@@ -1621,8 +1736,13 @@ export default function EditEntry(props) {
                   </Grid>
                 </Grid>
                 <Grid xs={12}>
-                  {lGBChildren.length != 0 &&
-                    <div>
+                {lGBChildren.length === 0 && <Typography 
+                  align='center' 
+                  variant="h6"
+                  color="primary"
+                  >No Records to Display</Typography>}
+                {lGBChildren.length != 0 &&
+                <div>
                 <Typography 
                 align='center' 
                 variant="h6"
@@ -1709,6 +1829,11 @@ export default function EditEntry(props) {
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
               <Grid xs={12}>
+              {lGBNote.length === 0 && <Typography 
+                align='center' 
+                variant="h6"
+                color="primary"
+                >No Records to Display</Typography>}
               {lGBNote.length != 0 && 
                 <div>
                 {/*<Typography 
@@ -1769,13 +1894,26 @@ export default function EditEntry(props) {
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
               <Grid xs={12}>
-              {lGBDocument.length != 0 &&
+              {lGBDocument.length === 0 && <Typography 
+                align='center' 
+                variant="h6"
+                color="primary"
+                >No Records to Display</Typography>}
+              {lGBDocument.length !== 0 &&
+              <div>
+                {/*<Typography 
+                align='center' 
+                variant="h6"
+                color="primary"
+                >Notes of - {sGBID}</Typography>*/}
+              
               <Table className="table table-hover table-striped table-bordered " >
                  <thead className="thead-light" style={{ padding: 0 }}>
                     <tr>
                        <th scope="col" style={{ width: '70%' }}>Title</th>
                        <th scope="col">Register Date</th>
                        <th scope="col">Entered By</th>
+                       <th scope="col">Edit</th>
                     </tr>
                  </thead>
                  <tbody style={{ padding: 0 }}>
@@ -1784,10 +1922,22 @@ export default function EditEntry(props) {
                              <td scope="row">{row.sTitle}</td>
                              <td scope="row">{row.nRegisterDate}</td>
                              <td scope="row">{row.nEnteredBy}</td>
+                             <td scope="row">
+                                  <IconButton color="primary"  onClick={()=>{handleEditDocumentRowClick(row)}} component="span" style={{padding:'0px'}}>
+                                    <EditOutlinedIcon/>
+                                  </IconButton>
+                                </td>
                        </tr>
                     ))}
               </tbody>
-           </Table>}
+           </Table>
+          </div>}
+           <Button 
+              variant='contained'
+              onClick={()=>{setaddDocumentModal(true)}}
+            >
+            Add a Document
+          </Button>
            </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
@@ -1814,9 +1964,12 @@ export default function EditEntry(props) {
           </Grid>
         </Grid>
       </form>
+
       {backdrop && <BackdropComponent
         backdrop={backdrop}
       />}
+
+      {/*Note*/}
       {addNoteModal && <AddNoteDialog
         addNoteModal={addNoteModal}
         sGBID={sGBID}
@@ -1831,7 +1984,7 @@ export default function EditEntry(props) {
         handleEditNoteClickClose={handleEditNoteClickClose}
         editNoteAPICall={editNoteAPICall}
       />}
-
+      {/*Child*/}
       {addChildModal && <AddChildDialog
         addChildModal={addChildModal}
         sGBID={sGBID}
@@ -1846,7 +1999,21 @@ export default function EditEntry(props) {
         handleEditChildClickClose={handleEditChildClickClose}
         editChildAPICall={editChildAPICall}
       />}
-
+      {/*Document*/}
+      {addDocumentModal && <AddDocumentDialog
+        addDocumentModal={addDocumentModal}
+        sGBID={sGBID}
+        classes={classes}
+        handleAddDocumentClickClose={handleAddDocumentClickClose}
+        addDocumentAPICall={addDocumentAPICall}
+      />}
+      {editDocumentModal && <EditDocumentDialog
+        editDocumentModal={editDocumentModal}
+        oDocument={oDocument}
+        classes={classes}
+        handleEditDocumentClickClose={handleEditDocumentClickClose}
+        editDocumentAPICall={editDocumentAPICall}
+      />}
     </Container>
   );
 }

@@ -1,5 +1,4 @@
-﻿using CTADBL.BaseClasses.Common;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,7 +20,7 @@ namespace CTADBL.BaseClasses.Transactions
         #endregion
 
         #region Public Properties
-
+        [Key]
         public int Id
         {
             get
@@ -129,7 +128,5 @@ namespace CTADBL.BaseClasses.Transactions
 
 
         #endregion
-
-
     }
 }

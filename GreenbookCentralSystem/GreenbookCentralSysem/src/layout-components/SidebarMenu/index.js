@@ -332,6 +332,13 @@ const SidebarMenu = (props) => {
                         Chartel
                     </NavLink>
                     </li>
+                    <li>
+                      <NavLink
+                        onClick={toggleSidebarMobile}
+                        to="/CTAConfig">
+                        CTA Config
+                    </NavLink>
+                    </li>
                   </ul>
                 </Collapse>
               </li>}

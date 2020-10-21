@@ -28,6 +28,7 @@ export const AddChildDialog = (props) => {
   const { register, handleSubmit, errors } = useForm();
   const handleSubmitAddChildRecord = () => {
     props.addChildAPICall({
+      sGBIDParent:props.sGBID,
       sName: sName,
       dtDOB: dtDOB,
       sGender: sGender,
@@ -125,13 +126,7 @@ export const AddChildDialog = (props) => {
                     type="text"
                     value={sChildID}
                     onChange={(e) => { setsChildID(e.target.value) }}
-                    inputRef={register({
-                      required: true
-                    })}
                   />
-                  {_.get("name_sChildID.type", errors) === "required" && (
-                    <span style={{ color: 'red' }}>This field is required</span>
-                  )}
                 </FormControl>
               </Grid>
               <Grid item xs={12} >
@@ -179,6 +174,7 @@ export const EditChildDialog = (props) => {
     props.editChildAPICall(
       {
         id: props.oChild.id,
+        sGBIDParent:props.oChild.sGBIDParent,
         sName: sName,
         dtDOB: dtDOB,
         sGender: sGender,
@@ -277,13 +273,7 @@ export const EditChildDialog = (props) => {
                     type="text"
                     value={sChildID}
                     onChange={(e) => { setsChildID(e.target.value) }}
-                    inputRef={register({
-                      required: true
-                    })}
                   />
-                  {_.get("name_sChildID.type", errors) === "required" && (
-                    <span style={{ color: 'red' }}>This field is required</span>
-                  )}
                 </FormControl>
               </Grid>
               <Grid item xs={12} >
