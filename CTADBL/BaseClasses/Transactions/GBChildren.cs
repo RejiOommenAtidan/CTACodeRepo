@@ -21,7 +21,7 @@ namespace CTADBL.BaseClasses.Transactions
         #endregion
 
         #region Public Properties
-
+        [Key]
         public int Id
         {
             get
@@ -129,7 +129,5 @@ namespace CTADBL.BaseClasses.Transactions
 
 
         #endregion
-
-
     }
 }

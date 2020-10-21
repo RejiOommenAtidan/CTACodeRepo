@@ -126,13 +126,7 @@ export const AddChildDialog = (props) => {
                     type="text"
                     value={sChildID}
                     onChange={(e) => { setsChildID(e.target.value) }}
-                    inputRef={register({
-                      required: true
-                    })}
                   />
-                  {_.get("name_sChildID.type", errors) === "required" && (
-                    <span style={{ color: 'red' }}>This field is required</span>
-                  )}
                 </FormControl>
               </Grid>
               <Grid item xs={12} >
@@ -279,13 +273,7 @@ export const EditChildDialog = (props) => {
                     type="text"
                     value={sChildID}
                     onChange={(e) => { setsChildID(e.target.value) }}
-                    inputRef={register({
-                      required: true
-                    })}
                   />
-                  {_.get("name_sChildID.type", errors) === "required" && (
-                    <span style={{ color: 'red' }}>This field is required</span>
-                  )}
                 </FormControl>
               </Grid>
               <Grid item xs={12} >
