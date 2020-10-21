@@ -72,7 +72,7 @@ export const PrintCard = (props) => {
      
     <div  style={{display: 'inline-block', border: '1px dashed grey', paddingLeft:'10px',fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
     {console.log(props.data.id)}
-      <table width={345} height={437} border={0}>
+      <table width={340} height={437} border={0}>
         <tbody>
           <tr>
             <td style={{fontSize: '20px', textAlign: 'center', padding: '1em 0 0 0'}}>ལག་ཁྱེར་ཨང་།</td>
@@ -139,10 +139,10 @@ export const PrintCard = (props) => {
           </tr>
           <tr>
             <td style={{textAlign: 'left', paddingRight: '5px', fontSize: '10px'}}>Pre. Book S. No.: </td> 
-            <td style={{textAlign: 'left', paddingRight: '5px', fontSize: '10px'}}><p style={{fontSize: '1.8em'}}>
+            <td style={{textAlign: 'left', paddingRight: '5px', fontSize: '10px'}}>
             
-              {props.data.nPreviousBookNo ? props.data.nPreviousBookNo : 'མེད།'}
-              </p>
+              {props.data.nPreviousBookNo ? props.data.nPreviousBookNo : <p style={{fontSize: '1.8em'}}>མེད།</p>}
+              
             </td>
           </tr>
           <tr><td style={{height: '20px'}} /></tr>

@@ -298,7 +298,7 @@ export default function NewEntry(props) {
               >
                 <Typography
                   className={classes.expansionHeading}
-                >Personal Information</Typography>
+                >Basic Personal Details (Mandatory Fields)</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid item xs={6}>
@@ -932,7 +932,7 @@ export default function NewEntry(props) {
               >
                 <Typography
                   className={classes.expansionHeading}
-                >Basic Personal Information</Typography>
+                >Personal Information</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid item xs={6}>

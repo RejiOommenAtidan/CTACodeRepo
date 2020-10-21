@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
   Container,
-  Grid
+  Grid, TextField
 } from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -15,6 +17,7 @@ import AddBox from '@material-ui/icons/AddBox';
 import { useHistory } from 'react-router-dom';
 import { Alerts } from '../../alerts';
 import handleError from "../../../auth/_helpers/handleError";
+
 
 const tableIcons = oTableIcons;
 
@@ -69,7 +72,8 @@ const useStyles = makeStyles(() => ({
 export default function EnhancedTable() {
   const classes = useStyles();
   const [editModal, setEditModal] = React.useState(false);
-  const [dataAPI, setdataAPI] = useState([]);
+  const [dataAPI, setdataAPI] = React.useState([]);
+  const [currentData, setCurrentData] = React.useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const [countryID, setCountryID] = React.useState('');
@@ -135,6 +139,13 @@ export default function EnhancedTable() {
       cellStyle: {
         padding: '5px'
       },
+      //searchable: false,
+      // customFilterAndSearch: (term, rowData) => {
+      //   //alert("Hello");
+      //   //console.log(term);
+      //   //console.log(rowData);
+      //   console.log (rowData.sCountry.indexOf(term));
+      //}
     },
 
     {
@@ -145,7 +156,7 @@ export default function EnhancedTable() {
       title: 'Edit',
       filtering: false,
       export: false,
-      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
+      render: rowData => rowData.id == 0 ? "" : <IconButton color="primary" aria-label="upload picture" component="span"
         onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
       >
         <EditOutlinedIcon />
@@ -155,6 +166,7 @@ export default function EnhancedTable() {
         borderRight: '0',
         width: '10%'
       },
+    
 
     },
     {
@@ -182,6 +194,9 @@ export default function EnhancedTable() {
       countryName: tableRowArray['sCountry']
     });
   }
+
+  
+  
 
   const editAPICall = (countryObj) => {
     axios.post(`/Country/EditCountry/CountryID=` + countryPK, countryObj/*countryToUpdate*/)
@@ -291,13 +306,91 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   };
+  // const sRow = { 
+  //   sCountryID: <input type = 'text' placeholder= "&#xF002;" onKeyDown={searchID}/>,
+  //   sCountry: <input type = 'text' placeholder= "&#xF002;" onKeyDown={searchName}/>
+  // }
+  
+
+  const sRow = {
+    id: 0,
+    // sCountryID: <input type = 'text' placeholder= "&#xF002;" onKeyDown={searchID}
+    // style={{fontFamily: 'FontAwesome'}}/>,
+    sCountryID: (
+      <div>
+      <TextField
+      id="countryID"
+      label="Search by ID"
+      onChange = {((e) => {searchID(e)})}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <AccountCircle />
+          </InputAdornment>
+        ),
+      }}
+      
+    /></div>),
+    sCountry: (
+      <div>
+      <TextField
+      id="countryName"
+      label="Search by Name"
+      onChange = {(e) => {searchName(e)}}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <AccountCircle />
+          </InputAdornment>
+        ),
+      }}
+      
+    /></div>),
+    edit: ""
+  }
+  const searchID = ((e) => {
+    console.log("Search ID: ", e.target.value);
+  }) 
+
+
+
+  const searchName = (e) => {
+    console.log ("Search Name: ", e.target.value );
+    console.log("CurrentData inside function" , currentData);
+  /*  if(e.target.value != ''){
+        axios.get(`/Country/SearchCountries/?sCountry=` + e.target.value )
+          .then(resp => {
+            if (resp.status === 200) {
+              setdataAPI([sRow, ...resp.data]);
+              setisLoading(false);
+            }
+          })
+          .catch(error => {
+            handleError(error, history);
+          })
+    }
+    else{
+      console.log("Resetting current data", currentData);
+      setdataAPI(currentData);
+    }
+    */
+    
+  }
+
+    //console.log("Rendering...");
+    //console.log("DataAPI", dataAPI);
+    //console.log("CurrentData", currentData);
+
 
   useEffect(() => {
     axios.get(`/Country/GetCountries`)
       .then(resp => {
         if (resp.status === 200) {
           setdataAPI(resp.data);
+          setCurrentData(resp.data);
           setisLoading(false);
+         
+          //setTimeout(console.log(resp.data),1);
         }
       })
       .catch(error => {
@@ -325,7 +418,7 @@ export default function EnhancedTable() {
             icons={tableIcons}
             title="Country"
             columns={columns}
-            data={dataAPI}
+            data={currentData}
             options={oOptions}
             actions={[
               {

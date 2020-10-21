@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link, Card, Table, Paper} from '@material-ui/core';
+import {Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link, Card, Table, Paper,CircularProgress,
+  Dialog,DialogContent,DialogContentText
+
+
+} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
@@ -30,6 +34,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Moment from 'moment';
 import MaterialTable, { MTableToolbar }  from 'material-table';
+import { oOptions, oTableIcons } from '../../config/commonConfig';
 
 
 
@@ -105,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  
+  oOptions.filtering = filtering;
   //validations
   const { register, handleSubmit, watch, errors } = useForm();
   
@@ -118,6 +123,7 @@ export default () => {
   const [serialNo, setSerialNo] = useState(1);
   const [filtering, setFiltering] = React.useState(false);
   const [makeListParams, setMakeListParams] = useState({});
+
 
   const columns = [
     {
@@ -173,7 +179,7 @@ export default () => {
       headerStyle: {
         padding:'0px',
         width:'9%',
-        textAlign:'center'
+        textAlign:'left'
       },
       cellStyle: {
         padding:'0px',
@@ -313,6 +319,7 @@ export default () => {
       console.log(error.config);
       console.log(error.message);
     })
+
     
   }, []);
 
@@ -383,6 +390,7 @@ export default () => {
             </div>
           ),
         }}
+        options={oOptions}
         actions={
           [
             

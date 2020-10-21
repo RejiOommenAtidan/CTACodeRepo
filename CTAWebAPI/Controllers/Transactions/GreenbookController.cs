@@ -26,8 +26,11 @@ namespace CTAWebAPI.Controllers.Transactions
         private readonly GetGBDataByFormNumberVMRepository _getGBDataByFormNumberVMRepository;
         private GreenBookVMRepository _greenBookVMRepository;
         private GivenGBIDRepository _givenGBIDRepository;
-        private GBRelationRepository _gbRelationRepository;
         private readonly CTALogger _ctaLogger;
+        private GBNoteRepository _gbNoteRepository;
+        private GBRelationRepository _gbRelationRepository;
+        private GBChildrenRepository _gbChildrenRepository;
+        private GBDocumentRepository _gbDocumentRepository;
         private readonly AuditLogRepository _auditLogRepository;
         public GreenbookController(DBConnectionInfo info)
         {
@@ -36,9 +39,12 @@ namespace CTAWebAPI.Controllers.Transactions
             _getGBDataByFormNumberVMRepository = new GetGBDataByFormNumberVMRepository(_info.sConnectionString);
             _greenBookVMRepository = new GreenBookVMRepository(_info.sConnectionString);
             _givenGBIDRepository = new GivenGBIDRepository(_info.sConnectionString);
-            _gbRelationRepository = new GBRelationRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
             _auditLogRepository = new AuditLogRepository(_info.sConnectionString);
+            _gbRelationRepository = new GBRelationRepository(_info.sConnectionString);
+            _gbNoteRepository = new GBNoteRepository(_info.sConnectionString);
+            _gbChildrenRepository = new GBChildrenRepository(_info.sConnectionString);
+            _gbDocumentRepository = new GBDocumentRepository(_info.sConnectionString);
         }
         #endregion
 
@@ -630,6 +636,43 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 #region Exception Logging 
                  _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
+        #region Get GB Link Data By GBID
+        [HttpGet]
+        [Route("[action]/sGBID={sGBID}")]
+        public IActionResult GetGBLinkDataByGBID(string sGBID)
+        {
+            #region Get Data
+            try
+            {
+                IEnumerable<GBChildren> lGBChildren = _gbChildrenRepository.GetGBChildrenByGBIDParent(sGBID);
+                IEnumerable<GBDocument> lGetGBDocument = _gbDocumentRepository.GetGBDocumentsByGBID(sGBID);
+                IEnumerable<GBNote> lGBNote = _gbNoteRepository.GetGBNoteByGBID(sGBID);
+
+                GBLnkVM lnkGbVM = new GBLnkVM
+                {
+                    lGBChildren = lGBChildren.ToList(),
+                    lGBDocument = lGetGBDocument.ToList(),
+                    lGBNote = lGBNote.ToList()
+                };
+
+                #region Information Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                #endregion
+
+                return Ok(lnkGbVM);
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);

@@ -233,7 +233,8 @@ export default function EnhancedTable() {
 const handleSubmit = () =>{
   //console.log(gbId);
   setGbId(tempGbId.toString());
-  if(gbId==""){
+  
+  if(tempGbId.toString()==""){
     setAlertMessage("Enter Green Book ID");
     setAlertType("error");
     snackbarOpen();
