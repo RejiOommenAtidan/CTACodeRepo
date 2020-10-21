@@ -40,6 +40,7 @@ const MadebType = lazy(() => import('./views/master/madebtype'));
 const Relation = lazy(() => import('./views/master/relation'));
 const Feature = lazy(() => import('./views/master/feature'));
 const Chartel = lazy(() => import('./views/master/chartel'));
+const CTAConfig = lazy(() => import('./views/master/ctaconfig'));
 
 // Madeb Pages
 const Sarso = lazy(() => import('./views/madeb/sarso'));
@@ -180,6 +181,7 @@ const Routes = () => {
                 '/Country',
                 '/NewEntry/:FORMNO',
                 '/Chartel',
+                '/CTAConfig',
                 '/Qualification',
                 '/Region',
                 '/Province',
@@ -222,6 +224,7 @@ const Routes = () => {
                     <Route path="/Home" component={Home} />
                     <Route path="/Region" component={Region} />
                     <Route path="/Chartel" component={Chartel} />
+                    <Route path="/CTAConfig" component={CTAConfig} />
                     <Route path="/AuthRegion" component={AuthRegion} />
                     <Route path="/Country" component={Country} />
                     <Route path="/Occupation" component={Occupation} />
