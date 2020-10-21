@@ -85,12 +85,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Update Madeb with assigned serial numbers
-        public void UpdateSerialNumber(string sGBID, int nFormNumber, int nIssuedOrNotID, int? nCurrentGBSno, int? nPreviousGBSno = null)
+        public void UpdateSerialNumber(string sGBID, int nFormNumber,  int? nCurrentGBSno, int? nPreviousGBSno = null)
         {
             Madeb madeb = GetMadebByGBIDAndFormNumber(sGBID, nFormNumber);
             madeb.nCurrentGBSno = nCurrentGBSno;
             madeb.nPreviousGBSno = nPreviousGBSno;
-            madeb.nIssuedOrNotID = nIssuedOrNotID;
+            
             string msg = this.Update(madeb);
 
         }
@@ -360,7 +360,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                            FROM tblmadeb 
                            WHERE tblmadeb.nFormNumber 
                            NOT IN (SELECT nFormNo 
-                                   FROM tblgivengbid) 
+                                   FROM tblgivengbid 
+                                   WHERE nFormNo IS NOT NULL)
                            AND tblmadeb.nMadebTypeID = 1 
                            AND tblmadeb.nIssuedOrNotID = 1
                            ORDER BY tblmadeb.nFormNumber DESC";

@@ -26,10 +26,20 @@ export const AddDialog = (props) => {
   console.log("gbSerialObj Object received in Add dialog: ", props.gbSerialObj);
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
 
+  let clicked = false;
 
+  const handleSubmitAndRedirect = (e) => {
+    console.log("Clicked redirect:" , e);
+    
+  }
   
-  const handleSubmitEditRecord = () =>{
-    props.addAPICall(gbSerialObj);
+  const handleSubmitEditRecord = (e) =>{
+    console.log("Plain", e);
+    console.log("Clicked state", clicked);
+    //alert("Submission Called.");
+    
+    
+    props.addAPICall(gbSerialObj, clicked);
     
       // setMessage("Record Successfully Edited");
     // setAlertType('success');
@@ -225,6 +235,7 @@ export const AddDialog = (props) => {
                                       onChange={(e) => { setGbId(e.target.value) }}
                                       InputProps={{
                                         readOnly: true
+                                        
                                       }}
                                       inputRef={register({
                                         required: true
@@ -524,7 +535,8 @@ export const AddDialog = (props) => {
         </Alert>
       </Snackbar> */}
 
-      <Button type="submit" color="primary">Save</Button> 
+      <Button type="submit" color="primary" name="submit" value="Save">Save</Button> 
+      <Button type="submit" color="primary" onClick={() => clicked=true} name="submit" value="Redirect">Save &amp; Redirect to Edit</Button>
       </DialogActions>
       </form>
     </Dialog>

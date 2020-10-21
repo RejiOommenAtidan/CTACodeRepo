@@ -242,8 +242,8 @@ export default () => {
   }
 
 
-  const addAPICall = (gbSerialObj) => {
-    debugger
+  const addAPICall = (gbSerialObj, clicked) => {
+    
     setLoading(true);
     console.log(gbSerialObj);
     axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, gbSerialObj)
@@ -251,6 +251,10 @@ export default () => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
+          if(clicked){
+            history.push("/GreenBookSerial");
+            return;
+          }
           axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumberAssignList`)
             .then(resp => {
               if (resp.status === 200) {
