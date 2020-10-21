@@ -52,7 +52,7 @@ namespace CTADBL.ViewModelsRepositories
 
                 command.Parameters.AddWithValue("records", records);
                 IEnumerable<GreenBookSerialNumberVM> result = GetRecords(command);
-                result = result.OrderBy(a => a.greenBookSerialNumber.nBookNo);
+                //result = result.OrderBy(a => a.greenBookSerialNumber.nBookNo);
                 //result = result.Reverse();
                 return result;
 

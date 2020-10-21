@@ -232,7 +232,8 @@ namespace CTAWebAPI.Controllers.Transactions
                     gbsn.dtUpdated = DateTime.Now;
                     _greenBookSerialNumberRepository.Add(gbsn);
                     int? nCurrentGBSno = (int?)gbsn.nBookNo;
-                    _madebRepository.UpdateSerialNumber(gbsn.sGBID, (int)gbsn.nFormNumber, 2, nCurrentGBSno);
+                    int nIssuedOrNotID = 2;
+                    _madebRepository.UpdateSerialNumber(gbsn.sGBID, (int)gbsn.nFormNumber, nIssuedOrNotID, nCurrentGBSno);
 
                     #region Information Logging 
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, gbsn.nEnteredBy);
