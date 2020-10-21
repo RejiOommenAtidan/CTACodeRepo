@@ -67,7 +67,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging 
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -170,7 +170,7 @@ namespace CTAWebAPI.Controllers.Transactions
 
         public IActionResult GetQuickResultComplex(DetailedSearchVM detailedSearch)
         {
-            if(detailedSearch == null)
+            if (detailedSearch == null)
             {
                 return BadRequest(String.Format(@"Invalid request parameters"));
             }
@@ -336,7 +336,7 @@ namespace CTAWebAPI.Controllers.Transactions
 
                 return Ok(gb);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 #region Exception Logging 
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
@@ -375,10 +375,11 @@ namespace CTAWebAPI.Controllers.Transactions
 
                     #region Relations Table Addition
                     //Father - 1
-                    if (!string.IsNullOrEmpty(greenbook.sFathersGBID)) 
+                    if (!string.IsNullOrEmpty(greenbook.sFathersGBID))
                     {
                         Greenbook fatherGB = _greenbookRepository.GetGreenbookByGBID(greenbook.sFathersGBID);
-                        if (fatherGB != null) {
+                        if (fatherGB != null)
+                        {
                             GBRelation fatherRelation = new GBRelation
                             {
                                 sGBID = greenbook.sGBID,
@@ -627,7 +628,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 GetGBDataByFormNumberVM getGBDataByFormNumberVM = _getGBDataByFormNumberVMRepository.GetGBDataByFormNumber(Id);
 
                 #region Information Logging 
-                  _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
                 #endregion
 
                 return Ok(getGBDataByFormNumberVM);
@@ -635,7 +636,7 @@ namespace CTAWebAPI.Controllers.Transactions
             catch (Exception ex)
             {
                 #region Exception Logging 
-                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -818,6 +819,11 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
+                    Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(gBChildren.sGBIDChild);
+                    if (fetchedGB == null)
+                    {
+                        return BadRequest("Child with GBID: " + gBChildren.sGBIDChild + " Doesn't Exists");
+                    }
                     gBChildren.dtEntered = DateTime.Now;
                     _gbChildrenRepository.Add(gBChildren);
 
