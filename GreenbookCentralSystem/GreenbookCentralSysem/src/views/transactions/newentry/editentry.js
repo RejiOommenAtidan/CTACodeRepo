@@ -299,20 +299,20 @@ export default function EditEntry(props) {
   };
    
   const editDocumentAPICall = (documentObject) => {
-    // axios.post(`/Greenbook/EditDocument/Id=`+documentObject.id, documentObject)
-    //   .then(resp => {
-    //     if (resp.status === 200) {
-    //       setlGBDocument(resp.data);
-    //       seteditDocumentModal(false);
-    //     }
-    //   })
-    //   .catch(error => {
-    //     handleError(error, history);
-    //   })
-    //   .then(release => {
-    //     //console.log(release); => udefined
-    //   });
     console.log(documentObject);
+    axios.post(`/Greenbook/EditDocument/Id=`+documentObject.id, documentObject)
+      .then(resp => {
+        if (resp.status === 200) {
+          setlGBDocument(resp.data);
+          seteditDocumentModal(false);
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   };
 
   //VARS to track

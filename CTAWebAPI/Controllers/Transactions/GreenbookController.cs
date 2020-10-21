@@ -654,7 +654,7 @@ namespace CTAWebAPI.Controllers.Transactions
             try
             {
                 IEnumerable<GBChildren> lGBChildren = _gbChildrenRepository.GetGBChildrenByGBIDParent(sGBID);
-                IEnumerable<GBDocument> lGetGBDocument = _gbDocumentRepository.GetGBDocumentsByGBID(sGBID);
+                IEnumerable<GBDocument> lGetGBDocument = _gbDocumentRepository.GetAllGBDocumentsByGBID(sGBID);
                 IEnumerable<GBNote> lGBNote = _gbNoteRepository.GetGBNoteByGBID(sGBID);
 
                 GBLnkVM lnkGbVM = new GBLnkVM
@@ -958,7 +958,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     #endregion
 
                     #region Get All Documents for Current GB ID to display in UI
-                    IEnumerable<GBDocument> documents = _gbDocumentRepository.GetGBDocumentsByGBID(gBDocument.sGBID);
+                    IEnumerable<GBDocument> documents = _gbDocumentRepository.GetAllGBDocumentsByGBID(gBDocument.sGBID);
                     #endregion
 
                     return Ok(documents);
@@ -1013,7 +1013,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         #endregion
 
                         #region Get All Documents for Current GB ID to display in UI
-                        IEnumerable<GBDocument> documents = _gbDocumentRepository.GetGBDocumentsByGBID(gBDocument.sGBID);
+                        IEnumerable<GBDocument> documents = _gbDocumentRepository.GetAllGBDocumentsByGBID(gBDocument.sGBID);
                         #endregion
 
                         return Ok(documents);

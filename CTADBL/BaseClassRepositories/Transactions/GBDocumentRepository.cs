@@ -46,6 +46,27 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 return GetRecord(command);
             }
         }
+
+        public IEnumerable<GBDocument> GetAllGBDocumentsByGBID(string sGBID)
+        {
+            string sql = @"SELECT`id`,
+                           `sGBId`,
+                           `sTitle`,
+                           `sDocType`,
+                           `binFileDoc`,
+                           `sFileExtension`,
+                           `nRegisterDate`,
+                           `dtEntered`,
+                           `nEnteredBy`
+                        FROM `lnkgbdocument`
+                        WHERE sGBID = @sGBID;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                return GetRecords(command);
+            }
+
+        }
         #endregion
 
         #region Populate Records
