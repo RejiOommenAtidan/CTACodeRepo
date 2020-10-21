@@ -56,35 +56,43 @@ namespace CTADBL.BaseClassRepositories.Masters
         #region Get CTAConfig
         public IEnumerable<CTAConfig> GetAllConfig()
         {
-            string sql = @"SELECT `Id`,
-                                `sKey`,
-                                `sValue`,
-                                `dtEntered`,
-                                `nEnteredBy`
-                            FROM `lstctaconfig`;";
-            using (var command = new MySqlCommand(sql))
-            {
-                return GetRecords(command);
-            }
+
+            return configs;
+            //string sql = @"SELECT `Id`,
+            //                    `sKey`,
+            //                    `sValue`,
+            //                    `dtEntered`,
+            //                    `nEnteredBy`
+            //                FROM `lstctaconfig`;";
+            //using (var command = new MySqlCommand(sql))
+            //{
+            //    return GetRecords(command);
+            //}
         }
 
         public CTAConfig GetConfigById(string Id)
         {
-            string sql = @"SELECT `Id`,
-                            `sKey`,
-                            `sValue`,
-                            `dtEntered`,
-                            `nEnteredBy`
-                        FROM `lstctaconfig`
-                        WHERE Id = @Id;";
-            using (var command = new MySqlCommand(sql))
-            {
-                command.Parameters.AddWithValue("Id", Id);
-                return GetRecord(command);
-            }
+            return configs.Where(con => con.Id == Convert.ToInt32(Id)).FirstOrDefault();
         }
 
-        public static dynamic GetValue(string key)
+        
+        //public CTAConfig GetConfigById(string Id)
+        //{
+        //    string sql = @"SELECT `Id`,
+        //                    `sKey`,
+        //                    `sValue`,
+        //                    `dtEntered`,
+        //                    `nEnteredBy`
+        //                FROM `lstctaconfig`
+        //                WHERE Id = @Id;";
+        //    using (var command = new MySqlCommand(sql))
+        //    {
+        //        command.Parameters.AddWithValue("Id", Id);
+        //        return GetRecord(command);
+        //    }
+        //}
+
+        public static dynamic GetValueByKey(string key)
         {
             var value = configs.Where(con => con.sKey == key).Select(res => res.sValue).FirstOrDefault();
             return value;
@@ -92,18 +100,21 @@ namespace CTADBL.BaseClassRepositories.Masters
 
         public CTAConfig GetConfigByKey(string sKey)
         {
-            string sql = @"SELECT `Id`,
-                            `sKey`,
-                            `sValue`,
-                            `dtEntered`,
-                            `nEnteredBy`
-                        FROM `lstctaconfig`
-                        WHERE sKey = @sKey;";
-            using (var command = new MySqlCommand(sql))
-            {
-                command.Parameters.AddWithValue("sKey", sKey);
-                return GetRecord(command);
-            }
+            return configs.Where(con => con.sKey == sKey).FirstOrDefault();
+
+
+            //string sql = @"SELECT `Id`,
+            //                `sKey`,
+            //                `sValue`,
+            //                `dtEntered`,
+            //                `nEnteredBy`
+            //            FROM `lstctaconfig`
+            //            WHERE sKey = @sKey;";
+            //using (var command = new MySqlCommand(sql))
+            //{
+            //    command.Parameters.AddWithValue("sKey", sKey);
+            //    return GetRecord(command);
+            //}
         }
         #endregion
 
@@ -125,6 +136,7 @@ namespace CTADBL.BaseClassRepositories.Masters
         {
             var builder = new SqlQueryBuilder<CTAConfig>(ctaConfig);
             ExecuteCommand(builder.GetInsertCommand());
+            LoadValues();
         }
         #endregion
 
@@ -133,6 +145,7 @@ namespace CTADBL.BaseClassRepositories.Masters
         {
             var builder = new SqlQueryBuilder<CTAConfig>(ctaConfig);
             ExecuteCommand(builder.GetUpdateCommand());
+            LoadValues();
         }
         #endregion
 

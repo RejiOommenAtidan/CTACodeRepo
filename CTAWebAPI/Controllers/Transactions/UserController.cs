@@ -92,7 +92,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 //    return BadRequest("Invalid Row Count in Masters Table");
 
 
-                int records = Convert.ToInt32(CTAConfigRepository.GetValue("SelectTotalRecordCount"));
+                int records = Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount"));
                 IEnumerable<UsersVM> allUsers = _usersVMRepository.GetUsersWithUserRightsName(records);
                 #region Information Logging 
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
