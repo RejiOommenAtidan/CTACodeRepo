@@ -930,7 +930,133 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception in GBChildren Exists Function, Exception Message: " + ex.Message);
+                throw new Exception("Exception in GB Children Exists Function, Exception Message: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region Document Part
+
+        #region Add Document
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult AddDocument(GBDocument gBDocument)
+        {
+            #region Add Document
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    gBDocument.dtEntered = DateTime.Now;
+                    _gbDocumentRepository.Add(gBDocument);
+
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBDocument.nEnteredBy);
+                    #endregion
+
+                    #region Get All Documents for Current GB ID to display in UI
+                    IEnumerable<GBDocument> documents = _gbDocumentRepository.GetGBDocumentsByGBID(gBDocument.sGBID);
+                    #endregion
+
+                    return Ok(documents);
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    return BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, gBDocument.nEnteredBy);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
+        #region Edit Document
+        [HttpPost("EditDocument/Id={Id}")]
+        [Route("[action]")]
+        public IActionResult EditDocument(string Id, [FromBody] GBDocument gBDocument)
+        {
+            #region Edit Document
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (Id == null)
+                    {
+                        return BadRequest("Document Param ID cannot be NULL");
+                    }
+
+                    if (Id != gBDocument.Id.ToString())
+                    {
+                        return BadRequest("Document ID's ain't Matching");
+                    }
+                    if (GBDocumentExists(Id))
+                    {
+                        GBDocument fetchedGBDocument = _gbDocumentRepository.GetDocumentById(Id);
+                        gBDocument.dtEntered = fetchedGBDocument.dtEntered;
+                        _gbDocumentRepository.Update(gBDocument);
+
+                        #region Alert Logging 
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBDocument.nEnteredBy);
+                        #endregion
+
+                        #region Get All Documents for Current GB ID to display in UI
+                        IEnumerable<GBDocument> documents = _gbDocumentRepository.GetGBDocumentsByGBID(gBDocument.sGBID);
+                        #endregion
+
+                        return Ok(documents);
+                    }
+                    else
+                    {
+                        return BadRequest("Document with ID:" + Id + " does not exist");
+                    }
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+                    return BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, gBDocument.nEnteredBy);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
+        #region Check if GBChild Exists
+        private bool GBDocumentExists(string Id)
+        {
+            try
+            {
+                GBDocument fetchedGBDocument = _gbDocumentRepository.GetDocumentById(Id);
+                if (fetchedGBDocument != null)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Exception in GB Document Exists Function, Exception Message: " + ex.Message);
             }
         }
         #endregion
