@@ -157,7 +157,23 @@ export default function EditEntry(props) {
     };
    
     const addNoteAPICall = (sNote) => {
-    setaddNoteModal(false);
+    let noteObj = {
+      sGBID:sGBID,
+      sNote:sNote
+    };
+    axios.post(`/Greenbook/AddNote`, noteObj)
+      .then(resp => {
+        if (resp.status === 200) {
+          setlGBNote(resp.data);
+          setaddNoteModal(false);
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
     };
 
   const handleEditNoteClickClose = () => {
@@ -165,13 +181,26 @@ export default function EditEntry(props) {
   };
    
   const editNoteAPICall = (oNote) => {
-    seteditNoteModal(false);
+    axios.post(`/Greenbook/EditNote/Id=`+oNote.id, oNote)
+      .then(resp => {
+        if (resp.status === 200) {
+          setlGBNote(resp.data);
+          seteditNoteModal(false);
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   };
 
 
   const handleEditChildRowClick=(row)=>{
     setoChild({
       id:row.id,
+      sGBIDParent:row.sGBIDParent,
       sName:row.sName,
       dtDOB:row.dtDOB,
       sGender:row.sGender,
@@ -186,8 +215,19 @@ export default function EditEntry(props) {
     };
    
     const addChildAPICall = (childObj) => {
-      console.table(childObj);
-    setaddChildModal(false);
+    axios.post(`/Greenbook/AddChild`, childObj)
+      .then(resp => {
+        if (resp.status === 200) {
+          setlGBChildren(resp.data);
+          setaddChildModal(false);
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
     };
 
   const handleEditChildClickClose = () => {
@@ -195,10 +235,20 @@ export default function EditEntry(props) {
   };
    
   const editChildAPICall = (childObj) => {
-    console.table(childObj);
-    seteditChildModal(false);
+    axios.post(`/Greenbook/EditChild/Id=`+childObj.id, childObj)
+      .then(resp => {
+        if (resp.status === 200) {
+          setlGBChildren(resp.data);
+          seteditChildModal(false);  
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   };
-
 
   //VARS to track
   const [Id, setnId] = useState('');

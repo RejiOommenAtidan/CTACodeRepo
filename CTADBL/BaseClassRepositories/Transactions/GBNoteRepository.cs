@@ -37,6 +37,23 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 return null;
             }
         }
+
+        public GBNote GetGBNoteById(string Id)
+        {
+            string sql = @"SELECT `Id`,
+                            `sGBId`,
+                            `sNote`,
+                            `dtEntered`,
+                            `nEnteredBy`
+                        FROM `lnkgbnote`
+                        WHERE Id = @Id;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("Id", Id);
+                return GetRecord(command);
+            }
+        }
+
         #endregion
 
         #region Add Call

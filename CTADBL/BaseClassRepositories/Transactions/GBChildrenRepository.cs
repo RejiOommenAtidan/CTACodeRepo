@@ -30,6 +30,26 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 return GetRecords(command);
             }
         }
+
+        public GBChildren GetGBChildrenById(string Id)
+        {
+            string sql = @"SELECT `Id`,
+                            `sGBIDParent`,
+                            `sName`,
+                            `dtDOB`,
+                            `sGender`,
+                            `sChildID`,
+                            `sGBIDChild`,
+                            `dtEntered`,
+                            `nEnteredBy`
+                        FROM `lnkgbchildren`
+                        WHERE Id = @Id;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("Id", Id);
+                return GetRecord(command);
+            }
+        }
         #endregion
 
         #region Populate Greenbook Records

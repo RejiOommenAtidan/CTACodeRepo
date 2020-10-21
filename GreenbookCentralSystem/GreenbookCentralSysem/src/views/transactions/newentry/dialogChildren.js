@@ -28,6 +28,7 @@ export const AddChildDialog = (props) => {
   const { register, handleSubmit, errors } = useForm();
   const handleSubmitAddChildRecord = () => {
     props.addChildAPICall({
+      sGBIDParent:props.sGBID,
       sName: sName,
       dtDOB: dtDOB,
       sGender: sGender,
@@ -179,6 +180,7 @@ export const EditChildDialog = (props) => {
     props.editChildAPICall(
       {
         id: props.oChild.id,
+        sGBIDParent:props.oChild.sGBIDParent,
         sName: sName,
         dtDOB: dtDOB,
         sGender: sGender,
