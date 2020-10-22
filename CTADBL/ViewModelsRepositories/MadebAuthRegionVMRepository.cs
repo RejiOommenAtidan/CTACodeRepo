@@ -1,4 +1,6 @@
-﻿using CTADBL.BaseClasses.Transactions;
+﻿using CTADBL.BaseClasses.Masters;
+using CTADBL.BaseClasses.Transactions;
+using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Repository;
 using CTADBL.ViewModels;
@@ -153,11 +155,12 @@ namespace CTADBL.ViewModelsRepositories
                         LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         LEFT JOIN `lstmadebstatus` ON `tblmadeb`.`nMadebStatusID` = `lstmadebstatus`.`ID`
                         WHERE `nMadebTypeID`= @madebType 
-                        ORDER BY `tblmadeb`.`Id` DESC
-                        LIMIT 1000;";
+                        ORDER BY `tblmadeb`.`dtUpdated` DESC
+                        LIMIT @limit;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("madebType", madebType);
+                command.Parameters.AddWithValue("limit", Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount")));
                 return GetRecords(command);
             }
         }

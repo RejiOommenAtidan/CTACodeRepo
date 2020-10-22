@@ -1,4 +1,5 @@
-﻿using CTADBL.BaseClasses.Transactions;
+﻿using CTADBL.BaseClassRepositories.Masters;
+using CTADBL.BaseClasses.Transactions;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.ViewModelsRepositories;
 using CTADBL.ViewModels;
@@ -43,7 +44,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetGreenBookSerialNumbers(int records = 500)
+        public IActionResult GetGreenBookSerialNumbers()
         {
             #region Get GreenBookSerialNumbers limit by 'records'.
             //
@@ -52,6 +53,7 @@ namespace CTAWebAPI.Controllers.Transactions
             //
             try
             {
+                int records = Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount"));
                 IEnumerable<GreenBookSerialNumberVM> result = _greenBookSerialNumberVMRepository.GetGreenBookSerialNumbers(records);
 
                 if (result != null & result.Count() > 0)
