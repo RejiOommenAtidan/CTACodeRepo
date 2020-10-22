@@ -36,7 +36,7 @@ import Moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
-
+import SaveIcon from '@material-ui/icons/Save'; 
 
 import {IssueBookTable} from '../issuebooktable';
 
@@ -166,13 +166,16 @@ export default function EnhancedTable() {
  // const navigate = useNavigate();
 
   const [dataAPI, setdataAPI] = useState([]);
-  
+  const [latestData, setLatestData] = useState([]);
+
   const [bookIssueData, setBookIssueData] = useState([]);
 
 
   //VAR
 
   const [historyTable, setHistoryTable] = React.useState(false);
+  const [latestDataTable, setLatestDataTable] = React.useState(false);
+
 
   const [id, setId] = React.useState('');
   const [tempGbId, setTempGbId] = React.useState(9116519);
@@ -232,30 +235,40 @@ export default function EnhancedTable() {
 }
 const handleSubmit = () =>{
   //console.log(gbId);
-  setGbId(tempGbId.toString());
+  //setGbId(tempGbId.toString());
   
-  if(tempGbId.toString()==""){
+  if(gbId==""){
     setAlertMessage("Enter Green Book ID");
     setAlertType("error");
     snackbarOpen();
   }
   else{
+    setLatestDataTable(false);
     setHistoryTable(true);
  
   }
   
 }
+const handleLatestSubmit = (sGBID) =>{
+
+
+       setGbId(sGBID);
+       setLatestDataTable(false);
+      setHistoryTable(true);
+ 
+    
+}
 
  
  
 
-  useEffect(() => { /*
-    axios.get(`IssueBook/GetIssueBookByGBId/GBId=6766082`)
+  useEffect(() => { 
+    axios.get(`IssueBook/GetLatestIssueBookJoin`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
-          //setdataAPI(resp.data);
-          //selectDatafunction()
+          setLatestData(resp.data);
+          setLatestDataTable(true);
         }
       })
       .catch(error => {
@@ -273,7 +286,7 @@ const handleSubmit = () =>{
       .then(release => {
         //console.log(release); => udefined
       } );
-    */ }, []);
+     }, []);
 
   return (
 
@@ -294,18 +307,66 @@ const handleSubmit = () =>{
 
                <Typography color="textPrimary">Enter Green Book Number To Issue Book:</Typography>
                <TextField id="standard-basic" type='number' label="Green Book No." 
-                onChange ={ (e) => {setTempGbId(e.target.value)} }
+                onChange ={ (e) => {setGbId(e.target.value.toString())} }
+                value={gbId}
                 
                
                />
              { /* <Button   style={{marginTop:8,marginLeft:5 }} type='submit' onClick={searchGbId}  variant="outlined">Show</Button>*/}
-             <Button   style={{marginTop:8,marginLeft:5 }} type='submit' onClick={()=>{handleSubmit()}}  variant="outlined">Show</Button>
-            
+             <Button   style={{marginTop:8,marginLeft:5 }} type='submit' onClick={()=>{handleSubmit()}}  variant="outlined">Search</Button>
+             <Button   style={{marginTop:8,marginLeft:5 }} type='submit' onClick={()=>{setHistoryTable(false);setLatestDataTable(true);setGbId('')}}  variant="outlined">Show Latest</Button>
+             <br/>
            {/*  <IssueBookTable
               gbId={gbId}
               />
            */ }
+               
+
+          
+         
+        {latestDataTable &&
+          <>
+        
+            <Table className="table table-hover table-striped table-bordered">
+            <thead className="thead-light">
+            <tr>
+              
+                <th > Issued Date </th>
+                <th > GB ID </th>
+                <th > Why </th>
+                <th > Where </th>
+                <th > Form No </th>
+                <th > Issued Yet? </th>    
+             
+                <th > Issue Book </th>                           
+            </tr>
+            </thead>
+            <tbody>
+            {latestData.map((row1, index) => (
+            <tr>
+             
+                <td >{row1.dtReceived ? Moment(row1.dtReceived).format('YYYY-MM-DD') : ''}</td>
+               
+                <td>{row1.sGBID} </td>
+                <td>{row1.sMadebDisplayName}</td>
+                <td>{row1.sAuthRegion}</td>
+             
+                <td>{row1.nFormNumber}</td>
+                <td>{row1.sTypeIssued == null  ?  'On Progress' : row1.sTypeIssued }</td>
+        
                 
+                <td>
+                 { <IconButton color="primary"   onClick={() => { handleLatestSubmit(row1.sGBID) }} aria-label="upload picture" component="span" style={{padding:'0px'}}>
+                    <SaveIcon/>
+            </IconButton>}
+                </td>
+                                                    
+            </tr>
+            
+
+            ))}
+            </tbody>
+            </Table></> }
               
          { historyTable &&   
                         <IssueBookTable
