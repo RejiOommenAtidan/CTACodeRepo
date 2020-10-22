@@ -191,7 +191,7 @@ namespace CTAWebAPI.Controllers.Masters
                         //    _auditLogRepository.Add(auditLog);
                         //}
 
-                        _ctaLogger.LogAuditRecord(fetchedCTAConfig, ctaConfig,null,0,0, fetchedCTAConfig.Id,ctaConfig.nEnteredBy);
+                        CTALogger.LogAuditRecord(fetchedCTAConfig, ctaConfig,null,0,0, fetchedCTAConfig.Id,ctaConfig.nEnteredBy);
 
                         #endregion
 

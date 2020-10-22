@@ -40,8 +40,8 @@ namespace CTAWebAPI
             services.AddSingleton(config);
             CTAConfigRepository configRepository = new CTAConfigRepository(config.sConnectionString);
             services.AddSingleton(configRepository);
-            //CTALogger ctaLogger = new CTALogger(config);
-            //services.AddSingleton(ctaLogger);
+            CTALogger._auditLogRepository = new CTADBL.BaseClassRepositories.Transactions.AuditLogRepository(config.sConnectionString);
+            
             #endregion
 
             #region JWT Auth

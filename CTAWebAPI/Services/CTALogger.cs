@@ -11,14 +11,16 @@ namespace CTAWebAPI.Services
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly ActionLoggerRepository _actionLoggerRepository;
-        private readonly AuditLogRepository _auditLogRepository;
+        public static  AuditLogRepository _auditLogRepository;
         public CTALogger(DBConnectionInfo info)
         {
             _info = info;
             _actionLoggerRepository = new ActionLoggerRepository(_info.sConnectionString);
-            _auditLogRepository = new AuditLogRepository(_info.sConnectionString);
+            //_auditLogRepository = new AuditLogRepository(_info.sConnectionString);
         }
         #endregion
+
+        
 
         #region Log Record
         /// <summary>
@@ -65,7 +67,7 @@ namespace CTAWebAPI.Services
         /// <param name="sGBID">GB ID</param>
         /// <param name="nRegionID">Auth Region ID</param>
         /// <param name="nFeatureID">Feature ID</param>
-        public void LogAuditRecord<T>(T oOld, T oNew, string sGBID, int nRegionID,int nFeatureID, int nRecordID, int nEnteredBy) where T : class
+        public static void LogAuditRecord<T>(T oOld, T oNew, string sGBID, int nRegionID,int nFeatureID, int nRecordID, int nEnteredBy) where T : class
         {
             #region Add Audit Record
             try
@@ -94,5 +96,7 @@ namespace CTAWebAPI.Services
             #endregion
         }
         #endregion
+
+        
     }
 }

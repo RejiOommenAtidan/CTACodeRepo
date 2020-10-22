@@ -264,13 +264,26 @@ console.log("Madeb Edit Object received in dialog", madeb);
                                             id="nFormNumber"
                                             label="Form Number"
                                             type="number"
-                                            // InputProps={{
-                                            //     readOnly: true,
-                                            // }}
-                                            value={nFormNumber}
-                                            onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
+                                            name="nFormNumber"
+                                            InputProps={{
+                                               pattern: /[0-9]/,
+                                               inputProps: { min: 1} 
+                                               
 
-                                        />
+                                            }}
+                                            value={nFormNumber}
+                                            onChange={(e) => { 
+                                              setFormNumber(parseInt(e.target.value));
+                                              
+                                            }}
+                                            required
+                                            inputRef={register({
+                                              required: true
+                                            })}
+                                          />
+                                          {_.get("nFormNumber.type", errors) === "required" && (
+                                            <span style={{color: 'red'}}>This field is required</span>
+                                          )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
