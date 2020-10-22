@@ -1,5 +1,7 @@
+using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.Entities;
 using CTAWebAPI.Helpers;
+using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +38,8 @@ namespace CTAWebAPI
             var config = new DBConnectionInfo();
             config.sConnectionString = Configuration.GetConnectionString("myconn");
             services.AddSingleton(config);
+            CTAConfigRepository configRepository = new CTAConfigRepository(config.sConnectionString);
+            services.AddSingleton(configRepository);
             #endregion
 
             #region JWT Auth

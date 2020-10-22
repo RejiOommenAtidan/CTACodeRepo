@@ -47,11 +47,6 @@ namespace CTADBL.BaseClassRepositories.Masters
             }
         }
 
-        public bool UpdateConfiguration(IEnumerable<CTAConfig> configs)
-        {
-            //to do
-            return true;
-        }
 
         #region Get CTAConfig
         public IEnumerable<CTAConfig> GetAllConfig()
