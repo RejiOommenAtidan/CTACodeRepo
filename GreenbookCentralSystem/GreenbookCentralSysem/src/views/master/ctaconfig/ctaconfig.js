@@ -12,18 +12,18 @@ import { AddDialog, EditDialog } from './dialog';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons } from '../../../config/commonConfig';
-import FilterList from '@material-ui/icons/FilterList';
-import AddBox from '@material-ui/icons/AddBox';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
 
 const tableIcons = oTableIcons;
 
 const useStyles = makeStyles(() => ({
+  // MTableOverride = {
+
+  // }
 }));
 
 export default function Chartel() {
-
   let history = useHistory();
   const classes = useStyles();
   const [isLoading, setisLoading] = React.useState(true);
@@ -69,7 +69,7 @@ export default function Chartel() {
         padding: '5px',
         paddingLeft: '10px',
         borderLeft: '0'
-      },
+      }
     },
     {
       field: "sValue",
@@ -201,13 +201,13 @@ export default function Chartel() {
             options={oOptions}
             actions={[
               {
-                icon: AddBox,
+                icon: oTableIcons.Add,
                 tooltip: 'Add CTA Config',
                 isFreeAction: true,
                 onClick: (event) => setAddModal(true)
               },
               {
-                icon: FilterList,
+                icon: oTableIcons.Filter,
                 tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }

@@ -480,21 +480,21 @@ const editAPICall = (obj) =>{
                             {pendingData.map((row1, index) => (
                             <tr>
                              
-                                <th scope="row">{row1.dtReceived ? Moment(row1.dtReceived).format('YYYY-MM-DD') : ''}</th>
+                                <td scope="row">{row1.dtReceived ? Moment(row1.dtReceived).format('YYYY-MM-DD') : ''}</td>
                                
                              
-                                <th scope="row">{row1.sMadebDisplayName}</th>
-                                <th scope="row">{row1.sAuthRegion}</th>
+                                <td scope="row">{row1.sMadebDisplayName}</td>
+                                <td scope="row">{row1.sAuthRegion}</td>
                              
-                                <th scope="row">{row1.nFormNumber}</th>
-                                <th scope="row">{row1.sTypeIssued == null  ?  'On Progress' : row1.sTypeIssued }</th>
+                                <td scope="row">{row1.nFormNumber}</td>
+                                <td scope="row">{row1.sTypeIssued == null  ?  'On Progress' : row1.sTypeIssued }</td>
                         
                                 
-                                <th scope="row">
+                                <td scope="row">
                                   <IconButton color="primary"   onClick={() => { saveClick(row1) }} aria-label="upload picture" component="span" style={{padding:'0px'}}>
                                     <SaveIcon/>
                                   </IconButton>
-                                </th>
+                                </td>
                                                                     
                             </tr>
                             
