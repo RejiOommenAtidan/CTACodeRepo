@@ -20,6 +20,9 @@ import { useHistory } from 'react-router-dom';
 const tableIcons = oTableIcons;
 
 const useStyles = makeStyles(() => ({
+  // MTableOverride = {
+
+  // }
 }));
 
 export default function Chartel() {
@@ -69,7 +72,7 @@ export default function Chartel() {
         padding: '5px',
         paddingLeft: '10px',
         borderLeft: '0'
-      },
+      }
     },
     {
       field: "sValue",

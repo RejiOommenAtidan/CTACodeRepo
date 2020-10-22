@@ -20,7 +20,7 @@ export const sSnackbarAddMessage = "Record added successfully";
 export const sSnackbarUpdateMessage = "Record updated successfully";
 export const sDateFormat = "DD-MM-YYYY";
 export const sDateFormatMUIDatepicker = "dd-MM-yyyy";
-export const aPageSizeArray = [5,10, 15, 20, 30, 50, 70, 100];
+export const aPageSizeArray = [5, 10, 15, 20, 30, 50, 70, 100];
 export const nPageSize = 15;
 export const oOptions = {
     // loadingType:"linear",
@@ -38,40 +38,39 @@ export const oOptions = {
         fontSize: '15px',
         padding: '10px',
         border: '1px solid lightgrey'
-        
     },
     pageSize: nPageSize,
     pageSizeOptions: aPageSizeArray,
     rowStyle: x => {
-      
+
         if (x.tableData.id % 2) {
-            return { backgroundColor: "#f2f2f2",padding:'0' }
+            return { backgroundColor: "#f2f2f2", padding: '0' }
         }
-        else{
-            return {padding:'0' }
+        else {
+            return { padding: '0' }
         }
-        
+
     }
 };
 
 export const oTableIcons = {
-    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-    DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-    PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-    ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-    SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-    ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+    Add: forwardRef((props, ref) => <AddBox {...props} color={"primary"} ref={ref} />),
+    Check: forwardRef((props, ref) => <Check {...props} color={"primary"} ref={ref} />),
+    Clear: forwardRef((props, ref) => <Clear {...props} color={"primary"} ref={ref} />),
+    Delete: forwardRef((props, ref) => <DeleteOutline {...props} color={"primary"} ref={ref} />),
+    DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} color={"primary"} ref={ref} />),
+    Edit: forwardRef((props, ref) => <Edit {...props} color={"primary"} ref={ref} />),
+    Export: forwardRef((props, ref) => <SaveAlt {...props} color={"primary"} ref={ref} />),
+    Filter: forwardRef((props, ref) => <FilterList {...props} color={"primary"} ref={ref} />),
+    FirstPage: forwardRef((props, ref) => <FirstPage {...props} color={"primary"} ref={ref} />),
+    LastPage: forwardRef((props, ref) => <LastPage {...props} color={"primary"} ref={ref} />),
+    NextPage: forwardRef((props, ref) => <ChevronRight {...props} color={"primary"} ref={ref} />),
+    PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} color={"primary"} ref={ref} />),
+    ResetSearch: forwardRef((props, ref) => <Clear {...props} color={"primary"} ref={ref} />),
+    Search: forwardRef((props, ref) => <Search {...props} color={"primary"} ref={ref} />),
+    SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} color={"primary"} ref={ref} />),
+    ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} color={"primary"} ref={ref} />),
+    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} color={"primary"} ref={ref} />)
 };
 
 
