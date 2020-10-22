@@ -15,6 +15,12 @@ import {
   IconButton
 } from '@material-ui/core';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DeleteIcon from '@material-ui/icons/Delete';
 import {AddDocumentDialog,EditDocumentDialog} from './dialogDocument';
 import {AddChildDialog,EditChildDialog} from './dialogChildren';
 import {AddNoteDialog,EditNoteDialog} from './dialogNote';
@@ -148,6 +154,17 @@ export default function EditEntry(props) {
    const [addDocumentModal, setaddDocumentModal] = useState(false);
    const [editDocumentModal, seteditDocumentModal] = useState(false);
    const [oDocument, setoDocument] = useState({});
+   const [openDeleteDialog, setopenDeleteDialog] = React.useState(false);
+   const [oDelete, setoDelete] = React.useState({});
+   const handleDeleteDialogClickOpen = (rowObject) => {
+    setopenDeleteDialog(true);
+    setoDelete(rowObject);
+  };
+
+  const handleDeleteDialogClose = () => {
+    setopenDeleteDialog(false);
+    setoDelete({});
+  };
 
    //Modal Functions - Note
    const handleEditNoteRowClick=(row)=>{
@@ -271,6 +288,23 @@ export default function EditEntry(props) {
       nRegisterDate: row.nRegisterDate
     });
     seteditDocumentModal(true);
+   };
+
+   const handleDeleteDocumentRowClick=()=>{
+    //console.log(oDelete);
+    axios.post(`/Greenbook/DeleteDocument`, oDelete)
+      .then(resp => {
+        if (resp.status === 200) {
+          setlGBDocument(resp.data);
+          handleDeleteDialogClose();
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
    };
 
    const handleAddDocumentClickClose = () => {
@@ -1914,6 +1948,7 @@ export default function EditEntry(props) {
                        <th scope="col">Register Date</th>
                        <th scope="col">Entered By</th>
                        <th scope="col">Edit</th>
+                       <th scope="col">Delete</th>
                     </tr>
                  </thead>
                  <tbody style={{ padding: 0 }}>
@@ -1925,6 +1960,11 @@ export default function EditEntry(props) {
                              <td scope="row">
                                   <IconButton color="primary"  onClick={()=>{handleEditDocumentRowClick(row)}} component="span" style={{padding:'0px'}}>
                                     <EditOutlinedIcon/>
+                                  </IconButton>
+                                </td>
+                                <td scope="row">
+                                  <IconButton color="primary"  onClick={()=>{handleDeleteDialogClickOpen(row)}} component="span" style={{padding:'0px'}}>
+                                    <DeleteIcon/>
                                   </IconButton>
                                 </td>
                        </tr>
@@ -1964,6 +2004,29 @@ export default function EditEntry(props) {
           </Grid>
         </Grid>
       </form>
+
+      <Dialog
+        open={openDeleteDialog}
+        onClose={handleDeleteDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        onEscapeKeyDown={handleDeleteDialogClose}
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete Document ?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to Delete this document ? (Document Name: {oDelete.sTitle})
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteDialogClose} color="primary">
+            No
+          </Button>
+          <Button onClick={handleDeleteDocumentRowClick} color="primary" autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {backdrop && <BackdropComponent
         backdrop={backdrop}
