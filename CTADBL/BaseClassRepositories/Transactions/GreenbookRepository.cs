@@ -76,7 +76,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         /* Changes by Rajen */
 
         #region Get Green Book/Books
-        public IEnumerable<Greenbook> GetAllGreenBooks()
+        public IEnumerable<Greenbook> GetAllGreenBooks(int records)
         {
             string sql = @"SELECT `Id`,
                             `_Id`,
@@ -139,9 +139,11 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `TBUSpouseName`
                         FROM `tblgreenbook`
                         ORDER BY Id DESC,
-                        dtUpdated DESC;";
+                        dtUpdated DESC 
+                        LIMIT @records;";
             using (var command = new MySqlCommand(sql))
             {
+                command.Parameters.AddWithValue("records", records);
                 return GetRecords(command);
             }
         }

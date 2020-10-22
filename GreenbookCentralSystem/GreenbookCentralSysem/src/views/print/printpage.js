@@ -18,6 +18,7 @@ import {
 
   
 } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
 import { red } from '@material-ui/core/colors';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import axios from 'axios';
@@ -320,14 +321,24 @@ export default function EnhancedTable() {
         });
 
     }
-
-    const abcd = () =>{
+    const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+    const showPrint = () =>{
       //var controls = new Array();
       //controls.push("controls1");
       //controls.push("controls2");
-   
-      sessionStorage.setItem("printObj", JSON.stringify(selected));
-      window.open('/PrintPage');
+      console.log(userId)
+      axios.get(`/PrintGreenBook/AddPrintActionLog/?nUserId=`+ userId)
+      .then(resp => {
+        if (resp.status === 200) {
+          sessionStorage.setItem("printObj", JSON.stringify(selected));
+           window.open('/PrintPage');
+        }
+      })
+      .catch(error => {
+       console.log(error.message);
+      })
+      
+      
     } 
   useEffect(() => {
 
@@ -498,7 +509,7 @@ export default function EnhancedTable() {
 
           
             <Typography color="textPrimary">Print Preview</Typography> 
-            <Button variant='outlined' onClick={()=>{abcd()}}>Print</Button>
+            <Button variant='outlined' onClick={()=>{showPrint()}}>Print</Button>
             <div id="toPrint" className="mt4"  style={{     
               marginLeft:'25px' , marginTop:'30px' , fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
 

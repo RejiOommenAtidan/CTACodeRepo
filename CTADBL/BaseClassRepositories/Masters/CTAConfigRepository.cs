@@ -121,7 +121,7 @@ namespace CTADBL.BaseClassRepositories.Masters
             ctaConfig.sKey = (string)reader["sKey"]; ;
             ctaConfig.sValue = (string)reader["sValue"]; ;
             ctaConfig.nEnteredBy = (int)reader["nEnteredBy"];
-            ctaConfig.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]); ;
+            ctaConfig.dtEntered = (DateTime)reader["dtEntered"]; ;
             return ctaConfig;
         }
         #endregion

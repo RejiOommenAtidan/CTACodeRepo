@@ -88,6 +88,15 @@ namespace CTAWebAPI.Controllers.Transactions
             Object forms = _issueBookRepository.GetIssueBookJoin(GBId);
             return Ok(forms);
         }
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetLatestIssueBookJoin()
+        {
+            Object forms = _issueBookRepository.GetLatestIssueBookJoin();
+            return Ok(forms);
+        }
+
+
 
 
 

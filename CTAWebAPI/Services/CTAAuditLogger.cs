@@ -7,6 +7,13 @@ namespace CTAWebAPI.Services
 {
     public static class CTAAuditLogger
     {
+        /// <summary>
+        /// Returns Array of String [0] - Old, [1] - New
+        /// </summary>
+        /// <typeparam name="T">Object of a Type</typeparam>
+        /// <param name="oOld">Old Object</param>
+        /// <param name="oNew">New Object</param>
+        /// <returns></returns>
         public static string[] ReturnStrings<T>(T oOld, T oNew) where T : class
         {
             string sSeparator = ", ";
@@ -36,14 +43,14 @@ namespace CTAWebAPI.Services
                         object sOldvalue = type.GetProperty(pi.Name).GetValue(oOld, null);
                         object sNewValue = type.GetProperty(pi.Name).GetValue(oNew, null);
 
-                        PropertyInfo commonPI = type.GetProperty(pi.Name);
-                        object[] displayNameAttributeCommon = commonPI.GetCustomAttributes(typeof(DisplayNameAttribute), false);
-                        string sDisplayNameCommon = displayNameAttributeCommon.Length > 0 ? (displayNameAttributeCommon[0] as DisplayNameAttribute).DisplayName : pi.Name;
+                        //PropertyInfo commonPI = type.GetProperty(pi.Name);
+                        //object[] displayNameAttributeCommon = commonPI.GetCustomAttributes(typeof(DisplayNameAttribute), false);
+                        //string sDisplayNameCommon = displayNameAttributeCommon.Length > 0 ? (displayNameAttributeCommon[0] as DisplayNameAttribute).DisplayName : pi.Name;
 
                         if (sOldvalue != sNewValue && (sOldvalue == null || !sOldvalue.Equals(sNewValue)))
                         {
-                            string sOldStringToJoin = sDisplayNameCommon + " " + "=" + " " + sOldvalue.ToString();
-                            string sNewStringToJoin = sDisplayNameCommon + " " + "=" + " " + sNewValue.ToString();
+                            string sOldStringToJoin = pi.Name + " " + "=" + " " + sOldvalue.ToString();
+                            string sNewStringToJoin = pi.Name + " " + "=" + " " + sNewValue.ToString();
 
                             lFieldValuesOld.Add(sOldStringToJoin);
                             lFieldValuesNew.Add(sNewStringToJoin);

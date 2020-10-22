@@ -384,18 +384,18 @@ namespace CTADBL.BaseClassRepositories.Transactions
             string sql = @"SELECT 
                            `tblmadeb`.`Id`,
                             `_Id`,
-                            `nFormNumber`,
-                            `sGBID`,
-                            `nMadebTypeID`,
-                            `sName`,
-                            `sFathersName`,
-                            `nAuthRegionID`,
-                            `dtReceived`,
-                            `dtIssueAction`,
-                            `nIssuedOrNotID`,
-                            `nType`,
-                            `sChangeField`,
-                            `sOfficeOfTibetan`,
+                             `tblmadeb`.`nFormNumber`,
+                             `tblmadeb`.`sGBID`,
+                             `tblmadeb`.`nMadebTypeID`,
+                             `tblmadeb`.`sName`,
+                             `tblmadeb`.`sFathersName`,
+                             `tblmadeb`.`nAuthRegionID`,
+                             `tblmadeb`.`dtReceived`,
+                             `tblmadeb`.`dtIssueAction`,
+                             `tblmadeb`.`nIssuedOrNotID`,
+                             `tblmadeb`.`nType`,
+                             `tblmadeb`.`sChangeField`,
+                             `tblmadeb`.`sOfficeOfTibetan`,
                             `sDocumentAttached`,
                             `nCurrentGBSno`,
                             `nPreviousGBSno`,
@@ -408,18 +408,20 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sApprovedReject`,
                             `dtReject`,
                             `dtReturnEmail`,
-                   `tblmadeb`.`dtEntered`,
+                  			 `tblmadeb`.`dtEntered`,
                             `tblmadeb`.`nEnteredBy`,
                             `tblmadeb`.`dtUpdated`,
                             `tblmadeb`.`nUpdatedBy`,
-                            `sAuthRegion`,
-                            `sTypeIssued`,
-                            `sMadebDisplayName`
+                              `lstauthregion`.`sAuthRegion`,
+                            `lsttypeissued`.`sTypeIssued`,
+                            `lstmadebtype`.`sMadebDisplayName`
+                          
                         FROM `tblmadeb`
-                         LEFT JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
+                          LEFT JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
                         LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         LEFT JOIN `lstmadebtype` on `tblmadeb`.`nMadebTypeID` = `lstmadebtype`.`Id`
-                        WHERE `nIssuedOrNotID` !=2 AND `sGBID` = @sGBId ORDER BY `Id` DESC";
+                        
+                        WHERE `tblmadeb`.`nFormNumber` IN (SELECT nFormNumber FROM tblgreenbookserial where nFormNumber IS NOT NULL ) AND  `tblmadeb`.`nIssuedOrNotID` !=2 AND  `tblmadeb`.`sGBID` = @sGBId ORDER BY  `tblmadeb`.`Id` DESC";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sGBId", sGBId);
