@@ -1166,3 +1166,7 @@ ADD COLUMN nFormNumber int(11) DEFAULT NULL AFTER sFormNumber;
 
 update tblgreenbookissued
 set nFormNumber=ceil(cast(sFormNumber AS char(7)));
+
+update tblgreenbookissued
+set nFormNumber = null
+where nformNumber = 0;
