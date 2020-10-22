@@ -11,236 +11,236 @@ CREATE TABLE `lstRegion` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Place', 'None');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Bir Boetsog', 'BTS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Bir Dege', 'BD');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Bangalore', 'BL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Bhandara Norgeling', 'BN');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Bomdila/Tengang', 'BT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Chauntra Nangchen', 'CN');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Dehradun', 'DD');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Darjeeling', 'DJ');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Delhi', 'DL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Dalhousie Phuntsokling', 'DP');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Dhasa', 'DS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Gangtok', 'GT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Herbertpur Doegu Yougyaling', 'HB');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Hunsur Rabling', 'HR');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Kalimpong', 'KP');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Kollegal Dhondenling', 'KD');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Sataun', 'KK');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Kamrao', 'KR');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Kullu', 'KM');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Ladakh', 'LD');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Bylakuppe Lugsam', 'LS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Miao Chophelling', 'MC');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Mundgod Doeguling', 'MD');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Mandi', 'MN');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Mainpat Phendeling', 'MP');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Bonshee New Thopgyal', 'BNT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Odisha Phuntsoklimg', 'OP');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Poanta Cholsum', 'PC');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Puruwala Sakya', 'PS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Ravangla', 'RV');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Tso Pema', 'RW');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Shillong', 'SH');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Shimla', 'SM');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Sonada Tashiling', 'ST');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Bylakuppe Dickyi Larso', 'TD');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Tuting', 'TT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Tezu Dhargyaling', 'TZ');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Gyalsa Phakshing', 'GP');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Boudha Jorpati', 'CJ');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Jawalakhel', 'JH');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Sha-Wa-Ra', 'SW');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Tashiling', 'TL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Tashi Palkyil', 'TP');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Lodrik', 'PLD');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('New South Wales', 'NSW');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Norfolk Island', 'NF');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Northen Territory', 'NT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Queendsland', 'QL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('South Australia', 'SA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Tasmania', 'TA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Victoria', 'VI');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Western Australia', 'AUW');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Alsace', 'FA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Aquitaine', 'FB');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Auvergne', 'FC');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Basse-Normandie', 'FD');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Bretagne', 'FE');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Centre', 'FF');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Champagne Ardenne', 'FG');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Corse', 'FH');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Franche Comte', 'FI');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Haute-Normandie', 'FQ');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Ile-de-France', 'FJ');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Languedoc-Roussillon', 'FK');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Limousin', 'FRL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Lorraine', 'FM');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Midi-Pyrenees', 'FN');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Nord-Pas-de-Calais', 'FO');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Pays de la loire', 'FR');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Picardie', 'FS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Poitou Charentes', 'FT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Provence-Alpes-Cote d\'Asur', 'FU');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Rhone-Alpes', 'FV');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Alabama', 'AL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Alaska', 'AK');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Arizona', 'AZ');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Arkansas', 'AR');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('California', 'CA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Colorado', 'CO');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Connecticut', 'CT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Delaware', 'DE');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Florida', 'FL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Georgia', 'GA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Hawaii', 'HI');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Idaho', 'ID');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Illinois', 'IL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Indiana', 'IN');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Iowa', 'IA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Kansas', 'KS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Kentucky', 'KY');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Louisiana', 'LA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Maine', 'ME');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Maryland', 'MD');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Massachusetts', 'MA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Michigan', 'MI');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Minnesota', 'MN');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Mississippi', 'MS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Missouri', 'MO');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Montana', 'MT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Nebraska', 'NE');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Nevada', 'NV');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('New Hamshire', 'NH');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('New Jersey', 'NJ');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('New Mexico', 'NM');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('New York', 'NY');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('North Carolina', 'NC');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('North Dakota', 'ND');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Ohio', 'OH');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Oklahoma', 'OK');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Oregon', 'OR');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Pennysylvania', 'PA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Rhode Island', 'RI');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('South Carolina', 'SC');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('South Dakota', 'SD');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Tennessee', 'TN');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Texas', 'TX');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Utah', 'UT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Vermont', 'VT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Virginia', 'VA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Washington', 'WA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('West Virginia', 'WV');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Wisconsin', 'WI');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Wyoming', 'WY');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Alberta', 'AB');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('British Columbia', 'BC');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Manitoba', 'MB');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('New Brunswick', 'NB');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('New Foundland & Labrador', 'NL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Nova Scotia', 'NS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('North West Territories', 'NWT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Nunavut', 'NU');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Ontario', 'ON');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Prince Edward Island', 'PE');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Quebec', 'QC');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Saskatchewan', 'WK');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Yukon', 'YT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Stuttgart', 'BW');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Munich', 'BY');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Berlin', 'DBE');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Potsdam', 'BB');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Bremen', 'DHB');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Hamburg', 'HH');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Hesse-Wiesbaden', 'HE');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Lower Saxony-Hanover', 'NI');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Schwerin', 'MV');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('North Rhine-Westphallia', 'NRW');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Rhineland-Palatinate', 'RP');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Saarland', 'SL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Saxony-Dresden', 'SN');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Saxony Anhalt-magdeburg', 'DST');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Schleswig-Holstein', 'DSH');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Thuringia', 'TH');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Zurich', 'ZH');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Bern', 'BE');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Lucerne', 'LU');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Uri', 'UR');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Schwyz', 'SZ');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Obwalden', 'OW');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Nidwalden', 'NW');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Glarus', 'GL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Zug', 'ZG');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Fribourg', 'CFR');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Solothurn', 'LO');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Basel Stadt', 'BS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Basel Landschaft', 'CBL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Schaffhausen', 'CSH');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Appenzell Ausserrhoden', 'AR');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Appenzell Innerrhoden', 'AI');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('St.Gallen', 'SG');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Graubunden', 'GR');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Aargau', 'AG');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Thurgau', 'TG');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Ticino', 'TI');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('vaud', 'VD');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Valais', 'VS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Neuchatel', 'NE');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Geneva', 'GE');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Jura', 'JU');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Dimapur', 'DMP');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Mussoorie', 'THF');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Chakrata', 'SFF');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Northland', 'NTL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Auckland', 'AUK');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Walkato', 'WKO');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Bay of Plenty', 'BOP');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Gisbone', 'GIS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Hawke\'s Bay', 'HKB');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Taranaki', 'TKI');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Manawtu-Wanganui', 'MWT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Wellington', 'WGN');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Tasman', 'TAS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Nelson', 'NSN');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Marlborough', 'MBH');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('West Coast', 'WTC');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Canterbury', 'CAN');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Otago', 'OTA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Southland', 'STL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Antwerpen', 'AN');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Limburg', 'LI');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Vlaams-Brabant', 'VB');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Oost-Vlaanderen', 'OV');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('West-Vlaanderen', 'WV');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Henegouwen', 'HT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Walls-Brabant', 'BW');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Namen', 'NA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Luik', 'LG');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Luxemburg', 'LX');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Varanasi', 'CUTS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Druk Karche', 'KAR');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Druk Bhumthang', 'BUM');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Hongtsog', 'HNT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Bodgar', 'BOD');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Jigmenang', 'JIG');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Khasaka', 'KHA');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Pado', 'PDO');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Thimphu', 'TMP');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Paljorling', 'PAL');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Tashi Jong', 'TJ');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Taiwan', 'TWI');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Austria', 'AT');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Barcelona', 'ESB');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Amsterdam', 'AMS');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Paris', 'PAR');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Mahe', 'MAHE');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Tokyo', 'TYO');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('London', 'LON');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Milan', 'MI');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Washington DC', 'WDC');
-INSERT INTO `ctadb`.`lstregion` (`sRegion_name`, `sRegion_code`) VALUES ('Moscow', 'MOS');
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Place', 'None',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bir Boetsog', 'BTS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bir Dege', 'BD',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bangalore', 'BL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhandara Norgeling', 'BN',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bomdila/Tengang', 'BT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chauntra Nangchen', 'CN',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dehradun', 'DD',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Darjeeling', 'DJ',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Delhi', 'DL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dalhousie Phuntsokling', 'DP',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dhasa', 'DS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Gangtok', 'GT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Herbertpur Doegu Yougyaling', 'HB',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Hunsur Rabling', 'HR',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Kalimpong', 'KP',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Kollegal Dhondenling', 'KD',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sataun', 'KK',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Kamrao', 'KR',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Kullu', 'KM',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Ladakh', 'LD',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bylakuppe Lugsam', 'LS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Miao Chophelling', 'MC',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Mundgod Doeguling', 'MD',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Mandi', 'MN',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Mainpat Phendeling', 'MP',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bonshee New Thopgyal', 'BNT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Odisha Phuntsoklimg', 'OP',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Poanta Cholsum', 'PC',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Puruwala Sakya', 'PS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Ravangla', 'RV',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tso Pema', 'RW',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Shillong', 'SH',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Shimla', 'SM',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sonada Tashiling', 'ST',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bylakuppe Dickyi Larso', 'TD',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tuting', 'TT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tezu Dhargyaling', 'TZ',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Gyalsa Phakshing', 'GP',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Boudha Jorpati', 'CJ',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Jawalakhel', 'JH',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sha-Wa-Ra', 'SW',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tashiling', 'TL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tashi Palkyil', 'TP',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Lodrik', 'PLD',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New South Wales', 'NSW',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norfolk Island', 'NF',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Northen Territory', 'NT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Queendsland', 'QL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('South Australia', 'SA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tasmania', 'TA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Victoria', 'VI',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Western Australia', 'AUW',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Alsace', 'FA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Aquitaine', 'FB',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Auvergne', 'FC',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Basse-Normandie', 'FD',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bretagne', 'FE',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Centre', 'FF',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Champagne Ardenne', 'FG',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Corse', 'FH',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Franche Comte', 'FI',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Haute-Normandie', 'FQ',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Ile-de-France', 'FJ',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Languedoc-Roussillon', 'FK',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Limousin', 'FRL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Lorraine', 'FM',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Midi-Pyrenees', 'FN',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Nord-Pas-de-Calais', 'FO',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Pays de la loire', 'FR',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Picardie', 'FS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Poitou Charentes', 'FT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Provence-Alpes-Cote d\'Asur', 'FU',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Rhone-Alpes', 'FV',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Alabama', 'AL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Alaska', 'AK',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Arizona', 'AZ',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Arkansas', 'AR',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('California', 'CA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Colorado', 'CO',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Connecticut', 'CT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Delaware', 'DE',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Florida', 'FL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Georgia', 'GA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Hawaii', 'HI',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Idaho', 'ID',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Illinois', 'IL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Indiana', 'IN',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Iowa', 'IA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Kansas', 'KS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Kentucky', 'KY',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Louisiana', 'LA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Maine', 'ME',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Maryland', 'MD',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Massachusetts', 'MA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Michigan', 'MI',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Minnesota', 'MN',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Mississippi', 'MS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Missouri', 'MO',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Montana', 'MT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Nebraska', 'NE',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Nevada', 'NV',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New Hamshire', 'NH',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New Jersey', 'NJ',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New Mexico', 'NM',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New York', 'NY',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('North Carolina', 'NC',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('North Dakota', 'ND',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Ohio', 'OH',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Oklahoma', 'OK',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Oregon', 'OR',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Pennysylvania', 'PA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Rhode Island', 'RI',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('South Carolina', 'SC',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('South Dakota', 'SD',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tennessee', 'TN',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Texas', 'TX',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Utah', 'UT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Vermont', 'VT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Virginia', 'VA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Washington', 'WA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('West Virginia', 'WV',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Wisconsin', 'WI',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Wyoming', 'WY',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Alberta', 'AB',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('British Columbia', 'BC',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Manitoba', 'MB',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New Brunswick', 'NB',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New Foundland & Labrador', 'NL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Nova Scotia', 'NS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('North West Territories', 'NWT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Nunavut', 'NU',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Ontario', 'ON',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Prince Edward Island', 'PE',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Quebec', 'QC',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Saskatchewan', 'WK',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Yukon', 'YT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Stuttgart', 'BW',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Munich', 'BY',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Berlin', 'DBE',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Potsdam', 'BB',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bremen', 'DHB',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Hamburg', 'HH',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Hesse-Wiesbaden', 'HE',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Lower Saxony-Hanover', 'NI',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Schwerin', 'MV',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('North Rhine-Westphallia', 'NRW',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Rhineland-Palatinate', 'RP',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Saarland', 'SL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Saxony-Dresden', 'SN',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Saxony Anhalt-magdeburg', 'DST',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Schleswig-Holstein', 'DSH',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Thuringia', 'TH',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Zurich', 'ZH',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bern', 'BE',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Lucerne', 'LU',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Uri', 'UR',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Schwyz', 'SZ',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Obwalden', 'OW',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Nidwalden', 'NW',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Glarus', 'GL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Zug', 'ZG',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Fribourg', 'CFR',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Solothurn', 'LO',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Basel Stadt', 'BS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Basel Landschaft', 'CBL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Schaffhausen', 'CSH',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Appenzell Ausserrhoden', 'AR',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Appenzell Innerrhoden', 'AI',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('St.Gallen', 'SG',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Graubunden', 'GR',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Aargau', 'AG',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Thurgau', 'TG',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Ticino', 'TI',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('vaud', 'VD',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Valais', 'VS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Neuchatel', 'NE',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Geneva', 'GE',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Jura', 'JU',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dimapur', 'DMP',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Mussoorie', 'THF',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chakrata', 'SFF',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Northland', 'NTL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Auckland', 'AUK',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Walkato', 'WKO',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bay of Plenty', 'BOP',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Gisbone', 'GIS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Hawke\'s Bay', 'HKB',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Taranaki', 'TKI',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Manawtu-Wanganui', 'MWT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Wellington', 'WGN',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tasman', 'TAS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Nelson', 'NSN',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Marlborough', 'MBH',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('West Coast', 'WTC',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Canterbury', 'CAN',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Otago', 'OTA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Southland', 'STL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Antwerpen', 'AN',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Limburg', 'LI',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Vlaams-Brabant', 'VB',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Oost-Vlaanderen', 'OV',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('West-Vlaanderen', 'WV',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Henegouwen', 'HT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Walls-Brabant', 'BW',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Namen', 'NA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Luik', 'LG',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Luxemburg', 'LX',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Varanasi', 'CUTS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Druk Karche', 'KAR',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Druk Bhumthang', 'BUM',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Hongtsog', 'HNT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bodgar', 'BOD',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Jigmenang', 'JIG',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Khasaka', 'KHA',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Pado', 'PDO',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Thimphu', 'TMP',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Paljorling', 'PAL',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tashi Jong', 'TJ',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Taiwan', 'TWI',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Austria', 'AT',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Barcelona', 'ESB',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Amsterdam', 'AMS',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Paris', 'PAR',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Mahe', 'MAHE',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tokyo', 'TYO',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('London', 'LON',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Milan', 'MI',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Washington DC', 'WDC',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Moscow', 'MOS',now(),1,now(),1);
 
 
 CREATE TABLE `lstAuthRegion` (
@@ -254,173 +254,173 @@ CREATE TABLE `lstAuthRegion` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Aargau', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Alberta', 'CA');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Albuquerque', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Atlanta', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Austin', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Australia', 'AU');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Bangalore', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Basel', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Belgium', 'BE');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Bern', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Bhandara', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Bhodgarnang', 'BT');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Bhopal', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('BTS, Bir', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Dege, Bir', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Bodh Gaya', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Bomdila', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Boston', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Boudha', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Boulder', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('British Columbia', 'CA');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Bumthang', 'BT');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Chakrata', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Charlottesville', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Chauntra', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Chicago', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Clement Town', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Colorado', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Connecticut', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Dalhousie', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Darjeeling', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Dekyiling', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Delhi', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Deutschland', 'DE');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Dharamsala', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Dhorpatan', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Dickey Larsoe, Bylakuppe', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Dimapur', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Dolanji', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Flawil', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Gangtok', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Geneva', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Glarus', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Herbertpur', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Hongtso', 'BT');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Horgen', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Hungary', 'HU');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Hunsur', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Idaho', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Italy', 'IT');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Ithaca', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Jaigaon', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Jalpaiguri', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Jampaling', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Jawalakhel', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Jigmenang', 'BT');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('jorpati', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Kalimpong', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Kamrao', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('karche', 'BT');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Kathmandu City', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Khasakha', 'BT');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Kolkata', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Kollegal', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Kullu Manali', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Ladakh Jangthang', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Landquart', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Leh', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Liechtenstein', 'LI');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Lindsay', 'CA');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('London', 'GB');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Lotserok', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Lugsam, Bylakuppe', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Luzern', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Madison', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Maine', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Mainpat', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Manang', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Mandu Wala', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Massachusetts', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Miao', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Michigan', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Minnesota', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Missoula', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Montana', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Moscow', 'RU');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Muenchwilen', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Mundgod', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Mussoorie', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Nainital', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('New York & New Jersey', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('North California', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Nubri', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Oetwil', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Ontario', 'CA');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Odisha', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Pado', 'BT');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Paljorling', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Pandoh', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Paonta Sahib', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Paris', 'FR');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Pema Tsal', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Pennsylvania', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Philadelphia', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Poland', 'PL');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Portland', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Pretoria', 'ZA');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Puruwala', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Quebec', 'CA');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Rajpur', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Rapperswil & Jona', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('So Wa Ra', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Ravangla', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Rikon', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Rongshar', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Ruti', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Saharanpur', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Salt Lake City', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Salugara', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Santa Fe', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Sataun', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Schaffhausen', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Seattle', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Shillong', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Shimla', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Solothurn', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Solu Khumbu', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Sonada', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Srinagar', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Swayambhu', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Switzerland', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Taiwan', 'TW');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Tashi Gang', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Tashi Jong', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Tashi Ling', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Tashi Palkhiel', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Tenzin Gang', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Texas', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Tezu', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Thimphu', 'BT');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Tokyo', 'JP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Toronto', 'CA');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Tuggen', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Turbenthal', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Tuting', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Utah', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Uznach', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Varanasi', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Vermont', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Virginia', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Wadenswil', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Walung', 'NP');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Washington', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Wattwil', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Zurich', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('South California', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Norway', 'NO');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Austria', 'AS');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Mandi', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Tso Pema', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Tawang', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Indiana', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Tsering Dhondhen', 'IN');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Capitol Area', 'US');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Lausanne', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Trogen', 'CH');
-INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`) VALUES ('Washington DC', 'US');
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Aargau', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Alberta', 'CA',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Albuquerque', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Atlanta', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Austin', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Australia', 'AU',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bangalore', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Basel', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Belgium', 'BE',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bern', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhandara', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhodgarnang', 'BT',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhopal', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('BTS, Bir', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dege, Bir', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bodh Gaya', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bomdila', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Boston', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Boudha', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Boulder', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('British Columbia', 'CA',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bumthang', 'BT',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chakrata', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Charlottesville', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chauntra', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chicago', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Clement Town', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Colorado', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Connecticut', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dalhousie', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Darjeeling', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dekyiling', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Delhi', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Deutschland', 'DE',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dharamsala', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dhorpatan', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dickey Larsoe, Bylakuppe', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dimapur', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dolanji', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Flawil', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Gangtok', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Geneva', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Glarus', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Herbertpur', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Hongtso', 'BT',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Horgen', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Hungary', 'HU',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Hunsur', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Idaho', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Italy', 'IT',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Ithaca', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Jaigaon', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Jalpaiguri', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Jampaling', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Jawalakhel', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Jigmenang', 'BT',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('jorpati', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Kalimpong', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Kamrao', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('karche', 'BT',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Kathmandu City', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Khasakha', 'BT',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Kolkata', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Kollegal', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Kullu Manali', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Ladakh Jangthang', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Landquart', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Leh', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Liechtenstein', 'LI',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Lindsay', 'CA',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('London', 'GB',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Lotserok', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Lugsam, Bylakuppe', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Luzern', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Madison', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Maine', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Mainpat', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Manang', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Mandu Wala', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Massachusetts', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Miao', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Michigan', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Minnesota', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Missoula', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Montana', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Moscow', 'RU',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Muenchwilen', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Mundgod', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Mussoorie', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Nainital', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New York & New Jersey', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('North California', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Nubri', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Oetwil', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Ontario', 'CA',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Odisha', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Pado', 'BT',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Paljorling', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Pandoh', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Paonta Sahib', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Paris', 'FR',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Pema Tsal', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Pennsylvania', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Philadelphia', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Poland', 'PL',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Portland', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Pretoria', 'ZA',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Puruwala', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Quebec', 'CA',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Rajpur', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Rapperswil & Jona', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('So Wa Ra', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Ravangla', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Rikon', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Rongshar', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Ruti', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Saharanpur', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Salt Lake City', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Salugara', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Santa Fe', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sataun', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Schaffhausen', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Seattle', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Shillong', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Shimla', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Solothurn', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Solu Khumbu', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sonada', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Srinagar', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Swayambhu', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Switzerland', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Taiwan', 'TW',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tashi Gang', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tashi Jong', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tashi Ling', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tashi Palkhiel', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tenzin Gang', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Texas', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tezu', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Thimphu', 'BT',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tokyo', 'JP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Toronto', 'CA',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tuggen', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Turbenthal', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tuting', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Utah', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Uznach', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Varanasi', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Vermont', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Virginia', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Wadenswil', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Walung', 'NP',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Washington', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Wattwil', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Zurich', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('South California', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norway', 'NO',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Austria', 'AS',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Mandi', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tso Pema', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tawang', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Indiana', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tsering Dhondhen', 'IN',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Capitol Area', 'US',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Lausanne', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Trogen', 'CH',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Washington DC', 'US',now(),1,now(),1);
 
 
 
@@ -435,53 +435,53 @@ CREATE TABLE `lstCountry` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-INSERT INTO `lstCountry` (`sCountryID`, `sCountry`) VALUES ('AF','Afghanistan'),
-('AL','Albania'),('DZ','Algeria'),('AS','Austria'),('AD','Andorra'),('AO','Angola'),
-('AI','Anguilla'),('AQ','Antarctica'),('AG','Antigua and Barbuda'),('AR','Argentina'),
-('AM','Armenia'),('AW','Aruba'),('AU','Australia'),('AS','Austria'),('AZ','Azerbaijan'),
-('BS','Bahamas'),('BH','Bahrain'),('BD','Bangladesh'),('BB','Barbados'),('BY','Belarus'),
-('BE','Belgium'),('BZ','Belize'),('BJ','Benin'),('BM','Bermuda'),('BT','Bhutan'),
-('BO','Bolivia'),('BA','Bosnia & Herzegovina'),('BW','Botswana'),('BV','Bouvet Island'),
-('BR','Brazil'),('IO','British Indian Ocean'),('BN','Brunei Darussalam'),('BG','Bulgaria'),
-('BF','Burkina Faso'),('BI','Burundi'),('KH','Cambodia'),('CM','Cameroon'),('CA','Canada'),
-('CV','Cape Verde'),('KY','Cayman Islands'),('CF','Central Africa Rep'),('TD','Chad'),('CL','Chile'),
-('CN','China'),('CX','Christmas Island'),('CC','Cocos'),('CO','Colombia'),('KM','Comoros'),
-('CG','Congo'),('CK','Cook Islands'),('CR','Costa Rica'),('CI','Ivory Coast'),
-('HR','Croatia (Hrvatska'),('CU','Cuba'),('CY','Cyprus'),('CZ','Czech Republic'),
-('DK','Denmark'),('DJ','Djibouti'),('DM','Dominica'),('DO','Dominican Republic'),
-('TP','East Timor'),('EC','Ecuador'),('EG','Egypt'),('SV','El Salvador'),('GQ','Equatorial Guinea'),
-('ER','Eritrea'),('EE','Estonia'),('ET','Ethiopia'),('FK','Falkland Islands'),('FO','Faroe Islands'),
-('FJ','Fiji'),('FI','Finland'),('FR','France'),('FX','France, Metropolitan'),('GF','French Guiana'),
-('PF','French Polynesia'),('TF','French Southern'),('GA','Gabon'),('GM','Gambia'),('GE','Georgia'),
-('DE','Germany'),('GH','Ghana'),('GI','Gibraltar'),('GR','Greece'),('GL','Greenland'),('GD','Grenada'),
-('GP','Guadeloupe'),('GU','Guam'),('GT','Guatemala'),('GN','Guinea'),('GW','Guinea-Bissau'),
-('GY','Guyana'),('HT','Haiti'),('HM','Heard & McDonald'),('HN','Honduras'),('HK','Hong Kong'),
-('HU','Hungary'),('IS','Iceland'),('IN','India'),('ID','Indonesia'),('IR','Iran'),('IQ','Iraq'),
-('IE','Ireland'),('IL','Israel'),('IT','Italy'),('JM','Jamaica'),('JP','Japan'),('JO','Jordan'),
-('KZ','Kazakhstan'),('KE','Kenya'),('KI','Kiribati'),('KP','Korea (North)'),('KR','Korea (South)'),
-('KW','Kuwait'),('KG','Kyrgyzstan'),('LA','Laos'),('LV','Latvia'),('LB','Lebanon'),('LS','Lesotho'),
-('LR','Liberia'),('LY','Libya'),('LI','Liechtenstein'),('LT','Lithuania'),('LU','Luxembourg'),('MO','Macau'),
-('MK','Macedonia'),('MG','Madagascar'),('MW','Malawi'),('MY','Malaysia'),('MV','Maldives'),('ML','Mali'),
-('MT','Malta'),('MH','Marshall Islands'),('MQ','Martinique'),('MR','Mauritania'),('MU','Mauritius'),
-('YT','Mayotte'),('MX','Mexico'),('FM','Micronesia'),('MD','Moldova'),('MC','Monaco'),('MN','Mongolia'),
-('MS','Montserrat'),('MA','Morocco'),('MZ','Mozambique'),('MM','Myanmar'),('NA','Namibia'),('NR','Nauru'),
-('NP','Nepal'),('NL','Netherlands'),('AN','Netherlands Anti'),('NC','New Caledonia'),('NZ','New Zealand'),
-('NI','Nicaragua'),('NE','Niger'),('NG','Nigeria'),('NU','Niue'),('NF','Norfolk Island'),('MP','Northern Mariana'),
-('NO','Norway'),('OM','Oman'),('PK','Pakistan'),('PW','Palau'),('PA','Panama'),('PG','Papua Guinea'),
-('PY','Paraguay'),('PE','Peru'),('PH','Philippines'),('PN','Pitcairn'),('PL','Poland'),('PT','Portugal'),
-('PR','Puerto Rico'),('QA','Qatar'),('RE','Reunion'),('RO','Romania'),('RU','Russian Federation'),
-('RW','Rwanda'),('KN','Saint Kitts'),('LC','Saint Lucia'),('VC','Saint Vincent'),('WS','Samoa'),
-('SM','San Marino'),('ST','Sao Tome'),('SA','Saudi Arabia'),('SN','Senegal'),('SC','Seychelles'),
-('SL','Sierra Leone'),('SG','Singapore'),('SK','Slovak Republic'),('SI','Slovenia'),('SB','Solomon Islands'),
-('SO','Somalia'),('ZA','South Africa'),('GS','S. Georgia'),('SP','Spain'),('LK','Sri Lanka'),('SH','St. Helena'),
-('PM','St. Pierre'),('SD','Sudan'),('SR','Suriname'),('SJ','Svalbard'),('SZ','Swaziland'),('SE','Sweden'),
-('CH','Switzerland'),('SY','Syria'),('TW','Taiwan'),('TJ','Tajikistan'),('TZ','Tanzania'),('TH','Thailand'),
-('TG','Togo'),('TK','Tokelau'),('TO','Tonga'),('TT','Trinidad & Tobago'),('TN','Tunisia'),('TR','Turkey'),
-('TM','Turkmenistan'),('TC','Turks & Caicos Is'),('TV','Tuvalu'),('UG','Uganda'),('UA','Ukraine'),
-('AE','United Arab Emirates'),('GB','Great Britain'),('US','United States of America'),('UM','US Minor Outlying'),
-('UY','Uruguay'),('UZ','Uzbekistan'),('VU','Vanuatu'),('VA','Vatican City State'),('VE','Venezuela'),('VN','Viet Nam'),
-('VG','Virgin Is(British)'),('VI','Virgin Is(US)'),('WF','Wallis and Futuna'),('EH','Western Sahara'),('YE','Yemen'),
-('YU','Yugoslavia'),('ZR','Zaire'),('ZM','Zambia'),('ZW','Zimbabwe'),('TB','Tibet');
+INSERT INTO `lstCountry` (`sCountryID`, `sCountry`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('AF','Afghanistan',now(),1,now(),1),
+('AL','Albania',now(),1,now(),1),('DZ','Algeria',now(),1,now(),1),('AS','Austria',now(),1,now(),1),('AD','Andorra',now(),1,now(),1),('AO','Angola',now(),1,now(),1),
+('AI','Anguilla',now(),1,now(),1),('AQ','Antarctica',now(),1,now(),1),('AG','Antigua and Barbuda',now(),1,now(),1),('AR','Argentina',now(),1,now(),1),
+('AM','Armenia',now(),1,now(),1),('AW','Aruba',now(),1,now(),1),('AU','Australia',now(),1,now(),1),('AS','Austria',now(),1,now(),1),('AZ','Azerbaijan',now(),1,now(),1),
+('BS','Bahamas',now(),1,now(),1),('BH','Bahrain',now(),1,now(),1),('BD','Bangladesh',now(),1,now(),1),('BB','Barbados',now(),1,now(),1),('BY','Belarus',now(),1,now(),1),
+('BE','Belgium',now(),1,now(),1),('BZ','Belize',now(),1,now(),1),('BJ','Benin',now(),1,now(),1),('BM','Bermuda',now(),1,now(),1),('BT','Bhutan',now(),1,now(),1),
+('BO','Bolivia',now(),1,now(),1),('BA','Bosnia & Herzegovina',now(),1,now(),1),('BW','Botswana',now(),1,now(),1),('BV','Bouvet Island',now(),1,now(),1),
+('BR','Brazil',now(),1,now(),1),('IO','British Indian Ocean',now(),1,now(),1),('BN','Brunei Darussalam',now(),1,now(),1),('BG','Bulgaria',now(),1,now(),1),
+('BF','Burkina Faso',now(),1,now(),1),('BI','Burundi',now(),1,now(),1),('KH','Cambodia',now(),1,now(),1),('CM','Cameroon',now(),1,now(),1),('CA','Canada',now(),1,now(),1),
+('CV','Cape Verde',now(),1,now(),1),('KY','Cayman Islands',now(),1,now(),1),('CF','Central Africa Rep',now(),1,now(),1),('TD','Chad',now(),1,now(),1),('CL','Chile',now(),1,now(),1),
+('CN','China',now(),1,now(),1),('CX','Christmas Island',now(),1,now(),1),('CC','Cocos',now(),1,now(),1),('CO','Colombia',now(),1,now(),1),('KM','Comoros',now(),1,now(),1),
+('CG','Congo',now(),1,now(),1),('CK','Cook Islands',now(),1,now(),1),('CR','Costa Rica',now(),1,now(),1),('CI','Ivory Coast',now(),1,now(),1),
+('HR','Croatia (Hrvatska',now(),1,now(),1),('CU','Cuba',now(),1,now(),1),('CY','Cyprus',now(),1,now(),1),('CZ','Czech Republic',now(),1,now(),1),
+('DK','Denmark',now(),1,now(),1),('DJ','Djibouti',now(),1,now(),1),('DM','Dominica',now(),1,now(),1),('DO','Dominican Republic',now(),1,now(),1),
+('TP','East Timor',now(),1,now(),1),('EC','Ecuador',now(),1,now(),1),('EG','Egypt',now(),1,now(),1),('SV','El Salvador',now(),1,now(),1),('GQ','Equatorial Guinea',now(),1,now(),1),
+('ER','Eritrea',now(),1,now(),1),('EE','Estonia',now(),1,now(),1),('ET','Ethiopia',now(),1,now(),1),('FK','Falkland Islands',now(),1,now(),1),('FO','Faroe Islands',now(),1,now(),1),
+('FJ','Fiji',now(),1,now(),1),('FI','Finland',now(),1,now(),1),('FR','France',now(),1,now(),1),('FX','France, Metropolitan',now(),1,now(),1),('GF','French Guiana',now(),1,now(),1),
+('PF','French Polynesia',now(),1,now(),1),('TF','French Southern',now(),1,now(),1),('GA','Gabon',now(),1,now(),1),('GM','Gambia',now(),1,now(),1),('GE','Georgia',now(),1,now(),1),
+('DE','Germany',now(),1,now(),1),('GH','Ghana',now(),1,now(),1),('GI','Gibraltar',now(),1,now(),1),('GR','Greece',now(),1,now(),1),('GL','Greenland',now(),1,now(),1),('GD','Grenada',now(),1,now(),1),
+('GP','Guadeloupe',now(),1,now(),1),('GU','Guam',now(),1,now(),1),('GT','Guatemala',now(),1,now(),1),('GN','Guinea',now(),1,now(),1),('GW','Guinea-Bissau',now(),1,now(),1),
+('GY','Guyana',now(),1,now(),1),('HT','Haiti',now(),1,now(),1),('HM','Heard & McDonald',now(),1,now(),1),('HN','Honduras',now(),1,now(),1),('HK','Hong Kong',now(),1,now(),1),
+('HU','Hungary',now(),1,now(),1),('IS','Iceland',now(),1,now(),1),('IN','India',now(),1,now(),1),('ID','Indonesia',now(),1,now(),1),('IR','Iran',now(),1,now(),1),('IQ','Iraq',now(),1,now(),1),
+('IE','Ireland',now(),1,now(),1),('IL','Israel',now(),1,now(),1),('IT','Italy',now(),1,now(),1),('JM','Jamaica',now(),1,now(),1),('JP','Japan',now(),1,now(),1),('JO','Jordan',now(),1,now(),1),
+('KZ','Kazakhstan',now(),1,now(),1),('KE','Kenya',now(),1,now(),1),('KI','Kiribati',now(),1,now(),1),('KP','Korea (North)',now(),1,now(),1),('KR','Korea (South)',now(),1,now(),1),
+('KW','Kuwait',now(),1,now(),1),('KG','Kyrgyzstan',now(),1,now(),1),('LA','Laos',now(),1,now(),1),('LV','Latvia',now(),1,now(),1),('LB','Lebanon',now(),1,now(),1),('LS','Lesotho',now(),1,now(),1),
+('LR','Liberia',now(),1,now(),1),('LY','Libya',now(),1,now(),1),('LI','Liechtenstein',now(),1,now(),1),('LT','Lithuania',now(),1,now(),1),('LU','Luxembourg',now(),1,now(),1),('MO','Macau',now(),1,now(),1),
+('MK','Macedonia',now(),1,now(),1),('MG','Madagascar',now(),1,now(),1),('MW','Malawi',now(),1,now(),1),('MY','Malaysia',now(),1,now(),1),('MV','Maldives',now(),1,now(),1),('ML','Mali',now(),1,now(),1),
+('MT','Malta',now(),1,now(),1),('MH','Marshall Islands',now(),1,now(),1),('MQ','Martinique',now(),1,now(),1),('MR','Mauritania',now(),1,now(),1),('MU','Mauritius',now(),1,now(),1),
+('YT','Mayotte',now(),1,now(),1),('MX','Mexico',now(),1,now(),1),('FM','Micronesia',now(),1,now(),1),('MD','Moldova',now(),1,now(),1),('MC','Monaco',now(),1,now(),1),('MN','Mongolia',now(),1,now(),1),
+('MS','Montserrat',now(),1,now(),1),('MA','Morocco',now(),1,now(),1),('MZ','Mozambique',now(),1,now(),1),('MM','Myanmar',now(),1,now(),1),('NA','Namibia',now(),1,now(),1),('NR','Nauru',now(),1,now(),1),
+('NP','Nepal',now(),1,now(),1),('NL','Netherlands',now(),1,now(),1),('AN','Netherlands Anti',now(),1,now(),1),('NC','New Caledonia',now(),1,now(),1),('NZ','New Zealand',now(),1,now(),1),
+('NI','Nicaragua',now(),1,now(),1),('NE','Niger',now(),1,now(),1),('NG','Nigeria',now(),1,now(),1),('NU','Niue',now(),1,now(),1),('NF','Norfolk Island',now(),1,now(),1),('MP','Northern Mariana',now(),1,now(),1),
+('NO','Norway',now(),1,now(),1),('OM','Oman',now(),1,now(),1),('PK','Pakistan',now(),1,now(),1),('PW','Palau',now(),1,now(),1),('PA','Panama',now(),1,now(),1),('PG','Papua Guinea',now(),1,now(),1),
+('PY','Paraguay',now(),1,now(),1),('PE','Peru',now(),1,now(),1),('PH','Philippines',now(),1,now(),1),('PN','Pitcairn',now(),1,now(),1),('PL','Poland',now(),1,now(),1),('PT','Portugal',now(),1,now(),1),
+('PR','Puerto Rico',now(),1,now(),1),('QA','Qatar',now(),1,now(),1),('RE','Reunion',now(),1,now(),1),('RO','Romania',now(),1,now(),1),('RU','Russian Federation',now(),1,now(),1),
+('RW','Rwanda',now(),1,now(),1),('KN','Saint Kitts',now(),1,now(),1),('LC','Saint Lucia',now(),1,now(),1),('VC','Saint Vincent',now(),1,now(),1),('WS','Samoa',now(),1,now(),1),
+('SM','San Marino',now(),1,now(),1),('ST','Sao Tome',now(),1,now(),1),('SA','Saudi Arabia',now(),1,now(),1),('SN','Senegal',now(),1,now(),1),('SC','Seychelles',now(),1,now(),1),
+('SL','Sierra Leone',now(),1,now(),1),('SG','Singapore',now(),1,now(),1),('SK','Slovak Republic',now(),1,now(),1),('SI','Slovenia',now(),1,now(),1),('SB','Solomon Islands',now(),1,now(),1),
+('SO','Somalia',now(),1,now(),1),('ZA','South Africa',now(),1,now(),1),('GS','S. Georgia',now(),1,now(),1),('SP','Spain',now(),1,now(),1),('LK','Sri Lanka',now(),1,now(),1),('SH','St. Helena',now(),1,now(),1),
+('PM','St. Pierre',now(),1,now(),1),('SD','Sudan',now(),1,now(),1),('SR','Suriname',now(),1,now(),1),('SJ','Svalbard',now(),1,now(),1),('SZ','Swaziland',now(),1,now(),1),('SE','Sweden',now(),1,now(),1),
+('CH','Switzerland',now(),1,now(),1),('SY','Syria',now(),1,now(),1),('TW','Taiwan',now(),1,now(),1),('TJ','Tajikistan',now(),1,now(),1),('TZ','Tanzania',now(),1,now(),1),('TH','Thailand',now(),1,now(),1),
+('TG','Togo',now(),1,now(),1),('TK','Tokelau',now(),1,now(),1),('TO','Tonga',now(),1,now(),1),('TT','Trinidad & Tobago',now(),1,now(),1),('TN','Tunisia',now(),1,now(),1),('TR','Turkey',now(),1,now(),1),
+('TM','Turkmenistan',now(),1,now(),1),('TC','Turks & Caicos Is',now(),1,now(),1),('TV','Tuvalu',now(),1,now(),1),('UG','Uganda',now(),1,now(),1),('UA','Ukraine',now(),1,now(),1),
+('AE','United Arab Emirates',now(),1,now(),1),('GB','Great Britain',now(),1,now(),1),('US','United States of America',now(),1,now(),1),('UM','US Minor Outlying',now(),1,now(),1),
+('UY','Uruguay',now(),1,now(),1),('UZ','Uzbekistan',now(),1,now(),1),('VU','Vanuatu',now(),1,now(),1),('VA','Vatican City State',now(),1,now(),1),('VE','Venezuela',now(),1,now(),1),('VN','Viet Nam',now(),1,now(),1),
+('VG','Virgin Is(British)',now(),1,now(),1),('VI','Virgin Is(US)',now(),1,now(),1),('WF','Wallis and Futuna',now(),1,now(),1),('EH','Western Sahara',now(),1,now(),1),('YE','Yemen',now(),1,now(),1),
+('YU','Yugoslavia',now(),1,now(),1),('ZR','Zaire',now(),1,now(),1),('ZM','Zambia',now(),1,now(),1),('ZW','Zimbabwe',now(),1,now(),1),('TB','Tibet',now(),1,now(),1);
 
 CREATE TABLE `lstoccupation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -494,24 +494,24 @@ CREATE TABLE `lstoccupation` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Aged', 'རྒས་ཁོགས།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Domestic Work', 'ནང་ལས།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Farmer', 'ཞིང་པ།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Retired', 'རྒས་ཡོལ།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Self Employed', 'རང་འཚོ།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Wage Earner', 'ཉི་གླ།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Salaried Job', 'གླ་ཡོད་ལས་རིགས།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Student', 'སློབ་ཕྲུག');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Housewife', 'ནང་གི་ཨ་མ།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Business', 'ཚོང་ལས།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Professional', 'ཆེད་ལས་པ།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Monk', 'གྲྭ་པ།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('[No Entry]', '');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Not Employed', 'ལས་མེད།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Minor', 'བྱིས་པ།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Tantric Yana', 'སྔགས་པ།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Nomad', 'འབྲོག་པ།');
-INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`) VALUES ('Nun', 'བཙུན་མ།');
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Aged', 'རྒས་ཁོགས།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Domestic Work', 'ནང་ལས།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Farmer', 'ཞིང་པ།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Retired', 'རྒས་ཡོལ།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Self Employed', 'རང་འཚོ།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Wage Earner', 'ཉི་གླ།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Salaried Job', 'གླ་ཡོད་ལས་རིགས།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Student', 'སློབ་ཕྲུག',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Housewife', 'ནང་གི་ཨ་མ།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Business', 'ཚོང་ལས།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Professional', 'ཆེད་ལས་པ།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Monk', 'གྲྭ་པ།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('[No Entry]', '',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Not Employed', 'ལས་མེད།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Minor', 'བྱིས་པ།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Tantric Yana', 'སྔགས་པ།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Nomad', 'འབྲོག་པ།',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Nun', 'བཙུན་མ།',now(),1,now(),1);
 
 CREATE TABLE `lstProvince` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -523,10 +523,10 @@ CREATE TABLE `lstProvince` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstprovince` (`sProvince`) VALUES ('Dome');
-INSERT INTO `ctadb`.`lstprovince` (`sProvince`) VALUES ('Dotoe');
-INSERT INTO `ctadb`.`lstprovince` (`sProvince`) VALUES ('Utsang');
-INSERT INTO `ctadb`.`lstprovince` (`sProvince`) VALUES ('Unknown');
+INSERT INTO `ctadb`.`lstprovince` (`sProvince`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dome',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstprovince` (`sProvince`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Dotoe',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstprovince` (`sProvince`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Utsang',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstprovince` (`sProvince`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Unknown',now(),1,now(),1);
 
 
 CREATE TABLE `lstQualification` (
@@ -540,14 +540,14 @@ CREATE TABLE `lstQualification` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`) VALUES ('A', 'Monastic Education');
-INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`) VALUES ('G', 'Graduation');
-INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`) VALUES ('M', 'Matriculation');
-INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`) VALUES ('N', 'No Formal Education');
-INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`) VALUES ('P', 'Primary');
-INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`) VALUES ('R', 'Post Graduation');
-INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`) VALUES ('S', 'Senior Secondary');
-INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`) VALUES ('U', '[No Entry]');
+INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('A', 'Monastic Education',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('G', 'Graduation',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('M', 'Matriculation',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('N', 'No Formal Education',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('P', 'Primary',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('R', 'Post Graduation',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('S', 'Senior Secondary',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstQualification` (`sQualificationID`, `sQualification`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('U', '[No Entry]',now(),1,now(),1);
 
 CREATE TABLE `lstDOBApprox` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -573,11 +573,11 @@ CREATE TABLE `lstTypeIssued` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstTypeIssued` (`sTypeIssued`) VALUES ('On Progress');
-INSERT INTO `ctadb`.`lstTypeIssued` (`sTypeIssued`) VALUES ('Issued');
-INSERT INTO `ctadb`.`lstTypeIssued` (`sTypeIssued`) VALUES ('Rejected');
-INSERT INTO `ctadb`.`lstTypeIssued` (`sTypeIssued`) VALUES ('Double');
-INSERT INTO `ctadb`.`lstTypeIssued` (`sTypeIssued`) VALUES ('Cancel');
+INSERT INTO `ctadb`.`lstTypeIssued` (`sTypeIssued`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('On Progress',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstTypeIssued` (`sTypeIssued`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Issued',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstTypeIssued` (`sTypeIssued`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Rejected',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstTypeIssued` (`sTypeIssued`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Double',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstTypeIssued` (`sTypeIssued`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Cancel',now(),1,now(),1);
 
 CREATE TABLE `lstUserRights` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -589,11 +589,11 @@ CREATE TABLE `lstUserRights` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`) VALUES ('Search');
-INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`) VALUES ('Entry');
-INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`) VALUES ('Book Issue');
-INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`) VALUES ('Edit');
-INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`) VALUES ('Admin');
+INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Search',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Entry',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Issue',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Edit',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Admin',now(),1,now(),1);
 
 
 
@@ -627,13 +627,13 @@ CREATE TABLE `lstRelation` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstRelation` (`sRelation`) VALUES ('Father');
-INSERT INTO `ctadb`.`lstRelation` (`sRelation`) VALUES ('Mother');
-INSERT INTO `ctadb`.`lstRelation` (`sRelation`) VALUES ('Spouse');
-INSERT INTO `ctadb`.`lstRelation` (`sRelation`) VALUES ('MaleChild');
-INSERT INTO `ctadb`.`lstRelation` (`sRelation`) VALUES ('FemaleChild');
--- INSERT INTO `ctadb`.`lstRelation` (`sRelation`) VALUES ('Brother');
--- INSERT INTO `ctadb`.`lstRelation` (`sRelation`) VALUES ('Sister');
+INSERT INTO `ctadb`.`lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Father',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Mother',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Spouse',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('MaleChild',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('FemaleChild',now(),1,now(),1);
+-- INSERT INTO `ctadb`.`lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brother',now(),1,now(),1);
+-- INSERT INTO `ctadb`.`lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sister',now(),1,now(),1);
 
 CREATE TABLE `lstMadebStatus` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -645,10 +645,10 @@ CREATE TABLE `lstMadebStatus` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`) VALUES ('Approved');
-INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`) VALUES ('Rejected');
-INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`) VALUES ('Cancelled');
-INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`) VALUES ('Closed');
+INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Approved',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Rejected',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Cancelled',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Closed',now(),1,now(),1);
 
 CREATE TABLE `lstMadebType` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -662,12 +662,12 @@ CREATE TABLE `lstMadebType` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Sarso (New)','First Issued','F');
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Norchoe (Change)','Modified Issued','M');
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Bhorlak (Lost)','Lost Issued','L');
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Abroad','Abroad','A');
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Book Full','Book Full','U');
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`) VALUES ('Brief GB','Brief GB','B');
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso (New)','First Issued','F',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe (Change)','Modified Issued','M',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak (Lost)','Lost Issued','L',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad','Abroad','A',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full','Book Full','U',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB','Brief GB','B',now(),1,now(),1);
 
 use ctadb;
 
@@ -681,29 +681,29 @@ CREATE TABLE `lstFeature` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('LoginPage');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Home');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Give GB No');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Delete');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Users');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Report');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Edit');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Issue Book');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Make List');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Print');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Give Serial');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('New Entry');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Sarso Madeb');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Norchoe Madeb');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Bhorlak Madeb');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Book full');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Brief GB');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Abroad');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Change');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Search');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Sarso New GB Entry');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('Roles Feature Mapping');
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`) VALUES ('User Roles Manage');
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('LoginPage',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Home',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Give GB No',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Delete',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Users',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Report',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Edit',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Issue Book',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Make List',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Print',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Give Serial',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New Entry',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso Madeb',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe Madeb',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak Madeb',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book full',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Change',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Search',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso New GB Entry',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Roles Feature Mapping',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Roles Manage',now(),1,now(),1);
 
 
 CREATE TABLE `lstCTAConfig` (
@@ -944,6 +944,23 @@ CREATE TABLE `tblAuditLog` (
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE `tblChartelPayment` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sGBId` varchar(255) DEFAULT NULL,
+  `dtArrearsFrom` date DEFAULT NULL,
+  `dtArrearsTo` date DEFAULT NULL,
+  `nChartelTotalAmount` int(11) DEFAULT NULL,
+  `nAuthRegionID` int(11) DEFAULT NULL,
+  `sCountryID` varchar(255) DEFAULT NULL,
+  `sPaymentStatus` varchar(255) DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=131071 DEFAULT CHARSET=latin1;
+
 
 -- -------------------------
 -- --Link Tables------------
@@ -1189,16 +1206,3 @@ BEGIN
 END$$
 DELIMITER ;
 
-CREATE PROCEDURE `spGetFormNumber`(IN formNumberIN INT, OUT result INT)
-BEGIN
-	DECLARE exist BOOLEAN;
-    
-    
-    SELECT EXISTS (SELECT nFormNumber FROM tblmadeb WHERE nFormNumber = formNumberIN) INTO exist;
-    IF (exist) THEN
-		SELECT MAX(nFormNumber+1) FROM tblmadeb INTO formNumberIN;
-		
-	END IF;
-    SET result = formNumberIN;
-    SELECT result;
-END

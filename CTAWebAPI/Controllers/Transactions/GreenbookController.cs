@@ -1043,6 +1043,55 @@ namespace CTAWebAPI.Controllers.Transactions
         }
         #endregion
 
+        #region Delete Call
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult DeleteDocument(GBDocument gBDocument)
+        {
+            #region Delete GB Document
+            try
+            {
+                string gbDocumentID = gBDocument.Id.ToString();
+                if (!string.IsNullOrEmpty(gbDocumentID))
+                {
+                    if (GBDocumentExists(gbDocumentID))
+                    {
+                        GBDocument fetchedgBDocument = _gbDocumentRepository.GetDocumentById(gbDocumentID);
+                        _gbDocumentRepository.Delete(fetchedgBDocument);
+
+                        #region Alert Logging 
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBDocument.nEnteredBy);
+                        #endregion
+
+                        #region Get All Documents for Current GB ID to display in UI
+                        IEnumerable<GBDocument> documents = _gbDocumentRepository.GetAllGBDocumentsByGBID(gBDocument.sGBID);
+                        #endregion
+
+                        return Ok(documents);
+                    }
+                    else
+                    {
+                        return BadRequest("Greenbook Document with ID: " + gbDocumentID + " does not exist");
+                    }
+                }
+                else
+                {
+                    return BadRequest("Greenbook Document Id Cannot be null");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, gBDocument.nEnteredBy);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
         #region Check if GBChild Exists
         private bool GBDocumentExists(string Id)
         {
