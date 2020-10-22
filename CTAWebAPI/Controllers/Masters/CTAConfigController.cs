@@ -1,5 +1,7 @@
 ﻿using CTADBL.BaseClasses.Masters;
+using CTADBL.BaseClasses.Transactions;
 using CTADBL.BaseClassRepositories.Masters;
+using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
 using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Cors;
@@ -21,11 +23,13 @@ namespace CTAWebAPI.Controllers.Masters
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly CTAConfigRepository _ctaConfigRepository;
+        private readonly AuditLogRepository _auditLogRepository;
         private readonly CTALogger _ctaLogger;
         public CTAConfigController(DBConnectionInfo info)
         {
             _info = info;
             _ctaConfigRepository = new CTAConfigRepository(_info.sConnectionString);
+            _auditLogRepository = new AuditLogRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
         }
         #endregion
@@ -168,6 +172,28 @@ namespace CTAWebAPI.Controllers.Masters
                         CTAConfig fetchedCTAConfig = _ctaConfigRepository.GetConfigById(ID);
                         ctaConfig.dtEntered = fetchedCTAConfig.dtEntered;
                         _ctaConfigRepository.Update(ctaConfig);
+
+                        #region Audit Log
+                        //string[] sDifference = CTAAuditLogger.ReturnStrings(fetchedCTAConfig, ctaConfig);   
+                        //if (sDifference != null & sDifference[0] != "" && sDifference[1] != "")
+                        //{
+                        //    AuditLog auditLog = new AuditLog
+                        //    {
+                        //        dtEntered = DateTime.Now,
+                        //        nFeatureID = 0,//Need to Add Masters ID Here, Example:10
+                        //        nRegionID = null, 
+                        //        nRecordID = 0, //?
+                        //        sGBID = null, //Null because Madeb, GB Not Involved, else provide GBID, if GBID Present then RegionId will be region id's, auth region
+                        //        sFieldValuesOld = sDifference[0],
+                        //        sFieldValuesNew = sDifference[1],
+                        //        nEnteredBy = ctaConfig.nEnteredBy
+                        //    };
+                        //    _auditLogRepository.Add(auditLog);
+                        //}
+
+                        _ctaLogger.LogAuditRecord(fetchedCTAConfig, ctaConfig,null,0,0, fetchedCTAConfig.Id,ctaConfig.nEnteredBy);
+
+                        #endregion
 
                         #region Alert Logging 
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, ctaConfig.nEnteredBy);

@@ -11,10 +11,12 @@ namespace CTAWebAPI.Services
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly ActionLoggerRepository _actionLoggerRepository;
+        private readonly AuditLogRepository _auditLogRepository;
         public CTALogger(DBConnectionInfo info)
         {
             _info = info;
             _actionLoggerRepository = new ActionLoggerRepository(_info.sConnectionString);
+            _auditLogRepository = new AuditLogRepository(_info.sConnectionString);
         }
         #endregion
 
@@ -48,6 +50,46 @@ namespace CTAWebAPI.Services
             catch (Exception ex)
             {
                 throw new Exception("Exception Occured while Logging, Exception Message: "+ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
+        #region Audit Logger
+        /// <summary>
+        /// Audit Log Record
+        /// </summary>
+        /// <typeparam name="T">Type T</typeparam>
+        /// <param name="oOld">Old Object</param>
+        /// <param name="oNew">New Object</param>
+        /// <param name="sGBID">GB ID</param>
+        /// <param name="nRegionID">Auth Region ID</param>
+        /// <param name="nFeatureID">Feature ID</param>
+        public void LogAuditRecord<T>(T oOld, T oNew, string sGBID, int nRegionID,int nFeatureID, int nRecordID, int nEnteredBy) where T : class
+        {
+            #region Add Audit Record
+            try
+            {
+                string[] sDifference = CTAAuditLogger.ReturnStrings(oOld, oNew);
+                if (sDifference != null & sDifference[0] != "" && sDifference[1] != "")
+                {
+                    AuditLog auditLogger = new AuditLog()
+                    {
+                        dtEntered = DateTime.Now,
+                        nFeatureID = nFeatureID,
+                        nRegionID = nRegionID,
+                        nRecordID = nRecordID,
+                        sGBID = sGBID,
+                        sFieldValuesOld = sDifference[0],
+                        sFieldValuesNew = sDifference[1],
+                        nEnteredBy = nEnteredBy
+                    };
+                    _auditLogRepository.Add(auditLogger);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Exception Occured while Audit Logging, Exception Message: " + ex.Message);
             }
             #endregion
         }
