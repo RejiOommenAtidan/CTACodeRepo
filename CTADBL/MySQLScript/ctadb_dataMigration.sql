@@ -1157,3 +1157,12 @@ INNER JOIN tblgreenbook f ON
     f.sGBID = g.sSpouseGBID and  g.sSpouseGBID is not null
 ORDER BY 
     sGBID;
+
+delete from tblgivengbid where id = 14898 and  nGBID = 8278214;
+
+
+ALTER TABLE tblgreenbookissued
+ADD COLUMN nFormNumber int(11) DEFAULT NULL AFTER sFormNumber;
+
+update tblgreenbookissued
+set nFormNumber=ceil(cast(sFormNumber AS char(7)));
