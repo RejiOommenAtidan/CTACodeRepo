@@ -151,7 +151,76 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 return forms;
             }
         }
+        public Object GetLatestIssueBookJoin()
+        {
+            string sql = @"SELECT 
+                           `tblmadeb`.`Id`,
+                            `_Id`,
+                             `tblmadeb`.`nFormNumber`,
+                             `tblmadeb`.`sGBID`,
+                             `tblmadeb`.`nMadebTypeID`,
+                             `tblmadeb`.`sName`,
+                             `tblmadeb`.`sFathersName`,
+                             `tblmadeb`.`nAuthRegionID`,
+                             `tblmadeb`.`dtReceived`,
+                             `tblmadeb`.`dtIssueAction`,
+                             `tblmadeb`.`nIssuedOrNotID`,
+                             `tblmadeb`.`nType`,
+                             `tblmadeb`.`sChangeField`,
+                             `tblmadeb`.`sOfficeOfTibetan`,
+                            `sDocumentAttached`,
+                            `nCurrentGBSno`,
+                            `nPreviousGBSno`,
+                            `nSaneyFormNo`,
+                            `nReceiptNo`,
+                            `nMadebStatusID`,
+                            `sMadebStatusRemark`,
+                            `dtEmailSend`,
+                            `sAlias`,
+                            `sApprovedReject`,
+                            `dtReject`,
+                            `dtReturnEmail`,
+                  			 `tblmadeb`.`dtEntered`,
+                            `tblmadeb`.`nEnteredBy`,
+                            `tblmadeb`.`dtUpdated`,
+                            `tblmadeb`.`nUpdatedBy`,
+                              `lstauthregion`.`sAuthRegion`,
+                            `lsttypeissued`.`sTypeIssued`,
+                            `lstmadebtype`.`sMadebDisplayName`
+                          
+                        FROM `tblmadeb`
+                          LEFT JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
+                        LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
+                        LEFT JOIN `lstmadebtype` on `tblmadeb`.`nMadebTypeID` = `lstmadebtype`.`Id`
+                        
+                        WHERE `tblmadeb`.`nFormNumber` IN (SELECT nFormNumber FROM tblgreenbookserial where nFormNumber IS NOT NULL ) AND  `tblmadeb`.`nIssuedOrNotID` !=2  ORDER BY  `tblmadeb`.`dtUpdated` DESC LIMIT 10";
+            using (var command = new MySqlCommand(sql))
+            {
+               
+                command.Connection = _connection;
+                command.CommandType = CommandType.Text;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var forms = tables[0].AsEnumerable().Select(row => new {
+                    Id = row.Field<int>("Id"),
+                    sGBID = row.Field<string>("sGBID"),
+                    dtReceived = row.Field<DateTime>("dtReceived"),
+                    nMadebTypeID = row.Field<int>("nMadebTypeID"),
+                    nAuthRegionID = row.Field<int>("nAuthRegionID"),
+                    nFormNumber = row.Field<int>("nFormNumber"),
+                    nIssuedOrNotID = row.Field<int>("nIssuedOrNotID"),
+                    sAuthRegion = row.Field<string>("sAuthRegion"),
+                    sTypeIssued = row.Field<string>("sTypeIssued"),
+                    sMadebDisplayName = row.Field<string>("sMadebDisplayName"),
 
+
+
+                }).ToList();
+                return forms;
+            }
+        }
 
 
 

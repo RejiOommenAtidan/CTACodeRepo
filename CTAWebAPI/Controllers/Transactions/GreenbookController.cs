@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
+using CTADBL.BaseClassRepositories.Masters;
 namespace CTAWebAPI.Controllers.Transactions
 {
     [EnableCors("AllowOrigin")]
@@ -56,7 +56,8 @@ namespace CTAWebAPI.Controllers.Transactions
             #region Get All Greenbooks
             try
             {
-                IEnumerable<Greenbook> greenbooks = _greenbookRepository.GetAllGreenBooks();
+                int records = Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount"));
+                IEnumerable<Greenbook> greenbooks = _greenbookRepository.GetAllGreenBooks(records);
 
                 #region Information Logging
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");

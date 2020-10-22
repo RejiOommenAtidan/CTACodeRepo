@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable, { MTableToolbar }  from 'material-table';
 import Moment from 'moment';
 import { useSelector,useDispatch } from 'react-redux';
-
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 
 import IconButton from '@material-ui/core/IconButton';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
@@ -173,7 +173,7 @@ export default function GiveGBId(){
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
       onClick={() => { assignClick(rowData) }} style={{padding:'0px'}}
     >
-      <AssignmentTurnedInIcon />
+      <CreateNewFolderIcon />
       </IconButton> ,
       
       cellStyle: {

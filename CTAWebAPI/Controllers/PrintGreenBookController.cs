@@ -9,6 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
+using CTAWebAPI.Services;
+using CTAWebAPI.Helpers;
+using System.Reflection;
 
 namespace CTAWebAPI.Controllers
 {
@@ -21,11 +24,14 @@ namespace CTAWebAPI.Controllers
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly PrintGreenBookVMRepository _printGreenBookVMRepository;
+        private readonly CTALogger _ctaLogger;
+
 
         public PrintGreenBookController(DBConnectionInfo info)
         {
             _info = info;
             _printGreenBookVMRepository = new PrintGreenBookVMRepository (_info.sConnectionString);
+            _ctaLogger = new CTALogger(_info);
         }
         #endregion
         [HttpGet]
@@ -75,6 +81,23 @@ namespace CTAWebAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+            #endregion
+        }
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult AddPrintActionLog(int nUserId)
+        {
+
+            #region AddPrintActionLog
+         
+                #region Information Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, nUserId);
+
+            return Ok();
+            #endregion
+            
+
+          
             #endregion
         }
 
