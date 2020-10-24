@@ -225,41 +225,41 @@ const Routes = () => {
                     variants={pageVariants}
                     transition={pageTransition}>               
                     <Route path="/Home" component={Home} />
-                    <Route path="/Region" component={Region} />
-                    <Route path="/Chartel" component={Chartel} />
-                    <Route path="/CTAConfig" component={CTAConfig} />
-                    <Route path="/AuthRegion" component={AuthRegion} />
-                    <Route path="/Country" component={Country} />
-                    <Route path="/Occupation" component={Occupation} />
-                    <Route path="/Province" component={Province} />
-                    <Route path="/Qualification" component={Qualification} />
-                    <Route path="/Relation" component={Relation} />
-                    <Route path="/Feature" component={Feature} />
-                    <Route path="/TypeIssued" component={TypeIssued} />
-                    <Route path="/MadebType" component={MadebType} />
                     <Route path="/Greenbooks" component={Greenbook} />
                     <Route path="/NewGreenBookSerial" component={NewGreenBookSerial} />
                     {/*Private Routes Go Here*/}
-                    <PrivateRoute path="/GivenGBID"  feature={3} component={GivenGBID} />
-                    <PrivateRoute path="/DeleteGB"  feature={4} component={DeleteGB} />
-                    <PrivateRoute path="/Users"  feature={5} component={Users} />
-                    <PrivateRoute path="/EditEntry/:GBID"  feature={7} component={EditEntry} />
-                    <PrivateRoute path="/IssueBook"  feature={8} component={IssueBook} />
-                    <PrivateRoute path="/MakeList"  feature={9} component={MakeList} />
-                    <PrivateRoute path="/Print"  feature={10} component={Print} />
-                    <PrivateRoute path="/GreenBookSerial"  feature={11} component={GreenBookSerial} />
-                    <PrivateRoute path="/NewEntry/:FORMNO"  feature={12} component={NewEntry} />
-                    <PrivateRoute path="/Sarso"  feature={13} component={Sarso} />
-                    <PrivateRoute path="/Norchoe"  feature={14} component={Norchoe} />
+                    <PrivateRoute path="/GivenGBID" feature={3} component={GivenGBID} />
+                    <PrivateRoute path="/DeleteGB" feature={4} component={DeleteGB} />
+                    <PrivateRoute path="/Users" feature={5} component={Users} />
+                    <PrivateRoute path="/EditEntry/:GBID" feature={7} component={EditEntry} />
+                    <PrivateRoute path="/IssueBook" feature={8} component={IssueBook} />
+                    <PrivateRoute path="/MakeList" feature={9} component={MakeList} />
+                    <PrivateRoute path="/Print" feature={10} component={Print} />
+                    <PrivateRoute path="/GreenBookSerial" feature={11} component={GreenBookSerial} />
+                    <PrivateRoute path="/NewEntry/:FORMNO" feature={12} component={NewEntry} />
+                    <PrivateRoute path="/Sarso" feature={13} component={Sarso} />
+                    <PrivateRoute path="/Norchoe" feature={14} component={Norchoe} />
                     <PrivateRoute path="/Bhorlak" feature={15} component={Bhorlak} />
-                    <PrivateRoute path="/BookFull"  feature={16} component={BookFull} />
-                    <PrivateRoute path="/BriefGB"  feature={17} component={BriefGB} />
-                    <PrivateRoute path="/Abroad"  feature={18} component={Abroad} />
-                    <PrivateRoute path="/ChangePassword"  feature={19} component={ChangePassword} />
-                    <PrivateRoute path="/Search"  feature={20} component={Search} />
-                    <PrivateRoute path="/SarsoNewGBEntry"  feature={21} component={SarsoNewGBEntry} />
-                    <PrivateRoute path="/FeatureRoles"  feature={22} component={FeatureUserrights} />
-                    <PrivateRoute path="/UserRights"  feature={23} component={UserRights} />
+                    <PrivateRoute path="/BookFull" feature={16} component={BookFull} />
+                    <PrivateRoute path="/BriefGB" feature={17} component={BriefGB} />
+                    <PrivateRoute path="/Abroad" feature={18} component={Abroad} />
+                    <PrivateRoute path="/ChangePassword" feature={19} component={ChangePassword} />
+                    <PrivateRoute path="/Search" feature={20} component={Search} />
+                    <PrivateRoute path="/SarsoNewGBEntry" feature={21} component={SarsoNewGBEntry} />
+                    <PrivateRoute path="/FeatureRoles" feature={22} component={FeatureUserrights} />
+                    <PrivateRoute path="/UserRights" feature={23} component={UserRights} />
+                    <PrivateRoute path="/Region" feature={24} component={Region} />
+                    <PrivateRoute path="/Chartel" feature={25} component={Chartel} />
+                    <PrivateRoute path="/CTAConfig" feature={26} component={CTAConfig} />
+                    <PrivateRoute path="/AuthRegion" feature={27} component={AuthRegion} />
+                    <PrivateRoute path="/Country" feature={28} component={Country} />
+                    <PrivateRoute path="/Occupation" feature={29} component={Occupation} />
+                    <PrivateRoute path="/Province" feature={30} component={Province} />
+                    <PrivateRoute path="/Qualification" feature={31} component={Qualification} />
+                    <PrivateRoute path="/Relation" feature={32} component={Relation} />
+                    <PrivateRoute path="/Feature" feature={33} component={Feature} />
+                    <PrivateRoute path="/TypeIssued" feature={34} component={TypeIssued} />
+                    <PrivateRoute path="/MadebType" feature={35} component={MadebType} />
                   </motion.div>
                 </Switch>
               </LeftSidebar>
