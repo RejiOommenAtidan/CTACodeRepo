@@ -22,6 +22,7 @@ using System.Text;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
+    [Authorize]
     [EnableCors("AllowOrigin")]
     //[APIKeyAuth]
     [Route("api/[controller]")]
@@ -29,6 +30,7 @@ namespace CTAWebAPI.Controllers.Transactions
     public class UserController : ControllerBase
     {
         #region Constructor
+        private readonly double dTimeout = 2;
         private readonly DBConnectionInfo _info;
         private readonly UserRepository _userRepository;
         private readonly UserVMRepository _userVMRepository;
@@ -340,7 +342,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     new Claim(ClaimTypes.Name, userVMFromDB.oUser.Id.ToString()),
                     new Claim(ClaimTypes.Role, userVMFromDB.oUserRights.sUserRightsName)
                         }),
-                        Expires = DateTime.UtcNow.AddDays(7),
+                        Expires = DateTime.UtcNow.AddDays(dTimeout),
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                     };
                     var token = tokenHandler.CreateToken(tokenDescriptor);

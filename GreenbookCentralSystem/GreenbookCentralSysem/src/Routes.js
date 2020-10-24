@@ -5,6 +5,8 @@ import { ClimbingBoxLoader } from 'react-spinners';
 import { ThemeProvider } from '@material-ui/styles';
 import MuiTheme from './theme';
 import { PrivateRoute } from './auth/_components/PrivateRoute';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 // Layout Blueprints
 import {
@@ -13,8 +15,6 @@ import {
   MinimalLayout,
   PresentationLayout
 } from './layout-blueprints';
-
-
 
 // Example Pages
 
@@ -70,7 +70,10 @@ const Search = lazy(() => import('./views/search/index'));
 
 const Routes = () => {
   const location = useLocation();
-
+  const oUserAuth = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
+  if(oUserAuth!==null)
+    axios.defaults.headers.common['Authorization'] = "Bearer "+oUserAuth.sJWTToken;
+    
   const pageVariants = {
     initial: {
       opacity: 0

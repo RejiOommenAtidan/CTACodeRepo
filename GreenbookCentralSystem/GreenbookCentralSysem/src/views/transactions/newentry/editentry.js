@@ -1622,7 +1622,7 @@ export default function EditEntry(props) {
                 >Relation & Contact Details</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-               <Grid item xs={6}>
+               <Grid item xs={12}>
                 <Grid xs={12} style={{ display: 'flex' }}>
                   <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
@@ -1707,9 +1707,9 @@ export default function EditEntry(props) {
                         className={classes.textField}
                       />
                     </FormControl>
+                  </Grid>
                 </Grid>
-              </Grid>
-                <Grid item xs={6}>
+                <Grid xs={12}>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
@@ -1774,7 +1774,7 @@ export default function EditEntry(props) {
                   align='center' 
                   variant="h6"
                   color="primary"
-                  >No Records to Display</Typography>}
+                  >No Records Found</Typography>}
                 {lGBChildren.length != 0 &&
                 <div>
                 <Typography 
@@ -1813,12 +1813,12 @@ export default function EditEntry(props) {
                </Table>
                </div>}
                <Button 
-              variant='contained'
-              onClick={()=>{setaddChildModal(true)}}
-            >
-            Add a Child
-          </Button>
-               </Grid>
+                  variant='contained'
+                  onClick={()=>{setaddChildModal(true)}}
+                >
+                Add a Child
+              </Button>
+              </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </Grid>
@@ -1867,7 +1867,7 @@ export default function EditEntry(props) {
                 align='center' 
                 variant="h6"
                 color="primary"
-                >No Records to Display</Typography>}
+                >No Records Found</Typography>}
               {lGBNote.length != 0 && 
                 <div>
                 {/*<Typography 
@@ -1932,7 +1932,7 @@ export default function EditEntry(props) {
                 align='center' 
                 variant="h6"
                 color="primary"
-                >No Records to Display</Typography>}
+                >No Records Found</Typography>}
               {lGBDocument.length !== 0 &&
               <div>
                 {/*<Typography 
@@ -1940,7 +1940,6 @@ export default function EditEntry(props) {
                 variant="h6"
                 color="primary"
                 >Notes of - {sGBID}</Typography>*/}
-              
               <Table className="table table-hover table-striped table-bordered " >
                  <thead className="thead-light" style={{ padding: 0 }}>
                     <tr>

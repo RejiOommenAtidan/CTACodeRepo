@@ -19,7 +19,7 @@ const tableIcons = oTableIcons;
 
 const useStyles = makeStyles(() => ({
   // MTableOverride = {
-
+  //   //MuiTableSortLabel-root.MuiTableSortLabel-active:
   // }
 }));
 
@@ -192,6 +192,7 @@ export default function Chartel() {
       <Grid container className={classes.box}>
         <Grid item xs={12}>
           <MaterialTable
+          className={classes.MTableOverride}
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={tableIcons}
