@@ -68,9 +68,14 @@ const HeaderUserbox = () => {
     history.push('/ChangePassword');
   };
 
-  const sFullname = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.sFullname);
-  const sRightsName = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUserRights.sUserRightsName);
-  
+  const oUserAuth = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
+  let bRender = true;
+  if (oUserAuth === null) {
+    bRender = false;
+    history.push("/Login");
+  }
+  //const sRightsName = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUserRights.sUserRightsName);
+
   // const preventDefault = (event) => {
   //   event.preventDefault();
   //   history.push("/Home");
@@ -89,12 +94,13 @@ const HeaderUserbox = () => {
         </Link>
         <Typography color="textPrimary">Breadcrumb</Typography>
       </Breadcrumbs>*/}
+      {bRender && <div>
       <ButtonGroup
         variant="contained"
         className="btn-second m-2"
         color="primary"
         aria-label="split button">
-        <Button className="btn-transition-none">Welcome, {sFullname + " (" + sRightsName + ")"}</Button>
+        <Button className="btn-transition-none">Welcome, {oUserAuth.oUser.sFullname + " (" + oUserAuth.oUserRights.sUserRightsName + ")"}</Button>
         <Button
           className="btn-transition-none px-2"
           color="primary"
@@ -120,6 +126,7 @@ const HeaderUserbox = () => {
             </MenuItem>
         </div>
       </Menu>
+      </div>}
     </>
   );
 };

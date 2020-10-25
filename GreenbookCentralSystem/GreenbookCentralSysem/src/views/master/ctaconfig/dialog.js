@@ -108,6 +108,7 @@ export const EditDialog = (props) => {
                 <Grid item xs={12} >
                   <FormControl className={props.classes.formControl}>
                     <TextField
+                      disabled
                       id="id_sKey"
                       name="name_sKey"
                       label="Key"
@@ -117,10 +118,6 @@ export const EditDialog = (props) => {
                       inputRef={register({
                         required: true
                       })}
-                      InputProps={{
-                        disabled:true,
-                        readOnly:true
-                      }}
                     />
                     {_.get("name_sKey.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
