@@ -21,6 +21,7 @@ import { Alerts } from '../../alerts';
 import { AddDialog, EditDialog } from './dialog';
 import { ViewDialog } from '../../search/dialog';
 import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
+import MyComp from '../../common/filtercomponent';
 const tableIcons = oTableIcons;
 
 const useStyles = makeStyles((theme) => ({
@@ -103,8 +104,17 @@ export default function EnhancedTable() {
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
   const [isLoading, setisLoading] = React.useState(true);
-//View GB
+
+
+  //View GB
 const [viewModal, setViewModal] = useState(false);
+
+// For Custom Filter
+const [myElement, setMyElement] = useState(null);
+const [myValue, setMyValue] = useState({});
+
+
+
 const handleViewClickClose = () => {
 
   setViewModal(false);
@@ -150,6 +160,11 @@ const openRelationGB = (newsGBID) => {
     setAddModal(false);
   };
 
+
+  // Filter functions
+  const searchColumn = () => console.log("Hello from searchColumn function.");
+
+
   const columns = [
     {
       field: "madeb.id",
@@ -168,12 +183,21 @@ const openRelationGB = (newsGBID) => {
         padding: '5px',
 
       },
+      filterComponent: () => 
+                        <MyComp 
+                          name="Form Number" 
+                          field="madeb.nFormNumber" 
+                          searchColumn={searchColumn} 
+                          myValue={myValue}
+                          setMyValue={setMyValue}
+                          setMyElement={setMyElement}
+                        />
     },
     {
       field: "madeb.dtReceived",
       title: "Received Date",
       // type: 'date',
-      // dateSetting: {locale: 'en-GB'},
+      // dateSetting: {locale: 'en-GB'}, 
       cellStyle: {
         padding: '5px',
 
@@ -369,6 +393,8 @@ const openRelationGB = (newsGBID) => {
     }
 
   ];
+
+
 
   const emailClick = (tableRowArray) => {
 

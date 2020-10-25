@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Container,
-  Grid, TextField
+  Grid, Table, TextField
 } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -17,7 +17,9 @@ import AddBox from '@material-ui/icons/AddBox';
 import { useHistory } from 'react-router-dom';
 import { Alerts } from '../../alerts';
 import handleError from "../../../auth/_helpers/handleError";
-
+//import { onFilterChanged } from './test';
+//import MTableFilterRow from './myfilter';
+import MyComp from '../../common/filtercomponent';
 
 const tableIcons = oTableIcons;
 
@@ -73,7 +75,6 @@ export default function EnhancedTable() {
   const classes = useStyles();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = React.useState([]);
-  const [currentData, setCurrentData] = React.useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const [countryID, setCountryID] = React.useState('');
@@ -113,6 +114,67 @@ export default function EnhancedTable() {
     setAddModal(false);
   };
 
+
+  
+
+  //let myElement = null;
+  const [myarray, setMyArray] = useState([]);
+  const [myElement, setMyElement] = useState(null);
+  const [myValue, setMyValue] = useState({});
+  const [currId, setCurrId] = useState('');
+  let ele = null;
+  
+  console.log("myarray: ", myarray);
+  const buildArray = () => {
+    let tmp = []
+    if(columns){
+      columns.forEach(col => tmp.push({id: col.field, val: ''}));
+    }
+    setMyArray(tmp);
+  }
+
+
+
+  const updateArray = (newObj) => {
+    const newArray = myarray.map(d => {
+      if(d.id === newObj.id){
+        return newObj;
+      }
+      else{
+        return d;
+      }
+    });
+    setMyArray(newArray);
+  }
+
+  let tableRef = useRef(null);
+
+  // const MyComp = React.memo((props) => {
+  //   return(
+  //     <div>
+  //     <TextField
+  //     id={props.field}
+  //     label={"Search By " + props.name}
+  //     onChange = {((e) => {
+  //       debugger
+  //       myElement = e.target;
+  //       setMyValue(e.target.value);
+  //       searchColumn(e.target.value);
+        
+  //     })}
+  //     value={myValue}
+  //     autoFocus={true}
+  //     InputProps={{
+  //       startAdornment: (
+  //         <InputAdornment position="start">
+  //           <AccountCircle />
+  //         </InputAdornment>
+  //       ),
+  //     }}
+      
+  //   /></div>) ;
+  // })
+
   const columns = [
     {
       field: "id",
@@ -132,6 +194,20 @@ export default function EnhancedTable() {
         paddingLeft: '10px',
         borderLeft: '0'
       },
+      filterComponent: () => 
+              <MyComp 
+                name="Country ID" 
+                field="sCountryID" 
+                searchColumn={searchColumn} 
+                myValue={myValue}
+                setMyValue={setMyValue}
+                setMyElement={setMyElement}
+                myarray={myarray}
+                updateArray={updateArray}
+                currId={currId}
+                setCurrId={setCurrId}
+                key={"sCountryID"}
+              />
     },
     {
       field: "sCountry",
@@ -139,6 +215,21 @@ export default function EnhancedTable() {
       cellStyle: {
         padding: '5px'
       },
+      filterComponent: () => 
+                        <MyComp 
+                          name="Country" 
+                          field="sCountry" 
+                          searchColumn={searchColumn} 
+                          myValue={myValue}
+                          setMyValue={setMyValue}
+                          setMyElement={setMyElement}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          setCurrId={setCurrId}
+                          key={"sCountry"}
+                        />
+      
       //searchable: false,
       // customFilterAndSearch: (term, rowData) => {
       //   //alert("Hello");
@@ -308,7 +399,7 @@ export default function EnhancedTable() {
   };
   // const sRow = { 
   //   sCountryID: <input type = 'text' placeholder= "&#xF002;" onKeyDown={searchID}/>,
-  //   sCountry: <input type = 'text' placeholder= "&#xF002;" onKeyDown={searchName}/>
+  //   sCountry: <input type = 'text' placeholder= "&#xF002;" onKeyDown={searchColumn}/>
   // }
   
 
@@ -336,7 +427,7 @@ export default function EnhancedTable() {
       <TextField
       id="countryName"
       label="Search by Name"
-      onChange = {(e) => {searchName(e)}}
+      onChange = {((e) => {searchColumn(e)})}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
@@ -348,21 +439,65 @@ export default function EnhancedTable() {
     /></div>),
     edit: ""
   }
+  
+
   const searchID = ((e) => {
     console.log("Search ID: ", e.target.value);
+    console.log("Search ID is : ", e.target.value);
+    if(e.target.value != ''){
+      axios.get(`/Country/SearchCountries/?sCountry=` + e.target.value )
+        .then(resp => {
+          if (resp.status === 200) {
+            setdataAPI([sRow, ...resp.data]);
+            setisLoading(false);
+          }
+        })
+        .catch(error => {
+          handleError(error, history);
+        })
+  }
+  else{
+    console.log("Resetting current data");
+    axios.get(`/Country/GetCountries`)
+    .then(resp => {
+      if (resp.status === 200) {
+        setdataAPI([sRow, ...resp.data]);
+        setisLoading(false);
+        
+      }
+    })
+    .catch(error => {
+      handleError(error, history);
+    })
+    
+  }
+  console.log("at the end...");
+  return;
   }) 
 
+  
 
-
-  const searchName = (e) => {
-    console.log ("Search Name: ", e.target.value );
-    console.log("CurrentData inside function" , currentData);
-  /*  if(e.target.value != ''){
-        axios.get(`/Country/SearchCountries/?sCountry=` + e.target.value )
+  const searchColumn = (value, element) => {
+    console.log ("Search Name: ", value );
+    console.log("Element is ", element);
+    console.log("Array has values: ", myarray);
+    let searchObj = {};
+    myarray.map(item => {
+      
+      searchObj = {...searchObj, [item.id]: item.val };
+    })
+    console.log("Search Object:" , searchObj);
+    ele = element;
+    //setisLoading(true);
+    if(value != ''){
+        axios.get(`/Country/SearchCountries/?sCountry=` + value )
           .then(resp => {
             if (resp.status === 200) {
-              setdataAPI([sRow, ...resp.data]);
-              setisLoading(false);
+              debugger
+              console.log("Got filter Data");
+              setdataAPI([...resp.data]);
+              //setTimeout(() => ele.focus(), 2000);
+              
             }
           })
           .catch(error => {
@@ -370,27 +505,37 @@ export default function EnhancedTable() {
           })
     }
     else{
-      console.log("Resetting current data", currentData);
-      setdataAPI(currentData);
+      console.log("Resetting current data");
+      axios.get(`/Country/GetCountries`)
+      .then(resp => {
+        if (resp.status === 200) {
+          setdataAPI([...resp.data]);
+          setisLoading(false);
+          
+        }
+      })
+      .catch(error => {
+        handleError(error, history);
+      })
+      
     }
-    */
+    
     
   }
 
-    //console.log("Rendering...");
-    //console.log("DataAPI", dataAPI);
-    //console.log("CurrentData", currentData);
+    console.log("Rendering...");
+    console.log("DataAPI", dataAPI);
+   
 
 
   useEffect(() => {
+    buildArray();
     axios.get(`/Country/GetCountries`)
       .then(resp => {
         if (resp.status === 200) {
-          setdataAPI(resp.data);
-          setCurrentData(resp.data);
+          setdataAPI([...resp.data]);
           setisLoading(false);
-         
-          //setTimeout(console.log(resp.data),1);
+          
         }
       })
       .catch(error => {
@@ -399,8 +544,29 @@ export default function EnhancedTable() {
       .then(release => {
         //console.log(release); => udefined
       });
-  }, []);
-
+      
+  },[]);
+  //console.log("Table Ref is:", tableRef);
+  //console.log("TableRef current is:", tableRef.current);
+  const myFilterFunction = (id, value) => {
+    debugger
+    //console.log("Inside myFilterFunction", id, value);
+  };
+  if(tableRef.current) {
+    //console.log("Filtered Data: ", tableRef.current.dataManager.filteredData);
+    //console.log ("Filter Function: ", tableRef.current.onFilterChange);
+    
+    //console.log("myFilterFunction is: ", myFilterFunction);
+    // tableRef.current.onFilterChange = myFilterFunction;
+    // console.log ("Filter Function Change to: ", tableRef.current.onFilterChange);
+    //tableRef.current.dataManager.applyFilters = false;
+  }
+  
+  const onFilterChanged = (id, val) => {
+    console.log("new", id, val);
+   
+    
+  }
   return (
     <Container maxWidth="lg" disableGutters={true}>
       {/* <Breadcrumbs aria-label="breadcrumb">
@@ -413,12 +579,31 @@ export default function EnhancedTable() {
       <Grid container className={classes.box} >
         <Grid item xs={12}>
           <MaterialTable
+            key="CountryTable"
+            onFilterChange={(e) => { onFilterChanged(e[0].column.tableData.id, e[0].column.tableData.value)}}
+            
+            tableRef={tableRef}
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={tableIcons}
             title="Country"
             columns={columns}
-            data={currentData}
+            data={dataAPI}
+            // data={query =>
+            //   new Promise((resolve, reject) => {
+            //     let url = 'http://localhost:52013/api/Country/SearchCountries/?sCountry='  
+            //     fetch(url)  
+            //       .then(response => response.json())
+            //       .then(json => {console.log(json);
+            //         resolve({
+            //         data: json,
+            //         page: 0,
+            //         totalCount: json.length,                  
+            //       })})
+                 
+            //   })
+            // }
+            
             options={oOptions}
             actions={[
               {
@@ -434,6 +619,17 @@ export default function EnhancedTable() {
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
               }
             ]}
+            // components={{
+            //   FilterRow: props => 
+            //   (
+            //     <>
+
+            //       <MTableFilterRow {...props} />
+                  
+            //     </>
+            //   )
+            
+            // }}
           />
         </Grid>
       </Grid>
