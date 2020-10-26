@@ -14,14 +14,15 @@ import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import {useSelector} from 'react-redux';
 
-
 export const AddDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, errors } = useForm();
   const handleSubmitAddRecord = () => {
     props.addAPICall(
       {
         sKey: sKey,
-        sValue: sValue
+        sValue: sValue,
+        nUpdatedBy: userId
       }
     );
   }
@@ -93,7 +94,7 @@ export const EditDialog = (props) => {
         id: props.oCTAConfig.id,
         sKey: sKey,
         sValue: sValue,
-        nEnteredBy:userId
+        nUpdatedBy: userId
       }
     );
   }

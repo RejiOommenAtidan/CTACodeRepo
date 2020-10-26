@@ -20,8 +20,6 @@ namespace CTAWebAPI.Services
         }
         #endregion
 
-        
-
         #region Log Record
         /// <summary>
         /// Logs Record in Action Logger table in DB
@@ -59,15 +57,17 @@ namespace CTAWebAPI.Services
 
         #region Audit Logger
         /// <summary>
-        /// Audit Log Record
+        /// Audit Log for Every Edit Across System
         /// </summary>
-        /// <typeparam name="T">Type T</typeparam>
+        /// <typeparam name="T">Type</typeparam>
         /// <param name="oOld">Old Object</param>
         /// <param name="oNew">New Object</param>
         /// <param name="sGBID">GB ID</param>
-        /// <param name="nRegionID">Auth Region ID</param>
+        /// <param name="nRegionID">Region ID</param>
         /// <param name="nFeatureID">Feature ID</param>
-        public static void LogAuditRecord<T>(T oOld, T oNew, string sGBID, int nRegionID,int nFeatureID, int nRecordID, int nEnteredBy) where T : class
+        /// <param name="nRecordID">Record ID</param>
+        /// <param name="nEnteredBy">UserID UI</param>
+        public static void LogAuditRecord<T>(T oOld, T oNew, string sGBID, int? nRegionID,int nFeatureID, int nRecordID, int nEnteredBy) where T : class
         {
             #region Add Audit Record
             try
@@ -95,8 +95,6 @@ namespace CTAWebAPI.Services
             }
             #endregion
         }
-        #endregion
-
-        
+        #endregion  
     }
 }
