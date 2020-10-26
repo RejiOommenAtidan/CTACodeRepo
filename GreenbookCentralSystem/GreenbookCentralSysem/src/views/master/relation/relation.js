@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function Relation() {
-  const history = useHistory();
+  let history = useHistory();
   const classes = useStyles();
   const [isLoading, setisLoading] = React.useState(true);
   const [editModal, setEditModal] = React.useState(false);

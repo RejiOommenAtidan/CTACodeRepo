@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function Region() {
-  const history = useHistory();
+  let history = useHistory();
   const classes = useStyles();
   const [isLoading, setisLoading] = React.useState(true);
   const [editModal, setEditModal] = React.useState(false);
@@ -138,7 +138,6 @@ export default function Region() {
       });
   };
   const addAPICall = (regionObj) => {
-    console.log(regionObj)
     setisLoading(true);
     axios.post(`/Region/AddRegion/`, regionObj)
       .then(resp => {
@@ -179,7 +178,6 @@ export default function Region() {
   };
 
   useEffect(() => {
-
     axios.get(`/Region/GetRegion`)
       .then(resp => {
         if (resp.status === 200) {
