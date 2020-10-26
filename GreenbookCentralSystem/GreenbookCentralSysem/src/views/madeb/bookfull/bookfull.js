@@ -307,24 +307,24 @@ const openRelationGB = (newsGBID) => {
 
       },
     },
-    {
-      field: "sMadebStatus",
-      title: "Status",
+    // {
+    //   field: "sMadebStatus",
+    //   title: "Status",
 
-      cellStyle: {
-        padding: '5px',
+    //   cellStyle: {
+    //     padding: '5px',
 
-      },
-    },
-    {
-      field: "madeb.sMadebStatusRemark",
-      title: "Status Remark",
+    //   },
+    // },
+    // {
+    //   field: "madeb.sMadebStatusRemark",
+    //   title: "Status Remark",
 
-      cellStyle: {
-        padding: '5px',
+    //   cellStyle: {
+    //     padding: '5px',
 
-      },
-    },
+    //   },
+    // },
     {
       field: "madeb.dtReject",
       title: "Reject Date",
@@ -592,7 +592,7 @@ const openRelationGB = (newsGBID) => {
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
             icons={tableIcons}
-            title="BookFull Madeb"
+            title="Book Full Madeb"
 
             columns={columns}
             data={dataAPI}

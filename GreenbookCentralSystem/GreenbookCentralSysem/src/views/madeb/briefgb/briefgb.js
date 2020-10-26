@@ -187,8 +187,17 @@ export default () => {
     {
       field: "madeb.sName",
       title: "Name",
+      headerStyle: {
+        padding: '0px',
+        width: '30%',
+        // color:'red'
+        //textAlign: 'left'
+      },
       cellStyle: {
-        padding: '5px',
+        padding: '0px',
+        paddingLeft: '10px',
+        width: '30%',
+        //textAlign: 'left'
       },
     },
     {
@@ -196,14 +205,22 @@ export default () => {
       render:  rowData =>rowData['madeb']['sGBID']? <Button className="m-2 btn-transparent btn-link btn-link-first" onClick={() => { viewGb(rowData['madeb']['sGBID'])}}><span>{rowData['madeb']['sGBID']}</span></Button>:'', 
       title: "GB Id",
       cellStyle: {
-        padding: '5px',
+        padding: '0px',
       },
     },
     {
       field: "madeb.sFathersName",
       title: "Father's Name",
+      headerStyle: {
+        padding: '0px',
+        width: '15%',
+        //textAlign: 'left'
+      },
       cellStyle: {
-        padding: '5px',
+        padding: '0px',
+        paddingLeft: '10px',
+        width: '15%',
+        //textAlign: 'left'
       },
     },
     {
@@ -234,24 +251,24 @@ export default () => {
         padding: '5px',
       },
     },
-    {
-      field: "madeb.sApprovedReject",
-      title: "Approved/Rejected",
+    // {
+    //   field: "madeb.sApprovedReject",
+    //   title: "Approved/Rejected",
 
-      headerStyle: {
-        padding: '0px',
-        width: '10%',
-        textAlign: 'left'
-      },
-      cellStyle: {
-        padding: '0px',
-        paddingLeft: '10px',
-        width: '10%',
-        textAlign: 'left'
+    //   headerStyle: {
+    //     padding: '0px',
+    //     width: '10%',
+    //     textAlign: 'left'
+    //   },
+    //   cellStyle: {
+    //     padding: '0px',
+    //     paddingLeft: '10px',
+    //     width: '10%',
+    //     textAlign: 'left'
 
-      },
+    //   },
 
-    },
+    // },
     {
       field: 'Verified By',
       title: 'Verified By',
@@ -288,24 +305,7 @@ export default () => {
 
       },
     },
-    {
-      field: "sMadebStatus",
-      title: "Status",
-
-      cellStyle: {
-        padding: '5px',
-
-      },
-    },
-    {
-      field: "madeb.sMadebStatusRemark",
-      title: "Status Remark",
-
-      cellStyle: {
-        padding: '5px',
-
-      },
-    },
+    
     {
       field: "madeb.dtReject",
       title: "Reject Date",
@@ -327,6 +327,24 @@ export default () => {
 
       },
       render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : ''
+    },
+    {
+      field: "sMadebStatus",
+      title: "Status",
+
+      cellStyle: {
+        padding: '5px',
+
+      },
+    },
+    {
+      field: "madeb.sMadebStatusRemark",
+      title: "Status Remark",
+
+      cellStyle: {
+        padding: '5px',
+
+      },
     },
 
     {
@@ -526,7 +544,6 @@ export default () => {
     <>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-        
           <MaterialTable
             style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={loading}

@@ -208,7 +208,6 @@ export default function EnhancedTable() {
         paddingLeft: '10px',
         width: '15%',
         textAlign: 'left'
-
       },
     },
     {
