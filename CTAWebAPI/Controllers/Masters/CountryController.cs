@@ -2,6 +2,7 @@
 using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.Entities;
 using CTAWebAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 
 namespace CTAWebAPI.Controllers.Masters
 {
+    [Authorize]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     [ApiController]
@@ -271,29 +274,56 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Search
-        [HttpGet]
+        //[HttpGet]
+        //[Route("[action]")]
+        //public IActionResult SearchCountries(string sCountry)
+        //{
+        //    if (String.IsNullOrEmpty(sCountry))
+        //    {
+        //        return RedirectToAction("GetCountries");
+        //        //return BadRequest("Search parameter not specified");
+        //    }
+        //    try
+        //    {
+        //        IEnumerable<Country> result = _countryRepository.SearchCountries(sCountry);
+        //        if(result != null && result.Count() > 0)
+        //        {
+        //            return Ok(result);
+        //        }
+        //        return NoContent();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError);
+        //    }
+        //}
+
+        [HttpPost]
         [Route("[action]")]
-        public IActionResult SearchCountries(string sCountry)
+        public IActionResult SearchCountries(Object country) 
         {
-            if (String.IsNullOrEmpty(sCountry))
+            if(String.IsNullOrEmpty(country.ToString()))
             {
                 return RedirectToAction("GetCountries");
-                //return BadRequest("Search parameter not specified");
             }
             try
             {
-                IEnumerable<Country> result = _countryRepository.SearchCountries(sCountry);
-                if(result != null && result.Count() > 0)
+                IEnumerable<Country> countries = _countryRepository.SearchCountries(country.ToString());
+                if(countries != null && countries.Count() > 0)
                 {
-                    return Ok(result);
+                    return Ok(countries);
                 }
-                return NoContent();
+                else
+                {
+                    return NoContent();
+                }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
         #endregion
 
     }

@@ -7,17 +7,17 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const MyComp = (props) => {
   //const val = props.myValue.id
-  debugger
+ 
   
   const obj = props.myarray.find(x => x.id === props.field);
   const val = obj.val;
-  const changeHandler = (e) => {
-    props.updateArray({id: e.target.id, val: e.target.value});
-    props.searchColumn(e.target.value, e.target);
-    props.setMyElement(e.target);
-    props.setCurrId(e.target.id);
-    //setVal(e.target.value);
-  }
+  // const changeHandler = (e) => {
+  //   props.updateArray({id: e.target.id, val: e.target.value});
+  //   props.searchColumn(e.target.value, e.target);
+  //   props.setMyElement(e.target);
+  //   props.setCurrId(e.target.id);
+  //   //setVal(e.target.value);
+  // }
   return(
     <div>
     <TextField
@@ -25,12 +25,8 @@ const MyComp = (props) => {
     label={"Search By " + props.name}
     onChange = {((e) => 
       {
-        changeHandler(e);
-      // debugger
-      // //myElement = e.target;
-      // props.setMyValue({id: e.target.id, val: e.target.value, element: e.target});
-      // props.searchColumn(e.target.value, e.target);
-      // props.setMyElement(e.target);
+        props.changeHandler(e);
+      
       
     })}
     //
