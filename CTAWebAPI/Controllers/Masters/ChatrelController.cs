@@ -145,6 +145,10 @@ namespace CTAWebAPI.Controllers.Masters
                         chatrel.dtEntered = fetchedChatrel.dtEntered;
                         _chatrelRepository.Update(chatrel);
 
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetchedChatrel, chatrel, null, null, 25, fetchedChatrel.Id, chatrel.nEnteredBy);
+                        #endregion
+
                         #region Alert Logging 
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, chatrel.nEnteredBy);
                         #endregion
