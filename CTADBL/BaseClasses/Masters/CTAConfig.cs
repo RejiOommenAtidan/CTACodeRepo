@@ -12,8 +12,8 @@ namespace CTADBL.BaseClasses.Masters
         private int _Id;
         private string _sKey;
         private string _sValue;
-        private DateTime _dtEntered;
-        private int _nEnteredBy;
+        private DateTime _dtUpdated;
+        private int _nUpdatedBy;
         #endregion
 
         #region Public CTAConfig Properties
@@ -22,8 +22,8 @@ namespace CTADBL.BaseClasses.Masters
         public string sKey { get { return _sKey; } set { _sKey = value; } }
         [DisplayName("Value")]
         public string sValue { get { return _sValue; } set { _sValue = value; } }
-        public DateTime dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
-        public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
+        public DateTime dtUpdated { get { return _dtUpdated; } set { _dtUpdated = value; } }
+        public int nUpdatedBy { get { return _nUpdatedBy; } set { _nUpdatedBy = value; } }
         #endregion
     }
 }

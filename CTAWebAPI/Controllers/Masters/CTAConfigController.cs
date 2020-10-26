@@ -128,11 +128,11 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 if (ModelState.IsValid)
                 {
-                    ctaConfig.dtEntered = DateTime.Now;
+                    ctaConfig.dtUpdated = DateTime.Now;
                     _ctaConfigRepository.Add(ctaConfig);
 
                     #region Information Logging
-                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, ctaConfig.nEnteredBy);
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, ctaConfig.nUpdatedBy);
                     #endregion
 
                     return Ok(ctaConfig);
@@ -148,7 +148,7 @@ namespace CTAWebAPI.Controllers.Masters
             catch (Exception ex)
             {
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, ctaConfig.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, ctaConfig.nUpdatedBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -171,7 +171,7 @@ namespace CTAWebAPI.Controllers.Masters
                     if (CTAConfigExists(ID))
                     {
                         CTAConfig fetchedCTAConfig = _ctaConfigRepository.GetConfigById(ID);
-                        ctaConfig.dtEntered = fetchedCTAConfig.dtEntered;
+                        ctaConfig.dtUpdated = fetchedCTAConfig.dtUpdated;
                         _ctaConfigRepository.Update(ctaConfig);
 
                         #region Audit Log
@@ -192,12 +192,12 @@ namespace CTAWebAPI.Controllers.Masters
                         //    _auditLogRepository.Add(auditLog);
                         //}
 
-                        CTALogger.LogAuditRecord(fetchedCTAConfig, ctaConfig,null,0,0, fetchedCTAConfig.Id,ctaConfig.nEnteredBy);
+                        CTALogger.LogAuditRecord(fetchedCTAConfig, ctaConfig,null,0,0, fetchedCTAConfig.Id,ctaConfig.nUpdatedBy);
 
                         #endregion
 
                         #region Alert Logging 
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, ctaConfig.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, ctaConfig.nUpdatedBy);
                         #endregion
 
                         return Ok("CTAConfig with ID: " + ID + " updated Successfully");
@@ -218,7 +218,7 @@ namespace CTAWebAPI.Controllers.Masters
             catch (Exception ex)
             {
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, ctaConfig.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, ctaConfig.nUpdatedBy);
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -245,7 +245,7 @@ namespace CTAWebAPI.Controllers.Masters
                         _ctaConfigRepository.Delete(fetchedCTAConfig);
 
                         #region Alert Logging 
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, ctaConfig.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, ctaConfig.nUpdatedBy);
                         #endregion
 
                         return Ok("CTAConfig with ID: " + ctaConfigID + " removed Successfully");
@@ -264,7 +264,7 @@ namespace CTAWebAPI.Controllers.Masters
             catch (Exception ex)
             {
                 #region Exception Logging 
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, ctaConfig.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, ctaConfig.nUpdatedBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
