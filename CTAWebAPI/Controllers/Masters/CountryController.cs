@@ -270,5 +270,31 @@ namespace CTAWebAPI.Controllers.Masters
         }
         #endregion
 
+        #region Search
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult SearchCountries(string sCountry)
+        {
+            if (String.IsNullOrEmpty(sCountry))
+            {
+                return RedirectToAction("GetCountries");
+                //return BadRequest("Search parameter not specified");
+            }
+            try
+            {
+                IEnumerable<Country> result = _countryRepository.SearchCountries(sCountry);
+                if(result != null && result.Count() > 0)
+                {
+                    return Ok(result);
+                }
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+        #endregion
+
     }
 }
