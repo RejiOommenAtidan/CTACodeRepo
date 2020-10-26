@@ -3,8 +3,11 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import axios from 'axios';
+import {sAPIBASEURL} from './config/commonConfig';
 
-axios.defaults.baseURL = process.env.REACT_APP_APIBASEURL;
+// axios.defaults.baseURL = process.env.REACT_APP_APIBASEURL;
+axios.defaults.baseURL = sAPIBASEURL;
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
