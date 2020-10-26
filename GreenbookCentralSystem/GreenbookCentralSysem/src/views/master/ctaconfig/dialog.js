@@ -12,6 +12,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import {useSelector} from 'react-redux';
 
 
 export const AddDialog = (props) => {
@@ -84,13 +85,15 @@ export const AddDialog = (props) => {
 }
 
 export const EditDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, errors } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(
       {
         id: props.oCTAConfig.id,
         sKey: sKey,
-        sValue: sValue
+        sValue: sValue,
+        nEnteredBy:userId
       }
     );
   }
