@@ -298,13 +298,13 @@ export default function Qualification() {
           options={oOptions}
           actions={[
             {
-              icon: AddBox,
+              icon: oTableIcons.Add,
               tooltip: 'Add Qualification',
               isFreeAction: true,
               onClick: (event) => setAddModal(true)
             },
             {
-              icon: FilterList,
+              icon: oTableIcons.Filter,
               tooltip: 'Show Filter',
               isFreeAction: true,
               onClick: (event) => { setFiltering(currentFilter => !currentFilter) }

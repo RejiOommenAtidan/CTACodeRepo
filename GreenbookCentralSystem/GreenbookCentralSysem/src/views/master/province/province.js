@@ -327,13 +327,13 @@ export default function EnhancedTable() {
           options={oOptions}
           actions={[
             {
-              icon: AddBox,
+              icon: oTableIcons.Add,
               tooltip: 'Add Province',
               isFreeAction: true,
               onClick: (event) => setAddModal(true)
             },
             {
-              icon: FilterList,
+              icon: oTableIcons.Filter,
               tooltip: 'Show Filter',
               isFreeAction: true,
               onClick: (event) => { setFiltering(currentFilter => !currentFilter) }

@@ -271,13 +271,13 @@ export default function Feature() {
           options={oOptions}
           actions={[
             {
-              icon: AddBox,
+              icon: oTableIcons.Add,
               tooltip: 'Add Feature',
               isFreeAction: true,
               onClick: () => setAddModal(true)
             },
             {
-              icon: FilterList,
+              icon: oTableIcons.Filter,
               tooltip: 'Toggle Filter',
               isFreeAction: true,
               onClick: (event) => { setFiltering(currentFilter => !currentFilter) }

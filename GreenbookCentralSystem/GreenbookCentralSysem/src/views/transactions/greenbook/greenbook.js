@@ -123,7 +123,7 @@ export default function GBList(props) {
             options={oOptions}
             actions={[
               {
-                icon: FilterList,
+                icon: oTableIcons.Filter,
                 tooltip: 'Show Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
