@@ -961,12 +961,24 @@ CREATE TABLE `tblAuditLog` (
 CREATE TABLE `tblChartelPayment` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBId` varchar(255) DEFAULT NULL,
+  `nChartelAmount` int(11) DEFAULT NULL,
+  `nChartelMeal` int(11) DEFAULT NULL,
+  `nChartelYear` int(11) DEFAULT NULL,
+  `nChartelLateFeesPercentage` int(11) DEFAULT NULL,
+  `nArrearsAmount` int(11) DEFAULT NULL,
   `dtArrearsFrom` date DEFAULT NULL,
   `dtArrearsTo` date DEFAULT NULL,
+  `nChartelSalaryAmt` int(11) DEFAULT NULL,
+  `dtChartelSalaryFrom` date DEFAULT NULL,
+  `dtChartelSalaryTo` date DEFAULT NULL,
+  `nChartelBusinessDonationAmt` int(11) DEFAULT NULL,
   `nChartelTotalAmount` int(11) DEFAULT NULL,
+  `nChartelRecieptNumber` int(11) DEFAULT NULL,
   `nAuthRegionID` int(11) DEFAULT NULL,
   `sCountryID` varchar(255) DEFAULT NULL,
   `sPaymentStatus` varchar(255) DEFAULT NULL,
+  `sPaymentMode` varchar(255) DEFAULT NULL,
+  `sPaymentCurrency` varchar(255) DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
@@ -1216,4 +1228,12 @@ BEGIN
     SELECT max(nBookNo) + 1 AS nBookNo FROM tblgreenbookserial;
 END$$
 DELIMITER ;
+
+
+CREATE INDEX MDB_GBID ON tblmadeb(sGBID);
+CREATE INDEX GREENBOOK_GBID ON tblgreenbook(sGBID);
+CREATE INDEX GBID_RELATION ON lnkgbrelation(sgbidrelation, nrelationid);
+CREATE INDEX GB_DOC_GBID ON lnkgbdocument (sGBID);
+
+
 
