@@ -115,9 +115,6 @@ export default function EnhancedTable() {
     setAddModal(false);
   };
 
-
-  
-
   //let myElement = null;
   const [myarray, setMyArray] = useState([]);
   // const [myElement, setMyElement] = useState(null);
@@ -255,9 +252,6 @@ export default function EnhancedTable() {
       countryName: tableRowArray['sCountry']
     });
   }
-
-  
-  
 
   const editAPICall = (countryObj) => {
     axios.post(`/Country/EditCountry/CountryID=` + countryPK, countryObj/*countryToUpdate*/)
