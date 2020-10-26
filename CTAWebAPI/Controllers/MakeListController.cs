@@ -1,19 +1,18 @@
-﻿using CTADBL.ViewModels;
+﻿using CTADBL.Entities;
+using CTADBL.ViewModels;
 using CTADBL.ViewModelsRepositories;
-using CTADBL.Entities;
 using CTAWebAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using Newtonsoft.Json;
-using System.Text.Json;
 
 namespace CTAWebAPI.Controllers
 {
+    [Authorize]
     [EnableCors("AllowOrigin")]
     //[APIKeyAuth]
     [Route("api/[controller]")]

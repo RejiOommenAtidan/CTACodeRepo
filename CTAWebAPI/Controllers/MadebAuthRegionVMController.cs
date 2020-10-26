@@ -2,6 +2,7 @@
 using CTADBL.ViewModels;
 using CTADBL.ViewModelsRepositories;
 using CTAWebAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers
 {
+    [Authorize]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]

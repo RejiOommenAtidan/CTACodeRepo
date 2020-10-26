@@ -2,11 +2,13 @@
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
 using CTAWebAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
+    [Authorize]
     [EnableCors("AllowOrigin")]
     //[APIKeyAuth]
     [Route("api/[controller]")]

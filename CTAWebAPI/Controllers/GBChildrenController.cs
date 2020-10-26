@@ -1,17 +1,14 @@
 ﻿using CTADBL.BaseClasses.Transactions;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
-using CTAWebAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace CTAWebAPI.Controllers
 {
+    [Authorize]
     [EnableCors("AllowOrigin")]
     //[APIKeyAuth]
     [Route("api/[controller]")]
