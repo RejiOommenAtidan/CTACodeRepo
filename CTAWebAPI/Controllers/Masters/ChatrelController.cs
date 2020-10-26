@@ -18,16 +18,16 @@ namespace CTAWebAPI.Controllers.Masters
     [Route("api/[controller]")]
     //[APIKeyAuth]
     [ApiController]
-    public class ChartelController : ControllerBase
+    public class ChatrelController : ControllerBase
     {
         #region Constructor
         private readonly DBConnectionInfo _info;
-        private readonly ChartelRepository _chartelRepository;
+        private readonly ChatrelRepository _chatrelRepository;
         private readonly CTALogger _ctaLogger;
-        public ChartelController(DBConnectionInfo info)
+        public ChatrelController(DBConnectionInfo info)
         {
             _info = info;
-            _chartelRepository = new ChartelRepository(_info.sConnectionString);
+            _chatrelRepository = new ChatrelRepository(_info.sConnectionString);
             _ctaLogger = new CTALogger(_info);
         }
         #endregion
@@ -35,18 +35,18 @@ namespace CTAWebAPI.Controllers.Masters
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetAllChartel()
+        public IActionResult GetAllChatrel()
         {
-            #region Get All Chartel
+            #region Get All Chatrel
             try
             {
 
-                IEnumerable<Chartel> chartels = _chartelRepository.GetAllChartel();
+                IEnumerable<Chatrel> chatrels = _chatrelRepository.GetAllChatrel();
                 #region Information Logging 
                 CTALogger logger = new CTALogger(_info);
                 logger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
                 #endregion
-                return Ok(chartels);
+                return Ok(chatrels);
             }
             catch (Exception ex)
             {
@@ -59,25 +59,28 @@ namespace CTAWebAPI.Controllers.Masters
             #endregion
         }
 
-        [HttpGet("GetChartelById/ID={ID}")]
+        [HttpGet("GetChatrelById/ID={ID}")]
         [Route("[action]")]
-        public IActionResult GetChartelById(string ID)
+        public IActionResult GetChatrelById(string ID)
         {
-            #region Get Single Chartel
+            #region Get Single Chatrel
             try
             {
 
-                Chartel chartel = _chartelRepository.GetChartelById(ID);
+                Chatrel chatrel = _chatrelRepository.GetChatrelById(ID);
+
                 #region Information Logging
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
                 #endregion
-                return Ok(chartel);
+
+                return Ok(chatrel);
             }
             catch (Exception ex)
             {
                 #region Exception Logging
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
                 #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -86,24 +89,24 @@ namespace CTAWebAPI.Controllers.Masters
 
         #region Add Call
         //TODO: Tell
-        //[AllowAnonymous]
         [HttpPost]
         [Route("[action]")]
-        public IActionResult AddChartel(Chartel chartel)
+        public IActionResult AddChatrel(Chatrel chatrel)
         {
-            #region Add Chartel
+            #region Add Chatrel
             try
             {
                 if (ModelState.IsValid)
                 {
-                    chartel.dtEntered = DateTime.Now;
+                    chatrel.dtEntered = DateTime.Now;
 
-                    _chartelRepository.Add(chartel);
+                    _chatrelRepository.Add(chatrel);
 
                     #region Information Logging
-                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, chartel.nEnteredBy);
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, chatrel.nEnteredBy);
                     #endregion
-                    return Ok(chartel);
+
+                    return Ok(chatrel);
                 }
                 else
                 {
@@ -116,8 +119,9 @@ namespace CTAWebAPI.Controllers.Masters
             catch (Exception ex)
             {
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, chartel.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, chatrel.nEnteredBy);
                 #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -125,29 +129,31 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Edit Call
-        [HttpPost("EditChartel/ID={ID}")]
+        [HttpPost("EditChatrel/ID={ID}")]
         [Route("[action]")]
-        public IActionResult EditChartel(string ID, [FromBody] Chartel chartel)
+        public IActionResult EditChatrel(string ID, [FromBody] Chatrel chatrel)
         {
-            #region Edit Chartel
+            #region Edit Chatrel
             try
             {
                 if (ModelState.IsValid)
                 {
 
-                    if (ChartelExists(ID))
+                    if (ChatrelExists(ID))
                     {
-                        Chartel fetchedChartel = _chartelRepository.GetChartelById(ID);
-                        chartel.dtEntered = fetchedChartel.dtEntered;
-                        _chartelRepository.Update(chartel);
+                        Chatrel fetchedChatrel = _chatrelRepository.GetChatrelById(ID);
+                        chatrel.dtEntered = fetchedChatrel.dtEntered;
+                        _chatrelRepository.Update(chatrel);
+
                         #region Alert Logging 
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, chartel.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, chatrel.nEnteredBy);
                         #endregion
-                        return Ok("Chartel with ID: " + ID + " updated Successfully");
+
+                        return Ok("Chatrel with ID: " + ID + " updated Successfully");
                     }
                     else
                     {
-                        return BadRequest("Chartel with ID:" + ID + " does not exist");
+                        return BadRequest("Chatrel with ID:" + ID + " does not exist");
                     }
                 }
                 else
@@ -161,8 +167,9 @@ namespace CTAWebAPI.Controllers.Masters
             catch (Exception ex)
             {
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, chartel.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, chatrel.nEnteredBy);
                 #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
@@ -172,64 +179,65 @@ namespace CTAWebAPI.Controllers.Masters
         #region Delete Call
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteChartel(Chartel chartel)
+        public IActionResult DeleteChatrel(Chatrel chatrel)
         {
-            #region Delete Chartel
+            #region Delete Chatrel
             try
             {
                 //TODO: check for correct way of sending string from body
-                string chartelId = chartel.Id.ToString();
-                if (!string.IsNullOrEmpty(chartelId))
+                string chatrelID = chatrel.Id.ToString();
+                if (!string.IsNullOrEmpty(chatrelID))
                 {
-                    if (ChartelExists(chartelId))
+                    if (ChatrelExists(chatrelID))
                     {
 
-                        Chartel fetchedChartel = _chartelRepository.GetChartelById(chartelId);
-                        _chartelRepository.Delete(fetchedChartel);
+                        Chatrel fetchedChatrel = _chatrelRepository.GetChatrelById(chatrelID);
+                        _chatrelRepository.Delete(fetchedChatrel);
 
                         #region Alert Logging 
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, chartel.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, chatrel.nEnteredBy);
                         #endregion
 
 
-                        return Ok("Chartel with ID: " + fetchedChartel + " removed Successfully");
+                        return Ok("Chatrel with ID: " + fetchedChatrel + " removed Successfully");
                     }
                     else
                     {
-                        return BadRequest("Chartel with ID: " + chartelId + " does not exist");
+                        return BadRequest("Chatrel with ID: " + chatrelID + " does not exist");
                     }
                 }
                 else
                 {
-                    return BadRequest("Chartel Id Cannot be NULL");
+                    return BadRequest("Chatrel Id Cannot be NULL");
                 }
 
             }
             catch (Exception ex)
             {
                 #region Exception Logging 
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, chartel.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, chatrel.nEnteredBy);
                 #endregion
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
         }
         #endregion
 
-        #region Check if Chartel Exists
-        private bool ChartelExists(string ID)
+        #region Check if Chatrel Exists
+        private bool ChatrelExists(string ID)
         {
             try
             {
-                Chartel fetchedChartel = _chartelRepository.GetChartelById(ID);
-                if (fetchedChartel != null)
+                Chatrel fetchedChatrel = _chatrelRepository.GetChatrelById(ID);
+                if (fetchedChatrel != null)
                     return true;
                 else
                     return false;
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception in Chartel Exists Function, Exception Message: " + ex.Message);
+                throw new Exception("Exception in Chatrel Exists Function, Exception Message: " + ex.Message);
             }
         }
         #endregion

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Container,
-  Grid,
-  Typography
+  Grid
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
@@ -11,8 +10,6 @@ import MaterialTable from 'material-table';
 import IconButton from '@material-ui/core/IconButton';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { AddDialog, EditDialog } from './dialog';
-import AddBox from '@material-ui/icons/AddBox';
-import FilterList from '@material-ui/icons/FilterList';
 import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
@@ -298,13 +295,13 @@ export default function Users() {
             options={oOptions}
             actions={[
               {
-                icon: AddBox,
+                icon: oTableIcons.Add,
                 tooltip: 'Add User',
                 isFreeAction: true,
                 onClick: (event) => setAddModal(true)
               },
               {
-                icon: FilterList,
+                icon: oTableIcons.Filter,
                 tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }

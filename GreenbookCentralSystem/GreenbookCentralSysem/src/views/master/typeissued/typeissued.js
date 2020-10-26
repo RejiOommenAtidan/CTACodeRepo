@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Container,
-  Grid,
-  Typography
+  Grid
 } from '@material-ui/core';
 import axios from 'axios';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -12,8 +11,6 @@ import { AddDialog, EditDialog } from './dialog';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons } from '../../../config/commonConfig';
-import FilterList from '@material-ui/icons/FilterList';
-import AddBox from '@material-ui/icons/AddBox';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
 
@@ -76,7 +73,7 @@ export default function TypeIssued() {
       // }
     },
     {
-      align:"center",
+      align: "center",
       field: 'edit',
       title: 'Edit',
       filtering: false,
@@ -204,13 +201,13 @@ export default function TypeIssued() {
             options={oOptions}
             actions={[
               {
-                icon: AddBox,
+                icon: oTableIcons.Add,
                 tooltip: 'Add TypeIssued',
                 isFreeAction: true,
                 onClick: (event) => setAddModal(true)
               },
               {
-                icon: FilterList,
+                icon: oTableIcons.Filter,
                 tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }

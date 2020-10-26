@@ -1,45 +1,22 @@
-// hi
 import React, { useEffect, useState } from 'react';
-//import { useNavigate } from 'react-router-dom';
 import {
-  Box,
   Container,
-  Grid,
-  Button,
-  Typography,
-  FormControl,
-  TextField
-  
+  Grid
 } from '@material-ui/core';
-
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-
-import Slide from '@material-ui/core/Slide';
-import Chip from '@material-ui/core/Chip';
-
 import IconButton from '@material-ui/core/IconButton';
-import AddCircleIcon from "@material-ui/icons/AddCircle";
+
 
 // Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
-import MaterialTable, { MTableToolbar }  from 'material-table';
+import MaterialTable from 'material-table';
 import { oOptions, oTableIcons } from '../../../config/commonConfig';
-import FilterList from '@material-ui/icons/FilterList';
-import AddBox from '@material-ui/icons/AddBox';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
 
-
-
 const tableIcons = oTableIcons;
-
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const useStyles = makeStyles(() => ({
   /*root: {
@@ -91,14 +68,10 @@ const useStyles = makeStyles(() => ({
 
 export default function EnhancedTable() {
   const classes = useStyles();
- // const navigate = useNavigate();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
-  // const [loadingProp, setloadingProp] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
-
-
   //VAR
   const [province, setProvince] = React.useState('');
   const [provincePK, setProvincePK] = React.useState(0);
@@ -144,9 +117,9 @@ export default function EnhancedTable() {
         borderLeft: '0'
       }
     },
-    
+
     {
-      align:"center",
+      align: "center",
       field: "edit",
       title: "Edit",
       filtering: false,
@@ -163,18 +136,18 @@ export default function EnhancedTable() {
         width: '10%'
       },
     },
-   
+
   ];
 
   const editClick = (tableRowArray) => {
     setProvincePK(tableRowArray["id"]);
     setProvince(tableRowArray["sProvince"]);
-    
+
     setEditModal(true);
     setProvinceObj({
       id: tableRowArray["id"],
       province: tableRowArray["sProvince"]
-      
+
     });
   }
 
@@ -202,7 +175,7 @@ export default function EnhancedTable() {
               console.log(error.message);
               console.log(error.config);
             });
-            
+
         }
       })
       .catch(error => {
@@ -240,7 +213,7 @@ export default function EnhancedTable() {
     setDeleteModal(true);
     setProvincePK(tableRowArray["id"]);
     setProvince(tableRowArray["sProvince"]);
-    
+
   };
 
   const handleClose = () => {
@@ -249,7 +222,7 @@ export default function EnhancedTable() {
   };
 
   const deleteAPICall = () => {
-   
+
     const provinceToDelete = {
       ID: provincePK,
       sProvince: province
@@ -294,16 +267,8 @@ export default function EnhancedTable() {
   }, []);
 
   return (
-
-      
-        // <Box
-        //   display="flex"
-        //   flexDirection="column"
-        //   height="100%"
-        //   justifyContent="center"
-        // >
-          <Container maxWidth="lg" disableGutters={true}>
-            {/* <Typography variant="h4" gutterBottom>Province
+    <Container maxWidth="lg" disableGutters={true}>
+      {/* <Typography variant="h4" gutterBottom>Province
              <IconButton
                 color="primary"
                 aria-label="upload picture"
@@ -315,58 +280,53 @@ export default function EnhancedTable() {
                 <AddCircleIcon />
               </IconButton>
             </Typography> */}
-            <Grid container className={classes.box}>
-              <Grid item xs={12}>
-              
-        <MaterialTable  
-          style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-          icons={tableIcons}
-          title="Province" 
-          data={dataAPI} 
-          columns={columns} 
-          options={oOptions}
-          actions={[
-            {
-              icon: AddBox,
-              tooltip: 'Add Province',
-              isFreeAction: true,
-              onClick: (event) => setAddModal(true)
-            },
-            {
-              icon: FilterList,
-              tooltip: 'Show Filter',
-              isFreeAction: true,
-              onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
-            }
-          ]} 
-        />
-      
-              </Grid>
-            </Grid>
-            {addModal && <AddDialog
-              addModal={addModal}
-              classes={classes}
-              handleAddClickClose={handleAddClickClose}
-              addAPICall={addAPICall}
-            />}
-            {editModal && <EditDialog
-              editModal={editModal}
-              provinceObj={provinceObj}
-              classes={classes}
-              handleEditClickClose={handleEditClickClose}
-              editAPICall={editAPICall}
-            />}
-            {deleteModal && <DeleteDialog
-              deleteModal={deleteModal}
-              province={province}
-              handleClose={handleClose}
-              deleteAPICall={deleteAPICall}
-            />}
-          </Container>
-        //</Box>
-   
+      <Grid container className={classes.box}>
+        <Grid item xs={12}>
 
+          <MaterialTable
+            style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
+            icons={tableIcons}
+            title="Province"
+            data={dataAPI}
+            columns={columns}
+            options={oOptions}
+            actions={[
+              {
+                icon: oTableIcons.Add,
+                tooltip: 'Add Province',
+                isFreeAction: true,
+                onClick: (event) => setAddModal(true)
+              },
+              {
+                icon: oTableIcons.Filter,
+                tooltip: 'Show Filter',
+                isFreeAction: true,
+                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+              }
+            ]}
+          />
 
-          
+        </Grid>
+      </Grid>
+      {addModal && <AddDialog
+        addModal={addModal}
+        classes={classes}
+        handleAddClickClose={handleAddClickClose}
+        addAPICall={addAPICall}
+      />}
+      {editModal && <EditDialog
+        editModal={editModal}
+        provinceObj={provinceObj}
+        classes={classes}
+        handleEditClickClose={handleEditClickClose}
+        editAPICall={editAPICall}
+      />}
+      {deleteModal && <DeleteDialog
+        deleteModal={deleteModal}
+        province={province}
+        handleClose={handleClose}
+        deleteAPICall={deleteAPICall}
+      />}
+    </Container>
   );
 }

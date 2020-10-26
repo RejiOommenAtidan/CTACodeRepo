@@ -15,8 +15,6 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import { AddDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
-import AddBox from '@material-ui/icons/AddBox';
-import Search from '@material-ui/icons/Search';
 import { storeDataAPI } from 'actions/masters/featureAction';
 import { setCurrentSelectedFeature } from 'actions/masters/featureAction';
 import { aPageSizeArray } from '../../../config/commonConfig';
@@ -25,7 +23,6 @@ import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop';
 import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
 import handleError from '../../../auth/_helpers/handleError';
-import FilterList from '@material-ui/icons/FilterList';
 
 const tableIcons = oTableIcons;
 
@@ -271,13 +268,13 @@ export default function Feature() {
           options={oOptions}
           actions={[
             {
-              icon: AddBox,
+              icon: oTableIcons.Add,
               tooltip: 'Add Feature',
               isFreeAction: true,
               onClick: () => setAddModal(true)
             },
             {
-              icon: FilterList,
+              icon: oTableIcons.Filter,
               tooltip: 'Toggle Filter',
               isFreeAction: true,
               onClick: (event) => { setFiltering(currentFilter => !currentFilter) }

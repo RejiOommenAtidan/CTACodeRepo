@@ -705,7 +705,7 @@ INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdate
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Roles Feature Mapping',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Roles Manage',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Region',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chartel',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('chatrel',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('CTAConfig',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('AuthRegion',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Country',now(),1,now(),1);
@@ -721,33 +721,33 @@ CREATE TABLE `lstCTAConfig` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sKey` text NOT NULL,
   `sValue` MEDIUMTEXT NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtEntered`, `nEnteredBy`) VALUES
+INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtUpdated`, `nUpdatedBy`) VALUES
 (1, 'UITableNumberOfRowsInPage', '20', now(), 1),
 (2, 'SelectTotalRecordCount', '1000', now(), 1),
 (3, 'DateFormat', 'DD-MM-YYYY', now(), 1);
 
 
-CREATE TABLE `lstChartel` (
+CREATE TABLE `lstchatrel` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `sChartelKey` text NOT NULL,
-  `nChartelValue` int(11) NOT NULL,
-  `dtChartelFrom` date DEFAULT NULL,
+  `schatrelKey` text NOT NULL,
+  `nchatrelValue` int(11) NOT NULL,
+  `dtchatrelFrom` date DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `lstChartel` (`Id`, `sChartelKey`, `nChartelValue`, `dtChartelFrom`, `dtEntered`, `nEnteredBy`) VALUES
-(1, 'ChartelAmount', '36', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(2, 'ChartelMeal', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(3, 'ChartelSalaryAmt', '50', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(4, 'ChartelLateFeesPercentage', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(5, 'ChartelStartYear', '2011', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1);
+INSERT INTO `lstchatrel` (`Id`, `schatrelKey`, `nchatrelValue`, `dtchatrelFrom`, `dtEntered`, `nEnteredBy`) VALUES
+(1, 'chatrelAmount', '36', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
+(2, 'chatrelMeal', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
+(3, 'chatrelSalaryAmt', '50', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
+(4, 'chatrelLateFeesPercentage', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
+(5, 'chatrelStartYear', '2011', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1);
 
 -- -------------------------
 -- --Transactional Tables---
@@ -958,15 +958,27 @@ CREATE TABLE `tblAuditLog` (
 
 
 
-CREATE TABLE `tblChartelPayment` (
+CREATE TABLE `tblchatrelPayment` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBId` varchar(255) DEFAULT NULL,
+  `nchatrelAmount` int(11) DEFAULT NULL,
+  `nchatrelMeal` int(11) DEFAULT NULL,
+  `nchatrelYear` int(11) DEFAULT NULL,
+  `nchatrelLateFeesPercentage` int(11) DEFAULT NULL,
+  `nArrearsAmount` int(11) DEFAULT NULL,
   `dtArrearsFrom` date DEFAULT NULL,
   `dtArrearsTo` date DEFAULT NULL,
-  `nChartelTotalAmount` int(11) DEFAULT NULL,
+  `nchatrelSalaryAmt` int(11) DEFAULT NULL,
+  `dtchatrelSalaryFrom` date DEFAULT NULL,
+  `dtchatrelSalaryTo` date DEFAULT NULL,
+  `nchatrelBusinessDonationAmt` int(11) DEFAULT NULL,
+  `nchatrelTotalAmount` int(11) DEFAULT NULL,
+  `nchatrelRecieptNumber` int(11) DEFAULT NULL,
   `nAuthRegionID` int(11) DEFAULT NULL,
   `sCountryID` varchar(255) DEFAULT NULL,
   `sPaymentStatus` varchar(255) DEFAULT NULL,
+  `sPaymentMode` varchar(255) DEFAULT NULL,
+  `sPaymentCurrency` varchar(255) DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
@@ -989,22 +1001,23 @@ CREATE TABLE `lnkGBRelation` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-CREATE TABLE `lnkgbchartel` (
+
+CREATE TABLE `lnkgbchatrel` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBId` varchar(255) DEFAULT NULL,
-  `nChartelAmount` int(11) NOT NULL,
-  `nChartelMeal` int(11) DEFAULT NULL,
-  `nChartelYear` int(11) DEFAULT NULL,
-  `nChartelLateFeesPercentage` int(11) DEFAULT NULL,
+  `nchatrelAmount` int(11) NOT NULL,
+  `nchatrelMeal` int(11) DEFAULT NULL,
+  `nchatrelYear` int(11) DEFAULT NULL,
+  `nchatrelLateFeesPercentage` int(11) DEFAULT NULL,
   `nArrearsAmount` int(11) DEFAULT NULL,
   `dtArrearsFrom` date DEFAULT NULL,
   `dtArrearsTo` date DEFAULT NULL,
-  `nChartelSalaryAmt` int(11) DEFAULT NULL,
-  `dtChartelSalaryFrom` date DEFAULT NULL,
-  `dtChartelSalaryTo` date DEFAULT NULL,
-  `nChartelBusinessDonationAmt` int(11) DEFAULT NULL,
-  `nChartelTotalAmount` int(11) DEFAULT NULL,
-  `nChartelRecieptNumber` int(11) DEFAULT NULL,
+  `nChatrelSalaryAmt` int(11) DEFAULT NULL,
+  `dtChatrelSalaryFrom` date DEFAULT NULL,
+  `dtChatrelSalaryTo` date DEFAULT NULL,
+  `nChatrelBusinessDonationAmt` int(11) DEFAULT NULL,
+  `nChatrelTotalAmount` int(11) DEFAULT NULL,
+  `nChatrelRecieptNumber` int(11) DEFAULT NULL,
   `nAuthRegionID` int(11) DEFAULT NULL,
   `sCountryID` varchar(255) DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
@@ -1216,4 +1229,12 @@ BEGIN
     SELECT max(nBookNo) + 1 AS nBookNo FROM tblgreenbookserial;
 END$$
 DELIMITER ;
+
+
+CREATE INDEX MDB_GBID ON tblmadeb(sGBID);
+CREATE INDEX GREENBOOK_GBID ON tblgreenbook(sGBID);
+CREATE INDEX GBID_RELATION ON lnkgbrelation(sgbidrelation, nrelationid);
+CREATE INDEX GB_DOC_GBID ON lnkgbdocument (sGBID);
+
+
 

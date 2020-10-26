@@ -6,7 +6,7 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-import Chartel from './chartel';
+import Chatrel from './chatrel';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CoverChartel = () => {
+const CoverChatrel = () => {
   const classes = useStyles();
   return (
     <Container maxWidth={false}>
@@ -27,9 +27,9 @@ const CoverChartel = () => {
           </Link>
         <Typography color="textPrimary">Type Issued</Typography>
       </Breadcrumbs>*/}
-      <Chartel />
+      <Chatrel />
     </Container>
   );
 };
 
-export default CoverChartel;
+export default CoverChatrel;

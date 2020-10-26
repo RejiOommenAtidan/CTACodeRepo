@@ -230,7 +230,7 @@ export default function FeatureUserrights() {
             options={oOptions}
             actions={[
               {
-                icon: FilterList,
+                icon: oTableIcons.Filter,
                 tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }

@@ -38,8 +38,8 @@ namespace CTADBL.BaseClassRepositories.Masters
             string sql = @"SELECT `Id`,
                                 `sKey`,
                                 `sValue`,
-                                `dtEntered`,
-                                `nEnteredBy`
+                                `dtUpdated`,
+                                `nUpdatedBy`
                             FROM `lstctaconfig`;";
             using (var command = new MySqlCommand(sql))
             {
@@ -120,8 +120,8 @@ namespace CTADBL.BaseClassRepositories.Masters
             ctaConfig.Id = (int)reader["Id"];
             ctaConfig.sKey = (string)reader["sKey"]; ;
             ctaConfig.sValue = (string)reader["sValue"]; ;
-            ctaConfig.nEnteredBy = (int)reader["nEnteredBy"];
-            ctaConfig.dtEntered = (DateTime)reader["dtEntered"]; ;
+            ctaConfig.nUpdatedBy = (int)reader["nUpdatedBy"];
+            ctaConfig.dtUpdated = (DateTime)reader["dtUpdated"]; ;
             return ctaConfig;
         }
         #endregion

@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
   // }
 }));
 
-export default function Chartel() {
+export default function Chatrel() {
   let history = useHistory();
   const classes = useStyles();
   const [isLoading, setisLoading] = React.useState(true);
