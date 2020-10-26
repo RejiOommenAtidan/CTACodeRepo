@@ -150,6 +150,7 @@ export const EditDialog = (props) => {
                                       inputRef={register({
                                         required: true
                                       })}
+                                      disabled
                                     />
                                     {_.get("nBookNo.type", errors) === "required" && (
                                       <span style={{color: 'red'}}>This field is required</span>
@@ -166,6 +167,8 @@ export const EditDialog = (props) => {
                                         InputProps={{
                                           readOnly: true
                                         }}
+                                        color="text.disabled"
+                                   
                                         value={sName}
                                         onChange={(e) => { setName(e.target.value) }}
                                         inputRef={register({
