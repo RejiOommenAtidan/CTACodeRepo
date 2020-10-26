@@ -108,7 +108,7 @@ export default function Relation() {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
                 setDataChanged(true);
-                setisLoading(true);
+                setisLoading(false);
               }
             })
             .catch(error => {

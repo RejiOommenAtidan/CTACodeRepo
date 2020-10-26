@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useState } from 'react';
 import {
   Box,
   Container,
@@ -18,65 +17,69 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import { useSelector } from 'react-redux';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export const EditDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
   const handleSubmitEditRecord = () => {
-    props.editAPICall({ id: props.madebTypeObj.id, sMadebType: madebType })
+    props.editAPICall(
+      {
+        id: props.madebTypeObj.id,
+        sMadebType: madebType,
+        nUpdatedBy: userId
+      }
+    )
   }
-  //debugger
   const [madebType, setMadebType] = useState(props.madebTypeObj.madebType);
   return (
     <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Madeb Type</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
-      <DialogContent>
-        <DialogContentText>
-          <div>
-            <Grid container>
-              <Grid item xs={12} >
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_MadebType"
-                    name="sMadabType"
-                    label="Madeb Type"
-                    type="text"
-                    value={madebType} 
-                    onChange={(e) => { setMadebType(e.target.value) }}
-                    inputRef={register({
-                      required: true
-                    })}
-                  />
-                  {_.get("sMadabType.type", errors) === "required" && (
-                      <span style={{color: 'red'}}>This field is required</span>
-                  )}
-                </FormControl>
+        <DialogContent>
+          <DialogContentText>
+            <div>
+              <Grid container>
+                <Grid item xs={12} >
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="id_MadebType"
+                      name="sMadabType"
+                      label="Madeb Type"
+                      type="text"
+                      value={madebType}
+                      onChange={(e) => { setMadebType(e.target.value) }}
+                      inputRef={register({
+                        required: true
+                      })}
+                    />
+                    {_.get("sMadabType.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                  </FormControl>
+                </Grid>
               </Grid>
-            </Grid>
-          </div>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.editAPICall({ id: props.madebTypeObj.id, sMadebType: madebType })} color="primary">Save</Button> */}
-        <Button type="submit" color="primary">Save</Button>
-      </DialogActions>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
+          {/* <Button onClick={() => props.editAPICall({ id: props.madebTypeObj.id, sMadebType: madebType })} color="primary">Save</Button> */}
+          <Button type="submit" color="primary">Save</Button>
+        </DialogActions>
       </form>
     </Dialog>
   );
-
-
 }
 
 export const DeleteDialog = (props) => {
-  console.log("Delete Dialog");
   return (
     <Dialog
-    
+
       open={props.deleteModal}
       TransitionComponent={Transition}
       keepMounted
@@ -101,48 +104,51 @@ export const DeleteDialog = (props) => {
 }
 
 export const AddDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
   const handleSubmitAddRecord = () => {
-    props.addAPICall({sMadebType: madebType });
+    props.addAPICall(
+      {
+        sMadebType: madebType,
+        nEnteredBy: userId,
+        nUpdatedBy: userId
+      }
+    );
   }
-  console.log("Add Dialog");
   const [madebType, setMadebType] = useState('');
   return (
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Madeb Type</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitAddRecord)}>
-      <DialogContent>
-        <DialogContentText>
-          <Grid container>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_madebType"
-                  name="sMadebType"
-                  label="Madeb Type"
-                  type="text"
-                  onChange={(e) => { setMadebType(e.target.value) }}
-                  inputRef={register({
-                    required: true
-                  })}
-                />
-                {_.get("sMadebType.type", errors) === "required" && (
-                      <span style={{color: 'red'}}>This field is required</span>
-                    )}
-              </FormControl>
+        <DialogContent>
+          <DialogContentText>
+            <Grid container>
+              <Grid item xs={12}>
+                <FormControl className={props.classes.formControl}>
+                  <TextField
+                    id="id_madebType"
+                    name="sMadebType"
+                    label="Madeb Type"
+                    type="text"
+                    onChange={(e) => { setMadebType(e.target.value) }}
+                    inputRef={register({
+                      required: true
+                    })}
+                  />
+                  {_.get("sMadebType.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
+                </FormControl>
+              </Grid>
             </Grid>
-            
-          </Grid>
-
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.addAPICall({sMadebType: madebType })} color="primary">Save</Button> */}
-        <Button type="submit" color="primary">Save</Button> 
-      </DialogActions>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+          {/* <Button onClick={() => props.addAPICall({sMadebType: madebType })} color="primary">Save</Button> */}
+          <Button type="submit" color="primary">Save</Button>
+        </DialogActions>
       </form>
     </Dialog>
   );
-
 }

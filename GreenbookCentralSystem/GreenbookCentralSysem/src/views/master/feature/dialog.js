@@ -15,7 +15,6 @@
 //ENSURE SEMICOLON AFTER EACH IMPORT!!
 
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import {
   Grid,
   Button,
@@ -29,11 +28,19 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import { useSelector } from 'react-redux';
 
 export const EditDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, errors } = useForm();
   const handleSubmitEditRecord = () => {
-    props.editAPICall({ id: ocurrentfeature.id, sFeature: sFeature })
+    props.editAPICall(
+      {
+        id: ocurrentfeature.id,
+        sFeature: sFeature,
+        nUpdatedBy: userId
+      }
+    )
   }
   const ocurrentfeature = useSelector(state => state.FeatureReducer.oCurrentFeature);
   const [sFeature, setsFeature] = useState(ocurrentfeature.sFeature);
@@ -41,9 +48,62 @@ export const EditDialog = (props) => {
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Feature</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
-      <DialogContent>
-        <DialogContentText>
-          <div>
+        <DialogContent>
+          <DialogContentText>
+            <div>
+              <Grid container>
+                <Grid item xs={12}>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      autoFocus
+                      id="id_sFeature"
+                      name="sFeature"
+                      label="Feature"
+                      type="text"
+                      value={sFeature}
+                      onChange={(e) => { setsFeature(e.target.value) }}
+                      inputRef={register({
+                        required: true
+                      })}
+                    />
+                    {_.get("sFeature.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
+          {/* <Button onClick={() => props.editAPICall({ id: ocurrentfeature.id, sFeature: sFeature })} color="primary">Save</Button> */}
+          <Button type="submit" color="primary">Save</Button>
+        </DialogActions>
+      </form>
+    </Dialog>
+  );
+}
+
+export const AddDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
+  const handleSubmitAddRecord = () => {
+    props.addAPICall(
+      {
+        sFeature: sFeature,
+        nEnteredBy: userId,
+        nUpdatedBy: userId
+      }
+    )
+  }
+  const [sFeature, setsFeature] = useState("");
+  return (
+    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
+      <DialogTitle id="form-dialog-title">Add Feature</DialogTitle>
+      <form onSubmit={handleSubmit(handleSubmitAddRecord)}>
+        <DialogContent>
+          <DialogContentText>
             <Grid container>
               <Grid item xs={12}>
                 <FormControl className={props.classes.formControl}>
@@ -59,65 +119,19 @@ export const EditDialog = (props) => {
                       required: true
                     })}
                   />
-                  {_.get("sFeature.type", errors) === "required" && (
-                      <span style={{color: 'red'}}>This field is required</span>
+                  {_.get("sQualification.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
                   )}
                 </FormControl>
               </Grid>
             </Grid>
-          </div>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.editAPICall({ id: ocurrentfeature.id, sFeature: sFeature })} color="primary">Save</Button> */}
-        <Button type="submit" color="primary">Save</Button> 
-      </DialogActions>
-      </form>
-    </Dialog>
-  );
-}
-
-export const AddDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
-  const handleSubmitAddRecord = () => {
-    props.addAPICall({ sFeature: sFeature })
-  }
-  const [sFeature, setsFeature] = useState("");
-  return (
-    <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Feature</DialogTitle>
-      <form onSubmit={handleSubmit(handleSubmitAddRecord)}>
-      <DialogContent>
-        <DialogContentText>
-          <Grid container>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  autoFocus
-                  id="id_sFeature"
-                  name="sFeature"
-                  label="Feature"
-                  type="text"
-                  value={sFeature}
-                  onChange={(e) => { setsFeature(e.target.value) }}
-                  inputRef={register({
-                    required: true
-                  })}
-                />
-                {_.get("sQualification.type", errors) === "required" && (
-                      <span style={{color: 'red'}}>This field is required</span>
-                    )}
-              </FormControl>
-            </Grid>
-          </Grid>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.addAPICall({ sFeature: sFeature })} color="primary">Save</Button> */}
-        <Button type="submit" color="primary">Save</Button> 
-      </DialogActions>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+          {/* <Button onClick={() => props.addAPICall({ sFeature: sFeature })} color="primary">Save</Button> */}
+          <Button type="submit" color="primary">Save</Button>
+        </DialogActions>
       </form>
     </Dialog>
   );

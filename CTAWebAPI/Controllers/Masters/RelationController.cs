@@ -138,10 +138,19 @@ namespace CTAWebAPI.Controllers.Masters
                     if (RelationExists(ID))
                     {
                         Relation fetchedrelation = _relationRepository.GetRelationById(ID);
+                        relation.nEnteredBy = fetchedrelation.nEnteredBy;
                         relation.dtEntered = fetchedrelation.dtEntered;
                         relation.dtUpdated = DateTime.Now;
-                        //user.User_Id
                         _relationRepository.Update(relation);
+
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetchedrelation, relation, null, null, 32, fetchedrelation.Id, relation.nUpdatedBy);
+                        #endregion
+
+                        #region Alert Logging 
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, relation.nUpdatedBy);
+                        #endregion
+
                         return Ok("Relation with ID: " + ID + " updated Successfully");
                     }
                     else
@@ -222,6 +231,5 @@ namespace CTAWebAPI.Controllers.Masters
             }
         }
         #endregion
-
     }
 }

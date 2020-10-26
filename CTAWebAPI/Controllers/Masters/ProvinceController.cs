@@ -20,6 +20,7 @@ namespace CTAWebAPI.Controllers.Masters
     [ApiController]
     public class ProvinceController : Controller
     {
+        #region Constructor
         private readonly ProvinceRepository _provinceRepository;
         private readonly DBConnectionInfo _info;
 
@@ -28,6 +29,7 @@ namespace CTAWebAPI.Controllers.Masters
             _info = info;
             _provinceRepository = new ProvinceRepository(info.sConnectionString);
         }
+        #endregion
 
         #region Get Calls
         [HttpGet]
@@ -95,7 +97,6 @@ namespace CTAWebAPI.Controllers.Masters
 
         #endregion
 
-
         #region Add Call
         [HttpPost]
         [Route("[action]")]
@@ -150,7 +151,6 @@ namespace CTAWebAPI.Controllers.Masters
         }
         #endregion
 
-
         #region Edit Call
         [HttpPost("EditProvince/provinceID={provinceID}")]
         [Route("[action]")]
@@ -165,6 +165,7 @@ namespace CTAWebAPI.Controllers.Masters
 
                     if (ModelState.IsValid)
                     {
+                        provinceToUpdate.nEnteredBy = province.nEnteredBy;
                         provinceToUpdate.dtEntered = province.dtEntered;
                         provinceToUpdate.dtUpdated = DateTime.Now;
 
@@ -174,13 +175,18 @@ namespace CTAWebAPI.Controllers.Masters
                         int updated = _provinceRepository.Update(provinceToUpdate);
                         if(updated > 0)
                         {
+                            #region Audit Log
+                            CTALogger.LogAuditRecord(province, provinceToUpdate, null, null, 30, province.Id, provinceToUpdate.nUpdatedBy);
+                            #endregion
+
                             #region Alert Logging
                             CTALogger logger = new CTALogger(_info);
                             logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, provinceToUpdate.nEnteredBy);
                             #endregion
+
                             Province updatedProvince = _provinceRepository.GetProvinceById(provinceID);
 
-                            return Ok(String.Format("Province with ID: {0} updated Successfully", provinceID));
+                            return Ok(string.Format("Province with ID: {0} updated Successfully", provinceID));
                         }
                         else
                         {
@@ -198,7 +204,6 @@ namespace CTAWebAPI.Controllers.Masters
                 else
                 {
                     return BadRequest("Province Update data invalid. Try again.");
-
                 }
             }
             catch (Exception ex)

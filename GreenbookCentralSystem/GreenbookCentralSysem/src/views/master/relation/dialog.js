@@ -12,11 +12,19 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import { useSelector } from 'react-redux';
 
 export const AddDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
   const handleSubmitAddRecord = () => {
-    props.addAPICall({ sRelation: relation })
+    props.addAPICall(
+      {
+        sRelation: relation,
+        nEnteredBy: userId,
+        nUpdatedBy: userId
+      }
+    )
   }
   const [relationId, setRelationId] = useState('');
   const [relation, setRelation] = useState('');
@@ -24,53 +32,9 @@ export const AddDialog = (props) => {
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Relation</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitAddRecord)}>
-      <DialogContent>
-        <DialogContentText>
-          <Grid container>
-            <Grid item xs={12} >
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_Relation"
-                  name="sRelation"
-                  label="Relation"
-                  type="text"
-                  onChange={(e) => { setRelation(e.target.value) }}
-                  inputRef={register({
-                    required: true
-                  })}
-                />
-                {_.get("sRelation.type", errors) === "required" && (
-                      <span style={{color: 'red'}}>This field is required</span>
-                    )}
-              </FormControl>
-            </Grid>
-          </Grid>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.addAPICall({ sRelation: relation })} color="primary">Save</Button> */}
-        <Button type="submit" color="primary">Save</Button> 
-      </DialogActions>
-      </form>
-    </Dialog>
-  );
-}
-
-export const EditDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
-  const handleSubmitEditRecord = () => {
-    props.editAPICall({ id: props.relationObj.id, sRelation: Name })
-  }
-  const [Name, setRelation] = useState(props.relationObj.relation);
-  return (
-    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Edit Relation</DialogTitle>
-      <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
-      <DialogContent>
-        <DialogContentText>
-          <div>
-            <Grid container >
+        <DialogContent>
+          <DialogContentText>
+            <Grid container>
               <Grid item xs={12} >
                 <FormControl className={props.classes.formControl}>
                   <TextField
@@ -78,26 +42,77 @@ export const EditDialog = (props) => {
                     name="sRelation"
                     label="Relation"
                     type="text"
-                    value={Name}
                     onChange={(e) => { setRelation(e.target.value) }}
                     inputRef={register({
                       required: true
                     })}
                   />
                   {_.get("sRelation.type", errors) === "required" && (
-                      <span style={{color: 'red'}}>This field is required</span>
+                    <span style={{ color: 'red' }}>This field is required</span>
                   )}
                 </FormControl>
               </Grid>
             </Grid>
-          </div>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.editAPICall({ id: props.relationObj.id, sRelation: Name })} color="primary">Save</Button> */}
-        <Button type="submit" color="primary">Save</Button> 
-      </DialogActions>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+          {/* <Button onClick={() => props.addAPICall({ sRelation: relation })} color="primary">Save</Button> */}
+          <Button type="submit" color="primary">Save</Button>
+        </DialogActions>
+      </form>
+    </Dialog>
+  );
+}
+
+export const EditDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
+  const handleSubmitEditRecord = () => {
+    props.editAPICall(
+      {
+        id: props.relationObj.id,
+        sRelation: Name,
+        nUpdatedBy: userId
+      }
+    )
+  }
+  const [Name, setRelation] = useState(props.relationObj.relation);
+  return (
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
+      <DialogTitle id="form-dialog-title">Edit Relation</DialogTitle>
+      <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
+        <DialogContent>
+          <DialogContentText>
+            <div>
+              <Grid container >
+                <Grid item xs={12} >
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="id_Relation"
+                      name="sRelation"
+                      label="Relation"
+                      type="text"
+                      value={Name}
+                      onChange={(e) => { setRelation(e.target.value) }}
+                      inputRef={register({
+                        required: true
+                      })}
+                    />
+                    {_.get("sRelation.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
+          {/* <Button onClick={() => props.editAPICall({ id: props.relationObj.id, sRelation: Name })} color="primary">Save</Button> */}
+          <Button type="submit" color="primary">Save</Button>
+        </DialogActions>
       </form>
     </Dialog>
   );

@@ -18,77 +18,82 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import { useSelector } from 'react-redux';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export const EditDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
   const handleSubmitEditRecord = () => {
-    props.editAPICall({ id: props.occupationObj.id, sOccupationDesc: occupationDesc, sOccupationDescTibetan: occupationDescTibetan })
+    props.editAPICall(
+      {
+        id: props.occupationObj.id,
+        sOccupationDesc: occupationDesc,
+        sOccupationDescTibetan: occupationDescTibetan,
+        nUpdatedBy: userId
+      }
+    )
   }
-  //debugger
   const [occupationDesc, setOccupationDesc] = useState(props.occupationObj.occupationDesc);
   const [occupationDescTibetan, setOccupationDescTibetan] = useState(props.occupationObj.occupationDescTibetan);
   return (
     <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Occupation</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
-      <DialogContent>
-        <DialogContentText>
-          <div>
-            <Grid container>
-              <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_occupationDesc"
-                    name="sOccupation"
-                    label="Occupation"
-                    type="text"
-                    // InputProps={{
-                    //   readOnly: true
-                    // }}
-                    value={occupationDesc}
-                    onChange={(e) => { setOccupationDesc(e.target.value) }}
-                    inputRef={register({
-                      required: true
-                    })}
-                  />
-                  {_.get("sOccupation.type", errors) === "required" && (
-                      <span style={{color: 'red'}}>This field is required</span>
-                  )}
-                </FormControl>
+        <DialogContent>
+          <DialogContentText>
+            <div>
+              <Grid container>
+                <Grid item xs={12}>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="id_occupationDesc"
+                      name="sOccupation"
+                      label="Occupation"
+                      type="text"
+                      // InputProps={{
+                      //   readOnly: true
+                      // }}
+                      value={occupationDesc}
+                      onChange={(e) => { setOccupationDesc(e.target.value) }}
+                      inputRef={register({
+                        required: true
+                      })}
+                    />
+                    {_.get("sOccupation.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} >
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="id_OccupationDescTibetan"
+                      label="Occupation (in Tibetan)"
+                      type="text"
+                      value={occupationDescTibetan}
+                      onChange={(e) => { setOccupationDescTibetan(e.target.value) }}
+                    />
+                  </FormControl>
+                </Grid>
               </Grid>
-              <Grid item xs={12} >
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_OccupationDescTibetan"
-                    label="Occupation (in Tibetan)"
-                    type="text"
-                    value={occupationDescTibetan} 
-                    onChange={(e) => { setOccupationDescTibetan(e.target.value) }}
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
-          </div>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.editAPICall({ id: props.occupationObj.id, sOccupationDesc: occupationDesc, sOccupationDescTibetan: occupationDescTibetan })} color="primary">Save</Button> */}
-        <Button type="submit" color="primary">Save</Button> 
-      </DialogActions>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
+          {/* <Button onClick={() => props.editAPICall({ id: props.occupationObj.id, sOccupationDesc: occupationDesc, sOccupationDescTibetan: occupationDescTibetan })} color="primary">Save</Button> */}
+          <Button type="submit" color="primary">Save</Button>
+        </DialogActions>
       </form>
     </Dialog>
   );
-
-
 }
 
 export const DeleteDialog = (props) => {
-  console.log("Delete Dialog");
   return (
     <Dialog
       open={props.deleteModal}
@@ -111,62 +116,66 @@ export const DeleteDialog = (props) => {
       </DialogActions>
     </Dialog>
   );
-
 }
 
 export const AddDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
   const handleSubmitAddRecord = () => {
-    props.addAPICall({ sOccupationDesc: occupationDesc, sOccupationDescTibetan: occupationDescTibetan })
+    props.addAPICall(
+      {
+        sOccupationDesc: occupationDesc,
+        sOccupationDescTibetan: occupationDescTibetan,
+        nEnteredBy: userId,
+        nUpdatedBy: userId
+      }
+    )
   }
-  console.log("Add Dialog");
   const [occupationDesc, setOccupationDesc] = useState('');
   const [occupationDescTibetan, setOccupationDescTibetan] = useState('');
   return (
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Occupation</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitAddRecord)}>
-      <DialogContent>
-        <DialogContentText>
-          <Grid container>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_occupationDesc"
-                  name="sOccupation"
-                  label="Occupation"
-                  type="text"
-                  onChange={(e) => { setOccupationDesc(e.target.value) }}
-                  inputRef={register({
-                    required: true
-                  })}
-                />
-                {_.get("sOccupation.type", errors) === "required" && (
-                      <span style={{color: 'red'}}>This field is required</span>
-                    )}
-              </FormControl>
+        <DialogContent>
+          <DialogContentText>
+            <Grid container>
+              <Grid item xs={12}>
+                <FormControl className={props.classes.formControl}>
+                  <TextField
+                    id="id_occupationDesc"
+                    name="sOccupation"
+                    label="Occupation"
+                    type="text"
+                    onChange={(e) => { setOccupationDesc(e.target.value) }}
+                    inputRef={register({
+                      required: true
+                    })}
+                  />
+                  {_.get("sOccupation.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} >
+                <FormControl className={props.classes.formControl}>
+                  <TextField
+                    id="id_OccupationDescTibetan"
+                    label="Occupation (in Tibetan)"
+                    type="text"
+                    onChange={(e) => { setOccupationDescTibetan(e.target.value) }}
+                  />
+                </FormControl>
+              </Grid>
             </Grid>
-            <Grid item xs={12} >
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_OccupationDescTibetan"
-                  label="Occupation (in Tibetan)"
-                  type="text"
-                  onChange={(e) => { setOccupationDescTibetan(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.addAPICall({ sOccupationDesc: occupationDesc, sOccupationDescTibetan: occupationDescTibetan })} color="primary">Save</Button> */}
-        <Button type="submit" color="primary">Save</Button> 
-      </DialogActions>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+          {/* <Button onClick={() => props.addAPICall({ sOccupationDesc: occupationDesc, sOccupationDescTibetan: occupationDescTibetan })} color="primary">Save</Button> */}
+          <Button type="submit" color="primary">Save</Button>
+        </DialogActions>
       </form>
     </Dialog>
   );
-
 }

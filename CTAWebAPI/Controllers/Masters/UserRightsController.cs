@@ -164,10 +164,14 @@ namespace CTAWebAPI.Controllers.Masters
                     if (UserRightsExists(ID))
                     {
                         UserRights fetcheduserrights = _userRightsRepository.GetUserRightsById(ID);
+                        userrights.nEnteredBy = fetcheduserrights.nEnteredBy;
                         userrights.dtEntered = fetcheduserrights.dtEntered;
                         userrights.dtUpdated = DateTime.Now;
-                        //user.User_Id
                         _userRightsRepository.Update(userrights);
+
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetcheduserrights, userrights, null, null, 36, fetcheduserrights.Id, userrights.nUpdatedBy);
+                        #endregion
 
                         #region Alert Logging 
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, userrights.nEnteredBy);

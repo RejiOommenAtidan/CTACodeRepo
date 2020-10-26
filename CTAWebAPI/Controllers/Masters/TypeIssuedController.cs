@@ -139,15 +139,24 @@ namespace CTAWebAPI.Controllers.Masters
                     {
 
                         TypeIssued fetchedtypeissued = _typedIssuedRepository.GetTypeIssuedById(ID);
+                        typeissued.nEnteredBy = fetchedtypeissued.nEnteredBy;
                         typeissued.dtEntered = fetchedtypeissued.dtEntered;
                         typeissued.dtUpdated = DateTime.Now;
-                        //user.User_Id
                         _typedIssuedRepository.Update(typeissued);
-                        return Ok("TypeIssued with ID: " + ID + " updated Successfully");
+
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetchedtypeissued, typeissued, null, null, 26, fetchedtypeissued.Id, typeissued.nUpdatedBy);
+                        #endregion
+
+                        #region Alert Logging 
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, typeissued.nUpdatedBy);
+                        #endregion
+
+                        return Ok("Type Issued with ID: " + ID + " updated Successfully");
                     }
                     else
                     {
-                        return BadRequest("TypeIssued with ID:" + ID + " does not exist");
+                        return BadRequest("Type Issued with ID:" + ID + " does not exist");
                     }
                 }
                 else
