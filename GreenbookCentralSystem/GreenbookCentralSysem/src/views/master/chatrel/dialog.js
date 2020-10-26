@@ -26,7 +26,7 @@ export const AddDialog = (props) => {
       {
         sChatrelKey: sChatrelKey,
         nChatrelValue: nChatrelValue,
-        dtChatrelFrom: dtChatrelFrom,
+        dtChatrelFrom: dtChatrelFrom
       }
     );
   }
@@ -36,7 +36,7 @@ export const AddDialog = (props) => {
   const [dtChatrelFrom, setdtChatrelFrom] = useState(null);
   return (
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Issue Type</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add Chatrel</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitAddRecord)}>
         <DialogContent>
           <DialogContentText>
@@ -166,7 +166,7 @@ export const EditDialog = (props) => {
                       label="Value"
                       type="number"
                       value={nChatrelValue}
-                      onChange={(e) => { setnChatrelValue(e.target.value) }}
+                      onChange={(e) => { setnChatrelValue(parseInt(e.target.value)) }}
                       inputRef={register({
                         required: true
                       })}
