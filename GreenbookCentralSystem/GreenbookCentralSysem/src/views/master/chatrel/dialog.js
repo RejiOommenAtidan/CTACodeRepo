@@ -24,16 +24,16 @@ export const AddDialog = (props) => {
   const handleSubmitAddRecord = () => {
     props.addAPICall(
       {
-        sChartelKey: sChartelKey,
-        nChartelValue: nChartelValue,
-        dtChartelFrom: dtChartelFrom,
+        sChatrelKey: sChatrelKey,
+        nChatrelValue: nChatrelValue,
+        dtChatrelFrom: dtChatrelFrom,
       }
     );
   }
 
-  const [sChartelKey, setsChartelKey] = useState("");
-  const [nChartelValue, setnChartelValue] = useState('');
-  const [dtChartelFrom, setdtChartelFrom] = useState(null);
+  const [sChatrelKey, setsChatrelKey] = useState("");
+  const [nChatrelValue, setnChatrelValue] = useState('');
+  const [dtChatrelFrom, setdtChatrelFrom] = useState(null);
   return (
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Issue Type</DialogTitle>
@@ -44,17 +44,17 @@ export const AddDialog = (props) => {
               <Grid item xs={12} >
                 <FormControl className={props.classes.formControl}>
                   <TextField
-                    id="id_sChartelKey"
-                    name="name_sChartelKey"
-                    label="Chartel Term"
+                    id="id_sChatrelKey"
+                    name="name_sChatrelKey"
+                    label="Chatrel Term"
                     type="text"
-                    value={sChartelKey}
-                    onChange={(e) => { setsChartelKey(e.target.value) }}
+                    value={sChatrelKey}
+                    onChange={(e) => { setsChatrelKey(e.target.value) }}
                     inputRef={register({
                       required: true
                     })}
                   />
-                  {_.get("name_sChartelKey.type", errors) === "required" && (
+                  {_.get("name_sChatrelKey.type", errors) === "required" && (
                     <span style={{ color: 'red' }}>This field is required</span>
                   )}
                 </FormControl>
@@ -62,18 +62,18 @@ export const AddDialog = (props) => {
               <Grid item xs={12} >
                 <FormControl className={props.classes.formControl}>
                   <TextField
-                    id="id_nChartelValue"
-                    name="name_nChartelValue"
+                    id="id_nChatrelValue"
+                    name="name_nChatrelValue"
                     label="Value"
                     type="number"
-                    value={nChartelValue}
-                    onChange={(e) => { setnChartelValue(e.target.value) }}
+                    value={nChatrelValue}
+                    onChange={(e) => { setnChatrelValue(e.target.value) }}
                     inputRef={register({
                       required: true
                     })}
                   />
                 </FormControl>
-                {_.get("name_nChartelValue.type", errors) === "required" && (
+                {_.get("name_nChatrelValue.type", errors) === "required" && (
                   <span style={{ color: 'red' }}>This field is required</span>
                 )}
               </Grid>
@@ -81,8 +81,8 @@ export const AddDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
-                      id="id_dtChartelFrom"
-                      name="name_dtChartelFrom"
+                      id="id_dtChatrelFrom"
+                      name="name_dtChatrelFrom"
                       variant="dialog"
                       openTo="year"
                       views={["year", "month", "date"]}
@@ -90,10 +90,10 @@ export const AddDialog = (props) => {
                       inputRef={register({
                         required: true
                       })}
-                      label="Chartel From"
+                      label="Chatrel From"
                       format={sDateFormatMUIDatepicker}
-                      onChange={date => { setdtChartelFrom(date) }}
-                      value={dtChartelFrom}
+                      onChange={date => { setdtChatrelFrom(date) }}
+                      value={dtChatrelFrom}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
@@ -101,7 +101,7 @@ export const AddDialog = (props) => {
                       className={props.classes.dateField}
                     />
                   </MuiPickersUtilsProvider>
-                  {_.get("name_dtChartelFrom.type", errors) === "required" && (
+                  {_.get("name_dtChatrelFrom.type", errors) === "required" && (
                     <span style={{ color: 'red' }}>This field is required</span>
                   )}
                 </FormControl>
@@ -124,19 +124,19 @@ export const EditDialog = (props) => {
   const handleSubmitEditRecord = () => {
     props.editAPICall(
       {
-        id: props.oChartel.id,
-        sChartelKey: sChartelKey,
-        nChartelValue: nChartelValue,
-        dtChartelFrom: dtChartelFrom
+        id: props.oChatrel.id,
+        sChatrelKey: sChatrelKey,
+        nChatrelValue: nChatrelValue,
+        dtChatrelFrom: dtChatrelFrom
       }
     );
   }
-  const [sChartelKey, setsChartelKey] = useState(props.oChartel.sChartelKey);
-  const [nChartelValue, setnChartelValue] = useState(props.oChartel.nChartelValue);
-  const [dtChartelFrom, setdtChartelFrom] = useState(props.oChartel.dtChartelFrom);
+  const [sChatrelKey, setsChatrelKey] = useState(props.oChatrel.sChatrelKey);
+  const [nChatrelValue, setnChatrelValue] = useState(props.oChatrel.nChatrelValue);
+  const [dtChatrelFrom, setdtChatrelFrom] = useState(props.oChatrel.dtChatrelFrom);
   return (
     <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Edit Chartel</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Chatrel</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
         <DialogContent>
           <DialogContentText>
@@ -145,12 +145,12 @@ export const EditDialog = (props) => {
                 <Grid item xs={12} >
                   <FormControl className={props.classes.formControl}>
                     <TextField
-                      id="id_sChartelKey"
-                      name="name_sChartelKey"
-                      label="Chartel Term"
+                      id="id_sChatrelKey"
+                      name="name_sChatrelKey"
+                      label="Chatrel Term"
                       type="text"
-                      value={sChartelKey}
-                      onChange={(e) => { setsChartelKey(e.target.value) }}
+                      value={sChatrelKey}
+                      onChange={(e) => { setsChatrelKey(e.target.value) }}
                       InputProps={{
                         readOnly: true,
                         disabled: true
@@ -161,18 +161,18 @@ export const EditDialog = (props) => {
                 <Grid item xs={12} >
                   <FormControl className={props.classes.formControl}>
                     <TextField
-                      id="id_nChartelValue"
-                      name="name_nChartelValue"
+                      id="id_nChatrelValue"
+                      name="name_nChatrelValue"
                       label="Value"
                       type="number"
-                      value={nChartelValue}
-                      onChange={(e) => { setnChartelValue(e.target.value) }}
+                      value={nChatrelValue}
+                      onChange={(e) => { setnChatrelValue(e.target.value) }}
                       inputRef={register({
                         required: true
                       })}
                     />
                   </FormControl>
-                  {_.get("name_nChartelValue.type", errors) === "required" && (
+                  {_.get("name_nChatrelValue.type", errors) === "required" && (
                     <span style={{ color: 'red' }}>This field is required</span>
                   )}
                 </Grid>
@@ -180,8 +180,8 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
-                        id="id_dtChartelFrom"
-                        name="name_dtChartelFrom"
+                        id="id_dtChatrelFrom"
+                        name="name_dtChatrelFrom"
                         variant="dialog"
                         openTo="year"
                         views={["year", "month", "date"]}
@@ -189,10 +189,10 @@ export const EditDialog = (props) => {
                         inputRef={register({
                           required: true
                         })}
-                        label="Chartel From"
+                        label="Chatrel From"
                         format={sDateFormatMUIDatepicker}
-                        onChange={date => { setdtChartelFrom(date) }}
-                        value={dtChartelFrom}
+                        onChange={date => { setdtChatrelFrom(date) }}
+                        value={dtChatrelFrom}
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
                         }}
@@ -200,7 +200,7 @@ export const EditDialog = (props) => {
                         className={props.classes.dateField}
                       />
                     </MuiPickersUtilsProvider>
-                    {_.get("name_dtChartelFrom.type", errors) === "required" && (
+                    {_.get("name_dtChatrelFrom.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
                     )}
                   </FormControl>

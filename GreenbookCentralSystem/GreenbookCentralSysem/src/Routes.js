@@ -39,7 +39,7 @@ const UserRights = lazy(() => import('./views/master/userrights'));
 const MadebType = lazy(() => import('./views/master/madebtype'));
 const Relation = lazy(() => import('./views/master/relation'));
 const Feature = lazy(() => import('./views/master/feature'));
-const Chartel = lazy(() => import('./views/master/chartel'));
+const Chatrel = lazy(() => import('./views/master/chatrel'));
 const CTAConfig = lazy(() => import('./views/master/ctaconfig'));
 
 // Madeb Pages
@@ -183,7 +183,7 @@ const Routes = () => {
                 '/Home',
                 '/Country',
                 '/NewEntry/:FORMNO',
-                '/Chartel',
+                '/Chatrel',
                 '/CTAConfig',
                 '/Qualification',
                 '/Region',
@@ -249,7 +249,7 @@ const Routes = () => {
                     <PrivateRoute path="/FeatureRoles" feature={22} component={FeatureUserrights} />
                     <PrivateRoute path="/UserRights" feature={23} component={UserRights} />
                     <PrivateRoute path="/Region" feature={24} component={Region} />
-                    <PrivateRoute path="/Chartel" feature={25} component={Chartel} />
+                    <PrivateRoute path="/Chatrel" feature={25} component={Chatrel} />
                     <PrivateRoute path="/CTAConfig" feature={26} component={CTAConfig} />
                     <PrivateRoute path="/AuthRegion" feature={27} component={AuthRegion} />
                     <PrivateRoute path="/Country" feature={28} component={Country} />

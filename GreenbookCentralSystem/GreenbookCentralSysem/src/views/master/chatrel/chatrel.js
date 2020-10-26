@@ -23,7 +23,7 @@ const tableIcons = oTableIcons;
 const useStyles = makeStyles(() => ({
 }));
 
-export default function Chartel() {
+export default function Chatrel() {
   Moment.locale('en');
   let history = useHistory();
   const classes = useStyles();
@@ -32,11 +32,11 @@ export default function Chartel() {
   const [editModal, setEditModal] = React.useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [dataAPI, setdataAPI] = useState([]);
-  const [nChartelPK, setnChartelPK] = useState(0);
-  const [sChartelKey, setsChartelKey] = useState("");
-  const [nChartelValue, setnChartelValue] = useState(0);
-  const [dtChartelFrom, setdtChartelFrom] = useState(null);
-  const [oChartel, setoChartel] = useState({});
+  const [nChatrelPK, setnChatrelPK] = useState(0);
+  const [sChatrelKey, setsChatrelKey] = useState("");
+  const [nChatrelValue, setnChatrelValue] = useState(0);
+  const [dtChatrelFrom, setdtChatrelFrom] = useState(null);
+  const [oChatrel, setoChatrel] = useState({});
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
 
@@ -65,8 +65,8 @@ export default function Chartel() {
       export: true
     },
     {
-      field: "sChartelKey",
-      title: "Chartel Term",
+      field: "sChatrelKey",
+      title: "Chatrel Term",
       cellStyle: {
         padding: '5px',
         paddingLeft: '10px',
@@ -74,7 +74,7 @@ export default function Chartel() {
       },
     },
     {
-      field: "nChartelValue",
+      field: "nChatrelValue",
       title: "Value",
       cellStyle: {
         padding: '5px',
@@ -83,8 +83,8 @@ export default function Chartel() {
       },
     },
     {
-      render: rowData => Moment(rowData['dtChartelFrom']).format(sDateFormat),
-      field: "dtChartelFrom",
+      render: rowData => Moment(rowData['dtChatrelFrom']).format(sDateFormat),
+      field: "dtChatrelFrom",
       title: "Starting From",
       cellStyle: {
         padding: '5px',
@@ -113,26 +113,26 @@ export default function Chartel() {
   ];
 
   const editClick = (tableRowArray) => {
-    setnChartelPK(tableRowArray["id"]);
-    setsChartelKey(tableRowArray["sChartelKey"]);
-    setnChartelValue(tableRowArray["nChartelValue"]);
-    setdtChartelFrom(tableRowArray["dtChartelFrom"]);
-    setoChartel({
+    setnChatrelPK(tableRowArray["id"]);
+    setsChatrelKey(tableRowArray["sChatrelKey"]);
+    setnChatrelValue(tableRowArray["nChatrelValue"]);
+    setdtChatrelFrom(tableRowArray["dtChatrelFrom"]);
+    setoChatrel({
       id: tableRowArray["id"],
-      sChartelKey: tableRowArray["sChartelKey"],
-      nChartelValue: tableRowArray["nChartelValue"],
-      dtChartelFrom: tableRowArray["dtChartelFrom"]
+      sChatrelKey: tableRowArray["sChatrelKey"],
+      nChatrelValue: tableRowArray["nChatrelValue"],
+      dtChatrelFrom: tableRowArray["dtChatrelFrom"]
     });
     setEditModal(true);
   };
 
-  const editAPICall = (chartelObj) => {
+  const editAPICall = (chatrelObj) => {
     setisLoading(true);
-    axios.post(`/Chartel/EditChartel/ID=` + nChartelPK, chartelObj)
+    axios.post(`/Chatrel/EditChatrel/ID=` + nChatrelPK, chatrelObj)
       .then(resp => {
         if (resp.status === 200) {
           setEditModal(false);
-          axios.get(`/Chartel/GetAllChartel`)
+          axios.get(`/Chatrel/GetAllChatrel`)
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
@@ -155,13 +155,13 @@ export default function Chartel() {
       });
   };
 
-  const addAPICall = (chartelObj) => {
+  const addAPICall = (chatrelObj) => {
     setisLoading(true);
-    axios.post(`/Chartel/AddChartel`, chartelObj)
+    axios.post(`/Chatrel/AddChatrel`, chatrelObj)
       .then(resp => {
         if (resp.status === 200) {
           setAddModal(false);
-          axios.get(`/Chartel/GetAllChartel`)
+          axios.get(`/Chatrel/GetAllChatrel`)
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
@@ -185,7 +185,7 @@ export default function Chartel() {
   };
 
   useEffect(() => {
-    axios.get(`/Chartel/GetAllChartel`)
+    axios.get(`/Chatrel/GetAllChatrel`)
       .then(resp => {
         if (resp.status === 200) {
           setdataAPI(resp.data);
@@ -209,14 +209,14 @@ export default function Chartel() {
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={tableIcons}
-            title="Chartel"
+            title="Chatrel"
             columns={columns}
             data={dataAPI}
             options={oOptions}
             actions={[
               {
                 icon: AddBox,
-                tooltip: 'Add Chartel',
+                tooltip: 'Add Chatrel',
                 isFreeAction: true,
                 onClick: (event) => setAddModal(true)
               },
@@ -238,7 +238,7 @@ export default function Chartel() {
       />}
       {editModal && <EditDialog
         editModal={editModal}
-        oChartel={oChartel}
+        oChatrel={oChatrel}
         classes={classes}
         handleEditClickClose={handleEditClickClose}
         editAPICall={editAPICall}
