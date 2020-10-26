@@ -12,8 +12,6 @@ import { AddDialog, EditDialog } from './dialog';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
-import FilterList from '@material-ui/icons/FilterList';
-import AddBox from '@material-ui/icons/AddBox';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
 import Moment from 'moment';
@@ -214,12 +212,12 @@ export default function Chatrel() {
             data={dataAPI}
             options={oOptions}
             actions={[
-              {
-                icon: oTableIcons.Add,
-                tooltip: 'Add Chatrel',
-                isFreeAction: true,
-                onClick: (event) => setAddModal(true)
-              },
+              // {
+              //   icon: oTableIcons.Add,
+              //   tooltip: 'Add Chatrel',
+              //   isFreeAction: true,
+              //   onClick: (event) => setAddModal(true)
+              // },
               {
                 icon: oTableIcons.Filter,
                 tooltip: 'Toggle Filter',

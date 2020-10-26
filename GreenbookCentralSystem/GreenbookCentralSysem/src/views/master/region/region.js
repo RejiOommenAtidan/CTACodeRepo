@@ -3,7 +3,6 @@ import {
   Container,
   Grid
 } from '@material-ui/core';
-
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -11,12 +10,11 @@ import IconButton from '@material-ui/core/IconButton';
 import { AddDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons } from '../../../config/commonConfig';
-import FilterList from '@material-ui/icons/FilterList';
-import AddBox from '@material-ui/icons/AddBox';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
 
 const tableIcons = oTableIcons;
+
 const useStyles = makeStyles(() => ({
 }));
 
@@ -32,8 +30,6 @@ export default function Region() {
   const [region, setRegion] = React.useState('');
   const [regionPK, setRegionPK] = React.useState(0);
   const [regionObj, setRegionObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;

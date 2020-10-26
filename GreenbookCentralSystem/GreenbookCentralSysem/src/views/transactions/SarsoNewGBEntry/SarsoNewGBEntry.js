@@ -14,7 +14,6 @@ import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons,sDateFormat } from '../../../config/commonConfig';
-import FilterList from '@material-ui/icons/FilterList';
 
 const tableIcons = oTableIcons;
 

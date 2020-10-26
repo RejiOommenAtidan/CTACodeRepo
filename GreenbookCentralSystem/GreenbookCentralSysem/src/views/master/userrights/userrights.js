@@ -10,8 +10,6 @@ import IconButton from '@material-ui/core/IconButton';
 import { AddDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons } from '../../../config/commonConfig';
-import FilterList from '@material-ui/icons/FilterList';
-import AddBox from '@material-ui/icons/AddBox';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
 
@@ -77,7 +75,7 @@ export default function UserRights() {
   const [dataChanged, setDataChanged] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
-  const history = useHistory();
+  let history = useHistory();
   const [isLoading, setisLoading] = React.useState(true);
 
   const handleEditClickOpen = () => {
@@ -146,7 +144,6 @@ export default function UserRights() {
   }
 
   const editAPICall = (userRightsObj) => {
-
     axios.post(`/UserRights/EditUserRights/ID=` + userRightsPK, userRightsObj/*UserRightsToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
@@ -169,6 +166,7 @@ export default function UserRights() {
         console.log(error.message);
       });
   };
+
   const addAPICall = (userRightsObj) => {
     axios.post(`/UserRights/AddUserRights/`, userRightsObj)
       .then(resp => {
@@ -255,7 +253,6 @@ export default function UserRights() {
               }
             ]}
           />
-
         </Grid>
       </Grid>
       {addModal && <AddDialog
