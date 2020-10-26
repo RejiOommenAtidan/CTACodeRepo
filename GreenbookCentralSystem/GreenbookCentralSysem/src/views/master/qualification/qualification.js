@@ -77,6 +77,8 @@ export default function Qualification() {
   const [qualificationObj, setQualificationObj] = useState({});
   const [dataChanged, setDataChanged] = useState(false);
   let history = useHistory();
+  const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -90,10 +92,6 @@ export default function Qualification() {
   const handleAddClickClose = () => {
     setAddModal(false);
   };
-
-  const [filtering, setFiltering] = React.useState(false);
-  oOptions.filtering = filtering;
-  const history = useHistory();
 
   const columns = [
     {

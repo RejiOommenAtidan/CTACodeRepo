@@ -78,6 +78,8 @@ export default function EnhancedTable() {
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
   let history = useHistory();
+  const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -91,10 +93,6 @@ export default function EnhancedTable() {
   const handleAddClickClose = () => {
     setAddModal(false);
   };
-
-  const [filtering, setFiltering] = React.useState(false);
-  oOptions.filtering = filtering;
-  const history = useHistory();
 
   const columns = [
     {
