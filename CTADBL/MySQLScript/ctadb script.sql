@@ -704,7 +704,18 @@ INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdate
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso New GB Entry',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Roles Feature Mapping',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Roles Manage',now(),1,now(),1);
-
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Region',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chartel',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('CTAConfig',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('AuthRegion',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Country',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Occupation',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Province',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Qualification',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Relation',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Feature',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('TypeIssued',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('MadebType',now(),1,now(),1);
 
 CREATE TABLE `lstCTAConfig` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -936,7 +947,7 @@ CREATE TABLE `tblAuditLog` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `dtEntered` datetime DEFAULT NULL,
   `nFeatureID` int(11) NOT NULL,
-  `nRegionID` int(11) NOT NULL,
+  `nRegionID` int(11) DEFAULT NULL,
   `nRecordID` int(11) NOT NULL,
   `sGBID` varchar(255) DEFAULT NULL,
   `sFieldValuesOld` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,

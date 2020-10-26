@@ -45,7 +45,7 @@ namespace CTADBL.BaseClassRepositories.Masters
         public IEnumerable<Country> GetAllCountries()
         {
             // DBAs across the country are having strokes over this next command!
-            using (var command = new MySqlCommand("SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry"))
+            using (var command = new MySqlCommand("SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry LIMIT 50"))
             {
                 return GetRecords(command);
             }
@@ -58,6 +58,18 @@ namespace CTADBL.BaseClassRepositories.Masters
                 return GetRecord(command);
             }
         }
+
+        public IEnumerable<Country> SearchCountries(string param)
+        {
+            string sql = String.Format(@"SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE sCountry LIKE '{0}{1}{2}'", "%", param, "%");
+
+            using (var command = new MySqlCommand(sql))
+            {
+                //command.Parameters.AddWithValue("param", param);
+                return GetRecords(command);
+            }
+        }
+
         #endregion
 
         public bool CountryIdExists(string countryId)
