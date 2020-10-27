@@ -156,14 +156,12 @@ export default function UserRights() {
               }
             })
             .catch(error => {
-              console.log(error.config);
-              console.log(error.message);
+              handleError(error, history);
             });
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
+        handleError(error, history);
       });
   };
 
@@ -179,14 +177,12 @@ export default function UserRights() {
               }
             })
             .catch(error => {
-              console.log(error.config);
-              console.log(error.message);
+              handleError(error, history);
             });
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
+        handleError(error, history);
       });
   };
 
@@ -209,8 +205,7 @@ export default function UserRights() {
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
+        handleError(error, history);
       });
   }, []);
 

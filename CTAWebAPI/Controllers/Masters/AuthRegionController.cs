@@ -20,11 +20,9 @@ namespace CTAWebAPI.Controllers.Masters
     [ApiController]
     public class AuthRegionController : ControllerBase
     {
+        #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly AuthRegionRepository _authRegionRepository;
-
-        #region Constructor
-
         public AuthRegionController(DBConnectionInfo info)
         {
             _info = info;
@@ -174,6 +172,7 @@ namespace CTAWebAPI.Controllers.Masters
 
                     if (ModelState.IsValid)
                     {
+                        regionToUpdate.nEnteredBy = region.nEnteredBy;
                         regionToUpdate.dtEntered = region.dtEntered;
                         //to uncomment later
                         //regionToUpdate.nEnteredBy = // catch current user id here
@@ -181,11 +180,16 @@ namespace CTAWebAPI.Controllers.Masters
                         int updated = _authRegionRepository.Update(regionToUpdate);
                         if (updated > 0)
                         {
+                            #region Audit Log
+                            CTALogger.LogAuditRecord(region, regionToUpdate, null, null, 27, region.ID, regionToUpdate.nUpdatedBy);
+                            #endregion
+
                             #region Alert Logging
                             CTALogger logger = new CTALogger(_info);
                             logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, regionToUpdate.nEnteredBy);
                             #endregion
-                            return Ok(String.Format("Region with ID: {0} updated Successfully", RegionID));
+
+                            return Ok(string.Format("Region with ID: {0} updated Successfully", RegionID));
                         }
                         else
                             return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while updating the record.");

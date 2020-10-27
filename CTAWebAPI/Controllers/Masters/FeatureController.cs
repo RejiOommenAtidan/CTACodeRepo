@@ -98,6 +98,7 @@ namespace CTAWebAPI.Controllers.Masters
                 {
                     feature.dtEntered = DateTime.Now;
                     feature.dtUpdated = DateTime.Now;
+
                     _featureRepository.Add(feature);
 
                     #region Information Logging
@@ -149,9 +150,14 @@ namespace CTAWebAPI.Controllers.Masters
                     if (FeatureExists(Id))
                     {
                         Feature fetchedFeature = _featureRepository.GetFeatureById(Id);
+                        feature.nEnteredBy = fetchedFeature.nEnteredBy;
                         feature.dtEntered = fetchedFeature.dtEntered;
                         feature.dtUpdated = DateTime.Now;
                         _featureRepository.Update(feature);
+
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetchedFeature, feature, null, null, 33, fetchedFeature.Id, feature.nUpdatedBy);
+                        #endregion
 
                         #region Alert Logging 
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, feature.nEnteredBy);

@@ -168,13 +168,11 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              console.log(error.message);
               handleError(error, history);
             })
         }
       })
       .catch(error => {
-        console.log(error.message);
         handleError(error, history);
       })
   };
@@ -197,13 +195,11 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              console.log(error.message);
               handleError(error, history);
             })
         }
       })
       .catch(error => {
-        console.log(error.message);
         handleError(error, history);
       })
   };
@@ -242,13 +238,11 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              console.log(error.message);
               handleError(error, history);
             })
         }
       })
       .catch(error => {
-        console.log(error.message);
         handleError(error, history);
       })
   };

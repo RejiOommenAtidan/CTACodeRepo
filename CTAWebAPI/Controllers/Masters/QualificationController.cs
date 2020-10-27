@@ -138,10 +138,19 @@ namespace CTAWebAPI.Controllers.Masters
                     if (QualificationExists(ID))
                     {
                         Qualification fetchedqualification = _qualificationRepository.GetQualificationById(ID);
+                        qualification.nEnteredBy = fetchedqualification.nEnteredBy;
                         qualification.dtEntered = fetchedqualification.dtEntered;
                         qualification.dtUpdated = DateTime.Now;
-                        //user.User_Id
                         _qualificationRepository.Update(qualification);
+
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetchedqualification, qualification, null, null, 31, fetchedqualification.Id, qualification.nUpdatedBy);
+                        #endregion
+
+                        #region Alert Logging 
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, qualification.nUpdatedBy);
+                        #endregion
+
                         return Ok("Qualification with ID: " + ID + " updated Successfully");
                     }
                     else

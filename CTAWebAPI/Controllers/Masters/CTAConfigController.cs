@@ -175,25 +175,7 @@ namespace CTAWebAPI.Controllers.Masters
                         _ctaConfigRepository.Update(ctaConfig);
 
                         #region Audit Log
-                        //string[] sDifference = CTAAuditLogger.ReturnStrings(fetchedCTAConfig, ctaConfig);   
-                        //if (sDifference != null & sDifference[0] != "" && sDifference[1] != "")
-                        //{
-                        //    AuditLog auditLog = new AuditLog
-                        //    {
-                        //        dtEntered = DateTime.Now,
-                        //        nFeatureID = 0,//Need to Add Masters ID Here, Example:10
-                        //        nRegionID = null, 
-                        //        nRecordID = 0, //?
-                        //        sGBID = null, //Null because Madeb, GB Not Involved, else provide GBID, if GBID Present then RegionId will be region id's, auth region
-                        //        sFieldValuesOld = sDifference[0],
-                        //        sFieldValuesNew = sDifference[1],
-                        //        nEnteredBy = ctaConfig.nEnteredBy
-                        //    };
-                        //    _auditLogRepository.Add(auditLog);
-                        //}
-
-                        CTALogger.LogAuditRecord(fetchedCTAConfig, ctaConfig,null,0,0, fetchedCTAConfig.Id,ctaConfig.nUpdatedBy);
-
+                        CTALogger.LogAuditRecord(fetchedCTAConfig,ctaConfig,null,null,26,fetchedCTAConfig.Id,ctaConfig.nUpdatedBy);
                         #endregion
 
                         #region Alert Logging 

@@ -76,6 +76,9 @@ export default function Qualification() {
   const [qualificationPK, setQualificationPK] = React.useState(0);
   const [qualificationObj, setQualificationObj] = useState({});
   const [dataChanged, setDataChanged] = useState(false);
+  let history = useHistory();
+  const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -89,10 +92,6 @@ export default function Qualification() {
   const handleAddClickClose = () => {
     setAddModal(false);
   };
-
-  const [filtering, setFiltering] = React.useState(false);
-  oOptions.filtering = filtering;
-  const history = useHistory();
 
   const columns = [
     {
@@ -165,49 +164,41 @@ export default function Qualification() {
           axios.get(`/Qualification/GetQualification`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
                 setDataChanged(true);
               }
             })
             .catch(error => {
-              console.log(error.config);
-              console.log(error.message);
+              handleError(error,history);
             });
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
+        handleError(error,history);
       });
   };
   const addAPICall = (qualificationObj) => {
     axios.post(`/Qualification/AddQualification/`, qualificationObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           axios.get(`/Qualification/GetQualification`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data)
               }
             })
             .catch(error => {
-              console.log(error.config);
-              console.log(error.message);
+              handleError(error,history);
             });
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
+        handleError(error,history);
       });
   };
 
   const deleteClick = (tableRowArray) => {
-
     setDeleteModal(true);
     setQualificationPK(tableRowArray["id"]);
     setQualificationID(tableRowArray["sQualificationID"]);
@@ -216,20 +207,17 @@ export default function Qualification() {
 
   const handleClose = () => {
     setDeleteModal(false);
-
   };
 
   useEffect(() => {
     axios.get(`/Qualification/GetQualification`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setdataAPI(resp.data)
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
+        handleError(error,history);
       });
   }, []);
 
@@ -249,7 +237,6 @@ export default function Qualification() {
             </Typography> */}
       <Grid container className={classes.box}>
         <Grid item xs={12}>
-
           <MaterialTable
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={tableIcons}
@@ -272,7 +259,6 @@ export default function Qualification() {
               }
             ]}
           />
-
         </Grid>
       </Grid>
       {addModal && <AddDialog
@@ -288,7 +274,6 @@ export default function Qualification() {
         handleEditClickClose={handleEditClickClose}
         editAPICall={editAPICall}
       />}
-
     </Container>
   );
 }

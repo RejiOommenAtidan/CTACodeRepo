@@ -34,7 +34,7 @@ namespace CTADataMigrationAndSupport
             connetionString = txtConnectionString.Text;
             string sLogFolderPath = txtLogFolderPath.Text;
             string sPathPrifix = txtImagePath.Text;
-            
+
 
 
             cnn = new MySqlConnection(connetionString);
@@ -132,12 +132,12 @@ namespace CTADataMigrationAndSupport
                         cmd.Parameters["@nEnteredBy"].Value = 1;
                         int RowsAffected = cmd.ExecuteNonQuery();
                         nInsertedFileCount++;
-                        lblResult.Text =  @"GB Id: " + sGBNum;
+                        lblResult.Text = @"GB Id: " + sGBNum;
                         sbLogging.AppendLine("Green Book Id: " + sGBNum);
                     }
                     else
                     {
-                        lblResult.Text =  @"File NOT Exists: " + row["sGBID"].ToString().Trim();
+                        lblResult.Text = @"File NOT Exists: " + row["sGBID"].ToString().Trim();
                         sbLogging.AppendLine("Image Not Exist for Green Book Id: " + sGBNum);
                         nNotFoundFileCount++;
 
@@ -154,12 +154,12 @@ namespace CTADataMigrationAndSupport
 
                 cnn.Close();
                 lblResult.Text = "============================";
-                lblResult.Text += Environment.NewLine +  "                Summary";
+                lblResult.Text += Environment.NewLine + "                Summary";
                 lblResult.Text += Environment.NewLine + "============================";
-                lblResult.Text += Environment.NewLine +  "Start Process: " + sStartProcess;
-                lblResult.Text += Environment.NewLine +  "End Process: " + sEndProcess;
-                lblResult.Text += Environment.NewLine +  "Number of Images Inserted: " + nInsertedFileCount.ToString();
-                lblResult.Text += Environment.NewLine +  "Number of Images Not found: " + nNotFoundFileCount.ToString();
+                lblResult.Text += Environment.NewLine + "Start Process: " + sStartProcess;
+                lblResult.Text += Environment.NewLine + "End Process: " + sEndProcess;
+                lblResult.Text += Environment.NewLine + "Number of Images Inserted: " + nInsertedFileCount.ToString();
+                lblResult.Text += Environment.NewLine + "Number of Images Not found: " + nNotFoundFileCount.ToString();
                 lblResult.Text += Environment.NewLine + "============================";
 
                 sbLogging.AppendLine("===================================");
@@ -176,7 +176,7 @@ namespace CTADataMigrationAndSupport
             }
             catch (Exception ex)
             {
-                lblResult.Text += Environment.NewLine +  ex.ToString();
+                lblResult.Text += Environment.NewLine + ex.ToString();
             }
 
         }
@@ -191,7 +191,7 @@ namespace CTADataMigrationAndSupport
 
         }
 
-        
+
         private void label2_Click(object sender, EventArgs e)
         {
 
@@ -254,7 +254,7 @@ namespace CTADataMigrationAndSupport
                         //break;
                 }
 
-                
+
 
                 cnn = new MySqlConnection(connetionString);
                 try
@@ -293,11 +293,11 @@ namespace CTADataMigrationAndSupport
                         }
 
                         //If the sSearchColumn value is numeric
-                        if (Int64.TryParse(row[sSearchColumn].ToString(),out long longValue))
+                        if (Int64.TryParse(row[sSearchColumn].ToString(), out long longValue))
                         {
                             //this is number
                             query = "select sGBID from tblgreenbook where sGBID = '" + row[sSearchColumn].ToString() + "'";
-                           MySqlCommand cmdExist = new MySqlCommand(query, cnn);
+                            MySqlCommand cmdExist = new MySqlCommand(query, cnn);
                             MySqlDataAdapter returnValExist = new MySqlDataAdapter(query, cnn);
                             DataTable dtExist = new DataTable("tblGreenBook");
                             returnValExist.Fill(dtExist);
@@ -488,7 +488,7 @@ namespace CTADataMigrationAndSupport
                 catch (Exception ex)
                 {
                     lblResultRelation.Text += Environment.NewLine + ex.ToString();
-}
+                }
             }
         }
 
@@ -572,10 +572,10 @@ namespace CTADataMigrationAndSupport
             }
 
             //Int64 nTotalChartelAmount = ((nChartelAmount + nChartelMeal) * nChartelPendingYears) + nLateFeeCharge;
-            decimal nTotalChartelAmount = Math.Round((Convert.ToDecimal(nChartelAmount + nChartelMeal)* Convert.ToDecimal(nChartelPendingYears + 1)) + nLateFeeCharge,2);
+            decimal nTotalChartelAmount = Math.Round((Convert.ToDecimal(nChartelAmount + nChartelMeal) * Convert.ToDecimal(nChartelPendingYears + 1)) + nLateFeeCharge, 2);
 
-            label7.Text = "Calculation : (" + nChartelAmount.ToString() + " + " + nChartelMeal.ToString() + ") * (" + nChartelPendingYears.ToString() + " + 1) + " 
-                + Math.Round(nLateFeeCharge,2).ToString() + " = " + nTotalChartelAmount.ToString("0.00");
+            label7.Text = "Calculation : (" + nChartelAmount.ToString() + " + " + nChartelMeal.ToString() + ") * (" + nChartelPendingYears.ToString() + " + 1) + "
+                + Math.Round(nLateFeeCharge, 2).ToString() + " = " + nTotalChartelAmount.ToString("0.00");
 
 
 
@@ -618,9 +618,9 @@ namespace CTADataMigrationAndSupport
             for (int i = 0; i < nChartelPendingYears; i++)
             {
 
-                double  dLateFee = (((36d + 10d) * 10d) / 100d);
+                double dLateFee = (((36d + 10d) * 10d) / 100d);
                 lnkGBChartelPending.Rows.Add(
-                    i+1,
+                    i + 1,
                     sName,
                     36,
                     10,
@@ -685,6 +685,310 @@ namespace CTADataMigrationAndSupport
             //table.Rows.Add(21, "Medicine A", "Diagnosis A", DateTime.Now);
             return table;
         }
+
+        private void buttonGenerateDummyData_Click(object sender, EventArgs e)
+        {
+            string connetionString = null;
+            MySqlConnection cnn;
+            connetionString = txtConnectionString.Text;
+            string sLogFolderPath = txtLogFolderPath.Text;
+            string sDummyColumn = string.Empty;
+            string sDummyData = string.Empty;
+            string sFirstNameData = string.Empty;
+            string sMiddleNameData = string.Empty;
+            string sLastNameData = string.Empty;
+            string sFamilyNameData = string.Empty;
+            string sPhoneData = string.Empty;
+            string sEmailData = string.Empty;
+            string sFathersNameData = string.Empty;
+            string sMothersNameData = string.Empty;
+            string sSpouseNameData = string.Empty;
+            string updateString = string.Empty;
+
+            if (checkBoxsFirstName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsFirstName.Text : checkBoxsFirstName.Text; }
+            if (checkBoxsMiddleName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsMiddleName.Text : checkBoxsMiddleName.Text; }
+            if (checkBoxsLastName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsLastName.Text : checkBoxsLastName.Text; }
+            if (checkBoxsFamilyName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsFamilyName.Text : checkBoxsFamilyName.Text; }
+            if (checkBoxsPhone.Checked) {sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsPhone.Text : checkBoxsPhone.Text; }
+            if (checkBoxsEmail.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsEmail.Text : checkBoxsEmail.Text; }
+            if (checkBoxsFathersName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsFathersName.Text : checkBoxsFathersName.Text; }
+            if (checkBoxsMothersName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsMothersName.Text : checkBoxsMothersName.Text; }
+            if (checkBoxsSpouseName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsSpouseName.Text : checkBoxsSpouseName.Text; }
+
+
+
+            if (sDummyColumn.Length <= 0)
+            {
+                labelDummyDataReport.Text = "Please select Column";
+                return;
+            }
+            else
+            {
+                
+                cnn = new MySqlConnection(connetionString);
+                try
+                {
+                    cnn.Open();
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook Limit 1000";
+                    string query = "select sGBID," + sDummyColumn + " from tblgreenbook";
+                    MySqlCommand cmd = new MySqlCommand(query, cnn);
+                    MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
+                    DataTable dt = new DataTable("tblGreenBook");
+                    returnVal.Fill(dt);
+                    string sStartProcess = DateTime.Now.ToString();
+                    Int64 nInsertedFileCount = 0;
+                    Int64 nNotUpdateCount = 0;
+                    StringBuilder sbLogging = new StringBuilder();
+
+                    if (dt != null || dt.Rows.Count > 0)
+                    {
+                        progressBarProcess.Minimum = 0;
+                        progressBarProcess.Maximum = dt.Rows.Count;
+                        progressBarProcess.Step = 1;
+                    }
+                    else
+                    {
+                        progressBarProcess.Minimum = 0;
+                        progressBarProcess.Maximum = 1;
+                        progressBarProcess.Step = 1;
+                        progressBarProcess.PerformStep();
+                    }
+
+                    //Iterate through Items 
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        progressBarProcess.PerformStep();
+                        updateString = string.Empty;
+
+                        if (row["sGBID"] == DBNull.Value)
+                        {
+                            continue;
+                        }
+
+                        string sGBNum = row["sGBID"].ToString().Trim();
+                        if (sDummyColumn.Contains("sFirstName")){sFirstNameData = row["sFirstName"].ToString().Trim();}
+                        if (sDummyColumn.Contains("sMiddleName")){ sMiddleNameData = row["sMiddleName"].ToString().Trim();}
+                        if (sDummyColumn.Contains("sLastName")){ sLastNameData = row["sLastName"].ToString().Trim();}
+                        if (sDummyColumn.Contains("sFamilyName")){ sFamilyNameData = row["sFamilyName"].ToString().Trim();}
+                        if (sDummyColumn.Contains("sPhone")){ sPhoneData = row["sPhone"].ToString().Trim();}
+                        if (sDummyColumn.Contains("sEmail")){ sEmailData = row["sEmail"].ToString().Trim();}
+                        if (sDummyColumn.Contains("sFathersName")){ sFathersNameData = row["sFathersName"].ToString().Trim();}
+                        if (sDummyColumn.Contains("sMothersName")){ sMothersNameData = row["sMothersName"].ToString().Trim();}
+                        if (sDummyColumn.Contains("sSpouseName")){ sSpouseNameData = row["sSpouseName"].ToString().Trim();}
+
+                        //string sColumnData = row[sDummyColumn].ToString().Trim();
+                        //if (sColumnData != "" || sColumnData != string.Empty)
+                        //{
+                        //    sDummyData = RandomString(sColumnData.Length, false);
+                        //    sDummyData = char.ToUpper(sDummyData[0]) + sDummyData.Substring(1).ToLower();
+                        //}
+                        //else
+                        //{
+                        //    sDummyData = string.Empty;
+                        //}
+                        if (sFirstNameData.Length > 0){updateString += updateString.Length <= 0 ? "`sFirstName` = @sFirstName " : ", `sFirstName` = @sFirstName ";}
+                        if (sMiddleNameData.Length > 0){updateString += updateString.Length <= 0 ? "`sMiddleName` = @sMiddleName " : ", `sMiddleName` = @sMiddleName ";}
+                        if (sLastNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sLastName` = @sLastName " : ", `sLastName` = @sLastName "; }
+                        if (sFamilyNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sFamilyName` = @sFamilyName " : ", `sFamilyName` = @sFamilyName "; }
+                        if (sPhoneData.Length > 0) { updateString += updateString.Length <= 0 ? "`sPhone` = @sPhone " : ", `sPhone` = @sPhone "; }
+                        if (sEmailData.Length > 0) { updateString += updateString.Length <= 0 ? "`sEmail` = @sEmail " : ", `sEmail` = @sEmail "; }
+                        if (sFathersNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sFathersName` = @sFathersName " : ", `sFathersName` = @sFathersName "; }
+                        if (sMothersNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sMothersName` = @sMothersName " : ", `sMothersName` = @sMothersName "; }
+                        if (sSpouseNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sSpouseName` = @sSpouseName " : ", `sSpouseName` = @sSpouseName "; }
+
+
+                        if (updateString != string.Empty)
+                        {
+                            string cmdString = "UPDATE `ctadb`.`tblgreenbook`  SET " + updateString + "WHERE `sGBID` = @sGBID;";
+
+
+
+                            cmd = new MySqlCommand(cmdString, cnn);
+
+                            cmd.Parameters.Add("@sGBId", MySqlDbType.VarChar, 255);
+                            cmd.Parameters["@sGBId"].Value = row["sGBID"].ToString();
+
+
+                            if (sFirstNameData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sFirstName", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sFirstName"].Value = RandomDummyData(sFirstNameData.Length, sFirstNameData, false);
+                            }
+                            if (sMiddleNameData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sMiddleName", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sMiddleName"].Value = RandomDummyData(sMiddleNameData.Length, sMiddleNameData, false);
+                            }
+                            if (sLastNameData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sLastName", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sLastName"].Value = RandomDummyData(sLastNameData.Length, sLastNameData, false);
+                            }
+                            if (sFamilyNameData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sFamilyName", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sFamilyName"].Value = RandomDummyData(sFamilyNameData.Length, sFamilyNameData, false);
+                            }
+                            if (sPhoneData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sPhone", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sPhone"].Value = RandomDummyData(sPhoneData.Length, sPhoneData, true);
+                            }
+                            if (sEmailData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sEmail", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sEmail"].Value = RandomDummyEmailData(sEmailData.Length, sEmailData, false);
+                            }
+                            if (sFathersNameData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sFathersName", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sFathersName"].Value = RandomDummyData(sFathersNameData.Length, sFathersNameData, false);
+                            }
+                            if (sMothersNameData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sMothersName", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sMothersName"].Value = RandomDummyData(sMothersNameData.Length, sMothersNameData, false);
+                            }
+                            if (sSpouseNameData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sSpouseName", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sSpouseName"].Value = RandomDummyData(sSpouseNameData.Length, sSpouseNameData, false);
+                            }
+
+
+
+                            int RowsAffected = cmd.ExecuteNonQuery();
+                            labelDummyDataReport.Text = @"GB Id: " + sGBNum;
+                            sbLogging.AppendLine("Green Book Id: " + sGBNum);
+
+                        }
+                        else
+                        {
+                            labelDummyDataReport.Text = @"GB Id Not Updated: " + sGBNum;
+                            sbLogging.AppendLine("Green Book Id Not Updated: " + sGBNum);
+                            nNotUpdateCount++;
+                        }
+                        nInsertedFileCount++;
+
+                    }
+
+                    string sEndProcess = DateTime.Now.ToString();
+
+                    cnn.Close();
+                    labelDummyDataReport.Text = "============================";
+                    labelDummyDataReport.Text += Environment.NewLine + "                Summary";
+                    labelDummyDataReport.Text += Environment.NewLine + "============================";
+                    labelDummyDataReport.Text += Environment.NewLine + "Start Process: " + sStartProcess;
+                    labelDummyDataReport.Text += Environment.NewLine + "End Process: " + sEndProcess;
+                    labelDummyDataReport.Text += Environment.NewLine + "Column Selected for Update: " + sDummyColumn.ToString();
+                    labelDummyDataReport.Text += Environment.NewLine + "Number of GB Updated: " + nInsertedFileCount.ToString();
+                    labelDummyDataReport.Text += Environment.NewLine + "Number of GB Not Updated: " + nNotUpdateCount.ToString();
+                    labelDummyDataReport.Text += Environment.NewLine + "============================";
+
+                    sbLogging.AppendLine("===================================");
+                    sbLogging.AppendLine("             Summary");
+                    sbLogging.AppendLine("===================================");
+                    sbLogging.AppendLine("Start Process: " + sStartProcess);
+                    sbLogging.AppendLine("End Process: " + sEndProcess);
+                    sbLogging.AppendLine("Column Selected for Update: " + sDummyColumn.ToString());
+                    sbLogging.AppendLine("Number of GB Updated: " + nInsertedFileCount.ToString());
+                    sbLogging.AppendLine("Number of GB Not Updated: " + nNotUpdateCount.ToString());
+                    sbLogging.AppendLine("===================================");
+
+                    File.AppendAllText(sLogFolderPath + "Dummy Data log-" + Guid.NewGuid().ToString() + ".txt", sbLogging.ToString());
+                    sbLogging.Clear();
+                }
+                catch (Exception ex)
+                {
+                    labelDummyDataReport.Text += Environment.NewLine + ex.ToString();
+                }
+
+            }
+
+
+        }
+
+        public static string RandomDummyEmailData(int length, string orginalString, bool isNumber)
+        {
+            string[] columnDatasplit = orginalString.Split(",");
+            string tempData = string.Empty;
+            string dummyData = string.Empty;
+
+            for (int i = 0; i < columnDatasplit.Length; i++)
+            {
+                if (columnDatasplit[i].Trim() == "")
+                {
+                    continue;
+                }
+                else
+                {
+                    if (columnDatasplit[i].Contains("@"))
+                    {
+                        tempData = RandomString(columnDatasplit[i].Substring (0,columnDatasplit[i].IndexOf("@")).Length, isNumber) + "@" + RandomString(7, isNumber) + ".com";
+                        dummyData = tempData.ToLower();
+                    }
+                    else
+                    {
+                        dummyData = string.Empty;
+                    }
+                }
+            }
+
+            return dummyData;
+
+        }
+
+        public static string RandomDummyData(int length, string orginalString, bool isNumber)
+        {
+            string[] columnDatasplit = orginalString.Split(" ");
+            string tempData = string.Empty;
+            string dummyData = string.Empty;
+
+            for (int i = 0; i < columnDatasplit.Length; i++)
+            {
+                if (columnDatasplit[i].Trim() == "")
+                {
+                    continue;
+                }
+                else
+                {
+                    tempData = RandomString(columnDatasplit[i].Length, isNumber);
+                    if (tempData.Length>0)
+                    {
+                        dummyData += dummyData.Length <=0?  char.ToUpper(tempData[0]) + tempData.Substring(1).ToLower() : " " + char.ToUpper(tempData[0]) + tempData.Substring(1).ToLower(); ;
+                    }
+                    else
+                    {
+                        dummyData = string.Empty;
+                    }
+                }
+            }
+
+            return dummyData;
+
+        }
+
+        public static string RandomString(int length, bool isNumber)
+        {
+            const string charsCapital = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string charsSmall = "abcdefghijklmnopqrstuvwxyz";
+            const string charsSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            const string numberSet = "0123456789";
+            var random = new Random();
+
+            string chars = string.Empty;
+            if (isNumber)
+            {
+                chars = numberSet;
+            }
+            else
+            {
+                chars = charsSet;
+            }
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
 
     }
 }

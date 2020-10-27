@@ -139,9 +139,18 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         Region fetchedregion = _regionRepository.GetRegionById(ID);
                         region.dtEntered = fetchedregion.dtEntered;
+                        region.nEnteredBy = fetchedregion.nEnteredBy;
                         region.dtUpdated = DateTime.Now;
-                        //user.User_Id
                         _regionRepository.Update(region);
+
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetchedregion, region, null, null, 24, fetchedregion.Id, region.nUpdatedBy);
+                        #endregion
+
+                        #region Alert Logging 
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, region.nUpdatedBy);
+                        #endregion
+
                         return Ok("Region with ID: " + ID + " updated Successfully");
                     }
                     else

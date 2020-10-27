@@ -18,15 +18,18 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import { sDateFormatMUIDatepicker } from '../../../config/commonConfig';
+import {useSelector} from 'react-redux';
 
 export const AddDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, errors } = useForm();
   const handleSubmitAddRecord = () => {
     props.addAPICall(
       {
         sChatrelKey: sChatrelKey,
         nChatrelValue: nChatrelValue,
-        dtChatrelFrom: dtChatrelFrom
+        dtChatrelFrom: dtChatrelFrom,
+        nEnteredBy: userId
       }
     );
   }
@@ -120,6 +123,7 @@ export const AddDialog = (props) => {
 }
 
 export const EditDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, errors } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(
@@ -127,7 +131,8 @@ export const EditDialog = (props) => {
         id: props.oChatrel.id,
         sChatrelKey: sChatrelKey,
         nChatrelValue: nChatrelValue,
-        dtChatrelFrom: dtChatrelFrom
+        dtChatrelFrom: dtChatrelFrom,
+        nEnteredBy: userId
       }
     );
   }

@@ -19,7 +19,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function Relation() {
-  const history = useHistory();
+  let history = useHistory();
   const classes = useStyles();
   const [isLoading, setisLoading] = React.useState(true);
   const [editModal, setEditModal] = React.useState(false);
@@ -108,7 +108,7 @@ export default function Relation() {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
                 setDataChanged(true);
-                setisLoading(true);
+                setisLoading(false);
               }
             })
             .catch(error => {

@@ -95,7 +95,7 @@ export default function EnhancedTable() {
 
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
-  const history = useHistory();
+  let history = useHistory();
 
   const columns = [
     {
@@ -169,21 +169,18 @@ export default function EnhancedTable() {
           axios.get(`/Occupation/GetOccupations`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
                 setDataChanged(true);
               }
             })
             .catch(error => {
-              console.log(error.config);
-              console.log(error.message);
+              handleError(error,history);
             });
 
         }
       })
       .catch(error => {
-        console.log(error.message);
-        console.log(error.config);
+        handleError(error,history);
       });
 
   };
@@ -196,21 +193,17 @@ export default function EnhancedTable() {
           axios.get(`/Occupation/GetOccupations`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data)
               }
             })
             .catch(error => {
-              console.log(error.config);
-              console.log(error.message);
+              handleError(error,history);
             });
         }
       })
       .catch(error => {
-        console.log(error.message);
-        console.log(error.config);
+        handleError(error,history);
       });
-
   };
 
   const deleteClick = (tableRowArray) => {
@@ -222,11 +215,9 @@ export default function EnhancedTable() {
 
   const handleClose = () => {
     setDeleteModal(false);
-
   };
 
   const deleteAPICall = () => {
-
     const occupationToDelete = {
       ID: occupationPK,
       sOccupationDesc: occupationDesc,
@@ -236,24 +227,20 @@ export default function EnhancedTable() {
       .then(resp => {
         console.log(occupationToDelete);
         if (resp.status === 200) {
-          console.log(resp.data);
           setDeleteModal(false);
           axios.get(`/Occupation/GetOccupations`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data)
               }
             })
             .catch(error => {
-              console.log(error.message);
-              console.log(error.config);
+              handleError(error,history);
             });
         }
       })
       .catch(error => {
-        console.log(error.message);
-        console.log(error.config);
+        handleError(error,history);
       });
   };
 
@@ -261,13 +248,11 @@ export default function EnhancedTable() {
     axios.get(`/Occupation/GetOccupations`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setdataAPI(resp.data)
         }
       })
       .catch(error => {
-        console.log(error.message);
-        console.log(error.config);
+        handleError(error,history);
       });
 
   }, []);
@@ -288,7 +273,6 @@ export default function EnhancedTable() {
             </Typography> */}
       <Grid container className={classes.box}>
         <Grid item xs={12}>
-
           <MaterialTable
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={tableIcons}
@@ -311,7 +295,6 @@ export default function EnhancedTable() {
               }
             ]}
           />
-
         </Grid>
       </Grid>
       {addModal && <AddDialog

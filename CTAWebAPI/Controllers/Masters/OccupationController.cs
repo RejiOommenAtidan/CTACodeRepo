@@ -20,6 +20,7 @@ namespace CTAWebAPI.Controllers.Masters
     [ApiController]
     public class OccupationController : ControllerBase
     {
+        #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly OccupationRepository _occupationRepository;
         public OccupationController(DBConnectionInfo info)
@@ -27,6 +28,7 @@ namespace CTAWebAPI.Controllers.Masters
             _info = info;
             _occupationRepository = new OccupationRepository(_info.sConnectionString);
         }
+        #endregion
 
         #region Get Calls
         [HttpGet]
@@ -156,6 +158,7 @@ namespace CTAWebAPI.Controllers.Masters
                 {
                     if (ModelState.IsValid)
                     {
+                        occupationToUpdate.nEnteredBy = occupation.nEnteredBy;
                         occupationToUpdate.dtEntered = occupation.dtEntered;
                         occupationToUpdate.dtUpdated = DateTime.Now;
                             
@@ -167,11 +170,16 @@ namespace CTAWebAPI.Controllers.Masters
                         int updated = _occupationRepository.Update(occupationToUpdate);
                         if (updated > 0)
                         {
+                            #region Audit Log
+                            CTALogger.LogAuditRecord(occupation, occupationToUpdate, null, null, 29, occupation.Id, occupationToUpdate.nUpdatedBy);
+                            #endregion
+
                             #region Alert Logging
                             CTALogger logger = new CTALogger(_info);
                             logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, occupationToUpdate.nEnteredBy);
                             #endregion
-                            return Ok(String.Format("Occupation with ID: {0} updated Successfully", occupationId));
+
+                            return Ok(string.Format("Occupation with ID: {0} updated Successfully", occupationId));
                         }
                         else
                             return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while updating the record.");

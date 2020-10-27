@@ -20,14 +20,15 @@ namespace CTAWebAPI.Controllers.Masters
     [ApiController]
     public class MadebTypeController : ControllerBase
     {
+        #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly MadebTypeRepository _madebTypeRepository;
-
         public MadebTypeController (DBConnectionInfo info)
         {
             _info = info;
             _madebTypeRepository = new MadebTypeRepository(_info.sConnectionString);
         }
+        #endregion
 
         #region Get Calls
         [HttpGet]
@@ -160,6 +161,7 @@ namespace CTAWebAPI.Controllers.Masters
 
                     if (ModelState.IsValid)
                     {
+                        madebTypeToUpdate.nEnteredBy = madebType.nEnteredBy;
                         madebTypeToUpdate.dtEntered = madebType.dtEntered;
                         madebTypeToUpdate.dtUpdated = DateTime.Now;
                         
@@ -170,12 +172,16 @@ namespace CTAWebAPI.Controllers.Masters
                         int updated = _madebTypeRepository.Update(madebTypeToUpdate);
                         if (updated > 0)
                         {
+                            #region Audit Log
+                            CTALogger.LogAuditRecord(madebType, madebTypeToUpdate, null, null, 35, madebType.Id, madebTypeToUpdate.nUpdatedBy);
+                            #endregion
+
                             #region Alert Logging
                             CTALogger logger = new CTALogger(_info);
                             logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
                             #endregion
 
-                            return Ok(String.Format("Madeb Type with ID: {0} updated Successfully", madebTypeID));
+                            return Ok(string.Format("Madeb Type with ID: {0} updated Successfully", madebTypeID));
                         }
                         else
                             return StatusCode(StatusCodes.Status500InternalServerError, "There was an error while updating the record.");

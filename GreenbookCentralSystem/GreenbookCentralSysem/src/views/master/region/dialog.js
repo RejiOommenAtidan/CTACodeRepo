@@ -12,11 +12,20 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import {useSelector} from 'react-redux';
 
 export const AddDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
   const handleSubmitAddRecord = () => {
-    props.addAPICall({ sRegion_code: regionId, sRegion_name: region })
+    props.addAPICall(
+      { 
+        sRegion_code: regionId, 
+        sRegion_name: region ,
+        nEnteredBy: userId,
+        nUpdatedBy: userId
+      }
+    )
   }
   const [regionId, setRegionId] = useState('');
   const [region, setRegion] = useState('');
@@ -75,9 +84,16 @@ export const AddDialog = (props) => {
 }
 
 export const EditDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
   const handleSubmitEditRecord = () => {
-    props.editAPICall({ id: props.regionObj.id, sRegion_code: props.regionObj.regionId, sRegion_name: Name })
+    props.editAPICall(
+      { id: props.regionObj.id, 
+        sRegion_code: props.regionObj.regionId, 
+        sRegion_name: Name,
+        nUpdatedBy: userId
+      }
+    )
   }
   const [Name, setRegion] = useState(props.regionObj.region);
   return (
@@ -94,9 +110,7 @@ export const EditDialog = (props) => {
                     id="id_regionId"
                     label="Region ID"
                     type="text"
-                    InputProps={{
-                      readOnly: true
-                    }}
+                    disabled
                     value={props.regionObj.regionId}
                   />
                 </FormControl>

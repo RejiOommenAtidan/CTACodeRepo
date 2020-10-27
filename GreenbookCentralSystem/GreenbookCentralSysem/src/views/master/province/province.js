@@ -7,8 +7,6 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import IconButton from '@material-ui/core/IconButton';
-
-
 // Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
@@ -79,6 +77,9 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
+  let history = useHistory();
+  const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -92,10 +93,6 @@ export default function EnhancedTable() {
   const handleAddClickClose = () => {
     setAddModal(false);
   };
-
-  const [filtering, setFiltering] = React.useState(false);
-  oOptions.filtering = filtering;
-  const history = useHistory();
 
   const columns = [
     {
@@ -166,63 +163,52 @@ export default function EnhancedTable() {
           axios.get(`/Province/GetProvinces`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
                 setDataChanged(true);
               }
             })
             .catch(error => {
-              console.log(error.message);
-              console.log(error.config);
+              handleError(error,history);
             });
 
         }
       })
       .catch(error => {
-        console.log(error.message);
-        console.log(error.config);
+        handleError(error,history);
       });
   };
   const addAPICall = (provinceObj) => {
     axios.post(`/Province/AddProvince/`, provinceObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           axios.get(`/Province/GetProvinces`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data)
               }
             })
             .catch(error => {
-              console.log(error.config);
-              console.log(error.message);
+              handleError(error,history);
             });
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
+        handleError(error,history);
       });
   };
 
   const deleteClick = (tableRowArray) => {
-
     setDeleteModal(true);
     setProvincePK(tableRowArray["id"]);
     setProvince(tableRowArray["sProvince"]);
-
   };
 
   const handleClose = () => {
     setDeleteModal(false);
-
   };
 
   const deleteAPICall = () => {
-
     const provinceToDelete = {
       ID: provincePK,
       sProvince: province
@@ -231,24 +217,20 @@ export default function EnhancedTable() {
       .then(resp => {
         console.log(provinceToDelete);
         if (resp.status === 200) {
-          console.log(resp.data);
           setDeleteModal(false);
           axios.get(`/Province/GetProvinces`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data)
               }
             })
             .catch(error => {
-              console.log(error.config);
-              console.log(error.message);
+              handleError(error,history);
             });
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
+        handleError(error,history);
       });
   };
 
@@ -256,13 +238,11 @@ export default function EnhancedTable() {
     axios.get(`/Province/GetProvinces`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setdataAPI(resp.data)
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
+        handleError(error,history);
       });
   }, []);
 
@@ -282,7 +262,6 @@ export default function EnhancedTable() {
             </Typography> */}
       <Grid container className={classes.box}>
         <Grid item xs={12}>
-
           <MaterialTable
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={tableIcons}
@@ -305,7 +284,6 @@ export default function EnhancedTable() {
               }
             ]}
           />
-
         </Grid>
       </Grid>
       {addModal && <AddDialog

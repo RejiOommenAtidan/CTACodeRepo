@@ -12,65 +12,29 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import { useSelector } from 'react-redux';
 
 export const AddDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
   const handleSubmitAddRecord = () => {
-    props.addAPICall({ sTypeIssued: typeIssued });
-  }
+    props.addAPICall(
+      {
+        sTypeIssued: typeIssued,
+        nEnteredBy: userId,
+        nUpdatedBy: userId
+      }
+    )
+  };
   const [typeIssuedId, setTypeIssuedId] = useState('');
   const [typeIssued, setTypeIssued] = useState('');
   return (
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Issue Type</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitAddRecord)}>
-      <DialogContent>
-        <DialogContentText>
-          <Grid container>
-            <Grid item xs={12} >
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_TypeIssued"
-                  name = "sTypeIssued"
-                  label="TypeIssued"
-                  type="text"
-                  onChange={(e) => { setTypeIssued(e.target.value) }}
-                  inputRef={register({
-                    required: true
-                  })}
-                />
-                {_.get("sTypeIssued.type", errors) === "required" && (
-                      <span style={{color: 'red'}}>This field is required</span>
-                    )}
-              </FormControl>
-            </Grid>
-          </Grid>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.addAPICall({ sTypeIssued: typeIssued })} color="primary">Save</Button> */}
-        <Button type="submit" color="primary">Save</Button> 
-      </DialogActions>
-      </form>
-    </Dialog>
-  );
-}
-
-export const EditDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
-  const handleSubmitEditRecord = () => {
-    props.editAPICall({ id: props.typeIssuedObj.id, sTypeIssued: Name });
-  }
-  const [Name, setTypeIssued] = useState(props.typeIssuedObj.typeIssued);
-  return (
-    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Edit Issue Type</DialogTitle>
-      <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
-      <DialogContent>
-        <DialogContentText>
-          <div>
-            <Grid container >
+        <DialogContent>
+          <DialogContentText>
+            <Grid container>
               <Grid item xs={12} >
                 <FormControl className={props.classes.formControl}>
                   <TextField
@@ -78,25 +42,77 @@ export const EditDialog = (props) => {
                     name="sTypeIssued"
                     label="TypeIssued"
                     type="text"
-                    value={Name}
                     onChange={(e) => { setTypeIssued(e.target.value) }}
                     inputRef={register({
                       required: true
                     })}
                   />
                   {_.get("sTypeIssued.type", errors) === "required" && (
-                      <span style={{color: 'red'}}>This field is required</span>
+                    <span style={{ color: 'red' }}>This field is required</span>
                   )}
                 </FormControl>
               </Grid>
             </Grid>
-          </div>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.editAPICall({ id: props.typeIssuedObj.id, sTypeIssued: Name })} color="primary">Save</Button> */}
-      </DialogActions>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+          {/* <Button onClick={() => props.addAPICall({ sTypeIssued: typeIssued })} color="primary">Save</Button> */}
+          <Button type="submit" color="primary">Save</Button>
+        </DialogActions>
+      </form>
+    </Dialog>
+  );
+}
+
+export const EditDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
+  const handleSubmitEditRecord = () => {
+    props.editAPICall(
+      {
+        id: props.typeIssuedObj.id,
+        sTypeIssued: Name,
+        nUpdatedBy: userId
+      }
+    )
+  };
+  const [Name, setTypeIssued] = useState(props.typeIssuedObj.typeIssued);
+  return (
+    <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
+      <DialogTitle id="form-dialog-title">Edit Issue Type</DialogTitle>
+      <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
+        <DialogContent>
+          <DialogContentText>
+            <div>
+              <Grid container >
+                <Grid item xs={12} >
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="id_TypeIssued"
+                      name="sTypeIssued"
+                      label="TypeIssued"
+                      type="text"
+                      value={Name}
+                      onChange={(e) => { setTypeIssued(e.target.value) }}
+                      inputRef={register({
+                        required: true
+                      })}
+                    />
+                    {_.get("sTypeIssued.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
+          <Button type="submit" color="primary">Save</Button>
+          {/* <Button onClick={() => props.editAPICall({ id: props.typeIssuedObj.id, sTypeIssued: Name })} color="primary">Save</Button> */}
+        </DialogActions>
       </form>
     </Dialog>
   );
