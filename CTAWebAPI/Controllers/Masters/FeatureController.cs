@@ -98,6 +98,7 @@ namespace CTAWebAPI.Controllers.Masters
                 {
                     feature.dtEntered = DateTime.Now;
                     feature.dtUpdated = DateTime.Now;
+
                     _featureRepository.Add(feature);
 
                     #region Information Logging

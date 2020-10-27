@@ -15,6 +15,7 @@ import Slide from '@material-ui/core/Slide';
 import MuiAlert from '@material-ui/lab/Alert';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import {useSelector} from 'react-redux';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -25,7 +26,8 @@ function Alert(props) {
 }
 
 export const EditDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
   const snackbarClose = (event, reason) => {
@@ -37,7 +39,14 @@ export const EditDialog = (props) => {
 
   const handleSubmitEditRecord = () => {
     //props.editAPICall(madeb);
-    props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })
+    props.editAPICall(
+      { 
+        id: props.countryObj.id, 
+        sCountryID: props.countryObj.countryId, 
+        sCountry: Name,
+        nUpdatedBy: userId 
+      }
+    )
   }
 
   const [Name, setCountryName] = useState(props.countryObj.countryName);
@@ -55,9 +64,7 @@ export const EditDialog = (props) => {
                       id="id_countryId"
                       label="Country ID"
                       type="text"
-                      InputProps={{
-                        readOnly: true
-                      }}
+                      disabled
                       value={props.countryObj.countryId}
                     />
                   </FormControl>
@@ -96,6 +103,7 @@ export const EditDialog = (props) => {
 }
 
 export const AddDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [countryId, setCountryId] = useState('');
   const [countryName, setCountryName] = useState('');
   return (
@@ -129,7 +137,15 @@ export const AddDialog = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        <Button onClick={() => props.addAPICall({ sCountryID: countryId, sCountry: countryName })} color="primary">Save</Button>
+        <Button onClick={() => props.addAPICall(
+          { 
+            sCountryID: countryId, 
+            sCountry: countryName,
+            nEnteredBy: userId,
+            nUpdatedBy: userId 
+          }
+          )
+        } color="primary">Save</Button>
       </DialogActions>
     </Dialog>
   );

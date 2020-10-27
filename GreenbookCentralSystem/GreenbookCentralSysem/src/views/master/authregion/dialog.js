@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
-  Box,
-  Container,
   Grid,
   Button,
-  Typography,
   FormControl,
   TextField,
   Select,
 } from '@material-ui/core';
 
+import {useSelector} from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -27,8 +25,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export const EditDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
-  //debugger
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
   const [authRegion, setAuthRegion] = useState(props.authRegionObj.authRegion);
   const [countryID, setCountryID] = useState(props.authRegionObj.countryID);
   
@@ -51,7 +49,14 @@ export const EditDialog = (props) => {
   })
 
   const handleSubmitEditRecord = () => {
-    props.editAPICall({ ID: props.authRegionObj.ID, sCountryID: countryID, sAuthRegion: authRegion })
+    props.editAPICall(
+      { 
+        ID: props.authRegionObj.ID, 
+        sCountryID: countryID, 
+        sAuthRegion: authRegion,
+        nUpdatedBy: userId 
+      }
+    )
   }
 
   return (
@@ -60,11 +65,9 @@ export const EditDialog = (props) => {
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
       <DialogContent>
         <DialogContentText>
-          <div>
             <Grid container>
-              
-            <Grid item xs={12} sm={12} lg={12} >
-                <FormControl >
+            <Grid item xs={12}>
+                <FormControl  className={props.classes.formControl}>
                   <Autocomplete
                     openOnFocus
                     clearOnEscape
@@ -110,7 +113,7 @@ export const EditDialog = (props) => {
                     )}
                 </FormControl>
               </Grid>
-              <Grid item xs={12}>
+              {/*<Grid item xs={12}>
                 <FormControl className={props.classes.formControl}>
                   <Select 
                     id="countryID"
@@ -123,10 +126,10 @@ export const EditDialog = (props) => {
                   >
                   </Select>
                 </FormControl>
-              </Grid>
+                    </Grid>*/}
 
               <Grid item xs={12} >
-                <FormControl className={props.classes.formControl}>
+                <FormControl>
                   <TextField
                     id="id_AuthRegion"
                     label="Auth Region"
@@ -137,7 +140,6 @@ export const EditDialog = (props) => {
                 </FormControl>
               </Grid>
             </Grid>
-          </div>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -148,12 +150,9 @@ export const EditDialog = (props) => {
       </form>
     </Dialog>
   );
-
-
 }
 
 export const DeleteDialog = (props) => {
-  console.log("Delete Dialog");
   return (
     <Dialog
       open={props.deleteModal}
@@ -180,8 +179,8 @@ export const DeleteDialog = (props) => {
 }
 
 export const AddDialog = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
-  console.log("Add Dialog");
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const { register, handleSubmit, errors } = useForm();
   const ids = props.dataAPI.map((data) => data.sCountryID);
   const [countryID, setCountryID] = useState(ids[0]);
   const [authRegion, setAuthRegion] = useState('');
@@ -198,7 +197,14 @@ export const AddDialog = (props) => {
   
 
   const handleSubmitAddRecord = () => {
-    props.addAPICall({ sCountryID: countryID, sAuthRegion: authRegion })
+    props.addAPICall(
+      { 
+        sCountryID: countryID, 
+        sAuthRegion: authRegion,
+        nEnteredBy: userId,
+        nUpdatedBy: userId 
+      }
+    )
   }
 
   return (

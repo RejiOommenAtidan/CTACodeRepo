@@ -103,6 +103,7 @@ namespace CTAWebAPI.Controllers.Masters
                 {
                     userRights.dtEntered = DateTime.Now;
                     userRights.dtUpdated = DateTime.Now;
+
                     _userRightsRepository.Add(userRights);
 
                     #region Get Added Userright for getting Id

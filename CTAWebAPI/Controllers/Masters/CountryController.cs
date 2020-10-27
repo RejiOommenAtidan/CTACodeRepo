@@ -20,11 +20,9 @@ namespace CTAWebAPI.Controllers.Masters
     [ApiController]
     public class CountryController : ControllerBase
     {
+        #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly CountryRepository _countryRepository;
-
-        #region Constructor
-
         public CountryController(DBConnectionInfo info)
         {
             _info = info;
@@ -105,7 +103,7 @@ namespace CTAWebAPI.Controllers.Masters
         [Route("[action]")]
         public IActionResult AddCountry(Country country)
         {
-            #region Add User
+            #region Add Country
             try
             {
                 if (ModelState.IsValid)
@@ -166,7 +164,7 @@ namespace CTAWebAPI.Controllers.Masters
         [Route("[action]")]
         public IActionResult EditCountry(string ID, [FromBody] Country countryToUpdate)
         {
-            #region Edit User
+            #region Edit Country
             try
             {
                 Country country = _countryRepository.GetCountryById(ID);
@@ -176,6 +174,7 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         if (ModelState.IsValid)
                         {
+                            countryToUpdate.nEnteredBy = country.nEnteredBy;
                             countryToUpdate.dtEntered = country.dtEntered;
                             //to uncomment later
                             //countryToUpdate.nUpdatedBy =  //catch current user id here
@@ -183,11 +182,16 @@ namespace CTAWebAPI.Controllers.Masters
                             int updated = _countryRepository.Update(countryToUpdate);
                             if (updated > 0)
                             {
+                                #region Audit Log
+                                CTALogger.LogAuditRecord(country, countryToUpdate, null, null, 28, country.ID, countryToUpdate.nUpdatedBy);
+                                #endregion
+
                                 #region Alert Logging
                                 CTALogger logger = new CTALogger(_info);
                                 logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, countryToUpdate.nEnteredBy);
                                 #endregion
-                                return Ok(String.Format("Country with ID: {0} updated Successfully", ID));
+
+                                return Ok(string.Format("Country with ID: {0} updated Successfully", ID));
                             }
                             
                             else
@@ -325,6 +329,5 @@ namespace CTAWebAPI.Controllers.Masters
         }
 
         #endregion
-
     }
 }
