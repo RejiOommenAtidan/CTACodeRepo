@@ -22,7 +22,7 @@ const MyComp = (props) => {
     <div>
     <TextField
     id={props.field}
-    label={"Search By " + props.name}
+    label={"Search " + props.name}
     onChange = {((e) => 
       {
         props.changeHandler(e);

@@ -110,9 +110,45 @@ export default function EnhancedTable() {
 const [viewModal, setViewModal] = useState(false);
 
 // For Custom Filter
-const [myElement, setMyElement] = useState(null);
-const [myValue, setMyValue] = useState({});
 
+const [myarray, setMyArray] = useState([]);
+  // const [myElement, setMyElement] = useState(null);
+  // const [myValue, setMyValue] = useState({});
+  const [currId, setCurrId] = useState('');
+  //let ele = null;
+  const [searching, setSearching] = useState(false);
+  console.log("myarray: ", myarray);
+
+  const buildArray = () => {
+    let tmp = []
+    if(columns){
+      columns.forEach(col => tmp.push({id: col.field, val: ''}));
+    }
+    
+    setMyArray(tmp);
+  }
+
+
+  const updateArray = (newObj) => {
+    const newArray = myarray.map(d => {
+      if(d.id === newObj.id){
+        return newObj;
+      }
+      else{
+        return d;
+      }
+    });
+    setMyArray(newArray);
+  }
+
+  const changeHandler = (e) => {
+    updateArray({id: e.target.id, val: e.target.value});
+    //searchColumn(e.target.value, e.target);
+    setSearching(true);
+    //setMyElement(e.target);
+    setCurrId(e.target.id);
+    //setVal(e.target.value);
+  }
 
 
 const handleViewClickClose = () => {
@@ -162,7 +198,7 @@ const openRelationGB = (newsGBID) => {
 
 
   // Filter functions
-  const searchColumn = () => console.log("Hello from searchColumn function.");
+  //const searchColumn = () => console.log("Hello from searchColumn function.");
 
 
   const columns = [
@@ -187,10 +223,11 @@ const openRelationGB = (newsGBID) => {
                         <MyComp 
                           name="Form Number" 
                           field="madeb.nFormNumber" 
-                          searchColumn={searchColumn} 
-                          myValue={myValue}
-                          setMyValue={setMyValue}
-                          setMyElement={setMyElement}
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"nFormNumber"}
                         />
     },
     {
@@ -202,7 +239,18 @@ const openRelationGB = (newsGBID) => {
         padding: '5px',
 
       },
-      render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined
+      render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined,
+
+      filterComponent: () => 
+                        <MyComp 
+                          name="Received Date" 
+                          field="madeb.dtReceived" 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"dtReceived"}
+                        />
     },
     {
       field: "sAuthRegion",
@@ -212,6 +260,16 @@ const openRelationGB = (newsGBID) => {
         padding: '5px',
 
       },
+      filterComponent: () => 
+                        <MyComp 
+                          name="Authority" 
+                          field="sAuthRegion" 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"sAuthRegion"}
+                        />
     },
     {
       field: "madeb.sName",
@@ -224,7 +282,7 @@ const openRelationGB = (newsGBID) => {
     },
 
     {
-     // field: "madeb.sGBID",
+      field: "madeb.sGBID",
      render:  rowData =>rowData['madeb']['sGBID']? <Button className="m-2 btn-transparent btn-link btn-link-first" onClick={() => { viewGb(rowData['madeb']['sGBID'])}}><span>{rowData['madeb']['sGBID']}</span></Button>:'', 
      title: "GB Id",
 
@@ -394,7 +452,50 @@ const openRelationGB = (newsGBID) => {
 
   ];
 
+  useEffect(() => {
+    console.log("Searching useEffect. Searching is", searching);
+    
+    if(searching){
+      let searchObj = {};
+      myarray.map(item => {
+        if (item.id === "madeb.id" || item.id === 'Re-Verified By' || item.id === 'Verified By' || item.id === 'edit' || item.id === 'email'  ){
+          return;
+          console.log("Changed id to", item.val);
+        };
 
+        if(item.id === 'madeb.nCurrentGBSno' || item.id === 'madeb.nFormNumber' || item.id === 'madeb.nPreviousGBSno' || item.id === 'madeb.nSaneyFormNo' ) {
+          item.val = parseInt(item.val) ||  null ;
+        }
+        var id = item.id;
+        if(item.id.startsWith('madeb')){
+          id = item.id.substring(6);
+        }
+        searchObj = {...searchObj, [id]: item.val };
+      });
+      console.log("Search Object: Inside useEffect" , searchObj);
+   
+      axios.post(`/MadebAuthRegionVM/ColumnSearchMadeb/madebType=5`, searchObj)
+        .then(resp => {
+          if (resp.status === 200) {
+            debugger
+            console.log("Got filter Data");
+            setdataAPI([...resp.data]);
+            setSearching(false);
+            //setTimeout(() => ele.focus(), 2000);
+            
+          }
+          if(resp.status === 204){
+            console.log("Got  Empty data set");
+            setdataAPI([...resp.data]);
+            setSearching(false);
+          }
+        })
+        .catch(error => {
+          console.log(error.message);
+          //handleError(error, history);
+        })
+    }
+  },[myarray])
 
   const emailClick = (tableRowArray) => {
 
@@ -555,6 +656,7 @@ const openRelationGB = (newsGBID) => {
   };
 
   useEffect(() => {
+    buildArray();
     axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
       .then(resp => {
         if (resp.status === 200) {

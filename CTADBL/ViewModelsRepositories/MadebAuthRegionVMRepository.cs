@@ -5,6 +5,7 @@ using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Repository;
 using CTADBL.ViewModels;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -301,8 +302,90 @@ namespace CTADBL.ViewModelsRepositories
                 return GetRecords(command);
             }
         }
-
         #endregion
+        #endregion
+
+        #region Column Search Madebs
+
+        public IEnumerable<MadebAuthRegionVM> ColumnSearchMadebs(int madebType, string madeb)
+        {
+            string addToSql = "";
+
+            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(madeb);
+
+
+            foreach (KeyValuePair<string, dynamic> item in dictionary)
+            {
+                if (item.Value != null)
+                {
+                    if(item.Value.GetType() == typeof(Int32) || item.Value.GetType() == typeof(Int64))
+                    {
+                        addToSql += String.Format(@"{0} LIKE '{1}%' AND ", item.Key, item.Value);
+                    }
+                    
+                    if (item.Value.GetType() == typeof(string))
+                    {
+                        if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                        {
+                            addToSql += String.Format(@"{0} LIKE '%{1}%' AND ", item.Key, item.Value);
+                        }
+                    }
+                }
+            }
+            if (String.IsNullOrEmpty(addToSql))
+            {
+                return GetMadebsByType(madebType);
+            }
+            string sql = String.Format(@"SELECT `tblmadeb`.`Id`,
+                            `_Id`,
+                            `nFormNumber`,
+                            `sGBID`,
+                            `nMadebTypeID`,
+                            `sName`,
+                            `sFathersName`,
+                            `nAuthRegionID`,
+                            `dtReceived`,
+                            `dtIssueAction`,
+                            `nIssuedOrNotID`,
+                            `nType`,
+                            `sChangeField`,
+                            `sOfficeOfTibetan`,
+                            `sDocumentAttached`,
+                            `nCurrentGBSno`,
+                            `nPreviousGBSno`,
+                            `nSaneyFormNo`,
+                            `nReceiptNo`,
+                            `dtEmailSend`,
+                            `sAlias`,
+                            `sApprovedReject`,
+                            `dtReject`,
+                            `dtReturnEmail`,
+                            `tblmadeb`.`dtEntered`,
+                            `tblmadeb`.`nEnteredBy`,
+                            `tblmadeb`.`dtUpdated`,
+                            `tblmadeb`.`nUpdatedBy`,
+                            `sAuthRegion`,
+                            `sTypeIssued`, 
+                            `lstmadebstatus`.`sMadebStatus`,
+                            `tblmadeb`.`nMadebStatusID`,
+                            `sMadebStatusRemark`
+                        FROM `tblmadeb` 
+                        LEFT JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
+                        LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
+                        LEFT JOIN `lstmadebstatus` ON `tblmadeb`.`nMadebStatusID` = `lstmadebstatus`.`ID`
+                        WHERE {0} 
+                        `nMadebTypeID`= @madebType 
+                        ORDER BY `tblmadeb`.`dtUpdated` DESC
+                        LIMIT @limit;", addToSql);
+
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("madebType", madebType);
+                command.Parameters.AddWithValue("limit", Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount")));
+                return GetRecords(command);
+            }
+            
+        }
 
         #endregion
 

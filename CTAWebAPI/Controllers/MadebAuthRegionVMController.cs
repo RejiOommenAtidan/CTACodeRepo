@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+
 namespace CTAWebAPI.Controllers
 {
     [Authorize]
@@ -296,6 +297,66 @@ namespace CTAWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
+        }
+        #endregion
+
+
+        #region Search
+        [HttpPost("ColumnSearchMadeb/madebType={madebType}")]
+        [Route("[action]")]
+        public IActionResult ColumnSearchMadeb(int madebType, [FromBody] Object madeb)
+        {
+            if(madeb == null)
+            {
+                return BadRequest("Bad Request, search object is null.");
+            }
+            try
+            {
+                IEnumerable<MadebAuthRegionVM> madebs = _madebAuthRegionVMRepository.ColumnSearchMadebs(madebType, madeb.ToString());
+                if(madebs != null && madebs.Count() > 0)
+                {
+                    #region Information Logging 
+                    string sActionType = Enum.GetName(typeof(Operations), 2);
+                    string sModuleName = (GetType().Name).Replace("Controller", "");
+                    string sEventName = Enum.GetName(typeof(LogLevels), 1);
+                    string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                    string sDescription = currentMethodName + " Method Called";
+                    CTALogger logger = new CTALogger(_info);
+                    logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                    #endregion
+                    return Ok(madebs);
+                }
+                else
+                {
+                    #region Information Logging 
+                    string sActionType = Enum.GetName(typeof(Operations), 2);
+                    string sModuleName = (GetType().Name).Replace("Controller", "");
+                    string sEventName = Enum.GetName(typeof(LogLevels), 1);
+                    string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                    string sDescription = currentMethodName + " Method Called";
+                    CTALogger logger = new CTALogger(_info);
+                    logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+                    #endregion
+                    return NoContent();
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                string sActionType = Enum.GetName(typeof(Operations), 2);
+                string sModuleName = (GetType().Name).Replace("Controller", "");
+                string sEventName = Enum.GetName(typeof(LogLevels), 3);
+                string currentMethodName = MethodBase.GetCurrentMethod().Name;
+                string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
+                CTALogger logger = new CTALogger(_info);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, ex.StackTrace);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+
+            }
+
         }
 
         #endregion
