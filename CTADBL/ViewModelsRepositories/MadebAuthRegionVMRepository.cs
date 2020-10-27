@@ -336,7 +336,7 @@ namespace CTADBL.ViewModelsRepositories
             {
                 return GetMadebsByType(madebType);
             }
-            string sql = String.Format(@"SELECT `tblmadeb`.`Id`,
+            string sql = String.Format(@"SELECT `Id`,
                             `_Id`,
                             `nFormNumber`,
                             `sGBID`,
@@ -344,7 +344,7 @@ namespace CTADBL.ViewModelsRepositories
                             `sName`,
                             `sFathersName`,
                             `nAuthRegionID`,
-                            `dtReceived`,
+                            STR_TO_DATE(`dtReceived`, '%d-%m-%Y' ) as `dtReceived`,
                             `dtIssueAction`,
                             `nIssuedOrNotID`,
                             `nType`,
@@ -360,22 +360,19 @@ namespace CTADBL.ViewModelsRepositories
                             `sApprovedReject`,
                             `dtReject`,
                             `dtReturnEmail`,
-                            `tblmadeb`.`dtEntered`,
-                            `tblmadeb`.`nEnteredBy`,
-                            `tblmadeb`.`dtUpdated`,
-                            `tblmadeb`.`nUpdatedBy`,
+                            `dtEntered`,
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`,
                             `sAuthRegion`,
                             `sTypeIssued`, 
-                            `lstmadebstatus`.`sMadebStatus`,
-                            `tblmadeb`.`nMadebStatusID`,
+                            `sMadebStatus`,
+                            `nMadebStatusID`,
                             `sMadebStatusRemark`
-                        FROM `tblmadeb` 
-                        LEFT JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
-                        LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
-                        LEFT JOIN `lstmadebstatus` ON `tblmadeb`.`nMadebStatusID` = `lstmadebstatus`.`ID`
+                        FROM `myview` 
                         WHERE {0} 
                         `nMadebTypeID`= @madebType 
-                        ORDER BY `tblmadeb`.`dtUpdated` DESC
+                        ORDER BY `dtUpdated` DESC
                         LIMIT @limit;", addToSql);
 
             using (var command = new MySqlCommand(sql))
