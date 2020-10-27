@@ -15,6 +15,7 @@ import {
   IconButton
 } from '@material-ui/core';
 
+import {useSelector} from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -403,6 +404,7 @@ export default function EditEntry(props) {
   const [TBUFathersName, setTBUFathersName] = useState('');
   const [TBUMothersName, setTBUMothersName] = useState('');
   const [TBUSpouseName, setTBUSpouseName] = useState('');
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -568,7 +570,8 @@ export default function EditEntry(props) {
       TBUOriginVillage,
       TBUFathersName,
       TBUMothersName,
-      TBUSpouseName
+      TBUSpouseName,
+      nUpdatedBy:userId
     };
     axios.post(`/Greenbook/EditGreenbook/Id=` + props.match.params.GBID.toString(), greenbook)
       .then(resp => {

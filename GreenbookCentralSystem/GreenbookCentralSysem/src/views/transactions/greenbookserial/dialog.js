@@ -15,7 +15,7 @@ import Slide from '@material-ui/core/Slide';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
+import {useSelector} from 'react-redux';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -25,6 +25,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 //     return <MuiAlert elevation={6} variant="filled" {...props} />;
 //   }
 export const EditDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   console.log("Hello from Edit Dialog");
   const { register, handleSubmit, watch, errors } = useForm();
 
@@ -73,7 +74,8 @@ export const EditDialog = (props) => {
     sCountryID,
     nMadebTypeId,
     nFormNumber,
-    nAuthRegionId
+    nAuthRegionId,
+    nUpdatedBy:userId
   }
   console.log("gbSerialObj Object received in dialog", gbSerialObj);
 
@@ -398,7 +400,7 @@ export const EditDialog = (props) => {
 }
 
 export const AddDialog = (props) => {
-
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   console.log("Hello from Add dialog");
 
 
@@ -452,7 +454,9 @@ export const AddDialog = (props) => {
     sCountryID,
     nMadebTypeId,
     nFormNumber,
-    nAuthRegionId
+    nAuthRegionId,
+    nEnteredBy:userId,
+    nUpdatedBy:userId
   }
   console.log("gbSerialObj Object received in Add dialog", gbSerialObj);
 

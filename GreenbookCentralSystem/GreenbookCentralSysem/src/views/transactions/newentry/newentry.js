@@ -30,6 +30,7 @@ import handleError from '../../../auth/_helpers/handleError';
 import { sDateFormatMUIDatepicker } from '../../../config/commonConfig';
 import { BackdropComponent } from '../../backdrop/pageBackDrop';
 import { Alerts } from '../../alerts/index';
+import {useSelector} from 'react-redux';
 
 const useStyles = makeStyles({
   root: {
@@ -108,6 +109,7 @@ const useStyles = makeStyles({
 });
 
 export default function NewEntry(props) {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [backdrop, setBackdrop] = React.useState(true);
   const classes = useStyles();
   let history = useHistory();
@@ -230,7 +232,9 @@ export default function NewEntry(props) {
       TBUOriginVillage,
       TBUFathersName,
       TBUMothersName,
-      TBUSpouseName
+      TBUSpouseName,
+      nEnteredBy:userId,
+      nUpdatedBy:userId
     };
 
     axios.post(`/Greenbook/AddGreenbook/`, greenbook)

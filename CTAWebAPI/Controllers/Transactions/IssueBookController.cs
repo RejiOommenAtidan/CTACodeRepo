@@ -160,7 +160,7 @@ namespace CTAWebAPI.Controllers.Transactions
         [Route("[action]")]
         public IActionResult EditIssueBook(string Id, [FromBody] IssueBook issueBook)
         {
-            #region Edit IssueBook
+            #region Edit Issue Book
             try
             {
                 if (ModelState.IsValid)
@@ -177,9 +177,15 @@ namespace CTAWebAPI.Controllers.Transactions
                     if (IssueBookExists(Id))
                     {
                         IssueBook fetchedIssueBook = _issueBookRepository.GetIssueBookById(Id);
+                        issueBook.nEnteredBy = fetchedIssueBook.nEnteredBy;
                         issueBook.dtEntered = fetchedIssueBook.dtEntered;
                         issueBook.dtUpdated = DateTime.Now;
                         _issueBookRepository.Update(issueBook);
+
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetchedIssueBook, issueBook, issueBook.nGBID.ToString(), issueBook.nAuthRegionId, 8, fetchedIssueBook.Id, issueBook.nUpdatedBy);
+                        #endregion
+
                         #region Alert Logging 
                         string sActionType = Enum.GetName(typeof(Operations), 3);
                         string sModuleName = (GetType().Name).Replace("Controller", "");

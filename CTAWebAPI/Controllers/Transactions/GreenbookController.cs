@@ -485,9 +485,14 @@ namespace CTAWebAPI.Controllers.Transactions
                     if (GreenbookExists(Id))
                     {
                         Greenbook fetchedGreenbook = _greenbookRepository.GetGreenboookById(Id);
+                        greenbook.nEnteredBy = fetchedGreenbook.nEnteredBy;
                         greenbook.dtEntered = fetchedGreenbook.dtEntered;
                         greenbook.dtUpdated = DateTime.Now;
                         _greenbookRepository.Update(greenbook);
+
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetchedGreenbook, greenbook, greenbook.sGBID, greenbook.nAuthRegionID, 7, fetchedGreenbook.Id, greenbook.nUpdatedBy);
+                        #endregion
 
                         #region Alert Logging 
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, greenbook.nEnteredBy);
@@ -771,8 +776,13 @@ namespace CTAWebAPI.Controllers.Transactions
                     if (GBNoteExists(Id))
                     {
                         GBNote fetchedGBNote = _gbNoteRepository.GetGBNoteById(Id);
+                        Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(fetchedGBNote.sGBID);
                         gBNote.dtEntered = fetchedGBNote.dtEntered;
                         _gbNoteRepository.Update(gBNote);
+
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetchedGBNote, gBNote, fetchedGBNote.sGBID, fetchedGB.nAuthRegionID, 7, fetchedGBNote.Id, (int)gBNote.nEnteredBy);
+                        #endregion
 
                         #region Alert Logging 
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBNote.nEnteredBy);
@@ -866,7 +876,7 @@ namespace CTAWebAPI.Controllers.Transactions
         [Route("[action]")]
         public IActionResult EditChild(string Id, [FromBody] GBChildren gBChild)
         {
-            #region Edit Note
+            #region Edit Child
             try
             {
                 if (ModelState.IsValid)
@@ -883,8 +893,13 @@ namespace CTAWebAPI.Controllers.Transactions
                     if (GBChildrenExists(Id))
                     {
                         GBChildren fetchedGBChild = _gbChildrenRepository.GetGBChildrenById(Id);
+                        Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(fetchedGBChild.sGBIDParent);
                         gBChild.dtEntered = fetchedGBChild.dtEntered;
                         _gbChildrenRepository.Update(gBChild);
+
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetchedGBChild, gBChild, fetchedGBChild.sGBIDParent, fetchedGB.nAuthRegionID, 7, fetchedGBChild.Id, (int)gBChild.nEnteredBy);
+                        #endregion
 
                         #region Alert Logging 
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBChild.nEnteredBy);
@@ -1010,7 +1025,12 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         GBDocument fetchedGBDocument = _gbDocumentRepository.GetDocumentById(Id);
                         gBDocument.dtEntered = fetchedGBDocument.dtEntered;
+                        Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(fetchedGBDocument.sGBID);
                         _gbDocumentRepository.Update(gBDocument);
+
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetchedGBDocument, gBDocument, fetchedGBDocument.sGBID, fetchedGB.nAuthRegionID, 7, fetchedGBDocument.Id, (int)gBDocument.nEnteredBy);
+                        #endregion
 
                         #region Alert Logging 
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBDocument.nEnteredBy);
