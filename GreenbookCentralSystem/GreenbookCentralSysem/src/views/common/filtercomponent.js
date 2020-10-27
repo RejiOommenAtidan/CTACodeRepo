@@ -33,13 +33,16 @@ const MyComp = (props) => {
     value={val}
     //value={props.myValue.val}
     autoFocus={props.currId === props.field}
-    InputProps={{
-      startAdornment: (
-        <InputAdornment position="start">
-          <AccountCircle />
-        </InputAdornment>
-      ),
+    InputLabelProps={{
+      shrink: true,
     }}
+    // InputProps={{
+    //   startAdornment: (
+    //     <InputAdornment position="start">
+    //       <AccountCircle />
+    //     </InputAdornment>
+    //   ),
+    //}}
     
   /></div>) ;
 };

@@ -274,32 +274,56 @@ const openRelationGB = (newsGBID) => {
     {
       field: "madeb.sName",
       title: "Name",
-
       cellStyle: {
         padding: '5px',
-
       },
+      filterComponent: () => 
+                        <MyComp 
+                          name="Name" 
+                          field="madeb.sName" 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"madeb.sName"}
+                        />
     },
 
     {
-      field: "madeb.sGBID",
+     field: "madeb.sGBID",
      render:  rowData =>rowData['madeb']['sGBID']? <Button className="m-2 btn-transparent btn-link btn-link-first" onClick={() => { viewGb(rowData['madeb']['sGBID'])}}><span>{rowData['madeb']['sGBID']}</span></Button>:'', 
      title: "GB Id",
-
-      cellStyle: {
+     cellStyle: {
         padding: '5px',
-
       },
+      filterComponent: () => 
+                        <MyComp 
+                          field="madeb.sGBID"   
+                          name="GB Id" 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"madeb.sGBID"}
+                        />
     },
 
     {
       field: "madeb.sFathersName",
       title: "Father's Name",
-
       cellStyle: {
         padding: '5px',
-
       },
+      filterComponent: () => 
+                        <MyComp 
+                          field="madeb.sFathersName"   
+                          name="Father's Name" 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"madeb.sFathersName"}
+                        />
     },
     {
       field: "madeb.nSaneyFormNo",
@@ -309,6 +333,16 @@ const openRelationGB = (newsGBID) => {
         padding: '5px',
 
       },
+      filterComponent: () => 
+                        <MyComp 
+                          field="madeb.nSaneyFormNo"   
+                          name="Saney Form No" 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"madeb.nSaneyFormNo"}
+                        />
     },
     {
       field: "madeb.nCurrentGBSno",
@@ -318,6 +352,16 @@ const openRelationGB = (newsGBID) => {
         padding: '5px',
 
       },
+      filterComponent: () => 
+                        <MyComp 
+                          field="madeb.nCurrentGBSno"   
+                          name="Current GB SNo." 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"madeb.nCurrentGBSno"}
+                        />
     },
     {
       field: "madeb.nPreviousGBSno",
@@ -327,6 +371,16 @@ const openRelationGB = (newsGBID) => {
         padding: '5px',
 
       },
+      filterComponent: () => 
+                        <MyComp 
+                          field="madeb.nPreviousGBSno"   
+                          name="Previous GB SNo" 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"madeb.nPreviousGBSno"}
+                        />
     },
     {
       field: 'Verified By',
@@ -354,6 +408,16 @@ const openRelationGB = (newsGBID) => {
         padding: '5px',
 
       },
+      filterComponent: () => 
+                        <MyComp 
+                          field="madeb.dtIssueAction"   
+                          name="Issue Action Date" 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"madeb.dtIssueAction"}
+                        />,
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
     },
     {
@@ -364,25 +428,56 @@ const openRelationGB = (newsGBID) => {
         padding: '5px',
 
       },
+      filterComponent: () => 
+                        <MyComp 
+                          field="sTypeIssued"   
+                          name="Issue Action" 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"sTypeIssued"}
+                        />
     },
-    // {
-    //   field: "sMadebStatus",
-    //   title: "Status",
+    {
+      field: "sMadebStatus",
+      title: "Status",
 
-    //   cellStyle: {
-    //     padding: '5px',
+      cellStyle: {
+        padding: '5px',
 
-    //   },
-    // },
-    // {
-    //   field: "madeb.sMadebStatusRemark",
-    //   title: "Status Remark",
+      },
+      filterComponent: () => 
+                        <MyComp 
+                          field="sMadebStatus"   
+                          name="Status" 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"sMadebStatus"}
+                        />
+    },
+    
+    {
+      field: "madeb.sMadebStatusRemark",
+      title: "Status Remark",
 
-    //   cellStyle: {
-    //     padding: '5px',
+      cellStyle: {
+        padding: '5px',
 
-    //   },
-    // },
+      },
+      filterComponent: () => 
+                        <MyComp 
+                          field="madeb.sMadebStatusRemark"   
+                          name="Status Remark" 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"madeb.sMadebStatusRemark"}
+                        />
+    },
     {
       field: "madeb.dtReject",
       title: "Reject Date",
@@ -393,6 +488,16 @@ const openRelationGB = (newsGBID) => {
 
       },
       render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined,
+      filterComponent: () => 
+                        <MyComp 
+                          field="madeb.dtReject"   
+                          name="Reject Date" 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"madeb.dtReject"}
+                        />
     },
     {
       field: "madeb.dtReturnEmail",
@@ -404,6 +509,16 @@ const openRelationGB = (newsGBID) => {
 
       },
       render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : undefined,
+      filterComponent: () => 
+                        <MyComp 
+                          field="madeb.dtReturnEmail"   
+                          name="Return Date" 
+                          changeHandler={changeHandler}
+                          myarray={myarray}
+                          updateArray={updateArray}
+                          currId={currId}
+                          key={"madeb.dtReturnEmail"}
+                        />
     },
     {
       field: "email",
