@@ -655,6 +655,7 @@ CREATE TABLE `lstMadebType` (
   `sMadebType` text NOT NULL,
   `sMadebDisplayName` text NOT NULL,
   `sMadebDisplayKey` text NOT NULL,
+  `nMadebFeatureId` text NOT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime DEFAULT NULL,
@@ -662,12 +663,12 @@ CREATE TABLE `lstMadebType` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso (New)','First Issued','F',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe (Change)','Modified Issued','M',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak (Lost)','Lost Issued','L',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad','Abroad','A',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full','Book Full','U',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB','Brief GB','B',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso (New)','First Issued','F',13,now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe (Change)','Modified Issued','M',14,now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak (Lost)','Lost Issued','L',15,now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad','Abroad','A',18,now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full','Book Full','U',16,now(),1,now(),1);
+INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB','Brief GB','B',17,now(),1,now(),1);
 
 use ctadb;
 
