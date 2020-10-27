@@ -23,14 +23,14 @@ namespace CTAWebAPI.Controllers.Transactions
     [ApiController]
     public class GreenBookSerialNumberController : ControllerBase
     {
-        
+
+        #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly GreenBookSerialNumberRepository _greenBookSerialNumberRepository;
         private readonly GreenBookSerialNumberVMRepository _greenBookSerialNumberVMRepository;
         private readonly GreenBookSerialNewRecordRepository _greenBookSerialNewRecordRepository;
         private readonly MadebRepository _madebRepository;
         private readonly CTALogger _ctaLogger;
-        #region Constructor
         public GreenBookSerialNumberController(DBConnectionInfo info)
         {
             _info = info;
@@ -218,9 +218,6 @@ namespace CTAWebAPI.Controllers.Transactions
 
         #endregion
 
-
-
-
         #region Add Calls
         [HttpPost]
         [Route("[action]")]
@@ -264,14 +261,12 @@ namespace CTAWebAPI.Controllers.Transactions
         }
         #endregion
 
-        
-
         #region Edit Call
         [HttpPost("EditGreenbookSerialNumber/Id={Id}")]
         [Route("[action]")]
         public IActionResult EditGreenBookSerialNumber(string Id, [FromBody] GreenBookSerialNumber gbsn)
         {
-            #region Edit Greenbook
+            #region Edit Greenbook Serial Number
             try
             {
                 if (ModelState.IsValid)
@@ -289,9 +284,14 @@ namespace CTAWebAPI.Controllers.Transactions
                     GreenBookSerialNumber fetch = _greenBookSerialNumberRepository.GetGreenBookSerialNumberById(Convert.ToInt32(Id));
                     if (fetch != null)
                     {
+                        gbsn.nEnteredBy = fetch.nEnteredBy;
                         gbsn.dtEntered = fetch.dtEntered;
                         gbsn.dtUpdated = DateTime.Now;
                         _greenBookSerialNumberRepository.Update(gbsn);
+
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetch, gbsn, fetch.sGBID, fetch.nAuthRegionId, 11, fetch.Id, gbsn.nUpdatedBy);
+                        #endregion
 
                         #region Alert Logging 
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, gbsn.nEnteredBy);
@@ -325,10 +325,5 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
         #endregion
-        
-
-
-
-
     }
 }

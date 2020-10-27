@@ -13,8 +13,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import {useSelector} from 'react-redux';
 
 export const AddDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [lUserRights, setlUserRights] = React.useState(props.lUserRights);
   const [Id, setId] = React.useState('')
   const [sUsername, setsUsername] = React.useState('');
@@ -102,7 +104,9 @@ export const AddDialog = (props) => {
               sFullname,
               nUserRightsId,
               sPassword,
-              sOffice
+              sOffice,
+              nEnteredBy:userId,
+              nUpdatedBy:userId
             }
           )
         }} color="primary">Save</Button>
@@ -112,6 +116,7 @@ export const AddDialog = (props) => {
 }
 
 export const EditDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [lUserRights, setlUserRights] = React.useState(props.oUserObj.lUserRights);
   const [Id, setId] = React.useState(props.oUserObj.id)
   const [sUsername, setsUsername] = React.useState(props.oUserObj.sUsername);
@@ -204,7 +209,8 @@ export const EditDialog = (props) => {
             sFullname,
             nUserRightsId,
             sPassword,
-            sOffice
+            sOffice,
+            nUpdatedBy:userId
           })
         }
         } color="primary">Save</Button>

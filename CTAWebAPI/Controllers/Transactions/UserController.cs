@@ -204,10 +204,15 @@ namespace CTAWebAPI.Controllers.Transactions
                     if (UserExists(Id))
                     {
                         User fetchedUser = _userRepository.GetUserById(Id);
+                        user.nEnteredBy = fetchedUser.nEnteredBy;
                         user.dtEntered = fetchedUser.dtEntered;
                         user.dtUpdated = DateTime.Now;
                         user.nActive = 1;
                         _userRepository.Update(user);
+
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(fetchedUser, user, null, null, 5, fetchedUser.Id, user.nUpdatedBy);
+                        #endregion
 
                         #region Alert Logging 
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, user.nEnteredBy);
