@@ -13,6 +13,7 @@ using System.Xml;
 using System.Data.SqlClient;
 using Ubiety.Dns.Core.Records;
 using System.Resources;
+using System.Text.RegularExpressions;
 
 namespace CTADataMigrationAndSupport
 {
@@ -832,7 +833,7 @@ namespace CTADataMigrationAndSupport
                             if (sPhoneData.Length > 0)
                             {
                                 cmd.Parameters.Add("@sPhone", MySqlDbType.VarChar, 255);
-                                cmd.Parameters["@sPhone"].Value = RandomDummyData(sPhoneData.Length, sPhoneData, true);
+                                cmd.Parameters["@sPhone"].Value = RandomDummyPhoneData(sPhoneData.Length, sPhoneData, true);
                             }
                             if (sEmailData.Length > 0)
                             {
@@ -906,6 +907,82 @@ namespace CTADataMigrationAndSupport
             }
 
 
+        }
+
+        public static string RandomDummyPhoneData(int length, string orginalString, bool isNumber)
+        {
+            string[] columnDatasplit = orginalString.Split(" ");
+            string tempData = string.Empty;
+            string dummyData = string.Empty;
+
+            for (int i = 0; i < columnDatasplit.Length; i++)
+            {
+                if (columnDatasplit[i].Trim() == "")
+                {
+                    continue;
+                }
+                else
+                {
+                    if (columnDatasplit[i].Contains("+"))
+                    {
+                        //tempData = RandomString(columnDatasplit[i].Substring(0, columnDatasplit[i].IndexOf("@")).Length, isNumber) + "@" + RandomString(7, isNumber) + ".com";
+                        //dummyData = tempData.ToLower();
+                        tempData = RandomString(columnDatasplit[i].Length, isNumber);
+                        int[] tempDataIndex = AllIndexesOf(columnDatasplit[i], "+", false);
+                        for (int tmp = 0; tmp <= tempDataIndex.Length; tmp++)
+                        {
+                            char[] ch = tempData.ToCharArray();
+                            ch[tempDataIndex[tmp]] = '+'; // index starts at 0!
+                            tempData = new string(ch);
+                        }
+
+                        if (tempData.Length > 0)
+                        {
+                            dummyData += dummyData.Length <= 0 ? char.ToUpper(tempData[0]) + tempData.Substring(1).ToLower() : " " + char.ToUpper(tempData[0]) + tempData.Substring(1).ToLower(); ;
+                        }
+                        else
+                        {
+                            dummyData = string.Empty;
+                        }
+
+                        //columnDatasplit[i] columnDatasplit[i].Substring(0, columnDatasplit[i].IndexOf("+")).Length;
+                    }
+                    else
+                    {
+                        tempData = RandomString(columnDatasplit[i].Length, isNumber);
+                        if (tempData.Length > 0)
+                        {
+                            dummyData += dummyData.Length <= 0 ? char.ToUpper(tempData[0]) + tempData.Substring(1).ToLower() : " " + char.ToUpper(tempData[0]) + tempData.Substring(1).ToLower(); ;
+                        }
+                        else
+                        {
+                            dummyData = string.Empty;
+                        }
+                    }
+                }
+            }
+
+            return dummyData;
+
+        }
+
+        public static int[] AllIndexesOf(string str, string substr, bool ignoreCase = false)
+        {
+            if (string.IsNullOrWhiteSpace(str) ||
+                string.IsNullOrWhiteSpace(substr))
+            {
+                throw new ArgumentException("String or substring is not specified.");
+            }
+
+            var indexes = new List<int>();
+            int index = 0;
+
+            while ((index = str.IndexOf(substr, index, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal)) != -1)
+            {
+                indexes.Add(index++);
+            }
+
+            return indexes.ToArray();
         }
 
         public static string RandomDummyEmailData(int length, string orginalString, bool isNumber)

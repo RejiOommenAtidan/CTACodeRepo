@@ -681,10 +681,10 @@ CREATE TABLE `lstFeature` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('LoginPage',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Login Page',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Home',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Give GB No',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Delete',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Delete GB',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Users',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Report',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Edit',now(),1,now(),1);
@@ -696,7 +696,7 @@ INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdate
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso Madeb',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe Madeb',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak Madeb',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book full',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Change',now(),1,now(),1);
@@ -705,8 +705,8 @@ INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdate
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Roles Feature Mapping',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Roles Manage',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Region',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('chatrel',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('CTAConfig',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chatrel',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('CTA Config',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('AuthRegion',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Country',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Occupation',now(),1,now(),1);
@@ -714,8 +714,10 @@ INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdate
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Qualification',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Relation',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Feature',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('TypeIssued',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('MadebType',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Type Issued',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Madeb Type',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Rights',now(),1,now(),1);
+
 
 CREATE TABLE `lstCTAConfig` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
