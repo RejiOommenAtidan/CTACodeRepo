@@ -49,6 +49,19 @@
             this.buttonGetChartelNow = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.checkBoxsEmail = new System.Windows.Forms.CheckBox();
+            this.checkBoxsSpouseName = new System.Windows.Forms.CheckBox();
+            this.checkBoxsMothersName = new System.Windows.Forms.CheckBox();
+            this.checkBoxsFathersName = new System.Windows.Forms.CheckBox();
+            this.checkBoxsPhone = new System.Windows.Forms.CheckBox();
+            this.checkBoxsFamilyName = new System.Windows.Forms.CheckBox();
+            this.checkBoxsLastName = new System.Windows.Forms.CheckBox();
+            this.checkBoxsMiddleName = new System.Windows.Forms.CheckBox();
+            this.checkBoxsFirstName = new System.Windows.Forms.CheckBox();
+            this.labelDummyDataReport = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.buttonGenerateDummyData = new System.Windows.Forms.Button();
             this.txtLogFolderPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.progressBarProcess = new System.Windows.Forms.ProgressBar();
@@ -56,6 +69,7 @@
             this.tabPageRelationDataClincing.SuspendLayout();
             this.tabPageImageMigration.SuspendLayout();
             this.tabPageCTAChartel.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtConnectionString
@@ -81,6 +95,7 @@
             this.tabControlCTA.Controls.Add(this.tabPageRelationDataClincing);
             this.tabControlCTA.Controls.Add(this.tabPageImageMigration);
             this.tabControlCTA.Controls.Add(this.tabPageCTAChartel);
+            this.tabControlCTA.Controls.Add(this.tabPage1);
             this.tabControlCTA.Location = new System.Drawing.Point(10, 88);
             this.tabControlCTA.Name = "tabControlCTA";
             this.tabControlCTA.SelectedIndex = 0;
@@ -269,6 +284,145 @@
             this.label5.TabIndex = 0;
             this.label5.Text = "GBId:";
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.checkBoxsEmail);
+            this.tabPage1.Controls.Add(this.checkBoxsSpouseName);
+            this.tabPage1.Controls.Add(this.checkBoxsMothersName);
+            this.tabPage1.Controls.Add(this.checkBoxsFathersName);
+            this.tabPage1.Controls.Add(this.checkBoxsPhone);
+            this.tabPage1.Controls.Add(this.checkBoxsFamilyName);
+            this.tabPage1.Controls.Add(this.checkBoxsLastName);
+            this.tabPage1.Controls.Add(this.checkBoxsMiddleName);
+            this.tabPage1.Controls.Add(this.checkBoxsFirstName);
+            this.tabPage1.Controls.Add(this.labelDummyDataReport);
+            this.tabPage1.Controls.Add(this.label8);
+            this.tabPage1.Controls.Add(this.buttonGenerateDummyData);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(759, 435);
+            this.tabPage1.TabIndex = 3;
+            this.tabPage1.Text = "CTA Dummy Data";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxsEmail
+            // 
+            this.checkBoxsEmail.AutoSize = true;
+            this.checkBoxsEmail.Location = new System.Drawing.Point(272, 69);
+            this.checkBoxsEmail.Name = "checkBoxsEmail";
+            this.checkBoxsEmail.Size = new System.Drawing.Size(60, 19);
+            this.checkBoxsEmail.TabIndex = 16;
+            this.checkBoxsEmail.Text = "sEmail";
+            this.checkBoxsEmail.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxsSpouseName
+            // 
+            this.checkBoxsSpouseName.AutoSize = true;
+            this.checkBoxsSpouseName.Location = new System.Drawing.Point(272, 95);
+            this.checkBoxsSpouseName.Name = "checkBoxsSpouseName";
+            this.checkBoxsSpouseName.Size = new System.Drawing.Size(101, 19);
+            this.checkBoxsSpouseName.TabIndex = 15;
+            this.checkBoxsSpouseName.Text = "sSpouseName";
+            this.checkBoxsSpouseName.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxsMothersName
+            // 
+            this.checkBoxsMothersName.AutoSize = true;
+            this.checkBoxsMothersName.Location = new System.Drawing.Point(159, 95);
+            this.checkBoxsMothersName.Name = "checkBoxsMothersName";
+            this.checkBoxsMothersName.Size = new System.Drawing.Size(107, 19);
+            this.checkBoxsMothersName.TabIndex = 14;
+            this.checkBoxsMothersName.Text = "sMothersName";
+            this.checkBoxsMothersName.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxsFathersName
+            // 
+            this.checkBoxsFathersName.AutoSize = true;
+            this.checkBoxsFathersName.Location = new System.Drawing.Point(52, 95);
+            this.checkBoxsFathersName.Name = "checkBoxsFathersName";
+            this.checkBoxsFathersName.Size = new System.Drawing.Size(101, 19);
+            this.checkBoxsFathersName.TabIndex = 13;
+            this.checkBoxsFathersName.Text = "sFathersName";
+            this.checkBoxsFathersName.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxsPhone
+            // 
+            this.checkBoxsPhone.AutoSize = true;
+            this.checkBoxsPhone.Location = new System.Drawing.Point(159, 70);
+            this.checkBoxsPhone.Name = "checkBoxsPhone";
+            this.checkBoxsPhone.Size = new System.Drawing.Size(65, 19);
+            this.checkBoxsPhone.TabIndex = 12;
+            this.checkBoxsPhone.Text = "sPhone";
+            this.checkBoxsPhone.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxsFamilyName
+            // 
+            this.checkBoxsFamilyName.AutoSize = true;
+            this.checkBoxsFamilyName.Location = new System.Drawing.Point(52, 70);
+            this.checkBoxsFamilyName.Name = "checkBoxsFamilyName";
+            this.checkBoxsFamilyName.Size = new System.Drawing.Size(98, 19);
+            this.checkBoxsFamilyName.TabIndex = 11;
+            this.checkBoxsFamilyName.Text = "sFamilyName";
+            this.checkBoxsFamilyName.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxsLastName
+            // 
+            this.checkBoxsLastName.AutoSize = true;
+            this.checkBoxsLastName.Location = new System.Drawing.Point(272, 44);
+            this.checkBoxsLastName.Name = "checkBoxsLastName";
+            this.checkBoxsLastName.Size = new System.Drawing.Size(84, 19);
+            this.checkBoxsLastName.TabIndex = 10;
+            this.checkBoxsLastName.Text = "sLastName";
+            this.checkBoxsLastName.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxsMiddleName
+            // 
+            this.checkBoxsMiddleName.AutoSize = true;
+            this.checkBoxsMiddleName.Location = new System.Drawing.Point(159, 44);
+            this.checkBoxsMiddleName.Name = "checkBoxsMiddleName";
+            this.checkBoxsMiddleName.Size = new System.Drawing.Size(100, 19);
+            this.checkBoxsMiddleName.TabIndex = 9;
+            this.checkBoxsMiddleName.Text = "sMiddleName";
+            this.checkBoxsMiddleName.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxsFirstName
+            // 
+            this.checkBoxsFirstName.AutoSize = true;
+            this.checkBoxsFirstName.Location = new System.Drawing.Point(52, 45);
+            this.checkBoxsFirstName.Name = "checkBoxsFirstName";
+            this.checkBoxsFirstName.Size = new System.Drawing.Size(85, 19);
+            this.checkBoxsFirstName.TabIndex = 8;
+            this.checkBoxsFirstName.Text = "sFirstName";
+            this.checkBoxsFirstName.UseVisualStyleBackColor = true;
+            // 
+            // labelDummyDataReport
+            // 
+            this.labelDummyDataReport.AutoSize = true;
+            this.labelDummyDataReport.Location = new System.Drawing.Point(52, 191);
+            this.labelDummyDataReport.Name = "labelDummyDataReport";
+            this.labelDummyDataReport.Size = new System.Drawing.Size(0, 15);
+            this.labelDummyDataReport.TabIndex = 7;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(46, 22);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(138, 15);
+            this.label8.TabIndex = 5;
+            this.label8.Text = "GreenBook Dummy Data";
+            // 
+            // buttonGenerateDummyData
+            // 
+            this.buttonGenerateDummyData.Location = new System.Drawing.Point(52, 125);
+            this.buttonGenerateDummyData.Name = "buttonGenerateDummyData";
+            this.buttonGenerateDummyData.Size = new System.Drawing.Size(210, 23);
+            this.buttonGenerateDummyData.TabIndex = 4;
+            this.buttonGenerateDummyData.Text = "Generate Dummy data";
+            this.buttonGenerateDummyData.UseVisualStyleBackColor = true;
+            this.buttonGenerateDummyData.Click += new System.EventHandler(this.buttonGenerateDummyData_Click);
+            // 
             // txtLogFolderPath
             // 
             this.txtLogFolderPath.Location = new System.Drawing.Point(137, 42);
@@ -314,6 +468,8 @@
             this.tabPageImageMigration.PerformLayout();
             this.tabPageCTAChartel.ResumeLayout(false);
             this.tabPageCTAChartel.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -344,6 +500,19 @@
         private System.Windows.Forms.Label labelChartelResult;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button buttonGenerateDummyData;
+        private System.Windows.Forms.Label labelDummyDataReport;
+        private System.Windows.Forms.CheckBox checkBoxsEmail;
+        private System.Windows.Forms.CheckBox checkBoxsSpouseName;
+        private System.Windows.Forms.CheckBox checkBoxsMothersName;
+        private System.Windows.Forms.CheckBox checkBoxsFathersName;
+        private System.Windows.Forms.CheckBox checkBoxsPhone;
+        private System.Windows.Forms.CheckBox checkBoxsFamilyName;
+        private System.Windows.Forms.CheckBox checkBoxsLastName;
+        private System.Windows.Forms.CheckBox checkBoxsMiddleName;
+        private System.Windows.Forms.CheckBox checkBoxsFirstName;
     }
 }
 
