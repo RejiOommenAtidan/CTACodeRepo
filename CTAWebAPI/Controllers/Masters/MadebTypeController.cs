@@ -106,6 +106,7 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 if (ModelState.IsValid)
                 {
+                    madebType.nMadebFeatureId = 0;
                     madebType.dtEntered = DateTime.Now;
                     madebType.dtUpdated = DateTime.Now;
 

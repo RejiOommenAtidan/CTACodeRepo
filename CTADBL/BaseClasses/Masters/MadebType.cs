@@ -11,7 +11,7 @@ namespace CTADBL.BaseClasses.Masters
         private string _madebType;
         private string _sMadebDisplayName;
         private string _sMadebDisplayKey;
-
+        private int _nMadebFeatureId;
         [Key]
         public int Id
         {
@@ -58,6 +58,17 @@ namespace CTADBL.BaseClasses.Masters
             set
             {
                 _sMadebDisplayKey = value;
+            }
+        }
+        public int nMadebFeatureId
+        {
+            get
+            {
+                return _nMadebFeatureId;
+            }
+            set
+            {
+                _nMadebFeatureId = value;
             }
         }
     }

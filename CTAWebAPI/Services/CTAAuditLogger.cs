@@ -47,7 +47,7 @@ namespace CTAWebAPI.Services
                         //object[] displayNameAttributeCommon = commonPI.GetCustomAttributes(typeof(DisplayNameAttribute), false);
                         //string sDisplayNameCommon = displayNameAttributeCommon.Length > 0 ? (displayNameAttributeCommon[0] as DisplayNameAttribute).DisplayName : pi.Name;
 
-                        if (sOldvalue != sNewValue && (sOldvalue == null || !sOldvalue.Equals(sNewValue)))
+                        if (sOldvalue != sNewValue && (sOldvalue == null || !sOldvalue.Equals(sNewValue)) && sOldvalue!=null && sNewValue!=null)
                         {
                             string sOldStringToJoin = pi.Name + " " + "=" + " " + sOldvalue.ToString();
                             string sNewStringToJoin = pi.Name + " " + "=" + " " + sNewValue.ToString();

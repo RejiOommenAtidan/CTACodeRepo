@@ -1,4 +1,6 @@
-﻿using CTADBL.BaseClasses.Transactions;
+﻿using CTADBL.BaseClasses.Masters;
+using CTADBL.BaseClasses.Transactions;
+using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
 using CTADBL.ViewModels;
@@ -27,12 +29,14 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly MadebRepository _madebRepository;
+        private readonly MadebTypeRepository _madebTypeRepository;
         private readonly MadebNewRecordVMRepository _madebNewRecordVMRepository;
         public MadebController(DBConnectionInfo info)
         {
             _info = info;
             _madebRepository = new MadebRepository(_info.sConnectionString);
             _madebNewRecordVMRepository = new MadebNewRecordVMRepository(_info.sConnectionString);
+            _madebTypeRepository = new MadebTypeRepository(_info.sConnectionString);
         }
         #endregion
 
@@ -408,6 +412,14 @@ namespace CTAWebAPI.Controllers.Transactions
                         {
                             return StatusCode(StatusCodes.Status500InternalServerError, result);
                         }
+
+                        #region Audit Log
+                        if (string.IsNullOrEmpty(madeb.sGBID))
+                            CTALogger.LogAuditRecord(fetchedMadeb, madeb, null, null, GetMadebFeatureMapping(madeb.nMadebTypeID), fetchedMadeb.Id, madeb.nUpdatedBy);
+                        else
+                            CTALogger.LogAuditRecord(fetchedMadeb, madeb, madeb.sGBID, madeb.nAuthRegionID, GetMadebFeatureMapping(madeb.nMadebTypeID), fetchedMadeb.Id, madeb.nUpdatedBy);
+                        #endregion
+
                         #region Alert Logging 
                         string sActionType = Enum.GetName(typeof(Operations), 3);
                         string sModuleName = (GetType().Name).Replace("Controller", "");
@@ -577,6 +589,39 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 throw new Exception("Exception in Madeb Exists Function, Exception Message: " + ex.Message);
             }
+        }
+        #endregion
+
+        #region Get Madeb to Feature Mapping
+        private int GetMadebFeatureMapping(int? nMadebTypeID) {
+
+            string sMadebId = nMadebTypeID.ToString();
+            MadebType fetchedMadebType = _madebTypeRepository.GetMadebTypeById(sMadebId);
+            return fetchedMadebType.nMadebFeatureId;
+            //if (nMadebTypeID==1) 
+            //{
+            //    return 13;//Sarso
+            //}
+            //else if (nMadebTypeID == 2) 
+            //{
+            //    return 14;//Norchoe
+            //}
+            //else if (nMadebTypeID == 3)
+            //{
+            //    return 15;//Bhorlak
+            //}
+            //else if (nMadebTypeID == 4)
+            //{
+            //    return 18;//Abroad
+            //}
+            //else if (nMadebTypeID == 5)
+            //{
+            //    return 16;//Book Full
+            //}
+            //else 
+            //{
+            //    return 17;//BriefGB
+            //}
         }
         #endregion
     }
