@@ -97,7 +97,7 @@ namespace CTADBL.BaseClassRepositories.Masters
             Chatrel chatrel = new Chatrel();
             chatrel.Id = (int)reader["Id"];
             chatrel.sChatrelKey = (string)reader["sChatrelKey"];
-            chatrel.nChatrelValue = (int?)reader["nChatrelValue"];
+            chatrel.nChatrelValue = (int)reader["nChatrelValue"];
             chatrel.dtChatrelFrom = reader.IsDBNull("dtChatrelFrom") ? null : (DateTime?)(reader["dtChatrelFrom"]);
             chatrel.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
             chatrel.nEnteredBy = (int)reader["nEnteredBy"];

@@ -10,7 +10,7 @@ namespace CTADBL.BaseClasses.Masters
         #region Private Chatrel Properties 
         private int _Id;
         private string _sChatrelKey;
-        private int? _nChatrelValue;
+        private int _nChatrelValue;
         private DateTime? _dtChatrelFrom;
         private DateTime? _dtEntered = null;
         private int _nEnteredBy = 1;
@@ -20,7 +20,7 @@ namespace CTADBL.BaseClasses.Masters
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
         public string sChatrelKey { get { return _sChatrelKey; } set { _sChatrelKey = value; } }
-        public int? nChatrelValue { get { return _nChatrelValue; } set { _nChatrelValue = value; } }
+        public int nChatrelValue { get { return _nChatrelValue; } set { _nChatrelValue = value; } }
         public DateTime? dtChatrelFrom { get { return _dtChatrelFrom; } set { _dtChatrelFrom = value; } }
         public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
         public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }

@@ -18,14 +18,14 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly ChatrelRepository _chartelRepository;
-        private readonly GBChartelRepository _gbChartelRepository;
+        private readonly GBChatrelRepository _gbChartelRepository;
         private readonly CTALogger _ctaLogger;
         public PaymentsController(DBConnectionInfo info)
         {
             _info = info;
             _ctaLogger = new CTALogger(_info);
             _chartelRepository = new ChatrelRepository(_info.sConnectionString);
-            _gbChartelRepository = new GBChartelRepository(_info.sConnectionString);
+            _gbChartelRepository = new GBChatrelRepository(_info.sConnectionString);
         }
         #endregion
 
