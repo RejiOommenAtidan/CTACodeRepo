@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TextField } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import SearchOutlined from '@material-ui/icons/SearchOutlined';
 
 
 
@@ -22,7 +23,7 @@ const MyComp = (props) => {
     <div>
     <TextField
     id={props.field}
-    label={"Search " + props.name}
+    label={"Search " }
     onChange = {((e) => 
       {
         props.changeHandler(e);
@@ -39,10 +40,10 @@ const MyComp = (props) => {
     // InputProps={{
     //   startAdornment: (
     //     <InputAdornment position="start">
-    //       <AccountCircle />
+    //       <SearchOutlined />
     //     </InputAdornment>
     //   ),
-    //}}
+    // }}
     
   /></div>) ;
 };

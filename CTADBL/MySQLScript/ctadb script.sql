@@ -700,24 +700,28 @@ INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdate
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Change',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Change Password',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Search',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso New GB Entry',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Roles Feature Mapping',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Roles Manage',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Region',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chatrel',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('CTA Config',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('AuthRegion',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Country',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Occupation',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Province',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Qualification',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Relation',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Feature',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Type Issued',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Madeb Type',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Rights',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Region (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chatrel (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('CTA Config (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Authority Region (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Country (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Occupation (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Province (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Qualification (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Relation (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Feature (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Type Issued (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Madeb Type (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Rights (Master)',now(),1,now(),1);
+
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Rights (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Rights (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Rights (Master)',now(),1,now(),1);
 
 
 CREATE TABLE `lstCTAConfig` (
@@ -735,22 +739,22 @@ INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtUpdated`, `nUpdatedBy`) V
 (3, 'DateFormat', 'DD-MM-YYYY', now(), 1);
 
 
-CREATE TABLE `lstchatrel` (
+CREATE TABLE `lstChatrel` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `schatrelKey` text NOT NULL,
-  `nchatrelValue` int(11) NOT NULL,
-  `dtchatrelFrom` date DEFAULT NULL,
+  `sChatrelKey` text NOT NULL,
+  `nChatrelValue` int(11) NOT NULL,
+  `dtChatrelFrom` date DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO `lstchatrel` (`Id`, `schatrelKey`, `nchatrelValue`, `dtchatrelFrom`, `dtEntered`, `nEnteredBy`) VALUES
-(1, 'chatrelAmount', '36', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(2, 'chatrelMeal', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(3, 'chatrelSalaryAmt', '50', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(4, 'chatrelLateFeesPercentage', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(5, 'chatrelStartYear', '2011', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1);
+INSERT INTO `lstChatrel` (`Id`, `sChatrelKey`, `nChatrelValue`, `dtChatrelFrom`, `dtEntered`, `nEnteredBy`) VALUES
+(1, 'ChatrelAmount', '36', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
+(2, 'ChatrelMeal', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
+(3, 'ChatrelSalaryAmt', '50', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
+(4, 'ChatrelLateFeesPercentage', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
+(5, 'ChatrelStartYear', '2011', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1);
 
 -- -------------------------
 -- --Transactional Tables---
@@ -961,7 +965,7 @@ CREATE TABLE `tblAuditLog` (
 
 
 
-CREATE TABLE `tblchatrelPayment` (
+CREATE TABLE `tblChatrelPayment` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBId` varchar(255) DEFAULT NULL,
   `nchatrelAmount` int(11) DEFAULT NULL,
@@ -982,6 +986,7 @@ CREATE TABLE `tblchatrelPayment` (
   `sPaymentStatus` varchar(255) DEFAULT NULL,
   `sPaymentMode` varchar(255) DEFAULT NULL,
   `sPaymentCurrency` varchar(255) DEFAULT NULL,
+  `sPaidByGBId` varchar(255) DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
@@ -1005,13 +1010,13 @@ CREATE TABLE `lnkGBRelation` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
-CREATE TABLE `lnkgbchatrel` (
+CREATE TABLE `lnkgbChatrel` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBId` varchar(255) DEFAULT NULL,
-  `nchatrelAmount` int(11) NOT NULL,
-  `nchatrelMeal` int(11) DEFAULT NULL,
-  `nchatrelYear` int(11) DEFAULT NULL,
-  `nchatrelLateFeesPercentage` int(11) DEFAULT NULL,
+  `nChatrelAmount` int(11) NOT NULL,
+  `nChatrelMeal` int(11) DEFAULT NULL,
+  `nChatrelYear` int(11) DEFAULT NULL,
+  `nChatrelLateFeesPercentage` int(11) DEFAULT NULL,
   `nArrearsAmount` int(11) DEFAULT NULL,
   `dtArrearsFrom` date DEFAULT NULL,
   `dtArrearsTo` date DEFAULT NULL,
@@ -1023,6 +1028,8 @@ CREATE TABLE `lnkgbchatrel` (
   `nChatrelRecieptNumber` int(11) DEFAULT NULL,
   `nAuthRegionID` int(11) DEFAULT NULL,
   `sCountryID` varchar(255) DEFAULT NULL,
+  `sPaymentCurrency` varchar(255) DEFAULT NULL,
+  `sPaidByGBId` varchar(255) DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
@@ -1230,6 +1237,23 @@ BEGIN
     SELECT ID, sAuthRegion FROM lstauthregion;
     SELECT ID, sCountryID, sCountry FROM lstcountry;
     SELECT max(nBookNo) + 1 AS nBookNo FROM tblgreenbookserial;
+END$$
+DELIMITER ;
+
+DROP procedure IF EXISTS `spGetFormNumber`;
+DELIMITER $$
+CREATE PROCEDURE `spGetFormNumber`(IN formNumberIN INT, OUT result INT)
+BEGIN
+    DECLARE exist BOOLEAN;
+   
+   
+    SELECT EXISTS (SELECT nFormNumber FROM tblmadeb WHERE nFormNumber = formNumberIN) INTO exist;
+    IF (exist) THEN
+        SELECT MAX(nFormNumber+1) FROM tblmadeb INTO formNumberIN;
+       
+    END IF;
+    SET result = formNumberIN;
+    SELECT result;
 END$$
 DELIMITER ;
 
