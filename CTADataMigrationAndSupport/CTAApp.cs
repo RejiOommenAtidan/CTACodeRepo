@@ -730,8 +730,8 @@ namespace CTADataMigrationAndSupport
                 try
                 {
                     cnn.Open();
-                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook Limit 1000";
-                    string query = "select sGBID," + sDummyColumn + " from tblgreenbook";
+                    string query = "select sGBID," + sDummyColumn + " from tblgreenbook Limit 1000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook";
                     MySqlCommand cmd = new MySqlCommand(query, cnn);
                     MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
                     DataTable dt = new DataTable("tblGreenBook");
@@ -929,7 +929,7 @@ namespace CTADataMigrationAndSupport
                         //dummyData = tempData.ToLower();
                         tempData = RandomString(columnDatasplit[i].Length, isNumber);
                         int[] tempDataIndex = AllIndexesOf(columnDatasplit[i], "+", false);
-                        for (int tmp = 0; tmp <= tempDataIndex.Length; tmp++)
+                        for (int tmp = 0; tmp < tempDataIndex.Length; tmp++)
                         {
                             char[] ch = tempData.ToCharArray();
                             ch[tempDataIndex[tmp]] = '+'; // index starts at 0!
