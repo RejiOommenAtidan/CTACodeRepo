@@ -13,7 +13,7 @@ import {
   setSidebarToggleMobile
 } from '../../reducers/ThemeOptions';
 
-import projectLogo from '../../assets/images/react.svg';
+import projectLogo from '../../assets/images/CTALogo.png';
 
 const SidebarHeader = (props) => {
   const toggleSidebarMobile = () => {
@@ -38,16 +38,17 @@ const SidebarHeader = (props) => {
             to="/"
             title="Bamburgh React Admin Dashboard with Material-UI PRO"
             className="app-sidebar-logo">
-            <div className="app-sidebar-logo--icon">
+            <div >
               <img
                 alt="Bamburgh React Admin Dashboard with Material-UI PRO"
                 src={projectLogo}
+                width="50px"
               />
             </div>
             <div className="app-sidebar-logo--text">
-              <span>General</span>
+            
 
-              <b>bamburgh</b>
+              <b>Chatrel</b>
             </div>
           </NavLink>
         </div>

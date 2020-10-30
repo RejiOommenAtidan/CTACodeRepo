@@ -20,6 +20,7 @@ import {
 const Home = lazy(() => import('./views/home'));
 const Test = lazy(() => import('./views/test'));
 const Login = lazy(() => import('./views/login'));
+const SelfPayment = lazy(() => import('./views/selfpayment'));
 
 const Routes = () => {
   const location = useLocation();
@@ -102,7 +103,7 @@ const Routes = () => {
 
             <Route
               path={[
-                
+                '/Home',
               ]}>
               <MinimalLayout>
                 <Switch location={location} key={location.pathname}>
@@ -113,7 +114,10 @@ const Routes = () => {
                     variants={pageVariants}
                     transition={pageTransition}>
                   
-                
+                  <Route
+                      path="/Home"
+                      component={Home}
+                    />
                 
                   </motion.div>
                 </Switch>
@@ -122,8 +126,9 @@ const Routes = () => {
 
             <Route
               path={[
-                '/Home',
-                '/Test'
+               
+                '/Test',
+                '/SelfPayment'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -133,13 +138,14 @@ const Routes = () => {
                     exit="out"
                     variants={pageVariants}
                     transition={pageTransition}>
-                    <Route
-                      path="/Home"
-                      component={Home}
-                    />
+                    
                     <Route
                       path="/Test"
                       component={Test}
+                    />
+                     <Route
+                      path="/SelfPayment"
+                      component={SelfPayment}
                     />
                     
                   </motion.div>
