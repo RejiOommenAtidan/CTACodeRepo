@@ -71,7 +71,7 @@
             this.labelDummyDataReport = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.buttonGenerateDummyData = new System.Windows.Forms.Button();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPageDummyProfilePicture = new System.Windows.Forms.TabPage();
             this.labelDummyProfilePicture = new System.Windows.Forms.Label();
             this.buttonGenerateDummyProfilePicture = new System.Windows.Forms.Button();
             this.textBoxProfilePicturePath = new System.Windows.Forms.TextBox();
@@ -84,7 +84,7 @@
             this.tabPageImageMigration.SuspendLayout();
             this.tabPageCTAChartel.SuspendLayout();
             this.tabPageDummyData.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabPageDummyProfilePicture.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtConnectionString
@@ -111,7 +111,7 @@
             this.tabControlCTA.Controls.Add(this.tabPageImageMigration);
             this.tabControlCTA.Controls.Add(this.tabPageCTAChartel);
             this.tabControlCTA.Controls.Add(this.tabPageDummyData);
-            this.tabControlCTA.Controls.Add(this.tabPage1);
+            this.tabControlCTA.Controls.Add(this.tabPageDummyProfilePicture);
             this.tabControlCTA.Location = new System.Drawing.Point(10, 88);
             this.tabControlCTA.Name = "tabControlCTA";
             this.tabControlCTA.SelectedIndex = 0;
@@ -539,28 +539,27 @@
             this.buttonGenerateDummyData.UseVisualStyleBackColor = true;
             this.buttonGenerateDummyData.Click += new System.EventHandler(this.buttonGenerateDummyData_Click);
             // 
-            // tabPage1
+            // tabPageDummyProfilePicture
             // 
-            this.tabPage1.Controls.Add(this.labelDummyProfilePicture);
-            this.tabPage1.Controls.Add(this.buttonGenerateDummyProfilePicture);
-            this.tabPage1.Controls.Add(this.textBoxProfilePicturePath);
-            this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(759, 435);
-            this.tabPage1.TabIndex = 5;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPageDummyProfilePicture.Controls.Add(this.labelDummyProfilePicture);
+            this.tabPageDummyProfilePicture.Controls.Add(this.buttonGenerateDummyProfilePicture);
+            this.tabPageDummyProfilePicture.Controls.Add(this.textBoxProfilePicturePath);
+            this.tabPageDummyProfilePicture.Controls.Add(this.label9);
+            this.tabPageDummyProfilePicture.Location = new System.Drawing.Point(4, 24);
+            this.tabPageDummyProfilePicture.Name = "tabPageDummyProfilePicture";
+            this.tabPageDummyProfilePicture.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDummyProfilePicture.Size = new System.Drawing.Size(759, 435);
+            this.tabPageDummyProfilePicture.TabIndex = 5;
+            this.tabPageDummyProfilePicture.Text = "CTA Dummy Profile Picture";
+            this.tabPageDummyProfilePicture.UseVisualStyleBackColor = true;
             // 
             // labelDummyProfilePicture
             // 
             this.labelDummyProfilePicture.AutoSize = true;
             this.labelDummyProfilePicture.Location = new System.Drawing.Point(27, 154);
             this.labelDummyProfilePicture.Name = "labelDummyProfilePicture";
-            this.labelDummyProfilePicture.Size = new System.Drawing.Size(25, 15);
+            this.labelDummyProfilePicture.Size = new System.Drawing.Size(0, 15);
             this.labelDummyProfilePicture.TabIndex = 36;
-            this.labelDummyProfilePicture.Text = "asd";
             // 
             // buttonGenerateDummyProfilePicture
             // 
@@ -637,8 +636,8 @@
             this.tabPageCTAChartel.PerformLayout();
             this.tabPageDummyData.ResumeLayout(false);
             this.tabPageDummyData.PerformLayout();
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.tabPageDummyProfilePicture.ResumeLayout(false);
+            this.tabPageDummyProfilePicture.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -691,7 +690,7 @@
         private System.Windows.Forms.Label labelDummyDataReport;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button buttonGenerateDummyData;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPageDummyProfilePicture;
         private System.Windows.Forms.Button buttonGenerateDummyProfilePicture;
         private System.Windows.Forms.TextBox textBoxProfilePicturePath;
         private System.Windows.Forms.Label label9;

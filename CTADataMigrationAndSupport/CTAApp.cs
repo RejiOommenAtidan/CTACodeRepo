@@ -38,6 +38,8 @@ namespace CTADataMigrationAndSupport
             string sLogFolderPath = txtLogFolderPath.Text;
             string sPathPrifix = txtImagePath.Text;
 
+            progressBarProcess.Value = 0;
+            progressBarProcess.Refresh();
 
 
             cnn = new MySqlConnection(connetionString);
@@ -228,7 +230,7 @@ namespace CTADataMigrationAndSupport
             Int32 nNotNumberButString = 0;
             StringBuilder sbLogging = new StringBuilder();
 
-            progressBarProcess.Equals(0);
+            progressBarProcess.Value = 0;
             progressBarProcess.Refresh();
 
             if (comboBox1.SelectedItem == null)
@@ -519,6 +521,10 @@ namespace CTADataMigrationAndSupport
             int nAuthRegionID = 0;
             string sCountryID = string.Empty;
             cnn = new MySqlConnection(connetionString);
+            progressBarProcess.Value = 0;
+            progressBarProcess.Refresh();
+
+
             try
             {
                 cnn.Open();
@@ -725,6 +731,8 @@ namespace CTADataMigrationAndSupport
             string TBUMothersNameData = string.Empty;
             string TBUSpouseNameData = string.Empty;
             string updateString = string.Empty;
+            progressBarProcess.Value = 0;
+            progressBarProcess.Refresh();
 
             if (checkBoxsFirstName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsFirstName.Text : checkBoxsFirstName.Text; }
             if (checkBoxsMiddleName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsMiddleName.Text : checkBoxsMiddleName.Text; }
@@ -1154,6 +1162,9 @@ namespace CTADataMigrationAndSupport
 
         private void buttonGenerateDummyProfilePicture_Click(object sender, EventArgs e)
         {
+            progressBarProcess.Value = 0;
+            progressBarProcess.Refresh();
+
             ProfilePictureDummyData();
 
         }
