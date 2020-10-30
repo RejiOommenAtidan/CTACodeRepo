@@ -70,7 +70,8 @@ namespace CTAWebAPI.Controllers
         #endregion
 
         #region Get Payment Records
-
+        [HttpGet]
+        [Route("[action]")]
         public IActionResult GetAllChatrelPayments()
         {
             try
@@ -97,7 +98,31 @@ namespace CTAWebAPI.Controllers
         }
 
         #endregion
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult DisplayChatrelPayment(string sGBID)
+        {
+            if(String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID))
+            {
+                return BadRequest("Required parameters are missing.");
+            }
+            try
+            {
+                Object chatrel = _chatrelPaymentRepository.DisplayChatrelPayment(sGBID);
+                if(chatrel != null)
+                {
+                    return Ok(chatrel);
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
 
-
+            }
+        }
     }
 }

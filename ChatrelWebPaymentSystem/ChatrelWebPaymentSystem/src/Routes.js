@@ -16,7 +16,9 @@ import {
   PresentationLayout
 } from './layout-blueprints';
 
+
 const Home = lazy(() => import('./views/home'));
+const Test = lazy(() => import('./views/test'));
 const Login = lazy(() => import('./views/login'));
 
 const Routes = () => {
@@ -120,7 +122,8 @@ const Routes = () => {
 
             <Route
               path={[
-                '/Home'
+                '/Home',
+                '/Test'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -133,6 +136,10 @@ const Routes = () => {
                     <Route
                       path="/Home"
                       component={Home}
+                    />
+                    <Route
+                      path="/Test"
+                      component={Test}
                     />
                     
                   </motion.div>
