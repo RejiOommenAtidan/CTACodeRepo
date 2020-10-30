@@ -17,9 +17,15 @@ import {
 } from './layout-blueprints';
 
 
-const Home = lazy(() => import('./views/home'));
+
+const Home = lazy(() => import('./views/home/home.js'));
 const Test = lazy(() => import('./views/test'));
 const Login = lazy(() => import('./views/login'));
+const SelfPayment = lazy(() => import('./views/selfpayment'));
+const Family = lazy(() => import("./views/family"));
+const Friends = lazy(() => import("./views/friends"));
+const PaymentHistory = lazy(() => import('./views/paymenthistory'));
+const PaymentPage = lazy(() => import('./views/paymentpage'));
 
 const Routes = () => {
   const location = useLocation();
@@ -102,7 +108,7 @@ const Routes = () => {
 
             <Route
               path={[
-                
+                '/Home',
               ]}>
               <MinimalLayout>
                 <Switch location={location} key={location.pathname}>
@@ -113,7 +119,10 @@ const Routes = () => {
                     variants={pageVariants}
                     transition={pageTransition}>
                   
-                
+                  <Route
+                      path="/Home"
+                      component={Home}
+                    />
                 
                   </motion.div>
                 </Switch>
@@ -122,8 +131,12 @@ const Routes = () => {
 
             <Route
               path={[
-                '/Home',
-                '/Test'
+                '/Family',
+                '/Friends',
+                '/PaymentHistory',
+                '/Test',
+                '/SelfPayment',
+                '/PaymentPage/:gbid'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -133,13 +146,30 @@ const Routes = () => {
                     exit="out"
                     variants={pageVariants}
                     transition={pageTransition}>
-                    <Route
-                      path="/Home"
-                      component={Home}
-                    />
+                    
                     <Route
                       path="/Test"
                       component={Test}
+                    />
+                     <Route
+                      path="/Family"
+                      component={Family}
+                    />
+                    <Route
+                      path="/Friends"
+                      component={Friends}
+                    />
+                    <Route
+                      path="/PaymentHistory"
+                      component={PaymentHistory}
+                    />
+                    <Route
+                      path="/SelfPayment"
+                      component={SelfPayment}
+                    />
+                    <Route
+                      path='/PaymentPage/:gbid'
+                      component={PaymentPage}
                     />
                     
                   </motion.div>
