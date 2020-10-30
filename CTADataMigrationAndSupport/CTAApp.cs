@@ -24,12 +24,14 @@ namespace CTADataMigrationAndSupport
             InitializeComponent();
         }
 
+        #region Profile Migration
+
         private void btnImageMigration_Click(object sender, EventArgs e)
         {
             string connetionString = null;
             MySqlConnection cnn;
             //connetionString = "Server=127.0.0.1;Port=3306;Database=ctadb;Uid=root;allow zero datetime=no";
-            //string sLogFolderPath = @"D:\Reji\Chartel\CTAImageFile-DataMigration\CTAImageUploadFromFolder\CTAImageUploadFromFolder\";
+            //string sLogFolderPath = @"D:\Reji\Chatrel\CTAImageFile-DataMigration\CTAImageUploadFromFolder\CTAImageUploadFromFolder\";
             //string sPathPrifix = @"C:\xampp\htdocs\GreenBook\gb\images\";
 
             connetionString = txtConnectionString.Text;
@@ -182,6 +184,11 @@ namespace CTADataMigrationAndSupport
 
         }
 
+        #endregion
+
+       
+
+
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -220,6 +227,9 @@ namespace CTADataMigrationAndSupport
             Int32 nStringWithEmpty = 0;
             Int32 nNotNumberButString = 0;
             StringBuilder sbLogging = new StringBuilder();
+
+            progressBarProcess.Equals(0);
+            progressBarProcess.Refresh();
 
             if (comboBox1.SelectedItem == null)
             {
@@ -493,6 +503,9 @@ namespace CTADataMigrationAndSupport
             }
         }
 
+
+        #region Chatrel
+
         private void buttonGetChartelNow_Click(object sender, EventArgs e)
         {
             string connetionString = null;
@@ -525,15 +538,15 @@ namespace CTADataMigrationAndSupport
                     sName = dt.Rows[0]["sName"].ToString();
                     nAuthRegionID = Convert.ToInt32(dt.Rows[0]["nAuthRegionID"]);
                     sCountryID = dt.Rows[0]["sCountryID"].ToString();
-                    labelChartelResult.Text = nPaidUntil.ToString();
-                    labelChartelResult.Text = "Total Chartel Balance: $" + getChartelAmount(nPaidUntil) + " from the year " + nPaidUntil.ToString();
-                    DataTable dtChartelPending = getChartelDataTable(nPaidUntil, sName, nAuthRegionID, sCountryID);
+                    labelChatrelResult.Text = nPaidUntil.ToString();
+                    labelChatrelResult.Text = "Total Chatrel Balance: $" + getChatrelAmount(nPaidUntil) + " from the year " + nPaidUntil.ToString();
+                    DataTable dtChatrelPending = getChatrelDataTable(nPaidUntil, sName, nAuthRegionID, sCountryID);
 
                 }
                 else
                 {
                     nPaidUntil = 2011;
-                    labelChartelResult.Text = "Invalid GB Id";
+                    labelChatrelResult.Text = "Invalid GB Id";
                 }
 
                 cnn.Close();
@@ -541,91 +554,91 @@ namespace CTADataMigrationAndSupport
             }
             catch (Exception ex)
             {
-                labelChartelResult.Text += Environment.NewLine + ex.ToString();
+                labelChatrelResult.Text += Environment.NewLine + ex.ToString();
             }
 
 
         }
 
-        private string getChartelAmount(int nChartelYear)
+        private string getChatrelAmount(int nChatrelYear)
         {
-            int nChartelAmount = 36;
-            int nChartelMeal = 10;
-            int nChartelSalaryAmt = 50;
-            int nChartelLateFeesPercentage = 10;
-            int nChartelStartYear = 2011;
-            int nChartelCurrentYear = DateTime.Today.Year;
-            int nChartelPendingYears = 0;
+            int nChatrelAmount = 36;
+            int nChatrelMeal = 10;
+            int nChatrelSalaryAmt = 50;
+            int nChatrelLateFeesPercentage = 10;
+            int nChatrelStartYear = 2011;
+            int nChatrelCurrentYear = DateTime.Today.Year;
+            int nChatrelPendingYears = 0;
             decimal nLateFeeCharge = 0;
             //Calculate
 
 
-            if (nChartelYear < nChartelStartYear)
+            if (nChatrelYear < nChatrelStartYear)
             {
-                nChartelYear = 2011;
+                nChatrelYear = 2011;
             }
 
-            nChartelPendingYears = nChartelCurrentYear - nChartelYear;
+            nChatrelPendingYears = nChatrelCurrentYear - nChatrelYear;
 
-            if (nChartelPendingYears > 1)
+            if (nChatrelPendingYears > 1)
             {
-                nLateFeeCharge = (((Convert.ToDecimal(nChartelAmount) + Convert.ToDecimal(nChartelMeal)) * Convert.ToDecimal(nChartelPendingYears)) * 10) / 100;
+                nLateFeeCharge = (((Convert.ToDecimal(nChatrelAmount) + Convert.ToDecimal(nChatrelMeal)) * Convert.ToDecimal(nChatrelPendingYears)) * 10) / 100;
             }
 
-            //Int64 nTotalChartelAmount = ((nChartelAmount + nChartelMeal) * nChartelPendingYears) + nLateFeeCharge;
-            decimal nTotalChartelAmount = Math.Round((Convert.ToDecimal(nChartelAmount + nChartelMeal) * Convert.ToDecimal(nChartelPendingYears + 1)) + nLateFeeCharge, 2);
+            //Int64 nTotalChatrelAmount = ((nChatrelAmount + nChatrelMeal) * nChatrelPendingYears) + nLateFeeCharge;
+            decimal nTotalChatrelAmount = Math.Round((Convert.ToDecimal(nChatrelAmount + nChatrelMeal) * Convert.ToDecimal(nChatrelPendingYears + 1)) + nLateFeeCharge, 2);
 
-            label7.Text = "Calculation : (" + nChartelAmount.ToString() + " + " + nChartelMeal.ToString() + ") * (" + nChartelPendingYears.ToString() + " + 1) + "
-                + Math.Round(nLateFeeCharge, 2).ToString() + " = " + nTotalChartelAmount.ToString("0.00");
+            label7.Text = "Calculation : (" + nChatrelAmount.ToString() + " + " + nChatrelMeal.ToString() + ") * (" + nChatrelPendingYears.ToString() + " + 1) + "
+                + Math.Round(nLateFeeCharge, 2).ToString() + " = " + nTotalChatrelAmount.ToString("0.00");
 
 
 
-            return nTotalChartelAmount.ToString("0.00");
+            return nTotalChatrelAmount.ToString("0.00");
         }
 
-        private DataTable getChartelDataTable(int nChartelYear, string sName, int nAuthRegionID, string sCountryID)
+        private DataTable getChatrelDataTable(int nChatrelYear, string sName, int nAuthRegionID, string sCountryID)
         {
-            int nChartelAmount = 36;
-            int nChartelMeal = 10;
-            int nChartelSalaryAmt = 50;
-            int nChartelLateFeesPercentage = 10;
-            int nChartelStartYear = 2011;
-            int nChartelCurrentYear = DateTime.Today.Year;
-            int nChartelPendingYears = 0;
+            int nChatrelAmount = 36;
+            int nChatrelMeal = 10;
+            int nChatrelSalaryAmt = 50;
+            int nChatrelLateFeesPercentage = 10;
+            int nChatrelStartYear = 2011;
+            int nChatrelCurrentYear = DateTime.Today.Year;
+            int nChatrelPendingYears = 0;
             decimal nLateFeeCharge = 0;
             //Calculate
 
 
-            if (nChartelYear < nChartelStartYear)
+            if (nChatrelYear < nChatrelStartYear)
             {
-                nChartelYear = 2011;
+                nChatrelYear = 2011;
             }
 
-            nChartelPendingYears = nChartelCurrentYear - nChartelYear;
+            nChatrelPendingYears = nChatrelCurrentYear - nChatrelYear;
 
-            if (nChartelPendingYears > 1)
+            if (nChatrelPendingYears > 1)
             {
-                nLateFeeCharge = (((Convert.ToDecimal(nChartelAmount) + Convert.ToDecimal(nChartelMeal)) * Convert.ToDecimal(nChartelPendingYears)) * 10) / 100;
+                nLateFeeCharge = (((Convert.ToDecimal(nChatrelAmount) + Convert.ToDecimal(nChatrelMeal)) * Convert.ToDecimal(nChatrelPendingYears)) * 10) / 100;
             }
 
-            //Int64 nTotalChartelAmount = ((nChartelAmount + nChartelMeal) * nChartelPendingYears) + nLateFeeCharge;
-            decimal nTotalChartelAmount = Math.Round((Convert.ToDecimal(nChartelAmount + nChartelMeal) * Convert.ToDecimal(nChartelPendingYears + 1)) + nLateFeeCharge, 2);
+            //Int64 nTotalChatrelAmount = ((nChatrelAmount + nChatrelMeal) * nChatrelPendingYears) + nLateFeeCharge;
+            decimal nTotalChatrelAmount = Math.Round((Convert.ToDecimal(nChatrelAmount + nChatrelMeal) * Convert.ToDecimal(nChatrelPendingYears + 1)) + nLateFeeCharge, 2);
 
-            label7.Text = "Calculation : (" + nChartelAmount.ToString() + " + " + nChartelMeal.ToString() + ") * (" + nChartelPendingYears.ToString() + " + 1) + "
-                + Math.Round(nLateFeeCharge, 2).ToString() + " = " + nTotalChartelAmount.ToString("0.00");
+            label7.Text = "Calculation : (" + nChatrelAmount.ToString() + " + " + nChatrelMeal.ToString() + ") * (" + nChatrelPendingYears.ToString() + " + 1) + "
+                + Math.Round(nLateFeeCharge, 2).ToString() + " = " + nTotalChatrelAmount.ToString("0.00");
 
-            DataTable lnkGBChartelPending = GetTable();
+            DataTable lnkGBChatrelPending = GetTable();
             int countRow = 0;
-            for (int i = 0; i < nChartelPendingYears; i++)
+            for (int i = 0; i < nChatrelPendingYears; i++)
             {
 
                 double dLateFee = (((36d + 10d) * 10d) / 100d);
-                lnkGBChartelPending.Rows.Add(
+                lnkGBChatrelPending.Rows.Add(
                     i + 1,
                     sName,
                     36,
                     10,
-                    nChartelYear,
+                    nChatrelYear,
                     dLateFee,
                     0,
                     0,
@@ -635,16 +648,16 @@ namespace CTADataMigrationAndSupport
                     nAuthRegionID,
                     sCountryID);
                 countRow++;
-                nChartelYear++;
+                nChatrelYear++;
             }
             countRow++;
 
-            lnkGBChartelPending.Rows.Add(
+            lnkGBChatrelPending.Rows.Add(
                     countRow,
                     sName,
                     36,
                     10,
-                    nChartelYear,
+                    nChatrelYear,
                     0,
                     0,
                     0,
@@ -655,8 +668,8 @@ namespace CTADataMigrationAndSupport
                     sCountryID);
 
 
-            //return nTotalChartelAmount.ToString("0.00");
-            return lnkGBChartelPending;
+            //return nTotalChatrelAmount.ToString("0.00");
+            return lnkGBChatrelPending;
         }
 
         static DataTable GetTable()
@@ -666,11 +679,11 @@ namespace CTADataMigrationAndSupport
             DataTable table = new DataTable();
             table.Columns.Add("Id", typeof(int));
             table.Columns.Add("sName", typeof(string));
-            table.Columns.Add("nChartel", typeof(int));
+            table.Columns.Add("nChatrel", typeof(int));
             table.Columns.Add("nMeal", typeof(int));
             table.Columns.Add("nYear", typeof(int));
             table.Columns.Add("nLateFees", typeof(decimal));
-            table.Columns.Add("nChartelSalaryAmt", typeof(int));
+            table.Columns.Add("nChatrelSalaryAmt", typeof(int));
             table.Columns.Add("nBusinessDonation", typeof(int));
             table.Columns.Add("nAdditionalDonation", typeof(int));
             table.Columns.Add("nTotalAmount", typeof(decimal));
@@ -678,15 +691,13 @@ namespace CTADataMigrationAndSupport
             table.Columns.Add("nAuthRegionId", typeof(int));
             table.Columns.Add("sCountryId", typeof(string));
 
-
-            //// here we add rows.
-            //table.Rows.Add(25, "Drug A", "Disease A", DateTime.Now);
-            //table.Rows.Add(50, "Drug Z", "Problem Z", DateTime.Now);
-            //table.Rows.Add(10, "Drug Q", "Disorder Q", DateTime.Now);
-            //table.Rows.Add(21, "Medicine A", "Diagnosis A", DateTime.Now);
             return table;
         }
 
+        #endregion
+
+
+        #region Dummy Data
         private void buttonGenerateDummyData_Click(object sender, EventArgs e)
         {
             string connetionString = null;
@@ -704,19 +715,35 @@ namespace CTADataMigrationAndSupport
             string sFathersNameData = string.Empty;
             string sMothersNameData = string.Empty;
             string sSpouseNameData = string.Empty;
+            string sAddress1Data = string.Empty;
+            string sAddress2Data = string.Empty;
+            string sPCodeData = string.Empty;
+            string TibetanNameData = string.Empty;
+            string TBUPlaceOfBirthData = string.Empty;
+            string TBUOriginVillageData = string.Empty;
+            string TBUFathersNameData = string.Empty;
+            string TBUMothersNameData = string.Empty;
+            string TBUSpouseNameData = string.Empty;
             string updateString = string.Empty;
 
-            if (checkBoxsFirstName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsFirstName.Text : checkBoxsFirstName.Text; }
-            if (checkBoxsMiddleName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsMiddleName.Text : checkBoxsMiddleName.Text; }
-            if (checkBoxsLastName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsLastName.Text : checkBoxsLastName.Text; }
-            if (checkBoxsFamilyName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsFamilyName.Text : checkBoxsFamilyName.Text; }
-            if (checkBoxsPhone.Checked) {sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsPhone.Text : checkBoxsPhone.Text; }
-            if (checkBoxsEmail.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsEmail.Text : checkBoxsEmail.Text; }
-            if (checkBoxsFathersName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsFathersName.Text : checkBoxsFathersName.Text; }
-            if (checkBoxsMothersName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsMothersName.Text : checkBoxsMothersName.Text; }
-            if (checkBoxsSpouseName.Checked){sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsSpouseName.Text : checkBoxsSpouseName.Text; }
-
-
+            if (checkBoxsFirstName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsFirstName.Text : checkBoxsFirstName.Text; }
+            if (checkBoxsMiddleName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsMiddleName.Text : checkBoxsMiddleName.Text; }
+            if (checkBoxsLastName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsLastName.Text : checkBoxsLastName.Text; }
+            if (checkBoxsFamilyName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsFamilyName.Text : checkBoxsFamilyName.Text; }
+            if (checkBoxsPhone.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsPhone.Text : checkBoxsPhone.Text; }
+            if (checkBoxsEmail.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsEmail.Text : checkBoxsEmail.Text; }
+            if (checkBoxsFathersName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsFathersName.Text : checkBoxsFathersName.Text; }
+            if (checkBoxsMothersName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsMothersName.Text : checkBoxsMothersName.Text; }
+            if (checkBoxsSpouseName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsSpouseName.Text : checkBoxsSpouseName.Text; }
+            if (checkBoxsAddress1.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsAddress1.Text : checkBoxsAddress1.Text; }
+            if (checkBoxsAddress2.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsAddress2.Text : checkBoxsAddress2.Text; }
+            if (checkBoxsPCode.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxsPCode.Text : checkBoxsPCode.Text; }
+            if (checkBoxTibetanName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxTibetanName.Text : checkBoxTibetanName.Text; }
+            if (checkBoxTBUPlaceOfBirth.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxTBUPlaceOfBirth.Text : checkBoxTBUPlaceOfBirth.Text; }
+            if (checkBoxTBUOriginVillage.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxTBUOriginVillage.Text : checkBoxTBUOriginVillage.Text; }
+            if (checkBoxTBUFathersName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxTBUFathersName.Text : checkBoxTBUFathersName.Text; }
+            if (checkBoxTBUMothersName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxTBUMothersName.Text : checkBoxTBUMothersName.Text; }
+            if (checkBoxTBUSpouseName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxTBUSpouseName.Text : checkBoxTBUSpouseName.Text; }
 
             if (sDummyColumn.Length <= 0)
             {
@@ -725,7 +752,7 @@ namespace CTADataMigrationAndSupport
             }
             else
             {
-                
+
                 cnn = new MySqlConnection(connetionString);
                 try
                 {
@@ -767,28 +794,27 @@ namespace CTADataMigrationAndSupport
                         }
 
                         string sGBNum = row["sGBID"].ToString().Trim();
-                        if (sDummyColumn.Contains("sFirstName")){sFirstNameData = row["sFirstName"].ToString().Trim();}
-                        if (sDummyColumn.Contains("sMiddleName")){ sMiddleNameData = row["sMiddleName"].ToString().Trim();}
-                        if (sDummyColumn.Contains("sLastName")){ sLastNameData = row["sLastName"].ToString().Trim();}
-                        if (sDummyColumn.Contains("sFamilyName")){ sFamilyNameData = row["sFamilyName"].ToString().Trim();}
-                        if (sDummyColumn.Contains("sPhone")){ sPhoneData = row["sPhone"].ToString().Trim();}
-                        if (sDummyColumn.Contains("sEmail")){ sEmailData = row["sEmail"].ToString().Trim();}
-                        if (sDummyColumn.Contains("sFathersName")){ sFathersNameData = row["sFathersName"].ToString().Trim();}
-                        if (sDummyColumn.Contains("sMothersName")){ sMothersNameData = row["sMothersName"].ToString().Trim();}
-                        if (sDummyColumn.Contains("sSpouseName")){ sSpouseNameData = row["sSpouseName"].ToString().Trim();}
+                        if (sDummyColumn.Contains("sFirstName")) { sFirstNameData = row["sFirstName"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("sMiddleName")) { sMiddleNameData = row["sMiddleName"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("sLastName")) { sLastNameData = row["sLastName"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("sFamilyName")) { sFamilyNameData = row["sFamilyName"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("sPhone")) { sPhoneData = row["sPhone"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("sEmail")) { sEmailData = row["sEmail"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("sFathersName")) { sFathersNameData = row["sFathersName"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("sMothersName")) { sMothersNameData = row["sMothersName"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("sSpouseName")) { sSpouseNameData = row["sSpouseName"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("sAddress1")) { sAddress1Data = row["sAddress1"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("sAddress2")) { sAddress2Data = row["sAddress2"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("sPCode")) { sPCodeData = row["sPCode"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("TibetanName")) { TibetanNameData = row["TibetanName"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("TBUPlaceOfBirth")) { TBUPlaceOfBirthData = row["TBUPlaceOfBirth"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("TBUOriginVillage")) { TBUOriginVillageData = row["TBUOriginVillage"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("TBUFathersName")) { TBUFathersNameData = row["TBUFathersName"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("TBUMothersName")) { TBUMothersNameData = row["TBUMothersName"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("TBUSpouseName")) { TBUSpouseNameData = row["TBUSpouseName"].ToString().Trim(); }
 
-                        //string sColumnData = row[sDummyColumn].ToString().Trim();
-                        //if (sColumnData != "" || sColumnData != string.Empty)
-                        //{
-                        //    sDummyData = RandomString(sColumnData.Length, false);
-                        //    sDummyData = char.ToUpper(sDummyData[0]) + sDummyData.Substring(1).ToLower();
-                        //}
-                        //else
-                        //{
-                        //    sDummyData = string.Empty;
-                        //}
-                        if (sFirstNameData.Length > 0){updateString += updateString.Length <= 0 ? "`sFirstName` = @sFirstName " : ", `sFirstName` = @sFirstName ";}
-                        if (sMiddleNameData.Length > 0){updateString += updateString.Length <= 0 ? "`sMiddleName` = @sMiddleName " : ", `sMiddleName` = @sMiddleName ";}
+                        if (sFirstNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sFirstName` = @sFirstName " : ", `sFirstName` = @sFirstName "; }
+                        if (sMiddleNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sMiddleName` = @sMiddleName " : ", `sMiddleName` = @sMiddleName "; }
                         if (sLastNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sLastName` = @sLastName " : ", `sLastName` = @sLastName "; }
                         if (sFamilyNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sFamilyName` = @sFamilyName " : ", `sFamilyName` = @sFamilyName "; }
                         if (sPhoneData.Length > 0) { updateString += updateString.Length <= 0 ? "`sPhone` = @sPhone " : ", `sPhone` = @sPhone "; }
@@ -796,7 +822,15 @@ namespace CTADataMigrationAndSupport
                         if (sFathersNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sFathersName` = @sFathersName " : ", `sFathersName` = @sFathersName "; }
                         if (sMothersNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sMothersName` = @sMothersName " : ", `sMothersName` = @sMothersName "; }
                         if (sSpouseNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sSpouseName` = @sSpouseName " : ", `sSpouseName` = @sSpouseName "; }
-
+                        if (sAddress1Data.Length > 0) { updateString += updateString.Length <= 0 ? "`sAddress1` = @sAddress1 " : ", `sAddress1` = @sAddress1 "; }
+                        if (sAddress2Data.Length > 0) { updateString += updateString.Length <= 0 ? "`sAddress2` = @sAddress2 " : ", `sAddress2` = @sAddress2 "; }
+                        if (sPCodeData.Length > 0) { updateString += updateString.Length <= 0 ? "`sPCode` = @sPCode " : ", `sPCode` = @sPCode "; }
+                        if (TibetanNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`TibetanName` = @TibetanName " : ", `TibetanName` = @TibetanName "; }
+                        if (TBUPlaceOfBirthData.Length > 0) { updateString += updateString.Length <= 0 ? "`TBUPlaceOfBirth` = @TBUPlaceOfBirth " : ", `TBUPlaceOfBirth` = @TBUPlaceOfBirth "; }
+                        if (TBUOriginVillageData.Length > 0) { updateString += updateString.Length <= 0 ? "`TBUOriginVillage` = @TBUOriginVillage " : ", `TBUOriginVillage` = @TBUOriginVillage "; }
+                        if (TBUFathersNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`TBUFathersName` = @TBUFathersName " : ", `TBUFathersName` = @TBUFathersName "; }
+                        if (TBUMothersNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`TBUMothersName` = @TBUMothersName " : ", `TBUMothersName` = @TBUMothersName "; }
+                        if (TBUSpouseNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`TBUSpouseName` = @TBUSpouseName " : ", `TBUSpouseName` = @TBUSpouseName "; }
 
                         if (updateString != string.Empty)
                         {
@@ -856,7 +890,54 @@ namespace CTADataMigrationAndSupport
                                 cmd.Parameters["@sSpouseName"].Value = RandomDummyData(sSpouseNameData.Length, sSpouseNameData, false);
                             }
 
+                            if (sAddress1Data.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sAddress1", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sAddress1"].Value = RandomDummyData(sAddress1Data.Length, sAddress1Data, false);
+                            }
+                            if (sAddress2Data.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sAddress2", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sAddress2"].Value = RandomDummyData(sAddress2Data.Length, sAddress2Data, false);
+                            }
+                            if (sPCodeData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sPCode", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sPCode"].Value = RandomDummyData(sPCodeData.Length, sPCodeData, false);
+                            }
 
+                            if (TibetanNameData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@TibetanName", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@TibetanName"].Value = RandomDummyData(TibetanNameData.Length, TibetanNameData, false);
+                            }
+                            if (TBUPlaceOfBirthData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@TBUPlaceOfBirth", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@TBUPlaceOfBirth"].Value = RandomDummyData(TBUPlaceOfBirthData.Length, TBUPlaceOfBirthData, false);
+                            }
+                            if (TBUOriginVillageData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@TBUOriginVillage", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@TBUOriginVillage"].Value = RandomDummyData(TBUOriginVillageData.Length, TBUOriginVillageData, false);
+                            }
+
+                            if (TBUFathersNameData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@TBUFathersName", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@TBUFathersName"].Value = RandomDummyData(TBUFathersNameData.Length, TBUFathersNameData, false);
+                            }
+                            if (TBUMothersNameData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@TBUMothersName", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@TBUMothersName"].Value = RandomDummyData(TBUMothersNameData.Length, TBUMothersNameData, false);
+                            }
+                            if (TBUSpouseNameData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@TBUSpouseName", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@TBUSpouseName"].Value = RandomDummyData(TBUSpouseNameData.Length, TBUSpouseNameData, false);
+                            }
+                           
 
                             int RowsAffected = cmd.ExecuteNonQuery();
                             labelDummyDataReport.Text = @"GB Id: " + sGBNum;
@@ -1001,7 +1082,7 @@ namespace CTADataMigrationAndSupport
                 {
                     if (columnDatasplit[i].Contains("@"))
                     {
-                        tempData = RandomString(columnDatasplit[i].Substring (0,columnDatasplit[i].IndexOf("@")).Length, isNumber) + "@" + RandomString(7, isNumber) + ".com";
+                        tempData = RandomString(columnDatasplit[i].Substring(0, columnDatasplit[i].IndexOf("@")).Length, isNumber) + "@" + RandomString(7, isNumber) + ".com";
                         dummyData = tempData.ToLower();
                     }
                     else
@@ -1030,9 +1111,9 @@ namespace CTADataMigrationAndSupport
                 else
                 {
                     tempData = RandomString(columnDatasplit[i].Length, isNumber);
-                    if (tempData.Length>0)
+                    if (tempData.Length > 0)
                     {
-                        dummyData += dummyData.Length <=0?  char.ToUpper(tempData[0]) + tempData.Substring(1).ToLower() : " " + char.ToUpper(tempData[0]) + tempData.Substring(1).ToLower(); ;
+                        dummyData += dummyData.Length <= 0 ? char.ToUpper(tempData[0]) + tempData.Substring(1).ToLower() : " " + char.ToUpper(tempData[0]) + tempData.Substring(1).ToLower(); ;
                     }
                     else
                     {
@@ -1066,6 +1147,128 @@ namespace CTADataMigrationAndSupport
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
+        #endregion
+
+
+        #region Profile Dummy Picture
+
+        private void buttonGenerateDummyProfilePicture_Click(object sender, EventArgs e)
+        {
+            ProfilePictureDummyData();
+
+        }
+
+        private void ProfilePictureDummyData()
+        {
+            string connetionString = null;
+            MySqlConnection cnn;
+            connetionString = txtConnectionString.Text;
+            string sLogFolderPath = txtLogFolderPath.Text;
+            string sPathPrifix = txtImagePath.Text;
+
+            cnn = new MySqlConnection(connetionString);
+            try
+            {
+                cnn.Open();
+                string sEndProcess = DateTime.Now.ToString();
+                string query = "Select Id, sGBID from lnkgbdocument where binFileDoc is not null and sDocType = 'Photo Identity';";
+                MySqlCommand cmd = new MySqlCommand(query, cnn);
+                MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
+                DataTable dt = new DataTable("lnkgbdocument");
+                returnVal.Fill(dt);
+                string sStartProcess = DateTime.Now.ToString();
+                Int64 nInsertedFileCount = 0;
+                StringBuilder sbLogging = new StringBuilder();
+
+
+                if (dt != null || dt.Rows.Count > 0)
+                {
+                    progressBarProcess.Minimum = 0;
+                    progressBarProcess.Maximum = dt.Rows.Count;
+                    progressBarProcess.Step = 1;
+                }
+                else
+                {
+                    progressBarProcess.Minimum = 0;
+                    progressBarProcess.Maximum = 1;
+                    progressBarProcess.Step = 1;
+                    progressBarProcess.PerformStep();
+                }
+
+                //Iterate through Items 
+                foreach (DataRow row in dt.Rows)
+                {
+                    progressBarProcess.PerformStep();
+
+                    if (row["sGBID"] == DBNull.Value)
+                    {
+                        continue;
+                    }
+                    string IdNum = row["Id"].ToString().Trim();
+                    string sGBNum = row["sGBID"].ToString().Trim();
+
+                    // To check the last chartecter digit from sGBId
+                    string sLastDigit = sGBNum.Substring(sGBNum.Length-1, 1);
+                    string sFileName = sLastDigit + ".jpg";
+                    string sFullPath = textBoxProfilePicturePath.Text + sFileName;
+                    FileStream fs;
+                    BinaryReader br;
+
+                    if (File.Exists(sFullPath))
+                    {
+                        byte[] ImageData;
+                        fs = new FileStream(sFullPath, FileMode.Open, FileAccess.Read);
+                        br = new BinaryReader(fs);
+                        ImageData = br.ReadBytes((int)fs.Length);
+                        br.Close();
+                        fs.Close();
+
+                        string cmdString = "UPDATE `ctadb`.`lnkgbdocument` SET `binFileDoc` = @binFileDoc, `sFileExtension` = @sFileExtension WHERE `Id` = @Id;";
+                        cmd = new MySqlCommand(cmdString, cnn);
+
+                        cmd.Parameters.Add("@Id", MySqlDbType.VarChar, 255);
+                        cmd.Parameters.Add("@binFileDoc", MySqlDbType.Blob);
+                        cmd.Parameters.Add("@sFileExtension", MySqlDbType.VarChar, 255);
+
+                        cmd.Parameters["@Id"].Value = IdNum;
+                        cmd.Parameters["@binFileDoc"].Value = ImageData;
+                        cmd.Parameters["@sFileExtension"].Value = "jpg";
+                        int RowsAffected = cmd.ExecuteNonQuery();
+                        nInsertedFileCount++;
+                        labelDummyProfilePicture.Text = @"GB Id: " + sGBNum;
+                        sbLogging.AppendLine("Green Book Id: " + sGBNum);
+                    }
+                }
+
+                cnn.Close();
+                labelDummyProfilePicture.Text = "============================";
+                labelDummyProfilePicture.Text += Environment.NewLine + "                Summary";
+                labelDummyProfilePicture.Text += Environment.NewLine + "============================";
+                labelDummyProfilePicture.Text += Environment.NewLine + "Start Process: " + sStartProcess;
+                labelDummyProfilePicture.Text += Environment.NewLine + "End Process: " + sEndProcess;
+                labelDummyProfilePicture.Text += Environment.NewLine + "Number of Profile Dummy Images Inserted: " + nInsertedFileCount.ToString();
+                labelDummyProfilePicture.Text += Environment.NewLine + "============================";
+
+                sbLogging.AppendLine("===================================");
+                sbLogging.AppendLine("             Summary");
+                sbLogging.AppendLine("===================================");
+                sbLogging.AppendLine("Start Process: " + sStartProcess);
+                sbLogging.AppendLine("End Process: " + sEndProcess);
+                sbLogging.AppendLine("Number of Images Inserted: " + nInsertedFileCount.ToString());
+                sbLogging.AppendLine("===================================");
+
+                File.AppendAllText(sLogFolderPath + "log-" + Guid.NewGuid().ToString() + ".txt", sbLogging.ToString());
+                sbLogging.Clear();
+            }
+            catch (Exception ex)
+            {
+                labelDummyProfilePicture.Text += Environment.NewLine + ex.ToString();
+            }
+        }
+
+
+
+        #endregion
 
     }
 }
