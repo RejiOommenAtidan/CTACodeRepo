@@ -10,11 +10,13 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import pendingimg from '../home/pending.PNG';
 import emp from '../home/employee.PNG';
 export default function Home() {
+
   return (
     <>
       <Card className="card-box mb-spacing-6-x2" style={{  padding: 50 }} >
       <Grid container spacing={10}>
         <Grid item xs={12}>
+          
           <h4>QUICK ACTIONS</h4>
           <Grid container spacing={10}>
             <Grid item xs={4}>

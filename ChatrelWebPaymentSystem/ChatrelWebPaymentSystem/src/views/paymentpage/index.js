@@ -39,7 +39,8 @@ const rows = [
   
 ];
 
-export const PaymentPage = (props) => {
+export default function PaymentPage  (props) {
+  console.log("props", props);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -153,3 +154,4 @@ export const PaymentPage = (props) => {
     </>
   );
 }
+

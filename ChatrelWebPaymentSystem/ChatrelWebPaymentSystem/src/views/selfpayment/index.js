@@ -1,5 +1,5 @@
 import React from 'react';
-import {PaymentPage} from '../paymentpage';
+import PaymentPage from '../paymentpage';
 export default function CoverHome() {
   return (
     <>
