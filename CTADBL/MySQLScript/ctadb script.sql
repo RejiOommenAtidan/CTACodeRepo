@@ -965,22 +965,23 @@ CREATE TABLE `tblAuditLog` (
 
 
 
-CREATE TABLE `tblChatrelPayment` (
+CREATE TABLE `tblchatrelpayment` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBId` varchar(255) DEFAULT NULL,
-  `nchatrelAmount` int(11) DEFAULT NULL,
-  `nchatrelMeal` int(11) DEFAULT NULL,
-  `nchatrelYear` int(11) DEFAULT NULL,
-  `nchatrelLateFeesPercentage` int(11) DEFAULT NULL,
-  `nArrearsAmount` int(11) DEFAULT NULL,
+  `nChatrelAmount` decimal(15,2) DEFAULT NULL,
+  `nChatrelMeal` decimal(15,2) DEFAULT NULL,
+  `nChatrelYear` int(11) DEFAULT NULL,
+  `nChatrelLateFeesPercentage` int(11) DEFAULT NULL,
+  `nArrearsAmount` decimal(15,2) DEFAULT NULL,
   `dtArrearsFrom` date DEFAULT NULL,
   `dtArrearsTo` date DEFAULT NULL,
-  `nchatrelSalaryAmt` int(11) DEFAULT NULL,
-  `dtchatrelSalaryFrom` date DEFAULT NULL,
-  `dtchatrelSalaryTo` date DEFAULT NULL,
-  `nchatrelBusinessDonationAmt` int(11) DEFAULT NULL,
-  `nchatrelTotalAmount` int(11) DEFAULT NULL,
-  `nchatrelRecieptNumber` int(11) DEFAULT NULL,
+  `nChatrelSalaryAmt` decimal(15,2) DEFAULT NULL,
+  `dtChatrelSalaryFrom` date DEFAULT NULL,
+  `dtChatrelSalaryTo` date DEFAULT NULL,
+  `nChatrelAdditionalDonationAmt` decimal(15,2) DEFAULT NULL,
+  `nChatrelBusinessDonationAmt` decimal(15,2) DEFAULT NULL,
+  `nChatrelTotalAmount` decimal(15,2) DEFAULT NULL,
+  `nChatrelRecieptNumber` int(11) DEFAULT NULL,
   `nAuthRegionID` int(11) DEFAULT NULL,
   `sCountryID` varchar(255) DEFAULT NULL,
   `sPaymentStatus` varchar(255) DEFAULT NULL,
@@ -990,7 +991,7 @@ CREATE TABLE `tblChatrelPayment` (
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=131071 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 -- -------------------------
@@ -1010,21 +1011,22 @@ CREATE TABLE `lnkGBRelation` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
-CREATE TABLE `lnkgbChatrel` (
+CREATE TABLE `lnkgbchatrel` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBId` varchar(255) DEFAULT NULL,
-  `nChatrelAmount` int(11) NOT NULL,
-  `nChatrelMeal` int(11) DEFAULT NULL,
+  `nChatrelAmount` decimal(15,2) NOT NULL,
+  `nChatrelMeal` decimal(15,2) DEFAULT NULL,
   `nChatrelYear` int(11) DEFAULT NULL,
   `nChatrelLateFeesPercentage` int(11) DEFAULT NULL,
-  `nArrearsAmount` int(11) DEFAULT NULL,
+  `nArrearsAmount` decimal(15,2) DEFAULT NULL,
   `dtArrearsFrom` date DEFAULT NULL,
   `dtArrearsTo` date DEFAULT NULL,
-  `nChatrelSalaryAmt` int(11) DEFAULT NULL,
+  `nChatrelSalaryAmt` decimal(15,2)DEFAULT NULL,
   `dtChatrelSalaryFrom` date DEFAULT NULL,
   `dtChatrelSalaryTo` date DEFAULT NULL,
-  `nChatrelBusinessDonationAmt` int(11) DEFAULT NULL,
-  `nChatrelTotalAmount` int(11) DEFAULT NULL,
+  `nChatrelAdditionalDonationAmt` decimal(15,2) DEFAULT NULL,
+  `nChatrelBusinessDonationAmt` decimal(15,2) DEFAULT NULL,
+  `nChatrelTotalAmount` decimal(15,2) DEFAULT NULL,
   `nChatrelRecieptNumber` int(11) DEFAULT NULL,
   `nAuthRegionID` int(11) DEFAULT NULL,
   `sCountryID` varchar(255) DEFAULT NULL,
@@ -1033,7 +1035,7 @@ CREATE TABLE `lnkgbChatrel` (
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=131071 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=262141 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `lnkGBDocument` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
