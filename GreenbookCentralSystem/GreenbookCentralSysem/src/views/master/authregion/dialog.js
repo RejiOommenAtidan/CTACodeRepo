@@ -25,6 +25,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export const EditDialog = (props) => {
+
+  // console.log("Props object", props);
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, errors } = useForm();
   const [authRegion, setAuthRegion] = useState(props.authRegionObj.authRegion);
@@ -48,6 +50,8 @@ export const EditDialog = (props) => {
     }
   })
 
+  // console.log("Country select is : ", valueCountry);
+
   const handleSubmitEditRecord = () => {
     props.editAPICall(
       { 
@@ -66,10 +70,12 @@ export const EditDialog = (props) => {
       <DialogContent>
         <DialogContentText>
             <Grid container>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm= {12}>
                 <FormControl  className={props.classes.formControl}>
                   <Autocomplete
                     openOnFocus
+                    fullWidth
+                    style={{ width: 250 }}
                     clearOnEscape
                     onChange={  
                       (e, value) => {

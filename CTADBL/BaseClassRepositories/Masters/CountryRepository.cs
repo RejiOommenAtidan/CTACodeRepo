@@ -49,7 +49,7 @@ namespace CTADBL.BaseClassRepositories.Masters
         public IEnumerable<Country> GetAllCountries()
         {
             // DBAs across the country are having strokes over this next command!
-            using (var command = new MySqlCommand("SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry LIMIT 50"))
+            using (var command = new MySqlCommand("SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry"))
             {
                 return GetRecords(command);
             }

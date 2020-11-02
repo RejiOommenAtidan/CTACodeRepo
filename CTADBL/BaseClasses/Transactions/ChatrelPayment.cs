@@ -29,6 +29,7 @@ namespace CTADBL.BaseClasses.Transactions
         private string? _sPaymentStatus;
         private string? _sPaymentMode;
         private string? _sPaymentCurrency;
+        private string? _sPaidByGBId;
         private DateTime? _dtEntered;
         private int _nEnteredBy;
         #endregion
@@ -54,6 +55,7 @@ namespace CTADBL.BaseClasses.Transactions
         public string? sPaymentStatus { get { return _sPaymentStatus; } set { _sPaymentStatus = value; } }
         public string? sPaymentMode { get { return _sPaymentMode; } set { _sPaymentMode = value; } }
         public string? sPaymentCurrency { get { return _sPaymentCurrency; } set { _sPaymentCurrency = value; } }
+        public string? sPaidByGBId { get { return _sPaidByGBId; } set { _sPaidByGBId = value; } }
         public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
         public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
 
