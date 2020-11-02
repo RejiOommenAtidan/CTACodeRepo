@@ -4,9 +4,9 @@ import { GoogleLogout } from 'react-google-login';
 
 const GoogleLogoutButton = () => (
 <GoogleLogout
-    clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}
+    clientId={"11153496233-ft9h6spf18pfshdlri865cm6d6eteqef.apps.googleusercontent.com"}
     buttonText="Logout"
-    onLogoutSuccess={() => {window.location.replace('http://localhost:8080/');}}
+    onLogoutSuccess={() => {localStorage.removeItem("currentUser");window.location.replace('/login');}}
     //onLogoutSuccess={logout}
     >
 </GoogleLogout>

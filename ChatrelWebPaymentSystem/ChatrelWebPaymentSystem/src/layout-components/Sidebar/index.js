@@ -33,7 +33,7 @@ const Sidebar = (props) => {
         <div className="app-sidebar--content">
           <SidebarMenu />
         </div>
-        {sidebarFooter && <SidebarFooter />}
+        {/*sidebarFooter && <SidebarFooter />*/}
       </div>
       <div
         onClick={toggleSidebarMobile}
