@@ -120,7 +120,7 @@ const MainNavigator = createDrawerNavigator(
     }
   },
   {
-    initialRouteName: "GBDetail",
+    initialRouteName: "Login",
     // drawerPosition: "right",
     hideStatusBar:true,
     statusBarAnimation:true,

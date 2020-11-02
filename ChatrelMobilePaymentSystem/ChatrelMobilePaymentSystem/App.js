@@ -8,13 +8,15 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import MainNavigator from './code/navigation/MainNavigator';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import { store } from './code/store/configureStore';
 
 const App: () => React$Node = () => {
   return (
     <>
-      <MainNavigator />
+      <Provider store={store}>
+        <MainNavigator />
+      </Provider>
     </>
   );
 };
