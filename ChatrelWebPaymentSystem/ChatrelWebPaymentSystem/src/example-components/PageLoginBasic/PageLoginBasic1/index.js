@@ -18,11 +18,33 @@ export default function LogingPage(props) {
   const responseGoogle = (response) => {
     console.log(response);
   }
-  const login = (response) => {
-    console.log(response);
-  //  history.push("/Home");
+
+   const [login,setLogin]=React.useState(false);
+   const [gbid,setGbid]=React.useState(0);
+   const [dob,setDob]=React.useState("");
+
+   const obj ={
+    gbid:gbid,
+    dob:dob,
+    user:"",
   }
-   
+  const submit = () => {
+    obj.user=JSON.parse(localStorage.getItem('currentUser')).name;
+    alert(JSON.stringify(obj));
+    window.location='/selfpayment';
+  }
+   useEffect(() => {
+    if(JSON.parse(localStorage.getItem('currentUser'))== null){
+      setLogin(false);
+    }
+    else{
+     setLogin(true);
+     
+     
+     
+    }
+  }, []);
+
   return (
     <>
       <div className="app-wrapper  min-vh-100" style={{   backgroundColor: '#168b44', color:'white'}}>
@@ -38,7 +60,29 @@ export default function LogingPage(props) {
                         <h1 className="display-2 mb-1 font-weight-bold">Welcome to Chatrel</h1>
                         <h3 className="display-5 mb-1 ">Your go-to resource for supporting the Tibetan Government</h3>
                         <br />
+                        { JSON.parse(localStorage.getItem('currentUser'))== null &&
                         <GoogleLoginPage/>
+                        }
+                        { JSON.parse(localStorage.getItem('currentUser')) != null && 
+                        
+                        <>
+                         <TextField   id="standard-basic" type='number' onChange={(e)=>{console.log(obj);setGbid(e.target.value)}} style={{color:'white'}} label="GBID"/>
+                          <br/>  
+                         <TextField
+                         id="date"
+                         label="DOB"
+                         type="date"
+                         onChange={(e)=>{setDob(e.target.value)}}
+                       
+                         InputLabelProps={{
+                           shrink: true,
+                         }}
+                       />
+                       <br/>
+                       <br/>
+                        <Button variant="contained" onClick={()=>{submit()}} style={{   backgroundColor: 'yellow', color:'black'}}>Submit</Button>
+                       </>
+                        }
                       </div>
                       <div>
 
