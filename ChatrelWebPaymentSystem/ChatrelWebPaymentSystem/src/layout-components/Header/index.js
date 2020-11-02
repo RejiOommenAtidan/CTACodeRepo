@@ -26,11 +26,30 @@ const Header = (props) => {
 
   return (
     <>
-    
-    <div
-      className={clsx('app-header')} >
-         <HeaderDrawer />
-    
+     <div
+      className={clsx('app-header', {
+        'app-header--shadow': headerShadow,
+        'app-header--opacity-bg': headerBgTransparent
+      })}>
+      <div className="app-header--pane">
+        <button
+          className={clsx(
+            'navbar-toggler hamburger hamburger--elastic toggle-mobile-sidebar-btn',
+            { 'is-active': sidebarToggleMobile }
+          )}
+          onClick={toggleSidebarMobile}>
+          <span className="hamburger-box">
+            <span className="hamburger-inner" />
+          </span>
+        </button>
+       {/*   <HeaderSearch />
+      <HeaderMenu /> */}
+      </div>
+      <div className="app-header--pane">
+        {/*   <HeaderDots />
+        <HeaderUserbox />
+       <HeaderDrawer />*/}
+      </div>
     </div>
     </>
   );
