@@ -1,6 +1,6 @@
-﻿using CTADBL.BaseClasses.Masters;
-using CTADBL.QueryBuilder;
-using CTADBL.Repository;
+﻿using ChatrelDBL.BaseClasses.Masters;
+using ChatrelDBL.QueryBuilder;
+using ChatrelDBL.Repository;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
-namespace CTADBL.BaseClassRepositories.Masters
+namespace ChatrelDBL.BaseClassRepositories.Masters
 {
     public class CountryRepository : ADORepository<Country>
     {
@@ -49,7 +49,7 @@ namespace CTADBL.BaseClassRepositories.Masters
         public IEnumerable<Country> GetAllCountries()
         {
             // DBAs across the country are having strokes over this next command!
-            using (var command = new MySqlCommand("SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry"))
+            using (var command = new MySqlCommand("SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry LIMIT 50"))
             {
                 return GetRecords(command);
             }
@@ -80,14 +80,14 @@ namespace CTADBL.BaseClassRepositories.Masters
         public IEnumerable<Country> SearchCountries(string a)
         {
             string addToSql = "";
-            
+
             var country = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(a);
             //Dictionary<string, dynamic> parameters = country.GetType().GetProperties().ToDictionary(prop => prop.Name, prop => prop.GetValue(country, null));
             foreach (KeyValuePair<string, dynamic> item in country)
             {
                 if (item.Value != null)
                 {
-                    if(item.Value.GetType() == typeof(string))
+                    if (item.Value.GetType() == typeof(string))
                     {
                         if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
                         {

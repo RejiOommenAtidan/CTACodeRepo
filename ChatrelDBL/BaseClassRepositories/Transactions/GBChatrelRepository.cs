@@ -1,12 +1,12 @@
-﻿using CTADBL.BaseClasses.Transactions;
-using CTADBL.QueryBuilder;
-using CTADBL.Repository;
+﻿using ChatrelDBL.BaseClasses.Transactions;
+using ChatrelDBL.QueryBuilder;
+using ChatrelDBL.Repository;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
 
-namespace CTADBL.BaseClassRepositories.Transactions
+namespace ChatrelDBL.BaseClassRepositories.Transactions
 {
     public class GBChatrelRepository : ADORepository<GBChatrel>
     {
@@ -99,7 +99,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
         }
 
-        public IEnumerable<GBChatrel> GetChatrelsByGBID (string sGBID)
+        public IEnumerable<GBChatrel> GetChatrelsByGBID(string sGBID)
         {
             string sql = @"SELECT `Id`,
                             `sGBId`,
@@ -136,19 +136,18 @@ namespace CTADBL.BaseClassRepositories.Transactions
             GBChatrel gbChatrel = new GBChatrel();
             gbChatrel.Id = (int)reader["Id"];
             gbChatrel.sGBId = reader.IsDBNull("sGBId") ? null : (string)reader["sGBId"];
-            gbChatrel.nChatrelAmount = (decimal)reader["nChatrelAmount"];
-            gbChatrel.nChatrelMeal = reader.IsDBNull("nChatrelMeal") ? null : (decimal?)reader["nChatrelMeal"];
+            gbChatrel.nChatrelAmount = (int)reader["nChatrelAmount"];
+            gbChatrel.nChatrelMeal = reader.IsDBNull("nChatrelMeal") ? null : (int?)reader["nChatrelMeal"];
             gbChatrel.nChatrelYear = reader.IsDBNull("nChatrelYear") ? null : (int?)reader["nChatrelYear"];
             gbChatrel.nChatrelLateFeesPercentage = reader.IsDBNull("nChatrelLateFeesPercentage") ? null : (int?)reader["nChatrelLateFeesPercentage"];
-            gbChatrel.nArrearsAmount = reader.IsDBNull("nArrearsAmount") ? null : (decimal?)reader["nArrearsAmount"];
+            gbChatrel.nArrearsAmount = reader.IsDBNull("nArrearsAmount") ? null : (int?)reader["nArrearsAmount"];
             gbChatrel.dtArrearsFrom = reader.IsDBNull("dtArrearsFrom") ? null : (DateTime?)(reader["dtArrearsFrom"]);
             gbChatrel.dtArrearsTo = reader.IsDBNull("dtArrearsTo") ? null : (DateTime?)(reader["dtArrearsTo"]);
-            gbChatrel.nChatrelSalaryAmt = reader.IsDBNull("nChatrelSalaryAmt") ? null : (decimal?)reader["nChatrelSalaryAmt"];
+            gbChatrel.nChatrelSalaryAmt = reader.IsDBNull("nChatrelSalaryAmt") ? null : (int?)reader["nChatrelSalaryAmt"];
             gbChatrel.dtChatrelSalaryFrom = reader.IsDBNull("dtChatrelSalaryFrom") ? null : (DateTime?)(reader["dtChatrelSalaryFrom"]);
             gbChatrel.dtChatrelSalaryTo = reader.IsDBNull("dtChatrelSalaryTo") ? null : (DateTime?)(reader["dtChatrelSalaryTo"]);
-            gbChatrel.nChatrelAdditionalDonationAmt = reader.IsDBNull("nChatrelAdditionalDonationAmt") ? null : (decimal?)reader["nChatrelAdditionalDonationAmt"];
-            gbChatrel.nChatrelBusinessDonationAmt = reader.IsDBNull("nChatrelBusinessDonationAmt") ? null : (decimal?)reader["nChatrelBusinessDonationAmt"];
-            gbChatrel.nChatrelTotalAmount = reader.IsDBNull("nChatrelTotalAmount") ? null : (decimal?)reader["nChatrelTotalAmount"];
+            gbChatrel.nChatrelBusinessDonationAmt = reader.IsDBNull("nChatrelBusinessDonationAmt") ? null : (int?)reader["nChatrelBusinessDonationAmt"];
+            gbChatrel.nChatrelTotalAmount = reader.IsDBNull("nChatrelTotalAmount") ? null : (int?)reader["nChatrelTotalAmount"];
             gbChatrel.nChatrelRecieptNumber = reader.IsDBNull("nChatrelRecieptNumber") ? null : (int?)reader["nChatrelRecieptNumber"];
             gbChatrel.nAuthRegionID = reader.IsDBNull("nAuthRegionID") ? null : (int?)reader["nAuthRegionID"];
             gbChatrel.sCountryID = reader.IsDBNull("sCountryID") ? null : (string)reader["sCountryID"];

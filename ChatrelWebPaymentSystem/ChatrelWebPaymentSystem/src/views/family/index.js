@@ -44,7 +44,7 @@ export default function Family () {
 
 
 
-  // dfasdfasdf sdfasdf asdf asdfasdf sdfas
+  
   
   const handleClick = (temp) => {
     var gbid = {id: temp, other: "test" };

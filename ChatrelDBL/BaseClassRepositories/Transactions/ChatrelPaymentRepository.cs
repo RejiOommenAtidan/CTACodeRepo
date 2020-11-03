@@ -1,34 +1,30 @@
-﻿using CTADBL.BaseClasses.Masters;
-using CTADBL.BaseClasses.Transactions;
-using CTADBL.BaseClassRepositories.Masters;
-using CTADBL.QueryBuilder;
-using CTADBL.Repository;
+﻿using ChatrelDBL.BaseClasses.Masters;
+using ChatrelDBL.BaseClasses.Transactions;
+using ChatrelDBL.BaseClassRepositories.Masters;
+using ChatrelDBL.QueryBuilder;
+using ChatrelDBL.Repository;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Asn1;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.Linq;
 
-namespace CTADBL.BaseClassRepositories.Transactions
+namespace ChatrelDBL.BaseClassRepositories.Transactions
 {
     public class ChatrelPaymentRepository : ADORepository<ChatrelPayment>
     {
         private GreenbookRepository _greenbookRepository;
         private ChatrelRepository _chatrelRepository;
-        private AuthRegionRepository _authRegionRepository;
 
-        private decimal _nChatrelAmount;
-        private decimal _nChatrelMeal;
-        private decimal _nChatrelSalaryAmt;
-        private int _nChatrelLateFeesPercentage;
+        private int _nChatrelAmount;
+        private int _nChatrelMeal;
+        private int _nChatrelSalaryAmt;
+        private int _nChatrelLateFeePercentage;
         private int _nChatrelStartYear;
         private decimal _dLateFees;
         private int _FYStartMonth = 4;
-        private int _FYStartDate = 1;
         private int _FYEndMonth = 3;
-        private int _FYEndDate = 31;
         private int _currentYear = DateTime.Now.Year;
 
 
@@ -37,16 +33,15 @@ namespace CTADBL.BaseClassRepositories.Transactions
         {
             _greenbookRepository = new GreenbookRepository(connectionString);
             _chatrelRepository = new ChatrelRepository(connectionString);
-            _authRegionRepository = new AuthRegionRepository(connectionString);
+
 
             IEnumerable<Chatrel> chatrelValues = _chatrelRepository.GetAllChatrel();
-
-            _nChatrelAmount = chatrelValues.Where(key => key.sChatrelKey == "ChatrelAmount").Select(key => key.nChatrelValue).FirstOrDefault();
-            _nChatrelMeal = chatrelValues.Where(key => key.sChatrelKey == "ChatrelMeal").Select(key => key.nChatrelValue).FirstOrDefault();
-            _nChatrelSalaryAmt = chatrelValues.Where(key => key.sChatrelKey == "ChatrelSalaryAmt").Select(key => key.nChatrelValue).FirstOrDefault();
-            _nChatrelLateFeesPercentage = chatrelValues.Where(key => key.sChatrelKey == "ChatrelLateFeesPercentage").Select(key => key.nChatrelValue).FirstOrDefault();
-            _nChatrelStartYear = chatrelValues.Where(key => key.sChatrelKey == "ChatrelStartYear").Select(key => key.nChatrelValue).FirstOrDefault() - 1;
-            _dLateFees = (_nChatrelAmount + _nChatrelMeal) * _nChatrelLateFeesPercentage / 100;
+            _nChatrelAmount = chatrelValues.Where(key => key.sChatrelKey == "chatrelAmount").Select(key => key.nChatrelValue).FirstOrDefault();
+            _nChatrelMeal = chatrelValues.Where(key => key.sChatrelKey == "chatrelMeal").Select(key => key.nChatrelValue).FirstOrDefault();
+            _nChatrelSalaryAmt = chatrelValues.Where(key => key.sChatrelKey == "chatrelSalaryAmt").Select(key => key.nChatrelValue).FirstOrDefault();
+            _nChatrelLateFeePercentage = chatrelValues.Where(key => key.sChatrelKey == "chatrelLateFeePercentage").Select(key => key.nChatrelValue).FirstOrDefault();
+            _nChatrelStartYear = chatrelValues.Where(key => key.sChatrelKey == "chatrelStartYear").Select(key => key.nChatrelValue).FirstOrDefault();
+            _dLateFees = (_nChatrelAmount + _nChatrelMeal) * _nChatrelLateFeePercentage / 100;
 
         }
         #endregion
@@ -80,63 +75,54 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
 
-        #region Create Payment Record for a GBID
+        #region Public Create Payment Record for a GBID
         public Object DisplayChatrelPayment(string sGBID)
         {
             Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
-            AuthRegion authRegion = _authRegionRepository.GetAuthRegionById(greenbook.nAuthRegionID.ToString());
-            int paidUntil = GetPaidUntil(sGBID);
-            DateTime[] dates = GetDatesFromYear(paidUntil + 1);
             ChatrelPayment chatrelPayment = new ChatrelPayment
             {
                 Id = -1,
-                nChatrelAmount = decimal.Round(_nChatrelAmount,2),
-                nChatrelMeal = _nChatrelMeal,
-                nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage,
-                nArrearsAmount = CheckPendingAmount(sGBID),
+                nArrearsAmount = (int)CheckPendingAmount(sGBID),
                 nAuthRegionID = greenbook.nAuthRegionID,
-                sCountryID = authRegion.sCountryID,
-                nChatrelYear = _currentYear,
-                sGBId = sGBID,
-                dtArrearsFrom = dates[0],
-                dtArrearsTo = new DateTime(_currentYear, _FYEndMonth, _FYEndDate)
-                
+                //sCountryID = greenbook.sCountryID,
+                nchatrelYear = _currentYear
+
             };
-            var result = new { chatrelPayment = chatrelPayment, gbChatrels = GetOutstandingDetails(greenbook) };
+            var result = new { chatrelPayment = chatrelPayment, outstandingDetails = GetOutstandingDetails(sGBID) };
             return result;
         }
         #endregion
 
 
         #region GetOutstanding Details
-        private IEnumerable<Object> GetOutstandingDetails(Greenbook greenbook)
+        private IEnumerable<Object> GetOutstandingDetails(string sGBID)
         {
-            int paidUntil = GetPaidUntil(greenbook.sGBID);
+            int paidUntil = GetPaidUntil(sGBID);
             int pendingYears = _currentYear - paidUntil;
             List<Object> list = new List<Object>();
             for (int i = 1; i < pendingYears; i++)
             {
-                DateTime[] dates = GetDatesFromYear(paidUntil + i);
-                DateTime start = dates[0];
-                DateTime end = dates[1];
-                var pending = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = paidUntil + i, lateFees= _dLateFees, nArrearsAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, greenbook.sCountryID };
+                string[] dates = GetDatesFromYear(paidUntil + i);
+                string start = dates[0];
+                string end = dates[1];
+                var pending = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = paidUntil + i, dLateFees = _dLateFees, startDate = start, endDate = end };
 
                 list.Add(pending);
             }
-            DateTime[] currDates = GetDatesFromYear(_currentYear);
+            string[] currDates = GetDatesFromYear(_currentYear);
 
-            var current = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = _currentYear, dtDateFrom = currDates[0], dtDateTo = currDates[1], greenbook.nAuthRegionID, greenbook.sGBID, greenbook.sCountryID };
+            var current = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = _currentYear, dLateFees = _dLateFees, startDate = currDates[0], endDate = currDates[1] };
             list.Add(current);
             return list;
         }
         #endregion
 
         #region Get Financial year Dates from Year
-        private DateTime[] GetDatesFromYear(int year)
+        private string[] GetDatesFromYear(int year)
         {
-            DateTime s = new DateTime(year, _FYStartMonth, _FYStartDate);
-            DateTime e = new DateTime(year + 1, _FYEndMonth, _FYEndDate);
-            DateTime[] years = { s, e };
+            string start = String.Format("01/04/{0}", year);
+            string end = String.Format("31/03/{0}", year + 1);
+            string[] years = { start, end };
             return years;
         }
         #endregion
@@ -149,7 +135,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             int pendingYears = _currentYear - paidUntil;
             decimal currentDues = _nChatrelAmount + _nChatrelMeal;
             decimal arrears = (pendingYears) * (_nChatrelAmount + _nChatrelMeal);
-            decimal penalty = (arrears * _nChatrelLateFeesPercentage / 100);
+            decimal penalty = (arrears * _nChatrelLateFeePercentage / 100);
             decimal totalDues = Math.Round(currentDues + arrears + penalty, 2);
             return totalDues;
         }
@@ -158,12 +144,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Get Paid Until year
         private int GetPaidUntil(string sGBID)
         {
+            int currentYear = DateTime.Today.Year;
             int paidUntil = Convert.ToInt32(_greenbookRepository.GetGreenbookByGBID(sGBID).sPaidUntil);
 
             paidUntil = (paidUntil < _nChatrelStartYear ? _nChatrelStartYear : paidUntil);
-            
-            
-            
+
+
+
             return paidUntil;
         }
         #endregion
@@ -207,10 +194,10 @@ namespace CTADBL.BaseClassRepositories.Transactions
                         LIMIT @limit;";
             using (var command = new MySqlCommand(sql))
             {
-                command.Parameters.AddWithValue("limit", Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount")));
+                command.Parameters.AddWithValue("limit", Convert.ToInt32(ChatrelConfigRepository.GetValueByKey("SelectTotalRecordCount")));
                 return GetRecords(command);
             }
-    
+
         }
 
         public ChatrelPayment GetChatrelPayment(string Id)
@@ -290,26 +277,25 @@ namespace CTADBL.BaseClassRepositories.Transactions
             {
                 Id = (int)reader["Id"],
                 sGBId = reader.IsDBNull("sGBId") ? null : (string)reader["sGBId"],
-                nChatrelAmount = reader.IsDBNull("nChatrelAmount") ? null : (decimal?)reader["nChatrelAmount"],
-                nChatrelMeal = reader.IsDBNull("nchatrelMeal") ? null : (decimal?)reader["nchatrelMeal"],
-                nChatrelYear = reader.IsDBNull("nchatrelYear") ? null : (int?)reader["nchatrelYear"],
-                nChatrelLateFeesPercentage = reader.IsDBNull("nchatrelLateFeesPercentage") ? null : (int?)reader["nchatrelLateFeesPercentage"],
-                nArrearsAmount = reader.IsDBNull("nArrearsAmount") ? null : (decimal?)reader["nArrearsAmount"],
+                nchatrelAmount = reader.IsDBNull("nArrearsAmount") ? null : (int?)reader["nArrearsAmount"],
+                nchatrelMeal = reader.IsDBNull("nchatrelMeal") ? null : (int?)reader["nchatrelMeal"],
+                nchatrelYear = reader.IsDBNull("nchatrelYear") ? null : (int?)reader["nchatrelYear"],
+                nchatrelLateFeesPercentage = reader.IsDBNull("nchatrelLateFeesPercentage") ? null : (int?)reader["nchatrelLateFeesPercentage"],
+                nArrearsAmount = reader.IsDBNull("nArrearsAmount") ? null : (int?)reader["nArrearsAmount"],
                 dtArrearsFrom = reader.IsDBNull("dtArrearsFrom") ? null : (DateTime?)(reader["dtArrearsFrom"]),
-                dtArrearsTo = reader.IsDBNull("dtArrearsTo") ? null : (DateTime?)(reader["dtArrearsTo"]),
-                nChatrelSalaryAmt = reader.IsDBNull("nchatrelSalaryAmt") ? null : (decimal?)reader["nchatrelSalaryAmt"],
-                dtChatrelSalaryFrom = reader.IsDBNull("dtChatrelSalaryFrom") ? null : (DateTime?)(reader["dtChatrelSalaryFrom"]),
-                dtChatrelSalaryTo = reader.IsDBNull("dtChatrelSalaryTo") ? null : (DateTime?)(reader["dtChatrelSalaryTo"]),
-                nChatrelAdditionalDonationAmt = reader.IsDBNull("nChatrelAdditionalDonationAmt") ? null : (decimal?)reader["nChatrelAdditionalDonationAmt"],
-                nChatrelBusinessDonationAmt = reader.IsDBNull("nchatrelBusinessDonationAmt") ? null : (decimal?)reader["nchatrelBusinessDonationAmt"],
-                nChatrelTotalAmount = reader.IsDBNull("nchatrelTotalAmount") ? null : (decimal?)reader["nchatrelTotalAmount"],
-                nChatrelRecieptNumber = reader.IsDBNull("nChatrelRecieptNumber") ? null : (int?)reader["nChatrelRecieptNumber"],
+                dtArrearsTo = reader.IsDBNull("dtArrearsFrom") ? null : (DateTime?)(reader["dtArrearsFrom"]),
+                nchatrelSalaryAmt = reader.IsDBNull("nchatrelSalaryAmt") ? null : (int?)reader["nchatrelSalaryAmt"],
+                dtchatrelSalaryFrom = reader.IsDBNull("dtArrearsFrom") ? null : (DateTime?)(reader["dtArrearsFrom"]),
+                dtchatrelSalaryTo = reader.IsDBNull("dtArrearsFrom") ? null : (DateTime?)(reader["dtArrearsFrom"]),
+                nchatrelBusinessDonationAmt = reader.IsDBNull("nchatrelBusinessDonationAmt") ? null : (int?)reader["nchatrelBusinessDonationAmt"],
+                nchatrelTotalAmount = reader.IsDBNull("nchatrelTotalAmount") ? null : (int?)reader["nchatrelTotalAmount"],
+                nchatrelRecieptNumber = reader.IsDBNull("nArrearsAmount") ? null : (int?)reader["nArrearsAmount"],
                 nAuthRegionID = reader.IsDBNull("nAuthRegionID") ? null : (int?)reader["nAuthRegionID"],
                 sCountryID = reader.IsDBNull("sCountryID") ? null : (string)reader["sCountryID"],
                 sPaymentStatus = reader.IsDBNull("sPaymentStatus") ? null : (string)reader["sPaymentStatus"],
                 sPaymentMode = reader.IsDBNull("sPaymentMode") ? null : (string)reader["sPaymentMode"],
                 sPaymentCurrency = reader.IsDBNull("sPaymentCurrency") ? null : (string)reader["sPaymentCurrency"],
-                dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
+                dtEntered = reader.IsDBNull("dtArrearsFrom") ? null : (DateTime?)(reader["dtArrearsFrom"]),
                 nEnteredBy = (int)reader["nEnteredBy"]
             };
             return chatrelPayment;

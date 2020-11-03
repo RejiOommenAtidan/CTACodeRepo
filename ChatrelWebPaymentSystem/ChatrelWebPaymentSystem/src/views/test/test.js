@@ -69,7 +69,7 @@ function createPaymentHistory(receiptNo, date, period, paymentFor, action){
   return {receiptNo, date, period, paymentFor, action};
 }
 
-const select = (<select><option>1</option></select>);
+const select = (<select><option>1</option><option>2</option><option>3</option><option>4</option></select>);
 
 const rows = [
   createData(select, '01/04/2017 - 31/03/2018', 36, 10, 4.6, <input type="checkbox"/>, 50.6),
