@@ -16,7 +16,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [EnableCors("AllowOrigin")]
     //[APIKeyAuth]
     [Route("api/[controller]")]
@@ -115,6 +115,9 @@ namespace CTAWebAPI.Controllers
                 Object chatrel = _chatrelPaymentRepository.DisplayChatrelPayment(sGBID);
                 if(chatrel != null)
                 {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
                     return Ok(chatrel);
                 }
                 else
@@ -124,9 +127,48 @@ namespace CTAWebAPI.Controllers
             }
             catch(Exception ex)
             {
+                #region Exception Logging 
+
+                _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError);
 
             }
         }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetFamilyDetails(string sGBID)
+        {
+            if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID))
+            {
+                return BadRequest("Required parameters are missing.");
+            }
+            try
+            {
+                Object chatrel = _chatrelPaymentRepository.GetFamilyDetails(sGBID);
+                if (chatrel != null)
+                {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
+                    return Ok(chatrel);
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+
+                _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
+            }
+        }
+
     }
 }
