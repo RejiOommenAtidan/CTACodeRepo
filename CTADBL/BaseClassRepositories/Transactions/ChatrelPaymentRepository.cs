@@ -119,7 +119,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 DateTime[] dates = GetDatesFromYear(paidUntil + i);
                 DateTime start = dates[0];
                 DateTime end = dates[1];
-                var pending = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = paidUntil + i, nArrearsAmount = _dLateFees, dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, greenbook.sCountryID };
+                var pending = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = paidUntil + i, lateFees= _dLateFees, nArrearsAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, greenbook.sCountryID };
 
                 list.Add(pending);
             }
