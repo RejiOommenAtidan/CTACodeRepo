@@ -3,6 +3,7 @@ using CTADBL.BaseClasses.Transactions;
 using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.QueryBuilder;
 using CTADBL.Repository;
+using CTADBL.ViewModelsRepositories;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Asn1;
 using System;
@@ -18,6 +19,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
         private GreenbookRepository _greenbookRepository;
         private ChatrelRepository _chatrelRepository;
         private AuthRegionRepository _authRegionRepository;
+        private GBRelationVMRepository _gbRelationVMRepository;
+        private static MySqlConnection _connection;
 
         private decimal _nChatrelAmount;
         private decimal _nChatrelMeal;
@@ -38,6 +41,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             _greenbookRepository = new GreenbookRepository(connectionString);
             _chatrelRepository = new ChatrelRepository(connectionString);
             _authRegionRepository = new AuthRegionRepository(connectionString);
+            _connection = new MySqlConnection(connectionString);
 
             IEnumerable<Chatrel> chatrelValues = _chatrelRepository.GetAllChatrel();
 
@@ -102,14 +106,14 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 dtArrearsTo = new DateTime(_currentYear, _FYEndMonth, _FYEndDate)
                 
             };
-            var result = new { chatrelPayment = chatrelPayment, gbChatrels = GetOutstandingDetails(greenbook) };
+            var result = new { nPaidUntil = new DateTime(paidUntil+1, _FYEndMonth, _FYEndDate) , chatrelPayment = chatrelPayment, gbChatrels = GetOutstandingDetails(greenbook, authRegion) };
             return result;
         }
         #endregion
 
 
         #region GetOutstanding Details
-        private IEnumerable<Object> GetOutstandingDetails(Greenbook greenbook)
+        private IEnumerable<Object> GetOutstandingDetails(Greenbook greenbook, AuthRegion authRegion)
         {
             int paidUntil = GetPaidUntil(greenbook.sGBID);
             int pendingYears = _currentYear - paidUntil;
@@ -119,13 +123,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 DateTime[] dates = GetDatesFromYear(paidUntil + i);
                 DateTime start = dates[0];
                 DateTime end = dates[1];
-                var pending = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = paidUntil + i, lateFees= _dLateFees, nArrearsAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, greenbook.sCountryID };
+                var pending = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = paidUntil + i, lateFees= _dLateFees, nArrearsAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
 
                 list.Add(pending);
             }
             DateTime[] currDates = GetDatesFromYear(_currentYear);
 
-            var current = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = _currentYear, dtDateFrom = currDates[0], dtDateTo = currDates[1], greenbook.nAuthRegionID, greenbook.sGBID, greenbook.sCountryID };
+            var current = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = _currentYear, dtDateFrom = currDates[0], dtDateTo = currDates[1], greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
             list.Add(current);
             return list;
         }
@@ -168,6 +172,67 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
         #endregion
 
+        #region Get Family details
+        public IEnumerable<Object> GetFamilyDetails(string sGBID)
+        {
+            string sql = @"SELECT frel.sGBIDRelation,
+                                   gb1.sfirstname AS sName,
+                                   gb1.dtDOB,
+                                   gb1.sPaidUntil,
+                                   CASE
+                                     WHEN frel.nrelationid = 1 THEN 'Father'
+                                     WHEN frel.nrelationid = 2 THEN 'Mother'
+                                     WHEN frel.nrelationid = 3 THEN 'Spouse'
+                                   END 
+                                   AS sRelation
+                            FROM   lnkgbrelation AS frel
+                                   LEFT JOIN tblgreenbook AS gb
+                                          ON gb.sgbid = frel.sgbid
+                                   LEFT JOIN tblgreenbook AS gb1
+                                          ON frel.sgbidrelation = gb1.sgbid
+                            WHERE  gb.sgbid = @sGBID
+                            UNION
+                            SELECT child.sgbidchild,
+                                   child.sname,
+                                   child.dtdob,
+                                   gb1.spaiduntil,
+                                   CASE
+                                     WHEN child.sgender = 'M' THEN 'Son'
+                                     WHEN child.sgender = 'F' THEN 'Daughter'
+                                   end AS Relation
+                            FROM   lnkgbchildren AS child
+                                   LEFT JOIN tblgreenbook AS gb
+                                          ON gb.sgbid = child.sgbidparent
+                                   LEFT JOIN tblgreenbook AS gb1
+                                          ON child.sgbidchild = gb1.sgbid
+                            WHERE  gb.sgbid = @sGBID; ";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                command.Connection = _connection;
+                command.CommandType = CommandType.Text;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                if(tables != null && tables.Count > 0)
+                {
+                    var relationDetails = tables[0].AsEnumerable().Select(row => new {
+                        sGBIDRelation = row.Field<string>("sGBIDRelation"),
+                        sName = row.Field<string>("sName"),
+                        dtDOB = row.Field<DateTime?>("dtDOB"),
+                        sPaidUntil = row.Field<string>("sPaidUntil"),
+                        sRelation = row.Field<string>("sRelation"),
+                    }).ToList();
+                    return relationDetails;
+                }
+                return null;
+            }
+
+            
+
+        }
+        #endregion
 
         //#region Delete Call
         //public void Delete(ChatrelPayment chatrelPayment)
