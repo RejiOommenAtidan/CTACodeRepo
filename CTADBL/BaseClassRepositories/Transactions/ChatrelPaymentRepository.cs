@@ -17,10 +17,11 @@ namespace CTADBL.BaseClassRepositories.Transactions
     {
         private GreenbookRepository _greenbookRepository;
         private ChatrelRepository _chatrelRepository;
+        private AuthRegionRepository _authRegionRepository;
 
-        private int _nChatrelAmount;
-        private int _nChatrelMeal;
-        private int _nChatrelSalaryAmt;
+        private decimal _nChatrelAmount;
+        private decimal _nChatrelMeal;
+        private decimal _nChatrelSalaryAmt;
         private int _nChatrelLateFeesPercentage;
         private int _nChatrelStartYear;
         private decimal _dLateFees;
@@ -36,7 +37,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         {
             _greenbookRepository = new GreenbookRepository(connectionString);
             _chatrelRepository = new ChatrelRepository(connectionString);
-
+            _authRegionRepository = new AuthRegionRepository(connectionString);
 
             IEnumerable<Chatrel> chatrelValues = _chatrelRepository.GetAllChatrel();
 
@@ -45,7 +46,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             _nChatrelSalaryAmt = chatrelValues.Where(key => key.sChatrelKey == "ChatrelSalaryAmt").Select(key => key.nChatrelValue).FirstOrDefault();
             _nChatrelLateFeesPercentage = chatrelValues.Where(key => key.sChatrelKey == "ChatrelLateFeesPercentage").Select(key => key.nChatrelValue).FirstOrDefault();
             _nChatrelStartYear = chatrelValues.Where(key => key.sChatrelKey == "ChatrelStartYear").Select(key => key.nChatrelValue).FirstOrDefault() - 1;
-            _dLateFees = (decimal)(_nChatrelAmount + _nChatrelMeal) * _nChatrelLateFeesPercentage / 100;
+            _dLateFees = (_nChatrelAmount + _nChatrelMeal) * _nChatrelLateFeesPercentage / 100;
 
         }
         #endregion
@@ -83,18 +84,19 @@ namespace CTADBL.BaseClassRepositories.Transactions
         public Object DisplayChatrelPayment(string sGBID)
         {
             Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
+            AuthRegion authRegion = _authRegionRepository.GetAuthRegionById(greenbook.nAuthRegionID.ToString());
             int paidUntil = GetPaidUntil(sGBID);
             DateTime[] dates = GetDatesFromYear(paidUntil + 1);
             ChatrelPayment chatrelPayment = new ChatrelPayment
             {
                 Id = -1,
-                nchatrelAmount = _nChatrelAmount,
-                nchatrelMeal = _nChatrelMeal,
-                nchatrelLateFeesPercentage = _nChatrelLateFeesPercentage,
-                nArrearsAmount = (int)CheckPendingAmount(sGBID),
+                nChatrelAmount = decimal.Round(_nChatrelAmount,2),
+                nChatrelMeal = _nChatrelMeal,
+                nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage,
+                nArrearsAmount = CheckPendingAmount(sGBID),
                 nAuthRegionID = greenbook.nAuthRegionID,
-                sCountryID = greenbook.sCountryID,
-                nchatrelYear = _currentYear,
+                sCountryID = authRegion.sCountryID,
+                nChatrelYear = _currentYear,
                 sGBId = sGBID,
                 dtArrearsFrom = dates[0],
                 dtArrearsTo = new DateTime(_currentYear, _FYEndMonth, _FYEndDate)
@@ -288,25 +290,26 @@ namespace CTADBL.BaseClassRepositories.Transactions
             {
                 Id = (int)reader["Id"],
                 sGBId = reader.IsDBNull("sGBId") ? null : (string)reader["sGBId"],
-                nchatrelAmount = reader.IsDBNull("nArrearsAmount") ? null : (int?)reader["nArrearsAmount"],
-                nchatrelMeal = reader.IsDBNull("nchatrelMeal") ? null : (int?)reader["nchatrelMeal"],
-                nchatrelYear = reader.IsDBNull("nchatrelYear") ? null : (int?)reader["nchatrelYear"],
-                nchatrelLateFeesPercentage = reader.IsDBNull("nchatrelLateFeesPercentage") ? null : (int?)reader["nchatrelLateFeesPercentage"],
-                nArrearsAmount = reader.IsDBNull("nArrearsAmount") ? null : (int?)reader["nArrearsAmount"],
+                nChatrelAmount = reader.IsDBNull("nChatrelAmount") ? null : (decimal?)reader["nChatrelAmount"],
+                nChatrelMeal = reader.IsDBNull("nchatrelMeal") ? null : (decimal?)reader["nchatrelMeal"],
+                nChatrelYear = reader.IsDBNull("nchatrelYear") ? null : (int?)reader["nchatrelYear"],
+                nChatrelLateFeesPercentage = reader.IsDBNull("nchatrelLateFeesPercentage") ? null : (int?)reader["nchatrelLateFeesPercentage"],
+                nArrearsAmount = reader.IsDBNull("nArrearsAmount") ? null : (decimal?)reader["nArrearsAmount"],
                 dtArrearsFrom = reader.IsDBNull("dtArrearsFrom") ? null : (DateTime?)(reader["dtArrearsFrom"]),
-                dtArrearsTo = reader.IsDBNull("dtArrearsFrom") ? null : (DateTime?)(reader["dtArrearsFrom"]),
-                nchatrelSalaryAmt = reader.IsDBNull("nchatrelSalaryAmt") ? null : (int?)reader["nchatrelSalaryAmt"],
-                dtchatrelSalaryFrom = reader.IsDBNull("dtArrearsFrom") ? null : (DateTime?)(reader["dtArrearsFrom"]),
-                dtchatrelSalaryTo = reader.IsDBNull("dtArrearsFrom") ? null : (DateTime?)(reader["dtArrearsFrom"]),
-                nchatrelBusinessDonationAmt = reader.IsDBNull("nchatrelBusinessDonationAmt") ? null : (int?)reader["nchatrelBusinessDonationAmt"],
-                nchatrelTotalAmount = reader.IsDBNull("nchatrelTotalAmount") ? null : (int?)reader["nchatrelTotalAmount"],
-                nchatrelRecieptNumber = reader.IsDBNull("nArrearsAmount") ? null : (int?)reader["nArrearsAmount"],
+                dtArrearsTo = reader.IsDBNull("dtArrearsTo") ? null : (DateTime?)(reader["dtArrearsTo"]),
+                nChatrelSalaryAmt = reader.IsDBNull("nchatrelSalaryAmt") ? null : (decimal?)reader["nchatrelSalaryAmt"],
+                dtChatrelSalaryFrom = reader.IsDBNull("dtChatrelSalaryFrom") ? null : (DateTime?)(reader["dtChatrelSalaryFrom"]),
+                dtChatrelSalaryTo = reader.IsDBNull("dtChatrelSalaryTo") ? null : (DateTime?)(reader["dtChatrelSalaryTo"]),
+                nChatrelAdditionalDonationAmt = reader.IsDBNull("nChatrelAdditionalDonationAmt") ? null : (decimal?)reader["nChatrelAdditionalDonationAmt"],
+                nChatrelBusinessDonationAmt = reader.IsDBNull("nchatrelBusinessDonationAmt") ? null : (decimal?)reader["nchatrelBusinessDonationAmt"],
+                nChatrelTotalAmount = reader.IsDBNull("nchatrelTotalAmount") ? null : (decimal?)reader["nchatrelTotalAmount"],
+                nChatrelRecieptNumber = reader.IsDBNull("nChatrelRecieptNumber") ? null : (int?)reader["nChatrelRecieptNumber"],
                 nAuthRegionID = reader.IsDBNull("nAuthRegionID") ? null : (int?)reader["nAuthRegionID"],
                 sCountryID = reader.IsDBNull("sCountryID") ? null : (string)reader["sCountryID"],
                 sPaymentStatus = reader.IsDBNull("sPaymentStatus") ? null : (string)reader["sPaymentStatus"],
                 sPaymentMode = reader.IsDBNull("sPaymentMode") ? null : (string)reader["sPaymentMode"],
                 sPaymentCurrency = reader.IsDBNull("sPaymentCurrency") ? null : (string)reader["sPaymentCurrency"],
-                dtEntered = reader.IsDBNull("dtArrearsFrom") ? null : (DateTime?)(reader["dtArrearsFrom"]),
+                dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
                 nEnteredBy = (int)reader["nEnteredBy"]
             };
             return chatrelPayment;
