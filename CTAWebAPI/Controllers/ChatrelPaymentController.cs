@@ -146,13 +146,47 @@ namespace CTAWebAPI.Controllers
             }
             try
             {
-                Object chatrel = _chatrelPaymentRepository.GetFamilyDetails(sGBID);
-                if (chatrel != null)
+                Object familyDetails = _chatrelPaymentRepository.GetFamilyDetails(sGBID);
+                if (familyDetails != null)
                 {
                     #region Information Logging 
                     _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
                     #endregion
-                    return Ok(chatrel);
+                    return Ok(familyDetails);
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+
+                _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
+            }
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetPaymentHistory(string sGBID)
+        {
+            if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID))
+            {
+                return BadRequest("Required parameters are missing.");
+            }
+            try
+            {
+                Object paymentHistory = _chatrelPaymentRepository.GetPaymentHistory(sGBID);
+                if (paymentHistory != null)
+                {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
+                    return Ok(paymentHistory);
                 }
                 else
                 {
