@@ -123,13 +123,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 DateTime[] dates = GetDatesFromYear(paidUntil + i);
                 DateTime start = dates[0];
                 DateTime end = dates[1];
-                var pending = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = paidUntil + i, lateFees= _dLateFees, nArrearsAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, employed = 0, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
+                var pending = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = paidUntil + i, lateFees= _dLateFees, nTotalDue = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, employed = 0, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
 
                 list.Add(pending);
             }
             DateTime[] currDates = GetDatesFromYear(_currentYear);
 
-            var current = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = _currentYear, lateFees = 0, nArrearsAmount = 0, dtDateFrom = currDates[0], dtDateTo = currDates[1], employed = 0, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
+            var current = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = _currentYear, lateFees = 0, nTotalDue = (_nChatrelAmount + _nChatrelMeal), dtDateFrom = currDates[0], dtDateTo = currDates[1], employed = 0, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
             list.Add(current);
             return list;
         }
