@@ -8,9 +8,7 @@ export const FriendChatrelScreen = (props) => {
     return (
         <View style={styles.main}>
             <View style={styles.container}>
-                <Text>
-                    This is Friend Chatrel Screen
-            </Text>
+                <Text>PAYMENT FOR FRIEND</Text>
             </View>
         </View>
     );
