@@ -16,4 +16,4 @@ export const store = createStore(
 );
 
 
-//Comment the redux Line After dev ends
+//Comment the redux Line After deveopment ends

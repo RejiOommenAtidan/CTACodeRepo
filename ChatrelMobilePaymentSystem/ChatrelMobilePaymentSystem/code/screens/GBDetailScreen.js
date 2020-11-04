@@ -7,8 +7,12 @@ import { Platform } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import {sDateFormat} from '../constants/CommonConfig';
 import Moment from 'moment';
+import { useSelector, useDispatch } from 'react-redux';
+import {storeGBDetails} from '../store/actions/GBDetailsAction';
+
 
 export const GBDetailScreen = (props) => {
+  const dispatch = useDispatch();
   const [nGBID, setnGBID] = useState("");
   const [bShowGBID, setbShowGBID] = useState(true);
   const [dtDOB, setdtDOB] = useState(null);
@@ -70,12 +74,15 @@ export const GBDetailScreen = (props) => {
       </View>
       <View style={styles.container}>
         <Button
-          title="Continue"
-          onPress={()=>{console.log({
-            nGBID:parseInt(nGBID),
-            dtDob:dtDOB
-          })
-          props.navigation.navigate({routeName:"Home"})
+          title="Verify & Continue"
+          onPress={()=>{
+            let oGBDetails={
+              nGBID:parseInt(nGBID),
+              dtDob:dtDOB
+            };
+            console.log(oGBDetails);
+          dispatch(storeGBDetails(oGBDetails));
+          props.navigation.navigate({routeName:"Home"});
         }}
         />
       </View>

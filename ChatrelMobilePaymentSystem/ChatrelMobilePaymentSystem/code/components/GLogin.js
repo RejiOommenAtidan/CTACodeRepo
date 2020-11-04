@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-community/google-signin';
 import { sClientIDAndroid } from '../constants/CommonConfig';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,8 +8,8 @@ import {storeGoogleCreds} from '../store/actions/GLoginAction';
 export const GLogin = (props) => {
   const dispatch = useDispatch();
   const oGoogle = useSelector(state => state.GLoginReducer.oGoogle);
-  console.log(oGoogle);
-  const [user, setUser] = useState({})
+  //console.log(oGoogle);
+  const [user, setUser] = useState({});
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: sClientIDAndroid,
@@ -18,9 +18,9 @@ export const GLogin = (props) => {
       //iosClientId: '', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
     });
     isSignedIn();
-    if(oGoogle!==null){
-      getCurrentUserInfo();
-    }
+    // if(oGoogle!==null){
+    //   getCurrentUserInfo();
+    // }
   }, [])
   const signIn = async () => {
     try {
@@ -70,43 +70,26 @@ export const GLogin = (props) => {
       }
     }
   };
-  const signOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      setUser({}); // Remember to remove the user from your app's state as well
-      props.props.navigation.navigate({
-        routeName: 'Login'
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const signOut = async () => {
+  //   try {
+  //     await GoogleSignin.revokeAccess();
+  //     await GoogleSignin.signOut();
+  //     setUser({}); // Remember to remove the user from your app's state as well
+  //     props.props.navigation.navigate({
+  //       routeName: 'Login'
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
   return (
     <View style={styles.main}>
-      {!user.idToken ?
         <GoogleSigninButton
           style={{ width: 192, height: 48 }}
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
           onPress={signIn}
-        /> :
-        <View style={styles.container}>
-          <Image
-            source={{ uri: user.user.photo }}
-            style={styles.imageStyle}
-          />
-          <Text style={styles.text}>
-            Name: {user.user.name}{' '}
-          </Text>
-          <Text style={styles.text}>
-            Email: {user.user.email}
-          </Text>
-          <TouchableOpacity style={styles.button} onPress={signOut}>
-            <Text>Logout</Text>
-          </TouchableOpacity>
-        </View>
-      }
+        />
     </View>
   )
 }

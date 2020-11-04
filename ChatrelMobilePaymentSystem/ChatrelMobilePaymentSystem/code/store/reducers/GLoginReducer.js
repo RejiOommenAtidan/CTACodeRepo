@@ -1,7 +1,7 @@
 import { STORE_GOOGLECREDS } from '../actions/GLoginAction';
 
 const initialGLoginState = {
-    oGoogle: {}
+    oGoogle: null
 };
 
 export const GLoginReducer = (state = initialGLoginState, action) => {
