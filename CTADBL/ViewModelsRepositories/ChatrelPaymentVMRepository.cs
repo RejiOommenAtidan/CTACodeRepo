@@ -55,6 +55,7 @@ namespace CTADBL.ViewModelsRepositories
                     command.ExecuteNonQuery();
                 }
                 transaction.Commit();
+                //To do: Update GreenBook "sPaidUntil" column to reflect current paid upto status.
                 return ("Records inserted successfully.");
             }
             catch (Exception ex)
