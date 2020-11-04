@@ -4,21 +4,21 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
 
-export const ChatrelPaymentScreen = (props) => {
+export const FriendChatrelScreen = (props) => {
     return (
         <View style={styles.main}>
             <View style={styles.container}>
                 <Text>
-                    This is Chatrel Payment Screen
+                    This is Friend Chatrel Screen
             </Text>
             </View>
         </View>
     );
 };
 
-ChatrelPaymentScreen.navigationOptions = navData => {
+FriendChatrelScreen.navigationOptions = navData => {
     return {
-      headerTitle: 'Chatrel Payment',
+      headerTitle: 'Friend Chatrel',
       headerLeft: (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item

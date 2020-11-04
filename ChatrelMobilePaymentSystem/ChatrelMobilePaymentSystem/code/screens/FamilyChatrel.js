@@ -4,21 +4,21 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
 
-export const ChatrelHistoryScreen = (props) => {
+export const FamilyChatrelScreen = (props) => {
     return (
         <View style={styles.main}>
             <View style={styles.container}>
                 <Text>
-                    This is Chatrel History Screen
-                </Text>
+                    This is Family Chatrel Screen
+            </Text>
             </View>
         </View>
     );
 };
 
-ChatrelHistoryScreen.navigationOptions = navData => {
+FamilyChatrelScreen.navigationOptions = navData => {
     return {
-      headerTitle: 'Chartel History',
+      headerTitle: 'Family Chatrel',
       headerLeft: (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item
@@ -32,6 +32,7 @@ ChatrelHistoryScreen.navigationOptions = navData => {
       )
     };
   };
+
 
 const styles = StyleSheet.create({
     main: {

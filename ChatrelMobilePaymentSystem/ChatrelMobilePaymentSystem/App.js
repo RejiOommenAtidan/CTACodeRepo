@@ -1,20 +1,29 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
+  ScrollView
 } from 'react-native';
 
 import {
   Colors
 } from 'react-native/Libraries/NewAppScreen';
+import SplashScreen from 'react-native-splash-screen'
 
 import MainNavigator from './code/navigation/MainNavigator';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import { store } from './code/store/configureStore';
 
 const App: () => React$Node = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
   return (
     <>
-      <MainNavigator />
+      <Provider store={store}>
+        {/*<ScrollView>*/}
+          <MainNavigator />
+        {/*</ScrollView>*/}
+      </Provider>
     </>
   );
 };

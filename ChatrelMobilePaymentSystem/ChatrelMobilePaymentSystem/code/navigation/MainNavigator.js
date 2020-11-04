@@ -9,7 +9,9 @@ import { ChatrelHistoryScreen } from '../screens/ChatrelHistoryScreen';
 import { FileDisputeScreen } from '../screens/FileDisputeScreen';
 import { GBDetailScreen } from '../screens/GBDetailScreen';
 import { HomeScreen } from '../screens/HomeScreen';
-import { ChatrelPaymentScreen } from '../screens/ChatrelPayment';
+import { SelfChatrelScreen } from '../screens/SelfChatrel';
+import { FriendChatrelScreen } from '../screens/FriendChatrel';
+import { FamilyChatrelScreen } from '../screens/FamilyChatrel';
 import { LoginScreen } from '../screens/LoginScreen';
 import Colors from '../constants/Colors';
 
@@ -53,9 +55,27 @@ const GBDetailNavigator = createStackNavigator(
   }
 );
 
-const ChatrelPaymentNavigator = createStackNavigator(
+const SelfChatrelNavigator = createStackNavigator(
   {
-    ChatrelPayment: ChatrelPaymentScreen
+    SelfChatrel: SelfChatrelScreen
+  },
+  {
+    defaultNavigationOptions: defaultStackNavOptions
+  }
+);
+
+const FamilyChatrelNavigator = createStackNavigator(
+  {
+    FamilyChatrel: FamilyChatrelScreen
+  },
+  {
+    defaultNavigationOptions: defaultStackNavOptions
+  }
+);
+
+const FriendChatrelNavigator = createStackNavigator(
+  {
+    FriendChatrel: FriendChatrelScreen
   },
   {
     defaultNavigationOptions: defaultStackNavOptions
@@ -82,28 +102,40 @@ const FileDisputeNavigator = createStackNavigator(
 
 const MainNavigator = createDrawerNavigator(
   {
-    Login: {
-      screen: LoginNavigator,
-      navigationOptions: {
-        drawerLabel: 'Login'
-      }
-    },
+    // Login: {
+    //   screen: LoginNavigator,
+    //   navigationOptions: {
+    //     drawerLabel: 'Login'
+    //   }
+    // },
     Home: {
       screen: HomeNavigator,
       navigationOptions: {
-        drawerLabel: 'Home'
+        drawerLabel: 'Quick Actions'
       }
     },
-    GBDetail: {
-      screen:GBDetailNavigator,
+    // GBDetail: {
+    //   screen:GBDetailNavigator,
+    //   navigationOptions: {
+    //     drawerLabel: 'GB Details'
+    //   }
+    // },
+    SelfChatrel: {
+      screen: SelfChatrelNavigator,
       navigationOptions: {
-        drawerLabel: 'GB Details'
+        drawerLabel: 'Self Chatrel'
       }
     },
-    ChatrelPayment: {
-      screen: ChatrelPaymentNavigator,
+    FamilyChatrel: {
+      screen: FamilyChatrelNavigator,
       navigationOptions: {
-        drawerLabel: 'Chatrel Payment'
+        drawerLabel: 'Family Chatrel'
+      }
+    },
+    FriendChatrel: {
+      screen: FriendChatrelNavigator,
+      navigationOptions: {
+        drawerLabel: 'Friend Chatrel'
       }
     },
     ChatrelHistory: {
@@ -120,7 +152,7 @@ const MainNavigator = createDrawerNavigator(
     }
   },
   {
-    initialRouteName: "GBDetail",
+    initialRouteName: "Home",
     // drawerPosition: "right",
     hideStatusBar:true,
     statusBarAnimation:true,
