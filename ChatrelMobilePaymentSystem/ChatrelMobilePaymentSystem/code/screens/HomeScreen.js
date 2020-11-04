@@ -42,7 +42,13 @@ export const HomeScreen = (props) => {
           </Text>
           <Button
             buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
-            title='PAY NOW' />
+            title='PAY NOW' 
+            onPress={()=>{
+              props.navigation.navigate({
+                routeName: 'SelfChatrel'
+              });
+            }}
+            />
         </Card>
       </View>
     </View>

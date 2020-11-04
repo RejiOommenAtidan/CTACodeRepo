@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { View, StyleSheet,Text,Switch } from 'react-native';
+import { View, StyleSheet, Text, Switch } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
 import DatePicker from 'react-native-datepicker';
-import {sDateFormat} from '../constants/CommonConfig';
+import { sDateFormat } from '../constants/CommonConfig';
 import Moment from 'moment';
-import { useSelector, useDispatch } from 'react-redux';
-import {storeGBDetails} from '../store/actions/GBDetailsAction';
+import { useDispatch } from 'react-redux';
+import { storeGBDetails } from '../store/actions/GBDetailsAction';
+import { storeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
 
 
 export const GBDetailScreen = (props) => {
@@ -38,11 +39,11 @@ export const GBDetailScreen = (props) => {
           value={nGBID}
         />
         <View style={styles.container}>
-        <Switch
-          onValueChange={()=>{setbShowGBID(!bShowGBID)}}
-          value={bShowGBID}
-        /> 
-        <Text>Show/Hide GBID</Text>
+          <Switch
+            onValueChange={() => { setbShowGBID(!bShowGBID) }}
+            value={bShowGBID}
+          />
+          <Text>Show/Hide GBID</Text>
         </View>
       </View>
       <View style={styles.container}>
@@ -75,15 +76,16 @@ export const GBDetailScreen = (props) => {
       <View style={styles.container}>
         <Button
           title="Verify & Continue"
-          onPress={()=>{
-            let oGBDetails={
-              nGBID:parseInt(nGBID),
-              dtDob:dtDOB
+          onPress={() => {
+            let oGBDetails = {
+              nGBID: parseInt(nGBID),
+              dtDob: dtDOB
             };
             console.log(oGBDetails);
-          dispatch(storeGBDetails(oGBDetails));
-          props.navigation.navigate({routeName:"Home"});
-        }}
+            dispatch(storeGBDetails(oGBDetails));
+            dispatch(storeCurrentGBDetails(oGBDetails));
+            props.navigation.navigate({ routeName: "Home" });
+          }}
         />
       </View>
     </View>

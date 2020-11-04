@@ -3,15 +3,35 @@ import { Text, View, StyleSheet } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
+import {Chatrel} from '../components/Chatrel';
+
+// const oHardcoded = {
+//   sGBID:"1234567",
+//   dtDOB:"01-01-2001",
+//   sName:"Malay Doshi",
+//   sPaidUntil:"2017",
+//   sYearsDue:"3 Years"
+// };
 
 export const SelfChatrelScreen = (props) => {
     return (
         <View style={styles.main}>
-            <View style={styles.container}>
-                <Text>
-                    This is Self Chatrel Screen
-            </Text>
-            </View>
+        <Text>Self Chatrel</Text>
+            {/*<View style={styles.container}>
+                <Text>Self Chatrel</Text>
+                <Text>PERSONAL INFORMATION</Text>
+                <Text>Greenbook ID</Text>
+                <Text>{oHardcoded.sGBID}</Text>
+                <Text>Date of Birth</Text>
+                <Text>{oHardcoded.dtDOB}</Text>
+                <Text>Name</Text>
+                <Text>{oHardcoded.sName}</Text>
+                <Text>Year of Last Payment</Text>
+                <Text>{oHardcoded.sPaidUntil}</Text>
+                <Text>Payment of Years Due</Text>
+                <Text>{oHardcoded.sYearsDue}</Text>
+              </View>*/}
+            <Chatrel></Chatrel>
         </View>
     );
 };

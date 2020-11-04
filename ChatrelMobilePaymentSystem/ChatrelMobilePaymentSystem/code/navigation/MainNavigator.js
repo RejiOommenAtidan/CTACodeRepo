@@ -10,7 +10,8 @@ import { FileDisputeScreen } from '../screens/FileDisputeScreen';
 import { GBDetailScreen } from '../screens/GBDetailScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { SelfChatrelScreen } from '../screens/SelfChatrel';
-import { FriendChatrelScreen } from '../screens/FriendChatrel';
+import { FriendChatrelIntermediateScreen } from '../screens/FriendChatrelIntermediate';
+import { FriendChatrelScreen } from '../screens/FriendChatrelScreen';
 import { FamilyChatrelScreen } from '../screens/FamilyChatrel';
 import { LoginScreen } from '../screens/LoginScreen';
 import Colors from '../constants/Colors';
@@ -67,6 +68,15 @@ const SelfChatrelNavigator = createStackNavigator(
 const FamilyChatrelNavigator = createStackNavigator(
   {
     FamilyChatrel: FamilyChatrelScreen
+  },
+  {
+    defaultNavigationOptions: defaultStackNavOptions
+  }
+);
+
+const FriendChatrelIntermediateNavigator = createStackNavigator(
+  {
+    FriendChatrelIntermediate: FriendChatrelIntermediateScreen
   },
   {
     defaultNavigationOptions: defaultStackNavOptions
@@ -132,12 +142,18 @@ const MainNavigator = createDrawerNavigator(
         drawerLabel: 'Family Chatrel'
       }
     },
-    FriendChatrel: {
-      screen: FriendChatrelNavigator,
+    FriendChatrelIntermediate: {
+      screen: FriendChatrelIntermediateNavigator,
       navigationOptions: {
         drawerLabel: 'Friend Chatrel'
       }
     },
+    // FriendChatrel: {
+    //   screen: FriendChatrelNavigator,
+    //   navigationOptions: {
+    //     drawerLabel: 'Friend Chatrel'
+    //   }
+    // },
     ChatrelHistory: {
       screen: ChatrelHistoryNavigator,
       navigationOptions: {
@@ -154,8 +170,8 @@ const MainNavigator = createDrawerNavigator(
   {
     initialRouteName: "Home",
     // drawerPosition: "right",
-    hideStatusBar:true,
-    statusBarAnimation:true,
+    //hideStatusBar:true,
+    //statusBarAnimation:true,
     contentOptions: {
       activeTintColor: Colors.primary,
       labelStyle: {
