@@ -17,6 +17,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
         private GreenbookRepository _greenbookRepository;
         private ChatrelRepository _chatrelRepository;
         private AuthRegionRepository _authRegionRepository;
+        private static MySqlConnection _connection;
 
         private decimal _nChatrelAmount;
         private decimal _nChatrelMeal;
@@ -37,6 +38,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
             _greenbookRepository = new GreenbookRepository(connectionString);
             _chatrelRepository = new ChatrelRepository(connectionString);
             _authRegionRepository = new AuthRegionRepository(connectionString);
+            _connection = new MySqlConnection(connectionString);
 
             IEnumerable<Chatrel> chatrelValues = _chatrelRepository.GetAllChatrel();
 
