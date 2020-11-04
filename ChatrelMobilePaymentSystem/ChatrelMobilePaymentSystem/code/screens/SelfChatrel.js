@@ -16,7 +16,7 @@ import {Chatrel} from '../components/Chatrel';
 export const SelfChatrelScreen = (props) => {
     return (
         <View style={styles.main}>
-        <Text>SELF PAYMENT</Text>
+        <Text>Self Chatrel</Text>
             {/*<View style={styles.container}>
                 <Text>Self Chatrel</Text>
                 <Text>PERSONAL INFORMATION</Text>

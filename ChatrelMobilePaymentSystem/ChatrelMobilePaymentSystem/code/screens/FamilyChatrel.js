@@ -9,7 +9,7 @@ export const FamilyChatrelScreen = (props) => {
     return (
         <View style={styles.main}>
             <View style={styles.container}>
-            <Text>FAMILY PAYMENT</Text>
+            <Text>Family Chatrel</Text>
             <Chatrel></Chatrel>
             </View>
         </View>
