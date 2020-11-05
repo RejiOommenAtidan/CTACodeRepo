@@ -16,8 +16,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
-
+import Moment from 'moment';
+import { useSelector} from 'react-redux';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -33,16 +33,17 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Family () {
+  const sGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
   const [paymentHistory,setPaymentHistory]=React.useState();
   const classes = useStyles();
   const theme = useTheme();
-  let nGBID=9675;
+  
   useEffect(() => {
     //setPaymentData(payObj);
-    axios.get(`http://localhost:52013/api/ChatrelPayment/GetFamilyDetails/?sGBID=`+nGBID)
+    axios.get(`http://localhost:52013/api/ChatrelPayment/GetPaymentHistory/?sGBID=`+sGBID)
       .then(resp => {
         if (resp.status === 200) {
-         // setFamilyData(resp.data);
+         setPaymentHistory(resp.data);
          
         }
       })
@@ -64,6 +65,7 @@ export default function Family () {
      }, []);
   return (
     <>
+    {paymentHistory &&
       <Card  style={{  padding: 50 }} >
 
       <br />
@@ -82,11 +84,11 @@ export default function Family () {
         </TableHead>
         <TableBody>
           {paymentHistory.map((row) => (
-            <TableRow key={row.receiptNo}>
-              <TableCell >{row.receiptNo}</TableCell>
-              <TableCell align="center">{row.date}</TableCell>
-              <TableCell align="center">{row.period}</TableCell>
-              <TableCell align="center">{row.paymentFor}</TableCell>
+            <TableRow >
+              <TableCell >{row.nChatrelRecieptNumber}</TableCell>
+              <TableCell align="center">{row.dtEntered.split('T'[0])}</TableCell>
+              <TableCell align="center">{Moment(row.dtPeriodFrom).format('YYYY')+' - '+Moment(row.dtPeriodTo).format('YYYY') }</TableCell>
+              <TableCell align="center">{row.sRelation}</TableCell>
               <TableCell align="center"><input type="button" value="Download Receipt"/></TableCell>
               
             </TableRow>
@@ -94,7 +96,7 @@ export default function Family () {
         </TableBody>
       </Table>
     </TableContainer>
-    </Card>
+    </Card>}
     </>
   );
 }

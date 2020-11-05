@@ -20,6 +20,9 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
 
+import { useSelector, useDispatch } from 'react-redux';
+import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -37,18 +40,27 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Family () {
   let history = useHistory();
-  const handleClick = (temp) => {
-    var gbid = {id: temp, other: "test" };
-    history.push('/PaymentPage/' + gbid);
-    
-  }
+  let dispatch = useDispatch();
+
   const classes = useStyles();
   const theme = useTheme();
-  let nGBID=9675;
+  
+  const sGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
   const [familyData,setFamilyData]=React.useState();
+
+  const makePayment = (sGBID)=> {
+
+    let obj={
+      sGBID:sGBID,
+      from:'Chatrel for Family'
+    }
+    dispatch(storeCurrentGBDetails(obj));
+    history.push('/PaymentPage');
+  }
+
   useEffect(() => {
     //setPaymentData(payObj);
-    axios.get(`http://localhost:52013/api/ChatrelPayment/GetFamilyDetails/?sGBID=`+nGBID)
+    axios.get(`http://localhost:52013/api/ChatrelPayment/GetFamilyDetails/?sGBID=`+sGBID)
       .then(resp => {
         if (resp.status === 200) {
           setFamilyData(resp.data);
@@ -100,9 +112,9 @@ export default function Family () {
                   <TableCell align="center">{row.sGBIDRelation}</TableCell>
                   <TableCell align="right">{row.dtDOB}</TableCell>
                   {row.sGBIDRelation == null && 
-                  <TableCell align="center"><input type="button" disabled value="Make Payment"/></TableCell>}
+                  <TableCell align="center"><input type="button"  disabled value="Make Payment"/></TableCell>}
                   {row.sGBIDRelation != null && 
-                  <TableCell align="center"><input type="button"  value="Make Payment"/></TableCell>}
+                  <TableCell align="center"><input type="button" onClick={()=>{makePayment(row.sGBIDRelation)}} value="Make Payment"/></TableCell>}
                   
                 </TableRow>
               ))}

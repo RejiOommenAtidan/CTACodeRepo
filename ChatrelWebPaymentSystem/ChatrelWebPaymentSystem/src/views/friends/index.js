@@ -30,15 +30,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function createFamilyData(name, relation, gbid, age, action) {
-  return { name, relation, gbid, age, action };
-}
-const family = [
-  createFamilyData('Member A', 'Father', 'IN1234567', 68, <input type="button" value="Make Payment"/>),
-  createFamilyData('Member B', 'Mother', 'IN1234567', 64, <input type="button" value="Make Payment"/>),
-  createFamilyData('Member C', 'Spouse', 'IN1234567', 33, <input type="button" value="Make Payment"/>),
-  createFamilyData('Member D', 'Daughter', 'IN1234567', 5, <input type="button" value="Make Payment"/>),
-];
 
 export default function Friends () {
   const classes = useStyles();
@@ -54,7 +45,14 @@ export default function Friends () {
             <Grid item xs={12} sm={2}>
               <FormControl>
                 <TextField
-                  label="Enter Name of Friend"
+                  label="Enter First Name of Friend"
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <FormControl>
+                <TextField
+                  label="Enter Last Name of Friend"
                 />
               </FormControl>
             </Grid>

@@ -32,7 +32,7 @@ export default function LogingPage(props) {
 
   //On Success of verifying info
 let oGBDetails={
-  nGBID:parseInt(nGBID),
+  sGBID:nGBID,
   dtDob:dtDob
 };
   const submit = () => {
