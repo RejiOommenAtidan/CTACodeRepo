@@ -32,7 +32,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
         private int _FYStartDate = 1;
         private int _FYEndMonth = 3;
         private int _FYEndDate = 31;
-        private int _currentYear = DateTime.Now.Year;
+        private int _currentYear = DateTime.Now.Month <= 3 ? DateTime.Now.Year - 1 : DateTime.Now.Year;
+        private bool inGracePeriod = DateTime.Now.Month > 3 && DateTime.Now.Month < 5;
 
 
         #region Constructor
@@ -84,29 +85,43 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
 
-        #region Create Payment Record for a GBID
+        #region Display Payment Record for a GBID
         public Object DisplayChatrelPayment(string sGBID)
         {
             Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
             AuthRegion authRegion = _authRegionRepository.GetAuthRegionById(greenbook.nAuthRegionID.ToString());
             int paidUntil = GetPaidUntil(sGBID);
-            DateTime[] dates = GetDatesFromYear(paidUntil + 1);
+            int pendingYears = _currentYear - paidUntil;
+            if (pendingYears <= 0)
+            {
+                return ("No Outstandings");
+            }
+            decimal arrears = CheckPendingAmount(sGBID);
+            DateTime?[] dates = { null, null };
+            if(arrears > 0)
+            {
+                dates = GetDatesFromYear(paidUntil + 1);
+                dates[1] = new DateTime(_currentYear, _FYEndMonth, _FYEndDate);
+            }
+            
             ChatrelPayment chatrelPayment = new ChatrelPayment
             {
                 Id = -1,
                 nChatrelAmount = decimal.Round(_nChatrelAmount,2),
                 nChatrelMeal = _nChatrelMeal,
                 nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage,
+                nChatrelSalaryAmt = 0,
                 nArrearsAmount = CheckPendingAmount(sGBID),
+                nChatrelTotalAmount = _nChatrelAmount + _nChatrelMeal + arrears,
                 nAuthRegionID = greenbook.nAuthRegionID,
                 sCountryID = authRegion.sCountryID,
                 nChatrelYear = _currentYear,
                 sGBId = sGBID,
                 dtArrearsFrom = dates[0],
-                dtArrearsTo = new DateTime(_currentYear, _FYEndMonth, _FYEndDate)
+                dtArrearsTo = dates[1]
                 
             };
-            var result = new { nPaidUntil = new DateTime(paidUntil+1, _FYEndMonth, _FYEndDate) , chatrelPayment = chatrelPayment, gbChatrels = GetOutstandingDetails(greenbook, authRegion) };
+            var result = new { nPaidUntil = new DateTime(paidUntil+1, _FYEndMonth, _FYEndDate), sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName),  chatrelPayment = chatrelPayment, gbChatrels = GetOutstandingDetails(greenbook, authRegion) };
             return result;
         }
         #endregion
@@ -120,27 +135,36 @@ namespace CTADBL.BaseClassRepositories.Transactions
             List<Object> list = new List<Object>();
             for (int i = 1; i < pendingYears; i++)
             {
-                DateTime[] dates = GetDatesFromYear(paidUntil + i);
-                DateTime start = dates[0];
-                DateTime end = dates[1];
-                var pending = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = paidUntil + i, lateFees= _dLateFees, nTotalDue = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, employed = 0, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
+                DateTime?[] dates = GetDatesFromYear(paidUntil + i);
+                DateTime? start = dates[0];
+                DateTime? end = dates[1];
+                if (i == (pendingYears - 1) && inGracePeriod)
+                {
+                    var gracepending = new { nChatrelYear = paidUntil + i, nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelSalaryAmt = 0, lateFees = 0, nArrearsAmount = (_nChatrelAmount + _nChatrelMeal), nChatrelTotalAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
+                    list.Add(gracepending);
+                    continue;
+                }
+                var pending = new { nChatrelYear = paidUntil + i, nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelSalaryAmt = 0, lateFees = _dLateFees, nArrearsAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees),  nChatrelTotalAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end,  greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
 
+                // Check if we are in grace period in the previous year to current.
+
+               
                 list.Add(pending);
             }
-            DateTime[] currDates = GetDatesFromYear(_currentYear);
+            DateTime?[] currDates = GetDatesFromYear(_currentYear);
 
-            var current = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = _currentYear, lateFees = 0, nTotalDue = (_nChatrelAmount + _nChatrelMeal), dtDateFrom = currDates[0], dtDateTo = currDates[1], employed = 0, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
+            var current = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = _currentYear, lateFees = 0, nChatrelTotalAmount = (_nChatrelAmount + _nChatrelMeal), dtDateFrom = currDates[0], dtDateTo = currDates[1], nChatrelSalaryAmt = 0, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
             list.Add(current);
             return list;
         }
         #endregion
 
         #region Get Financial year Dates from Year
-        private DateTime[] GetDatesFromYear(int year)
+        private DateTime?[] GetDatesFromYear(int year)
         {
-            DateTime s = new DateTime(year, _FYStartMonth, _FYStartDate);
-            DateTime e = new DateTime(year + 1, _FYEndMonth, _FYEndDate);
-            DateTime[] years = { s, e };
+            DateTime? s = new DateTime(year, _FYStartMonth, _FYStartDate);
+            DateTime? e = new DateTime(year + 1, _FYEndMonth, _FYEndDate);
+            DateTime?[] years = { s, e };
             return years;
         }
         #endregion
@@ -150,11 +174,20 @@ namespace CTADBL.BaseClassRepositories.Transactions
         {
 
             int paidUntil = GetPaidUntil(sGBID);
-            int pendingYears = _currentYear - paidUntil;
-            decimal currentDues = _nChatrelAmount + _nChatrelMeal;
+            int pendingYears = (_currentYear - 1) - paidUntil;
+            //decimal currentDues = _nChatrelAmount + _nChatrelMeal;
             decimal arrears = (pendingYears) * (_nChatrelAmount + _nChatrelMeal);
-            decimal penalty = (arrears * _nChatrelLateFeesPercentage / 100);
-            decimal totalDues = Math.Round(currentDues + arrears + penalty, 2);
+            decimal penalty = 0.00m;
+            if(inGracePeriod)
+            {
+                penalty = ((pendingYears - 1) * (_nChatrelAmount + _nChatrelMeal) * _nChatrelLateFeesPercentage / 100);
+            }
+            else
+            {
+                penalty = ((pendingYears) * (_nChatrelAmount + _nChatrelMeal) * _nChatrelLateFeesPercentage / 100);
+            }
+            
+            decimal totalDues = Math.Round(arrears + penalty, 2);
             return totalDues;
         }
         #endregion
@@ -232,6 +265,60 @@ namespace CTADBL.BaseClassRepositories.Transactions
             
 
         }
+        #endregion
+
+        #region Get Payment History
+        
+        public IEnumerable<Object> GetPaymentHistory(string sGBID)
+        {
+            string sql = @"SELECT   pymt.nChatrelRecieptNumber,
+                                    pymt.dtEntered,
+                                    pymt.dtArrearsFrom AS dtPeriodFrom,
+                                    STR_TO_DATE(CONCAT(pymt.nChatrelYear, '-03', '-31'), '%Y-%m-%d') AS dtPeriodTo,
+                                    gb.sFirstName,
+                                    CASE
+                                                WHEN lnkrel.nRelationID = 1 THEN 'Father'
+                                                WHEN lnkrel.nRelationID = 2 THEN 'Mother'
+                                                WHEN lnkrel.nRelationID = 3 THEN 'Spouse'
+                                                WHEN pymt.sGBId = pymt.sPaidByGBId THEN 'Self'
+                                                ELSE 'Friend'
+                                    END
+                                    AS sRelation
+                        FROM       tblchatrelpayment AS pymt
+                        INNER JOIN tblgreenbook      AS gb
+                        ON         pymt.sGBId = gb.sGBId
+                        LEFT JOIN  lnkgbrelation AS lnkrel
+                        ON         lnkrel.sGBID = pymt.sPaidByGBId
+                        AND        lnkrel.sGBIDRelation = pymt.sGBID
+                        WHERE      pymt.sPaidByGBId = @sGBID;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                command.Connection = _connection;
+                command.CommandType = CommandType.Text;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                if (tables != null && tables.Count > 0)
+                {
+                    var paymentHistory = tables[0].AsEnumerable().Select(row => new {
+                        nChatrelRecieptNumber = row.Field<int>("nChatrelRecieptNumber"),
+                        dtEntered = row.Field<DateTime>("dtEntered"),
+                        dtPeriodFrom = row.Field<DateTime>("dtPeriodFrom"),
+                        dtPeriodTo = row.Field<DateTime>("dtPeriodTo"),
+                        sFirstName = row.Field<string>("sFirstName"),
+                        sRelation = row.Field<string>("sRelation")
+                    }).ToList();
+                    return paymentHistory;
+                }
+                return null;
+            }
+
+
+
+        }
+
         #endregion
 
         //#region Delete Call
