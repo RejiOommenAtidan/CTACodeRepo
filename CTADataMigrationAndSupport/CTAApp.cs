@@ -520,6 +520,10 @@ namespace CTADataMigrationAndSupport
             string sName = string.Empty;
             int nAuthRegionID = 0;
             string sCountryID = string.Empty;
+            string sCurrencyCode = string.Empty;
+            string sDOB = string.Empty;
+            int nAge = 0;
+            string isChild = string.Empty;
             cnn = new MySqlConnection(connetionString);
             progressBarProcess.Value = 0;
             progressBarProcess.Refresh();
@@ -530,7 +534,7 @@ namespace CTADataMigrationAndSupport
                 cnn.Open();
 
                 //string query = "SELECT sGBID FROM tblGreenBook";
-                string query = "select SUBSTRING(sPaidUntil,1,4) as sPaidUntil, concat(sFirstName , ' ' , sLastName) as sName, nAuthRegionID, sCountryID from tblgreenbook where sPaidUntil != '' and SUBSTRING(sPaidUntil,1,4) REGEXP '^-?[0-9]+$' and sGBId = '" + sGBId + "'";
+                string query = "SELECT tblgreenbook.sGBId, SUBSTRING(tblgreenbook.sPaidUntil,1,4) as sPaidUntil , concat(COALESCE(`sFirstName`,'') , ' ' , COALESCE(`sLastName`,'')) as sName , tblgreenbook.nAuthRegionID , lstauthregion.sCountryID  , lstauthregion.sCurrencyCode,  lstauthregion.sAuthRegion , tblgreenbook.dtdob ,  DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),tblgreenbook.dtdob)),'%Y')+0 AS age,   DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),tblgreenbook.dtdob)),'%Y')+0 >=6 and DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),tblgreenbook.dtdob)),'%Y')+0 <18 AS IsChild FROM tblgreenbook  Left Outer Join lstauthregion on lstauthregion.ID = tblgreenbook.nAuthRegionID WHERE sGBId = '" + sGBId + "'";
                 //string query = "select sGBID from tblgreenbook where sGBID = 0000000";
                 MySqlCommand cmd = new MySqlCommand(query, cnn);
                 MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
@@ -540,13 +544,17 @@ namespace CTADataMigrationAndSupport
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     //Calculate the chartel pending amount from dt.Rows[0]["sPaidUntil"]
-                    nPaidUntil = Convert.ToInt32(dt.Rows[0]["sPaidUntil"]);
+                    nPaidUntil = dt.Rows[0]["sPaidUntil"] != ""? Convert.ToInt32(dt.Rows[0]["sPaidUntil"]): 2011;
                     sName = dt.Rows[0]["sName"].ToString();
                     nAuthRegionID = Convert.ToInt32(dt.Rows[0]["nAuthRegionID"]);
                     sCountryID = dt.Rows[0]["sCountryID"].ToString();
+                    sCurrencyCode = dt.Rows[0]["sCurrencyCode"].ToString();
+                    sDOB = dt.Rows[0]["dtDOB"].ToString();
+                    nAge = Convert.ToInt32(dt.Rows[0]["age"]);
+                    isChild = dt.Rows[0]["IsChild"].ToString();
                     labelChatrelResult.Text = nPaidUntil.ToString();
-                    labelChatrelResult.Text = "Total Chatrel Balance: $" + getChatrelAmount(nPaidUntil) + " from the year " + nPaidUntil.ToString();
-                    DataTable dtChatrelPending = getChatrelDataTable(nPaidUntil, sName, nAuthRegionID, sCountryID);
+                    labelChatrelResult.Text = "Total Chatrel Balance: $" + getChatrelAmount(nPaidUntil, sCurrencyCode,isChild == "0" ? false: true) + " from the year " + nPaidUntil.ToString();
+                    DataTable dtChatrelPending = getChatrelDataTable(nPaidUntil, sName, nAuthRegionID, sCountryID, sCurrencyCode,sDOB, isChild == "0" ? false : true);
 
                 }
                 else
@@ -566,18 +574,30 @@ namespace CTADataMigrationAndSupport
 
         }
 
-        private string getChatrelAmount(int nChatrelYear)
+        private string getChatrelAmount(int nChatrelYear,string sCurrencyCode, bool isChild)
         {
-            int nChatrelAmount = 36;
-            int nChatrelMeal = 10;
-            int nChatrelSalaryAmt = 50;
-            int nChatrelLateFeesPercentage = 10;
-            int nChatrelStartYear = 2011;
-            int nChatrelCurrentYear = DateTime.Today.Year;
-            int nChatrelPendingYears = 0;
+            //int nChatrelAmount = 36;
+            //int nChatrelMeal = 10;
+            //int nChatrelSalaryAmt = 50;
+            //int nChatrelLateFeesPercentage = 10;
+            //int nChatrelStartYear = 2011;
+            //int nChatrelCurrentYear = DateTime.Today.Year;
+            //int nChatrelPendingYears = 0;
+            //decimal nLateFeeCharge = 0;
+
+            double nChatrelAmount = sCurrencyCode == "USD" ? 36 : 48;
+            double nChatrelMeal = sCurrencyCode == "USD" ? 10 : 10;
+            double nChatrelSalaryAmt = sCurrencyCode == "USD" ? 50 : 0;
+            double nChatrelLateFeesPercentage = sCurrencyCode == "USD" ? 10 : 10;
+            double nChatrelStartYear = 2011;
+            double nChatrelCurrentYear = DateTime.Today.Year;
+            double nChatrelPendingYears = 0;
             decimal nLateFeeCharge = 0;
             //Calculate
-
+            if (isChild)
+            {
+                nChatrelAmount = sCurrencyCode == "USD" ? 12 : 12; 
+            }
 
             if (nChatrelYear < nChatrelStartYear)
             {
@@ -602,17 +622,22 @@ namespace CTADataMigrationAndSupport
             return nTotalChatrelAmount.ToString("0.00");
         }
 
-        private DataTable getChatrelDataTable(int nChatrelYear, string sName, int nAuthRegionID, string sCountryID)
+        private DataTable getChatrelDataTable(int nChatrelYear, string sName, int nAuthRegionID, string sCountryID , string sCurrencyCode,string sDOB, bool isChild)
         {
-            int nChatrelAmount = 36;
-            int nChatrelMeal = 10;
-            int nChatrelSalaryAmt = 50;
-            int nChatrelLateFeesPercentage = 10;
-            int nChatrelStartYear = 2011;
-            int nChatrelCurrentYear = DateTime.Today.Year;
-            int nChatrelPendingYears = 0;
+            double nChatrelAmount = sCurrencyCode == "USD"?36:48;
+            double nChatrelMeal = sCurrencyCode == "USD" ? 10 : 10;
+            double nChatrelSalaryAmt = sCurrencyCode == "USD" ? 50 : 0;
+            double nChatrelLateFeesPercentage = sCurrencyCode == "USD" ? 10 : 10;
+            double nChatrelStartYear = 2011;
+            double nChatrelCurrentYear = DateTime.Today.Year;
+            double nChatrelPendingYears = 0;
             decimal nLateFeeCharge = 0;
+            DateTime dtDOB = Convert.ToDateTime(sDOB);
             //Calculate
+            if (isChild)
+            {
+                nChatrelAmount = 12;
+            }
 
 
             if (nChatrelYear < nChatrelStartYear)
@@ -638,44 +663,92 @@ namespace CTADataMigrationAndSupport
             for (int i = 0; i < nChatrelPendingYears; i++)
             {
 
-                double dLateFee = (((36d + 10d) * 10d) / 100d);
+
+                nChatrelAmount = getChartelAmountForChildYear(dtDOB, nChatrelYear,1, Convert.ToInt32(sCurrencyCode == "USD" ? 36 : 48 / 12));
+                if (nChatrelAmount == 0)
+                {
+                    nChatrelYear++;
+                    continue;
+                }
+                double dLateFee = (((nChatrelAmount + nChatrelMeal) * nChatrelLateFeesPercentage) / 100d);
                 lnkGBChatrelPending.Rows.Add(
                     i + 1,
                     sName,
-                    36,
-                    10,
+                    nChatrelAmount,
+                    nChatrelMeal,
                     nChatrelYear,
                     dLateFee,
                     0,
                     0,
                     0,
-                    (36d + 10d + dLateFee),
+                    (nChatrelAmount + nChatrelMeal + dLateFee),
                     DateTime.Now,
                     nAuthRegionID,
-                    sCountryID);
+                    sCountryID,
+                    sCurrencyCode);
                 countRow++;
                 nChatrelYear++;
             }
-            countRow++;
+                nChatrelAmount = getChartelAmountForChildYear(dtDOB, nChatrelYear,1, Convert.ToInt32(sCurrencyCode == "USD" ? 36 : 48 / 12));
+           
+                countRow++;
 
-            lnkGBChatrelPending.Rows.Add(
-                    countRow,
-                    sName,
-                    36,
-                    10,
-                    nChatrelYear,
-                    0,
-                    0,
-                    0,
-                    0,
-                    (36d + 10d + 0),
-                    DateTime.Now,
-                    nAuthRegionID,
-                    sCountryID);
-
-
+                lnkGBChatrelPending.Rows.Add(
+                        countRow,
+                        sName,
+                        nChatrelAmount,
+                        nChatrelMeal,
+                        nChatrelYear,
+                        0,
+                        0,
+                        0,
+                        0,
+                        (nChatrelAmount + nChatrelMeal + 0),
+                        DateTime.Now,
+                        nAuthRegionID,
+                        sCountryID,
+                        sCurrencyCode);
+           
             //return nTotalChatrelAmount.ToString("0.00");
             return lnkGBChatrelPending;
+        }
+
+        private int getChartelAmountForChildYear(DateTime dtDOB,int CurrentYear, int ChildMonthChatrelAmount, int AdultMonthChatrelAmount)
+        {
+            string str = "31 Mar " + (CurrentYear + 1);
+            DateTime endDateOfCurrentYear ;
+
+            if (DateTime.TryParse(str, out endDateOfCurrentYear))
+            {
+                TimeSpan ts = endDateOfCurrentYear - dtDOB;
+                DateTime Age = DateTime.MinValue.AddDays(ts.Days);
+                //MessageBox.Show(string.Format(" {0} Years {1} Month {2} Days", Age.Year - 1, Age.Month - 1, Age.Day - 1));
+
+                if (Age.Year - 1 == 6)
+                {
+                    return Age.Month * ChildMonthChatrelAmount;
+                }
+                else if (Age.Year - 1 >= 7 && Age.Year - 1 <= 17)
+                {
+                    return 12 * ChildMonthChatrelAmount;
+                }
+                else if (Age.Year - 1 == 18)
+                {
+                    return ((12 - Age.Month) * ChildMonthChatrelAmount) + (Age.Month * AdultMonthChatrelAmount);
+                }
+                else if (Age.Year - 1 > 18)
+                {
+                    return 12 * AdultMonthChatrelAmount;
+                }
+                else
+                {
+                    return 0;
+                } 
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         static DataTable GetTable()
@@ -696,6 +769,7 @@ namespace CTADataMigrationAndSupport
             table.Columns.Add("dtPayment", typeof(DateTime));
             table.Columns.Add("nAuthRegionId", typeof(int));
             table.Columns.Add("sCountryId", typeof(string));
+            table.Columns.Add("sCurrencyCode", typeof(string));
 
             return table;
         }
