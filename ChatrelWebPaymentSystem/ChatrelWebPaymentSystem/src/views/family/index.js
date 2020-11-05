@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React,{useEffect} from 'react';
 import { Card } from '@material-ui/core';
 import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
 import PropTypes from 'prop-types';
@@ -16,7 +16,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
+import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
 
@@ -37,33 +37,44 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Family () {
   let history = useHistory();
-  function createFamilyData(name, relation, gbid, age, action) {
-    return { name, relation, gbid, age, action };
-  
-  }
-
-
-
-  
-  
   const handleClick = (temp) => {
     var gbid = {id: temp, other: "test" };
     history.push('/PaymentPage/' + gbid);
     
   }
-  
-  const family = [
-    createFamilyData('Member A', 'Father', 'IN1234567', 68, <input type="button" value="Make Payment" onClick={() => handleClick('IN1234567')}/>),
-    createFamilyData('Member B', 'Mother', 'IN1234567', 64, <input type="button" value="Make Payment"/>),
-    createFamilyData('Member C', 'Spouse', 'IN1234567', 33, <input type="button" value="Make Payment"/>),
-    createFamilyData('Member D', 'Daughter', 'IN1234567', 5, <input type="button" value="Make Payment"/>),
-  ];
-
   const classes = useStyles();
   const theme = useTheme();
+  let nGBID=9675;
+  const [familyData,setFamilyData]=React.useState();
+  useEffect(() => {
+    //setPaymentData(payObj);
+    axios.get(`http://localhost:52013/api/ChatrelPayment/GetFamilyDetails/?sGBID=`+nGBID)
+      .then(resp => {
+        if (resp.status === 200) {
+          setFamilyData(resp.data);
+         
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+     }, []);
   return (
     <>
     <p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>Pay for Family Members</p>
+    { familyData &&
       <Card  style={{  padding: 50 }} >
       <br />
         <p style={{backgroundColor: "lightblue"}}>Family Member List</p>
@@ -80,22 +91,25 @@ export default function Family () {
               </TableRow>
             </TableHead>
             <TableBody>
-              {family.map((row) => (
+              {familyData.map((row) => (
                 <TableRow key={row.name}>
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    {row.sName}
                   </TableCell>
-                  <TableCell align="center">{row.relation}</TableCell>
-                  <TableCell align="center">{row.gbid}</TableCell>
-                  <TableCell align="right">{row.age}</TableCell>
-                  <TableCell align="center">{row.action}</TableCell>
+                  <TableCell align="center">{row.sRelation}</TableCell>
+                  <TableCell align="center">{row.sGBIDRelation}</TableCell>
+                  <TableCell align="right">{row.dtDOB}</TableCell>
+                  {row.sGBIDRelation == null && 
+                  <TableCell align="center"><input type="button" disabled value="Make Payment"/></TableCell>}
+                  {row.sGBIDRelation != null && 
+                  <TableCell align="center"><input type="button"  value="Make Payment"/></TableCell>}
                   
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
-    </Card>
+    </Card>}
     </>
   );
 }

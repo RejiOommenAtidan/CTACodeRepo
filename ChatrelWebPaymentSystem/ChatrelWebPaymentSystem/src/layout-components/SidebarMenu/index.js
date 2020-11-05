@@ -34,6 +34,10 @@ import CameraTwoToneIcon from '@material-ui/icons/CameraTwoTone';
 
 import HomeIcon from '@material-ui/icons/Home';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
+import {storeGoogleCreds} from '../../actions/transactions/CurrentGBDetailsAction';
+
 const SidebarMenu = (props) => {
   const { setSidebarToggleMobile, sidebarUserbox } = props;
 
@@ -134,7 +138,19 @@ const SidebarMenu = (props) => {
     setPagesRecoverOpen(!pagesRecoverOpen);
     event.preventDefault();
   };
+  const dispatch = useDispatch();
+  const userObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
+  const selfPayment =() =>{
+    
+    let obj={
+      nGBID:userObj.nGBID,
+      from:'Chatrel for Self'
+    }
+    toggleSidebarMobile();
+    dispatch(storeCurrentGBDetails(obj));
 
+  }
+  
   return (
     <>
       <PerfectScrollbar>
@@ -156,13 +172,13 @@ const SidebarMenu = (props) => {
             <li>
               <NavLink
                 activeClassName="active"
-                onClick={toggleSidebarMobile}
+                onClick={()=>{selfPayment(); }}
                 className="nav-link-simple"
-                to="/Test">
+                to="/PaymentPage">
                 <span className="sidebar-icon">
                   <HomeIcon />
                 </span>
-                Pay for Self
+                Chatrel for Self
               </NavLink>
             </li>
             <li>
@@ -170,11 +186,11 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Test">
+                to="/Family">
                 <span className="sidebar-icon">
                   <HomeIcon />
                 </span>
-                Pay for Family
+                 Chatrel for Family
               </NavLink>
             </li>
             <li>
@@ -182,11 +198,23 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/Test">
+                to="/Friends">
                 <span className="sidebar-icon">
                   <HomeIcon />
                 </span>
-                Pay for Friends
+                Chatrel for Friends
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                activeClassName="active"
+                onClick={toggleSidebarMobile}
+                className="nav-link-simple"
+                to="/PaymentHistory">
+                <span className="sidebar-icon">
+                  <HomeIcon />
+                </span>
+                Chatrel History
               </NavLink>
             </li>
             </ul>

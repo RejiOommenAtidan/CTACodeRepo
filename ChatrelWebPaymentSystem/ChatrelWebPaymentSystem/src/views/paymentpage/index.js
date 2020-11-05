@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card } from '@material-ui/core';
 import {Link, Box, Container, Grid, Button, Typography, FormControl, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
 import PropTypes from 'prop-types';
@@ -15,7 +15,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { useSelector} from 'react-redux';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -27,24 +29,28 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 650,
   },
 }));
-function createData(name, calories, fat, carbs, protein, total) {
-  return { name, calories, fat, carbs, protein, total };
-}
 
-const rows = [
-  createData('01/04/2017 - 31/03/2018', 36, 10, 4.6, <input type="checkbox"/>, 50.6),
-  createData('01/04/2018 - 31/03/2019', 36, 10, 4.6,<input type="checkbox"/>, 50.6),
-  createData('01/04/2019 - 31/03/2020', 36, 10, 9.6,<input type="checkbox" checked/>, 105.6),
-  createData('01/04/2020 - 31/03/2021', 36, 10, 0, <input type="checkbox"/>,46),
-  
-];
+
 
 export default function PaymentPage  (props) {
-  console.log("props", props);
 
+  let history = useHistory();
+
+  let nGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.nGBID);
+  let pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
+  let paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.nGBID);
+
+  console.log(paidByGBID);
+  const userObj = useSelector(state => state.GLoginReducer.oGoogle);
+
+  const [dataAPI, setDataAPI] = React.useState();
+  const [summaryData, setSummaryData] = React.useState();
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const [total, setTotal] = React.useState(0);
+  const [bdonation, setBdonation] = React.useState(0);
+  const [adonation, setAdonation] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -53,9 +59,105 @@ export default function PaymentPage  (props) {
   const handleChangeIndex = (index) => {
     setValue(index);
   };
+
+
+const [paymentData, setPaymentData] = React.useState();
+
+
+const modify =(index) =>{
+  let payObj = [...paymentData];
+  if(payObj[index].employed===0){
+    payObj[index].employed=50;
+    //setPaymentData(payObj);
+  }
+  else{
+    payObj[index].employed=0;
+  }
+  setPaymentData(payObj);
+  calculate(index);
+}
+
+const calculate =(index) =>{
+let payObj = [...paymentData];
+
+let len=paymentData.length  ;
+
+if(index!=len-1)
+{
+payObj[index].lateFees=(payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].employed)/10;
+}
+payObj[index].nTotalDue= payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].lateFees + payObj[index].employed;
+setPaymentData(payObj);
+calcTotal(paymentData ,adonation,bdonation);
+}
+const calcTotal =(obj ,a,b)=>{
+  let temptotal=a+b;
+  obj.forEach((row ) => {
+  
+  temptotal+= row.nTotalDue;
+  
+  })
+  setTotal(temptotal);
+
+}
+const submit =() =>{
+  let tempSummaryObj = summaryData;
+  let payObj = [...paymentData];
+  let lastindex =payObj.length-1;
+
+  tempSummaryObj.nArrearsAmount= total- ( payObj[lastindex].nTotalDue + bdonation+adonation);
+  tempSummaryObj.nChatrelTotalAmount=total;
+  tempSummaryObj.nChatrelSalaryAmt=payObj[lastindex].employed;
+  tempSummaryObj.nChatrelBusinessDonationAmt=bdonation;
+  tempSummaryObj.nChatrelAdditionalDonationAmt=adonation;
+  tempSummaryObj.sPaidByGBId=paidByGBID;
+
+  
+  
+  let finalObj={
+    "chatrelPayment": tempSummaryObj,
+    "gbChatrels": paymentData
+  }
+
+  console.log("Final Obj:" , finalObj)
+}
+
+
+
+
+  const select = (<select><option>1</option><option>2</option><option>3</option><option>4</option></select>);
+  useEffect(() => {
+    //setPaymentData(payObj);
+    axios.get(`http://localhost:52013/api/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+nGBID)
+      .then(resp => {
+        if (resp.status === 200) {
+          setDataAPI(resp.data);
+          setSummaryData(resp.data.chatrelPayment);
+          console.log(resp.data.chatrelPayment.sGBId); 
+          setPaymentData(resp.data.gbChatrels);
+          calcTotal(resp.data.gbChatrels ,adonation,bdonation);
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+     }, []);
   return (
-    <>
+    <> {dataAPI  &&
       <Card  style={{  padding: 50 }} >
+       
         
         <div>
           <Grid container spacing={3}>
@@ -79,17 +181,17 @@ export default function PaymentPage  (props) {
      
      
           <br />
-            <p style={{backgroundColor: "lightblue"}}>Personal Details - {props.sGBID}</p>
+            <p style={{backgroundColor: "lightblue"}}>Personal Details - {dataAPI.chatrelPayment.sGBId}</p>
           
           
               <FormControl>
-                <TextField label="GreenBook Holder Name" value="Aayush Pandyaaa"/>
+                <TextField label="GreenBook Holder Name" value={userObj.name}/>
               </FormControl>
               
             
             
             <FormControl style={{paddingLeft: "20px"}}>
-                <TextField label="Paid Until" value="31/03/2017"/>
+                <TextField label="Paid Until"  value={dataAPI.nPaidUntil.split('T')[0]}/>
               </FormControl>
               <br />
               <br />
@@ -100,6 +202,7 @@ export default function PaymentPage  (props) {
         <TableHead>
           <TableRow>
             <TableCell>Year</TableCell>
+            <TableCell>Region</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Chatrel</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Meal</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Penalty</TableCell>
@@ -108,16 +211,18 @@ export default function PaymentPage  (props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
+          { paymentData &&
+           paymentData.map((row,index) => (
+            <TableRow >
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.nChatrelYear}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-              <TableCell align="right">{row.total}</TableCell>
+              <TableCell>{select}</TableCell>
+              <TableCell align="right">{row.nChatrelAmount}</TableCell>
+              <TableCell align="right">{row.nChatrelMeal}</TableCell>
+              <TableCell align="right">{row.lateFees}</TableCell>
+              <TableCell align="right">{ <input value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox"/>}</TableCell>
+              <TableCell align="right">{row.nTotalDue}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -127,20 +232,47 @@ export default function PaymentPage  (props) {
     <p style={{backgroundColor: "lightblue"}}>Additional Payment</p>
     <Grid container xs={12} sm={12} alignContent="flex-end" justify="flex-end">
     <FormControl style={{textAlign: "right"}} >
-                <TextField label="Business Donation" value="10" inputProps={{min: 0, style: { textAlign: 'right' }}}/>
+                <TextField label="Business Donation" type='number' value={bdonation} 
+                onChange={(e)=>{
+                  if(e.target.value ===""){
+                    calcTotal(paymentData,adonation,0);
+                    setBdonation(0);
+                  }
+                  else{
+                    calcTotal(paymentData,adonation,parseInt(e.target.value));
+                    setBdonation(parseInt(e.target.value));
+                  }
+                  
+                  
+                  }}
+                   inputProps={{min: 0, style: { textAlign: 'right' }}}/>
               </FormControl>  
     </Grid>
      
     <Grid container xs={12} sm={12} alignContent="flex-end" justify="flex-end">
     <FormControl>
-                <TextField textAlign={"right"} label="Additional Donation" value="0" inputProps={{min: 0, style: { textAlign: 'right' }}}/>
+                <TextField textAlign={"right"}  type='number'label="Additional Donation" value={adonation} 
+                onChange={(e)=>{
+                  if(e.target.value === ""){
+                    calcTotal(paymentData,0,bdonation);
+                    setAdonation(0);
+                  }
+                  else{
+                    calcTotal(paymentData,parseInt(e.target.value),bdonation);
+                    setAdonation(parseInt(e.target.value));
+                  }
+                  
+                  
+                
+                }} 
+                inputProps={{min: 0, style: { textAlign: 'right' }}}/>
               </FormControl>  
     </Grid>
     <br />
-           <p style={{backgroundColor: "lightblue", textAlign: "right", fontWeight: "bold"}}>Total To Pay<span style={{textAlign: "right", fontWeight: "bold"}}> $262.80</span></p>          
+           <p style={{backgroundColor: "lightblue", textAlign: "right", fontWeight: "bold"}}>Total To Pay <span style={{textAlign: "right", fontWeight: "bold"}}>$ {total.toFixed(2)}</span></p>          
            <br />
            <p style={{backgroundColor: "lightblue"}}>Pay Online</p>   
-           <div><img src="https://www.paypalobjects.com/webstatic/mktg/logo/bdg_now_accepting_pp_2line_w.png" border="0" alt="Now accepting PayPal" /></div>
+           <div><Button onClick={()=>{submit() }} > <img src="https://www.paypalobjects.com/webstatic/mktg/logo/bdg_now_accepting_pp_2line_w.png" border="0" alt="Now accepting PayPal" /></Button></div>
            
       
         </div>
@@ -151,6 +283,7 @@ export default function PaymentPage  (props) {
     
         
       </Card>
+}
     </>
   );
 }

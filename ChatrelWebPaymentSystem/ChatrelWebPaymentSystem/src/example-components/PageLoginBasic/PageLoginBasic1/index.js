@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import {storeGBDetails} from '../../../actions/transactions/GBDetailsAction';
 import {
   Grid,
   InputAdornment,
@@ -15,35 +17,42 @@ import GoogleLoginPage from 'views/login/GoogleLogin';
 import projectLogo from '../../../assets/images/CTALogo.png';
 
 export default function LogingPage(props) {
+
+  let history = useHistory();
+  const dispatch = useDispatch();
+
+
   const responseGoogle = (response) => {
     console.log(response);
   }
 
    const [login,setLogin]=React.useState(false);
-   const [gbid,setGbid]=React.useState(0);
-   const [dob,setDob]=React.useState("");
+   const [nGBID,setGbID]=React.useState(0);
+   const [dtDob,setDob]=React.useState("");
 
-   const obj ={
-    gbid:gbid,
-    dob:dob,
-    user:"",
-  }
+  //On Success of verifying info
+let oGBDetails={
+  nGBID:parseInt(nGBID),
+  dtDob:dtDob
+};
   const submit = () => {
-    obj.user=JSON.parse(localStorage.getItem('currentUser')).name;
-    alert(JSON.stringify(obj));
-    window.location='/selfpayment';
+    //obj.user=JSON.parse(localStorage.getItem('currentUser')).name;
+    //alert(JSON.stringify(obj));
+    console.log(oGBDetails);
+    dispatch(storeGBDetails(oGBDetails));
+    
+    history.push('/family');
   }
+  const userObj = useSelector(state => state.GLoginReducer.oGoogle);
    useEffect(() => {
-    if(JSON.parse(localStorage.getItem('currentUser'))== null){
+    
+    if( userObj == null){
       setLogin(false);
     }
     else{
      setLogin(true);
-     
-     
-     
     }
-  }, []);
+  }, [userObj]);
 
   return (
     <>
@@ -60,29 +69,33 @@ export default function LogingPage(props) {
                         <h1 className="display-2 mb-1 font-weight-bold">Welcome to Chatrel</h1>
                         <h3 className="display-5 mb-1 ">Your go-to resource for supporting the Tibetan Government</h3>
                         <br />
-                        { JSON.parse(localStorage.getItem('currentUser'))== null &&
+                        { !login &&                     
                         <GoogleLoginPage/>
                         }
-                        { JSON.parse(localStorage.getItem('currentUser')) != null && 
-                        
+                      
+                        {
+                          login &&
                         <>
-                         <TextField   id="standard-basic" type='number' onChange={(e)=>{console.log(obj);setGbid(e.target.value)}} style={{color:'white'}} label="GBID"/>
-                          <br/>  
-                         <TextField
-                         id="date"
-                         label="DOB"
-                         type="date"
-                         onChange={(e)=>{setDob(e.target.value)}}
+
+                            <TextField   id="standard-basic" type='number' onChange={(e)=>{setGbID(e.target.value)}} style={{color:'white'}} label="GBID"/>
+                              <br/>  
+                            <TextField
+                            id="date"
+                            label="DOB"
+                            type="date"
+                            onChange={(e)=>{setDob(e.target.value)}}
+                          
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                          <br/>
+                          <br/>
+                            <Button variant="contained" onClick={()=>{submit()}} style={{   backgroundColor: 'yellow', color:'black'}}>Submit</Button>
                        
-                         InputLabelProps={{
-                           shrink: true,
-                         }}
-                       />
-                       <br/>
-                       <br/>
-                        <Button variant="contained" onClick={()=>{submit()}} style={{   backgroundColor: 'yellow', color:'black'}}>Submit</Button>
                        </>
                         }
+                        
                       </div>
                       <div>
 

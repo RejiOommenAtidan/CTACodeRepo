@@ -1,9 +1,9 @@
 
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { Card } from '@material-ui/core';
 import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
 import PropTypes from 'prop-types';
-
+import axios from 'axios';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -30,22 +30,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function createPaymentHistory(receiptNo, date, period, paymentFor, action){
-  return {receiptNo, date, period, paymentFor, action};
-}
-const paymentHistory = [
-  createPaymentHistory(123, '12-10-2019', '01-04-2016 - 31-03-2020', 'Self', <input type="button" value="Download Receipt"/>),
-  createPaymentHistory(123, '12-10-2017', '01-04-2014 - 31-03-2018', 'Spouse', <input type="button" value="Download Receipt"/>),
-  createPaymentHistory(123, '12-10-2017', '01-04-2009 - 31-03-2018', 'Friend', <input type="button" value="Download Receipt"/>),
-  createPaymentHistory(123, '12-10-2015', '01-04-2014 - 31-03-2016', 'Self', <input type="button" value="Download Receipt"/>),
-  createPaymentHistory(123, '12-10-2015', '01-04-2009 - 31-03-2016', 'Father', <input type="button" value="Download Receipt"/>),
-  createPaymentHistory(123, '12-10-2015', '01-04-2009 - 31-03-2016', 'Son', <input type="button" value="Download Receipt"/>),
 
-];
 
 export default function Family () {
+  const [paymentHistory,setPaymentHistory]=React.useState();
   const classes = useStyles();
   const theme = useTheme();
+  let nGBID=9675;
+  useEffect(() => {
+    //setPaymentData(payObj);
+    axios.get(`http://localhost:52013/api/ChatrelPayment/GetFamilyDetails/?sGBID=`+nGBID)
+      .then(resp => {
+        if (resp.status === 200) {
+         // setFamilyData(resp.data);
+         
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+     }, []);
   return (
     <>
       <Card  style={{  padding: 50 }} >
@@ -71,7 +87,7 @@ export default function Family () {
               <TableCell align="center">{row.date}</TableCell>
               <TableCell align="center">{row.period}</TableCell>
               <TableCell align="center">{row.paymentFor}</TableCell>
-              <TableCell align="center">{row.action}</TableCell>
+              <TableCell align="center"><input type="button" value="Download Receipt"/></TableCell>
               
             </TableRow>
           ))}
