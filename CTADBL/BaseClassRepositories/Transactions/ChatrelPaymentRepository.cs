@@ -211,6 +211,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             string sql = @"SELECT frel.sGBIDRelation,
                                    gb1.sfirstname AS sName,
                                    gb1.dtDOB,
+                                   TIMESTAMPDIFF(YEAR, gb1.dtDOB, CURDATE()) AS nAge,
                                    gb1.sPaidUntil,
                                    CASE
                                      WHEN frel.nrelationid = 1 THEN 'Father'
@@ -228,6 +229,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             SELECT child.sgbidchild,
                                    child.sname,
                                    child.dtdob,
+                                   TIMESTAMPDIFF(YEAR, child.dtdob, CURDATE()) AS nAge,
                                    gb1.spaiduntil,
                                    CASE
                                      WHEN child.sgender = 'M' THEN 'Son'
@@ -254,6 +256,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                         sGBIDRelation = row.Field<string>("sGBIDRelation"),
                         sName = row.Field<string>("sName"),
                         dtDOB = row.Field<DateTime?>("dtDOB"),
+                        nAge = row.Field<int>("nAge"),
                         sPaidUntil = row.Field<string>("sPaidUntil"),
                         sRelation = row.Field<string>("sRelation"),
                     }).ToList();
