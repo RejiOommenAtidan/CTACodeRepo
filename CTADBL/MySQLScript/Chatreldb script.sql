@@ -1,5 +1,3 @@
-Use chatreldb;
-
 CREATE TABLE `lnkgbchatrel` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBId` varchar(255) DEFAULT NULL,
@@ -40,6 +38,18 @@ CREATE TABLE `lnkgbchildren` (
   KEY `sGBIDParent` (`sGBIDParent`)
 ) ENGINE=InnoDB AUTO_INCREMENT=109499 DEFAULT CHARSET=latin1;
 
+CREATE TABLE `lnkgbFileDispute` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sGBId` varchar(255) DEFAULT NULL,
+  `sSubject` varchar(500) DEFAULT NULL,
+  `sEmailBody` VARCHAR(2000) DEFAULT NULL,
+  `binFileDoc` longblob DEFAULT NULL,
+  `sFileExtension` varchar(255) DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `GB_EMAIL_GBID` (`sGBId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `lnkgbrelation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -156,6 +166,7 @@ CREATE TABLE `lstauthregion` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `sAuthRegion` text NOT NULL,
   `sCountryID` text NOT NULL,
+  `sCurrencyCode` text NOT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   `dtUpdated` datetime DEFAULT NULL,
@@ -200,6 +211,8 @@ CREATE TABLE `tblactionlogger` (
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 --- -------------------------------------------------------------------------
 --- Data Migration From CTADB to ChatrelDB
 --- -------------------------------------------------------------------------
@@ -301,6 +314,7 @@ INSERT INTO `chatreldb`.`lstauthregion`
 (`ID`,
 `sAuthRegion`,
 `sCountryID`,
+`sCurrencyCode`,
 `dtEntered`,
 `nEnteredBy`,
 `dtUpdated`,
@@ -309,6 +323,7 @@ SELECT
 	`ID`,
 	`sAuthRegion`,
 	`sCountryID`,
+	`sCurrencyCode`,
 	`dtEntered`,
 	`nEnteredBy`,
 	`dtUpdated`,
