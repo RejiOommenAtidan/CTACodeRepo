@@ -68,6 +68,10 @@ const FeatureUserrights = lazy(() => import('./views/transactions/featureuserrig
 const NewGreenBookSerial = lazy(() => import('./views/transactions/newgreenbookserial'));
 const Search = lazy(() => import('./views/search/index'));
 
+//Chatrel Payment Pages
+const ChatrelPay = lazy(() => import('./views/chatrelpay'));
+const Family = lazy(() => import('./views/chatrelpay/family'));
+
 const Routes = () => {
   const location = useLocation();
   const oUserAuth = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
@@ -214,7 +218,9 @@ const Routes = () => {
                 '/Users',
                 '/Print',
                 '/FeatureRoles',
-                '/Search'
+                '/Search',
+                '/ChatrelPay',
+                '/ChatrelPay/Family'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -227,6 +233,8 @@ const Routes = () => {
                     <Route path="/Home" component={Home} />
                     <Route path="/Greenbooks" component={Greenbook} />
                     <Route path="/NewGreenBookSerial" component={NewGreenBookSerial} />
+                    <Route path="/ChatrelPay" component={ChatrelPay} />
+                    <Route path="/ChatrelPay/Family" component={Family} />
                     {/*Private Routes Go Here*/}
                     <PrivateRoute path="/GivenGBID" feature={3} component={GivenGBID} />
                     <PrivateRoute path="/DeleteGB" feature={4} component={DeleteGB} />

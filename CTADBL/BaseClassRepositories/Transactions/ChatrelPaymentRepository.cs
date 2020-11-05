@@ -33,6 +33,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         private int _FYEndMonth = 3;
         private int _FYEndDate = 31;
         private int _currentYear = DateTime.Now.Month <= 3 ? DateTime.Now.Year - 1 : DateTime.Now.Year;
+        private bool inGracePeriod = DateTime.Now.Month > 3 && DateTime.Now.Month < 5;
 
 
         #region Constructor
@@ -84,7 +85,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
 
-        #region Create Payment Record for a GBID
+        #region Display Payment Record for a GBID
         public Object DisplayChatrelPayment(string sGBID)
         {
             Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
@@ -137,8 +138,17 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 DateTime?[] dates = GetDatesFromYear(paidUntil + i);
                 DateTime? start = dates[0];
                 DateTime? end = dates[1];
+                if (i == (pendingYears - 1) && inGracePeriod)
+                {
+                    var gracepending = new { nChatrelYear = paidUntil + i, nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelSalaryAmt = 0, lateFees = 0, nArrearsAmount = (_nChatrelAmount + _nChatrelMeal), nChatrelTotalAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
+                    list.Add(gracepending);
+                    continue;
+                }
                 var pending = new { nChatrelYear = paidUntil + i, nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelSalaryAmt = 0, lateFees = _dLateFees, nArrearsAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees),  nChatrelTotalAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end,  greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
 
+                // Check if we are in grace period in the previous year to current.
+
+               
                 list.Add(pending);
             }
             DateTime?[] currDates = GetDatesFromYear(_currentYear);
@@ -168,7 +178,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             //decimal currentDues = _nChatrelAmount + _nChatrelMeal;
             decimal arrears = (pendingYears) * (_nChatrelAmount + _nChatrelMeal);
             decimal penalty = 0.00m;
-            if(DateTime.Now.Month > 3 && DateTime.Now.Month < 5)
+            if(inGracePeriod)
             {
                 penalty = ((pendingYears - 1) * (_nChatrelAmount + _nChatrelMeal) * _nChatrelLateFeesPercentage / 100);
             }
