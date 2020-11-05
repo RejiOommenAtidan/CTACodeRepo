@@ -66,12 +66,12 @@ const [paymentData, setPaymentData] = React.useState();
 
 const modify =(index) =>{
   let payObj = [...paymentData];
-  if(payObj[index].employed===0){
-    payObj[index].employed=50;
+  if(payObj[index].nChatrelSalaryAmt===0){
+    payObj[index].nChatrelSalaryAmt=50;
     //setPaymentData(payObj);
   }
   else{
-    payObj[index].employed=0;
+    payObj[index].nChatrelSalaryAmt=0;
   }
   setPaymentData(payObj);
   calculate(index);
@@ -84,9 +84,9 @@ let len=paymentData.length  ;
 
 if(index!=len-1)
 {
-payObj[index].lateFees=(payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].employed)/10;
+payObj[index].lateFees=(payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nChatrelSalaryAmt)/10;
 }
-payObj[index].nTotalDue= payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].lateFees + payObj[index].employed;
+payObj[index].nChatrelTotalAmount= payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].lateFees + payObj[index].nChatrelSalaryAmt;
 setPaymentData(payObj);
 calcTotal(paymentData ,adonation,bdonation);
 }
@@ -94,7 +94,7 @@ const calcTotal =(obj ,a,b)=>{
   let temptotal=a+b;
   obj.forEach((row ) => {
   
-  temptotal+= row.nTotalDue;
+  temptotal+= row.nChatrelTotalAmount;
   
   })
   setTotal(temptotal);
@@ -105,9 +105,9 @@ const submit =() =>{
   let payObj = [...paymentData];
   let lastindex =payObj.length-1;
 
-  tempSummaryObj.nArrearsAmount= total- ( payObj[lastindex].nTotalDue + bdonation+adonation);
+  tempSummaryObj.nArrearsAmount= total- ( payObj[lastindex].nChatrelTotalAmount + bdonation+adonation);
   tempSummaryObj.nChatrelTotalAmount=total;
-  tempSummaryObj.nChatrelSalaryAmt=payObj[lastindex].employed;
+  tempSummaryObj.nChatrelSalaryAmt=payObj[lastindex].nChatrelSalaryAmt;
   tempSummaryObj.nChatrelBusinessDonationAmt=bdonation;
   tempSummaryObj.nChatrelAdditionalDonationAmt=adonation;
   tempSummaryObj.sPaidByGBId=paidByGBID;
@@ -120,6 +120,33 @@ const submit =() =>{
   }
 
   console.log("Final Obj:" , finalObj)
+  axios.post(`http://localhost:52013/api/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+nGBID)
+  .then(resp => {
+    if (resp.status === 200) {
+      setDataAPI(resp.data);
+      setSummaryData(resp.data.chatrelPayment);
+      console.log(resp.data.chatrelPayment.sGBId); 
+      setPaymentData(resp.data.gbChatrels);
+      calcTotal(resp.data.gbChatrels ,adonation,bdonation);
+    }
+  })
+  .catch(error => {
+    if (error.response) {
+      console.error(error.response.data);
+      console.error(error.response.status);
+      console.error(error.response.headers);
+    } else if (error.request) {
+      console.warn(error.request);
+    } else {
+      console.error('Error', error.message);
+    }
+    console.log(error.config);
+  })
+  .then(release => {
+    //console.log(release); => udefined
+  });
+
+
 }
 
 
@@ -185,7 +212,7 @@ const submit =() =>{
           
           
               <FormControl>
-                <TextField label="GreenBook Holder Name" value={userObj.name}/>
+                <TextField label="GreenBook Holder Name" value={dataAPI.sName}/>
               </FormControl>
               
             
@@ -222,7 +249,7 @@ const submit =() =>{
               <TableCell align="right">{row.nChatrelMeal}</TableCell>
               <TableCell align="right">{row.lateFees}</TableCell>
               <TableCell align="right">{ <input value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox"/>}</TableCell>
-              <TableCell align="right">{row.nTotalDue}</TableCell>
+              <TableCell align="right">{row.nChatrelTotalAmount}</TableCell>
             </TableRow>
           ))}
         </TableBody>

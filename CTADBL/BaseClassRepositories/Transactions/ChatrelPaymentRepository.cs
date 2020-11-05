@@ -256,7 +256,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                         sGBIDRelation = row.Field<string>("sGBIDRelation"),
                         sName = row.Field<string>("sName"),
                         dtDOB = row.Field<DateTime?>("dtDOB"),
-                        nAge = row.Field<int>("nAge"),
+                        nAge = row.Field<long>("nAge"),
                         sPaidUntil = row.Field<string>("sPaidUntil"),
                         sRelation = row.Field<string>("sRelation"),
                     }).ToList();
