@@ -8,10 +8,10 @@ import DatePicker from 'react-native-datepicker';
 import { sDateFormat } from '../constants/CommonConfig';
 import Moment from 'moment';
 
-
 export const FriendChatrelIntermediateScreen = (props) => {
   const [nFriendGBID, setnFriendGBID] = useState("");
-  const [sFriendFullname, setsFriendFullname] = useState("");
+  const [sFriendFirstname, setsFriendFirstname] = useState("");
+  const [sFriendLastname, setsFriendLastname] = useState("");
   const [bShowFriendGBID, setbShowFriendGBID] = useState(true);
   const [dtFriendDOB, setdtFriendDOB] = useState(null);
   const dtToday = Moment().format(sDateFormat);
@@ -47,8 +47,8 @@ export const FriendChatrelIntermediateScreen = (props) => {
           </View>
           <View style={styles.container}>
             <Input
-              label="Friend's Fullname"
-              placeholder="Friend's Fullname Please"
+              label="Friend's Firstname"
+              placeholder="Friend's Firstname Please"
               //autoFocus={true}
               //autoCapitalize={"characters"}
               autoCompleteType={"off"}
@@ -60,8 +60,27 @@ export const FriendChatrelIntermediateScreen = (props) => {
               keyboardAppearance={"default"}
               disableFullscreenUI={true}
               //maxLength={7}
-              onChangeText={(value) => { setsFriendFullname(value) }}
-              value={sFriendFullname}
+              onChangeText={(value) => { setsFriendFirstname(value) }}
+              value={sFriendFirstname}
+            />
+          </View>
+          <View style={styles.container}>
+            <Input
+              label="Friend's Lastname"
+              placeholder="Friend's Lastname Please"
+              //autoFocus={true}
+              //autoCapitalize={"characters"}
+              autoCompleteType={"off"}
+              autoCorrect={false}
+              clearButtonMode={"while-editing"}
+              //dataDetectorTypes={"phoneNumber"}
+              //secureTextEntry={!bShowFriendGBID}
+              keyboardType={"default"}
+              keyboardAppearance={"default"}
+              disableFullscreenUI={true}
+              //maxLength={7}
+              onChangeText={(value) => { setsFriendLastname(value) }}
+              value={sFriendLastname}
             />
           </View>
           <View style={styles.container}>
@@ -96,12 +115,13 @@ export const FriendChatrelIntermediateScreen = (props) => {
               onPress={() => {
                 let oFriendGBDetails = {
                   nFriendGBID: parseInt(nFriendGBID),
-                  sFriendFullname: sFriendFullname,
+                  sFriendFirstname: sFriendFirstname,
+                  sFriendLastname: sFriendLastname,
                   dtFriendDOB: dtFriendDOB
                 };
                 console.log(oFriendGBDetails);
                 // debugger;
-                // props.navigation.navigate({ routeName: "FriendChatrel" });
+                props.navigation.navigate({ routeName: "FriendChatrel" });
               }}
             />
           </View>
