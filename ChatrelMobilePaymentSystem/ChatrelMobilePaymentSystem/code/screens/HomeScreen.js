@@ -5,6 +5,7 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
+import axios from 'axios';
 
 const aCard = [
   { sLabel: "Self Chatrel", sImagePath: require('../assets/CTALogo.png') },
@@ -12,31 +13,47 @@ const aCard = [
   { sLabel: "Friend Chatrel", sImagePath: require('../assets/CTALogo.png') },
 ];
 
+const getAuthRegions = () => {
+  axios.get(`/AuthRegion/GetAuthRegions`)
+    .then(resp => {
+      if (resp.status === 200) {
+        console.log(resp.data);
+        // setdataAPI(resp.data)
+      }
+    })
+    .catch(error => {
+      console.log(error.message);
+      console.log(error.config);
+    });
+};
+
 const HomeScreen = (props) => {
   // console.log(props);
-  const backAction = () => {
-    if (props.isFocused) {
-      Alert.alert("Hold on!", "Are you sure you want to exit?", [
-        {
-          text: "Cancel",
-          onPress: () => null,
-          style: "cancel"
-        },
-        {
-          text: "YES", onPress: () => BackHandler.exitApp()
-        }
-        // {
-        //   cancelable: false
-        // }
-      ]);
-    }
-    return true;
-  };
+  // const backAction = () => {
+  //   if (props.isFocused) {
+  //     Alert.alert("Hold on!", "Are you sure you want to exit?", [
+  //       {
+  //         text: "Cancel",
+  //         onPress: () => null,
+  //         style: "cancel"
+  //       },
+  //       {
+  //         text: "YES", onPress: () => BackHandler.exitApp()
+  //       }
+  //       // {
+  //       //   cancelable: false
+  //       // }
+  //     ]);
+  //   }
+  //   return true;
+  // };
   useEffect(() => {
-    BackHandler.addEventListener("hardwareBackPress", backAction);
+    getAuthRegions();
+    // BackHandler.addEventListener("hardwareBackPress", backAction);
 
-    return () =>
-      BackHandler.removeEventListener("hardwareBackPress", backAction);
+    // return () =>
+    //   BackHandler.removeEventListener("hardwareBackPress", backAction);
+
   }, []);
   return (
     <ScrollView>
