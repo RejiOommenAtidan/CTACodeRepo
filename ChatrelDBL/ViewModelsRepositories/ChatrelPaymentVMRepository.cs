@@ -13,6 +13,10 @@ namespace ChatrelDBL.ViewModelsRepositories
     {
 
         private static MySqlConnection _connection;
+        private int _FYStartMonth = 4;
+        private int _FYStartDate = 1;
+        private int _FYEndMonth = 3;
+        private int _FYEndDate = 31;
         #region Constructor
         public ChatrelPaymentVMRepository(string connectionString) : base(connectionString)
         {
@@ -28,6 +32,27 @@ namespace ChatrelDBL.ViewModelsRepositories
             ChatrelPayment chatrelPayment = chatrelPaymentVM.chatrelPayment;
             IEnumerable<GBChatrel> chatrels = chatrelPaymentVM.gbChatrels;
             chatrelPayment.dtEntered = DateTime.Now;
+            if (chatrelPayment.nChatrelSalaryAmt > 0)
+            {
+                chatrelPayment.dtChatrelSalaryFrom = new DateTime((int)chatrelPayment.nChatrelYear, _FYStartMonth, _FYStartDate);
+                chatrelPayment.dtChatrelSalaryTo = new DateTime((int)chatrelPayment.nChatrelYear, _FYEndMonth, _FYEndDate);
+            }
+
+            foreach (var chatrel in chatrels)
+            {
+                chatrel.nChatrelRecieptNumber = chatrelPayment.nChatrelRecieptNumber;
+                chatrel.sPaymentCurrency = chatrelPayment.sPaymentCurrency;
+                chatrel.sGBId = chatrelPayment.sGBId;
+                chatrel.sPaidByGBId = chatrelPayment.sPaidByGBId;
+                chatrel.nChatrelLateFeesPercentage = chatrelPayment.nChatrelLateFeesPercentage;
+                if (chatrel.nChatrelSalaryAmt > 0)
+                {
+                    chatrel.dtChatrelSalaryFrom = chatrel.dtArrearsFrom;
+                    chatrel.dtChatrelSalaryTo = chatrel.dtArrearsTo;
+                }
+                chatrel.nEnteredBy = chatrelPayment.nEnteredBy;
+                chatrel.dtEntered = DateTime.Now;
+            }
 
             var builder = new SqlQueryBuilder<ChatrelPayment>(chatrelPayment);
             MySqlCommand command = builder.GetInsertCommand();
@@ -42,11 +67,10 @@ namespace ChatrelDBL.ViewModelsRepositories
                 command.ExecuteNonQuery();
                 foreach (var chatrel in chatrels)
                 {
-                    chatrel.dtEntered = DateTime.Now;
                     var cbuilder = new SqlQueryBuilder<GBChatrel>(chatrel);
-                    command = cbuilder.GetInsertCommand();
-                    command.Connection = _connection;
-                    command.Transaction = transaction;
+                    command.CommandText = cbuilder.GetInsertCommand().CommandText;
+                    //command.Connection = _connection;
+                    //command.Transaction = transaction;
                     command.ExecuteNonQuery();
                 }
                 transaction.Commit();
