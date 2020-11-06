@@ -338,10 +338,14 @@ namespace CTADBL.BaseClassRepositories.Transactions
         public bool VerifyFriendDetails(string sFirstName, string sLastName, string sGBID, DateTime dtDOB)
         {
             Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
-            if(greenbook.sFirstName == sFirstName && greenbook.sLastName == sLastName && greenbook.dtDOB == dtDOB)
+            if(greenbook != null)
             {
-                return true;
+                if (greenbook.sFirstName == sFirstName && greenbook.sLastName == sLastName && greenbook.dtDOB == dtDOB)
+                {
+                    return true;
+                }
             }
+            
             return false;
         }
         #endregion

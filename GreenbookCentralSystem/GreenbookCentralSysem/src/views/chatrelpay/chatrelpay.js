@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { Card } from '@material-ui/core';
 import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
 import PropTypes from 'prop-types';
@@ -94,20 +95,28 @@ const paymentHistory = [
 ];
 
 export default function ChatrelPay () {
+  const sGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sGBID);
+  const pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
+  const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
+
   let history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const [show, setShow] = React.useState(true);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    if(newValue === 1){
+      setShow(false);
+      history.push('/family');
+    }
   };
 
   const handleChangeIndex = (index) => {
     setValue(index);
   };
   function a11yProps(index) {
-    
     return {
       id: `full-width-tab-${index}`,
       'aria-controls': `full-width-tabpanel-${index}`,
@@ -135,7 +144,7 @@ export default function ChatrelPay () {
             <Grid item xs={12} sm={12}> 
             <div className={classes.root}>
         <AppBar position="static" color="default">
-        <Tabs
+        {show && <Tabs
           value={value}
           onChange={handleChange}
           indicatorColor="secondary"
@@ -147,12 +156,12 @@ export default function ChatrelPay () {
           <Tab label="Payment for Family" {...a11yProps(1)} />
           <Tab label="Payment for Friends" {...a11yProps(2)} />
           <Tab label="Payment History" {...a11yProps(3)} />
-        </Tabs>
+        </Tabs>}
       </AppBar>
      
         <TabPanel value={value} index={0} dir={theme.direction}>
           <br />
-          <p style={{backgroundColor: "lightblue"}}>Personal Details - IN9996070</p>
+          <p style={{backgroundColor: "lightblue"}}>Personal Details - {sGBID}</p>
           
           
               <FormControl>

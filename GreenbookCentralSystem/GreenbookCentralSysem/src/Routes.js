@@ -70,7 +70,9 @@ const Search = lazy(() => import('./views/search/index'));
 
 //Chatrel Payment Pages
 const ChatrelPay = lazy(() => import('./views/chatrelpay'));
-const Family = lazy(() => import('./views/chatrelpay/family'));
+const MainPage = lazy(() => import('./views/chatrelpay/mainpage'));
+const PaymentPage = lazy(() => import('./views/chatrelpay/paymentpage'));
+
 
 const Routes = () => {
   const location = useLocation();
@@ -220,7 +222,8 @@ const Routes = () => {
                 '/FeatureRoles',
                 '/Search',
                 '/ChatrelPay',
-                '/ChatrelPay/Family'
+                '/ChatrelPay/MainPage',
+                '/ChatrelPay/PaymentPage'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -233,8 +236,9 @@ const Routes = () => {
                     <Route path="/Home" component={Home} />
                     <Route path="/Greenbooks" component={Greenbook} />
                     <Route path="/NewGreenBookSerial" component={NewGreenBookSerial} />
-                    <Route path="/ChatrelPay" component={ChatrelPay} />
-                    <Route path="/ChatrelPay/Family" component={Family} />
+                    <Route path="/ChatrelPay" component={ChatrelPay} exact />
+                    <Route path="/ChatrelPay/MainPage" component={MainPage} exact />
+                    <Route path="/ChatrelPay/PaymentPage" component={PaymentPage} exact />
                     {/*Private Routes Go Here*/}
                     <PrivateRoute path="/GivenGBID" feature={3} component={GivenGBID} />
                     <PrivateRoute path="/DeleteGB" feature={4} component={DeleteGB} />
