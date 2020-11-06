@@ -576,20 +576,13 @@ namespace CTADataMigrationAndSupport
 
         private string getChatrelAmount(int nChatrelYear,string sCurrencyCode, bool isChild)
         {
-            //int nChatrelAmount = 36;
-            //int nChatrelMeal = 10;
-            //int nChatrelSalaryAmt = 50;
-            //int nChatrelLateFeesPercentage = 10;
-            //int nChatrelStartYear = 2011;
-            //int nChatrelCurrentYear = DateTime.Today.Year;
-            //int nChatrelPendingYears = 0;
-            //decimal nLateFeeCharge = 0;
 
             double nChatrelAmount = sCurrencyCode == "USD" ? 36 : 48;
             double nChatrelMeal = sCurrencyCode == "USD" ? 10 : 10;
             double nChatrelSalaryAmt = sCurrencyCode == "USD" ? 50 : 0;
             double nChatrelLateFeesPercentage = sCurrencyCode == "USD" ? 10 : 10;
             double nChatrelStartYear = 2011;
+            int nGracePeriodInMonths = 1;
             double nChatrelCurrentYear = DateTime.Today.Year;
             double nChatrelPendingYears = 0;
             decimal nLateFeeCharge = 0;
@@ -629,10 +622,12 @@ namespace CTADataMigrationAndSupport
             double nChatrelSalaryAmt = sCurrencyCode == "USD" ? 50 : 0;
             double nChatrelLateFeesPercentage = sCurrencyCode == "USD" ? 10 : 10;
             double nChatrelStartYear = 2011;
+            int nGracePeriodInMonths = 1;
             double nChatrelCurrentYear = DateTime.Today.Year;
             double nChatrelPendingYears = 0;
             decimal nLateFeeCharge = 0;
             DateTime dtDOB = Convert.ToDateTime(sDOB);
+            double dLateFee = 0;
             //Calculate
             if (isChild)
             {
@@ -670,7 +665,15 @@ namespace CTADataMigrationAndSupport
                     nChatrelYear++;
                     continue;
                 }
-                double dLateFee = (((nChatrelAmount + nChatrelMeal) * nChatrelLateFeesPercentage) / 100d);
+                if (i+1 == nChatrelPendingYears && nGracePeriodInMonths > 0)
+                {
+                    dLateFee = DateTime.Now >= Convert.ToDateTime(nChatrelYear.ToString() + "-03-31").AddMonths(nGracePeriodInMonths) ? (((nChatrelAmount + nChatrelMeal) * nChatrelLateFeesPercentage) / 100d) : 0;
+                }
+                else
+                {
+                    dLateFee = (((nChatrelAmount + nChatrelMeal) * nChatrelLateFeesPercentage) / 100d);
+                }
+                //double dLateFee = (((nChatrelAmount + nChatrelMeal) * nChatrelLateFeesPercentage) / 100d);
                 lnkGBChatrelPending.Rows.Add(
                     i + 1,
                     sName,
