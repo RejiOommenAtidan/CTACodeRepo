@@ -5,27 +5,12 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
-import axios from 'axios';
 
 const aCard = [
   { sLabel: "Self Chatrel", sImagePath: require('../assets/CTALogo.png') },
   { sLabel: "Family Chatrel", sImagePath: require('../assets/CTALogo.png') },
   { sLabel: "Friend Chatrel", sImagePath: require('../assets/CTALogo.png') },
 ];
-
-const getAuthRegions = () => {
-  axios.get(`/AuthRegion/GetAuthRegions`)
-    .then(resp => {
-      if (resp.status === 200) {
-        console.log(resp.data);
-        // setdataAPI(resp.data)
-      }
-    })
-    .catch(error => {
-      console.log(error.message);
-      console.log(error.config);
-    });
-};
 
 const HomeScreen = (props) => {
   // console.log(props);
@@ -48,7 +33,6 @@ const HomeScreen = (props) => {
   //   return true;
   // };
   useEffect(() => {
-    getAuthRegions();
     // BackHandler.addEventListener("hardwareBackPress", backAction);
 
     // return () =>
