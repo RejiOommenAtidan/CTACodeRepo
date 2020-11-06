@@ -143,7 +143,7 @@ const SidebarMenu = (props) => {
   const selfPayment =() =>{
     
     let obj={
-      nGBID:userObj.nGBID,
+      sGBID:userObj.sGBID,
       from:'Chatrel for Self'
     }
     toggleSidebarMobile();
@@ -172,9 +172,9 @@ const SidebarMenu = (props) => {
             <li>
               <NavLink
                 activeClassName="active"
-                onClick={()=>{selfPayment(); }}
+                onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/PaymentPage">
+                to="/SelfPayment">
                 <span className="sidebar-icon">
                   <HomeIcon />
                 </span>

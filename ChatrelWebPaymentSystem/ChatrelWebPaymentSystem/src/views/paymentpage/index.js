@@ -36,9 +36,9 @@ export default function PaymentPage  (props) {
 
   let history = useHistory();
 
-  let nGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.nGBID);
-  let pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
-  let paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.nGBID);
+  const sGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sGBID);
+  const pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
+  const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
 
   console.log(paidByGBID);
   const userObj = useSelector(state => state.GLoginReducer.oGoogle);
@@ -120,14 +120,12 @@ const submit =() =>{
   }
 
   console.log("Final Obj:" , finalObj)
-  axios.post(`http://localhost:52013/api/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+nGBID)
+  axios.post(`http://localhost:52013/api/ChatrelPayment/AddNewChatrelPayment`,finalObj)
   .then(resp => {
     if (resp.status === 200) {
-      setDataAPI(resp.data);
-      setSummaryData(resp.data.chatrelPayment);
-      console.log(resp.data.chatrelPayment.sGBId); 
-      setPaymentData(resp.data.gbChatrels);
-      calcTotal(resp.data.gbChatrels ,adonation,bdonation);
+      
+      console.log("Added"); 
+      
     }
   })
   .catch(error => {
@@ -155,7 +153,7 @@ const submit =() =>{
   const select = (<select><option>1</option><option>2</option><option>3</option><option>4</option></select>);
   useEffect(() => {
     //setPaymentData(payObj);
-    axios.get(`http://localhost:52013/api/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+nGBID)
+    axios.get(`http://localhost:52013/api/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sGBID)
       .then(resp => {
         if (resp.status === 200) {
           setDataAPI(resp.data);
@@ -183,23 +181,8 @@ const submit =() =>{
      }, []);
   return (
     <> {dataAPI  &&
-      <Card  style={{  padding: 50 }} >
-       
-        
-        <div>
-          <Grid container spacing={3}>
-            
-              <Grid item xs={12} sm={2}>
-              
-              {/* <FormControl >
-                <TextField label="GreenBook ID" value={9996070}/>
-              </FormControl> */}
-            </Grid>
-            
-          </Grid>
-          <br/>
-        </div>
-        
+    <><p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>{pageFrom}</p>
+    <Card  style={{  padding: 50 }} >
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12}> 
             <div className={classes.root}>
@@ -249,7 +232,7 @@ const submit =() =>{
               <TableCell align="right">{row.nChatrelMeal}</TableCell>
               <TableCell align="right">{row.lateFees}</TableCell>
               <TableCell align="right">{ <input value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox"/>}</TableCell>
-              <TableCell align="right">{row.nChatrelTotalAmount}</TableCell>
+              <TableCell align="right">{row.nChatrelTotalAmount }</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -310,6 +293,7 @@ const submit =() =>{
     
         
       </Card>
+      </>
 }
     </>
   );

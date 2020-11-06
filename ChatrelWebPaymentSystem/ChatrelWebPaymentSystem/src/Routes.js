@@ -26,6 +26,7 @@ const Family = lazy(() => import("./views/family"));
 const Friends = lazy(() => import("./views/friends"));
 const PaymentHistory = lazy(() => import('./views/paymenthistory'));
 const PaymentPage = lazy(() => import('./views/paymentpage'));
+const SelfPayment = lazy(() => import('./views/paymentpage/selfpayment.js'));
 
 const Routes = () => {
   const location = useLocation();
@@ -169,7 +170,11 @@ const Routes = () => {
                       path='/PaymentPage'
                       component={PaymentPage}
                     />
-                    
+
+                    <Route
+                      path='/SelfPayment'
+                      component={SelfPayment}
+                    />                    
                   </motion.div>
                 </Switch>
               </LeftSidebar>

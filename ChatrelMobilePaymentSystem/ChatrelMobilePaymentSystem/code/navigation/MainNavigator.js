@@ -8,7 +8,7 @@ import {
 import { ChatrelHistoryScreen } from '../screens/ChatrelHistoryScreen';
 import { FileDisputeScreen } from '../screens/FileDisputeScreen';
 import { GBDetailScreen } from '../screens/GBDetailScreen';
-import { HomeScreen } from '../screens/HomeScreen';
+import HomeScreen from '../screens/HomeScreen';
 import { SelfChatrelScreen } from '../screens/SelfChatrel';
 import { FriendChatrelIntermediateScreen } from '../screens/FriendChatrelIntermediate';
 import { FriendChatrelScreen } from '../screens/FriendChatrelScreen';
