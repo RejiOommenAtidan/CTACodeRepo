@@ -108,7 +108,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                 nChatrelMeal = _nChatrelMeal,
                 nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage,
                 nChatrelSalaryAmt = 0,
-                nArrearsAmount = CheckPendingAmount(sGBID),
+                nArrearsAmount = arrears,
                 nChatrelTotalAmount = _nChatrelAmount + _nChatrelMeal + arrears,
                 nAuthRegionID = greenbook.nAuthRegionID,
                 sCountryID = authRegion.sCountryID,
@@ -118,7 +118,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                 dtArrearsTo = dates[1]
 
             };
-            var result = new { nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrelPayment, gbChatrels = GetOutstandingDetails(greenbook, authRegion) };
+            var result = new { nDefaultSalaryAmount = _nChatrelSalaryAmt, nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrelPayment, gbChatrels = GetOutstandingDetails(greenbook, authRegion) };
             return result;
         }
         #endregion
@@ -169,6 +169,10 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
         #region Check Pending Amount
         private decimal CheckPendingAmount(string sGBID)
         {
+            if (String.IsNullOrWhiteSpace(sGBID) || String.IsNullOrEmpty(sGBID))
+            {
+                return 0.00m;
+            }
 
             int paidUntil = GetPaidUntil(sGBID);
             int pendingYears = (_currentYear - 1) - paidUntil;
@@ -192,6 +196,10 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
         #region Get Paid Until year
         private int GetPaidUntil(string sGBID)
         {
+            if (String.IsNullOrWhiteSpace(sGBID) || String.IsNullOrEmpty(sGBID))
+            {
+                return 0;
+            }
             int paidUntil = Convert.ToInt32(_greenbookRepository.GetGreenbookByGBID(sGBID).sPaidUntil);
 
             paidUntil = (paidUntil < _nChatrelStartYear ? _nChatrelStartYear : paidUntil);
@@ -251,6 +259,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                 {
                     var relationDetails = tables[0].AsEnumerable().Select(row => new {
                         sGBIDRelation = row.Field<string>("sGBIDRelation"),
+                        dPending = String.IsNullOrEmpty(row.Field<string>("sGBIDRelation")) ? 0 : CheckPendingAmount(row.Field<string>("sGBIDRelation")) + _nChatrelAmount + _nChatrelMeal,
                         sName = row.Field<string>("sName"),
                         dtDOB = row.Field<DateTime?>("dtDOB"),
                         nAge = row.Field<long>("nAge"),
@@ -275,7 +284,9 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     pymt.dtEntered,
                                     pymt.dtArrearsFrom AS dtPeriodFrom,
                                     STR_TO_DATE(CONCAT(pymt.nChatrelYear, '-03', '-31'), '%Y-%m-%d') AS dtPeriodTo,
+                                    pymt.sGBID,
                                     gb.sFirstName,
+                                    gb.sLastName,
                                     CASE
                                                 WHEN lnkrel.nRelationID = 1 THEN 'Father'
                                                 WHEN lnkrel.nRelationID = 2 THEN 'Mother'
@@ -307,18 +318,28 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                         dtEntered = row.Field<DateTime>("dtEntered"),
                         dtPeriodFrom = row.Field<DateTime>("dtPeriodFrom"),
                         dtPeriodTo = row.Field<DateTime>("dtPeriodTo"),
+                        sGBID = row.Field<string>("sGBID"),
                         sFirstName = row.Field<string>("sFirstName"),
+                        sLastName = row.Field<string>("sLastName"),
                         sRelation = row.Field<string>("sRelation")
                     }).ToList();
                     return paymentHistory;
                 }
                 return null;
             }
-
-
-
         }
+        #endregion
 
+        #region Verify Friend Details
+        public bool VerifyFriendDetails(string sFirstName, string sLastName, string sGBID, DateTime dtDOB)
+        {
+            Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
+            if (greenbook.sFirstName == sFirstName && greenbook.sLastName == sLastName && greenbook.dtDOB == dtDOB)
+            {
+                return true;
+            }
+            return false;
+        }
         #endregion
 
 
