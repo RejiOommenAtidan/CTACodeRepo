@@ -1,11 +1,10 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, ScrollView,TouchableOpacity } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
 // import {Chatrel} from '../components/Chatrel';
 import { Card } from 'react-native-elements';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { sDateFormat } from '../constants/CommonConfig';
 import Moment from 'moment';
 
@@ -24,26 +23,24 @@ export const FamilyChatrelIntermediateScreen = (props) => {
         <ScrollView>
           {aFamilyMember.map((member, index) => {
             return (
-              <View key={index}>
-                <TouchableOpacity style={styles.button}>
-                  <Card>
-                    <Card.Title>{member.sName}</Card.Title>
-                    <Text style={{ marginBottom: 10 }}>
-                      USD {member.nChatrelDue}
-                    </Text>
-                    <Card.Divider />
-                    <Text style={{ marginBottom: 10 }}>
-                      Greenbook ID: {member.sGBID}
-                    </Text>
-                    <Text style={{ marginBottom: 10 }}>
-                      Date of Birth :{member.dtDOB}
-                    </Text>
-                    <Text style={{ marginBottom: 10 }}>
-                      Relation: {member.sRelation}
-                    </Text>
-                  </Card>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity key={index} style={styles.button} onPress={()=>{console.log(member)}}>
+                <Card>
+                  <Card.Title>{member.sName}</Card.Title>
+                  <Text style={{ marginBottom: 10 }}>
+                    USD {member.nChatrelDue}
+                  </Text>
+                  <Card.Divider />
+                  <Text style={{ marginBottom: 10 }}>
+                    Greenbook ID: {member.sGBID}
+                  </Text>
+                  <Text style={{ marginBottom: 10 }}>
+                    Date of Birth :{member.dtDOB}
+                  </Text>
+                  <Text style={{ marginBottom: 10 }}>
+                    Relation: {member.sRelation}
+                  </Text>
+                </Card>
+              </TouchableOpacity>
             )
           })}
         </ScrollView>
