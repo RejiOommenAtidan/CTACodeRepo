@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ChatrelDBL.BaseClasses.Masters
 {
-    [Table("lstctaconfig")]
+    [Table("lstchatrelconfig")]
     public class ChatrelConfig
     {
         #region Private CTAConfig Properties 

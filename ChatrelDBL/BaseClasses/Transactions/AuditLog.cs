@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ChatrelDBL.BaseClasses.Transactions
 {
+    [Table("tblauditlog")]
     public class AuditLog
     {
         #region Private AuditLog Properties 

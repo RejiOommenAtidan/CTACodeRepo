@@ -41,7 +41,7 @@ namespace ChatrelDBL.BaseClassRepositories.Masters
                                 `sValue`,
                                 `dtUpdated`,
                                 `nUpdatedBy`
-                            FROM `lstctaconfig`;";
+                            FROM `lstchatrelconfig`;";
             using (var command = new MySqlCommand(sql))
             {
                 configs = GetRecords(command);
