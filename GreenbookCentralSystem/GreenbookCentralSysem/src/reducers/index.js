@@ -9,6 +9,8 @@ import QualificationReducer from "./masters/qualificationReducer";
 import RegionReducer from "./masters/regionReducer";
 import RelationReducer from "./masters/relationReducer";
 import TypeIssuedReducer from "./masters/typeissuedReducer";
+import {GBDetailsReducer} from './transactions/GBDetailsReducer';
+import {CurrentGBDetailsReducer} from './transactions/CurrentGBDetailsReducer';
 ////TRANSACTIONS GOES HERE
 ////UserAuth GOES HERE
 import UserAuthenticationReducer from "./userAuthenticationReducer";
@@ -23,5 +25,7 @@ export default {
   QualificationReducer,
   RegionReducer,
   RelationReducer,
-  TypeIssuedReducer
+  TypeIssuedReducer,
+  GBDetailsReducer,
+  CurrentGBDetailsReducer
 };
