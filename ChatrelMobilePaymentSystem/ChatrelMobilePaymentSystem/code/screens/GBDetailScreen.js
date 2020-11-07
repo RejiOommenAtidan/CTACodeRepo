@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, Switch } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, Switch, BackHandler } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
@@ -13,8 +13,12 @@ import { storeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
 
 
 export const GBDetailScreen = (props) => {
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => true);
+    return () => {BackHandler.removeEventListener('hardwareBackPress', () => true);};
+  }, []);
   const dispatch = useDispatch();
-  const [nGBID, setnGBID] = useState("");
+  const [sGBID, setsGBID] = useState("");
   const [bShowGBID, setbShowGBID] = useState(true);
   const [dtDOB, setdtDOB] = useState(null);
   const dtToday = Moment().format(sDateFormat);
@@ -35,8 +39,8 @@ export const GBDetailScreen = (props) => {
           keyboardAppearance={"default"}
           disableFullscreenUI={true}
           maxLength={7}
-          onChangeText={(value) => { setnGBID(value) }}
-          value={nGBID}
+          onChangeText={(value) => { setsGBID(value) }}
+          value={sGBID}
         />
         <View style={styles.container}>
           <Switch
@@ -78,7 +82,7 @@ export const GBDetailScreen = (props) => {
           title="Verify & Continue"
           onPress={() => {
             let oGBDetails = {
-              nGBID: parseInt(nGBID),
+              sGBID: sGBID,
               dtDob: dtDOB
             };
             console.log(oGBDetails);
@@ -92,22 +96,22 @@ export const GBDetailScreen = (props) => {
   );
 };
 
-GBDetailScreen.navigationOptions = navData => {
-  return {
-    headerTitle: 'GB Details',
-    headerLeft: (
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === 'android' ? "menu" : "ios-menu-outline"}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
-    )
-  };
-};
+// GBDetailScreen.navigationOptions = navData => {
+//   return {
+//     headerTitle: 'GB Details',
+//     headerLeft: (
+//       <HeaderButtons HeaderButtonComponent={HeaderButton}>
+//         <Item
+//           title="Menu"
+//           iconName={Platform.OS === 'android' ? "menu" : "ios-menu-outline"}
+//           onPress={() => {
+//             navData.navigation.toggleDrawer();
+//           }}
+//         />
+//       </HeaderButtons>
+//     )
+//   };
+// };
 
 
 const styles = StyleSheet.create({

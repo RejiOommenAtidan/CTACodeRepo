@@ -1,19 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, BackHandler, Alert } from 'react-native';
 import { Card, Button } from 'react-native-elements'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
-
-const aCard = [
-  { sLabel: "Self Chatrel", sImagePath: require('../assets/CTALogo.png') },
-  { sLabel: "Family Chatrel", sImagePath: require('../assets/CTALogo.png') },
-  { sLabel: "Friend Chatrel", sImagePath: require('../assets/CTALogo.png') },
-];
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const HomeScreen = (props) => {
-  // console.log(props);
   // const backAction = () => {
   //   if (props.isFocused) {
   //     Alert.alert("Hold on!", "Are you sure you want to exit?", [
@@ -32,12 +27,35 @@ const HomeScreen = (props) => {
   //   }
   //   return true;
   // };
+
+  const [nChatrelTotalAmount, setnChatrelTotalAmount] = useState(0);
+
+  const aCard = [
+    { sLabel: "Self Chatrel", sImagePath: require('../assets/CTALogo.png'), sRouteName: "SelfChatrel" },
+    { sLabel: "Family Chatrel", sImagePath: require('../assets/CTALogo.png'), sRouteName: "FamilyChatrelIntermediate" },
+    { sLabel: "Friend Chatrel", sImagePath: require('../assets/CTALogo.png'), sRouteName: "FriendChatrelIntermediate" },
+  ];
+
+  const oCurrentGBDetails = useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails);
+
+  const getChatrelDetails = () => {
+    axios.get(`/ChatrelPayment/DisplayChatrelPayment/sGBID=` + oCurrentGBDetails.sGBID)
+      .then(resp => {
+        if (resp.status === 200) {
+          setnChatrelTotalAmount(resp.data.chatrelPayment.nChatrelTotalAmount);
+        }
+      })
+      .catch(error => {
+        console.log(error.message);
+        console.log(error.config);
+      });
+  };
+
   useEffect(() => {
-    // BackHandler.addEventListener("hardwareBackPress", backAction);
-
-    // return () =>
-    //   BackHandler.removeEventListener("hardwareBackPress", backAction);
-
+    getChatrelDetails();
+    BackHandler.addEventListener('hardwareBackPress', () => true);
+    return () => {BackHandler.removeEventListener('hardwareBackPress', () => true);};
+    
   }, []);
   return (
     <ScrollView>
@@ -46,7 +64,12 @@ const HomeScreen = (props) => {
           <View><Text>Quick Actions</Text></View>
           {aCard.map((card, index) => {
             return (
-              <TouchableOpacity key={index} onPress={() => { console.log(card) }}>
+              <TouchableOpacity key={index} onPress={() => {
+                props.navigation.navigate({
+                  routeName: card.sRouteName
+                });
+                console.log(card);
+              }}>
                 <Card style={styles.card}>
                   <Card.Title>{card.sLabel}</Card.Title>
                   <Card.Divider />
@@ -60,7 +83,7 @@ const HomeScreen = (props) => {
           <Card>
             <Card.Image source={require('../assets/Pay.png')} />
             <Text>
-              Pendng Amount $197.8
+              Pendng Amount ${nChatrelTotalAmount}
             </Text>
             <Button
               buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}

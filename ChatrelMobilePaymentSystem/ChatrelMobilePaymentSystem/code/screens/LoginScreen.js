@@ -2,12 +2,13 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 // import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 // import HeaderButton from '../components/HeaderButton';
-// import { Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { GLogin } from '../components/GLogin';
 import { ActivityIndicator } from 'react-native';
 import { Image } from 'react-native-elements';
 
 export const LoginScreen = (props) => {
+
   return (
     <View style={styles.main}>
       <View style={styles.container}>

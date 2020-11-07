@@ -26,7 +26,7 @@ export const GLogin = (props) => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
+      //console.log(userInfo);
       setUser(userInfo);
       dispatch(storeGoogleCreds(userInfo));
       props.props.navigation.navigate({
