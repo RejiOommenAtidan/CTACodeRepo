@@ -184,7 +184,7 @@ const MainNavigator = createDrawerNavigator(
     }
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: "Login",
     // drawerPosition: "right",
     //hideStatusBar:true,
     statusBarAnimation: true,

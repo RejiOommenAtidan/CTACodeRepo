@@ -3,7 +3,7 @@ import { REMOVE_CURRENTGBDETAILS } from '../actions/CurrentGBDetailsAction';
 
 const initialCurrentGBDetailsState = {
     oCurrentGBDetails: {
-        sGBID:"7654321"
+        sGBID:"7937671"
     }
 };
 

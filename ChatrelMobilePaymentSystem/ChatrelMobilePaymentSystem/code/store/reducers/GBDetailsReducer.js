@@ -3,7 +3,8 @@ import { REMOVE_GBDETAILS } from '../actions/GBDetailsAction';
 
 const initialGBDetailsState = {
     oGBDetails: {
-        sGBID: "1234567"
+        sGBID: "7937671",
+        dtDOB:"01-01-2001"
     }
 };
 

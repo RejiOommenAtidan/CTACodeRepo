@@ -6,12 +6,8 @@ import axios from 'axios';
 import Moment from 'moment';
 // import { sDateFormat } from '../constants/CommonConfig';
 
-const oHardcoded = {
-    dtDOB: "01-01-2001"
-};
-
 export const Chatrel = props => {
-    const sGBIDHardcoded = "7937671";
+    // const sGBIDHardcoded = "7937671";
     const [sName, setsName] = useState("");
     const [nPaidUntil, setnPaidUntil] = useState(0);
     const [sGBID, setsGBID] = useState("");
@@ -22,8 +18,8 @@ export const Chatrel = props => {
     const [nAdditionalDonation, setnAdditionalDonation] = useState(0);
     const [nBusinessDonation, setnBusinessDonation] = useState(0);
 
+    const oGBDetails = useSelector(state => state.GBDetailsReducer.oGBDetails);
     const oCurrentGBDetails = useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails);
-
     const toggleSwitch = (index, year) => {
         let oPayment = [...aGBChatrels];
         if (year.nChatrelSalaryAmt === 0) {
@@ -85,7 +81,7 @@ export const Chatrel = props => {
     }, []);
 
     const getChatrelDetails = () => {
-        axios.get(`/ChatrelPayment/DisplayChatrelPayment/sGBID=` + sGBIDHardcoded)
+        axios.get(`/ChatrelPayment/DisplayChatrelPayment/sGBID=` + oCurrentGBDetails.sGBID)
             .then(resp => {
                 if (resp.status === 200) {
                     setnChatrelLateFeesPercentage(resp.data.chatrelPayment.nChatrelLateFeesPercentage);
@@ -108,7 +104,7 @@ export const Chatrel = props => {
             <Text>Greenbook ID</Text>
             <Text>{sGBID}</Text>
             <Text>Date of Birth</Text>
-            <Text>{oHardcoded.dtDOB}</Text>
+            <Text>{oGBDetails.dtDOB}</Text>
             <Text>Name</Text>
             <Text>{sName}</Text>
             <Text>Year of Last Chatrel</Text>
