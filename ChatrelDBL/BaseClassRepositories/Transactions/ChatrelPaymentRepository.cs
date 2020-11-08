@@ -43,10 +43,10 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
 
             IEnumerable<Chatrel> chatrelValues = _chatrelRepository.GetAllChatrel();
 
-            _nChatrelAmount = chatrelValues.Where(key => key.sChatrelKey == "ChatrelAmount").Select(key => key.nChatrelValue).FirstOrDefault();
-            _nChatrelMeal = chatrelValues.Where(key => key.sChatrelKey == "ChatrelMeal").Select(key => key.nChatrelValue).FirstOrDefault();
-            _nChatrelSalaryAmt = chatrelValues.Where(key => key.sChatrelKey == "ChatrelSalaryAmt").Select(key => key.nChatrelValue).FirstOrDefault();
-            _nChatrelLateFeesPercentage = chatrelValues.Where(key => key.sChatrelKey == "ChatrelLateFeesPercentage").Select(key => key.nChatrelValue).FirstOrDefault();
+            _nChatrelAmount = chatrelValues.Where(key => key.sChatrelKey == "USDYearChatrelAmount").Select(key => key.nChatrelValue).FirstOrDefault();
+            _nChatrelMeal = chatrelValues.Where(key => key.sChatrelKey == "USDYearChatrelMeal").Select(key => key.nChatrelValue).FirstOrDefault();
+            _nChatrelSalaryAmt = chatrelValues.Where(key => key.sChatrelKey == "USDYearChatrelSalaryAmt").Select(key => key.nChatrelValue).FirstOrDefault();
+            _nChatrelLateFeesPercentage = chatrelValues.Where(key => key.sChatrelKey == "USDChatrelLateFeesPercentage").Select(key => key.nChatrelValue).FirstOrDefault();
             _nChatrelStartYear = chatrelValues.Where(key => key.sChatrelKey == "ChatrelStartYear").Select(key => key.nChatrelValue).FirstOrDefault() - 1;
             _dLateFees = (_nChatrelAmount + _nChatrelMeal) * _nChatrelLateFeesPercentage / 100;
 
@@ -137,11 +137,11 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                 DateTime? end = dates[1];
                 if (i == (pendingYears - 1) && inGracePeriod)
                 {
-                    var gracepending = new { nChatrelYear = paidUntil + i, nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelSalaryAmt = 0, lateFees = 0, nArrearsAmount = (_nChatrelAmount + _nChatrelMeal), nChatrelTotalAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
+                    var gracepending = new { nChatrelYear = paidUntil + i, nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelSalaryAmt = 0, lateFees = 0, nArrearsAmount = (_nChatrelAmount + _nChatrelMeal), nChatrelTotalAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, authRegion.sCurrencyCode };
                     list.Add(gracepending);
                     continue;
                 }
-                var pending = new { nChatrelYear = paidUntil + i, nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelSalaryAmt = 0, lateFees = _dLateFees, nArrearsAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), nChatrelTotalAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
+                var pending = new { nChatrelYear = paidUntil + i, nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelSalaryAmt = 0, lateFees = _dLateFees, nArrearsAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), nChatrelTotalAmount = (_nChatrelAmount + _nChatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, authRegion.sCurrencyCode };
 
                 // Check if we are in grace period in the previous year to current.
 
@@ -150,7 +150,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
             }
             DateTime?[] currDates = GetDatesFromYear(_currentYear);
 
-            var current = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = _currentYear, lateFees = 0, nChatrelTotalAmount = (_nChatrelAmount + _nChatrelMeal), dtDateFrom = currDates[0], dtDateTo = currDates[1], nChatrelSalaryAmt = 0, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID };
+            var current = new { nChatrelAmount = _nChatrelAmount, nChatrelMeal = _nChatrelMeal, nChatrelYear = _currentYear, lateFees = 0, nChatrelTotalAmount = (_nChatrelAmount + _nChatrelMeal), dtDateFrom = currDates[0], dtDateTo = currDates[1], nChatrelSalaryAmt = 0, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, authRegion.sCurrencyCode };
             list.Add(current);
             return list;
         }

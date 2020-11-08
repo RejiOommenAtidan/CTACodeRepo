@@ -4,6 +4,7 @@ using CTADBL.Repository;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace CTADBL.BaseClassRepositories.Masters
 {
@@ -44,14 +45,14 @@ namespace CTADBL.BaseClassRepositories.Masters
         public IEnumerable<AuthRegion> GetAllAuthRegions()
         {
             // DBAs across the country are having strokes over this next command!
-            using (var command = new MySqlCommand("SELECT ID, sAuthRegion, sCountryID, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstauthregion"))
+            using (var command = new MySqlCommand("SELECT ID, sAuthRegion, sCountryID, sCurrencyCode, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstauthregion"))
             {
                 return GetRecords(command);
             }
         }
         public AuthRegion GetAuthRegionById(string id)
         {
-            using (var command = new MySqlCommand("SELECT ID,  sAuthRegion, sCountryID, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstauthregion WHERE ID = @id"))
+            using (var command = new MySqlCommand("SELECT ID,  sAuthRegion, sCountryID, sCurrencyCode, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstauthregion WHERE ID = @id"))
             {
                 command.Parameters.AddWithValue("id", id);
                 return GetRecord(command);
@@ -80,6 +81,7 @@ namespace CTADBL.BaseClassRepositories.Masters
                 ID = (int)reader["ID"],
                 sAuthRegion = (string)reader["sAuthRegion"],
                 sCountryID = (string)reader["sCountryID"],
+                sCurrencyCode = reader.IsDBNull("sCurrencyCode") ? null : (string)(reader["sCurrencyCode"]),
                 dtEntered = dtEntered,
                 nEnteredBy = (int)reader["nEnteredBy"],
                 dtUpdated = dtUpdated,

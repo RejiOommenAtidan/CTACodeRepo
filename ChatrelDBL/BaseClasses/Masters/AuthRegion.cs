@@ -9,8 +9,9 @@ namespace ChatrelDBL.BaseClasses.Masters
     public class AuthRegion : CommonProps
     {
         private int _id;
-        private string _authRegion;
-        private string _countryId;
+        private string _sAuthRegion;
+        private string _sCountryId;
+        private string _sCurrencyCode;
 
         [Key]
         public int ID
@@ -29,11 +30,11 @@ namespace ChatrelDBL.BaseClasses.Masters
         {
             get
             {
-                return _authRegion;
+                return _sAuthRegion;
             }
             set
             {
-                _authRegion = value;
+                _sAuthRegion = value;
             }
         }
         [Required]
@@ -41,11 +42,23 @@ namespace ChatrelDBL.BaseClasses.Masters
         {
             get
             {
-                return _countryId;
+                return _sCountryId;
             }
             set
             {
-                _countryId = value;
+                _sCountryId = value;
+            }
+        }
+        [Required]
+        public string sCurrencyCode
+        {
+            get
+            {
+                return _sCurrencyCode;
+            }
+            set
+            {
+                _sCurrencyCode = value;
             }
         }
     }

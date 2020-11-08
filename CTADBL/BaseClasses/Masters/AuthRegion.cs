@@ -8,44 +8,57 @@ namespace CTADBL.BaseClasses.Masters
     public class AuthRegion : CommonProps
     {
         private int _id;
-        private string _authRegion;
-        private string _countryId;
+        private string _sAuthRegion;
+        private string _sCountryId;
+        private string? _sCurrencyCode;
 
         [Key]
-        public int ID 
-        { 
-            get 
+        public int ID
+        {
+            get
             {
                 return _id;
-            } 
-            set 
+            }
+            set
             {
                 _id = value;
-            } 
+            }
         }
         [Required]
-        public string sAuthRegion 
-        { 
-            get 
+        public string sAuthRegion
+        {
+            get
             {
-                return _authRegion;
-            } 
-            set 
+                return _sAuthRegion;
+            }
+            set
             {
-                _authRegion = value;
-            } 
+                _sAuthRegion = value;
+            }
         }
         [Required]
-        public string sCountryID 
-        { 
-            get 
+        public string sCountryID
+        {
+            get
             {
-                return _countryId;
-            } 
-            set 
+                return _sCountryId;
+            }
+            set
             {
-                _countryId = value;
-            } 
+                _sCountryId = value;
+            }
+        }
+        [Required]
+        public string sCurrencyCode
+        {
+            get
+            {
+                return _sCurrencyCode;
+            }
+            set
+            {
+                _sCurrencyCode = value;
+            }
         }
     }
 }

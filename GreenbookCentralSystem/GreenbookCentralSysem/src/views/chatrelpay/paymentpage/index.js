@@ -125,12 +125,12 @@ export default function PaymentPage  (props) {
   const updateAuthRegion = (e, value) => {
     console.log(value.id, e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_')));
     const index = e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_'));
-    const nAuthRegionID = value.id;
-    const sCountryID = value.sCountryID;
     let chartelObj = [...paymentData];
     chartelObj[index].nAuthRegionID = value.id;
     chartelObj[index].sCountryID = value.sCountryID;
+    chartelObj[index].sCurrencyCode = value.sCurrencyCode;
     setPaymentData(chartelObj);
+    calculate(index);
   };
 
 
@@ -157,7 +157,7 @@ if(index!=len-1)
 {
 payObj[index].lateFees=(payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nChatrelSalaryAmt)/10;
 }
-payObj[index].nChatrelTotalAmount= payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].lateFees + payObj[index].nChatrelSalaryAmt;
+payObj[index].nChatrelTotalAmount= (payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].lateFees + payObj[index].nChatrelSalaryAmt) * ((dollarToRupees && payObj[index].sCurrencyCode === 'USD') ? dollarToRupees.toFixed(4) : 1);
 setPaymentData(payObj);
 calcTotal(paymentData ,adonation,bdonation);
 }
@@ -166,7 +166,7 @@ const calcTotal =(obj ,a,b)=>{
   obj.forEach((row ) => {
   
   //temptotal+= row.nChatrelTotalAmount;
-  temptotal += (row.nChatrelTotalAmount * dollarToRupees.toFixed(4)).toFixed(2);
+  temptotal += (row.nChatrelTotalAmount);
   
   })
   setTotal(temptotal);
@@ -223,12 +223,12 @@ const submit =() =>{
  
   const select = (<select><option>1</option><option>2</option><option>3</option><option>4</option></select>);
   useEffect(() => {
-    axios.get(`http://localhost:52013/api/AuthRegion/GetAuthRegions`)
+    axios.get(`/AuthRegion/GetAuthRegions`)
       .then(resp => {
         if(resp.status === 200){
           console.log("AuthRegions fetched:", resp.data);
           setAuthRegions(resp.data);
-          axios.get(`http://localhost:52013/api/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sGBID)
+          axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sGBID)
             .then(resp => {
               if (resp.status === 200) {
                 console.log("resp.data is:", resp.data);
@@ -312,7 +312,7 @@ const submit =() =>{
             <TableCell style={{width: "5%"}}>Currency</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Chatrel</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Meal</TableCell>
-            <TableCell align="right" style={{width: "10%"}}>Penalty</TableCell>
+            <TableCell align="right" style={{width: "10%"}}>Late Fees</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Employed</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Rate &#8377;/$</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Total</TableCell>
@@ -367,13 +367,13 @@ const submit =() =>{
                   )}
                 />
               </TableCell>
-              <TableCell>{'USD'}</TableCell>
+              <TableCell>{row.sCurrencyCode}</TableCell>
               <TableCell align="right">{row.nChatrelAmount}</TableCell>
               <TableCell align="right">{row.nChatrelMeal}</TableCell>
               <TableCell align="right">{row.lateFees}</TableCell>
               <TableCell align="center">{ <input value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox"/>}</TableCell>
-              <TableCell>{dollarToRupees.toFixed(4)}</TableCell>
-              <TableCell align="right">{(row.nChatrelTotalAmount * dollarToRupees.toFixed(4)).toFixed(2) }</TableCell>
+              <TableCell>{(dollarToRupees && row.sCurrencyCode === 'USD') ? dollarToRupees.toFixed(4) : 1}</TableCell>
+              <TableCell align="right">{row.nChatrelTotalAmount.toFixed(2) }</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -420,7 +420,7 @@ const submit =() =>{
               </FormControl>  
     </Grid>
     <br />
-           <p style={{backgroundColor: "lightblue", textAlign: "right", fontWeight: "bold"}}>Total To Pay <span style={{textAlign: "right", fontWeight: "bold"}}>$ {total.toFixed(2)}</span></p>          
+           <p style={{backgroundColor: "lightblue", textAlign: "right", fontWeight: "bold"}}>Total To Pay <span style={{textAlign: "right", fontWeight: "bold"}}>&#8377; {total.toFixed(2)}</span></p>          
           
            <div><Button variant="contained" color="primary" onClick={()=>{submit() }} >Save</Button></div>
            
