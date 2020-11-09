@@ -423,6 +423,11 @@ INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `sCurrencyCode
 INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `sCurrencyCode`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Trogen', 'CH',null,now(),1,now(),1);
 INSERT INTO `ctadb`.`lstauthregion` (`sAuthRegion`, `sCountryID`, `sCurrencyCode`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Washington DC', 'US','USD',now(),1,now(),1);
 
+SET SQL_SAFE_UPDATES=0;
+
+UPDATE lstauthregion
+SET sCurrencyCode = 'USD'
+WHERE sCountryID NOT IN ('IN','NP','BT'); 
 
 
 CREATE TABLE `lstCountry` (
@@ -751,17 +756,17 @@ CREATE TABLE `lstChatrel` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 INSERT INTO `lstChatrel` (`Id`, `sChatrelKey`, `nChatrelValue`, `dtChatrelFrom`, `dtEntered`, `nEnteredBy`) VALUES
-(1, 'USDYearChatrelAmount', '36', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(2, 'USDYearChatrelMeal', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(3, 'USDYearChatrelSalaryAmt', '50', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(4, 'USDChatrelLateFeesPercentage', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(5, 'USDChildMonthChatrelAmount', '1', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(6, 'INRYearChatrelAmount', '48', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(7, 'INRYearChatrelMeal', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(8, 'INRYearChatrelSalaryAmt', '0', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(9, 'INRChatrelLateFeesPercentage', '10', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(10, 'INRChildMonthChatrelAmount', '1', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1),
-(11, 'ChatrelStartYear', '2011', DATE_FORMAT(now(), "%Y-%m-%d"), now(), 1);
+(1, 'USDYearChatrelAmount', '36', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
+(2, 'USDYearChatrelMeal', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
+(3, 'USDYearChatrelSalaryAmt', '50', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
+(4, 'USDChatrelLateFeesPercentage', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
+(5, 'USDChildMonthChatrelAmount', '1', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
+(6, 'INRYearChatrelAmount', '48', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
+(7, 'INRYearChatrelMeal', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
+(8, 'INRYearChatrelSalaryAmt', '0', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
+(9, 'INRChatrelLateFeesPercentage', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
+(10, 'INRChildMonthChatrelAmount', '1', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
+(11, 'ChatrelStartYear', '2011', NULL, now(), 1);
 
 -- -------------------------
 -- --Transactional Tables---
@@ -774,6 +779,38 @@ CREATE TABLE `tblRecentlySearchedGB` (
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `tblgbchatrel` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sGBId` varchar(255) DEFAULT NULL,
+  `nChatrelAmount` decimal(15,2) NOT NULL,
+  `nChatrelMeal` decimal(15,2) DEFAULT NULL,
+  `nChatrelYear` int(11) DEFAULT NULL,
+  `nChatrelLateFeesPercentage` int(11) DEFAULT NULL,
+  `nArrearsAmount` decimal(15,2) DEFAULT NULL,
+  `dtArrearsFrom` date DEFAULT NULL,
+  `dtArrearsTo` date DEFAULT NULL,
+  `nChatrelSalaryAmt` decimal(15,2)DEFAULT NULL,
+  `dtChatrelSalaryFrom` date DEFAULT NULL,
+  `dtChatrelSalaryTo` date DEFAULT NULL,
+  `nChatrelAdditionalDonationAmt` decimal(15,2) DEFAULT NULL,
+  `nChatrelBusinessDonationAmt` decimal(15,2) DEFAULT NULL,
+  `nChatrelTotalAmount` decimal(15,2) DEFAULT NULL,
+  `nChatrelRecieptNumber` int(11) DEFAULT NULL,
+  `nAuthRegionID` int(11) DEFAULT NULL,
+  `sCountryID` varchar(255) DEFAULT NULL,
+  `sPaymentCurrency` varchar(255) DEFAULT NULL,
+  `sPaidByGBId` varchar(255) DEFAULT NULL,
+  `sPayPal_Status` varchar(255) DEFAULT NULL,
+  `sPayPal_ID` varchar(255) DEFAULT NULL,
+  `sPayPal_Currency_Code` varchar(255) DEFAULT NULL,
+  `sPayPal_Currency_Value` varchar(255) DEFAULT NULL,
+  `sPayPal_Response_Object` varchar(5000) DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
