@@ -5,6 +5,7 @@ import {
   createAppContainer
 } from 'react-navigation';
 
+// import CustomHeaderButton from '../components/HeaderButton';
 import { ChatrelHistoryScreen } from '../screens/ChatrelHistoryScreen';
 import { FileDisputeScreen } from '../screens/FileDisputeScreen';
 import { GBDetailScreen } from '../screens/GBDetailScreen';
@@ -27,7 +28,10 @@ const defaultStackNavOptions = {
   headerBackTitleStyle: {
     fontFamily: 'open-sans'
   },
-  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
+  // cardStyle: {
+  //   backgroundColor: '#168b44'
+  // },
 };
 
 const LoginNavigator = createStackNavigator(
@@ -35,7 +39,25 @@ const LoginNavigator = createStackNavigator(
     Login: LoginScreen
   },
   {
-    defaultNavigationOptions: defaultStackNavOptions
+    //headerBackTitleVisible:false,
+    // cardShadowEnabled:true,
+    // headerTransitionPreset:"fade-in-place",
+    // headerMode: "none",
+    // navigationOptions: (navigation) => ({
+    //   header: null,
+    //   headerLeft: null,
+    //   headerRight: null,
+    //   // drawerIcon: CustomHeaderButton
+    // }),
+    // transparentCard:true,
+    // mode:"modal",
+    // headerLayoutPreset:"center",
+    // cardShadowEnabled:"",
+    // cardOverlayEnabled:true,
+    // headerMode: "screen",
+    // defaultNavigationOptions: defaultStackNavOptions,
+    
+    cardStyle: { backgroundColor: Colors.greenBG }
   }
 );
 
@@ -125,7 +147,10 @@ const MainNavigator = createDrawerNavigator(
     Login: {
       screen: LoginNavigator,
       navigationOptions: {
-        drawerLabel: 'Login'
+        drawerLabel: 'Login',
+        header:null,
+        headerLeft: null,
+        headerRight:null,
       }
     },
     Home: {
@@ -135,7 +160,7 @@ const MainNavigator = createDrawerNavigator(
       }
     },
     GBDetail: {
-      screen:GBDetailNavigator,
+      screen: GBDetailNavigator,
       navigationOptions: {
         drawerLabel: 'GB Details'
       }

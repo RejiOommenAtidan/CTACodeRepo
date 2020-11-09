@@ -6,62 +6,80 @@ import { Platform } from 'react-native';
 import { GLogin } from '../components/GLogin';
 import { ActivityIndicator } from 'react-native';
 import { Image } from 'react-native-elements';
+import Colors from '../constants/Colors';
 
 export const LoginScreen = (props) => {
 
   return (
-    <View style={styles.main}>
-      <View style={styles.container}>
+    <View style={styles.mainContainer}>
+      <View style={styles.imgContainer}>
         <Image
+          style={styles.imgComp}
           source={require('../assets/CTALogo.png')}
-          style={{ width: 200, height: 175, marginTop: 50 }}
           PlaceholderContent={<ActivityIndicator />}
         />
-        <View style={styles.container}>
-          <View style={styles.container}>
-            <Text>
-              Welcome to Chatrel
-                </Text>
-            <Text>
-              Your go-to resource for supporting<Text> the Tibetan Government</Text>
-            </Text>
-          </View>
-          <GLogin props={props}></GLogin>
-        </View>
       </View>
+      <View>
+        <Text style={styles.headerComp}>
+          Welcome to Chatrel
+        </Text>
+      </View>
+      <View>
+        <Text style={styles.textComponent}>
+          Your go-to resource for supporting the{"\n"}Tibetan Government
+        </Text>
+      </View>
+      <GLogin props={props}></GLogin>
     </View>
   );
 };
 
-
-// LoginScreen.navigationOptions = navData => {
-//   return {
-//     headerTitle: 'Login',
-//     headerLeft: (
-//       <HeaderButtons HeaderButtonComponent={HeaderButton}>
-//         <Item
-//           title="Menu"
-//           iconName={Platform.OS === 'android' ? "menu" : "ios-menu-outline"}
-//           onPress={() => {
-//             navData.navigation.toggleDrawer();
-//           }}
-//         />
-//       </HeaderButtons>
-//     )
-//   };
-// };
-
+LoginScreen.navigationOptions = navData => {
+  return {
+    //headerTitle: 'Login',
+    header:null,
+    headerLeft: null,
+    headerRight:null
+  };
+};
 
 const styles = StyleSheet.create({
-  main: {
+  mainContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    margin: 5
   },
-  container: {
+  imgContainer: {
+    marginTop: 30,
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center'
+  },
+  imgComp: {
+    width: 250,
+    height: 240,
+    marginTop: 6,
+    marginBottom: 25,
+    marginRight: 70
+  },
+  headerComp: {
+    textAlign: "left",
+    fontSize: 28,
+    paddingBottom: 10,
+    marginLeft: 40,
+    fontStyle: "normal",
+    fontWeight: "normal",
+    marginBottom: 10,
+    color: Colors.white
+  },
+  textComponent: {
+    fontSize: 14.5,
+    textAlign: "left",
+    paddingBottom: 5,
+    marginBottom: 15,
+    marginLeft: 40,
+    fontStyle: "normal",
+    fontWeight: "normal",
+    color: Colors.white
   }
 });
