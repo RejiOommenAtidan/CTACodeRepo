@@ -84,6 +84,7 @@ export const Chatrel = props => {
         axios.get(`/ChatrelPayment/DisplayChatrelPayment/sGBID=` + oCurrentGBDetails.sGBID)
             .then(resp => {
                 if (resp.status === 200) {
+                    console.log(resp.data);
                     setnChatrelLateFeesPercentage(resp.data.chatrelPayment.nChatrelLateFeesPercentage);
                     setnDefaultSalaryAmount(resp.data.nDefaultSalaryAmount);
                     setaGBChatrels(resp.data.gbChatrels);

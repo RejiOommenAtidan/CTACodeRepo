@@ -1,40 +1,56 @@
-import React from 'react';
-import { Text, View, StyleSheet, ScrollView,TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
-// import {Chatrel} from '../components/Chatrel';
 import { Card } from 'react-native-elements';
 import { sDateFormat } from '../constants/CommonConfig';
 import Moment from 'moment';
-
-const aFamilyMember = [
-  { sName: "Abcd Demo", sRelation: "Mother", dtDOB: "01-01-1972", sGBID: "", nChatrelDue: 250 },
-  { sName: "Def Demo", sRelation: "Father", dtDOB: "01-01-1968", sGBID: "", nChatrelDue: 200 },
-  { sName: "Ghi Demo", sRelation: "Spouse", dtDOB: "01-01-1996", sGBID: "", nChatrelDue: 225 },
-];
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 export const FamilyChatrelIntermediateScreen = (props) => {
+  const [aFamilyMembers, setaFamilyMembers] = useState([]);
+  const oCurrentGBDetails = useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails);
+  const getFamilyDetails = () => {
+    axios.get(`/ChatrelPayment/GetFamilyDetails/sGBID=` + oCurrentGBDetails.sGBID)
+      .then(resp => {
+        if (resp.status === 200) {
+          //console.log(resp.data);
+          setaFamilyMembers(resp.data);
+        }
+      })
+      .catch(error => {
+        console.log(error.message);
+        console.log(error.config);
+      });
+  };
+
+  useEffect(() => {
+    getFamilyDetails();
+  });
   return (
     <View style={styles.main}>
       <View style={styles.container}>
         <Text>Family Members</Text>
-
         <ScrollView>
-          {aFamilyMember.map((member, index) => {
+          {aFamilyMembers.map((member, index) => {
             return (
-              <TouchableOpacity key={index} style={styles.button} onPress={()=>{console.log(member)}}>
+              <TouchableOpacity key={index} style={styles.button} onPress={() => { console.log(member) }}>
                 <Card>
                   <Card.Title>{member.sName}</Card.Title>
                   <Text style={{ marginBottom: 10 }}>
-                    USD {member.nChatrelDue}
+                    USD : {member.dPending}
                   </Text>
                   <Card.Divider />
                   <Text style={{ marginBottom: 10 }}>
-                    Greenbook ID: {member.sGBID}
+                    Greenbook ID: {member.sGBIDRelation}
                   </Text>
                   <Text style={{ marginBottom: 10 }}>
-                    Date of Birth :{member.dtDOB}
+                    Age :{member.nAge}
+                  </Text>
+                  <Text style={{ marginBottom: 10 }}>
+                    DOB:{Moment(member.dtDOB).format(sDateFormat)}
                   </Text>
                   <Text style={{ marginBottom: 10 }}>
                     Relation: {member.sRelation}
