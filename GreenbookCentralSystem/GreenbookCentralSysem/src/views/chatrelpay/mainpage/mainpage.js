@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -121,6 +121,7 @@ export default function MainPage () {
   //const payingFor=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sName);
   const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
   const paidByName= useSelector(state => state.GBDetailsReducer.oGBDetails.sName);
+  const [chatrelPending, setChatrelPending] = React.useState(null);
 
   let history = useHistory();
   let dispatch = useDispatch();
@@ -208,6 +209,18 @@ export default function MainPage () {
   // const handleChangeIndex = (index) => {
   //   setValue(index);
   // };
+  React.useEffect(() => {
+    axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+paidByGBID)
+    .then(resp => {
+      if (resp.status === 200) {
+        setChatrelPending(resp.data.chatrelPayment.nChatrelTotalAmount);
+        console.log("Data fetched...", resp.data);
+      }
+    })
+    .catch(error => {
+      console.log(error.message);
+    });
+  }, []);
   return (
     <>
       <Card  style={{  padding: 50 }} >
@@ -248,19 +261,26 @@ export default function MainPage () {
         <TabPanel value={value} index={0} dir={theme.direction}>
           <br />
           <p style={{backgroundColor: "lightblue"}}>Personal Details </p>
+         
           <Grid style={{paddingTop: '10px'}}>
             <FormControl style={{paddingRight: "20px"}}>
               <TextField label="GreenBook ID" value={paidByGBID}/>
             </FormControl>
           
-            <FormControl>
+            <FormControl style={{paddingRight: "20px"}}>
               <TextField label="GreenBook Holder Name" value={paidByName}/>
+            </FormControl>
+
+            <FormControl>
+              <TextField InputLabelProps={{ shrink: true }} label="Chatrel Pending" value={chatrelPending && chatrelPending}/>
             </FormControl>
           </Grid>
             
             <Grid item style={{paddingTop: '10px'}}>
-              <input type="button" onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' })}} value="Check Pending &amp; Pay"/>
+            
+              <input type="button" onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' })}} value="Verify &amp; Pay"/>
             </Grid>
+           
         </TabPanel>
 
        

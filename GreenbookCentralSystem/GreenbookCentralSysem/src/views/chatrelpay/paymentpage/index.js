@@ -372,7 +372,7 @@ const submit =() =>{
               <TableCell align="right">{row.nChatrelMeal}</TableCell>
               <TableCell align="right">{row.lateFees}</TableCell>
               <TableCell align="center">{ <input value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox"/>}</TableCell>
-              <TableCell>{(dollarToRupees && row.sCurrencyCode === 'USD') ? dollarToRupees.toFixed(4) : 1}</TableCell>
+              <TableCell>{(dollarToRupees && row.sCurrencyCode === 'USD') ? dollarToRupees.toFixed(4) : ''}</TableCell>
               <TableCell align="right">{row.nChatrelTotalAmount.toFixed(2) }</TableCell>
             </TableRow>
           ))}
