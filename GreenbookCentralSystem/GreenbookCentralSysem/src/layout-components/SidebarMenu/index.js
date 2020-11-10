@@ -660,6 +660,21 @@ const SidebarMenu = (props) => {
                 Change Password
               </NavLink>
             </li>
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
+              &&
+            <li>
+              <NavLink
+                activeClassName="active"
+                onClick={toggleSidebarMobile}
+                className="nav-link-simple"
+                to="/ChatrelPay">
+                <span className="sidebar-icon">
+                  <VpnKeyIcon />
+                </span>
+                Chatrels
+              </NavLink>
+            </li>
+            }
           </ul>
         </div>
       </PerfectScrollbar>

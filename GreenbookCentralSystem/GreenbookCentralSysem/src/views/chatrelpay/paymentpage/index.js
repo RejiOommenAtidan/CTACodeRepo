@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { useEffect, useState } from 'react';
 import { Card } from '@material-ui/core';
 import {Link, Box, Container, Grid, Button, Typography, FormControl, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
@@ -69,6 +71,7 @@ export default function PaymentPage  (props) {
 
   const [authRegions, setAuthRegions] = React.useState(null);
   const [authRegion, setAuthRegion] = React.useState();
+  const [shouldRun, setShouldRun] = React.useState(true);
   
   console.log("AuthRegions set in 'authRegions'", authRegions);
   console.log("Current Region set in 'authRegion'", authRegion);
@@ -122,6 +125,11 @@ export default function PaymentPage  (props) {
     setValue(index);
   };
 
+  
+
+ 
+  
+
   const updateAuthRegion = (e, value) => {
     console.log(value.id, e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_')));
     const index = e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_'));
@@ -149,7 +157,7 @@ const modify =(index) =>{
   }
   setPaymentData(payObj);
   calculate(index);
-}
+};
 
 const calculate =(index) =>{
 let payObj = [...paymentData];
@@ -163,7 +171,9 @@ payObj[index].lateFees=(payObj[index].nChatrelAmount + payObj[index].nChatrelMea
 payObj[index].nChatrelTotalAmount= (payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].lateFees + payObj[index].nChatrelSalaryAmt) * ((dollarToRupees && payObj[index].sCurrencyCode === 'USD') ? dollarToRupees.toFixed(4) : 1);
 setPaymentData(payObj);
 calcTotal(paymentData ,adonation,bdonation);
-}
+};
+
+
 const calcTotal =(obj ,a,b)=>{
   let temptotal=a+b;
   obj.forEach((row ) => {
@@ -174,7 +184,22 @@ const calcTotal =(obj ,a,b)=>{
   })
   setTotal(temptotal);
 
-}
+};
+
+  
+  
+  const runOnce = () => {
+    debugger
+    if (paymentData && dollarToRupees && shouldRun){
+      const len = paymentData.length;
+      for (var i = 0; i < len; i++){
+        calculate(i);
+      }
+      setShouldRun(false);
+    } 
+  };
+  
+
 const submit =() =>{
   let tempSummaryObj = summaryData;
   let payObj = [...paymentData];
@@ -192,9 +217,9 @@ const submit =() =>{
   let finalObj={
     "chatrelPayment": tempSummaryObj,
     "gbChatrels": paymentData
-  }
+  };
 
-  console.log("Final Obj:" , finalObj)
+  console.log("Final Obj:" , finalObj);
   // axios.post(`http://localhost:52013/api/ChatrelPayment/AddNewChatrelPayment`,finalObj)
   // .then(resp => {
   //   if (resp.status === 200) {
@@ -220,7 +245,7 @@ const submit =() =>{
   // });
 
 
-}
+};
   
 
  
@@ -237,9 +262,15 @@ const submit =() =>{
                 console.log("resp.data is:", resp.data);
                 setDataAPI(resp.data);
                 setSummaryData(resp.data.chatrelPayment);
-                setPaymentData(resp.data.gbChatrels);
                 calcTotal(resp.data.gbChatrels ,adonation,bdonation);
+                setPaymentData(resp.data.gbChatrels);
                 
+                fetch('https://api.ratesapi.io/api/latest?base=USD&symbols=INR')
+                  .then(response => response.json())
+                  .then(data => {
+                  console.log("currency", data.rates.INR);
+                  setDollarToRupees(data.rates.INR);
+      });
                 
               }
             })
@@ -259,22 +290,31 @@ const submit =() =>{
     
       
      }, []);
+  
+     
   const [dollarToRupees, setDollarToRupees] = React.useState();
+
+  useEffect(() => {
+    runOnce();
+  }, [dollarToRupees])
+
+
   useEffect(() => {
     (authRegions && summaryData &&
     setAuthRegion(authRegions.find((x) => x.id === summaryData.nAuthRegionID)));
     
 
-    fetch('https://api.ratesapi.io/api/latest?base=USD&symbols=INR')
-      .then(response => response.json())
-      .then(data => {
-          console.log("currency", data.rates.INR);
-          setDollarToRupees(data.rates.INR);
-      });
     
-   
+    
+      
 
-  }, [authRegions, summaryData])
+      
+      
+
+  }, [authRegions, summaryData]);
+
+ 
+
   return (
     <> {dataAPI  &&
     <><p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>{pageFrom}</p>
@@ -375,7 +415,7 @@ const submit =() =>{
               <TableCell align="right">{row.nChatrelMeal}</TableCell>
               <TableCell align="right">{row.lateFees}</TableCell>
               <TableCell align="center">{ <input value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox" disabled = {row.isChild}/>}</TableCell>
-              <TableCell>{(dollarToRupees && row.sCurrencyCode === 'USD') ? dollarToRupees.toFixed(4) : '-'}</TableCell>
+              <TableCell align="center">{(dollarToRupees && row.sCurrencyCode === 'USD') ? dollarToRupees.toFixed(4) : '-'}</TableCell>
               <TableCell align="right">{row.nChatrelTotalAmount.toFixed(2) }</TableCell>
             </TableRow>
           ))}

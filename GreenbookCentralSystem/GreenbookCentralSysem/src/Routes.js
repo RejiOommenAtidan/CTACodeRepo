@@ -236,9 +236,7 @@ const Routes = () => {
                     <Route path="/Home" component={Home} />
                     <Route path="/Greenbooks" component={Greenbook} />
                     <Route path="/NewGreenBookSerial" component={NewGreenBookSerial} />
-                    <Route path="/ChatrelPay" component={ChatrelPay} exact />
-                    <Route path="/ChatrelPay/MainPage" component={MainPage} exact />
-                    <Route path="/ChatrelPay/PaymentPage" component={PaymentPage} exact />
+                    
                     {/*Private Routes Go Here*/}
                     <PrivateRoute path="/GivenGBID" feature={3} component={GivenGBID} />
                     <PrivateRoute path="/DeleteGB" feature={4} component={DeleteGB} />
@@ -272,6 +270,9 @@ const Routes = () => {
                     <PrivateRoute path="/Feature" feature={33} component={Feature} />
                     <PrivateRoute path="/TypeIssued" feature={34} component={TypeIssued} />
                     <PrivateRoute path="/MadebType" feature={35} component={MadebType} />
+                    <PrivateRoute path="/ChatrelPay" feature={37} component={ChatrelPay} exact />
+                    <PrivateRoute path="/ChatrelPay/MainPage" feature={37} component={MainPage} exact />
+                    <PrivateRoute path="/ChatrelPay/PaymentPage" feature={37} component={PaymentPage} exact />
                   </motion.div>
                 </Switch>
               </LeftSidebar>
