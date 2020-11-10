@@ -1358,5 +1358,194 @@ namespace CTADataMigrationAndSupport
 
         #endregion
 
+        public static DataTable GetDataTabletFromCSVFile(string csv_file_path)
+        {
+            DataTable csvData = new DataTable();
+            try
+            {
+                if (csv_file_path.EndsWith(".csv"))
+                {
+                    using (Microsoft.VisualBasic.FileIO.TextFieldParser csvReader = new Microsoft.VisualBasic.FileIO.TextFieldParser(csv_file_path))
+                    {
+                        csvReader.SetDelimiters(new string[] { "," });
+                        csvReader.HasFieldsEnclosedInQuotes = true;
+                        //read column
+                        string[] colFields = csvReader.ReadFields();
+                        foreach (string column in colFields)
+                        {
+                            DataColumn datecolumn = new DataColumn(column);
+                            datecolumn.AllowDBNull = true;
+                            csvData.Columns.Add(datecolumn);
+                        }
+                        while (!csvReader.EndOfData)
+                        {
+                            string[] fieldData = csvReader.ReadFields();
+                            for (int i = 0; i < fieldData.Length; i++)
+                            {
+                                if (fieldData[i] == "")
+                                {
+                                    fieldData[i] = null;
+                                }
+                            }
+                            csvData.Rows.Add(fieldData);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Exce " + ex);
+            }
+            return csvData;
+        }
+
+
+        private void btnUploadfile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.ShowDialog();
+                int ImportedRecord = 0, inValidItem = 0;
+                string SourceURl = "";
+                btnSave.Enabled = true;
+                if (dialog.FileName != "")
+                {
+                    if (dialog.FileName.EndsWith(".csv"))
+                    {
+                        DataTable dtNew = new DataTable();
+                        dtNew = GetDataTabletFromCSVFile(dialog.FileName);
+
+                        if (Convert.ToString(dtNew.Columns[0]).ToLower() != "sno" && Convert.ToString(dtNew.Columns[0]).ToLower() != "idno")
+                        {
+                            MessageBox.Show("Invalid Items File");
+                            btnSave.Enabled = false;
+                            return;
+                        }
+
+                        ChatrelPayment chatrelPayment = new ChatrelPayment();
+                        foreach (DataRow row in dtNew.Rows)
+                        {
+                            chatrelPayment.Id = Convert.ToInt32(row["SNo"]);
+                            chatrelPayment.sGBId = row["IDNo"].ToString();
+                            chatrelPayment.nChatrelAmount = Convert.ToInt32(row["Chatrel"]);
+                            chatrelPayment.nChatrelMeal  = Convert.ToInt32(row["Meal"]);
+                            chatrelPayment.nChatrelMeal  = Convert.ToInt32(row["Meal"]);
+                            chatrelPayment.nChatrelYear = Convert.ToInt32(row["Year"]);
+                            chatrelPayment.nChatrelLateFeesPercentage = Convert.ToInt32(row["ArrearsPlusLateFees"]);
+                            chatrelPayment.dtArrearsFrom= Convert.ToDateTime(row["ArrearsFrom"]);
+                            chatrelPayment.dtArrearsTo  = Convert.ToDateTime(row["ArrearsTo"]);
+                            chatrelPayment.nChatrelSalaryAmt = Convert.ToInt32(row["Salary"]);
+                            chatrelPayment.dtChatrelSalaryFrom = Convert.ToDateTime(row["PendigFrom"]);
+                            chatrelPayment.dtChatrelSalaryTo = Convert.ToDateTime(row["PendingTo"]);
+                            chatrelPayment.nChatrelBusinessDonationAmt = Convert.ToInt32(row["BusinessDonation"]);
+                            chatrelPayment.nChatrelAdditionalDonationAmt = Convert.ToInt32(row["AdditionalDonation"]);
+                            chatrelPayment.nChatrelTotalAmount = Convert.ToInt32(row["TotalAmout"]);
+                            chatrelPayment.nChatrelRecieptNumber = Convert.ToInt32(row["RecieptNo"]);
+                            chatrelPayment.dtEntered = Convert.ToDateTime(row["PaymentDate"]);
+                            chatrelPayment.nAuthRegionID = Convert.ToInt32(row["Region"]);
+                            chatrelPayment.sCountryID = row["Country"].ToString();
+                            chatrelPayment.sPaymentCurrency = row["CurrencyCode"].ToString();
+
+
+                        }
+
+                        //txtFile.Text = dialog.SafeFileName;
+                        //SourceURl = dialog.FileName;
+                        //if (dtNew.Rows != null && dtNew.Rows.ToString() != String.Empty)
+                        //{
+                        //    dgItems.DataSource = dtNew;
+                        //}
+                        //foreach (DataGridViewRow row in dgItems.Rows)
+                        //{
+                        //    if (Convert.ToString(row.Cells["LookupCode"].Value) == "" || row.Cells["LookupCode"].Value == null
+                        //        || Convert.ToString(row.Cells["ItemName"].Value) == "" || row.Cells["ItemName"].Value == null
+                        //        || Convert.ToString(row.Cells["DeptId"].Value) == "" || row.Cells["DeptId"].Value == null
+                        //        || Convert.ToString(row.Cells["Price"].Value) == "" || row.Cells["Price"].Value == null)
+                        //    {
+                        //        row.DefaultCellStyle.BackColor = Color.Red;
+                        //        inValidItem += 1;
+                        //    }
+                        //    else
+                        //    {
+                        //        ImportedRecord += 1;
+                        //    }
+                        //}
+                        //if (dgItems.Rows.Count == 0)
+                        //{
+                        //    btnSave.Enabled = false;
+                        //    MessageBox.Show("There is no data in this file", "GAUTAM POS", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        //}
+                    }
+                    else
+                    {
+                        MessageBox.Show("Selected File is Invalid, Please Select valid csv file.", "CTA Admin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Exception " + ex);
+            }
+        }
+
+    }
+
+    public class ChatrelPayment
+    {
+        #region Private  Properties 
+        private int _Id;
+        private string? _sGBId;
+        private decimal? _nChatrelAmount;
+        private decimal? _nChatrelMeal;
+        private int? _nChatrelYear;
+        private int? _nChatrelLateFeesPercentage;
+        private decimal? _nArrearsAmount;
+        private DateTime? _dtArrearsFrom;
+        private DateTime? _dtArrearsTo;
+        private decimal? _nChatrelSalaryAmt;
+        private DateTime? _dtChatrelSalaryFrom;
+        private DateTime? _dtChatrelSalaryTo;
+        private decimal? _nChatrelAdditionalDonationAmt;
+        private decimal? _nChatrelBusinessDonationAmt;
+        private decimal? _nChatrelTotalAmount;
+        private int? _nChatrelRecieptNumber;
+        private int? _nAuthRegionID;
+        private string? _sCountryID;
+        private string? _sPaymentStatus;
+        private string? _sPaymentMode;
+        private string? _sPaymentCurrency;
+        private string? _sPaidByGBId;
+        private DateTime? _dtEntered;
+        private int _nEnteredBy;
+        #endregion
+
+        #region Public Properties
+        public int Id { get { return _Id; } set { _Id = value; } }
+        public string? sGBId { get { return _sGBId; } set { _sGBId = value; } }
+        public decimal? nChatrelAmount { get { return _nChatrelAmount; } set { _nChatrelAmount = value; } }
+        public decimal? nChatrelMeal { get { return _nChatrelMeal; } set { _nChatrelMeal = value; } }
+        public int? nChatrelYear { get { return _nChatrelYear; } set { _nChatrelYear = value; } }
+        public int? nChatrelLateFeesPercentage { get { return _nChatrelLateFeesPercentage; } set { _nChatrelLateFeesPercentage = value; } }
+        public decimal? nArrearsAmount { get { return _nArrearsAmount; } set { _nArrearsAmount = value; } }
+        public DateTime? dtArrearsFrom { get { return _dtArrearsFrom; } set { _dtArrearsFrom = value; } }
+        public DateTime? dtArrearsTo { get { return _dtArrearsTo; } set { _dtArrearsTo = value; } }
+        public decimal? nChatrelSalaryAmt { get { return _nChatrelSalaryAmt; } set { _nChatrelSalaryAmt = value; } }
+        public DateTime? dtChatrelSalaryFrom { get { return _dtChatrelSalaryFrom; } set { _dtChatrelSalaryFrom = value; } }
+        public DateTime? dtChatrelSalaryTo { get { return _dtChatrelSalaryTo; } set { _dtChatrelSalaryTo = value; } }
+        public decimal? nChatrelAdditionalDonationAmt { get { return _nChatrelAdditionalDonationAmt; } set { _nChatrelAdditionalDonationAmt = value; } }
+        public decimal? nChatrelBusinessDonationAmt { get { return _nChatrelBusinessDonationAmt; } set { _nChatrelBusinessDonationAmt = value; } }
+        public decimal? nChatrelTotalAmount { get { return _nChatrelTotalAmount; } set { _nChatrelTotalAmount = value; } }
+        public int? nChatrelRecieptNumber { get { return _nChatrelRecieptNumber; } set { _nChatrelRecieptNumber = value; } }
+        public int? nAuthRegionID { get { return _nAuthRegionID; } set { _nAuthRegionID = value; } }
+        public string? sCountryID { get { return _sCountryID; } set { _sCountryID = value; } }
+        public string? sPaymentStatus { get { return _sPaymentStatus; } set { _sPaymentStatus = value; } }
+        public string? sPaymentMode { get { return _sPaymentMode; } set { _sPaymentMode = value; } }
+        public string? sPaymentCurrency { get { return _sPaymentCurrency; } set { _sPaymentCurrency = value; } }
+        public string? sPaidByGBId { get { return _sPaidByGBId; } set { _sPaidByGBId = value; } }
+        public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
+        public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
+
+        #endregion
     }
 }
