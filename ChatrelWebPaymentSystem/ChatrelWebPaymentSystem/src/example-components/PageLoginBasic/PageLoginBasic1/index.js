@@ -41,7 +41,7 @@ let oGBDetails={
     console.log(oGBDetails);
     dispatch(storeGBDetails(oGBDetails));
     
-    history.push('/family');
+    history.push('/Home');
   }
   const userObj = useSelector(state => state.GLoginReducer.oGoogle);
    useEffect(() => {

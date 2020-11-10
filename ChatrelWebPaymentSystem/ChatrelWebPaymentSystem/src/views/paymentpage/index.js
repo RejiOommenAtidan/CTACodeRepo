@@ -255,12 +255,12 @@ const runOnce = () => {
                 calcTotal(resp.data.gbChatrels ,adonation,bdonation);
 
                 fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
-      .then(response => response.json())
-      .then(data => {
-          console.log("currency", data.rates.USD);
-          setDollarToRupees(data.rates.USD);
-      });
-    
+                .then(response => response.json())
+                .then(data => {
+                    console.log("currency", data.rates.USD);
+                    setDollarToRupees(data.rates.USD);
+                });
+              
                 
                 
               }
