@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace ChatrelPaymentWebAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]
