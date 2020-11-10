@@ -13,10 +13,9 @@ export const FamilyChatrelIntermediateScreen = (props) => {
   const [aFamilyMembers, setaFamilyMembers] = useState([]);
   const oCurrentGBDetails = useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails);
   const getFamilyDetails = () => {
-    axios.get(`/ChatrelPayment/GetFamilyDetails/sGBID=` + oCurrentGBDetails.sGBID)
+    axios.get(`/ChatrelPayment/GetFamilyDetails/?sGBID=` + oCurrentGBDetails.sGBID)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
           setaFamilyMembers(resp.data);
         }
       })

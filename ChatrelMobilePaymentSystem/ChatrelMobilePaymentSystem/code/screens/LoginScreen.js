@@ -1,32 +1,28 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-// import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-// import HeaderButton from '../components/HeaderButton';
-import { Platform } from 'react-native';
 import { GLogin } from '../components/GLogin';
 import { ActivityIndicator } from 'react-native';
 import { Image } from 'react-native-elements';
 import Colors from '../constants/Colors';
 
 export const LoginScreen = (props) => {
-
   return (
     <View style={styles.mainContainer}>
       <View style={styles.imgContainer}>
         <Image
-          style={styles.imgComp}
+          style={styles.imgComponent}
           source={require('../assets/CTALogo.png')}
           PlaceholderContent={<ActivityIndicator />}
         />
       </View>
       <View>
-        <Text style={styles.headerComp}>
+        <Text style={styles.headerComponent}>
           Welcome to Chatrel
         </Text>
       </View>
       <View>
         <Text style={styles.textComponent}>
-          Your go-to resource for supporting the{"\n"}Tibetan Government
+          Your go - to resource for supporting the{"\n"}Tibetan Government
         </Text>
       </View>
       <GLogin props={props}></GLogin>
@@ -37,9 +33,9 @@ export const LoginScreen = (props) => {
 LoginScreen.navigationOptions = navData => {
   return {
     //headerTitle: 'Login',
-    header:null,
+    header: null,
     headerLeft: null,
-    headerRight:null
+    headerRight: null
   };
 };
 
@@ -55,14 +51,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  imgComp: {
+  imgComponent: {
     width: 250,
     height: 240,
     marginTop: 6,
     marginBottom: 25,
     marginRight: 70
   },
-  headerComp: {
+  headerComponent: {
     textAlign: "left",
     fontSize: 28,
     paddingBottom: 10,

@@ -41,7 +41,7 @@ const HomeScreen = (props) => {
   const oCurrentGBDetails = useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails);
 
   const getChatrelDetails = () => {
-    axios.get(`/ChatrelPayment/DisplayChatrelPayment/sGBID=` + oCurrentGBDetails.sGBID)
+    axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=` + oCurrentGBDetails.sGBID)
       .then(resp => {
         if (resp.status === 200) {
           setnChatrelTotalAmount(resp.data.chatrelPayment.nChatrelTotalAmount);
@@ -56,8 +56,8 @@ const HomeScreen = (props) => {
   useEffect(() => {
     getChatrelDetails();
     BackHandler.addEventListener('hardwareBackPress', () => true);
-    return () => {BackHandler.removeEventListener('hardwareBackPress', () => true);};
-    
+    return () => { BackHandler.removeEventListener('hardwareBackPress', () => true); };
+
   }, []);
   return (
     <ScrollView>
@@ -115,7 +115,7 @@ HomeScreen.navigationOptions = navData => {
           onPress={() => {
             navData.navigation.toggleDrawer();
           }}
-          
+
         />
       </HeaderButtons>
     )

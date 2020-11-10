@@ -81,10 +81,10 @@ export const Chatrel = props => {
     }, []);
 
     const getChatrelDetails = () => {
-        axios.get(`/ChatrelPayment/DisplayChatrelPayment/sGBID=` + oCurrentGBDetails.sGBID)
+        axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=` + oCurrentGBDetails.sGBID)
             .then(resp => {
                 if (resp.status === 200) {
-                    console.log(resp.data);
+                    //console.log(resp.data);
                     setnChatrelLateFeesPercentage(resp.data.chatrelPayment.nChatrelLateFeesPercentage);
                     setnDefaultSalaryAmount(resp.data.nDefaultSalaryAmount);
                     setaGBChatrels(resp.data.gbChatrels);
@@ -126,10 +126,10 @@ export const Chatrel = props => {
                             value={year.nChatrelSalaryAmt !== 0}
                         />
                         <Text>{year.nChatrelYear}</Text>
-                        <Text>Basic: {year.nChatrelAmount}</Text>
-                        <Text>Meal: {year.nChatrelMeal}</Text>
+                        <Text>Basic: $ {year.nChatrelAmount}</Text>
+                        <Text>Meal: $ {year.nChatrelMeal}</Text>
                         {year.lateFees !== 0 && <Text>Late Fees: {year.lateFees}</Text>}
-                        <Text>Total: {year.nChatrelTotalAmount}</Text>
+                        <Text>Total: $ {year.nChatrelTotalAmount}</Text>
                     </View>
                 )
             })}

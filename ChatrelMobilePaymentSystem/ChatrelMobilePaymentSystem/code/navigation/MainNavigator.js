@@ -56,7 +56,7 @@ const LoginNavigator = createStackNavigator(
     // cardOverlayEnabled:true,
     // headerMode: "screen",
     // defaultNavigationOptions: defaultStackNavOptions,
-    
+
     cardStyle: { backgroundColor: Colors.greenBG }
   }
 );
@@ -75,7 +75,15 @@ const GBDetailNavigator = createStackNavigator(
     GBDetail: GBDetailScreen
   },
   {
-    defaultNavigationOptions: defaultStackNavOptions
+    defaultNavigationOptions: defaultStackNavOptions,
+    headerMode: 'none',
+    cardStyle: { backgroundColor: 'transparent', shadowColor: 'transparent' },
+    transparentCard: true,
+    transitionConfig: () => ({
+      containerStyle: {
+        backgroundColor: 'transparent',
+      },
+    })
   }
 );
 
@@ -148,21 +156,24 @@ const MainNavigator = createDrawerNavigator(
       screen: LoginNavigator,
       navigationOptions: {
         drawerLabel: 'Login',
-        header:null,
+        header: null,
         headerLeft: null,
-        headerRight:null,
+        headerRight: null,
+      }
+    },
+    GBDetail: {
+      screen: GBDetailNavigator,
+      navigationOptions: {
+        drawerLabel: 'GB Details',
+        header: null,
+        headerLeft: null,
+        headerRight: null,
       }
     },
     Home: {
       screen: HomeNavigator,
       navigationOptions: {
         drawerLabel: 'Quick Actions'
-      }
-    },
-    GBDetail: {
-      screen: GBDetailNavigator,
-      navigationOptions: {
-        drawerLabel: 'GB Details'
       }
     },
     SelfChatrel: {
