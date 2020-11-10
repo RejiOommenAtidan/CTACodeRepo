@@ -185,24 +185,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             
             int pendingYears = _currentYear - paidUntil;
 
-            //if (authRegion.sCountryID == "IN" || authRegion.sCountryID == "BT" || authRegion.sCountryID == "NP")
-            //{
-            //    _nChatrelAmount = _nChatrelAmountINR;
-            //    _nChatrelMeal = _nChatrelMealINR;
-            //    _nChatrelSalaryAmt = _nChatrelSalaryAmtINR;
-            //    _nChatrelLateFeesPercentage = _nChatrelLateFeesPercentageINR;
-            //    _nChatrelChildAmt = _nChatrelChildAmtINR;
-            //}
-            //else
-            //{
-            //    _nChatrelAmount = _nChatrelAmountUSD;
-            //    _nChatrelMeal = _nChatrelMealUSD;
-            //    _nChatrelSalaryAmt = _nChatrelSalaryAmtUSD;
-            //    _nChatrelLateFeesPercentage = _nChatrelLateFeesPercentageUSD;
-            //    _nChatrelChildAmt = _nChatrelChildAmtUSD;
-            //}
-
-            //_dLateFees = (_nChatrelAmount + _nChatrelMeal) * _nChatrelLateFeesPercentage / 100;
+            
             List<Object> list = new List<Object>();
             for (int i = 1; i <= pendingYears; i++)
             {
@@ -210,7 +193,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 DateTime? start = dates[0];
                 DateTime? end = dates[1];
                 //should we check for child
-                //int age = (paidUntil + i + 1) - greenbook.dtDOB.Value.Year;
+               
                 var status = checkStatus(paidUntil + i, (DateTime)greenbook.dtDOB);
 
                 if(status == Status.Adult)
@@ -238,7 +221,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 int months = 0;
 
                 if(status == Status.TurningAdult)
-                //if(age == 18)
+                
                 {
                     months = adultMonths(paidUntil + i, (DateTime)greenbook.dtDOB);
                 }
@@ -258,7 +241,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 {
                     var current = new { nChatrelAmount = nChatrelChildAmt, nChatrelMeal = 0, nChatrelYear = _currentYear, lateFees = 0, nChatrelTotalAmount = nChatrelChildAmt, dtDateFrom = start, dtDateTo = end, nChatrelSalaryAmt = 0, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, authRegion.sCurrencyCode, nChatrelUSD = nChatrelChildUSD, nChatrelINR = nChatrelChildINR, nChatrelMealUSD = 0, nChatrelMealINR = 0, isChild = true };
                     list.Add(current);
-                    //_nPending += nChatrelChildAmt;
+                    
                     continue;
                 }
                 var pending = new { nChatrelYear = paidUntil + i, nChatrelAmount = nChatrelChildAmt, nChatrelMeal = 0, nChatrelSalaryAmt = 0, lateFees = lateFees, nArrearsAmount = (nChatrelChildAmt + lateFees),  nChatrelTotalAmount = (nChatrelChildAmt + lateFees), dtArrearsFrom = start, dtArrearsTo = end,  greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, authRegion.sCurrencyCode, nChatrelUSD = nChatrelChildUSD, nChatrelINR = nChatrelChildINR, nChatrelMealUSD = 0, nChatrelMealINR = 0, isChild = true };
