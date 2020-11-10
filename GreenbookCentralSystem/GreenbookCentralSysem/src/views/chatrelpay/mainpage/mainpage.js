@@ -324,9 +324,9 @@ export default function MainPage () {
                   <TableCell align="center">{row.nAge}</TableCell>
                   <TableCell align="right">{row.dPending}</TableCell>
                   {row.sGBIDRelation == null && 
-                  <TableCell align="center"><Button disabled variant="contained" color="primary" onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' })}}>Pay"</Button></TableCell>}
+                  <TableCell align="center"><Button disabled variant="contained" color="primary" onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' })}}>Pay</Button></TableCell>}
                   {row.sGBIDRelation != null && 
-                  <TableCell align="center"><Button variant='contained' color="primary" onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' })}}>Pay"</Button>
+                  <TableCell align="center"><Button variant='contained' color="primary" onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' })}}>Pay</Button>
                     
                     {/* <input type="button" onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' })}} value="Check Pending &amp; Pay"/> */}
                     </TableCell>}

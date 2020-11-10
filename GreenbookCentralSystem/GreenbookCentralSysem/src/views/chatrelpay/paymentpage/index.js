@@ -129,6 +129,9 @@ export default function PaymentPage  (props) {
     chartelObj[index].nAuthRegionID = value.id;
     chartelObj[index].sCountryID = value.sCountryID;
     chartelObj[index].sCurrencyCode = value.sCurrencyCode;
+    chartelObj[index].nChatrelAmount = value.sCurrencyCode === 'INR' ? chartelObj[index].nChatrelINR : chartelObj[index].nChatrelUSD;
+    chartelObj[index].nChatrelMeal = value.sCurrencyCode === 'INR' ? chartelObj[index].nChatrelMealINR : chartelObj[index].nChatrelMealUSD;
+
     setPaymentData(chartelObj);
     calculate(index);
   };
@@ -371,8 +374,8 @@ const submit =() =>{
               <TableCell align="right">{row.nChatrelAmount}</TableCell>
               <TableCell align="right">{row.nChatrelMeal}</TableCell>
               <TableCell align="right">{row.lateFees}</TableCell>
-              <TableCell align="center">{ <input value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox"/>}</TableCell>
-              <TableCell>{(dollarToRupees && row.sCurrencyCode === 'USD') ? dollarToRupees.toFixed(4) : ''}</TableCell>
+              <TableCell align="center">{ <input value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox" disabled = {row.isChild}/>}</TableCell>
+              <TableCell>{(dollarToRupees && row.sCurrencyCode === 'USD') ? dollarToRupees.toFixed(4) : '-'}</TableCell>
               <TableCell align="right">{row.nChatrelTotalAmount.toFixed(2) }</TableCell>
             </TableRow>
           ))}
