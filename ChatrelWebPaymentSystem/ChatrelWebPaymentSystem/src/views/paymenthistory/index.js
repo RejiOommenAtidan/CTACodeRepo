@@ -40,7 +40,7 @@ export default function Family () {
   
   useEffect(() => {
     //setPaymentData(payObj);
-    axios.get(`http://localhost:52013/api/ChatrelPayment/GetPaymentHistory/?sGBID=`+sGBID)
+    axios.get(`/ChatrelPayment/GetPaymentHistory/?sGBID=`+sGBID)
       .then(resp => {
         if (resp.status === 200) {
          setPaymentHistory(resp.data);

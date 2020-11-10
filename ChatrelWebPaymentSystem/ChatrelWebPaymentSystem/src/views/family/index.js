@@ -60,12 +60,13 @@ export default function Family () {
 
   useEffect(() => {
     //setPaymentData(payObj);
-    axios.get(`http://localhost:52013/api/ChatrelPayment/GetFamilyDetails/?sGBID=`+sGBID)
+    axios.get(`/ChatrelPayment/GetFamilyDetails/?sGBID=`+sGBID)
       .then(resp => {
         if (resp.status === 200) {
           setFamilyData(resp.data);
          
         }
+        
       })
       .catch(error => {
         if (error.response) {
