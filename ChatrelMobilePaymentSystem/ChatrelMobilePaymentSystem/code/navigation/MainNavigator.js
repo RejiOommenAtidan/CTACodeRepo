@@ -220,7 +220,7 @@ const MainNavigator = createDrawerNavigator(
     }
   },
   {
-    initialRouteName: "Login",
+    initialRouteName: "Home",
     // drawerPosition: "right",
     //hideStatusBar:true,
     statusBarAnimation: true,
