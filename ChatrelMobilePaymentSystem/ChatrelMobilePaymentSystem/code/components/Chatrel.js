@@ -7,12 +7,10 @@ import Moment from 'moment';
 // import { sDateFormat } from '../constants/CommonConfig';
 
 export const Chatrel = props => {
-    // const sGBIDHardcoded = "7937671";
     const [sName, setsName] = useState("");
     const [nPaidUntil, setnPaidUntil] = useState(0);
     const [sGBID, setsGBID] = useState("");
     const [nChatrelLateFeesPercentage, setnChatrelLateFeesPercentage] = useState(0);
-    const [nDefaultSalaryAmount, setnDefaultSalaryAmount] = useState(0);
     const [aGBChatrels, setaGBChatrels] = useState([]);
     const [nGrandTotal, setnGrandTotal] = useState(0);
     const [nAdditionalDonation, setnAdditionalDonation] = useState(0);
@@ -23,7 +21,7 @@ export const Chatrel = props => {
     const toggleSwitch = (index, year) => {
         let oPayment = [...aGBChatrels];
         if (year.nChatrelSalaryAmt === 0) {
-            oPayment[index].nChatrelSalaryAmt = nDefaultSalaryAmount;
+            oPayment[index].nChatrelSalaryAmt = oPayment[index].nSalaryUSD;
         }
         else {
             oPayment[index].nChatrelSalaryAmt = 0;
@@ -84,9 +82,8 @@ export const Chatrel = props => {
         axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=` + oCurrentGBDetails.sGBID)
             .then(resp => {
                 if (resp.status === 200) {
-                    //console.log(resp.data);
+                    console.log(resp.data);
                     setnChatrelLateFeesPercentage(resp.data.chatrelPayment.nChatrelLateFeesPercentage);
-                    setnDefaultSalaryAmount(resp.data.nDefaultSalaryAmount);
                     setaGBChatrels(resp.data.gbChatrels);
                     setsName(resp.data.sName);
                     setnPaidUntil(resp.data.nPaidUntil);
@@ -124,6 +121,7 @@ export const Chatrel = props => {
                             ios_backgroundColor="#3e3e3e"
                             onValueChange={() => { toggleSwitch(index, year) }}
                             value={year.nChatrelSalaryAmt !== 0}
+                            disabled={year.isChild}
                         />
                         <Text>{year.nChatrelYear}</Text>
                         <Text>Basic: $ {year.nChatrelAmount}</Text>
