@@ -18,6 +18,7 @@ import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useSelector} from 'react-redux';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -36,21 +37,82 @@ export default function PaymentPage  (props) {
 
   let history = useHistory();
 
-  const sGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sGBID);
-  const pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
-  const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
 
-  console.log(paidByGBID);
-  const userObj = useSelector(state => state.GLoginReducer.oGoogle);
+  // Who is paying
+  const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
+  
+  // GBID for whom we are paying
+  const sGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sGBID);
+  
+  // Relation we are paying for
+  const paymentFor = useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sRelation);
+
+  // Heading
+  const pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
+
+  
+
+  
+
+  //console.log(paidByGBID);
+  //const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 
   const [dataAPI, setDataAPI] = React.useState();
   const [summaryData, setSummaryData] = React.useState();
+  const [paymentData, setPaymentData] = React.useState();
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const [total, setTotal] = React.useState(0);
   const [bdonation, setBdonation] = React.useState(0);
   const [adonation, setAdonation] = React.useState(0);
+
+  const [authRegions, setAuthRegions] = React.useState(null);
+  const [authRegion, setAuthRegion] = React.useState();
+  
+  console.log("AuthRegions set in 'authRegions'", authRegions);
+  console.log("Current Region set in 'authRegion'", authRegion);
+  console.log("Current paymentData is ", paymentData);
+  
+
+  const autoComplete = (<Autocomplete
+    id="id_authRegion"
+    openOnFocus
+    clearOnEscape
+    autoComplete={true}
+    autoHighlight={true}
+    options={authRegions}
+    value={authRegion}
+    defaultValue={authRegion}
+    getOptionLabel={(option) => option.sAuthRegion}
+    renderOption={(option) => (
+      <React.Fragment>
+        <span>{option.sAuthRegion}</span>
+      </React.Fragment>
+    )}
+    onChange={
+      (e, value) => {
+        if (value !== null) {
+          console.log(value.id);
+          //setMadebStatusID(value.id);
+        }
+        else {
+          //setMadebStatusID(0);
+        }
+      }
+    }
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        label="Authority Region"
+        variant="standard"
+        inputProps={{
+          ...params.inputProps,
+          autoComplete: 'new-password', // disable autocomplete and autofill
+        }}
+      />
+    )}
+  />);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -60,8 +122,20 @@ export default function PaymentPage  (props) {
     setValue(index);
   };
 
+  const updateAuthRegion = (e, value) => {
+    console.log(value.id, e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_')));
+    const index = e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_'));
+    let chartelObj = [...paymentData];
+    chartelObj[index].nAuthRegionID = value.id;
+    chartelObj[index].sCountryID = value.sCountryID;
+    chartelObj[index].sCurrencyCode = value.sCurrencyCode;
+    chartelObj[index].nChatrelAmount = value.sCurrencyCode === 'INR' ? chartelObj[index].nChatrelINR : chartelObj[index].nChatrelUSD;
+    chartelObj[index].nChatrelMeal = value.sCurrencyCode === 'INR' ? chartelObj[index].nChatrelMealINR : chartelObj[index].nChatrelMealUSD;
 
-const [paymentData, setPaymentData] = React.useState();
+    setPaymentData(chartelObj);
+    calculate(index);
+  };
+
 
 
 const modify =(index) =>{
@@ -86,7 +160,7 @@ if(index!=len-1)
 {
 payObj[index].lateFees=(payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nChatrelSalaryAmt)/10;
 }
-payObj[index].nChatrelTotalAmount= payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].lateFees + payObj[index].nChatrelSalaryAmt;
+payObj[index].nChatrelTotalAmount= (payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].lateFees + payObj[index].nChatrelSalaryAmt) * ((dollarToRupees && payObj[index].sCurrencyCode === 'INR') ? dollarToRupees.toFixed(4) : 1);
 setPaymentData(payObj);
 calcTotal(paymentData ,adonation,bdonation);
 }
@@ -94,7 +168,8 @@ const calcTotal =(obj ,a,b)=>{
   let temptotal=a+b;
   obj.forEach((row ) => {
   
-  temptotal+= row.nChatrelTotalAmount;
+  //temptotal+= row.nChatrelTotalAmount;
+  temptotal += (row.nChatrelTotalAmount);
   
   })
   setTotal(temptotal);
@@ -120,70 +195,92 @@ const submit =() =>{
   }
 
   console.log("Final Obj:" , finalObj)
-  axios.post(`http://localhost:52013/api/ChatrelPayment/AddNewChatrelPayment`,finalObj)
-  .then(resp => {
-    if (resp.status === 200) {
+  // axios.post(`http://localhost:52013/api/ChatrelPayment/AddNewChatrelPayment`,finalObj)
+  // .then(resp => {
+  //   if (resp.status === 200) {
       
-      console.log("Added"); 
+  //     console.log("Added"); 
       
-    }
-  })
-  .catch(error => {
-    if (error.response) {
-      console.error(error.response.data);
-      console.error(error.response.status);
-      console.error(error.response.headers);
-    } else if (error.request) {
-      console.warn(error.request);
-    } else {
-      console.error('Error', error.message);
-    }
-    console.log(error.config);
-  })
-  .then(release => {
-    //console.log(release); => udefined
-  });
+  //   }
+  // })
+  // .catch(error => {
+  //   if (error.response) {
+  //     console.error(error.response.data);
+  //     console.error(error.response.status);
+  //     console.error(error.response.headers);
+  //   } else if (error.request) {
+  //     console.warn(error.request);
+  //   } else {
+  //     console.error('Error', error.message);
+  //   }
+  //   console.log(error.config);
+  // })
+  // .then(release => {
+  //   //console.log(release); => udefined
+  // });
 
 
 }
+  
 
-
-
-
+ 
   const select = (<select><option>1</option><option>2</option><option>3</option><option>4</option></select>);
   useEffect(() => {
-    //setPaymentData(payObj);
-    axios.get(`http://localhost:52013/api/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sGBID)
+    axios.get(`/AuthRegion/GetAuthRegions`)
       .then(resp => {
-        if (resp.status === 200) {
-          setDataAPI(resp.data);
-          setSummaryData(resp.data.chatrelPayment);
-          console.log(resp.data.chatrelPayment.sGBId); 
-          setPaymentData(resp.data.gbChatrels);
-          calcTotal(resp.data.gbChatrels ,adonation,bdonation);
+        if(resp.status === 200){
+          console.log("AuthRegions fetched:", resp.data);
+          setAuthRegions(resp.data);
+          axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sGBID)
+            .then(resp => {
+              if (resp.status === 200) {
+                console.log("resp.data is:", resp.data);
+                setDataAPI(resp.data);
+                setSummaryData(resp.data.chatrelPayment);
+                setPaymentData(resp.data.gbChatrels);
+                calcTotal(resp.data.gbChatrels ,adonation,bdonation);
+                
+                
+              }
+            })
+            .catch(error => {
+              console.log(error.message);
+              console.log(error.config);
+              //console.log(error.response.data);
+            });
         }
+          
       })
       .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
+        console.log(error.message);
         console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
       });
+    //setPaymentData(payObj);
+    
+      
      }, []);
+  const [dollarToRupees, setDollarToRupees] = React.useState();
+  useEffect(() => {
+    (authRegions && summaryData &&
+    setAuthRegion(authRegions.find((x) => x.id === summaryData.nAuthRegionID)));
+    
+
+    fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
+      .then(response => response.json())
+      .then(data => {
+          console.log("currency", data.rates.USD);
+          setDollarToRupees(data.rates.USD);
+      });
+    
+   
+
+  }, [authRegions, summaryData])
   return (
     <> {dataAPI  &&
     <><p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>{pageFrom}</p>
     <Card  style={{  padding: 50 }} >
           <Grid container spacing={3}>
+   
             <Grid item xs={12} sm={12}> 
             <div className={classes.root}>
       
@@ -212,11 +309,13 @@ const submit =() =>{
         <TableHead>
           <TableRow>
             <TableCell>Year</TableCell>
-            <TableCell>Region</TableCell>
+            <TableCell>Authority Region</TableCell>
+            <TableCell style={{width: "5%"}}>Currency</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Chatrel</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Meal</TableCell>
-            <TableCell align="right" style={{width: "10%"}}>Penalty</TableCell>
+            <TableCell align="right" style={{width: "10%"}}>Late Fees</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Employed</TableCell>
+            <TableCell align="right" style={{width: "10%"}}>Rate &#8377;/$</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Total</TableCell>
           </TableRow>
         </TableHead>
@@ -227,12 +326,55 @@ const submit =() =>{
               <TableCell component="th" scope="row">
                 {row.nChatrelYear}
               </TableCell>
-              <TableCell>{select}</TableCell>
+              {/*<TableCell>{select}</TableCell>*/}
+              <TableCell>
+                <Autocomplete
+                  id={`${index}_id`}
+                  openOnFocus
+                  clearOnEscape
+                  disableClearable
+                  autoComplete={true}
+                  autoHighlight={true}
+                  options={authRegions}
+                  //value={authRegion}
+                  defaultValue={authRegion}
+                  getOptionLabel={(option) => option.sAuthRegion}
+                  renderOption={(option) => (
+                    <React.Fragment>
+                      <span>{option.sAuthRegion}</span>
+                    </React.Fragment>
+                  )}
+                  onChange={
+                    (e, value) => {
+                      if (value !== null) {
+                        updateAuthRegion(e, value);
+                        
+                      }
+                      else {
+                        //setMadebStatusID(0);
+                      }
+                    }
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      //label="Authority Region"
+                      variant="standard"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                      }}
+                    />
+                  )}
+                />
+              </TableCell>
+              <TableCell>{row.sCurrencyCode}</TableCell>
               <TableCell align="right">{row.nChatrelAmount}</TableCell>
               <TableCell align="right">{row.nChatrelMeal}</TableCell>
               <TableCell align="right">{row.lateFees}</TableCell>
-              <TableCell align="right">{ <input value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox"/>}</TableCell>
-              <TableCell align="right">{row.nChatrelTotalAmount }</TableCell>
+              <TableCell align="center">{ <input value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox" disabled = {row.isChild}/>}</TableCell>
+              <TableCell align="center">{(dollarToRupees && row.sCurrencyCode === 'INR') ? dollarToRupees.toFixed(4) : '-'}</TableCell>
+              <TableCell align="right">{row.nChatrelTotalAmount.toFixed(2) }</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -280,13 +422,13 @@ const submit =() =>{
     </Grid>
     <br />
            <p style={{backgroundColor: "lightblue", textAlign: "right", fontWeight: "bold"}}>Total To Pay <span style={{textAlign: "right", fontWeight: "bold"}}>$ {total.toFixed(2)}</span></p>          
-           <br />
-           <p style={{backgroundColor: "lightblue"}}>Pay Online</p>   
-           <div><Button onClick={()=>{submit() }} > <img src="https://www.paypalobjects.com/webstatic/mktg/logo/bdg_now_accepting_pp_2line_w.png" border="0" alt="Now accepting PayPal" /></Button></div>
+          
+           <div><Button variant="contained" color="primary" onClick={()=>{submit() }} >Save</Button></div>
            
       
         </div>
             </Grid>
+           
           </Grid>
       
       

@@ -133,7 +133,7 @@ const Routes = () => {
                 '/Friends',
                 '/PaymentHistory',
                 '/Test',
-                'Home',
+                '/Home',
                 '/PaymentPage',
                 '/SelfPayment',
               ]}>
