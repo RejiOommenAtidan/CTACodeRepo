@@ -111,11 +111,10 @@ export default function Family () {
                   </TableCell>
                   <TableCell align="center">{row.sRelation}</TableCell>
                   <TableCell align="center">{row.sGBIDRelation}</TableCell>
-                  <TableCell align="right">{row.dtDOB}</TableCell>
-                  {row.sGBIDRelation == null && 
-                  <TableCell align="center"><input type="button"  disabled value="Make Payment"/></TableCell>}
-                  {row.sGBIDRelation != null && 
-                  <TableCell align="center"><input type="button" onClick={()=>{makePayment(row.sGBIDRelation)}} value="Make Payment"/></TableCell>}
+                  <TableCell align="right">{row.nAge}</TableCell>
+                  
+                  <TableCell align="center"><input type="button"  disabled={row.sGBIDRelation == null} value="Make Payment"/></TableCell>
+                  
                   
                 </TableRow>
               ))}

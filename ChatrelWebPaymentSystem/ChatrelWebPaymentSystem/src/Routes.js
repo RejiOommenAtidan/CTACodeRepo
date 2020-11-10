@@ -22,6 +22,8 @@ const Home = lazy(() => import('./views/home/home.js'));
 const Test = lazy(() => import('./views/test'));
 const Login = lazy(() => import('./views/login'));
 
+const Profile = lazy(() => import("./views/profile/index.js"));
+
 const Family = lazy(() => import("./views/family"));
 const Friends = lazy(() => import("./views/friends"));
 const PaymentHistory = lazy(() => import('./views/paymenthistory'));
@@ -136,6 +138,7 @@ const Routes = () => {
                 '/Home',
                 '/PaymentPage',
                 '/SelfPayment',
+                '/Profile'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -148,6 +151,10 @@ const Routes = () => {
                     <Route
                       path="/Home"
                       component={Home}
+                    />
+                     <Route
+                      path="/Profile"
+                      component={Profile}
                     />
                     <Route
                       path="/Test"

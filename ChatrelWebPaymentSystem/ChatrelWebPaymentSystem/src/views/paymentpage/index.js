@@ -70,6 +70,9 @@ export default function PaymentPage  (props) {
   const [authRegions, setAuthRegions] = React.useState(null);
   const [authRegion, setAuthRegion] = React.useState();
   
+
+  const [shouldRun, setShouldRun] = React.useState(true);
+
   console.log("AuthRegions set in 'authRegions'", authRegions);
   console.log("Current Region set in 'authRegion'", authRegion);
   console.log("Current paymentData is ", paymentData);
@@ -222,6 +225,17 @@ const submit =() =>{
 
 }
   
+ 
+const runOnce = () => {
+ // debugger
+  if (paymentData && dollarToRupees && shouldRun){
+    const len = paymentData.length;
+    for (var i = 0; i < len; i++){
+      calculate(i);
+    }
+    setShouldRun(false);
+  } 
+};
 
  
   const select = (<select><option>1</option><option>2</option><option>3</option><option>4</option></select>);
@@ -239,6 +253,14 @@ const submit =() =>{
                 setSummaryData(resp.data.chatrelPayment);
                 setPaymentData(resp.data.gbChatrels);
                 calcTotal(resp.data.gbChatrels ,adonation,bdonation);
+
+                fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("currency", data.rates.USD);
+                    setDollarToRupees(data.rates.USD);
+                });
+              
                 
                 
               }
@@ -259,18 +281,19 @@ const submit =() =>{
     
       
      }, []);
-  const [dollarToRupees, setDollarToRupees] = React.useState();
+     const [dollarToRupees, setDollarToRupees] = React.useState();
+     useEffect(() => {
+      runOnce();
+    }, [dollarToRupees])
+  
+  
+  
   useEffect(() => {
     (authRegions && summaryData &&
     setAuthRegion(authRegions.find((x) => x.id === summaryData.nAuthRegionID)));
     
 
-    fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
-      .then(response => response.json())
-      .then(data => {
-          console.log("currency", data.rates.USD);
-          setDollarToRupees(data.rates.USD);
-      });
+
     
    
 
