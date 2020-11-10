@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-community/google-signin';
 import { sClientIDAndroid } from '../constants/CommonConfig';
 import { useSelector, useDispatch } from 'react-redux';
-import {storeGoogleCreds} from '../store/actions/GLoginAction';
+import { storeGoogleCreds } from '../store/actions/GLoginAction';
 
 export const GLogin = (props) => {
   const dispatch = useDispatch();
@@ -83,38 +83,25 @@ export const GLogin = (props) => {
   //   }
   // };
   return (
-    <View style={styles.main}>
-        <GoogleSigninButton
-          style={{ width: 192, height: 48 }}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={signIn}
-        />
+    <View style={styles.gSignInContainer}>
+      <GoogleSigninButton
+        style={styles.gSignInComponent}
+        size={GoogleSigninButton.Size.Wide}
+        color={GoogleSigninButton.Color.Dark}
+        onPress={signIn}
+      />
     </View>
   )
 }
 const styles = StyleSheet.create({
-  main: {
+  gSignInContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  imageStyle: {
-    width: 200,
-    height: 300,
-    resizeMode: 'contain',
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    width: 300,
-    marginTop: 30,
+  gSignInComponent: {
+    width: 192,
+    height: 48,
+    marginRight: 120
   }
 });
