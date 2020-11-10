@@ -782,7 +782,7 @@ CREATE TABLE `tblRecentlySearchedGB` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
-CREATE TABLE `tblgbchatrel` (
+CREATE TABLE `tblgbchatrelDetail` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBId` varchar(255) DEFAULT NULL,
   `nChatrelAmount` decimal(15,2) NOT NULL,
@@ -808,6 +808,7 @@ CREATE TABLE `tblgbchatrel` (
   `sPayPal_Currency_Code` varchar(255) DEFAULT NULL,
   `sPayPal_Currency_Value` varchar(255) DEFAULT NULL,
   `sPayPal_Response_Object` varchar(5000) DEFAULT NULL,
+  `dtPayment` datetime DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
@@ -1032,6 +1033,7 @@ CREATE TABLE `tblchatrelpayment` (
   `sPaymentMode` varchar(255) DEFAULT NULL,
   `sPaymentCurrency` varchar(255) DEFAULT NULL,
   `sPaidByGBId` varchar(255) DEFAULT NULL,
+  `dtPayment` datetime DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
@@ -1076,6 +1078,7 @@ CREATE TABLE `lnkgbchatrel` (
   `sCountryID` varchar(255) DEFAULT NULL,
   `sPaymentCurrency` varchar(255) DEFAULT NULL,
   `sPaidByGBId` varchar(255) DEFAULT NULL,
+  `dtPayment` datetime DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)

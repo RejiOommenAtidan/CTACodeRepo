@@ -76,6 +76,11 @@
             this.buttonGenerateDummyProfilePicture = new System.Windows.Forms.Button();
             this.textBoxProfilePicturePath = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.tabPageBulkInsert = new System.Windows.Forms.TabPage();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnUploadfile = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.txtLogFolderPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.progressBarProcess = new System.Windows.Forms.ProgressBar();
@@ -85,6 +90,7 @@
             this.tabPageCTAChartel.SuspendLayout();
             this.tabPageDummyData.SuspendLayout();
             this.tabPageDummyProfilePicture.SuspendLayout();
+            this.tabPageBulkInsert.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtConnectionString
@@ -112,6 +118,7 @@
             this.tabControlCTA.Controls.Add(this.tabPageCTAChartel);
             this.tabControlCTA.Controls.Add(this.tabPageDummyData);
             this.tabControlCTA.Controls.Add(this.tabPageDummyProfilePicture);
+            this.tabControlCTA.Controls.Add(this.tabPageBulkInsert);
             this.tabControlCTA.Location = new System.Drawing.Point(10, 88);
             this.tabControlCTA.Name = "tabControlCTA";
             this.tabControlCTA.SelectedIndex = 0;
@@ -589,6 +596,55 @@
             this.label9.TabIndex = 33;
             this.label9.Text = "GreenBook Dummy Photo";
             // 
+            // tabPageBulkInsert
+            // 
+            this.tabPageBulkInsert.Controls.Add(this.btnSave);
+            this.tabPageBulkInsert.Controls.Add(this.btnUploadfile);
+            this.tabPageBulkInsert.Controls.Add(this.label10);
+            this.tabPageBulkInsert.Controls.Add(this.textBox2);
+            this.tabPageBulkInsert.Location = new System.Drawing.Point(4, 24);
+            this.tabPageBulkInsert.Name = "tabPageBulkInsert";
+            this.tabPageBulkInsert.Size = new System.Drawing.Size(759, 435);
+            this.tabPageBulkInsert.TabIndex = 6;
+            this.tabPageBulkInsert.Text = "Chatrel Bulk Insert";
+            this.tabPageBulkInsert.UseVisualStyleBackColor = true;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Enabled = false;
+            this.btnSave.Location = new System.Drawing.Point(524, 55);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(96, 23);
+            this.btnSave.TabIndex = 3;
+            this.btnSave.Text = "Save Records";
+            this.btnSave.UseVisualStyleBackColor = true;
+            // 
+            // btnUploadfile
+            // 
+            this.btnUploadfile.Location = new System.Drawing.Point(524, 12);
+            this.btnUploadfile.Name = "btnUploadfile";
+            this.btnUploadfile.Size = new System.Drawing.Size(96, 23);
+            this.btnUploadfile.TabIndex = 2;
+            this.btnUploadfile.Text = "Upload file";
+            this.btnUploadfile.UseVisualStyleBackColor = true;
+            this.btnUploadfile.Click += new System.EventHandler(this.btnUploadfile_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(27, 19);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(66, 15);
+            this.label10.TabIndex = 1;
+            this.label10.Text = "Choose file";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(123, 12);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(394, 23);
+            this.textBox2.TabIndex = 0;
+            // 
             // txtLogFolderPath
             // 
             this.txtLogFolderPath.Location = new System.Drawing.Point(137, 42);
@@ -638,6 +694,8 @@
             this.tabPageDummyData.PerformLayout();
             this.tabPageDummyProfilePicture.ResumeLayout(false);
             this.tabPageDummyProfilePicture.PerformLayout();
+            this.tabPageBulkInsert.ResumeLayout(false);
+            this.tabPageBulkInsert.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -695,6 +753,11 @@
         private System.Windows.Forms.TextBox textBoxProfilePicturePath;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label labelDummyProfilePicture;
+        private System.Windows.Forms.TabPage tabPageBulkInsert;
+        private System.Windows.Forms.Button btnUploadfile;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Button btnSave;
     }
 }
 

@@ -7,6 +7,8 @@ import { Platform } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+// import CustomHeaderButton from '../components/HeaderButton';
+import { Icon } from "react-native-elements";
 
 const HomeScreen = (props) => {
   // const backAction = () => {
@@ -104,6 +106,7 @@ const HomeScreen = (props) => {
 HomeScreen.navigationOptions = navData => {
   return {
     headerTitle: 'Quick Actions',
+    //drawerIcon: Icon,
     headerLeft: (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
@@ -112,6 +115,7 @@ HomeScreen.navigationOptions = navData => {
           onPress={() => {
             navData.navigation.toggleDrawer();
           }}
+          
         />
       </HeaderButtons>
     )
