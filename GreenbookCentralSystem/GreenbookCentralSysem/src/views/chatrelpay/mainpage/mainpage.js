@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import { Card } from '@material-ui/core';
-import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
+import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize, Input} from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -148,6 +148,7 @@ export default function MainPage () {
   const [sLastName, setLastName] = React.useState('');
   const [dtDOB, setDOB] = React.useState();
   const [sFriendGBID, setFriendGBID] = React.useState();
+  const [currencySymbol, setCurrencySymbol] = React.useState();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -213,6 +214,12 @@ export default function MainPage () {
     axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+paidByGBID)
     .then(resp => {
       if (resp.status === 200) {
+        if(resp.data.gbChatrels[0].sCurrencyCode === 'USD'){
+          setCurrencySymbol('$');
+        }
+        else{
+          setCurrencySymbol('Rs.');
+        }
         setChatrelPending(resp.data.chatrelPayment.nChatrelTotalAmount);
         console.log("Data fetched...", resp.data);
       }
@@ -255,6 +262,7 @@ export default function MainPage () {
           <Tab label="Chatrel for Family" {...a11yProps(1)} />
           <Tab label="Chatrel for Friends" {...a11yProps(2)} />
           <Tab label="Chatrel History" {...a11yProps(3)} />
+          <Tab label="Raise Dispute" {...a11yProps(4)} />
         </Tabs>
       </AppBar>
      
@@ -272,7 +280,7 @@ export default function MainPage () {
             </FormControl>
 
             <FormControl>
-              <TextField InputLabelProps={{ shrink: true }} label="Chatrel Pending" value={chatrelPending && chatrelPending}/>
+              <TextField InputLabelProps={{ shrink: true }} label="Chatrel Pending" value={chatrelPending && currencySymbol+' '+chatrelPending}/>
             </FormControl>
           </Grid>
             
@@ -427,6 +435,33 @@ export default function MainPage () {
         </TableBody>}
       </Table>
     </TableContainer>
+        </TabPanel>
+        <TabPanel value={value} index={4} dir={theme.direction}>
+        <br />
+        <p style={{backgroundColor: "lightblue"}}>Raise a Dispute</p>
+        <Grid container direction="column" alignContent="center" >
+            
+            <Grid item xs={12} sm={6}>
+              <FormControl>
+                <TextareaAutosize
+                  placeholder="Enter Brief Description"
+                  
+                  // InputProps={{inputProps: {style: minWidth = "50px"} }}
+                  style={{minWidth: "250px"}}
+                  rowsMin={5}
+                  //onChange={(e) => {setFirstName(e.target.value)}}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl>
+                <Input
+                  type='file'
+                />
+                
+              </FormControl>
+            </Grid>
+            </Grid>
         </TabPanel>
         </div>
             </Grid>

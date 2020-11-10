@@ -189,7 +189,7 @@ const calcTotal =(obj ,a,b)=>{
   
   
   const runOnce = () => {
-    debugger
+    
     if (paymentData && dollarToRupees && shouldRun){
       const len = paymentData.length;
       for (var i = 0; i < len; i++){
@@ -270,7 +270,7 @@ const submit =() =>{
                   .then(data => {
                   console.log("currency", data.rates.INR);
                   setDollarToRupees(data.rates.INR);
-      });
+                  });
                 
               }
             })
