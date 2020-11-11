@@ -21,9 +21,9 @@ namespace CTADBL.BaseClasses.Transactions
 
         private int? _nWhereIssued;
         private int? _nAuthRegionId;
-        private int? _nPrinted;
+        private bool _bPrinted;
         private string _sRemarks;
-      
+
         #endregion
 
         #region Public Madeb Properties
@@ -38,10 +38,8 @@ namespace CTADBL.BaseClasses.Transactions
         public string sFormNumber { get { return _sFormNumber; } set { _sFormNumber = value; } }
         public int? nWhereIssued { get { return _nWhereIssued; } set { _nWhereIssued = value; } }
         public int? nAuthRegionId { get { return _nAuthRegionId; } set { _nAuthRegionId = value; } }
-        public int? nPrinted { get { return _nPrinted; } set { _nPrinted = value; } }
+        public bool bPrinted { get { return _bPrinted; } set { _bPrinted = value; } }
         public string sRemarks { get { return _sRemarks; } set { _sRemarks = value; } }
-        
-      
         #endregion
     }
 }

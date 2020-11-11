@@ -152,7 +152,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 {
                     user.dtEntered = DateTime.Now;
                     user.dtUpdated = DateTime.Now;
-                    user.nActive = 1;
+                    user.bActive = true;
                     _userRepository.Add(user);
 
                     #region Information Logging
@@ -207,7 +207,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         user.nEnteredBy = fetchedUser.nEnteredBy;
                         user.dtEntered = fetchedUser.dtEntered;
                         user.dtUpdated = DateTime.Now;
-                        user.nActive = 1;
+                        user.bActive = true;
                         _userRepository.Update(user);
 
                         #region Audit Log

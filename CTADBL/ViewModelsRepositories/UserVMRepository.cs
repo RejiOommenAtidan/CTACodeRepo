@@ -44,7 +44,7 @@ namespace CTADBL.ViewModelsRepositories
                             _oUser.sFullname = (string)reader["sFullName"];
                             _oUser.sOffice = (string)reader["sOffice"];
                             _oUser.nUserRightsId = (int)reader["nUserRightsId"];
-                            _oUser.nActive = (int)reader["nActive"]; 
+                            _oUser.bActive = (bool)reader["nActive"]; 
                         }
                         // Next Result Set
                         reader.NextResult();
@@ -68,7 +68,7 @@ namespace CTADBL.ViewModelsRepositories
                                 Id = (int)reader["Id"],
                                 nFeatureID = (int)reader["nFeatureID"],
                                 nUserRightsID = (int)reader["nUserRightsID"],
-                                nRights = (int)reader["nRights"]
+                                bRights = (bool)reader["bRights"]
                             }); 
                         }
                         // Next Result Set

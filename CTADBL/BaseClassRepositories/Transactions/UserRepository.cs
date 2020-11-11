@@ -50,7 +50,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sOffice`,
                             `sPassword`,
                             `nUserRightsId`,
-                            IF(nActive, 1, 0) nActive,
+                            `nActive`,
                             `dtEntered`,
                             `nEnteredBy`,
                             `dtUpdated`,
@@ -71,7 +71,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sOffice`,
                             `sPassword`,
                             `nUserRightsId`,
-                            IF(nActive, 1, 0) nActive,
+                            `nActive`,
                             `dtEntered`,
                             `nEnteredBy`,
                             `dtUpdated`,
@@ -87,6 +87,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
         public User GetUserByUsername(string sUsername)
         {
+            //IF(nActive, 1, 0) nActive,
             string sql = @"SELECT `Id`,
                             `_Id`,
                             `sUsername`,
@@ -94,7 +95,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sOffice`,
                             `sPassword`,
                             `nUserRightsId`,
-                            IF(nActive, 1, 0) nActive,
+                            `nActive`,
                             `dtEntered`,
                             `nEnteredBy`,
                             `dtUpdated`,
@@ -121,13 +122,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
             user.sOffice = (string)reader["sOffice"];
             user.sPassword = (string)reader["sPassword"];
             user.nUserRightsId = (int)reader["nUserRightsId"];
-            user.nActive = Convert.ToInt32(reader["nActive"]);
+            user.bActive = (bool)reader["nActive"];
             //Common Properties
             user.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
             user.nEnteredBy = (int)reader["nEnteredBy"];
             user.dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]);
             user.nUpdatedBy = (int)reader["nUpdatedBy"];
-            
+
             return user;
         }
         #endregion

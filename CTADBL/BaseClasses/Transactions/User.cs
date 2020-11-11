@@ -15,7 +15,7 @@ namespace CTADBL.BaseClasses.Transactions
         private string _sOffice;
         private string _sPassword;
         private int _nUserRightsId;
-        private int _nActive;
+        private bool _bActive;
         #endregion
 
         #region Public Common Properties
@@ -27,7 +27,7 @@ namespace CTADBL.BaseClasses.Transactions
         public string sOffice { get { return _sOffice; } set { _sOffice = value; } }
         public string sPassword { get { return _sPassword; } set { _sPassword = value; } }
         public int nUserRightsId { get { return _nUserRightsId; } set { _nUserRightsId = value; } }
-        public int nActive { get { return _nActive; } set { _nActive = value; } }
+        public bool bActive { get { return _bActive; } set { _bActive = value; } }
         #endregion
     }
 }

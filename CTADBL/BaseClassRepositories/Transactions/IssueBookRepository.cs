@@ -260,7 +260,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 sFormNumber = reader.IsDBNull("sFormNumber") ? null : (string)(reader["sFormNumber"]),
                 nWhereIssued = reader.IsDBNull("nWhereIssued") ? null : (int?)(reader["nWhereIssued"]),
                 nAuthRegionId = reader.IsDBNull("nAuthRegionId") ? null : (int?)(reader["nAuthRegionId"]),
-                nPrinted = reader.IsDBNull("nPrinted") ? null : (int?)(reader["nPrinted"]),
+                bPrinted = (bool)(reader["bPrinted"]),
                 sRemarks = reader.IsDBNull("sRemarks") ? null : (string)(reader["sRemarks"]),
                 //Common Props
                 dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),

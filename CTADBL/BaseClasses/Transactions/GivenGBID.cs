@@ -14,8 +14,8 @@ namespace CTADBL.BaseClasses.Transactions
         private int _nGBId;
         private int _nFormNo;
         private DateTime? _dtDate;
-        private int _nGivenOrNot;
-        private int _nActive;
+        private bool _bGivenOrNot;
+        private bool _bActive;
         #endregion
 
         #region Public Given GBID Properties
@@ -25,8 +25,8 @@ namespace CTADBL.BaseClasses.Transactions
         public int nGBId { get { return _nGBId; } set { _nGBId = value; } }
         public int nFormNo { get { return _nFormNo; } set { _nFormNo = value; } }
         public DateTime? dtDate { get { return _dtDate; } set { _dtDate = value; } }
-        public int nGivenOrNot { get { return _nGivenOrNot; } set { _nGivenOrNot = value; } }
-        public int nActive { get { return _nActive; } set { _nActive = value; } }
+        public bool bGivenOrNot { get { return _bGivenOrNot; } set { _bGivenOrNot = value; } }
+        public bool bActive { get { return _bActive; } set { _bActive = value; } }
         #endregion 
     }
 }

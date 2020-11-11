@@ -118,7 +118,7 @@ namespace CTAWebAPI.Controllers.Masters
                         {
                             nFeatureID = oFeature.Id,
                             nUserRightsID = addedUserRight.Id,
-                            nRights = 0, //Making Rights Initially to 0
+                            bRights = true, //Making Rights Initially to True
                             dtEntered = DateTime.Now,
                             nEnteredBy = userRights.nEnteredBy
                         };

@@ -98,7 +98,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             FeatureUserrights featureUserrights = new FeatureUserrights();
             featureUserrights.Id = (int)reader["Id"];
             featureUserrights.nFeatureID = (int)reader["nFeatureID"]; ;
-            featureUserrights.nRights = (int)reader["nRights"]; ;
+            featureUserrights.bRights = (bool)reader["bRights"]; ;
             featureUserrights.nUserRightsID = (int)reader["nUserRightsID"]; ;
             featureUserrights.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
             featureUserrights.nEnteredBy = (int)reader["nEnteredBy"];

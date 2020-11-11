@@ -146,8 +146,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
             givenGBID.nGBId = (int)reader["nGBId"];
             givenGBID.nFormNo = (int)reader["nFormNo"];
             givenGBID.dtDate = reader.IsDBNull("dtDate") ? null : (DateTime?)(reader["dtDate"]);
-            givenGBID.nGivenOrNot = (int)reader["nGivenOrNot"];
-            givenGBID.nActive = (int)reader["nActive"];
+            givenGBID.bGivenOrNot = (bool)reader["bGivenOrNot"];
+            givenGBID.bActive = (bool)reader["bActive"];
             //Common Props
             givenGBID.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
             givenGBID.nEnteredBy = (int)reader["nEnteredBy"];

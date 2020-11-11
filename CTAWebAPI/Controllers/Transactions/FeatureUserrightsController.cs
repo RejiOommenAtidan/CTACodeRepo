@@ -180,7 +180,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     //{
                         FeatureUserrights fetchedFeatureUserright = _featureUserrightsRepository.GetFeatureUserrightsByFeatureAnduserRighstId(featureUserright.nFeatureID,featureUserright.nUserRightsID);
                         featureUserright.Id = fetchedFeatureUserright.Id;
-                        featureUserright.nRights = fetchedFeatureUserright.nRights == 1 ? 0 : 1;
+                        featureUserright.bRights = !fetchedFeatureUserright.bRights;
                         featureUserright.dtEntered = fetchedFeatureUserright.dtEntered;
                         featureUserright.nEnteredBy = fetchedFeatureUserright.nEnteredBy;
                         //featureUserright.nEnteredBy;: TODO
