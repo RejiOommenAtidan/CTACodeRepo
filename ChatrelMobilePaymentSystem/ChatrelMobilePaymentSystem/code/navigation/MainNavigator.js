@@ -8,6 +8,7 @@ import {
 // import CustomHeaderButton from '../components/HeaderButton';
 import { ChatrelHistoryScreen } from '../screens/ChatrelHistoryScreen';
 import { FileDisputeScreen } from '../screens/FileDisputeScreen';
+import { MyProfileScreen } from '../screens/MyProfileScreen';
 import { GBDetailScreen } from '../screens/GBDetailScreen';
 import HomeScreen from '../screens/HomeScreen';
 import { SelfChatrelScreen } from '../screens/SelfChatrel';
@@ -141,6 +142,15 @@ const ChatrelHistoryNavigator = createStackNavigator(
   }
 );
 
+const MyProfileNavigator = createStackNavigator(
+  {
+    MyProfile: MyProfileScreen
+  },
+  {
+    defaultNavigationOptions: defaultStackNavOptions
+  }
+);
+
 const FileDisputeNavigator = createStackNavigator(
   {
     FileDispute: FileDisputeScreen
@@ -210,6 +220,12 @@ const MainNavigator = createDrawerNavigator(
       screen: ChatrelHistoryNavigator,
       navigationOptions: {
         drawerLabel: 'Chatrel History'
+      }
+    },
+    MyProfile: {
+      screen: MyProfileNavigator,
+      navigationOptions: {
+        drawerLabel: 'My Profile'
       }
     },
     FileDispute: {

@@ -206,7 +206,7 @@ export const Chatrel = props => {
                                 <Text>Meal:  {year.nChatrelMeal}</Text>
                                 {year.lateFees !== 0 && <Text>Late Fees: {year.lateFees}</Text>}
                                 <Text>Total: {year.nChatrelTotalAmount}</Text>
-                                <Text>Conversion Rate &#8377;/$ : {(dollarToRupees && year.sCurrencyCode === 'INR') ? dollarToRupees.toFixed(4) : '-'}</Text>
+                                <Text>Conversion Rate &#8377;/$ : {(dollarToRupees && year.sCurrencyCode === 'INR') ? dollarToRupees.toFixed(4) : 'NA'}</Text>
                             </View>
                         )
                     })}
