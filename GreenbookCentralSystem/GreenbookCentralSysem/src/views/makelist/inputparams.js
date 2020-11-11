@@ -34,7 +34,7 @@ export const InputParams = (props) => {
   const [madebTypes, setMadebTypesData] = React.useState(props.selectData['madebTypes']);
   const [nMadebTypeId, setMadebTypeId] = React.useState(0);
   const [nAuthRegionId, setAuthRegionId] = React.useState(0);
-  const [nPrinted, setPrintStatus] = useState(0);
+  const [bPrinted, setPrintStatus] = useState(false);
 
   let valueAuthRegion = [];
   let valueMadebTypes = [];
@@ -59,7 +59,7 @@ export const InputParams = (props) => {
     endDate,
     nMadebTypeId,
     nAuthRegionId,
-    nPrinted
+    bPrinted
   };
 
   function handleFormSubmit() {
@@ -244,8 +244,8 @@ export const InputParams = (props) => {
 
                     style={{ width: 180 }}
                   >
-                    <MenuItem value={1}>Printed</MenuItem>
-                    <MenuItem value={0}>Not Printed</MenuItem>
+                    <MenuItem value={true}>Printed</MenuItem>
+                    <MenuItem value={false}>Not Printed</MenuItem>
                   </Select>
                 )}
                 name="Printed"

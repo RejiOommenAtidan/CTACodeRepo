@@ -126,7 +126,7 @@ export default function FeatureUserrights() {
     //Id
     //nUserrightsId
     // console.log(roleID);
-    //nRights
+    //bRights
     setOpenDialog(false);
     setIsLoading(true);
     let lnkObj = {
@@ -192,9 +192,10 @@ export default function FeatureUserrights() {
                 },
                 render: rowData => <Checkbox
                   color="primary"
-                  name="name_nRights"
-                  id="id_nRights"
-                  checked={rowData["aUserRights"][role.id-1] === 1 ? true : false}
+                  name="name_bRights"
+                  id="id_bRights"
+                  //checked={rowData["aUserRights"][role.id-1] === 1 ? true : false}
+                  checked={rowData["aUserRights"][role.id-1]}
                   onChange={() => { handleClickOpen(rowData, role.sUserRightsName, role.id) }}
                 />
               }
@@ -316,14 +317,14 @@ export default function FeatureUserrights() {
     setId(tableRowArray["oFeatureUserrights"]["id"]);
     setnFeatureID(tableRowArray["oFeatureUserrights"]["nFeatureID"]);
     setnUserRightsID(tableRowArray["oFeatureUserrights"]["nUserRightsID"]);
-    setnRights(tableRowArray["oFeatureUserrights"]["nRights"]);
+    setbRights(tableRowArray["oFeatureUserrights"]["bRights"]);
     setsFeature(tableRowArray["sFeature"]);
     setsUserRightsName(tableRowArray["sUserRightsName"]);
     setoLnkObj({
       id: tableRowArray["oFeatureUserrights"]["id"],
       nFeatureID: tableRowArray["oFeatureUserrights"]["nFeatureID"],
       nUserRightsID: tableRowArray["oFeatureUserrights"]["nUserRightsID"],
-      nRights: tableRowArray["oFeatureUserrights"]["nRights"],
+      bRights: tableRowArray["oFeatureUserrights"]["bRights"],
       sFeature: tableRowArray["sFeature"],
       sUserRightsName: tableRowArray["sUserRightsName"]
     });

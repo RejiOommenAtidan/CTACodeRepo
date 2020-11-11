@@ -220,8 +220,8 @@ export default function GiveGBId(){
     const gbidObj = {
       nGBId: randomGBID,
       nFormNo: nFormNumber,
-      nGivenOrNot: 0,
-      nActive: 1
+      bGivenOrNot: false,
+      bActive: true
     }
     console.log("GBID Object:\n" , gbidObj);
     

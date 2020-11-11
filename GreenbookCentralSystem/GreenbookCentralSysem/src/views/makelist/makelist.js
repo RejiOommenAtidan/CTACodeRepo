@@ -283,7 +283,7 @@ export default () => {
           i++;
         })
         setdataAPI(resp.data);
-        if(makeListParams.nPrinted === 0){
+        if(!makeListParams.bPrinted){
           setMakeTable(true);
         }
         else {

@@ -18,15 +18,15 @@ export const EditDialog = (props) => {
   const [Id, setId] = React.useState(props.oLnkObj.id)
   const [nFeatureID, setnFeatureID] = React.useState(props.oLnkObj.nFeatureID);
   const [nUserRightsId, setnUserRightsId] = React.useState(props.oLnkObj.nUserRightsID);
-  const [nRights, setnRights] = React.useState(props.oLnkObj.nRights);
+  const [bRights, setbRights] = React.useState(props.oLnkObj.bRights);
   const [sFeature, setsFeature] = React.useState(props.oLnkObj.sFeature);
   const [sUserRightsName, setsUserRightsName] = React.useState(props.oLnkObj.sUserRightsName);
   const handleChange = (e) => {
-    if (nRights === 1) {
-      setnRights(0);
+    if (bRights) {
+      setbRights(false);
     }
     else {
-      setnRights(1);
+      setbRights(true);
     }
   };
   return (
@@ -73,8 +73,8 @@ export const EditDialog = (props) => {
                         <Switch
                           color="primary"
                           name="name_bRights"
-                          id="id_nRights"
-                          checked={nRights === 1 ? true : false}
+                          id="id_bRights"
+                          checked={bRights }
                           onChange={handleChange}
                           size="small"
                         />}
@@ -95,7 +95,7 @@ export const EditDialog = (props) => {
             Id,
             nFeatureID,
             nUserRightsId,
-            nRights
+            bRights
           });
         }
         } color="primary">Save</Button>
@@ -138,17 +138,17 @@ export const EditDialog = (props) => {
   const [Id, setId] = React.useState(0)
   const [nFeatureID, setnFeatureID] = React.useState(0);
   const [nUserRightsId, setnUserRightsId] = React.useState(0);
-  const [nRights, setnRights] = React.useState(1);
+  const [bRights, setbRights] = React.useState(1);
   const [sFeature, setsFeature] = React.useState('');
   const [sUserRightsName, setsUserRightsName] = React.useState('');
 
   const handleChange = (e) => {
     //console.log(e);
-    if (nRights === 1) {
-      setnRights(0);
+    if (bRights ) {
+      setbRights(false);
     }
     else {
-      setnRights(1);
+      setbRights(true);
     }
   };
 
@@ -258,8 +258,8 @@ export const EditDialog = (props) => {
                       <Switch
                         color="primary"
                         name="name_bRights"
-                        id="id_nRights"
-                        checked={nRights === 1 ? true : false}
+                        id="id_bRights"
+                        checked={bRights ? true : false}
                         onChange={handleChange}
                         size="small"
                       />}
@@ -279,14 +279,14 @@ export const EditDialog = (props) => {
             {
               nFeatureID,
               nUserRightsId,
-              nRights
+              bRights
             }
           )
           // console.log(
           //   Id,
           //   nFeatureID,
           //   nUserRightsId,
-          //   nRights,
+          //   bRights,
           //   sFeature,
           //   sUserRightsName
           // )

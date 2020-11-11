@@ -49,7 +49,7 @@ function Alert(props) {
    const [enteredDate, setEnteredDate] = React.useState(props.editObj.dtEntered ? (props.editObj.dtEntered).split('T')[0] : undefined);
    const [gbId, setGbId] = React.useState(parseInt(props.editObj['nGBId']));
    const [issuedOrNotId, setIssuedOrNotId] = React.useState(props.editObj['nTypeIssuedId']);
-   const [printed, setPrinted] = React.useState(props.editObj['nPrinted']);
+   const [printed, setPrinted] = React.useState(props.editObj['bPrinted']);
    const [remarks, setRemarks] = React.useState(props.editObj['sRemarks']);
    const editObj ={
      id:id,
@@ -59,7 +59,7 @@ function Alert(props) {
      nGBId : gbId,
      dtIssuedDate:issuedDate,
      nAuthRegionId:authorityId , 
-     nPrinted:printed,
+     bPrinted:printed,
      sRemarks:remarks
   
    }
@@ -337,7 +337,7 @@ export const SaveDialog = (props) => {
   const [gbId, setGbId] = React.useState(parseInt(props.saveObj['sGBID']));
   const [issuedOrNotId, setIssuedOrNotId] = React.useState(props.saveObj['nIssuedOrNotID'] == 0  ?  1 : props.saveObj['nIssuedOrNotID']);
 
-  const [printed, setPrinted] = React.useState(0);
+  const [printed, setPrinted] = React.useState(false);
   const [remarks, setRemarks] = React.useState('');
   const saveObj ={
 
@@ -347,7 +347,7 @@ export const SaveDialog = (props) => {
     nGBId : gbId,
     dtIssuedDate:receivedDate,
     nAuthRegionId:authorityId , 
-    nPrinted:printed,
+    bPrinted:printed,
     sRemarks:remarks
  
   }
