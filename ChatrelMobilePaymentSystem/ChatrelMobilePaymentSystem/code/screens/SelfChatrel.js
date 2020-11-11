@@ -6,14 +6,6 @@ import { Platform } from 'react-native';
 import { Chatrel } from '../components/Chatrel';
 import Colors from '../constants/Colors';
 
-// const oHardcoded = {
-//   sGBID:"1234567",
-//   dtDOB:"01-01-2001",
-//   sName:"Malay Doshi",
-//   sPaidUntil:"2017",
-//   sYearsDue:"3 Years"
-// };
-
 export const SelfChatrelScreen = (props) => {
   return (
     <View style={styles.mainContainer}>
@@ -56,20 +48,19 @@ SelfChatrelScreen.navigationOptions = navData => {
   };
 };
 
-
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     margin: 17.5
   },
   headerComponent: {
-    width:142,
-    height:35,
+    width: 142,
+    height: 35,
     textAlign: "left",
     fontSize: 24,
     fontStyle: "normal",
     fontWeight: "normal",
     marginBottom: 10,
     color: Colors.blue
-  },
+  }
 });
