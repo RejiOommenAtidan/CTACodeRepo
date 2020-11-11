@@ -121,7 +121,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             user.sOffice = (string)reader["sOffice"];
             user.sPassword = (string)reader["sPassword"];
             user.nUserRightsId = (int)reader["nUserRightsId"];
-            user.nActive = (int)reader["nActive"];
+            user.nActive = Convert.ToInt32(reader["nActive"]);
             //Common Properties
             user.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
             user.nEnteredBy = (int)reader["nEnteredBy"];

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Core.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +27,14 @@ namespace ChatrelPaymentWebAPI.Controllers
         private readonly DBConnectionInfo _info;
         private readonly ChatrelPaymentRepository _chatrelPaymentRepository;
         private readonly ChatrelPaymentVMRepository _chatrelPaymentVMRepository;
+        private readonly GreenbookRepository _greenbookRepository;
         private readonly ChatrelLogger _chatrelLogger;
         public ChatrelPaymentController(DBConnectionInfo info)
         {
             _info = info;
             _chatrelPaymentRepository = new ChatrelPaymentRepository(info.sConnectionString);
             _chatrelPaymentVMRepository = new ChatrelPaymentVMRepository(info.sConnectionString);
+            _greenbookRepository = new GreenbookRepository(info.sConnectionString);
             _chatrelLogger = new ChatrelLogger(info);
         }
 
@@ -241,6 +244,46 @@ namespace ChatrelPaymentWebAPI.Controllers
 
             }
         }
+        #region Authenticate User
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult AuthenticateGBID(string sGBID, DateTime dtDOB, string sEmail, string sFirstName, string sLastName)
+        {
+            if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID) || String.IsNullOrWhiteSpace(sEmail) || String.IsNullOrEmpty(sEmail) || String.IsNullOrEmpty(sFirstName) || String.IsNullOrWhiteSpace(sFirstName) || String.IsNullOrEmpty(sLastName) || String.IsNullOrWhiteSpace(sLastName) || dtDOB == null )
+            {
+                return BadRequest("Parameters invalid.");
+            }
+            else
+            {
+                try
+                {
+                    Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
+                    if (greenbook.dtDOB == dtDOB && greenbook.sEmail == sEmail && greenbook.sFirstName == sFirstName && greenbook.sLastName == sLastName)
+                    {
+                        #region Information Logging 
+                        _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                        #endregion
 
+
+                        // should we set a cookie or a token?
+                        return Ok("Verified");
+                    }
+                    else
+                    {
+                        return Ok("Failed");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    #region Exception Logging 
+
+                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                    #endregion
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+            }
+            
+        }
+        #endregion
     }
 }

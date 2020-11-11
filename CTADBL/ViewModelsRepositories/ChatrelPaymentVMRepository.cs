@@ -103,6 +103,10 @@ namespace CTADBL.ViewModelsRepositories
             }
         }
 
+        private string GenerateReceiptNo()
+        {
+            return "";
+        }
 
         //#region Populate Records
         //public override ChatrelPaymentVM PopulateRecord(MySqlDataReader reader)

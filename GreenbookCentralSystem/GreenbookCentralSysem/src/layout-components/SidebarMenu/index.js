@@ -395,8 +395,8 @@ const SidebarMenu = (props) => {
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
-                          to="/Chatrel">
-                          Chatrel
+                          to="/ChatrelMaster">
+                          Chatrel Config
                     </NavLink>
                       </li>
                     }
@@ -667,11 +667,11 @@ const SidebarMenu = (props) => {
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
                 className="nav-link-simple"
-                to="/ChatrelPay">
+                to="/Chatrel">
                 <span className="sidebar-icon">
-                  <VpnKeyIcon />
+                  <HomeIcon />
                 </span>
-                Chatrels
+                Chatrel
               </NavLink>
             </li>
             }

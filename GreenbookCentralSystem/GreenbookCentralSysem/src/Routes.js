@@ -39,7 +39,7 @@ const UserRights = lazy(() => import('./views/master/userrights'));
 const MadebType = lazy(() => import('./views/master/madebtype'));
 const Relation = lazy(() => import('./views/master/relation'));
 const Feature = lazy(() => import('./views/master/feature'));
-const Chatrel = lazy(() => import('./views/master/chatrel'));
+const ChatrelMaster = lazy(() => import('./views/master/chatrel'));
 const CTAConfig = lazy(() => import('./views/master/ctaconfig'));
 
 // Madeb Pages
@@ -69,6 +69,7 @@ const NewGreenBookSerial = lazy(() => import('./views/transactions/newgreenbooks
 const Search = lazy(() => import('./views/search/index'));
 
 //Chatrel Payment Pages
+const Chatrel = lazy(() => import('./views/chatrelhome')); 
 const ChatrelPay = lazy(() => import('./views/chatrelpay'));
 const MainPage = lazy(() => import('./views/chatrelpay/mainpage'));
 const PaymentPage = lazy(() => import('./views/chatrelpay/paymentpage'));
@@ -189,7 +190,7 @@ const Routes = () => {
                 '/Home',
                 '/Country',
                 '/NewEntry/:FORMNO',
-                '/Chatrel',
+                '/ChatrelMaster',
                 '/CTAConfig',
                 '/Qualification',
                 '/Region',
@@ -223,7 +224,8 @@ const Routes = () => {
                 '/Search',
                 '/ChatrelPay',
                 '/ChatrelPay/MainPage',
-                '/ChatrelPay/PaymentPage'
+                '/ChatrelPay/PaymentPage',
+                '/Chatrel'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -259,7 +261,7 @@ const Routes = () => {
                     <PrivateRoute path="/FeatureRoles" feature={22} component={FeatureUserrights} />
                     <PrivateRoute path="/UserRights" feature={23} component={UserRights} />
                     <PrivateRoute path="/Region" feature={24} component={Region} />
-                    <PrivateRoute path="/Chatrel" feature={25} component={Chatrel} />
+                    <PrivateRoute path="/ChatrelMaster" feature={25} component={ChatrelMaster} />
                     <PrivateRoute path="/CTAConfig" feature={26} component={CTAConfig} />
                     <PrivateRoute path="/AuthRegion" feature={27} component={AuthRegion} />
                     <PrivateRoute path="/Country" feature={28} component={Country} />
@@ -270,6 +272,7 @@ const Routes = () => {
                     <PrivateRoute path="/Feature" feature={33} component={Feature} />
                     <PrivateRoute path="/TypeIssued" feature={34} component={TypeIssued} />
                     <PrivateRoute path="/MadebType" feature={35} component={MadebType} />
+                    <PrivateRoute path="/Chatrel" feature={37} component={Chatrel} exact />
                     <PrivateRoute path="/ChatrelPay" feature={37} component={ChatrelPay} exact />
                     <PrivateRoute path="/ChatrelPay/MainPage" feature={37} component={MainPage} exact />
                     <PrivateRoute path="/ChatrelPay/PaymentPage" feature={37} component={PaymentPage} exact />

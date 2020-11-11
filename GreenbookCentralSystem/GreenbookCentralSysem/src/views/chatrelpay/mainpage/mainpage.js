@@ -218,7 +218,7 @@ export default function MainPage () {
           setCurrencySymbol('$');
         }
         else{
-          setCurrencySymbol('Rs.');
+          setCurrencySymbol('₹');
         }
         setChatrelPending(resp.data.chatrelPayment.nChatrelTotalAmount);
         console.log("Data fetched...", resp.data);
@@ -439,25 +439,45 @@ export default function MainPage () {
         <TabPanel value={value} index={4} dir={theme.direction}>
         <br />
         <p style={{backgroundColor: "lightblue"}}>Raise a Dispute</p>
-        <Grid container direction="column" alignContent="center" >
+        <Grid container direction="column" alignContent="center"  >
             
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={9}>
               <FormControl>
                 <TextareaAutosize
                   placeholder="Enter Brief Description"
                   
                   // InputProps={{inputProps: {style: minWidth = "50px"} }}
-                  style={{minWidth: "250px"}}
+                  style={{minWidth: "450px"}}
                   rowsMin={5}
                   //onChange={(e) => {setFirstName(e.target.value)}}
                 />
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControl>
+              <FormControl style={{paddingTop: "10px"}}>
                 <Input
-                  type='file'
-                />
+                  type = 'file'
+                  accept=".doc, .docx, .pdf, image/*"
+                >
+                </Input>
+              {/* <input
+                accept=".doc, .docx, .pdf, image/*"
+                style={{ display: 'none' }}
+                id="raised-button-file"
+                multiple
+                type="file"
+              />
+              <label htmlFor="raised-button-file">
+                <Button variant="raised" component="span" className={classes.button}>
+                  Upload Document
+                </Button>
+              </label>  */}
+                
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl style={{paddingTop: "10px"}}>
+                <Button variant="contained"  color="primary">Save</Button>
                 
               </FormControl>
             </Grid>
