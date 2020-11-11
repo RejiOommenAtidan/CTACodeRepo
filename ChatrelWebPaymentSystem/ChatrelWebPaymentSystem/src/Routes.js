@@ -21,8 +21,9 @@ import {
 const Home = lazy(() => import('./views/home/home.js'));
 const Test = lazy(() => import('./views/test'));
 const Login = lazy(() => import('./views/login'));
-
+const AccessDenied = lazy(() => import('./views/error/locationerror.js'));
 const Profile = lazy(() => import("./views/profile/index.js"));
+const FileDispute = lazy(() => import("./views/filedispute/index.js"));
 
 const Family = lazy(() => import("./views/family"));
 const Friends = lazy(() => import("./views/friends"));
@@ -94,7 +95,13 @@ const Routes = () => {
         <Suspense fallback={<SuspenseLoading />}>
           <Switch>
             <Redirect exact from="/" to="/Login" />
-            <Route path={['/Login']}>
+            <Route path={[
+              '/Login',
+              '/AccessDenied'
+               
+          
+          
+          ]}>
               <PresentationLayout>
                 <Switch location={location} key={location.pathname}>
                   <motion.div
@@ -104,6 +111,7 @@ const Routes = () => {
                     variants={pageVariants}
                     transition={pageTransition}>
                     <Route path="/Login" component={Login} />
+                    <Route path="/AccessDenied" component={AccessDenied} />
                   </motion.div>
                 </Switch>
               </PresentationLayout>
@@ -138,7 +146,8 @@ const Routes = () => {
                 '/Home',
                 '/PaymentPage',
                 '/SelfPayment',
-                '/Profile'
+                '/Profile',
+                '/FileDispute'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -155,6 +164,10 @@ const Routes = () => {
                      <Route
                       path="/Profile"
                       component={Profile}
+                    />
+                      <Route
+                      path="/FileDispute"
+                      component={FileDispute}
                     />
                     <Route
                       path="/Test"

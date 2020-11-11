@@ -61,7 +61,8 @@ export default function Friends () {
   
   const obj={
       sGBID:sGBID,
-      from:'Chatrel for Friend'
+      title:'Chatrel for Friend',
+      relation:"Friend's"
     }
   dispatch(storeCurrentGBDetails(obj));
   history.push('/PaymentPage');

@@ -18,6 +18,8 @@ import projectLogo from '../../../assets/images/CTALogo.png';
 
 export default function LogingPage(props) {
 
+
+
   let history = useHistory();
   const dispatch = useDispatch();
 
@@ -25,6 +27,9 @@ export default function LogingPage(props) {
   const responseGoogle = (response) => {
     console.log(response);
   }
+
+  
+
 
    const [login,setLogin]=React.useState(false);
    const [nGBID,setGbID]=React.useState(0);
@@ -52,6 +57,16 @@ let oGBDetails={
     else{
      setLogin(true);
     }
+  
+   fetch('https://json.geoiplookup.io/')
+   .then(response => response.json())
+  .then(data => {
+      if(data.country_code!="IN"){
+          history.push('/AccessDenied')
+        }
+        console.log(data);
+  });
+
   }, [userObj]);
 
   return (
@@ -77,16 +92,25 @@ let oGBDetails={
                           login &&
                         <>
 
-                            <TextField   id="standard-basic" type='number' onChange={(e)=>{setGbID(e.target.value)}} style={{color:'white'}} label="GBID"/>
+                            <TextField   
+                              id="standard-basic" 
+                              type='number' 
+                              onChange={(e)=>{setGbID(e.target.value)}} 
+                              label="GBID"
+                              inputProps={{ style: { color: 'white'}}}
+                              InputLabelProps={{ style: { color: 'white'}}}
+                              />
                               <br/>  
                             <TextField
                             id="date"
                             label="DOB"
                             type="date"
                             onChange={(e)=>{setDob(e.target.value)}}
+                            inputProps={{ style: { color: 'white'}}}
                           
                             InputLabelProps={{
                               shrink: true,
+                              style: { color: 'white'}
                             }}
                           />
                           <br/>

@@ -11,7 +11,8 @@ export default function PaymentPage  (props) {
     const userObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
     let obj={
         sGBID:userObj.sGBID,
-        from:'Chatrel for Self'
+        title:'Chatrel for Self',
+        relation:'My'
       }
       dispatch(storeCurrentGBDetails(obj));
     /*useEffect(() => {
