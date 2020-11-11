@@ -44,7 +44,7 @@ namespace CTADBL.ViewModelsRepositories
                             _oUser.sFullname = (string)reader["sFullName"];
                             _oUser.sOffice = (string)reader["sOffice"];
                             _oUser.nUserRightsId = (int)reader["nUserRightsId"];
-                            _oUser.bActive = (bool)reader["nActive"]; 
+                            _oUser.bActive = (bool)reader["bActive"]; 
                         }
                         // Next Result Set
                         reader.NextResult();

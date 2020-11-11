@@ -15,8 +15,8 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
-// export const sAPIBASEURL = "http://localhost:52013/api";
-export const sAPIBASEURL = "https://cta-portal-webapi.azurewebsites.net/api";
+export const sAPIBASEURL = "http://localhost:52013/api";
+// export const sAPIBASEURL = "https://cta-portal-webapi.azurewebsites.net/api";
 export const sAdminEmail = "admin@CTA.com";
 export const sSnackbarAddMessage = "Record added successfully";
 export const sSnackbarUpdateMessage = "Record updated successfully";

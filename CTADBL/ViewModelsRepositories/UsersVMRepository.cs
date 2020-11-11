@@ -26,7 +26,7 @@ namespace CTADBL.ViewModelsRepositories
 	                        `users`.`sOffice`,
 	                        `users`.`sPassword`,
 	                        `users`.`nUserRightsId`,
-	                        IF(nActive, 1, 0) nActive,
+                            `users`.`bActive`,
 	                        `users`.`dtEntered`,
 	                        `users`.`nEnteredBy`,
 	                        `users`.`dtUpdated`,
@@ -34,7 +34,7 @@ namespace CTADBL.ViewModelsRepositories
 	                        `userrights`.`sUserRightsName`
                         FROM tbluser AS users
                         INNER JOIN lstuserrights AS userrights ON users.nUserRightsId = userrights.Id 
-                        WHERE `users`.`nActive` = 1
+                        WHERE `users`.`bActive` = 1
                         ORDER BY users.Id DESC
                         LIMIT @rows;";
             using (var command = new MySqlCommand(sql))
