@@ -373,7 +373,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         return BadRequest("Cannot Convert GBID to Int " + greenbook.sGBID);
                     #endregion
 
-                    #region Firing Update Query to Change nGivenOrNot to 1
+                    #region Firing Update Query to Change bGivenOrNot to true
                     _givenGBIDRepository.UpdateGivenOrNot(nGBId);
                     #endregion
 

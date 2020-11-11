@@ -46,7 +46,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             string sql = @"SELECT `Id`,
                             `nFeatureID`,
                             `nUserRightsID`,
-                            IF(nRights, 1, 0) nRights,
+                            `bRights`,
                             `dtEntered`,
                             `nEnteredBy`
                         FROM `lnkfeatureuserrights`;";
@@ -61,7 +61,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             string sql = @"SELECT `Id`,
                             `nFeatureID`,
                             `nUserRightsID`,
-                            IF(nRights, 1, 0) nRights,
+                            `bRights`,
                             `dtEntered`,
                             `nEnteredBy`
                         FROM `lnkfeatureuserrights`
@@ -78,7 +78,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             string sql = @"SELECT `Id`,
                             `nFeatureID`,
                             `nUserRightsID`,
-                            IF(nRights, 1, 0) nRights,
+                            `bRights`,
                             `dtEntered`,
                             `nEnteredBy`
                         FROM `lnkfeatureuserrights`

@@ -51,19 +51,20 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Get Given GBID/GBIDs Call
         public IEnumerable<GivenGBID> GetAllGivenGBID()
         {
+            
             string sql = @"SELECT `Id`,
                             `_Id`,
                             `nGBId`,
                             `nFormNo`,
                             `dtDate`,
-                            IF(nGivenOrNot, 1, 0) nGivenOrNot,
-                            IF(nActive, 1, 0) nActive,
+                            `bGivenOrNot`,
+                            `bActive`,
                             `dtEntered`,
                             `nEnteredBy`,
                             `dtUpdated`,
                             `nUpdatedBy`
                         FROM `tblgivengbid`
-                        WHERE nGivenOrNot = 0
+                        WHERE bGivenOrNot = 0
                         ORDER BY nFormNo DESC;";
             using (var command = new MySqlCommand(sql))
             {
@@ -78,8 +79,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `nGivenGBId`,
                             `nFormNo`,
                             `dtDate`,
-                            IF(nGivenOrNot, 1, 0) nGivenOrNot,
-                            IF(nActive, 1, 0) nActive,
+                            `bGivenOrNot`,
+                            `bActive`,
                             `dtEntered`,
                             `nEnteredBy`,
                             `dtUpdated`,
@@ -122,11 +123,11 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
         #endregion
 
-        #region Change Status for nGivenOrNot
+        #region Change Status for bGivenOrNot
         public int UpdateGivenOrNot(int nGBId)
         {
             string sql = @"UPDATE tblgivengbid
-                        SET nGivenOrNot = 1
+                        SET bGivenOrNot = 1
                         WHERE nGBId = @nGBId;";
             using (var command = new MySqlCommand(sql))
             {

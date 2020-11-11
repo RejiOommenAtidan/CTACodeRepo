@@ -6,7 +6,7 @@ using System;
 namespace CTADBL.ViewModels
 {
     /*
-     * select  gb.sFirstName, gb.sLastName, gb.sAliasName, gb.sFathersName, gb.sCity, gb.sOldGreenBkNo, gb.sGBID, gb.sAddress1 from tblgreenbook gb INNER JOIN tblgreenbookissued as gbi on gbi.ngbid = gb.sgbid where gbi.dtIssuedDate >= '2005-01-01' and gbi.dtIssuedDate <= '2019-12-31' and gbi.sWhyIssued = 'F' and gbi.nWhereIssued = 1 and gbi.nPrinted = 1 ;
+     * select  gb.sFirstName, gb.sLastName, gb.sAliasName, gb.sFathersName, gb.sCity, gb.sOldGreenBkNo, gb.sGBID, gb.sAddress1 from tblgreenbook gb INNER JOIN tblgreenbookissued as gbi on gbi.ngbid = gb.sgbid where gbi.dtIssuedDate >= '2005-01-01' and gbi.dtIssuedDate <= '2019-12-31' and gbi.sWhyIssued = 'F' and gbi.nWhereIssued = 1 and gbi.bPrinted = 1 ;
      * 
      * 
      */

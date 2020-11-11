@@ -25,7 +25,7 @@ namespace CTADBL.ViewModelsRepositories
 
         public IEnumerable<MakeList> GetMakeListData(Dictionary<string, dynamic> dict)
         {
-            string sql = @"select  gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sAliasName, gb.sFathersName, gb.sCity, gb.sOldGreenBkNo, gb.sGBID, gb.sAddress1 from tblgreenbook gb INNER JOIN tblgreenbookissued as gbi on CONCAT(gbi.ngbid + '') = gb.sgbid where gbi.dtIssuedDate >= @startDate and gbi.dtIssuedDate <= @endDate and gbi.nMadebTypeId = @nMadebTypeId and gbi.nAuthRegionId = @nAuthRegionId and gbi.nPrinted = @nPrinted ;";
+            string sql = @"select  gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sAliasName, gb.sFathersName, gb.sCity, gb.sOldGreenBkNo, gb.sGBID, gb.sAddress1 from tblgreenbook gb INNER JOIN tblgreenbookissued as gbi on CONCAT(gbi.ngbid + '') = gb.sgbid where gbi.dtIssuedDate >= @startDate and gbi.dtIssuedDate <= @endDate and gbi.nMadebTypeId = @nMadebTypeId and gbi.nAuthRegionId = @nAuthRegionId and gbi.bPrinted = @bPrinted ;";
 
             using (var command = new MySqlCommand(sql))
             {
@@ -33,7 +33,7 @@ namespace CTADBL.ViewModelsRepositories
                 command.Parameters.AddWithValue("endDate", dict["endDate"]);
                 command.Parameters.AddWithValue("nMadebTypeId", dict["nMadebTypeId"]);
                 command.Parameters.AddWithValue("nAuthRegionId", dict["nAuthRegionId"]);
-                command.Parameters.AddWithValue("nPrinted", dict["nPrinted"]);
+                command.Parameters.AddWithValue("bPrinted", dict["bPrinted"]);
                 command.Connection = _connection;
                 command.CommandType = CommandType.Text;
                 command.CommandTimeout = 999;
@@ -52,14 +52,14 @@ namespace CTADBL.ViewModelsRepositories
 
         public string SetPrinted(Dictionary<string, dynamic> dict)
         {
-            string sql = @"UPDATE tblgreenbookissued SET nPrinted = 1 WHERE dtIssuedDate >= @startDate AND dtIssuedDate <= @endDate AND nMadebTypeId = @nMadebTypeId AND nAuthRegionId = @nAuthRegionId AND nPrinted = 0" ;
+            string sql = @"UPDATE tblgreenbookissued SET bPrinted = 1 WHERE dtIssuedDate >= @startDate AND dtIssuedDate <= @endDate AND nMadebTypeId = @nMadebTypeId AND nAuthRegionId = @nAuthRegionId AND bPrinted = 0";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("startDate", dict["startDate"]);
                 command.Parameters.AddWithValue("endDate", dict["endDate"]);
                 command.Parameters.AddWithValue("nMadebTypeId", dict["nMadebTypeId"]);
                 command.Parameters.AddWithValue("nAuthRegionId", dict["nAuthRegionId"]);
-                //command.Parameters.AddWithValue("nPrinted", dict["nPrinted"]);
+                //command.Parameters.AddWithValue("bPrinted", dict["bPrinted"]);
                 command.Connection = _connection;
                 command.CommandType = CommandType.Text;
                 try

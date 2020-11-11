@@ -50,7 +50,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sOffice`,
                             `sPassword`,
                             `nUserRightsId`,
-                            `nActive`,
+                            `bActive`,
                             `dtEntered`,
                             `nEnteredBy`,
                             `dtUpdated`,
@@ -71,7 +71,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sOffice`,
                             `sPassword`,
                             `nUserRightsId`,
-                            `nActive`,
+                            `bActive`,
                             `dtEntered`,
                             `nEnteredBy`,
                             `dtUpdated`,
@@ -87,7 +87,6 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
         public User GetUserByUsername(string sUsername)
         {
-            //IF(nActive, 1, 0) nActive,
             string sql = @"SELECT `Id`,
                             `_Id`,
                             `sUsername`,
@@ -95,7 +94,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sOffice`,
                             `sPassword`,
                             `nUserRightsId`,
-                            `nActive`,
+                            `bActive`,
                             `dtEntered`,
                             `nEnteredBy`,
                             `dtUpdated`,
@@ -122,7 +121,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             user.sOffice = (string)reader["sOffice"];
             user.sPassword = (string)reader["sPassword"];
             user.nUserRightsId = (int)reader["nUserRightsId"];
-            user.bActive = (bool)reader["nActive"];
+            user.bActive = (bool)reader["bActive"];
             //Common Properties
             user.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
             user.nEnteredBy = (int)reader["nEnteredBy"];

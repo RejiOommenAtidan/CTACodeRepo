@@ -29,7 +29,7 @@ namespace CTADBL.ViewModelsRepositories
 
         public IEnumerable<IssueBookVM> GetIssueBookByGbId(int nGBId)
         {
-            string sql = String.Format(@"SELECT `gbi`.`Id`, `gbi`.`nGBId`, `gbi`.`dtIssuedDate`, `gbi`.`sWhyIssued`,`gbi`.`nMadebTypeId`, `gbi`.`nTypeIssuedId`,`gbi`.`sFormNumber`, `gbi`.`nWhereIssued`, `gbi`.`nAuthRegionId`, IF(`gbi`.`nPrinted`, 1, 0) AS nPrinted, `gbi`.`sRemarks`, `gbi`.`dtEntered`, `gbi`.`nEnteredBy`, `gbi`.`dtUpdated`, `gbi`.`nUpdatedBy`, au.sAuthRegion, md.sMadebDisplayName FROM `tblgreenbookissued` AS gbi LEFT JOIN lstauthregion AS au ON au.ID = gbi.nAuthRegionId LEFT JOIN lstmadebtype AS md ON md.Id = gbi.nMadebTypeId WHERE nGBId=@nGBId;");
+            string sql = String.Format(@"SELECT `gbi`.`Id`, `gbi`.`nGBId`, `gbi`.`dtIssuedDate`, `gbi`.`sWhyIssued`,`gbi`.`nMadebTypeId`, `gbi`.`nTypeIssuedId`,`gbi`.`sFormNumber`, `gbi`.`nWhereIssued`, `gbi`.`nAuthRegionId`,`gbi`.`bPrinted`, `gbi`.`sRemarks`, `gbi`.`dtEntered`, `gbi`.`nEnteredBy`, `gbi`.`dtUpdated`, `gbi`.`nUpdatedBy`, au.sAuthRegion, md.sMadebDisplayName FROM `tblgreenbookissued` AS gbi LEFT JOIN lstauthregion AS au ON au.ID = gbi.nAuthRegionId LEFT JOIN lstmadebtype AS md ON md.Id = gbi.nMadebTypeId WHERE nGBId=@nGBId;");
 
             using (var command = new MySqlCommand(sql))
             {
