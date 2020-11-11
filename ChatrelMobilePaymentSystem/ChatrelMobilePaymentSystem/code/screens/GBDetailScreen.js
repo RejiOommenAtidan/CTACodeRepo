@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Switch, BackHandler, ImageBackground } from 'react-native';
+import { View, StyleSheet, Text, Switch, BackHandler, ImageBackground, Dimensions } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import { sDateFormat } from '../constants/CommonConfig';
@@ -27,36 +27,36 @@ export const GBDetailScreen = (props) => {
   return (
     <ImageBackground
       source={require('../assets/Background.png')}
-      style={{flex: 1}}
+      style={{ flex: 1 }}
       resizeMode="cover">
-    <View style={styles.mainContainer}>
-      <View>
-        <Text style={styles.headerComponent}>
-          Verify your Details
+      <View style={styles.mainContainer}>
+        <View>
+          <Text style={styles.headerComponent}>
+            Verify your Details
         </Text>
-      </View>
-      <View>
-        <Text style={styles.textComponent}>
-          Disclaimer: All Fields are Mandatory
+        </View>
+        <View>
+          <Text style={styles.textComponent}>
+            Disclaimer: All Fields are Mandatory
         </Text>
-      </View>
-      <View style={styles.gbidContainer}>
-        <Input
-          label="Enter GBID"
-          placeholder="GBID Please"
-          autoFocus={true}
-          autoCompleteType={"off"}
-          autoCorrect={false}
-          clearButtonMode={"while-editing"}
-          //secureTextEntry={!bShowGBID}
-          keyboardType={"number-pad"}
-          keyboardAppearance={"default"}
-          disableFullscreenUI={true}
-          maxLength={7}
-          onChangeText={(value) => { setsGBID(value) }}
-          value={sGBID}
-        />
-        {/*<View style={styles.showGBIDContainer}>
+        </View>
+        <View style={styles.gbidContainer}>
+          <Input
+            label="Enter GBID"
+            placeholder="GBID Please"
+            autoFocus={true}
+            autoCompleteType={"off"}
+            autoCorrect={false}
+            clearButtonMode={"while-editing"}
+            //secureTextEntry={!bShowGBID}
+            keyboardType={"number-pad"}
+            keyboardAppearance={"default"}
+            disableFullscreenUI={true}
+            maxLength={7}
+            onChangeText={(value) => { setsGBID(value) }}
+            value={sGBID}
+          />
+          {/*<View style={styles.showGBIDContainer}>
           <Switch
             style={styles.showGBIDComponent}
             onValueChange={() => { setbShowGBID(!bShowGBID) }}
@@ -64,48 +64,48 @@ export const GBDetailScreen = (props) => {
           />
           <Text>Show/Hide GBID</Text>
         </View>*/}
+        </View>
+        <View style={styles.dobContainer}>
+          <DatePicker
+            androidMode={"spinner"}
+            style={styles.dobComponent}
+            date={dtDOB}
+            mode="date"
+            placeholder="Select DOB"
+            format={sDateFormat}
+            maxDate={dtToday}
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+              dateIcon: {
+                position: 'absolute',
+                left: 0,
+                top: 4,
+                marginLeft: 0
+              },
+              dateInput: {
+                marginLeft: 36
+              }
+            }}
+            onDateChange={(date) => { setdtDOB(date) }}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            style={styles.buttonComponent}
+            title="Verify & Continue"
+            onPress={() => {
+              let oGBDetails = {
+                sGBID: sGBID,
+                dtDob: dtDOB
+              };
+              dispatch(storeGBDetails(oGBDetails));
+              dispatch(storeCurrentGBDetails(oGBDetails));
+              props.navigation.navigate({ routeName: "Home" });
+            }}
+          />
+        </View>
       </View>
-      <View style={styles.dobContainer}>
-        <DatePicker
-          androidMode={"spinner"}
-          style={styles.dobComponent}
-          date={dtDOB}
-          mode="date"
-          placeholder="Select DOB"
-          format={sDateFormat}
-          maxDate={dtToday}
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          customStyles={{
-            dateIcon: {
-              position: 'absolute',
-              left: 0,
-              top: 4,
-              marginLeft: 0
-            },
-            dateInput: {
-              marginLeft: 36
-            }
-          }}
-          onDateChange={(date) => { setdtDOB(date) }}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          style={styles.buttonComponent}
-          title="Verify & Continue"
-          onPress={() => {
-            let oGBDetails = {
-              sGBID: sGBID,
-              dtDob: dtDOB
-            };
-            dispatch(storeGBDetails(oGBDetails));
-            dispatch(storeCurrentGBDetails(oGBDetails));
-            props.navigation.navigate({ routeName: "Home" });
-          }}
-        />
-      </View>
-    </View>
     </ImageBackground>
   );
 };
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   headerComponent: {
-    marginTop: 300,
+    marginTop: Dimensions.get("window").height > 600 ? 30 : 10,
     paddingLeft: 10,
     textAlign: "left",
     fontSize: 28,
@@ -147,6 +147,8 @@ const styles = StyleSheet.create({
     color: Colors.white
   },
   gbidContainer: {
+    // maxwidth: '95%',
+    // minWidth: '80%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -171,5 +173,6 @@ const styles = StyleSheet.create({
     // marginTop:20
     // marginLeft:20,
     // marginRight:20
+    width: Dimensions.get("window").width / 4
   }
 });

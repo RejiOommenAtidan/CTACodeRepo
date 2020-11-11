@@ -48,7 +48,10 @@ export default function PaymentPage  (props) {
   const paymentFor = useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sRelation);
 
   // Heading
-  const pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
+  const pageTitle=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.title);
+
+  // relation
+  const relation=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.relation);
 
   
 
@@ -300,7 +303,7 @@ const runOnce = () => {
   }, [authRegions, summaryData])
   return (
     <> {dataAPI  &&
-    <><p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>{pageFrom}</p>
+    <><p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>{pageTitle}</p>
     <Card  style={{  padding: 50 }} >
           <Grid container spacing={3}>
    
@@ -311,7 +314,7 @@ const runOnce = () => {
      
      
           <br />
-            <p style={{backgroundColor: "lightblue"}}>Personal Details - {dataAPI.chatrelPayment.sGBId}</p>
+            <p style={{backgroundColor: "lightblue"}}>{relation} Details - {dataAPI.chatrelPayment.sCountryID+dataAPI.chatrelPayment.sGBId}</p>
           
           
               <FormControl>

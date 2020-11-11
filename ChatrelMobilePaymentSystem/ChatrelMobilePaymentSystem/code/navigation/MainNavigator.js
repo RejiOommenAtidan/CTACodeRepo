@@ -8,6 +8,7 @@ import {
 // import CustomHeaderButton from '../components/HeaderButton';
 import { ChatrelHistoryScreen } from '../screens/ChatrelHistoryScreen';
 import { FileDisputeScreen } from '../screens/FileDisputeScreen';
+import { MyProfileScreen } from '../screens/MyProfileScreen';
 import { GBDetailScreen } from '../screens/GBDetailScreen';
 import HomeScreen from '../screens/HomeScreen';
 import { SelfChatrelScreen } from '../screens/SelfChatrel';
@@ -28,10 +29,7 @@ const defaultStackNavOptions = {
   headerBackTitleStyle: {
     fontFamily: 'open-sans'
   },
-  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
-  // cardStyle: {
-  //   backgroundColor: '#168b44'
-  // },
+  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
 };
 
 const LoginNavigator = createStackNavigator(
@@ -92,16 +90,8 @@ const SelfChatrelNavigator = createStackNavigator(
     SelfChatrel: SelfChatrelScreen
   },
   {
-    defaultNavigationOptions: defaultStackNavOptions
-  }
-);
-
-const FamilyChatrelNavigator = createStackNavigator(
-  {
-    FamilyChatrel: FamilyChatrelScreen
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions
+    defaultNavigationOptions: defaultStackNavOptions,
+    cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
   }
 );
 
@@ -111,6 +101,16 @@ const FamilyChatrelIntermediateNavigator = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavOptions
+  }
+);
+
+const FamilyChatrelNavigator = createStackNavigator(
+  {
+    FamilyChatrel: FamilyChatrelScreen
+  },
+  {
+    defaultNavigationOptions: defaultStackNavOptions,
+    cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
   }
 );
 
@@ -128,13 +128,23 @@ const FriendChatrelNavigator = createStackNavigator(
     FriendChatrel: FriendChatrelScreen
   },
   {
-    defaultNavigationOptions: defaultStackNavOptions
+    defaultNavigationOptions: defaultStackNavOptions,
+    cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
   }
 );
 
 const ChatrelHistoryNavigator = createStackNavigator(
   {
     ChatrelHistory: ChatrelHistoryScreen
+  },
+  {
+    defaultNavigationOptions: defaultStackNavOptions
+  }
+);
+
+const MyProfileNavigator = createStackNavigator(
+  {
+    MyProfile: MyProfileScreen
   },
   {
     defaultNavigationOptions: defaultStackNavOptions
@@ -212,6 +222,12 @@ const MainNavigator = createDrawerNavigator(
         drawerLabel: 'Chatrel History'
       }
     },
+    MyProfile: {
+      screen: MyProfileNavigator,
+      navigationOptions: {
+        drawerLabel: 'My Profile'
+      }
+    },
     FileDispute: {
       screen: FileDisputeNavigator,
       navigationOptions: {
@@ -220,7 +236,7 @@ const MainNavigator = createDrawerNavigator(
     }
   },
   {
-    initialRouteName: "Login",
+    initialRouteName: "Home",
     // drawerPosition: "right",
     //hideStatusBar:true,
     statusBarAnimation: true,

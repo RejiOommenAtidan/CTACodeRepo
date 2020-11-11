@@ -21,6 +21,8 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
 
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -56,38 +58,27 @@ const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
       <Card  style={{  padding: 50 }} >
 
       <br />
-        <p style={{backgroundColor: "lightblue"}}>My Profile</p>
-          <Grid container direction="column" alignContent="center" >
+        <p style={{backgroundColor: "lightblue"}}>File Dispute</p>
+          <Grid container direction="column" spacing={2} alignContent="center" >
             
 
-          <Grid item xs={12} sm={6}>
             
-                    <div className="avatar-icon-wrapper  m-2">
-                        <div className="d-block p-0 avatar-icon-wrapper  m-0 border-3 ">
-                            <div className=" border-3 border-white overflow-hidden">
-                                <img alt="..." className="img-fluid" src={userObj.imageUrl} />
-                            </div>
-                        </div>
-                    </div>
+             <Grid item xs={12} >
             
-             </Grid>
-             <Grid item xs={12} sm={6}>
-                    <div>First Name    : {userObj.givenName}</div>
-                    </Grid>
-             <Grid item xs={12} sm={6}>
-                    <div>Last Name     : {userObj.familyName}</div>
-                    </Grid>
-             <Grid item xs={12} sm={6}>
-                    <div>Email Id      : {userObj.email}</div>
-                    </Grid>
-             <Grid item xs={12} sm={6}>
-                    <div>Green Book Id : {userGBObj.sGBID}</div>
-                    </Grid>
-             <Grid item xs={12} sm={6}>
-                    <div>Date of Birth : {userGBObj.dtDob}</div>
-                    </Grid>
-            
+                <TextField label="Enter Description"/>
                  
+                
+            </Grid>
+            <Grid item xs={12} sm={4}>
+                 <input accept=".pdf,.doc,.docx" id="upload" type="file"
+                  // onChange={this.handleUploadClick}
+                  />
+            </Grid>
+            <Grid item xs={12} sm={4} alignContent="center">
+               <Button  variant="outlined">
+                Save
+              </Button>
+            </Grid>     
           
           </Grid>
     </Card>

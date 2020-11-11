@@ -260,7 +260,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <BrowserRouter basename="/bamburgh-react-admin-dashboard-pro/">
+        <BrowserRouter /*basename="/bamburgh-react-admin-dashboard-pro/"*/>
           <ScrollToTop>
             <Routes />
           </ScrollToTop>

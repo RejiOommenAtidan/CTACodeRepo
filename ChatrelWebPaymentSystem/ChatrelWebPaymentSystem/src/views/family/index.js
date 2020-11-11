@@ -48,11 +48,13 @@ export default function Family () {
   const sGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
   const [familyData,setFamilyData]=React.useState();
 
-  const makePayment = (sGBID)=> {
+  const makePayment = (sGBID,relation)=> {
 
     let obj={
       sGBID:sGBID,
-      from:'Chatrel for Family'
+      title:'Chatrel for Family',
+      relation:relation+"'s"
+
     }
     dispatch(storeCurrentGBDetails(obj));
     history.push('/PaymentPage');
@@ -113,7 +115,7 @@ export default function Family () {
                   <TableCell align="center">{row.sGBIDRelation}</TableCell>
                   <TableCell align="right">{row.nAge}</TableCell>
                   
-                  <TableCell align="center"><input type="button"  disabled={row.sGBIDRelation == null} value="Make Payment"/></TableCell>
+                  <TableCell align="center"><input type="button" onClick={()=>{makePayment(row.sGBIDRelation,row.sRelation)}} disabled={row.sGBIDRelation == null} value="Make Payment"/></TableCell>
                   
                   
                 </TableRow>

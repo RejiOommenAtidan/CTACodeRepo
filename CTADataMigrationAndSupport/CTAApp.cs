@@ -48,7 +48,8 @@ namespace CTADataMigrationAndSupport
                 cnn.Open();
 
                 //string query = "SELECT sGBID FROM tblGreenBook";
-                string query = "select sGBID from tblgreenbook where sBookIssued like '%2012%'";
+                string query = "select sGBID from tblgreenbook where sGBId Not in (SELECT sGBId FROM ctadb.lnkgbdocument)";
+                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2012%'";
                 //string query = "select sGBID from tblgreenbook where sGBID = 0000000";
                 MySqlCommand cmd = new MySqlCommand(query, cnn);
                 MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
