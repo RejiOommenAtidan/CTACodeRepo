@@ -611,7 +611,7 @@ CREATE TABLE `tbluser` (
   `sOffice` text NOT NULL,
   `sPassword` text NOT NULL,
   `nUserRightsId` int(11) NOT NULL,
-  `nActive` tinyint(1) NOT NULL,
+  `bActive` tinyint(1) NOT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   `dtUpdated` datetime DEFAULT NULL,
@@ -676,8 +676,7 @@ INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisp
 INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full','Book Full','U',16,now(),1,now(),1);
 INSERT INTO `ctadb`.`lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB','Brief GB','B',17,now(),1,now(),1);
 
-use ctadb;
-
+-- lstFeature
 CREATE TABLE `lstFeature` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sFeature` text NOT NULL, 
@@ -724,10 +723,7 @@ INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdate
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Type Issued (Master)',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Madeb Type (Master)',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Rights (Master)',now(),1,now(),1);
-
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Rights (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Rights (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('User Rights (Master)',now(),1,now(),1);
+INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chatrels',now(),1,now(),1);
 
 
 CREATE TABLE `lstCTAConfig` (
@@ -792,13 +788,12 @@ CREATE TABLE `tblgbchatrelDetail` (
   `nArrearsAmount` decimal(15,2) DEFAULT NULL,
   `dtArrearsFrom` date DEFAULT NULL,
   `dtArrearsTo` date DEFAULT NULL,
-  `nChatrelSalaryAmt` decimal(15,2)DEFAULT NULL,
-  `dtChatrelSalaryFrom` date DEFAULT NULL,
-  `dtChatrelSalaryTo` date DEFAULT NULL,
+  `nCurrentChatrelSalaryAmt` decimal(15,2)DEFAULT NULL,
+  `dtCurrentChatrelFrom` date DEFAULT NULL,
+  `dtCurrentChatrelTo` date DEFAULT NULL,
   `nChatrelAdditionalDonationAmt` decimal(15,2) DEFAULT NULL,
   `nChatrelBusinessDonationAmt` decimal(15,2) DEFAULT NULL,
   `nChatrelTotalAmount` decimal(15,2) DEFAULT NULL,
-  `nChatrelRecieptNumber` int(11) DEFAULT NULL,
   `nAuthRegionID` int(11) DEFAULT NULL,
   `sCountryID` varchar(255) DEFAULT NULL,
   `sPaymentCurrency` varchar(255) DEFAULT NULL,
@@ -928,8 +923,8 @@ CREATE TABLE `tblGivenGBID` (
   `nGBId` int(11) NOT NULL,
   `nFormNo` int(11) NOT NULL,
   `dtDate` date NOT NULL,
-  `nGivenOrNot` tinyint(1) NOT NULL,
-  `nActive` tinyint(1) NOT NULL,
+  `bGivenOrNot` tinyint(1) NOT NULL,
+  `bActive` tinyint(1) NOT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime DEFAULT NULL,
@@ -951,7 +946,7 @@ CREATE TABLE `tblGreenBookIssued` (
   `sFormNumber` text NOT NULL,
   `nWhereIssued` int(11) NOT NULL,
   `nAuthRegionId` int(11) DEFAULT NULL,
-  `nPrinted` tinyint(4) NOT NULL,
+  `bPrinted` tinyint(1) NOT NULL,
   `sRemarks` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
@@ -1020,13 +1015,13 @@ CREATE TABLE `tblchatrelpayment` (
   `nArrearsAmount` decimal(15,2) DEFAULT NULL,
   `dtArrearsFrom` date DEFAULT NULL,
   `dtArrearsTo` date DEFAULT NULL,
-  `nChatrelSalaryAmt` decimal(15,2) DEFAULT NULL,
-  `dtChatrelSalaryFrom` date DEFAULT NULL,
-  `dtChatrelSalaryTo` date DEFAULT NULL,
+  `nCurrentChatrelSalaryAmt` decimal(15,2) DEFAULT NULL,
+  `dtCurrentChatrelFrom` date DEFAULT NULL,
+  `dtCurrentChatrelTo` date DEFAULT NULL,
   `nChatrelAdditionalDonationAmt` decimal(15,2) DEFAULT NULL,
   `nChatrelBusinessDonationAmt` decimal(15,2) DEFAULT NULL,
   `nChatrelTotalAmount` decimal(15,2) DEFAULT NULL,
-  `nChatrelRecieptNumber` int(11) DEFAULT NULL,
+  `sChatrelReceiptNumber` varchar(255) DEFAULT NULL,
   `nAuthRegionID` int(11) DEFAULT NULL,
   `sCountryID` varchar(255) DEFAULT NULL,
   `sPaymentStatus` varchar(255) DEFAULT NULL,
@@ -1067,13 +1062,13 @@ CREATE TABLE `lnkgbchatrel` (
   `nArrearsAmount` decimal(15,2) DEFAULT NULL,
   `dtArrearsFrom` date DEFAULT NULL,
   `dtArrearsTo` date DEFAULT NULL,
-  `nChatrelSalaryAmt` decimal(15,2)DEFAULT NULL,
-  `dtChatrelSalaryFrom` date DEFAULT NULL,
-  `dtChatrelSalaryTo` date DEFAULT NULL,
+  `nCurrentChatrelSalaryAmt` decimal(15,2)DEFAULT NULL,
+  `dtCurrentChatrelFrom` date DEFAULT NULL,
+  `dtCurrentChatrelTo` date DEFAULT NULL,
   `nChatrelAdditionalDonationAmt` decimal(15,2) DEFAULT NULL,
   `nChatrelBusinessDonationAmt` decimal(15,2) DEFAULT NULL,
   `nChatrelTotalAmount` decimal(15,2) DEFAULT NULL,
-  `nChatrelRecieptNumber` int(11) DEFAULT NULL,
+  `sChatrelReceiptNumber` varchar(255) DEFAULT NULL,
   `nAuthRegionID` int(11) DEFAULT NULL,
   `sCountryID` varchar(255) DEFAULT NULL,
   `sPaymentCurrency` varchar(255) DEFAULT NULL,
@@ -1128,7 +1123,7 @@ CREATE TABLE `lnkFeatureUserRights` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `nFeatureID` int(11) Not NULL,
   `nUserRightsID` int(11) Not NULL,
-  `nRights` tinyint(1) NOT NULL,
+  `bRights` tinyint(1) NOT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
@@ -1208,12 +1203,12 @@ BEGIN
 		 `sFullName`,
 		 `sOffice`,
 		 `nUserRightsId`,
-		 IF(nActive, 1, 0) nActive
+		 `bActive`
 	 FROM `tbluser`
 	 WHERE 
 		`Id` = nUserIdIN
 		AND 
-		nActive = 1;
+		bActive = 1;
 	 
 	SELECT `Id`,
 		 `sUserRightsName`
@@ -1224,9 +1219,9 @@ BEGIN
 	SELECT `Id`,
 		 `nFeatureID`,
 		 `nUserRightsID`,
-		  IF(nRights, 1, 0) nRights
+		 `bRights`
 	 FROM `lnkfeatureuserrights`
-	 WHERE nUserRightsID IN (Select `nUserRightsId` from tblUser where Id = nUserIdIN) and nRights=1;
+	 WHERE nUserRightsID IN (Select `nUserRightsId` from tblUser where Id = nUserIdIN) and bRights=1;
 END$$
 
 DELIMITER ;
@@ -1245,7 +1240,7 @@ BEGIN
 		CONCAT(
 		  'SUM(CASE WHEN (lfu.nUserRightsID=''',
 		  lfu.nUserRightsID,
-		  ''') THEN lfu.nRights ELSE null END) ''',
+		  ''') THEN lfu.bRights ELSE null END) ''',
 		  ur.sUserRightsName, ''''
 		)
 	  ) INTO @sql
