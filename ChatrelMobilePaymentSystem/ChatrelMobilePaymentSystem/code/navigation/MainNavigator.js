@@ -29,10 +29,7 @@ const defaultStackNavOptions = {
   headerBackTitleStyle: {
     fontFamily: 'open-sans'
   },
-  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
-  // cardStyle: {
-  //   backgroundColor: '#168b44'
-  // },
+  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
 };
 
 const LoginNavigator = createStackNavigator(
@@ -93,16 +90,8 @@ const SelfChatrelNavigator = createStackNavigator(
     SelfChatrel: SelfChatrelScreen
   },
   {
-    defaultNavigationOptions: defaultStackNavOptions
-  }
-);
-
-const FamilyChatrelNavigator = createStackNavigator(
-  {
-    FamilyChatrel: FamilyChatrelScreen
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions
+    defaultNavigationOptions: defaultStackNavOptions,
+    cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
   }
 );
 
@@ -112,6 +101,16 @@ const FamilyChatrelIntermediateNavigator = createStackNavigator(
   },
   {
     defaultNavigationOptions: defaultStackNavOptions
+  }
+);
+
+const FamilyChatrelNavigator = createStackNavigator(
+  {
+    FamilyChatrel: FamilyChatrelScreen
+  },
+  {
+    defaultNavigationOptions: defaultStackNavOptions,
+    cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
   }
 );
 
@@ -129,7 +128,8 @@ const FriendChatrelNavigator = createStackNavigator(
     FriendChatrel: FriendChatrelScreen
   },
   {
-    defaultNavigationOptions: defaultStackNavOptions
+    defaultNavigationOptions: defaultStackNavOptions,
+    cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
   }
 );
 

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Text, View, ScrollView, Picker } from 'react-native';
+import { Switch, Text, View, ScrollView, Picker, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Input, Button } from 'react-native-elements';
 import axios from 'axios';
 import Moment from 'moment';
+import Colors from '../constants/Colors';
 // import { sDateFormat } from '../constants/CommonConfig';
 
 export const Chatrel = props => {
@@ -38,7 +39,6 @@ export const Chatrel = props => {
     };
 
     const runOnce = () => {
-        // debugger
         if (aGBChatrels && dollarToRupees && shouldRun) {
             const len = aGBChatrels.length;
             for (var i = 0; i < len; i++) {
@@ -49,8 +49,6 @@ export const Chatrel = props => {
     };
 
     const updateAuthRegion = (e, value) => {
-        //console.log(value.id, e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_')));
-        // const index = e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_'));
         const index = e;
         let chartelObj = [...aGBChatrels];
         chartelObj[index].nAuthRegionID = value.id;
@@ -162,102 +160,238 @@ export const Chatrel = props => {
     return (
         <>
             {aGBChatrels &&
-                <ScrollView>
-                    <Text>PERSONAL INFORMATION</Text>
-                    <Text>Greenbook ID</Text>
-                    <Text>{sGBID}</Text>
-                    <Text>Date of Birth</Text>
-                    <Text>{oGBDetails.dtDOB}</Text>
-                    <Text>Name</Text>
-                    <Text>{sName}</Text>
-                    <Text>Year of Last Chatrel</Text>
-                    <Text>{Moment(nPaidUntil).year()}</Text>
-                    <Text>Chatrel of Years Due</Text>
-                    <Text>{Moment().diff(nPaidUntil, 'years')} Years</Text>
-                    <Text>Chatrel Information</Text>
+                <ScrollView style={styles.mainContainer}>
+                    <View>
+                        <Text style={styles.headerComponent}>PERSONAL INFORMATION</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.textComponent}>GREENBOOK ID</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.textComponentAPI}>{sGBID}</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.textComponent}>DATE OF BIRTH</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.textComponentAPI}>{oGBDetails.dtDOB}</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.textComponent}>NAME</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.textComponentAPI}>{sName}</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.textComponent}>YEAR OF LAST CHATREL</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.textComponentAPI}>{Moment(nPaidUntil).year()}</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.textComponent}>CHATREL OF YEARS DUE</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.textComponentAPI}>{Moment().diff(nPaidUntil, 'years')} Years</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.chatrelTextComponent}>Chatrel Information</Text>
+                    </View>
                     {aGBChatrels.map((year, index) => {
                         return (
-                            <View key={year.nChatrelYear}>
-                                <Text>Employment Status: {year.nChatrelSalaryAmt === 0 ? "Not Employed" : "Employed"}</Text>
-                                <Switch
-                                    key={year.nChatrelYear}
-                                    trackColor={{ false: "#767577", true: "#81b0ff" }}
-                                    thumbColor={year.nChatrelSalaryAmt === 0 ? "#f4f3f4" : "#f5dd4b"}
-                                    ios_backgroundColor="#3e3e3e"
-                                    onValueChange={() => { toggleSwitch(index, year) }}
-                                    value={year.nChatrelSalaryAmt !== 0}
-                                    disabled={year.isChild}
-                                />
-                                <Text>{year.nChatrelYear}</Text>
-                                <Picker
-                                    selectedValue={nSelectedAuthRegion}
-                                    style={{ height: 50, width: 200 }}
-                                    onValueChange={(itemValue, itemIndex) =>
-                                        updateAuthRegion(index, itemValue)
-                                    }>
-                                    {/*<Picker.Item label="Java" value="java" />
-                                <Picker.Item label="JavaScript" value="js" />*/}
-                                    {lAuthRegions.map((singleAuthregion, key) => (
-                                        <Picker.Item label={singleAuthregion.sAuthRegion} value={singleAuthregion} key={key} />)
-                                    )}
-                                </Picker>
-                                <Text>Currency Code: {year.sCurrencyCode}</Text>
-                                <Text>Basic:  {year.nChatrelAmount}</Text>
-                                <Text>Meal:  {year.nChatrelMeal}</Text>
-                                {year.lateFees !== 0 && <Text>Late Fees: {year.lateFees}</Text>}
-                                <Text>Total: {year.nChatrelTotalAmount}</Text>
-                                <Text>Conversion Rate &#8377;/$ : {(dollarToRupees && year.sCurrencyCode === 'INR') ? dollarToRupees.toFixed(4) : 'NA'}</Text>
+                            <View style={styles.yearContainer} key={year.nChatrelYear}>
+                                <View>
+                                    <Text style={styles.chatrelYearComponent}>{year.nChatrelYear}</Text>
+                                </View>
+                                <View style={styles.employementStatusContainer}>
+                                    <Text style={styles.textComponentAPI}>Employment Status: {year.nChatrelSalaryAmt === 0 ? "Not Employed" : "Employed"}</Text>
+                                    <Switch
+                                        key={year.nChatrelYear}
+                                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                        thumbColor={year.nChatrelSalaryAmt === 0 ? "#f4f3f4" : "#f5dd4b"}
+                                        ios_backgroundColor="#3e3e3e"
+                                        onValueChange={() => { toggleSwitch(index, year) }}
+                                        value={year.nChatrelSalaryAmt !== 0}
+                                        disabled={year.isChild}
+                                    />
+                                </View>
+                                <View style={styles.authorityRegionContainer}>
+                                    <Text style={styles.textComponent}>AUTHORITY REGION</Text>
+                                    <Picker
+                                        selectedValue={nSelectedAuthRegion}
+                                        style={styles.pickerComponent}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            updateAuthRegion(index, itemValue)
+                                        }>
+                                        {/*<Picker.Item label="Java" value="java" />
+                                            <Picker.Item label="JavaScript" value="js" />*/}
+                                        {lAuthRegions.map((singleAuthregion, key) => (
+                                            <Picker.Item label={singleAuthregion.sAuthRegion} value={singleAuthregion} key={key} />)
+                                        )}
+                                    </Picker>
+                                </View>
+                                <View>
+                                    <Text style={styles.textComponent}>Currency Code: <Text style={styles.textComponentAPI}>{year.sCurrencyCode}</Text></Text>
+                                </View>
+                                <View>
+                                    <Text style={styles.textComponent}>Basic: <Text style={styles.textComponentAPI}>{year.nChatrelAmount}</Text></Text>
+                                </View>
+                                <View>
+                                    <Text style={styles.textComponent}>Meal: <Text style={styles.textComponentAPI}>{year.nChatrelMeal}</Text></Text>
+                                </View>
+                                <View>
+                                    {year.lateFees !== 0 && <Text style={styles.textComponent}>Late Fees: <Text style={styles.textComponentAPI}>{year.lateFees}</Text></Text>}
+                                </View>
+                                <View>
+                                    <Text style={styles.textComponent}>Total: <Text style={styles.textComponentAPI}>{year.nChatrelTotalAmount}</Text></Text>
+                                </View>
+                                <View>
+                                    <Text style={styles.textComponent}>Conversion Rate &#8377;/$ : {(dollarToRupees && year.sCurrencyCode === 'INR') ? dollarToRupees.toFixed(4) : 'NA'}</Text>
+                                </View>
                             </View>
                         )
                     })}
-                    <Input
-                        label="Additional Donation"
-                        placeholder="Additional Donation"
-                        autoCorrect={false}
-                        clearButtonMode={"while-editing"}
-                        keyboardType={"number-pad"}
-                        keyboardAppearance={"default"}
-                        disableFullscreenUI={true}
-                        onChangeText={(value) => {
-                            if (value === "") {
-                                calcTotal(aGBChatrels, 0, nBusinessDonation);
-                                setnAdditionalDonation(0);
-                            }
-                            else {
-                                calcTotal(aGBChatrels, parseInt(value), nBusinessDonation);
-                                setnAdditionalDonation(parseInt(value));
-                            }
-                        }}
-                        value={nAdditionalDonation}
-                    />
-                    <Input
-                        label="Business Donation"
-                        placeholder="Business Donation"
-                        autoCorrect={false}
-                        clearButtonMode={"while-editing"}
-                        keyboardType={"number-pad"}
-                        keyboardAppearance={"default"}
-                        disableFullscreenUI={true}
-                        onChangeText={(value) => {
-                            if (value === "") {
-                                calcTotal(aGBChatrels, nAdditionalDonation, 0);
-                                setnBusinessDonation(0);
-                            }
-                            else {
-                                calcTotal(aGBChatrels, nAdditionalDonation, parseInt(value));
-                                setnBusinessDonation(parseInt(value));
-                            }
-                        }}
-                        value={nBusinessDonation}
-                    />
-                    <Text>{nGrandTotal.toFixed(2)}</Text>
-                    <Button
-                        title="PayPal Button"
-                        type={"outline"}
-                        onPress={() => { handlSubmit() }}
-                    />
+                    <View style={styles.additionalDonationContainer}>
+                        <Input
+                            // label="Additional Donation"
+                            placeholder="Additional Donation"
+                            autoCorrect={false}
+                            clearButtonMode={"while-editing"}
+                            keyboardType={"number-pad"}
+                            keyboardAppearance={"default"}
+                            disableFullscreenUI={true}
+                            onChangeText={(value) => {
+                                if (value === "") {
+                                    calcTotal(aGBChatrels, 0, nBusinessDonation);
+                                    setnAdditionalDonation(0);
+                                }
+                                else {
+                                    calcTotal(aGBChatrels, parseInt(value), nBusinessDonation);
+                                    setnAdditionalDonation(parseInt(value));
+                                }
+                            }}
+                            value={nAdditionalDonation}
+                        />
+                    </View>
+                    <View style={styles.businessDonationContainer}>
+                        <Input
+                            // label="Business Donation"
+                            placeholder="Business Donation"
+                            autoCorrect={false}
+                            clearButtonMode={"while-editing"}
+                            keyboardType={"number-pad"}
+                            keyboardAppearance={"default"}
+                            disableFullscreenUI={true}
+                            onChangeText={(value) => {
+                                if (value === "") {
+                                    calcTotal(aGBChatrels, nAdditionalDonation, 0);
+                                    setnBusinessDonation(0);
+                                }
+                                else {
+                                    calcTotal(aGBChatrels, nAdditionalDonation, parseInt(value));
+                                    setnBusinessDonation(parseInt(value));
+                                }
+                            }}
+                            value={nBusinessDonation}
+                        />
+                    </View>
+                    <View style={styles.grandTotalCotainer}>
+                        <Text>{nGrandTotal.toFixed(2)}</Text>
+                    </View>
+                    <View style={styles.paypalButtonContainer}>
+                        <Button
+                            title="PayPal Button"
+                            type={"solid"}
+                            onPress={() => { handlSubmit() }}
+                        />
+                    </View>
                 </ScrollView>
             }
         </>
     );
 };
+
+const styles = StyleSheet.create({
+    mainContainer: {
+        //flex: 1,
+        //margin: 15
+    },
+    headerComponent: {
+        fontSize: 18,
+        fontStyle: "normal",
+        fontWeight: "normal",
+        marginBottom: 10,
+        color: Colors.blackText
+    },
+    textComponent: {
+        fontSize: 10.5,
+        textAlign: "left",
+        marginBottom: 15,
+        fontStyle: "normal",
+        fontWeight: "normal",
+        color: Colors.blackText
+    },
+    textComponentAPI: {
+        fontSize: 16,
+        textAlign: "left",
+        marginBottom: 10,
+        fontStyle: "normal",
+        fontWeight: "normal",
+        color: Colors.blackTextAPI
+    },
+    chatrelTextComponent: {
+        marginTop: 25,
+        textAlign: "left",
+        fontSize: 24,
+        fontStyle: "normal",
+        fontWeight: "normal",
+        color: Colors.ChatrelInfoBlue,
+        marginBottom: 10
+    },
+    chatrelYearComponent: {
+        marginBottom: 15,
+        fontSize: 28,
+        fontWeight: "500",
+        fontStyle: "normal",
+        textAlign: "left",
+        color: Colors.ChatrelYearGreen,
+    },
+    employementStatusContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 10
+    },
+    employementStatusComponent: {},
+    authorityRegionContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        marginBottom: 10
+    },
+    authorityRegionComponent: {},
+    pickerComponent: {
+        height: 25,
+        width: 175
+    },
+    yearContainer:{
+        marginBottom:5
+    },
+    additionalDonationContainer:{
+        marginTop:5,
+        marginBottom:5
+    },
+    additionalDonationComponent:{},
+    businessDonationContainer:{
+        marginBottom:5
+    },
+    businessDonationComponent:{},
+    grandTotalComponent:{},
+    grandTotalCotainer:{
+        marginBottom:10
+    },
+    paypalButtonContainer:{
+        marginVertical:10
+    },
+    paypalButtonComponent:{}
+});
