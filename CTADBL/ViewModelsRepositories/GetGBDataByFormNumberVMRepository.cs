@@ -1,5 +1,6 @@
 ﻿using CTADBL.BaseClasses.Masters;
 using CTADBL.BaseClasses.Transactions;
+using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.ViewModels;
 using MySql.Data.MySqlClient;
 using System;
@@ -12,9 +13,13 @@ namespace CTADBL.ViewModelsRepositories
     {
         #region Constructor
         private static MySqlConnection _connection;
+        private readonly GivenGBIDRepository _givenGBIDRepository;
+        private readonly MadebRepository _madebRepository;
         public GetGBDataByFormNumberVMRepository(string connectionString)
         {
             _connection = new MySqlConnection(connectionString);
+            _givenGBIDRepository = new GivenGBIDRepository(connectionString);
+            _madebRepository = new MadebRepository(connectionString);
         }
         #endregion
 
@@ -27,7 +32,8 @@ namespace CTADBL.ViewModelsRepositories
             List<Qualification> _lQualification = new List<Qualification>();
             List<Occupation> _lOccupation = new List<Occupation>();
             List<DOBApprox> _lDOBApprox = new List<DOBApprox>();
-            Madeb _oMadeb = new Madeb();
+            GivenGBIDMadebVM _oGivenGBIDMadebVM = new GivenGBIDMadebVM();
+            _oGivenGBIDMadebVM.oGivenGBID = new GivenGBID();
             using (var command = new MySqlCommand("spGetNewGreenBookDataByFormNo"))
             {
                 command.Parameters.AddWithValue("nFormNumberIN", nFormNumberIN);
@@ -138,36 +144,37 @@ namespace CTADBL.ViewModelsRepositories
                         //Madeb Single Record Population
                         while (reader.Read())
                         {
-                            _oMadeb.Id = (int)reader["Id"];
-                            //TODO:
-                            _oMadeb._id = reader.IsDBNull("_Id") ? null : (int?)(reader["_Id"]);
-                            _oMadeb.nFormNumber = (int)reader["nFormNumber"];
-                            _oMadeb.sGBID = reader.IsDBNull("sGBID") ? null : (string?)(reader["sGBID"]);
-                            _oMadeb.nMadebTypeID = reader.IsDBNull("nMadebTypeID") ? null : (int?)(reader["nMadebTypeID"]);
-                            _oMadeb.sName = (string)reader["sName"];
-                            _oMadeb.sFathersName = reader.IsDBNull("sFathersName") ? null : (string?)(reader["sFathersName"]);
-                            _oMadeb.nAuthRegionID = (int)reader["nAuthRegionID"];
-                            _oMadeb.dtReceived = (DateTime)reader["dtReceived"];
-                            _oMadeb.dtIssueAction = (DateTime)reader["dtIssueAction"];
-                            _oMadeb.nIssuedOrNotID = (int)reader["nIssuedOrNotID"];
-                            _oMadeb.nType = (int)reader["nType"];
-                            _oMadeb.sChangeField = reader.IsDBNull("sChangeField") ? null : (string?)(reader["sChangeField"]);
-                            _oMadeb.sOfficeOfTibetan = reader.IsDBNull("sOfficeOfTibetan") ? null : (string?)(reader["sOfficeOfTibetan"]);
-                            _oMadeb.sDocumentAttached = reader.IsDBNull("sDocumentAttached") ? null : (string?)(reader["sDocumentAttached"]);
-                            _oMadeb.nCurrentGBSno = reader.IsDBNull("nCurrentGBSno") ? null : (int?)(reader["nCurrentGBSno"]);
-                            _oMadeb.nPreviousGBSno = reader.IsDBNull("nPreviousGBSno") ? null : (int?)(reader["nPreviousGBSno"]);
-                            _oMadeb.nSaneyFormNo = reader.IsDBNull("nSaneyFormNo") ? null : (int?)(reader["nSaneyFormNo"]);
-                            _oMadeb.nReceiptNo = reader.IsDBNull("nCurrentGBSno") ? null : (int?)(reader["nCurrentGBSno"]);
-                            _oMadeb.dtEmailSend = reader.IsDBNull("dtEmailSend") ? null : (DateTime?)(reader["dtEmailSend"]);
-                            _oMadeb.sAlias = reader.IsDBNull("sAlias") ? null : (string?)(reader["sAlias"]);
-                            _oMadeb.sApprovedReject = reader.IsDBNull("sApprovedReject") ? null : (string?)(reader["sApprovedReject"]);
-                            _oMadeb.dtReject = reader.IsDBNull("dtReject") ? null : (DateTime?)(reader["dtReject"]);
-                            _oMadeb.dtReturnEmail = reader.IsDBNull("dtReturnEmail") ? null : (DateTime?)(reader["dtReturnEmail"]);
-                            //Common Prop
-                            _oMadeb.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
-                            _oMadeb.nEnteredBy = (int)reader["nEnteredBy"];
-                            _oMadeb.dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]);
-                            _oMadeb.nUpdatedBy = (int)reader["nUpdatedBy"];
+                            _oGivenGBIDMadebVM.oGivenGBID.nGBId = (int)reader["nGBId"];
+                            _oGivenGBIDMadebVM.oMadeb = _madebRepository.PopulateRecord(reader);
+                            //_oGivenGBIDMadebVM.oMadeb.Id = (int)reader["tblMadeb.Id"];
+                            //_oGivenGBIDMadebVM.oMadeb._id = reader.IsDBNull("tblMadeb._Id") ? null : (int?)(reader["tblMadeb._Id"]);
+                            //_oGivenGBIDMadebVM.oMadeb.nFormNumber = (int)reader["tblMadeb.nFormNumber"];
+                            //_oGivenGBIDMadebVM.oMadeb.sGBID = reader.IsDBNull("tblMadeb.sGBID") ? null : (string)(reader["tblMadeb.sGBID"]);
+                            //_oGivenGBIDMadebVM.oMadeb.nMadebTypeID = reader.IsDBNull("tblMadeb.nMadebTypeID") ? null : (int?)(reader["tblMadeb.nMadebTypeID"]);
+                            //_oGivenGBIDMadebVM.oMadeb.sName = (string)reader["tblMadeb.sName"];
+                            //_oGivenGBIDMadebVM.oMadeb.sFathersName = reader.IsDBNull("tblMadeb.sFathersName") ? null : (string)(reader["tblMadeb.sFathersName"]);
+                            //_oGivenGBIDMadebVM.oMadeb.nAuthRegionID = (int)reader["tblMadeb.nAuthRegionID"];
+                            //_oGivenGBIDMadebVM.oMadeb.dtReceived = (DateTime)reader["tblMadeb.dtReceived"];
+                            //_oGivenGBIDMadebVM.oMadeb.dtIssueAction = (DateTime)reader["tblMadeb.dtIssueAction"];
+                            //_oGivenGBIDMadebVM.oMadeb.nIssuedOrNotID = (int)reader["tblMadeb.nIssuedOrNotID"];
+                            //_oGivenGBIDMadebVM.oMadeb.nType = (int)reader["tblMadeb.nType"];
+                            //_oGivenGBIDMadebVM.oMadeb.sChangeField = reader.IsDBNull("tblMadeb.sChangeField") ? null : (string)(reader["tblMadeb.sChangeField"]);
+                            //_oGivenGBIDMadebVM.oMadeb.sOfficeOfTibetan = reader.IsDBNull("tblMadeb.sOfficeOfTibetan") ? null : (string)(reader["tblMadeb.sOfficeOfTibetan"]);
+                            //_oGivenGBIDMadebVM.oMadeb.sDocumentAttached = reader.IsDBNull("tblMadeb.sDocumentAttached") ? null : (string)(reader["tblMadeb.sDocumentAttached"]);
+                            //_oGivenGBIDMadebVM.oMadeb.nCurrentGBSno = reader.IsDBNull("tblMadeb.nCurrentGBSno") ? null : (int?)(reader["tblMadeb.nCurrentGBSno"]);
+                            //_oGivenGBIDMadebVM.oMadeb.nPreviousGBSno = reader.IsDBNull("tblMadeb.nPreviousGBSno") ? null : (int?)(reader["tblMadeb.nPreviousGBSno"]);
+                            //_oGivenGBIDMadebVM.oMadeb.nSaneyFormNo = reader.IsDBNull("tblMadeb.nSaneyFormNo") ? null : (int?)(reader["tblMadeb.nSaneyFormNo"]);
+                            //_oGivenGBIDMadebVM.oMadeb.nReceiptNo = reader.IsDBNull("tblMadeb.nCurrentGBSno") ? null : (int?)(reader["tblMadeb.nCurrentGBSno"]);
+                            //_oGivenGBIDMadebVM.oMadeb.dtEmailSend = reader.IsDBNull("tblMadeb.dtEmailSend") ? null : (DateTime?)(reader["tblMadeb.dtEmailSend"]);
+                            //_oGivenGBIDMadebVM.oMadeb.sAlias = reader.IsDBNull("tblMadeb.sAlias") ? null : (string)(reader["tblMadeb.sAlias"]);
+                            //_oGivenGBIDMadebVM.oMadeb.sApprovedReject = reader.IsDBNull("tblMadeb.sApprovedReject") ? null : (string)(reader["tblMadeb.sApprovedReject"]);
+                            //_oGivenGBIDMadebVM.oMadeb.dtReject = reader.IsDBNull("tblMadeb.dtReject") ? null : (DateTime?)(reader["tblMadeb.dtReject"]);
+                            //_oGivenGBIDMadebVM.oMadeb.dtReturnEmail = reader.IsDBNull("tblMadeb.dtReturnEmail") ? null : (DateTime?)(reader["tblMadeb.dtReturnEmail"]);
+                            ////Common Prop
+                            //_oGivenGBIDMadebVM.oMadeb.dtEntered = reader.IsDBNull("tblMadeb.dtEntered") ? null : (DateTime?)(reader["tblMadeb.dtEntered"]);
+                            //_oGivenGBIDMadebVM.oMadeb.nEnteredBy = (int)reader["tblMadeb.nEnteredBy"];
+                            //_oGivenGBIDMadebVM.oMadeb.dtUpdated = reader.IsDBNull("tblMadeb.dtUpdated") ? null : (DateTime?)(reader["tblMadeb.dtUpdated"]);
+                            //_oGivenGBIDMadebVM.oMadeb.nUpdatedBy = (int)reader["tblMadeb.nUpdatedBy"];
                         }
                         #endregion
 
@@ -179,7 +186,7 @@ namespace CTADBL.ViewModelsRepositories
                             lQualification = _lQualification,
                             lOccupation = _lOccupation,
                             lDOBApprox = _lDOBApprox,
-                            oMadeb = _oMadeb
+                            oGivenGBIDMadebVM = _oGivenGBIDMadebVM
                         };
                     }
                     finally

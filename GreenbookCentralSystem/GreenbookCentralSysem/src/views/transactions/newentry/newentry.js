@@ -262,15 +262,16 @@ export default function NewEntry(props) {
           setlOccupation(resp.data.lOccupation);
           setlProvince(resp.data.lProvince);
           setlQualification(resp.data.lQualification);
-          //Binded Fields
-          setnAuthRegionID(resp.data.oMadeb.nAuthRegionID);
-          setsGBID(resp.data.oMadeb.sGBID);
-          setsFirstName(resp.data.oMadeb.sName);
-          setsFathersName(resp.data.oMadeb.sFathersName);
-          setsOtherDocuments(resp.data.oMadeb.sDocumentAttached);
-          setsFstGreenBkNo(resp.data.oMadeb.nCurrentGBSno);
-          setsAliasName(resp.data.oMadeb.sAlias);
-          setdtFormDate(resp.data.oMadeb.dtReceived);
+          ////Binded Fields
+          setnAuthRegionID(resp.data.oGivenGBIDMadebVM.oMadeb.nAuthRegionID);
+          setsGBID(resp.data.oGivenGBIDMadebVM.oMadeb.sGBID);
+          setsFirstName(resp.data.oGivenGBIDMadebVM.oMadeb.sName);
+          setsFathersName(resp.data.oGivenGBIDMadebVM.oMadeb.sFathersName);
+          setsOtherDocuments(resp.data.oGivenGBIDMadebVM.oMadeb.sDocumentAttached);
+          setsFstGreenBkNo(resp.data.oGivenGBIDMadebVM.oMadeb.nCurrentGBSno);
+          setsAliasName(resp.data.oGivenGBIDMadebVM.oMadeb.sAlias);
+          setdtFormDate(resp.data.oGivenGBIDMadebVM.oMadeb.dtReceived);
+          setsGBID(resp.data.oGivenGBIDMadebVM.oGivenGBID.nGBId);
           setExpanded('panel1');
           setBackdrop(false);
         }

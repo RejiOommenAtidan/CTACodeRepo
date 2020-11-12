@@ -1,5 +1,4 @@
 ﻿using CTADBL.BaseClasses.Masters;
-using CTADBL.BaseClasses.Transactions;
 using System.Collections.Generic;
 
 namespace CTADBL.ViewModels
@@ -13,7 +12,7 @@ namespace CTADBL.ViewModels
         private List<Qualification> _lQualification;
         private List<Occupation> _lOccupation;
         private List<DOBApprox> _lDOBApprox;
-        private Madeb _oMadeb;
+        private GivenGBIDMadebVM _oGivenGBIDMadebVM;
         #endregion
 
         #region Public Props
@@ -23,7 +22,7 @@ namespace CTADBL.ViewModels
         public List<Qualification> lQualification { get { return _lQualification; } set { _lQualification = value; } }
         public List<Occupation> lOccupation { get { return _lOccupation; } set { _lOccupation = value; } }
         public List<DOBApprox> lDOBApprox { get { return _lDOBApprox; } set { _lDOBApprox = value; } }
-        public Madeb oMadeb { get { return _oMadeb; } set { _oMadeb = value; } }
+        public GivenGBIDMadebVM oGivenGBIDMadebVM { get { return _oGivenGBIDMadebVM; } set { _oGivenGBIDMadebVM = value; } }
         #endregion
     }
 }
