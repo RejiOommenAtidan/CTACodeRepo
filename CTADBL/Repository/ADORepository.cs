@@ -36,11 +36,19 @@ namespace CTADBL.Repository
                     while (reader.Read())
                         list.Add(PopulateRecord(reader));
                 }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
                 finally
                 {
                     // Always call Close when done reading.
                     reader.Close();
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
             finally
             {
@@ -64,11 +72,19 @@ namespace CTADBL.Repository
                         break;
                     }
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
                 finally
                 {
                     // Always call Close when done reading.
                     reader.Close();
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
             finally
             {
@@ -96,11 +112,19 @@ namespace CTADBL.Repository
                         if (record != null) list.Add(record);
                     }
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
                 finally
                 {
                     // Always call Close when done reading.
                     reader.Close();
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
             finally
             {
