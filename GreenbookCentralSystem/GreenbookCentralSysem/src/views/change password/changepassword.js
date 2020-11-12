@@ -8,6 +8,8 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { authenticationService } from '../../auth/_services';
 import handleError from '../../auth/_helpers/handleError';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeAuthDetails } from "../../actions/userAuthenticateAction";
 
 const useStyles = makeStyles({
   root: {
@@ -59,6 +61,7 @@ const useStyles = makeStyles({
 
 export default function ChangePassword() {
   let history = useHistory();
+  const dispatch = useDispatch();
   const currentUser = authenticationService.currentUserValue;
   const oUserAuthUser = JSON.parse(currentUser.UserAuthenticationReducer);
   let nUserId = oUserAuthUser.oUserAuth.oUser.id;
@@ -81,7 +84,8 @@ export default function ChangePassword() {
     axios.post(`/User/ChangePassword`, changePassword)
       .then(resp => {
         if (resp.status === 200) {
-          history.push("/Home");
+          dispatch(removeAuthDetails());
+          history.push('/Login');
         }
       })
       .catch(error => {
