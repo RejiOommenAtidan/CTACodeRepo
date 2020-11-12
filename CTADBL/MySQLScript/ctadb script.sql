@@ -661,7 +661,7 @@ CREATE TABLE `lstMadebType` (
   `sMadebType` text NOT NULL,
   `sMadebDisplayName` text NOT NULL,
   `sMadebDisplayKey` text NOT NULL,
-  `nMadebFeatureId` text NOT NULL,
+  `nMadebFeatureId` int(11) NOT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime DEFAULT NULL,
@@ -1157,8 +1157,9 @@ BEGIN
     select Id, sQualification, sQualificationID from lstQualification;
     select Id, sOccupationDesc from lstoccupation;
     select Id, sDOBApproxID, sDOBApproxName from lstDOBApprox;
-    select * from tblMadeb 
-    where nMadebTypeId = 1 and nFormNumber = nFormNumberIN;
+    select tblgivengbid.nGBId as nGBId, tblMadeb.* from tblMadeb 
+    inner join tblgivengbid on tblMadeb.nFormNumber = tblgivengbid.nFormNo
+    where tblMadeb.nMadebTypeId = 1 and tblMadeb.nFormNumber = nFormNumberIN;
 END$$
 
 DELIMITER ;

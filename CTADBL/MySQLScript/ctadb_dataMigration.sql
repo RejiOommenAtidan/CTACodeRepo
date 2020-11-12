@@ -1,5 +1,9 @@
 ﻿
 use ctadb;
+-- SELECT @@GLOBAL.sql_mode global, @@SESSION.sql_mode session;
+
+-- set session sql_mode = ''
+
 Insert into ctadb.tbluser
 (
     `tbluser`.`Id`,
