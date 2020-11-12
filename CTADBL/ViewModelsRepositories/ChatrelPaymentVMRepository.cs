@@ -33,28 +33,24 @@ namespace CTADBL.ViewModelsRepositories
         public string Add(ChatrelPaymentVM chatrelPaymentVM)
         {
 
-            _connection.Open();
+            
             ChatrelPayment chatrelPayment = chatrelPaymentVM.chatrelPayment;
             IEnumerable<GBChatrel> chatrels = chatrelPaymentVM.gbChatrels;
-            chatrelPayment.dtEntered = DateTime.Now;
-            if(chatrelPayment.nChatrelSalaryAmt > 0)
+
+            if(chatrelPayment.sPaymentMode == "Online")
             {
-                chatrelPayment.dtChatrelSalaryFrom = new DateTime((int)chatrelPayment.nChatrelYear, _FYStartMonth, _FYStartDate);
-                chatrelPayment.dtChatrelSalaryTo = new DateTime((int)chatrelPayment.nChatrelYear, _FYEndMonth, _FYEndDate);
+                chatrelPayment.sChatrelReceiptNumber = GenerateReceiptNo();
             }
+            
+            chatrelPayment.dtEntered = DateTime.Now;
+            chatrelPayment.sPaymentStatus = "Success";
 
             foreach(var chatrel in chatrels)
             {
-                chatrel.nChatrelRecieptNumber = chatrelPayment.nChatrelRecieptNumber;
-                chatrel.sPaymentCurrency = chatrelPayment.sPaymentCurrency;
+                chatrel.sChatrelReceiptNumber = chatrelPayment.sChatrelReceiptNumber;
                 chatrel.sGBId = chatrelPayment.sGBId;
                 chatrel.sPaidByGBId = chatrelPayment.sPaidByGBId;
                 chatrel.nChatrelLateFeesPercentage = chatrelPayment.nChatrelLateFeesPercentage;
-                if(chatrel.nChatrelSalaryAmt > 0)
-                {
-                    chatrel.dtChatrelSalaryFrom = chatrel.dtArrearsFrom;
-                    chatrel.dtChatrelSalaryTo = chatrel.dtArrearsTo;
-                }
                 chatrel.nEnteredBy = chatrelPayment.nEnteredBy;
                 chatrel.dtEntered = DateTime.Now;
             }
@@ -66,7 +62,7 @@ namespace CTADBL.ViewModelsRepositories
             MySqlTransaction transaction = _connection.BeginTransaction();
             command.Transaction = transaction;
             command.Connection = _connection;
-            
+            _connection.Open();
             try
             {
                 command.ExecuteNonQuery();
@@ -103,9 +99,19 @@ namespace CTADBL.ViewModelsRepositories
             }
         }
 
-        private string GenerateReceiptNo()
+        private string GenerateReceiptNo(string sPaymentMode = "Online")
         {
-            return "";
+            string sql = "SELECT IFNULL(MAX(CAST(SUBSTRING(sChatrelReceiptNumber, 4) AS UNSIGNED)), 1) AS value FROM tblchatrelpayment WHERE sPaymentMode = @sPaymentMode;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sPaymentMode", sPaymentMode);
+                command.Connection = _connection;
+                command.CommandType = CommandType.Text;
+
+                int maxNumber = Convert.ToInt32(command.ExecuteScalar());
+                return String.Format("CTA{0}", maxNumber);
+            }
+                
         }
 
         //#region Populate Records

@@ -136,9 +136,9 @@ export default function PaymentPage  (props) {
     let chartelObj = [...paymentData];
     chartelObj[index].nAuthRegionID = value.id;
     chartelObj[index].sCountryID = value.sCountryID;
-    chartelObj[index].sCurrencyCode = value.sCurrencyCode;
-    chartelObj[index].nChatrelAmount = value.sCurrencyCode === 'INR' ? chartelObj[index].nChatrelINR : chartelObj[index].nChatrelUSD;
-    chartelObj[index].nChatrelMeal = value.sCurrencyCode === 'INR' ? chartelObj[index].nChatrelMealINR : chartelObj[index].nChatrelMealUSD;
+    chartelObj[index].sPaymentCurrency = value.sPaymentCurrency;
+    chartelObj[index].nChatrelAmount = value.sPaymentCurrency === 'INR' ? chartelObj[index].nChatrelINR : chartelObj[index].nChatrelUSD;
+    chartelObj[index].nChatrelMeal = value.sPaymentCurrency === 'INR' ? chartelObj[index].nChatrelMealINR : chartelObj[index].nChatrelMealUSD;
 
     setPaymentData(chartelObj);
     calculate(index);
@@ -166,9 +166,9 @@ let len=paymentData.length  ;
 
 if(index!=len-1)
 {
-payObj[index].lateFees=(payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nChatrelSalaryAmt)/10;
+payObj[index].lateFees=(payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nCurrentChatrelSalaryAmt)/10;
 }
-payObj[index].nChatrelTotalAmount= (payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].lateFees + payObj[index].nChatrelSalaryAmt) * ((dollarToRupees && payObj[index].sCurrencyCode === 'USD') ? dollarToRupees.toFixed(4) : 1);
+payObj[index].nChatrelTotalAmount= (payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].lateFees + payObj[index].nCurrentChatrelSalaryAmt) * ((dollarToRupees && payObj[index].sPaymentCurrency === 'USD') ? dollarToRupees.toFixed(4) : 1);
 setPaymentData(payObj);
 calcTotal(paymentData ,adonation,bdonation);
 };
@@ -260,6 +260,7 @@ const submit =() =>{
             .then(resp => {
               if (resp.status === 200) {
                 console.log("resp.data is:", resp.data);
+                //resp.data.chatrelPayment.sPaymentMode = 'Offline';
                 setDataAPI(resp.data);
                 setSummaryData(resp.data.chatrelPayment);
                 calcTotal(resp.data.gbChatrels ,adonation,bdonation);
@@ -346,6 +347,7 @@ const submit =() =>{
               <br />
               <br />
            <p style={{backgroundColor: "lightblue"}}>Payment Balance</p>
+           <form onSubmit = {submit} >
            <TableContainer component={Paper}>
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
@@ -410,12 +412,12 @@ const submit =() =>{
                   )}
                 />
               </TableCell>
-              <TableCell>{row.sCurrencyCode}</TableCell>
+              <TableCell>{row.sPaymentCurrency}</TableCell>
               <TableCell align="right">{row.nChatrelAmount}</TableCell>
               <TableCell align="right">{row.nChatrelMeal}</TableCell>
               <TableCell align="right">{row.lateFees}</TableCell>
               <TableCell align="center">{ <input value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox" disabled = {row.isChild}/>}</TableCell>
-              <TableCell align="center">{(dollarToRupees && row.sCurrencyCode === 'USD') ? dollarToRupees.toFixed(4) : '-'}</TableCell>
+              <TableCell align="center">{(dollarToRupees && row.sPaymentCurrency === 'USD') ? dollarToRupees.toFixed(4) : '-'}</TableCell>
               <TableCell align="right">{row.nChatrelTotalAmount.toFixed(2) }</TableCell>
             </TableRow>
           ))}
@@ -465,8 +467,8 @@ const submit =() =>{
     <br />
            <p style={{backgroundColor: "lightblue", textAlign: "right", fontWeight: "bold"}}>Total To Pay <span style={{textAlign: "right", fontWeight: "bold"}}>&#8377; {total.toFixed(2)}</span></p>          
           
-           <div><Button variant="contained" color="primary" onClick={()=>{submit() }} >Save</Button></div>
-           
+           <div><Button variant="contained" color="primary" type = 'submit' >Save</Button></div>
+           </form>
       
         </div>
             </Grid>

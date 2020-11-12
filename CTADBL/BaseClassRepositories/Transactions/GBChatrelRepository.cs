@@ -1,4 +1,5 @@
 ﻿using CTADBL.BaseClasses.Transactions;
+using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using MySql.Data.MySqlClient;
@@ -43,55 +44,65 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Get GB Chatrel
         public IEnumerable<GBChatrel> GetAllGBChatrel()
         {
-            string sql = @"SELECT `Id`,
-                            `sGBId`,
-                            `nChatrelAmount`,
-                            `nChatrelMeal`,
-                            `nChatrelYear`,
-                            `nChatrelLateFeesPercentage`,
-                            `nArrearsAmount`,
-                            `dtArrearsFrom`,
-                            `dtArrearsTo`,
-                            `nChatrelSalaryAmt`,
-                            `dtChatrelSalaryFrom`,
-                            `dtChatrelSalaryTo`,
-                            `nChatrelBusinessDonationAmt`,
-                            `nChatrelTotalAmount`,
-                            `nChatrelRecieptNumber`,
-                            `nAuthRegionID`,
-                            `sCountryID`,
-                            `dtEntered`,
-                            `nEnteredBy`
-                        FROM `lnkgbChatrel`;";
+            string sql = @"SELECT   `lnkgbchatrel`.`Id`,
+                                    `lnkgbchatrel`.`sGBId`,
+                                    `lnkgbchatrel`.`nChatrelAmount`,
+                                    `lnkgbchatrel`.`nChatrelMeal`,
+                                    `lnkgbchatrel`.`nChatrelYear`,
+                                    `lnkgbchatrel`.`nChatrelLateFeesPercentage`,
+                                    `lnkgbchatrel`.`nArrearsAmount`,
+                                    `lnkgbchatrel`.`dtArrearsFrom`,
+                                    `lnkgbchatrel`.`dtArrearsTo`,
+                                    `lnkgbchatrel`.`nCurrentChatrelSalaryAmt`,
+                                    `lnkgbchatrel`.`dtCurrentChatrelFrom`,
+                                    `lnkgbchatrel`.`dtCurrentChatrelTo`,
+                                    `lnkgbchatrel`.`nChatrelAdditionalDonationAmt`,
+                                    `lnkgbchatrel`.`nChatrelBusinessDonationAmt`,
+                                    `lnkgbchatrel`.`nChatrelTotalAmount`,
+                                    `lnkgbchatrel`.`sChatrelReceiptNumber`,
+                                    `lnkgbchatrel`.`nAuthRegionID`,
+                                    `lnkgbchatrel`.`sCountryID`,
+                                    `lnkgbchatrel`.`sPaymentCurrency`,
+                                    `lnkgbchatrel`.`sPaidByGBId`,
+                                    `lnkgbchatrel`.`dtPayment`,
+                                    `lnkgbchatrel`.`dtEntered`,
+                                    `lnkgbchatrel`.`nEnteredBy`
+                                FROM `ctadb`.`lnkgbchatrel`
+                                LIMIT @limit;";
             using (var command = new MySqlCommand(sql))
             {
+                command.Parameters.AddWithValue("limit", Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount")));
                 return GetRecords(command);
             }
         }
 
         public GBChatrel GetGBChatrelById(string Id)
         {
-            string sql = @"SELECT `Id`,
-                            `sGBId`,
-                            `nChatrelAmount`,
-                            `nChatrelMeal`,
-                            `nChatrelYear`,
-                            `nChatrelLateFeesPercentage`,
-                            `nArrearsAmount`,
-                            `dtArrearsFrom`,
-                            `dtArrearsTo`,
-                            `nChatrelSalaryAmt`,
-                            `dtChatrelSalaryFrom`,
-                            `dtChatrelSalaryTo`,
-                            `nChatrelBusinessDonationAmt`,
-                            `nChatrelTotalAmount`,
-                            `nChatrelRecieptNumber`,
-                            `nAuthRegionID`,
-                            `sCountryID`,
-                            `dtEntered`,
-                            `nEnteredBy`
-                        FROM `lnkgbChatrel`
-                        WHERE Id = @Id;";
+            string sql = @"SELECT   `lnkgbchatrel`.`Id`,
+                                    `lnkgbchatrel`.`sGBId`,
+                                    `lnkgbchatrel`.`nChatrelAmount`,
+                                    `lnkgbchatrel`.`nChatrelMeal`,
+                                    `lnkgbchatrel`.`nChatrelYear`,
+                                    `lnkgbchatrel`.`nChatrelLateFeesPercentage`,
+                                    `lnkgbchatrel`.`nArrearsAmount`,
+                                    `lnkgbchatrel`.`dtArrearsFrom`,
+                                    `lnkgbchatrel`.`dtArrearsTo`,
+                                    `lnkgbchatrel`.`nCurrentChatrelSalaryAmt`,
+                                    `lnkgbchatrel`.`dtCurrentChatrelFrom`,
+                                    `lnkgbchatrel`.`dtCurrentChatrelTo`,
+                                    `lnkgbchatrel`.`nChatrelAdditionalDonationAmt`,
+                                    `lnkgbchatrel`.`nChatrelBusinessDonationAmt`,
+                                    `lnkgbchatrel`.`nChatrelTotalAmount`,
+                                    `lnkgbchatrel`.`sChatrelReceiptNumber`,
+                                    `lnkgbchatrel`.`nAuthRegionID`,
+                                    `lnkgbchatrel`.`sCountryID`,
+                                    `lnkgbchatrel`.`sPaymentCurrency`,
+                                    `lnkgbchatrel`.`sPaidByGBId`,
+                                    `lnkgbchatrel`.`dtPayment`,
+                                    `lnkgbchatrel`.`dtEntered`,
+                                    `lnkgbchatrel`.`nEnteredBy`
+                                FROM `ctadb`.`lnkgbchatrel`
+                                WHERE Id = @Id;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("Id", Id);
@@ -101,27 +112,31 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
         public IEnumerable<GBChatrel> GetChatrelsByGBID (string sGBID)
         {
-            string sql = @"SELECT `Id`,
-                            `sGBId`,
-                            `nChatrelAmount`,
-                            `nChatrelMeal`,
-                            `nChatrelYear`,
-                            `nChatrelLateFeesPercentage`,
-                            `nArrearsAmount`,
-                            `dtArrearsFrom`,
-                            `dtArrearsTo`,
-                            `nChatrelSalaryAmt`,
-                            `dtChatrelSalaryFrom`,
-                            `dtChatrelSalaryTo`,
-                            `nChatrelBusinessDonationAmt`,
-                            `nChatrelTotalAmount`,
-                            `nChatrelRecieptNumber`,
-                            `nAuthRegionID`,
-                            `sCountryID`,
-                            `dtEntered`,
-                            `nEnteredBy`
-                        FROM `lnkgbChatrel`
-                        WHERE sGBID = @sGBID;";
+            string sql = @"SELECT   `lnkgbchatrel`.`Id`,
+                                    `lnkgbchatrel`.`sGBId`,
+                                    `lnkgbchatrel`.`nChatrelAmount`,
+                                    `lnkgbchatrel`.`nChatrelMeal`,
+                                    `lnkgbchatrel`.`nChatrelYear`,
+                                    `lnkgbchatrel`.`nChatrelLateFeesPercentage`,
+                                    `lnkgbchatrel`.`nArrearsAmount`,
+                                    `lnkgbchatrel`.`dtArrearsFrom`,
+                                    `lnkgbchatrel`.`dtArrearsTo`,
+                                    `lnkgbchatrel`.`nCurrentChatrelSalaryAmt`,
+                                    `lnkgbchatrel`.`dtCurrentChatrelFrom`,
+                                    `lnkgbchatrel`.`dtCurrentChatrelTo`,
+                                    `lnkgbchatrel`.`nChatrelAdditionalDonationAmt`,
+                                    `lnkgbchatrel`.`nChatrelBusinessDonationAmt`,
+                                    `lnkgbchatrel`.`nChatrelTotalAmount`,
+                                    `lnkgbchatrel`.`sChatrelReceiptNumber`,
+                                    `lnkgbchatrel`.`nAuthRegionID`,
+                                    `lnkgbchatrel`.`sCountryID`,
+                                    `lnkgbchatrel`.`sPaymentCurrency`,
+                                    `lnkgbchatrel`.`sPaidByGBId`,
+                                    `lnkgbchatrel`.`dtPayment`,
+                                    `lnkgbchatrel`.`dtEntered`,
+                                    `lnkgbchatrel`.`nEnteredBy`
+                                FROM `ctadb`.`lnkgbchatrel`
+                                WHERE sGBID = @sGBID;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sGBID", sGBID);
@@ -143,15 +158,16 @@ namespace CTADBL.BaseClassRepositories.Transactions
             gbChatrel.nArrearsAmount = reader.IsDBNull("nArrearsAmount") ? null : (decimal?)reader["nArrearsAmount"];
             gbChatrel.dtArrearsFrom = reader.IsDBNull("dtArrearsFrom") ? null : (DateTime?)(reader["dtArrearsFrom"]);
             gbChatrel.dtArrearsTo = reader.IsDBNull("dtArrearsTo") ? null : (DateTime?)(reader["dtArrearsTo"]);
-            gbChatrel.nChatrelSalaryAmt = reader.IsDBNull("nChatrelSalaryAmt") ? null : (decimal?)reader["nChatrelSalaryAmt"];
-            gbChatrel.dtChatrelSalaryFrom = reader.IsDBNull("dtChatrelSalaryFrom") ? null : (DateTime?)(reader["dtChatrelSalaryFrom"]);
-            gbChatrel.dtChatrelSalaryTo = reader.IsDBNull("dtChatrelSalaryTo") ? null : (DateTime?)(reader["dtChatrelSalaryTo"]);
+            gbChatrel.nCurrentChatrelSalaryAmt = reader.IsDBNull("nCurrentChatrelSalaryAmt") ? null : (decimal?)reader["nCurrentChatrelSalaryAmt"];
+            gbChatrel.dtCurrentChatrelFrom = reader.IsDBNull("dtCurrentChatrelFrom") ? null : (DateTime?)(reader["dtCurrentChatrelFrom"]);
+            gbChatrel.dtCurrentChatrelTo = reader.IsDBNull("dtCurrentChatrelTo") ? null : (DateTime?)(reader["dtCurrentChatrelTo"]);
             gbChatrel.nChatrelAdditionalDonationAmt = reader.IsDBNull("nChatrelAdditionalDonationAmt") ? null : (decimal?)reader["nChatrelAdditionalDonationAmt"];
             gbChatrel.nChatrelBusinessDonationAmt = reader.IsDBNull("nChatrelBusinessDonationAmt") ? null : (decimal?)reader["nChatrelBusinessDonationAmt"];
             gbChatrel.nChatrelTotalAmount = reader.IsDBNull("nChatrelTotalAmount") ? null : (decimal?)reader["nChatrelTotalAmount"];
-            gbChatrel.nChatrelRecieptNumber = reader.IsDBNull("nChatrelRecieptNumber") ? null : (int?)reader["nChatrelRecieptNumber"];
+            gbChatrel.sChatrelReceiptNumber = reader.IsDBNull("sChatrelReceiptNumber") ? null : (string)reader["sChatrelReceiptNumber"];
             gbChatrel.nAuthRegionID = reader.IsDBNull("nAuthRegionID") ? null : (int?)reader["nAuthRegionID"];
             gbChatrel.sCountryID = reader.IsDBNull("sCountryID") ? null : (string)reader["sCountryID"];
+            gbChatrel.dtPayment = (DateTime)(reader["dtPayment"]);
             gbChatrel.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
             gbChatrel.nEnteredBy = (int)reader["nEnteredBy"];
             return gbChatrel;
