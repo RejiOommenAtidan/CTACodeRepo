@@ -8,7 +8,6 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { authenticationService } from '../../auth/_services';
 import handleError from '../../auth/_helpers/handleError';
-import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAuthDetails } from "../../actions/userAuthenticateAction";
 
