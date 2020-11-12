@@ -1,3 +1,5 @@
+use chatreldb;
+
 CREATE TABLE `lnkgbchatrel` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBId` varchar(255) DEFAULT NULL,
