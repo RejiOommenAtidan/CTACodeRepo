@@ -139,30 +139,34 @@ const SidebarMenu = (props) => {
         {sidebarUserbox && <SidebarUserbox />}
         <div className="sidebar-navigation">
           <ul>
-            <li>
-              <NavLink
-                activeClassName="active"
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="/Home">
-                <span className="sidebar-icon">
-                  <HomeIcon />
-                </span>
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 2)) !== undefined
+              &&
+              <li>
+                <NavLink
+                  activeClassName="active"
+                  onClick={toggleSidebarMobile}
+                  className="nav-link-simple"
+                  to="/Home">
+                  <span className="sidebar-icon">
+                    <HomeIcon />
+                  </span>
                 Home
               </NavLink>
-            </li>
-            <li>
-              <NavLink
-                activeClassName="active"
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="/Search">
-                <span className="sidebar-icon">
-                  <SearchIcon />
-                </span>
+              </li>}
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 20)) !== undefined
+              &&
+              <li>
+                <NavLink
+                  activeClassName="active"
+                  onClick={toggleSidebarMobile}
+                  className="nav-link-simple"
+                  to="/Search">
+                  <span className="sidebar-icon">
+                    <SearchIcon />
+                  </span>
                 Search
               </NavLink>
-            </li>
+              </li>}
             {authUser
               &&
               ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 13)) !== undefined
@@ -648,32 +652,34 @@ const SidebarMenu = (props) => {
                 Reports
               </NavLink>
             </li>*/}
-            <li>
-              <NavLink
-                activeClassName="active"
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="/ChangePassword">
-                <span className="sidebar-icon">
-                  <VpnKeyIcon />
-                </span>
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 19)) !== undefined
+              &&
+              <li>
+                <NavLink
+                  activeClassName="active"
+                  onClick={toggleSidebarMobile}
+                  className="nav-link-simple"
+                  to="/ChangePassword">
+                  <span className="sidebar-icon">
+                    <VpnKeyIcon />
+                  </span>
                 Change Password
               </NavLink>
-            </li>
+              </li>}
             {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
               &&
-            <li>
-              <NavLink
-                activeClassName="active"
-                onClick={toggleSidebarMobile}
-                className="nav-link-simple"
-                to="/Chatrel">
-                <span className="sidebar-icon">
-                  <HomeIcon />
-                </span>
+              <li>
+                <NavLink
+                  activeClassName="active"
+                  onClick={toggleSidebarMobile}
+                  className="nav-link-simple"
+                  to="/Chatrel">
+                  <span className="sidebar-icon">
+                    <HomeIcon />
+                  </span>
                 Chatrel
               </NavLink>
-            </li>
+              </li>
             }
           </ul>
         </div>

@@ -69,7 +69,7 @@ const NewGreenBookSerial = lazy(() => import('./views/transactions/newgreenbooks
 const Search = lazy(() => import('./views/search/index'));
 
 //Chatrel Payment Pages
-const Chatrel = lazy(() => import('./views/chatrelhome')); 
+const Chatrel = lazy(() => import('./views/chatrelhome'));
 const ChatrelPay = lazy(() => import('./views/chatrelpay'));
 const MainPage = lazy(() => import('./views/chatrelpay/mainpage'));
 const PaymentPage = lazy(() => import('./views/chatrelpay/paymentpage'));
@@ -78,9 +78,9 @@ const PaymentPage = lazy(() => import('./views/chatrelpay/paymentpage'));
 const Routes = () => {
   const location = useLocation();
   const oUserAuth = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
-  if(oUserAuth!==null)
-    axios.defaults.headers.common['Authorization'] = "Bearer "+oUserAuth.sJWTToken;
-    
+  if (oUserAuth !== null)
+    axios.defaults.headers.common['Authorization'] = "Bearer " + oUserAuth.sJWTToken;
+
   const pageVariants = {
     initial: {
       opacity: 0
@@ -100,7 +100,7 @@ const Routes = () => {
   };
 
   const SuspenseLoading = () => {
-    
+
     const [show, setShow] = useState(false);
     useEffect(() => {
       let timeout = setTimeout(() => setShow(true), 300);
@@ -137,7 +137,7 @@ const Routes = () => {
       </>
     );
   };
-  
+
   return (
     <ThemeProvider theme={MuiTheme}>
       <AnimatePresence>
@@ -234,12 +234,12 @@ const Routes = () => {
                     animate="in"
                     exit="out"
                     variants={pageVariants}
-                    transition={pageTransition}>               
-                    <Route path="/Home" component={Home} />
-                    <Route path="/Greenbooks" component={Greenbook} />
-                    <Route path="/NewGreenBookSerial" component={NewGreenBookSerial} />
-                    
+                    transition={pageTransition}>
+                    <PrivateRoute path="/Greenbooks" feature={7} component={Greenbook} />
+                    <PrivateRoute path="/NewGreenBookSerial" feature={11} component={NewGreenBookSerial} />
+
                     {/*Private Routes Go Here*/}
+                    <PrivateRoute path="/Home" feature={2} component={Home} />
                     <PrivateRoute path="/GivenGBID" feature={3} component={GivenGBID} />
                     <PrivateRoute path="/DeleteGB" feature={4} component={DeleteGB} />
                     <PrivateRoute path="/Users" feature={5} component={Users} />
