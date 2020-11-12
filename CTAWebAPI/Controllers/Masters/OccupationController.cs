@@ -176,7 +176,7 @@ namespace CTAWebAPI.Controllers.Masters
 
                             #region Alert Logging
                             CTALogger logger = new CTALogger(_info);
-                            logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, occupationToUpdate.nEnteredBy);
+                            logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, occupationToUpdate.nUpdatedBy);
                             #endregion
 
                             return Ok(string.Format("Occupation with ID: {0} updated Successfully", occupationId));

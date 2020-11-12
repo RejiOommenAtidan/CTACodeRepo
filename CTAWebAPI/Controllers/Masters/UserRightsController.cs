@@ -175,8 +175,9 @@ namespace CTAWebAPI.Controllers.Masters
                         #endregion
 
                         #region Alert Logging 
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, userrights.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, userrights.nUpdatedBy);
                         #endregion
+
                         return Ok("UserRights with ID: " + ID + " updated Successfully");
                     }
                     else

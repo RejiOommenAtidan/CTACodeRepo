@@ -193,9 +193,8 @@ namespace CTAWebAPI.Controllers.Transactions
                         string currentMethodName = MethodBase.GetCurrentMethod().Name;
                         string sDescription = currentMethodName + " Method Called";
                         CTALogger logger = new CTALogger(_info);
-                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, null, issueBook.nEnteredBy);
+                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, null, issueBook.nUpdatedBy);
                         #endregion
-
 
                         return Ok("IssueBook with ID: " + Id + " updated Successfully");
                     }

@@ -88,7 +88,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 sFileExtension = reader.IsDBNull("sFileExtension") ? null : (string?)reader["sFileExtension"],
                 nRegisterDate = reader.IsDBNull("nRegisterDate") ? null : (int?)reader["nRegisterDate"],
                 dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)reader["dtEntered"],
-                nEnteredBy = reader.IsDBNull("nEnteredBy") ? null : (int?)reader["nEnteredBy"],
+                nEnteredBy = (int)(reader["nEnteredBy"]),
                 binFileDoc = binFileDoc
             };
             return document;

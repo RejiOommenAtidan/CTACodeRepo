@@ -12,7 +12,7 @@ namespace CTADBL.BaseClasses.Transactions
         private string _sGBID;
         private string _sNote;
         private DateTime? _dtEntered;
-        private int? _nEnteredBy;
+        private int _nEnteredBy;
         #endregion
 
         #region Public GBNote Properties
@@ -21,7 +21,7 @@ namespace CTADBL.BaseClasses.Transactions
         public string sGBID { get { return _sGBID; } set { _sGBID = value; } }
         public string sNote { get { return _sNote; } set { _sNote = value; } }    
         public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
-        public int? nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
+        public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
         #endregion
     }
 }

@@ -11,7 +11,7 @@ namespace CTAWebAPI.Services
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly ActionLoggerRepository _actionLoggerRepository;
-        public static  AuditLogRepository _auditLogRepository;
+        public static AuditLogRepository _auditLogRepository;
         public CTALogger(DBConnectionInfo info)
         {
             _info = info;
@@ -30,7 +30,7 @@ namespace CTAWebAPI.Services
         /// <param name="sDescription">Description</param>
         /// <param name="sStackTrace">Stack Trace</param>
         /// <param name="nEnteredBy">User ID</param>
-        public void LogRecord(string sActionType,string sModuleName,string sEventName,string sDescription, [Optional] string sStackTrace, [Optional] int? nEnteredBy)
+        public void LogRecord(string sActionType, string sModuleName, string sEventName, string sDescription, [Optional] string sStackTrace, int nEnteredBy = 1)
         {
             #region Add Record
             try
@@ -49,7 +49,7 @@ namespace CTAWebAPI.Services
             }
             catch (Exception ex)
             {
-                throw new Exception("Exception Occured while Logging, Exception Message: "+ex.Message);
+                throw new Exception("Exception Occured while Logging, Exception Message: " + ex.Message);
             }
             #endregion
         }
@@ -67,7 +67,7 @@ namespace CTAWebAPI.Services
         /// <param name="nFeatureID">Feature ID</param>
         /// <param name="nRecordID">Record ID</param>
         /// <param name="nEnteredBy">UserID UI</param>
-        public static void LogAuditRecord<T>(T oOld, T oNew, string sGBID, int? nRegionID,int nFeatureID, int nRecordID, int nEnteredBy) where T : class
+        public static void LogAuditRecord<T>(T oOld, T oNew, string sGBID, int? nRegionID, int nFeatureID, int nRecordID, int nEnteredBy) where T : class
         {
             #region Add Audit Record
             try

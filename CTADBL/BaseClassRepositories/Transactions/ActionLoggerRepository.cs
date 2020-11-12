@@ -92,7 +92,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 sDescription = reader.IsDBNull("sDescription") ? null : (string)(reader["sDescription"]),
                 sStackTrace = reader.IsDBNull("sStackTrace") ? null : (string)(reader["sStackTrace"]),
                 dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
-                nEnteredBy = (int?)reader["nEnteredBy"]
+                nEnteredBy = (int)reader["nEnteredBy"]
             };
         }
         #endregion

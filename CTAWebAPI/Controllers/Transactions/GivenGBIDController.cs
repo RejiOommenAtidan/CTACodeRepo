@@ -167,7 +167,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _givenGBIDRepository.Update(givenGBID);
 
                         #region Alert Logging
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, givenGBID.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, givenGBID.nUpdatedBy);
                         #endregion
 
                         return Ok("Given GB with ID: " + Id + " updated Successfully");

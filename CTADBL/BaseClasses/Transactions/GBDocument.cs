@@ -16,7 +16,7 @@ namespace CTADBL.BaseClasses.Transactions
         private string? _sFileExtension;
         private int? _nRegisterDate;
         private DateTime? _dtEntered;
-        private int? _nEnteredBy;
+        private int _nEnteredBy;
         #endregion
 
         #region Public GBDocument Properties
@@ -29,7 +29,7 @@ namespace CTADBL.BaseClasses.Transactions
         public string? sFileExtension { get { return _sFileExtension; } set { _sFileExtension = value; } }
         public int? nRegisterDate { get { return _nRegisterDate; } set { _nRegisterDate = value; } }
         public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
-        public int? nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
+        public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
         #endregion
     }
 }

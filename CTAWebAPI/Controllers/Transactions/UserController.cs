@@ -215,7 +215,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         #endregion
 
                         #region Alert Logging 
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, user.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, user.nUpdatedBy);
                         #endregion
 
                         return Ok("User with ID: " + Id + " updated Successfully");

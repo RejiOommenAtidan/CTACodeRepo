@@ -16,7 +16,7 @@ namespace CTADBL.BaseClasses.Transactions
         private string? _sChildID;
         private string? _sGBIDChild;
         private DateTime? _dtEntered = null;
-        private int? _nEnteredBy = null;
+        private int _nEnteredBy;
         #endregion
 
         #region Public Properties
@@ -113,7 +113,7 @@ namespace CTADBL.BaseClasses.Transactions
             }
         }
 
-        public int? nEnteredBy
+        public int nEnteredBy
         {
             get
             {

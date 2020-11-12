@@ -65,7 +65,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 sChildID = reader.IsDBNull("sChildID") ? null : (string)reader["sChildID"],
                 sGBIDChild = reader.IsDBNull("sGBIDChild") ? null : (string)reader["sGBIDChild"],
                 dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
-                nEnteredBy = reader.IsDBNull("nEnteredBy") ? null : (int?)(reader["nEnteredBy"])
+                nEnteredBy = (int)(reader["nEnteredBy"])
             };
             
             

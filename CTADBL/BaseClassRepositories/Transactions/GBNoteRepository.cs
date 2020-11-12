@@ -89,7 +89,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 sGBID = reader.IsDBNull("sGBID") ? null : (string)reader["sGBID"],
                 sNote = reader.IsDBNull("sNote") ? null : (string)reader["sNote"],
                 dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
-                nEnteredBy = reader.IsDBNull("nEnteredBy") ? null : (int?)reader["nEnteredBy"]
+                nEnteredBy = (int)(reader["nEnteredBy"])
             };
 
             return note;

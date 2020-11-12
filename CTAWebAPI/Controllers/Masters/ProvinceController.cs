@@ -181,7 +181,7 @@ namespace CTAWebAPI.Controllers.Masters
 
                             #region Alert Logging
                             CTALogger logger = new CTALogger(_info);
-                            logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, provinceToUpdate.nEnteredBy);
+                            logger.LogRecord(((Operations)3).ToString(), GetType().Name.Replace("Controller", ""), ((LogLevels)2).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", null, provinceToUpdate.nUpdatedBy);
                             #endregion
 
                             Province updatedProvince = _provinceRepository.GetProvinceById(provinceID);

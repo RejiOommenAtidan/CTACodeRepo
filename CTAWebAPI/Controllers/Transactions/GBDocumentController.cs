@@ -17,19 +17,15 @@ namespace CTAWebAPI.Controllers.Masters
     [ApiController]
     public class GBDocumentController : ControllerBase
     {
+        #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly GBDocumentRepository _gbDocumentRepository;
-
-        #region Constructor
-
         public GBDocumentController(DBConnectionInfo info)
         {
             _info = info;
             _gbDocumentRepository = new GBDocumentRepository(_info.sConnectionString);
         }
         #endregion
-
-      
 
         #region Delete Call
         [HttpPost]
@@ -74,6 +70,5 @@ namespace CTAWebAPI.Controllers.Masters
             #endregion
         }
         #endregion
-
     }
 }

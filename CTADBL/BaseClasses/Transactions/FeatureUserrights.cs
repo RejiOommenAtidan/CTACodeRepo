@@ -13,7 +13,7 @@ namespace CTADBL.BaseClasses.Transactions
         private int? _nUserRightsID;
         private bool _bRights;
         private DateTime? _dtEntered;
-        private int? _nEnteredBy;
+        private int _nEnteredBy;
         #endregion
 
         #region Public FeatureUserrights Properties
@@ -23,7 +23,7 @@ namespace CTADBL.BaseClasses.Transactions
         public int? nUserRightsID { get { return _nUserRightsID; } set { _nUserRightsID = value; } }
         public bool bRights { get { return _bRights; } set { _bRights = value; } }
         public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
-        public int? nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
+        public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
         #endregion
     }
 }

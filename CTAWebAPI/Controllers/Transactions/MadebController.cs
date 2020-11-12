@@ -427,7 +427,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         string currentMethodName = MethodBase.GetCurrentMethod().Name;
                         string sDescription = currentMethodName + " Method Called";
                         CTALogger logger = new CTALogger(_info);
-                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, null, madeb.nEnteredBy);
+                        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, null, madeb.nUpdatedBy);
                         #endregion
 
                         

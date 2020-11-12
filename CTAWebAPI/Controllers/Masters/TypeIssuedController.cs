@@ -103,6 +103,7 @@ namespace CTAWebAPI.Controllers.Masters
                     #region Information Logging
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, typeissued.nEnteredBy);
                     #endregion
+
                     return Ok(typeissued);
                 }
                 else
@@ -116,7 +117,7 @@ namespace CTAWebAPI.Controllers.Masters
             catch (Exception ex)
             {
                 #region Exception Logging
-                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace, typeissued.nEnteredBy);
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message,ex.StackTrace, typeissued.nUpdatedBy);
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }

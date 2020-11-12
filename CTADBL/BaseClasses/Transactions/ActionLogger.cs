@@ -7,7 +7,7 @@ namespace CTADBL.BaseClasses.Transactions
     [Table("tblactionlogger")]
     public class ActionLogger
     {
-        #region Private ActionLog Properties 
+        #region Private ActionLogger Properties 
         private int _Id;
         private string _sActionType;
         private string _sModuleName;
@@ -15,10 +15,10 @@ namespace CTADBL.BaseClasses.Transactions
         private string _sDescription;    
         private string _sStackTrace=null;
         private DateTime? _dtEntered;
-        private int? _nEnteredBy=null;
+        private int _nEnteredBy;
         #endregion
 
-        #region Public ActionLog Properties
+        #region Public ActionLogger Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
         public string sActionType { get { return _sActionType; } set { _sActionType = value; } }
@@ -27,7 +27,7 @@ namespace CTADBL.BaseClasses.Transactions
         public string sDescription { get { return _sDescription; } set { _sDescription = value; } }
         public string sStackTrace { get { return _sStackTrace; } set { _sStackTrace = value; } }
         public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
-        public int? nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
+        public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
         #endregion
     }
 }

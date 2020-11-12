@@ -495,7 +495,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         #endregion
 
                         #region Alert Logging 
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, greenbook.nEnteredBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, greenbook.nUpdatedBy);
                         #endregion
 
                         return Ok("Greenbook with ID: " + Id + " updated Successfully");
@@ -1029,7 +1029,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _gbDocumentRepository.Update(gBDocument);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedGBDocument, gBDocument, fetchedGBDocument.sGBID, fetchedGB.nAuthRegionID, 7, fetchedGBDocument.Id, (int)gBDocument.nEnteredBy);
+                        CTALogger.LogAuditRecord(fetchedGBDocument, gBDocument, fetchedGBDocument.sGBID, fetchedGB.nAuthRegionID, 7, fetchedGBDocument.Id, gBDocument.nEnteredBy);
                         #endregion
 
                         #region Alert Logging 
