@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import {
   Container,
   Grid,
@@ -12,72 +12,76 @@ import {
   FormControl,
   TextField,
   Table,
-  IconButton
-} from '@material-ui/core';
+  IconButton,
+  Paper,
+} from "@material-ui/core";
 
-import {useSelector} from 'react-redux';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DeleteIcon from '@material-ui/icons/Delete';
-import {AddDocumentDialog,EditDocumentDialog} from './dialogDocument';
-import {AddChildDialog,EditChildDialog} from './dialogChildren';
-import {AddNoteDialog,EditNoteDialog} from './dialogNote';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { useSelector } from "react-redux";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { AddDocumentDialog, EditDocumentDialog } from "./dialogDocument";
+import { AddChildDialog, EditChildDialog } from "./dialogChildren";
+import { AddNoteDialog, EditNoteDialog } from "./dialogNote";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import _ from "lodash/fp";
-import { red } from '@material-ui/core/colors';
-import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import DateFnsUtils from '@date-io/date-fns';
-import Moment from 'moment';
+import { red } from "@material-ui/core/colors";
+import axios from "axios";
+import { makeStyles } from "@material-ui/core/styles";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import DateFnsUtils from "@date-io/date-fns";
+import Moment from "moment";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
-} from '@material-ui/pickers';
-import handleError from '../../../auth/_helpers/handleError';
-import { sDateFormat, sDateFormatMUIDatepicker } from '../../../config/commonConfig';
-import {IssueBookTable} from '../issuebooktable';
-import { BackdropComponent } from '../../backdrop/pageBackDrop';
+} from "@material-ui/pickers";
+import handleError from "../../../auth/_helpers/handleError";
+import {
+  sDateFormat,
+  sDateFormatMUIDatepicker,
+} from "../../../config/commonConfig";
+import { IssueBookTable } from "../issuebooktable";
+import { BackdropComponent } from "../../backdrop/pageBackDrop";
 
 const useStyles = makeStyles({
   root: {
-    height: '100%',
+    height: "100%",
     paddingBottom: 3,
     paddingTop: 3,
     flexGrow: 1,
-    'label + &': {
-      marginTop: 3
-    }
+    "label + &": {
+      marginTop: 3,
+    },
   },
   selectEmpty: {
     marginTop: 1.5,
   },
   formControl: {
     margin: 2,
-    width: '95%'
+    width: "95%",
   },
   paper: {
     padding: 2,
-    textAlign: 'center'
+    textAlign: "center",
   },
   textField: {
     marginTop: 0.15,
-    marginBottom: 0.15
+    marginBottom: 0.15,
   },
   dateField: {
     marginTop: 0.25,
-    marginBottom: 0.25
+    marginBottom: 0.25,
   },
   box: {
     marginBottom: 1.5,
-    marginTop: 1.5
+    marginTop: 1.5,
   },
   button: {
     margin: 1,
@@ -87,47 +91,47 @@ const useStyles = makeStyles({
       main: red[500],
     },
     secondary: {
-      main: '#11cb5f',
+      main: "#11cb5f",
     },
   },
   heading: {
     fontSize: 15,
     fontWeight: 10,
-    flexBasis: '33.33%',
-    flexShrink: 0
+    flexBasis: "33.33%",
+    flexShrink: 0,
   },
-  border: '1px solid rgba(0, 0, 0, .125)',
-  boxShadow: 'none',
-  '&:not(:last-child)': {
-    borderBottom: 0
+  border: "1px solid rgba(0, 0, 0, .125)",
+  boxShadow: "none",
+  "&:not(:last-child)": {
+    borderBottom: 0,
   },
-  '&:before': {
-    display: 'none'
+  "&:before": {
+    display: "none",
   },
-  '&$expanded': {
-    margin: 'auto'
+  "&$expanded": {
+    margin: "auto",
   },
   option: {
     fontSize: 10,
-    '& > span': {
+    "& > span": {
       marginRight: 5,
-      fontSize: 16
-    }
+      fontSize: 16,
+    },
   },
-  expansionPanel:{
-    backgroundColor:'#4e5287'
+  expansionPanel: {
+    backgroundColor: "#4e5287",
   },
-  expansionHeading:{
-    color:'#ffffff'
-  }
+  expansionHeading: {
+    color: "#ffffff",
+  },
 });
 
 export default function EditEntry(props) {
-  Moment.locale('en');
+  Moment.locale("en");
   const [backdrop, setBackdrop] = React.useState(true);
   const classes = useStyles();
   let history = useHistory();
-  const [expanded, setExpanded] = React.useState('');
+  const [expanded, setExpanded] = React.useState("");
   //Master List from API
   const [lAuthRegion, setlAuthRegion] = useState([]);
   const [lCountry, setlCountry] = useState([]);
@@ -136,28 +140,28 @@ export default function EditEntry(props) {
   const [lProvince, setlProvince] = useState([]);
   const [lQualification, setlQualification] = useState([]);
 
-   //Linking Lists from API
-   const [lGBChildren, setlGBChildren] = useState([]);
-   const [lGBDocument, setlGBDocument] = useState([]);
-   const [lGBNote, setlGBNote] = useState([]);
+  //Linking Lists from API
+  const [lGBChildren, setlGBChildren] = useState([]);
+  const [lGBDocument, setlGBDocument] = useState([]);
+  const [lGBNote, setlGBNote] = useState([]);
 
-   //Note
-   const [addNoteModal, setaddNoteModal] = useState(false);
-   const [editNoteModal, seteditNoteModal] = useState(false);
-   const [oNote, setoNote] = useState({});
-  
-   //Child
-   const [addChildModal, setaddChildModal] = useState(false);
-   const [editChildModal, seteditChildModal] = useState(false);
-   const [oChild, setoChild] = useState({});
+  //Note
+  const [addNoteModal, setaddNoteModal] = useState(false);
+  const [editNoteModal, seteditNoteModal] = useState(false);
+  const [oNote, setoNote] = useState({});
 
-   //Document
-   const [addDocumentModal, setaddDocumentModal] = useState(false);
-   const [editDocumentModal, seteditDocumentModal] = useState(false);
-   const [oDocument, setoDocument] = useState({});
-   const [openDeleteDialog, setopenDeleteDialog] = React.useState(false);
-   const [oDelete, setoDelete] = React.useState({});
-   const handleDeleteDialogClickOpen = (rowObject) => {
+  //Child
+  const [addChildModal, setaddChildModal] = useState(false);
+  const [editChildModal, seteditChildModal] = useState(false);
+  const [oChild, setoChild] = useState({});
+
+  //Document
+  const [addDocumentModal, setaddDocumentModal] = useState(false);
+  const [editDocumentModal, seteditDocumentModal] = useState(false);
+  const [oDocument, setoDocument] = useState({});
+  const [openDeleteDialog, setopenDeleteDialog] = React.useState(false);
+  const [oDelete, setoDelete] = React.useState({});
+  const handleDeleteDialogClickOpen = (rowObject) => {
     setopenDeleteDialog(true);
     setoDelete(rowObject);
   };
@@ -167,252 +171,260 @@ export default function EditEntry(props) {
     setoDelete({});
   };
 
-   //Modal Functions - Note
-   const handleEditNoteRowClick=(row)=>{
+  //Modal Functions - Note
+  const handleEditNoteRowClick = (row) => {
     setoNote({
-      id:row.id,
-      sNote:row.sNote,
-      sGBID:sGBID
+      id: row.id,
+      sNote: row.sNote,
+      sGBID: sGBID,
     });
     seteditNoteModal(true);
-   };
+  };
 
-   const handleAddNoteClickClose = () => {
+  const handleAddNoteClickClose = () => {
     setaddNoteModal(false);
-    };
-   
-    const addNoteAPICall = (sNote) => {
+  };
+
+  const addNoteAPICall = (sNote) => {
     let noteObj = {
-      sGBID:sGBID,
-      sNote:sNote
+      sGBID: sGBID,
+      sNote: sNote,
     };
-    axios.post(`/Greenbook/AddNote`, noteObj)
-      .then(resp => {
+    axios
+      .post(`/Greenbook/AddNote`, noteObj)
+      .then((resp) => {
         if (resp.status === 200) {
           setlGBNote(resp.data);
           setaddNoteModal(false);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         handleError(error, history);
       })
-      .then(release => {
+      .then((release) => {
         //console.log(release); => udefined
       });
-    };
+  };
 
   const handleEditNoteClickClose = () => {
     seteditNoteModal(false);
   };
-   
+
   const editNoteAPICall = (oNote) => {
-    axios.post(`/Greenbook/EditNote/Id=`+oNote.id, oNote)
-      .then(resp => {
+    axios
+      .post(`/Greenbook/EditNote/Id=` + oNote.id, oNote)
+      .then((resp) => {
         if (resp.status === 200) {
           setlGBNote(resp.data);
           seteditNoteModal(false);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         handleError(error, history);
       })
-      .then(release => {
+      .then((release) => {
         //console.log(release); => udefined
       });
   };
 
-
   //Modal Functions - Child
-  const handleEditChildRowClick=(row)=>{
+  const handleEditChildRowClick = (row) => {
     setoChild({
-      id:row.id,
-      sGBIDParent:row.sGBIDParent,
-      sName:row.sName,
-      dtDOB:row.dtDOB,
-      sGender:row.sGender,
-      sChildID:row.sChildID,
-      sGBIDChild:row.sGBIDChild
+      id: row.id,
+      sGBIDParent: row.sGBIDParent,
+      sName: row.sName,
+      dtDOB: row.dtDOB,
+      sGender: row.sGender,
+      sChildID: row.sChildID,
+      sGBIDChild: row.sGBIDChild,
     });
     seteditChildModal(true);
-   };
+  };
 
-   const handleAddChildClickClose = () => {
+  const handleAddChildClickClose = () => {
     setaddChildModal(false);
-    };
-   
-    const addChildAPICall = (childObj) => {
-    axios.post(`/Greenbook/AddChild`, childObj)
-      .then(resp => {
+  };
+
+  const addChildAPICall = (childObj) => {
+    axios
+      .post(`/Greenbook/AddChild`, childObj)
+      .then((resp) => {
         if (resp.status === 200) {
           setlGBChildren(resp.data);
           setaddChildModal(false);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         handleError(error, history);
       })
-      .then(release => {
+      .then((release) => {
         //console.log(release); => udefined
       });
-    };
+  };
 
   const handleEditChildClickClose = () => {
     seteditChildModal(false);
   };
-   
+
   const editChildAPICall = (childObj) => {
-    axios.post(`/Greenbook/EditChild/Id=`+childObj.id, childObj)
-      .then(resp => {
+    axios
+      .post(`/Greenbook/EditChild/Id=` + childObj.id, childObj)
+      .then((resp) => {
         if (resp.status === 200) {
           setlGBChildren(resp.data);
-          seteditChildModal(false);  
+          seteditChildModal(false);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         handleError(error, history);
       })
-      .then(release => {
+      .then((release) => {
         //console.log(release); => udefined
       });
   };
 
-
   //Modal Functions  - Document
-  const handleEditDocumentRowClick=(row)=>{
+  const handleEditDocumentRowClick = (row) => {
     setoDocument({
-      id:row.id,
+      id: row.id,
       sGBID: row.sGBID,
       sTitle: row.sTitle,
       sDocType: row.sDocType,
       binFileDoc: row.binFileDoc,
       sFileExtension: row.sFileExtension,
-      nRegisterDate: row.nRegisterDate
+      nRegisterDate: row.nRegisterDate,
     });
     seteditDocumentModal(true);
-   };
+  };
 
-   const handleDeleteDocumentRowClick=()=>{
+  const handleDeleteDocumentRowClick = () => {
     //console.log(oDelete);
-    axios.post(`/Greenbook/DeleteDocument`, oDelete)
-      .then(resp => {
+    axios
+      .post(`/Greenbook/DeleteDocument`, oDelete)
+      .then((resp) => {
         if (resp.status === 200) {
           setlGBDocument(resp.data);
           handleDeleteDialogClose();
         }
       })
-      .catch(error => {
+      .catch((error) => {
         handleError(error, history);
       })
-      .then(release => {
+      .then((release) => {
         //console.log(release); => udefined
       });
-   };
+  };
 
-   const handleAddDocumentClickClose = () => {
+  const handleAddDocumentClickClose = () => {
     setaddDocumentModal(false);
-    };
-   
-    const addDocumentAPICall = (documentObject) => {
+  };
+
+  const addDocumentAPICall = (documentObject) => {
     //console.log(documentObject);
-    axios.post(`/Greenbook/AddDocument`, documentObject)
-      .then(resp => {
+    axios
+      .post(`/Greenbook/AddDocument`, documentObject)
+      .then((resp) => {
         if (resp.status === 200) {
           setlGBDocument(resp.data);
           setaddDocumentModal(false);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         handleError(error, history);
       })
-      .then(release => {
+      .then((release) => {
         //console.log(release); => udefined
       });
-    };
+  };
 
   const handleEditDocumentClickClose = () => {
     seteditDocumentModal(false);
   };
-   
+
   const editDocumentAPICall = (documentObject) => {
     console.log(documentObject);
-    axios.post(`/Greenbook/EditDocument/Id=`+documentObject.id, documentObject)
-      .then(resp => {
+    axios
+      .post(`/Greenbook/EditDocument/Id=` + documentObject.id, documentObject)
+      .then((resp) => {
         if (resp.status === 200) {
           setlGBDocument(resp.data);
           seteditDocumentModal(false);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         handleError(error, history);
       })
-      .then(release => {
+      .then((release) => {
         //console.log(release); => udefined
       });
   };
 
   //VARS to track
-  const [Id, setnId] = useState('');
-  const [sGBID, setsGBID] = useState('');
-  const [nAuthRegionID, setnAuthRegionID] = useState('');
-  const [sFirstName, setsFirstName] = useState('');
-  const [sMiddleName, setsMiddleName] = useState('');
-  const [sFamilyName, setsFamilyName] = useState('');
-  const [sGender, setsGender] = useState('');
+  const [Id, setnId] = useState("");
+  const [sGBID, setsGBID] = useState("");
+  const [nAuthRegionID, setnAuthRegionID] = useState("");
+  const [sFirstName, setsFirstName] = useState("");
+  const [sMiddleName, setsMiddleName] = useState("");
+  const [sFamilyName, setsFamilyName] = useState("");
+  const [sGender, setsGender] = useState("");
   const [dtDOB, setdtDOB] = useState(new Date());
-  const [sDOBApprox, setsDOBApprox] = useState('');
-  const [sBirthPlace, setsBirthPlace] = useState('');
-  const [sBirthCountryID, setsBirthCountryID] = useState('');
-  const [sOriginVillage, setsOriginVillage] = useState('');
-  const [sOriginProvinceID, setsOriginProvinceID] = useState('');
-  const [sMarried, setsMarried] = useState('');
-  const [sOtherDocuments, setsOtherDocuments] = useState('');
-  const [sResidenceNumber, setsResidenceNumber] = useState('');
-  const [sQualificationID, setsQualificationID] = useState('');
-  const [sOccupationID, setsOccupationID] = useState('');
-  const [sAliasName, setsAliasName] = useState('');
-  const [sOldGreenBKNo, setsOldGreenBKNo] = useState('');
-  const [sFstGreenBkNo, setsFstGreenBkNo] = useState('');
+  const [sDOBApprox, setsDOBApprox] = useState("");
+  const [sBirthPlace, setsBirthPlace] = useState("");
+  const [sBirthCountryID, setsBirthCountryID] = useState("");
+  const [sOriginVillage, setsOriginVillage] = useState("");
+  const [sOriginProvinceID, setsOriginProvinceID] = useState("");
+  const [sMarried, setsMarried] = useState("");
+  const [sOtherDocuments, setsOtherDocuments] = useState("");
+  const [sResidenceNumber, setsResidenceNumber] = useState("");
+  const [sQualificationID, setsQualificationID] = useState("");
+  const [sOccupationID, setsOccupationID] = useState("");
+  const [sAliasName, setsAliasName] = useState("");
+  const [sOldGreenBKNo, setsOldGreenBKNo] = useState("");
+  const [sFstGreenBkNo, setsFstGreenBkNo] = useState("");
   const [dtFormDate, setdtFormDate] = useState(new Date());
-  const [sFathersName, setsFathersName] = useState('');
-  const [sFathersID, setsFathersID] = useState('');
-  const [sFathersGBID, setsFathersGBID] = useState('');
-  const [sMothersName, setsMothersName] = useState('');
-  const [sMothersID, setsMothersID] = useState('');
-  const [sMothersGBID, setsMothersGBID] = useState('');
-  const [sSpouseName, setsSpouseName] = useState('');
-  const [sSpouseID, setsSpouseID] = useState('');
-  const [sSpouseGBID, setsSpouseGBID] = useState('');
+  const [sFathersName, setsFathersName] = useState("");
+  const [sFathersID, setsFathersID] = useState("");
+  const [sFathersGBID, setsFathersGBID] = useState("");
+  const [sMothersName, setsMothersName] = useState("");
+  const [sMothersID, setsMothersID] = useState("");
+  const [sMothersGBID, setsMothersGBID] = useState("");
+  const [sSpouseName, setsSpouseName] = useState("");
+  const [sSpouseID, setsSpouseID] = useState("");
+  const [sSpouseGBID, setsSpouseGBID] = useState("");
   const [nChildrenM, setnChildrenM] = useState(0);
   const [nChildrenF, setnChildrenF] = useState(0);
-  const [sAddress1, setsAddress1] = useState('');
-  const [sAddress2, setsAddress2] = useState('');
-  const [sCity, setsCity] = useState('');
-  const [sState, setsState] = useState('');
-  const [sPCode, setsPCode] = useState('');
-  const [sCountryID, setsCountryID] = useState('');
-  const [sEmail, setsEmail] = useState('');
-  const [sPhone, setsPhone] = useState('');
-  const [sFax, setsFax] = useState('');
+  const [sAddress1, setsAddress1] = useState("");
+  const [sAddress2, setsAddress2] = useState("");
+  const [sCity, setsCity] = useState("");
+  const [sState, setsState] = useState("");
+  const [sPCode, setsPCode] = useState("");
+  const [sCountryID, setsCountryID] = useState("");
+  const [sEmail, setsEmail] = useState("");
+  const [sPhone, setsPhone] = useState("");
+  const [sFax, setsFax] = useState("");
   const [dtDeceased, setdtDeceased] = useState(new Date());
-  const [sBookIssued, setsBookIssued] = useState('');
+  const [sBookIssued, setsBookIssued] = useState("");
   const [dtValidityDate, setdtValidityDate] = useState(new Date());
-  const [sPaidUntil, setsPaidUntil] = useState('');
-  const [sEnteredDateTime, setsEnteredDateTime] = useState('');
-  const [TibetanName, setTibetanName] = useState('');
-  const [TBUPlaceOfBirth, setTBUPlaceOfBirth] = useState('');
-  const [TBUOriginVillage, setTBUOriginVillage] = useState('');
-  const [TBUFathersName, setTBUFathersName] = useState('');
-  const [TBUMothersName, setTBUMothersName] = useState('');
-  const [TBUSpouseName, setTBUSpouseName] = useState('');
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const [sPaidUntil, setsPaidUntil] = useState("");
+  const [sEnteredDateTime, setsEnteredDateTime] = useState("");
+  const [TibetanName, setTibetanName] = useState("");
+  const [TBUPlaceOfBirth, setTBUPlaceOfBirth] = useState("");
+  const [TBUOriginVillage, setTBUOriginVillage] = useState("");
+  const [TBUFathersName, setTBUFathersName] = useState("");
+  const [TBUMothersName, setTBUMothersName] = useState("");
+  const [TBUSpouseName, setTBUSpouseName] = useState("");
+  const userId = useSelector(
+    (state) => state.UserAuthenticationReducer.oUserAuth.oUser.id
+  );
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
   useEffect(() => {
-    axios.get(`/Greenbook/GetGBDataNewEntry/Id=1001`)
-      .then(resp => {
+    axios
+      .get(`/Greenbook/GetGBDataNewEntry/Id=1001`)
+      .then((resp) => {
         if (resp.status === 200) {
           //Masters
           setlAuthRegion(resp.data.lAuthRegion);
@@ -422,8 +434,11 @@ export default function EditEntry(props) {
           setlProvince(resp.data.lProvince);
           setlQualification(resp.data.lQualification);
           //Get GB Details
-          axios.get(`/Greenbook/GetGreenbook/Id=` + props.match.params.GBID.toString())
-            .then(resp => {
+          axios
+            .get(
+              `/Greenbook/GetGreenbook/Id=` + props.match.params.GBID.toString()
+            )
+            .then((resp) => {
               if (resp.status === 200) {
                 setnId(resp.data.id);
                 setsGBID(resp.data.sGBID);
@@ -479,37 +494,40 @@ export default function EditEntry(props) {
                 setTBUMothersName(resp.data.TBUMothersName);
                 setTBUSpouseName(resp.data.TBUSpouseName);
                 debugger;
-                axios.get(`/Greenbook/GetGBLinkDataByGBID/sGBID=`+resp.data.sGBID)
-               .then(resp => {
-                  if (resp.status === 200) {
-                     //console.log(resp.data)
-                     setlGBChildren(resp.data.lGBChildren);
-                     setlGBDocument(resp.data.lGBDocument);
-                     setlGBNote(resp.data.lGBNote);
-                     setExpanded("panel1");
-                     setBackdrop(false);
-                  }
-               })
-               .catch(error => {
-                  handleError(error, history);
-               })
-               .then(release => {
-                  //console.log(release); => udefined
-               });
+                axios
+                  .get(
+                    `/Greenbook/GetGBLinkDataByGBID/sGBID=` + resp.data.sGBID
+                  )
+                  .then((resp) => {
+                    if (resp.status === 200) {
+                      //console.log(resp.data)
+                      setlGBChildren(resp.data.lGBChildren);
+                      setlGBDocument(resp.data.lGBDocument);
+                      setlGBNote(resp.data.lGBNote);
+                      setExpanded("panel1");
+                      setBackdrop(false);
+                    }
+                  })
+                  .catch((error) => {
+                    handleError(error, history);
+                  })
+                  .then((release) => {
+                    //console.log(release); => udefined
+                  });
               }
             })
-            .catch(error => {
+            .catch((error) => {
               handleError(error, history);
             })
-            .then(release => {
+            .then((release) => {
               //console.log(release); => udefined
             });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         handleError(error, history);
       })
-      .then(release => {
+      .then((release) => {
         //console.log(release); => udefined
       });
   }, []);
@@ -571,42 +589,51 @@ export default function EditEntry(props) {
       TBUFathersName,
       TBUMothersName,
       TBUSpouseName,
-      nUpdatedBy:userId
+      nUpdatedBy: userId,
     };
-    axios.post(`/Greenbook/EditGreenbook/Id=` + props.match.params.GBID.toString(), greenbook)
-      .then(resp => {
+    axios
+      .post(
+        `/Greenbook/EditGreenbook/Id=` + props.match.params.GBID.toString(),
+        greenbook
+      )
+      .then((resp) => {
         if (resp.status === 200) {
           history.push("/Greenbooks");
         }
       })
-      .catch(error => {
+      .catch((error) => {
         handleError(error, history);
       })
-      .then(release => {
+      .then((release) => {
         //console.log(release); => udefined
       });
   };
 
   return (
-    <Container maxWidth="lg" disableGutters={true}><br />
-      <Typography variant="h4" gutterBottom>Edit Greenbook - {sGBID}</Typography>
+    <Container maxWidth="lg" disableGutters={true}>
+      <br />
+      <Typography variant="h4" gutterBottom>
+        Edit Greenbook - {sGBID}
+      </Typography>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.box}>
         <Grid container className={classes.box}>
           <Grid item xs={12}>
             <ExpansionPanel
               TransitionProps={{ unmountOnExit: true }}
-              expanded={expanded === 'panel1'}
-              onChange={handleAccordionChange('panel1')}
+              expanded={expanded === "panel1"}
+              onChange={handleAccordionChange("panel1")}
             >
               <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
+                expandIcon={
+                  <ExpandMoreIcon className={classes.expansionHeading} />
+                }
                 aria-controls="panel1a-content"
                 id="panel1a-header"
                 className={classes.expansionPanel}
               >
-                <Typography
-                className={classes.expansionHeading}
-                >Personal Information</Typography>
+                <Typography className={classes.expansionHeading}>
+                  Personal Information
+                </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid item xs={6}>
@@ -618,46 +645,53 @@ export default function EditEntry(props) {
                         label="Greenbook ID"
                         type="text"
                         value={sGBID}
-                        onChange={(e) => { setsGBID(e.target.value); }}
+                        onChange={(e) => {
+                          setsGBID(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
                         inputRef={register({
                           required: true,
                           minLength: 7,
-                          maxLength: 7
+                          maxLength: 7,
                         })}
                         InputProps={{
-                          readOnly: true
+                          readOnly: true,
                         }}
                       />
                       {_.get("name_sGBID.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
+                        <span style={{ color: "red" }}>
+                          This field is required
+                        </span>
                       )}
                       {_.get("name_sGBID.type", errors) === "minLength" && (
-                        <span style={{ color: 'red' }}>GBID cannot subceed 7 characters</span>
+                        <span style={{ color: "red" }}>
+                          GBID cannot subceed 7 characters
+                        </span>
                       )}
                       {_.get("name_sGBID.type", errors) === "maxLength" && (
-                        <span style={{ color: 'red' }}>GBID cannot exceed 7 characters</span>
+                        <span style={{ color: "red" }}>
+                          GBID cannot exceed 7 characters
+                        </span>
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12} >
+                  <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
-                        value={lAuthRegion.find(authRegion => authRegion.id === nAuthRegionID)}
+                        value={lAuthRegion.find(
+                          (authRegion) => authRegion.id === nAuthRegionID
+                        )}
                         openOnFocus
                         clearOnEscape
-                        onChange={
-                          (e, value) => {
-                            if (value !== null) {
-                              setnAuthRegionID(value.id);
-                            }
-                            else {
-                              setnAuthRegionID(0);
-                            }
+                        onChange={(e, value) => {
+                          if (value !== null) {
+                            setnAuthRegionID(value.id);
+                          } else {
+                            setnAuthRegionID(0);
                           }
-                        }
+                        }}
                         id="id_nAuthRegionID"
                         options={lAuthRegion}
                         classes={{
@@ -678,17 +712,20 @@ export default function EditEntry(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password'
+                              autoComplete: "new-password",
                             }}
                             name="name_nAuthRegionID"
                             inputRef={register({
-                              required: true
+                              required: true,
                             })}
                           />
                         )}
                       />
-                      {_.get("name_nAuthRegionID.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
+                      {_.get("name_nAuthRegionID.type", errors) ===
+                        "required" && (
+                        <span style={{ color: "red" }}>
+                          This field is required
+                        </span>
                       )}
                     </FormControl>
                   </Grid>
@@ -698,18 +735,22 @@ export default function EditEntry(props) {
                         id="id_sFirstName"
                         label="First Name"
                         type="text"
-                        onChange={(e) => { setsFirstName(e.target.value); }}
+                        onChange={(e) => {
+                          setsFirstName(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
                         value={sFirstName}
                         name="name_sFirstName"
                         inputRef={register({
-                          required: true
+                          required: true,
                         })}
                       />
                       {_.get("name_sFirstName.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
+                        <span style={{ color: "red" }}>
+                          This field is required
+                        </span>
                       )}
                     </FormControl>
                   </Grid>
@@ -719,7 +760,9 @@ export default function EditEntry(props) {
                         id="id_sMiddleName"
                         label="Middle Name"
                         type="text"
-                        onChange={(e) => { setsMiddleName(e.target.value); }}
+                        onChange={(e) => {
+                          setsMiddleName(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         value={sMiddleName}
@@ -733,7 +776,9 @@ export default function EditEntry(props) {
                         id="id_sFamilyName"
                         label="Family Name"
                         type="text"
-                        onChange={(e) => { setsFamilyName(e.target.value); }}
+                        onChange={(e) => {
+                          setsFamilyName(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         value={sFamilyName}
@@ -748,63 +793,78 @@ export default function EditEntry(props) {
                         name="name_TibetanName"
                         label="Tibetan Name (Tibetan) མིང་།"
                         type="text"
-                        onChange={(e) => { setTibetanName(e.target.value); }}
+                        onChange={(e) => {
+                          setTibetanName(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         value={TibetanName}
                         className={classes.textField}
                         inputRef={register({
-                          required: true
+                          required: true,
                         })}
                       />
-                      {_.get("name_TibetanName.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
+                      {_.get("name_TibetanName.type", errors) ===
+                        "required" && (
+                        <span style={{ color: "red" }}>
+                          This field is required
+                        </span>
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_TBUPlaceOfBirth"
-                        label="Place Of Birth (Tibetan) སྐྱེས་ཡུལ།"
-                        type="text"
-                        onChange={(e) => { setTBUPlaceOfBirth(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        value={TBUPlaceOfBirth}
-                        className={classes.textField}
-                        inputRef={register({
-                          required: true
-                        })}
-                        name="name_TBUPlaceOfBirth"
-                      />
-                      {_.get("name_TBUPlaceOfBirth.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_TBUOriginVillage"
-                        label="Origin Village (Tibetan) ཕ་ཡུལ།"
-                        type="text"
-                        onChange={(e) => { setTBUOriginVillage(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        name="name_TBUOriginVillage"
-                        inputRef={register({
-                          required: true
-                        })}
-                        value={TBUOriginVillage}
-                      />
-                      {_.get("name_TBUOriginVillage.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
-                    </FormControl>
-                  </Grid>
+                  <Grid xs={12} style={{ display: "flex" }}>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          id="id_TBUPlaceOfBirth"
+                          label="Place Of Birth (Tibetan) སྐྱེས་ཡུལ།"
+                          type="text"
+                          onChange={(e) => {
+                            setTBUPlaceOfBirth(e.target.value);
+                          }}
+                          fullWidth
+                          margin="dense"
+                          value={TBUPlaceOfBirth}
+                          className={classes.textField}
+                          inputRef={register({
+                            required: true,
+                          })}
+                          name="name_TBUPlaceOfBirth"
+                        />
+                        {_.get("name_TBUPlaceOfBirth.type", errors) ===
+                          "required" && (
+                          <span style={{ color: "red" }}>
+                            This field is required
+                          </span>
+                        )}
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          id="id_TBUOriginVillage"
+                          label="Origin Village (Tibetan) ཕ་ཡུལ།"
+                          type="text"
+                          onChange={(e) => {
+                            setTBUOriginVillage(e.target.value);
+                          }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                          name="name_TBUOriginVillage"
+                          inputRef={register({
+                            required: true,
+                          })}
+                          value={TBUOriginVillage}
+                        />
+                        {_.get("name_TBUOriginVillage.type", errors) ===
+                          "required" && (
+                          <span style={{ color: "red" }}>
+                            This field is required
+                          </span>
+                        )}
+                      </FormControl>
+                    </Grid>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
@@ -818,96 +878,108 @@ export default function EditEntry(props) {
                           name="name_dtDOB"
                           label="Date of Birth"
                           format={sDateFormatMUIDatepicker}
-                          onChange={date => { setdtDOB(date) }}
+                          onChange={(date) => {
+                            setdtDOB(date);
+                          }}
                           value={dtDOB}
                           KeyboardButtonProps={{
-                            'aria-label': 'change date',
+                            "aria-label": "change date",
                           }}
                           fullWidth
                           className={classes.dateField}
                           inputRef={register({
-                            required: true
+                            required: true,
                           })}
                         />
                       </MuiPickersUtilsProvider>
                       {_.get("name_dtDOB.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
+                        <span style={{ color: "red" }}>
+                          This field is required
+                        </span>
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <Autocomplete
-                        value={lCountry.find(birthCountry => birthCountry.sCountryID === sBirthCountryID)}
-                        openOnFocus
-                        clearOnEscape
-                        onChange={
-                          (e, value) => {
+                  <Grid xs={12} style={{ display: "flex" }}>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <Autocomplete
+                          value={lCountry.find(
+                            (birthCountry) =>
+                              birthCountry.sCountryID === sBirthCountryID
+                          )}
+                          openOnFocus
+                          clearOnEscape
+                          onChange={(e, value) => {
                             if (value !== null) {
                               setsBirthCountryID(value.sCountryID);
-                            }
-                            else {
+                            } else {
                               setsBirthCountryID("");
                             }
-                          }
-                        }
-                        id="id_sBirthCountryID"
-                        options={lCountry}
-                        classes={{
-                          option: classes.option,
-                        }}
-                        className={classes.textField}
-                        autoHighlight
-                        getOptionLabel={(option) => option.sCountry}
-                        renderOption={(option) => (
-                          <React.Fragment>
-                            <span>{option.sCountry}</span>
-                          </React.Fragment>
+                          }}
+                          id="id_sBirthCountryID"
+                          options={lCountry}
+                          classes={{
+                            option: classes.option,
+                          }}
+                          className={classes.textField}
+                          autoHighlight
+                          getOptionLabel={(option) => option.sCountry}
+                          renderOption={(option) => (
+                            <React.Fragment>
+                              <span>{option.sCountry}</span>
+                            </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Choose a Birth Country"
+                              variant="standard"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: "new-password",
+                              }}
+                              name="name_sBirthCountryID"
+                              inputRef={register({
+                                required: true,
+                              })}
+                            />
+                          )}
+                        />
+                        {_.get("name_sBirthCountryID.type", errors) ===
+                          "required" && (
+                          <span style={{ color: "red" }}>
+                            This field is required
+                          </span>
                         )}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Choose a Birth Country"
-                            variant="standard"
-                            inputProps={{
-                              ...params.inputProps,
-                              autoComplete: 'new-password'
-                            }}
-                            name="name_sBirthCountryID"
-                            inputRef={register({
-                              required: true
-                            })}
-                          />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          value={sBirthPlace}
+                          id="id_sBirthPlace"
+                          label="Place of Birth"
+                          type="text"
+                          onChange={(e) => {
+                            setsBirthPlace(e.target.value);
+                          }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                          name="name_sBirthPlace"
+                          inputRef={register({
+                            required: true,
+                          })}
+                        />
+                        {_.get("name_sBirthPlace.type", errors) ===
+                          "required" && (
+                          <span style={{ color: "red" }}>
+                            This field is required
+                          </span>
                         )}
-                      />
-                      {_.get("name_sBirthCountryID.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
-                    </FormControl>
+                      </FormControl>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        value={sBirthPlace}
-                        id="id_sBirthPlace"
-                        label="Place of Birth"
-                        type="text"
-                        onChange={(e) => { setsBirthPlace(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        name="name_sBirthPlace"
-                        inputRef={register({
-                          required: true
-                        })}
-                      />
-                      {_.get("name_sBirthPlace.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
-                    </FormControl>
-                  </Grid>
-                </Grid>
                 </Grid>
                 <Grid xs={6}>
                   <Grid item xs={12}>
@@ -922,71 +994,88 @@ export default function EditEntry(props) {
                           name="name_dtFormDate"
                           label="Sarso Form Date"
                           format={sDateFormatMUIDatepicker}
-                          onChange={date => { setdtFormDate(date) }}
+                          onChange={(date) => {
+                            setdtFormDate(date);
+                          }}
                           value={dtFormDate}
                           KeyboardButtonProps={{
-                            'aria-label': 'change date',
+                            "aria-label": "change date",
                           }}
                           inputRef={register({
-                            required: true
+                            required: true,
                           })}
                           fullWidth
                           className={classes.dateField}
                         />
                       </MuiPickersUtilsProvider>
                       {_.get("name_dtFormDate.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
+                        <span style={{ color: "red" }}>
+                          This field is required
+                        </span>
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        value={sFathersName}
-                        id="id_sFathersName"
-                        label="Father's Name"
-                        type="text"
-                        onChange={(e) => { setsFathersName(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        inputRef={register({
-                          required: true
-                        })}
-                        value={sFathersName}
-                        name="name_sFathersName"
-                      />
-                      {_.get("name_sFathersName.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        value={sFathersGBID}
-                        id="id_sFathersGBID"
-                        name="name_sFathersGBID"
-                        label="Father's GB No"
-                        type="text"
-                        onChange={(e) => { setsFathersGBID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        inputRef={register({
-                          minLength: 7,
-                          maxLength: 7
-                        })}
-                      />
-                      {_.get("name_sFathersGBID.type", errors) === "minLength" && (
-                        <span style={{ color: 'red' }}>Father's GB ID cannot subceed 7 characters</span>
-                      )}
-                      {_.get("name_sFathersGBID.type", errors) === "maxLength" && (
-                        <span style={{ color: 'red' }}>Father's GB ID cannot exceed 7 characters</span>
-                      )}
-                    </FormControl>
-                  </Grid>
+                  <Grid xs={12} style={{ display: "flex" }}>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          value={sFathersName}
+                          id="id_sFathersName"
+                          label="Father's Name"
+                          type="text"
+                          onChange={(e) => {
+                            setsFathersName(e.target.value);
+                          }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                          inputRef={register({
+                            required: true,
+                          })}
+                          value={sFathersName}
+                          name="name_sFathersName"
+                        />
+                        {_.get("name_sFathersName.type", errors) ===
+                          "required" && (
+                          <span style={{ color: "red" }}>
+                            This field is required
+                          </span>
+                        )}
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          value={sFathersGBID}
+                          id="id_sFathersGBID"
+                          name="name_sFathersGBID"
+                          label="Father's GB No"
+                          type="text"
+                          onChange={(e) => {
+                            setsFathersGBID(e.target.value);
+                          }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                          inputRef={register({
+                            minLength: 7,
+                            maxLength: 7,
+                          })}
+                        />
+                        {_.get("name_sFathersGBID.type", errors) ===
+                          "minLength" && (
+                          <span style={{ color: "red" }}>
+                            Father's GB ID cannot subceed 7 characters
+                          </span>
+                        )}
+                        {_.get("name_sFathersGBID.type", errors) ===
+                          "maxLength" && (
+                          <span style={{ color: "red" }}>
+                            Father's GB ID cannot exceed 7 characters
+                          </span>
+                        )}
+                      </FormControl>
+                    </Grid>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
@@ -994,68 +1083,86 @@ export default function EditEntry(props) {
                         id="id_TBUFathersName"
                         label="Father's Name (Tibetan) ཕ་མིང་།"
                         type="text"
-                        onChange={(e) => { setTBUFathersName(e.target.value); }}
+                        onChange={(e) => {
+                          setTBUFathersName(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
                         name="name_TBUFathersName"
                         value={TBUFathersName}
                         inputRef={register({
-                          required: true
+                          required: true,
                         })}
                       />
-                      {_.get("name_TBUFathersName.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
+                      {_.get("name_TBUFathersName.type", errors) ===
+                        "required" && (
+                        <span style={{ color: "red" }}>
+                          This field is required
+                        </span>
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sMothersName"
-                        label="Mother's Name"
-                        type="text"
-                        onChange={(e) => { setsMothersName(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        name="name_sMothersName"
-                        value={sMothersName}
-                        inputRef={register({
-                          required: true
-                        })}
-                      />
-                      {_.get("name_sMothersName.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        value={sMothersGBID}
-                        id="id_sMothersGBID"
-                        name="name_sMothersGBID"
-                        label="Mother's GB No"
-                        type="text"
-                        onChange={(e) => { setsMothersGBID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        inputRef={register({
-                          minLength: 7,
-                          maxLength: 7
-                        })}
-                      />
-                      {_.get("name_sMothersGBID.type", errors) === "minLength" && (
-                        <span style={{ color: 'red' }}>Mother's GB ID cannot subceed 7 characters</span>
-                      )}
-                      {_.get("name_sMothersGBID.type", errors) === "maxLength" && (
-                        <span style={{ color: 'red' }}>Mother's GB ID cannot exceed 7 characters</span>
-                      )}
-                    </FormControl>
-                  </Grid>
+                  <Grid xs={12} style={{ display: "flex" }}>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          id="id_sMothersName"
+                          label="Mother's Name"
+                          type="text"
+                          onChange={(e) => {
+                            setsMothersName(e.target.value);
+                          }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                          name="name_sMothersName"
+                          value={sMothersName}
+                          inputRef={register({
+                            required: true,
+                          })}
+                        />
+                        {_.get("name_sMothersName.type", errors) ===
+                          "required" && (
+                          <span style={{ color: "red" }}>
+                            This field is required
+                          </span>
+                        )}
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          value={sMothersGBID}
+                          id="id_sMothersGBID"
+                          name="name_sMothersGBID"
+                          label="Mother's GB No"
+                          type="text"
+                          onChange={(e) => {
+                            setsMothersGBID(e.target.value);
+                          }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                          inputRef={register({
+                            minLength: 7,
+                            maxLength: 7,
+                          })}
+                        />
+                        {_.get("name_sMothersGBID.type", errors) ===
+                          "minLength" && (
+                          <span style={{ color: "red" }}>
+                            Mother's GB ID cannot subceed 7 characters
+                          </span>
+                        )}
+                        {_.get("name_sMothersGBID.type", errors) ===
+                          "maxLength" && (
+                          <span style={{ color: "red" }}>
+                            Mother's GB ID cannot exceed 7 characters
+                          </span>
+                        )}
+                      </FormControl>
+                    </Grid>
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
@@ -1063,18 +1170,23 @@ export default function EditEntry(props) {
                         id="id_TBUMothersName"
                         label="Mother's Name (Tibetan) མ་མིང་།"
                         type="text"
-                        onChange={(e) => { setTBUMothersName(e.target.value); }}
+                        onChange={(e) => {
+                          setTBUMothersName(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
                         name="name_TBUMothersName"
                         value={TBUMothersName}
                         inputRef={register({
-                          required: true
+                          required: true,
                         })}
                       />
-                      {_.get("name_TBUMothersName.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
+                      {_.get("name_TBUMothersName.type", errors) ===
+                        "required" && (
+                        <span style={{ color: "red" }}>
+                          This field is required
+                        </span>
                       )}
                     </FormControl>
                   </Grid>
@@ -1084,7 +1196,9 @@ export default function EditEntry(props) {
                         id="id_sAddress1"
                         label="Address 1"
                         type="text"
-                        onChange={(e) => { setsAddress1(e.target.value); }}
+                        onChange={(e) => {
+                          setsAddress1(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
@@ -1094,11 +1208,13 @@ export default function EditEntry(props) {
                         name="name_sAddress1"
                         value={sAddress1}
                         inputRef={register({
-                          required: true
+                          required: true,
                         })}
                       />
                       {_.get("name_sAddress1.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
+                        <span style={{ color: "red" }}>
+                          This field is required
+                        </span>
                       )}
                     </FormControl>
                   </Grid>
@@ -1109,7 +1225,9 @@ export default function EditEntry(props) {
                         id="id_sAddress2"
                         label="Address 2"
                         type="text"
-                        onChange={(e) => { setsAddress2(e.target.value); }}
+                        onChange={(e) => {
+                          setsAddress2(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
@@ -1119,7 +1237,7 @@ export default function EditEntry(props) {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid xs={12} style={{ display: "flex" }}>
                     <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
                         <TextField
@@ -1127,7 +1245,9 @@ export default function EditEntry(props) {
                           id="id_sCity"
                           label="City"
                           type="text"
-                          onChange={(e) => { setsCity(e.target.value); }}
+                          onChange={(e) => {
+                            setsCity(e.target.value);
+                          }}
                           fullWidth
                           margin="dense"
                           className={classes.textField}
@@ -1140,39 +1260,42 @@ export default function EditEntry(props) {
                           id="id_sState"
                           label="State"
                           type="text"
-                          onChange={(e) => { setsState(e.target.value); }}
+                          onChange={(e) => {
+                            setsState(e.target.value);
+                          }}
                           fullWidth
                           margin="dense"
                           className={classes.textField}
                           name="name_sState"
                           inputRef={register({
-                            required: true
+                            required: true,
                           })}
                           value={sState}
                         />
                         {_.get("name_sState.type", errors) === "required" && (
-                          <span style={{ color: 'red' }}>This field is required</span>
+                          <span style={{ color: "red" }}>
+                            This field is required
+                          </span>
                         )}
                       </FormControl>
                     </Grid>
                   </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid xs={12} style={{ display: "flex" }}>
                     <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
                         <Autocomplete
-                          value={lCountry.find(country => country.sCountryID === sCountryID)}
+                          value={lCountry.find(
+                            (country) => country.sCountryID === sCountryID
+                          )}
                           openOnFocus
                           clearOnEscape
-                          onChange={
-                            (e, value) => {
-                              if (value !== null) {
-                                setsCountryID(value.sCountryID);
-                              }
-                              else {
-                                setsCountryID("");
-                              }
+                          onChange={(e, value) => {
+                            if (value !== null) {
+                              setsCountryID(value.sCountryID);
+                            } else {
+                              setsCountryID("");
                             }
-                          }
+                          }}
                           id="id_sCountryID"
                           options={lCountry}
                           classes={{
@@ -1193,17 +1316,20 @@ export default function EditEntry(props) {
                               variant="standard"
                               inputProps={{
                                 ...params.inputProps,
-                                autoComplete: 'new-password'
+                                autoComplete: "new-password",
                               }}
                               name="name_sCountryID"
                               inputRef={register({
-                                required: true
+                                required: true,
                               })}
                             />
                           )}
                         />
-                        {_.get("name_sCountryID.type", errors) === "required" && (
-                          <span style={{ color: 'red' }}>This field is required</span>
+                        {_.get("name_sCountryID.type", errors) ===
+                          "required" && (
+                          <span style={{ color: "red" }}>
+                            This field is required
+                          </span>
                         )}
                       </FormControl>
                     </Grid>
@@ -1214,7 +1340,9 @@ export default function EditEntry(props) {
                           id="id_sPCode"
                           label="Pin Code"
                           type="text"
-                          onChange={(e) => { setsPCode(e.target.value); }}
+                          onChange={(e) => {
+                            setsPCode(e.target.value);
+                          }}
                           fullWidth
                           margin="dense"
                           className={classes.textField}
@@ -1230,18 +1358,20 @@ export default function EditEntry(props) {
           <Grid item xs={12}>
             <ExpansionPanel
               TransitionProps={{ unmountOnExit: true }}
-              expanded={expanded === 'panel2'}
-              onChange={handleAccordionChange('panel2')}
+              expanded={expanded === "panel2"}
+              onChange={handleAccordionChange("panel2")}
             >
               <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
+                expandIcon={
+                  <ExpandMoreIcon className={classes.expansionHeading} />
+                }
                 aria-controls="panel1a-content"
                 id="panel1a-header"
                 className={classes.expansionPanel}
               >
-                <Typography
-                className={classes.expansionHeading}
-                >Basic Personal Information</Typography>
+                <Typography className={classes.expansionHeading}>
+                  Basic Personal Information
+                </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid item xs={6}>
@@ -1252,7 +1382,9 @@ export default function EditEntry(props) {
                         id="id_sAliasName"
                         label="Alias Name"
                         type="text"
-                        onChange={(e) => { setsAliasName(e.target.value); }}
+                        onChange={(e) => {
+                          setsAliasName(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
@@ -1260,7 +1392,7 @@ export default function EditEntry(props) {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid xs={12} style={{ display: "flex" }}>
                     <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
                         <InputLabel id="id_sGender">Gender</InputLabel>
@@ -1272,7 +1404,9 @@ export default function EditEntry(props) {
                           fullWidth
                           margin="dense"
                           className={classes.textField}
-                          onChange={(e) => { setsGender(e.target.value) }}
+                          onChange={(e) => {
+                            setsGender(e.target.value);
+                          }}
                         >
                           <MenuItem value={"M"}>Male</MenuItem>
                           <MenuItem value={"F"}>Female</MenuItem>
@@ -1286,7 +1420,9 @@ export default function EditEntry(props) {
                           id="id_sPaidUntil"
                           label="Paid Until"
                           type="text"
-                          onChange={(e) => { setsPaidUntil(e.target.value); }}
+                          onChange={(e) => {
+                            setsPaidUntil(e.target.value);
+                          }}
                           fullWidth
                           margin="dense"
                           className={classes.textField}
@@ -1297,19 +1433,19 @@ export default function EditEntry(props) {
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
-                        value={lProvince.find(province => province.id.toString() === sOriginProvinceID)}
+                        value={lProvince.find(
+                          (province) =>
+                            province.id.toString() === sOriginProvinceID
+                        )}
                         openOnFocus
                         clearOnEscape
-                        onChange={
-                          (e, value) => {
-                            if (value !== null) {
-                              setsOriginProvinceID(value.id.toString());
-                            }
-                            else {
-                              setsOriginProvinceID("0");
-                            }
+                        onChange={(e, value) => {
+                          if (value !== null) {
+                            setsOriginProvinceID(value.id.toString());
+                          } else {
+                            setsOriginProvinceID("0");
                           }
-                        }
+                        }}
                         id="id_sOriginProvinceID"
                         options={lProvince}
                         classes={{
@@ -1330,7 +1466,7 @@ export default function EditEntry(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password'
+                              autoComplete: "new-password",
                             }}
                           />
                         )}
@@ -1344,7 +1480,9 @@ export default function EditEntry(props) {
                         id="id_sFstGreenBkNo"
                         label="First GB Number"
                         type="text"
-                        onChange={(e) => { setsFstGreenBkNo(e.target.value); }}
+                        onChange={(e) => {
+                          setsFstGreenBkNo(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         value={sFstGreenBkNo}
@@ -1355,19 +1493,19 @@ export default function EditEntry(props) {
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
-                        value={lQualification.find(qualification => qualification.sQualificationID === sQualificationID)}
+                        value={lQualification.find(
+                          (qualification) =>
+                            qualification.sQualificationID === sQualificationID
+                        )}
                         openOnFocus
                         clearOnEscape
-                        onChange={
-                          (e, value) => {
-                            if (value !== null) {
-                              setsQualificationID(value.sQualificationID);
-                            }
-                            else {
-                              setsQualificationID("");
-                            }
+                        onChange={(e, value) => {
+                          if (value !== null) {
+                            setsQualificationID(value.sQualificationID);
+                          } else {
+                            setsQualificationID("");
                           }
-                        }
+                        }}
                         id="id_sQualificationID"
                         options={lQualification}
                         classes={{
@@ -1388,7 +1526,7 @@ export default function EditEntry(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password'
+                              autoComplete: "new-password",
                             }}
                           />
                         )}
@@ -1402,7 +1540,9 @@ export default function EditEntry(props) {
                         id="id_sDocuments"
                         label="Other Documents"
                         type="text"
-                        onChange={(e) => { setsOtherDocuments(e.target.value); }}
+                        onChange={(e) => {
+                          setsOtherDocuments(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         value={sOtherDocuments}
@@ -1418,7 +1558,9 @@ export default function EditEntry(props) {
                         id="id_sMarried"
                         label="Marital Status"
                         type="text"
-                        onChange={(e) => { setsMarried(e.target.value); }}
+                        onChange={(e) => {
+                          setsMarried(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
@@ -1441,10 +1583,12 @@ export default function EditEntry(props) {
                           id="id_dtValidityDate"
                           label="Validity Date"
                           format={sDateFormatMUIDatepicker}
-                          onChange={date => { setdtValidityDate(date) }}
+                          onChange={(date) => {
+                            setdtValidityDate(date);
+                          }}
                           value={dtValidityDate}
                           KeyboardButtonProps={{
-                            'aria-label': 'change date',
+                            "aria-label": "change date",
                           }}
                           fullWidth
                           className={classes.dateField}
@@ -1455,19 +1599,18 @@ export default function EditEntry(props) {
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
-                        value={lDOBApprox.find(dobapprox => dobapprox.sDOBApproxID === sDOBApprox)}
+                        value={lDOBApprox.find(
+                          (dobapprox) => dobapprox.sDOBApproxID === sDOBApprox
+                        )}
                         openOnFocus
                         clearOnEscape
-                        onChange={
-                          (e, value) => {
-                            if (value !== null) {
-                              setsDOBApprox(value.sDOBApproxID);
-                            }
-                            else {
-                              setsDOBApprox("");
-                            }
+                        onChange={(e, value) => {
+                          if (value !== null) {
+                            setsDOBApprox(value.sDOBApproxID);
+                          } else {
+                            setsDOBApprox("");
                           }
-                        }
+                        }}
                         id="id_sDOBApprox"
                         options={lDOBApprox}
                         classes={{
@@ -1488,7 +1631,7 @@ export default function EditEntry(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password'
+                              autoComplete: "new-password",
                             }}
                           />
                         )}
@@ -1502,7 +1645,9 @@ export default function EditEntry(props) {
                         id="id_sOriginVillage"
                         label="Origin Village"
                         type="text"
-                        onChange={(e) => { setsOriginVillage(e.target.value); }}
+                        onChange={(e) => {
+                          setsOriginVillage(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
@@ -1516,10 +1661,11 @@ export default function EditEntry(props) {
                         id="id_sOldGreenBKNo"
                         label="Old GB Number"
                         type="text"
-                        onChange={(e) => { setsOldGreenBKNo(e.target.value); }}
+                        onChange={(e) => {
+                          setsOldGreenBKNo(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
-
                         className={classes.textField}
                       />
                     </FormControl>
@@ -1531,7 +1677,9 @@ export default function EditEntry(props) {
                         id="id_sResidenceNumber"
                         label="RC Number"
                         type="text"
-                        onChange={(e) => { setsResidenceNumber(e.target.value); }}
+                        onChange={(e) => {
+                          setsResidenceNumber(e.target.value);
+                        }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
@@ -1541,19 +1689,19 @@ export default function EditEntry(props) {
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
-                        value={lOccupation.find(occupation => occupation.id.toString() === sOccupationID)}
+                        value={lOccupation.find(
+                          (occupation) =>
+                            occupation.id.toString() === sOccupationID
+                        )}
                         openOnFocus
                         clearOnEscape
-                        onChange={
-                          (e, value) => {
-                            if (value !== null) {
-                              setsOccupationID(value.id.toString());
-                            }
-                            else {
-                              setsOccupationID("0");
-                            }
+                        onChange={(e, value) => {
+                          if (value !== null) {
+                            setsOccupationID(value.id.toString());
+                          } else {
+                            setsOccupationID("0");
                           }
-                        }
+                        }}
                         id="id_sOccupationID"
                         options={lOccupation}
                         classes={{
@@ -1574,7 +1722,7 @@ export default function EditEntry(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password'
+                              autoComplete: "new-password",
                             }}
                           />
                         )}
@@ -1592,10 +1740,12 @@ export default function EditEntry(props) {
                           id="id_dtDeceased"
                           label="Deceased Date"
                           format={sDateFormatMUIDatepicker}
-                          onChange={date => { setdtDeceased(date) }}
+                          onChange={(date) => {
+                            setdtDeceased(date);
+                          }}
                           value={dtDeceased}
                           KeyboardButtonProps={{
-                            'aria-label': 'change date',
+                            "aria-label": "change date",
                           }}
                           fullWidth
                           className={classes.dateField}
@@ -1611,145 +1761,119 @@ export default function EditEntry(props) {
           <Grid item xs={12}>
             <ExpansionPanel
               TransitionProps={{ unmountOnExit: true }}
-              expanded={expanded === 'panel3'}
-              onChange={handleAccordionChange('panel3')}
+              expanded={expanded === "panel3"}
+              onChange={handleAccordionChange("panel3")}
             >
               <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
+                expandIcon={
+                  <ExpandMoreIcon className={classes.expansionHeading} />
+                }
                 aria-controls="panel1a-content"
                 id="panel1a-header"
                 className={classes.expansionPanel}
               >
-                <Typography
-                className={classes.expansionHeading}
-                >Relation & Contact Details</Typography>
+                <Typography className={classes.expansionHeading}>
+                  Relation & Contact Details
+                </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-               <Grid item xs={12}>
-                <Grid xs={12} style={{ display: 'flex' }}>
+                <Grid container spacing={3}>
                   <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        value={sFathersID}
-                        id="id_sFathersID"
-                        label="Father's Old GB No"
-                        type="text"
-                        onChange={(e) => { setsFathersID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        value={sMothersID}
-                        id="id_sMothersID"
-                        label="Mother's Old GB No"
-                        type="text"
-                        onChange={(e) => { setsMothersID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                      />
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <Grid xs={12} style={{ display: 'flex' }}>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        value={sSpouseName}
-                        id="id_sSpouseName"
-                        label="Spouse Name"
-                        type="text"
-                        onChange={(e) => { setsSpouseName(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={6}>
-                  <FormControl className={classes.formControl}>
-                    <TextField
-                      value={sSpouseGBID}
-                      id="id_sSpouseGBID"
-                      name="name_sSpouseGBID"
-                      label="Spouse GB No"
-                      type="text"
-                      onChange={(e) => { setsSpouseGBID(e.target.value); }}
-                      fullWidth
-                      margin="dense"
-                      className={classes.textField}
-                      inputRef={register({
-                        minLength: 7,
-                        maxLength: 7
-                      })}
-                    />
-                    {_.get("name_sSpouseGBID.type", errors) === "minLength" && (
-                      <span style={{ color: 'red' }}>Spouse's GB ID No cannot subceed 7 characters</span>
-                    )}
-                    {_.get("name_sSpouseGBID.type", errors) === "maxLength" && (
-                      <span style={{ color: 'red' }}>Spouse's GB No cannot exceed 7 characters</span>
-                    )}
-                  </FormControl>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        value={sSpouseID}
-                        id="id_sSpouseID"
-                        label="Spouse's Old GB No"
-                        type="text"
-                        onChange={(e) => { setsSpouseID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                      />
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <Grid xs={12}>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        value={TBUSpouseName}
-                        id="id_TBUSpouseName"
-                        label="Spouse Name (Tibetan)"
-                        type="text"
-                        onChange={(e) => { setTBUSpouseName(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
-                    <Grid item xs={6}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          value={sFax}
-                          id="id_sFax"
-                          label="Fax Number"
-                          type="text"
-                          onChange={(e) => { setsFax(e.target.value); }}
-                          fullWidth
-                          margin="dense"
-                          className={classes.textField}
-                        />
-                      </FormControl>
+                    <Grid xs={12} style={{ display: "flex" }}>
+                      <Grid item xs={6}>
+                        <FormControl className={classes.formControl}>
+                          <TextField
+                            value={sFathersID}
+                            id="id_sFathersID"
+                            label="Father's Old GB No"
+                            type="text"
+                            onChange={(e) => {
+                              setsFathersID(e.target.value);
+                            }}
+                            fullWidth
+                            margin="dense"
+                            className={classes.textField}
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl className={classes.formControl}>
+                          <TextField
+                            value={sMothersID}
+                            id="id_sMothersID"
+                            label="Mother's Old GB No"
+                            type="text"
+                            onChange={(e) => {
+                              setsMothersID(e.target.value);
+                            }}
+                            fullWidth
+                            margin="dense"
+                            className={classes.textField}
+                          />
+                        </FormControl>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid xs={12} style={{ display: "flex" }}>
+                      <Grid item xs={6}>
+                        <FormControl className={classes.formControl}>
+                          <TextField
+                            value={sSpouseName}
+                            id="id_sSpouseName"
+                            label="Spouse Name"
+                            type="text"
+                            onChange={(e) => {
+                              setsSpouseName(e.target.value);
+                            }}
+                            fullWidth
+                            margin="dense"
+                            className={classes.textField}
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl className={classes.formControl}>
+                          <TextField
+                            value={sSpouseGBID}
+                            id="id_sSpouseGBID"
+                            name="name_sSpouseGBID"
+                            label="Spouse GB No"
+                            type="text"
+                            onChange={(e) => {
+                              setsSpouseGBID(e.target.value);
+                            }}
+                            fullWidth
+                            margin="dense"
+                            className={classes.textField}
+                            inputRef={register({
+                              minLength: 7,
+                              maxLength: 7,
+                            })}
+                          />
+                          {_.get("name_sSpouseGBID.type", errors) ===
+                            "minLength" && (
+                            <span style={{ color: "red" }}>
+                              Spouse's GB ID No cannot subceed 7 characters
+                            </span>
+                          )}
+                          {_.get("name_sSpouseGBID.type", errors) ===
+                            "maxLength" && (
+                            <span style={{ color: "red" }}>
+                              Spouse's GB No cannot exceed 7 characters
+                            </span>
+                          )}
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
                       <FormControl className={classes.formControl}>
                         <TextField
-                          value={sPhone}
-                          id="id_sPhone"
-                          label="Phone Number"
+                          value={sSpouseID}
+                          id="id_sSpouseID"
+                          label="Spouse's Old GB No"
                           type="text"
-                          onChange={(e) => { setsPhone(e.target.value); }}
+                          onChange={(e) => {
+                            setsSpouseID(e.target.value);
+                          }}
                           fullWidth
                           margin="dense"
                           className={classes.textField}
@@ -1757,230 +1881,334 @@ export default function EditEntry(props) {
                       </FormControl>
                     </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        value={sEmail}
-                        id="id_sEmail"
-                        label="Email"
-                        type="email"
-                        onChange={(e) => { setsEmail(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                      />
-                    </FormControl>
+                  <Grid item xs={6}>
+                    <Grid item xs={12}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          value={TBUSpouseName}
+                          id="id_TBUSpouseName"
+                          label="Spouse Name (Tibetan)"
+                          type="text"
+                          onChange={(e) => {
+                            setTBUSpouseName(e.target.value);
+                          }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid xs={12} style={{ display: "flex" }}>
+                      <Grid item xs={6}>
+                        <FormControl className={classes.formControl}>
+                          <TextField
+                            value={sFax}
+                            id="id_sFax"
+                            label="Fax Number"
+                            type="text"
+                            onChange={(e) => {
+                              setsFax(e.target.value);
+                            }}
+                            fullWidth
+                            margin="dense"
+                            className={classes.textField}
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl className={classes.formControl}>
+                          <TextField
+                            value={sPhone}
+                            id="id_sPhone"
+                            label="Phone Number"
+                            type="text"
+                            onChange={(e) => {
+                              setsPhone(e.target.value);
+                            }}
+                            fullWidth
+                            margin="dense"
+                            className={classes.textField}
+                          />
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          value={sEmail}
+                          id="id_sEmail"
+                          label="Email"
+                          type="email"
+                          onChange={(e) => {
+                            setsEmail(e.target.value);
+                          }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                        />
+                      </FormControl>
+                    </Grid>
                   </Grid>
-                </Grid>
-                <Grid xs={12}>
-                {lGBChildren.length === 0 && <Typography 
-                  align='center' 
-                  variant="h6"
-                  color="primary"
-                  >No Records Found</Typography>}
-                {lGBChildren.length != 0 &&
-                <div>
-                <Typography 
-                align='center' 
-                variant="h6"
-                color="primary"
-                >Children of - {sGBID}</Typography>
-                  <Table className="table table-hover table-striped table-bordered " >
-                     <thead className="thead-light" style={{ padding: 0 }}>
-                        <tr>
-                           <th scope="col">Name</th>
-                           <th scope="col">DOB</th>
-                           <th scope="col">Gender</th>
-                           <th scope="col">Old GB Number</th>
-                           <th scope="col">GB Number</th>
-                           <th scope="col">Edit</th>
-                           {/*<th style={{ width: '15%' }} > Date</th>*/}
-                        </tr>
-                     </thead>
-                     <tbody style={{ padding: 0 }}>
-                        {lGBChildren.map((row, index) => (
-                           <tr>
-                                 <td scope="row">{row.sName}</td>
-                                 <td scope="row">{row.dtDOB ? Moment(row.dtDOB).format(sDateFormat) : ''}</td>
-                                 <td scope="row">{row.sGender}</td>
-                                 <td scope="row">{row.sChildID}</td>
-                                 <td scope="row">{row.sGBIDChild}</td>
-                                 <td scope="row">
-                                  <IconButton color="primary"  onClick={() => { handleEditChildRowClick(row) } } component="span" style={{padding:'0px'}}>
-                                    <EditOutlinedIcon/>
-                                  </IconButton>
-                                </td>
-                           </tr>
-                        ))}
-                  </tbody>
-               </Table>
-               </div>}
-               <Button 
-                  variant='contained'
-                  onClick={()=>{setaddChildModal(true)}}
-                >
-                Add a Child
-              </Button>
-              </Grid>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-          </Grid>
-          <Grid item xs={12}>
-            <ExpansionPanel
-              TransitionProps={{ unmountOnExit: true }}
-              expanded={expanded === 'panel4'}
-              onChange={handleAccordionChange('panel4')}
-            >
-              <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                className={classes.expansionPanel}
-              >
-                <Typography 
-                className={classes.expansionHeading}
-                >Book Issued Details</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                    <IssueBookTable
-                    gbId={sGBID}
-                    />
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-          </Grid>
-          <Grid item xs={12}>
-            <ExpansionPanel
-              TransitionProps={{ unmountOnExit: true }}
-              expanded={expanded === 'panel6'}
-              onChange={handleAccordionChange('panel6')}
-            >
-              <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                className={classes.expansionPanel}
-              >
-                <Typography 
-                className={classes.expansionHeading}
-                >Notes of - {sGBID}</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-              <Grid xs={12}>
-              {lGBNote.length === 0 && <Typography 
-                align='center' 
-                variant="h6"
-                color="primary"
-                >No Records Found</Typography>}
-              {lGBNote.length != 0 && 
-                <div>
-                {/*<Typography 
-                align='center' 
-                variant="h6"
-                color="primary"
-                >Notes of - {sGBID}</Typography>*/}
-                <Table className="table table-hover table-striped table-bordered" >
-                 <thead className="thead-light" style={{ padding: 0 }}>
-                    <tr>
-                       <th scope="col" style={{ width: '70%' }}>Notes</th>
-                       <th scope="col">Entered</th>
-                       <th scope="col">Edit</th>
-                    </tr>
-                 </thead>
-                 <tbody style={{ padding: 0 }}>
-                    {lGBNote.map((row, index) => (
-                       <tr>
-                             <td scope="row">{row.sNote}</td>
-                             <td scope="row">{row.dtEntered ? Moment(row.dtEntered).format(sDateFormat) : ''}</td>
-                             <td scope="row">
-                                  <IconButton color="primary"  onClick={()=>{handleEditNoteRowClick(row)}} component="span" style={{padding:'0px'}}>
-                                    <EditOutlinedIcon/>
-                                  </IconButton>
-                                </td>
-                       </tr>
-                    ))}
-                    <br />
-              </tbody>
-           </Table>
-           </div>
-          }
-          <Button 
-              variant='contained'
-              onClick={()=>{setaddNoteModal(true)}}
-            >
-            Add a Note
-          </Button>
-           </Grid>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-          </Grid>
-          <Grid item xs={12}>
-            <ExpansionPanel
-              TransitionProps={{ unmountOnExit: true }}
-              expanded={expanded === 'panel7'}
-              onChange={handleAccordionChange('panel7')}
-            >
-              <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                className={classes.expansionPanel}
-              >
-                <Typography 
-                className={classes.expansionHeading}
-                >Documents</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-              <Grid xs={12}>
-              {lGBDocument.length === 0 && <Typography 
-                align='center' 
-                variant="h6"
-                color="primary"
-                >No Records Found</Typography>}
-              {lGBDocument.length !== 0 &&
-              <div>
-                {/*<Typography 
-                align='center' 
-                variant="h6"
-                color="primary"
-                >Notes of - {sGBID}</Typography>*/}
-              <Table className="table table-hover table-striped table-bordered " >
-                 <thead className="thead-light" style={{ padding: 0 }}>
-                    <tr>
-                       <th scope="col" style={{ width: '70%' }}>Title</th>
-                       <th scope="col">Register Date</th>
-                       <th scope="col">Entered By</th>
-                       <th scope="col">Edit</th>
-                       <th scope="col">Delete</th>
-                    </tr>
-                 </thead>
-                 <tbody style={{ padding: 0 }}>
-                    {lGBDocument.map((row, index) => (
-                       <tr>
-                             <td scope="row">{row.sTitle}</td>
-                             <td scope="row">{row.nRegisterDate}</td>
-                             <td scope="row">{row.nEnteredBy}</td>
-                             <td scope="row">
-                                  <IconButton color="primary"  onClick={()=>{handleEditDocumentRowClick(row)}} component="span" style={{padding:'0px'}}>
-                                    <EditOutlinedIcon/>
-                                  </IconButton>
-                                </td>
+                  <Grid item xs={12}>
+                    {lGBChildren.length === 0 && (
+                      <Typography align="center" variant="h6" color="primary">
+                        No Records Found
+                      </Typography>
+                    )}
+                    {lGBChildren.length != 0 && (
+                      <div>
+                        <Typography align="center" variant="h6" color="primary">
+                          Children of - {sGBID}
+                        </Typography>
+                        <Table className="table table-hover table-striped table-bordered ">
+                          <thead className="thead-light" style={{ padding: 0 }}>
+                            <tr>
+                              <th scope="col">Name</th>
+                              <th scope="col">DOB</th>
+                              <th scope="col">Gender</th>
+                              <th scope="col">Old GB Number</th>
+                              <th scope="col">GB Number</th>
+                              <th scope="col">Edit</th>
+                              {/*<th style={{ width: '15%' }} > Date</th>*/}
+                            </tr>
+                          </thead>
+                          <tbody style={{ padding: 0 }}>
+                            {lGBChildren.map((row, index) => (
+                              <tr>
+                                <td scope="row">{row.sName}</td>
                                 <td scope="row">
-                                  <IconButton color="primary"  onClick={()=>{handleDeleteDialogClickOpen(row)}} component="span" style={{padding:'0px'}}>
-                                    <DeleteIcon/>
+                                  {row.dtDOB
+                                    ? Moment(row.dtDOB).format(sDateFormat)
+                                    : ""}
+                                </td>
+                                <td scope="row">{row.sGender}</td>
+                                <td scope="row">{row.sChildID}</td>
+                                <td scope="row">{row.sGBIDChild}</td>
+                                <td scope="row">
+                                  <IconButton
+                                    color="primary"
+                                    onClick={() => {
+                                      handleEditChildRowClick(row);
+                                    }}
+                                    component="span"
+                                    style={{ padding: "0px" }}
+                                  >
+                                    <EditOutlinedIcon />
                                   </IconButton>
                                 </td>
-                       </tr>
-                    ))}
-              </tbody>
-           </Table>
-          </div>}
-           <Button 
-              variant='contained'
-              onClick={()=>{setaddDocumentModal(true)}}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </Table>
+                      </div>
+                    )}
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        setaddChildModal(true);
+                      }}
+                    >
+                      Add a Child
+                    </Button>
+                  </Grid>
+                </Grid>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          </Grid>
+          <Grid item xs={12}>
+            <ExpansionPanel
+              TransitionProps={{ unmountOnExit: true }}
+              expanded={expanded === "panel4"}
+              onChange={handleAccordionChange("panel4")}
             >
-            Add a Document
-          </Button>
-           </Grid>
+              <ExpansionPanelSummary
+                expandIcon={
+                  <ExpandMoreIcon className={classes.expansionHeading} />
+                }
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                className={classes.expansionPanel}
+              >
+                <Typography className={classes.expansionHeading}>
+                  Book Issued Details
+                </Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <IssueBookTable gbId={sGBID} />
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          </Grid>
+          <Grid item xs={12}>
+            <ExpansionPanel
+              TransitionProps={{ unmountOnExit: true }}
+              expanded={expanded === "panel6"}
+              onChange={handleAccordionChange("panel6")}
+            >
+              <ExpansionPanelSummary
+                expandIcon={
+                  <ExpandMoreIcon className={classes.expansionHeading} />
+                }
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                className={classes.expansionPanel}
+              >
+                <Typography className={classes.expansionHeading}>
+                  Notes of - {sGBID}
+                </Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Grid xs={12}>
+                  {lGBNote.length === 0 && (
+                    <Typography align="center" variant="h6" color="primary">
+                      No Records Found
+                    </Typography>
+                  )}
+                  {lGBNote.length != 0 && (
+                    <div>
+                      {/*<Typography 
+                align='center' 
+                variant="h6"
+                color="primary"
+                >Notes of - {sGBID}</Typography>*/}
+                      <Table className="table table-hover table-striped table-bordered">
+                        <thead className="thead-light" style={{ padding: 0 }}>
+                          <tr>
+                            <th scope="col" style={{ width: "70%" }}>
+                              Notes
+                            </th>
+                            <th scope="col">Entered</th>
+                            <th scope="col">Edit</th>
+                          </tr>
+                        </thead>
+                        <tbody style={{ padding: 0 }}>
+                          {lGBNote.map((row, index) => (
+                            <tr>
+                              <td scope="row">{row.sNote}</td>
+                              <td scope="row">
+                                {row.dtEntered
+                                  ? Moment(row.dtEntered).format(sDateFormat)
+                                  : ""}
+                              </td>
+                              <td scope="row">
+                                <IconButton
+                                  color="primary"
+                                  onClick={() => {
+                                    handleEditNoteRowClick(row);
+                                  }}
+                                  component="span"
+                                  style={{ padding: "0px" }}
+                                >
+                                  <EditOutlinedIcon />
+                                </IconButton>
+                              </td>
+                            </tr>
+                          ))}
+                          <br />
+                        </tbody>
+                      </Table>
+                    </div>
+                  )}
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      setaddNoteModal(true);
+                    }}
+                  >
+                    Add a Note
+                  </Button>
+                </Grid>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          </Grid>
+          <Grid item xs={12}>
+            <ExpansionPanel
+              TransitionProps={{ unmountOnExit: true }}
+              expanded={expanded === "panel7"}
+              onChange={handleAccordionChange("panel7")}
+            >
+              <ExpansionPanelSummary
+                expandIcon={
+                  <ExpandMoreIcon className={classes.expansionHeading} />
+                }
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                className={classes.expansionPanel}
+              >
+                <Typography className={classes.expansionHeading}>
+                  Documents
+                </Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Grid xs={12}>
+                  {lGBDocument.length === 0 && (
+                    <Typography align="center" variant="h6" color="primary">
+                      No Records Found
+                    </Typography>
+                  )}
+                  {lGBDocument.length !== 0 && (
+                    <div>
+                      {/*<Typography 
+                align='center' 
+                variant="h6"
+                color="primary"
+                >Notes of - {sGBID}</Typography>*/}
+                      <Table className="table table-hover table-striped table-bordered ">
+                        <thead className="thead-light" style={{ padding: 0 }}>
+                          <tr>
+                            <th scope="col" style={{ width: "70%" }}>
+                              Title
+                            </th>
+                            <th scope="col">Register Date</th>
+                            <th scope="col">Entered By</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                          </tr>
+                        </thead>
+                        <tbody style={{ padding: 0 }}>
+                          {lGBDocument.map((row, index) => (
+                            <tr>
+                              <td scope="row">{row.sTitle}</td>
+                              <td scope="row">{row.nRegisterDate}</td>
+                              <td scope="row">{row.nEnteredBy}</td>
+                              <td scope="row">
+                                <IconButton
+                                  color="primary"
+                                  onClick={() => {
+                                    handleEditDocumentRowClick(row);
+                                  }}
+                                  component="span"
+                                  style={{ padding: "0px" }}
+                                >
+                                  <EditOutlinedIcon />
+                                </IconButton>
+                              </td>
+                              <td scope="row">
+                                <IconButton
+                                  color="primary"
+                                  onClick={() => {
+                                    handleDeleteDialogClickOpen(row);
+                                  }}
+                                  component="span"
+                                  style={{ padding: "0px" }}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
+                  )}
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      setaddDocumentModal(true);
+                    }}
+                  >
+                    Add a Document
+                  </Button>
+                </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </Grid>
@@ -1992,16 +2220,18 @@ export default function EditEntry(props) {
                 type="submit"
                 color="primary"
                 style={{ marginRight: "10px" }}
-              >Save</Button>
-              <Button variant="outlined"
-                onClick={
-                  () => 
-                  { 
-                    props.history.goBack();
-                    // history.push(props.location);
-                  }
-                }
-              >Cancel</Button>
+              >
+                Save
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  props.history.goBack();
+                  // history.push(props.location);
+                }}
+              >
+                Cancel
+              </Button>
             </Grid>
           </Grid>
         </Grid>
@@ -2017,68 +2247,83 @@ export default function EditEntry(props) {
         <DialogTitle id="alert-dialog-title">{"Delete Document ?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to Delete this document ? (Document Name: {oDelete.sTitle})
+            Are you sure you want to Delete this document ? (Document Name:{" "}
+            {oDelete.sTitle})
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDeleteDialogClose} color="primary">
             No
           </Button>
-          <Button onClick={handleDeleteDocumentRowClick} color="primary" autoFocus>
+          <Button
+            onClick={handleDeleteDocumentRowClick}
+            color="primary"
+            autoFocus
+          >
             Yes
           </Button>
         </DialogActions>
       </Dialog>
 
-      {backdrop && <BackdropComponent
-        backdrop={backdrop}
-      />}
+      {backdrop && <BackdropComponent backdrop={backdrop} />}
 
       {/*Note*/}
-      {addNoteModal && <AddNoteDialog
-        addNoteModal={addNoteModal}
-        sGBID={sGBID}
-        classes={classes}
-        handleAddNoteClickClose={handleAddNoteClickClose}
-        addNoteAPICall={addNoteAPICall}
-      />}
-      {editNoteModal && <EditNoteDialog
-        editNoteModal={editNoteModal}
-        oNote={oNote}
-        classes={classes}
-        handleEditNoteClickClose={handleEditNoteClickClose}
-        editNoteAPICall={editNoteAPICall}
-      />}
+      {addNoteModal && (
+        <AddNoteDialog
+          addNoteModal={addNoteModal}
+          sGBID={sGBID}
+          classes={classes}
+          handleAddNoteClickClose={handleAddNoteClickClose}
+          addNoteAPICall={addNoteAPICall}
+        />
+      )}
+      {editNoteModal && (
+        <EditNoteDialog
+          editNoteModal={editNoteModal}
+          oNote={oNote}
+          classes={classes}
+          handleEditNoteClickClose={handleEditNoteClickClose}
+          editNoteAPICall={editNoteAPICall}
+        />
+      )}
       {/*Child*/}
-      {addChildModal && <AddChildDialog
-        addChildModal={addChildModal}
-        sGBID={sGBID}
-        classes={classes}
-        handleAddChildClickClose={handleAddChildClickClose}
-        addChildAPICall={addChildAPICall}
-      />}
-      {editChildModal && <EditChildDialog
-        editChildModal={editChildModal}
-        oChild={oChild}
-        classes={classes}
-        handleEditChildClickClose={handleEditChildClickClose}
-        editChildAPICall={editChildAPICall}
-      />}
+      {addChildModal && (
+        <AddChildDialog
+          addChildModal={addChildModal}
+          sGBID={sGBID}
+          classes={classes}
+          handleAddChildClickClose={handleAddChildClickClose}
+          addChildAPICall={addChildAPICall}
+        />
+      )}
+      {editChildModal && (
+        <EditChildDialog
+          editChildModal={editChildModal}
+          oChild={oChild}
+          classes={classes}
+          handleEditChildClickClose={handleEditChildClickClose}
+          editChildAPICall={editChildAPICall}
+        />
+      )}
       {/*Document*/}
-      {addDocumentModal && <AddDocumentDialog
-        addDocumentModal={addDocumentModal}
-        sGBID={sGBID}
-        classes={classes}
-        handleAddDocumentClickClose={handleAddDocumentClickClose}
-        addDocumentAPICall={addDocumentAPICall}
-      />}
-      {editDocumentModal && <EditDocumentDialog
-        editDocumentModal={editDocumentModal}
-        oDocument={oDocument}
-        classes={classes}
-        handleEditDocumentClickClose={handleEditDocumentClickClose}
-        editDocumentAPICall={editDocumentAPICall}
-      />}
+      {addDocumentModal && (
+        <AddDocumentDialog
+          addDocumentModal={addDocumentModal}
+          sGBID={sGBID}
+          classes={classes}
+          handleAddDocumentClickClose={handleAddDocumentClickClose}
+          addDocumentAPICall={addDocumentAPICall}
+        />
+      )}
+      {editDocumentModal && (
+        <EditDocumentDialog
+          editDocumentModal={editDocumentModal}
+          oDocument={oDocument}
+          classes={classes}
+          handleEditDocumentClickClose={handleEditDocumentClickClose}
+          editDocumentAPICall={editDocumentAPICall}
+        />
+      )}
     </Container>
   );
 }
