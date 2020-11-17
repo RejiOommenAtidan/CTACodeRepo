@@ -50,6 +50,9 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPageDummyData = new System.Windows.Forms.TabPage();
+            this.buttonMadebDummyData = new System.Windows.Forms.Button();
+            this.checkBoxMadebFathersName = new System.Windows.Forms.CheckBox();
+            this.checkBoxMadebName = new System.Windows.Forms.CheckBox();
             this.checkBoxTBUSpouseName = new System.Windows.Forms.CheckBox();
             this.checkBoxTBUMothersName = new System.Windows.Forms.CheckBox();
             this.checkBoxTBUFathersName = new System.Windows.Forms.CheckBox();
@@ -84,6 +87,8 @@
             this.txtLogFolderPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.progressBarProcess = new System.Windows.Forms.ProgressBar();
+            this.textBoxDummyProfilePath = new System.Windows.Forms.TextBox();
+            this.checkBoxDummyProfile = new System.Windows.Forms.CheckBox();
             this.tabControlCTA.SuspendLayout();
             this.tabPageRelationDataClincing.SuspendLayout();
             this.tabPageImageMigration.SuspendLayout();
@@ -99,7 +104,8 @@
             this.txtConnectionString.Name = "txtConnectionString";
             this.txtConnectionString.Size = new System.Drawing.Size(639, 23);
             this.txtConnectionString.TabIndex = 9;
-            this.txtConnectionString.Text = "Server=127.0.0.1;Port=3306;Database=ctadb;Uid=root;allow zero datetime=no";
+            this.txtConnectionString.Text = "Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=ctadb; Uid=ctam" +
+    "ysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;";
             // 
             // label1
             // 
@@ -190,6 +196,8 @@
             // 
             // tabPageImageMigration
             // 
+            this.tabPageImageMigration.Controls.Add(this.checkBoxDummyProfile);
+            this.tabPageImageMigration.Controls.Add(this.textBoxDummyProfilePath);
             this.tabPageImageMigration.Controls.Add(this.lblResult);
             this.tabPageImageMigration.Controls.Add(this.label3);
             this.tabPageImageMigration.Controls.Add(this.btnImageMigration);
@@ -248,7 +256,7 @@
             this.tabPageCTAChartel.Location = new System.Drawing.Point(4, 24);
             this.tabPageCTAChartel.Name = "tabPageCTAChartel";
             this.tabPageCTAChartel.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCTAChartel.Size = new System.Drawing.Size(759, 435);
+            this.tabPageCTAChartel.Size = new System.Drawing.Size(759, 432);
             this.tabPageCTAChartel.TabIndex = 2;
             this.tabPageCTAChartel.Text = "CTA Chartel";
             this.tabPageCTAChartel.UseVisualStyleBackColor = true;
@@ -309,6 +317,9 @@
             // 
             // tabPageDummyData
             // 
+            this.tabPageDummyData.Controls.Add(this.buttonMadebDummyData);
+            this.tabPageDummyData.Controls.Add(this.checkBoxMadebFathersName);
+            this.tabPageDummyData.Controls.Add(this.checkBoxMadebName);
             this.tabPageDummyData.Controls.Add(this.checkBoxTBUSpouseName);
             this.tabPageDummyData.Controls.Add(this.checkBoxTBUMothersName);
             this.tabPageDummyData.Controls.Add(this.checkBoxTBUFathersName);
@@ -333,14 +344,50 @@
             this.tabPageDummyData.Location = new System.Drawing.Point(4, 24);
             this.tabPageDummyData.Name = "tabPageDummyData";
             this.tabPageDummyData.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDummyData.Size = new System.Drawing.Size(759, 435);
+            this.tabPageDummyData.Size = new System.Drawing.Size(759, 432);
             this.tabPageDummyData.TabIndex = 3;
             this.tabPageDummyData.Text = "CTA Dummy Data";
             this.tabPageDummyData.UseVisualStyleBackColor = true;
             // 
+            // buttonMadebDummyData
+            // 
+            this.buttonMadebDummyData.Location = new System.Drawing.Point(544, 128);
+            this.buttonMadebDummyData.Name = "buttonMadebDummyData";
+            this.buttonMadebDummyData.Size = new System.Drawing.Size(183, 23);
+            this.buttonMadebDummyData.TabIndex = 28;
+            this.buttonMadebDummyData.Text = "Generate Madeb Dummy data";
+            this.buttonMadebDummyData.UseVisualStyleBackColor = true;
+            this.buttonMadebDummyData.Click += new System.EventHandler(this.buttonMadebDummyData_Click);
+            // 
+            // checkBoxMadebFathersName
+            // 
+            this.checkBoxMadebFathersName.AutoSize = true;
+            this.checkBoxMadebFathersName.Checked = true;
+            this.checkBoxMadebFathersName.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxMadebFathersName.Location = new System.Drawing.Point(544, 92);
+            this.checkBoxMadebFathersName.Name = "checkBoxMadebFathersName";
+            this.checkBoxMadebFathersName.Size = new System.Drawing.Size(101, 19);
+            this.checkBoxMadebFathersName.TabIndex = 27;
+            this.checkBoxMadebFathersName.Text = "sFathersName";
+            this.checkBoxMadebFathersName.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxMadebName
+            // 
+            this.checkBoxMadebName.AutoSize = true;
+            this.checkBoxMadebName.Checked = true;
+            this.checkBoxMadebName.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxMadebName.Location = new System.Drawing.Point(544, 52);
+            this.checkBoxMadebName.Name = "checkBoxMadebName";
+            this.checkBoxMadebName.Size = new System.Drawing.Size(63, 19);
+            this.checkBoxMadebName.TabIndex = 26;
+            this.checkBoxMadebName.Text = "sName";
+            this.checkBoxMadebName.UseVisualStyleBackColor = true;
+            // 
             // checkBoxTBUSpouseName
             // 
             this.checkBoxTBUSpouseName.AutoSize = true;
+            this.checkBoxTBUSpouseName.Checked = true;
+            this.checkBoxTBUSpouseName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTBUSpouseName.Location = new System.Drawing.Point(275, 178);
             this.checkBoxTBUSpouseName.Name = "checkBoxTBUSpouseName";
             this.checkBoxTBUSpouseName.Size = new System.Drawing.Size(118, 19);
@@ -351,6 +398,8 @@
             // checkBoxTBUMothersName
             // 
             this.checkBoxTBUMothersName.AutoSize = true;
+            this.checkBoxTBUMothersName.Checked = true;
+            this.checkBoxTBUMothersName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTBUMothersName.Location = new System.Drawing.Point(147, 178);
             this.checkBoxTBUMothersName.Name = "checkBoxTBUMothersName";
             this.checkBoxTBUMothersName.Size = new System.Drawing.Size(124, 19);
@@ -361,6 +410,8 @@
             // checkBoxTBUFathersName
             // 
             this.checkBoxTBUFathersName.AutoSize = true;
+            this.checkBoxTBUFathersName.Checked = true;
+            this.checkBoxTBUFathersName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTBUFathersName.Location = new System.Drawing.Point(27, 178);
             this.checkBoxTBUFathersName.Name = "checkBoxTBUFathersName";
             this.checkBoxTBUFathersName.Size = new System.Drawing.Size(118, 19);
@@ -371,6 +422,8 @@
             // checkBoxTBUOriginVillage
             // 
             this.checkBoxTBUOriginVillage.AutoSize = true;
+            this.checkBoxTBUOriginVillage.Checked = true;
+            this.checkBoxTBUOriginVillage.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTBUOriginVillage.Location = new System.Drawing.Point(275, 153);
             this.checkBoxTBUOriginVillage.Name = "checkBoxTBUOriginVillage";
             this.checkBoxTBUOriginVillage.Size = new System.Drawing.Size(116, 19);
@@ -381,6 +434,8 @@
             // checkBoxTBUPlaceOfBirth
             // 
             this.checkBoxTBUPlaceOfBirth.AutoSize = true;
+            this.checkBoxTBUPlaceOfBirth.Checked = true;
+            this.checkBoxTBUPlaceOfBirth.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTBUPlaceOfBirth.Location = new System.Drawing.Point(147, 153);
             this.checkBoxTBUPlaceOfBirth.Name = "checkBoxTBUPlaceOfBirth";
             this.checkBoxTBUPlaceOfBirth.Size = new System.Drawing.Size(114, 19);
@@ -391,6 +446,8 @@
             // checkBoxTibetanName
             // 
             this.checkBoxTibetanName.AutoSize = true;
+            this.checkBoxTibetanName.Checked = true;
+            this.checkBoxTibetanName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTibetanName.Location = new System.Drawing.Point(27, 153);
             this.checkBoxTibetanName.Name = "checkBoxTibetanName";
             this.checkBoxTibetanName.Size = new System.Drawing.Size(98, 19);
@@ -401,6 +458,8 @@
             // checkBoxsPCode
             // 
             this.checkBoxsPCode.AutoSize = true;
+            this.checkBoxsPCode.Checked = true;
+            this.checkBoxsPCode.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxsPCode.Location = new System.Drawing.Point(275, 128);
             this.checkBoxsPCode.Name = "checkBoxsPCode";
             this.checkBoxsPCode.Size = new System.Drawing.Size(66, 19);
@@ -411,6 +470,8 @@
             // checkBoxsAddress2
             // 
             this.checkBoxsAddress2.AutoSize = true;
+            this.checkBoxsAddress2.Checked = true;
+            this.checkBoxsAddress2.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxsAddress2.Location = new System.Drawing.Point(147, 128);
             this.checkBoxsAddress2.Name = "checkBoxsAddress2";
             this.checkBoxsAddress2.Size = new System.Drawing.Size(79, 19);
@@ -421,6 +482,8 @@
             // checkBoxsAddress1
             // 
             this.checkBoxsAddress1.AutoSize = true;
+            this.checkBoxsAddress1.Checked = true;
+            this.checkBoxsAddress1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxsAddress1.Location = new System.Drawing.Point(27, 128);
             this.checkBoxsAddress1.Name = "checkBoxsAddress1";
             this.checkBoxsAddress1.Size = new System.Drawing.Size(79, 19);
@@ -431,6 +494,8 @@
             // checkBoxsEmail
             // 
             this.checkBoxsEmail.AutoSize = true;
+            this.checkBoxsEmail.Checked = true;
+            this.checkBoxsEmail.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxsEmail.Location = new System.Drawing.Point(275, 77);
             this.checkBoxsEmail.Name = "checkBoxsEmail";
             this.checkBoxsEmail.Size = new System.Drawing.Size(60, 19);
@@ -441,6 +506,8 @@
             // checkBoxsSpouseName
             // 
             this.checkBoxsSpouseName.AutoSize = true;
+            this.checkBoxsSpouseName.Checked = true;
+            this.checkBoxsSpouseName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxsSpouseName.Location = new System.Drawing.Point(275, 103);
             this.checkBoxsSpouseName.Name = "checkBoxsSpouseName";
             this.checkBoxsSpouseName.Size = new System.Drawing.Size(101, 19);
@@ -451,6 +518,8 @@
             // checkBoxsMothersName
             // 
             this.checkBoxsMothersName.AutoSize = true;
+            this.checkBoxsMothersName.Checked = true;
+            this.checkBoxsMothersName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxsMothersName.Location = new System.Drawing.Point(147, 103);
             this.checkBoxsMothersName.Name = "checkBoxsMothersName";
             this.checkBoxsMothersName.Size = new System.Drawing.Size(107, 19);
@@ -461,6 +530,8 @@
             // checkBoxsFathersName
             // 
             this.checkBoxsFathersName.AutoSize = true;
+            this.checkBoxsFathersName.Checked = true;
+            this.checkBoxsFathersName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxsFathersName.Location = new System.Drawing.Point(27, 103);
             this.checkBoxsFathersName.Name = "checkBoxsFathersName";
             this.checkBoxsFathersName.Size = new System.Drawing.Size(101, 19);
@@ -471,6 +542,8 @@
             // checkBoxsPhone
             // 
             this.checkBoxsPhone.AutoSize = true;
+            this.checkBoxsPhone.Checked = true;
+            this.checkBoxsPhone.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxsPhone.Location = new System.Drawing.Point(147, 78);
             this.checkBoxsPhone.Name = "checkBoxsPhone";
             this.checkBoxsPhone.Size = new System.Drawing.Size(65, 19);
@@ -481,6 +554,8 @@
             // checkBoxsFamilyName
             // 
             this.checkBoxsFamilyName.AutoSize = true;
+            this.checkBoxsFamilyName.Checked = true;
+            this.checkBoxsFamilyName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxsFamilyName.Location = new System.Drawing.Point(27, 78);
             this.checkBoxsFamilyName.Name = "checkBoxsFamilyName";
             this.checkBoxsFamilyName.Size = new System.Drawing.Size(98, 19);
@@ -491,6 +566,8 @@
             // checkBoxsLastName
             // 
             this.checkBoxsLastName.AutoSize = true;
+            this.checkBoxsLastName.Checked = true;
+            this.checkBoxsLastName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxsLastName.Location = new System.Drawing.Point(275, 52);
             this.checkBoxsLastName.Name = "checkBoxsLastName";
             this.checkBoxsLastName.Size = new System.Drawing.Size(84, 19);
@@ -501,6 +578,8 @@
             // checkBoxsMiddleName
             // 
             this.checkBoxsMiddleName.AutoSize = true;
+            this.checkBoxsMiddleName.Checked = true;
+            this.checkBoxsMiddleName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxsMiddleName.Location = new System.Drawing.Point(147, 52);
             this.checkBoxsMiddleName.Name = "checkBoxsMiddleName";
             this.checkBoxsMiddleName.Size = new System.Drawing.Size(100, 19);
@@ -511,6 +590,8 @@
             // checkBoxsFirstName
             // 
             this.checkBoxsFirstName.AutoSize = true;
+            this.checkBoxsFirstName.Checked = true;
+            this.checkBoxsFirstName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxsFirstName.Location = new System.Drawing.Point(27, 53);
             this.checkBoxsFirstName.Name = "checkBoxsFirstName";
             this.checkBoxsFirstName.Size = new System.Drawing.Size(85, 19);
@@ -604,7 +685,7 @@
             this.tabPageBulkInsert.Controls.Add(this.textBox2);
             this.tabPageBulkInsert.Location = new System.Drawing.Point(4, 24);
             this.tabPageBulkInsert.Name = "tabPageBulkInsert";
-            this.tabPageBulkInsert.Size = new System.Drawing.Size(759, 435);
+            this.tabPageBulkInsert.Size = new System.Drawing.Size(759, 432);
             this.tabPageBulkInsert.TabIndex = 6;
             this.tabPageBulkInsert.Text = "Chatrel Bulk Insert";
             this.tabPageBulkInsert.UseVisualStyleBackColor = true;
@@ -668,6 +749,27 @@
             this.progressBarProcess.Name = "progressBarProcess";
             this.progressBarProcess.Size = new System.Drawing.Size(763, 23);
             this.progressBarProcess.TabIndex = 20;
+            // 
+            // textBoxDummyProfilePath
+            // 
+            this.textBoxDummyProfilePath.Location = new System.Drawing.Point(393, 51);
+            this.textBoxDummyProfilePath.Name = "textBoxDummyProfilePath";
+            this.textBoxDummyProfilePath.Size = new System.Drawing.Size(346, 23);
+            this.textBoxDummyProfilePath.TabIndex = 35;
+            this.textBoxDummyProfilePath.Text = "D:\\Reji\\CTA-Chatrel\\CTADataMigrationAndSupport\\avatars\\";
+            // 
+            // checkBoxDummyProfile
+            // 
+            this.checkBoxDummyProfile.AutoSize = true;
+            this.checkBoxDummyProfile.Checked = true;
+            this.checkBoxDummyProfile.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxDummyProfile.Location = new System.Drawing.Point(270, 53);
+            this.checkBoxDummyProfile.Name = "checkBoxDummyProfile";
+            this.checkBoxDummyProfile.Size = new System.Drawing.Size(117, 19);
+            this.checkBoxDummyProfile.TabIndex = 36;
+            this.checkBoxDummyProfile.Text = "Is Dummy Profile";
+            this.checkBoxDummyProfile.UseVisualStyleBackColor = true;
+            this.checkBoxDummyProfile.CheckedChanged += new System.EventHandler(this.checkBoxDummyProfile_CheckedChanged);
             // 
             // CTAApp
             // 
@@ -758,6 +860,11 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button buttonMadebDummyData;
+        private System.Windows.Forms.CheckBox checkBoxMadebFathersName;
+        private System.Windows.Forms.CheckBox checkBoxMadebName;
+        private System.Windows.Forms.CheckBox checkBoxDummyProfile;
+        private System.Windows.Forms.TextBox textBoxDummyProfilePath;
     }
 }
 

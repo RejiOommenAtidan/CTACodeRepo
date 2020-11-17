@@ -50,6 +50,25 @@ namespace CTADataMigrationAndSupport
                 //string query = "SELECT sGBID FROM tblGreenBook";
                 string query = "select sGBID from tblgreenbook where sGBId Not in (SELECT sGBId FROM ctadb.lnkgbdocument)";
                 //string query = "select sGBID from tblgreenbook where sBookIssued like '%2012%'";
+                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2011%'";
+                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2010%'";
+                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2009%'";
+                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2008%'";
+                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2007%'";
+                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2006%'";
+                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and  sCountryID !='IN'";
+                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0";
+                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'N' and  sGender = 'M'";
+                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'N' and  sGender = 'F'";
+                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'M' ";
+                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'Y'";
+                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'D'";
+                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF in (1,2,3,4,5)";
+                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF > 5";
+                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM in (1,2,3,4,5)";
+                //string query = "select sGBID from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM > 5";
+                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2004%'";
+                //string query = "select sGBID from tblgreenbook where sBookIssued like '%2003%'";
                 //string query = "select sGBID from tblgreenbook where sGBID = 0000000";
                 MySqlCommand cmd = new MySqlCommand(query, cnn);
                 MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
@@ -107,6 +126,15 @@ namespace CTADataMigrationAndSupport
                     string sFullPath = sPathPrifix + sPathWithFileName;
                     if (File.Exists(sFullPath))
                     {
+
+                        if (checkBoxDummyProfile.Checked)
+                        {
+                            // To check the last chartecter digit from sGBId
+                            string sLastDigit = sGBNum.Substring(sGBNum.Length - 1, 1);
+                            sFileName = sLastDigit + ".jpg";
+                            sFullPath = textBoxDummyProfilePath.Text + sFileName; 
+                        }
+
                         byte[] ImageData;
                         fs = new FileStream(sFullPath, FileMode.Open, FileAccess.Read);
                         br = new BinaryReader(fs);
@@ -149,6 +177,10 @@ namespace CTADataMigrationAndSupport
 
                     }
                     this.Refresh();
+                    lblResult.Text += " - " + nInsertedFileCount.ToString() + "/" + dt.Rows.Count.ToString();
+                    //lblResult.Refresh();
+                    this.Refresh();
+                    Application.DoEvents();
 
                 }
 
@@ -189,7 +221,7 @@ namespace CTADataMigrationAndSupport
 
         #endregion
 
-       
+
 
 
         private void label1_Click(object sender, EventArgs e)
@@ -346,6 +378,7 @@ namespace CTADataMigrationAndSupport
                         }
 
                         this.Refresh();
+                        Application.DoEvents();
                     }
 
                     string sEndProcess = DateTime.Now.ToString();
@@ -466,6 +499,7 @@ namespace CTADataMigrationAndSupport
                         nRecordCount++;
                         labelRecordCount.Text = nRecordCount.ToString() + @"\" + dt.Rows.Count.ToString();
                         this.Refresh();
+                        Application.DoEvents();
                     }
                     string sEndProcess = DateTime.Now.ToString();
 
@@ -545,7 +579,7 @@ namespace CTADataMigrationAndSupport
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     //Calculate the chartel pending amount from dt.Rows[0]["sPaidUntil"]
-                    nPaidUntil = dt.Rows[0]["sPaidUntil"] != ""? Convert.ToInt32(dt.Rows[0]["sPaidUntil"]): 2011;
+                    nPaidUntil = dt.Rows[0]["sPaidUntil"] != "" ? Convert.ToInt32(dt.Rows[0]["sPaidUntil"]) : 2011;
                     sName = dt.Rows[0]["sName"].ToString();
                     nAuthRegionID = Convert.ToInt32(dt.Rows[0]["nAuthRegionID"]);
                     sCountryID = dt.Rows[0]["sCountryID"].ToString();
@@ -554,8 +588,8 @@ namespace CTADataMigrationAndSupport
                     nAge = Convert.ToInt32(dt.Rows[0]["age"]);
                     isChild = dt.Rows[0]["IsChild"].ToString();
                     labelChatrelResult.Text = nPaidUntil.ToString();
-                    labelChatrelResult.Text = "Total Chatrel Balance: $" + getChatrelAmount(nPaidUntil, sCurrencyCode,isChild == "0" ? false: true) + " from the year " + nPaidUntil.ToString();
-                    DataTable dtChatrelPending = getChatrelDataTable(nPaidUntil, sName, nAuthRegionID, sCountryID, sCurrencyCode,sDOB, isChild == "0" ? false : true);
+                    labelChatrelResult.Text = "Total Chatrel Balance: $" + getChatrelAmount(nPaidUntil, sCurrencyCode, isChild == "0" ? false : true) + " from the year " + nPaidUntil.ToString();
+                    DataTable dtChatrelPending = getChatrelDataTable(nPaidUntil, sName, nAuthRegionID, sCountryID, sCurrencyCode, sDOB, isChild == "0" ? false : true);
 
                 }
                 else
@@ -575,7 +609,7 @@ namespace CTADataMigrationAndSupport
 
         }
 
-        private string getChatrelAmount(int nChatrelYear,string sCurrencyCode, bool isChild)
+        private string getChatrelAmount(int nChatrelYear, string sCurrencyCode, bool isChild)
         {
 
             double nChatrelAmount = sCurrencyCode == "USD" ? 36 : 48;
@@ -590,7 +624,7 @@ namespace CTADataMigrationAndSupport
             //Calculate
             if (isChild)
             {
-                nChatrelAmount = sCurrencyCode == "USD" ? 12 : 12; 
+                nChatrelAmount = sCurrencyCode == "USD" ? 12 : 12;
             }
 
             if (nChatrelYear < nChatrelStartYear)
@@ -616,9 +650,9 @@ namespace CTADataMigrationAndSupport
             return nTotalChatrelAmount.ToString("0.00");
         }
 
-        private DataTable getChatrelDataTable(int nChatrelYear, string sName, int nAuthRegionID, string sCountryID , string sCurrencyCode,string sDOB, bool isChild)
+        private DataTable getChatrelDataTable(int nChatrelYear, string sName, int nAuthRegionID, string sCountryID, string sCurrencyCode, string sDOB, bool isChild)
         {
-            double nChatrelAmount = sCurrencyCode == "USD"?36:48;
+            double nChatrelAmount = sCurrencyCode == "USD" ? 36 : 48;
             double nChatrelMeal = sCurrencyCode == "USD" ? 10 : 10;
             double nChatrelSalaryAmt = sCurrencyCode == "USD" ? 50 : 0;
             double nChatrelLateFeesPercentage = sCurrencyCode == "USD" ? 10 : 10;
@@ -660,13 +694,13 @@ namespace CTADataMigrationAndSupport
             {
 
 
-                nChatrelAmount = getChartelAmountForChildYear(dtDOB, nChatrelYear,1, Convert.ToInt32(sCurrencyCode == "USD" ? 36 : 48 / 12));
+                nChatrelAmount = getChartelAmountForChildYear(dtDOB, nChatrelYear, 1, Convert.ToInt32(sCurrencyCode == "USD" ? 36 : 48 / 12));
                 if (nChatrelAmount == 0)
                 {
                     nChatrelYear++;
                     continue;
                 }
-                if (i+1 == nChatrelPendingYears && nGracePeriodInMonths > 0)
+                if (i + 1 == nChatrelPendingYears && nGracePeriodInMonths > 0)
                 {
                     dLateFee = DateTime.Now >= Convert.ToDateTime(nChatrelYear.ToString() + "-03-31").AddMonths(nGracePeriodInMonths) ? (((nChatrelAmount + nChatrelMeal) * nChatrelLateFeesPercentage) / 100d) : 0;
                 }
@@ -693,34 +727,34 @@ namespace CTADataMigrationAndSupport
                 countRow++;
                 nChatrelYear++;
             }
-                nChatrelAmount = getChartelAmountForChildYear(dtDOB, nChatrelYear,1, Convert.ToInt32(sCurrencyCode == "USD" ? 36 : 48 / 12));
-           
-                countRow++;
+            nChatrelAmount = getChartelAmountForChildYear(dtDOB, nChatrelYear, 1, Convert.ToInt32(sCurrencyCode == "USD" ? 36 : 48 / 12));
 
-                lnkGBChatrelPending.Rows.Add(
-                        countRow,
-                        sName,
-                        nChatrelAmount,
-                        nChatrelMeal,
-                        nChatrelYear,
-                        0,
-                        0,
-                        0,
-                        0,
-                        (nChatrelAmount + nChatrelMeal + 0),
-                        DateTime.Now,
-                        nAuthRegionID,
-                        sCountryID,
-                        sCurrencyCode);
-           
+            countRow++;
+
+            lnkGBChatrelPending.Rows.Add(
+                    countRow,
+                    sName,
+                    nChatrelAmount,
+                    nChatrelMeal,
+                    nChatrelYear,
+                    0,
+                    0,
+                    0,
+                    0,
+                    (nChatrelAmount + nChatrelMeal + 0),
+                    DateTime.Now,
+                    nAuthRegionID,
+                    sCountryID,
+                    sCurrencyCode);
+
             //return nTotalChatrelAmount.ToString("0.00");
             return lnkGBChatrelPending;
         }
 
-        private int getChartelAmountForChildYear(DateTime dtDOB,int CurrentYear, int ChildMonthChatrelAmount, int AdultMonthChatrelAmount)
+        private int getChartelAmountForChildYear(DateTime dtDOB, int CurrentYear, int ChildMonthChatrelAmount, int AdultMonthChatrelAmount)
         {
             string str = "31 Mar " + (CurrentYear + 1);
-            DateTime endDateOfCurrentYear ;
+            DateTime endDateOfCurrentYear;
 
             if (DateTime.TryParse(str, out endDateOfCurrentYear))
             {
@@ -747,7 +781,7 @@ namespace CTADataMigrationAndSupport
                 else
                 {
                     return 0;
-                } 
+                }
             }
             else
             {
@@ -784,6 +818,7 @@ namespace CTADataMigrationAndSupport
         #region Dummy Data
         private void buttonGenerateDummyData_Click(object sender, EventArgs e)
         {
+            #region program
             string connetionString = null;
             MySqlConnection cnn;
             connetionString = txtConnectionString.Text;
@@ -834,7 +869,6 @@ namespace CTADataMigrationAndSupport
             if (sDummyColumn.Length <= 0)
             {
                 labelDummyDataReport.Text = "Please select Column";
-                return;
             }
             else
             {
@@ -843,8 +877,33 @@ namespace CTADataMigrationAndSupport
                 try
                 {
                     cnn.Open();
-                    string query = "select sGBID," + sDummyColumn + " from tblgreenbook Limit 1000";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook Limit 1000";
                     //string query = "select sGBID," + sDummyColumn + " from tblgreenbook";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2012%'";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2011%'";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2010%'";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2009%'";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2008%'";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2007%'";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2006%'";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and  sCountryID !='IN'";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'N' and  sGender = 'M'";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'N' and  sGender = 'F'";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'M' ";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'Y'";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF = 0 and sDOBApprox = 'D'";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF in (1,2,3,4,5)";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM = 0 and nChildrenF > 5";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM in (1,2,3,4,5)";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2005%' and sCountryID ='IN' and nChildrenM > 5";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2004%'";
+                    //string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued like '%2003%'";
+                    string query = "select sGBID," + sDummyColumn + " from tblgreenbook  where sBookIssued is null";
+
+                    //select * from tblgreenbook  where sBookIssued is null;
+
+                    // where sBookIssued like '%2012%'
                     MySqlCommand cmd = new MySqlCommand(query, cnn);
                     MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
                     DataTable dt = new DataTable("tblGreenBook");
@@ -1023,7 +1082,7 @@ namespace CTADataMigrationAndSupport
                                 cmd.Parameters.Add("@TBUSpouseName", MySqlDbType.VarChar, 255);
                                 cmd.Parameters["@TBUSpouseName"].Value = RandomDummyData(TBUSpouseNameData.Length, TBUSpouseNameData, false);
                             }
-                           
+
 
                             int RowsAffected = cmd.ExecuteNonQuery();
                             labelDummyDataReport.Text = @"GB Id: " + sGBNum;
@@ -1037,6 +1096,10 @@ namespace CTADataMigrationAndSupport
                             nNotUpdateCount++;
                         }
                         nInsertedFileCount++;
+                        labelDummyDataReport.Text += " - " + nInsertedFileCount.ToString() + "/" + dt.Rows.Count.ToString();
+                        //labelDummyDataReport.Refresh();
+                        this.Refresh();
+                        Application.DoEvents();
 
                     }
 
@@ -1068,14 +1131,15 @@ namespace CTADataMigrationAndSupport
                 }
                 catch (Exception ex)
                 {
-                    labelDummyDataReport.Text += Environment.NewLine + ex.ToString();
+                    labelDummyDataReport.Text = Environment.NewLine + ex.ToString();
                 }
 
             }
-
+            #endregion
 
         }
 
+        
         public static string RandomDummyPhoneData(int length, string orginalString, bool isNumber)
         {
             string[] columnDatasplit = orginalString.Split(" ");
@@ -1254,7 +1318,7 @@ namespace CTADataMigrationAndSupport
             connetionString = txtConnectionString.Text;
             string sLogFolderPath = txtLogFolderPath.Text;
             string sPathPrifix = txtImagePath.Text;
-
+            
             cnn = new MySqlConnection(connetionString);
             try
             {
@@ -1297,7 +1361,7 @@ namespace CTADataMigrationAndSupport
                     string sGBNum = row["sGBID"].ToString().Trim();
 
                     // To check the last chartecter digit from sGBId
-                    string sLastDigit = sGBNum.Substring(sGBNum.Length-1, 1);
+                    string sLastDigit = sGBNum.Substring(sGBNum.Length - 1, 1);
                     string sFileName = sLastDigit + ".jpg";
                     string sFullPath = textBoxProfilePicturePath.Text + sFileName;
                     FileStream fs;
@@ -1327,6 +1391,8 @@ namespace CTADataMigrationAndSupport
                         labelDummyProfilePicture.Text = @"GB Id: " + sGBNum;
                         sbLogging.AppendLine("Green Book Id: " + sGBNum);
                     }
+                    this.Refresh();
+                    Application.DoEvents();
                 }
 
                 cnn.Close();
@@ -1430,12 +1496,12 @@ namespace CTADataMigrationAndSupport
                             chatrelPayment.Id = Convert.ToInt32(row["SNo"]);
                             chatrelPayment.sGBId = row["IDNo"].ToString();
                             chatrelPayment.nChatrelAmount = Convert.ToInt32(row["Chatrel"]);
-                            chatrelPayment.nChatrelMeal  = Convert.ToInt32(row["Meal"]);
-                            chatrelPayment.nChatrelMeal  = Convert.ToInt32(row["Meal"]);
+                            chatrelPayment.nChatrelMeal = Convert.ToInt32(row["Meal"]);
+                            chatrelPayment.nChatrelMeal = Convert.ToInt32(row["Meal"]);
                             chatrelPayment.nChatrelYear = Convert.ToInt32(row["Year"]);
                             chatrelPayment.nChatrelLateFeesPercentage = Convert.ToInt32(row["ArrearsPlusLateFees"]);
-                            chatrelPayment.dtArrearsFrom= Convert.ToDateTime(row["ArrearsFrom"]);
-                            chatrelPayment.dtArrearsTo  = Convert.ToDateTime(row["ArrearsTo"]);
+                            chatrelPayment.dtArrearsFrom = Convert.ToDateTime(row["ArrearsFrom"]);
+                            chatrelPayment.dtArrearsTo = Convert.ToDateTime(row["ArrearsTo"]);
                             chatrelPayment.nChatrelSalaryAmt = Convert.ToInt32(row["Salary"]);
                             chatrelPayment.dtChatrelSalaryFrom = Convert.ToDateTime(row["PendigFrom"]);
                             chatrelPayment.dtChatrelSalaryTo = Convert.ToDateTime(row["PendingTo"]);
@@ -1490,63 +1556,221 @@ namespace CTADataMigrationAndSupport
             }
         }
 
-    }
+        private void buttonMadebDummyData_Click(object sender, EventArgs e)
+        {
+            string connetionString = null;
+            MySqlConnection cnn;
+            connetionString = txtConnectionString.Text;
+            string sLogFolderPath = txtLogFolderPath.Text;
+            string sDummyColumn = string.Empty;
+            string sDummyData = string.Empty;
+            string sMadebNameData = string.Empty;
+            string sFathersNameData = string.Empty;
+            string updateString = string.Empty;
+            progressBarProcess.Value = 0;
+            progressBarProcess.Refresh();
 
-    public class ChatrelPayment
-    {
-        #region Private  Properties 
-        private int _Id;
-        private string? _sGBId;
-        private decimal? _nChatrelAmount;
-        private decimal? _nChatrelMeal;
-        private int? _nChatrelYear;
-        private int? _nChatrelLateFeesPercentage;
-        private decimal? _nArrearsAmount;
-        private DateTime? _dtArrearsFrom;
-        private DateTime? _dtArrearsTo;
-        private decimal? _nChatrelSalaryAmt;
-        private DateTime? _dtChatrelSalaryFrom;
-        private DateTime? _dtChatrelSalaryTo;
-        private decimal? _nChatrelAdditionalDonationAmt;
-        private decimal? _nChatrelBusinessDonationAmt;
-        private decimal? _nChatrelTotalAmount;
-        private int? _nChatrelRecieptNumber;
-        private int? _nAuthRegionID;
-        private string? _sCountryID;
-        private string? _sPaymentStatus;
-        private string? _sPaymentMode;
-        private string? _sPaymentCurrency;
-        private string? _sPaidByGBId;
-        private DateTime? _dtEntered;
-        private int _nEnteredBy;
-        #endregion
+            if (checkBoxMadebName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxMadebName.Text : checkBoxMadebName.Text; }
+            if (checkBoxMadebFathersName.Checked) { sDummyColumn += sDummyColumn.Length > 0 ? ", " + checkBoxMadebFathersName.Text : checkBoxMadebFathersName.Text; }
 
-        #region Public Properties
-        public int Id { get { return _Id; } set { _Id = value; } }
-        public string? sGBId { get { return _sGBId; } set { _sGBId = value; } }
-        public decimal? nChatrelAmount { get { return _nChatrelAmount; } set { _nChatrelAmount = value; } }
-        public decimal? nChatrelMeal { get { return _nChatrelMeal; } set { _nChatrelMeal = value; } }
-        public int? nChatrelYear { get { return _nChatrelYear; } set { _nChatrelYear = value; } }
-        public int? nChatrelLateFeesPercentage { get { return _nChatrelLateFeesPercentage; } set { _nChatrelLateFeesPercentage = value; } }
-        public decimal? nArrearsAmount { get { return _nArrearsAmount; } set { _nArrearsAmount = value; } }
-        public DateTime? dtArrearsFrom { get { return _dtArrearsFrom; } set { _dtArrearsFrom = value; } }
-        public DateTime? dtArrearsTo { get { return _dtArrearsTo; } set { _dtArrearsTo = value; } }
-        public decimal? nChatrelSalaryAmt { get { return _nChatrelSalaryAmt; } set { _nChatrelSalaryAmt = value; } }
-        public DateTime? dtChatrelSalaryFrom { get { return _dtChatrelSalaryFrom; } set { _dtChatrelSalaryFrom = value; } }
-        public DateTime? dtChatrelSalaryTo { get { return _dtChatrelSalaryTo; } set { _dtChatrelSalaryTo = value; } }
-        public decimal? nChatrelAdditionalDonationAmt { get { return _nChatrelAdditionalDonationAmt; } set { _nChatrelAdditionalDonationAmt = value; } }
-        public decimal? nChatrelBusinessDonationAmt { get { return _nChatrelBusinessDonationAmt; } set { _nChatrelBusinessDonationAmt = value; } }
-        public decimal? nChatrelTotalAmount { get { return _nChatrelTotalAmount; } set { _nChatrelTotalAmount = value; } }
-        public int? nChatrelRecieptNumber { get { return _nChatrelRecieptNumber; } set { _nChatrelRecieptNumber = value; } }
-        public int? nAuthRegionID { get { return _nAuthRegionID; } set { _nAuthRegionID = value; } }
-        public string? sCountryID { get { return _sCountryID; } set { _sCountryID = value; } }
-        public string? sPaymentStatus { get { return _sPaymentStatus; } set { _sPaymentStatus = value; } }
-        public string? sPaymentMode { get { return _sPaymentMode; } set { _sPaymentMode = value; } }
-        public string? sPaymentCurrency { get { return _sPaymentCurrency; } set { _sPaymentCurrency = value; } }
-        public string? sPaidByGBId { get { return _sPaidByGBId; } set { _sPaidByGBId = value; } }
-        public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
-        public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
+            if (sDummyColumn.Length <= 0)
+            {
+                labelDummyDataReport.Text = "Please select Column";
+                return;
+            }
+            else
+            {
 
-        #endregion
+                cnn = new MySqlConnection(connetionString);
+                try
+                {
+                    cnn.Open();
+                    //string query = "select sGBID," + sDummyColumn + " from tblmadeb Limit 1000";
+                    string query = "select ID as sGBId," + sDummyColumn + " from tblmadeb";
+                    MySqlCommand cmd = new MySqlCommand(query, cnn);
+                    MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
+                    DataTable dt = new DataTable("tblmadeb");
+                    returnVal.Fill(dt);
+                    string sStartProcess = DateTime.Now.ToString();
+                    Int64 nInsertedFileCount = 0;
+                    Int64 nNotUpdateCount = 0;
+                    StringBuilder sbLogging = new StringBuilder();
+
+                    if (dt != null || dt.Rows.Count > 0)
+                    {
+                        progressBarProcess.Minimum = 0;
+                        progressBarProcess.Maximum = dt.Rows.Count;
+                        progressBarProcess.Step = 1;
+                    }
+                    else
+                    {
+                        progressBarProcess.Minimum = 0;
+                        progressBarProcess.Maximum = 1;
+                        progressBarProcess.Step = 1;
+                        progressBarProcess.PerformStep();
+                    }
+
+                    //Iterate through Items 
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        progressBarProcess.PerformStep();
+                        updateString = string.Empty;
+
+                        if (row["sGBID"] == DBNull.Value)
+                        {
+                            continue;
+                        }
+
+                        string sGBNum = row["sGBID"].ToString().Trim();
+                        if (sDummyColumn.Contains("sName")) { sMadebNameData = row["sName"].ToString().Trim(); }
+                        if (sDummyColumn.Contains("sFathersName")) { 
+                            sFathersNameData = row["sFathersName"].ToString().Trim(); }
+
+                        if (sMadebNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sName` = @sName " : ", `sName` = @sName "; }
+                        if (sFathersNameData.Length > 0) { updateString += updateString.Length <= 0 ? "`sFathersName` = @sFathersName " : ", `sFathersName` = @sFathersName "; }
+
+                        if (updateString != string.Empty)
+                        {
+                            string cmdString = "UPDATE `ctadb`.`tblmadeb`  SET " + updateString + "WHERE `Id` = @sGBID;";
+
+                            cmd = new MySqlCommand(cmdString, cnn);
+
+                            cmd.Parameters.Add("@sGBId", MySqlDbType.VarChar, 255);
+                            cmd.Parameters["@sGBId"].Value = row["sGBID"].ToString();
+
+
+                            if (sMadebNameData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sName", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sName"].Value = RandomDummyData(sMadebNameData.Length, sMadebNameData, false);
+                            }
+                            if (sFathersNameData.Length > 0)
+                            {
+                                cmd.Parameters.Add("@sFathersName", MySqlDbType.VarChar, 255);
+                                cmd.Parameters["@sFathersName"].Value = RandomDummyData(sFathersNameData.Length, sFathersNameData, false);
+                            }
+
+
+                            int RowsAffected = cmd.ExecuteNonQuery();
+                            labelDummyDataReport.Text = @"Madeb Id: " + sGBNum;
+                            sbLogging.AppendLine("Madeb Id: " + sGBNum);
+
+                        }
+                        else
+                        {
+                            labelDummyDataReport.Text = @"Madeb Id Not Updated: " + sGBNum;
+                            sbLogging.AppendLine("Madeb Id Not Updated: " + sGBNum);
+                            nNotUpdateCount++;
+                        }
+                        nInsertedFileCount++;
+                        labelDummyDataReport.Text += " - " + nInsertedFileCount.ToString() + "/" + dt.Rows.Count.ToString();
+                        //labelDummyDataReport.Refresh();
+                        this.Refresh();
+                        Application.DoEvents();
+                    }
+
+                    string sEndProcess = DateTime.Now.ToString();
+
+                    cnn.Close();
+                    labelDummyDataReport.Text = "============================";
+                    labelDummyDataReport.Text += Environment.NewLine + "                Summary";
+                    labelDummyDataReport.Text += Environment.NewLine + "============================";
+                    labelDummyDataReport.Text += Environment.NewLine + "Start Process: " + sStartProcess;
+                    labelDummyDataReport.Text += Environment.NewLine + "End Process: " + sEndProcess;
+                    labelDummyDataReport.Text += Environment.NewLine + "Column Selected for Update: " + sDummyColumn.ToString();
+                    labelDummyDataReport.Text += Environment.NewLine + "Number of  Madeb Updated: " + nInsertedFileCount.ToString();
+                    labelDummyDataReport.Text += Environment.NewLine + "Number of in Madeb Not Updated: " + nNotUpdateCount.ToString();
+                    labelDummyDataReport.Text += Environment.NewLine + "============================";
+
+                    sbLogging.AppendLine("===================================");
+                    sbLogging.AppendLine("             Summary");
+                    sbLogging.AppendLine("===================================");
+                    sbLogging.AppendLine("Start Process: " + sStartProcess);
+                    sbLogging.AppendLine("End Process: " + sEndProcess);
+                    sbLogging.AppendLine("Column Selected for Update: " + sDummyColumn.ToString());
+                    sbLogging.AppendLine("Number of Madeb Updated: " + nInsertedFileCount.ToString());
+                    sbLogging.AppendLine("Number of in Madeb Not Updated: " + nNotUpdateCount.ToString());
+                    sbLogging.AppendLine("===================================");
+
+                    File.AppendAllText(sLogFolderPath + "Madeb Dummy Data log-" + Guid.NewGuid().ToString() + ".txt", sbLogging.ToString());
+                    sbLogging.Clear();
+
+                }
+                catch (Exception ex)
+                {
+                    labelDummyDataReport.Text += Environment.NewLine + ex.ToString();
+                }
+            }
+        }
+
+        public class ChatrelPayment
+        {
+            #region Private  Properties 
+            private int _Id;
+            private string? _sGBId;
+            private decimal? _nChatrelAmount;
+            private decimal? _nChatrelMeal;
+            private int? _nChatrelYear;
+            private int? _nChatrelLateFeesPercentage;
+            private decimal? _nArrearsAmount;
+            private DateTime? _dtArrearsFrom;
+            private DateTime? _dtArrearsTo;
+            private decimal? _nChatrelSalaryAmt;
+            private DateTime? _dtChatrelSalaryFrom;
+            private DateTime? _dtChatrelSalaryTo;
+            private decimal? _nChatrelAdditionalDonationAmt;
+            private decimal? _nChatrelBusinessDonationAmt;
+            private decimal? _nChatrelTotalAmount;
+            private int? _nChatrelRecieptNumber;
+            private int? _nAuthRegionID;
+            private string? _sCountryID;
+            private string? _sPaymentStatus;
+            private string? _sPaymentMode;
+            private string? _sPaymentCurrency;
+            private string? _sPaidByGBId;
+            private DateTime? _dtEntered;
+            private int _nEnteredBy;
+            #endregion
+
+            #region Public Properties
+            public int Id { get { return _Id; } set { _Id = value; } }
+            public string? sGBId { get { return _sGBId; } set { _sGBId = value; } }
+            public decimal? nChatrelAmount { get { return _nChatrelAmount; } set { _nChatrelAmount = value; } }
+            public decimal? nChatrelMeal { get { return _nChatrelMeal; } set { _nChatrelMeal = value; } }
+            public int? nChatrelYear { get { return _nChatrelYear; } set { _nChatrelYear = value; } }
+            public int? nChatrelLateFeesPercentage { get { return _nChatrelLateFeesPercentage; } set { _nChatrelLateFeesPercentage = value; } }
+            public decimal? nArrearsAmount { get { return _nArrearsAmount; } set { _nArrearsAmount = value; } }
+            public DateTime? dtArrearsFrom { get { return _dtArrearsFrom; } set { _dtArrearsFrom = value; } }
+            public DateTime? dtArrearsTo { get { return _dtArrearsTo; } set { _dtArrearsTo = value; } }
+            public decimal? nChatrelSalaryAmt { get { return _nChatrelSalaryAmt; } set { _nChatrelSalaryAmt = value; } }
+            public DateTime? dtChatrelSalaryFrom { get { return _dtChatrelSalaryFrom; } set { _dtChatrelSalaryFrom = value; } }
+            public DateTime? dtChatrelSalaryTo { get { return _dtChatrelSalaryTo; } set { _dtChatrelSalaryTo = value; } }
+            public decimal? nChatrelAdditionalDonationAmt { get { return _nChatrelAdditionalDonationAmt; } set { _nChatrelAdditionalDonationAmt = value; } }
+            public decimal? nChatrelBusinessDonationAmt { get { return _nChatrelBusinessDonationAmt; } set { _nChatrelBusinessDonationAmt = value; } }
+            public decimal? nChatrelTotalAmount { get { return _nChatrelTotalAmount; } set { _nChatrelTotalAmount = value; } }
+            public int? nChatrelRecieptNumber { get { return _nChatrelRecieptNumber; } set { _nChatrelRecieptNumber = value; } }
+            public int? nAuthRegionID { get { return _nAuthRegionID; } set { _nAuthRegionID = value; } }
+            public string? sCountryID { get { return _sCountryID; } set { _sCountryID = value; } }
+            public string? sPaymentStatus { get { return _sPaymentStatus; } set { _sPaymentStatus = value; } }
+            public string? sPaymentMode { get { return _sPaymentMode; } set { _sPaymentMode = value; } }
+            public string? sPaymentCurrency { get { return _sPaymentCurrency; } set { _sPaymentCurrency = value; } }
+            public string? sPaidByGBId { get { return _sPaidByGBId; } set { _sPaidByGBId = value; } }
+            public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
+            public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
+
+            #endregion
+        }
+
+        private void checkBoxDummyProfile_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxDummyProfile.Checked)
+            {
+                textBoxDummyProfilePath.Visible = true;
+            }
+            else
+            {
+                textBoxDummyProfilePath.Visible = false;
+            }
+        }
     }
 }

@@ -26,7 +26,7 @@
 
 <h5 align="center">You can build unlimited layout styles using any of the 500+ included components and elements. Powerful, unique template built for React and Material-UI.</h5>
 
-<h4 align="center">Premium admin template powered by the most popular UI components framework available for React: Material-UI. Features hundreds of examples making web development fast and easy. Start from one of the individual apps included or from the general dashboard and build beautiful scalable applications and presentation websites.</h4>
+<h4 align="center">Greenbook Central Administration.</h4>
 
 <br />
 
