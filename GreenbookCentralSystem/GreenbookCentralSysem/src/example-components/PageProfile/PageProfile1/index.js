@@ -208,13 +208,7 @@ export default function LivePreviewExample() {
                         </div>
                       </div>
                       <div className="font-size-lg">
-                        Premium admin template powered by the most popular UI
-                        components framework available for React: Material-UI.
-                        Features hundreds of examples making web development
-                        fast and easy. Start from one of the individual apps
-                        included or from the general dashboard and build
-                        beautiful scalable applications and presentation
-                        websites.
+                      Greenbook Central Administration.
                       </div>
                     </div>
                   </div>
@@ -1599,13 +1593,7 @@ export default function LivePreviewExample() {
                             Bamburgh React Admin Dashboard with Material-UI PRO
                           </h5>
                           <p className="font-size-lg text-white-50 mb-0">
-                            Premium admin template powered by the most popular
-                            UI components framework available for React:
-                            Material-UI. Features hundreds of examples making
-                            web development fast and easy. Start from one of the
-                            individual apps included or from the general
-                            dashboard and build beautiful scalable applications
-                            and presentation websites.
+                          Greenbook Central Administration.
                           </p>
                           <div className="mt-4">
                             <div className="avatar-icon-wrapper mx-auto mb-2">
@@ -1645,13 +1633,7 @@ export default function LivePreviewExample() {
                             unique template built for React and Material-UI.
                           </p>
                           <p className="font-size-md text-white-50">
-                            Premium admin template powered by the most popular
-                            UI components framework available for React:
-                            Material-UI. Features hundreds of examples making
-                            web development fast and easy. Start from one of the
-                            individual apps included or from the general
-                            dashboard and build beautiful scalable applications
-                            and presentation websites.
+                          Greenbook Central Administration.
                           </p>
                           <p className="font-size-md text-white-50">
                             View any of the 5+ live previews we&#39;ve set up to
@@ -1701,13 +1683,7 @@ export default function LivePreviewExample() {
                             Bamburgh React Admin Dashboard with Material-UI PRO
                           </h5>
                           <p className="font-size-lg mb-0 text-white-50">
-                            Premium admin template powered by the most popular
-                            UI components framework available for React:
-                            Material-UI. Features hundreds of examples making
-                            web development fast and easy. Start from one of the
-                            individual apps included or from the general
-                            dashboard and build beautiful scalable applications
-                            and presentation websites.
+                          Greenbook Central Administration.
                           </p>
                           <div className="mt-4">
                             <div className="avatar-icon-wrapper mx-auto mb-2">
@@ -1763,13 +1739,7 @@ export default function LivePreviewExample() {
                             you&#39;ll ever need!
                           </p>
                           <p className="text-light">
-                            Premium admin template powered by the most popular
-                            UI components framework available for React:
-                            Material-UI. Features hundreds of examples making
-                            web development fast and easy. Start from one of the
-                            individual apps included or from the general
-                            dashboard and build beautiful scalable applications
-                            and presentation websites.
+                          Greenbook Central Administration.
                           </p>
 
                           <div className="divider bg-white opacity-2 my-3 my-lg-5" />
