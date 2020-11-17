@@ -5,14 +5,17 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace CTADBL.BaseClassRepositories.Masters
 {
     public class ChatrelRepository : ADORepository<Chatrel>
     {
+        private static MySqlConnection _connection;
         #region Constructor
         public ChatrelRepository(string connectionString) : base(connectionString)
         {
+            _connection = new MySqlConnection(connectionString);
         }
         #endregion
 
@@ -89,6 +92,55 @@ namespace CTADBL.BaseClassRepositories.Masters
                 return GetRecord(command);
             }
         }
+        #endregion
+
+
+        #region Get Historic values of Chatrel Key for each year starting from Chatrel Year to Current Year
+
+        public Dictionary<int, dynamic> YearWiseValue(string chatrelConfigKey)
+        {
+            string sql = @"WITH recursive mycte(yr, val) AS
+                           (
+                                SELECT year(dtchatrelfrom),
+                                        nchatrelvalue
+                                FROM   lstchatrel
+                                WHERE  schatrelkey = @chatrelConfigKey
+                                AND    year(dtchatrelfrom) =
+                                        (
+                                                SELECT min(year(dtchatrelfrom))
+                                                FROM   lstchatrel
+                                                WHERE  schatrelkey = @chatrelConfigKey)
+                                UNION ALL
+                                SELECT    yr+1,
+                                            COALESCE(lstchatrel.nchatrelvalue, val)
+                                FROM      mycte
+                                LEFT JOIN lstchatrel
+                                ON        year(lstchatrel.dtchatrelfrom) = (yr+1)
+                                AND       lstchatrel.schatrelkey = @chatrelConfigKey
+                                WHERE     yr < year(curdate())
+                          )
+                          SELECT    mycte.yr,
+                                    COALESCE(lstchatrel.nchatrelvalue, val) AS val
+                          FROM      mycte
+                          LEFT JOIN lstchatrel
+                          ON        mycte.yr = year(lstchatrel.dtchatrelfrom)
+                          AND       lstchatrel.schatrelkey = @chatrelConfigKey
+                          ORDER BY  yr;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("chatrelConfigKey", chatrelConfigKey);
+                command.Connection = _connection;
+                command.CommandType = CommandType.Text;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                Dictionary<int, dynamic> dict = tables[0].AsEnumerable().ToDictionary<DataRow, int, dynamic>(row => Convert.ToInt32(row.Field<System.UInt64>("yr")), row => row.Field<dynamic>("val"));
+                return dict;
+            }
+             
+        }
+
         #endregion
 
         #region Populate Chatrel Records
