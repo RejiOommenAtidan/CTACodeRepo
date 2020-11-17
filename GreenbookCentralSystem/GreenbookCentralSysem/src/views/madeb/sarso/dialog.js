@@ -502,19 +502,13 @@ export const AddDialog = (props) => {
                                             name="name_fname"
 
                                             inputRef={register({
-                                                required: true,
-
-                                                pattern: /^[A-Za-z]+$/i
+                                                required: true
                                             })}
                                             //value='Aayush Pandya'
                                             onChange={(e) => { setFname(e.target.value) }}
                                         />
                                         {_.get("name_fname.type", errors) === "required" && (
                                             <p>This field is required</p>
-                                        )}
-
-                                        {_.get("name_fname.type", errors) === "pattern" && (
-                                            <p>Alphabetical characters only</p>
                                         )}
                                     </FormControl>
                                 </Grid>

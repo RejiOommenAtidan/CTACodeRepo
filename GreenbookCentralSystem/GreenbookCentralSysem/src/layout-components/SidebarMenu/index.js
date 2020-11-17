@@ -666,7 +666,7 @@ const SidebarMenu = (props) => {
                 Change Password
               </NavLink>
               </li>}
-            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
+            { /* authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
               &&
               <li>
                 <NavLink
@@ -680,7 +680,7 @@ const SidebarMenu = (props) => {
                 Chatrel
               </NavLink>
               </li>
-            }
+             */ }
           </ul>
         </div>
       </PerfectScrollbar>
