@@ -247,8 +247,15 @@ namespace ChatrelPaymentWebAPI.Controllers
         #region Authenticate User
         [HttpPost]
         [Route("[action]")]
-        public IActionResult AuthenticateGBID(string sGBID, DateTime dtDOB, string sEmail, string sFirstName, string sLastName)
+        //public IActionResult AuthenticateGBID(string sGBID, DateTime dtDOB, string sEmail, string sFirstName, string sLastName)
+        public IActionResult AuthenticateGBID(Dictionary<string, string> dict)
         {
+            string sGBID = dict.ContainsKey("sGBID") ? dict["sGBID"] : "";
+            string sEmail = dict.ContainsKey("sEmail") ? dict["sEmail"] : "";
+            string sFirstName = dict.ContainsKey("sFirstName") ? dict["sFirstName"] : "";
+            string sLastName = dict.ContainsKey("sLastName") ? dict["sLastName"] : "";
+            DateTime? dtDOB = dict.ContainsKey("dtDOB") ? (DateTime?)DateTime.Parse(dict["dtDOB"]) : null;
+
             if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID) || String.IsNullOrWhiteSpace(sEmail) || String.IsNullOrEmpty(sEmail) || String.IsNullOrEmpty(sFirstName) || String.IsNullOrWhiteSpace(sFirstName) || String.IsNullOrEmpty(sLastName) || String.IsNullOrWhiteSpace(sLastName) || dtDOB == null )
             {
                 return BadRequest("Parameters invalid.");
@@ -282,6 +289,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError);
                 }
             }
+            
             
         }
         #endregion
