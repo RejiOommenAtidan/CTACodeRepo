@@ -13,7 +13,7 @@ import { Alerts } from '../../../views/alerts';
 
 import { GoogleLogin } from 'react-google-login';
 import GoogleLoginPage from 'views/login/GoogleLogin';
-
+import axios from 'axios';
 import projectLogo from '../../../assets/images/CTALogo.png';
 
 export default function LogingPage(props) {
@@ -22,10 +22,12 @@ export default function LogingPage(props) {
 
   let history = useHistory();
   const dispatch = useDispatch();
-
-
+  
+  
+  const userObj = useSelector(state => state.GLoginReducer.oGoogle);
   const responseGoogle = (response) => {
     console.log(response);
+
   }
 
   
@@ -43,12 +45,44 @@ let oGBDetails={
   const submit = () => {
     //obj.user=JSON.parse(localStorage.getItem('currentUser')).name;
     //alert(JSON.stringify(obj));
-    console.log(oGBDetails);
-    dispatch(storeGBDetails(oGBDetails));
-    
-    history.push('/Home');
+   
+    let Obj={
+      sGBID:""+nGBID,
+      dtDOB:dtDob,
+      sFirstName:userObj.givenName,
+      sLastName:userObj.familyName,
+      sEmail:userObj.email  
+    }
+    console.log(Obj);
+  
+    axios.post(`ChatrelPayment/AuthenticateGBID/`,Obj)
+    .then(resp => {
+      if (resp.status === 200) {
+        //setPaymentHistory(resp.data);
+        if(resp.data=="Verified"){
+          dispatch(storeGBDetails(oGBDetails));
+          history.push('/Home');
+        }
+      }
+    })
+    .catch(error => {
+      if (error.response) {
+        console.error(error.response.data);
+        console.error(error.response.status);
+        console.error(error.response.headers);
+      } else if (error.request) {
+        console.warn(error.request);
+      } else {
+        console.error('Error', error.message);
+      }
+      console.log(error.config);
+    })
+    .then(release => {
+      //console.log(release); => udefined
+    });
+
   }
-  const userObj = useSelector(state => state.GLoginReducer.oGoogle);
+ 
    useEffect(() => {
     
     if( userObj == null){

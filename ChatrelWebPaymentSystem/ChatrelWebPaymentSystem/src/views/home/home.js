@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card ,CardContent,Typography ,Grid,Link} from '@material-ui/core';
+import { Card ,CardContent,Typography ,Grid,Link,Button} from '@material-ui/core';
 
 
 import PersonIcon from '@material-ui/icons/Person';
@@ -26,7 +26,7 @@ export default function Home() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Link onClick={()=>{history.push('/selfpayment')}} style={{cursor: 'pointer'}} > 
-                <Card  style={{height:'150px',backgroundColor:'yellow',color:'#168b44'}} >
+                <Card  style={{height:'150px',backgroundColor:'#ebca17',color:'#168b44'}} >
                   <CardContent>
                     <div style={{textAlign:'right'}}>
                     <PersonIcon  style={{width:'50px',height:'50px'}}/>
@@ -38,7 +38,7 @@ export default function Home() {
             </Grid>
             <Grid item xs={12}>
               <Link onClick={()=>{history.push('/Friends')}} style={{cursor: 'pointer'}} > 
-                <Card  style={{height:'150px',backgroundColor:'lightblue',color:'blue'}} >
+                <Card  style={{height:'150px',backgroundColor:'#aef4ff',color:'#3d65b0'}} >
                   <CardContent>
                   <div style={{textAlign:'right'}}>
                     <GroupIcon  style={{width:'50px',height:'50px'}}/>
@@ -50,7 +50,7 @@ export default function Home() {
             </Grid>
             <Grid item xs={12}>
             <Link onClick={()=>{history.push('/Family')}} style={{cursor: 'pointer'}} > 
-            <Card  style={{height:'150px',backgroundColor:'green',color:'yellow'}} >
+            <Card  style={{height:'150px',backgroundColor:'#168b44',color:'#ebca17'}} >
             <CardContent>
               <div style={{textAlign:'right'}}>
               <FavoriteIcon  style={{width:'50px',height:'50px'}}/>
@@ -67,19 +67,14 @@ export default function Home() {
             <Grid item xs={12}>
             <Card style={{height:'200px',width:'300px',backgroundColor:'yellow',color:'white',background:'url('+img+') no-repeat',backgroundImage:"linear-gradient(to bottom, rgba(235, 202, 23, 0), rgba(235, 202, 23, 0.82) 51%, #ebca17)"  }}>
               <CardContent>
-                <p style={{paddingTop:'50px'}}>PENDING AMOUNT</p>
+                <p style={{paddingTop:'30px'}}>PENDING AMOUNT</p>
                 <h1>$200</h1>
+                <p style={{paddingBottom:'10px'}}><Button style={{borderRadius:' 17px',backgroundColor:'#168b44'}}>Pay</Button></p>
+                
               </CardContent>  
             </Card> 
             </Grid>
-            <Grid item xs={12}>
-           
-            <Card>
-              <CardContent>
-                <p style={{paddingTop:'50px'}}>PENDING AMOUNT</p>
-              </CardContent>  
-            </Card>
-            </Grid>
+
           </Grid>  
         </Grid>
         </Grid>
