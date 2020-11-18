@@ -12,10 +12,55 @@ namespace CTADBL.BaseClassRepositories.Masters
     public class ChatrelRepository : ADORepository<Chatrel>
     {
         private static MySqlConnection _connection;
+        private static string _connectionString;
+        public static Dictionary<int, dynamic> ChatrelAmountUSD;
+        public static Dictionary<int, dynamic> ChatrelMealUSD;
+        public static Dictionary<int, dynamic> ChatrelSalaryUSD;
+        public static Dictionary<int, dynamic> ChatrelChildMonthlyUSD;
+
+        public static Dictionary<int, dynamic> ChatrelAmountINR;
+        public static Dictionary<int, dynamic> ChatrelMealINR;
+        public static Dictionary<int, dynamic> ChatrelSalaryINR;
+        public static Dictionary<int, dynamic> ChatrelChildMonthlyINR;
+
+        private static bool Initialized = false;
+
         #region Constructor
         public ChatrelRepository(string connectionString) : base(connectionString)
         {
             _connection = new MySqlConnection(connectionString);
+        }
+        #endregion
+
+        #region Static Constructor
+        static ChatrelRepository()
+        {
+           
+            
+        }
+        #endregion
+
+        #region Initialize static values 
+        public static void Init(string conn)
+        {
+
+            if (!Initialized)
+            {
+                _connectionString = conn;
+                MySqlConnection connection = new MySqlConnection(conn);
+                ChatrelAmountUSD = YearWiseValue("USDYearChatrelAmount", connection);
+                ChatrelMealUSD = YearWiseValue("USDYearChatrelMeal", connection);
+                ChatrelSalaryUSD = YearWiseValue("USDYearChatrelSalaryAmt", connection);
+                ChatrelChildMonthlyUSD = YearWiseValue("USDChildMonthChatrelAmount", connection);
+
+                ChatrelAmountINR = YearWiseValue("INRYearChatrelAmount", connection);
+                ChatrelMealINR = YearWiseValue("INRYearChatrelMeal", connection);
+                ChatrelSalaryINR = YearWiseValue("INRYearChatrelSalaryAmt", connection);
+                ChatrelChildMonthlyINR = YearWiseValue("INRChildMonthChatrelAmount", connection);
+
+                Initialized = true;
+            }
+            
         }
         #endregion
 
@@ -97,7 +142,7 @@ namespace CTADBL.BaseClassRepositories.Masters
 
         #region Get Historic values of Chatrel Key for each year starting from Chatrel Year to Current Year
 
-        public Dictionary<int, dynamic> YearWiseValue(string chatrelConfigKey)
+        private static Dictionary<int, dynamic> YearWiseValue(string chatrelConfigKey, MySqlConnection connection)
         {
             string sql = @"WITH recursive mycte(yr, val) AS
                            (
@@ -119,7 +164,7 @@ namespace CTADBL.BaseClassRepositories.Masters
                                 AND       lstchatrel.schatrelkey = @chatrelConfigKey
                                 WHERE     yr < year(curdate())
                           )
-                          SELECT    mycte.yr,
+                          SELECT    CAST(mycte.yr AS UNSIGNED) AS yr,
                                     COALESCE(lstchatrel.nchatrelvalue, val) AS val
                           FROM      mycte
                           LEFT JOIN lstchatrel
@@ -129,7 +174,7 @@ namespace CTADBL.BaseClassRepositories.Masters
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("chatrelConfigKey", chatrelConfigKey);
-                command.Connection = _connection;
+                command.Connection = connection;
                 command.CommandType = CommandType.Text;
                 MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
                 DataSet ds = new DataSet();

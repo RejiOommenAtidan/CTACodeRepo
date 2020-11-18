@@ -39,7 +39,7 @@ export default function PaymentPage  (props) {
 
   let history = useHistory();
 
-
+  console.log("Props contains:", props);
   // Who is paying
   const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
   
@@ -131,16 +131,16 @@ export default function PaymentPage  (props) {
   
 
   const updateAuthRegion = (e, value) => {
-    console.log(value.id, e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_')));
+    console.log("Auth region changed to ", value.id, "at row ", e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_')));
     const index = e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_'));
-    let chartelObj = [...paymentData];
-    chartelObj[index].nAuthRegionID = value.id;
-    chartelObj[index].sCountryID = value.sCountryID;
-    chartelObj[index].sPaymentCurrency = value.sPaymentCurrency;
-    chartelObj[index].nChatrelAmount = value.sPaymentCurrency === 'INR' ? chartelObj[index].nChatrelINR : chartelObj[index].nChatrelUSD;
-    chartelObj[index].nChatrelMeal = value.sPaymentCurrency === 'INR' ? chartelObj[index].nChatrelMealINR : chartelObj[index].nChatrelMealUSD;
+    let chatrelObj = [...paymentData];
+    chatrelObj[index].nAuthRegionID = value.id;
+    chatrelObj[index].sCountryID = value.sCountryID;
+    chatrelObj[index].sPaymentCurrency = value.sCurrencyCode;
+    chatrelObj[index].nChatrelAmount = value.sCurrencyCode === 'INR' ? chatrelObj[index].nChatrelINR : chatrelObj[index].nChatrelUSD;
+    chatrelObj[index].nChatrelMeal = value.sCurrencyCode === 'INR' ? chatrelObj[index].nChatrelMealINR : chatrelObj[index].nChatrelMealUSD;
 
-    setPaymentData(chartelObj);
+    setPaymentData(chatrelObj);
     calculate(index);
   };
 
@@ -148,12 +148,12 @@ export default function PaymentPage  (props) {
 
 const modify =(index) =>{
   let payObj = [...paymentData];
-  if(payObj[index].nChatrelSalaryAmt===0){
-    payObj[index].nChatrelSalaryAmt=50;
+  if(payObj[index].nCurrentChatrelSalaryAmt===0){
+    payObj[index].nCurrentChatrelSalaryAmt=50;
     //setPaymentData(payObj);
   }
   else{
-    payObj[index].nChatrelSalaryAmt=0;
+    payObj[index].nCurrentChatrelSalaryAmt=0;
   }
   setPaymentData(payObj);
   calculate(index);
@@ -256,6 +256,19 @@ const submit =() =>{
         if(resp.status === 200){
           console.log("AuthRegions fetched:", resp.data);
           setAuthRegions(resp.data);
+          if(props.location.state.pymtData){
+            setDataAPI(props.location.state.pymtData);
+            setSummaryData(props.location.state.pymtData.chatrelPayment);
+            calcTotal(props.location.state.pymtData.gbChatrels, adonation, bdonation);
+            setPaymentData(props.location.state.pymtData.gbChatrels);
+            fetch('https://api.ratesapi.io/api/latest?base=USD&symbols=INR')
+                  .then(response => response.json())
+                  .then(data => {
+                  console.log("currency", data.rates.INR);
+                  setDollarToRupees(data.rates.INR);
+                  });
+            return;
+          }
           axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sGBID)
             .then(resp => {
               if (resp.status === 200) {
