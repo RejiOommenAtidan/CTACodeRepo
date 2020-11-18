@@ -2,7 +2,8 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { Platform } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
+import Resolution from '../constants/ResolutionBreakpoint';
 
 export const MyProfileScreen = (props) => {
     const oUserHardcodedMyProfile = {
@@ -37,10 +38,10 @@ export const MyProfileScreen = (props) => {
     );
 };
 
-MyProfileScreen.navigationOptions = navData => {
+export const MyProfileScreenOptions = navData => {
     return {
         headerTitle: 'My Profile',
-        headerLeft: (
+        headerLeft: () => {
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
                     title="Menu"
@@ -50,7 +51,7 @@ MyProfileScreen.navigationOptions = navData => {
                     }}
                 />
             </HeaderButtons>
-        )
+                }
     };
 };
 
@@ -58,7 +59,9 @@ const styles = StyleSheet.create({
     main: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        marginHorizontal: Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+        marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin
     },
     container: {
         backgroundColor: '#fff',

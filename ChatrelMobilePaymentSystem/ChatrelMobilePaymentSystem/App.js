@@ -3,10 +3,11 @@ import { StyleSheet, ScrollView } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import SplashScreen from 'react-native-splash-screen'
 import axios from 'axios';
-import MainNavigator from './code/navigation/MainNavigator';
+import { MainNavigator } from './code/navigation/MainNavigator';
 import { Provider } from 'react-redux';
 import { store } from './code/store/configureStore';
 import { sAPIBASEURL } from './code/constants/CommonConfig';
+import { NavigationContainer } from '@react-navigation/native';
 
 const App: () => React$Node = () => {
   axios.defaults.baseURL = sAPIBASEURL;
@@ -17,7 +18,9 @@ const App: () => React$Node = () => {
     <>
       <Provider store={store}>
         {/*<ScrollView>*/}
-        <MainNavigator />
+        <NavigationContainer>
+          <MainNavigator />
+        </NavigationContainer>
         {/*</ScrollView>*/}
       </Provider>
     </>

@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, BackHandler, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, BackHandler, Alert, Dimensions } from 'react-native';
 import { Card, Button } from 'react-native-elements'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
-import { withNavigationFocus } from 'react-navigation';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-// import CustomHeaderButton from '../components/HeaderButton';
+import Resolution from '../constants/ResolutionBreakpoint';
+import Colors from '../constants/Colors';
 import { Icon } from "react-native-elements";
+// import { withNavigationFocus } from 'react-navigation';
+// import CustomHeaderButton from '../components/HeaderButton';
 
 const HomeScreen = (props) => {
   // const backAction = () => {
@@ -57,43 +59,47 @@ const HomeScreen = (props) => {
     getChatrelDetails();
     BackHandler.addEventListener('hardwareBackPress', () => true);
     return () => { BackHandler.removeEventListener('hardwareBackPress', () => true); };
-
   }, []);
   return (
     <ScrollView>
-      <View style={styles.main}>
-        <View style={styles.container}>
-          <View><Text>Quick Actions</Text></View>
+      <View style={styles.mainContainer}>
+        <View style={styles.cardContainer}>
+          {/*<View><Text>Quick Actions</Text></View>*/}
           {aCard.map((card, index) => {
             return (
-              <TouchableOpacity key={index} onPress={() => {
-                props.navigation.navigate({
-                  routeName: card.sRouteName
-                });
-                console.log(card);
-              }}>
-                <Card style={styles.card}>
-                  <Card.Title>{card.sLabel}</Card.Title>
-                  <Card.Divider />
-                  <Card.Image source={card.sImagePath} />
-                  {/*<Text>{card.sLabel}</Text>*/}
-                </Card>
-              </TouchableOpacity>
+              <View style={styles.singleCardContainer}>
+                <TouchableOpacity key={index} onPress={() => {
+                  props.navigation.navigate(card.sRouteName);
+                  console.log(card);
+                }}>
+                  <Card
+                    containerStyle={styles.singleCardComponent}
+                  >
+                    <Card.Title>{card.sLabel}</Card.Title>
+                    {/*<Card.Divider />*/}
+                    {/*<Card.Image source={card.sImagePath} />*/}
+                    {/*<Text>{card.sLabel}</Text>*/}
+                  </Card>
+                </TouchableOpacity>
+              </View>
             )
           })}
-          {/**/}
-          <Card>
+        </View>
+        {/**/}
+        <View style={styles.pendingAmountContainer}>
+          <Card containerStyle={styles.pendingAmountComponent}>
             <Card.Image source={require('../assets/Pay.png')} />
-            <Text>
-              Pendng Amount ${nChatrelTotalAmount}
+            <Text style={styles.pendingAmountTextComponent}>
+              Pending Amount ${nChatrelTotalAmount}
             </Text>
             <Button
-              buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
+              titleStyle={{ color: Colors.white, fontFamily: 'Kanit-Regular' }}
+              buttonStyle={{
+                backgroundColor: Colors.greenBG,
+              }}
               title='PAY NOW'
               onPress={() => {
-                props.navigation.navigate({
-                  routeName: 'SelfChatrel'
-                });
+                props.navigation.navigate('SelfChatrel');
               }}
             />
           </Card>
@@ -103,38 +109,57 @@ const HomeScreen = (props) => {
   );
 };
 
-HomeScreen.navigationOptions = navData => {
+export const HomeScreenOptions = navData => {
   return {
     headerTitle: 'Quick Actions',
-    //drawerIcon: Icon,
-    headerLeft: (
+    headerLeft: () => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
-          iconName={Platform.OS === 'android' ? "menu" : "ios-menu-outline"}
+          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
           onPress={() => {
             navData.navigation.toggleDrawer();
           }}
-
         />
       </HeaderButtons>
-    )
+    }
   };
 };
 
 const styles = StyleSheet.create({
-  main: {
-    flex: 1
+  mainContainer: {
+    flex: 1,
+    marginHorizontal: Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
-  container: {
-    // flex: 1,
-    backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
+  cardContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 20 : 25,
   },
-  card: {
-    width: '50%'
+  singleCardContainer: {
+    width: Dimensions.get('window').width / 3
+  },
+  singleCardComponent: {
+    height: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 75 : 100,
+    borderRadius: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 15 : 20
+  },
+  pendingAmountContainer: {
+    //position:"relative"
+  },
+  pendingAmountComponent: {
+
+  },
+  pendingAmountTextComponent: {
+    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 18,
+    fontFamily: 'Kanit-Regular',
+    fontStyle: "normal",
+    fontWeight: "300",
+    textAlign: "left",
+    color: Colors.black
   }
 });
 
-export default withNavigationFocus(HomeScreen);
+//export default withNavigationFocus(HomeScreen);
+
+export default HomeScreen;

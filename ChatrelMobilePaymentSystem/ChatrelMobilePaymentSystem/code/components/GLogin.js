@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-community/google-signin';
 import { sClientIDAndroid } from '../constants/CommonConfig';
 import { useSelector, useDispatch } from 'react-redux';
 import { storeGoogleCreds } from '../store/actions/GLoginAction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const GLogin = (props) => {
+
   const dispatch = useDispatch();
   const oGoogle = useSelector(state => state.GLoginReducer.oGoogle);
-  //console.log(oGoogle);
   const [user, setUser] = useState({});
+
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: sClientIDAndroid,
@@ -18,10 +20,26 @@ export const GLogin = (props) => {
       //iosClientId: '', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
     });
     isSignedIn();
-    // if(oGoogle!==null){
-    //   getCurrentUserInfo();
-    // }
-  }, [])
+    // getDataFromAsnycStorage().then(data => {
+    //   //console.log(data);
+    //   let userInfo = data;
+    //   if (userInfo) {
+    //     setUser(userInfo);
+    //     dispatch(storeGoogleCreds(userInfo));
+    //     props.props.navigation.navigate("GBDetail");
+    //   }
+    // });
+  }, []);
+
+  const getDataFromAsnycStorage = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('oUserInfo');
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      // error reading value
+    }
+  };
+
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -29,9 +47,14 @@ export const GLogin = (props) => {
       //console.log(userInfo);
       setUser(userInfo);
       dispatch(storeGoogleCreds(userInfo));
-      props.props.navigation.navigate({
-        routeName: 'GBDetail'
-      });
+      try {
+        const jsonUserInfoValue = JSON.stringify(userInfo);
+        await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
+      }
+      catch (e) {
+        console.log(e);
+      }
+      props.props.navigation.navigate("GBDetail");
     } catch (error) {
       console.log('Message', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -45,6 +68,7 @@ export const GLogin = (props) => {
       }
     }
   };
+
   const isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (!!isSignedIn) {
@@ -53,15 +77,14 @@ export const GLogin = (props) => {
       console.log('Please Login');
     }
   };
+
   const getCurrentUserInfo = async () => {
     try {
       const userInfo = await GoogleSignin.signInSilently();
       //console.log(userInfo);
       setUser(userInfo);
       dispatch(storeGoogleCreds(userInfo));
-      props.props.navigation.navigate({
-        routeName: 'GBDetail'
-      });
+      props.props.navigation.navigate("GBDetail");
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         console.log('User has not signed in yet');
@@ -70,6 +93,7 @@ export const GLogin = (props) => {
       }
     }
   };
+
   // const signOut = async () => {
   //   try {
   //     await GoogleSignin.revokeAccess();
@@ -82,6 +106,7 @@ export const GLogin = (props) => {
   //     console.error(error);
   //   }
   // };
+
   return (
     <View style={styles.gSignInContainer}>
       <GoogleSigninButton
@@ -93,6 +118,7 @@ export const GLogin = (props) => {
     </View>
   )
 }
+
 const styles = StyleSheet.create({
   gSignInContainer: {
     flex: 1,
@@ -100,8 +126,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   gSignInComponent: {
-    width: 192,
-    height: 48,
-    marginRight: 120
+    width: Dimensions.get('window').width * 0.50, //50%
+    height: Dimensions.get('window').height * 0.065 //6.5%,
   }
 });

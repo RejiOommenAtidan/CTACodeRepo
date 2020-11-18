@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 import { storeGBDetails } from '../store/actions/GBDetailsAction';
 import { storeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
 import Colors from '../constants/Colors';
+import Resolution from '../constants/ResolutionBreakpoint';
+import LinearGradient from 'react-native-linear-gradient';
 
 export const GBDetailScreen = (props) => {
   useEffect(() => {
@@ -27,36 +29,38 @@ export const GBDetailScreen = (props) => {
   return (
     <ImageBackground
       source={require('../assets/Background.png')}
-      style={{ flex: 1 }}
+      style={styles.imagebacgroundComponent}
       resizeMode="cover">
-      <View style={styles.mainContainer}>
-        <View>
-          <Text style={styles.headerComponent}>
-            Verify your Details
-        </Text>
-        </View>
-        <View>
-          <Text style={styles.textComponent}>
-            Disclaimer: All Fields are Mandatory
-        </Text>
-        </View>
-        <View style={styles.gbidContainer}>
-          <Input
-            label="Enter GBID"
-            placeholder="GBID Please"
-            autoFocus={true}
-            autoCompleteType={"off"}
-            autoCorrect={false}
-            clearButtonMode={"while-editing"}
-            //secureTextEntry={!bShowGBID}
-            keyboardType={"number-pad"}
-            keyboardAppearance={"default"}
-            disableFullscreenUI={true}
-            maxLength={7}
-            onChangeText={(value) => { setsGBID(value) }}
-            value={sGBID}
-          />
-          {/*<View style={styles.showGBIDContainer}>
+      <LinearGradient
+        style={styles.linearGradient}
+        colors={['#000000', '#000000']}
+      //start={{ x: 0.5, y: 0.5 }}
+      >
+        <View style={styles.mainContainer}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerComponent}>Verify your details</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.textComponent}>Disclaimer: All fields are mandatory</Text>
+          </View>
+          <View style={styles.gbidContainer}>
+            <Input
+              //label="Enter GBID"
+              placeholder="Enter 7 Digit Greenbook Number"
+              //autoFocus={true}
+              autoCompleteType={"off"}
+              autoCorrect={false}
+              clearButtonMode={"while-editing"}
+              //secureTextEntry={!bShowGBID}
+              keyboardType={"number-pad"}
+              keyboardAppearance={"default"}
+              disableFullscreenUI={true}
+              maxLength={7}
+              onChangeText={(value) => { setsGBID(value) }}
+              value={sGBID}
+              style={styles.gbidComponent}
+            />
+            {/*<View style={styles.showGBIDContainer}>
           <Switch
             style={styles.showGBIDComponent}
             onValueChange={() => { setbShowGBID(!bShowGBID) }}
@@ -64,53 +68,64 @@ export const GBDetailScreen = (props) => {
           />
           <Text>Show/Hide GBID</Text>
         </View>*/}
+          </View>
+          <View style={styles.dobContainer}>
+            <DatePicker
+              androidMode={"spinner"}
+              //style={styles.dobComponent}
+              date={dtDOB}
+              mode="date"
+              placeholder="Select DOB"
+              format={sDateFormat}
+              maxDate={dtToday}
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateText: {
+                  textAlign: "left",
+                  color: Colors.white,
+                  fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
+                  fontStyle: "normal",
+                  fontWeight: "normal",
+                  fontFamily: 'Kanit-Light'
+                },
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 2.4 : 4,
+                  marginLeft: 0
+                },
+                dateInput: {
+                  marginLeft: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21.6 : 36
+                }
+              }}
+              onDateChange={(date) => { setdtDOB(date) }}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              //style={styles.buttonComponent}
+              titleStyle={{ color: Colors.black }}
+              buttonStyle={styles.buttonComponent}
+              title="Verify Details"
+              onPress={() => {
+                let oGBDetails = {
+                  sGBID: sGBID,
+                  dtDob: dtDOB
+                };
+                dispatch(storeGBDetails(oGBDetails));
+                dispatch(storeCurrentGBDetails(oGBDetails));
+                props.navigation.navigate("Home");
+              }}
+            />
+          </View>
         </View>
-        <View style={styles.dobContainer}>
-          <DatePicker
-            androidMode={"spinner"}
-            style={styles.dobComponent}
-            date={dtDOB}
-            mode="date"
-            placeholder="Select DOB"
-            format={sDateFormat}
-            maxDate={dtToday}
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: 'absolute',
-                left: 0,
-                top: 4,
-                marginLeft: 0
-              },
-              dateInput: {
-                marginLeft: 36
-              }
-            }}
-            onDateChange={(date) => { setdtDOB(date) }}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            style={styles.buttonComponent}
-            title="Verify & Continue"
-            onPress={() => {
-              let oGBDetails = {
-                sGBID: sGBID,
-                dtDob: dtDOB
-              };
-              dispatch(storeGBDetails(oGBDetails));
-              dispatch(storeCurrentGBDetails(oGBDetails));
-              props.navigation.navigate({ routeName: "Home" });
-            }}
-          />
-        </View>
-      </View>
+      </LinearGradient>
     </ImageBackground>
   );
 };
 
-GBDetailScreen.navigationOptions = navData => {
+export const GBDetailScreenOptions = navData => {
   return {
     headerTitle: 'GB Details',
     header: null,
@@ -122,57 +137,97 @@ GBDetailScreen.navigationOptions = navData => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    margin: 5,
+    marginHorizontal: Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin,
     flexDirection: 'column'
   },
+  imagebacgroundComponent: {
+    flex: 1
+  },
+  headerContainer: {
+    width: Dimensions.get('window').width * 0.70,
+    height: Dimensions.get('window').height * 0.065,
+    marginTop: Dimensions.get("window").height < Resolution.nHeightScreenMargin ? 120 : 200,
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6
+  },
   headerComponent: {
-    marginTop: Dimensions.get("window").height > 600 ? 30 : 10,
-    paddingLeft: 10,
     textAlign: "left",
-    fontSize: 28,
-    paddingBottom: 10,
+    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 18 : 30,
     fontStyle: "normal",
-    fontWeight: "bold",
-    marginBottom: 10,
-    color: Colors.white
+    fontWeight: "normal",
+    color: Colors.white,
+    fontFamily: 'Kanit-Regular',
+    lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    //letterSpacing: Resolution.nLetterSpacing,
+  },
+  textContainer: {
+    width: Dimensions.get('window').width * 0.70,
+    height: Dimensions.get('window').height * 0.035,
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10
   },
   textComponent: {
-    paddingLeft: 10,
-    fontSize: 16,
+    fontFamily: 'NunitoSans-Light',
+    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
     textAlign: "left",
-    paddingBottom: 5,
-    marginBottom: 15,
     fontStyle: "normal",
-    fontWeight: "bold",
-    color: Colors.white
+    fontWeight: "300",
+    color: Colors.white,
+    lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.6 : 18,
+    //letterSpacing: Resolution.nLetterSpacing, 
   },
   gbidContainer: {
+    width: Dimensions.get('window').width * 0.80,
+    height: Dimensions.get('window').height * 0.035,
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 20.4 : 34,
+    lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
+    //letterSpacing: Resolution.nLetterSpacing, 
     // maxwidth: '95%',
     // minWidth: '80%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   gbidComponent: {
-    height: 40,
-    paddingLeft: 10
+    textAlign: "left",
+    color: Colors.white,
+    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
+    fontStyle: "normal",
+    fontWeight: "300",
+    fontFamily: 'Kanit-Light'
   },
   dobContainer: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: Dimensions.get('window').width * 0.80,
+    height: Dimensions.get('window').height * 0.035,
+    marginTop: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 20.4 : 34,
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 20.4 : 34
   },
   dobComponent: {
-    height: 40,
-    paddingLeft: 10,
-    width: 375
+    // textAlign: "left",
+    // color: Colors.white,
+    // fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
+    // fontStyle: "normal",
+    // fontWeight: "normal",
+    // fontFamily: 'Kanit-Light'
   },
   buttonContainer: {
-    marginTop: 20
+    width: Dimensions.get('window').width * 0.80, //70%
+    height: Dimensions.get('window').height * 0.035, //3.5%
+    marginTop: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 20.4 : 34,
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 20.4 : 34,
   },
   buttonComponent: {
+    backgroundColor: Colors.buttonYellow
+    //color: Colors.black
     // marginTop:20
     // marginLeft:20,
     // marginRight:20
-    width: Dimensions.get("window").width / 4
-  }
+    //width: Dimensions.get("window").width * 0.50
+  },
+  linearGradient: {
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    //borderRadius: 5,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    opacity: 0.87
+  },
 });
