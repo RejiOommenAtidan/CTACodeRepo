@@ -133,7 +133,7 @@ export default function MainPage () {
     //   from:'Chatrel for Family'
     // }
     dispatch(storeCurrentGBDetails(obj));
-    history.push('/ChatrelPay/PaymentPage');
+    history.push('/ChatrelPay/PaymentPage', {pymtData: paymentData});
   }
 
   const getReceipt = (nChatrelReceiptNumber) => {
@@ -149,6 +149,14 @@ export default function MainPage () {
   const [dtDOB, setDOB] = React.useState();
   const [sFriendGBID, setFriendGBID] = React.useState();
   const [currencySymbol, setCurrencySymbol] = React.useState();
+  const [paymentData, setPaymentData] = React.useState();
+
+  const [sAccept, setsAccept] = useState("audio/*,video/*,image/*,*.doc, *.docx, *.pdf, *.xls, *.xlsx");
+  const [sTitle, setsTitle] = useState("");
+  const [sDocType, setsDocType] = useState("");
+  const [binFileDoc, setbinFileDoc] = useState("");
+  const [sFileExtension, setsFileExtension] = useState("");
+  const [disputeDescription, setDisputeDescription] = useState('');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -214,6 +222,8 @@ export default function MainPage () {
     axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+paidByGBID)
     .then(resp => {
       if (resp.status === 200) {
+        console.log("Self Chatrel Payment data:", resp.data);
+        setPaymentData(resp.data);
         if(resp.data.gbChatrels[0].sCurrencyCode === 'USD'){
           setCurrencySymbol('$');
         }
@@ -228,6 +238,52 @@ export default function MainPage () {
       console.log(error.message);
     });
   }, []);
+
+  const reader = new FileReader();
+
+    reader.addEventListener("load", function () {
+        setbinFileDoc(reader.result);
+        console.log(reader.result);
+    }, false);
+
+  const handleUploadChange = (event) => {
+    let files = document.getElementById("id_binDocFile").files;
+    let file;
+    if (files) {
+        for (var i = 0; i < files.length; i++) {
+            file = files[i];
+            reader.readAsDataURL(file);
+            //use var instead of let
+            var Dot = file.name.lastIndexOf('.');
+            var Name = file.name.slice(0, Dot);
+            var Extension = file.type.split("/").pop()
+            setsTitle(Name);
+            setsFileExtension(Extension);
+            console.log(file.name);
+            console.log(Name);
+            console.log(Extension);
+        }
+    }
+};
+
+ const handleDisputeFileSubmit = (e) => {
+   e.preventDefault();
+   console.log ("File upload:", binFileDoc)
+   const submit = {sGBID: paidByGBID, sName: paidByName, description: disputeDescription, sTitle: sTitle,
+    file: binFileDoc, sFileExtension: sFileExtension }
+   axios.post(`/ChatrelPayment/SubmitDispute`, submit)
+   .then((resp) => {
+    if (resp.status === 200) {
+      alert('Submitted successfully.')
+    }
+  })
+  .catch((error) => {
+      alert('error on submission.') ;
+      console.log(error.message);
+  });
+ };
+
+
   return (
     <>
       <Card  style={{  padding: 50 }} >
@@ -439,49 +495,65 @@ export default function MainPage () {
         <TabPanel value={value} index={4} dir={theme.direction}>
         <br />
         <p style={{backgroundColor: "lightblue"}}>Raise a Dispute</p>
+        <form method = 'post' encType = '' onSubmit={(e) => handleDisputeFileSubmit(e)}>
         <Grid container direction="column" alignContent="center"  >
             
             <Grid item xs={12} sm={9}>
               <FormControl>
                 <TextareaAutosize
                   placeholder="Enter Brief Description"
-                  
+                  name="description"
                   // InputProps={{inputProps: {style: minWidth = "50px"} }}
                   style={{minWidth: "450px"}}
                   rowsMin={5}
-                  //onChange={(e) => {setFirstName(e.target.value)}}
+                  onChange={(e) => {setDisputeDescription(e.target.value)}}
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <FormControl style={{paddingTop: "10px"}}>
                 <Input
                   type = 'file'
                   accept=".doc, .docx, .pdf, image/*"
+                  name='attachment'
                 >
                 </Input>
-              {/* <input
-                accept=".doc, .docx, .pdf, image/*"
-                style={{ display: 'none' }}
-                id="raised-button-file"
-                multiple
-                type="file"
-              />
-              <label htmlFor="raised-button-file">
-                <Button variant="raised" component="span" className={classes.button}>
-                  Upload Document
-                </Button>
-              </label>  */}
-                
+                             
               </FormControl>
-            </Grid>
+            </Grid> */}
+            <Grid item xs={12}>
+              <FormControl >
+                  <label htmlFor="id_binDocFile">
+                      <input
+                          id="id_binDocFile"
+                          accept={sAccept}
+                          //className={props.classes.textField}
+                          style={{ display: 'none' }}
+                          type="file"
+                          onChange={(event) => { handleUploadChange(event) }}
+                      />
+                      <Button color="primary" variant="contained" component="span">
+                          Upload Document
+                      </Button>
+                  </label>
+              </FormControl>
+          </Grid>
+          {sTitle !== "" && <Grid item xs={12}>
+              <FormControl >
+                  <Typography
+                      variant="p"
+                      color="primary"
+                  >File Uploaded, File Name: {sTitle}</Typography>
+              </FormControl>
+          </Grid>}
             <Grid item xs={12} sm={6}>
               <FormControl style={{paddingTop: "10px"}}>
-                <Button variant="contained"  color="primary">Save</Button>
+                <Button variant="contained"  color="primary" type='submit'>Save</Button>
                 
               </FormControl>
             </Grid>
             </Grid>
+            </form>
         </TabPanel>
         </div>
             </Grid>

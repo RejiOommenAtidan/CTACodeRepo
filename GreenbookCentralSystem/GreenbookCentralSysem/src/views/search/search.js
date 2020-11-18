@@ -468,12 +468,12 @@ export default function SearchPage() {
   }
   const complexObj = {
 
-    sFirstname: firstName,
-    sSecondname: secondName,
-    sFamilyname: familyName,
-    sSpousename: spouseName,
-    sFathersname: fatherName,
-    sMothersname: motherName,
+    sFirstName: firstName,
+    sMiddleName: secondName,
+    sFamilyName: familyName,
+    sSpouseName: spouseName,
+    sFathersName: fatherName,
+    sMothersName: motherName,
     dtDOB: dob,
     sCity: city,
     sState: state,
@@ -576,7 +576,7 @@ export default function SearchPage() {
       fatherName.length > 3 || motherName.length > 3 ||
       city.length > 3 || state.length > 3 || gender.length == 1 ||
       dob || country || minAge > 0 || maxAge > 0) {
-      //console.log(complexObj);
+      console.log(complexObj);
       handleComplexSearch();
     }
   }, [firstName, secondName, familyName, spouseName, fatherName, motherName, city, state, dob, country, gender, minAge, maxAge]);

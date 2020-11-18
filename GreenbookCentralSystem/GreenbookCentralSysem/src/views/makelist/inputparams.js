@@ -51,7 +51,7 @@ export const InputParams = (props) => {
   });
 
   const handlePrintStatus = (event) => {
-    setPrintStatus(event.target.value);
+    setPrintStatus(event.target.value === "true");
   };
 
   const makeListParams = {
@@ -244,8 +244,8 @@ export const InputParams = (props) => {
 
                     style={{ width: 180 }}
                   >
-                    <MenuItem value={true}>Printed</MenuItem>
-                    <MenuItem value={false}>Not Printed</MenuItem>
+                    <MenuItem value={"true"}>Printed</MenuItem>
+                    <MenuItem value={"false"}>Not Printed</MenuItem>
                   </Select>
                 )}
                 name="Printed"
