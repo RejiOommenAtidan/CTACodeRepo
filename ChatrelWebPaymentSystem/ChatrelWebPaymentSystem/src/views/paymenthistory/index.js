@@ -66,6 +66,7 @@ export default function Family () {
   return (
     <>
     {paymentHistory &&
+    <><p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>Chatrel History</p>
       <Card  style={{  padding: 50 }} >
 
       <br />
@@ -96,7 +97,7 @@ export default function Family () {
         </TableBody>
       </Table>
     </TableContainer>
-    </Card>}
+    </Card></>}
     </>
   );
 }

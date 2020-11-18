@@ -52,9 +52,14 @@ export default function Friends () {
   
 const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
-
+const [fileName,setFileName]=React.useState("No file chosen");
+const handleUploadClick =(e) =>{
+  console.log(e)
+  //filename = this.files[0].name
+}
   return (
     <>
+    <p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>File Dispute</p>
       <Card  style={{  padding: 50 }} >
 
       <br />
@@ -62,21 +67,23 @@ const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
           <Grid container direction="column" spacing={2} alignContent="center" >
             
 
-            
+          <Grid item xs={12} sm={5}>
+                <TextField   label="Enter Subject"/>
+            </Grid>
              <Grid item xs={12} >
             
-                <TextField label="Enter Description"/>
+                <TextField   multiline label="Enter Description"/>
                  
                 
             </Grid>
-            <Grid item xs={12} sm={4}>
-                 <input accept=".pdf,.doc,.docx" id="upload" type="file"
-                  // onChange={this.handleUploadClick}
-                  />
+            <Grid item xs={12} sm={5}>
+               
+                 <input id="files" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" id="upload" type="file"
+                 />
             </Grid>
-            <Grid item xs={12} sm={4} alignContent="center">
-               <Button  variant="outlined">
-                Save
+            <Grid item xs={12} sm={5} alignContent="center">
+               <Button  variant="contained" color="primary">
+                Send
               </Button>
             </Grid>     
           

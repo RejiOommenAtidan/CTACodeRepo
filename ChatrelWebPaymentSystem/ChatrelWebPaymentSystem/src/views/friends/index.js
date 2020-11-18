@@ -20,7 +20,7 @@ import { subMinutes } from 'date-fns';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
-
+import axios from 'axios';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -57,18 +57,42 @@ export default function Friends () {
   
   const submit =() =>{
   console.log(FriendObj);
-  
-  
   const obj={
       sGBID:sGBID,
       title:'Chatrel for Friend',
       relation:"Friend's"
     }
-  dispatch(storeCurrentGBDetails(obj));
-  history.push('/PaymentPage');
+  axios.get(`ChatrelPayment/VerifyFriendDetails/?sGBID=`+sGBID+`&sFirstName=`+sFirstName+`&sLastName=`+sLastName+`&dtDOB=`+dtDob)
+  .then(resp => {
+    if (resp.status === 200) {
+      //setPaymentHistory(resp.data);
+      if(resp.data){
+        dispatch(storeCurrentGBDetails(obj));
+        history.push('/PaymentPage');
+      }
+    }
+  })
+  .catch(error => {
+    if (error.response) {
+      console.error(error.response.data);
+      console.error(error.response.status);
+      console.error(error.response.headers);
+    } else if (error.request) {
+      console.warn(error.request);
+    } else {
+      console.error('Error', error.message);
+    }
+    console.log(error.config);
+  })
+  .then(release => {
+    //console.log(release); => udefined
+  });
+    
+ 
   }
   return (
     <>
+    <p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>Chatrel for Friends</p>
       <Card  style={{  padding: 50 }} >
 
       <br />

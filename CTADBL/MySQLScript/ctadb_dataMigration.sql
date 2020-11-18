@@ -49,6 +49,8 @@ INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`,
 INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
 	VALUES ('rajen', 'Rajen', 'TCRC Office', 'rajen123', '5', '1',now(),1,now(),1);
 	
+INSERT INTO `ctadb`.`tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('kamlesh', 'Kamlesh', 'TCRC Office', 'kamlesh123', '5', '1',now(),1,now(),1);
     
 
 insert into  ctadb.tblgreenbook
@@ -1136,3 +1138,88 @@ INSERT INTO `lnkFeatureUserRights` (`Id`, `nFeatureID`, `nUserRightsID`, `bRight
 (183, 35, 1, 0, now(), 1),
 (184, 36, 1, 0, now(), 1),
 (185, 37, 1, 0, now(), 1);
+
+SET SQL_SAFE_UPDATES=0;
+update tblmadeb set dtReceived = dtIssueAction WHERE id in (63639, 44338, 45636);
+
+
+DROP procedure IF EXISTS `spReportGreenBookIssuedOverAll`;
+
+DELIMITER $$
+CREATE PROCEDURE spReportGreenBookIssuedOverAll
+(
+    IN sMadebDisplayKey varchar(5)
+    ,IN dtRecordFrom date
+    ,IN dtRecordTo date
+    ,IN sOrderBy varchar(255)
+)
+BEGIN
+
+    SET @SQLText = CONCAT('select 
+		DISTINCT tblgreenbookissued.nGBId, 
+		tblgreenbook.sFirstName, 
+		tblgreenbook.sMiddleName, 
+		tblgreenbook.sLastName, 
+		tblgreenbookissued.dtIssuedDate, 
+		tblgreenbookserial.nBookNo, 
+		lstauthregion.sAuthRegion,
+        lstauthregion.sCountryID
+	from 
+		tblgreenbookissued
+	inner join (tblgreenbook, tblgreenbookserial, lstauthregion) 
+		on 
+			(
+				tblgreenbookissued.nGBId=tblgreenbook.sGBId 
+				and tblgreenbook.sGBId = tblgreenbookserial.sGBID
+				and tblgreenbook.nAuthRegionID=lstauthregion.ID
+			) 
+	where 
+		tblgreenbookissued.sWhyIssued=''', sMadebDisplayKey 
+		,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' > ''' ,  dtRecordFrom
+		,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' <= ''', dtRecordTo
+	,''' order by ',sOrderBy );
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
+
+DROP procedure IF EXISTS `spReportGreenBookIssuedIndividual`;
+
+DELIMITER $$
+CREATE PROCEDURE spReportGreenBookIssuedIndividual
+(
+    IN sMadebDisplayKey varchar(5)
+    ,IN dtRecordFrom date
+    ,IN dtRecordTo date
+    ,IN sGroupBy varchar(255)
+    ,IN sOrderBy varchar(255)
+)
+BEGIN
+
+	declare SQLText varchar(5000);
+
+    SET @SQLText = CONCAT('select 
+	 ',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion.sAuthRegion", "distinct lstcountry.sCountry" ),', 
+    count(tblgreenbookissued.nGBId) 
+from 
+	tblgreenbookissued
+inner join (',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion", "tblgreenbook, lstcountry" ),')
+	on (
+			',IF(sOrderBy = 'lstauthregion.sAuthRegion', "tblgreenbookissued.nAuthRegionId=lstauthregion.ID", "tblgreenbookissued.nGBId=tblgreenbook.sGBId 
+            and tblgreenbook.sCountryID=lstcountry.sCountryID" ),'
+		)
+where 
+	tblgreenbookissued.sWhyIssued= ''', sMadebDisplayKey 
+	,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' > ''' ,  dtRecordFrom
+	,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' <= ''', dtRecordTo
+    ,''' group by ',sGroupBy 
+     ,' order by ',sOrderBy );
+	-- select @SQLText;
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+ 
