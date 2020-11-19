@@ -1,9 +1,10 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import { GLogin } from '../components/GLogin';
 import { ActivityIndicator } from 'react-native';
 import { Image } from 'react-native-elements';
 import Colors from '../constants/Colors';
+import Resolution from '../constants/ResolutionBreakpoint';
 
 export const LoginScreen = (props) => {
   return (
@@ -15,14 +16,14 @@ export const LoginScreen = (props) => {
           PlaceholderContent={<ActivityIndicator />}
         />
       </View>
-      <View>
+      <View style={styles.headerContainer}>
         <Text style={styles.headerComponent}>
           Welcome to Chatrel
         </Text>
       </View>
-      <View>
+      <View style={styles.textContainer}>
         <Text style={styles.textComponent}>
-          Your go - to resource for supporting the{"\n"}Tibetan Government
+          Your go-to resource for supporting the{"\n"}Tibetan Government.
         </Text>
       </View>
       <GLogin props={props}></GLogin>
@@ -30,52 +31,66 @@ export const LoginScreen = (props) => {
   );
 };
 
-LoginScreen.navigationOptions = navData => {
-  return {
-    //headerTitle: 'Login',
-    header: null,
-    headerLeft: null,
-    headerRight: null
-  };
-};
+// export const LoginScreenOptions = navData => {
+//   return {
+//     //headerTitle: 'Login',
+//     header: () => null,
+//     headerLeft: () => null,
+//     headerRight: () => null
+//   };
+// };
+
+// console.log(Dimensions.get('window').width)
+// console.log(Dimensions.get('window').height)
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    margin: 5
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
   imgContainer: {
-    marginTop: 30,
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
+    width: Dimensions.get('window').width * 0.70,
+    height: Dimensions.get('window').height * 0.36,
+    marginTop: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 15 : 25,
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 12 : 20
   },
   imgComponent: {
-    width: 250,
-    height: 240,
-    marginTop: 6,
-    marginBottom: 25,
-    marginRight: 70
+    width: '100%',
+    height: '100%'
+  },
+  headerContainer: {
+    width: Dimensions.get('window').width * 0.70,
+    height: Dimensions.get('window').height * 0.065,
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
   headerComponent: {
-    textAlign: "left",
-    fontSize: 28,
-    paddingBottom: 10,
-    marginLeft: 40,
+    width: '100%',
+    height: '100%',
+    textAlign: "center",
+    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 18 : 30,
     fontStyle: "normal",
     fontWeight: "normal",
-    marginBottom: 10,
-    color: Colors.white
+    color: Colors.white,
+    lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    letterSpacing: Resolution.nLetterSpacing,
+    fontFamily: 'Kanit-Regular'
+  },
+  textContainer: {
+    width: Dimensions.get('window').width * 0.70,
+    height: Dimensions.get('window').height * 0.065,
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 92.4 : 154,
   },
   textComponent: {
-    fontSize: 14.5,
-    textAlign: "left",
-    paddingBottom: 5,
-    marginBottom: 15,
-    marginLeft: 40,
+    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 14.75,
+    textAlign: "center",
     fontStyle: "normal",
-    fontWeight: "normal",
+    fontWeight: "300",
+    fontFamily: 'NunitoSans-Light',
+    lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.5 : 17.5,
+    letterSpacing: Resolution.nLetterSpacing / 2,
     color: Colors.white
   }
 });

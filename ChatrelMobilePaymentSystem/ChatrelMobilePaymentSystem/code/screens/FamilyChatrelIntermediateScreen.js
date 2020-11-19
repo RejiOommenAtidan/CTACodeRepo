@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
@@ -8,6 +8,7 @@ import { sDateFormat } from '../constants/CommonConfig';
 import Moment from 'moment';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import Resolution from '../constants/ResolutionBreakpoint';
 
 export const FamilyChatrelIntermediateScreen = (props) => {
   const [aFamilyMembers, setaFamilyMembers] = useState([]);
@@ -32,6 +33,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
     <View style={styles.main}>
       <View style={styles.container}>
         <Text>Family Members</Text>
+      </View>
         <ScrollView>
           {aFamilyMembers.map((member, index) => {
             return (
@@ -59,15 +61,14 @@ export const FamilyChatrelIntermediateScreen = (props) => {
             )
           })}
         </ScrollView>
-      </View>
     </View>
   );
 };
 
-FamilyChatrelIntermediateScreen.navigationOptions = navData => {
+export const FamilyChatrelIntermediateScreenOptions = navData => {
   return {
     headerTitle: 'Family Chatrel',
-    headerLeft: (
+    headerLeft: () => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
@@ -77,7 +78,7 @@ FamilyChatrelIntermediateScreen.navigationOptions = navData => {
           }}
         />
       </HeaderButtons>
-    )
+        }
   };
 };
 
@@ -86,7 +87,9 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    marginHorizontal: Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin
   },
   container: {
     flex: 1,

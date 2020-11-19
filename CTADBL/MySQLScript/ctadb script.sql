@@ -1303,6 +1303,212 @@ END$$
 DELIMITER ;
 
 
+DROP procedure IF EXISTS `spReportGreenBookIssuedOverAll`;
+
+DELIMITER $$
+CREATE PROCEDURE spReportGreenBookIssuedOverAll
+(
+    IN sMadebDisplayKey varchar(5)
+    ,IN dtRecordFrom date
+    ,IN dtRecordTo date
+    ,IN sOrderBy varchar(255)
+)
+BEGIN
+
+    SET @SQLText = CONCAT('select 
+		DISTINCT tblgreenbookissued.nGBId, 
+		tblgreenbook.sFirstName, 
+		tblgreenbook.sMiddleName, 
+		tblgreenbook.sLastName, 
+		tblgreenbookissued.dtIssuedDate, 
+		tblgreenbookserial.nBookNo, 
+		lstauthregion.sAuthRegion,
+        lstauthregion.sCountryID
+	from 
+		tblgreenbookissued
+	inner join (tblgreenbook, tblgreenbookserial, lstauthregion) 
+		on 
+			(
+				tblgreenbookissued.nGBId=tblgreenbook.sGBId 
+				and tblgreenbook.sGBId = tblgreenbookserial.sGBID
+				and tblgreenbook.nAuthRegionID=lstauthregion.ID
+			) 
+	where 
+		tblgreenbookissued.sWhyIssued=''', sMadebDisplayKey 
+		,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' > ''' ,  dtRecordFrom
+		,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' <= ''', dtRecordTo
+	,''' order by ',sOrderBy );
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
+DROP procedure IF EXISTS `spReportGreenBookIssuedIndividual`;
+DELIMITER $$
+CREATE PROCEDURE spReportGreenBookIssuedIndividual
+(
+    IN sMadebDisplayKey varchar(5)
+    ,IN dtRecordFrom date
+    ,IN dtRecordTo date
+    ,IN sGroupBy varchar(255)
+    ,IN sOrderBy varchar(255)
+)
+BEGIN
+    declare SQLText varchar(5000);
+    SET @SQLText = CONCAT('select 
+     ',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion.sAuthRegion", "distinct lstcountry.sCountry" ),' as IndividualPlace ,  
+    count(tblgreenbookissued.nGBId) as nCount 
+from 
+    tblgreenbookissued
+inner join (',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion", "tblgreenbook, lstcountry" ),')
+    on (
+            ',IF(sOrderBy = 'lstauthregion.sAuthRegion', "tblgreenbookissued.nAuthRegionId=lstauthregion.ID", "tblgreenbookissued.nGBId=tblgreenbook.sGBId 
+            and tblgreenbook.sCountryID=lstcountry.sCountryID" ),'
+        )
+where 
+    tblgreenbookissued.sWhyIssued= ''', sMadebDisplayKey 
+    ,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' > ''' ,  dtRecordFrom
+    ,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' <= ''', dtRecordTo
+    ,''' group by ',sGroupBy 
+     ,' order by ',sOrderBy );
+    -- select @SQLText;
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
+DROP procedure IF EXISTS `spReportCTAChangesLog`;
+DELIMITER $$
+CREATE PROCEDURE spReportCTAChangesLog
+(
+   IN dtRecordFrom date
+   
+)
+BEGIN
+    declare SQLText varchar(5000);
+    SET @SQLText = CONCAT('select 
+			tblauditlog.sGBID, 
+			concat(tblgreenbook.sFirstName, tblgreenbook.sLastName) as sName, 
+		   lstfeature.sFeature, 
+			tblauditlog.sFieldValuesOld, 
+			tblauditlog.sFieldValuesNew, 
+			tbluser.sFullName, 
+			tblauditlog.dtEntered
+		from 
+			tblauditlog
+		inner join tbluser 
+			on tblauditlog.nEnteredBy=tbluser.id
+		Left Join tblgreenbook
+			on tblauditlog.sGBID = tblgreenbook.sGBID
+		Left Join lstfeature
+			on tblauditlog.nFeatureID = lstfeature.Id
+		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') > ',dtRecordFrom );
+    -- select @SQLText;
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
+DROP procedure IF EXISTS `spReportCTAChangesLogForChildren`;
+DELIMITER $$
+CREATE PROCEDURE spReportCTAChangesLogForChildren
+(
+   IN dtRecordFrom date
+   
+)
+BEGIN
+    declare SQLText varchar(5000);
+    SET @SQLText = CONCAT('select 
+			tblauditlog.sGBID, 
+			concat(tblgreenbook.sFirstName, tblgreenbook.sLastName) as sName, 
+		   lstfeature.sFeature, 
+			tblauditlog.sFieldValuesOld, 
+			tblauditlog.sFieldValuesNew, 
+			tbluser.sFullName, 
+			tblauditlog.dtEntered
+		from 
+			tblauditlog
+		inner join tbluser 
+			on tblauditlog.nEnteredBy=tbluser.id
+		Left Join tblgreenbook
+			on tblauditlog.sGBID = tblgreenbook.sGBID
+		Left Join lstfeature
+			on tblauditlog.nFeatureID = lstfeature.Id
+		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') > ',dtRecordFrom );
+    -- select @SQLText;
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
+
+DROP procedure IF EXISTS `spReportCTANewEntryFromDay`;
+DELIMITER $$
+CREATE PROCEDURE spReportCTANewEntryFromDay
+(
+   IN dtRecordFrom date
+   
+)
+BEGIN
+    declare SQLText varchar(5000);
+    SET @SQLText = CONCAT('SELECT 
+		tblgreenbook.sGBID, 
+		tblgreenbook.sFirstName, 
+		tblgreenbook.sLastName, 
+		tblgreenbook.dtEntered, 
+		tbluser.sFullName, 
+		tbluser.sOffice
+	FROM 
+		tblgreenbook 
+	INNER JOIN tblUser
+		ON 
+			(
+				tblgreenbook.nEnteredBy=tblUser.id
+			) 
+	WHERE 
+		DATE_FORMAT(tblgreenbook.dtEntered, ''%Y-%m-%d'') > ',dtRecordFrom );
+    -- select @SQLText;
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
+
+DROP procedure IF EXISTS `spReportCTABelow6Years`;
+
+DELIMITER $$
+CREATE PROCEDURE spReportCTABelow6Years
+(
+    IN sOrderBy varchar(255)
+)
+BEGIN
+
+    SET @SQLText = CONCAT('select 
+		tblgreenbook.sGBId, 
+		tblgreenbook.sFirstName, 
+		tblgreenbook.sLastName, 
+		tblgreenbook.dtDOB, 
+		',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion.sAuthRegion", "lstcountry.sCountry" ),'
+	from 
+		tblgreenbook 
+	inner join ',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion", "lstcountry" ),' 
+		on 
+			(',IF(sOrderBy = 'lstauthregion.sAuthRegion', "tblgreenbook.nAuthRegionID=lstauthregion.ID", "tblgreenbook.sCountryID=lstcountry.sCountryID" ),') 
+	where 
+		DATE_FORMAT(NOW(), ''%Y'') - DATE_FORMAT(tblgreenbook.dtDOB, ''%Y'') - (DATE_FORMAT(NOW(), ''00-%m-%d'') < DATE_FORMAT(tblgreenbook.dtDOB, ''00-%m-%d'')) < 6 
+	order by ',sOrderBy );
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
+
 CREATE INDEX MDB_GBID ON tblmadeb(sGBID);
 CREATE INDEX GREENBOOK_GBID ON tblgreenbook(sGBID);
 CREATE INDEX GBID_RELATION ON lnkgbrelation(sgbidrelation, nrelationid);

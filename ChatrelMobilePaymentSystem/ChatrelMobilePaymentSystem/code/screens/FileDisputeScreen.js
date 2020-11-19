@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
@@ -7,6 +7,7 @@ import { Input } from 'react-native-elements';
 import DocumentPicker from 'react-native-document-picker';
 import { Button } from 'react-native-elements';
 import RNFS from 'react-native-fs';
+import Resolution from '../constants/ResolutionBreakpoint';
 
 export const FileDisputeScreen = (props) => {
   const [sDisputeSingleFile, setsDisputeSingleFile] = useState("");
@@ -99,7 +100,7 @@ export const FileDisputeScreen = (props) => {
   return (
     <View style={styles.main}>
       <View style={styles.container}>
-        <View style={styles.container}><Text>File a Dispute</Text></View>
+        {/*<View style={styles.container}><Text>File a Dispute</Text></View>*/}
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.buttonStyle}
@@ -144,10 +145,10 @@ export const FileDisputeScreen = (props) => {
   );
 };
 
-FileDisputeScreen.navigationOptions = navData => {
+export const FileDisputeScreenOptions = navData => {
   return {
     headerTitle: 'File Dispute',
-    headerLeft: (
+    headerLeft: () => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
@@ -157,7 +158,7 @@ FileDisputeScreen.navigationOptions = navData => {
           }}
         />
       </HeaderButtons>
-    )
+        }
   };
 };
 
@@ -166,10 +167,12 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    marginHorizontal: Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin
   },
   container: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',

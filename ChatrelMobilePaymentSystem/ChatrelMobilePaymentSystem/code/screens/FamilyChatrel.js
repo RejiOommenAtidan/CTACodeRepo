@@ -17,10 +17,10 @@ export const FamilyChatrelScreen = (props) => {
   );
 };
 
-FamilyChatrelScreen.navigationOptions = navData => {
+export const FamilyChatrelScreenOptions = navData => {
   return {
     headerTitle: 'Family Chatrel',
-    headerLeft: (
+    headerLeft: () => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
@@ -30,7 +30,7 @@ FamilyChatrelScreen.navigationOptions = navData => {
           }}
         />
       </HeaderButtons>
-    )
+        }
   };
 };
 

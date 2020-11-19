@@ -25,3 +25,16 @@ CALL spReportGreenBookIssuedIndividual ('U','2003-12-14','2012-12-17','lstcountr
 CALL spReportGreenBookIssuedIndividual ('U','2003-12-14','2012-12-17','lstauthregion.ID','lstauthregion.sAuthRegion');
 CALL spReportGreenBookIssuedIndividual ('B','2003-12-14','2015-12-17','lstcountry.sCountry','lstcountry.sCountry');
 CALL spReportGreenBookIssuedIndividual ('B','2003-12-14','2015-12-17','lstauthregion.ID','lstauthregion.sAuthRegion');
+
+
+CALL spReportCTAChangesLog ('2015-12-17');
+CALL spReportCTAChangesLog ('2015-12-17');
+
+CALL spReportCTAChangesLogForChildren ('2015-12-17');
+CALL spReportCTAChangesLogForChildren ('2015-12-17');
+
+CALL spReportCTANewEntryFromDay ('2015-12-17');
+CALL spReportCTANewEntryFromDay ('2015-12-17');
+
+CALL spReportCTABelow6Years ('lstauthregion.sAuthRegion');
+CALL spReportCTABelow6Years ('lstcountry.sCountry');

@@ -17,10 +17,10 @@ export const FriendChatrelScreen = (props) => {
   );
 };
 
-FriendChatrelScreen.navigationOptions = navData => {
+export const FriendChatrelScreenOptions = navData => {
   return {
     headerTitle: 'Friend Chatrel',
-    headerLeft: (
+    headerLeft:() => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
@@ -30,7 +30,7 @@ FriendChatrelScreen.navigationOptions = navData => {
           }}
         />
       </HeaderButtons>
-    )
+        }
   };
 };
 

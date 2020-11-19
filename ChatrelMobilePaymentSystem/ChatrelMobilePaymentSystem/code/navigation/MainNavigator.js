@@ -1,16 +1,12 @@
+import React from 'react';
 import { Platform } from 'react-native';
-import {
-  createStackNavigator,
-  createDrawerNavigator,
-  createAppContainer
-} from 'react-navigation';
-
-// import CustomHeaderButton from '../components/HeaderButton';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { ChatrelHistoryScreen } from '../screens/ChatrelHistoryScreen';
 import { FileDisputeScreen } from '../screens/FileDisputeScreen';
 import { MyProfileScreen } from '../screens/MyProfileScreen';
 import { GBDetailScreen } from '../screens/GBDetailScreen';
-import HomeScreen from '../screens/HomeScreen';
+import HomeScreen, {HomeScreenOptions} from '../screens/HomeScreen';
 import { SelfChatrelScreen } from '../screens/SelfChatrel';
 import { FriendChatrelIntermediateScreen } from '../screens/FriendChatrelIntermediate';
 import { FriendChatrelScreen } from '../screens/FriendChatrelScreen';
@@ -18,6 +14,9 @@ import { FamilyChatrelScreen } from '../screens/FamilyChatrel';
 import { FamilyChatrelIntermediateScreen } from '../screens/FamilyChatrelIntermediateScreen';
 import { LoginScreen } from '../screens/LoginScreen';
 import Colors from '../constants/Colors';
+import { GLogout } from '../components/GLogout';
+// import HeaderButton from '../components/HeaderButton';
+// import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -32,221 +31,320 @@ const defaultStackNavOptions = {
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
 };
 
-const LoginNavigator = createStackNavigator(
-  {
-    Login: LoginScreen
-  },
-  {
-    //headerBackTitleVisible:false,
-    // cardShadowEnabled:true,
-    // headerTransitionPreset:"fade-in-place",
-    // headerMode: "none",
-    // navigationOptions: (navigation) => ({
-    //   header: null,
-    //   headerLeft: null,
-    //   headerRight: null,
-    //   // drawerIcon: CustomHeaderButton
-    // }),
-    // transparentCard:true,
-    // mode:"modal",
-    // headerLayoutPreset:"center",
-    // cardShadowEnabled:"",
-    // cardOverlayEnabled:true,
-    // headerMode: "screen",
-    // defaultNavigationOptions: defaultStackNavOptions,
+const LoginStackNavigator = createStackNavigator();
 
-    cardStyle: { backgroundColor: Colors.greenBG }
-  }
-);
+const LoginNavigator = () => {
+  return (
+    <LoginStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <LoginStackNavigator.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          headerShown:false,          
+          animationEnabled:true,
+          gestureEnabled:true,
+          cardStyle: { backgroundColor: Colors.greenBG },
+          cardShadowEnabled:true
+        }}
+      >
+      </LoginStackNavigator.Screen>
+    </LoginStackNavigator.Navigator>
+  );
+};
 
-const HomeNavigator = createStackNavigator(
-  {
-    Home: HomeScreen
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions
-  }
-);
+const HomeStackNavigator = createStackNavigator();
 
-const GBDetailNavigator = createStackNavigator(
-  {
-    GBDetail: GBDetailScreen
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions,
-    headerMode: 'none',
-    cardStyle: { backgroundColor: 'transparent', shadowColor: 'transparent' },
-    transparentCard: true,
-    transitionConfig: () => ({
-      containerStyle: {
-        backgroundColor: 'transparent',
-      },
-    })
-  }
-);
+const HomeNavigator = () => {
+  return (
+    <HomeStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <HomeStackNavigator.Screen
+        name="Home"
+        component={HomeScreen}
+        options={HomeScreenOptions}
+      >
+      </HomeStackNavigator.Screen>
+    </HomeStackNavigator.Navigator>
+  );
+};
 
-const SelfChatrelNavigator = createStackNavigator(
-  {
-    SelfChatrel: SelfChatrelScreen
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions,
-    cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
-  }
-);
+const GBDetailStackNavigator = createStackNavigator();
 
-const FamilyChatrelIntermediateNavigator = createStackNavigator(
-  {
-    FamilyChatrelIntermediate: FamilyChatrelIntermediateScreen
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions
-  }
-);
+const GBDetailNavigator = () => {
+  return (
+    <GBDetailStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <GBDetailStackNavigator.Screen
+        name="GBDetail"
+        component={GBDetailScreen}
+        options={{
+          headerShown: false,
+          cardStyle: { backgroundColor: 'transparent', shadowColor: 'transparent' }
+          // transparentCard: true,
+          // transitionConfig: () => ({
+          //   containerStyle: {
+          //     backgroundColor: 'transparent',
+          //   },
+          // })
+        }}
+      >
+      </GBDetailStackNavigator.Screen>
+    </GBDetailStackNavigator.Navigator>
+  );
+};
 
-const FamilyChatrelNavigator = createStackNavigator(
-  {
-    FamilyChatrel: FamilyChatrelScreen
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions,
-    cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
-  }
-);
+const SelfChatrelStackNavigator = createStackNavigator();
 
-const FriendChatrelIntermediateNavigator = createStackNavigator(
-  {
-    FriendChatrelIntermediate: FriendChatrelIntermediateScreen
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions
-  }
-);
+const SelfChatrelNavigator = () => {
+  return (
+    <SelfChatrelStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <SelfChatrelStackNavigator.Screen
+        name="SelfChatrel"
+        component={SelfChatrelScreen}
+        options={{
+          cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
+        }}
+      >
+      </SelfChatrelStackNavigator.Screen>
+    </SelfChatrelStackNavigator.Navigator>
+  );
+};
 
-const FriendChatrelNavigator = createStackNavigator(
-  {
-    FriendChatrel: FriendChatrelScreen
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions,
-    cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
-  }
-);
+const FamilyChatrelIntermediateStackNavigator = createStackNavigator();
 
-const ChatrelHistoryNavigator = createStackNavigator(
-  {
-    ChatrelHistory: ChatrelHistoryScreen
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions
-  }
-);
+const FamilyChatrelIntermediateNavigator = () => {
+  return (
+    <FamilyChatrelIntermediateStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <FamilyChatrelIntermediateStackNavigator.Screen
+        name="FamilyChatrelIntermediate"
+        component={FamilyChatrelIntermediateScreen}
+      //options={}
+      >
+      </FamilyChatrelIntermediateStackNavigator.Screen>
+    </FamilyChatrelIntermediateStackNavigator.Navigator>
+  );
+};
 
-const MyProfileNavigator = createStackNavigator(
-  {
-    MyProfile: MyProfileScreen
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions
-  }
-);
+const FamilyChatrelStackNavigator = createStackNavigator();
 
-const FileDisputeNavigator = createStackNavigator(
-  {
-    FileDispute: FileDisputeScreen
-  },
-  {
-    defaultNavigationOptions: defaultStackNavOptions
-  }
-);
+const FamilyChatrelNavigator = () => {
+  return (
+    <FamilyChatrelStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <FamilyChatrelStackNavigator.Screen
+        name="FamilyChatrel"
+        component={FamilyChatrelScreen}
+        options={{
+          cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
+        }}
+      >
+      </FamilyChatrelStackNavigator.Screen>
+    </FamilyChatrelStackNavigator.Navigator>
+  );
+};
 
-const MainNavigator = createDrawerNavigator(
-  {
-    Login: {
-      screen: LoginNavigator,
-      navigationOptions: {
-        drawerLabel: 'Login',
-        header: null,
-        headerLeft: null,
-        headerRight: null,
-      }
-    },
-    GBDetail: {
-      screen: GBDetailNavigator,
-      navigationOptions: {
-        drawerLabel: 'GB Details',
-        header: null,
-        headerLeft: null,
-        headerRight: null,
-      }
-    },
-    Home: {
-      screen: HomeNavigator,
-      navigationOptions: {
-        drawerLabel: 'Quick Actions'
-      }
-    },
-    SelfChatrel: {
-      screen: SelfChatrelNavigator,
-      navigationOptions: {
-        drawerLabel: 'Self Chatrel'
-      }
-    },
-    FamilyChatrelIntermediate: {
-      screen: FamilyChatrelIntermediateNavigator,
-      navigationOptions: {
-        drawerLabel: 'Family Chatrel'
-      }
-    },
-    FamilyChatrel: {
-      screen: FamilyChatrelNavigator,
-      navigationOptions: {
-        drawerLabel: 'Family Chatrel'
-      }
-    },
-    FriendChatrelIntermediate: {
-      screen: FriendChatrelIntermediateNavigator,
-      navigationOptions: {
-        drawerLabel: 'Friend Chatrel'
-      }
-    },
-    FriendChatrel: {
-      screen: FriendChatrelNavigator,
-      navigationOptions: {
-        drawerLabel: 'Friend Chatrel',
-      }
-    },
-    ChatrelHistory: {
-      screen: ChatrelHistoryNavigator,
-      navigationOptions: {
-        drawerLabel: 'Chatrel History'
-      }
-    },
-    MyProfile: {
-      screen: MyProfileNavigator,
-      navigationOptions: {
-        drawerLabel: 'My Profile'
-      }
-    },
-    FileDispute: {
-      screen: FileDisputeNavigator,
-      navigationOptions: {
-        drawerLabel: 'File Dispute'
-      }
-    }
-  },
-  {
-    initialRouteName: "Home",
-    // drawerPosition: "right",
-    //hideStatusBar:true,
-    statusBarAnimation: true,
-    contentOptions: {
-      activeTintColor: Colors.primary,
-      labelStyle: {
-        fontFamily: 'open-sans-bold'
-      }
-    }
-  }
-);
+const FriendChatrelIntermediateStackNavigator = createStackNavigator();
 
-export default createAppContainer(MainNavigator);
+const FriendChatrelIntermediateNavigator = () => {
+  return (
+    <FriendChatrelIntermediateStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <FriendChatrelIntermediateStackNavigator.Screen
+        name="FriendChatrelIntermediate"
+        component={FriendChatrelIntermediateScreen}
+      //options={}
+      >
+      </FriendChatrelIntermediateStackNavigator.Screen>
+    </FriendChatrelIntermediateStackNavigator.Navigator>
+  );
+};
+
+const FriendChatrelStackNavigator = createStackNavigator();
+
+const FriendChatrelNavigator = () => {
+  return (
+    <FriendChatrelStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <FriendChatrelStackNavigator.Screen
+        name="FriendChatrel"
+        component={FriendChatrelScreen}
+        options={{
+          cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
+        }}
+      >
+      </FriendChatrelStackNavigator.Screen>
+    </FriendChatrelStackNavigator.Navigator>
+  );
+};
+
+const ChatrelHistoryStackNavigator = createStackNavigator();
+
+const ChatrelHistoryNavigator = () => {
+  return (
+    <ChatrelHistoryStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <ChatrelHistoryStackNavigator.Screen
+        name="ChatrelHistory"
+        component={ChatrelHistoryScreen}
+      //options={}
+      >
+      </ChatrelHistoryStackNavigator.Screen>
+    </ChatrelHistoryStackNavigator.Navigator>
+  );
+};
+
+const MyProfileStackNavigator = createStackNavigator();
+
+const MyProfileNavigator = () => {
+  return (
+    <MyProfileStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <MyProfileStackNavigator.Screen
+        name="MyProfile"
+        component={MyProfileScreen}
+      //options={}
+      >
+      </MyProfileStackNavigator.Screen>
+    </MyProfileStackNavigator.Navigator>
+  );
+};
+
+const FileDisputeStackNavigator = createStackNavigator();
+
+const FileDisputeNavigator = () => {
+  return (
+    <FileDisputeStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <FileDisputeStackNavigator.Screen
+        name="FileDispute"
+        component={FileDisputeScreen}
+      //options={}
+      >
+      </FileDisputeStackNavigator.Screen>
+    </FileDisputeStackNavigator.Navigator>
+  );
+};
+
+const MainDrawerNavigator = createDrawerNavigator();
+
+export const MainNavigator = () => {
+  return (
+    <MainDrawerNavigator.Navigator
+      initialRouteName={"Login"}
+      drawerPosition={"left"}
+      drawerType={"front"}
+      hideStatusBar={false}
+      statusBarAnimation={"slide"}
+      keyboardDismissMode={"on-drag"}
+      lazy={true}
+      openByDefault={false}
+      //drawerContent={} 
+      drawerContentOptions={{
+        activeTintColor: Colors.primary,
+        labelStyle: {
+          fontFamily: 'open-sans-bold'
+        }
+      }}
+    >
+      {/*Login*/}
+      <MainDrawerNavigator.Screen
+        name={"Login"}
+        component={LoginNavigator}
+        options={{
+          drawerLabel: 'Login'
+        }}
+      >
+      </MainDrawerNavigator.Screen>
+      {/*GBDetails*/}
+      <MainDrawerNavigator.Screen
+        name={"GBDetail"}
+        component={GBDetailNavigator}
+        options={{
+          drawerLabel: 'GB Details',
+          header: null,
+          headerLeft: null,
+          headerRight: null
+        }}
+      >
+      </MainDrawerNavigator.Screen>
+      {/*Home*/}
+      <MainDrawerNavigator.Screen
+        name={"Home"}
+        component={HomeNavigator}
+        options={{
+          drawerLabel: 'Quick Actions'
+        }}
+      >
+      </MainDrawerNavigator.Screen>
+      {/*SelfChatrel*/}
+      <MainDrawerNavigator.Screen
+        name={"SelfChatrel"}
+        component={SelfChatrelNavigator}
+        options={{
+          drawerLabel: 'Self Chatrel'
+        }}
+      >
+      </MainDrawerNavigator.Screen>
+      {/*FamilyChatrelIntermediate*/}
+      <MainDrawerNavigator.Screen
+        name={"FamilyChatrelIntermediate"}
+        component={FamilyChatrelIntermediateNavigator}
+        options={{
+          drawerLabel: 'Family Chatrel'
+        }}
+      >
+      </MainDrawerNavigator.Screen>
+      {/*FamilyChatrel*/}
+      <MainDrawerNavigator.Screen
+        name={"FamilyChatrel"}
+        component={FamilyChatrelNavigator}
+        options={{
+          drawerLabel: 'Family Chatrel'
+        }}
+      >
+      </MainDrawerNavigator.Screen>
+      {/*FriendChatrelIntermediate*/}
+      <MainDrawerNavigator.Screen
+        name={"FriendChatrelIntermediate"}
+        component={FriendChatrelIntermediateNavigator}
+        options={{
+          drawerLabel: 'Friend Chatrel'
+        }}
+      >
+      </MainDrawerNavigator.Screen>
+      {/*FriendChatrel*/}
+      <MainDrawerNavigator.Screen
+        name={"FriendChatrel"}
+        component={FriendChatrelNavigator}
+        options={{
+          drawerLabel: 'Friend Chatrel'
+        }}
+      >
+      </MainDrawerNavigator.Screen>
+      {/*ChatrelHistory*/}
+      <MainDrawerNavigator.Screen
+        name={"ChatrelHistory"}
+        component={ChatrelHistoryNavigator}
+        options={{
+          drawerLabel: 'Chatrel History'
+        }}
+      >
+      </MainDrawerNavigator.Screen>
+      {/*MyProfile*/}
+      <MainDrawerNavigator.Screen
+        name={"MyProfile"}
+        component={MyProfileNavigator}
+        options={{
+          drawerLabel: 'My Profile'
+        }}
+      >
+      </MainDrawerNavigator.Screen>
+      {/*FileDispute*/}
+      <MainDrawerNavigator.Screen
+        name={"FileDispute"}
+        component={FileDisputeNavigator}
+        options={{
+          drawerLabel: 'File Dispute'
+        }}
+      >
+      </MainDrawerNavigator.Screen>
+    </MainDrawerNavigator.Navigator>
+  );
+};
+
+// const MainNavigator = createDrawerNavigator(
+// );
+
+//export default createAppContainer(MainDrawerNavigator);
