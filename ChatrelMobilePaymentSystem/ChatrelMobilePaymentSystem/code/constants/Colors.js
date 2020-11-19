@@ -10,6 +10,6 @@ export default {
     buttonYellow:'#ebca17',
     ChatrelInfoBlue: '#3d65b0',
     ChatrelYearGreen: '#168b44',
-    ChatrelScreensBGColor: '#f6f6f6'
-    
+    ChatrelScreensBGColor: '#f6f6f6',
+    blueCardColor:'#aef4ff'
 };

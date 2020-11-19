@@ -35,9 +35,27 @@ const HomeScreen = (props) => {
   const [nChatrelTotalAmount, setnChatrelTotalAmount] = useState(0);
 
   const aCard = [
-    { sLabel: "Self Chatrel", sImagePath: require('../assets/CTALogo.png'), sRouteName: "SelfChatrel" },
-    { sLabel: "Family Chatrel", sImagePath: require('../assets/CTALogo.png'), sRouteName: "FamilyChatrelIntermediate" },
-    { sLabel: "Friend Chatrel", sImagePath: require('../assets/CTALogo.png'), sRouteName: "FriendChatrelIntermediate" },
+    {
+      sLabel: "Self Chatrel",
+      sImagePath: require('../assets/CTALogo.png'),
+      sRouteName: "SelfChatrel",
+      sBGColor: Colors.buttonYellow,
+      sTextColor: Colors.greenBG
+    },
+    {
+      sLabel: "Friend Chatrel",
+      sImagePath: require('../assets/CTALogo.png'),
+      sRouteName: "FriendChatrelIntermediate",
+      sBGColor: Colors.blueCardColor,
+      sTextColor: Colors.primary
+    },
+    {
+      sLabel: "Family Chatrel",
+      sImagePath: require('../assets/CTALogo.png'),
+      sRouteName: "FamilyChatrelIntermediate",
+      sBGColor: Colors.greenBG,
+      sTextColor: Colors.buttonYellow
+    }
   ];
 
   const oCurrentGBDetails = useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails);
@@ -67,15 +85,29 @@ const HomeScreen = (props) => {
           {/*<View><Text>Quick Actions</Text></View>*/}
           {aCard.map((card, index) => {
             return (
-              <View style={styles.singleCardContainer}>
-                <TouchableOpacity key={index} onPress={() => {
+              <View key={index} style={styles.singleCardContainer}>
+                <TouchableOpacity onPress={() => {
                   props.navigation.navigate(card.sRouteName);
                   console.log(card);
                 }}>
                   <Card
-                    containerStyle={styles.singleCardComponent}
+                    containerStyle={{
+                      ...styles.singleCardComponent,
+                      backgroundColor: card.sBGColor,
+                      borderRadius: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 15,
+                    }}
                   >
-                    <Card.Title>{card.sLabel}</Card.Title>
+                    <Card.Title
+                      style={{
+                        color: card.sTextColor,
+                        fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
+                        fontStyle: "normal",
+                        fontWeight: "normal",
+                        //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+                        letterSpacing: Resolution.nLetterSpacing / 2,
+                        fontFamily: 'Kanit-Regular'
+                      }}
+                    >{card.sLabel}</Card.Title>
                     {/*<Card.Divider />*/}
                     {/*<Card.Image source={card.sImagePath} />*/}
                     {/*<Text>{card.sLabel}</Text>*/}
@@ -88,7 +120,8 @@ const HomeScreen = (props) => {
         {/**/}
         <View style={styles.pendingAmountContainer}>
           <Card containerStyle={styles.pendingAmountComponent}>
-            <Card.Image source={require('../assets/Pay.png')} />
+            <Card.Image style={styles.pendingAmountImageComponent} source={require('../assets/Pay.png')} />
+            <Card.Divider />
             <Text style={styles.pendingAmountTextComponent}>
               Pending Amount ${nChatrelTotalAmount}
             </Text>
@@ -96,6 +129,7 @@ const HomeScreen = (props) => {
               titleStyle={{ color: Colors.white, fontFamily: 'Kanit-Regular' }}
               buttonStyle={{
                 backgroundColor: Colors.greenBG,
+                borderRadius: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.2 : 17,
               }}
               title='PAY NOW'
               onPress={() => {
@@ -104,6 +138,34 @@ const HomeScreen = (props) => {
             />
           </Card>
         </View>
+        {/*New Job Contribution*/}
+        {/*<View style={styles.newJobContribContainer}>
+          <Card
+            containerStyle={styles.newJobContribComponent}
+          >
+            <View style={styles.newJobContribTextContainer}>
+              <Text style={styles.newJobContribTextComponent}>
+                Have you gotten a new{"\n"} job since your last{"\n"} contribution?
+          </Text>
+            </View>
+            <View style={styles.jobContribStatusTextContainer}>
+              <Text style={styles.jobContribStatusTextComponent}>
+                Change your status and contribute more towards{"\n"} the Tibetan Government.
+          </Text>
+            </View>
+            <Button
+              titleStyle={{ color: Colors.white, fontFamily: 'Kanit-Regular' }}
+              buttonStyle={{
+                backgroundColor: Colors.buttonYellow,
+                borderRadius: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.2 : 17,
+              }}
+              title='UPDATE EMPLOYEMENT STATUS'
+              onPress={() => {
+                props.navigation.navigate('SelfChatrel');
+              }}
+            />
+          </Card>
+            </View>*/}
       </View>
     </ScrollView>
   );
@@ -141,22 +203,60 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width / 3
   },
   singleCardComponent: {
-    height: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 75 : 100,
-    borderRadius: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 15 : 20
+    height: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 48 : 80
   },
   pendingAmountContainer: {
-    //position:"relative"
   },
   pendingAmountComponent: {
-
+    borderRadius: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 15
+  },
+  pendingAmountImageComponent: {
+    width: Dimensions.get('window').width * 0.70,
+    height: Dimensions.get('window').height * 0.33
   },
   pendingAmountTextComponent: {
     fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 18,
     fontFamily: 'Kanit-Regular',
     fontStyle: "normal",
+    fontWeight: "normal",
+    textAlign: "left",
+    color: Colors.black,
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
+    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    letterSpacing: Resolution.nLetterSpacing
+  },
+  newJobContribComponent: {
+    backgroundColor: Colors.primary
+  },
+  newJobContribTextContainer: {
+    width: Dimensions.get('window').width * 0.70,
+    //height: Dimensions.get('window').height * 0.33
+  },
+  newJobContribTextComponent: {
+    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 15.6 : 26,
+    fontFamily: 'Kanit-ExtraLight',
+    fontStyle: "normal",
+    fontWeight: "200",
+    textAlign: "left",
+    color: Colors.white,
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1 : 6,
+    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    //letterSpacing: Resolution.nLetterSpacing
+  },
+  jobContribStatusTextContainer: {
+    width: Dimensions.get('window').width * 0.70,
+    //height: Dimensions.get('window').height * 0.33
+  },
+  jobContribStatusTextComponent: {
+    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+    fontFamily: 'NunitoSans-Light',
+    fontStyle: "normal",
     fontWeight: "300",
     textAlign: "left",
-    color: Colors.black
+    color: Colors.white,
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 22.8 : 38,
+    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    //letterSpacing: Resolution.nLetterSpacing
   }
 });
 
