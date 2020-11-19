@@ -1493,12 +1493,12 @@ BEGIN
 		tblgreenbook.sFirstName, 
 		tblgreenbook.sLastName, 
 		tblgreenbook.dtDOB, 
-		lstcountry.sCountry 
+		',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion.sAuthRegion", "lstcountry.sCountry" ),'
 	from 
 		tblgreenbook 
-	inner join lstcountry 
+	inner join ',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion", "lstcountry" ),' 
 		on 
-			(tblgreenbook.sCountryID=lstcountry.sCountryID) 
+			(',IF(sOrderBy = 'lstauthregion.sAuthRegion', "tblgreenbook.nAuthRegionID=lstauthregion.ID", "tblgreenbook.sCountryID=lstcountry.sCountryID" ),') 
 	where 
 		DATE_FORMAT(NOW(), ''%Y'') - DATE_FORMAT(tblgreenbook.dtDOB, ''%Y'') - (DATE_FORMAT(NOW(), ''00-%m-%d'') < DATE_FORMAT(tblgreenbook.dtDOB, ''00-%m-%d'')) < 6 
 	order by ',sOrderBy );
@@ -1507,6 +1507,7 @@ BEGIN
     DEALLOCATE PREPARE stmt;
 END$$
 DELIMITER ;
+
 
 CREATE INDEX MDB_GBID ON tblmadeb(sGBID);
 CREATE INDEX GREENBOOK_GBID ON tblgreenbook(sGBID);
