@@ -36,11 +36,16 @@ namespace CTADBL.BaseClasses.Transactions
         private int _nEnteredBy;
         #endregion
 
+        public enum PaymentStatus { Success = 1, Failed };
+        public enum PaymentMode { Online = 1, Offline_WebAdmin, Offline_Bulk };
+        public static string Success = "Success";
+        public static string Failed = "Failed";
+        public static string Online = "Online";
+        public static string Offline_WebAdmin = "Offline_WebAdmin";
+        public static string Offline_Bulk = "Offline_Bulk";
 
-       
 
 
- 
 
 
 

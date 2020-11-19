@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using static CTADBL.BaseClasses.Transactions.ChatrelPayment;
 
 namespace CTADBL.BaseClassRepositories.Transactions
 {
@@ -20,7 +21,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         private GreenbookRepository _greenbookRepository;
         private ChatrelRepository _chatrelRepository;
         private AuthRegionRepository _authRegionRepository;
-        private GBRelationVMRepository _gbRelationVMRepository;
+        private GBChatrelRepository _gbChatrelRepository;
         private static MySqlConnection _connection;
 
         private decimal _nChatrelAmount, _nChatrelAmountUSD, _nChatrelAmountINR ;
@@ -60,6 +61,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             _greenbookRepository = new GreenbookRepository(connectionString);
             _chatrelRepository = new ChatrelRepository(connectionString);
             _authRegionRepository = new AuthRegionRepository(connectionString);
+            _gbChatrelRepository = new GBChatrelRepository(connectionString);
             _connection = new MySqlConnection(connectionString);
 
             IEnumerable<Chatrel> chatrelValues = _chatrelRepository.GetAllChatrel();
@@ -125,7 +127,17 @@ namespace CTADBL.BaseClassRepositories.Transactions
             int pendingYears = _currentYear - paidUntil;
             if (pendingYears <= 0)
             {
-                return ("No Outstandings");
+                List<GBChatrel> gbChatrel = _gbChatrelRepository.GetChatrelsByGBIDForYear(sGBID, _currentYear).ToList();
+                ChatrelPayment chatrel = new ChatrelPayment { nChatrelYear = _currentYear, sPaymentCurrency = gbChatrel[0].sPaymentCurrency, nChatrelTotalAmount = 0.00m, nAuthRegionID = gbChatrel[0].nAuthRegionID, sCountryID = gbChatrel[0].sCountryID };
+                
+                gbChatrel[0].nChatrelAmount = 0.00m;
+                gbChatrel[0].nChatrelMeal = 0.00m;
+                var response = new { nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), message = "No Outstandings", sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrel, gbChatrels = gbChatrel };
+
+                return response;
+                //return (new { message = "No Outstandings", currency = authRegion.sCurrencyCode });
+                
+                
             }
             
 
@@ -180,7 +192,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
             chatrelPayment = new ChatrelPayment
             {
-                Id = -1,
+                Id = 0,
                 nChatrelAmount = decimal.Round(nChatrelAmount, 2),
                 nChatrelMeal = nChatrelMeal,
                 nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage,
@@ -195,7 +207,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 dtArrearsTo = dates[1],
                 dtCurrentChatrelFrom = new DateTime(_currentYear, _FYStartMonth, _FYStartDate),
                 dtCurrentChatrelTo = new DateTime(_currentYear+1 , _FYEndMonth, _FYEndDate),
-                sPaymentCurrency = authRegion.sCurrencyCode
+                sPaymentCurrency = authRegion.sCurrencyCode,
+                sPaymentMode = ChatrelPayment.Offline_WebAdmin
             };
            
             
@@ -389,7 +402,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 paidUntil = Convert.ToInt32(paidtill) ;
                 paidUntil = (paidUntil < _nChatrelStartYear ? _nChatrelStartYear : paidUntil);
             }
-            return _nChatrelStartYear;
+            return paidUntil;
         }
         #endregion
 
@@ -453,14 +466,14 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
 
             //}
-            return (((year + 1) - dtDOB.AddYears(18).Year) * 12) + _FYEndMonth - dtDOB.Month;
+            return (((year + 1) - dtDOB.AddYears(18).Year) * 12) + _FYEndMonth - dtDOB.Month + 1;
         }
         #endregion
 
         #region Find if Baby is turning Child in given year. If yes, return number of months of being Child
         private int ChildMonths (int year, DateTime dtDOB)
         {
-            return (((year + 1) - dtDOB.AddYears(6).Year) * 12) + _FYEndMonth - dtDOB.Month;
+            return (((year + 1) - dtDOB.AddYears(6).Year) * 12) + _FYEndMonth - dtDOB.Month + 1;
         }
         #endregion
 
@@ -513,7 +526,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 {
                     var relationDetails = tables[0].AsEnumerable().Select(row => new {
                         sGBIDRelation = row.Field<string>("sGBIDRelation"),
-                        dPending = String.IsNullOrEmpty(row.Field<string>("sGBIDRelation")) ? 0 : CheckPendingAmount(row.Field<string>("sGBIDRelation")) + _nChatrelAmount + _nChatrelMeal,
+                        dPending = String.IsNullOrEmpty(row.Field<string>("sGBIDRelation")) ? null : DisplayChatrelPayment(row.Field<string>("sGBIDRelation")),
                         sName = row.Field<string>("sName"),
                         dtDOB = row.Field<DateTime?>("dtDOB"),
                         nAge = row.Field<long>("nAge"),
@@ -720,7 +733,47 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
         }
 
+        public ChatrelPayment GetChatrelPaymentByGBIDForYear(string sGBID, int year)
+        {
+            string sql = @"SELECT   `tblchatrelpayment`.`Id`,
+                                    `tblchatrelpayment`.`sGBId`,
+                                    `tblchatrelpayment`.`nChatrelAmount`,
+                                    `tblchatrelpayment`.`nChatrelMeal`,
+                                    `tblchatrelpayment`.`nChatrelYear`,
+                                    `tblchatrelpayment`.`nChatrelLateFeesPercentage`,
+                                    `tblchatrelpayment`.`nArrearsAmount`,
+                                    `tblchatrelpayment`.`dtArrearsFrom`,
+                                    `tblchatrelpayment`.`dtArrearsTo`,
+                                    `tblchatrelpayment`.`nCurrentChatrelSalaryAmt`,
+                                    `tblchatrelpayment`.`dtCurrentChatrelFrom`,
+                                    `tblchatrelpayment`.`dtCurrentChatrelTo`,
+                                    `tblchatrelpayment`.`nChatrelAdditionalDonationAmt`,
+                                    `tblchatrelpayment`.`nChatrelBusinessDonationAmt`,
+                                    `tblchatrelpayment`.`nChatrelTotalAmount`,
+                                    `tblchatrelpayment`.`sChatrelReceiptNumber`,
+                                    `tblchatrelpayment`.`nAuthRegionID`,
+                                    `tblchatrelpayment`.`sCountryID`,
+                                    `tblchatrelpayment`.`sPaymentStatus`,
+                                    `tblchatrelpayment`.`sPaymentMode`,
+                                    `tblchatrelpayment`.`sPaymentCurrency`,
+                                    `tblchatrelpayment`.`sPaidByGBId`,
+                                    `tblchatrelpayment`.`dtPayment`,
+                                    `tblchatrelpayment`.`dtEntered`,
+                                    `tblchatrelpayment`.`nEnteredBy`
+                                FROM `ctadb`.`tblchatrelpayment`
+                                WHERE sGBID = @sGBID
+                                AND nChatrelYear = @year";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                command.Parameters.AddWithValue("year", year);
+                return GetRecord(command);
+            }
+        }
+
         #endregion
+
+
 
         #region Populate records
 
@@ -743,11 +796,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 nChatrelAdditionalDonationAmt = reader.IsDBNull("nChatrelAdditionalDonationAmt") ? null : (decimal?)reader["nChatrelAdditionalDonationAmt"],
                 nChatrelBusinessDonationAmt = reader.IsDBNull("nchatrelBusinessDonationAmt") ? null : (decimal?)reader["nchatrelBusinessDonationAmt"],
                 nChatrelTotalAmount = reader.IsDBNull("nchatrelTotalAmount") ? null : (decimal?)reader["nchatrelTotalAmount"],
-                sChatrelReceiptNumber = reader.IsDBNull("sChatrelReceiptNumber") ? null : (string)reader["sChatrelReceiptNumber"],
+                sChatrelReceiptNumber = (string)reader["sChatrelReceiptNumber"],
                 nAuthRegionID = reader.IsDBNull("nAuthRegionID") ? null : (int?)reader["nAuthRegionID"],
                 sCountryID = reader.IsDBNull("sCountryID") ? null : (string)reader["sCountryID"],
-                sPaymentStatus = reader.IsDBNull("sPaymentStatus") ? null : (string)reader["sPaymentStatus"],
-                sPaymentMode = reader.IsDBNull("sPaymentMode") ? null : (string)reader["sPaymentMode"],
+                sPaidByGBId = reader.IsDBNull("sPaidByGBId") ? null : (string)reader["sPaidByGBId"],
+                sPaymentStatus = reader.IsDBNull("sCountryID") ? null : (string)reader["sPaymentStatus"],
+                sPaymentMode = reader.IsDBNull("sCountryID") ? null : (string)reader["sPaymentMode"],
                 sPaymentCurrency = reader.IsDBNull("sPaymentCurrency") ? null : (string)reader["sPaymentCurrency"],
                 dtPayment = (DateTime)(reader["dtPayment"]),
                 dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),

@@ -143,6 +143,44 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 return GetRecords(command);
             }
         }
+
+        public IEnumerable<GBChatrel> GetChatrelsByGBIDForYear(string sGBID, int year)
+        {
+            string sql = @"SELECT   `lnkgbchatrel`.`Id`,
+                                    `lnkgbchatrel`.`sGBId`,
+                                    `lnkgbchatrel`.`nChatrelAmount`,
+                                    `lnkgbchatrel`.`nChatrelMeal`,
+                                    `lnkgbchatrel`.`nChatrelYear`,
+                                    `lnkgbchatrel`.`nChatrelLateFeesPercentage`,
+                                    `lnkgbchatrel`.`nArrearsAmount`,
+                                    `lnkgbchatrel`.`dtArrearsFrom`,
+                                    `lnkgbchatrel`.`dtArrearsTo`,
+                                    `lnkgbchatrel`.`nCurrentChatrelSalaryAmt`,
+                                    `lnkgbchatrel`.`dtCurrentChatrelFrom`,
+                                    `lnkgbchatrel`.`dtCurrentChatrelTo`,
+                                    `lnkgbchatrel`.`nChatrelAdditionalDonationAmt`,
+                                    `lnkgbchatrel`.`nChatrelBusinessDonationAmt`,
+                                    `lnkgbchatrel`.`nChatrelTotalAmount`,
+                                    `lnkgbchatrel`.`sChatrelReceiptNumber`,
+                                    `lnkgbchatrel`.`nAuthRegionID`,
+                                    `lnkgbchatrel`.`sCountryID`,
+                                    `lnkgbchatrel`.`sPaymentCurrency`,
+                                    `lnkgbchatrel`.`sPaidByGBId`,
+                                    `lnkgbchatrel`.`dtPayment`,
+                                    `lnkgbchatrel`.`dtEntered`,
+                                    `lnkgbchatrel`.`nEnteredBy`
+                                FROM `ctadb`.`lnkgbchatrel`
+                                WHERE sGBID = @sGBID
+                                AND nChatrelYear = @year;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                command.Parameters.AddWithValue("year", year);
+                return GetRecords(command);
+            }
+        }
+
+
         #endregion
 
         #region Populate GBChatrel Records
@@ -167,6 +205,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
             gbChatrel.sChatrelReceiptNumber = reader.IsDBNull("sChatrelReceiptNumber") ? null : (string)reader["sChatrelReceiptNumber"];
             gbChatrel.nAuthRegionID = reader.IsDBNull("nAuthRegionID") ? null : (int?)reader["nAuthRegionID"];
             gbChatrel.sCountryID = reader.IsDBNull("sCountryID") ? null : (string)reader["sCountryID"];
+            gbChatrel.sPaymentCurrency = reader.IsDBNull("sPaymentCurrency") ? null : (string)reader["sPaymentCurrency"];
+            gbChatrel.sPaidByGBId = reader.IsDBNull("sPaidByGBId") ? null : (string)reader["sPaidByGBId"];
             gbChatrel.dtPayment = (DateTime)(reader["dtPayment"]);
             gbChatrel.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
             gbChatrel.nEnteredBy = (int)reader["nEnteredBy"];

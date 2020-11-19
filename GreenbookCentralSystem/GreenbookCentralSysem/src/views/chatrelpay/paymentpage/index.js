@@ -1,4 +1,4 @@
-'use strict';
+//'use strict';
 
 import React, { useEffect, useState } from 'react';
 import { Card } from '@material-ui/core';
@@ -21,6 +21,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useSelector} from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -72,6 +73,8 @@ export default function PaymentPage  (props) {
   const [authRegions, setAuthRegions] = React.useState(null);
   const [authRegion, setAuthRegion] = React.useState();
   const [shouldRun, setShouldRun] = React.useState(true);
+  const [receiptNumber, setReceiptNumber] = React.useState('');
+  const [outstanding, setOutstanding] = React.useState(true);
   
   console.log("AuthRegions set in 'authRegions'", authRegions);
   console.log("Current Region set in 'authRegion'", authRegion);
@@ -164,9 +167,11 @@ let payObj = [...paymentData];
 
 let len=paymentData.length  ;
 
-if(index!=len-1)
-{
-payObj[index].lateFees=(payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nCurrentChatrelSalaryAmt)/10;
+if(index!=len-1){
+  payObj[index].lateFees=(payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nCurrentChatrelSalaryAmt)/10;
+}
+else{
+  payObj[index].lateFees=0;
 }
 payObj[index].nChatrelTotalAmount= (payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].lateFees + payObj[index].nCurrentChatrelSalaryAmt) * ((dollarToRupees && payObj[index].sPaymentCurrency === 'USD') ? dollarToRupees.toFixed(4) : 1);
 setPaymentData(payObj);
@@ -200,18 +205,19 @@ const calcTotal =(obj ,a,b)=>{
   };
   
 
-const submit =() =>{
+const submit =(e) =>{
+  e.preventDefault();
   let tempSummaryObj = summaryData;
   let payObj = [...paymentData];
   let lastindex =payObj.length-1;
 
   tempSummaryObj.nArrearsAmount= total- ( payObj[lastindex].nChatrelTotalAmount + bdonation+adonation);
   tempSummaryObj.nChatrelTotalAmount=total;
-  tempSummaryObj.nChatrelSalaryAmt=payObj[lastindex].nChatrelSalaryAmt;
+  tempSummaryObj.nCurrentChatrelSalaryAmt=payObj[lastindex].nCurrentChatrelSalaryAmt;
   tempSummaryObj.nChatrelBusinessDonationAmt=bdonation;
   tempSummaryObj.nChatrelAdditionalDonationAmt=adonation;
   tempSummaryObj.sPaidByGBId=paidByGBID;
-
+  tempSummaryObj.sChatrelReceiptNumber=receiptNumber;
   
   
   let finalObj={
@@ -220,26 +226,18 @@ const submit =() =>{
   };
 
   console.log("Final Obj:" , finalObj);
-  // axios.post(`http://localhost:52013/api/ChatrelPayment/AddNewChatrelPayment`,finalObj)
-  // .then(resp => {
-  //   if (resp.status === 200) {
+  axios.post(`http://localhost:52013/api/ChatrelPayment/AddNewChatrelPayment`,finalObj)
+  .then(resp => {
+    if (resp.status === 200) {
       
-  //     console.log("Added"); 
+      console.log(resp.data); 
       
-  //   }
-  // })
-  // .catch(error => {
-  //   if (error.response) {
-  //     console.error(error.response.data);
-  //     console.error(error.response.status);
-  //     console.error(error.response.headers);
-  //   } else if (error.request) {
-  //     console.warn(error.request);
-  //   } else {
-  //     console.error('Error', error.message);
-  //   }
-  //   console.log(error.config);
-  // })
+    }
+  })
+  .catch(error => {
+    console.log(error.config);
+    console.log(error.message);
+  });
   // .then(release => {
   //   //console.log(release); => udefined
   // });
@@ -257,6 +255,17 @@ const submit =() =>{
           console.log("AuthRegions fetched:", resp.data);
           setAuthRegions(resp.data);
           if(props.location.state.pymtData){
+            console.log("Status is ", props.location.state.outstanding);
+            if(!props.location.state.outstanding){
+              setOutstanding(false);
+              if(props.location.state.pymtData.gbChatrels[0].nCurrentChatrelSalaryAmt > 0){
+                // const checkBox = document.getElementById('employed');
+                // checkBox.checked = true;
+                // checkBox.disabled = true;
+              }
+              
+
+            }
             setDataAPI(props.location.state.pymtData);
             setSummaryData(props.location.state.pymtData.chatrelPayment);
             calcTotal(props.location.state.pymtData.gbChatrels, adonation, bdonation);
@@ -267,6 +276,7 @@ const submit =() =>{
                   console.log("currency", data.rates.INR);
                   setDollarToRupees(data.rates.INR);
                   });
+            console.log("Got data from props");
             return;
           }
           axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sGBID)
@@ -360,7 +370,7 @@ const submit =() =>{
               <br />
               <br />
            <p style={{backgroundColor: "lightblue"}}>Payment Balance</p>
-           <form onSubmit = {submit} >
+           <form onSubmit = {(e) => submit(e)} >
            <TableContainer component={Paper}>
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
@@ -386,6 +396,7 @@ const submit =() =>{
               {/*<TableCell>{select}</TableCell>*/}
               <TableCell>
                 <Autocomplete
+                  disabled = {!outstanding}
                   id={`${index}_id`}
                   openOnFocus
                   clearOnEscape
@@ -426,10 +437,13 @@ const submit =() =>{
                 />
               </TableCell>
               <TableCell>{row.sPaymentCurrency}</TableCell>
-              <TableCell align="right">{row.nChatrelAmount}</TableCell>
+              {outstanding && <> <TableCell align="right">{row.nChatrelAmount}</TableCell>
               <TableCell align="right">{row.nChatrelMeal}</TableCell>
-              <TableCell align="right">{row.lateFees}</TableCell>
-              <TableCell align="center">{ <input value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox" disabled = {row.isChild}/>}</TableCell>
+              <TableCell align="right">{row.lateFees}</TableCell> </>}
+              {!outstanding && <> <TableCell align="right"></TableCell>
+              <TableCell align="right"></TableCell>
+              <TableCell align="right"></TableCell> </>}
+              <TableCell align="center">{ <input id='employed' value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox" disabled = {row.isChild}/>}</TableCell>
               <TableCell align="center">{(dollarToRupees && row.sPaymentCurrency === 'USD') ? dollarToRupees.toFixed(4) : '-'}</TableCell>
               <TableCell align="right">{row.nChatrelTotalAmount.toFixed(2) }</TableCell>
             </TableRow>
@@ -479,14 +493,20 @@ const submit =() =>{
     </Grid>
     <br />
            <p style={{backgroundColor: "lightblue", textAlign: "right", fontWeight: "bold"}}>Total To Pay <span style={{textAlign: "right", fontWeight: "bold"}}>&#8377; {total.toFixed(2)}</span></p>          
-          
+           <Grid item>
+              <TextField
+                label= 'Enter Receipt Number'
+                onChange = {(e) => setReceiptNumber(e.target.value)}
+              />
+            </Grid>
            <div><Button variant="contained" color="primary" type = 'submit' >Save</Button></div>
            </form>
       
         </div>
             </Grid>
+            
             <Grid item>
-              <Button variant='contained' color='primary' onClick={() => history.push('/ChatrelPay/MainPage')} >Go Back</Button>
+              <Button variant='contained' color='primary' onClick={() => history.goBack()} >Go Back</Button>
             </Grid>
           </Grid>
       

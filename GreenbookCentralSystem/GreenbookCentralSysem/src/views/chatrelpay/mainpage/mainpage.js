@@ -126,14 +126,15 @@ export default function MainPage () {
   let history = useHistory();
   let dispatch = useDispatch();
   
-  const makePayment = (obj)=> {
-    console.log("Inside Make payment method for " , obj)
+  const makePayment = (obj, data, outstanding)=> {
+    console.log("Inside Make payment method for " , obj, data)
     // const obj={
     //   sGBID:sGBID,
     //   from:'Chatrel for Family'
     // }
     dispatch(storeCurrentGBDetails(obj));
-    history.push('/ChatrelPay/PaymentPage', {pymtData: paymentData});
+    
+    history.push('/ChatrelPay/PaymentPage', {pymtData: data, outstanding});
   }
 
   const getReceipt = (nChatrelReceiptNumber) => {
@@ -157,7 +158,9 @@ export default function MainPage () {
   const [binFileDoc, setbinFileDoc] = useState("");
   const [sFileExtension, setsFileExtension] = useState("");
   const [disputeDescription, setDisputeDescription] = useState('');
+  const [outstanding, setOutstanding] = useState(true);
 
+  console.log("Outstanding is: ", outstanding);
   const handleChange = (event, newValue) => {
     setValue(newValue);
     if(newValue === 1){
@@ -219,24 +222,40 @@ export default function MainPage () {
   //   setValue(index);
   // };
   React.useEffect(() => {
+    const element = document.getElementById('SelfPay_Btn');
+    element.disabled = true;
     axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+paidByGBID)
     .then(resp => {
       if (resp.status === 200) {
-        console.log("Self Chatrel Payment data:", resp.data);
+        //console.log("Self Chatrel Payment data:", resp.data);
+        if(resp.data.chatrelPayment.nChatrelTotalAmount === 0){
+          setChatrelPending('0');
+          setOutstanding(false);
+          // setCurrencySymbol(resp.data.currency === 'INR' ? '₹' : '$' );
+          // element.disabled = false;
+          // return;
+        }
+        else{
+          setChatrelPending(resp.data.chatrelPayment.nChatrelTotalAmount);
+        }
         setPaymentData(resp.data);
-        if(resp.data.gbChatrels[0].sCurrencyCode === 'USD'){
+        //const element = document.getElementById('SelfPay_Btn');
+        element.disabled = false;
+        if(resp.data.gbChatrels[0].sPaymentCurrency === 'USD'){
           setCurrencySymbol('$');
         }
         else{
           setCurrencySymbol('₹');
         }
-        setChatrelPending(resp.data.chatrelPayment.nChatrelTotalAmount);
+        
         console.log("Data fetched...", resp.data);
+        
       }
     })
     .catch(error => {
       console.log(error.message);
     });
+
   }, []);
 
   const reader = new FileReader();
@@ -342,7 +361,7 @@ export default function MainPage () {
             
             <Grid item style={{paddingTop: '10px'}}>
             
-              <input type="button" onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' })}} value="Verify &amp; Pay"/>
+              <input id="SelfPay_Btn" type="button" onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' }, paymentData, outstanding)}} value="Verify &amp; Pay"/>
             </Grid>
            
         </TabPanel>
@@ -386,11 +405,11 @@ export default function MainPage () {
                   <TableCell align="center">{row.sRelation}</TableCell>
                   <TableCell align="center">{row.sGBIDRelation}</TableCell>
                   <TableCell align="center">{row.nAge}</TableCell>
-                  <TableCell align="right">{row.dPending}</TableCell>
+                  <TableCell align="right">{row.dPending && row.dPending.chatrelPayment.nChatrelTotalAmount}</TableCell>
                   {row.sGBIDRelation == null && 
-                  <TableCell align="center"><Button disabled variant="contained" color="primary" onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' })}}>Pay</Button></TableCell>}
+                  <TableCell align="center"><Button disabled variant="contained" color="primary" >Pay</Button></TableCell>}
                   {row.sGBIDRelation != null && 
-                  <TableCell align="center"><Button variant='contained' color="primary" onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' })}}>Pay</Button>
+                  <TableCell align="center"><Button variant='contained' color="primary" onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' }, row.dPending, row.dPending.chatrelPayment.nChatrelTotalAmount)}}>Pay</Button>
                     
                     {/* <input type="button" onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' })}} value="Check Pending &amp; Pay"/> */}
                     </TableCell>}

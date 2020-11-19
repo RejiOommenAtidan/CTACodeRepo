@@ -1,6 +1,7 @@
 ﻿using CTADBL.BaseClasses.Masters;
 using CTADBL.BaseClasses.Transactions;
 using CTADBL.BaseClassRepositories.Masters;
+using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using CTADBL.ViewModels;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using static CTADBL.BaseClasses.Transactions.ChatrelPayment;
 
 namespace CTADBL.ViewModelsRepositories
 {
@@ -22,10 +24,19 @@ namespace CTADBL.ViewModelsRepositories
         private int _FYStartDate = 1;
         private int _FYEndMonth = 3;
         private int _FYEndDate = 31;
+        private GreenbookRepository _greenBookRepository;
+        private const string Success = "Success";
+        private const string Failed = "Failed";
+        private const string Online = "Online";
+        private const string Offline_WebAdmin = "Offline_WebAdmin";
+        private const string Offline_Bulk = "Offline_Bulk";
+        //private enum PaymentMode { Online = 1, Offline_WebAdmin, Offline_Bulk };
+        //private enum PaymentStatus { Success =1, Failed}
         #region Constructor
         public ChatrelPaymentVMRepository(string connectionString) : base(connectionString)
         {
             _connection = new MySqlConnection(connectionString);
+            _greenBookRepository = new GreenbookRepository(connectionString);
 
         }
         #endregion
@@ -36,33 +47,39 @@ namespace CTADBL.ViewModelsRepositories
             
             ChatrelPayment chatrelPayment = chatrelPaymentVM.chatrelPayment;
             IEnumerable<GBChatrel> chatrels = chatrelPaymentVM.gbChatrels;
-
-            if(chatrelPayment.sPaymentMode == "Online")
+            Greenbook greenbook = _greenBookRepository.GetGreenbookByGBID(chatrelPayment.sGBId);
+            
+            if(chatrelPayment.sPaymentMode == ChatrelPayment.Online)
             {
                 chatrelPayment.sChatrelReceiptNumber = GenerateReceiptNo();
             }
             
+            
             chatrelPayment.dtEntered = DateTime.Now;
-            chatrelPayment.sPaymentStatus = "Success";
+            chatrelPayment.dtPayment = DateTime.Now;
+            chatrelPayment.sPaymentStatus = ChatrelPayment.Success;
+            greenbook.dtUpdated = DateTime.Now;
+            greenbook.sPaidUntil = chatrelPayment.nChatrelYear.ToString();
 
-            foreach(var chatrel in chatrels)
+            foreach (var chatrel in chatrels)
             {
                 chatrel.sChatrelReceiptNumber = chatrelPayment.sChatrelReceiptNumber;
                 chatrel.sGBId = chatrelPayment.sGBId;
                 chatrel.sPaidByGBId = chatrelPayment.sPaidByGBId;
                 chatrel.nChatrelLateFeesPercentage = chatrelPayment.nChatrelLateFeesPercentage;
+                chatrel.dtPayment = chatrelPayment.dtPayment;
                 chatrel.nEnteredBy = chatrelPayment.nEnteredBy;
                 chatrel.dtEntered = DateTime.Now;
             }
 
             var builder = new SqlQueryBuilder<ChatrelPayment>(chatrelPayment);
             MySqlCommand command =  builder.GetInsertCommand();
-            
-            
+
+            _connection.Open();
             MySqlTransaction transaction = _connection.BeginTransaction();
             command.Transaction = transaction;
             command.Connection = _connection;
-            _connection.Open();
+            
             try
             {
                 command.ExecuteNonQuery();
@@ -70,10 +87,11 @@ namespace CTADBL.ViewModelsRepositories
                 {
                     var cbuilder = new SqlQueryBuilder<GBChatrel>(chatrel);
                     command.CommandText = cbuilder.GetInsertCommand().CommandText;
-                    //command.Connection = _connection;
-                    //command.Transaction = transaction;
-                    command.ExecuteNonQuery();
+                    int rows = command.ExecuteNonQuery();
                 }
+                var gbuilder = new SqlQueryBuilder<Greenbook>(greenbook);
+                command.CommandText = gbuilder.GetUpdateCommand().CommandText;
+                command.ExecuteNonQuery();
                 transaction.Commit();
                 //To do: Update GreenBook "sPaidUntil" column to reflect current paid upto status.
                 return ("Records inserted successfully.");
