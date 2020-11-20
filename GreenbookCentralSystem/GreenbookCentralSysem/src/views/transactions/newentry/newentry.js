@@ -271,7 +271,7 @@ export default function NewEntry(props) {
           setsFstGreenBkNo(resp.data.oGivenGBIDMadebVM.oMadeb.nCurrentGBSno);
           setsAliasName(resp.data.oGivenGBIDMadebVM.oMadeb.sAlias);
           setdtFormDate(resp.data.oGivenGBIDMadebVM.oMadeb.dtReceived);
-          setsGBID(resp.data.oGivenGBIDMadebVM.oGivenGBID.nGBId);
+          setsGBID(resp.data.oGivenGBIDMadebVM.oGivenGBID.nGBId.toString());
           setExpanded('panel1');
           setBackdrop(false);
         }
