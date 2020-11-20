@@ -127,12 +127,23 @@ namespace CTADBL.BaseClassRepositories.Transactions
             int pendingYears = _currentYear - paidUntil;
             if (pendingYears <= 0)
             {
-                List<GBChatrel> gbChatrel = _gbChatrelRepository.GetChatrelsByGBIDForYear(sGBID, _currentYear).ToList();
-                ChatrelPayment chatrel = new ChatrelPayment { nChatrelYear = _currentYear, sPaymentCurrency = gbChatrel[0].sPaymentCurrency, nChatrelTotalAmount = 0.00m, nAuthRegionID = gbChatrel[0].nAuthRegionID, sCountryID = gbChatrel[0].sCountryID };
-                
+                GBChatrel current = _gbChatrelRepository.GetChatrelByGBIDForYear(sGBID, _currentYear);
+                List<GBChatrel> gbChatrel = new List<GBChatrel>();
+                gbChatrel.Add(current);
                 gbChatrel[0].nChatrelAmount = 0.00m;
                 gbChatrel[0].nChatrelMeal = 0.00m;
-                var response = new { nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), message = "No Outstandings", sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrel, gbChatrels = gbChatrel };
+                gbChatrel[0].nChatrelTotalAmount = 0.00m;
+                ChatrelPayment chatrel = new ChatrelPayment 
+                { 
+                    sPaymentCurrency = "INR", 
+                    nChatrelTotalAmount = 0.00m,
+                    sGBId = sGBID,
+                    nChatrelYear = _currentYear,
+                    sPaymentMode = ChatrelPayment.Offline_WebAdmin
+                };
+                
+                
+                var response = new { gbChatrel[0].nAuthRegionID, nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), message = "No Outstandings", sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrel, gbChatrels = gbChatrel };
 
                 return response;
                 //return (new { message = "No Outstandings", currency = authRegion.sCurrencyCode });
@@ -193,28 +204,17 @@ namespace CTADBL.BaseClassRepositories.Transactions
             chatrelPayment = new ChatrelPayment
             {
                 Id = 0,
-                nChatrelAmount = decimal.Round(nChatrelAmount, 2),
-                nChatrelMeal = nChatrelMeal,
-                nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage,
-                nCurrentChatrelSalaryAmt = 0,
-                nArrearsAmount = arrears,
-                nChatrelTotalAmount = nChatrelTotalAmount + arrears,
-                nAuthRegionID = greenbook.nAuthRegionID,
-                sCountryID = authRegion.sCountryID,
-                nChatrelYear = _currentYear,
                 sGBId = sGBID,
-                dtArrearsFrom = dates[0],
-                dtArrearsTo = dates[1],
-                dtCurrentChatrelFrom = new DateTime(_currentYear, _FYStartMonth, _FYStartDate),
-                dtCurrentChatrelTo = new DateTime(_currentYear+1 , _FYEndMonth, _FYEndDate),
-                sPaymentCurrency = authRegion.sCurrencyCode,
+                nChatrelYear = _currentYear,
+                nChatrelTotalAmount = nChatrelTotalAmount + arrears,
+                sPaymentCurrency = "INR",
                 sPaymentMode = ChatrelPayment.Offline_WebAdmin
             };
            
             
 
             
-            var result = new { nDefaultSalaryAmount = _nChatrelSalaryAmt, nPaidUntil = new DateTime(paidUntil+1, _FYEndMonth, _FYEndDate), sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName),  chatrelPayment = chatrelPayment, gbChatrels };
+            var result = new { greenbook.nAuthRegionID, nPaidUntil = new DateTime(paidUntil+1, _FYEndMonth, _FYEndDate), sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName),  chatrelPayment = chatrelPayment, gbChatrels };
             return result;
         }
         #endregion
@@ -256,19 +256,19 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 {
                     if (i == (pendingYears - 1) && inGracePeriod)
                     {
-                        var gracepending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = chatrelBasic, nChatrelMeal = chatrelMeal, nCurrentChatrelSalaryAmt = 0, lateFees = 0, nArrearsAmount = (chatrelBasic + chatrelMeal), nChatrelTotalAmount = (chatrelBasic + chatrelMeal), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sPaymentCurrency = authRegion.sCurrencyCode, nChatrelUSD = chatrelBasicUSD, nChatrelINR = chatrelBasicINR, nChatrelMealUSD = chatrelMealUSD, nChatrelMealINR = chatrelMealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild = false };
+                        var gracepending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = chatrelBasic, nChatrelMeal = chatrelMeal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nArrearsAmount = (chatrelBasic + chatrelMeal), nChatrelTotalAmount = (chatrelBasic + chatrelMeal), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = "INR", nConversionRate = 0.00m, nChatrelUSD = chatrelBasicUSD, nChatrelINR = chatrelBasicINR, nChatrelMealUSD = chatrelMealUSD, nChatrelMealINR = chatrelMealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild = false };
                         list.Add(gracepending);
                         _nPending += chatrelBasic + chatrelMeal;
                         continue;
                     }
                     if(i == pendingYears) // Current Year
                     {
-                        var current = new { nChatrelYear = _currentYear, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = chatrelBasic, nChatrelMeal = chatrelMeal,  lateFees = 0, nChatrelTotalAmount = (chatrelBasic + chatrelMeal), dtDateFrom = start, dtDateTo = end, nCurrentChatrelSalaryAmt = 0, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sPaymentCurrency = authRegion.sCurrencyCode, nChatrelUSD = chatrelBasicUSD, nChatrelINR = chatrelBasicINR, nChatrelMealUSD = chatrelMealUSD, nChatrelMealINR = chatrelMealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild = false };
+                        var current = new { nChatrelYear = _currentYear, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = chatrelBasic, nChatrelMeal = chatrelMeal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nChatrelTotalAmount = (chatrelBasic + chatrelMeal), dtDateFrom = start, dtDateTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = "INR", nConversionRate = 0.00m, nChatrelUSD = chatrelBasicUSD, nChatrelINR = chatrelBasicINR, nChatrelMealUSD = chatrelMealUSD, nChatrelMealINR = chatrelMealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild = false };
                         list.Add(current);
                         //_nPending += _nChatrelAmount + _nChatrelMeal;
                         continue;
                     }
-                    var apending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = chatrelBasic, nChatrelMeal = chatrelMeal, nCurrentChatrelSalaryAmt = 0, lateFees = _dLateFees, nArrearsAmount = (chatrelBasic + chatrelMeal + _dLateFees), nChatrelTotalAmount = (chatrelBasic + chatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sPaymentCurrency = authRegion.sCurrencyCode, nChatrelUSD = chatrelBasicUSD, nChatrelINR = chatrelBasicINR, nChatrelMealUSD = chatrelMealUSD, nChatrelMealINR = chatrelMealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild = false };
+                    var apending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = chatrelBasic, nChatrelMeal = chatrelMeal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = _dLateFees, nArrearsAmount = (chatrelBasic + chatrelMeal + _dLateFees), nChatrelTotalAmount = (chatrelBasic + chatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = "INR", nConversionRate = 0.00m, nChatrelUSD = chatrelBasicUSD, nChatrelINR = chatrelBasicINR, nChatrelMealUSD = chatrelMealUSD, nChatrelMealINR = chatrelMealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild = false };
                     list.Add(apending);
                     _nPending += chatrelBasic + chatrelMeal + _dLateFees;
                     continue;
@@ -302,7 +302,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
                 if (i == (pendingYears - 1) && inGracePeriod)
                 {
-                    var gracepending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = nChatrelChildAmt, nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, lateFees = 0, nArrearsAmount = (nChatrelChildAmt ), nChatrelTotalAmount = (nChatrelChildAmt), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sPaymentCurrency = authRegion.sCurrencyCode, nChatrelUSD = nChatrelChildUSD, nChatrelINR = nChatrelChildINR, nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, isChild  };
+                    var gracepending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = nChatrelChildAmt, nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nArrearsAmount = (nChatrelChildAmt ), nChatrelTotalAmount = (nChatrelChildAmt), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = "INR", nConversionRate = 0.00m, nChatrelUSD = nChatrelChildUSD, nChatrelINR = nChatrelChildINR, nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, isChild  };
                     
                     list.Add(gracepending);
                     
@@ -312,13 +312,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 }
                 if (i == pendingYears) // Current Year
                 {
-                    var current = new { nChatrelYear = _currentYear, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = nChatrelChildAmt, nChatrelMeal = meal,  lateFees = 0, nChatrelTotalAmount = nChatrelChildAmt, dtDateFrom = start, dtDateTo = end, nCurrentChatrelSalaryAmt = 0, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sPaymentCurrency = authRegion.sCurrencyCode, nChatrelUSD = nChatrelChildUSD, nChatrelINR = nChatrelChildINR, nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, isChild  };
+                    var current = new { nChatrelYear = _currentYear, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = nChatrelChildAmt, nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nChatrelTotalAmount = nChatrelChildAmt, dtDateFrom = start, dtDateTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = "INR", nConversionRate = 0.00m, nChatrelUSD = nChatrelChildUSD, nChatrelINR = nChatrelChildINR, nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, isChild  };
                     
                     list.Add(current);
                     
                     continue;
                 }
-                var pending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = nChatrelChildAmt, nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, lateFees = lateFees, nArrearsAmount = (nChatrelChildAmt + lateFees),  nChatrelTotalAmount = (nChatrelChildAmt + lateFees), dtArrearsFrom = start, dtArrearsTo = end,  greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sPaymentCurrency = authRegion.sCurrencyCode, nChatrelUSD = nChatrelChildUSD, nChatrelINR = nChatrelChildINR, nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, isChild  };
+                var pending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = nChatrelChildAmt, nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = lateFees, nArrearsAmount = (nChatrelChildAmt + lateFees),  nChatrelTotalAmount = (nChatrelChildAmt + lateFees), dtArrearsFrom = start, dtArrearsTo = end,  greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = "INR", nConversionRate = 0.00m, nChatrelUSD = nChatrelChildUSD, nChatrelINR = nChatrelChildINR, nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, isChild  };
                
                 list.Add(pending);
                 _nPending += nChatrelChildAmt + meal + lateFees;
@@ -396,7 +396,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         private int GetPaidUntil(Greenbook greenbook)
         {
             string paidtill = greenbook.sPaidUntil;
-            int paidUntil = 0;
+            int paidUntil = _nChatrelStartYear;
             if (!String.IsNullOrEmpty(paidtill) || !String.IsNullOrWhiteSpace(paidtill))
             {
                 paidUntil = Convert.ToInt32(paidtill) ;
@@ -625,31 +625,25 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
         public IEnumerable<ChatrelPayment> GetAllChatrelPayments()
         {
-            string sql = @"SELECT   `tblchatrelpayment`.`Id`,
+            string sql = @"SELECT `tblchatrelpayment`.`Id`,
                                     `tblchatrelpayment`.`sGBId`,
-                                    `tblchatrelpayment`.`nChatrelAmount`,
-                                    `tblchatrelpayment`.`nChatrelMeal`,
                                     `tblchatrelpayment`.`nChatrelYear`,
-                                    `tblchatrelpayment`.`nChatrelLateFeesPercentage`,
-                                    `tblchatrelpayment`.`nArrearsAmount`,
-                                    `tblchatrelpayment`.`dtArrearsFrom`,
-                                    `tblchatrelpayment`.`dtArrearsTo`,
-                                    `tblchatrelpayment`.`nCurrentChatrelSalaryAmt`,
-                                    `tblchatrelpayment`.`dtCurrentChatrelFrom`,
-                                    `tblchatrelpayment`.`dtCurrentChatrelTo`,
-                                    `tblchatrelpayment`.`nChatrelAdditionalDonationAmt`,
-                                    `tblchatrelpayment`.`nChatrelBusinessDonationAmt`,
                                     `tblchatrelpayment`.`nChatrelTotalAmount`,
                                     `tblchatrelpayment`.`sChatrelReceiptNumber`,
-                                    `tblchatrelpayment`.`nAuthRegionID`,
-                                    `tblchatrelpayment`.`sCountryID`,
                                     `tblchatrelpayment`.`sPaymentStatus`,
                                     `tblchatrelpayment`.`sPaymentMode`,
                                     `tblchatrelpayment`.`sPaymentCurrency`,
                                     `tblchatrelpayment`.`sPaidByGBId`,
+                                    `tblchatrelpayment`.`sPayPal_Status`,
+                                    `tblchatrelpayment`.`sPayPal_ID`,
+                                    `tblchatrelpayment`.`sPayPal_Currency_Code`,
+                                    `tblchatrelpayment`.`sPayPal_Currency_Value`,
+                                    `tblchatrelpayment`.`sPayPal_Response_Object`,
                                     `tblchatrelpayment`.`dtPayment`,
                                     `tblchatrelpayment`.`dtEntered`,
-                                    `tblchatrelpayment`.`nEnteredBy`
+                                    `tblchatrelpayment`.`nEnteredBy`,
+                                    `tblchatrelpayment`.`dtUpdated`,
+                                    `tblchatrelpayment`.`nUpdatedBy`
                                 FROM `ctadb`.`tblchatrelpayment`
                                 LIMIT @limit;";
             using (var command = new MySqlCommand(sql))
@@ -662,31 +656,25 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
         public ChatrelPayment GetChatrelPayment(string Id)
         {
-            string sql = @"SELECT   `tblchatrelpayment`.`Id`,
+            string sql = @"SELECT `tblchatrelpayment`.`Id`,
                                     `tblchatrelpayment`.`sGBId`,
-                                    `tblchatrelpayment`.`nChatrelAmount`,
-                                    `tblchatrelpayment`.`nChatrelMeal`,
                                     `tblchatrelpayment`.`nChatrelYear`,
-                                    `tblchatrelpayment`.`nChatrelLateFeesPercentage`,
-                                    `tblchatrelpayment`.`nArrearsAmount`,
-                                    `tblchatrelpayment`.`dtArrearsFrom`,
-                                    `tblchatrelpayment`.`dtArrearsTo`,
-                                    `tblchatrelpayment`.`nCurrentChatrelSalaryAmt`,
-                                    `tblchatrelpayment`.`dtCurrentChatrelFrom`,
-                                    `tblchatrelpayment`.`dtCurrentChatrelTo`,
-                                    `tblchatrelpayment`.`nChatrelAdditionalDonationAmt`,
-                                    `tblchatrelpayment`.`nChatrelBusinessDonationAmt`,
                                     `tblchatrelpayment`.`nChatrelTotalAmount`,
                                     `tblchatrelpayment`.`sChatrelReceiptNumber`,
-                                    `tblchatrelpayment`.`nAuthRegionID`,
-                                    `tblchatrelpayment`.`sCountryID`,
                                     `tblchatrelpayment`.`sPaymentStatus`,
                                     `tblchatrelpayment`.`sPaymentMode`,
                                     `tblchatrelpayment`.`sPaymentCurrency`,
                                     `tblchatrelpayment`.`sPaidByGBId`,
+                                    `tblchatrelpayment`.`sPayPal_Status`,
+                                    `tblchatrelpayment`.`sPayPal_ID`,
+                                    `tblchatrelpayment`.`sPayPal_Currency_Code`,
+                                    `tblchatrelpayment`.`sPayPal_Currency_Value`,
+                                    `tblchatrelpayment`.`sPayPal_Response_Object`,
                                     `tblchatrelpayment`.`dtPayment`,
                                     `tblchatrelpayment`.`dtEntered`,
-                                    `tblchatrelpayment`.`nEnteredBy`
+                                    `tblchatrelpayment`.`nEnteredBy`,
+                                    `tblchatrelpayment`.`dtUpdated`,
+                                    `tblchatrelpayment`.`nUpdatedBy`
                                 FROM `ctadb`.`tblchatrelpayment`
                                 WHERE Id = @Id";
             using (var command = new MySqlCommand(sql))
@@ -699,33 +687,27 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
         public IEnumerable<ChatrelPayment> GetChatrelPaymentByGBID(string sGBID)
         {
-            string sql = @"SELECT   `tblchatrelpayment`.`Id`,
+            string sql = @"SELECT `tblchatrelpayment`.`Id`,
                                     `tblchatrelpayment`.`sGBId`,
-                                    `tblchatrelpayment`.`nChatrelAmount`,
-                                    `tblchatrelpayment`.`nChatrelMeal`,
                                     `tblchatrelpayment`.`nChatrelYear`,
-                                    `tblchatrelpayment`.`nChatrelLateFeesPercentage`,
-                                    `tblchatrelpayment`.`nArrearsAmount`,
-                                    `tblchatrelpayment`.`dtArrearsFrom`,
-                                    `tblchatrelpayment`.`dtArrearsTo`,
-                                    `tblchatrelpayment`.`nCurrentChatrelSalaryAmt`,
-                                    `tblchatrelpayment`.`dtCurrentChatrelFrom`,
-                                    `tblchatrelpayment`.`dtCurrentChatrelTo`,
-                                    `tblchatrelpayment`.`nChatrelAdditionalDonationAmt`,
-                                    `tblchatrelpayment`.`nChatrelBusinessDonationAmt`,
                                     `tblchatrelpayment`.`nChatrelTotalAmount`,
                                     `tblchatrelpayment`.`sChatrelReceiptNumber`,
-                                    `tblchatrelpayment`.`nAuthRegionID`,
-                                    `tblchatrelpayment`.`sCountryID`,
                                     `tblchatrelpayment`.`sPaymentStatus`,
                                     `tblchatrelpayment`.`sPaymentMode`,
                                     `tblchatrelpayment`.`sPaymentCurrency`,
                                     `tblchatrelpayment`.`sPaidByGBId`,
+                                    `tblchatrelpayment`.`sPayPal_Status`,
+                                    `tblchatrelpayment`.`sPayPal_ID`,
+                                    `tblchatrelpayment`.`sPayPal_Currency_Code`,
+                                    `tblchatrelpayment`.`sPayPal_Currency_Value`,
+                                    `tblchatrelpayment`.`sPayPal_Response_Object`,
                                     `tblchatrelpayment`.`dtPayment`,
                                     `tblchatrelpayment`.`dtEntered`,
-                                    `tblchatrelpayment`.`nEnteredBy`
+                                    `tblchatrelpayment`.`nEnteredBy`,
+                                    `tblchatrelpayment`.`dtUpdated`,
+                                    `tblchatrelpayment`.`nUpdatedBy`
                                 FROM `ctadb`.`tblchatrelpayment`
-                        WHERE sGBID = @sGBID";
+                                WHERE sGBID = @sGBID";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sGBID", sGBID);
@@ -735,31 +717,25 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
         public ChatrelPayment GetChatrelPaymentByGBIDForYear(string sGBID, int year)
         {
-            string sql = @"SELECT   `tblchatrelpayment`.`Id`,
+            string sql = @"SELECT `tblchatrelpayment`.`Id`,
                                     `tblchatrelpayment`.`sGBId`,
-                                    `tblchatrelpayment`.`nChatrelAmount`,
-                                    `tblchatrelpayment`.`nChatrelMeal`,
                                     `tblchatrelpayment`.`nChatrelYear`,
-                                    `tblchatrelpayment`.`nChatrelLateFeesPercentage`,
-                                    `tblchatrelpayment`.`nArrearsAmount`,
-                                    `tblchatrelpayment`.`dtArrearsFrom`,
-                                    `tblchatrelpayment`.`dtArrearsTo`,
-                                    `tblchatrelpayment`.`nCurrentChatrelSalaryAmt`,
-                                    `tblchatrelpayment`.`dtCurrentChatrelFrom`,
-                                    `tblchatrelpayment`.`dtCurrentChatrelTo`,
-                                    `tblchatrelpayment`.`nChatrelAdditionalDonationAmt`,
-                                    `tblchatrelpayment`.`nChatrelBusinessDonationAmt`,
                                     `tblchatrelpayment`.`nChatrelTotalAmount`,
                                     `tblchatrelpayment`.`sChatrelReceiptNumber`,
-                                    `tblchatrelpayment`.`nAuthRegionID`,
-                                    `tblchatrelpayment`.`sCountryID`,
                                     `tblchatrelpayment`.`sPaymentStatus`,
                                     `tblchatrelpayment`.`sPaymentMode`,
                                     `tblchatrelpayment`.`sPaymentCurrency`,
                                     `tblchatrelpayment`.`sPaidByGBId`,
+                                    `tblchatrelpayment`.`sPayPal_Status`,
+                                    `tblchatrelpayment`.`sPayPal_ID`,
+                                    `tblchatrelpayment`.`sPayPal_Currency_Code`,
+                                    `tblchatrelpayment`.`sPayPal_Currency_Value`,
+                                    `tblchatrelpayment`.`sPayPal_Response_Object`,
                                     `tblchatrelpayment`.`dtPayment`,
                                     `tblchatrelpayment`.`dtEntered`,
-                                    `tblchatrelpayment`.`nEnteredBy`
+                                    `tblchatrelpayment`.`nEnteredBy`,
+                                    `tblchatrelpayment`.`dtUpdated`,
+                                    `tblchatrelpayment`.`nUpdatedBy`
                                 FROM `ctadb`.`tblchatrelpayment`
                                 WHERE sGBID = @sGBID
                                 AND nChatrelYear = @year";
@@ -783,29 +759,22 @@ namespace CTADBL.BaseClassRepositories.Transactions
             {
                 Id = (int)reader["Id"],
                 sGBId = reader.IsDBNull("sGBId") ? null : (string)reader["sGBId"],
-                nChatrelAmount = reader.IsDBNull("nChatrelAmount") ? null : (decimal?)reader["nChatrelAmount"],
-                nChatrelMeal = reader.IsDBNull("nchatrelMeal") ? null : (decimal?)reader["nchatrelMeal"],
-                nChatrelYear = reader.IsDBNull("nchatrelYear") ? null : (int?)reader["nchatrelYear"],
-                nChatrelLateFeesPercentage = reader.IsDBNull("nchatrelLateFeesPercentage") ? null : (int?)reader["nchatrelLateFeesPercentage"],
-                nArrearsAmount = reader.IsDBNull("nArrearsAmount") ? null : (decimal?)reader["nArrearsAmount"],
-                dtArrearsFrom = reader.IsDBNull("dtArrearsFrom") ? null : (DateTime?)(reader["dtArrearsFrom"]),
-                dtArrearsTo = reader.IsDBNull("dtArrearsTo") ? null : (DateTime?)(reader["dtArrearsTo"]),
-                nCurrentChatrelSalaryAmt = reader.IsDBNull("nCurrentChatrelSalaryAmt") ? null : (decimal?)reader["nCurrentChatrelSalaryAmt"],
-                dtCurrentChatrelFrom = reader.IsDBNull("dtCurrentChatrelFrom") ? null : (DateTime?)(reader["dtCurrentChatrelFrom"]),
-                dtCurrentChatrelTo = reader.IsDBNull("dtCurrentChatrelTo") ? null : (DateTime?)(reader["dtCurrentChatrelTo"]),
-                nChatrelAdditionalDonationAmt = reader.IsDBNull("nChatrelAdditionalDonationAmt") ? null : (decimal?)reader["nChatrelAdditionalDonationAmt"],
-                nChatrelBusinessDonationAmt = reader.IsDBNull("nchatrelBusinessDonationAmt") ? null : (decimal?)reader["nchatrelBusinessDonationAmt"],
                 nChatrelTotalAmount = reader.IsDBNull("nchatrelTotalAmount") ? null : (decimal?)reader["nchatrelTotalAmount"],
                 sChatrelReceiptNumber = (string)reader["sChatrelReceiptNumber"],
-                nAuthRegionID = reader.IsDBNull("nAuthRegionID") ? null : (int?)reader["nAuthRegionID"],
-                sCountryID = reader.IsDBNull("sCountryID") ? null : (string)reader["sCountryID"],
                 sPaidByGBId = reader.IsDBNull("sPaidByGBId") ? null : (string)reader["sPaidByGBId"],
                 sPaymentStatus = reader.IsDBNull("sCountryID") ? null : (string)reader["sPaymentStatus"],
                 sPaymentMode = reader.IsDBNull("sCountryID") ? null : (string)reader["sPaymentMode"],
                 sPaymentCurrency = reader.IsDBNull("sPaymentCurrency") ? null : (string)reader["sPaymentCurrency"],
+                sPayPal_Status = reader.IsDBNull("sPayPal_Status") ? null : (string)reader["sPayPal_Status"],
+                sPayPal_ID = reader.IsDBNull("sPayPal_ID") ? null : (string)reader["sPayPal_ID"],
+                sPayPal_Currency_Code = reader.IsDBNull("sPayPal_Currency_Code") ? null : (string)reader["sPayPal_Currency_Code"],
+                sPayPal_Currency_Value = reader.IsDBNull("sPayPal_Currency_Value") ? null : (string)reader["sPayPal_Currency_Value"],
+                sPayPal_Response_Object = reader.IsDBNull("sPayPal_Response_Object") ? null : (string)reader["sPayPal_Response_Object"],
                 dtPayment = (DateTime)(reader["dtPayment"]),
                 dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
-                nEnteredBy = (int)reader["nEnteredBy"]
+                nEnteredBy = (int)reader["nEnteredBy"],
+                dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]),
+                nUpdatedBy = (int)reader["nUpdatedBy"],
             };
             return chatrelPayment;
         }

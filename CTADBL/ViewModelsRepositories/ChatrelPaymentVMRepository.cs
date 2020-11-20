@@ -57,6 +57,7 @@ namespace CTADBL.ViewModelsRepositories
             
             chatrelPayment.dtEntered = DateTime.Now;
             chatrelPayment.dtPayment = DateTime.Now;
+            chatrelPayment.dtUpdated = DateTime.Now;
             chatrelPayment.sPaymentStatus = ChatrelPayment.Success;
             greenbook.dtUpdated = DateTime.Now;
             greenbook.sPaidUntil = chatrelPayment.nChatrelYear.ToString();
@@ -64,14 +65,15 @@ namespace CTADBL.ViewModelsRepositories
             foreach (var chatrel in chatrels)
             {
                 chatrel.sChatrelReceiptNumber = chatrelPayment.sChatrelReceiptNumber;
-                chatrel.sGBId = chatrelPayment.sGBId;
+                //chatrel.sGBId = chatrelPayment.sGBId;
                 chatrel.sPaidByGBId = chatrelPayment.sPaidByGBId;
-                chatrel.nChatrelLateFeesPercentage = chatrelPayment.nChatrelLateFeesPercentage;
+                //chatrel.nChatrelLateFeesPercentage = chatrelPayment.nChatrelLateFeesPercentage;
                 chatrel.dtPayment = chatrelPayment.dtPayment;
                 chatrel.nEnteredBy = chatrelPayment.nEnteredBy;
                 chatrel.dtEntered = DateTime.Now;
+                chatrel.dtUpdated = DateTime.Now;
             }
-
+            
             var builder = new SqlQueryBuilder<ChatrelPayment>(chatrelPayment);
             MySqlCommand command =  builder.GetInsertCommand();
 
@@ -83,8 +85,10 @@ namespace CTADBL.ViewModelsRepositories
             try
             {
                 command.ExecuteNonQuery();
+                long id = command.LastInsertedId;
                 foreach (var chatrel in chatrels)
                 {
+                    chatrel.chatrelpaymentID = Convert.ToInt32(id);
                     var cbuilder = new SqlQueryBuilder<GBChatrel>(chatrel);
                     command.CommandText = cbuilder.GetInsertCommand().CommandText;
                     int rows = command.ExecuteNonQuery();

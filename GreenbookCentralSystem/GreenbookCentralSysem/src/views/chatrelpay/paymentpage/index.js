@@ -22,6 +22,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector} from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PaymentPage  (props) {
 
   let history = useHistory();
-
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   console.log("Props contains:", props);
   // Who is paying
   const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
@@ -60,6 +61,7 @@ export default function PaymentPage  (props) {
   //console.log(paidByGBID);
   //const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 
+  
   const [dataAPI, setDataAPI] = React.useState();
   const [summaryData, setSummaryData] = React.useState();
   const [paymentData, setPaymentData] = React.useState();
@@ -139,7 +141,7 @@ export default function PaymentPage  (props) {
     let chatrelObj = [...paymentData];
     chatrelObj[index].nAuthRegionID = value.id;
     chatrelObj[index].sCountryID = value.sCountryID;
-    chatrelObj[index].sPaymentCurrency = value.sCurrencyCode;
+    chatrelObj[index].sAuthRegionCurrency = value.sCurrencyCode;
     chatrelObj[index].nChatrelAmount = value.sCurrencyCode === 'INR' ? chatrelObj[index].nChatrelINR : chatrelObj[index].nChatrelUSD;
     chatrelObj[index].nChatrelMeal = value.sCurrencyCode === 'INR' ? chatrelObj[index].nChatrelMealINR : chatrelObj[index].nChatrelMealUSD;
 
@@ -168,12 +170,20 @@ let payObj = [...paymentData];
 let len=paymentData.length  ;
 
 if(index!=len-1){
-  payObj[index].lateFees=(payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nCurrentChatrelSalaryAmt)/10;
+  payObj[index].nChatrelLateFeesValue=(payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nCurrentChatrelSalaryAmt)/10;
+  
+  payObj[index].nArrearsAmount = payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nChatrelLateFeesValue + payObj[index].nCurrentChatrelSalaryAmt;
+
 }
 else{
-  payObj[index].lateFees=0;
+  payObj[index].nChatrelLateFeesValue=0;
+  
 }
-payObj[index].nChatrelTotalAmount= (payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].lateFees + payObj[index].nCurrentChatrelSalaryAmt) * ((dollarToRupees && payObj[index].sPaymentCurrency === 'USD') ? dollarToRupees.toFixed(4) : 1);
+
+payObj[index].nChatrelTotalAmount= (payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nChatrelLateFeesValue + payObj[index].nCurrentChatrelSalaryAmt) * ((dollarToRupees && payObj[index].sAuthRegionCurrency === 'USD') ? dollarToRupees.toFixed(4) : 1);
+
+payObj[index].nConversionRate = payObj[index].sAuthRegionCurrency === 'INR' ? 1.00 : parseFloat(dollarToRupees.toFixed(4));
+
 setPaymentData(payObj);
 calcTotal(paymentData ,adonation,bdonation);
 };
@@ -196,9 +206,35 @@ const calcTotal =(obj ,a,b)=>{
   const runOnce = () => {
     
     if (paymentData && dollarToRupees && shouldRun){
-      const len = paymentData.length;
-      for (var i = 0; i < len; i++){
-        calculate(i);
+      
+      
+      if(!outstanding){
+        if(paymentData[0].nCurrentChatrelSalaryAmt > 0){
+          console.log("we have no outstanding");
+           const checkBox = document.getElementById('employed');
+           const rateField = document.getElementById('rate');
+           const totalField = document.getElementById('total');
+           if(checkBox){
+              checkBox.checked = true;
+              checkBox.disabled = true;
+              setPaymentData(paymentData.map((element) => {
+                element.nChatrelTotalAmount = 0;
+                element.nCurrentChatrelSalaryAmt = 0;
+                return element;
+              }));
+              rateField.innerText = '';
+              //totalField.innerText = '';
+              setTotal(0.00);
+           }
+          
+        }
+      }
+      else{
+        console.log("we have outstanding");
+        const len = paymentData.length;
+        for (var i = 0; i < len; i++){
+          calculate(i);
+        }
       }
       setShouldRun(false);
     } 
@@ -213,16 +249,52 @@ const submit =(e) =>{
 
   tempSummaryObj.nArrearsAmount= total- ( payObj[lastindex].nChatrelTotalAmount + bdonation+adonation);
   tempSummaryObj.nChatrelTotalAmount=total;
-  tempSummaryObj.nCurrentChatrelSalaryAmt=payObj[lastindex].nCurrentChatrelSalaryAmt;
   tempSummaryObj.nChatrelBusinessDonationAmt=bdonation;
   tempSummaryObj.nChatrelAdditionalDonationAmt=adonation;
   tempSummaryObj.sPaidByGBId=paidByGBID;
   tempSummaryObj.sChatrelReceiptNumber=receiptNumber;
+
+  let chatrel = 0.00;
+  let meal = 0.00;
+  let salary = 0.00;
+  payObj.forEach(gbchatrel => {
+    chatrel += gbchatrel.sAuthRegionCurrency=== 'INR' ?  gbchatrel.nChatrelAmount : gbchatrel.nChatrelAmount * dollarToRupees.toFixed(4);
+    meal += gbchatrel.sAuthRegionCurrency=== 'INR' ?  gbchatrel.nChatrelMeal : gbchatrel.nChatrelMeal * dollarToRupees.toFixed(4);
+    salary += gbchatrel.sAuthRegionCurrency=== 'INR' ?  gbchatrel.nCurrentChatrelSalaryAmt : gbchatrel.nCurrentChatrelSalaryAmt  * dollarToRupees.toFixed(4);
+    gbchatrel.nEnteredBy = userId;
+    gbchatrel.nUpdatedBy = userId;
+  });
+  
+  tempSummaryObj.nChatrelAmount = chatrel;
+  tempSummaryObj.nChatrelMeal = meal;
+  tempSummaryObj.nCurrentChatrelSalaryAmt = salary;
+  tempSummaryObj.nEnteredBy = userId;
+  tempSummaryObj.nUpdatedBy = userId;
+  // if(payObj[lastindex].sAuthRegionCurrency === 'USD'){
+  //   tempSummaryObj.nCurrentChatrelSalaryAmt=payObj[lastindex].nCurrentChatrelSalaryAmt * dollarToRupees.toFixed(4);
+  //   tempSummaryObj.nChatrelAmount = payObj[lastindex].nChatrelAmount * dollarToRupees.toFixed(4);
+  //   tempSummaryObj.nChatrelMeal = payObj[lastindex].nChatrelMeal * dollarToRupees.toFixed(4);
+  // }
+  // else{
+  //   tempSummaryObj.nCurrentChatrelSalaryAmt=payObj[lastindex].nCurrentChatrelSalaryAmt;
+  //   tempSummaryObj.nChatrelAmount = payObj[lastindex].nChatrelAmount; 
+  //   tempSummaryObj.nChatrelMeal = payObj[lastindex].nChatrelMeal;
+  // }
   
   
+  // The following to be commented if conversion rate column available in db.
+  // payObj.forEach(gbchatrel => {
+  //   gbchatrel.nChatrelTotalAmount = gbchatrel.nChatrelAmount + gbchatrel.nChatrelMeal + gbchatrel.nCurrentChatrelSalaryAmt + gbchatrel.nChatrelLateFeesValue
+  // });
+  
+  // let finalObj={
+  //   "chatrelPayment": tempSummaryObj,
+  //   "gbChatrels": paymentData
+  // };
+
   let finalObj={
     "chatrelPayment": tempSummaryObj,
-    "gbChatrels": paymentData
+    "gbChatrels": payObj
   };
 
   console.log("Final Obj:" , finalObj);
@@ -238,9 +310,7 @@ const submit =(e) =>{
     console.log(error.config);
     console.log(error.message);
   });
-  // .then(release => {
-  //   //console.log(release); => udefined
-  // });
+  
 
 
 };
@@ -274,9 +344,10 @@ const submit =(e) =>{
                   .then(response => response.json())
                   .then(data => {
                   console.log("currency", data.rates.INR);
-                  setDollarToRupees(data.rates.INR);
+                  setDollarToRupees(parseFloat(data.rates.INR));
                   });
             console.log("Got data from props");
+            
             return;
           }
           axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sGBID)
@@ -293,7 +364,7 @@ const submit =(e) =>{
                   .then(response => response.json())
                   .then(data => {
                   console.log("currency", data.rates.INR);
-                  setDollarToRupees(data.rates.INR);
+                  setDollarToRupees(parseFloat(data.rates.INR));
                   });
                 
               }
@@ -316,27 +387,21 @@ const submit =(e) =>{
      }, []);
   
      
-  const [dollarToRupees, setDollarToRupees] = React.useState();
+  const [dollarToRupees, setDollarToRupees] = React.useState(0.00);
 
   useEffect(() => {
     runOnce();
+    console.log("dollar rate is ", dollarToRupees);
   }, [dollarToRupees])
 
 
   useEffect(() => {
-    (authRegions && summaryData &&
-    setAuthRegion(authRegions.find((x) => x.id === summaryData.nAuthRegionID)));
-    
+    (authRegions && dataAPI &&
+    setAuthRegion(authRegions.find((x) => x.id === dataAPI.nAuthRegionID)));
 
-    
-    
-      
+  }, [authRegions, dataAPI]);
 
-      
-      
-
-  }, [authRegions, summaryData]);
-
+  
  
 
   return (
@@ -436,16 +501,16 @@ const submit =(e) =>{
                   )}
                 />
               </TableCell>
-              <TableCell>{row.sPaymentCurrency}</TableCell>
+              <TableCell>{row.sAuthRegionCurrency}</TableCell>
               {outstanding && <> <TableCell align="right">{row.nChatrelAmount}</TableCell>
               <TableCell align="right">{row.nChatrelMeal}</TableCell>
-              <TableCell align="right">{row.lateFees}</TableCell> </>}
+              <TableCell align="right">{row.nChatrelLateFeesValue}</TableCell> </>}
               {!outstanding && <> <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell> </>}
               <TableCell align="center">{ <input id='employed' value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox" disabled = {row.isChild}/>}</TableCell>
-              <TableCell align="center">{(dollarToRupees && row.sPaymentCurrency === 'USD') ? dollarToRupees.toFixed(4) : '-'}</TableCell>
-              <TableCell align="right">{row.nChatrelTotalAmount.toFixed(2) }</TableCell>
+              <TableCell id='rate' align="center">{(dollarToRupees && row.sAuthRegionCurrency === 'USD') ? dollarToRupees.toFixed(4) : '-'}</TableCell>
+              <TableCell id='total' align="right">{row.nChatrelTotalAmount.toFixed(2) }</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -499,7 +564,7 @@ const submit =(e) =>{
                 onChange = {(e) => setReceiptNumber(e.target.value)}
               />
             </Grid>
-           <div><Button variant="contained" color="primary" type = 'submit' >Save</Button></div>
+           <div style={{paddingTop:'10px'}}><Button variant="contained" color="primary" type = 'submit' >Save</Button></div>
            </form>
       
         </div>

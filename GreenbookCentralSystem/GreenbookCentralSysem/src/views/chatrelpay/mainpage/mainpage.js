@@ -241,7 +241,7 @@ export default function MainPage () {
         setPaymentData(resp.data);
         //const element = document.getElementById('SelfPay_Btn');
         element.disabled = false;
-        if(resp.data.gbChatrels[0].sPaymentCurrency === 'USD'){
+        if(resp.data.gbChatrels[0].sAuthRegionCurrency === 'USD'){
           setCurrencySymbol('$');
         }
         else{

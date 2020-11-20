@@ -11,6 +11,7 @@ namespace CTADBL.ViewModels
         #region Private properties
         private IEnumerable<GBChatrel> _gbChatrels;
         private ChatrelPayment _chatrelPayment;
+        private bool _bOutstanding = true;
         #endregion
 
         #region Public properties
@@ -37,6 +38,19 @@ namespace CTADBL.ViewModels
                 _chatrelPayment = value;
             }
         }
+        
+        public bool Outstanding 
+        {
+            get
+            {
+                return _bOutstanding;
+            }
+            set
+            {
+                _bOutstanding = value;
+            }
+        }
+
         #endregion
     }
 }
