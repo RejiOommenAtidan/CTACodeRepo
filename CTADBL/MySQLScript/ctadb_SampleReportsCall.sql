@@ -38,3 +38,28 @@ CALL spReportCTANewEntryFromDay ('2015-12-17');
 
 CALL spReportCTABelow6Years ('lstauthregion.sAuthRegion');
 CALL spReportCTABelow6Years ('lstcountry.sCountry');
+
+CALL spReportCTADeceasedRegionOrCountryWise ('2009-12-17','2015-12-17','lstcountry.sCountry');
+CALL spReportCTADeceasedRegionOrCountryWise ('2009-12-17','2015-12-17','lstauthregion.sAuthRegion');
+
+
+CALL spReportCTAMadebRegionOrCountryWise ('F','2009-12-17','2015-12-17','lstcountry.sCountry');
+CALL spReportCTAMadebRegionOrCountryWise ('F','2009-12-17','2015-12-17','lstauthregion.sAuthRegion');
+CALL spReportCTAMadebRegionOrCountryWise ('M','2009-12-17','2015-12-17','lstcountry.sCountry');
+CALL spReportCTAMadebRegionOrCountryWise ('M','2009-12-17','2015-12-17','lstauthregion.sAuthRegion');
+CALL spReportCTAMadebRegionOrCountryWise ('L','2009-12-17','2015-12-17','lstcountry.sCountry');
+CALL spReportCTAMadebRegionOrCountryWise ('L','2009-12-17','2015-12-17','lstauthregion.sAuthRegion');
+CALL spReportCTAMadebRegionOrCountryWise ('A','2009-12-17','2015-12-17','lstcountry.sCountry');
+CALL spReportCTAMadebRegionOrCountryWise ('A','2009-12-17','2015-12-17','lstauthregion.sAuthRegion');
+CALL spReportCTAMadebRegionOrCountryWise ('U','2009-12-17','2015-12-17','lstcountry.sCountry');
+CALL spReportCTAMadebRegionOrCountryWise ('U','2009-12-17','2015-12-17','lstauthregion.sAuthRegion');
+CALL spReportCTAMadebRegionOrCountryWise ('B','2009-12-17','2015-12-17','lstcountry.sCountry');
+CALL spReportCTAMadebRegionOrCountryWise ('B','2009-12-17','2015-12-17','lstauthregion.sAuthRegion');
+
+
+
+
+
+
+
+

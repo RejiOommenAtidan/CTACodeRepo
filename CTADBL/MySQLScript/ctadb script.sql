@@ -1509,6 +1509,83 @@ END$$
 DELIMITER ;
 
 
+DROP procedure IF EXISTS `spReportCTADeceasedRegionOrCountryWise`;
+
+DELIMITER $$
+CREATE PROCEDURE spReportCTADeceasedRegionOrCountryWise
+(
+	IN dtRecordFrom date
+    ,IN dtRecordTo date
+    ,IN sOrderBy varchar(255)
+)
+BEGIN
+	-- declare SQLText varchar(5000);
+
+    SET @SQLText = CONCAT('select 
+			tblgreenbook.sGBID, 
+			tblgreenbook.sFirstName, 
+			tblgreenbook.sLastName, 
+			tblgreenbook.dtDOB, 
+			tblgreenbook.dtDeceased, 
+			',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstauthregion.sAuthRegion", "lstcountry.sCountry" ),', 
+			DATE_FORMAT(tblgreenbook.dtDeceased, ''%Y'') - DATE_FORMAT(tblgreenbook.dtDOB, ''%Y'') - (DATE_FORMAT(tblgreenbook.dtDeceased, ''00-%m-%d'') < DATE_FORMAT(tblgreenbook.dtDOB, ''00-%m-%d'')) as DeathAge 
+		from 
+			tblgreenbook 
+		inner join ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstauthregion", "lstcountry" ),' 
+			on (',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "tblgreenbook.nAuthRegionId=lstauthregion.ID", "tblgreenbook.sCountryID=lstcountry.sCountryID" ),') 
+		where 
+			date(tblgreenbook.dtDeceased) >= ''', dtRecordFrom ,''' 
+			and date(tblgreenbook.dtDeceased) < ''', dtRecordTo ,''' 
+			and tblgreenbook.dtDeceased is not null
+		order by ', sOrderBy ,', tblgreenbook.dtDeceased');
+        
+        --	select @SQLText;
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
+
+DROP procedure IF EXISTS `spReportCTAMadebRegionOrCountryWise`;
+
+DELIMITER $$
+CREATE PROCEDURE spReportCTAMadebRegionOrCountryWise
+(
+	IN sMadebDisplayKey varchar(255)
+	,IN dtRecordFrom date
+    ,IN dtRecordTo date
+    ,IN sOrderBy varchar(255)
+)
+BEGIN
+	-- declare SQLText varchar(5000);
+
+	SET @SQLText = CONCAT('SELECT 
+				DISTINCT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.sAuthRegion", "lstcountry.sCountry" ),') as sPlaceName, 
+				',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.ID", "lstcountry.sCountryID" ),' as sPlaceID
+			FROM 
+				tblMadeb 
+			INNER JOIN ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion
+	ON tblMadeb.nAuthRegionID=lstAuthRegion.ID", "(lstAuthRegion,lstCountry)
+				ON (tblMadeb.nAuthRegionID=lstAuthRegion.ID 
+				AND lstcountry.sCountryID=lstAuthRegion.sCountryID)" ),'
+			INNER JOIN lstMadebType
+				ON tblMadeb.nMadebTypeID=lstMadebType.ID
+			WHERE
+				lstMadebType.sMadebDisplayKey=''', sMadebDisplayKey ,''' 
+			and DATE(tblMadeb.dtReceived) >= ''', dtRecordFrom ,''' 
+			and DATE(tblMadeb.dtReceived) < ''', dtRecordTo ,'''
+		ORDER BY  ', sOrderBy );
+        
+          
+        --	select @SQLText;
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
+
 CREATE INDEX MDB_GBID ON tblmadeb(sGBID);
 CREATE INDEX GREENBOOK_GBID ON tblgreenbook(sGBID);
 CREATE INDEX GBID_RELATION ON lnkgbrelation(sgbidrelation, nrelationid);
