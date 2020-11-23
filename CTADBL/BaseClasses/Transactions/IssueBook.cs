@@ -16,8 +16,8 @@ namespace CTADBL.BaseClasses.Transactions
         private string? _sWhyIssued;
         private int? _nMadebTypeId;
         private int? _nTypeIssuedId;
-
-        private string _sFormNumber;
+        private int _nFormNumber;
+        private string? _sFormNumber;
 
         private int? _nWhereIssued;
         private int? _nAuthRegionId;
@@ -35,7 +35,9 @@ namespace CTADBL.BaseClasses.Transactions
         public int? nMadebTypeId { get { return _nMadebTypeId; } set { _nMadebTypeId = value; } }
 
         public int? nTypeIssuedId { get { return _nTypeIssuedId; } set { _nTypeIssuedId = value; } }
-        public string sFormNumber { get { return _sFormNumber; } set { _sFormNumber = value; } }
+        public string? sFormNumber { get { return _sFormNumber; } set { _sFormNumber = value; } }
+
+        public int nFormNumber { get { return _nFormNumber; } set { _nFormNumber = value; } }
         public int? nWhereIssued { get { return _nWhereIssued; } set { _nWhereIssued = value; } }
         public int? nAuthRegionId { get { return _nAuthRegionId; } set { _nAuthRegionId = value; } }
         public bool bPrinted { get { return _bPrinted; } set { _bPrinted = value; } }

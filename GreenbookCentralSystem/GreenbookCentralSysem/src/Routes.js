@@ -75,6 +75,23 @@ const MainPage = lazy(() => import('./views/chatrelpay/mainpage'));
 const PaymentPage = lazy(() => import('./views/chatrelpay/paymentpage'));
 
 
+//Report 
+
+const ReportIssuedOverAll = lazy(() => import('./views/reports/IssuedOverAll/index.js'));
+const ReportIssuedIndividual = lazy(() => import('./views/reports/IssuedIndividual/index.js'));
+const ReportChangesLog = lazy(() => import('./views/reports/ChangesLog'));
+const ReportChildChangesLog = lazy(() => import('./views/reports/ChildChangesLog'));
+const ReportNewEntryFromDay = lazy(() => import('./views/reports/NewEntryFromDay'));
+const ReportBelow6Years = lazy(() => import('./views/reports/Below6Years'));
+const ReportDeceased = lazy(() => import('./views/reports/Deceased'));
+const ReportMadebSarso = lazy(() => import('./views/reports/madeb/sarso'));
+const ReportMadebNorchoe = lazy(() => import('./views/reports/madeb/norchoe'));
+const ReportMadebBhorlak = lazy(() => import('./views/reports/madeb/bhorlak'));
+const ReportMadebBookFull = lazy(() => import('./views/reports/madeb/bookfull'));
+const ReportMadebBriefGB = lazy(() => import('./views/reports/madeb/briefgb'));
+const ReportMadebAbroad = lazy(() => import('./views/reports/madeb/abroad'));
+//const IssuedOverAll = lazy(() => import('./views/reports/IssuedOverAll/index.js'));
+
 const Routes = () => {
   const location = useLocation();
   const oUserAuth = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
@@ -225,7 +242,22 @@ const Routes = () => {
                 '/ChatrelPay',
                 '/ChatrelPay/MainPage',
                 '/ChatrelPay/PaymentPage',
-                '/Chatrel'
+                '/Chatrel',
+                '/Reports/GreenBookIssuedOverall',
+                '/Reports/GreenBookIssuedIndividual',
+                '/Reports/ChangesLog',
+                '/Reports/ChildChangesLog',
+                '/Reports/NewEntryFromDay',
+                '/Reports/Below6Years',
+                '/Reports/Deceased',
+                '/Reports/Madeb/Sarso',
+                '/Reports/Madeb/Norchoe',
+                '/Reports/Madeb/Bhorlak',
+                '/Reports/Madeb/Abroad',
+                '/Reports/Madeb/BriefGB',
+                '/Reports/Madeb/BookFull',
+            
+             
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -276,6 +308,20 @@ const Routes = () => {
                     <PrivateRoute path="/ChatrelPay" feature={37} component={ChatrelPay} exact />
                     <PrivateRoute path="/ChatrelPay/MainPage" feature={37} component={MainPage} exact />
                     <PrivateRoute path="/ChatrelPay/PaymentPage" feature={37} component={PaymentPage} exact />
+                    <Route path="/Reports/GreenBookIssuedOverall" component={ReportIssuedOverAll}  exact />
+                    <Route path="/Reports/GreenBookIssuedIndividual" component={ReportIssuedIndividual}  exact />
+                    <Route path="/Reports/ChangesLog" component={ReportChangesLog}  exact />
+                    <Route path="/Reports/ChildChangesLog" component={ReportChildChangesLog}  exact />
+                    <Route path="/Reports/NewEntryFromDay" component={ReportNewEntryFromDay}  exact />
+                    <Route path="/Reports/Below6Years" component={ReportBelow6Years}  exact />
+                    <Route path="/Reports/Deceased" component={ReportDeceased}  exact />
+                    <Route path="/Reports/Madeb/Sarso" component={ReportMadebSarso}  exact />
+                    <Route path="/Reports/Madeb/Norchoe" component={ReportMadebNorchoe}  exact />
+                    <Route path="/Reports/Madeb/Abroad" component={ReportMadebAbroad}  exact />
+                    <Route path="/Reports/Madeb/BriefGB" component={ReportMadebBriefGB}  exact />
+                    <Route path="/Reports/Madeb/BookFull" component={ReportMadebBookFull}  exact />
+                    <Route path="/Reports/Madeb/Bhorlak" component={ReportMadebBhorlak}  exact />
+                    
                   </motion.div>
                 </Switch>
               </LeftSidebar>
