@@ -5,7 +5,7 @@ import { forwardRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { authenticationService } from '../../auth/_services';
-
+import { oOptions, oTableIcons } from '../../config/commonConfig';
 
 
 
@@ -24,7 +24,7 @@ import {
   Select,
   InputLabel,
   Button,
-  Card,Menu
+  Card, Menu
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { red } from '@material-ui/core/colors';
@@ -62,25 +62,25 @@ import {
 import stock from '../../assets/images/No_person.jpg';
 
 
-const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <div></div>),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-};
+// const tableIcons = {
+//   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+//   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+//   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+//   Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+//   DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+//   Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+//   Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+//   Filter: forwardRef((props, ref) => <div></div>),
+//   FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+//   LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+//   NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+//   PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+//   ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+//   Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+//   SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+//   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+//   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+// };
 
 const ageCoded = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124];
 
@@ -166,6 +166,7 @@ export default function SearchPage() {
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
   const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
   const [dataFromAPI, setdataFromAPI] = React.useState([]);
   const [recentGBData, setRecentGBData] = React.useState([]);
   const [sGBID, setsGBID] = React.useState('');
@@ -234,23 +235,23 @@ export default function SearchPage() {
       },
     },
     {
-      render: rowData =><div  onContextMenu={(e)=>{handleClick(e)}} style={{ cursor: 'context-menu' }} > <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={() => { viewGb(rowData['sGBID'])}}><span>{rowData['sCountryID'] + rowData['sGBID']}</span></Button>
-      <Menu
-      keepMounted
-      open={contextState.mouseY !== null}
-      onClose={()=>{handleClose()}}
-      anchorReference="anchorPosition"
-      anchorPosition={
-        contextState.mouseY !== null && contextState.mouseX !== null
-          ? { top: contextState.mouseY, left: contextState.mouseX }
-          : undefined
-      }
-    >
-      <MenuItem onClick={()=>{handleView(rowData['sGBID'])}}>View</MenuItem>
-      <MenuItem onClick={()=>{handleEdit(rowData['id'])}}>Edit</MenuItem>
-      
-    </Menu>
-    </div>
+      render: rowData => <div onContextMenu={(e) => { handleClick(e) }} style={{ cursor: 'context-menu' }} > <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={() => { viewGb(rowData['sGBID']) }}><span>{rowData['sCountryID'] + rowData['sGBID']}</span></Button>
+        <Menu
+          keepMounted
+          open={contextState.mouseY !== null}
+          onClose={() => { handleClose() }}
+          anchorReference="anchorPosition"
+          anchorPosition={
+            contextState.mouseY !== null && contextState.mouseX !== null
+              ? { top: contextState.mouseY, left: contextState.mouseX }
+              : undefined
+          }
+        >
+          <MenuItem onClick={() => { handleView(rowData['sGBID']) }}>View</MenuItem>
+          <MenuItem onClick={() => { handleEdit(rowData['id']) }}>Edit</MenuItem>
+
+        </Menu>
+      </div>
       ,
       //field: "sGBID",
       title: "GB ID",
@@ -262,7 +263,7 @@ export default function SearchPage() {
       },
       cellStyle: {
         // padding:'0px',
-        
+
         width: '7%',
         textAlign: 'left'
 
@@ -322,7 +323,7 @@ export default function SearchPage() {
       },
     },
     {
-      field: "age",
+      field: "nAge",
       title: "Age",
       filterPlaceholder: 'Search..',
       headerStyle: {
@@ -395,13 +396,13 @@ export default function SearchPage() {
     mouseX: null,
     mouseY: null,
   };
- 
+
   const [contextState, setContextState] = React.useState(initialState);
   const handleClick = (event) => {
     event.preventDefault();
-    var x=window.scrollX;
-    var y=window.scrollY;
-    window.onscroll=()=>{window.scrollTo(x, y);};
+    var x = window.scrollX;
+    var y = window.scrollY;
+    window.onscroll = () => { window.scrollTo(x, y); };
     setContextState({
       mouseX: event.clientX - 2,
       mouseY: event.clientY - 4,
@@ -410,16 +411,16 @@ export default function SearchPage() {
 
   const handleClose = () => {
     setContextState(initialState);
-    window.onscroll= () =>{};
+    window.onscroll = () => { };
   };
 
   const handleView = (sGBID) => {
-    window.onscroll= () =>{};
+    window.onscroll = () => { };
     setContextState(initialState);
     viewGb(sGBID)
   };
   const handleEdit = (id) => {
-    window.onscroll= () =>{};
+    window.onscroll = () => { };
     setContextState(initialState);
     history.push("/EditEntry/" + id);
   };
@@ -594,62 +595,50 @@ export default function SearchPage() {
             </Link>
             <Typography color="textPrimary">Search</Typography>
           </Breadcrumbs>
-          {dataFromAPI.length == 0 && 
-          <Paper>  <Typography color="textPrimary" align="center">No records to display </Typography> </Paper>
+          {dataFromAPI.length == 0 &&
+            <Paper>  <Typography color="textPrimary" align="center">No records to display </Typography> </Paper>
           }
-          {dataFromAPI.length != 0 && 
-          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
-            isLoading={isLoading}
-            icons={tableIcons}
-            title="Search"
-            columns={columns}
-            data={dataFromAPI}
-            options={{
-              filtering,
-              exportButton: true,
-              exportAllData: true,
-              headerStyle: {
-                padding: '0',
-                paddingLeft: '10px',
-                border: '1px solid lightgrey',
-              },
-              pageSize: pageSize,
-              pageSizeOptions: pageSizeArray
-            }}
-            actions={[
+          {dataFromAPI.length != 0 &&
+            <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+              isLoading={isLoading}
+              icons={oTableIcons}
+              title="Search"
+              columns={columns}
+              data={dataFromAPI}
+              options={oOptions}
+              actions={[
 
-              {
-                icon: Search,
-                tooltip: 'Show Filter',
-                isFreeAction: true,
-                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
-              }
-            ]}
-          />}
+                {
+                  icon: oTableIcons.Search,
+                  tooltip: 'Toggle Filter',
+                  isFreeAction: true,
+                  onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+                }
+              ]}
+            />}
 
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper style={{ padding: '10px' }}>
             {/*<Typography color="textPrimary" align="center">Search</Typography>*/}
             <FormControl component="fieldset">
-              <FormLabel component="legend">Search Category</FormLabel>
+              <FormLabel component="legend">Search Type</FormLabel>
               <RadioGroup aria-label="search" name="search" value={searchType} onChange={handleChange}>
-                <FormControlLabel value="simple" control={<Radio />} label="Simple Search" />
-                <FormControlLabel value="complex" control={<Radio />} label="Detailed Search" />
+                <FormControlLabel value="simple" control={<Radio />} label="Simple" />
+                <FormControlLabel value="complex" control={<Radio />} label="Detailed" />
               </RadioGroup>
             </FormControl>
             <Grid container>
 
               {searchType == 'simple' && <>
-                <Typography color="textPrimary" align="center">Simple Search</Typography>
+                <Typography color="textPrimary" align="center">Simple</Typography>
                 <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
                     <TextField
                       autoFocus
                       id="id_searchField"
-                      label="Search Field"
+                      label="Enter Value"
                       type="text"
-
                       onChange={handleSimpleSearch}
                     />
                   </FormControl>
@@ -674,7 +663,7 @@ export default function SearchPage() {
               </>
               }
               {searchType == 'complex' && <>
-                <Typography color="textPrimary" align="center">Detailed Search</Typography>
+                <Typography color="textPrimary" align="center">Detailed</Typography>
                 <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
                     <TextField
@@ -700,7 +689,6 @@ export default function SearchPage() {
                 <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
                     <TextField
-
                       id="id_FamilyName"
                       label="Family Name"
                       type="text"
@@ -722,7 +710,6 @@ export default function SearchPage() {
                 <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
                     <TextField
-
                       id="id_FatherName"
                       label="Father's Name"
                       type="text"

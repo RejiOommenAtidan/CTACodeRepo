@@ -13,7 +13,7 @@ import Moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons,sDateFormat } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
 
 const tableIcons = oTableIcons;
 
@@ -126,13 +126,13 @@ export default function SarsoNewGBEntry() {
       filtering: false,
       sorting: false,
       export: false,
-      render: rowData => 
-           <Button  onClick={() => { history.push('/NewEntry/' + rowData.nFormNo); }} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
-           <span className="btn-wrapper--icon">
-               
-               <AddIcon />
-           </span>
-</Button>,
+      render: rowData =>
+        <Button onClick={() => { history.push('/NewEntry/' + rowData.nFormNo); }} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
+          <span className="btn-wrapper--icon">
+
+            <AddIcon />
+          </span>
+        </Button>,
       cellStyle: {
         padding: '5px',
         borderRight: '0',
@@ -145,6 +145,7 @@ export default function SarsoNewGBEntry() {
     axios.get(`/GivenGBID/GetGivenGBIDs`)
       .then(resp => {
         if (resp.status === 200) {
+          console.info(resp.data);
           setdataAPI(resp.data);
           setisLoading(false);
         }
@@ -159,14 +160,14 @@ export default function SarsoNewGBEntry() {
 
   return (
     <Container maxWidth="lg" disableGutters={true}><br />
-      <Typography variant="h4" gutterBottom>Sarso New GB Entry</Typography>
+      <Typography variant="h4" gutterBottom>New Entry</Typography>
       <Grid container className={classes.box}>
         <Grid item xs={12}>
           <MaterialTable
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={tableIcons}
-            title="Sarso New GB Entry"
+            title="New Entry"
             columns={columns}
             data={dataAPI}
             options={oOptions}

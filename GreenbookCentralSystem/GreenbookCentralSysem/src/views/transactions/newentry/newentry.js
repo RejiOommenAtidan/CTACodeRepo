@@ -255,6 +255,7 @@ export default function NewEntry(props) {
     axios.get(`/Greenbook/GetGBDataNewEntry/Id=` + props.match.params.FORMNO)
       .then(resp => {
         if (resp.status === 200) {
+          
           //Masters
           setlAuthRegion(resp.data.lAuthRegion);
           setlCountry(resp.data.lCountry);
@@ -263,15 +264,17 @@ export default function NewEntry(props) {
           setlProvince(resp.data.lProvince);
           setlQualification(resp.data.lQualification);
           ////Binded Fields
-          setnAuthRegionID(resp.data.oGivenGBIDMadebVM.oMadeb.nAuthRegionID);
-          setsGBID(resp.data.oGivenGBIDMadebVM.oMadeb.sGBID);
-          setsFirstName(resp.data.oGivenGBIDMadebVM.oMadeb.sName);
-          setsFathersName(resp.data.oGivenGBIDMadebVM.oMadeb.sFathersName);
-          setsOtherDocuments(resp.data.oGivenGBIDMadebVM.oMadeb.sDocumentAttached);
-          setsFstGreenBkNo(resp.data.oGivenGBIDMadebVM.oMadeb.nCurrentGBSno);
-          setsAliasName(resp.data.oGivenGBIDMadebVM.oMadeb.sAlias);
-          setdtFormDate(resp.data.oGivenGBIDMadebVM.oMadeb.dtReceived);
-          setsGBID(resp.data.oGivenGBIDMadebVM.oGivenGBID.nGBId.toString());
+          let apiDataMadeb = resp.data.oGivenGBIDMadebVM.oMadeb;
+          let apiDataGivenGBID = resp.data.oGivenGBIDMadebVM.oGivenGBID;
+          setnAuthRegionID(apiDataMadeb===null?null:apiDataMadeb.nAuthRegionID);
+          setsGBID(apiDataMadeb===null?null:apiDataMadeb.sGBID);
+          setsFirstName(apiDataMadeb===null?null:apiDataMadeb.sName);
+          setsFathersName(apiDataMadeb===null?null:apiDataMadeb.sFathersName);
+          setsOtherDocuments(apiDataMadeb===null?null:apiDataMadeb.sDocumentAttached);
+          setsFstGreenBkNo(apiDataMadeb===null?null:apiDataMadeb.nCurrentGBSno);
+          setsAliasName(apiDataMadeb===null?null:apiDataMadeb.sAlias);
+          setdtFormDate(apiDataMadeb===null?null:apiDataMadeb.dtReceived);
+          setsGBID(apiDataGivenGBID===null?null:apiDataGivenGBID.nGBId.toString());
           setExpanded('panel1');
           setBackdrop(false);
         }
@@ -396,6 +399,7 @@ export default function NewEntry(props) {
                         label="First Name"
                         type="text"
                         onChange={(e) => { setsFirstName(e.target.value); }}
+                        autoFocus
                         fullWidth
                         margin="dense"
                         className={classes.textField}

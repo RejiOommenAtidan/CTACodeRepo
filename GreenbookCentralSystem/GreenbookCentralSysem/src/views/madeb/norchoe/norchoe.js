@@ -365,7 +365,7 @@ const openRelationGB = (newsGBID) => {
     },
     {
       field: "madeb.sDocumentAttached",
-      title: "Document Att.",
+      title: "Document Attached",
       
       headerStyle: {
         padding:'0px',
@@ -436,7 +436,7 @@ const openRelationGB = (newsGBID) => {
     },
     {
       field: "madeb.dtIssueAction",
-      title: "Issue Action Dt.",
+      title: "Issue Action Date",
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD') : '',
      // render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
       headerStyle: {

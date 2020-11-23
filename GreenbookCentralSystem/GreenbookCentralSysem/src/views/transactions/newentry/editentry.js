@@ -493,7 +493,7 @@ export default function EditEntry(props) {
                 setTBUFathersName(resp.data.TBUFathersName);
                 setTBUMothersName(resp.data.TBUMothersName);
                 setTBUSpouseName(resp.data.TBUSpouseName);
-                debugger;
+                //debugger;
                 axios
                   .get(
                     `/Greenbook/GetGBLinkDataByGBID/sGBID=` + resp.data.sGBID
@@ -723,10 +723,10 @@ export default function EditEntry(props) {
                       />
                       {_.get("name_nAuthRegionID.type", errors) ===
                         "required" && (
-                        <span style={{ color: "red" }}>
-                          This field is required
-                        </span>
-                      )}
+                          <span style={{ color: "red" }}>
+                            This field is required
+                          </span>
+                        )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -739,6 +739,7 @@ export default function EditEntry(props) {
                           setsFirstName(e.target.value);
                         }}
                         fullWidth
+                        autoFocus
                         margin="dense"
                         className={classes.textField}
                         value={sFirstName}
@@ -806,10 +807,10 @@ export default function EditEntry(props) {
                       />
                       {_.get("name_TibetanName.type", errors) ===
                         "required" && (
-                        <span style={{ color: "red" }}>
-                          This field is required
-                        </span>
-                      )}
+                          <span style={{ color: "red" }}>
+                            This field is required
+                          </span>
+                        )}
                     </FormControl>
                   </Grid>
                   <Grid xs={12} style={{ display: "flex" }}>
@@ -833,10 +834,10 @@ export default function EditEntry(props) {
                         />
                         {_.get("name_TBUPlaceOfBirth.type", errors) ===
                           "required" && (
-                          <span style={{ color: "red" }}>
-                            This field is required
-                          </span>
-                        )}
+                            <span style={{ color: "red" }}>
+                              This field is required
+                            </span>
+                          )}
                       </FormControl>
                     </Grid>
                     <Grid item xs={6}>
@@ -859,10 +860,10 @@ export default function EditEntry(props) {
                         />
                         {_.get("name_TBUOriginVillage.type", errors) ===
                           "required" && (
-                          <span style={{ color: "red" }}>
-                            This field is required
-                          </span>
-                        )}
+                            <span style={{ color: "red" }}>
+                              This field is required
+                            </span>
+                          )}
                       </FormControl>
                     </Grid>
                   </Grid>
@@ -947,10 +948,10 @@ export default function EditEntry(props) {
                         />
                         {_.get("name_sBirthCountryID.type", errors) ===
                           "required" && (
-                          <span style={{ color: "red" }}>
-                            This field is required
-                          </span>
-                        )}
+                            <span style={{ color: "red" }}>
+                              This field is required
+                            </span>
+                          )}
                       </FormControl>
                     </Grid>
                     <Grid item xs={6}>
@@ -973,10 +974,10 @@ export default function EditEntry(props) {
                         />
                         {_.get("name_sBirthPlace.type", errors) ===
                           "required" && (
-                          <span style={{ color: "red" }}>
-                            This field is required
-                          </span>
-                        )}
+                            <span style={{ color: "red" }}>
+                              This field is required
+                            </span>
+                          )}
                       </FormControl>
                     </Grid>
                   </Grid>
@@ -1037,10 +1038,10 @@ export default function EditEntry(props) {
                         />
                         {_.get("name_sFathersName.type", errors) ===
                           "required" && (
-                          <span style={{ color: "red" }}>
-                            This field is required
-                          </span>
-                        )}
+                            <span style={{ color: "red" }}>
+                              This field is required
+                            </span>
+                          )}
                       </FormControl>
                     </Grid>
                     <Grid item xs={6}>
@@ -1064,16 +1065,16 @@ export default function EditEntry(props) {
                         />
                         {_.get("name_sFathersGBID.type", errors) ===
                           "minLength" && (
-                          <span style={{ color: "red" }}>
-                            Father's GB ID cannot subceed 7 characters
-                          </span>
-                        )}
+                            <span style={{ color: "red" }}>
+                              Father's GB ID cannot subceed 7 characters
+                            </span>
+                          )}
                         {_.get("name_sFathersGBID.type", errors) ===
                           "maxLength" && (
-                          <span style={{ color: "red" }}>
-                            Father's GB ID cannot exceed 7 characters
-                          </span>
-                        )}
+                            <span style={{ color: "red" }}>
+                              Father's GB ID cannot exceed 7 characters
+                            </span>
+                          )}
                       </FormControl>
                     </Grid>
                   </Grid>
@@ -1097,10 +1098,10 @@ export default function EditEntry(props) {
                       />
                       {_.get("name_TBUFathersName.type", errors) ===
                         "required" && (
-                        <span style={{ color: "red" }}>
-                          This field is required
-                        </span>
-                      )}
+                          <span style={{ color: "red" }}>
+                            This field is required
+                          </span>
+                        )}
                     </FormControl>
                   </Grid>
                   <Grid xs={12} style={{ display: "flex" }}>
@@ -1124,10 +1125,10 @@ export default function EditEntry(props) {
                         />
                         {_.get("name_sMothersName.type", errors) ===
                           "required" && (
-                          <span style={{ color: "red" }}>
-                            This field is required
-                          </span>
-                        )}
+                            <span style={{ color: "red" }}>
+                              This field is required
+                            </span>
+                          )}
                       </FormControl>
                     </Grid>
                     <Grid item xs={6}>
@@ -1151,16 +1152,16 @@ export default function EditEntry(props) {
                         />
                         {_.get("name_sMothersGBID.type", errors) ===
                           "minLength" && (
-                          <span style={{ color: "red" }}>
-                            Mother's GB ID cannot subceed 7 characters
-                          </span>
-                        )}
+                            <span style={{ color: "red" }}>
+                              Mother's GB ID cannot subceed 7 characters
+                            </span>
+                          )}
                         {_.get("name_sMothersGBID.type", errors) ===
                           "maxLength" && (
-                          <span style={{ color: "red" }}>
-                            Mother's GB ID cannot exceed 7 characters
-                          </span>
-                        )}
+                            <span style={{ color: "red" }}>
+                              Mother's GB ID cannot exceed 7 characters
+                            </span>
+                          )}
                       </FormControl>
                     </Grid>
                   </Grid>
@@ -1184,10 +1185,10 @@ export default function EditEntry(props) {
                       />
                       {_.get("name_TBUMothersName.type", errors) ===
                         "required" && (
-                        <span style={{ color: "red" }}>
-                          This field is required
-                        </span>
-                      )}
+                          <span style={{ color: "red" }}>
+                            This field is required
+                          </span>
+                        )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
@@ -1327,10 +1328,10 @@ export default function EditEntry(props) {
                         />
                         {_.get("name_sCountryID.type", errors) ===
                           "required" && (
-                          <span style={{ color: "red" }}>
-                            This field is required
-                          </span>
-                        )}
+                            <span style={{ color: "red" }}>
+                              This field is required
+                            </span>
+                          )}
                       </FormControl>
                     </Grid>
                     <Grid item xs={6}>
@@ -1851,16 +1852,16 @@ export default function EditEntry(props) {
                           />
                           {_.get("name_sSpouseGBID.type", errors) ===
                             "minLength" && (
-                            <span style={{ color: "red" }}>
-                              Spouse's GB ID No cannot subceed 7 characters
-                            </span>
-                          )}
+                              <span style={{ color: "red" }}>
+                                Spouse's GB ID No cannot subceed 7 characters
+                              </span>
+                            )}
                           {_.get("name_sSpouseGBID.type", errors) ===
                             "maxLength" && (
-                            <span style={{ color: "red" }}>
-                              Spouse's GB No cannot exceed 7 characters
-                            </span>
-                          )}
+                              <span style={{ color: "red" }}>
+                                Spouse's GB No cannot exceed 7 characters
+                              </span>
+                            )}
                         </FormControl>
                       </Grid>
                     </Grid>

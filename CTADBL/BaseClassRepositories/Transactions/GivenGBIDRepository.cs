@@ -52,20 +52,24 @@ namespace CTADBL.BaseClassRepositories.Transactions
         public IEnumerable<GivenGBID> GetAllGivenGBID()
         {
             
-            string sql = @"SELECT `Id`,
-                            `_Id`,
-                            `nGBId`,
-                            `nFormNo`,
-                            `dtDate`,
-                            `bGivenOrNot`,
-                            `bActive`,
-                            `dtEntered`,
-                            `nEnteredBy`,
-                            `dtUpdated`,
-                            `nUpdatedBy`
-                        FROM `tblgivengbid`
-                        WHERE bGivenOrNot = 0
-                        ORDER BY nFormNo DESC;";
+            string sql = @"SELECT
+                            `tblgivengbid`.`Id`,
+                            `tblgivengbid`.`_Id`,
+                            `tblgivengbid`.`nFormNo`,
+                            `tblgivengbid`.`nGBId`,
+                            `tblgivengbid`.`dtDate`,
+                            `tblgivengbid`.`bGivenOrNot`,
+                            `tblgivengbid`.`bActive`,
+                            `tblgivengbid`.`dtEntered`,
+                            `tblgivengbid`.`nEnteredBy`,
+                            `tblgivengbid`.`dtUpdated`,
+                            `tblgivengbid`.`nUpdatedBy`
+                            FROM
+                            `tblgivengbid`
+                            INNER JOIN tblMadeb
+                            on tblMadeb.nFormNumber = tblgivengbid.nFormNo
+                            where bGivenOrNot = 0 and bActive = 1
+                            ORDER BY nFormNo DESC;";
             using (var command = new MySqlCommand(sql))
             {
                 return GetRecords(command);

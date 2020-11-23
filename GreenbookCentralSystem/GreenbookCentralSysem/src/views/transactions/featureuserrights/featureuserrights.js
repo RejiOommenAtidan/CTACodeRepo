@@ -142,6 +142,7 @@ export default function FeatureUserrights() {
               if (resp.status === 200) {
                 setdataAPI(resp.data.lFeatureUserRightsPivot);
                 setIsLoading(false);
+                window.location.reload();
               }
             })
             .catch(error => {
@@ -166,6 +167,7 @@ export default function FeatureUserrights() {
       .then(resp => {
         if (resp.status === 200) {
           const roles = resp.data.lUserRights;
+          //console.log(resp.data);
           const generatedColumns = [];
           //Add feature to cols array & then all roles 1 by 1
           generatedColumns.push(
@@ -182,8 +184,8 @@ export default function FeatureUserrights() {
           roles.map((role) => {
             generatedColumns.push(
               {
-                align:'center',
-                sorting:false,
+                align: 'center',
+                sorting: false,
                 title: role.sUserRightsName,
                 cellStyle: {
                   padding: '5px',
@@ -195,7 +197,8 @@ export default function FeatureUserrights() {
                   name="name_bRights"
                   id="id_bRights"
                   //checked={rowData["aUserRights"][role.id-1] === 1 ? true : false}
-                  checked={rowData["aUserRights"][role.id-1]}
+                  disabled={role.id == 5} //5 is for Admin
+                  checked={rowData["aUserRights"][role.id - 1]}
                   onChange={() => { handleClickOpen(rowData, role.sUserRightsName, role.id) }}
                 />
               }

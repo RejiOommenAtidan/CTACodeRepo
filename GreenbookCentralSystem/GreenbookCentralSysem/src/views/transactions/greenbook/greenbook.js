@@ -61,7 +61,7 @@ export default function GBList(props) {
         paddingLeft: '10px'
       },
       export: true,
-      render: rowData => rowData["dtDOB"] === null ? "" : Moment().diff(rowData["dtDOB"],'years')
+      render: rowData => rowData["dtDOB"] === null ? "NA" : Moment().diff(rowData["dtDOB"],'years')
     },
     {
       field: 'edit',
