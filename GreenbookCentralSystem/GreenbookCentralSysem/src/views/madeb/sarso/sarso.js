@@ -251,7 +251,7 @@ export default function EnhancedTable() {
     },
     {
       field: "madeb.sDocumentAttached",
-      title: "Document Att.",
+      title: "Document Attached",
       headerStyle: {
         padding: '0px',
         width: '10%',
@@ -266,7 +266,7 @@ export default function EnhancedTable() {
     },
     {
       field: "madeb.dtIssueAction",
-      title: "Issue Action Dt.",
+      title: "Issue Action Date",
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : '',
       // render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
       headerStyle: {
@@ -622,6 +622,15 @@ export default function EnhancedTable() {
     axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=1`)
       .then(resp => {
         if (resp.status === 200) {
+          // console.log(resp.data[0].madeb.dtReceived);
+          // myApiData = resp.data;
+          // myApiData = myApiData.map(singleMadeb=>{
+          //   ...singleMadeb,
+          //   singleMaded.dtReceived
+          // });
+
+          
+          
           setdataAPI(resp.data);
           selectDatafunction();
           setisLoading(false);

@@ -196,7 +196,7 @@ export default function Chatrel() {
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={tableIcons}
-            title="CTA Config"
+            title="CTA Configuration"
             columns={columns}
             data={dataAPI}
             options={oOptions}

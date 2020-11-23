@@ -322,7 +322,7 @@ const openRelationGB = (newsGBID) => {
     },
     {
       field: "madeb.dtIssueAction",
-      title: "Issue Action Dt.",
+      title: "Issue Action Date",
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : '',
       // render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
       headerStyle: {
