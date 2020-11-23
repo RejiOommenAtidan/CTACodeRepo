@@ -11,6 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Http.Features;
+using System.Net;
+
 namespace CTAWebAPI.Controllers.Transactions
 {
 
@@ -91,6 +96,174 @@ namespace CTAWebAPI.Controllers.Transactions
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             
+        }
+        #endregion
+
+        #region GetReportCTABelow6Years
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetReportCTABelow6Years(string sOrderBy)
+        {
+
+            try
+            {
+                var result = _reportRepository.GetReportCTABelow6Years(sOrderBy);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+        }
+        #endregion
+
+        #region GetReportCTANewEntryFromDay
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetReportCTANewEntryFromDay(DateTime dtRecordFrom)
+        {
+
+            try
+            {
+                var result = _reportRepository.GetReportCTANewEntryFromDay(dtRecordFrom);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+        }
+        #endregion
+
+        #region GetReportCTAChangesLogForChildren
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetReportCTAChangesLogForChildren(DateTime dtRecordFrom)
+        {
+
+            try
+            {
+                var result = _reportRepository.GetReportCTAChangesLogForChildren(dtRecordFrom);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+        }
+        #endregion
+
+        #region GetReportCTAChangesLog
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetReportCTAChangesLog(DateTime dtRecordFrom)
+        {
+
+            try
+            {
+                var result = _reportRepository.GetReportCTAChangesLog(dtRecordFrom);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+        }
+        #endregion
+
+        #region GetReportCTAMadebRegionOrCountryWise
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetReportCTAMadebRegionOrCountryWise(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
+        {
+
+            try
+            {
+                var result = _reportRepository.GetReportCTAMadebRegionOrCountryWise(sMadebDisplayKey, dtRecordFrom, dtRecordTo, sOrderBy);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+        }
+        #endregion
+
+        #region GetReportCTADeceasedRegionOrCountryWise
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetReportCTADeceasedRegionOrCountryWise(DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
+        {
+
+            try
+            {
+                var result = _reportRepository.GetReportCTADeceasedRegionOrCountryWise(dtRecordFrom, dtRecordTo, sOrderBy);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
         }
         #endregion
 
