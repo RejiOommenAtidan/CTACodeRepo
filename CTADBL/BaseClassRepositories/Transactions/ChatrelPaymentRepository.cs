@@ -128,11 +128,16 @@ namespace CTADBL.BaseClassRepositories.Transactions
             if (pendingYears <= 0)
             {
                 GBChatrel current = _gbChatrelRepository.GetChatrelByGBIDForYear(sGBID, _currentYear);
+                current.Id = 0;
+                current.chatrelpaymentID = 0;
+                current.sChatrelReceiptNumber = "";
+                current.nChatrelAmount = 0.00m;
+                current.nChatrelMeal = 0.00m;
+                current.nChatrelTotalAmount = 0.00m;
+                current.sPaymentCurrency = "INR";
                 List<GBChatrel> gbChatrel = new List<GBChatrel>();
                 gbChatrel.Add(current);
-                gbChatrel[0].nChatrelAmount = 0.00m;
-                gbChatrel[0].nChatrelMeal = 0.00m;
-                gbChatrel[0].nChatrelTotalAmount = 0.00m;
+                
                 ChatrelPayment chatrel = new ChatrelPayment 
                 { 
                     sPaymentCurrency = "INR", 
@@ -141,9 +146,19 @@ namespace CTADBL.BaseClassRepositories.Transactions
                     nChatrelYear = _currentYear,
                     sPaymentMode = ChatrelPayment.Offline_WebAdmin
                 };
+
+                GBChatrelDonation donation = new GBChatrelDonation
+                {
+                    sGBId = sGBID,
+                    nAuthRegionID = gbChatrel[0].nAuthRegionID,
+                    sCountryID = gbChatrel[0].sCountryID,
+                    nChatrelAdditionalDonationAmt = 0,
+                    nChatrelBusinessDonationAmt = 0,
+                    sPaymentCurrency = "INR",
+                    sAuthRegionCurrency = gbChatrel[0].sAuthRegionCurrency
+                };
                 
-                
-                var response = new { gbChatrel[0].nAuthRegionID, nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), message = "No Outstandings", sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrel, gbChatrels = gbChatrel };
+                var response = new { gbChatrel[0].nAuthRegionID, nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), message = "No Outstandings", sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrel, gbChatrels = gbChatrel, gbChatrelDonation = donation };
 
                 return response;
                 //return (new { message = "No Outstandings", currency = authRegion.sCurrencyCode });
@@ -210,11 +225,18 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 sPaymentCurrency = "INR",
                 sPaymentMode = ChatrelPayment.Offline_WebAdmin
             };
-           
-            
 
-            
-            var result = new { greenbook.nAuthRegionID, nPaidUntil = new DateTime(paidUntil+1, _FYEndMonth, _FYEndDate), sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName),  chatrelPayment = chatrelPayment, gbChatrels };
+
+            GBChatrelDonation gbChatrelDonation = new GBChatrelDonation
+            {
+                sGBId = sGBID,
+                sPaymentCurrency = "INR",
+                nChatrelAdditionalDonationAmt = 0,
+                nChatrelBusinessDonationAmt = 0
+            };
+
+
+            var result = new { greenbook.nAuthRegionID, nPaidUntil = new DateTime(paidUntil+1, _FYEndMonth, _FYEndDate), sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName),  chatrelPayment = chatrelPayment, gbChatrels, gbChatrelDonation };
             return result;
         }
         #endregion
@@ -547,11 +569,38 @@ namespace CTADBL.BaseClassRepositories.Transactions
         
         public IEnumerable<Object> GetPaymentHistory(string sGBID)
         {
-            string sql = @"SELECT   pymt.sChatrelReceiptNumber,
-                                    pymt.dtEntered,
-                                    pymt.dtArrearsFrom AS dtPeriodFrom,
-                                    STR_TO_DATE(CONCAT(pymt.nChatrelYear, '-03', '-31'), '%Y-%m-%d') AS dtPeriodTo,
+            //string sql = @"SELECT   pymt.sChatrelReceiptNumber,
+            //                        pymt.dtEntered,
+            //                        pymt.dtArrearsFrom AS dtPeriodFrom,
+            //                        STR_TO_DATE(CONCAT(pymt.nChatrelYear, '-03', '-31'), '%Y-%m-%d') AS dtPeriodTo,
+            //                        pymt.sGBID,
+            //                        gb.sFirstName,
+            //                        gb.sLastName,
+            //                        CASE
+            //                                    WHEN lnkrel.nRelationID = 1 THEN 'Father'
+            //                                    WHEN lnkrel.nRelationID = 2 THEN 'Mother'
+            //                                    WHEN lnkrel.nRelationID = 3 THEN 'Spouse'
+            //                                    WHEN pymt.sGBId = pymt.sPaidByGBId THEN 'Self'
+            //                                    ELSE 'Friend'
+            //                        END
+            //                        AS sRelation
+            //            FROM       tblchatrelpayment AS pymt
+            //            INNER JOIN tblgreenbook      AS gb
+            //            ON         pymt.sGBId = gb.sGBId
+            //            LEFT JOIN  lnkgbrelation AS lnkrel
+            //            ON         lnkrel.sGBID = pymt.sPaidByGBId
+            //            AND        lnkrel.sGBIDRelation = pymt.sGBID
+            //            WHERE      pymt.sPaidByGBId = @sGBID;";
+            string sql = @"SELECT   pymt.dtPayment,
+                                    pymt.sPaidByGBId,
+                                    pymt.sGBID AS sGBIDPaidFor,
                                     pymt.sGBID,
+                                    pymt.sPaymentCurrency,
+                                    pymt.nChatrelTotalAmount,
+                                    pymt.sChatrelReceiptNumber,
+                                    pymt.sPaymentStatus,
+                                    pymt.sPaymentMode,
+                                    
                                     gb.sFirstName,
                                     gb.sLastName,
                                     CASE
@@ -568,7 +617,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                         LEFT JOIN  lnkgbrelation AS lnkrel
                         ON         lnkrel.sGBID = pymt.sPaidByGBId
                         AND        lnkrel.sGBIDRelation = pymt.sGBID
-                        WHERE      pymt.sPaidByGBId = @sGBID;";
+                        
+                        WHERE      pymt.sPaidByGBId = @sGBID; ";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sGBID", sGBID);
@@ -581,14 +631,18 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 if (tables != null && tables.Count > 0)
                 {
                     var paymentHistory = tables[0].AsEnumerable().Select(row => new {
+                        dtPayment = row.Field<DateTime>("dtPayment"),
                         sChatrelReceiptNumber = row.Field<string>("sChatrelReceiptNumber"),
-                        dtEntered = row.Field<DateTime>("dtEntered"),
-                        dtPeriodFrom = row.Field<DateTime>("dtPeriodFrom"),
-                        dtPeriodTo = row.Field<DateTime>("dtPeriodTo"),
-                        sGBID = row.Field<string>("sGBID"),
+                        sPaidByGBId = row.Field<string>("sPaidByGBId"),
+                        sGBIDPaidFor = row.Field<string>("sGBIDPaidFor"),
                         sFirstName = row.Field<string>("sFirstName"),
                         sLastName = row.Field<string>("sLastName"),
-                        sRelation = row.Field<string>("sRelation")
+                        sRelation = row.Field<string>("sRelation"),
+                        sPaymentCurrency = row.Field<string>("sPaymentCurrency"),
+                        nChatrelTotalAmount = row.Field<decimal>("nChatrelTotalAmount"),
+                        sPaymentMode = row.Field<string>("sPaymentMode"),
+                        sPaymentStatus = row.Field<string>("sPaymentStatus")
+                        
                     }).ToList();
                     return paymentHistory;
                 }
