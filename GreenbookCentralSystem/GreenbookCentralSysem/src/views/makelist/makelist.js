@@ -288,6 +288,7 @@ export default () => {
           setLoading(false);
           return;
         }
+        setNoRecords(false);
         let i = 1;
         resp.data.forEach((element) => {
           element.nSerialNo = i;
