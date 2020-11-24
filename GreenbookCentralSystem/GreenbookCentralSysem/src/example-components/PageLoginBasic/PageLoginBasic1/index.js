@@ -42,7 +42,7 @@ export default function LogingPage() {
     debugger;
     // Redirect to Home if Data Present in Redux
     if (LoggedInOrNot !== null) {
-      history.push('/Home');
+      history.push('/Search');
     }
   }, []);
 
@@ -52,7 +52,7 @@ export default function LogingPage() {
         dispatch(storeAuthDetails(user));
         //history.push('/Home');
         //Using Window.location.reload to /Home for refersh and read proper value from LS
-        window.location.reload("/Home");
+        window.location.reload("/Search");
       },
       error => {
         setAlertMessage("Invalid Username/Password");
