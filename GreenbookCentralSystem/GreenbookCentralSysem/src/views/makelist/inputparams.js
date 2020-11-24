@@ -96,7 +96,7 @@ export const InputParams = (props) => {
               {/* {_.get("startDate.type", errors) === "required" && (
                 <span style={{ color: 'red' }}>This field is required</span>
               )} */}
-              {errors.startDate && "Date From is required."}
+              {errors.startDate && <span style={{ color: 'red' }}>Date From is required</span>}
             </FormControl>
           </Grid>
           <Grid item xs >
@@ -117,7 +117,7 @@ export const InputParams = (props) => {
                 })}
               />
               {_.get("endDate.type", errors) === "required" && (
-                <span style={{ color: 'red' }}>This field is required</span>
+                <span style={{ color: 'red' }}>Date To is required</span>
               )}
             </FormControl>
           </Grid>
