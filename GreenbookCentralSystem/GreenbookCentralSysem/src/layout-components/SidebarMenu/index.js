@@ -690,7 +690,7 @@ const SidebarMenu = (props) => {
                 Chatrel
               </NavLink>
               </li>
-             */ }
+            
                       <li>
                 <a
                   href="#/"
@@ -706,71 +706,63 @@ const SidebarMenu = (props) => {
                 </a>
                 <Collapse in={reportOpen}>
                   <ul>
-                    {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 5)) !== undefined
-                      &&*/
+                   
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/GreenBookIssuedOverall">
                           Green Book Issued Over all
                     </NavLink>
-                      </li>}
-                    {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 22)) !== undefined
-                      &&*/
+                      </li>
+                 
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/GreenBookIssuedIndividual">
                           Green Book Issued Individual
                     </NavLink>
-                      </li>}
-                    {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
-                      &&*/
+                      </li>
+                
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/ChangesLog">
                           Changes Log
                     </NavLink>
-                      </li>}
-                       {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 5)) !== undefined
-                      &&*/
+                      </li>
+                       
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/ChildChangesLog">
                           Child Changes Log
                     </NavLink>
-                      </li>}
-                    {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 22)) !== undefined
-                      &&*/
+                      </li>
+                  
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/NewEntryFromDay">
                           New Entry From Day
                     </NavLink>
-                      </li>}
-                    {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
-                      &&*/
+                      </li>
+                  
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/Below6Years">
                           Below 6 Year Region Wise
                     </NavLink>
-                      </li>}
-                       {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
-                      &&*/
+                      </li>
+                      
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/Deceased">
                           Deceased Region or Country Wise
                     </NavLink>
-                      </li>}
-                  {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
-                   &&*/  
+                      </li>
+                 
                       <li>
                 <a
                   href="#/"
@@ -784,68 +776,59 @@ const SidebarMenu = (props) => {
                 </a>
                 <Collapse in={reportMadebOpen}>
                   <ul>
-                    {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 5)) !== undefined
-                      &&*/
+                  
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/Madeb/Sarso">
                           Sarso Report
                     </NavLink>
-                      </li>}
-                    {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 22)) !== undefined
-                      &&*/
+                      </li>
+                   
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/Madeb/Norchoe">
                           Norchoe Report
                     </NavLink>
-                      </li>}
-                    {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
-                      &&*/
+                      </li>
+                   
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/Madeb/Bhorlak">
                           Bhorlak Report
                     </NavLink>
-                      </li>}
-                       {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 5)) !== undefined
-                      &&*/
+                      </li>
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/Madeb/BookFull">
                           BookFull Report
                     </NavLink>
-                      </li>}
-                    {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 22)) !== undefined
-                      &&*/
+                      </li>
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/Madeb/BriefGB">
                           BriefGB Report
                     </NavLink>
-                      </li>}
-                    {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
-                      &&*/
+                      </li>
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/Madeb/Abroad">
                           Abroad Report
                     </NavLink>
-                      </li>}
+                      </li>
                       
                   </ul>
                 </Collapse>
-              </li>   }
+              </li>  
 
                   </ul>
                 </Collapse>
-              </li>
+            </li>*/}
               <div style={{paddingTop:'100px'}}>
               </div>
           </ul> 
