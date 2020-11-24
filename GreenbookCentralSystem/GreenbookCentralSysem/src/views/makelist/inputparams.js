@@ -72,11 +72,11 @@ export const InputParams = (props) => {
 
   return (
 
-    <div >
+    <div style={{maxWidth: '1090px'}} >
       <form onSubmit={handleSubmit(handleFormSubmit)}>
 
-        <Grid container spacing={3}>
-          <Grid item xs={2}>
+        <Grid container spacing={1}>
+          <Grid item xs>
             <FormControl>
               <TextField
                 id="startDate"
@@ -96,10 +96,10 @@ export const InputParams = (props) => {
               {/* {_.get("startDate.type", errors) === "required" && (
                 <span style={{ color: 'red' }}>This field is required</span>
               )} */}
-              {errors.startDate && "Date From is required."}
+              {errors.startDate && <span style={{ color: 'red' }}>Date From is required</span>}
             </FormControl>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs >
             <FormControl>
               <TextField
                 id="endDate"
@@ -117,12 +117,12 @@ export const InputParams = (props) => {
                 })}
               />
               {_.get("endDate.type", errors) === "required" && (
-                <span style={{ color: 'red' }}>This field is required</span>
+                <span style={{ color: 'red' }}>Date To is required</span>
               )}
             </FormControl>
           </Grid>
-          <Grid item xs={2}>
-            <FormControl >
+          <Grid item xs >
+            <FormControl style={{paddingRight: '20px'}}>
               <Controller
                 render={props => (
                   <Autocomplete
@@ -177,8 +177,8 @@ export const InputParams = (props) => {
               
             </FormControl>
           </Grid>
-          <Grid item xs={2}>
-            <FormControl >
+          <Grid item xs >
+            <FormControl style={{paddingRight: '20px'}} >
               <Controller
                render={props => (
               <Autocomplete
@@ -231,8 +231,8 @@ export const InputParams = (props) => {
               {errors.AuthRegion && <span style={{color: 'red'}}>Select Authority Region</span>}
             </FormControl>
           </Grid>
-          <Grid item xs={2}>
-            <FormControl >
+          <Grid item  >
+            <FormControl style={{paddingRight: '20px'}} >
               <InputLabel id="Printed/Not">Print Status</InputLabel>
               <Controller
                 render={props => (
@@ -255,7 +255,7 @@ export const InputParams = (props) => {
               {errors.Printed && <span style={{color: 'red'}}>Select Print Status</span>}
             </FormControl>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item  >
             <FormControl >
               <Button variant="outlined" type="submit" color="primary" style={{ fontSize: '1em' }}>Make List</Button>
             </FormControl>

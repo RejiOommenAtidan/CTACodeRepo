@@ -738,7 +738,9 @@ CREATE TABLE `lstCTAConfig` (
 INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtUpdated`, `nUpdatedBy`) VALUES
 (1, 'UITableNumberOfRowsInPage', '20', now(), 1),
 (2, 'SelectTotalRecordCount', '1000', now(), 1),
-(3, 'DateFormat', 'DD-MM-YYYY', now(), 1);
+(3, 'DateFormat', 'DD-MM-YYYY', now(), 1),
+(4, 'CTAAdminEmail', 'malay.doshi@atidan.com', now(), 1),
+(5, 'CTAAdminEmailPassword', 'xxxxxxxxxxx', now(), 1);
 
 
 CREATE TABLE `lstChatrel` (
@@ -913,7 +915,7 @@ CREATE TABLE `tblGreenBookIssued` (
   `nMadebTypeId` int(11) DEFAULT NULL,
   `nTypeIssuedId` int(11) NOT NULL,
   `sFormNumber` text NOT NULL,
-  `nWhereIssued` int(11) NOT NULL,
+  `nWhereIssued` int(11) NULL,
   `nAuthRegionId` int(11) DEFAULT NULL,
   `bPrinted` tinyint(1) NOT NULL,
   `sRemarks` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -1481,7 +1483,7 @@ BEGIN
 		tblgreenbook.sFirstName, 
 		tblgreenbook.sLastName, 
 		tblgreenbook.dtDOB, 
-		',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion.sAuthRegion", "lstcountry.sCountry" ),'
+		',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion.sAuthRegion", "lstcountry.sCountry" ),' as sPlace
 	from 
 		tblgreenbook 
 	inner join ',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion", "lstcountry" ),' 
@@ -1500,40 +1502,37 @@ DELIMITER ;
 DROP procedure IF EXISTS `spReportCTADeceasedRegionOrCountryWise`;
 
 DELIMITER $$
-CREATE PROCEDURE spReportCTADeceasedRegionOrCountryWise
-(
-	IN dtRecordFrom date
+CREATE PROCEDURE `spReportCTADeceasedRegionOrCountryWise`(
+    IN dtRecordFrom date
     ,IN dtRecordTo date
     ,IN sOrderBy varchar(255)
 )
 BEGIN
-	-- declare SQLText varchar(5000);
-
+    -- declare SQLText varchar(5000);
     SET @SQLText = CONCAT('select 
-			tblgreenbook.sGBID, 
-			tblgreenbook.sFirstName, 
-			tblgreenbook.sLastName, 
-			tblgreenbook.dtDOB, 
-			tblgreenbook.dtDeceased, 
-			',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstauthregion.sAuthRegion", "lstcountry.sCountry" ),', 
-			DATE_FORMAT(tblgreenbook.dtDeceased, ''%Y'') - DATE_FORMAT(tblgreenbook.dtDOB, ''%Y'') - (DATE_FORMAT(tblgreenbook.dtDeceased, ''00-%m-%d'') < DATE_FORMAT(tblgreenbook.dtDOB, ''00-%m-%d'')) as DeathAge 
-		from 
-			tblgreenbook 
-		inner join ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstauthregion", "lstcountry" ),' 
-			on (',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "tblgreenbook.nAuthRegionId=lstauthregion.ID", "tblgreenbook.sCountryID=lstcountry.sCountryID" ),') 
-		where 
-			date(tblgreenbook.dtDeceased) >= ''', dtRecordFrom ,''' 
-			and date(tblgreenbook.dtDeceased) < ''', dtRecordTo ,''' 
-			and tblgreenbook.dtDeceased is not null
-		order by ', sOrderBy ,', tblgreenbook.dtDeceased');
+            tblgreenbook.sGBID, 
+            tblgreenbook.sFirstName, 
+            tblgreenbook.sLastName, 
+            tblgreenbook.dtDOB, 
+            tblgreenbook.dtDeceased, 
+            ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstauthregion.sAuthRegion", "lstcountry.sCountry" ),' as sPlace, 
+            DATE_FORMAT(tblgreenbook.dtDeceased, ''%Y'') - DATE_FORMAT(tblgreenbook.dtDOB, ''%Y'') - (DATE_FORMAT(tblgreenbook.dtDeceased, ''00-%m-%d'') < DATE_FORMAT(tblgreenbook.dtDOB, ''00-%m-%d'')) as DeathAge 
+        from 
+            tblgreenbook 
+        inner join ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstauthregion", "lstcountry" ),' 
+            on (',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "tblgreenbook.nAuthRegionId=lstauthregion.ID", "tblgreenbook.sCountryID=lstcountry.sCountryID" ),') 
+        where 
+            date(tblgreenbook.dtDeceased) >= ''', dtRecordFrom ,''' 
+            and date(tblgreenbook.dtDeceased) < ''', dtRecordTo ,''' 
+            and tblgreenbook.dtDeceased is not null
+        order by ', sOrderBy ,', tblgreenbook.dtDeceased');
         
-        --	select @SQLText;
+        --  select @SQLText;
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
     DEALLOCATE PREPARE stmt;
 END$$
 DELIMITER ;
-
 
 DROP procedure IF EXISTS `spReportCTAMadebRegionOrCountryWise`;
 
@@ -1550,7 +1549,7 @@ BEGIN
 
 	SET @SQLText = CONCAT('SELECT 
 				DISTINCT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.sAuthRegion", "lstcountry.sCountry" ),') as sPlaceName, 
-				',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.ID", "lstcountry.sCountryID" ),' as sPlaceID
+				CONVERT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.ID" , "lstcountry.sCountryID" ),',CHAR) as sPlaceID
 			FROM 
 				tblMadeb 
 			INNER JOIN ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion
@@ -1563,6 +1562,174 @@ BEGIN
 				lstMadebType.sMadebDisplayKey=''', sMadebDisplayKey ,''' 
 			and DATE(tblMadeb.dtReceived) >= ''', dtRecordFrom ,''' 
 			and DATE(tblMadeb.dtReceived) < ''', dtRecordTo ,'''
+		ORDER BY  ', sOrderBy );
+        
+          
+        --	select @SQLText;
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
+
+DROP procedure IF EXISTS `spReportChatrelRecordsRegionOrCountryWise`;
+
+DELIMITER $$
+CREATE PROCEDURE spReportChatrelRecordsRegionOrCountryWise
+(
+	IN dtRecordFrom date
+    ,IN dtRecordTo date
+    ,IN sOrderBy varchar(255)
+)
+BEGIN
+	-- declare SQLText varchar(5000);
+
+	SET @SQLText = CONCAT('SELECT `lnkgbchatrel`.`Id`,
+    `lnkgbchatrel`.`chatrelpaymentID`,
+    `lnkgbchatrel`.`sGBId`,
+    `lnkgbchatrel`.`nChatrelAmount`,
+    `lnkgbchatrel`.`nChatrelMeal`,
+    `lnkgbchatrel`.`nChatrelYear`,
+    `lnkgbchatrel`.`nChatrelLateFeesPercentage`,
+    `lnkgbchatrel`.`nChatrelLateFeesValue`,
+    `lnkgbchatrel`.`nArrearsAmount`,
+    `lnkgbchatrel`.`dtArrearsFrom`,
+    `lnkgbchatrel`.`dtArrearsTo`,
+    `lnkgbchatrel`.`nCurrentChatrelSalaryAmt`,
+    `lnkgbchatrel`.`dtCurrentChatrelFrom`,
+    `lnkgbchatrel`.`dtCurrentChatrelTo`,
+    `lnkgbchatrel`.`nChatrelTotalAmount`,
+    `lnkgbchatrel`.`sChatrelReceiptNumber`,
+    `lnkgbchatrel`.`nAuthRegionID`,
+    `lnkgbchatrel`.`sCountryID`,
+    `lnkgbchatrel`.`sPaymentCurrency`,
+    `lnkgbchatrel`.`sAuthRegionCurrency`,
+    `lnkgbchatrel`.`nConversionRate`,
+    `lnkgbchatrel`.`sPaidByGBId`,
+    `lnkgbchatrel`.`dtPayment`,
+    `lnkgbchatrel`.`dtEntered`,
+    `lnkgbchatrel`.`nEnteredBy`,
+    `lnkgbchatrel`.`dtUpdated`,
+    `lnkgbchatrel`.`nUpdatedBy`
+FROM `ctadb`.`lnkgbchatrel`
+where 
+	 DATE(lnkgbchatrel.dtEntered) >= ''', dtRecordFrom ,''' 
+			and DATE(lnkgbchatrel.dtEntered) < ''', dtRecordTo ,'''
+		ORDER BY  ', sOrderBy );
+        
+          
+        --	select @SQLText;
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
+
+DROP procedure IF EXISTS `spReportChatrelSuccessRecordsRegionOrCountryWise`;
+
+DELIMITER $$
+CREATE PROCEDURE spReportChatrelSuccessRecordsRegionOrCountryWise
+(
+	IN dtRecordFrom date
+    ,IN dtRecordTo date
+    ,IN sOrderBy varchar(255)
+)
+BEGIN
+	-- declare SQLText varchar(5000);
+
+	SET @SQLText = CONCAT('SELECT `lnkgbchatrel`.`Id`,
+    `lnkgbchatrel`.`chatrelpaymentID`,
+    `lnkgbchatrel`.`sGBId`,
+    `lnkgbchatrel`.`nChatrelAmount`,
+    `lnkgbchatrel`.`nChatrelMeal`,
+    `lnkgbchatrel`.`nChatrelYear`,
+    `lnkgbchatrel`.`nChatrelLateFeesPercentage`,
+    `lnkgbchatrel`.`nChatrelLateFeesValue`,
+    `lnkgbchatrel`.`nArrearsAmount`,
+    `lnkgbchatrel`.`dtArrearsFrom`,
+    `lnkgbchatrel`.`dtArrearsTo`,
+    `lnkgbchatrel`.`nCurrentChatrelSalaryAmt`,
+    `lnkgbchatrel`.`dtCurrentChatrelFrom`,
+    `lnkgbchatrel`.`dtCurrentChatrelTo`,
+    `lnkgbchatrel`.`nChatrelTotalAmount`,
+    `lnkgbchatrel`.`sChatrelReceiptNumber`,
+    `lnkgbchatrel`.`nAuthRegionID`,
+    `lnkgbchatrel`.`sCountryID`,
+    `lnkgbchatrel`.`sPaymentCurrency`,
+    `lnkgbchatrel`.`sAuthRegionCurrency`,
+    `lnkgbchatrel`.`nConversionRate`,
+    `lnkgbchatrel`.`sPaidByGBId`,
+    `lnkgbchatrel`.`dtPayment`,
+    `lnkgbchatrel`.`dtEntered`,
+    `lnkgbchatrel`.`nEnteredBy`,
+    `lnkgbchatrel`.`dtUpdated`,
+    `lnkgbchatrel`.`nUpdatedBy`
+FROM `ctadb`.`lnkgbchatrel`
+inner join `tblchatrelpayment`
+	on tblchatrelpayment.Id = lnkgbchatrel.chatrelpaymentID
+where 
+	 DATE(lnkgbchatrel.dtEntered) >= ''', dtRecordFrom ,''' 
+			and DATE(lnkgbchatrel.dtEntered) < ''', dtRecordTo ,'''
+            and tblchatrelpayment.sPaymentStatus=''Success''
+		ORDER BY  ', sOrderBy );
+        
+          
+        --	select @SQLText;
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
+
+DROP procedure IF EXISTS `spReportChatrelFailedRecordsRegionOrCountryWise`;
+
+DELIMITER $$
+CREATE PROCEDURE spReportChatrelFailedRecordsRegionOrCountryWise
+(
+	IN dtRecordFrom date
+    ,IN dtRecordTo date
+    ,IN sOrderBy varchar(255)
+)
+BEGIN
+	-- declare SQLText varchar(5000);
+
+	SET @SQLText = CONCAT('SELECT `lnkgbchatrel`.`Id`,
+    `lnkgbchatrel`.`chatrelpaymentID`,
+    `lnkgbchatrel`.`sGBId`,
+    `lnkgbchatrel`.`nChatrelAmount`,
+    `lnkgbchatrel`.`nChatrelMeal`,
+    `lnkgbchatrel`.`nChatrelYear`,
+    `lnkgbchatrel`.`nChatrelLateFeesPercentage`,
+    `lnkgbchatrel`.`nChatrelLateFeesValue`,
+    `lnkgbchatrel`.`nArrearsAmount`,
+    `lnkgbchatrel`.`dtArrearsFrom`,
+    `lnkgbchatrel`.`dtArrearsTo`,
+    `lnkgbchatrel`.`nCurrentChatrelSalaryAmt`,
+    `lnkgbchatrel`.`dtCurrentChatrelFrom`,
+    `lnkgbchatrel`.`dtCurrentChatrelTo`,
+    `lnkgbchatrel`.`nChatrelTotalAmount`,
+    `lnkgbchatrel`.`sChatrelReceiptNumber`,
+    `lnkgbchatrel`.`nAuthRegionID`,
+    `lnkgbchatrel`.`sCountryID`,
+    `lnkgbchatrel`.`sPaymentCurrency`,
+    `lnkgbchatrel`.`sAuthRegionCurrency`,
+    `lnkgbchatrel`.`nConversionRate`,
+    `lnkgbchatrel`.`sPaidByGBId`,
+    `lnkgbchatrel`.`dtPayment`,
+    `lnkgbchatrel`.`dtEntered`,
+    `lnkgbchatrel`.`nEnteredBy`,
+    `lnkgbchatrel`.`dtUpdated`,
+    `lnkgbchatrel`.`nUpdatedBy`
+FROM `ctadb`.`lnkgbchatrel`
+inner join `tblchatrelpayment`
+	on tblchatrelpayment.Id = lnkgbchatrel.chatrelpaymentID
+where 
+	 DATE(lnkgbchatrel.dtEntered) >= ''', dtRecordFrom ,''' 
+			and DATE(lnkgbchatrel.dtEntered) < ''', dtRecordTo ,'''
+            and tblchatrelpayment.sPaymentStatus=''Failed''
 		ORDER BY  ', sOrderBy );
         
           

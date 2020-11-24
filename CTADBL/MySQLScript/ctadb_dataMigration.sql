@@ -1129,8 +1129,8 @@ SELECT
 	sPaidUntil,
 	58,
 	null,
-	'done',
-	'offline',
+	'Success',
+	'Offline_WebAdmin',
 	'INR',
 	sGBID,
 	null,
@@ -1201,3 +1201,28 @@ SELECT
 	dtUpdated,
 	nUpdatedBy
 from tblchatrelpayment
+
+
+SET SQL_SAFE_UPDATES=0;
+UPDATE `lnkgbchatrel` a
+INNER JOIN `tblgreenbook` b ON a.sGBID = b.sGBID
+SET a.nAuthRegionID =  b.nAuthRegionId;
+
+UPDATE `lnkgbchatrel` a
+INNER JOIN `tblgreenbook` b ON a.sGBID = b.sGBID
+SET a.sCountryID =  b.sCountryID;
+
+update tblgivengbid
+set bActive = 0
+where nFormNo in (350,
+348,
+327,
+315,
+274,
+3,
+1,
+0);
+
+update tblgivengbid
+set bActive = 0
+where nGBId = 0;

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace CTAWebAPI.Controllers
@@ -45,7 +46,15 @@ namespace CTAWebAPI.Controllers
                     #region Information Logging
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, 1);
                     #endregion
-                    return Ok(makeList);
+                    if(makeList.Count() > 0)
+                    {
+                        return Ok(makeList);
+                    }
+                    else
+                    {
+                        return Ok("No Records");
+                    }
+                    
                 }
                 else
                 {

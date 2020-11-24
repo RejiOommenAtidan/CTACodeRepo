@@ -59,7 +59,12 @@ CALL spReportCTAMadebRegionOrCountryWise ('B','2009-12-17','2015-12-17','lstauth
 
 
 
-
+CALL spReportChatrelSuccessRecordsRegionOrCountryWise ('2009-12-17','2015-12-17','lnkgbchatrel.nAuthRegionID');
+CALL spReportChatrelSuccessRecordsRegionOrCountryWise ('2009-12-17','2015-12-17','lnkgbchatrel.sCountryID');
+CALL spReportChatrelFailedRecordsRegionOrCountryWise ('2009-12-17','2015-12-17','lnkgbchatrel.sCountryID');
+CALL spReportChatrelFailedRecordsRegionOrCountryWise ('2009-12-17','2015-12-17','lnkgbchatrel.nAuthRegionID');
+CALL spReportChatrelRecordsRegionOrCountryWise ('2009-12-17','2015-12-17','lnkgbchatrel.sCountryID');
+CALL spReportChatrelRecordsRegionOrCountryWise ('2009-12-17','2015-12-17','lnkgbchatrel.nAuthRegionID');
 
 
 
