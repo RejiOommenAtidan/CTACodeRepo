@@ -32,12 +32,16 @@ namespace CTADBL.BaseClasses.Transactions
 
         public enum PaymentStatus { Success = 1, Failed };
         public enum PaymentMode { Online = 1, Offline_WebAdmin, Offline_Bulk };
+
         public static string Success = "Success";
         public static string Failed = "Failed";
+
         public static string Online = "Online";
         public static string Offline_WebAdmin = "Offline_WebAdmin";
         public static string Offline_Bulk = "Offline_Bulk";
 
+        public static string INR = "INR";
+        public static string USD = "USD";
 
         #region Public Properties
         public int Id { get { return _Id; } set { _Id = value; } }

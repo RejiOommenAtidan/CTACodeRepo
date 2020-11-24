@@ -11,9 +11,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
 {
     public class GBChatrelRepository : ADORepository<GBChatrel>
     {
+        private GreenbookRepository _greenbookRepository;
+        private static MySqlConnection _connection;
         #region Constructor
         public GBChatrelRepository(string connectionString) : base(connectionString)
         {
+            _greenbookRepository = new GreenbookRepository(connectionString);
+            _connection = new MySqlConnection(connectionString);
         }
         #endregion
 
@@ -196,6 +200,39 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
         }
 
+        public int GetLatestAuthRegionID(string sGBID)
+        {
+            string sql = @"SELECT 
+                                nAuthRegionID 
+                           FROM 
+                                ctadb.lnkgbchatrel 
+                           WHERE 
+                                sGBID = @sGBID
+                           ORDER BY 
+                                nChatrelYear DESC, 
+                                dtPayment DESC 
+                           LIMIT 1;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                _connection.Open();
+                command.Connection = _connection;
+
+                var result = command.ExecuteScalar();
+                int authRegionID = 0;
+                if(result != null)
+                {
+                    authRegionID = Convert.ToInt32(result);
+                }
+                else
+                {
+                    authRegionID = _greenbookRepository.GetGreenbookByGBID(sGBID).nAuthRegionID;
+                }
+                _connection.Close();
+                return authRegionID;
+            }
+
+        }
 
         #endregion
 

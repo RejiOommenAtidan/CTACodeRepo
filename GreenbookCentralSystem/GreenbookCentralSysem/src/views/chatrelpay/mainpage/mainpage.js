@@ -605,7 +605,7 @@ export default function MainPage () {
     
         
       </Card>
-      <Grid item >
+      <Grid style={{paddingTop: '10px'}} item >
               <Button variant='contained' color='primary' onClick={() => history.goBack()} >Go Back</Button>
       </Grid>
     </>
