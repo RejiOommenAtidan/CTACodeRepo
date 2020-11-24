@@ -173,18 +173,7 @@ const HomeScreen = (props) => {
 
 export const HomeScreenOptions = navData => {
   return {
-    headerTitle: 'Quick Actions',
-    headerLeft: () => {
-      <HeaderButtons HeaderButtonComponent={HeaderButton}>
-        <Item
-          title="Menu"
-          iconName={Platform.OS === 'android' ? 'md-menu' : 'ios-menu'}
-          onPress={() => {
-            navData.navigation.toggleDrawer();
-          }}
-        />
-      </HeaderButtons>
-    }
+    
   };
 };
 

@@ -1,13 +1,13 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { ChatrelHistoryScreen } from '../screens/ChatrelHistoryScreen';
 import { FileDisputeScreen } from '../screens/FileDisputeScreen';
 import { MyProfileScreen } from '../screens/MyProfileScreen';
 import { GBDetailScreen } from '../screens/GBDetailScreen';
-import HomeScreen, {HomeScreenOptions} from '../screens/HomeScreen';
-import { SelfChatrelScreen } from '../screens/SelfChatrel';
+import HomeScreen from '../screens/HomeScreen';
+import { SelfChatrelScreen, SelfChatrelScreenOptions } from '../screens/SelfChatrel';
 import { FriendChatrelIntermediateScreen } from '../screens/FriendChatrelIntermediate';
 import { FriendChatrelScreen } from '../screens/FriendChatrelScreen';
 import { FamilyChatrelScreen } from '../screens/FamilyChatrel';
@@ -15,20 +15,21 @@ import { FamilyChatrelIntermediateScreen } from '../screens/FamilyChatrelInterme
 import { LoginScreen } from '../screens/LoginScreen';
 import Colors from '../constants/Colors';
 import { GLogout } from '../components/GLogout';
-// import HeaderButton from '../components/HeaderButton';
-// import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import HeaderButton from '../components/HeaderButton';
 
 const defaultStackNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === 'android' ? Colors.primary : ''
   },
   headerTitleStyle: {
-    fontFamily: 'open-sans-bold'
+    fontFamily: 'Kanit-Regular'
   },
   headerBackTitleStyle: {
     fontFamily: 'open-sans'
   },
-  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
+  headerPressColorAndroid: Colors.white
 };
 
 const LoginStackNavigator = createStackNavigator();
@@ -40,11 +41,15 @@ const LoginNavigator = () => {
         name="Login"
         component={LoginScreen}
         options={{
-          headerShown:false,          
-          animationEnabled:true,
-          gestureEnabled:true,
+          animationTypeForReplace: "pop",
+          headerBackTitleVisible: false,
+          headerShown: false,
+          headerLeft: null,
+          headrRight: null,
+          animationEnabled: true,
+          gestureEnabled: false,
           cardStyle: { backgroundColor: Colors.greenBG },
-          cardShadowEnabled:true
+          cardShadowEnabled: true
         }}
       >
       </LoginStackNavigator.Screen>
@@ -60,7 +65,33 @@ const HomeNavigator = () => {
       <HomeStackNavigator.Screen
         name="Home"
         component={HomeScreen}
-        options={HomeScreenOptions}
+        options={{
+          headerTitle: 'Quick Actions',
+          headerTitleStyle: { color: Colors.blue },
+          headerTransparent: true,
+          headerLeft: (navData) => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+              <Item
+                title="Menu"
+                iconName={Platform.OS === 'android' ? "menu" : "ios-menu-outline"}
+                onPress={() => {
+                  navData.navigation.toggleDrawer();
+                }}
+              />
+            </HeaderButtons>
+          ),
+          headerRight: (navData) => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+              <Item
+                title="Menu"
+                iconName={Platform.OS === 'android' ? "menu" : "ios-menu-outline"}
+                onPress={() => {
+                  Alert.alert("Hello")
+                }}
+              />
+            </HeaderButtons>
+          ),
+        }}
       >
       </HomeStackNavigator.Screen>
     </HomeStackNavigator.Navigator>
@@ -100,7 +131,9 @@ const SelfChatrelNavigator = () => {
         name="SelfChatrel"
         component={SelfChatrelScreen}
         options={{
-          cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
+          ...SelfChatrelScreenOptions,
+          cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor },
+
         }}
       >
       </SelfChatrelStackNavigator.Screen>
@@ -148,7 +181,9 @@ const FriendChatrelIntermediateNavigator = () => {
       <FriendChatrelIntermediateStackNavigator.Screen
         name="FriendChatrelIntermediate"
         component={FriendChatrelIntermediateScreen}
-      //options={}
+        options={{
+          cardStyle: { backgroundColor: Colors.blueCardColor },
+        }}
       >
       </FriendChatrelIntermediateStackNavigator.Screen>
     </FriendChatrelIntermediateStackNavigator.Navigator>
@@ -210,7 +245,38 @@ const FileDisputeNavigator = () => {
       <FileDisputeStackNavigator.Screen
         name="FileDispute"
         component={FileDisputeScreen}
-      //options={}
+      //options={
+      //{
+      //   drawerLabel: 'File Dispute',
+      //   title: "File Dispute",
+      //   gestureEnabled: true,
+      //   headerTitle: "File a Dispute",
+      //   swipeEnabled: true,
+      //   headerTitleAlign: "center",
+      //   headerLeft:(navData)=>(
+      //     <HeaderButtons HeaderButtonComponent={HeaderButton}>
+      //       <Item
+      //         title="Menu"
+      //         iconName={Platform.OS === 'android' ? "menu" : "ios-menu-outline"}
+      //         onPress={() => {
+      //           navData.navigation.toggleDrawer();
+      //         }}
+      //       />
+      //     </HeaderButtons>
+      //   ),
+      //   headerRight: () => (
+      //     <HeaderButtons HeaderButtonComponent={HeaderButton}>
+      //       <Item
+      //         title="Menu"
+      //         iconName={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
+      //         onPress={() => {
+      //           navData.navigation.navigate('');
+      //         }}
+      //       />
+      //     </HeaderButtons>
+      //   )
+      // }
+      //}
       >
       </FileDisputeStackNavigator.Screen>
     </FileDisputeStackNavigator.Navigator>
@@ -222,7 +288,7 @@ const MainDrawerNavigator = createDrawerNavigator();
 export const MainNavigator = () => {
   return (
     <MainDrawerNavigator.Navigator
-      initialRouteName={"Login"}
+      initialRouteName={"FriendChatrelIntermediate"}
       drawerPosition={"left"}
       drawerType={"front"}
       hideStatusBar={false}
@@ -243,7 +309,8 @@ export const MainNavigator = () => {
         name={"Login"}
         component={LoginNavigator}
         options={{
-          drawerLabel: 'Login'
+          //drawerLabel: 'Login',
+          
         }}
       >
       </MainDrawerNavigator.Screen>
@@ -252,6 +319,8 @@ export const MainNavigator = () => {
         name={"GBDetail"}
         component={GBDetailNavigator}
         options={{
+          gestureEnabled: false,
+          swipeEnabled: false,
           drawerLabel: 'GB Details',
           header: null,
           headerLeft: null,
@@ -334,9 +403,15 @@ export const MainNavigator = () => {
       {/*FileDispute*/}
       <MainDrawerNavigator.Screen
         name={"FileDispute"}
+
         component={FileDisputeNavigator}
         options={{
-          drawerLabel: 'File Dispute'
+          // drawerLabel: 'File Dispute',
+          // title: "File Dispute",
+          // gestureEnabled: true,
+          // headerTitle: "File a Dispute",
+          // swipeEnabled: true,
+          // headerTitleAlign: "center"
         }}
       >
       </MainDrawerNavigator.Screen>

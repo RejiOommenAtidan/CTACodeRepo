@@ -228,6 +228,6 @@ const styles = StyleSheet.create({
     //borderRadius: 5,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
-    opacity: 0.87
-  },
+    opacity: 0.775
+  }
 });

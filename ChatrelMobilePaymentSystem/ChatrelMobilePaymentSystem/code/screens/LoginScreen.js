@@ -31,15 +31,6 @@ export const LoginScreen = (props) => {
   );
 };
 
-// export const LoginScreenOptions = navData => {
-//   return {
-//     //headerTitle: 'Login',
-//     header: () => null,
-//     headerLeft: () => null,
-//     headerRight: () => null
-//   };
-// };
-
 // console.log(Dimensions.get('window').width)
 // console.log(Dimensions.get('window').height)
 
