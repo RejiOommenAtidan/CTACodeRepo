@@ -5775,6 +5775,11 @@ react-native-linear-gradient@^2.5.6:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.6.tgz#96215cbc5ec7a01247a20890888aa75b834d44a0"
   integrity sha512-HDwEaXcQIuXXCV70O+bK1rizFong3wj+5Q/jSyifKFLg0VWF95xh8XQgfzXwtq0NggL9vNjPKXa016KuFu+VFg==
 
+react-native-paypal-lib@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/react-native-paypal-lib/-/react-native-paypal-lib-1.0.9.tgz#592f8f05308e4fb064e11b487f08db7238583879"
+  integrity sha512-UcpTd2FU2cUdu+PbiDziQvLtqjo/EKPMmH7mIwJ7k8KANIlFpOn6QuDAMKKsQCs1uG511xzlUmQC8HKS3EvKYQ==
+
 react-native-ratings@^7.2.0:
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-7.3.0.tgz#32e11e4ed944ba8adbbc995d601df3f131619b6f"

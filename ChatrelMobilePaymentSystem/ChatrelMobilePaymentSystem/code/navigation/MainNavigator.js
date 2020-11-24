@@ -310,7 +310,7 @@ export const MainNavigator = () => {
         component={LoginNavigator}
         options={{
           //drawerLabel: 'Login',
-          
+
         }}
       >
       </MainDrawerNavigator.Screen>

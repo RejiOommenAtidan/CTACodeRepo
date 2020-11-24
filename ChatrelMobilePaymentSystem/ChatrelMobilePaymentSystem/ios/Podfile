@@ -8,6 +8,8 @@ target 'ChatrelMobilePaymentSystem' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'RNPaypal', :path => '../node_modules/react-native-paypal'
+
   target 'ChatrelMobilePaymentSystemTests' do
     inherit! :complete
     # Pods for testing

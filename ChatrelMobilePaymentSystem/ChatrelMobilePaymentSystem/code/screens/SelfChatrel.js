@@ -31,7 +31,7 @@ export const SelfChatrelScreen = (props) => {
   );
 };
 
-export const SelfChatrelScreenOptions = navData  => {
+export const SelfChatrelScreenOptions = navData => {
   return {
     headerTitle: 'Self Chatrel',
     headerLeft: () => {
@@ -44,7 +44,7 @@ export const SelfChatrelScreenOptions = navData  => {
           }}
         />
       </HeaderButtons>
-        }
+    }
   };
 };
 

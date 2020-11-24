@@ -173,7 +173,7 @@ const HomeScreen = (props) => {
 
 export const HomeScreenOptions = navData => {
   return {
-    
+
   };
 };
 
