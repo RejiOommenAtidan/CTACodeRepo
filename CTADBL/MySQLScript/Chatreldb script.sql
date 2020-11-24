@@ -2,29 +2,55 @@ use chatreldb;
 
 CREATE TABLE `lnkgbchatrel` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `chatrelpaymentID` int(11) NOT NULL,
   `sGBId` varchar(255) DEFAULT NULL,
   `nChatrelAmount` decimal(15,2) NOT NULL,
   `nChatrelMeal` decimal(15,2) DEFAULT NULL,
   `nChatrelYear` int(11) DEFAULT NULL,
   `nChatrelLateFeesPercentage` int(11) DEFAULT NULL,
+  `nChatrelLateFeesValue` decimal(15,2) DEFAULT NULL,
   `nArrearsAmount` decimal(15,2) DEFAULT NULL,
   `dtArrearsFrom` date DEFAULT NULL,
   `dtArrearsTo` date DEFAULT NULL,
-  `nCurrentChatrelSalaryAmt` decimal(15,2)DEFAULT NULL,
+  `nCurrentChatrelSalaryAmt` decimal(15,2) DEFAULT NULL,
   `dtCurrentChatrelFrom` date DEFAULT NULL,
   `dtCurrentChatrelTo` date DEFAULT NULL,
-  `nChatrelAdditionalDonationAmt` decimal(15,2) DEFAULT NULL,
-  `nChatrelBusinessDonationAmt` decimal(15,2) DEFAULT NULL,
   `nChatrelTotalAmount` decimal(15,2) DEFAULT NULL,
   `sChatrelReceiptNumber` varchar(255) DEFAULT NULL,
   `nAuthRegionID` int(11) DEFAULT NULL,
   `sCountryID` varchar(255) DEFAULT NULL,
   `sPaymentCurrency` varchar(255) DEFAULT NULL,
+  `sAuthRegionCurrency` varchar(255) DEFAULT NULL,
+  `nConversionRate` decimal(15,2) DEFAULT NULL,
   `sPaidByGBId` varchar(255) DEFAULT NULL,
+  `dtPayment` datetime DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `lnkgbchatreldonation` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `chatrelpaymentID` int(11) NOT NULL,
+  `sGBId` varchar(255) DEFAULT NULL,
+  `nChatrelAdditionalDonationAmt` decimal(15,2) DEFAULT NULL,
+  `nChatrelBusinessDonationAmt` decimal(15,2) DEFAULT NULL,
+  `sChatrelReceiptNumber` varchar(255) DEFAULT NULL,
+  `nAuthRegionID` int(11) DEFAULT NULL,
+  `sCountryID` varchar(255) DEFAULT NULL,
+  `sPaymentCurrency` varchar(255) DEFAULT NULL,
+  `sAuthRegionCurrency` varchar(255) DEFAULT NULL,
+  `nConversionRate` decimal(15,2) DEFAULT NULL,
+  `sPaidByGBId` varchar(255) DEFAULT NULL,
+  `dtPayment` datetime DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `lnkgbchildren` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -38,7 +64,7 @@ CREATE TABLE `lnkgbchildren` (
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`),
   KEY `sGBIDParent` (`sGBIDParent`)
-) ENGINE=InnoDB AUTO_INCREMENT=109499 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=109500 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `lnkgbFileDispute` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -75,7 +101,7 @@ CREATE TABLE `lstchatrel` (
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE `lstchatrelconfig` (
@@ -85,36 +111,34 @@ CREATE TABLE `lstchatrelconfig` (
   `dtUpdated` datetime DEFAULT NULL,
   `nUpdatedBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE `tblchatrelpayment` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBId` varchar(255) DEFAULT NULL,
-  `nChatrelAmount` decimal(15,2) DEFAULT NULL,
-  `nChatrelMeal` decimal(15,2) DEFAULT NULL,
   `nChatrelYear` int(11) DEFAULT NULL,
-  `nChatrelLateFeesPercentage` int(11) DEFAULT NULL,
-  `nArrearsAmount` decimal(15,2) DEFAULT NULL,
-  `dtArrearsFrom` date DEFAULT NULL,
-  `dtArrearsTo` date DEFAULT NULL,
-  `nCurrentChatrelSalaryAmt` decimal(15,2) DEFAULT NULL,
-  `dtCurrentChatrelFrom` date DEFAULT NULL,
-  `dtCurrentChatrelTo` date DEFAULT NULL,
-  `nChatrelAdditionalDonationAmt` decimal(15,2) DEFAULT NULL,
-  `nChatrelBusinessDonationAmt` decimal(15,2) DEFAULT NULL,
   `nChatrelTotalAmount` decimal(15,2) DEFAULT NULL,
   `sChatrelReceiptNumber` varchar(255) DEFAULT NULL,
-  `nAuthRegionID` int(11) DEFAULT NULL,
-  `sCountryID` varchar(255) DEFAULT NULL,
   `sPaymentStatus` varchar(255) DEFAULT NULL,
   `sPaymentMode` varchar(255) DEFAULT NULL,
   `sPaymentCurrency` varchar(255) DEFAULT NULL,
   `sPaidByGBId` varchar(255) DEFAULT NULL,
+  `sPayPal_Status` varchar(255) DEFAULT NULL,
+  `sPayPal_ID` varchar(255) DEFAULT NULL,
+  `sPayPal_Currency_Code` varchar(255) DEFAULT NULL,
+  `sPayPal_Currency_Value` varchar(255) DEFAULT NULL,
+  `sPayPal_Response_Object` varchar(5000) DEFAULT NULL,
+  `dtPayment` datetime DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=131071 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=113938 DEFAULT CHARSET=latin1;
+
+
+
 
 
 CREATE TABLE `tblgreenbook` (
@@ -395,53 +419,6 @@ SELECT
 FROM ctadb.lnkgbchildren;
 
 
-INSERT INTO `chatreldb`.`lnkgbchatrel`
-(`Id`,
-`sGBId`,
-`nChatrelAmount`,
-`nChatrelMeal`,
-`nChatrelYear`,
-`nChatrelLateFeesPercentage`,
-`nArrearsAmount`,
-`dtArrearsFrom`,
-`dtArrearsTo`,
-`nCurrentChatrelSalaryAmt`,
-`dtCurrentChatrelFrom`,
-`dtCurrentChatrelTo`,
-`nChatrelAdditionalDonationAmt`,
-`nChatrelBusinessDonationAmt`,
-`nChatrelTotalAmount`,
-`sChatrelReceiptNumber`,
-`nAuthRegionID`,
-`sCountryID`,
-`sPaymentCurrency`,
-`sPaidByGBId`,
-`dtEntered`,
-`nEnteredBy`)
-SELECT 
-	`Id`,
-	`sGBId`,
-	`nChatrelAmount`,
-	`nChatrelMeal`,
-	`nChatrelYear`,
-	`nChatrelLateFeesPercentage`,
-	`nArrearsAmount`,
-	`dtArrearsFrom`,
-	`dtArrearsTo`,
-	`nCurrentChatrelSalaryAmt`,
-	`dtCurrentChatrelFrom`,
-	`dtCurrentChatrelTo`,
-	`nChatrelAdditionalDonationAmt`,
-	`nChatrelBusinessDonationAmt`,
-	`nChatrelTotalAmount`,
-	`sChatrelReceiptNumber`,
-	`nAuthRegionID`,
-	`sCountryID`,
-	`sPaymentCurrency`,
-	`sPaidByGBId`,
-	`dtEntered`,
-	`nEnteredBy` 
-FROM ctadb.lnkgbchatrel;
 
 INSERT INTO `chatreldb`.`lstrelation`
 (`Id`,
@@ -459,4 +436,104 @@ SELECT
 	`dtUpdated`,
 	`nUpdatedBy`
 FROM ctadb.lstrelation;
+
+
+INSERT INTO `tblchatrelpayment`
+(`Id`,
+`sGBId`,
+`nChatrelYear`,
+`nChatrelTotalAmount`,
+`sChatrelReceiptNumber`,
+`sPaymentStatus`,
+`sPaymentMode`,
+`sPaymentCurrency`,
+`sPaidByGBId`,
+`sPayPal_Status`,
+`sPayPal_ID`,
+`sPayPal_Currency_Code`,
+`sPayPal_Currency_Value`,
+`sPayPal_Response_Object`,
+`dtPayment`,
+`dtEntered`,
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`)
+SELECT `tblchatrelpayment`.`Id`,
+    `tblchatrelpayment`.`sGBId`,
+    `tblchatrelpayment`.`nChatrelYear`,
+    `tblchatrelpayment`.`nChatrelTotalAmount`,
+    `tblchatrelpayment`.`sChatrelReceiptNumber`,
+    `tblchatrelpayment`.`sPaymentStatus`,
+    `tblchatrelpayment`.`sPaymentMode`,
+    `tblchatrelpayment`.`sPaymentCurrency`,
+    `tblchatrelpayment`.`sPaidByGBId`,
+    `tblchatrelpayment`.`sPayPal_Status`,
+    `tblchatrelpayment`.`sPayPal_ID`,
+    `tblchatrelpayment`.`sPayPal_Currency_Code`,
+    `tblchatrelpayment`.`sPayPal_Currency_Value`,
+    `tblchatrelpayment`.`sPayPal_Response_Object`,
+    `tblchatrelpayment`.`dtPayment`,
+    `tblchatrelpayment`.`dtEntered`,
+    `tblchatrelpayment`.`nEnteredBy`,
+    `tblchatrelpayment`.`dtUpdated`,
+    `tblchatrelpayment`.`nUpdatedBy`
+FROM `ctadb`.`tblchatrelpayment`;
+
+
+INSERT INTO `lnkgbchatrel`
+(`Id`,
+`chatrelpaymentID`,
+`sGBId`,
+`nChatrelAmount`,
+`nChatrelMeal`,
+`nChatrelYear`,
+`nChatrelLateFeesPercentage`,
+`nChatrelLateFeesValue`,
+`nArrearsAmount`,
+`dtArrearsFrom`,
+`dtArrearsTo`,
+`nCurrentChatrelSalaryAmt`,
+`dtCurrentChatrelFrom`,
+`dtCurrentChatrelTo`,
+`nChatrelTotalAmount`,
+`sChatrelReceiptNumber`,
+`nAuthRegionID`,
+`sCountryID`,
+`sPaymentCurrency`,
+`sAuthRegionCurrency`,
+`nConversionRate`,
+`sPaidByGBId`,
+`dtPayment`,
+`dtEntered`,
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`)
+SELECT `lnkgbchatrel`.`Id`,
+    `lnkgbchatrel`.`chatrelpaymentID`,
+    `lnkgbchatrel`.`sGBId`,
+    `lnkgbchatrel`.`nChatrelAmount`,
+    `lnkgbchatrel`.`nChatrelMeal`,
+    `lnkgbchatrel`.`nChatrelYear`,
+    `lnkgbchatrel`.`nChatrelLateFeesPercentage`,
+    `lnkgbchatrel`.`nChatrelLateFeesValue`,
+    `lnkgbchatrel`.`nArrearsAmount`,
+    `lnkgbchatrel`.`dtArrearsFrom`,
+    `lnkgbchatrel`.`dtArrearsTo`,
+    `lnkgbchatrel`.`nCurrentChatrelSalaryAmt`,
+    `lnkgbchatrel`.`dtCurrentChatrelFrom`,
+    `lnkgbchatrel`.`dtCurrentChatrelTo`,
+    `lnkgbchatrel`.`nChatrelTotalAmount`,
+    `lnkgbchatrel`.`sChatrelReceiptNumber`,
+    `lnkgbchatrel`.`nAuthRegionID`,
+    `lnkgbchatrel`.`sCountryID`,
+    `lnkgbchatrel`.`sPaymentCurrency`,
+    `lnkgbchatrel`.`sAuthRegionCurrency`,
+    `lnkgbchatrel`.`nConversionRate`,
+    `lnkgbchatrel`.`sPaidByGBId`,
+    `lnkgbchatrel`.`dtPayment`,
+    `lnkgbchatrel`.`dtEntered`,
+    `lnkgbchatrel`.`nEnteredBy`,
+    `lnkgbchatrel`.`dtUpdated`,
+    `lnkgbchatrel`.`nUpdatedBy`
+FROM `ctadb`.`lnkgbchatrel`;
 
