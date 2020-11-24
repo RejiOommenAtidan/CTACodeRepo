@@ -33,7 +33,7 @@ namespace CTADBL.ViewModelsRepositories
                 command.Parameters.AddWithValue("endDate", dict["endDate"]);
                 command.Parameters.AddWithValue("nMadebTypeId", dict["nMadebTypeId"]);
                 command.Parameters.AddWithValue("nAuthRegionId", dict["nAuthRegionId"]);
-                command.Parameters.AddWithValue("bPrinted", dict["bPrinted"]);
+                command.Parameters.AddWithValue("bPrinted", dict["bPrinted"].GetBoolean());
                 command.Connection = _connection;
                 command.CommandType = CommandType.Text;
                 command.CommandTimeout = 999;

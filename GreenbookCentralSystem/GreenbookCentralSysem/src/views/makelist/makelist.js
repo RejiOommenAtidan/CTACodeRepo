@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import {Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link, Card, Table, Paper,CircularProgress,
-  Dialog,DialogContent,DialogContentText
-
-
+import {Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link, Card, Table, Paper, Dialog,DialogContent,DialogContentText
 } from '@material-ui/core';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
@@ -68,7 +67,13 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     'label + &': {
       marginTop: theme.spacing(3)
-    }
+    },
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '& > * + *': {
+      marginLeft: theme.spacing(2),
+    },
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -120,7 +125,7 @@ export default () => {
   const [loading, setLoading] = useState(false);
   const [dataReady, setDataReady] = useState(false);
   const [makeTable, setMakeTable] = useState(false);
-  const [serialNo, setSerialNo] = useState(1);
+  const [noRecords, setNoRecords] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
   const [makeListParams, setMakeListParams] = useState({});
 
@@ -277,6 +282,12 @@ export default () => {
     axios.post(`MakeList/MakeList`, makeListParams)
     .then(resp => {
       if(resp.status === 200){
+        if(resp.data === 'No Records'){
+          setNoRecords(true);
+          setdataAPI([]);
+          setLoading(false);
+          return;
+        }
         let i = 1;
         resp.data.forEach((element) => {
           element.nSerialNo = i;
@@ -343,7 +354,17 @@ export default () => {
         makeList = {makeList}
       />)}
       <br />
-      
+      {loading && 
+        <div className={classes.root}>
+          <CircularProgress />
+          {noRecords && <h4>No Records Found</h4>}
+        </div>
+      }
+      {noRecords && 
+        <div className={classes.root}>
+          {<h4>No Records Found</h4>}
+        </div>
+      }
       { dataAPI.length !=0 &&
       
         <MaterialTable 
