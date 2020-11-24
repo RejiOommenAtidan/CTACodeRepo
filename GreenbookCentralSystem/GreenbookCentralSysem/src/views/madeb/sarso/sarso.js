@@ -244,7 +244,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.nSaneyFormNo",
       title: "Saney Form No",
-      hidden: true,
+      hidden: false,
       cellStyle: {
         padding: '5px'
       },

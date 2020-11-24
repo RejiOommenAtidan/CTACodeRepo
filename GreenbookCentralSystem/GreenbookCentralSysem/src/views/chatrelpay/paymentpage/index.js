@@ -140,15 +140,17 @@ export default function PaymentPage  (props) {
   
 
   const updateAuthRegion = (e, value) => {
-    console.log("Auth region changed to ", value.id, "at row ", e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_')));
+    console.log("Auth region changed to ", value.id, "at row ", e.target.id);
     //const index = e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_'));
-    const index = e.target.id.substring(0, e.target.id.indexOf('_'));
+    //const index = e.target.id.substring(0, e.target.id.indexOf('_'));
+    const index = parseInt(e.target.id);
     let chatrelObj = [...paymentData];
     chatrelObj[index].nAuthRegionID = value.id;
     chatrelObj[index].sCountryID = value.sCountryID;
     chatrelObj[index].sAuthRegionCurrency = value.sCurrencyCode;
     chatrelObj[index].nChatrelAmount = value.sCurrencyCode === 'INR' ? chatrelObj[index].nChatrelINR : chatrelObj[index].nChatrelUSD;
     chatrelObj[index].nChatrelMeal = value.sCurrencyCode === 'INR' ? chatrelObj[index].nChatrelMealINR : chatrelObj[index].nChatrelMealUSD;
+    chatrelObj[index].nCurrentChatrelSalaryAmt = 0;
 
     setPaymentData(chatrelObj);
     calculate(index);
@@ -482,15 +484,15 @@ const submit =(e) =>{
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>Year</TableCell>
-            <TableCell>Authority Region</TableCell>
-            <TableCell style={{width: "5%"}}>Currency</TableCell>
-            <TableCell align="right" style={{width: "10%"}}>Chatrel</TableCell>
-            <TableCell align="right" style={{width: "10%"}}>Meal</TableCell>
-            <TableCell align="right" style={{width: "10%"}}>Late Fees</TableCell>
-            <TableCell align="right" style={{width: "10%"}}>Employed</TableCell>
+            <TableCell style={{width: "3%"}}>Year</TableCell>
+            <TableCell style={{width: "20%"}}>Authority Region</TableCell>
+            <TableCell align="center" style={{width: "10%"}}>Region Currency</TableCell>
+            <TableCell align="center" style={{width: "5%"}}>Chatrel</TableCell>
+            <TableCell align="center" style={{width: "5%"}}>Meal</TableCell>
+            <TableCell align="center" style={{width: "8%"}}>Late Fees</TableCell>
+            <TableCell align="center" style={{width: "10%"}}>Employed</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Rate &#8377;/$</TableCell>
-            <TableCell align="right" style={{width: "10%"}}>Total</TableCell>
+            <TableCell align="right" style={{width: "10%"}}>Total (₹)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -504,7 +506,7 @@ const submit =(e) =>{
               <TableCell>
                 <Autocomplete
                   disabled = {!outstanding}
-                  id={`${index}_id`}
+                  id={`${index}`}
                   openOnFocus
                   clearOnEscape
                   disableClearable
@@ -516,7 +518,7 @@ const submit =(e) =>{
                   getOptionLabel={(option) => option.sAuthRegion}
                   renderOption={(option) => (
                     <React.Fragment>
-                      <span id={`${index}_id`}>{option.sAuthRegion}</span>
+                      <span id={`${index}`}>{option.sAuthRegion}</span>
                     </React.Fragment>
                   )}
                   onChange={
@@ -543,10 +545,10 @@ const submit =(e) =>{
                   )}
                 />
               </TableCell>
-              <TableCell>{row.sAuthRegionCurrency}</TableCell>
-              {outstanding && <> <TableCell align="right">{row.nChatrelAmount}</TableCell>
-              <TableCell align="right">{row.nChatrelMeal}</TableCell>
-              <TableCell align="right">{row.nChatrelLateFeesValue}</TableCell> </>}
+              <TableCell align="center">{row.sAuthRegionCurrency}</TableCell>
+              {outstanding && <> <TableCell align="center">{row.nChatrelAmount}</TableCell>
+              <TableCell align="center">{row.nChatrelMeal}</TableCell>
+              <TableCell align="center">{row.nChatrelLateFeesValue}</TableCell> </>}
               {!outstanding && <> <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell> </>}
