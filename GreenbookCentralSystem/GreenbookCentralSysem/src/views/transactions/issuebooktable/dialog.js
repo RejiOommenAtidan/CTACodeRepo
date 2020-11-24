@@ -329,7 +329,7 @@ export const SaveDialog = (props) => {
     "dtUpdated": null,
     "nUpdatedBy": 1
 }]);
-  const [formNumber, setFormNumber] = React.useState(props.saveObj['nFormNumber'].toString());
+  const [formNumber, setFormNumber] = React.useState(props.saveObj['nFormNumber']);
   const [id, setId] = React.useState(props.saveObj['id']);
   const [madebType,setMadebType]= React.useState(props.saveObj['nMadebTypeID']);
   const [authorityId, setAuthorityId] = React.useState(props.saveObj['nAuthRegionID']);
@@ -341,7 +341,7 @@ export const SaveDialog = (props) => {
   const [remarks, setRemarks] = React.useState('');
   const saveObj ={
 
-    sFormNumber: formNumber.toString(), 
+    nFormNumber: formNumber, 
     nMadebTypeId: madebType,
     nTypeIssuedId: issuedOrNotId,
     nGBId : gbId,

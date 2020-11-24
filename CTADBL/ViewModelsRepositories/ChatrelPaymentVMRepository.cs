@@ -47,76 +47,100 @@ namespace CTADBL.ViewModelsRepositories
             
             ChatrelPayment chatrelPayment = chatrelPaymentVM.chatrelPayment;
             IEnumerable<GBChatrel> chatrels = chatrelPaymentVM.gbChatrels;
-            Greenbook greenbook = _greenBookRepository.GetGreenbookByGBID(chatrelPayment.sGBId);
-            
-            if(chatrelPayment.sPaymentMode == ChatrelPayment.Online)
+            GBChatrelDonation gbChatrelDonation = chatrelPaymentVM.gbChatrelDonation;
+            if(gbChatrelDonation == null && chatrels == null)
             {
-                chatrelPayment.sChatrelReceiptNumber = GenerateReceiptNo();
+                return ("No donation amount.");
             }
-            
-            
-            chatrelPayment.dtEntered = DateTime.Now;
-            chatrelPayment.dtPayment = DateTime.Now;
-            chatrelPayment.dtUpdated = DateTime.Now;
-            chatrelPayment.sPaymentStatus = ChatrelPayment.Success;
-            greenbook.dtUpdated = DateTime.Now;
-            greenbook.sPaidUntil = chatrelPayment.nChatrelYear.ToString();
-
-            foreach (var chatrel in chatrels)
+            else 
             {
-                chatrel.sChatrelReceiptNumber = chatrelPayment.sChatrelReceiptNumber;
-                //chatrel.sGBId = chatrelPayment.sGBId;
-                chatrel.sPaidByGBId = chatrelPayment.sPaidByGBId;
-                //chatrel.nChatrelLateFeesPercentage = chatrelPayment.nChatrelLateFeesPercentage;
-                chatrel.dtPayment = chatrelPayment.dtPayment;
-                chatrel.nEnteredBy = chatrelPayment.nEnteredBy;
-                chatrel.dtEntered = DateTime.Now;
-                chatrel.dtUpdated = DateTime.Now;
-            }
-            
-            var builder = new SqlQueryBuilder<ChatrelPayment>(chatrelPayment);
-            MySqlCommand command =  builder.GetInsertCommand();
-
-            _connection.Open();
-            MySqlTransaction transaction = _connection.BeginTransaction();
-            command.Transaction = transaction;
-            command.Connection = _connection;
-            
-            try
-            {
-                command.ExecuteNonQuery();
-                long id = command.LastInsertedId;
-                foreach (var chatrel in chatrels)
+                Greenbook greenbook = _greenBookRepository.GetGreenbookByGBID(chatrelPayment.sGBId);
+                if (chatrelPayment.sPaymentMode == ChatrelPayment.Online)
                 {
-                    chatrel.chatrelpaymentID = Convert.ToInt32(id);
-                    var cbuilder = new SqlQueryBuilder<GBChatrel>(chatrel);
-                    command.CommandText = cbuilder.GetInsertCommand().CommandText;
-                    int rows = command.ExecuteNonQuery();
+                    chatrelPayment.sChatrelReceiptNumber = GenerateReceiptNo();
                 }
-                var gbuilder = new SqlQueryBuilder<Greenbook>(greenbook);
-                command.CommandText = gbuilder.GetUpdateCommand().CommandText;
-                command.ExecuteNonQuery();
-                transaction.Commit();
-                //To do: Update GreenBook "sPaidUntil" column to reflect current paid upto status.
-                return ("Records inserted successfully.");
-            }
-            catch (Exception ex)
-            {
+
+
+                chatrelPayment.dtEntered = DateTime.Now;
+                chatrelPayment.dtPayment = DateTime.Now;
+                chatrelPayment.dtUpdated = DateTime.Now;
+                chatrelPayment.sPaymentStatus = ChatrelPayment.Success;
+                greenbook.dtUpdated = DateTime.Now;
+                greenbook.sPaidUntil = chatrelPayment.nChatrelYear.ToString();
+
+                if(chatrels != null)
+                {
+                    foreach (var chatrel in chatrels)
+                    {
+                        chatrel.sChatrelReceiptNumber = chatrelPayment.sChatrelReceiptNumber;
+                        //chatrel.sGBId = chatrelPayment.sGBId;
+                        chatrel.sPaidByGBId = chatrelPayment.sPaidByGBId;
+                        //chatrel.nChatrelLateFeesPercentage = chatrelPayment.nChatrelLateFeesPercentage;
+                        chatrel.dtPayment = chatrelPayment.dtPayment;
+                        chatrel.dtEntered = DateTime.Now;
+                        chatrel.dtUpdated = DateTime.Now;
+                    }
+                }
+                
+
+                var builder = new SqlQueryBuilder<ChatrelPayment>(chatrelPayment);
+                MySqlCommand command = builder.GetInsertCommand();
+
+                _connection.Open();
+                MySqlTransaction transaction = _connection.BeginTransaction();
+                command.Transaction = transaction;
+                command.Connection = _connection;
+
                 try
                 {
-                    transaction.Rollback();
-                    //To do: Audit log for rollback transaction.
-                    return ("Transaction rolled back successfully.");
-                }
-                catch(MySqlException mysqlException)
-                {
-                    if (transaction.Connection != null)
+                    command.ExecuteNonQuery();
+                    long insertId = command.LastInsertedId;
+                    if(chatrels != null)
                     {
-                        return ("An exception of type " + mysqlException.GetType() +
-                        " was encountered while attempting to roll back the transaction.");
+                        foreach (var chatrel in chatrels)
+                        {
+                            chatrel.chatrelpaymentID = Convert.ToInt32(insertId);
+                            var cbuilder = new SqlQueryBuilder<GBChatrel>(chatrel);
+                            command.CommandText = cbuilder.GetInsertCommand().CommandText;
+                            int rows = command.ExecuteNonQuery();
+                        }
                     }
-                    return ("An exception of type " + mysqlException.GetType() +
-                        " was encountered while attempting to roll back the transaction.");
+                    if(gbChatrelDonation != null)
+                    {
+                        gbChatrelDonation.chatrelpaymentID = Convert.ToInt32(insertId);
+                        gbChatrelDonation.sChatrelReceiptNumber = chatrelPayment.sChatrelReceiptNumber;
+                        gbChatrelDonation.dtPayment = chatrelPayment.dtPayment;
+                        gbChatrelDonation.dtEntered = chatrelPayment.dtEntered;
+                        gbChatrelDonation.dtUpdated = chatrelPayment.dtUpdated;
+                        var dbuilder = new SqlQueryBuilder<GBChatrelDonation>(gbChatrelDonation);
+                        command.CommandText = dbuilder.GetInsertCommand().CommandText;
+                        int rows = command.ExecuteNonQuery();
+                    }
+                    var gbuilder = new SqlQueryBuilder<Greenbook>(greenbook);
+                    command.CommandText = gbuilder.GetUpdateCommand().CommandText;
+                    command.ExecuteNonQuery();
+                    transaction.Commit();
+                    //To do: Update GreenBook "sPaidUntil" column to reflect current paid upto status.
+                    return ("Records inserted successfully.");
+                }
+                catch (Exception ex)
+                {
+                    try
+                    {
+                        transaction.Rollback();
+                        //To do: Audit log for rollback transaction.
+                        return ("Transaction rolled back successfully.");
+                    }
+                    catch (MySqlException mysqlException)
+                    {
+                        if (transaction.Connection != null)
+                        {
+                            return ("An exception of type " + mysqlException.GetType() +
+                            " was encountered while attempting to roll back the transaction.");
+                        }
+                        return ("An exception of type " + mysqlException.GetType() +
+                            " was encountered while attempting to roll back the transaction.");
+                    }
                 }
             }
         }

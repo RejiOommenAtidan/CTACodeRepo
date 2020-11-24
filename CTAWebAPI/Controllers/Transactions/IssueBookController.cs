@@ -115,6 +115,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 {
                     issueBook.dtEntered = DateTime.Now;
                     issueBook.dtUpdated = DateTime.Now;
+                    issueBook.sFormNumber = issueBook.nFormNumber.ToString();
                     _issueBookRepository.Add(issueBook);
                     _madebRepository.UpdateTypeIssued(MadebId, nIssuedOrNotID);
                     #region Information Logging 

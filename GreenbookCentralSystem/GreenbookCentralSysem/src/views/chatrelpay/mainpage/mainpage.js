@@ -128,12 +128,7 @@ export default function MainPage () {
   
   const makePayment = (obj, data, outstanding)=> {
     console.log("Inside Make payment method for " , obj, data)
-    // const obj={
-    //   sGBID:sGBID,
-    //   from:'Chatrel for Family'
-    // }
     dispatch(storeCurrentGBDetails(obj));
-    
     history.push('/ChatrelPay/PaymentPage', {pymtData: data, outstanding});
   }
 
@@ -200,22 +195,38 @@ export default function MainPage () {
     }
   };
 
-  const verify = () => {
+  const verify = (e) => {
+    e.preventDefault()
     axios.get(`http://localhost:52013/api/ChatrelPayment/VerifyFriendDetails/?sGBID=${sFriendGBID}&sFirstName=${sFirstName}&sLastName=${sLastName}&dtDOB=${dtDOB}`)
     .then(resp => {
+      
       if(resp.status === 200){
         console.log(resp.data);
         if(resp.data === true){
-          makePayment({sGBID: sFriendGBID, sName: `${sFirstName} ${sLastName}`, sRelation: `Friend`, from:'Chatrel for Friend' })
+          axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sFriendGBID)
+          .then(resp => {
+            if (resp.status === 200) {
+              makePayment({sGBID: sFriendGBID, sName: `${sFirstName} ${sLastName}`, sRelation: `Friend`, from:'Chatrel for Friend' }, resp.data, resp.data.chatrelPayment.nChatrelTotalAmount)
+            }
+          })
+          .catch(error => {
+            console.log(error.message);
+          });
         }
         else{
           alert("Values don't match with database. Enter correct values.");
         }
       }
+      
+    
     })
     .catch(error => {
+        if(error.response.status === 400){
+          alert("Missing Parameters...");
+        }
         console.log(error.message);
-        console.log(error.config);
+        console.log(error);
+
     });
   };
   // const handleChangeIndex = (index) => {
@@ -424,6 +435,7 @@ export default function MainPage () {
         <TabPanel value={value} index={2} dir={theme.direction}>
         <br />
         <p style={{backgroundColor: "lightblue"}}>Pay for a friend</p>
+        <form onSubmit = {(e) => verify(e)}>
           <Grid container direction="column" alignContent="center" >
             
             <Grid item xs={12} sm={6}>
@@ -433,6 +445,7 @@ export default function MainPage () {
                   // InputProps={{inputProps: {style: minWidth = "50px"} }}
                   style={{minWidth: "250px"}}
                   onChange={(e) => {setFirstName(e.target.value)}}
+                  required
                 />
               </FormControl>
             </Grid>
@@ -442,6 +455,7 @@ export default function MainPage () {
                   label="Enter Last Name of Friend"
                   style={{minWidth: "250px"}}
                   onChange={(e) => {setLastName(e.target.value)}}
+                  required
                 />
               </FormControl>
             </Grid>
@@ -451,6 +465,7 @@ export default function MainPage () {
                   label="Enter GreenBook ID"
                   style={{minWidth: "250px"}}
                   onChange={(e) => {setFriendGBID(e.target.value)}}
+                  required
                 />
               </FormControl>
             </Grid>
@@ -464,15 +479,17 @@ export default function MainPage () {
                   style={{minWidth: "250px"}}
                   type="date"
                   onChange={(e) => {setDOB(e.target.value)}}
+                  required
                 />
               </FormControl>
             </Grid>
             
             <Grid item xs={12} sm={3}>
               <br />
-              <Button variant="outlined" color="primary" onClick={verify}>Verify &amp; Pay</Button>
+              <Button variant="outlined" color="primary" type="submit" >Verify &amp; Pay</Button>
             </Grid>
           </Grid>
+          </form>
         </TabPanel>
         <TabPanel value={value} index={3} dir={theme.direction}>
         <br />
@@ -482,27 +499,33 @@ export default function MainPage () {
         <TableHead>
           <TableRow>
             
-            <TableCell align="left" style={{width: "10%"}}>Receipt No.</TableCell>
-            <TableCell align="center" style={{width: "10%"}}>Date</TableCell>
-            <TableCell align="center" style={{width: "10%"}}>Period</TableCell>
-            <TableCell align="center" style={{width: "10%"}}>Name</TableCell>
-            <TableCell align="center" style={{width: "10%"}}>Relation</TableCell>
-            <TableCell align="center" style={{width: "10%"}}>Action</TableCell>
+            <TableCell align="left" style={{width: "8%"}}>Date</TableCell>
+            <TableCell align="center" style={{width: "13%"}}>Reciept No.</TableCell>
+            <TableCell align="center" style={{width: "8%"}}>Paid By GBID</TableCell>
+            <TableCell align="center" style={{width: "8%"}}>Paid for GBID</TableCell>
+            <TableCell align="center" style={{width: "16%"}}>Paid for Name</TableCell>
+            <TableCell align="center" style={{width: "8%"}}>Relation</TableCell>
+            <TableCell align="center" style={{width: "3%"}}>Currency</TableCell>
+            <TableCell align="center" style={{width: "8%"}}>Amount</TableCell>
+            <TableCell align="center" style={{width: "10%"}}>Mode</TableCell>
+            <TableCell align="center" style={{width: "10%"}}>Status</TableCell>
+
+
           </TableRow>
         </TableHead>
         {paymentHistory && <TableBody>
           {paymentHistory.map((row) => (
             <TableRow key={row.receiptNo}>
-              {/* <TableCell >{row.receiptNo}</TableCell>
-              <TableCell align="center">{row.date}</TableCell>
-              <TableCell align="center">{row.period}</TableCell>
-              <TableCell align="center">{row.paymentFor}</TableCell>
-              <TableCell align="center">{row.action}</TableCell> */}
-              <TableCell >{row.nChatrelRecieptNumber}</TableCell>
-              <TableCell align="center">{row.dtEntered.split('T'[0])}</TableCell>
-              <TableCell align="center">{Moment(row.dtPeriodFrom).format('YYYY')+' - '+Moment(row.dtPeriodTo).format('YYYY') }</TableCell>
-              <TableCell align="center">{row.sFirstName}</TableCell>
+              <TableCell align="center">{Moment(row.dtPayment).format("DD/MM/yyyy")}</TableCell>
+              <TableCell >{row.sChatrelReceiptNumber}</TableCell>
+              <TableCell >{row.sPaidByGBId}</TableCell>
+              <TableCell >{row.sGBIDPaidFor}</TableCell>
+              <TableCell >{row.sFirstName + ' ' + row.sLastName}</TableCell>
               <TableCell align="center">{row.sRelation}</TableCell>
+              <TableCell align="center">{row.sPaymentCurrency}</TableCell>
+              <TableCell align="center">{row.nChatrelTotalAmount}</TableCell>
+              <TableCell align="center">{row.sPaymentMode}</TableCell>
+              <TableCell align="center">{row.sPaymentStatus}</TableCell>
               <TableCell align="center"><input type="button" value="Download Receipt" onClick={()=>{getReceipt({nChatrelReceiptNumber: row.nChatrelRecieptNumber })}} /></TableCell>
               
             </TableRow>
@@ -582,6 +605,9 @@ export default function MainPage () {
     
         
       </Card>
+      <Grid item >
+              <Button variant='contained' color='primary' onClick={() => history.goBack()} >Go Back</Button>
+      </Grid>
     </>
   );
 }

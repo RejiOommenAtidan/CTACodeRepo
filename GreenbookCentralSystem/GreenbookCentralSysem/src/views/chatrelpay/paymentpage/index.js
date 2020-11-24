@@ -65,6 +65,8 @@ export default function PaymentPage  (props) {
   const [dataAPI, setDataAPI] = React.useState();
   const [summaryData, setSummaryData] = React.useState();
   const [paymentData, setPaymentData] = React.useState();
+  const [donationData, setDonationData] = React.useState();
+
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
@@ -77,6 +79,8 @@ export default function PaymentPage  (props) {
   const [shouldRun, setShouldRun] = React.useState(true);
   const [receiptNumber, setReceiptNumber] = React.useState('');
   const [outstanding, setOutstanding] = React.useState(true);
+  const [donationNull, setDonationNull] = React.useState(false);
+  const [gbChatrelsNull, setGBChatrelsNull] = React.useState(false);
   
   console.log("AuthRegions set in 'authRegions'", authRegions);
   console.log("Current Region set in 'authRegion'", authRegion);
@@ -137,7 +141,8 @@ export default function PaymentPage  (props) {
 
   const updateAuthRegion = (e, value) => {
     console.log("Auth region changed to ", value.id, "at row ", e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_')));
-    const index = e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_'));
+    //const index = e.currentTarget.id.substring(0, e.currentTarget.id.indexOf('_'));
+    const index = e.target.id.substring(0, e.target.id.indexOf('_'));
     let chatrelObj = [...paymentData];
     chatrelObj[index].nAuthRegionID = value.id;
     chatrelObj[index].sCountryID = value.sCountryID;
@@ -151,14 +156,23 @@ export default function PaymentPage  (props) {
 
 
 
-const modify =(index) =>{
+const modify =(target) =>{
+  console.log(target);
   let payObj = [...paymentData];
-  if(payObj[index].nCurrentChatrelSalaryAmt===0){
-    payObj[index].nCurrentChatrelSalaryAmt=50;
-    //setPaymentData(payObj);
+  let index = '';
+  if(target.type === 'text'){
+    index = parseInt(target.id);
+    payObj[index].nCurrentChatrelSalaryAmt = parseFloat(target.value) ? parseFloat(target.value) : 0 ;
   }
   else{
-    payObj[index].nCurrentChatrelSalaryAmt=0;
+    index = parseInt(target.value);
+    if(payObj[index].nCurrentChatrelSalaryAmt===0){
+      payObj[index].nCurrentChatrelSalaryAmt=50;
+      //setPaymentData(payObj);
+    }
+    else{
+      payObj[index].nCurrentChatrelSalaryAmt=0;
+    }
   }
   setPaymentData(payObj);
   calculate(index);
@@ -215,6 +229,7 @@ const calcTotal =(obj ,a,b)=>{
            const rateField = document.getElementById('rate');
            const totalField = document.getElementById('total');
            if(checkBox){
+              rateField.innerText = '';
               checkBox.checked = true;
               checkBox.disabled = true;
               setPaymentData(paymentData.map((element) => {
@@ -222,9 +237,10 @@ const calcTotal =(obj ,a,b)=>{
                 element.nCurrentChatrelSalaryAmt = 0;
                 return element;
               }));
-              rateField.innerText = '';
+              
               //totalField.innerText = '';
               setTotal(0.00);
+              setGBChatrelsNull(true);
            }
           
         }
@@ -246,6 +262,20 @@ const submit =(e) =>{
   let tempSummaryObj = summaryData;
   let payObj = [...paymentData];
   let lastindex =payObj.length-1;
+
+  let donationObj = donationData;
+  if(bdonation > 0 || adonation > 0){
+    donationObj.nChatrelAdditionalDonationAmt = adonation;
+    donationObj.nChatrelBusinessDonationAmt = bdonation;
+    donationObj.nAuthRegionID = payObj[lastindex].nAuthRegionID;
+    donationObj.sCountryID = payObj[lastindex].sCountryID;
+    donationObj.sAuthRegionCurrency = payObj[lastindex].sAuthRegionCurrency;
+    donationObj.sPaidByGBId = paidByGBID;
+    donationObj.nConversionRate = 1.00;
+  }
+  else{
+    donationObj = null;
+  }
 
   tempSummaryObj.nArrearsAmount= total- ( payObj[lastindex].nChatrelTotalAmount + bdonation+adonation);
   tempSummaryObj.nChatrelTotalAmount=total;
@@ -292,18 +322,27 @@ const submit =(e) =>{
   //   "gbChatrels": paymentData
   // };
 
+  if(gbChatrelsNull){
+    payObj = null;
+  }
+
+  if(donationNull){
+  
+  }
+
   let finalObj={
     "chatrelPayment": tempSummaryObj,
-    "gbChatrels": payObj
+    "gbChatrels": payObj,
+    "gbChatrelDonation": donationObj
   };
 
   console.log("Final Obj:" , finalObj);
   axios.post(`http://localhost:52013/api/ChatrelPayment/AddNewChatrelPayment`,finalObj)
   .then(resp => {
     if (resp.status === 200) {
-      
+      alert(resp.data);
+       history.goBack();
       console.log(resp.data); 
-      
     }
   })
   .catch(error => {
@@ -338,8 +377,11 @@ const submit =(e) =>{
             }
             setDataAPI(props.location.state.pymtData);
             setSummaryData(props.location.state.pymtData.chatrelPayment);
-            calcTotal(props.location.state.pymtData.gbChatrels, adonation, bdonation);
             setPaymentData(props.location.state.pymtData.gbChatrels);
+            setDonationData(props.location.state.pymtData.gbChatrelDonation);
+            calcTotal(props.location.state.pymtData.gbChatrels, adonation, bdonation);
+            
+
             fetch('https://api.ratesapi.io/api/latest?base=USD&symbols=INR')
                   .then(response => response.json())
                   .then(data => {
@@ -410,7 +452,7 @@ const submit =(e) =>{
     <Card  style={{  padding: 50 }} >
           <Grid container spacing={3}>
           <Grid item >
-              <Button variant='contained' color='primary' onClick={() => history.push('/ChatrelPay/MainPage')} >Go Back</Button>
+              <Button variant='contained' color='primary' onClick={() => history.goBack()} >Go Back</Button>
             </Grid>
             <Grid item xs={12} sm={12}> 
             <div className={classes.root}>
@@ -474,7 +516,7 @@ const submit =(e) =>{
                   getOptionLabel={(option) => option.sAuthRegion}
                   renderOption={(option) => (
                     <React.Fragment>
-                      <span>{option.sAuthRegion}</span>
+                      <span id={`${index}_id`}>{option.sAuthRegion}</span>
                     </React.Fragment>
                   )}
                   onChange={
@@ -508,7 +550,11 @@ const submit =(e) =>{
               {!outstanding && <> <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell> </>}
-              <TableCell align="center">{ <input id='employed' value= {index} onChange={(e)=>{modify(e.target.value)}} type="checkbox" disabled = {row.isChild}/>}</TableCell>
+              {(row.sAuthRegionCurrency === 'USD') &&
+              <TableCell align="center">{ <input id='employed' value= {index} onChange={(e)=>{modify(e.target)}} type="checkbox" disabled = {row.isChild}/>}</TableCell>}
+              {(row.sAuthRegionCurrency === 'INR') &&
+                <TableCell align="center">< input id={index} type = 'text' style={{maxWidth:'50px', border: 'none', borderBottom: '1px solid'}} onChange={(e)=>{modify(e.target)}} /></TableCell>
+              }
               <TableCell id='rate' align="center">{(dollarToRupees && row.sAuthRegionCurrency === 'USD') ? dollarToRupees.toFixed(4) : '-'}</TableCell>
               <TableCell id='total' align="right">{row.nChatrelTotalAmount.toFixed(2) }</TableCell>
             </TableRow>
