@@ -561,7 +561,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         // Message ready. Now to use smtp client to despatch message
                         SmtpClient smtpClient = new SmtpClient();
                         smtpClient.Connect("smtp-mail.outlook.com", 25, false);
-                        smtpClient.Authenticate("malay.doshi@atidan.com", sEmailPwd);
+                        smtpClient.Authenticate(email.sFrom, sEmailPwd);
                         smtpClient.Send(message);
                         smtpClient.Disconnect(true);
                         smtpClient.Dispose();
