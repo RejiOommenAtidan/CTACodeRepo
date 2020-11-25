@@ -26,7 +26,9 @@ namespace CTAWebAPI.Controllers.Transactions
     [ApiController]
     public class MadebController : ControllerBase
     {
-        private static string sEmailPwd = "M@lay@123";
+        
+
+        
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly MadebRepository _madebRepository;
@@ -542,6 +544,13 @@ namespace CTAWebAPI.Controllers.Transactions
                     //TODO: remove mail details as given by client afwrds
                     if (ModelState.IsValid)
                     {
+                        //string sEmail = CTAConfigRepository.GetValueByKey("CTAAdminEmail").ToString();
+                        string sEmailPwd = CTAConfigRepository.GetValueByKey("CTAAdminEmailPassword").ToString();
+                        string sEmailRelayServer = CTAConfigRepository.GetValueByKey("CTAEmailRelayServer").ToString();
+                        int nPort = Convert.ToInt32(CTAConfigRepository.GetValueByKey("CTAEmailServerPort"));
+                        bool bUseSSL = Convert.ToBoolean(CTAConfigRepository.GetValueByKey("CTAEmailUseSSL"));
+
+
                         MimeMessage message = new MimeMessage();
                         MailboxAddress from = new MailboxAddress("CTA Team", email.sFrom);
                         MailboxAddress to = new MailboxAddress(email.sName, email.sReceiver);
@@ -558,9 +567,15 @@ namespace CTAWebAPI.Controllers.Transactions
                         message.Body = messageBody.ToMessageBody();
                         message.Date = DateTime.Now;
 
+
+
                         // Message ready. Now to use smtp client to despatch message
+
+                         
+
+
                         SmtpClient smtpClient = new SmtpClient();
-                        smtpClient.Connect("smtp-mail.outlook.com", 25, false);
+                        smtpClient.Connect(sEmailRelayServer, nPort, bUseSSL);
                         smtpClient.Authenticate(email.sFrom, sEmailPwd);
                         smtpClient.Send(message);
                         smtpClient.Disconnect(true);
