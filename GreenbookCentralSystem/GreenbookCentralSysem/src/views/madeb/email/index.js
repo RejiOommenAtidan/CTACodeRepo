@@ -36,7 +36,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     const [formNumber, setFormNumber] = React.useState(props.emailInObj.nFormNumber);
     const [name, setName] = React.useState(props.emailInObj.sName);
     const [recipient, setRecipient] = React.useState('');
-    const [sender, setSender] = React.useState('dataunit@tibet.net');
+    const [sender, setSender] = React.useState('malay.doshi@atidan.com');
     const [subject, setSubject] = React.useState(madebName+' case no: '+formNumber.toString()+'  Name: '+ name);
     const [body, setBody] = React.useState(madebName +' case no:'+formNumber.toString()+' \nName: '+ name +'\nPostal Address:');
     
@@ -86,7 +86,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
                                               type="text"
                                               required = {true}   
                                               InputProps={{
-                                                  readOnly: false,
+                                                  // readOnly: true,
+                                                  disabled:true
                                               }} 
                                              // className={props.classes.textField}
                                               value={sender}
