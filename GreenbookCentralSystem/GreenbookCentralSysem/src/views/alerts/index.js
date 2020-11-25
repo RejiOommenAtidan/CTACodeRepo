@@ -13,7 +13,7 @@ const theme = createMuiTheme({
     secondary: {
       main: '#11cb5f'
     },
-  }
+  },
 });
 
 function Alert(props) {
@@ -26,10 +26,18 @@ export const Alerts = (props) => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Snackbar open={props.snackbar} autoHideDuration={2000} onClose={props.snackbarClose} >
-          <Alert onClose={props.snackbarClose} severity={alertType}>
+        <Snackbar open={props.snackbar} autoHideDuration={3000} onClose={props.snackbarClose} >
+          {/*<Alert onClose={props.snackbarClose} severity={alertType}>
             {alertMessage}
+          </Alert>*/}
+          <Alert className="alerts-alternate mb-4" severity={alertType}>
+            <div className="d-flex align-items-center align-content-start">
+              <span>
+                <strong className="d-block">{alertType.charAt(0).toUpperCase() + alertType.slice(1)+'!'}</strong> {alertMessage}
+              </span>
+            </div>
           </Alert>
+
         </Snackbar>
       </ThemeProvider>
     </>
