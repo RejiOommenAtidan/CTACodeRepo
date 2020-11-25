@@ -13,7 +13,7 @@ const theme = createMuiTheme({
     secondary: {
       main: '#11cb5f'
     },
-  },
+  }
 });
 
 function Alert(props) {
