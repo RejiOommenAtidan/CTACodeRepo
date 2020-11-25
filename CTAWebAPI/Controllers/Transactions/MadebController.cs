@@ -26,6 +26,7 @@ namespace CTAWebAPI.Controllers.Transactions
     [ApiController]
     public class MadebController : ControllerBase
     {
+        private static string sEmailPwd = "M@lay@123";
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly MadebRepository _madebRepository;
@@ -538,18 +539,21 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 try
                 {
+                    //TODO: remove mail details as given by client afwrds
                     if (ModelState.IsValid)
                     {
                         MimeMessage message = new MimeMessage();
                         MailboxAddress from = new MailboxAddress("CTA Team", email.sFrom);
                         MailboxAddress to = new MailboxAddress(email.sName, email.sReceiver);
-
+                        //MailboxAddress toCC = new MailboxAddress("Razor Tech", "malay.doshi@razor-tech.com");
                         BodyBuilder messageBody = new BodyBuilder();
                         messageBody.TextBody = email.sBody;
 
 
                         message.From.Add(from);
                         message.To.Add(to);
+                        //CC Section
+                        message.Cc.Add(to);
                         message.Subject = email.sSubject;
                         message.Body = messageBody.ToMessageBody();
                         message.Date = DateTime.Now;
@@ -557,7 +561,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         // Message ready. Now to use smtp client to despatch message
                         SmtpClient smtpClient = new SmtpClient();
                         smtpClient.Connect("smtp-mail.outlook.com", 25, false);
-                        smtpClient.Authenticate("rajen.parekh@outlook.com", "");
+                        smtpClient.Authenticate("malay.doshi@atidan.com", sEmailPwd);
                         smtpClient.Send(message);
                         smtpClient.Disconnect(true);
                         smtpClient.Dispose();
