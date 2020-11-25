@@ -26,9 +26,9 @@ namespace CTAWebAPI.Controllers.Transactions
     [ApiController]
     public class MadebController : ControllerBase
     {
-        
 
-        
+
+
         #region Constructor
         private readonly DBConnectionInfo _info;
         private readonly MadebRepository _madebRepository;
@@ -80,7 +80,7 @@ namespace CTAWebAPI.Controllers.Transactions
             try
             {
                 IEnumerable<Madeb> madebs = _madebRepository.GetAllMadebs();
-                if(madebs.Count() > 0)
+                if (madebs.Count() > 0)
                 {
                     #region Information Logging 
                     string sActionType = Enum.GetName(typeof(Operations), 2);
@@ -137,10 +137,11 @@ namespace CTAWebAPI.Controllers.Transactions
                     #endregion
                     return Ok(madeb);
                 }
-                else {
+                else
+                {
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -151,14 +152,14 @@ namespace CTAWebAPI.Controllers.Transactions
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
                 string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,ex.StackTrace);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
         }
-        
+
 
         [HttpGet("GetMadebsByType/MadebType={madebType}")]
         [Route("[action]")]
@@ -168,7 +169,7 @@ namespace CTAWebAPI.Controllers.Transactions
             try
             {
                 IEnumerable<Madeb> madebs = _madebRepository.GetMadebsByType(madebType);
-                if(madebs.Count() > 0)
+                if (madebs.Count() > 0)
                 {
                     #region Information Logging 
                     string sActionType = Enum.GetName(typeof(Operations), 2);
@@ -186,7 +187,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 {
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -213,7 +214,7 @@ namespace CTAWebAPI.Controllers.Transactions
             try
             {
                 Madeb madeb = _madebRepository.GetMadebByFormNumber(formNumber);
-                if(madeb != null)
+                if (madeb != null)
                 {
                     #region Information Logging 
                     string sActionType = Enum.GetName(typeof(Operations), 2);
@@ -241,7 +242,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
                 string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,ex.StackTrace);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -285,7 +286,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
                 string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,ex.StackTrace);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, ex.StackTrace);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -307,7 +308,7 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-            
+
         }
 
         [HttpGet("GetMadebforIssueBook/GBId={GBId}")]
@@ -336,11 +337,11 @@ namespace CTAWebAPI.Controllers.Transactions
                     madeb.dtEntered = DateTime.Now;
                     madeb.dtUpdated = DateTime.Now;
                     string result = _madebRepository.Add(madeb);
-                    if(result == "GBID does not exist.")
+                    if (result == "GBID does not exist.")
                     {
                         return NotFound(String.Format("GBID {0} does not exist.", madeb.sGBID));
                     }
-                    if(result == "Insert Failed")
+                    if (result == "Insert Failed")
                     {
                         return StatusCode(StatusCodes.Status500InternalServerError, result);
                     }
@@ -373,7 +374,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
                 string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,ex.StackTrace, madeb.nEnteredBy);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, ex.StackTrace, madeb.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -433,7 +434,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, null, madeb.nUpdatedBy);
                         #endregion
 
-                        
+
                         return Ok("Madeb with ID: " + Id + " updated Successfully");
                     }
                     else
@@ -458,7 +459,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
                 string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,ex.StackTrace, madeb.nEnteredBy);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, ex.StackTrace, madeb.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -483,7 +484,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         Madeb fetchedMadeb = _madebRepository.GetMadebById(madebID);
                         //if (JsonConvert.SerializeObject(madeb) == JsonConvert.SerializeObject(fetchedMadeb))
-                        if(madeb.Id == fetchedMadeb.Id)
+                        if (madeb.Id == fetchedMadeb.Id)
                         {
                             _madebRepository.Delete(fetchedMadeb);
                             #region Alert Logging 
@@ -523,7 +524,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 string currentMethodName = MethodBase.GetCurrentMethod().Name;
                 string sDescription = "Exception in " + currentMethodName;
                 CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription,ex.StackTrace, madeb.nEnteredBy);
+                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, ex.StackTrace, madeb.nEnteredBy);
                 #endregion
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -537,7 +538,7 @@ namespace CTAWebAPI.Controllers.Transactions
         [Route("[action]")]
         public IActionResult SendEmail(EmailSent email)
         {
-            if(email != null)
+            if (email != null)
             {
                 try
                 {
@@ -545,34 +546,28 @@ namespace CTAWebAPI.Controllers.Transactions
                     if (ModelState.IsValid)
                     {
                         //string sEmail = CTAConfigRepository.GetValueByKey("CTAAdminEmail").ToString();
+                        string sEmailCC = CTAConfigRepository.GetValueByKey("CTAEmailCC").ToString();
                         string sEmailPwd = CTAConfigRepository.GetValueByKey("CTAAdminEmailPassword").ToString();
                         string sEmailRelayServer = CTAConfigRepository.GetValueByKey("CTAEmailRelayServer").ToString();
                         int nPort = Convert.ToInt32(CTAConfigRepository.GetValueByKey("CTAEmailServerPort"));
                         bool bUseSSL = Convert.ToBoolean(CTAConfigRepository.GetValueByKey("CTAEmailUseSSL"));
 
-
                         MimeMessage message = new MimeMessage();
                         MailboxAddress from = new MailboxAddress("CTA Team", email.sFrom);
                         MailboxAddress to = new MailboxAddress(email.sName, email.sReceiver);
-                        //MailboxAddress toCC = new MailboxAddress("Razor Tech", "malay.doshi@razor-tech.com");
+                        MailboxAddress toCC = new MailboxAddress("CTA Team CC", sEmailCC);
                         BodyBuilder messageBody = new BodyBuilder();
                         messageBody.TextBody = email.sBody;
-
 
                         message.From.Add(from);
                         message.To.Add(to);
                         //CC Section
-                        message.Cc.Add(to);
+                        message.Cc.Add(toCC);
                         message.Subject = email.sSubject;
                         message.Body = messageBody.ToMessageBody();
                         message.Date = DateTime.Now;
 
-
-
                         // Message ready. Now to use smtp client to despatch message
-
-                         
-
 
                         SmtpClient smtpClient = new SmtpClient();
                         smtpClient.Connect(sEmailRelayServer, nPort, bUseSSL);
@@ -583,9 +578,9 @@ namespace CTAWebAPI.Controllers.Transactions
                         return Ok("Email sent successfully.");
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "There was internal server error sending your email.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
                 }
             }
 
@@ -612,7 +607,8 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Get Madeb to Feature Mapping
-        private int GetMadebFeatureMapping(int? nMadebTypeID) {
+        private int GetMadebFeatureMapping(int? nMadebTypeID)
+        {
 
             string sMadebId = nMadebTypeID.ToString();
             MadebType fetchedMadebType = _madebTypeRepository.GetMadebTypeById(sMadebId);

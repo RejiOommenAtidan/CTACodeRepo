@@ -753,7 +753,7 @@ export default function SearchPage() {
                         margin="normal"
                         id="id_dtDOB"
                         label="DOB"
-                        format="MM/dd/yyyy"
+                        format="dd/mm/yyyy"
                         onChange={(date) => { setDob(date) }}
                         value={dob}
                         KeyboardButtonProps={{
