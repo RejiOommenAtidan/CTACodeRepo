@@ -7,9 +7,10 @@ export default {
     blue: '#3d65b0',
     blackText: '#6e6e6e',
     blackTextAPI: '#2e2e2e',
-    buttonYellow:'#ebca17',
+    buttonYellow: '#ebca17',
     ChatrelInfoBlue: '#3d65b0',
     ChatrelYearGreen: '#168b44',
     ChatrelScreensBGColor: '#f6f6f6',
-    blueCardColor:'#aef4ff'
+    blueCardColor: '#aef4ff',
+    darkYellowFamilyPage: '#eb920d'
 };

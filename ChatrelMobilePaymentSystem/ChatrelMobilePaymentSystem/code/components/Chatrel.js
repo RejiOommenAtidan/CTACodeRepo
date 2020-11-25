@@ -6,6 +6,9 @@ import axios from 'axios';
 import Moment from 'moment';
 import Colors from '../constants/Colors';
 // import { sDateFormat } from '../constants/CommonConfig';
+import RNPaypal from 'react-native-paypal-lib';
+// import { requestOneTimePayment, requestBillingAgreement } from 'react-native-paypal';
+import { sPayPalClientID } from '../constants/CommonConfig';
 
 export const Chatrel = props => {
     const [sName, setsName] = useState("");
@@ -82,23 +85,66 @@ export const Chatrel = props => {
         setnGrandTotal(temptotal);
     };
 
-    const handlSubmit = () => {
-        let tempSummaryObj = {};
-        let oPayment = [...aGBChatrels];
-        let lastindex = oPayment.length - 1;
+    const handlSubmit = async () => {
+        // let tempSummaryObj = {};
+        // let oPayment = [...aGBChatrels];
+        // let lastindex = oPayment.length - 1;
 
-        tempSummaryObj.nArrearsAmount = nGrandTotal - (oPayment[lastindex].nChatrelDue + nBusinessDonation + nAdditionalDonation);
-        tempSummaryObj.nChatrelTotalAmount = nGrandTotal;
-        tempSummaryObj.nChatrelSalaryAmt = oPayment[lastindex].nChatrelSalaryAmt;
-        tempSummaryObj.nChatrelBusinessDonationAmt = nBusinessDonation;
-        tempSummaryObj.nChatrelAdditionalDonationAmt = nAdditionalDonation;
-        tempSummaryObj.sPaidByGBId = "1234567";
+        // tempSummaryObj.nArrearsAmount = nGrandTotal - (oPayment[lastindex].nChatrelDue + nBusinessDonation + nAdditionalDonation);
+        // tempSummaryObj.nChatrelTotalAmount = nGrandTotal;
+        // tempSummaryObj.nChatrelSalaryAmt = oPayment[lastindex].nChatrelSalaryAmt;
+        // tempSummaryObj.nChatrelBusinessDonationAmt = nBusinessDonation;
+        // tempSummaryObj.nChatrelAdditionalDonationAmt = nAdditionalDonation;
+        // tempSummaryObj.sPaidByGBId = "1234567";
 
-        let finalObj = {
-            "chatrelPayment": tempSummaryObj,
-            "gbChatrels": aGBChatrels
-        }
-        console.log("Final Obj:", finalObj)
+        // let finalObj = {
+        //     "chatrelPayment": tempSummaryObj,
+        //     "gbChatrels": aGBChatrels
+        // }
+        // console.log("Final Obj:", finalObj)
+
+        RNPaypal.paymentRequest({
+            clientId: sPayPalClientID,
+            environment: RNPaypal.ENVIRONMENT.NO_NETWORK,
+            intent: RNPaypal.INTENT.SALE,
+            price: 106.23,
+            currency: 'ILS',
+            description: `Android Testing`,
+            acceptCreditCards: true
+        }).then(response => {
+            alert(response);
+            console.log(response);
+        }).catch(err => {
+            console.log(err);
+            if (err == RNPaypal.USER_CANCELLED) {
+                // User didn't complete the payment
+                alert("User cancelled");
+            } else if (err == RNPaypal.INVALID_CONFIG) {
+                alert("Invalid Details Sent to PayPal");
+            }
+        });
+
+        // const {
+        //     nonce,
+        //     payerId,
+        //     email,
+        //     firstName,
+        //     lastName,
+        //     phone
+        // } = await requestOneTimePayment(
+        //   sPayPalClientID,
+        //   {
+        //     amount: '5', // required
+        //     // any PayPal supported currency (see here: https://developer.paypal.com/docs/integration/direct/rest/currency-codes/#paypal-account-payments)
+        //     currency: 'USD',
+        //     // any PayPal supported locale (see here: https://braintree.github.io/braintree_ios/Classes/BTPayPalRequest.html#/c:objc(cs)BTPayPalRequest(py)localeCode)
+        //     localeCode: 'en_GB', 
+        //     shippingAddressRequired: false,
+        //     userAction: 'commit', // display 'Pay Now' on the PayPal review page
+        //     // one of 'authorize', 'sale', 'order'. defaults to 'authorize'. see details here: https://developer.paypal.com/docs/api/payments/v1/#payment-create-request-body
+        //     intent: 'sale', 
+        //   }
+        // );
     };
 
     useEffect(() => {
@@ -300,7 +346,7 @@ export const Chatrel = props => {
                     </View>
                     <View style={styles.paypalButtonContainer}>
                         <Button
-                            title="PayPal Button"
+                            title="Make Payment"
                             type={"solid"}
                             onPress={() => { handlSubmit() }}
                         />
@@ -374,24 +420,24 @@ const styles = StyleSheet.create({
         height: 25,
         width: 175
     },
-    yearContainer:{
-        marginBottom:5
+    yearContainer: {
+        marginBottom: 5
     },
-    additionalDonationContainer:{
-        marginTop:5,
-        marginBottom:5
+    additionalDonationContainer: {
+        marginTop: 5,
+        marginBottom: 5
     },
-    additionalDonationComponent:{},
-    businessDonationContainer:{
-        marginBottom:5
+    additionalDonationComponent: {},
+    businessDonationContainer: {
+        marginBottom: 5
     },
-    businessDonationComponent:{},
-    grandTotalComponent:{},
-    grandTotalCotainer:{
-        marginBottom:10
+    businessDonationComponent: {},
+    grandTotalComponent: {},
+    grandTotalCotainer: {
+        marginBottom: 10
     },
-    paypalButtonContainer:{
-        marginVertical:10
+    paypalButtonContainer: {
+        marginVertical: 10
     },
-    paypalButtonComponent:{}
+    paypalButtonComponent: {}
 });

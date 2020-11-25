@@ -20,7 +20,7 @@ export const FriendChatrelScreen = (props) => {
 export const FriendChatrelScreenOptions = navData => {
   return {
     headerTitle: 'Friend Chatrel',
-    headerLeft:() => {
+    headerLeft: () => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
@@ -30,7 +30,7 @@ export const FriendChatrelScreenOptions = navData => {
           }}
         />
       </HeaderButtons>
-        }
+    }
   };
 };
 

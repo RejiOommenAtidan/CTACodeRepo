@@ -30,7 +30,7 @@ export const FamilyChatrelScreenOptions = navData => {
           }}
         />
       </HeaderButtons>
-        }
+    }
   };
 };
 
