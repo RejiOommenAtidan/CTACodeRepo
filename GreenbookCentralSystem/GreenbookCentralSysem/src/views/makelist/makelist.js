@@ -136,14 +136,14 @@ export default () => {
       title: "Sr No.",
       headerStyle: {
         padding:'0px',
-        width:'4%',
-        textAlign:'right'
+        width:'7%',
+        textAlign:'left'
       },
       cellStyle: {
        // padding:'0px',
-        padding:'10px',
-        width:'4%',
-        textAlign:'center'
+        padding:'0px',
+        width:'7%',
+        textAlign:'left'
       }
     },
     {

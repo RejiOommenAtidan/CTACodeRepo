@@ -227,11 +227,20 @@ export default function SearchPage() {
   }
   const columns = [
     {
-      field: "id",
+      field: "nSerialNo",
       title: "Sr No.",
-      hidden: true,
+      hidden: false,
+      headerStyle: {
+        padding: '0px',
+        width: '3%',
+        textAlign: 'left'
+      },
       cellStyle: {
-        padding: '5px',
+        // padding:'0px',
+
+        width: '3%',
+        textAlign: 'left'
+
       },
     },
     {
@@ -258,13 +267,13 @@ export default function SearchPage() {
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '0px',
-        width: '7%',
+        width: '5%',
         textAlign: 'left'
       },
       cellStyle: {
         // padding:'0px',
 
-        width: '7%',
+        width: '5%',
         textAlign: 'left'
 
       },
@@ -311,13 +320,13 @@ export default function SearchPage() {
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '0px',
-        width: '7%',
+        width: '10%',
         textAlign: 'left'
       },
       cellStyle: {
         // padding:'0px',
-        padding: '10px',
-        width: '7%',
+        padding: '0px',
+        width: '10%',
         textAlign: 'left'
 
       },
@@ -345,13 +354,13 @@ export default function SearchPage() {
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '0px',
-        width: '7%',
+        width: '3%',
         textAlign: 'left'
       },
       cellStyle: {
         // padding:'0px',
-        padding: '10px',
-        width: '7%',
+        padding: '5px',
+        width: '3%',
         textAlign: 'left'
 
       },
@@ -442,9 +451,12 @@ export default function SearchPage() {
       axios.post(`Greenbook/GetQuickResult`, simpleObj)
         .then(resp => {
           if (resp.status === 200) {
-
-            console.log(resp.data);
-
+            let i = 1;
+          //  console.log(resp.data);
+            resp.data.forEach((element) => {
+              element.nSerialNo = i;
+              i++;
+            })
             setdataFromAPI(resp.data);
             setisLoading(false);
           }
@@ -515,7 +527,13 @@ export default function SearchPage() {
       .then(resp => {
         if (resp.status === 200) {
 
-          console.log(resp.data);
+          let i = 1;
+            console.log(resp.data);
+            resp.data.forEach((element) => {
+              element.nSerialNo = i;
+              i++;
+            })
+
 
           setdataFromAPI(resp.data);
           setisLoading(false);
