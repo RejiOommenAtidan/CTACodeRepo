@@ -345,7 +345,7 @@ const handleLatestSubmit = (sGBID) =>{
             {latestData.map((row1, index) => (
             <tr>
              
-                <td >{row1.dtReceived ? Moment(row1.dtReceived).format('YYYY-MM-DD') : ''}</td>
+                <td >{row1.dtReceived ? Moment(row1.dtReceived).format('DD-MM-YYYY') : ''}</td>
                
                 <td>{row1.sGBID} </td>
                 <td>{row1.sMadebDisplayName}</td>

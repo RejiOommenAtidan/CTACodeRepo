@@ -441,8 +441,8 @@ const editAPICall = (obj) =>{
                             <tr>
                                 <td scope="row">{index+1}</td>
                                
-                                <td scope="row">{row.dtIssuedDate ? Moment(row.dtIssuedDate).format('YYYY-MM-DD') : ''}</td>
-                                <td scope="row">{row.dtEntered ? Moment(row.dtEntered).format('YYYY-MM-DD HH:mm:ss') : ''}</td>
+                                <td scope="row">{row.dtIssuedDate ? Moment(row.dtIssuedDate).format('DD-MM-YYYY') : ''}</td>
+                                <td scope="row">{row.dtEntered ? Moment(row.dtEntered).format('DD-MM-YYYY HH:mm:ss') : ''}</td>
                              
                                 <td scope="row">{row.sMadebDisplayName}</td>
                                 <td scope="row">{row.sAuthRegion}</td>
@@ -480,7 +480,7 @@ const editAPICall = (obj) =>{
                             {pendingData.map((row1, index) => (
                             <tr>
                              
-                                <td scope="row">{row1.dtReceived ? Moment(row1.dtReceived).format('YYYY-MM-DD') : ''}</td>
+                                <td scope="row">{row1.dtReceived ? Moment(row1.dtReceived).format('DD-MM-YYYY') : ''}</td>
                                
                              
                                 <td scope="row">{row1.sMadebDisplayName}</td>
