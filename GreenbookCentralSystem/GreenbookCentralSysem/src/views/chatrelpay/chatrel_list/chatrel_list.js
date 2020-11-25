@@ -6,6 +6,8 @@ import {
   Link,
   Button
 } from '@material-ui/core';
+import {useHistory, NavLink} from 'react-router-dom';
+
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,12 +18,12 @@ import Moment from 'moment';
 import MaterialTable from 'material-table';
 import IconButton from '@material-ui/core/IconButton';
 import EmailIcon from '@material-ui/icons/Email';
-import { EmailDialog } from '../email';
+
 import { Alerts } from '../../alerts';
-import { AddDialog, EditDialog } from './dialog';
-import { ViewDialog } from '../../search/dialog';
-import { oOptions, oTableIcons, sDateFormat } from '../../config/commonConfig';
-import MyComp from '../../common/filtercomponent';
+//import { AddDialog, EditDialog } from './dialog';
+//import { ViewDialog } from '../../search/dialog';
+import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
+//import MyComp from '../../common/filtercomponent';
 
 const tableIcons = oTableIcons;
 
@@ -73,9 +75,12 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function ChatrelTable(){
+export default function ChatrelList(){
 
   const classes = useStyles();
+  const history = useHistory();
+
+
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   const [selectData, setSelectData] = useState([]);
@@ -108,31 +113,17 @@ export default function ChatrelTable(){
       title: "Sr No.",
       hidden: true,
     },
-    
+    {
+      field: "dtPayment",
+      title: "Date",
+      cellStyle: {
+        padding: '5px'
+      },
+      render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
+    },
     {
       field: "sGBId",
       title: "GreenBook Id",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      field: "sFirstName",
-      title: "First Name",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      field: "sAuthRegion",
-      title: "Authority Region",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      field: "sPaymentCurrency",
-      title: "Additional Donation",
       cellStyle: {
         padding: '5px'
       },
@@ -152,97 +143,71 @@ export default function ChatrelTable(){
       },
     },
     {
-      field: "nChatrelAmount",
-      title: "Chatrel Basic",
+      field: "sPaymentCurrency",
+      title: "Currency",
       cellStyle: {
         padding: '5px'
       },
-    },
-    {
-      field: "nChatrelMeal",
-      title: "Meal",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      field: "nChatrelSalaryAmt",
-      title: "Salary",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      field: "dtArrearsFrom",
-      title: "Arrears From",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      field: "dtArrearsTo",
-      title: "Arrears To",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      field: "nArrearsAmount",
-      title: "Arrears",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      field: "nChatrelBusinessDonationAmt",
-      title: "Business Donation",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      field: "nChatrelAdditionalDonationAmt",
-      title: "Additional Donation",
-      cellStyle: {
-        padding: '5px'
-      },
+      hidden: true
     },
     {
       field: "nChatrelTotalAmount",
-      title: "Additional Donation",
+      title: "Chatrel Amount",
       cellStyle: {
         padding: '5px'
       },
+      render : rowData => rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelTotalAmount']}` : `$ ${rowData['nChatrelTotalAmount']}`
     },
     {
-      field: "nChatrelRecieptNumber",
-      title: "Additional Donation",
+      field: "sChatrelReceiptNumber",
+      title: "Receipt Number",
       cellStyle: {
         padding: '5px'
       },
     },
-    {
-      field: "sCountryID",
-      title: "Additional Donation",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
+    
     {
       field: "sPaymentStatus",
-      title: "Additional Donation",
+      title: "Payment Status",
       cellStyle: {
         padding: '5px'
       },
     },
     {
       field: "sPaymentMode",
-      title: "Additional Donation",
+      title: "Payment Mode",
       cellStyle: {
         padding: '5px'
       },
     },
-    
+    {
+      field: "sPayPal_ID",
+      title: "PayPal ID",
+      cellStyle: {
+        padding: '5px'
+      },
+    },
+    {
+      field: "sPayPal_Status",
+      title: "PayPal Status",
+      cellStyle: {
+        padding: '5px'
+      },
+    },
+    {
+      field: "sPayPal_Currency_Code",
+      title: "PayPal Currency",
+      cellStyle: {
+        padding: '5px'
+      },
+    },
+    {
+      field: "sPayPal_Currency_Value",
+      title: "PayPal Amount",
+      cellStyle: {
+        padding: '5px'
+      },
+    },
     
     
     
@@ -251,16 +216,17 @@ export default function ChatrelTable(){
 
 
   useEffect(() => {
-    axios.get(``)
+    axios.get(`ChatrelPayment/GetAllChatrelPayments`)
     .then(resp => {
       if (resp.status === 200) {
+        console.log("Chatrel List", resp.data);
         setdataAPI(resp.data);
-        selectDatafunction();
+        
         setisLoading(false);
       }
     })
     .catch(error => {
-      console.log(error.config);
+      console.log(error.message);
       setisLoading(false);
     });
     
@@ -274,7 +240,7 @@ export default function ChatrelTable(){
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
             icons={tableIcons}
-            title="Book Full Madeb"
+            title="Chatrel Payment List"
 
             columns={columns}
             data={dataAPI}
@@ -282,9 +248,9 @@ export default function ChatrelTable(){
             actions={[
               {
                 icon: AddBox,
-                tooltip: 'Add Book Full Madeb',
+                tooltip: 'Add a Payment',
                 isFreeAction: true,
-                onClick: () => setAddModal(true)
+                onClick: () => history.push('/ChatrelPay')
               },
               {
                 icon: Search,
@@ -294,14 +260,14 @@ export default function ChatrelTable(){
               }
             ]}
           />
-          {editModal && <EditDialog
+          {/* {editModal && <EditDialog
             editModal={editModal}
             selectData={selectData}
             classes={classes}
             handleEditClickClose={handleEditClickClose}
             editAPICall={editAPICall}
-            bookFullObj={bookFullObj}
-          />}
+            chatrelObj={chatrelObj}
+          />} */}
           {snackbar && <Alerts
             alertObj={alertObj}
             snackbar={snackbar}

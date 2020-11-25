@@ -16,6 +16,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import {useSelector} from 'react-redux';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -26,9 +27,12 @@ function Alert(props) {
 }
 
 export const EditDialog = (props) => {
+  debugger
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, errors } = useForm();
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [nAuthRegionId, setAuthRegionId] = React.useState(props.countryObj.nDefaultAuthRegion);
+  const [authRegions, setAuthRegions] = React.useState(props.authRegions);
 
   const snackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -36,7 +40,14 @@ export const EditDialog = (props) => {
     }
     setSnackbarOpen(false);
   };
-
+  console.log("nAuthRegionId is ", nAuthRegionId);
+  let valueAuthRegion = [];
+  authRegions && authRegions.forEach(element => {
+    if (element.id === nAuthRegionId) {
+      valueAuthRegion = element;
+    }
+    console.log("ValueAuthRegion is", valueAuthRegion);
+  });
   const handleSubmitEditRecord = () => {
     //props.editAPICall(madeb);
     props.editAPICall(
@@ -86,6 +97,53 @@ export const EditDialog = (props) => {
                     {_.get("sCountry.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
                     )}
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} >
+                  <FormControl className={props.classes.formControl}>
+                  <Autocomplete
+
+                    openOnFocus
+                    clearOnEscape
+                    autoComplete = {true}
+                    autoHighlight = {true}
+                    onChange={
+                      (e, value) => {
+                        if (value !== null) {
+                          console.log("AuthRegion id changed to:", value.id);
+                          setAuthRegionId(value.id);
+                        }
+                        else {
+                          setAuthRegionId(0);
+                        }
+                      }
+                    }
+                    style={{ width: 180 }}
+                value={valueAuthRegion}
+                id="id_nAuthorityId"
+                options={authRegions}
+                
+                getOptionLabel={(option) => option.sAuthRegion}
+                renderOption={(option) => (
+                  <React.Fragment>
+                    <span>{option.sAuthRegion}</span>
+                  </React.Fragment>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Authority Region"
+                    //className={props.classes.textField}
+                    variant="standard"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: 'new-password', // disable autocomplete and autofill
+                    }}
+                  />
+                )}
+              />
+              
+                 
                   </FormControl>
                 </Grid>
               </Grid>

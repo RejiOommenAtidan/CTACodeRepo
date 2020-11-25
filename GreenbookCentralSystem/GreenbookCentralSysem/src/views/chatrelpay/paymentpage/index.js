@@ -21,7 +21,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useSelector} from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
+import { Alerts } from '../../alerts';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,7 +54,20 @@ export default function PaymentPage  (props) {
   // Heading
   const pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
 
-  
+  //Alert
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  }
+  const [snackbar, setSnackbar] = React.useState(false);
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  }
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
 
   
 
@@ -342,8 +355,11 @@ const submit =(e) =>{
   axios.post(`http://localhost:52013/api/ChatrelPayment/AddNewChatrelPayment`,finalObj)
   .then(resp => {
     if (resp.status === 200) {
-      alert(resp.data);
-       history.goBack();
+      //alert(resp.data);
+      setAlertMessage('Chatrel recorded successfully.');
+      setAlertType('success');
+      snackbarOpen();
+      history.goBack();
       console.log(resp.data); 
     }
   })
@@ -624,7 +640,12 @@ const submit =(e) =>{
           </Grid>
       
       
-    
+          {snackbar && <Alerts
+            alertObj={alertObj}
+            snackbar={snackbar}
+            snackbarClose={snackbarClose}
+          />
+          }
         
       </Card>
       </>
