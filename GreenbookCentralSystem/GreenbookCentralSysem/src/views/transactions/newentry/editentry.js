@@ -440,6 +440,7 @@ export default function EditEntry(props) {
             )
             .then((resp) => {
               if (resp.status === 200) {
+                console.log(resp.data);
                 setnId(resp.data.id);
                 setsGBID(resp.data.sGBID);
                 setnAuthRegionID(resp.data.nAuthRegionID);
@@ -487,12 +488,12 @@ export default function EditEntry(props) {
                 setdtValidityDate(resp.data.dtValidityDate);
                 setsPaidUntil(resp.data.sPaidUntil);
                 setsEnteredDateTime(resp.data.sEnteredDateTime);
-                setTibetanName(resp.data.TibetanName);
-                setTBUPlaceOfBirth(resp.data.TBUPlaceOfBirth);
-                setTBUOriginVillage(resp.data.TBUOriginVillage);
-                setTBUFathersName(resp.data.TBUFathersName);
-                setTBUMothersName(resp.data.TBUMothersName);
-                setTBUSpouseName(resp.data.TBUSpouseName);
+                setTibetanName(resp.data.tibetanName);
+                setTBUPlaceOfBirth(resp.data.tbuPlaceOfBirth);
+                setTBUOriginVillage(resp.data.tbuOriginVillage);
+                setTBUFathersName(resp.data.tbuFathersName);
+                setTBUMothersName(resp.data.tbuMothersName);
+                setTBUSpouseName(resp.data.tbuSpouseName);
                 //debugger;
                 axios
                   .get(
