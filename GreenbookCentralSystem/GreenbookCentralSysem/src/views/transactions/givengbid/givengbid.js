@@ -33,7 +33,7 @@ import { useHistory } from 'react-router-dom';
 import { removeAuthDetails } from '../../../actions/userAuthenticateAction';
 //Local
 import { AssignDialog } from './assigndialog';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
 
 
 
@@ -144,7 +144,7 @@ export default function GiveGBId() {
         padding: '5px',
 
       },
-      render: rowData => Moment(rowData['dtReceived']).format('YYYY-MM-DD'),
+      render: rowData => Moment(rowData['dtReceived']).format(sDateFormat),
     },
     // {
     //   field: "sAuthRegion",

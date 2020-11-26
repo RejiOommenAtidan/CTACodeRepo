@@ -243,7 +243,8 @@ export default function EnhancedTable() {
   ];
 
   const editClick = (tableRowArray) => {
-    let ar = [...authRegions]
+  
+
     setCountryPK(tableRowArray['id']);
     setCountryID(tableRowArray['sCountryID']);
     setCountryName(tableRowArray['sCountry']);
@@ -252,7 +253,7 @@ export default function EnhancedTable() {
       id: tableRowArray['id'],
       countryId: tableRowArray['sCountryID'],
       countryName: tableRowArray['sCountry'],
-      nDefaultAuthRegion: tableRowArray['nDefaultAuthRegion']
+      nDefaultAuthRegionID: tableRowArray['nDefaultAuthRegionID']
     });
   }
 

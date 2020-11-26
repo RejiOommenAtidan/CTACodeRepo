@@ -10,7 +10,7 @@ namespace CTADBL.BaseClasses.Masters
         private int _id;
         private string _countryId;
         private string _country;
-        private int? _nDefaultAuthRegion;
+        private int? _nDefaultAuthRegionID;
 
         [Key]
         public int ID 
@@ -49,15 +49,15 @@ namespace CTADBL.BaseClasses.Masters
                 _country = value;
             }
         }
-        public int? nDefaultAuthRegion
+        public int? nDefaultAuthRegionID
         {
             get
             {
-                return _nDefaultAuthRegion;
+                return _nDefaultAuthRegionID;
             }
             set
             {
-                _nDefaultAuthRegion = value;
+                _nDefaultAuthRegionID = value;
             }
         }
     }

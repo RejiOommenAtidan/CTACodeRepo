@@ -136,7 +136,7 @@ export default () => {
       title: "Sr No.",
       headerStyle: {
         padding:'0px',
-        width:'7%',
+        minWidth:'3%',
         textAlign:'left'
       },
       cellStyle: {
@@ -278,6 +278,7 @@ export default () => {
 
   const makeList = (makeListParams) => {
     setLoading(true);
+    setNoRecords(false);
     console.log("Make List Params recd. \n", makeListParams);
     axios.post(`MakeList/MakeList`, makeListParams)
     .then(resp => {
@@ -370,7 +371,7 @@ export default () => {
       
         <MaterialTable 
         style={{padding:'10px',width:'100%', border:'2px solid grey',borderRadius:'10px'}}
-        isLoading = {loading}
+        //isLoading = {loading}
         icons={tableIcons}
         title="Make List"
         columns={columns}

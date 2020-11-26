@@ -31,7 +31,7 @@ export const EditDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, errors } = useForm();
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [nAuthRegionId, setAuthRegionId] = React.useState(props.countryObj.nDefaultAuthRegion);
+  const [nDefaultAuthRegionID, setDefaultAuthRegionID] = React.useState(props.countryObj.nDefaultAuthRegionID);
   const [authRegions, setAuthRegions] = React.useState(props.authRegions);
 
   const snackbarClose = (event, reason) => {
@@ -40,14 +40,18 @@ export const EditDialog = (props) => {
     }
     setSnackbarOpen(false);
   };
-  console.log("nAuthRegionId is ", nAuthRegionId);
-  let valueAuthRegion = [];
-  authRegions && authRegions.forEach(element => {
-    if (element.id === nAuthRegionId) {
-      valueAuthRegion = element;
-    }
-    console.log("ValueAuthRegion is", valueAuthRegion);
-  });
+  //console.log("nDefaultAuthRegionID is ", nDefaultAuthRegionID);
+  
+  const regions = authRegions && authRegions.filter((a) => {
+    return a.sCountryID === props.countryObj.countryId;
+      
+    
+  })
+  //console.log ("Regions are", regions);
+  
+  const valueAuthRegion = authRegions && nDefaultAuthRegionID && authRegions.find((element) => element.id === nDefaultAuthRegionID);
+  console.log ("valueauthregion is", valueAuthRegion);
+
   const handleSubmitEditRecord = () => {
     //props.editAPICall(madeb);
     props.editAPICall(
@@ -55,6 +59,7 @@ export const EditDialog = (props) => {
         id: props.countryObj.id, 
         sCountryID: props.countryObj.countryId, 
         sCountry: Name,
+        nDefaultAuthRegionID,
         nUpdatedBy: userId 
       }
     )
@@ -111,17 +116,17 @@ export const EditDialog = (props) => {
                       (e, value) => {
                         if (value !== null) {
                           console.log("AuthRegion id changed to:", value.id);
-                          setAuthRegionId(value.id);
+                          setDefaultAuthRegionID(value.id);
                         }
                         else {
-                          setAuthRegionId(0);
+                          setDefaultAuthRegionID(0);
                         }
                       }
                     }
                     style={{ width: 180 }}
                 value={valueAuthRegion}
                 id="id_nAuthorityId"
-                options={authRegions}
+                options={regions}
                 
                 getOptionLabel={(option) => option.sAuthRegion}
                 renderOption={(option) => (
