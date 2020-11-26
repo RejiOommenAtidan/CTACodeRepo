@@ -71,6 +71,7 @@ export default function EnhancedTable() {
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const [countryList, setCountryList] = useState([]);
+  const [loading, setLoading] = useState(true);
   //VAR
   const [countryID, setCountryID] = React.useState('');
   const [authRegion, setAuthRegion] = React.useState('');
@@ -137,6 +138,14 @@ export default function EnhancedTable() {
       },
     },
     {
+      field: "sCurrencyCode",
+      title: "Currency",
+      cellStyle: {
+        padding: '5px',
+
+      },
+    },
+    {
       align: "center",
       field: "edit",
       title: "Edit",
@@ -164,7 +173,8 @@ export default function EnhancedTable() {
     setAuthRegionObj({
       ID: tableRowArray["id"],
       countryID: tableRowArray["sCountryID"],
-      authRegion: tableRowArray["sAuthRegion"]
+      authRegion: tableRowArray["sAuthRegion"],
+      sCurrencyCode: tableRowArray["sCurrencyCode"]
     });
   }
 
@@ -286,6 +296,18 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           console.log(resp.data);
           setdataAPI(resp.data)
+          axios.get(`/Country/GetCountries`)
+          .then(resp => {
+            if (resp.status === 200) {
+              console.log(resp.data);
+              setCountryList(resp.data)
+              setLoading(false);
+            }
+          })
+          .catch(error => {
+            console.log(error.config);
+            console.log(error.message);
+           });
         }
       })
       .catch(error => {
@@ -293,17 +315,7 @@ export default function EnhancedTable() {
         console.log(error.config);
       });
 
-    axios.get(`/Country/GetCountries`)
-      .then(resp => {
-        if (resp.status === 200) {
-          console.log(resp.data);
-          setCountryList(resp.data)
-        }
-      })
-      .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
-      });
+    
 
   }, []);
 
@@ -327,6 +339,7 @@ export default function EnhancedTable() {
 
           <MaterialTable
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
+            isLoading={loading}
             icons={tableIcons}
             title="Authority Regions"
             data={dataAPI}

@@ -22,6 +22,7 @@ namespace CTADBL.ViewModelsRepositories
                 Id = (int)reader["ID"],
                 sAuthRegion = (string)reader["sAuthRegion"],
                 sCountryID = (string)reader["sCountryID"],
+                sCurrencyCode = (string)reader["sCurrencyCode"],
                 sCountry = (string)reader["sCountry"]
             };
         }
@@ -30,7 +31,7 @@ namespace CTADBL.ViewModelsRepositories
         #region Get
         public IEnumerable<AuthRegionCountry> GetAuthRegionsCountryName()
         {
-            using (var command = new MySqlCommand("SELECT a.ID, a.sAuthRegion, a.sCountryID, c.sCountry FROM lstauthregion as a INNER JOIN lstcountry as c ON a.sCountryID = c.sCountryID order by a.ID"))
+            using (var command = new MySqlCommand("SELECT a.ID, a.sAuthRegion, a.sCountryID, a.sCurrencyCode, c.sCountry FROM lstauthregion as a INNER JOIN lstcountry as c ON a.sCountryID = c.sCountryID order by a.ID"))
             {
                 return GetRecords(command);
             }

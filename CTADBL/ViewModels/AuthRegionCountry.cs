@@ -5,6 +5,7 @@
         public int Id { get; set; }
         public string sAuthRegion { get; set; }
         public string sCountryID { get; set; }
+        public string sCurrencyCode { get; set; }
         public string sCountry { get; set; }
     }
 }
