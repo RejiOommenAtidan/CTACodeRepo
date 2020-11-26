@@ -175,11 +175,13 @@ export default function NewEntry(props) {
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+    console.log(isExpanded ? panel : false);
   };
 
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = () => {
+  
     let greenbook = {
       sGBID,
       nAuthRegionID,
@@ -236,7 +238,7 @@ export default function NewEntry(props) {
       nEnteredBy:userId,
       nUpdatedBy:userId
     };
-
+    console.log(greenbook);
     axios.post(`/Greenbook/AddGreenbook/`, greenbook)
       .then(resp => {
         if (resp.status === 200) {
@@ -329,7 +331,7 @@ export default function NewEntry(props) {
                         InputProps={{
                           readOnly: true
                         }}
-                        value={sGBID}
+                        defaultValue={sGBID}
                       />
                       {_.get("name_sGBID.type", errors) === "required" && (
                         <span style={{ color: 'red' }}>This field is required</span>
@@ -407,7 +409,7 @@ export default function NewEntry(props) {
                         inputRef={register({
                           required: true
                         })}
-                        value={sFirstName}
+                        defaultValue={sFirstName}
                       />
                       {_.get("name_sFirstName.type", errors) === "required" && (
                         <span style={{ color: 'red' }}>This field is required</span>
@@ -424,7 +426,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sMiddleName}
+                        defaultValue={sMiddleName}
                       />
                     </FormControl>
                   </Grid>
@@ -438,7 +440,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sFamilyName}
+                        defaultValue={sFamilyName}
                       />
                     </FormControl>
                   </Grid>
@@ -453,7 +455,7 @@ export default function NewEntry(props) {
                         margin="dense"
                         className={classes.textField}
                         name="name_TibetanName"
-                        value={TibetanName}
+                        defaultValue={TibetanName}
                         inputRef={register({
                           required: true
                         })}
@@ -478,7 +480,7 @@ export default function NewEntry(props) {
                           required: true
                         })}
                         name="name_TBUPlaceOfBirth"
-                        value={TBUPlaceOfBirth}
+                        defaultValue={TBUPlaceOfBirth}
                       />
                       {_.get("name_TBUPlaceOfBirth.type", errors) === "required" && (
                         <span style={{ color: 'red' }}>This field is required</span>
@@ -499,7 +501,7 @@ export default function NewEntry(props) {
                         inputRef={register({
                           required: true
                         })}
-                        value={TBUOriginVillage}
+                        defaultValue={TBUOriginVillage}
                       />
                       {_.get("name_TBUOriginVillage.type", errors) === "required" && (
                         <span style={{ color: 'red' }}>This field is required</span>
@@ -601,7 +603,7 @@ export default function NewEntry(props) {
                         inputRef={register({
                           required: true
                         })}
-                        value={sBirthPlace}
+                        defaultValue={sBirthPlace}
                       />
                       {_.get("name_sBirthPlace.type", errors) === "required" && (
                         <span style={{ color: 'red' }}>This field is required</span>
@@ -654,7 +656,7 @@ export default function NewEntry(props) {
                         inputRef={register({
                           required: true
                         })}
-                        value={sFathersName}
+                        defaultValue={sFathersName}
                         name="name_sFathersName"
                       />
                       {_.get("name_sFathersName.type", errors) === "required" && (
@@ -673,7 +675,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sFathersGBID}
+                        defaultValue={sFathersGBID}
                         inputRef={register({
                           minLength: 7,
                           maxLength: 7
@@ -699,7 +701,8 @@ export default function NewEntry(props) {
                         margin="dense"
                         className={classes.textField}
                         name="name_TBUFathersName"
-                        value={TBUFathersName}
+                        defaultValue={TBUFathersName}
+                      
                         inputRef={register({
                           required: true
                         })}
@@ -721,7 +724,7 @@ export default function NewEntry(props) {
                         margin="dense"
                         className={classes.textField}
                         name="name_sMothersName"
-                        value={sMothersName}
+                        defaultValue={sMothersName}
                         inputRef={register({
                           required: true
                         })}
@@ -742,7 +745,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sMothersGBID}
+                        defaultValue={sMothersGBID}
                         inputRef={register({
                           minLength: 7,
                           maxLength: 7
@@ -768,7 +771,7 @@ export default function NewEntry(props) {
                         margin="dense"
                         className={classes.textField}
                         name="name_TBUMothersName"
-                        value={TBUMothersName}
+                        defaultValue={TBUMothersName}
                         inputRef={register({
                           required: true
                         })}
@@ -792,7 +795,7 @@ export default function NewEntry(props) {
                         rows={1}
                         rowsMax={3}
                         name="name_sAddress1"
-                        value={sAddress1}
+                        defaultValue={sAddress1}
                         inputRef={register({
                           required: true
                         })}
@@ -815,7 +818,7 @@ export default function NewEntry(props) {
                         multiline={true}
                         rows={1}
                         rowsMax={3}
-                        value={sAddress2}
+                        defaultValue={sAddress2}
                       />
                     </FormControl>
                   </Grid>
@@ -830,7 +833,7 @@ export default function NewEntry(props) {
                           fullWidth
                           margin="dense"
                           className={classes.textField}
-                          value={sCity}
+                          defaultValue={sCity}
                         />
                       </FormControl>
                     </Grid>
@@ -848,7 +851,7 @@ export default function NewEntry(props) {
                           inputRef={register({
                             required: true
                           })}
-                          value={sState}
+                          defaultValue={sState}
                         />
                         {_.get("name_sState.type", errors) === "required" && (
                           <span style={{ color: 'red' }}>This field is required</span>
@@ -917,7 +920,7 @@ export default function NewEntry(props) {
                           fullWidth
                           margin="dense"
                           className={classes.textField}
-                          value={sPCode}
+                          defaultValue={sPCode}
                         />
                       </FormControl>
                     </Grid>
@@ -955,7 +958,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sAliasName}
+                        defaultValue={sAliasName}
                       />
                     </FormControl>
                   </Grid>
@@ -987,7 +990,7 @@ export default function NewEntry(props) {
                           fullWidth
                           margin="dense"
                           className={classes.textField}
-                          value={sPaidUntil}
+                          defaultValue={sPaidUntil}
                         />
                       </FormControl>
                     </Grid>
@@ -1045,7 +1048,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sFstGreenBkNo}
+                        defaultValue={sFstGreenBkNo}
                       />
                     </FormControl>
                   </Grid>
@@ -1102,7 +1105,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sOtherDocuments}
+                        defaultValue={sOtherDocuments}
                       />
                     </FormControl>
                   </Grid>
@@ -1119,8 +1122,8 @@ export default function NewEntry(props) {
                         className={classes.textField}
                         value={sMarried}
                       >
-                        <MenuItem value={"Y"}>Yes</MenuItem>
-                        <MenuItem value={"N"}>No</MenuItem>
+                        <MenuItem value={"Y"}>Married</MenuItem>
+                        <MenuItem value={"N"}>Single</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -1201,7 +1204,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sOriginVillage}
+                        defaultValue={sOriginVillage}
                       />
                     </FormControl>
                   </Grid>
@@ -1215,7 +1218,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sOldGreenBKNo}
+                        defaultValue={sOldGreenBKNo}
                       />
                     </FormControl>
                   </Grid>
@@ -1229,7 +1232,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sResidenceNumber}
+                        defaultValue={sResidenceNumber}
                       />
                     </FormControl>
                   </Grid>
@@ -1332,7 +1335,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sFathersID}
+                        defaultValue={sFathersID}
                       />
                     </FormControl>
                   </Grid>
@@ -1346,7 +1349,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sMothersID}
+                        defaultValue={sMothersID}
                       />
                     </FormControl>
                   </Grid>
@@ -1362,7 +1365,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sSpouseName}
+                        defaultValue={sSpouseName}
                       />
                     </FormControl>
                   </Grid>
@@ -1377,7 +1380,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sSpouseGBID}
+                        defaultValue={sSpouseGBID}
                         inputRef={register({
                           minLength: 7,
                           maxLength: 7
@@ -1402,7 +1405,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sSpouseID}
+                        defaultValue={sSpouseID}
                       />
                     </FormControl>
                   </Grid>
@@ -1418,7 +1421,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={TBUSpouseName}
+                        defaultValue={TBUSpouseName}
                       />
                     </FormControl>
                   </Grid>
@@ -1433,7 +1436,7 @@ export default function NewEntry(props) {
                           fullWidth
                           margin="dense"
                           className={classes.textField}
-                          value={sFax}
+                          defaultValue={sFax}
                         />
                       </FormControl>
                     </Grid>
@@ -1447,7 +1450,7 @@ export default function NewEntry(props) {
                           fullWidth
                           margin="dense"
                           className={classes.textField}
-                          value={sPhone}
+                          defaultValue={sPhone}
                         />
                       </FormControl>
                     </Grid>
@@ -1462,7 +1465,7 @@ export default function NewEntry(props) {
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        value={sEmail}
+                        defaultValue={sEmail}
                       />
                     </FormControl>
                   </Grid>
@@ -1475,11 +1478,13 @@ export default function NewEntry(props) {
                 variant="outlined"
                 type="submit"
                 color="primary"
+                onClick={() => {setExpanded('panel1') }}
                 style={{ marginRight: "10px" }}>Save</Button>
               <Button variant="outlined"
                 onClick={() => { history.push('/SarsoNewGBEntry') }}
               >Cancel
               </Button>
+            
             </Grid>
           </Grid>
         </Grid>

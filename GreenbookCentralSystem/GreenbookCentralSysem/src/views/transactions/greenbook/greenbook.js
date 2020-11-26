@@ -90,6 +90,7 @@ export default function GBList(props) {
     axios.get(`/Greenbook/GetGreenbooks`)
       .then(resp => {
         if (resp.status === 200) {
+          console.log(resp.data);
           setdataAPI(resp.data);
           setisLoading(false);
         }

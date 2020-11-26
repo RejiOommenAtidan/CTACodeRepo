@@ -318,7 +318,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             greenbook.sResidenceNumber = reader.IsDBNull("sResidenceNumber") ? null : (string)reader["sResidenceNumber"];
             greenbook.sQualificationID = reader.IsDBNull("sQualificationID") ? null : (string)reader["sQualificationID"];
             greenbook.sOccupationID = reader.IsDBNull("sOccupationID") ? null : (string)reader["sOccupationID"];
-            greenbook.sAliasName = (string)reader["sAliasName"];
+            greenbook.sAliasName = reader.IsDBNull("sAliasName") ? null : (string)reader["sAliasName"];
             greenbook.sOldGreenBKNo = reader.IsDBNull("sOldGreenBKNo") ? null : (string)reader["sOldGreenBKNo"];
             greenbook.sFstGreenBkNo = reader.IsDBNull("sFstGreenBkNo") ? null : (string)reader["sFstGreenBkNo"];
             greenbook.dtFormDate = reader.IsDBNull("dtFormDate") ? null : (DateTime?)(reader["dtFormDate"]);
