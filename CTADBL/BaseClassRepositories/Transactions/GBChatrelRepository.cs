@@ -11,11 +11,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
 {
     public class GBChatrelRepository : ADORepository<GBChatrel>
     {
+        private CountryRepository _countryRepository;
         private GreenbookRepository _greenbookRepository;
         private static MySqlConnection _connection;
         #region Constructor
         public GBChatrelRepository(string connectionString) : base(connectionString)
         {
+            _countryRepository = new CountryRepository(connectionString);
             _greenbookRepository = new GreenbookRepository(connectionString);
             _connection = new MySqlConnection(connectionString);
         }
@@ -226,6 +228,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 }
                 else
                 {
+                    //authRegionID = _countryRepository.GetDefaultAuthRegionID("US");
                     authRegionID = _greenbookRepository.GetGreenbookByGBID(sGBID).nAuthRegionID;
                 }
                 _connection.Close();

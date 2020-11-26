@@ -77,6 +77,7 @@ export default function EnhancedTable() {
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = React.useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [authRegions, setAuthRegions] = useState([]);
   const [addModal, setAddModal] = useState(false);
   const [countryID, setCountryID] = React.useState('');
   const [countryName, setCountryName] = React.useState('');
@@ -122,7 +123,7 @@ export default function EnhancedTable() {
   const [currId, setCurrId] = useState('');
   //let ele = null;
   const [searching, setSearching] = useState(false);
-  console.log("myarray: ", myarray);
+  //console.log("myarray: ", myarray);
 
   const buildArray = () => {
     let tmp = []
@@ -242,6 +243,7 @@ export default function EnhancedTable() {
   ];
 
   const editClick = (tableRowArray) => {
+    let ar = [...authRegions]
     setCountryPK(tableRowArray['id']);
     setCountryID(tableRowArray['sCountryID']);
     setCountryName(tableRowArray['sCountry']);
@@ -249,7 +251,8 @@ export default function EnhancedTable() {
     setCountryObj({
       id: tableRowArray['id'],
       countryId: tableRowArray['sCountryID'],
-      countryName: tableRowArray['sCountry']
+      countryName: tableRowArray['sCountry'],
+      nDefaultAuthRegion: tableRowArray['nDefaultAuthRegion']
     });
   }
 
@@ -440,29 +443,29 @@ export default function EnhancedTable() {
   }) 
 
   useEffect(() => {
-    console.log("Searching useEffect. Searching is", searching);
+    //console.log("Searching useEffect. Searching is", searching);
     if(searching){
       let searchObj = {};
       myarray.map(item => {
         if (item.id === "id"){
           item.val = 0;
-          console.log("Changed id to", item.val);
+          //console.log("Changed id to", item.val);
         };
         searchObj = {...searchObj, [item.id]: item.val };
       });
-      console.log("Search Object: Inside useEffect" , searchObj);
+      //console.log("Search Object: Inside useEffect" , searchObj);
       axios.post(`/Country/SearchCountries/`, searchObj)
         .then(resp => {
           if (resp.status === 200) {
             debugger
-            console.log("Got filter Data");
+        //    console.log("Got filter Data");
             setdataAPI([...resp.data]);
             setSearching(false);
             //setTimeout(() => ele.focus(), 2000);
             
           }
           if(resp.status === 204){
-            console.log("Got  Empty data set");
+          //  console.log("Got  Empty data set");
             setdataAPI([...resp.data]);
             setSearching(false);
           }
@@ -531,7 +534,17 @@ export default function EnhancedTable() {
       .then(resp => {
         if (resp.status === 200) {
           setdataAPI([...resp.data]);
-          setisLoading(false);
+          axios.get(`/AuthRegion/GetAuthRegions`)
+          .then(resp => {
+          if(resp.status === 200){
+            setAuthRegions(resp.data);
+            setisLoading(false);
+          }
+        })
+        .catch(error =>{
+          console.log(error.message);
+        });
+          
           
         }
       })
@@ -542,6 +555,8 @@ export default function EnhancedTable() {
       .then(release => {
         //console.log(release); => udefined
       });
+    
+    
       
   },[]);
  
@@ -623,6 +638,7 @@ export default function EnhancedTable() {
         classes={classes}
         handleEditClickClose={handleEditClickClose}
         editAPICall={editAPICall}
+        authRegions = {authRegions}
       />}
       { snackbar && <Alerts
         alertObj={alertObj}

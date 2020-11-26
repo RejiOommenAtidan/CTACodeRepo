@@ -14,10 +14,11 @@ namespace CTADBL.BaseClassRepositories.Masters
 {
     public class CountryRepository : ADORepository<Country>
     {
+        private MySqlConnection _connection;
         #region Constructor
         public CountryRepository(string connectionString) : base(connectionString)
         {
-
+            _connection = new MySqlConnection(connectionString);
         }
         #endregion
 
@@ -49,17 +50,30 @@ namespace CTADBL.BaseClassRepositories.Masters
         public IEnumerable<Country> GetAllCountries()
         {
             // DBAs across the country are having strokes over this next command!
-            using (var command = new MySqlCommand("SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry"))
+            using (var command = new MySqlCommand("SELECT ID, sCountryID, sCountry, nDefaultAuthRegion, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry"))
             {
                 return GetRecords(command);
             }
         }
         public Country GetCountryById(string id)
         {
-            using (var command = new MySqlCommand("SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE ID = @id"))
+            using (var command = new MySqlCommand("SELECT ID, sCountryID, sCountry, nDefaultAuthRegion, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE ID = @id"))
             {
                 command.Parameters.AddWithValue("id", id);
                 return GetRecord(command);
+            }
+        }
+
+        public int GetDefaultAuthRegionID(string sCountryID)
+        {
+            using(var command = new MySqlCommand("SELECT nDefaultAuthRegion FROM lstcountry WHERE sCountryID = @sCountryID;"))
+            {
+                command.Parameters.AddWithValue("sCountryID", sCountryID);
+                _connection.Open();
+                command.Connection = _connection;
+                int authRegiondID = Convert.ToInt32(command.ExecuteScalar());
+                _connection.Close();
+                return authRegiondID;
             }
         }
 
@@ -68,7 +82,7 @@ namespace CTADBL.BaseClassRepositories.Masters
 
         //public IEnumerable<Country> SearchCountries(string param)
         //{
-        //    string sql = String.Format(@"SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE sCountry LIKE '{0}{1}{2}'", "%", param, "%");
+        //    string sql = String.Format(@"SELECT ID, sCountryID, sCountry, nDefaultAuthRegion, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE sCountry LIKE '{0}{1}{2}'", "%", param, "%");
 
         //    using (var command = new MySqlCommand(sql))
         //    {
@@ -101,7 +115,7 @@ namespace CTADBL.BaseClassRepositories.Masters
                 return GetAllCountries();
             }
 
-            string sql = String.Format(@"SELECT ID, sCountryID, sCountry, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE {0} 1 = 1", addToSql);
+            string sql = String.Format(@"SELECT ID, sCountryID, sCountry, nDefaultAuthRegion, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstCountry WHERE {0} 1 = 1", addToSql);
 
             using (var command = new MySqlCommand(sql))
             {
@@ -153,6 +167,7 @@ namespace CTADBL.BaseClassRepositories.Masters
                 ID = (int)reader["ID"],
                 sCountryID = (string)reader["sCountryID"],
                 sCountry = (string)reader["sCountry"],
+                nDefaultAuthRegion = reader.IsDBNull("nDefaultAuthRegion") ? null : (int?)(reader["nDefaultAuthRegion"]),
                 //dtEntered = dtEntered,
                 dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
                 nEnteredBy = (int)reader["nEnteredBy"],
