@@ -5,6 +5,7 @@ import { authenticationService } from '../../../auth/_services';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { storeAuthDetails, removeAuthDetails } from "../../../actions/userAuthenticateAction";
+
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import {
   Grid,
@@ -15,7 +16,8 @@ import {
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 import { Alerts } from '../../../views/alerts';
 
-export default function LogingPage() {
+export default function LogingPage(props) {
+ 
   let LoggedInOrNot = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
   let history = useHistory();
   const dispatch = useDispatch();
@@ -39,9 +41,12 @@ export default function LogingPage() {
   };
 
   useEffect(() => {
-    debugger;
+  // console.log('Props:',props);
+    
+    
     // Redirect to Home if Data Present in Redux
     if (LoggedInOrNot !== null) {
+      
       history.push('/Search');
     }
   }, []);

@@ -2,6 +2,8 @@
 using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace CTADBL.BaseClassRepositories.Transactions
@@ -53,5 +55,65 @@ namespace CTADBL.BaseClassRepositories.Transactions
             ExecuteCommand(builder.GetDeleteCommand());
         }
         #endregion
+
+        public int HandleGreenBookUpdate(List<GBRelation> gbRelations)
+        {
+            try
+            {
+                foreach (var relation in gbRelations)
+                {
+                    GBRelation r;
+                    if (String.IsNullOrEmpty(relation.sGBIDRelation) || String.IsNullOrWhiteSpace(relation.sGBIDRelation))
+                    {
+                        if (Exists(relation, out r))
+                        {
+                            Delete(r);
+                        }
+                        continue;
+                    }
+
+                    if (Exists(relation, out r))
+                    {
+                        r.dtUpdated = DateTime.Now;
+                        Update(r);
+                    }
+                    else
+                    {
+                        relation.dtUpdated = DateTime.Now;
+                        relation.dtEntered = DateTime.Now;
+                        relation.nEnteredBy = relation.nUpdatedBy;
+                        Add(relation);
+                    }
+                }
+                return 1;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+
+
+        private bool Exists(GBRelation gbRelation, out GBRelation relation)
+        {
+            GBRelation r = GetGBRelationByGBID(gbRelation.sGBID, gbRelation.nRelationID);
+            relation = r;
+            return r != null;
+        }
+
+
+
+        public GBRelation GetGBRelationByGBID(string sGBID, int nRelationID)
+        {
+            string sql = @"SELECT * FROM lnkgbrelation WHERE nRelationID = @nRelationID AND sGBID = @sGBID;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                command.Parameters.AddWithValue("nRelationID", nRelationID);
+                GBRelation relation = GetRecord(command);
+                return relation;
+            }
+        }
     }
 }
