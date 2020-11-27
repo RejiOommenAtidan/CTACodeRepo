@@ -222,7 +222,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
                 var result = command.ExecuteScalar();
                 int authRegionID = 0;
-                if(result != null)
+                if(result != null && result.GetType().Name != "DBNull")
                 {
                     authRegionID = Convert.ToInt32(result);
                 }

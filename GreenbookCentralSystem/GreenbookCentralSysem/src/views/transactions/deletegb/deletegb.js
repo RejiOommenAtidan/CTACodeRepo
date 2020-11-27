@@ -7,6 +7,8 @@ import { red } from '@material-ui/core/colors';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import { useForm } from "react-hook-form";
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop';
 
 
 const useStyles =  makeStyles({
@@ -29,7 +31,21 @@ export default function GiveGBId(){
   //const { register, handleSubmit, errors } = useForm();
   const classes = useStyles();
   const [gbidToDelete, setGBIDToDelete] = useState(0);
-  
+  const [backdrop, setBackdrop] = React.useState(false);
+
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  }
+  const [snackbar, setSnackbar] = React.useState(false);
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  }
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
 
   const handleValidation = (val) => {
     console.log("inside validation");
@@ -56,14 +72,18 @@ export default function GiveGBId(){
       //const sGBID = parseInt(element.value);
       const sGBID = element.value;
       console.log("gbid entered", sGBID);
-
+      setBackdrop(true);
       axios.post(`GreenBook/DeleteGreenBookByGBID/?sGBID=`+ sGBID)
       .then(resp => {
         if (resp.status === 200) {
           //setSelectData(resp.data);
           console.log("GreenBook ID Deleted from GreenBook\n", resp.data);
           
-          alert(`GreenBook with Id ${sGBID} deleted successfully.`);
+        
+          setAlertMessage(`GreenBook with Id ${sGBID} deleted successfully.`);
+          setAlertType('success');
+          snackbarOpen();
+          setBackdrop(false);
           element.value = '';
           element.focus();
         // setdataAPI(resp.data)
@@ -72,19 +92,26 @@ export default function GiveGBId(){
       .catch(error => {
         console.log(error.config);
         console.log(error.message);
-        alert(`GreenBook with Id ${sGBID} deletion failed.`);
+        
+        setAlertMessage(`GreenBook with Id ${sGBID} deletion failed.`);
+        setAlertType('error');
+        snackbarOpen();
+        setBackdrop(false);
         element.value = '';
         element.focus();
       })
   }
 }
   return (
+    <>
     <div
     style={{
         position: 'absolute', 
         left: '60%', 
         top: '50%',
-        transform: 'translate(-50%, -50%)'
+        transform: 'translate(-50%, -50%)',
+        border: '1px solid red'
+        
     }}
 >
 
@@ -116,8 +143,29 @@ export default function GiveGBId(){
         <CardActions>
           <Button onClick={handleSubmit} color="primary">Delete</Button>
         </CardActions>
+        {backdrop && <BackdropComponent
+        backdrop={backdrop}
+        
+      />}
+      
+      
       </Card>
+      
     </div>
-    
+    <div style={{
+        position: 'absolute', 
+        left: '60%', 
+        top: '80%'
+        
+        
+    }}>
+      
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />}
+    </div>
+    </>
   );
 }

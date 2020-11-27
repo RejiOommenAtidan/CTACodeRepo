@@ -296,53 +296,98 @@ namespace CTADBL.BaseClassRepositories.Transactions
                     continue;
                 }
 
-                int months = 0;
-                int childMonths = 0;
+                
+                //int months = 0;
+                //int childMonths = 0;
                 decimal meal = 0.00m;
                 decimal mealUSD = 0.00m;
                 decimal mealINR = 0.00m;
                 bool isChild = true;
-                if (status == Status.TurningAdult)
-                {
-                    months = indianRegion ? 12 :  AdultMonths(paidUntil + i, (DateTime)greenbook.dtDOB);
-                    meal = chatrelMeal;
-                    mealUSD = _chatrelMealUSD[paidUntil + i];
-                    mealINR = _chatrelMealINR[paidUntil + i];
-                    isChild = false;
-
-                }
-                if(status == Status.MidTeen)
-                {
-                    months = 12;
-                }
-                if(status == Status.TurningMidTeen)
-                {
-                    months = MidTeenMonths(paidUntil + i, (DateTime)greenbook.dtDOB);
-                }
-                if(status == Status.TurningChild)
-                {
-                    childMonths = ChildMonths(paidUntil + i, (DateTime)greenbook.dtDOB);
-                }
-                var nChatrelChildAmt = status == Status.TurningChild ? childMonths * chatrelChildMonthly  : (months * chatrelBasic / 12) + ((12 - months) * chatrelChildMonthly);
-                var nChatrelChildUSD = status == Status.TurningChild ? childMonths * chatrelChildMonthlyUSD : (months * chatrelBasicUSD / 12) + ((12 - months) * chatrelChildMonthlyUSD) ;
-                var nChatrelChildINR = status == Status.TurningChild ? childMonths * chatrelChildMonthlyINR : (months * chatrelBasicINR / 12) + ((12 - months) * chatrelChildMonthlyINR) ;
-
-                //switch (status)
+                //if (status == Status.TurningAdult)
                 //{
-                //    case Status.TurningChild:
-                //        nChatrelChildAmt = childMonths * chatrelChildMonthly;
-                //        nChatrelChildUSD = childMonths * chatrelChildMonthlyUSD;
-                //        nChatrelChildINR = childMonths * chatrelChildMonthlyINR;
-                //        break;
-                //    case Status.TurningMidTeen:
-                //        nChatrelChildAmt = (months * chatrelMidTeenINR / 12) + ((12 - months) * chatrelChildMonthly);
-                //        nChatrelChildUSD = (months * chatrelBasicUSD / 12) + ((12 - months) * chatrelChildMonthlyUSD);
-                //        nChatrelChildINR = (months * chatrelBasicINR / 12) + ((12 - months) * chatrelChildMonthlyINR);
-                //        break;
-                //    case Status.MidTeen:
-                //        nChatrelChildAmt = 
-                //        break;
+                //    months = indianRegion ? 12 :  AdultMonths(paidUntil + i, (DateTime)greenbook.dtDOB);
+                //    meal = chatrelMeal;
+                //    mealUSD = _chatrelMealUSD[paidUntil + i];
+                //    mealINR = _chatrelMealINR[paidUntil + i];
+                //    isChild = false;
+
                 //}
+                //if(status == Status.MidTeen)
+                //{
+                //    months = 12;
+                //}
+                //if(status == Status.TurningMidTeen)
+                //{
+                //    months = MidTeenMonths(paidUntil + i, (DateTime)greenbook.dtDOB);
+                //}
+                //if(status == Status.TurningChild)
+                //{
+                //    childMonths = ChildMonths(paidUntil + i, (DateTime)greenbook.dtDOB);
+                //}
+                //var nChatrelChildAmt = status == Status.TurningChild ? childMonths * chatrelChildMonthly  : (months * chatrelBasic / 12) + ((12 - months) * chatrelChildMonthly);
+                //var nChatrelChildUSD = status == Status.TurningChild ? childMonths * chatrelChildMonthlyUSD : (months * chatrelBasicUSD / 12) + ((12 - months) * chatrelChildMonthlyUSD) ;
+                //var nChatrelChildINR = status == Status.TurningChild ? childMonths * chatrelChildMonthlyINR : (months * chatrelBasicINR / 12) + ((12 - months) * chatrelChildMonthlyINR) ;
+
+                decimal nChatrelChildAmt = 0.00m, nChatrelChildUSD = 0.00m, nChatrelChildINR = 0.00m;
+
+                switch (status)
+                {
+                    case Status.TurningAdult:
+                        int adultMonths = AdultMonths(paidUntil + i, (DateTime)greenbook.dtDOB);
+                        meal = chatrelMeal;
+                        mealUSD = chatrelMealUSD;
+                        mealINR = chatrelMealINR;
+                        isChild = false;
+                        if (indianRegion)
+                        {
+                            nChatrelChildAmt = (chatrelBasic);
+                            nChatrelChildUSD = (adultMonths * chatrelBasicUSD / 12) + ((12 - adultMonths) * chatrelChildMonthlyUSD);
+                            nChatrelChildINR = (chatrelBasicINR);
+                        }
+                        else
+                        {
+                            nChatrelChildAmt = (adultMonths * chatrelBasic / 12) + ((12 - adultMonths) * chatrelChildMonthly);
+                            nChatrelChildUSD = (adultMonths * chatrelBasicUSD / 12) + ((12 - adultMonths) * chatrelChildMonthlyUSD);
+                            nChatrelChildINR = (chatrelBasicINR) ;
+                        }
+                        
+                        break;
+
+                    case Status.MidTeen:
+                        nChatrelChildAmt = indianRegion ? chatrelBasic : 12 * chatrelChildMonthly;
+                        nChatrelChildUSD = 12 * chatrelChildMonthlyUSD;
+                        nChatrelChildINR = chatrelBasicINR;
+                        break;
+
+                    case Status.TurningMidTeen:
+                        int midTeenMonths = MidTeenMonths(paidUntil + i, (DateTime)greenbook.dtDOB);
+                        if (indianRegion)
+                        {
+                            nChatrelChildAmt = (midTeenMonths * chatrelBasic / 12) + ((12 - midTeenMonths) * chatrelChildMonthly);
+                            nChatrelChildUSD = (12  * chatrelChildMonthlyUSD);
+                            nChatrelChildINR = (midTeenMonths * chatrelBasicINR / 12) + ((12 - midTeenMonths) * chatrelChildMonthlyINR);
+                        }
+                        else
+                        {
+                            nChatrelChildAmt = (12 * chatrelChildMonthly);
+                            nChatrelChildUSD = (12 * chatrelChildMonthlyUSD);
+                            nChatrelChildINR = (midTeenMonths * chatrelBasicINR / 12) + ((12 - midTeenMonths) * chatrelChildMonthlyINR);
+                        }
+                        break;
+
+                    case Status.Child:
+                        nChatrelChildAmt = 12 * chatrelChildMonthly;
+                        nChatrelChildUSD = 12 * chatrelChildMonthlyUSD;
+                        nChatrelChildINR = 12 * chatrelChildMonthlyINR;
+                        break;
+
+                    case Status.TurningChild:
+                        int childMonths = ChildMonths(paidUntil + i, (DateTime)greenbook.dtDOB);
+                        nChatrelChildAmt = childMonths * chatrelChildMonthly;
+                        nChatrelChildUSD = childMonths * chatrelChildMonthlyUSD;
+                        nChatrelChildINR = childMonths * chatrelChildMonthlyINR;
+                        break;
+                }
 
 
 
