@@ -563,11 +563,12 @@ export default function SearchPage() {
   }, []);
 
   useEffect(() => {
-    getRecentGB();
+    
     axios.get(`Country/GetCountries`)
       .then(resp => {
         if (resp.status === 200) {
           setCountryData(resp.data);
+          getRecentGB();
           // 
         }
       })

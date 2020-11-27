@@ -10,7 +10,7 @@ import { authenticationService } from '../../auth/_services';
 import handleError from '../../auth/_helpers/handleError';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAuthDetails } from "../../actions/userAuthenticateAction";
-
+import { Alerts } from '../alerts';
 const useStyles = makeStyles({
   root: {
     height: '100%',
@@ -79,19 +79,34 @@ export default function ChangePassword() {
   // password.current = watch("name_sNewPassword", "");
   // console.log(password);
 
+//Alert
+const [alertMessage, setAlertMessage] = useState("");
+const [alertType, setAlertType] = useState("");
+const alertObj = {
+  alertMessage: alertMessage,
+  alertType: alertType
+}
+const [snackbar, setSnackbar] = React.useState(false);
+const snackbarOpen = () => {
+  setSnackbar(true);
+}
+const snackbarClose = () => {
+  setSnackbar(false);
+};
+
 
   useEffect(() => {
    
   },[]);
   const onSubmit = () => {
-   
+    if(sNewPassword===sConfirmNewPassword){  
     let changePassword = {
       nUserId,
       sOldPassword,
       sNewPassword,
       sConfirmNewPassword
     };
-
+    
     axios.post(`/User/ChangePassword`, changePassword)
       .then(resp => {
         if (resp.status === 200) {
@@ -106,6 +121,12 @@ export default function ChangePassword() {
       .then(release => {
         //console.log(release); => udefined
       });
+    }
+    else{
+      setAlertMessage('New Passwords do not match');
+      setAlertType('error');
+      snackbarOpen();
+    }
   };
 
   return (
@@ -124,7 +145,7 @@ export default function ChangePassword() {
                   id="id_sOldPassword"
                   label="Old Password"
                   type="password"
-                  value={sOldPassword}
+                  defaultValue={sOldPassword}
                   onChange={(e) => { setsOldPassword(e.target.value); }}
                   fullWidth
                   margin="normal"
@@ -144,7 +165,7 @@ export default function ChangePassword() {
                   label="New Password"
                   type="password"
                   onChange={(e) => { setsNewPassword(e.target.value); }}
-                  value={sNewPassword}
+                  defaultValue={sNewPassword}
                   fullWidth
                   className={classes.textField}
                   margin="normal"
@@ -165,7 +186,7 @@ export default function ChangePassword() {
                   id="id_sConfirmNewPassword"
                   label="Confirm New Password"
                   type="password"
-                  value={sConfirmNewPassword}
+                  defaultValue={sConfirmNewPassword}
                   onChange={(e) => { setsConfirmNewPassword(e.target.value); }}
                   fullWidth
                   margin="normal"
@@ -187,6 +208,12 @@ export default function ChangePassword() {
           </Grid>
         </form>
       </Container>
+      {snackbar && <Alerts
+          alertObj={alertObj}
+          snackbar={snackbar}
+          snackbarClose={snackbarClose}
+        />}
+
     </>
   );
 }
