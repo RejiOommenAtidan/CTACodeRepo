@@ -452,7 +452,7 @@ export default function SearchPage() {
         .then(resp => {
           if (resp.status === 200) {
             let i = 1;
-          //  console.log(resp.data);
+            console.log(resp.data);
             resp.data.forEach((element) => {
               element.nSerialNo = i;
               i++;
@@ -670,11 +670,11 @@ export default function SearchPage() {
                     >
                       <MenuItem value="sGBID">GB Number</MenuItem>
                       <MenuItem value="sOldGreenBkNo">Old GB Number</MenuItem>
-                      <MenuItem value="sOldGreenBKNo">First GB Number</MenuItem>
+                      <MenuItem value="sFstGreenBkNo">First GB Number</MenuItem>
                       <MenuItem value="sResidenceNumber">Residence Number</MenuItem>
                       <MenuItem value="sFathersGBID">Father's GB Number</MenuItem>
                       <MenuItem value="sMothersGBID">Mother's GB Number</MenuItem>
-                      <MenuItem value="sSpouseID">Spouse GB Number</MenuItem>
+                      <MenuItem value="sSpouseGBID">Spouse GB Number</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -753,7 +753,7 @@ export default function SearchPage() {
                         margin="normal"
                         id="id_dtDOB"
                         label="DOB"
-                        format="dd/mm/yyyy"
+                        format="dd/MM/yyyy"
                         onChange={(date) => { setDob(date) }}
                         value={dob}
                         KeyboardButtonProps={{

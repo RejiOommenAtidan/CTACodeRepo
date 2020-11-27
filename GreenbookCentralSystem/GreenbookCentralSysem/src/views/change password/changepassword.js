@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { Button, Grid, Typography, Container, TextField, FormControl } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -64,7 +64,12 @@ export default function ChangePassword() {
   const dispatch = useDispatch();
   const currentUser = authenticationService.currentUserValue;
   const oUserAuthUser = JSON.parse(currentUser.UserAuthenticationReducer);
-  let nUserId = oUserAuthUser.oUserAuth.oUser.id;
+ // let nUserId = oUserAuthUser.oUserAuth.oUser.id;
+  const nUserId=  useSelector(state =>{ 
+      if(state.UserAuthenticationReducer.oUserAuth){
+        return state.UserAuthenticationReducer.oUserAuth.oUser.id;
+      }});
+    
   const classes = useStyles();
   const { register, handleSubmit, errors } = useForm();
   const [sOldPassword, setsOldPassword] = useState('');
@@ -73,7 +78,13 @@ export default function ChangePassword() {
   // const password = useRef({});
   // password.current = watch("name_sNewPassword", "");
   // console.log(password);
+
+
+  useEffect(() => {
+   
+  },[]);
   const onSubmit = () => {
+   
     let changePassword = {
       nUserId,
       sOldPassword,
@@ -85,7 +96,8 @@ export default function ChangePassword() {
       .then(resp => {
         if (resp.status === 200) {
           dispatch(removeAuthDetails());
-          history.push('/Login');
+          history.push('/Login',{changepassword:true});
+    
         }
       })
       .catch(error => {

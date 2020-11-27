@@ -534,8 +534,48 @@ export default function EditEntry(props) {
   }, []);
 
   const { register, handleSubmit, errors } = useForm();
+
+
+  const RelationObj =[
+        {
+          sGBID:sGBID,
+          sGBIDRelation:sFathersGBID,
+          nRelationID:1
+        },
+        {
+          sGBID:sGBID,
+          sGBIDRelation:sMothersGBID,
+          nRelationID:2
+        },
+        {
+          sGBID:sGBID,
+          sGBIDRelation:sSpouseGBID,
+          nRelationID:3
+        }
+      ]
   const onSubmit = () => {
     //e.preventDefault();
+    const RelationObj =[
+      {
+        sGBID:sGBID,
+        sGBIDRelation:sFathersGBID,
+        nRelationID:1,
+        nUpdatedBy: userId
+
+      },
+      {
+        sGBID:sGBID,
+        sGBIDRelation:sMothersGBID,
+        nRelationID:2,
+        nUpdatedBy: userId,
+      },
+      {
+        sGBID:sGBID,
+        sGBIDRelation:sSpouseGBID,
+        nRelationID:3,
+        nUpdatedBy: userId
+      }
+    ]
     let greenbook = {
       Id,
       sGBID,
@@ -599,7 +639,20 @@ export default function EditEntry(props) {
       )
       .then((resp) => {
         if (resp.status === 200) {
-          history.push("/Greenbooks");
+          axios.post(`/GBRelation/HandleGreenBookUpdate`,RelationObj)
+          .then((resp) => {
+            if (resp.status === 200) {    
+              history.push("/Greenbooks");
+            }
+          })
+          .catch((error) => {
+            handleError(error, history);
+          })
+          .then((release) => {
+            //console.log(release); => udefined
+          });
+
+
         }
       })
       .catch((error) => {
@@ -1567,8 +1620,8 @@ export default function EditEntry(props) {
                         margin="dense"
                         className={classes.textField}
                       >
-                        <MenuItem value={"Y"}>Yes</MenuItem>
-                        <MenuItem value={"N"}>No</MenuItem>
+                        <MenuItem value={"Y"}>Married</MenuItem>
+                        <MenuItem value={"N"}>Single</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>

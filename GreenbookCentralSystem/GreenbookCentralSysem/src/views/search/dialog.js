@@ -643,11 +643,11 @@ export const ViewDialog = (props) => {
                             <tr>
                                 <td scope='row'>{index+1}</td>
                                 <td >{row.sFeature }</td>
-                                <td >{row.auditLogs.sFieldValuesOld}</td>
-                                <td >{row.auditLogs.sFieldValuesNew}</td>
+                                <td >{row.auditLog.sFieldValuesOld }</td>
+                                <td >{row.auditLog.sFieldValuesNew }</td>
                                 <td >{row.sEnteredBy}</td>
                                 <td >{row.sOffice}</td>
-                                <td >{row.auditLogs.dtEntered ? Moment(row.issueBook.dtEntered).format('DD-MM-YYYY'): ''}</td>
+                                <td >{row.auditLog.dtEntered ? Moment(row.auditLog.dtEntered).format('DD-MM-YYYY'): ''}</td>
                              
                               
                                                                     
