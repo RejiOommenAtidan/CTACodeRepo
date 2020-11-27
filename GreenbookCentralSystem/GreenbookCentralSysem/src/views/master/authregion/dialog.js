@@ -31,6 +31,7 @@ export const EditDialog = (props) => {
   const { register, handleSubmit, errors } = useForm();
   const [authRegion, setAuthRegion] = useState(props.authRegionObj.authRegion);
   const [countryID, setCountryID] = useState(props.authRegionObj.countryID);
+  const [sCurrencyCode, setCurrencyCode] = useState(props.authRegionObj.sCurrencyCode);
   
   const ids = props.countryList.map((data) => data.sCountryID);
   let value ="";
@@ -58,6 +59,7 @@ export const EditDialog = (props) => {
         ID: props.authRegionObj.ID, 
         sCountryID: countryID, 
         sAuthRegion: authRegion,
+        sCurrencyCode,
         nUpdatedBy: userId 
       }
     )
@@ -88,6 +90,7 @@ export const EditDialog = (props) => {
                         }
                       }
                     }
+                    style={{ width: 180 }}
                     value={valueCountry} 
                     id="id_sCountryID"
                     options={props.countryList}
@@ -145,6 +148,17 @@ export const EditDialog = (props) => {
                   />
                 </FormControl>
               </Grid>
+              <Grid item xs={12} >
+                <FormControl>
+                  <TextField
+                    id="id_CurrencyCode"
+                    label="Currency Code"
+                    type="text"
+                    value={sCurrencyCode} // Set Auth Region name 
+                    onChange={(e) => { setCurrencyCode(e.target.value) }}
+                  />
+                </FormControl>
+              </Grid>
             </Grid>
         </DialogContentText>
       </DialogContent>
@@ -190,7 +204,7 @@ export const AddDialog = (props) => {
   const ids = props.dataAPI.map((data) => data.sCountryID);
   const [countryID, setCountryID] = useState(ids[0]);
   const [authRegion, setAuthRegion] = useState('');
-  
+  const [sCurrencyCode, setCurrencyCode] = useState('');
   // const children =  () => { 
   //   return (ids.filter((data, index, array) => (array.indexOf(data) == index)).map((filteredData) =>  (<option value={filteredData}>{filteredData}</option>)))};
     const children =  () => { 
@@ -208,6 +222,7 @@ export const AddDialog = (props) => {
         sCountryID: countryID, 
         sAuthRegion: authRegion,
         nEnteredBy: userId,
+        sCurrencyCode,
         nUpdatedBy: userId 
       }
     )
@@ -236,7 +251,8 @@ export const AddDialog = (props) => {
                         }
                       }
                     }
-                    //value={valueCountry} 
+                    //value={valueCountry}
+                    style={{ width: '250px' }}
                     id="id_sCountryID"
                     options={props.countryList}
                     autoHighlight
@@ -296,6 +312,17 @@ export const AddDialog = (props) => {
                     )}
               </FormControl>
             </Grid>
+            <Grid item xs={12} >
+                <FormControl>
+                  <TextField
+                    id="id_CurrencyCode"
+                    label="Currency Code"
+                    type="text"
+                    value={sCurrencyCode} // Set Auth Region name 
+                    onChange={(e) => { setCurrencyCode(e.target.value) }}
+                  />
+                </FormControl>
+              </Grid>
           </Grid>
 
         </DialogContentText>
