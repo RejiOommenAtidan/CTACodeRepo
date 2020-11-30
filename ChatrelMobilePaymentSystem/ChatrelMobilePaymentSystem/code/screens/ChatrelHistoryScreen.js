@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 import Moment from 'moment';
 import { sDateFormat } from '../constants/CommonConfig';
 
@@ -72,9 +73,9 @@ export const ChatrelHistoryScreen = (props) => {
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.headingContainer}>
+      {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>CHATREL HISTORY</Text>
-      </View>
+  </View>*/}
       <ScrollView>
         {
           paymentHistory.map((singleHistory, index) => {
@@ -142,8 +143,11 @@ export const ChatrelHistoryScreen = (props) => {
 
 export const ChatrelHistoryScreenOptions = navData => {
   return {
-    headerTitle: 'Chartel History',
-    headerLeft: () => {
+    headerTitle: 'Chatrel History',
+    headerStyle: {
+      backgroundColor: Colors.primary,
+    },
+    headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
@@ -153,7 +157,8 @@ export const ChatrelHistoryScreenOptions = navData => {
           }}
         />
       </HeaderButtons>
-    }
+    ),
+    headerRight: CustomHeaderRightButton,
   };
 };
 

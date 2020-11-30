@@ -73,7 +73,7 @@ export const InputParams = (props) => {
   return (
 
     <div style={{maxWidth: '1090px'}} >
-      <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <form  onSubmit={handleSubmit(handleFormSubmit)}>
 
         <Grid container spacing={1}>
           <Grid item xs>
@@ -161,7 +161,7 @@ export const InputParams = (props) => {
                       //className={props.classes.textField}
                       inputProps={{
                         ...params.inputProps,
-                        autoComplete: 'new-password', // disable autocomplete and autofill
+                        autoComplete: 'off', // disable autocomplete and autofill
                       }}
                     />
                   )}
@@ -218,7 +218,7 @@ export const InputParams = (props) => {
                     variant="standard"
                     inputProps={{
                       ...params.inputProps,
-                      autoComplete: 'new-password', // disable autocomplete and autofill
+                      autoComplete: 'off', // disable autocomplete and autofill
                     }}
                   />
                 )}

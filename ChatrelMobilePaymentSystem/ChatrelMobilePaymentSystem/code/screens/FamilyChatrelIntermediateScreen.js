@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 import { sDateFormat } from '../constants/CommonConfig';
 import Moment from 'moment';
 
@@ -107,7 +108,10 @@ export const FamilyChatrelIntermediateScreen = (props) => {
 export const FamilyChatrelIntermediateScreenOptions = navData => {
   return {
     headerTitle: 'Family Chatrel',
-    headerLeft: () => {
+    headerStyle: {
+      backgroundColor: Colors.primary,
+    },
+    headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
@@ -117,7 +121,8 @@ export const FamilyChatrelIntermediateScreenOptions = navData => {
           }}
         />
       </HeaderButtons>
-    }
+    ),
+    headerRight: CustomHeaderRightButton
   };
 };
 

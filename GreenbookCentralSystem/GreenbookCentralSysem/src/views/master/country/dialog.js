@@ -142,7 +142,7 @@ export const EditDialog = (props) => {
                     variant="standard"
                     inputProps={{
                       ...params.inputProps,
-                      autoComplete: 'new-password', // disable autocomplete and autofill
+                      autoComplete: 'off', // disable autocomplete and autofill
                     }}
                   />
                 )}

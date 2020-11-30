@@ -1,31 +1,18 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Dimensions, Platform } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { Platform } from 'react-native';
 import { Chatrel } from '../components/Chatrel';
 import Colors from '../constants/Colors';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import Resolution from '../constants/ResolutionBreakpoint';
 
 export const SelfChatrelScreen = (props) => {
   return (
     <View style={styles.mainContainer}>
-      <View>
+      {/*<View style={styles.headerContainer}>
         <Text style={styles.headerComponent}>Self Chatrel</Text>
-      </View>
-      {/*<View style={styles.container}>
-                <Text>Self Chatrel</Text>
-                <Text>PERSONAL INFORMATION</Text>
-                <Text>Greenbook ID</Text>
-                <Text>{oHardcoded.sGBID}</Text>
-                <Text>Date of Birth</Text>
-                <Text>{oHardcoded.dtDOB}</Text>
-                <Text>Name</Text>
-                <Text>{oHardcoded.sName}</Text>
-                <Text>Year of Last Payment</Text>
-                <Text>{oHardcoded.sPaidUntil}</Text>
-                <Text>Payment of Years Due</Text>
-                <Text>{oHardcoded.sYearsDue}</Text>
-              </View>*/}
+  </View>*/}
       <Chatrel></Chatrel>
     </View>
   );
@@ -34,7 +21,10 @@ export const SelfChatrelScreen = (props) => {
 export const SelfChatrelScreenOptions = navData => {
   return {
     headerTitle: 'Self Chatrel',
-    headerLeft: () => {
+    headerStyle: {
+      backgroundColor: Colors.primary,
+    },
+    headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
@@ -44,23 +34,33 @@ export const SelfChatrelScreenOptions = navData => {
           }}
         />
       </HeaderButtons>
-    }
+    ),
+    headerRight: CustomHeaderRightButton,
+    cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
   };
 };
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    margin: 17.5
+    marginHorizontal: Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin
+  },
+  headerContainer: {
+    width: Dimensions.get('window').width * 0.50,
+    height: Dimensions.get('window').height * 0.04,
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10
   },
   headerComponent: {
-    width: 142,
-    height: 35,
+    width: '100%',
+    height: '100%',
     textAlign: "left",
-    fontSize: 24,
+    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 14.4 : 24,
     fontStyle: "normal",
     fontWeight: "normal",
-    marginBottom: 10,
-    color: Colors.blue
+    color: Colors.blue,
+    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    //letterSpacing: Resolution.nLetterSpacing,
+    fontFamily: 'Kanit-Regular'
   }
 });

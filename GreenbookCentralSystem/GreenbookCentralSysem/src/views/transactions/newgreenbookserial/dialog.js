@@ -311,7 +311,7 @@ export const AddDialog = (props) => {
                                          variant="standard"
                                          inputProps={{
                                            ...params.inputProps,
-                                           autoComplete: 'new-password', // disable autocomplete and autofill
+                                           autoComplete: 'off', // disable autocomplete and autofill
                                          }}
                                          
                                         />
@@ -356,7 +356,7 @@ export const AddDialog = (props) => {
                                          variant="standard"
                                          inputProps={{
                                            ...params.inputProps,
-                                           autoComplete: 'new-password', // disable autocomplete and autofill
+                                           autoComplete: 'off', // disable autocomplete and autofill
                                          }}
                                          inputRef={register({
                                           required: true
@@ -430,7 +430,7 @@ export const AddDialog = (props) => {
                                          variant="standard"
                                          inputProps={{
                                            ...params.inputProps,
-                                           autoComplete: 'new-password', // disable autocomplete and autofill
+                                           autoComplete: 'off', // disable autocomplete and autofill
                                          }}
                                          inputRef={register({
                                           required: true
@@ -467,7 +467,7 @@ export const AddDialog = (props) => {
                                               })}
                                               inputProps={{
                                                 ...params.inputProps,
-                                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                                autoComplete: 'off', // disable autocomplete and autofill
                                               }}
                                             />
                                           )}

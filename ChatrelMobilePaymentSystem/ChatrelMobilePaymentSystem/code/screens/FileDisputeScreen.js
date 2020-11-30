@@ -10,6 +10,7 @@ import RNFS from 'react-native-fs';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
 import axios from 'axios';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const FileDisputeScreen = (props) => {
@@ -104,9 +105,9 @@ export const FileDisputeScreen = (props) => {
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.headingContainer}>
+      {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>Submit a Dispute</Text>
-      </View>
+  </View>*/}
       <View style={styles.enterSubjectContainer}>
         <Text style={styles.enterSubjectComponent}>ENTER SUBJECT</Text>
       </View>
@@ -214,8 +215,8 @@ export const FileDisputeScreen = (props) => {
 
 export const FileDisputeScreenOptions = navData => {
   return {
-    headerTitle: 'File Dispute',
-    headerLeft: () => {
+    headerTitle: "Submit a Dispute",
+    headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
@@ -225,8 +226,9 @@ export const FileDisputeScreenOptions = navData => {
           }}
         />
       </HeaderButtons>
-    }
-  };
+    ),
+    headerRight: CustomHeaderRightButton
+  }
 };
 
 
@@ -239,6 +241,7 @@ const styles = StyleSheet.create({
   headingContainer: {
     width: Dimensions.get('window').width * 0.55,
     height: Dimensions.get('window').height * 0.04,
+    marginTop: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 16.8 : 28
   },
   headingComponent: {
