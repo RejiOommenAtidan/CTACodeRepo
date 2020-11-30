@@ -117,6 +117,13 @@ namespace CTAWebAPI.Controllers
                 Object chatrel = _chatrelPaymentRepository.DisplayChatrelPayment(sGBID);
                 if(chatrel != null)
                 {
+                    if(chatrel.ToString() == "Greenbook ID does not Exist.")
+                    {
+                        #region Information Logging 
+                        _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                        #endregion
+                        return NotFound(chatrel.ToString());
+                    }
                     #region Information Logging 
                     _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
                     #endregion

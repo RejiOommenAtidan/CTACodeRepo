@@ -15,6 +15,7 @@ import { GoogleLogin } from 'react-google-login';
 import GoogleLoginPage from 'views/login/GoogleLogin';
 import axios from 'axios';
 import projectLogo from '../../../assets/images/CTALogo.png';
+import { storeCurrentGBDetails } from 'actions/transactions/CurrentGBDetailsAction';
 
 export default function LogingPage(props) {
 
@@ -54,32 +55,34 @@ let oGBDetails={
       sEmail:userObj.email  
     }
     console.log(Obj);
-  
-    axios.post(`ChatrelPayment/AuthenticateGBID/`,Obj)
-    .then(resp => {
-      if (resp.status === 200) {
-        //setPaymentHistory(resp.data);
-        if(resp.data=="Verified"){
-          dispatch(storeGBDetails(oGBDetails));
-          history.push('/Home');
-        }
-      }
-    })
-    .catch(error => {
-      if (error.response) {
-        console.error(error.response.data);
-        console.error(error.response.status);
-        console.error(error.response.headers);
-      } else if (error.request) {
-        console.warn(error.request);
-      } else {
-        console.error('Error', error.message);
-      }
-      console.log(error.config);
-    })
-    .then(release => {
-      //console.log(release); => udefined
-    });
+    dispatch(storeGBDetails(oGBDetails));
+    dispatch(storeCurrentGBDetails(oGBDetails));
+    history.push('/Home');
+    // axios.post(`ChatrelPayment/AuthenticateGBID/`,Obj)
+    // .then(resp => {
+    //   if (resp.status === 200) {
+    //     //setPaymentHistory(resp.data);
+    //     if(resp.data=="Verified"){
+    //       dispatch(storeGBDetails(oGBDetails));
+    //       history.push('/Home');
+    //     }
+    //   }
+    // })
+    // .catch(error => {
+    //   if (error.response) {
+    //     console.error(error.response.data);
+    //     console.error(error.response.status);
+    //     console.error(error.response.headers);
+    //   } else if (error.request) {
+    //     console.warn(error.request);
+    //   } else {
+    //     console.error('Error', error.message);
+    //   }
+    //   console.log(error.config);
+    // })
+    // .then(release => {
+    //   //console.log(release); => udefined
+    // });
 
   }
  

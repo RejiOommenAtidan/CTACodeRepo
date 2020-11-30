@@ -133,7 +133,7 @@ export default function PaymentPage  (props) {
         variant="standard"
         inputProps={{
           ...params.inputProps,
-          autoComplete: 'new-password', // disable autocomplete and autofill
+          autoComplete: 'off', // disable autocomplete and autofill
         }}
       />
     )}
@@ -174,7 +174,7 @@ export default function PaymentPage  (props) {
 const modify =(target) =>{
   console.log(target);
   let payObj = [...paymentData];
-  let index = '';
+  let index;
   if(target.type === 'text'){
     index = parseInt(target.id);
     payObj[index].nCurrentChatrelSalaryAmt = parseFloat(target.value) ? parseFloat(target.value) : 0 ;
@@ -182,7 +182,7 @@ const modify =(target) =>{
   else{
     index = parseInt(target.value);
     if(payObj[index].nCurrentChatrelSalaryAmt===0){
-      payObj[index].nCurrentChatrelSalaryAmt=50;
+      payObj[index].nCurrentChatrelSalaryAmt= payObj[index].nSalaryUSD;
       //setPaymentData(payObj);
     }
     else{
@@ -199,7 +199,7 @@ let payObj = [...paymentData];
 let len=paymentData.length  ;
 
 if(index!=len-1){
-  payObj[index].nChatrelLateFeesValue=(payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nCurrentChatrelSalaryAmt)/10;
+  payObj[index].nChatrelLateFeesValue=(payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nCurrentChatrelSalaryAmt) * (payObj[index].nChatrelLateFeesPercentage / 100);
   
   payObj[index].nArrearsAmount = payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nChatrelLateFeesValue + payObj[index].nCurrentChatrelSalaryAmt;
 
@@ -555,7 +555,7 @@ const submit =(e) =>{
                       variant="standard"
                       inputProps={{
                         ...params.inputProps,
-                        autoComplete: 'new-password', // disable autocomplete and autofill
+                        autoComplete: 'off', // disable autocomplete and autofill
                       }}
                     />
                   )}
@@ -564,7 +564,7 @@ const submit =(e) =>{
               <TableCell align="center">{row.sAuthRegionCurrency}</TableCell>
               {outstanding && <> <TableCell align="center">{row.nChatrelAmount}</TableCell>
               <TableCell align="center">{row.nChatrelMeal}</TableCell>
-              <TableCell align="center">{row.nChatrelLateFeesValue}</TableCell> </>}
+              <TableCell align="center">{row.nChatrelLateFeesValue.toFixed(2)}</TableCell> </>}
               {!outstanding && <> <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell> </>}

@@ -151,7 +151,7 @@ const SidebarMenu = (props) => {
                 Home
               </NavLink>
             </li>
-            <li>
+            {/* <li>
               <NavLink
                 activeClassName="active"
                 onClick={toggleSidebarMobile}
@@ -160,7 +160,7 @@ const SidebarMenu = (props) => {
                
                 Chatrel for Self
               </NavLink>
-            </li>
+            </li> */}
             <li>
               <NavLink
                 activeClassName="active"

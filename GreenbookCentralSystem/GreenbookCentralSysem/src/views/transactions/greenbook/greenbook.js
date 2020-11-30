@@ -46,13 +46,13 @@ export default function GBList(props) {
       </Button>,
     },
     {
-      title: "Fullname",
+      title: "Full Name",
       cellStyle: {
         padding: '5px',
         paddingLeft: '10px'
       },
       export: true,
-      render: rowData => rowData["sFirstName"] === null ? "" : rowData["sFirstName"] + " " + rowData["sMiddleName"] === null ? "" : rowData["sMiddleName"] + " " + rowData["sLastName"] === null ? "" : rowData["sLastName"],
+      render: rowData => (rowData["sFirstName"] === null ? "" : rowData["sFirstName"] )+ " " +( rowData["sMiddleName"] === null ? "" : rowData["sMiddleName"] )+ " " +( rowData["sLastName"] === null ? "" : rowData["sLastName"]),
     },
     {
       title: "Age",
