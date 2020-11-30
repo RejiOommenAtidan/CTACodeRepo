@@ -380,7 +380,7 @@ export default function NewEntry(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password',
+                              autoComplete: 'off',
                             }}
                             name="name_nAuthRegionID"
                             inputRef={register({
@@ -575,7 +575,7 @@ export default function NewEntry(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password',
+                              autoComplete: 'off',
                             }}
                             name="name_sBirthCountryID"
                             inputRef={register({
@@ -896,7 +896,7 @@ export default function NewEntry(props) {
                               variant="standard"
                               inputProps={{
                                 ...params.inputProps,
-                                autoComplete: 'new-password',
+                                autoComplete: 'off',
                               }}
                               name="name_sCountryID"
                               inputRef={register({
@@ -1031,7 +1031,7 @@ export default function NewEntry(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password', // disable autocomplete and autofill
+                              autoComplete: 'off', // disable autocomplete and autofill
                             }}
                           />
                         )}
@@ -1113,6 +1113,9 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <InputLabel id="id_sMarried">Marital Status</InputLabel>
                       <Select
+                      MenuProps={{
+                        disableScrollLock: false,
+                      }}
                         id="id_sMarried"
                         label="Marital Status"
                         type="text"
@@ -1272,7 +1275,7 @@ export default function NewEntry(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password', // disable autocomplete and autofill
+                              autoComplete: 'off', // disable autocomplete and autofill
                             }}
                           />
                         )}

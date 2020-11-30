@@ -112,7 +112,7 @@ export const EditDialog = (props) => {
                         name="text_country"
                         inputProps={{
                           ...params.inputProps,
-                          autoComplete: 'new-password', // disable autocomplete and autofill
+                          autoComplete: 'off', // disable autocomplete and autofill
                         }}
                       />
                     )}
@@ -273,7 +273,7 @@ export const AddDialog = (props) => {
                         name="text_country"
                         inputProps={{
                           ...params.inputProps,
-                          autoComplete: 'new-password', // disable autocomplete and autofill
+                          autoComplete: 'off', // disable autocomplete and autofill
                         }}
                       />
                     )}

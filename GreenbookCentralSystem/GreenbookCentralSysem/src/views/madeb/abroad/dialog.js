@@ -310,7 +310,7 @@ export const EditDialog = (props) => {
                               variant="standard"
                               inputProps={{
                                 ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                autoComplete: 'off', // disable autocomplete and autofill
                               }}
                               inputRef={register({
                                 required: true
@@ -541,7 +541,7 @@ export const EditDialog = (props) => {
                           variant="standard"
                           inputProps={{
                             ...params.inputProps,
-                            autoComplete: 'new-password', // disable autocomplete and autofill
+                            autoComplete: 'off', // disable autocomplete and autofill
                           }}
                         />
                       )}
@@ -854,7 +854,7 @@ export const AddDialog = (props) => {
                               name="authority_text"
                               inputProps={{
                                 ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                autoComplete: 'off', // disable autocomplete and autofill
                               }}
                               inputRef={register({
                                 required: true

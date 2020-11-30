@@ -151,7 +151,7 @@ function Alert(props) {
                                          variant="standard"
                                          inputProps={{
                                              ...params.inputProps,
-                                 autoComplete: 'new-password', // disable autocomplete and autofill
+                                 autoComplete: 'off', // disable autocomplete and autofill
                                }}
                              />
                            )}
@@ -193,7 +193,7 @@ function Alert(props) {
                                          variant="standard"
                                          inputProps={{
                                              ...params.inputProps,
-                                 autoComplete: 'new-password', // disable autocomplete and autofill
+                                 autoComplete: 'off', // disable autocomplete and autofill
                                }}
                              />
                            )}
@@ -253,7 +253,7 @@ function Alert(props) {
                                          variant="standard"
                                          inputProps={{
                                              ...params.inputProps,
-                                 autoComplete: 'new-password', // disable autocomplete and autofill
+                                 autoComplete: 'off', // disable autocomplete and autofill
                                }}
                              />
                            )}
@@ -442,7 +442,7 @@ export const SaveDialog = (props) => {
                                         variant="standard"
                                         inputProps={{
                                             ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                autoComplete: 'off', // disable autocomplete and autofill
                               }}
                             />
                           )}
@@ -484,7 +484,7 @@ export const SaveDialog = (props) => {
                                         variant="standard"
                                         inputProps={{
                                             ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                autoComplete: 'off', // disable autocomplete and autofill
                               }}
                             />
                           )}
@@ -544,7 +544,7 @@ export const SaveDialog = (props) => {
                                         variant="standard"
                                         inputProps={{
                                             ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                autoComplete: 'off', // disable autocomplete and autofill
                               }}
                             />
                           )}

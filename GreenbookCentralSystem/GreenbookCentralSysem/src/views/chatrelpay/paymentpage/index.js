@@ -133,7 +133,7 @@ export default function PaymentPage  (props) {
         variant="standard"
         inputProps={{
           ...params.inputProps,
-          autoComplete: 'new-password', // disable autocomplete and autofill
+          autoComplete: 'off', // disable autocomplete and autofill
         }}
       />
     )}
@@ -555,7 +555,7 @@ const submit =(e) =>{
                       variant="standard"
                       inputProps={{
                         ...params.inputProps,
-                        autoComplete: 'new-password', // disable autocomplete and autofill
+                        autoComplete: 'off', // disable autocomplete and autofill
                       }}
                     />
                   )}
