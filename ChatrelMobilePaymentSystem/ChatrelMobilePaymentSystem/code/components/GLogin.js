@@ -5,6 +5,7 @@ import { sClientIDAndroid } from '../constants/CommonConfig';
 import { useSelector, useDispatch } from 'react-redux';
 import { storeGoogleCreds } from '../store/actions/GLoginAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 export const GLogin = (props) => {
 
@@ -19,9 +20,11 @@ export const GLogin = (props) => {
       forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
       //iosClientId: '', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
     });
+
     isSignedIn();
-    // getDataFromAsnycStorage().then(data => {
-    //   //console.log(data);
+
+    // getUserDataFromAsnycStorage().then(data => {
+    //   //console.info(data);
     //   let userInfo = data;
     //   if (userInfo) {
     //     setUser(userInfo);
@@ -29,14 +32,17 @@ export const GLogin = (props) => {
     //     props.props.navigation.navigate("GBDetail");
     //   }
     // });
+
   }, []);
 
-  const getDataFromAsnycStorage = async () => {
+  const getUserDataFromAsnycStorage = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('oUserInfo');
+      console.info(jsonValue);
       return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-      // error reading value
+    }
+    catch (e) {
+      console.info(e);
     }
   };
 
@@ -44,7 +50,11 @@ export const GLogin = (props) => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      //console.log(userInfo);
+      // console.info(userInfo.user.email);
+      // console.info(userInfo.user.givenName);
+      // console.info(userInfo.user.familyName);
+      // console.info(userInfo.user.name);//full name by google api
+      // console.info(userInfo.user.photo);
       setUser(userInfo);
       dispatch(storeGoogleCreds(userInfo));
       try {
@@ -52,19 +62,23 @@ export const GLogin = (props) => {
         await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
       }
       catch (e) {
-        console.log(e);
+        console.info(e);
       }
       props.props.navigation.navigate("GBDetail");
-    } catch (error) {
-      console.log('Message', error.message);
+    }
+    catch (error) {
+      console.info('Message', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log('User Cancelled the Login Flow');
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log('Signing In');
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log('Play Services Not Available or Outdated');
-      } else {
-        console.log('Some Other Error Happened');
+        console.info('User Cancelled the Login Flow');
+      }
+      else if (error.code === statusCodes.IN_PROGRESS) {
+        console.info('Signing In');
+      }
+      else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.info('Play Services Not Available or Outdated');
+      }
+      else {
+        console.info('Some Other Error Happened');
       }
     }
   };
@@ -73,23 +87,32 @@ export const GLogin = (props) => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (!!isSignedIn) {
       getCurrentUserInfo();
-    } else {
-      console.log('Please Login');
+    }
+    else {
+      console.info('Please Login');
     }
   };
 
   const getCurrentUserInfo = async () => {
     try {
       const userInfo = await GoogleSignin.signInSilently();
-      //console.log(userInfo);
       setUser(userInfo);
       dispatch(storeGoogleCreds(userInfo));
+      try {
+        const jsonUserInfoValue = JSON.stringify(userInfo);
+        await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
+      }
+      catch (e) {
+        console.info(e);
+      }
       props.props.navigation.navigate("GBDetail");
-    } catch (error) {
+    }
+    catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-        console.log('User has not signed in yet');
-      } else {
-        console.log("Something went wrong. Unable to get user's info");
+        console.info('User has not signed in yet');
+      }
+      else {
+        console.info("Something went wrong. Unable to get user's info");
       }
     }
   };

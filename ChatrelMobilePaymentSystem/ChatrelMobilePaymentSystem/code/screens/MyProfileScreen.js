@@ -5,6 +5,7 @@ import HeaderButton from '../components/HeaderButton';
 import { Platform, Dimensions } from 'react-native';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../../code/constants/Colors';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 
 export const MyProfileScreen = (props) => {
     const oUserHardcodedMyProfile = {
@@ -17,11 +18,11 @@ export const MyProfileScreen = (props) => {
     };
     return (
         <View style={styles.mainContainer}>
-            <View style={styles.headerContainer}>
+            {/*<View style={styles.headerContainer}>
                 <Text style={styles.headerComponent}>
                     My Profile
                 </Text>
-            </View>
+    </View>*/}
             {/*FULL NAME*/}
             <View style={styles.nameLabelContainer}>
                 <Text style={styles.nameLabelComponent}>
@@ -94,8 +95,11 @@ export const MyProfileScreen = (props) => {
 
 export const MyProfileScreenOptions = navData => {
     return {
-        headerTitle: 'My Profile',
-        headerLeft: () => {
+        headerTitle: "My Profile",
+        headerStyle: {
+            backgroundColor: Colors.primary,
+          },
+        headerLeft: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
                     title="Menu"
@@ -105,7 +109,8 @@ export const MyProfileScreenOptions = navData => {
                     }}
                 />
             </HeaderButtons>
-        }
+        ),
+        headerRight: CustomHeaderRightButton
     };
 };
 
@@ -120,6 +125,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         width: Dimensions.get('window').width * 0.32,
         height: Dimensions.get('window').height * 0.04,
+        //marginTop: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
         marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 18 : 30
     },
     headerComponent: {

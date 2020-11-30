@@ -10,6 +10,7 @@ import Moment from 'moment';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
 import axios from 'axios';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 
 export const FriendChatrelIntermediateScreen = (props) => {
   const [nFriendGBID, setnFriendGBID] = useState("");
@@ -21,9 +22,9 @@ export const FriendChatrelIntermediateScreen = (props) => {
   return (
     <ScrollView>
       <View style={styles.mainContainer}>
-        <View style={styles.headingContainer}>
+        {/*<View style={styles.headingContainer}>
           <Text style={styles.headingComponent}>Chatrel For Friends</Text>
-        </View>
+  </View>*/}
         <View style={styles.firstNameLabelContainer}>
           <Text style={styles.firstNameLabelComponent}>FIRST NAME</Text>
         </View>
@@ -206,7 +207,10 @@ export const FriendChatrelIntermediateScreen = (props) => {
 export const FriendChatrelIntermediateScreenOptions = navData => {
   return {
     headerTitle: 'Chatrel for a Friend',
-    headerLeft: () => {
+    headerStyle: {
+      backgroundColor: Colors.primary,
+    },
+    headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
@@ -216,7 +220,9 @@ export const FriendChatrelIntermediateScreenOptions = navData => {
           }}
         />
       </HeaderButtons>
-    }
+    ),
+    headerRight: CustomHeaderRightButton,
+    cardStyle: { backgroundColor: Colors.blueCardColor },
   };
 };
 

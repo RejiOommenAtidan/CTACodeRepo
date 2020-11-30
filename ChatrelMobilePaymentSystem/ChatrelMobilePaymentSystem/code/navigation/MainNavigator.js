@@ -2,21 +2,21 @@ import React from 'react';
 import { Alert, Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { ChatrelHistoryScreen } from '../screens/ChatrelHistoryScreen';
-import { FileDisputeScreen } from '../screens/FileDisputeScreen';
-import { MyProfileScreen } from '../screens/MyProfileScreen';
+import { ChatrelHistoryScreen, ChatrelHistoryScreenOptions } from '../screens/ChatrelHistoryScreen';
+import { FileDisputeScreen, FileDisputeScreenOptions } from '../screens/FileDisputeScreen';
+import { MyProfileScreen, MyProfileScreenOptions } from '../screens/MyProfileScreen';
 import { GBDetailScreen } from '../screens/GBDetailScreen';
-import HomeScreen from '../screens/HomeScreen';
+import HomeScreen, { HomeScreenOptions } from '../screens/HomeScreen';
 import { SelfChatrelScreen, SelfChatrelScreenOptions } from '../screens/SelfChatrel';
-import { FriendChatrelIntermediateScreen } from '../screens/FriendChatrelIntermediate';
-import { FriendChatrelScreen } from '../screens/FriendChatrelScreen';
-import { FamilyChatrelScreen } from '../screens/FamilyChatrel';
-import { FamilyChatrelIntermediateScreen } from '../screens/FamilyChatrelIntermediateScreen';
+import { FriendChatrelIntermediateScreen, FriendChatrelIntermediateScreenOptions } from '../screens/FriendChatrelIntermediate';
+import { FriendChatrelScreen, FriendChatrelScreenOptions } from '../screens/FriendChatrelScreen';
+import { FamilyChatrelScreen, FamilyChatrelScreenOptions } from '../screens/FamilyChatrel';
+import { FamilyChatrelIntermediateScreen, FamilyChatrelIntermediateScreenOptions } from '../screens/FamilyChatrelIntermediateScreen';
 import { LoginScreen } from '../screens/LoginScreen';
 import Colors from '../constants/Colors';
-import { GLogout } from '../components/GLogout';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
+import { GLogout } from '../components/GLogout';
 
 const defaultStackNavOptions = {
   headerStyle: {
@@ -65,33 +65,7 @@ const HomeNavigator = () => {
       <HomeStackNavigator.Screen
         name="Home"
         component={HomeScreen}
-        options={{
-          headerTitle: 'Quick Actions',
-          headerTitleStyle: { color: Colors.blue },
-          headerTransparent: true,
-          headerLeft: (navData) => (
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-              <Item
-                title="Menu"
-                iconName={Platform.OS === 'android' ? "menu" : "ios-menu-outline"}
-                onPress={() => {
-                  navData.navigation.toggleDrawer();
-                }}
-              />
-            </HeaderButtons>
-          ),
-          headerRight: (navData) => (
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-              <Item
-                title="Menu"
-                iconName={Platform.OS === 'android' ? "menu" : "ios-menu-outline"}
-                onPress={() => {
-                  Alert.alert("Hello")
-                }}
-              />
-            </HeaderButtons>
-          ),
-        }}
+        options={HomeScreenOptions}
       >
       </HomeStackNavigator.Screen>
     </HomeStackNavigator.Navigator>
@@ -130,11 +104,7 @@ const SelfChatrelNavigator = () => {
       <SelfChatrelStackNavigator.Screen
         name="SelfChatrel"
         component={SelfChatrelScreen}
-        options={{
-          ...SelfChatrelScreenOptions,
-          cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor },
-
-        }}
+        options={SelfChatrelScreenOptions}
       >
       </SelfChatrelStackNavigator.Screen>
     </SelfChatrelStackNavigator.Navigator>
@@ -149,7 +119,7 @@ const FamilyChatrelIntermediateNavigator = () => {
       <FamilyChatrelIntermediateStackNavigator.Screen
         name="FamilyChatrelIntermediate"
         component={FamilyChatrelIntermediateScreen}
-      //options={}
+        options={FamilyChatrelIntermediateScreenOptions}
       >
       </FamilyChatrelIntermediateStackNavigator.Screen>
     </FamilyChatrelIntermediateStackNavigator.Navigator>
@@ -164,9 +134,7 @@ const FamilyChatrelNavigator = () => {
       <FamilyChatrelStackNavigator.Screen
         name="FamilyChatrel"
         component={FamilyChatrelScreen}
-        options={{
-          cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
-        }}
+        options={FamilyChatrelScreenOptions}
       >
       </FamilyChatrelStackNavigator.Screen>
     </FamilyChatrelStackNavigator.Navigator>
@@ -181,9 +149,7 @@ const FriendChatrelIntermediateNavigator = () => {
       <FriendChatrelIntermediateStackNavigator.Screen
         name="FriendChatrelIntermediate"
         component={FriendChatrelIntermediateScreen}
-        options={{
-          cardStyle: { backgroundColor: Colors.blueCardColor },
-        }}
+        options={FriendChatrelIntermediateScreenOptions}
       >
       </FriendChatrelIntermediateStackNavigator.Screen>
     </FriendChatrelIntermediateStackNavigator.Navigator>
@@ -198,9 +164,7 @@ const FriendChatrelNavigator = () => {
       <FriendChatrelStackNavigator.Screen
         name="FriendChatrel"
         component={FriendChatrelScreen}
-        options={{
-          cardStyle: { backgroundColor: Colors.ChatrelScreensBGColor }
-        }}
+        options={FriendChatrelScreenOptions}
       >
       </FriendChatrelStackNavigator.Screen>
     </FriendChatrelStackNavigator.Navigator>
@@ -215,7 +179,7 @@ const ChatrelHistoryNavigator = () => {
       <ChatrelHistoryStackNavigator.Screen
         name="ChatrelHistory"
         component={ChatrelHistoryScreen}
-      //options={}
+        options={ChatrelHistoryScreenOptions}
       >
       </ChatrelHistoryStackNavigator.Screen>
     </ChatrelHistoryStackNavigator.Navigator>
@@ -230,7 +194,7 @@ const MyProfileNavigator = () => {
       <MyProfileStackNavigator.Screen
         name="MyProfile"
         component={MyProfileScreen}
-      //options={}
+        options={MyProfileScreenOptions}
       >
       </MyProfileStackNavigator.Screen>
     </MyProfileStackNavigator.Navigator>
@@ -245,6 +209,7 @@ const FileDisputeNavigator = () => {
       <FileDisputeStackNavigator.Screen
         name="FileDispute"
         component={FileDisputeScreen}
+        options={FileDisputeScreenOptions}
       //options={
       //{
       //   drawerLabel: 'File Dispute',
@@ -288,7 +253,7 @@ const MainDrawerNavigator = createDrawerNavigator();
 export const MainNavigator = () => {
   return (
     <MainDrawerNavigator.Navigator
-      initialRouteName={"FriendChatrelIntermediate"}
+      initialRouteName={"Login"}
       drawerPosition={"left"}
       drawerType={"front"}
       hideStatusBar={false}

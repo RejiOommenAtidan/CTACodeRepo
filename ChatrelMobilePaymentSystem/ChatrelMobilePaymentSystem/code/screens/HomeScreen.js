@@ -10,7 +10,8 @@ import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
 import { Icon } from "react-native-elements";
 // import { withNavigationFocus } from 'react-navigation';
-// import CustomHeaderButton from '../components/HeaderButton';
+//import CustomHeaderButton from '../components/HeaderButton';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 
 const HomeScreen = (props) => {
   // const backAction = () => {
@@ -81,8 +82,10 @@ const HomeScreen = (props) => {
   return (
     <ScrollView>
       <View style={styles.mainContainer}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerComponent}>Quick Actions</Text>
+        </View>
         <View style={styles.cardContainer}>
-          {/*<View><Text>Quick Actions</Text></View>*/}
           {aCard.map((card, index) => {
             return (
               <View key={index} style={styles.singleCardContainer}>
@@ -173,7 +176,22 @@ const HomeScreen = (props) => {
 
 export const HomeScreenOptions = navData => {
   return {
-
+    headerTitle: "Home",
+    headerStyle: {
+      backgroundColor: Colors.primary,
+    },
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName={Platform.OS === 'android' ? "menu" : "ios-menu-outline"}
+          onPress={() => {
+            navData.navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
+    headerRight: CustomHeaderRightButton
   };
 };
 
@@ -181,7 +199,24 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     marginHorizontal: Dimensions.get('window').width * Resolution.nWidthScreenMargin,
-    marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin,
+    marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin
+  },
+  headerContainer: {
+    width: Dimensions.get('window').width * 0.60,
+    height: Dimensions.get('window').height * 0.04,
+    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15
+  },
+  headerComponent: {
+    width: '100%',
+    height: '100%',
+    textAlign: "left",
+    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 14.4 : 24,
+    fontStyle: "normal",
+    fontWeight: "normal",
+    color: Colors.blue,
+    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    //letterSpacing: Resolution.nLetterSpacing,
+    fontFamily: 'Kanit-Regular'
   },
   cardContainer: {
     flexDirection: "row",

@@ -10,21 +10,98 @@ import { storeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
 import Colors from '../constants/Colors';
 import Resolution from '../constants/ResolutionBreakpoint';
 import LinearGradient from 'react-native-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 export const GBDetailScreen = (props) => {
+
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', () => true);
+
+    
+    // getUserDataFromAsnycStorage().then(oUserInfo => {
+    //   if (oUserInfo) {
+    //     getGBDataFromAsnycStorage().then(oGBInfo => {
+    //       if (oGBInfo) {
+    //         let oUserCompleteDetails = {...oUserInfo,...oGBInfo}
+    //         verifyAllDetails(oUserCompleteDetails);
+    //       }
+    //     });
+    //   }
+    // });
 
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', () => true);
     };
+
   }, []);
+
+  const getGBDataFromAsnycStorage = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('oGBInfo');
+      console.info(jsonValue);
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    }
+    catch (e) {
+      console.info(e);
+    }
+  };
+
+  const getUserDataFromAsnycStorage = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('oUserInfo');
+      console.info(jsonValue);
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    }
+    catch (e) {
+      console.info(e);
+    }
+  };
+
+  const verifyAllDetails = (oUserCompleteDetails)=>{
+    axios.post('/ChatrelPayment/VerifyUser',oUserCompleteDetails)
+    .then(response=>{
+      if(response.status===200){
+        //TODO: Make Set State calls
+        props.navigation.navigate("Home");
+      }
+    })
+    .catch(error=>{
+      if (error.response) {
+        // Not 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+    });
+  };
 
   const dispatch = useDispatch();
   const [sGBID, setsGBID] = useState("");
   const [bShowGBID, setbShowGBID] = useState(true);
   const [dtDOB, setdtDOB] = useState(null);
   const dtToday = Moment().format(sDateFormat);
+
+  const handleVerifyDetailsPress = async () => {
+    let oGBDetails = {
+      sGBID: sGBID,
+      dtDob: dtDOB
+    };
+    dispatch(storeGBDetails(oGBDetails));
+    dispatch(storeCurrentGBDetails(oGBDetails));
+    try {
+      const jsonGBInfoValue = JSON.stringify(oGBDetails);
+      await AsyncStorage.setItem('oGBInfo', jsonGBInfoValue);
+    }
+    catch (e) {
+      console.info(e);
+    }
+    props.navigation.navigate("Home");
+  };
 
   return (
     <ImageBackground
@@ -108,15 +185,7 @@ export const GBDetailScreen = (props) => {
               titleStyle={{ color: Colors.black }}
               buttonStyle={styles.buttonComponent}
               title="Verify Details"
-              onPress={() => {
-                let oGBDetails = {
-                  sGBID: sGBID,
-                  dtDob: dtDOB
-                };
-                dispatch(storeGBDetails(oGBDetails));
-                dispatch(storeCurrentGBDetails(oGBDetails));
-                props.navigation.navigate("Home");
-              }}
+              onPress={() => { handleVerifyDetailsPress() }}
             />
           </View>
         </View>
