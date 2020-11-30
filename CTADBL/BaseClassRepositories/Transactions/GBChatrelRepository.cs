@@ -229,7 +229,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 else
                 {
                     //authRegionID = _countryRepository.GetDefaultAuthRegionID("US");
-                    authRegionID = _greenbookRepository.GetGreenbookByGBID(sGBID).nAuthRegionID;
+                    Greenbook gb = _greenbookRepository.GetGreenbookByGBID(sGBID);
+                    if(gb != null)
+                    {
+                        authRegionID = gb.nAuthRegionID;
+                    }
+                    
                 }
                 _connection.Close();
                 return authRegionID;

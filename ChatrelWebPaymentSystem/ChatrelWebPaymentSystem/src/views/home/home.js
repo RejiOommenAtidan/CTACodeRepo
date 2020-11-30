@@ -1,19 +1,90 @@
-import React from 'react';
+import React , { useEffect, useState } from 'react';
 import { Card ,CardContent,Typography ,Grid,Link,Button} from '@material-ui/core';
-
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import PersonIcon from '@material-ui/icons/Person';
 import GroupIcon from '@material-ui/icons/Group';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 //import projectLogo from '../../assets/images/ctalogo.png';
-
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
 import img from '../../assets/images/home_pending.jpg';
 import {useHistory} from 'react-router-dom';
+import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.paper,
+    maxWidth: 1000,
+    alignContent: "center",
+    textAlign: "center"
+  },
+  table: {
+    minWidth: 650,
+  },
+}));
+
 
 export default function Home() {
 
- const history = useHistory();
+  const sGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sGBID);
+  //const pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
+  //const payingFor=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sName);
+  const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
+  const paidByName= useSelector(state => state.GBDetailsReducer.oGBDetails.sName);
+  const [chatrelPending, setChatrelPending] = React.useState(null);
+  let history = useHistory();
+  let dispatch = useDispatch();
+  const classes = useStyles();
+  const theme = useTheme();
+  const [currencySymbol, setCurrencySymbol] = React.useState();
+  const [paymentData, setPaymentData] = React.useState();
+  const [outstanding, setOutstanding] = useState(true);
+  useEffect(() => {
+  axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+paidByGBID)
+  .then(resp => {
+    if (resp.status === 200) {
+      //console.log("Self Chatrel Payment data:", resp.data);
+      if(resp.data.chatrelPayment.nChatrelTotalAmount === 0){
+        setChatrelPending('0');
+        setOutstanding(false);
+        // setCurrencySymbol(resp.data.currency === 'INR' ? '₹' : '$' );
+        // element.disabled = false;
+        // return;
+      }
+      else{
+        setChatrelPending(resp.data.chatrelPayment.nChatrelTotalAmount);
+      }
+      setPaymentData(resp.data);
+      
+      
+      if(resp.data.gbChatrels[0].sAuthRegionCurrency === 'USD'){
+        setCurrencySymbol('$');
+      }
+      else{
+        setCurrencySymbol('₹');
+      }
+      
+      console.log("Data fetched...", resp.data);
+      
+    }
+  })
+  .catch(error => {
+    console.log(error.message);
+  });
+
+}, []);
+
+ 
+
+ const makePayment = (obj, data, outstanding)=> {
+  console.log("Inside Make payment method for " , obj, data)
+  dispatch(storeCurrentGBDetails(obj));
+  history.push('/PaymentPage', {pymtData: data, outstanding});
+}
+
+
 
   return (
     <>
@@ -25,7 +96,7 @@ export default function Home() {
          
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Link onClick={()=>{history.push('/selfpayment')}} style={{cursor: 'pointer'}} > 
+              <Link onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' }, paymentData, outstanding)}} style={{cursor: 'pointer'}} > 
                 <Card  style={{height:'150px',backgroundColor:'#ebca17',color:'#168b44'}} >
                   <CardContent>
                     <div style={{textAlign:'right'}}>
