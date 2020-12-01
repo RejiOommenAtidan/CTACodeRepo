@@ -1,90 +1,23 @@
-
 import React, { useEffect, useState } from 'react';
-//import { useNavigate } from 'react-router-dom';
 import {
-  Box,
-  Container,
   Grid,
-  Button,
-  Typography,
-  FormControl,
-  TextField,
-  Breadcrumbs,
-  Link,
-  Paper
-  
+  Button
 } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-//import theme from '../../../theme/theme/theme'
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import MUIDataTable from "mui-datatables";
-//import { ThemeProvider } from '@material-ui/styles';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import Chip from '@material-ui/core/Chip';
 import Moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
 
 // Local import
-import { AddDialog,  EditDialog } from './dialog';
-import {EmailDialog} from '../email';
-import {Alerts} from '../../alerts';
+import { AddDialog, EditDialog } from './dialog';
+import { EmailDialog } from '../email';
+import { Alerts } from '../../alerts';
 import { ViewDialog } from '../../search/dialog';
-
-import MaterialTable, { MTableToolbar }  from 'material-table';
-import { forwardRef } from 'react';
-
-import AddBox from '@material-ui/icons/AddBox';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import Check from '@material-ui/icons/Check';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Clear from '@material-ui/icons/Clear';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import Edit from '@material-ui/icons/Edit';
-import FilterList from '@material-ui/icons/FilterList';
-import FirstPage from '@material-ui/icons/FirstPage';
-import LastPage from '@material-ui/icons/LastPage';
-import Remove from '@material-ui/icons/Remove';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import Search from '@material-ui/icons/Search';
-import ViewColumn from '@material-ui/icons/ViewColumn';
-
-import {oOptions,oTableIcons, sDateFormat} from '../../../config/commonConfig';
-
-const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <div></div>),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-};
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import MaterialTable from 'material-table';
+import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -131,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
       main: '#11cb5f',
     },
   }
-
 }));
 
 export default function EnhancedTable() {
@@ -150,12 +82,12 @@ export default function EnhancedTable() {
   const [authority, setAuthority] = React.useState(0);
   const [receivedDate, setReceivedDate] = React.useState('');
   const [name, setName] = React.useState('');
-  
+
   const [gbId, setGbId] = React.useState('');
   const [receiptNo, setReceiptNo] = React.useState(0);
   const [changeField, setChangeField] = React.useState('');
   const [status, setStatus] = React.useState('');
-  
+
   const [documents, setDocument] = React.useState('');
   const [issueActionDate, setIssueActionDate] = React.useState('');
   const [issueAction, setIssueAction] = React.useState(0);
@@ -163,37 +95,33 @@ export default function EnhancedTable() {
   const [rejectDate, setRejectDate] = React.useState('');
   const [norchoeObj, setNorchoeObj] = useState({});
   const [emailInObj, setEmailInObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
-
   const [filtering, setFiltering] = React.useState(false);
 
   oOptions.filtering = filtering;
- //View GB
- const [viewModal, setViewModal] = useState(false);
- const handleViewClickClose = () => {
+  //View GB
+  const [viewModal, setViewModal] = useState(false);
+  const handleViewClickClose = () => {
+    setViewModal(false);
+  };
 
-  setViewModal(false);
-};
-
-const viewGb = (GBID) => {
-  console.log(GBID)
-  setGbId(GBID);
-  setViewModal(true);
-}
-const openRelationGB = (newsGBID) => {
-  handleViewClickClose();
-  setTimeout(() => viewGb(newsGBID), 0);
-} 
-  //Alert
- const [alertMessage, setAlertMessage] = useState("");
- const [alertType, setAlertType] = useState("");
-  const alertObj={
-    alertMessage:alertMessage,
-    alertType:alertType
+  const viewGb = (GBID) => {
+    console.log(GBID)
+    setGbId(GBID);
+    setViewModal(true);
   }
-  const [snackbar,setSnackbar]=React.useState(false);
+  const openRelationGB = (newsGBID) => {
+    handleViewClickClose();
+    setTimeout(() => viewGb(newsGBID), 0);
+  }
+  //Alert
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  }
+  const [snackbar, setSnackbar] = React.useState(false);
   const snackbarOpen = () => {
     console.log('alert');
     setSnackbar(true);
@@ -218,256 +146,181 @@ const openRelationGB = (newsGBID) => {
     setEmailModal(true);
   };
   const handleEmailClickClose = () => {
-    
-    setEmailModal(false);
-  };
 
-  const options = {
-    textLabels: {
-      body: {
-        noMatch: "Loading..."
-      },
-     
-    },
-    filter:true,
-    viewColumns:false,
-    selectableRows: false,
-    jumpToPage: true,
-    rowsPerPage: rowsPerPage,
-    rowsPerPageOptions: [5, 10, 20, 30],
-    onChangePage: (number) => {
-      setCurrentPage(number + 1);
-      console.log('Current Page No.', number + 1)
-    },
-    onChangeRowsPerPage: (rows) => {
-      console.log("Rows per page:", rows)
-    },
-    onTableChange: (action, tableState) => {
-      console.log("Action:", action, "\ntableState:", tableState, "Data Changed:", dataChanged);
-      
-    }
+    setEmailModal(false);
   };
 
   const columns = [
     {
+      align: 'center',
       field: "madeb.id",
       title: "Sr No.",
-      hidden:true,
-      cellStyle: {
-        padding:'5px',
-        
-      },
-    
+      hidden: true,
+      // cellStyle: {
+      //   padding: '5px'
+      // }
     },
     {
       field: "madeb.nFormNumber",
       title: "Form No.",
-      filterPlaceholder:'Search..',
+      filterPlaceholder: 'Search..',
       headerStyle: {
-        padding:'0px',
-        width:'7%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-       // padding:'0px',
-        padding:'10px',
-        width:'7%',
-        textAlign:'left'
-        
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.dtReceived",
       title: "Received Date",
       render: rowData => Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD'),
       headerStyle: {
-        padding:'0px',
-        width:'9%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'9%',
-        textAlign:'left'
-        
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "sAuthRegion",
       title: "Authority",
-     
       headerStyle: {
-        padding:'0px',
-        width:'10%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'10%',
-        textAlign:'left'
-        
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.sName",
       title: "Name",
-     
       headerStyle: {
-        padding:'0px',
-        width:'15%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'15%',
-        textAlign:'left'
-        
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       //field: "madeb.sGBID",
-      render:  rowData =>rowData['madeb']['sGBID']? <Button className="m-2 btn-transparent btn-link btn-link-first" onClick={() => { viewGb(rowData['madeb']['sGBID'])}}><span>{rowData['madeb']['sGBID']}</span></Button>:'',
+      render: rowData => rowData['madeb']['sGBID'] ? <Button size={"small"} className="m-2 btn-transparent btn-link btn-link-first" onClick={() => { viewGb(rowData['madeb']['sGBID']) }}><span>{rowData['madeb']['sGBID']}</span></Button> : '',
       title: "GB ID",
-      
       headerStyle: {
-        padding:'0px',
-        width:'15%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'15%',
-        textAlign:'left'
-        
-      },
-
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.sChangeField",
       title: "Change Field",
-      hidden:false,
+      hidden: false,
       headerStyle: {
-        padding:'0px',
-        width:'15%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'15%',
-        textAlign:'left'
-        
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.sDocumentAttached",
       title: "Document Attached",
-      
       headerStyle: {
-        padding:'0px',
-        width:'10%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'10%',
-        textAlign:'left'
-        
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.nReceiptNo",
       title: "Receipt No.",
-      
       headerStyle: {
-        padding:'0px',
-        width:'10%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'10%',
-        textAlign:'left'
-        
-      },
-      
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "sMadebStatus",
       title: "Status",
-      
       headerStyle: {
-        padding:'0px',
-        width:'10%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'10%',
-        textAlign:'left'
-        
-      },
-  
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.sMadebStatusRemark",
       title: "Remark",
-      
       headerStyle: {
-        padding:'0px',
-        width:'10%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'10%',
-        textAlign:'left'
-        
-      },
-  
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.dtIssueAction",
       title: "Issue Action Date",
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD') : '',
-     // render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
+      // render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
       headerStyle: {
-        padding:'0px',
-        width:'10%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'10%',
-        textAlign:'left'
-        
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "sTypeIssued",
       title: "Issue Action",
-      
       headerStyle: {
-        padding:'0px',
-        width:'9%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'9%',
-        textAlign:'left'
-        
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.dtReturnEmail",
@@ -475,127 +328,112 @@ const openRelationGB = (newsGBID) => {
       //render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
       render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD') : '',
       headerStyle: {
-        padding:'0px',
-        width:'8%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'8%',
-        textAlign:'left'
-        
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.dtReject",
       title: "Reject Date",
       render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD') : '',
-     
-    
       headerStyle: {
-        padding:'0px',
-        width:'8%',
-        textAlign:'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        paddingLeft:'10px',
-        width:'8%',
-        textAlign:'left'
-        
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
-
     {
       field: "email",
       title: "Email",
-      filtering:false,
-      sort: false,
-      export:false,
+      filtering: false,
+      sorting: false,
+      export: false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => { emailClick(rowData) }}  style={{padding:'0px'}}
-    >
-      <EmailIcon/>
-      </IconButton> ,
-      
+        onClick={() => { emailClick(rowData) }} style={{ padding: '0px' }}
+      >
+        <EmailIcon />
+      </IconButton>,
       headerStyle: {
-        padding:'0px',
-        width:'1%',
-        textAlign:'center'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        width:'1%',
-        textAlign:'center'
-        
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "edit",
       title: "Edit",
       sorting: false,
-      export:false,
-      filtering:false,
-      render: rowData =>  <>{rowData.madeb.nIssuedOrNotID==2 && <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => {  editClick(rowData) }} disabled style={{padding:'0px'}}
-    >
-      <EditOutlinedIcon/>
-    </IconButton>}
-    {rowData.madeb.nIssuedOrNotID!=2 && <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => {  editClick(rowData) }}  style={{padding:'0px'}}
-    >
-      <EditOutlinedIcon/>
-    </IconButton>}
-    </>,
+      export: false,
+      filtering: false,
+      render: rowData => <>{rowData.madeb.nIssuedOrNotID == 2 && <IconButton color="primary" aria-label="upload picture" component="span"
+        onClick={() => { editClick(rowData) }} disabled style={{ padding: '0px' }}
+      >
+        <EditOutlinedIcon />
+      </IconButton>}
+        {rowData.madeb.nIssuedOrNotID != 2 && <IconButton color="primary" aria-label="upload picture" component="span"
+          onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+        >
+          <EditOutlinedIcon />
+        </IconButton>}
+      </>,
       headerStyle: {
-        padding:'0px',
-        width:'1%',
-        textAlign:'center'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding:'0px',
-        width:'1%',
-        textAlign:'center'
-        
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
-      field:'Verified By',
-      title:'Verified By',
+      field: 'Verified By',
+      title: 'Verified By',
       sort: false,
-      export:true,
-      filtering:false,
-      hidden:true,
+      export: true,
+      filtering: false,
+      hidden: true,
     },
     {
-      field:'Re-Verified By',
-      title:'Re-Verified By',
+      field: 'Re-Verified By',
+      title: 'Re-Verified By',
       sort: false,
-      export:true,
-      filtering:false,
-      hidden:true,
+      export: true,
+      filtering: false,
+      hidden: true,
     }
-   
   ];
 
-  const emailClick = (tableRowArray) => { 
-   
+  const emailClick = (tableRowArray) => {
+
     setId(tableRowArray['madeb']['id']);
     setFormNumber(tableRowArray['madeb']['nFormNumber']);
     setName(tableRowArray['madeb']['sName']);
-  
+
     setEmailInObj({
-        id: tableRowArray['madeb']['id'],
-        nFormNumber: tableRowArray['madeb']['nFormNumber'],
-        sName: tableRowArray['madeb']['sName'],
-        madebName:'Norchoe'
+      id: tableRowArray['madeb']['id'],
+      nFormNumber: tableRowArray['madeb']['nFormNumber'],
+      sName: tableRowArray['madeb']['sName'],
+      madebName: 'Norchoe'
     });
-    
+
     setEmailModal(true);
   }
-  const editClick = (tableRowArray) => { 
- 
+  const editClick = (tableRowArray) => {
+
     setId(tableRowArray['madeb']['id']);
     setFormNumber(tableRowArray['madeb']['nFormNumber']);
     setAuthority(tableRowArray['sAuthRegion']);
@@ -611,27 +449,27 @@ const openRelationGB = (newsGBID) => {
     setIssueActionDate(tableRowArray['madeb']['dtIssueAction']);
     setIssueAction(tableRowArray['madeb']['nIssuedOrNotID']);
     setReturnDate(tableRowArray['madeb']['dtReturnEmail']);
-    
+
     setNorchoeObj({
       id: tableRowArray['madeb']['id'],
       nFormNumber: tableRowArray['madeb']['nFormNumber'],
       dtReceived: tableRowArray['madeb']['dtReceived'],
       nAuthRegionID: tableRowArray['madeb']['nAuthRegionID'],
       sName: tableRowArray['madeb']['sName'],
-      sChangeField    :tableRowArray['madeb']['sChangeField'],
-      nReceiptNo   :tableRowArray['madeb']['nReceiptNo'],
-      sGBID  :tableRowArray['madeb']['sGBID'],
-      sDocumentAttached  :tableRowArray['madeb']['sDocumentAttached'],
-      dtIssueAction  :tableRowArray['madeb']['dtIssueAction'],
-      nIssuedOrNotID  :tableRowArray['madeb']['nIssuedOrNotID'],
-      dtReturnEmail  :tableRowArray['madeb']['dtReturnEmail'],
+      sChangeField: tableRowArray['madeb']['sChangeField'],
+      nReceiptNo: tableRowArray['madeb']['nReceiptNo'],
+      sGBID: tableRowArray['madeb']['sGBID'],
+      sDocumentAttached: tableRowArray['madeb']['sDocumentAttached'],
+      dtIssueAction: tableRowArray['madeb']['dtIssueAction'],
+      nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
+      dtReturnEmail: tableRowArray['madeb']['dtReturnEmail'],
       nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
       sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
-      });
-     
-      console.log(norchoeObj);
-      setEditModal(true);
-    }
+    });
+
+    console.log(norchoeObj);
+    setEditModal(true);
+  }
   const editAPICall = (madeb) => {
     // let CountryID = countryPK;
     // let countryToUpdate = {
@@ -640,7 +478,7 @@ const openRelationGB = (newsGBID) => {
     //   sCountry: countryName,
     // };
     console.log(madeb);
-    
+
     axios.post(`/Madeb/EditMadeb/ID=` + id, madeb/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
@@ -654,7 +492,7 @@ const openRelationGB = (newsGBID) => {
               if (resp.status === 200) {
                 console.log(resp.data);
                 setdataAPI(resp.data);
-                
+
                 setDataChanged(true);
               }
             })
@@ -692,9 +530,9 @@ const openRelationGB = (newsGBID) => {
         }
       })
       .catch(error => {
-        setAlertMessage('Error! '+error.message);
-              setAlertType('error');
-               snackbarOpen();
+        setAlertMessage('Error! ' + error.message);
+        setAlertType('error');
+        snackbarOpen();
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -711,39 +549,32 @@ const openRelationGB = (newsGBID) => {
       });
   };
 
-
-  const selectDatafunction = () =>{
+  const selectDatafunction = () => {
     axios.get(`Madeb/GetNewEmptyMadeb`)
-    .then(resp => {
-      if (resp.status === 200) {
-        setSelectData(resp.data);
-        
-       // setdataAPI(resp.data)
-      }
-    })
-    .catch(error => {
-      if (error.response) {
-        console.error(error.response.data);
-        console.error(error.response.status);
-        console.error(error.response.headers);
-      } else if (error.request) {
-        console.warn(error.request);
-      } else {
-        console.error('Error', error.message);
-      }
-      console.log(error.config);
-    })
-    .then(release => {
-      //console.log(release); => udefined
-    });
+      .then(resp => {
+        if (resp.status === 200) {
+          setSelectData(resp.data);
+
+          // setdataAPI(resp.data)
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
   }
   const addAPICall = (madeb) => {
-
-   
-    console.log('added');
-    console.log('madeb');
- 
-    
     axios.post(`/Madeb/AddMadeb/`, madeb)
       .then(resp => {
         if (resp.status === 200) {
@@ -761,9 +592,9 @@ const openRelationGB = (newsGBID) => {
               }
             })
             .catch(error => {
-              setAlertMessage('Error! '+error.message);
+              setAlertMessage('Error! ' + error.message);
               setAlertType('error');
-               snackbarOpen();
+              snackbarOpen();
               if (error.response) {
                 console.error(error.response.data);
                 console.error(error.response.status);
@@ -782,9 +613,9 @@ const openRelationGB = (newsGBID) => {
         }
       })
       .catch(error => {
-        setAlertMessage('Error! '+error.message);
-              setAlertType('error');
-               snackbarOpen();
+        setAlertMessage('Error! ' + error.message);
+        setAlertType('error');
+        snackbarOpen();
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -801,14 +632,9 @@ const openRelationGB = (newsGBID) => {
       });
   };
 
-
-
   const handleClose = () => {
     setDeleteModal(false);
-
   };
-
-
 
   useEffect(() => {
     axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=2`)
@@ -837,75 +663,68 @@ const openRelationGB = (newsGBID) => {
   }, []);
 
   return (
-
-      <>
-       <Grid container spacing={1}>
+    <>
+      <Grid container spacing={1}>
         <Grid item xs={12}>
- 
-         
-          <MaterialTable style={{padding:'10px',width:'100%', border:'2px solid grey',borderRadius:'10px'}}
-          isLoading={isLoading}
-       icons={tableIcons}
-      title="Norchoe Madeb"
-    columns={columns}
-    data={dataAPI}        
-    options={oOptions}
-    actions={[
-      {
-        icon: AddBox,
-        tooltip: 'Add Norchoe Madeb',
-        isFreeAction: true,
-        onClick: () => setAddModal(true)
-      },
-      {
-        icon: Search,
-        tooltip: 'Show Filter',
-        isFreeAction: true,
-        onClick: (event) => {setFiltering(currentFilter => !currentFilter)}
-      }
-    ]}
-  />
-     {viewModal && <ViewDialog
-          viewModal={viewModal}
-          classes={classes}
-          handleViewClickClose={handleViewClickClose}
-          sGBID={gbId}
-          openRelationGB={openRelationGB}
-        />}
-            {addModal && <AddDialog
-              addModal={addModal}
-              classes={classes}
-              selectData={selectData}
-              handleAddClickClose={handleAddClickClose}
-              addAPICall={addAPICall}
-            />}
-            {editModal && <EditDialog
-              editModal={editModal}
-              norchoeObj={norchoeObj}
-              selectData={selectData}
-              classes={classes}
-              handleEditClickClose={handleEditClickClose}
-              editAPICall={editAPICall}
-            />}
-            {emailModal && <EmailDialog
-              emailModal={emailModal}
-              emailInObj={emailInObj}
-              //selectData={selectData}
-              classes={classes}
-              handleEmailClickClose={handleEmailClickClose}
-              //emailAPICall={emailAPICall}
-            />}
-            { snackbar && <Alerts
-       alertObj={alertObj}
-       snackbar={snackbar}
-       snackbarClose={snackbarClose}
-       /> }
-          
-          </Grid>
+          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+            isLoading={isLoading}
+            icons={oTableIcons}
+            title="Norchoe Madeb"
+            columns={columns}
+            data={dataAPI}
+            options={oOptions}
+            actions={[
+              {
+                icon: oTableIcons.Add,
+                tooltip: 'Add Norchoe Madeb',
+                isFreeAction: true,
+                onClick: () => setAddModal(true)
+              },
+              {
+                icon: oTableIcons.Search,
+                tooltip: 'Toggle Filter',
+                isFreeAction: true,
+                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+              }
+            ]}
+          />
+          {viewModal && <ViewDialog
+            viewModal={viewModal}
+            classes={classes}
+            handleViewClickClose={handleViewClickClose}
+            sGBID={gbId}
+            openRelationGB={openRelationGB}
+          />}
+          {addModal && <AddDialog
+            addModal={addModal}
+            classes={classes}
+            selectData={selectData}
+            handleAddClickClose={handleAddClickClose}
+            addAPICall={addAPICall}
+          />}
+          {editModal && <EditDialog
+            editModal={editModal}
+            norchoeObj={norchoeObj}
+            selectData={selectData}
+            classes={classes}
+            handleEditClickClose={handleEditClickClose}
+            editAPICall={editAPICall}
+          />}
+          {emailModal && <EmailDialog
+            emailModal={emailModal}
+            emailInObj={emailInObj}
+            //selectData={selectData}
+            classes={classes}
+            handleEmailClickClose={handleEmailClickClose}
+          //emailAPICall={emailAPICall}
+          />}
+          {snackbar && <Alerts
+            alertObj={alertObj}
+            snackbar={snackbar}
+            snackbarClose={snackbarClose}
+          />}
         </Grid>
-            </>
-
-
-          
+      </Grid>
+    </>
   );
 }
