@@ -160,7 +160,7 @@ export default function MainPage () {
     setValue(newValue);
     if(newValue === 1){
       if(familyData === null){
-       axios.get(`http://localhost:52013/api/ChatrelPayment/GetFamilyDetails/?sGBID=`+paidByGBID)
+       axios.get(`/ChatrelPayment/GetFamilyDetails/?sGBID=`+paidByGBID)
         .then(resp => {
           if (resp.status === 200) {
             setFamilyData(resp.data);
@@ -177,7 +177,7 @@ export default function MainPage () {
     }
     else if(newValue === 3){
       if(paymentHistory === null){
-        axios.get(`http://localhost:52013/api/ChatrelPayment/GetPaymentHistory/?sGBID=`+paidByGBID)
+        axios.get(`ChatrelPayment/GetPaymentHistory/?sGBID=`+paidByGBID)
           .then(resp => {
             if (resp.status === 200) {
               setPaymentHistory(resp.data);
@@ -197,7 +197,7 @@ export default function MainPage () {
 
   const verify = (e) => {
     e.preventDefault()
-    axios.get(`http://localhost:52013/api/ChatrelPayment/VerifyFriendDetails/?sGBID=${sFriendGBID}&sFirstName=${sFirstName}&sLastName=${sLastName}&dtDOB=${dtDOB}`)
+    axios.get(`/ChatrelPayment/VerifyFriendDetails/?sGBID=${sFriendGBID}&sFirstName=${sFirstName}&sLastName=${sLastName}&dtDOB=${dtDOB}`)
     .then(resp => {
       
       if(resp.status === 200){

@@ -142,15 +142,17 @@ namespace ChatrelDBL.ViewModelsRepositories
 
         private string GenerateReceiptNo(string sPaymentMode = "Online")
         {
-            string sql = "SELECT IFNULL(MAX(CAST(SUBSTRING(sChatrelReceiptNumber, 4) AS UNSIGNED)), 1) AS value FROM tblchatrelpayment WHERE sPaymentMode = @sPaymentMode;";
+            string sql = "SELECT IFNULL(MAX(CAST(sChatrelReceiptNumber AS UNSIGNED)) + 1, 1) AS value FROM tblchatrelpayment WHERE sPaymentMode = @sPaymentMode;";
             using (var command = new MySqlCommand(sql))
             {
+                _connection.Open();
                 command.Parameters.AddWithValue("sPaymentMode", sPaymentMode);
                 command.Connection = _connection;
                 command.CommandType = CommandType.Text;
 
                 int maxNumber = Convert.ToInt32(command.ExecuteScalar());
-                return String.Format("CTA{0}", maxNumber);
+                _connection.Close();
+                return String.Format("{0}", maxNumber);
             }
 
         }

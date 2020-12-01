@@ -132,6 +132,10 @@ namespace CTADBL.BaseClassRepositories.Transactions
             int authRegionId = _gbChatrelRepository.GetLatestAuthRegionID(sGBID);
             AuthRegion authRegion = _authRegionRepository.GetAuthRegionById(authRegionId.ToString());
             int paidUntil = GetPaidUntil(greenbook);
+            if (paidUntil <= 0)
+            {
+                return "Paid Until Value not found";
+            }
             int pendingYears = _currentYear - paidUntil;
             if (pendingYears <= 0)
             {
@@ -506,13 +510,24 @@ namespace CTADBL.BaseClassRepositories.Transactions
         private int GetPaidUntil(Greenbook greenbook)
         {
             string paidtill = greenbook.sPaidUntil;
-            int paidUntil = _nChatrelStartYear;
-            if (!String.IsNullOrEmpty(paidtill) || !String.IsNullOrWhiteSpace(paidtill))
+            try
             {
-                paidUntil = Convert.ToInt32(paidtill) ;
-                paidUntil = (paidUntil < _nChatrelStartYear ? _nChatrelStartYear : paidUntil);
+                int paidUntil = Convert.ToInt32(paidtill);
+                return paidUntil;
             }
-            return paidUntil;
+            catch(Exception ex)
+            {
+                return 0;
+            }
+            
+            
+            //int paidUntil = _nChatrelStartYear;
+            //if (!String.IsNullOrEmpty(paidtill) || !String.IsNullOrWhiteSpace(paidtill))
+            //{
+            //    paidUntil = Convert.ToInt32(paidtill) ;
+            //    paidUntil = (paidUntil < _nChatrelStartYear ? _nChatrelStartYear : paidUntil);
+            //}
+            //return paidUntil;
         }
         #endregion
 

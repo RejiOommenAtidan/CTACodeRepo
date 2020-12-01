@@ -38,6 +38,11 @@ export default function Family () {
   const classes = useStyles();
   const theme = useTheme();
   
+  const getReceipt = (sChatrelReceiptNumber) => {
+    console.log("Receipt Number", sChatrelReceiptNumber);
+  }
+
+
   useEffect(() => {
     //setPaymentData(payObj);
     axios.get(`/ChatrelPayment/GetPaymentHistory/?sGBID=`+sGBID)
@@ -76,25 +81,36 @@ export default function Family () {
         <TableHead>
           <TableRow>
             
-            <TableCell align="left" style={{width: "10%"}}>Receipt No.</TableCell>
-            <TableCell align="center" style={{width: "10%"}}>Date</TableCell>
-            <TableCell align="center" style={{width: "10%"}}>Period</TableCell>
-            <TableCell align="center" style={{width: "10%"}}>Payment For</TableCell>
-            <TableCell align="center" style={{width: "10%"}}>Action</TableCell>
+            <TableCell align="left" style={{width: "8%"}}>Date</TableCell>
+            <TableCell align="center" style={{width: "13%"}}>Reciept No.</TableCell>
+            <TableCell align="center" style={{width: "8%"}}>Paid By GBID</TableCell>
+            <TableCell align="center" style={{width: "8%"}}>Paid for GBID</TableCell>
+            <TableCell align="center" style={{width: "16%"}}>Paid for Name</TableCell>
+            <TableCell align="center" style={{width: "8%"}}>Relation</TableCell>
+            <TableCell align="center" style={{width: "3%"}}>Currency</TableCell>
+            <TableCell align="center" style={{width: "8%"}}>Amount</TableCell>
+            <TableCell align="center" style={{width: "10%"}}>Mode</TableCell>
+            <TableCell align="center" style={{width: "10%"}}>Status</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        {paymentHistory && <TableBody>
           {paymentHistory.map((row) => (
-            <TableRow >
-              <TableCell >{row.nChatrelRecieptNumber}</TableCell>
-              <TableCell align="center">{row.dtEntered.split('T'[0])}</TableCell>
-              <TableCell align="center">{Moment(row.dtPeriodFrom).format('YYYY')+' - '+Moment(row.dtPeriodTo).format('YYYY') }</TableCell>
+            <TableRow key={row.receiptNo}>
+              <TableCell align="center">{Moment(row.dtPayment).format("DD/MM/yyyy")}</TableCell>
+              <TableCell >{row.sChatrelReceiptNumber}</TableCell>
+              <TableCell >{row.sPaidByGBId}</TableCell>
+              <TableCell >{row.sGBIDPaidFor}</TableCell>
+              <TableCell >{row.sFirstName + ' ' + row.sLastName}</TableCell>
               <TableCell align="center">{row.sRelation}</TableCell>
-              <TableCell align="center"><input type="button" value="Download Receipt"/></TableCell>
+              <TableCell align="center">{row.sPaymentCurrency}</TableCell>
+              <TableCell align="center">{row.nChatrelTotalAmount}</TableCell>
+              <TableCell align="center">{row.sPaymentMode}</TableCell>
+              <TableCell align="center">{row.sPaymentStatus}</TableCell>
+              <TableCell align="center"><input type="button" value="Download Receipt" onClick={()=>{getReceipt({sChatrelReceiptNumber: row.sChatrelReceiptNumber })}} /></TableCell>
               
             </TableRow>
           ))}
-        </TableBody>
+        </TableBody>}
       </Table>
     </TableContainer>
     </Card></>}

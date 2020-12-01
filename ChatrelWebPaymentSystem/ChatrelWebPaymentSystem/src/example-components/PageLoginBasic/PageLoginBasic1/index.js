@@ -43,10 +43,10 @@ let oGBDetails={
   sGBID:nGBID,
   dtDob:dtDob
 };
-  const submit = () => {
+  const submit = (e) => {
     //obj.user=JSON.parse(localStorage.getItem('currentUser')).name;
     //alert(JSON.stringify(obj));
-   
+    e.preventDefault();
     let Obj={
       sGBID:""+nGBID,
       dtDOB:dtDob,
@@ -114,7 +114,7 @@ let oGBDetails={
             <div className="app-content--inner d-flex align-items-center">
               <div className="flex-grow-1 w-100 d-flex align-items-center">
                 <div className="bg-composed-wrapper--content py-5">
-                  <form >
+                  <form onSubmit={(e) =>submit(e)} >
                     <Grid item md={10} lg={8} xl={4} className="mx-auto">
                       <div className="text-center" style={{textAlign:'center'}}>
                         <img alt="CTA" src={projectLogo} width="300px" height="300px"/>
@@ -131,6 +131,7 @@ let oGBDetails={
 
                             <TextField   
                               id="standard-basic" 
+                              autoFocus
                               type='number' 
                               onChange={(e)=>{setGbID(e.target.value)}} 
                               label="GBID"
@@ -152,8 +153,8 @@ let oGBDetails={
                           />
                           <br/>
                           <br/>
-                            <Button variant="contained" onClick={()=>{submit()}} style={{   backgroundColor: 'yellow', color:'black'}}>Submit</Button>
-                       
+                            <Button variant="contained" type = 'submit' style={{   backgroundColor: 'yellow', color:'black'}}>Submit</Button>
+                       {/* onClick={()=>{submit()}} */}
                        </>
                         }
                         

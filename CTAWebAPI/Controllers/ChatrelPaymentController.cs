@@ -104,6 +104,7 @@ namespace CTAWebAPI.Controllers
         }
 
         #endregion
+        #region Display Chatrel Payment
         [HttpGet]
         [Route("[action]")]
         public IActionResult DisplayChatrelPayment(string sGBID)
@@ -123,6 +124,13 @@ namespace CTAWebAPI.Controllers
                         _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
                         #endregion
                         return NotFound(chatrel.ToString());
+                    }
+                    if(chatrel.ToString() == "Paid Until Value not found")
+                    {
+                        #region Information Logging 
+                        _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                        #endregion
+                        return NotFound("Paid Until data not available. Contact CTA.");
                     }
                     #region Information Logging 
                     _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
@@ -144,7 +152,7 @@ namespace CTAWebAPI.Controllers
 
             }
         }
-
+        #endregion
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetFamilyDetails(string sGBID)

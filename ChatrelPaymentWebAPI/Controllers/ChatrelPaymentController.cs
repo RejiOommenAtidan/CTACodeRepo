@@ -118,8 +118,22 @@ namespace ChatrelPaymentWebAPI.Controllers
                 Object chatrel = _chatrelPaymentRepository.DisplayChatrelPayment(sGBID);
                 if (chatrel != null)
                 {
+                    if (chatrel.ToString() == "Greenbook ID does not Exist.")
+                    {
+                        #region Information Logging 
+                        _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBID));
+                        #endregion
+                        return NotFound(chatrel.ToString());
+                    }
+                    if (chatrel.ToString() == "Paid Until Value not found")
+                    {
+                        #region Information Logging 
+                        _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBID));
+                        #endregion
+                        return NotFound("Paid Until data not available. Contact CTA.");
+                    }
                     #region Information Logging 
-                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", 1);
+                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBID));
                     #endregion
                     return Ok(chatrel);
                 }
@@ -132,7 +146,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             {
                 #region Exception Logging 
 
-                _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, 1);
+                _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, Convert.ToInt32(sGBID));
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError);
 
@@ -187,7 +201,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                 if (paymentHistory != null)
                 {
                     #region Information Logging 
-                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBID));
                     #endregion
                     return Ok(paymentHistory);
                 }
@@ -200,7 +214,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             {
                 #region Exception Logging 
 
-                _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, Convert.ToInt32(sGBID));
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError);
 
@@ -225,7 +239,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                 if (verified)
                 {
                     #region Information Logging 
-                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBID));
                     #endregion
                     return Ok(verified);
                 }
@@ -238,7 +252,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             {
                 #region Exception Logging 
 
-                _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, Convert.ToInt32(sGBID));
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError);
 

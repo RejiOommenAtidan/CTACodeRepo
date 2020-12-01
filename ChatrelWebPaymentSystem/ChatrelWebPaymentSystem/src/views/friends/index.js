@@ -1,24 +1,12 @@
-
 import React from 'react';
 import { Card } from '@material-ui/core';
 import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import { TableBodyRow } from 'mui-datatables';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { subMinutes } from 'date-fns';
-import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
 import axios from 'axios';
 const useStyles = makeStyles((theme) => ({
@@ -38,117 +26,115 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Friends () {
+  let history = useHistory();
+  let dispatch = useDispatch();
+  
   const classes = useStyles();
   const theme = useTheme();
-  const [sFirstName,setFirstName]=React.useState("");
-  const [sLastName,setLastName]=React.useState("");
-  const [sGBID,setGBID]=React.useState("");
-  const [dtDob,setDOB]=React.useState("");
-  
-  const FriendObj={
-    sFirstName,
-    sLastName,
-    sGBID,
-    dtDob
-  }
-  let history = useHistory();
-  
-  const dispatch = useDispatch();
-  
-  const submit =() =>{
-  console.log(FriendObj);
-  const obj={
-      sGBID:sGBID,
-      title:'Chatrel for Friend',
-      relation:"Friend's"
-    }
-  axios.get(`ChatrelPayment/VerifyFriendDetails/?sGBID=`+sGBID+`&sFirstName=`+sFirstName+`&sLastName=`+sLastName+`&dtDOB=`+dtDob)
-  .then(resp => {
-    if (resp.status === 200) {
-      //setPaymentHistory(resp.data);
-      if(resp.data){
-        dispatch(storeCurrentGBDetails(obj));
-        history.push('/PaymentPage');
-      }
-    }
-  })
-  .catch(error => {
-    if (error.response) {
-      console.error(error.response.data);
-      console.error(error.response.status);
-      console.error(error.response.headers);
-    } else if (error.request) {
-      console.warn(error.request);
-    } else {
-      console.error('Error', error.message);
-    }
-    console.log(error.config);
-  })
-  .then(release => {
-    //console.log(release); => udefined
-  });
-    
- 
-  }
-  return (
-    <>
-    <p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>Chatrel for Friends</p>
-      <Card  style={{  padding: 50 }} >
+  const [sFirstName, setFirstName] = React.useState('');
+  const [sLastName, setLastName] = React.useState('');
+  const [dtDOB, setDOB] = React.useState();
+  const [sFriendGBID, setFriendGBID] = React.useState();
 
-      <br />
-        <p style={{backgroundColor: "lightblue"}}>Pay for a friend</p>
-          <Grid container direction="column" alignContent="center" >
-            
-            <Grid item xs={12} sm={2}>
-              <FormControl>
-                <TextField
-                  label="Enter First Name "
-                  onChange={(e)=>setFirstName(e.target.value)}
-                  style={{width:'150px'}}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={2}>
-              <FormControl>
-                <TextField
-                  label="Enter Last Name "
-                  onChange={(e)=>setLastName(e.target.value)}
-                  style={{width:'150px'}}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={2}>
-              <FormControl>
-                <TextField
-                id="standard-basic"
-                  label="Enter GreenBook ID"
-                  onChange={(e)=>setGBID(e.target.value)}
-                  type="number"
-                  inputProps={{min:0,max:9999999}}
-                  style={{width:'150px'}}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={2}>
-              <FormControl>
-                <TextField
-                  label="Enter Birth Date"
-                  type="date"
-                  onChange={(e)=>{setDOB(e.target.value)}}
-                  style={{width:'150px'}}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </FormControl>
-            </Grid>
-            
-            <Grid item xs={12} sm={2}>
-              <br />
-              <Button variant="outlined" onClick={()=>{submit()}} color="primary">Verify &amp; Pay</Button>
-            </Grid>
-          </Grid>
-    </Card>
-    </>
-  );
+  const makePayment = (obj, data, outstanding)=> {
+    console.log("Inside Make payment method for " , obj, data)
+    dispatch(storeCurrentGBDetails(obj));
+    history.push('/PaymentPage', {pymtData: data, outstanding});
+  }
+
+
+  const verify = (e) => {
+    e.preventDefault()
+    axios.get(`/ChatrelPayment/VerifyFriendDetails/?sGBID=${sFriendGBID}&sFirstName=${sFirstName}&sLastName=${sLastName}&dtDOB=${dtDOB}`)
+    .then(resp => {
+      
+      if(resp.status === 200){
+        console.log(resp.data);
+        if(resp.data === true){
+          axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sFriendGBID)
+          .then(resp => {
+            if (resp.status === 200) {
+              makePayment({sGBID: sFriendGBID, sName: `${sFirstName} ${sLastName}`, sRelation: `Friend`, from:'Chatrel for Friend' }, resp.data, resp.data.chatrelPayment.nChatrelTotalAmount)
+            }
+          })
+          .catch(error => {
+            console.log(error.message);
+          });
+        }
+        else{
+          alert("Values don't match with database. Enter correct values.");
+        }
+      }
+      
+    
+    })
+    .catch(error => {
+        if(error.response.status === 400){
+          alert("Missing Parameters...");
+        }
+        console.log(error.message);
+        console.log(error);
+
+    });
+  };
+  return (
+  <>
+  <p style={{backgroundColor: "lightblue"}}>Pay for a friend</p>
+  <form onSubmit = {(e) => verify(e)}>
+    <Grid container direction="column" alignContent="center" >
+      
+      <Grid item xs={12} sm={6}>
+        <FormControl>
+          <TextField
+            label="Enter First Name of Friend"
+            // InputProps={{inputProps: {style: minWidth = "50px"} }}
+            style={{minWidth: "250px"}}
+            onChange={(e) => {setFirstName(e.target.value)}}
+            required
+          />
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={3}>
+        <FormControl>
+          <TextField
+            label="Enter Last Name of Friend"
+            style={{minWidth: "250px"}}
+            onChange={(e) => {setLastName(e.target.value)}}
+            required
+          />
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={3}>
+        <FormControl>
+          <TextField
+            label="Enter GreenBook ID"
+            style={{minWidth: "250px"}}
+            onChange={(e) => {setFriendGBID(e.target.value)}}
+            required
+          />
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={3}>
+        <FormControl>
+          <TextField
+            label="Enter Birth Date"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            style={{minWidth: "250px"}}
+            type="date"
+            onChange={(e) => {setDOB(e.target.value)}}
+            required
+          />
+        </FormControl>
+      </Grid>
+      
+      <Grid item xs={12} sm={3}>
+        <br />
+        <Button variant="outlined" color="primary" type="submit" >Verify &amp; Pay</Button>
+      </Grid>
+    </Grid>
+    </form>
+    </>);
+
 }

@@ -45,7 +45,7 @@ export default function PaymentPage  (props) {
   console.log("Props contains:", props);
   // Who is paying
   const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
-  const userId = paidByGBID;
+  const userId = parseInt(paidByGBID);
   // GBID for whom we are paying
   const sGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sGBID);
   
@@ -210,9 +210,9 @@ else{
   
 }
 
-payObj[index].nChatrelTotalAmount= (payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nChatrelLateFeesValue + payObj[index].nCurrentChatrelSalaryAmt) * ((dollarToRupees && payObj[index].sAuthRegionCurrency === 'USD') ? dollarToRupees.toFixed(4) : 1);
+payObj[index].nChatrelTotalAmount= (payObj[index].nChatrelAmount + payObj[index].nChatrelMeal + payObj[index].nChatrelLateFeesValue + payObj[index].nCurrentChatrelSalaryAmt) * ((dollarToRupees && payObj[index].sAuthRegionCurrency === 'INR') ? dollarToRupees.toFixed(4) : 1);
 
-payObj[index].nConversionRate = payObj[index].sAuthRegionCurrency === 'INR' ? 1.00 : parseFloat(dollarToRupees.toFixed(4));
+payObj[index].nConversionRate = payObj[index].sAuthRegionCurrency === 'USD' ? 1.00 : parseFloat(dollarToRupees.toFixed(4));
 
 setPaymentData(payObj);
 calcTotal(paymentData ,adonation,bdonation);
@@ -304,9 +304,9 @@ const submit =(e) =>{
   let meal = 0.00;
   let salary = 0.00;
   payObj.forEach(gbchatrel => {
-    chatrel += gbchatrel.sAuthRegionCurrency=== 'INR' ?  gbchatrel.nChatrelAmount : gbchatrel.nChatrelAmount * dollarToRupees.toFixed(4);
-    meal += gbchatrel.sAuthRegionCurrency=== 'INR' ?  gbchatrel.nChatrelMeal : gbchatrel.nChatrelMeal * dollarToRupees.toFixed(4);
-    salary += gbchatrel.sAuthRegionCurrency=== 'INR' ?  gbchatrel.nCurrentChatrelSalaryAmt : gbchatrel.nCurrentChatrelSalaryAmt  * dollarToRupees.toFixed(4);
+    chatrel += gbchatrel.sAuthRegionCurrency=== 'USD' ?  gbchatrel.nChatrelAmount : gbchatrel.nChatrelAmount * dollarToRupees.toFixed(4);
+    meal += gbchatrel.sAuthRegionCurrency=== 'USD' ?  gbchatrel.nChatrelMeal : gbchatrel.nChatrelMeal * dollarToRupees.toFixed(4);
+    salary += gbchatrel.sAuthRegionCurrency=== 'USD' ?  gbchatrel.nCurrentChatrelSalaryAmt : gbchatrel.nCurrentChatrelSalaryAmt  * dollarToRupees.toFixed(4);
     gbchatrel.nEnteredBy = userId;
     gbchatrel.nUpdatedBy = userId;
   });
@@ -353,7 +353,7 @@ const submit =(e) =>{
   };
 
   console.log("Final Obj:" , finalObj);
-  axios.post(`http://localhost:52013/api/ChatrelPayment/AddNewChatrelPayment`,finalObj)
+  axios.post(`/ChatrelPayment/AddNewChatrelPayment`,finalObj)
   .then(resp => {
     if (resp.status === 200) {
       //alert(resp.data);
@@ -401,11 +401,11 @@ const submit =(e) =>{
             calcTotal(props.location.state.pymtData.gbChatrels, adonation, bdonation);
             
 
-            fetch('https://api.ratesapi.io/api/latest?base=USD&symbols=INR')
+            fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
                   .then(response => response.json())
                   .then(data => {
-                  console.log("currency", data.rates.INR);
-                  setDollarToRupees(parseFloat(data.rates.INR));
+                    console.log("currency", data.rates.USD);
+                    setDollarToRupees(data.rates.USD);
                   });
             console.log("Got data from props");
             
@@ -421,11 +421,11 @@ const submit =(e) =>{
                 calcTotal(resp.data.gbChatrels ,adonation,bdonation);
                 setPaymentData(resp.data.gbChatrels);
                 
-                fetch('https://api.ratesapi.io/api/latest?base=USD&symbols=INR')
+                fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
                   .then(response => response.json())
                   .then(data => {
-                  console.log("currency", data.rates.INR);
-                  setDollarToRupees(parseFloat(data.rates.INR));
+                    console.log("currency", data.rates.USD);
+                    setDollarToRupees(data.rates.USD);
                   });
                 
               }
@@ -509,7 +509,7 @@ const submit =(e) =>{
             <TableCell align="center" style={{width: "8%"}}>Late Fees</TableCell>
             <TableCell align="center" style={{width: "10%"}}>Employed</TableCell>
             <TableCell align="right" style={{width: "10%"}}>Rate &#8377;/$</TableCell>
-            <TableCell align="right" style={{width: "10%"}}>Total (₹)</TableCell>
+            <TableCell align="right" style={{width: "10%"}}>Total ($)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -574,7 +574,7 @@ const submit =(e) =>{
               {(row.sAuthRegionCurrency === 'INR') &&
                 <TableCell align="center">< input id={index} type = 'text' style={{maxWidth:'50px', border: 'none', borderBottom: '1px solid'}} onChange={(e)=>{modify(e.target)}} /></TableCell>
               }
-              <TableCell id='rate' align="center">{(dollarToRupees && row.sAuthRegionCurrency === 'USD') ? dollarToRupees.toFixed(4) : '-'}</TableCell>
+              <TableCell id='rate' align="center">{(dollarToRupees && row.sAuthRegionCurrency === 'INR') ? dollarToRupees.toFixed(4) : '-'}</TableCell>
               <TableCell id='total' align="right">{row.nChatrelTotalAmount.toFixed(2) }</TableCell>
             </TableRow>
           ))}
@@ -585,7 +585,7 @@ const submit =(e) =>{
     <p style={{backgroundColor: "lightblue"}}>Additional Payment</p>
     <Grid container xs={12} sm={12} alignContent="flex-end" justify="flex-end">
     <FormControl style={{textAlign: "right"}} >
-                <TextField label="Business Donation" type='number' value={bdonation} 
+                <TextField label="Business Donation $" type='number' value={bdonation} 
                 onChange={(e)=>{
                   if(e.target.value ===""){
                     calcTotal(paymentData,adonation,0);
@@ -604,7 +604,7 @@ const submit =(e) =>{
      
     <Grid container xs={12} sm={12} alignContent="flex-end" justify="flex-end">
     <FormControl>
-                <TextField textAlign={"right"}  type='number'label="Additional Donation" value={adonation} 
+                <TextField textAlign={"right"}  type='number'label="Additional Donation $" value={adonation} 
                 onChange={(e)=>{
                   if(e.target.value === ""){
                     calcTotal(paymentData,0,bdonation);
@@ -622,7 +622,7 @@ const submit =(e) =>{
               </FormControl>  
     </Grid>
     <br />
-           <p style={{backgroundColor: "lightblue", textAlign: "right", fontWeight: "bold"}}>Total To Pay <span style={{textAlign: "right", fontWeight: "bold"}}>&#8377; {total.toFixed(2)}</span></p>          
+           <p style={{backgroundColor: "lightblue", textAlign: "right", fontWeight: "bold"}}>Total To Pay <span style={{textAlign: "right", fontWeight: "bold"}}>$ {total.toFixed(2)}</span></p>          
            <Grid item>
               <TextField
                 label= 'Enter Receipt Number'

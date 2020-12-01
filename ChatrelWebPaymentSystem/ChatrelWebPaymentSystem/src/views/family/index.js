@@ -70,7 +70,7 @@ export default function MainPage () {
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:52013/api/ChatrelPayment/GetFamilyDetails/?sGBID=`+paidByGBID)
+    axios.get(`ChatrelPayment/GetFamilyDetails/?sGBID=`+paidByGBID)
     .then(resp => {
       if (resp.status === 200) {
         setFamilyData(resp.data);
@@ -87,7 +87,7 @@ export default function MainPage () {
   
   return(
 <>
-<p style={{backgroundColor: "lightblue"}}>Family Member List for {sGBID}</p>
+<p style={{backgroundColor: "lightblue"}}>Family Member List for {paidByGBID}</p>
            <TableContainer component={Paper}>
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
