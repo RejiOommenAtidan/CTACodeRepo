@@ -17,11 +17,9 @@ import { AddDialog, EditDialog } from './dialog';
 import { EmailDialog } from '../email';
 import { Alerts } from '../../alerts';
 import MaterialTable from 'material-table';
-import AddBox from '@material-ui/icons/AddBox';
-import Search from '@material-ui/icons/Search';
 import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
 import { ViewDialog } from '../../search/dialog';
-const tableIcons = oTableIcons;
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,7 +66,6 @@ const useStyles = makeStyles((theme) => ({
       main: '#11cb5f',
     },
   }
-
 }));
 
 export default function EnhancedTable() {
@@ -94,41 +91,37 @@ export default function EnhancedTable() {
   const [rejectDate, setRejectDate] = React.useState('');
   const [abroadObj, setAbroadObj] = useState({});
   const [emailInObj, setEmailInObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
   const [isLoading, setisLoading] = React.useState(true);
   const [gbId, setGbId] = React.useState('');
- //View GB
-const [viewModal, setViewModal] = useState(false);
-const handleViewClickClose = () => {
+  //View GB
+  const [viewModal, setViewModal] = useState(false);
+  const handleViewClickClose = () => {
+    setViewModal(false);
+  };
 
-  setViewModal(false);
-};
+  const viewGb = (GBID) => {
+    setGbId(GBID);
+    setViewModal(true);
+  };
+  const openRelationGB = (newsGBID) => {
+    handleViewClickClose();
+    setTimeout(() => viewGb(newsGBID), 0);
+  };
 
-const viewGb = (GBID) => {
-  console.log(GBID)
-  setGbId(GBID);
-  setViewModal(true);
-}
-const openRelationGB = (newsGBID) => {
-  handleViewClickClose();
-  setTimeout(() => viewGb(newsGBID), 0);
-} 
-
-//Alert
+  //Alert
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const alertObj = {
     alertMessage: alertMessage,
     alertType: alertType
-  }
+  };
   const [snackbar, setSnackbar] = React.useState(false);
   const snackbarOpen = () => {
     setSnackbar(true);
-  }
+  };
   const snackbarClose = () => {
     setSnackbar(false);
   };
@@ -158,137 +151,241 @@ const openRelationGB = (newsGBID) => {
       field: "madeb.id",
       title: "Sr No.",
       hidden: true,
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.nFormNumber",
       title: "Form Number",
       filterPlaceholder: "Search...",
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.dtReceived",
       title: "Received Date",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
+        textAlign: "center",
+        padding: '5px'
       },
       render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined
     },
     {
       field: "sAuthRegion",
       title: "Authority",
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.sName",
       title: "Name",
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.sAlias",
       title: "Alias",
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       //field: "madeb.sGBID",
-      render:  rowData =>rowData['madeb']['sGBID']? <Button className="m-2 btn-transparent btn-link btn-link-first" onClick={() => { viewGb(rowData['madeb']['sGBID'])}}><span>{rowData['madeb']['sGBID']}</span></Button>:'',
+      render: rowData => rowData['madeb']['sGBID'] ? <Button className="m-2 btn-transparent btn-link btn-link-first" size={"small"} onClick={() => { viewGb(rowData['madeb']['sGBID']) }}><span>{rowData['madeb']['sGBID']}</span></Button> : '',
       title: "GB Id",
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.sFathersName",
       title: "Father's Name",
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.nReceiptNo",
       title: "Receipt No",
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.nSaneyFormNo",
       title: "Saney Form No",
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.nCurrentGBSno",
       title: "Current GB SNo.",
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.nPreviousGBSno",
       title: "Previous GB SNo",
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
 
     {
       field: 'Verified By',
       title: 'Verified By',
-      sort: false,
+      sorting: false,
       export: true,
       filtering: false,
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: 'Re-Verified By',
       title: 'Re-Verified By',
-      sort: false,
+      sorting: false,
       export: true,
       filtering: false,
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.dtIssueAction",
       title: "Issue Action Date",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-
+        textAlign: "center",
+        padding: '5px'
       },
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
     },
     {
       field: "sTypeIssued",
       title: "Issue Action",
-
-      cellStyle: {
-        padding: '5px',
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.dtReject",
       title: "Reject Date",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-
+        textAlign: "center",
+        padding: '5px'
       },
       render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined
     },
@@ -297,9 +394,14 @@ const openRelationGB = (newsGBID) => {
       title: "Return Date",
       //type: 'date',
       //dateSetting: {locale: 'en-IN'},
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-
+        textAlign: "center",
+        padding: '5px'
       },
       render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : ''
     },
@@ -307,24 +409,21 @@ const openRelationGB = (newsGBID) => {
       field: "email",
       title: "Email",
       filtering: false,
-      sort: false,
+      sorting: false,
       export: false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
         onClick={() => { emailClick(rowData) }} style={{ padding: '0px' }}
       >
         <EmailIcon />
       </IconButton>,
-
       headerStyle: {
-        padding: '0px',
-        width: '1%',
-        textAlign: 'center'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        width: '1%',
-        textAlign: 'center'
-
+        textAlign: "center",
+        padding: '5px'
       },
     },
     {
@@ -333,25 +432,30 @@ const openRelationGB = (newsGBID) => {
       sorting: false,
       export: false,
       filtering: false,
-      render: rowData =>  <>{rowData.madeb.nIssuedOrNotID==2 && <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => {  editClick(rowData) }} disabled style={{padding:'0px'}}
-    >
-      <EditOutlinedIcon/>
-    </IconButton>}
-    {rowData.madeb.nIssuedOrNotID!=2 && <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => {  editClick(rowData) }}  style={{padding:'0px'}}
-    >
-      <EditOutlinedIcon/>
-    </IconButton>}
-    </>,
-      cellStyle: {
-        padding: '5px',
+      render: rowData => <>{rowData.madeb.nIssuedOrNotID == 2 && <IconButton color="primary" aria-label="upload picture" component="span"
+        onClick={() => { editClick(rowData) }} disabled style={{ padding: '0px' }}
+      >
+        <EditOutlinedIcon />
+      </IconButton>}
+        {rowData.madeb.nIssuedOrNotID != 2 && <IconButton color="primary" aria-label="upload picture" component="span"
+          onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+        >
+          <EditOutlinedIcon />
+        </IconButton>}
+      </>,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     }
   ];
 
   const emailClick = (tableRowArray) => {
-
     setId(tableRowArray['madeb']['id']);
     setFormNumber(tableRowArray['madeb']['nFormNumber']);
     setName(tableRowArray['madeb']['sName']);
@@ -364,9 +468,9 @@ const openRelationGB = (newsGBID) => {
     });
 
     setEmailModal(true);
-  }
-  const editClick = (tableRowArray) => {
+  };
 
+  const editClick = (tableRowArray) => {
     setId(tableRowArray['madeb']['id']);
     setFormNumber(tableRowArray['madeb']['nFormNumber']);
     setAuthority(tableRowArray['sAuthRegion']);
@@ -397,9 +501,9 @@ const openRelationGB = (newsGBID) => {
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
       dtReturnEmail: tableRowArray['madeb']['dtReturnEmail']
     });
-
     setEditModal(true);
-  }
+  };
+
   const editAPICall = (madeb) => {
     // let CountryID = countryPK;
     // let countryToUpdate = {
@@ -407,7 +511,6 @@ const openRelationGB = (newsGBID) => {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
-    console.log(madeb);
 
     axios.post(`/Madeb/EditMadeb/ID=` + id, madeb/*countryToUpdate*/)
       .then(resp => {
@@ -503,7 +606,6 @@ const openRelationGB = (newsGBID) => {
       });
   }
   const addAPICall = (madeb) => {
-
     axios.post(`/Madeb/AddMadeb/`, madeb)
       .then(resp => {
         if (resp.status === 200) {
@@ -563,7 +665,6 @@ const openRelationGB = (newsGBID) => {
 
   const handleClose = () => {
     setDeleteModal(false);
-
   };
 
   useEffect(() => {
@@ -596,24 +697,22 @@ const openRelationGB = (newsGBID) => {
     <>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-
-          
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="Abroad"
             columns={columns}
             data={dataAPI}
             options={oOptions}
             actions={[
               {
-                icon: AddBox,
+                icon: oTableIcons.Add,
                 tooltip: 'Add Abroad Madeb',
                 isFreeAction: true,
                 onClick: () => setAddModal(true)
               },
               {
-                icon: Search,
+                icon: oTableIcons.Search,
                 tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
@@ -621,12 +720,12 @@ const openRelationGB = (newsGBID) => {
             ]}
           />
           {viewModal && <ViewDialog
-          viewModal={viewModal}
-          classes={classes}
-          handleViewClickClose={handleViewClickClose}
-          sGBID={gbId}
-          openRelationGB={openRelationGB}
-        />}
+            viewModal={viewModal}
+            classes={classes}
+            handleViewClickClose={handleViewClickClose}
+            sGBID={gbId}
+            openRelationGB={openRelationGB}
+          />}
           {addModal && <AddDialog
             addModal={addModal}
             classes={classes}
@@ -655,7 +754,6 @@ const openRelationGB = (newsGBID) => {
             snackbar={snackbar}
             snackbarClose={snackbarClose}
           />}
-
         </Grid>
       </Grid>
     </>
