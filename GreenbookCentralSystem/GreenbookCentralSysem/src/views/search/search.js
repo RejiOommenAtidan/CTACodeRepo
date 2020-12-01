@@ -150,6 +150,9 @@ const useStyles = makeStyles((theme) => ({
       marginRight: 5,
       fontSize: 16
     }
+  },
+  labelAsterisk: {
+    color: "red"
   }
 }));
 

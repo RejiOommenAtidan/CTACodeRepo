@@ -74,9 +74,12 @@ export default function EnhancedTable() {
   const [madebType, setMadebType] = React.useState('');
   const [madebTypePK, setMadebTypePK] = React.useState(0);
   const [madebTypeObj, setMadebTypeObj] = useState({});
+
+  
   const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
   const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
+  
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -117,6 +120,24 @@ export default function EnhancedTable() {
       }
     },
     {
+      field: "sMadebDisplayName",
+      title: "Madeb Display Name",
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px',
+        borderLeft: '0'
+      }
+    },
+    {
+      field: "sMadebDisplayKey",
+      title: "Madeb DisplayKey",
+      cellStyle: {
+        padding: '5px',
+        paddingLeft: '10px',
+        borderLeft: '0'
+      }
+    },
+    {
       align: "center",
       field: "edit",
       title: "Edit",
@@ -143,18 +164,22 @@ export default function EnhancedTable() {
     setEditModal(true);
     setMadebTypeObj({
       id: tableRowArray["id"],
-      madebType: tableRowArray["sMadebType"]
+      madebType: tableRowArray["sMadebType"],
+      sMadebDisplayName : tableRowArray["sMadebDisplayName"],
+      sMadebDisplayKey: tableRowArray["sMadebDisplayKey"],
+      nMadebFeatureId: tableRowArray["nMadebFeatureId"]
     });
   }
 
-  const editAPICall = (madebTypeObj) => {
+  const editAPICall = (obj) => {
     // let MadebTypeID = madebTypePK;
     // let madebTypeToUpdate = {
     //   ID : madebTypePK,
     //   sMadebTypeID: madebTypeID,
     //   sMadebType: madebTypeName,
     // };
-    axios.post(`/MadebType/EditMadebType/madebTypeID=` + madebTypePK, madebTypeObj)
+    console.log(obj);
+    axios.post(`/MadebType/EditMadebType/madebTypeID=` + madebTypePK, obj)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);

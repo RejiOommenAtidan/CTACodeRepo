@@ -1104,6 +1104,7 @@ SET SQL_SAFE_UPDATES=0;
 update tblmadeb set dtReceived = dtIssueAction WHERE id in (63639, 44338, 45636);
 
 
+
 INSERT INTO `ctadb`.`tblchatrelpayment`
 (
 `sGBId`,
@@ -1126,7 +1127,7 @@ INSERT INTO `ctadb`.`tblchatrelpayment`
 `nUpdatedBy`)
 SELECT
 	sGBID,
-	sPaidUntil,
+	SUBSTRING(sPaidUntil,1,4),
 	58,
 	null,
 	'Success',
@@ -1200,8 +1201,7 @@ SELECT
 	nEnteredBy,
 	dtUpdated,
 	nUpdatedBy
-from tblchatrelpayment
-
+from tblchatrelpayment;
 
 SET SQL_SAFE_UPDATES=0;
 UPDATE `lnkgbchatrel` a
