@@ -39,14 +39,16 @@ const SidebarHeader = (props) => {
             title="CTA"
             className="app-sidebar-logo">
             <div >
-              <img 
-              style={{width:'40px'}}
+              <img
+                style={{ width: '40px' }}
                 alt="CTA"
                 src={projectLogo}
               />
             </div>
             <div className="app-sidebar-logo--text">
-             <span style={{color: "white",paddingTop:15}}><h5>GreenBook Central</h5></span>
+              <span style={{ color: "white", paddingTop: 15 }}>
+                <h6>Green Book Database</h6>
+              </span>
             </div>
           </NavLink>
         </div>

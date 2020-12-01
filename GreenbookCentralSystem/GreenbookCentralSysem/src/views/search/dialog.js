@@ -784,7 +784,12 @@ export const ViewDialog = (props) => {
       </DialogContent>
        
       <DialogActions>
-        <Button onClick={props.handleViewClickClose} color="primary">Close</Button>
+        <Button 
+        onClick={props.handleViewClickClose} 
+        color="primary"
+        variant={"contained"}
+        size={"small"}
+        >Close</Button>
       
       </DialogActions>
     </Dialog>}

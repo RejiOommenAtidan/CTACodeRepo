@@ -4,7 +4,7 @@ import shadows from './shadows';
 const MuiTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#3c44b1'
+      main: '#253053'
     },
     grey: {
       300: '#fefefe',
@@ -109,7 +109,7 @@ const MuiTheme = createMuiTheme({
     }
   },
   typography: {
-    fontFamily: ['Heebo', 'sans-serif'].join(','),
+    fontFamily: ['Lato', 'sans-serif'].join(','),
     fontSize: 14
   },
   shadows

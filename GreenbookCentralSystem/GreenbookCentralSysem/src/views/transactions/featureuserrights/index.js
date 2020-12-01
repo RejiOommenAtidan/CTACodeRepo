@@ -21,12 +21,12 @@ const CoverFeatureUserrights = () => {
   const classes = useStyles();
   return (
     <Container maxWidth={false}>
-      <Breadcrumbs aria-label="breadcrumb">
+      {/*<Breadcrumbs aria-label="breadcrumb">
         <Link color="inherit" href="/app/manageuser" >
           Home
           </Link>
         <Typography color="textPrimary">Manage Feature Roles</Typography>
-      </Breadcrumbs>
+  </Breadcrumbs>*/}
       <FeatureUserrights />
     </Container>
   );

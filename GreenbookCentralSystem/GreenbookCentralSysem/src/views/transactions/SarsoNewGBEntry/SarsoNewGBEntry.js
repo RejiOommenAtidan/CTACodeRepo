@@ -160,7 +160,7 @@ export default function SarsoNewGBEntry() {
 
   return (
     <Container maxWidth="lg" disableGutters={true}><br />
-      <Typography variant="h4" gutterBottom>New Entry</Typography>
+      {/*<Typography variant="h4" gutterBottom>New Entry</Typography>*/}
       <Grid container className={classes.box}>
         <Grid item xs={12}>
           <MaterialTable

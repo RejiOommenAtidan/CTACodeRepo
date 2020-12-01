@@ -1,18 +1,22 @@
 import React from 'react';
 import { Alert, Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList
+} from '@react-navigation/drawer';
 import { ChatrelHistoryScreen, ChatrelHistoryScreenOptions } from '../screens/ChatrelHistoryScreen';
 import { FileDisputeScreen, FileDisputeScreenOptions } from '../screens/FileDisputeScreen';
 import { MyProfileScreen, MyProfileScreenOptions } from '../screens/MyProfileScreen';
-import { GBDetailScreen } from '../screens/GBDetailScreen';
+import { GBDetailScreen,GBDetailScreenOptions } from '../screens/GBDetailScreen';
 import HomeScreen, { HomeScreenOptions } from '../screens/HomeScreen';
 import { SelfChatrelScreen, SelfChatrelScreenOptions } from '../screens/SelfChatrel';
 import { FriendChatrelIntermediateScreen, FriendChatrelIntermediateScreenOptions } from '../screens/FriendChatrelIntermediate';
 import { FriendChatrelScreen, FriendChatrelScreenOptions } from '../screens/FriendChatrelScreen';
 import { FamilyChatrelScreen, FamilyChatrelScreenOptions } from '../screens/FamilyChatrel';
 import { FamilyChatrelIntermediateScreen, FamilyChatrelIntermediateScreenOptions } from '../screens/FamilyChatrelIntermediateScreen';
-import { LoginScreen } from '../screens/LoginScreen';
+import { LoginScreen,LoginScreenOptions } from '../screens/LoginScreen';
 import Colors from '../constants/Colors';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
@@ -29,7 +33,10 @@ const defaultStackNavOptions = {
     fontFamily: 'open-sans'
   },
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
-  headerPressColorAndroid: Colors.white
+  headerPressColorAndroid: Colors.white,
+  animationTypeForReplace: "pop",
+  animationEnabled: true,
+  cardShadowEnabled: true
 };
 
 const LoginStackNavigator = createStackNavigator();
@@ -40,17 +47,7 @@ const LoginNavigator = () => {
       <LoginStackNavigator.Screen
         name="Login"
         component={LoginScreen}
-        options={{
-          animationTypeForReplace: "pop",
-          headerBackTitleVisible: false,
-          headerShown: false,
-          headerLeft: null,
-          headrRight: null,
-          animationEnabled: true,
-          gestureEnabled: false,
-          cardStyle: { backgroundColor: Colors.greenBG },
-          cardShadowEnabled: true
-        }}
+        options={LoginScreenOptions}
       >
       </LoginStackNavigator.Screen>
     </LoginStackNavigator.Navigator>
@@ -80,16 +77,7 @@ const GBDetailNavigator = () => {
       <GBDetailStackNavigator.Screen
         name="GBDetail"
         component={GBDetailScreen}
-        options={{
-          headerShown: false,
-          cardStyle: { backgroundColor: 'transparent', shadowColor: 'transparent' }
-          // transparentCard: true,
-          // transitionConfig: () => ({
-          //   containerStyle: {
-          //     backgroundColor: 'transparent',
-          //   },
-          // })
-        }}
+        options={GBDetailScreenOptions}
       >
       </GBDetailStackNavigator.Screen>
     </GBDetailStackNavigator.Navigator>
@@ -210,38 +198,6 @@ const FileDisputeNavigator = () => {
         name="FileDispute"
         component={FileDisputeScreen}
         options={FileDisputeScreenOptions}
-      //options={
-      //{
-      //   drawerLabel: 'File Dispute',
-      //   title: "File Dispute",
-      //   gestureEnabled: true,
-      //   headerTitle: "File a Dispute",
-      //   swipeEnabled: true,
-      //   headerTitleAlign: "center",
-      //   headerLeft:(navData)=>(
-      //     <HeaderButtons HeaderButtonComponent={HeaderButton}>
-      //       <Item
-      //         title="Menu"
-      //         iconName={Platform.OS === 'android' ? "menu" : "ios-menu-outline"}
-      //         onPress={() => {
-      //           navData.navigation.toggleDrawer();
-      //         }}
-      //       />
-      //     </HeaderButtons>
-      //   ),
-      //   headerRight: () => (
-      //     <HeaderButtons HeaderButtonComponent={HeaderButton}>
-      //       <Item
-      //         title="Menu"
-      //         iconName={Platform.OS === 'android' ? 'md-create' : 'ios-create'}
-      //         onPress={() => {
-      //           navData.navigation.navigate('');
-      //         }}
-      //       />
-      //     </HeaderButtons>
-      //   )
-      // }
-      //}
       >
       </FileDisputeStackNavigator.Screen>
     </FileDisputeStackNavigator.Navigator>
@@ -261,12 +217,38 @@ export const MainNavigator = () => {
       keyboardDismissMode={"on-drag"}
       lazy={true}
       openByDefault={false}
-      //drawerContent={} 
       drawerContentOptions={{
         activeTintColor: Colors.primary,
         labelStyle: {
-          fontFamily: 'open-sans-bold'
+          fontFamily: 'Kanit-Regular'
         }
+      }}
+      drawerContent={props => {
+        const filteredProps = {
+          ...props,
+          state: {
+            ...props.state,
+            routeNames: props.state.routeNames.filter(
+              routeName =>
+                routeName !== 'Login' &&
+                routeName !== 'GBDetail' &&
+                routeName !== 'FamilyChatrel' &&
+                routeName !== 'FriendChatrel'
+            ),
+            routes: props.state.routes.filter(
+              route =>
+                route.name !== 'Login' &&
+                route.name !== 'GBDetail' &&
+                route.name !== 'FamilyChatrel' &&
+                route.name !== 'FriendChatrel'
+            ),
+          },
+        };
+        return (
+          <DrawerContentScrollView {...filteredProps}>
+            <DrawerItemList {...filteredProps} />
+          </DrawerContentScrollView>
+        );
       }}
     >
       {/*Login*/}
@@ -274,8 +256,9 @@ export const MainNavigator = () => {
         name={"Login"}
         component={LoginNavigator}
         options={{
-          //drawerLabel: 'Login',
-
+          //Make it false after dev ends
+          gestureEnabled: true,
+          swipeEnabled: true
         }}
       >
       </MainDrawerNavigator.Screen>
@@ -285,11 +268,7 @@ export const MainNavigator = () => {
         component={GBDetailNavigator}
         options={{
           gestureEnabled: false,
-          swipeEnabled: false,
-          drawerLabel: 'GB Details',
-          header: null,
-          headerLeft: null,
-          headerRight: null
+          swipeEnabled: false
         }}
       >
       </MainDrawerNavigator.Screen>
@@ -298,7 +277,9 @@ export const MainNavigator = () => {
         name={"Home"}
         component={HomeNavigator}
         options={{
-          drawerLabel: 'Quick Actions'
+          drawerLabel: 'Home',
+          gestureEnabled: true,
+          swipeEnabled: true
         }}
       >
       </MainDrawerNavigator.Screen>
@@ -307,7 +288,9 @@ export const MainNavigator = () => {
         name={"SelfChatrel"}
         component={SelfChatrelNavigator}
         options={{
-          drawerLabel: 'Self Chatrel'
+          drawerLabel: 'Self Chatrel',
+          gestureEnabled: true,
+          swipeEnabled: true
         }}
       >
       </MainDrawerNavigator.Screen>
@@ -316,7 +299,9 @@ export const MainNavigator = () => {
         name={"FamilyChatrelIntermediate"}
         component={FamilyChatrelIntermediateNavigator}
         options={{
-          drawerLabel: 'Family Chatrel'
+          drawerLabel: 'Family Chatrel',
+          gestureEnabled: true,
+          swipeEnabled: true
         }}
       >
       </MainDrawerNavigator.Screen>
@@ -324,9 +309,6 @@ export const MainNavigator = () => {
       <MainDrawerNavigator.Screen
         name={"FamilyChatrel"}
         component={FamilyChatrelNavigator}
-        options={{
-          drawerLabel: 'Family Chatrel'
-        }}
       >
       </MainDrawerNavigator.Screen>
       {/*FriendChatrelIntermediate*/}
@@ -334,7 +316,9 @@ export const MainNavigator = () => {
         name={"FriendChatrelIntermediate"}
         component={FriendChatrelIntermediateNavigator}
         options={{
-          drawerLabel: 'Friend Chatrel'
+          drawerLabel: 'Friend Chatrel',
+          gestureEnabled: true,
+          swipeEnabled: true
         }}
       >
       </MainDrawerNavigator.Screen>
@@ -342,9 +326,6 @@ export const MainNavigator = () => {
       <MainDrawerNavigator.Screen
         name={"FriendChatrel"}
         component={FriendChatrelNavigator}
-        options={{
-          drawerLabel: 'Friend Chatrel'
-        }}
       >
       </MainDrawerNavigator.Screen>
       {/*ChatrelHistory*/}
@@ -352,7 +333,9 @@ export const MainNavigator = () => {
         name={"ChatrelHistory"}
         component={ChatrelHistoryNavigator}
         options={{
-          drawerLabel: 'Chatrel History'
+          drawerLabel: 'Chatrel History',
+          gestureEnabled: true,
+          swipeEnabled: true
         }}
       >
       </MainDrawerNavigator.Screen>
@@ -361,22 +344,20 @@ export const MainNavigator = () => {
         name={"MyProfile"}
         component={MyProfileNavigator}
         options={{
-          drawerLabel: 'My Profile'
+          drawerLabel: 'My Profile',
+          gestureEnabled: true,
+          swipeEnabled: true
         }}
       >
       </MainDrawerNavigator.Screen>
       {/*FileDispute*/}
       <MainDrawerNavigator.Screen
         name={"FileDispute"}
-
         component={FileDisputeNavigator}
         options={{
-          // drawerLabel: 'File Dispute',
-          // title: "File Dispute",
-          // gestureEnabled: true,
-          // headerTitle: "File a Dispute",
-          // swipeEnabled: true,
-          // headerTitleAlign: "center"
+          drawerLabel: 'File Dispute',
+          gestureEnabled: true,
+          swipeEnabled: true
         }}
       >
       </MainDrawerNavigator.Screen>

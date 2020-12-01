@@ -31,6 +31,16 @@ export const LoginScreen = (props) => {
   );
 };
 
+export const LoginScreenOptions = navData => {
+  return {
+    headerShown: false,
+    headerLeft: null,
+    headerRight: null,
+    headerBackTitleVisible: false,
+    cardStyle: { backgroundColor: Colors.greenBG }
+  };
+};
+
 // console.log(Dimensions.get('window').width)
 // console.log(Dimensions.get('window').height)
 

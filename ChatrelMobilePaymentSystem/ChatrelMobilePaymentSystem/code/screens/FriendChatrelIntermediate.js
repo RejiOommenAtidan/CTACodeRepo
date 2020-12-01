@@ -9,10 +9,23 @@ import { sDateFormat } from '../constants/CommonConfig';
 import Moment from 'moment';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import axios from 'axios';
 import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import { useForm, Controller } from "react-hook-form";
+import {errorComponent,errorContainer} from '../constants/CommonConfig';
+import axios from 'axios';
 
 export const FriendChatrelIntermediateScreen = (props) => {
+  const { control, handleSubmit, errors } = useForm();
+  const onSubmit = () => {
+    let oFriendGBDetails = {
+      nFriendGBID: parseInt(nFriendGBID),
+      sFriendFirstname: sFriendFirstname,
+      sFriendLastname: sFriendLastname,
+      dtFriendDOB: dtFriendDOB
+    };
+    console.log(oFriendGBDetails);
+    //props.navigation.navigate("FriendChatrel");
+  };
   const [nFriendGBID, setnFriendGBID] = useState("");
   const [sFriendFirstname, setsFriendFirstname] = useState("");
   const [sFriendLastname, setsFriendLastname] = useState("");
@@ -29,92 +42,134 @@ export const FriendChatrelIntermediateScreen = (props) => {
           <Text style={styles.firstNameLabelComponent}>FIRST NAME</Text>
         </View>
         <View style={styles.firstNameValueContainer}>
-          <Input
-            inputContainerStyle={{ borderBottomWidth: 0 }}
-            inputStyle={{
-              height: Dimensions.get('window').height * 0.02,
-              marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
-              borderRadius: 10,
-              backgroundColor: Colors.white,
-              borderColor: Colors.white
-            }}
-            //label="Friend's Firstname"
-            placeholder="Friend's First Name"
-            //autoFocus={true}
-            //autoCapitalize={"characters"}
-            autoCompleteType={"off"}
-            autoCorrect={false}
-            clearButtonMode={"while-editing"}
-            //dataDetectorTypes={"phoneNumber"}
-            //secureTextEntry={!bShowFriendGBID}
-            keyboardType={"default"}
-            keyboardAppearance={"default"}
-            disableFullscreenUI={true}
-            //maxLength={7}
-            onChangeText={(value) => { setsFriendFirstname(value) }}
-            value={sFriendFirstname}
+          <Controller
+            control={control}
+            render={({ onChange, onBlur, value }) => (
+              <Input
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                inputStyle={{
+                  height: Dimensions.get('window').height * 0.02,
+                  //marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
+                  borderRadius: 10,
+                  backgroundColor: Colors.white,
+                  borderColor: Colors.white
+                }}
+                //label="Friend's Firstname"
+                placeholder="Friend's First Name"
+                //autoFocus={true}
+                //autoCapitalize={"characters"}
+                autoCompleteType={"off"}
+                autoCorrect={false}
+                clearButtonMode={"while-editing"}
+                //dataDetectorTypes={"phoneNumber"}
+                //secureTextEntry={!bShowFriendGBID}
+                keyboardType={"default"}
+                keyboardAppearance={"default"}
+                disableFullscreenUI={true}
+                //maxLength={7}
+                onBlur={onBlur}
+                onChangeText={(value) => { onChange(value); setsFriendFirstname(value) }}
+                value={sFriendFirstname}
+              />
+            )}
+            name="name_sFriendFirstName"
+            rules={{ required: true }}
+            defaultValue=""
           />
+          {errors.name_sFriendFirstName &&
+            <View style={errorContainer}>
+              <Text style={errorComponent}>This is field required.</Text>
+            </View>
+          }
         </View>
         <View style={styles.lastNameLabelContainer}>
           <Text style={styles.lastNameLabelComponent}>LAST NAME</Text>
         </View>
         <View style={styles.lastNameValueContainer}>
-          <Input
-            inputContainerStyle={{ borderBottomWidth: 0 }}
-            inputStyle={{
-              height: Dimensions.get('window').height * 0.02,
-              marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
-              borderRadius: 10,
-              backgroundColor: Colors.white,
-              borderColor: Colors.white
-            }}
-            //label="Friend's Lastname"
-            placeholder="Friend's Last Name"
-            //autoFocus={true}
-            //autoCapitalize={"characters"}
-            autoCompleteType={"off"}
-            autoCorrect={false}
-            clearButtonMode={"while-editing"}
-            //dataDetectorTypes={"phoneNumber"}
-            //secureTextEntry={!bShowFriendGBID}
-            keyboardType={"default"}
-            keyboardAppearance={"default"}
-            disableFullscreenUI={true}
-            //maxLength={7}
-            onChangeText={(value) => { setsFriendLastname(value) }}
-            value={sFriendLastname}
+          <Controller
+            control={control}
+            render={({ onChange, onBlur, value }) => (
+              <Input
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                inputStyle={{
+                  height: Dimensions.get('window').height * 0.02,
+                  //marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
+                  borderRadius: 10,
+                  backgroundColor: Colors.white,
+                  borderColor: Colors.white
+                }}
+                //label="Friend's Lastname"
+                placeholder="Friend's Last Name"
+                //autoFocus={true}
+                //autoCapitalize={"characters"}
+                autoCompleteType={"off"}
+                autoCorrect={false}
+                clearButtonMode={"while-editing"}
+                //dataDetectorTypes={"phoneNumber"}
+                //secureTextEntry={!bShowFriendGBID}
+                keyboardType={"default"}
+                keyboardAppearance={"default"}
+                disableFullscreenUI={true}
+                //maxLength={7}
+                onBlur={onBlur}
+                onChangeText={(value) => { onChange(value); setsFriendLastname(value) }}
+                value={sFriendLastname}
+              />
+            )}
+            name="name_sFriendLastName"
+            rules={{ required: true }}
+            defaultValue=""
           />
+          {errors.name_sFriendLastName &&
+            <View style={errorContainer}>
+              <Text style={errorComponent}>This is field required.</Text>
+            </View>
+          }
         </View>
         {/*GBID*/}
         <View style={styles.gbidLabelContainer}>
           <Text style={styles.gbidLabelComponent}>GREENBOOK ID</Text>
         </View>
         <View style={styles.gbidValueContainer}>
-          <Input
-            inputContainerStyle={{ borderBottomWidth: 0 }}
-            inputStyle={{
-              height: Dimensions.get('window').height * 0.02,
-              marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
-              borderRadius: 10,
-              backgroundColor: Colors.white,
-              borderColor: Colors.white
-            }}
-            //label="Friend's GBID"
-            placeholder="Friend's GBID"
-            //autoFocus={true}
-            //autoCapitalize={"characters"}
-            autoCompleteType={"off"}
-            autoCorrect={false}
-            clearButtonMode={"while-editing"}
-            //dataDetectorTypes={"phoneNumber"}
-            //secureTextEntry={!bShowFriendGBID}
-            keyboardType={"number-pad"}
-            keyboardAppearance={"default"}
-            disableFullscreenUI={true}
-            maxLength={7}
-            onChangeText={(value) => { setnFriendGBID(value) }}
-            value={nFriendGBID}
+          <Controller
+            control={control}
+            render={({ onChange, onBlur, value }) => (
+              <Input
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                inputStyle={{
+                  height: Dimensions.get('window').height * 0.02,
+                  //marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
+                  borderRadius: 10,
+                  backgroundColor: Colors.white,
+                  borderColor: Colors.white
+                }}
+                //label="Friend's GBID"
+                placeholder="Friend's GBID"
+                //autoFocus={true}
+                //autoCapitalize={"characters"}
+                autoCompleteType={"off"}
+                autoCorrect={false}
+                clearButtonMode={"while-editing"}
+                //dataDetectorTypes={"phoneNumber"}
+                //secureTextEntry={!bShowFriendGBID}
+                keyboardType={"number-pad"}
+                keyboardAppearance={"default"}
+                disableFullscreenUI={true}
+                maxLength={7}
+                onBlur={onBlur}
+                onChangeText={(value) => { onChange(value); setnFriendGBID(value) }}
+                value={nFriendGBID}
+              />
+            )}
+            name="name_nFriendGBID"
+            rules={{ required: true }}
+            defaultValue=""
           />
+          {errors.name_nFriendGBID &&
+            <View style={errorContainer}>
+              <Text style={errorComponent}>This is field required.</Text>
+            </View>
+          }
         </View>
         {/*<View style={styles.container}>
           <Switch
@@ -129,64 +184,69 @@ export const FriendChatrelIntermediateScreen = (props) => {
           <Text style={styles.dobLabelComponent}>DATE OF BIRTH</Text>
         </View>
         <View style={styles.dobValueContainer}>
-          <DatePicker
-            androidMode={"spinner"}
-            style={{
-              width: Dimensions.get('window').width * 0.775,
-              //backgroundColor: Colors.white,
-              //borderColor: Colors.white
-            }}
-            date={dtFriendDOB}
-            mode="date"
-            placeholder="Friend's DOB"
-            format={sDateFormat}
-            //minDate={dtToday}
-            maxDate={dtToday}
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: 'absolute',
-                left: 0,
-                top: 4,
-                marginLeft: 0
-              },
-              placeholderText: {
-                fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-                fontFamily: 'Kanit-Regular'
-              },
-              // dateIcon: {
-              //   width:0,
-              //   height:0,
-              //   },
-              dateInput: {
-                //textAlign:'left',
-                marginLeft: 36,
-                backgroundColor: Colors.white,
-                borderRadius: 10,
-                borderWidth: 1,
-                //overflow: 'hidden',
-                borderColor: Colors.white,
-                //justifyContent: 'flex-start',
-                alignItems: 'flex-start'
-              }
-            }}
-            onDateChange={(date) => { setdtFriendDOB(date) }}
+          <Controller
+            control={control}
+            render={({ onChange, onBlur, value }) => (
+              <DatePicker
+                androidMode={"spinner"}
+                style={{
+                  width: Dimensions.get('window').width * 0.775,
+                  //backgroundColor: Colors.white,
+                  //borderColor: Colors.white
+                }}
+                date={dtFriendDOB}
+                mode="date"
+                placeholder="Friend's DOB"
+                format={sDateFormat}
+                //minDate={dtToday}
+                maxDate={dtToday}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  placeholderText: {
+                    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+                    fontFamily: 'Kanit-Regular'
+                  },
+                  // dateIcon: {
+                  //   width:0,
+                  //   height:0,
+                  //   },
+                  dateInput: {
+                    //textAlign:'left',
+                    marginLeft: 36,
+                    backgroundColor: Colors.white,
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    //overflow: 'hidden',
+                    borderColor: Colors.white,
+                    //justifyContent: 'flex-start',
+                    alignItems: 'flex-start'
+                  }
+                }}
+                onBlur={onBlur}
+                onDateChange={(date) => { onChange(date); setdtFriendDOB(date) }}
+              />
+            )}
+            name="name_dtFriendDOB"
+            rules={{ required: true }}
+            defaultValue=""
           />
+          {errors.name_dtFriendDOB &&
+            <View style={errorContainer}>
+              <Text style={errorComponent}>This is field required.</Text>
+            </View>
+          }
         </View>
         <View style={styles.buttonContainer}>
           <Button
             title="Verify & Continue"
-            onPress={() => {
-              let oFriendGBDetails = {
-                nFriendGBID: parseInt(nFriendGBID),
-                sFriendFirstname: sFriendFirstname,
-                sFriendLastname: sFriendLastname,
-                dtFriendDOB: dtFriendDOB
-              };
-              console.log(oFriendGBDetails);
-              props.navigation.navigate("FriendChatrel");
-            }}
+            onPress={handleSubmit(onSubmit)}
             titleStyle={{
               color: Colors.white,
               fontFamily: 'Kanit-Regular'
@@ -328,6 +388,5 @@ const styles = StyleSheet.create({
   dobValueContainer: {
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 30 : 50,
   },
-
-  buttonContainer: {},
+  buttonContainer: {}
 });

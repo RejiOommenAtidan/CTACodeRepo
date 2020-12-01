@@ -295,7 +295,7 @@ namespace CTADBL.ViewModelsRepositories
                     sLastName = row.Field<string>("sLastName"),
                     sFamilyName = row.Field<string>("sFamilyName"),
                     dtDOB = row.Field<DateTime>("dtDOB"),
-                    Age = Convert.ToInt32(row.Field<System.UInt64>("Age")),
+                    nAge = Convert.ToInt32(row.Field<System.UInt64>("Age")),
                     sFathersName = row.Field<string>("sFathersName"),
                     sMothersName = row.Field<string>("sMothersName"),
                     sCity = row.Field<string>("sCity"),

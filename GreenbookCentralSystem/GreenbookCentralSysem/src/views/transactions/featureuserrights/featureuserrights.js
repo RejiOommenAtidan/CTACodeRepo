@@ -221,7 +221,7 @@ export default function FeatureUserrights() {
   return (
 
     <Container maxWidth="lg" disableGutters={true}><br />
-      <Typography variant="h4" gutterBottom>Feature Roles</Typography>
+      {/*<Typography variant="h4" gutterBottom>Feature Roles</Typography>*/}
       <Grid container className={classes.box}>
         <Grid item xs={12}>
           <MaterialTable
