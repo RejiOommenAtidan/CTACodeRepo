@@ -19,6 +19,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import CancelIcon from '@material-ui/icons/Cancel';
+import WarningIcon from '@material-ui/icons/Warning';
+
 import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
 
 const tableIcons = oTableIcons;
@@ -250,17 +253,30 @@ export default function FeatureUserrights() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Toggle Mapping"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Toggle Mapping ?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Are you sure to change this mapping ?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button
+            onClick={handleClose}
+            variant="contained"
+            size={"small"}
+            color={"primary"}
+            startIcon={<CancelIcon />}
+          >
             No
           </Button>
-          <Button onClick={editAPICall} color="primary" autoFocus>
+          <Button
+            onClick={editAPICall}
+            autoFocus
+            variant="contained"
+            size={"small"}
+            color={"primary"}
+            startIcon={<WarningIcon />}
+          >
             Yes
           </Button>
         </DialogActions>
