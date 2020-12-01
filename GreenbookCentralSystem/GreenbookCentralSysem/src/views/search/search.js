@@ -262,7 +262,7 @@ export default function SearchPage() {
         </Menu>
       </div>
       ,
-      //field: "sGBID",
+      field: "sGBID",
       title: "GB ID",
       filterPlaceholder: 'Search..',
       headerStyle: {
@@ -279,10 +279,29 @@ export default function SearchPage() {
       },
     },
     {
-      render: rowData => rowData['sFirstName'] + " " + rowData['sLastName'],
-      //field: "abc",
+      render: rowData => (rowData['sFirstName']?rowData['sFirstName']:'') + " " + (rowData['sLastName']?rowData['sLastName']:''),
+      field: "sFirstName",
       title: "Name",
       filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '0px',
+        width: '7%',
+        textAlign: 'left'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '10px',
+        width: '7%',
+        textAlign: 'left'
+
+      },
+    },
+    {
+      field: "sLastName",
+      title: "sLastName",
+      filterPlaceholder: 'Search..',
+      hidden: true,
+      searchable:true,
       headerStyle: {
         padding: '0px',
         width: '7%',
@@ -441,7 +460,7 @@ export default function SearchPage() {
   const handleSimpleSearch = (e) => {
 
     //setSearchField(e.target.value,console.log(searchField))
-    if (e.target.value.length > 2) {
+    if (e.target.value.length > 0) {
       const simpleObj = {
 
         sSearchField: searchFilter,
@@ -487,7 +506,7 @@ export default function SearchPage() {
     sSpouseName: spouseName,
     sFathersName: fatherName,
     sMothersName: motherName,
-    dtDOB: dob,
+    dtDOB: Moment(dob).format('YYYY-MM-DD')!='Invalid date' ? Moment(dob).format('YYYY-MM-DD'): '',
     sCity: city,
     sState: state,
     sCountryID: country,
@@ -555,6 +574,12 @@ export default function SearchPage() {
         //console.log(release); => udefined
       });
   }
+  /*const isValidDate=(d)=> {
+    let x=d instanceof Date;
+    ​​​​​ if(x){
+      setDob(date)
+    }
+  }​​​​​*/
   useEffect(() => {
     //Use === instead of ==
     if (authenticationService.currentUserValue === null) {
@@ -594,15 +619,15 @@ export default function SearchPage() {
     if (firstName.length > 3 || secondName.length > 3 ||
       familyName.length > 3 || spouseName.length > 3 ||
       fatherName.length > 3 || motherName.length > 3 ||
-      city.length > 3 || state.length > 3 || gender.length == 1 ||
-      dob || country || minAge > 0 || maxAge > 0) {
+      city.length > 2 || state.length > 3 || gender.length == 1 ||
+      Moment(dob).format('YYYY-MM-DD')!='Invalid date' || country || minAge > 0 || maxAge > 0) {
       console.log(complexObj);
       handleComplexSearch();
     }
   }, [firstName, secondName, familyName, spouseName, fatherName, motherName, city, state, dob, country, gender, minAge, maxAge]);
 
 
-
+  
   return (
     <>
       <Grid container spacing={1}>
@@ -755,7 +780,7 @@ export default function SearchPage() {
                         id="id_dtDOB"
                         label="DOB"
                         format="dd/MM/yyyy"
-                        onChange={(date) => { setDob(date) }}
+                        onChange={(date) => {setDob(date) }}
                         value={dob}
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
