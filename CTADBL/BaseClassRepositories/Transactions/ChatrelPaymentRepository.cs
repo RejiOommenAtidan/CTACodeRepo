@@ -68,17 +68,17 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
             IEnumerable<Chatrel> chatrelValues = _chatrelRepository.GetAllChatrel();
 
-            _nChatrelAmountUSD = chatrelValues.Where(key => key.sChatrelKey == "USDYearChatrelAmount").Select(key => key.nChatrelValue).FirstOrDefault();
-            _nChatrelMealUSD = chatrelValues.Where(key => key.sChatrelKey == "USDYearChatrelMeal").Select(key => key.nChatrelValue).FirstOrDefault();
-            _nChatrelSalaryAmtUSD = chatrelValues.Where(key => key.sChatrelKey == "USDYearChatrelSalaryAmt").Select(key => key.nChatrelValue).FirstOrDefault();
+            //_nChatrelAmountUSD = chatrelValues.Where(key => key.sChatrelKey == "USDYearChatrelAmount").Select(key => key.nChatrelValue).FirstOrDefault();
+            //_nChatrelMealUSD = chatrelValues.Where(key => key.sChatrelKey == "USDYearChatrelMeal").Select(key => key.nChatrelValue).FirstOrDefault();
+            //_nChatrelSalaryAmtUSD = chatrelValues.Where(key => key.sChatrelKey == "USDYearChatrelSalaryAmt").Select(key => key.nChatrelValue).FirstOrDefault();
             _nChatrelLateFeesPercentageUSD = chatrelValues.Where(key => key.sChatrelKey == "USDChatrelLateFeesPercentage").Select(key => key.nChatrelValue).FirstOrDefault();
-            _nChatrelChildAmtUSD = chatrelValues.Where(key => key.sChatrelKey == "USDChildMonthChatrelAmount").Select(key => key.nChatrelValue).FirstOrDefault();
+            //_nChatrelChildAmtUSD = chatrelValues.Where(key => key.sChatrelKey == "USDChildMonthChatrelAmount").Select(key => key.nChatrelValue).FirstOrDefault();
 
-            _nChatrelAmountINR = chatrelValues.Where(key => key.sChatrelKey == "INRYearChatrelAmount").Select(key => key.nChatrelValue).FirstOrDefault();
-            _nChatrelMealINR = chatrelValues.Where(key => key.sChatrelKey == "INRYearChatrelMeal").Select(key => key.nChatrelValue).FirstOrDefault();
-            _nChatrelSalaryAmtINR = chatrelValues.Where(key => key.sChatrelKey == "INRYearChatrelSalaryAmt").Select(key => key.nChatrelValue).FirstOrDefault();
+            //_nChatrelAmountINR = chatrelValues.Where(key => key.sChatrelKey == "INRYearChatrelAmount").Select(key => key.nChatrelValue).FirstOrDefault();
+            //_nChatrelMealINR = chatrelValues.Where(key => key.sChatrelKey == "INRYearChatrelMeal").Select(key => key.nChatrelValue).FirstOrDefault();
+            //_nChatrelSalaryAmtINR = chatrelValues.Where(key => key.sChatrelKey == "INRYearChatrelSalaryAmt").Select(key => key.nChatrelValue).FirstOrDefault();
             _nChatrelLateFeesPercentageINR = chatrelValues.Where(key => key.sChatrelKey == "INRChatrelLateFeesPercentage").Select(key => key.nChatrelValue).FirstOrDefault();
-            _nChatrelChildAmtINR = chatrelValues.Where(key => key.sChatrelKey == "INRChildMonthChatrelAmount").Select(key => key.nChatrelValue).FirstOrDefault();
+            //_nChatrelChildAmtINR = chatrelValues.Where(key => key.sChatrelKey == "INRChildMonthChatrelAmount").Select(key => key.nChatrelValue).FirstOrDefault();
 
             //_nChatrelAmount = chatrelValues.Where(key => key.sChatrelKey == "USDYearChatrelAmount").Select(key => key.nChatrelValue).FirstOrDefault();
             //_nChatrelMeal = chatrelValues.Where(key => key.sChatrelKey == "USDYearChatrelMeal").Select(key => key.nChatrelValue).FirstOrDefault();
@@ -124,6 +124,10 @@ namespace CTADBL.BaseClassRepositories.Transactions
         {
             _nPending = 0.00m;
             Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
+            if(greenbook == null)
+            {
+                return "Greenbook ID does not Exist.";
+            }
             //AuthRegion authRegion = _authRegionRepository.GetAuthRegionById(greenbook.nAuthRegionID.ToString());
             int authRegionId = _gbChatrelRepository.GetLatestAuthRegionID(sGBID);
             AuthRegion authRegion = _authRegionRepository.GetAuthRegionById(authRegionId.ToString());
@@ -274,35 +278,32 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
                 Status status = indianRegion ? CheckStatusINR(paidUntil + i, (DateTime)greenbook.dtDOB) :  CheckStatus(paidUntil + i, (DateTime)greenbook.dtDOB);
 
-                if(status == Status.Adult)
-                {
-                    if (i == (pendingYears - 1) && inGracePeriod)
-                    {
-                        var gracepending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = chatrelBasic, nChatrelMeal = chatrelMeal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nArrearsAmount = (chatrelBasic + chatrelMeal), nChatrelTotalAmount = (chatrelBasic + chatrelMeal), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = chatrelBasicUSD, nChatrelINR = chatrelBasicINR, nChatrelMealUSD = chatrelMealUSD, nChatrelMealINR = chatrelMealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild = false };
-                        list.Add(gracepending);
-                        _nPending += chatrelBasic + chatrelMeal;
-                        continue;
-                    }
-                    if(i == pendingYears) // Current Year
-                    {
-                        var current = new { nChatrelYear = _currentYear, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = chatrelBasic, nChatrelMeal = chatrelMeal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nChatrelTotalAmount = (chatrelBasic + chatrelMeal), dtDateFrom = start, dtDateTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = chatrelBasicUSD, nChatrelINR = chatrelBasicINR, nChatrelMealUSD = chatrelMealUSD, nChatrelMealINR = chatrelMealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild = false };
-                        list.Add(current);
-                        //_nPending += _nChatrelAmount + _nChatrelMeal;
-                        continue;
-                    }
-                    var apending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = chatrelBasic, nChatrelMeal = chatrelMeal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = _dLateFees, nArrearsAmount = (chatrelBasic + chatrelMeal + _dLateFees), nChatrelTotalAmount = (chatrelBasic + chatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = chatrelBasicUSD, nChatrelINR = chatrelBasicINR, nChatrelMealUSD = chatrelMealUSD, nChatrelMealINR = chatrelMealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild = false };
-                    list.Add(apending);
-                    _nPending += chatrelBasic + chatrelMeal + _dLateFees;
-                    continue;
-                }
+                //if(status == Status.Adult)
+                //{
+                //    if (i == (pendingYears - 1) && inGracePeriod)
+                //    {
+                //        var gracepending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = chatrelBasic, nChatrelMeal = chatrelMeal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nArrearsAmount = (chatrelBasic + chatrelMeal), nChatrelTotalAmount = (chatrelBasic + chatrelMeal), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = chatrelBasicUSD, nChatrelINR = chatrelBasicINR, nChatrelMealUSD = chatrelMealUSD, nChatrelMealINR = chatrelMealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild = false };
+                //        list.Add(gracepending);
+                //        _nPending += chatrelBasic + chatrelMeal;
+                //        continue;
+                //    }
+                //    if(i == pendingYears) // Current Year
+                //    {
+                //        var current = new { nChatrelYear = _currentYear, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = chatrelBasic, nChatrelMeal = chatrelMeal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nChatrelTotalAmount = (chatrelBasic + chatrelMeal), dtDateFrom = start, dtDateTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = chatrelBasicUSD, nChatrelINR = chatrelBasicINR, nChatrelMealUSD = chatrelMealUSD, nChatrelMealINR = chatrelMealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild = false };
+                //        list.Add(current);
+                //        //_nPending += _nChatrelAmount + _nChatrelMeal;
+                //        continue;
+                //    }
+                //    var apending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = chatrelBasic, nChatrelMeal = chatrelMeal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = _dLateFees, nArrearsAmount = (chatrelBasic + chatrelMeal + _dLateFees), nChatrelTotalAmount = (chatrelBasic + chatrelMeal + _dLateFees), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = chatrelBasicUSD, nChatrelINR = chatrelBasicINR, nChatrelMealUSD = chatrelMealUSD, nChatrelMealINR = chatrelMealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild = false };
+                //    list.Add(apending);
+                //    _nPending += chatrelBasic + chatrelMeal + _dLateFees;
+                //    continue;
+                //}
 
                 
                 //int months = 0;
                 //int childMonths = 0;
-                decimal meal = 0.00m;
-                decimal mealUSD = 0.00m;
-                decimal mealINR = 0.00m;
-                bool isChild = true;
+                
                 //if (status == Status.TurningAdult)
                 //{
                 //    months = indianRegion ? 12 :  AdultMonths(paidUntil + i, (DateTime)greenbook.dtDOB);
@@ -329,9 +330,21 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 //var nChatrelChildINR = status == Status.TurningChild ? childMonths * chatrelChildMonthlyINR : (months * chatrelBasicINR / 12) + ((12 - months) * chatrelChildMonthlyINR) ;
 
                 decimal nChatrelChildAmt = 0.00m, nChatrelChildUSD = 0.00m, nChatrelChildINR = 0.00m;
+                decimal meal = 0.00m, mealUSD = 0.00m, mealINR = 0.00m;
+                bool isChild = true;
 
                 switch (status)
                 {
+                    case Status.Adult:
+                        nChatrelChildAmt = chatrelBasic;
+                        nChatrelChildUSD = chatrelBasicUSD;
+                        nChatrelChildINR = chatrelBasicINR;
+                        meal = chatrelMeal;
+                        mealUSD = chatrelMealUSD;
+                        mealINR = chatrelMealINR;
+                        isChild = false;
+                        break;
+                    
                     case Status.TurningAdult:
                         int adultMonths = AdultMonths(paidUntil + i, (DateTime)greenbook.dtDOB);
                         meal = chatrelMeal;
@@ -395,7 +408,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
                 if (i == (pendingYears - 1) && inGracePeriod)
                 {
-                    var gracepending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = nChatrelChildAmt, nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nArrearsAmount = (nChatrelChildAmt ), nChatrelTotalAmount = (nChatrelChildAmt), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = nChatrelChildUSD, nChatrelINR = nChatrelChildINR, nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, isChild  };
+                    var gracepending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = Math.Round(nChatrelChildAmt, 2), nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nArrearsAmount = (nChatrelChildAmt + meal), nChatrelTotalAmount = Math.Round((nChatrelChildAmt + meal), 2), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = Math.Round(nChatrelChildUSD, 2), nChatrelINR = Math.Round(nChatrelChildINR, 2), nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild  };
                     
                     list.Add(gracepending);
                     
@@ -405,13 +418,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 }   
                 if (i == pendingYears) // Current Year
                 {
-                    var current = new { nChatrelYear = _currentYear, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = nChatrelChildAmt, nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nChatrelTotalAmount = nChatrelChildAmt, dtDateFrom = start, dtDateTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = nChatrelChildUSD, nChatrelINR = nChatrelChildINR, nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, isChild  };
+                    var current = new { nChatrelYear = _currentYear, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = Math.Round(nChatrelChildAmt, 2), nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nChatrelTotalAmount = Math.Round(nChatrelChildAmt + meal, 2), dtDateFrom = start, dtDateTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = Math.Round(nChatrelChildUSD, 2), nChatrelINR = Math.Round(nChatrelChildINR, 2), nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild  };
                     
                     list.Add(current);
                     
                     continue;
                 }
-                var pending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = nChatrelChildAmt, nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = lateFees, nArrearsAmount = (nChatrelChildAmt + lateFees),  nChatrelTotalAmount = (nChatrelChildAmt + lateFees), dtArrearsFrom = start, dtArrearsTo = end,  greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = nChatrelChildUSD, nChatrelINR = nChatrelChildINR, nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, isChild  };
+                var pending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = Math.Round(nChatrelChildAmt, 2), nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = lateFees, nArrearsAmount = (nChatrelChildAmt + + meal + lateFees),  nChatrelTotalAmount = Math.Round((nChatrelChildAmt + meal + lateFees), 2), dtArrearsFrom = start, dtArrearsTo = end,  greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = Math.Round(nChatrelChildUSD, 2), nChatrelINR = Math.Round(nChatrelChildINR, 2), nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild  };
                
                 list.Add(pending);
                 _nPending += nChatrelChildAmt + meal + lateFees;
@@ -438,6 +451,10 @@ namespace CTADBL.BaseClassRepositories.Transactions
         private decimal CheckPendingAmount(string sGBID)
         {
             var obj = DisplayChatrelPayment(sGBID);
+            if (obj.ToString() == "Greenbook ID does not Exist.")
+            {
+                return -1;
+            }
             var chatrel = (object)obj.GetType().GetProperty("chatrelPayment")?.GetValue(obj, null);
             var nChatrelTotalAmount = (decimal)chatrel?.GetType().GetProperty("nChatrelTotalAmount")?.GetValue(chatrel, null);
 

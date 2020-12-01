@@ -120,74 +120,76 @@ export const GBDetailScreen = (props) => {
           <View style={styles.textContainer}>
             <Text style={styles.textComponent}>Disclaimer: All fields are mandatory</Text>
           </View>
+          {/*<form onSubmit={handleSubmit(onSubmit)}>*/}
           <View style={styles.gbidContainer}>
-            <Input
-              //label="Enter GBID"
-              placeholder="Enter 7 Digit Greenbook Number"
-              //autoFocus={true}
-              autoCompleteType={"off"}
-              autoCorrect={false}
-              clearButtonMode={"while-editing"}
-              //secureTextEntry={!bShowGBID}
-              keyboardType={"number-pad"}
-              keyboardAppearance={"default"}
-              disableFullscreenUI={true}
-              maxLength={7}
-              onChangeText={(value) => { setsGBID(value) }}
-              value={sGBID}
-              style={styles.gbidComponent}
-            />
-            {/*<View style={styles.showGBIDContainer}>
-          <Switch
-            style={styles.showGBIDComponent}
-            onValueChange={() => { setbShowGBID(!bShowGBID) }}
-            value={bShowGBID}
+          <Input
+            //label="Enter GBID"
+            placeholder="Enter 7 Digit Greenbook Number"
+            //autoFocus={true}
+            autoCompleteType={"off"}
+            autoCorrect={false}
+            clearButtonMode={"while-editing"}
+            //secureTextEntry={!bShowGBID}
+            keyboardType={"number-pad"}
+            keyboardAppearance={"default"}
+            disableFullscreenUI={true}
+            maxLength={7}
+            onChangeText={(value) => { setsGBID(value) }}
+            value={sGBID}
+            style={styles.gbidComponent}
           />
-          <Text>Show/Hide GBID</Text>
-        </View>*/}
-          </View>
-          <View style={styles.dobContainer}>
-            <DatePicker
-              androidMode={"spinner"}
-              //style={styles.dobComponent}
-              date={dtDOB}
-              mode="date"
-              placeholder="Select DOB"
-              format={sDateFormat}
-              maxDate={dtToday}
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateText: {
-                  textAlign: "left",
-                  color: Colors.white,
-                  fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
-                  fontStyle: "normal",
-                  fontWeight: "normal",
-                  fontFamily: 'Kanit-Light'
-                },
-                dateIcon: {
-                  position: 'absolute',
-                  left: 0,
-                  top: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 2.4 : 4,
-                  marginLeft: 0
-                },
-                dateInput: {
-                  marginLeft: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21.6 : 36
-                }
-              }}
-              onDateChange={(date) => { setdtDOB(date) }}
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              //style={styles.buttonComponent}
-              titleStyle={{ color: Colors.black }}
-              buttonStyle={styles.buttonComponent}
-              title="Verify Details"
-              onPress={() => { handleVerifyDetailsPress() }}
-            />
-          </View>
+          {/*<View style={styles.showGBIDContainer}>
+        <Switch
+          style={styles.showGBIDComponent}
+          onValueChange={() => { setbShowGBID(!bShowGBID) }}
+          value={bShowGBID}
+        />
+        <Text>Show/Hide GBID</Text>
+      </View>*/}
+        </View>
+        <View style={styles.dobContainer}>
+          <DatePicker
+            androidMode={"spinner"}
+            //style={styles.dobComponent}
+            date={dtDOB}
+            mode="date"
+            placeholder="Select DOB"
+            format={sDateFormat}
+            maxDate={dtToday}
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+              dateText: {
+                textAlign: "left",
+                color: Colors.white,
+                fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
+                fontStyle: "normal",
+                fontWeight: "normal",
+                fontFamily: 'Kanit-Light'
+              },
+              dateIcon: {
+                position: 'absolute',
+                left: 0,
+                top: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 2.4 : 4,
+                marginLeft: 0
+              },
+              dateInput: {
+                marginLeft: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21.6 : 36
+              }
+            }}
+            onDateChange={(date) => { setdtDOB(date) }}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            //style={styles.buttonComponent}
+            titleStyle={{ color: Colors.black }}
+            buttonStyle={styles.buttonComponent}
+            title="Verify Details"
+            onPress={() => { handleVerifyDetailsPress() }}
+          />
+        </View>
+          {/*</form>*/}
         </View>
       </LinearGradient>
     </ImageBackground>
@@ -196,10 +198,10 @@ export const GBDetailScreen = (props) => {
 
 export const GBDetailScreenOptions = navData => {
   return {
-    headerTitle: 'GB Details',
-    header: null,
+    headerShown: false,
     headerLeft: null,
-    headerRight: null
+    headerRight: null,
+    cardStyle: { backgroundColor: 'transparent', shadowColor: 'transparent' }
   };
 };
 

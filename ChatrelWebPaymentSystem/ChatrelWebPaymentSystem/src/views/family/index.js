@@ -1,7 +1,10 @@
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
-import React,{useEffect} from 'react';
 import { Card } from '@material-ui/core';
-import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
+import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize, Input} from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -16,11 +19,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import Moment from 'moment';
 
-
-import { useSelector, useDispatch } from 'react-redux';
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
 
 const useStyles = makeStyles((theme) => ({
@@ -37,93 +37,92 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-
-export default function Family () {
-  let history = useHistory();
-  let dispatch = useDispatch();
+export default function MainPage () {
+  const sGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sGBID);
+  //const pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
+  //const payingFor=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sName);
+  const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
+  const paidByName= useSelector(state => state.GBDetailsReducer.oGBDetails.sName);
+  const [chatrelPending, setChatrelPending] = React.useState(null);
 
   const classes = useStyles();
   const theme = useTheme();
+  const [value, setValue] = React.useState(0);
+  const [familyData, setFamilyData]=React.useState(null);
+  const [paymentHistory, setPaymentHistory] = React.useState(null);
+  const [sFirstName, setFirstName] = React.useState('');
+  const [sLastName, setLastName] = React.useState('');
+  const [dtDOB, setDOB] = React.useState();
+  const [sFriendGBID, setFriendGBID] = React.useState();
+  const [currencySymbol, setCurrencySymbol] = React.useState();
+  const [paymentData, setPaymentData] = React.useState();
+  const [outstanding, setOutstanding] = useState(true);
   
-  const sGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
-  const [familyData,setFamilyData]=React.useState();
+  console.log("Outstanding is: ", outstanding);
 
-  const makePayment = (sGBID,relation)=> {
-
-    let obj={
-      sGBID:sGBID,
-      title:'Chatrel for Family',
-      relation:relation+"'s"
-
-    }
+  let history = useHistory();
+  let dispatch = useDispatch();
+  
+  const makePayment = (obj, data, outstanding)=> {
+    console.log("Inside Make payment method for " , obj, data)
     dispatch(storeCurrentGBDetails(obj));
-    history.push('/PaymentPage');
+    history.push('/PaymentPage', {pymtData: data, outstanding});
   }
 
   useEffect(() => {
-    //setPaymentData(payObj);
-    axios.get(`/ChatrelPayment/GetFamilyDetails/?sGBID=`+sGBID)
-      .then(resp => {
-        if (resp.status === 200) {
-          setFamilyData(resp.data);
-         
-        }
-        
-      })
-      .catch(error => {
-        if (error.response) {
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
-        } else if (error.request) {
-          console.warn(error.request);
-        } else {
-          console.error('Error', error.message);
-        }
-        console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
-     }, []);
-  return (
-    <>
-    <p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>Pay for Family Members</p>
-    { familyData &&
-      <Card  style={{  padding: 50 }} >
-      <br />
-        <p style={{backgroundColor: "lightblue"}}>Family Member List</p>
-        <TableContainer component={Paper}>
-          <Table className={classes.table} size="small" aria-label="a dense table">
-            <TableHead>
-              <TableRow>
-                
-                <TableCell align="left" style={{width: "10%"}}>Name</TableCell>
-                <TableCell align="center" style={{width: "10%"}}>Relation</TableCell>
-                <TableCell align="center" style={{width: "10%"}}>GreenBook ID</TableCell>
-                <TableCell align="right" style={{width: "10%"}}>Age</TableCell>
-                <TableCell align="center" style={{width: "10%"}}>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {familyData.map((row) => (
-                <TableRow key={row.name}>
+    axios.get(`http://localhost:52013/api/ChatrelPayment/GetFamilyDetails/?sGBID=`+paidByGBID)
+    .then(resp => {
+      if (resp.status === 200) {
+        setFamilyData(resp.data);
+  
+      }
+    })
+    .catch(error => {
+      console.log(error.config);
+      console.log(error.message);
+  
+    })
+  
+  }, []);
+  
+  return(
+<>
+<p style={{backgroundColor: "lightblue"}}>Family Member List for {sGBID}</p>
+           <TableContainer component={Paper}>
+      <Table className={classes.table} size="small" aria-label="a dense table">
+        <TableHead>
+          <TableRow>
+            
+            <TableCell align="left" style={{width: "10%"}}>Name</TableCell>
+            <TableCell align="center" style={{width: "10%"}}>Relation</TableCell>
+            <TableCell align="center" style={{width: "10%"}}>GreenBook ID</TableCell>
+            <TableCell align="center" style={{width: "10%"}}>Age</TableCell>
+            <TableCell align="right" style={{width: "10%"}}>Pending</TableCell>
+            <TableCell align="center" style={{width: "10%"}}>Action</TableCell>
+          </TableRow>
+        </TableHead>
+        {familyData && <TableBody>
+          {familyData.map((row) => (
+            <TableRow key={row.name}>
                   <TableCell component="th" scope="row">
                     {row.sName}
                   </TableCell>
                   <TableCell align="center">{row.sRelation}</TableCell>
                   <TableCell align="center">{row.sGBIDRelation}</TableCell>
-                  <TableCell align="right">{row.nAge}</TableCell>
+                  <TableCell align="center">{row.nAge}</TableCell>
+                  <TableCell align="right">{row.dPending && row.dPending.chatrelPayment.nChatrelTotalAmount}</TableCell>
+                  {row.sGBIDRelation == null && 
+                  <TableCell align="center"><Button disabled variant="contained" color="primary" >Pay</Button></TableCell>}
+                  {row.sGBIDRelation != null && 
+                  <TableCell align="center"><Button variant='contained' color="primary" onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' }, row.dPending, row.dPending.chatrelPayment.nChatrelTotalAmount)}}>Pay</Button>
+                    </TableCell>}
                   
-                  <TableCell align="center"><input type="button" onClick={()=>{makePayment(row.sGBIDRelation,row.sRelation)}} disabled={row.sGBIDRelation == null} value="Make Payment"/></TableCell>
-                  
-                  
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-    </Card>}
-    </>
-  );
+            </TableRow>
+          ))}
+        </TableBody>}
+      </Table>
+    </TableContainer>
+</>
+);
+
 }
