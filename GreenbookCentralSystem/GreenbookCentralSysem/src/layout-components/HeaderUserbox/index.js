@@ -14,6 +14,13 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAuthDetails } from "../../actions/userAuthenticateAction";
 import { withStyles } from '@material-ui/core/styles';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 const StyledBadge = withStyles({
   badge: {
@@ -48,6 +55,16 @@ const HeaderUserbox = () => {
   let history = useHistory();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openLogoutConfirmationDialog, setOpenLogoutConfirmationDialog] = useState(false);
+
+  const handleLogoutConfirmationClose = () => {
+    setOpenLogoutConfirmationDialog(false);
+    setAnchorEl(null);
+  };
+
+  const handleLogoutConfirmationOpen = () => {
+    setOpenLogoutConfirmationDialog(true);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -61,7 +78,7 @@ const HeaderUserbox = () => {
     setAnchorEl(null);
     dispatch(removeAuthDetails());
     history.push('/Login');
-  }
+  };
 
   const handleChangePasswordClose = () => {
     setAnchorEl(null);
@@ -95,38 +112,72 @@ const HeaderUserbox = () => {
         <Typography color="textPrimary">Breadcrumb</Typography>
       </Breadcrumbs>*/}
       {bRender && <div>
-      <ButtonGroup
-        variant="contained"
-        className="btn-second m-2"
-        color="primary"
-        aria-label="split button">
-        <Button className="btn-transition-none">Welcome, {oUserAuth.oUser.sFullname + " (" + oUserAuth.oUserRights.sUserRightsName + ")"}</Button>
-        <Button
-          className="btn-transition-none px-2"
+        <ButtonGroup
+          variant="contained"
+          className="btn-second m-2"
           color="primary"
-          size="small"
-          aria-haspopup="true"
-          onClick={handleClick}>
-          <ArrowDropDownIcon />
-        </Button>
-      </ButtonGroup>
-      <Menu
-        id="simple-menu2"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        classes={{ list: 'p-0' }}>
-        <div className="p-3">
-          <MenuItem className="pr-5 px-3 text-dark" onClick={handleChangePasswordClose}>
-            Change Password
+          aria-label="split button">
+          <Button className="btn-transition-none">Welcome, {oUserAuth.oUser.sFullname + " (" + oUserAuth.oUserRights.sUserRightsName + ")"}</Button>
+          <Button
+            className="btn-transition-none px-2"
+            color="primary"
+            size="small"
+            aria-haspopup="true"
+            onClick={handleClick}>
+            <ArrowDropDownIcon />
+          </Button>
+        </ButtonGroup>
+        <Menu
+          id="simple-menu2"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          classes={{ list: 'p-0' }}>
+          <div className="p-3">
+            <MenuItem className="pr-5 px-3 text-dark" onClick={handleChangePasswordClose}>
+              Change Password
             </MenuItem>
-          <MenuItem className="pr-5 px-3 text-danger" onClick={logUserOut}>
-            Logout
+            <MenuItem className="pr-5 px-3 text-danger" onClick={handleLogoutConfirmationOpen}>
+              Logout
             </MenuItem>
-        </div>
-      </Menu>
+          </div>
+        </Menu>
       </div>}
+      <Dialog
+        open={openLogoutConfirmationDialog}
+        onClose={handleLogoutConfirmationClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Logout ?</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to Logout ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            onClick={handleLogoutConfirmationClose}
+            color="primary"
+            startIcon={<CancelIcon />}
+            size={"small"}
+          >
+            No
+          </Button>
+          <Button
+            size={"small"}
+            color={"primary"}
+            variant="contained"
+            onClick={logUserOut}
+            autoFocus
+            startIcon={<ExitToAppIcon />}
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
