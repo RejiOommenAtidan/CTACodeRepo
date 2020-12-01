@@ -10,8 +10,6 @@ import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import AddBox from '@material-ui/icons/AddBox';
-import Search from '@material-ui/icons/Search';
 import Moment from 'moment';
 import MaterialTable from 'material-table';
 import IconButton from '@material-ui/core/IconButton';
@@ -22,7 +20,6 @@ import { AddDialog, EditDialog } from './dialog';
 import { ViewDialog } from '../../search/dialog';
 import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
 import MyComp from '../../common/filtercomponent';
-const tableIcons = oTableIcons;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,7 +66,6 @@ const useStyles = makeStyles((theme) => ({
       main: '#11cb5f',
     },
   }
-
 }));
 
 export default function EnhancedTable() {
@@ -97,8 +93,6 @@ export default function EnhancedTable() {
   const [issueAction, setIssueAction] = React.useState(0);
   const [returnDate, setReturnDate] = React.useState('');
   const [bookFullObj, setBookFullObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
   const [emailInObj, setEmailInObj] = useState({});
   const [filtering, setFiltering] = React.useState(false);
@@ -107,11 +101,11 @@ export default function EnhancedTable() {
 
 
   //View GB
-const [viewModal, setViewModal] = useState(false);
+  const [viewModal, setViewModal] = useState(false);
 
-// For Custom Filter
+  // For Custom Filter
 
-const [myarray, setMyArray] = useState([]);
+  const [myarray, setMyArray] = useState([]);
   // const [myElement, setMyElement] = useState(null);
   // const [myValue, setMyValue] = useState({});
   const [currId, setCurrId] = useState('');
@@ -121,68 +115,63 @@ const [myarray, setMyArray] = useState([]);
 
   const buildArray = () => {
     let tmp = []
-    if(columns){
-      columns.forEach(col => tmp.push({id: col.field, val: ''}));
+    if (columns) {
+      columns.forEach(col => tmp.push({ id: col.field, val: '' }));
     }
-    
     setMyArray(tmp);
-  }
-
+  };
 
   const updateArray = (newObj) => {
     const newArray = myarray.map(d => {
-      if(d.id === newObj.id){
+      if (d.id === newObj.id) {
         return newObj;
       }
-      else{
+      else {
         return d;
       }
     });
     setMyArray(newArray);
-  }
+  };
 
   const changeHandler = (e) => {
-    updateArray({id: e.target.id, val: e.target.value});
+    updateArray({ id: e.target.id, val: e.target.value });
     //searchColumn(e.target.value, e.target);
     setSearching(true);
     //setMyElement(e.target);
     setCurrId(e.target.id);
     //setVal(e.target.value);
-  }
+  };
 
+  const handleViewClickClose = () => {
+    setViewModal(false);
+  };
 
-const handleViewClickClose = () => {
+  const viewGb = (GBID) => {
+    console.log(GBID)
+    setGbId(GBID);
+    setViewModal(true);
+  };
+  const openRelationGB = (newsGBID) => {
+    handleViewClickClose();
+    setTimeout(() => viewGb(newsGBID), 0);
+  };
 
-  setViewModal(false);
-};
-
-const viewGb = (GBID) => {
-  console.log(GBID)
-  setGbId(GBID);
-  setViewModal(true);
-}
-const openRelationGB = (newsGBID) => {
-  handleViewClickClose();
-  setTimeout(() => viewGb(newsGBID), 0);
-} 
-
-//Alert
+  //Alert
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const alertObj = {
     alertMessage: alertMessage,
     alertType: alertType
-  }
+  };
   const [snackbar, setSnackbar] = React.useState(false);
   const snackbarOpen = () => {
     setSnackbar(true);
-  }
+  };
   const snackbarClose = () => {
     setSnackbar(false);
   };
 
   const handleEmailClickClose = () => {
-
     setEmailModal(false);
   };
 
@@ -196,7 +185,6 @@ const openRelationGB = (newsGBID) => {
     setAddModal(false);
   };
 
-
   // Filter functions
   //const searchColumn = () => console.log("Hello from searchColumn function.");
 
@@ -206,197 +194,263 @@ const openRelationGB = (newsGBID) => {
       field: "madeb.id",
       title: "Sr No.",
       hidden: true,
-      cellStyle: {
-        padding: '5px'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.nFormNumber",
       title: "Form Number",
       filterPlaceholder: "Search...",
-      cellStyle: {
-        padding: '5px',
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-      filterComponent: () => 
-                        <MyComp 
-                          name="Form Number" 
-                          field="madeb.nFormNumber" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"nFormNumber"}
-                        />
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          name="Form Number"
+          field="madeb.nFormNumber"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"nFormNumber"}
+        />
     },
     {
       field: "madeb.dtReceived",
       title: "Received Date",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'}, 
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-
+        textAlign: "center",
+        padding: '5px'
       },
       render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined,
-
-      filterComponent: () => 
-                        <MyComp 
-                          name="Received Date" 
-                          field="madeb.dtReceived" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"dtReceived"}
-                        />
+      filterComponent: () =>
+        <MyComp
+          name="Received Date"
+          field="madeb.dtReceived"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"dtReceived"}
+        />
     },
     {
       field: "sAuthRegion",
       title: "Authority",
-
-      cellStyle: {
-        padding: '5px',
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-      filterComponent: () => 
-                        <MyComp 
-                          name="Authority" 
-                          field="sAuthRegion" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"sAuthRegion"}
-                        />
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          name="Authority"
+          field="sAuthRegion"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"sAuthRegion"}
+        />
     },
     {
       field: "madeb.sName",
       title: "Name",
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-      filterComponent: () => 
-                        <MyComp 
-                          name="Name" 
-                          field="madeb.sName" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"madeb.sName"}
-                        />
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          name="Name"
+          field="madeb.sName"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.sName"}
+        />
     },
 
     {
-     field: "madeb.sGBID",
-     render:  rowData =>rowData['madeb']['sGBID']? <Button className="m-2 btn-transparent btn-link btn-link-first" onClick={() => { viewGb(rowData['madeb']['sGBID'])}}><span>{rowData['madeb']['sGBID']}</span></Button>:'', 
-     title: "GB Id",
-     cellStyle: {
-        padding: '5px',
+      field: "madeb.sGBID",
+      render: rowData => rowData['madeb']['sGBID'] ? <Button className="m-2 btn-transparent btn-link btn-link-first" size={"small"} onClick={() => { viewGb(rowData['madeb']['sGBID']) }}><span>{rowData['madeb']['sGBID']}</span></Button> : '',
+      title: "GB Id",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-      filterComponent: () => 
-                        <MyComp 
-                          field="madeb.sGBID"   
-                          name="GB Id" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"madeb.sGBID"}
-                        />
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          field="madeb.sGBID"
+          name="GB Id"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.sGBID"}
+        />
     },
 
     {
       field: "madeb.sFathersName",
       title: "Father's Name",
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-      filterComponent: () => 
-                        <MyComp 
-                          field="madeb.sFathersName"   
-                          name="Father's Name" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"madeb.sFathersName"}
-                        />
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          field="madeb.sFathersName"
+          name="Father's Name"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.sFathersName"}
+        />
     },
     {
       field: "madeb.nSaneyFormNo",
       title: "Saney Form No",
-
-      cellStyle: {
-        padding: '5px',
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-      filterComponent: () => 
-                        <MyComp 
-                          field="madeb.nSaneyFormNo"   
-                          name="Saney Form No" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"madeb.nSaneyFormNo"}
-                        />
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          field="madeb.nSaneyFormNo"
+          name="Saney Form No"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.nSaneyFormNo"}
+        />
     },
     {
       field: "madeb.nCurrentGBSno",
       title: "Current GB SNo.",
-
-      cellStyle: {
-        padding: '5px',
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-      filterComponent: () => 
-                        <MyComp 
-                          field="madeb.nCurrentGBSno"   
-                          name="Current GB SNo." 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"madeb.nCurrentGBSno"}
-                        />
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          field="madeb.nCurrentGBSno"
+          name="Current GB SNo."
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.nCurrentGBSno"}
+        />
     },
     {
       field: "madeb.nPreviousGBSno",
       title: "Previous GB SNo",
-
-      cellStyle: {
-        padding: '5px',
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-      filterComponent: () => 
-                        <MyComp 
-                          field="madeb.nPreviousGBSno"   
-                          name="Previous GB SNo" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"madeb.nPreviousGBSno"}
-                        />
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          field="madeb.nPreviousGBSno"
+          name="Previous GB SNo"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.nPreviousGBSno"}
+        />
     },
     {
       field: 'Verified By',
       title: 'Verified By',
-      sort: false,
+      sorting: false,
       export: true,
       filtering: false,
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: 'Re-Verified By',
       title: 'Re-Verified By',
-      sort: false,
+      sorting: false,
       export: true,
       filtering: false,
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
 
     {
@@ -404,121 +458,148 @@ const openRelationGB = (newsGBID) => {
       title: "Issue Action Date",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
-      cellStyle: {
-        padding: '5px',
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-      filterComponent: () => 
-                        <MyComp 
-                          field="madeb.dtIssueAction"   
-                          name="Issue Action Date" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"madeb.dtIssueAction"}
-                        />,
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          field="madeb.dtIssueAction"
+          name="Issue Action Date"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.dtIssueAction"}
+        />,
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
     },
     {
       field: "sTypeIssued",
       title: "Issue Action",
-
-      cellStyle: {
-        padding: '5px',
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-      filterComponent: () => 
-                        <MyComp 
-                          field="sTypeIssued"   
-                          name="Issue Action" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"sTypeIssued"}
-                        />
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          field="sTypeIssued"
+          name="Issue Action"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"sTypeIssued"}
+        />
     },
     {
       field: "sMadebStatus",
       title: "Status",
-
-      cellStyle: {
-        padding: '5px',
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-      filterComponent: () => 
-                        <MyComp 
-                          field="sMadebStatus"   
-                          name="Status" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"sMadebStatus"}
-                        />
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          field="sMadebStatus"
+          name="Status"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"sMadebStatus"}
+        />
     },
-    
+
     {
       field: "madeb.sMadebStatusRemark",
       title: "Status Remark",
-
-      cellStyle: {
-        padding: '5px',
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-      filterComponent: () => 
-                        <MyComp 
-                          field="madeb.sMadebStatusRemark"   
-                          name="Status Remark" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"madeb.sMadebStatusRemark"}
-                        />
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          field="madeb.sMadebStatusRemark"
+          name="Status Remark"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.sMadebStatusRemark"}
+        />
     },
     {
       field: "madeb.dtReject",
       title: "Reject Date",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-
+        textAlign: "center",
+        padding: '5px'
       },
       render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined,
-      filterComponent: () => 
-                        <MyComp 
-                          field="madeb.dtReject"   
-                          name="Reject Date" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"madeb.dtReject"}
-                        />
+      filterComponent: () =>
+        <MyComp
+          field="madeb.dtReject"
+          name="Reject Date"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.dtReject"}
+        />
     },
     {
       field: "madeb.dtReturnEmail",
       title: "Return Date",
       //type: 'date',
       //dateSetting: {locale: 'en-IN'},
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-
+        textAlign: "center",
+        padding: '5px'
       },
       render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : undefined,
-      filterComponent: () => 
-                        <MyComp 
-                          field="madeb.dtReturnEmail"   
-                          name="Return Date" 
-                          changeHandler={changeHandler}
-                          myarray={myarray}
-                          updateArray={updateArray}
-                          currId={currId}
-                          key={"madeb.dtReturnEmail"}
-                        />
+      filterComponent: () =>
+        <MyComp
+          field="madeb.dtReturnEmail"
+          name="Return Date"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.dtReturnEmail"}
+        />
     },
     {
       field: "email",
@@ -531,17 +612,15 @@ const openRelationGB = (newsGBID) => {
       >
         <EmailIcon />
       </IconButton>,
-
       headerStyle: {
-        padding: '0px',
-        width: '1%',
-        textAlign: 'center'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        width: '1%',
-        textAlign: 'center'
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "edit",
@@ -549,46 +628,51 @@ const openRelationGB = (newsGBID) => {
       sorting: false,
       export: false,
       filtering: false,
-      render: rowData =>  <>{rowData.madeb.nIssuedOrNotID==2 && <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => {  editClick(rowData) }} disabled style={{padding:'0px'}}
-    >
-      <EditOutlinedIcon/>
-    </IconButton>}
-    {rowData.madeb.nIssuedOrNotID!=2 && <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => {  editClick(rowData) }}  style={{padding:'0px'}}
-    >
-      <EditOutlinedIcon/>
-    </IconButton>}
-    </>,
-      cellStyle: {
-        padding: '5px'
+      render: rowData => <>{rowData.madeb.nIssuedOrNotID == 2 && <IconButton color="primary" aria-label="upload picture" component="span"
+        onClick={() => { editClick(rowData) }} disabled style={{ padding: '0px' }}
+      >
+        <EditOutlinedIcon />
+      </IconButton>}
+        {rowData.madeb.nIssuedOrNotID != 2 && <IconButton color="primary" aria-label="upload picture" component="span"
+          onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+        >
+          <EditOutlinedIcon />
+        </IconButton>}
+      </>,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     }
-
   ];
 
   useEffect(() => {
     console.log("Searching useEffect. Searching is", searching);
-    
-    if(searching){
+
+    if (searching) {
       let searchObj = {};
       myarray.map(item => {
-        if (item.id === "madeb.id" || item.id === 'Re-Verified By' || item.id === 'Verified By' || item.id === 'edit' || item.id === 'email'  ){
+        if (item.id === "madeb.id" || item.id === 'Re-Verified By' || item.id === 'Verified By' || item.id === 'edit' || item.id === 'email') {
           return;
           console.log("Changed id to", item.val);
         };
 
-        if(item.id === 'madeb.nCurrentGBSno' || item.id === 'madeb.nFormNumber' || item.id === 'madeb.nPreviousGBSno' || item.id === 'madeb.nSaneyFormNo' ) {
-          item.val = parseInt(item.val) ||  null ;
+        if (item.id === 'madeb.nCurrentGBSno' || item.id === 'madeb.nFormNumber' || item.id === 'madeb.nPreviousGBSno' || item.id === 'madeb.nSaneyFormNo') {
+          item.val = parseInt(item.val) || null;
         }
         var id = item.id;
-        if(item.id.startsWith('madeb')){
+        if (item.id.startsWith('madeb')) {
           id = item.id.substring(6);
         }
-        searchObj = {...searchObj, [id]: item.val };
+        searchObj = { ...searchObj, [id]: item.val };
       });
-      console.log("Search Object: Inside useEffect" , searchObj);
-   
+      console.log("Search Object: Inside useEffect", searchObj);
+
       axios.post(`/MadebAuthRegionVM/ColumnSearchMadeb/madebType=5`, searchObj)
         .then(resp => {
           if (resp.status === 200) {
@@ -597,9 +681,9 @@ const openRelationGB = (newsGBID) => {
             setdataAPI([...resp.data]);
             setSearching(false);
             //setTimeout(() => ele.focus(), 2000);
-            
+
           }
-          if(resp.status === 204){
+          if (resp.status === 204) {
             console.log("Got  Empty data set");
             setdataAPI([...resp.data]);
             setSearching(false);
@@ -610,7 +694,7 @@ const openRelationGB = (newsGBID) => {
           //handleError(error, history);
         })
     }
-  },[myarray])
+  }, [myarray]);
 
   const emailClick = (tableRowArray) => {
 
@@ -626,7 +710,7 @@ const openRelationGB = (newsGBID) => {
     });
 
     setEmailModal(true);
-  }
+  };
 
   const editClick = (tableRowArray) => {
 
@@ -665,16 +749,14 @@ const openRelationGB = (newsGBID) => {
     });
     //console.log(tableRowArray);
     setEditModal(true);
-  }
+  };
 
   const editAPICall = (madeb) => {
-    console.log(madeb);
     madeb.dtReject = madeb.dtReject === "" ? null : madeb.dtReject;
     madeb.dtReceived = madeb.dtReceived === "" ? null : madeb.dtReceived;
     madeb.dtIssueAction = madeb.dtIssueAction === "" ? null : madeb.dtIssueAction;
     madeb.dtReturnEmail = madeb.dtReturnEmail === "" ? null : madeb.dtReturnEmail;
 
-    debugger
     axios.post(`Madeb/EditMadeb/Id=` + madeb.id, madeb)
       .then(resp => {
         if (resp.status === 200) {
@@ -704,13 +786,11 @@ const openRelationGB = (newsGBID) => {
       })
   };
 
-
   const selectDatafunction = () => {
     axios.get(`Madeb/GetNewEmptyMadeb`)
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
-
           // setdataAPI(resp.data)
         }
       })
@@ -731,8 +811,6 @@ const openRelationGB = (newsGBID) => {
       });
   }
   const addAPICall = (madeb) => {
-    console.log(madeb);
-    debugger
     axios.post(`Madeb/AddMadeb/`, madeb)
       .then(resp => {
         if (resp.status === 200) {
@@ -762,12 +840,10 @@ const openRelationGB = (newsGBID) => {
         setAlertType('error');
         snackbarOpen();
       })
-
   };
 
   const handleClose = () => {
     setDeleteModal(false);
-
   };
 
   useEffect(() => {
@@ -805,24 +881,22 @@ const openRelationGB = (newsGBID) => {
     <>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-         
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="Book Full Madeb"
-
             columns={columns}
             data={dataAPI}
             options={oOptions}
             actions={[
               {
-                icon: AddBox,
+                icon: oTableIcons.Add,
                 tooltip: 'Add Book Full Madeb',
                 isFreeAction: true,
                 onClick: () => setAddModal(true)
               },
               {
-                icon: Search,
+                icon: oTableIcons.Search,
                 tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
@@ -830,12 +904,12 @@ const openRelationGB = (newsGBID) => {
             ]}
           />
           {viewModal && <ViewDialog
-          viewModal={viewModal}
-          classes={classes}
-          handleViewClickClose={handleViewClickClose}
-          sGBID={gbId}
-          openRelationGB={openRelationGB}
-        />}
+            viewModal={viewModal}
+            classes={classes}
+            handleViewClickClose={handleViewClickClose}
+            sGBID={gbId}
+            openRelationGB={openRelationGB}
+          />}
           {addModal && <AddDialog
             addModal={addModal}
             selectData={selectData}
