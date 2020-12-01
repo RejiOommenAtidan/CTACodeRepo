@@ -406,6 +406,15 @@ export default function EnhancedTable() {
       export: true,
       filtering: false,
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: 'Re-Verified By',
@@ -414,6 +423,15 @@ export default function EnhancedTable() {
       export: true,
       filtering: false,
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     }
   ];
 

@@ -15,11 +15,7 @@ import { AddDialog, EditDialog } from './dialog';
 import { EmailDialog } from '../email';
 import { Alerts } from '../../alerts';
 import MaterialTable from 'material-table';
-import AddBox from '@material-ui/icons/AddBox';
-import Search from '@material-ui/icons/Search';
 import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
-
-const tableIcons = oTableIcons;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,7 +62,6 @@ const useStyles = makeStyles((theme) => ({
       main: '#11cb5f',
     },
   }
-
 }));
 
 export default function EnhancedTable() {
@@ -93,8 +88,6 @@ export default function EnhancedTable() {
   const [rejectDate, setRejectDate] = React.useState('');
   const [sarsoObj, setSarsoObj] = useState({});
   const [emailInObj, setEmailInObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
   const [isLoading, setisLoading] = React.useState(true);
 
@@ -127,12 +120,10 @@ export default function EnhancedTable() {
   const handleAddClickClose = () => {
     setAddModal(false);
   };
-
   const handleEmailClickOpen = () => {
     setEmailModal(true);
   };
   const handleEmailClickClose = () => {
-
     setEmailModal(false);
   };
 
@@ -141,128 +132,122 @@ export default function EnhancedTable() {
       field: "madeb.id",
       title: "Sr No.",
       hidden: true,
-      cellStyle: {
-        padding: '5px'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.nFormNumber",
       title: "Form No.",
       filterPlaceholder: 'Search..',
       headerStyle: {
-        padding: '0px',
-        width: '7%',
-        textAlign: 'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        // padding:'0px',
-        padding: '10px',
-        width: '7%',
-        textAlign: 'left'
-
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.dtReceived",
       title: "Received Date",
       render: rowData => Moment(rowData['madeb']['dtReceived']).format(sDateFormat),
       headerStyle: {
-        padding: '0px',
-        width: '7%',
-        textAlign: 'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        paddingLeft: '10px',
-        width: '9%',
-        textAlign: 'left'
-
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "sAuthRegion",
       title: "Authority",
       headerStyle: {
-        padding: '0px',
-        width: '7%',
-        textAlign: 'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        paddingLeft: '10px',
-        width: '7%',
-        textAlign: 'left'
-
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.sName",
       title: "Name",
       headerStyle: {
-        padding: '0px',
-        width: '15%',
-        textAlign: 'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        paddingLeft: '10px',
-        width: '15%',
-        textAlign: 'left'
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.sGBID",
       title: "GB ID",
       headerStyle: {
-        padding: '0px',
-        width: '7%',
-        textAlign: 'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        paddingLeft: '10px',
-        width: '7%',
-        textAlign: 'left'
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.sFathersName",
       title: "Father's Name",
       headerStyle: {
-        padding: '0px',
-        width: '15%',
-        textAlign: 'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        paddingLeft: '10px',
-        width: '15%',
-        textAlign: 'left'
-
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.nSaneyFormNo",
       title: "Saney Form No",
       hidden: false,
-      cellStyle: {
-        padding: '5px'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.sDocumentAttached",
       title: "Document Attached",
       headerStyle: {
-        padding: '0px',
-        width: '10%',
-        textAlign: 'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        paddingLeft: '10px',
-        width: '10%',
-        textAlign: 'left'
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.dtIssueAction",
@@ -270,34 +255,27 @@ export default function EnhancedTable() {
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : '',
       // render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
       headerStyle: {
-        padding: '0px',
-        width: '10%',
-        textAlign: 'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        paddingLeft: '10px',
-        width: '10%',
-        textAlign: 'left'
-
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "sTypeIssued",
       title: "Issue Action",
-
       headerStyle: {
-        padding: '0px',
-        width: '11%',
-        textAlign: 'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        paddingLeft: '10px',
-        width: '9%',
-        textAlign: 'left'
-
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.dtReturnEmail",
@@ -305,32 +283,28 @@ export default function EnhancedTable() {
       //render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
       render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : '',
       headerStyle: {
-        padding: '0px',
-        width: '12%',
-        textAlign: 'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        paddingLeft: '10px',
-        width: '12%',
-        textAlign: 'left'
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.dtReject",
       title: "Reject Date",
       render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : '',
       headerStyle: {
-        padding: '0px',
-        width: '8%',
-        textAlign: 'left'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        paddingLeft: '10px',
-        width: '8%',
-        textAlign: 'left'
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
 
     {
@@ -344,18 +318,15 @@ export default function EnhancedTable() {
       >
         <EmailIcon />
       </IconButton>,
-
       headerStyle: {
-        padding: '0px',
-        width: '1%',
-        textAlign: 'center'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        width: '1%',
-        textAlign: 'center'
-
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "edit",
@@ -363,54 +334,68 @@ export default function EnhancedTable() {
       sorting: false,
       export: false,
       filtering: false,
-      render: rowData => <>{rowData.madeb.nIssuedOrNotID==2 && <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => {  editClick(rowData) }} disabled style={{padding:'0px'}}
-    >
-      <EditOutlinedIcon/>
-    </IconButton>}
-    {rowData.madeb.nIssuedOrNotID!=2 && <IconButton color="primary" aria-label="upload picture" component="span"
-      onClick={() => {  editClick(rowData) }}  style={{padding:'0px'}}
-    >
-      <EditOutlinedIcon/>
-    </IconButton>}
-    </>,
+      render: rowData => <>{rowData.madeb.nIssuedOrNotID == 2 && <IconButton color="primary" aria-label="upload picture" component="span"
+        onClick={() => { editClick(rowData) }} disabled style={{ padding: '0px' }}
+      >
+        <EditOutlinedIcon />
+      </IconButton>}
+        {rowData.madeb.nIssuedOrNotID != 2 && <IconButton color="primary" aria-label="upload picture" component="span"
+          onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+        >
+          <EditOutlinedIcon />
+        </IconButton>}
+      </>,
       headerStyle: {
-        padding: '0px',
-        width: '1%',
-        textAlign: 'center'
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
       cellStyle: {
-        padding: '0px',
-        width: '1%',
-        textAlign: 'center'
-
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: 'Verified By',
       title: 'Verified By',
-      sort: false,
+      sorting: false,
       export: true,
       filtering: false,
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: 'Re-Verified By',
       title: 'Re-Verified By',
-      sort: false,
+      sorting: false,
       export: true,
       filtering: false,
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     }
 
   ];
 
   const emailClick = (tableRowArray) => {
-
     setId(tableRowArray['madeb']['id']);
     setFormNumber(tableRowArray['madeb']['nFormNumber']);
     setName(tableRowArray['madeb']['sName']);
-
     setEmailInObj({
       id: tableRowArray['madeb']['id'],
       nFormNumber: tableRowArray['madeb']['nFormNumber'],
@@ -555,7 +540,6 @@ export default function EnhancedTable() {
       });
   }
   const addAPICall = (madeb) => {
-
     axios.post(`/Madeb/AddMadeb/`, madeb)
       .then(resp => {
         if (resp.status === 200) {
@@ -615,7 +599,6 @@ export default function EnhancedTable() {
 
   const handleClose = () => {
     setDeleteModal(false);
-
   };
 
   useEffect(() => {
@@ -628,9 +611,6 @@ export default function EnhancedTable() {
           //   ...singleMadeb,
           //   singleMaded.dtReceived
           // });
-
-          
-          
           setdataAPI(resp.data);
           selectDatafunction();
           setisLoading(false);
@@ -654,27 +634,25 @@ export default function EnhancedTable() {
   }, []);
 
   return (
-
     <>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-        
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="Sarso Madeb"
             columns={columns}
             data={dataAPI}
             options={oOptions}
             actions={[
               {
-                icon: AddBox,
+                icon: oTableIcons.Add,
                 tooltip: 'Add Sarso Madeb',
                 isFreeAction: true,
                 onClick: () => setAddModal(true)
               },
               {
-                icon: Search,
+                icon: oTableIcons.Search,
                 tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
