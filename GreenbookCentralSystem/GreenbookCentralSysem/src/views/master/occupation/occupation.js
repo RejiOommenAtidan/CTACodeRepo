@@ -14,8 +14,6 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
 
-const tableIcons = oTableIcons;
-
 const useStyles = makeStyles(() => ({
   /*root: {
     backgroundColor: theme.palette.background.dark,
@@ -66,7 +64,6 @@ const useStyles = makeStyles(() => ({
 
 export default function EnhancedTable() {
   const classes = useStyles();
-
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -76,8 +73,6 @@ export default function EnhancedTable() {
   const [occupationDesc, setOccupationDesc] = React.useState('');
   const [occupationDescTibetan, setOccupationDescTibetan] = React.useState('');
   const [occupationObj, setOccupationObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
 
   const handleEditClickOpen = () => {
@@ -102,32 +97,44 @@ export default function EnhancedTable() {
       field: "id",
       title: "Sr No.",
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true
     },
     {
       field: "sOccupationDesc",
       title: "Occupation",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
       field: "sOccupationDescTibetan",
       title: "Occupation (in Tibetan)",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
-      align: "center",
       field: "edit",
       title: "Edit",
       filtering: false,
@@ -138,11 +145,15 @@ export default function EnhancedTable() {
       >
         <EditOutlinedIcon />
       </IconButton>,
-      cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
 
   ];
@@ -157,10 +168,9 @@ export default function EnhancedTable() {
       occupationDesc: tableRowArray["sOccupationDesc"],
       occupationDescTibetan: tableRowArray["sOccupationDescTibetan"]
     });
-  }
+  };
 
   const editAPICall = (occupationObj) => {
-
     axios.post(`/Occupation/EditOccupation/occupationId=` + occupationPK, occupationObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -174,16 +184,17 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              handleError(error,history);
+              handleError(error, history);
             });
 
         }
       })
       .catch(error => {
-        handleError(error,history);
+        handleError(error, history);
       });
 
   };
+
   const addAPICall = (occupationObj) => {
     axios.post(`/Occupation/AddOccupation`, occupationObj)
       .then(resp => {
@@ -197,12 +208,12 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              handleError(error,history);
+              handleError(error, history);
             });
         }
       })
       .catch(error => {
-        handleError(error,history);
+        handleError(error, history);
       });
   };
 
@@ -235,12 +246,12 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              handleError(error,history);
+              handleError(error, history);
             });
         }
       })
       .catch(error => {
-        handleError(error,history);
+        handleError(error, history);
       });
   };
 
@@ -252,7 +263,7 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
-        handleError(error,history);
+        handleError(error, history);
       });
 
   }, []);
@@ -275,7 +286,7 @@ export default function EnhancedTable() {
         <Grid item xs={12}>
           <MaterialTable
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="Occupation"
             data={dataAPI}
             columns={columns}

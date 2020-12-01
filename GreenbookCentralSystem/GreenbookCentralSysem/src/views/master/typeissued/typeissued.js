@@ -14,8 +14,6 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
 
-const tableIcons = oTableIcons;
-
 const useStyles = makeStyles(() => ({
 }));
 
@@ -52,20 +50,29 @@ export default function TypeIssued() {
       field: "id",
       title: "Sr No.",
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true
     },
     {
       field: "sTypeIssued",
       title: "Type Issued",
-      cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
       // customFilterAndSearch: (term, rowData)=>{
       //   console.log(term);
       //   //console.log(field);
@@ -73,7 +80,6 @@ export default function TypeIssued() {
       // }
     },
     {
-      align: "center",
       field: 'edit',
       title: 'Edit',
       filtering: false,
@@ -84,10 +90,14 @@ export default function TypeIssued() {
       >
         <EditOutlinedIcon />
       </IconButton>,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
+        textAlign: "center",
+        padding: '5px'
       }
     },
   ];
@@ -100,7 +110,7 @@ export default function TypeIssued() {
       id: tableRowArray["id"],
       typeIssued: tableRowArray["sTypeIssued"]
     });
-  }
+  };
 
   const editAPICall = (typeIssuedObj) => {
     setisLoading(true);
@@ -131,6 +141,7 @@ export default function TypeIssued() {
         //console.log(release); => udefined
       });
   };
+
   const addAPICall = (typeIssuedObj) => {
     setisLoading(true);
     axios.post(`/TypeIssued/AddTypeIssued/`, typeIssuedObj)
@@ -194,7 +205,7 @@ export default function TypeIssued() {
           <MaterialTable
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="Type Issued"
             columns={columns}
             data={dataAPI}

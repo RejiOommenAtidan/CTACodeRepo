@@ -15,8 +15,6 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
 
-const tableIcons = oTableIcons;
-
 const useStyles = makeStyles(() => ({
   //   root: {
   //     backgroundColor: theme.palette.background.dark,
@@ -78,8 +76,6 @@ export default function EnhancedTable() {
   const [authRegionPK, setAuthRegionPK] = React.useState(0);
   const [authRegionObj, setAuthRegionObj] = useState({});
   const [countryName, setCountryName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
@@ -104,9 +100,14 @@ export default function EnhancedTable() {
       field: "id",
       title: "Sr No.",
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true
     },
@@ -114,53 +115,75 @@ export default function EnhancedTable() {
       field: "sCountryID",
       title: "Short Name",
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
       field: "sCountry",
       title: "Country",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
       field: "sAuthRegion",
       title: "Authority Region",
-      cellStyle: {
-        padding: '5px',
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "sCurrencyCode",
       title: "Currency",
-      cellStyle: {
-        padding: '5px',
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
-      align: "center",
       field: "edit",
       title: "Edit",
       filtering: false,
+      sorting: false,
       export: false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
         onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
       >
         <EditOutlinedIcon />
       </IconButton>,
-      cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
 
   ];
@@ -176,7 +199,7 @@ export default function EnhancedTable() {
       authRegion: tableRowArray["sAuthRegion"],
       sCurrencyCode: tableRowArray["sCurrencyCode"]
     });
-  }
+  };
 
   const editAPICall = (authRegionObj) => {
     // let CountryID = countryPK;
@@ -209,8 +232,8 @@ export default function EnhancedTable() {
         console.log(error.config);
       });
   };
-  const addAPICall = (authRegionObj) => {
 
+  const addAPICall = (authRegionObj) => {
     // let countryToAdd = {
     //   sCountryID: countryID,
     //   sCountry: countryName,
@@ -253,7 +276,6 @@ export default function EnhancedTable() {
 
   const handleClose = () => {
     setDeleteModal(false);
-
   };
 
   const deleteAPICall = () => {
@@ -287,36 +309,30 @@ export default function EnhancedTable() {
         console.log(error.message);
         console.log(error.config);
       });
-
   };
 
   useEffect(() => {
     axios.get(`/AuthRegionCountry/GetAllAuthRegionsCountryName`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setdataAPI(resp.data)
           axios.get(`/Country/GetCountries`)
-          .then(resp => {
-            if (resp.status === 200) {
-              console.log(resp.data);
-              setCountryList(resp.data)
-              setLoading(false);
-            }
-          })
-          .catch(error => {
-            console.log(error.config);
-            console.log(error.message);
-           });
+            .then(resp => {
+              if (resp.status === 200) {
+                setCountryList(resp.data)
+                setLoading(false);
+              }
+            })
+            .catch(error => {
+              console.log(error.config);
+              console.log(error.message);
+            });
         }
       })
       .catch(error => {
         console.log(error.message);
         console.log(error.config);
       });
-
-    
-
   }, []);
 
 
@@ -336,11 +352,10 @@ export default function EnhancedTable() {
             </Typography> */}
       <Grid container className={classes.box}>
         <Grid item xs={12}>
-
           <MaterialTable
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={loading}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="Authority Regions"
             data={dataAPI}
             columns={columns}
@@ -360,7 +375,6 @@ export default function EnhancedTable() {
               }
             ]}
           />
-
         </Grid>
       </Grid>
       {addModal && <AddDialog

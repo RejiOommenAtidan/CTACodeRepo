@@ -13,8 +13,6 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
 
-const tableIcons = oTableIcons;
-
 const useStyles = makeStyles(() => ({
   /*root: {
     backgroundColor: theme.palette.background.dark,
@@ -96,9 +94,14 @@ export default function UserRights() {
       field: "id",
       title: "Sr No.",
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true
     },
@@ -106,14 +109,17 @@ export default function UserRights() {
     {
       field: "sUserRightsName",
       title: "User Rights",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
-      align: "center",
       field: "edit",
       title: "Edit",
       filtering: false,
@@ -124,13 +130,16 @@ export default function UserRights() {
       >
         <EditOutlinedIcon />
       </IconButton>,
-      cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
-
   ];
 
   const editClick = (tableRowArray) => {
@@ -141,7 +150,7 @@ export default function UserRights() {
       id: tableRowArray["id"],
       userRights: tableRowArray["sUserRightsName"]
     });
-  }
+  };
 
   const editAPICall = (userRightsObj) => {
     axios.post(`/UserRights/EditUserRights/ID=` + userRightsPK, userRightsObj/*UserRightsToUpdate*/)
@@ -228,7 +237,7 @@ export default function UserRights() {
           <MaterialTable
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="User Rights"
             data={dataAPI}
             columns={columns}

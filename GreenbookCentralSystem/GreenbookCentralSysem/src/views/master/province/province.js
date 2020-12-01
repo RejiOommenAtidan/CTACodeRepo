@@ -14,8 +14,6 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
 
-const tableIcons = oTableIcons;
-
 const useStyles = makeStyles(() => ({
   /*root: {
     backgroundColor: theme.palette.background.dark,
@@ -74,8 +72,6 @@ export default function EnhancedTable() {
   const [province, setProvince] = React.useState('');
   const [provincePK, setProvincePK] = React.useState(0);
   const [provinceObj, setProvinceObj] = useState({});
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
   let history = useHistory();
   const [filtering, setFiltering] = React.useState(false);
@@ -99,24 +95,32 @@ export default function EnhancedTable() {
       field: "id",
       title: "Sr No.",
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true
     },
     {
       field: "sProvince",
       title: "Province",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
 
     {
-      align: "center",
       field: "edit",
       title: "Edit",
       filtering: false,
@@ -127,26 +131,27 @@ export default function EnhancedTable() {
       >
         <EditOutlinedIcon />
       </IconButton>,
-      cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
-
   ];
 
   const editClick = (tableRowArray) => {
     setProvincePK(tableRowArray["id"]);
     setProvince(tableRowArray["sProvince"]);
-
     setEditModal(true);
     setProvinceObj({
       id: tableRowArray["id"],
       province: tableRowArray["sProvince"]
-
     });
-  }
+  };
 
   const editAPICall = (provinceObj) => {
     // let ProvinceID = provincePK;
@@ -168,15 +173,16 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              handleError(error,history);
+              handleError(error, history);
             });
 
         }
       })
       .catch(error => {
-        handleError(error,history);
+        handleError(error, history);
       });
   };
+
   const addAPICall = (provinceObj) => {
     axios.post(`/Province/AddProvince/`, provinceObj)
       .then(resp => {
@@ -189,12 +195,12 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              handleError(error,history);
+              handleError(error, history);
             });
         }
       })
       .catch(error => {
-        handleError(error,history);
+        handleError(error, history);
       });
   };
 
@@ -225,12 +231,12 @@ export default function EnhancedTable() {
               }
             })
             .catch(error => {
-              handleError(error,history);
+              handleError(error, history);
             });
         }
       })
       .catch(error => {
-        handleError(error,history);
+        handleError(error, history);
       });
   };
 
@@ -242,7 +248,7 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
-        handleError(error,history);
+        handleError(error, history);
       });
   }, []);
 
@@ -264,7 +270,7 @@ export default function EnhancedTable() {
         <Grid item xs={12}>
           <MaterialTable
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="Province"
             data={dataAPI}
             columns={columns}

@@ -13,7 +13,6 @@ import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
-import FilterList from '@material-ui/icons/FilterList';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -21,10 +20,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import WarningIcon from '@material-ui/icons/Warning';
-
 import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
-
-const tableIcons = oTableIcons;
 
 const useStyles = makeStyles({
   root: {
@@ -122,6 +118,7 @@ export default function FeatureUserrights() {
     setuserightName("");
     setroleID(0);
   };
+
   const editAPICall = () => {
     // let myElement = mapping.map(element=>element.sFeature===tableRow["sFeature"]);
     // console.log(myElement);
@@ -177,23 +174,30 @@ export default function FeatureUserrights() {
             {
               field: "sFeature",
               title: "Feature",
+              headerStyle: {
+                textAlign: "center",
+                textAlignLast: "center",
+                verticalAlign: "middle"
+              },
               cellStyle: {
-                padding: '5px',
-                paddingLeft: '10px',
-                borderLeft: '0'
+                textAlign: "center",
+                padding: '5px'
               }
             }
           );
           roles.map((role) => {
             generatedColumns.push(
               {
-                align: 'center',
                 sorting: false,
                 title: role.sUserRightsName,
+                headerStyle: {
+                  textAlign: "center",
+                  textAlignLast: "center",
+                  verticalAlign: "middle"
+                },
                 cellStyle: {
-                  padding: '5px',
-                  paddingLeft: '10px',
-                  borderLeft: '0'
+                  textAlign: "center",
+                  padding: '5px'
                 },
                 render: rowData => <Checkbox
                   color="primary"
@@ -222,7 +226,6 @@ export default function FeatureUserrights() {
   }, []);
 
   return (
-
     <Container maxWidth="lg" disableGutters={true}><br />
       {/*<Typography variant="h4" gutterBottom>Feature Roles</Typography>*/}
       <Grid container className={classes.box}>
@@ -230,7 +233,7 @@ export default function FeatureUserrights() {
           <MaterialTable
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="Feature Roles"
             columns={columns}
             data={dataAPI}
@@ -246,14 +249,13 @@ export default function FeatureUserrights() {
           />
         </Grid>
       </Grid>
-
       <Dialog
         open={openDialog}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Toggle Mapping ?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Change Mapping ?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Are you sure to change this mapping ?

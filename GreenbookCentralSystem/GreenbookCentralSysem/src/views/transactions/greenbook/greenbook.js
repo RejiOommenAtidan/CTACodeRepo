@@ -9,13 +9,10 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import MaterialTable from 'material-table';
-import FilterList from '@material-ui/icons/FilterList';
 import handleError from '../../../auth/_helpers/handleError';
 import IconButton from '@material-ui/core/IconButton';
 import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
 import Moment from 'moment';
-
-const tableIcons = oTableIcons;
 
 const useStyles = makeStyles(() => ({
 }));
@@ -31,12 +28,16 @@ export default function GBList(props) {
 
   const columns = [
     {
-
       field: "sGBID",
-      title: "Greenbook ID",
+      title: "Green Book ID",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true,
       render: rowData => <Button size="small" color="primary"
@@ -47,21 +48,31 @@ export default function GBList(props) {
     },
     {
       title: "Full Name",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true,
-      render: rowData => (rowData["sFirstName"] === null ? "" : rowData["sFirstName"] )+ " " +( rowData["sMiddleName"] === null ? "" : rowData["sMiddleName"] )+ " " +( rowData["sLastName"] === null ? "" : rowData["sLastName"]),
+      render: rowData => (rowData["sFirstName"] === null ? "" : rowData["sFirstName"]) + " " + (rowData["sMiddleName"] === null ? "" : rowData["sMiddleName"]) + " " + (rowData["sLastName"] === null ? "" : rowData["sLastName"]),
     },
     {
       title: "Age",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true,
-      render: rowData => rowData["dtDOB"] === null ? "NA" : Moment().diff(rowData["dtDOB"],'years')
+      render: rowData => rowData["dtDOB"] === null ? "NA" : Moment().diff(rowData["dtDOB"], 'years')
     },
     {
       field: 'edit',
@@ -74,17 +85,21 @@ export default function GBList(props) {
       >
         <EditOutlinedIcon />
       </IconButton>,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
+        textAlign: "center",
+        padding: '5px'
       }
     }
   ];
 
   const editClick = (tableRowArray) => {
     history.push("/EditEntry/" + tableRowArray.id);
-  }
+  };
 
   useEffect(() => {
     axios.get(`/Greenbook/GetGreenbooks`)
@@ -117,8 +132,8 @@ export default function GBList(props) {
           <MaterialTable
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-            icons={tableIcons}
-            title="Greenbook"
+            icons={oTableIcons}
+            title="Green Book"
             columns={columns}
             data={dataAPI}
             options={oOptions}

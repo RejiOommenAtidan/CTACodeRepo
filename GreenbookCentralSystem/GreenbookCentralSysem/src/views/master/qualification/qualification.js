@@ -14,8 +14,6 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
 
-const tableIcons = oTableIcons;
-
 const useStyles = makeStyles(() => ({
   /*root: {
     backgroundColor: theme.palette.background.dark,
@@ -98,32 +96,44 @@ export default function Qualification() {
       field: "id",
       title: "Sr No.",
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true
     },
     {
       field: "sQualificationID",
       title: "Qualification ID",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
       field: "sQualification",
       title: "Qualification",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
-      align: "center",
       field: "edit",
       title: "Edit",
       filtering: false,
@@ -134,13 +144,16 @@ export default function Qualification() {
       >
         <EditOutlinedIcon />
       </IconButton>,
-      cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
-
   ];
 
   const editClick = (tableRowArray) => {
@@ -153,7 +166,7 @@ export default function Qualification() {
       qualificationId: tableRowArray["sQualificationID"],
       qualification: tableRowArray["sQualification"]
     });
-  }
+  };
 
   const editAPICall = (qualificationObj) => {
     axios.post(`/Qualification/EditQualification/ID=` + qualificationPK, qualificationObj/*QualificationToUpdate*/)
@@ -169,14 +182,15 @@ export default function Qualification() {
               }
             })
             .catch(error => {
-              handleError(error,history);
+              handleError(error, history);
             });
         }
       })
       .catch(error => {
-        handleError(error,history);
+        handleError(error, history);
       });
   };
+
   const addAPICall = (qualificationObj) => {
     axios.post(`/Qualification/AddQualification/`, qualificationObj)
       .then(resp => {
@@ -189,12 +203,12 @@ export default function Qualification() {
               }
             })
             .catch(error => {
-              handleError(error,history);
+              handleError(error, history);
             });
         }
       })
       .catch(error => {
-        handleError(error,history);
+        handleError(error, history);
       });
   };
 
@@ -217,7 +231,7 @@ export default function Qualification() {
         }
       })
       .catch(error => {
-        handleError(error,history);
+        handleError(error, history);
       });
   }, []);
 
@@ -239,7 +253,7 @@ export default function Qualification() {
         <Grid item xs={12}>
           <MaterialTable
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="Qualification"
             data={dataAPI}
             columns={columns}

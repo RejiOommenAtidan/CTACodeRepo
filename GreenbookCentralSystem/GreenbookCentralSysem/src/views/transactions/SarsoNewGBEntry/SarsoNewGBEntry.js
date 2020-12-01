@@ -15,8 +15,6 @@ import handleError from '../../../auth/_helpers/handleError';
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
 
-const tableIcons = oTableIcons;
-
 const useStyles = makeStyles({
   root: {
     height: '100%',
@@ -93,29 +91,42 @@ export default function SarsoNewGBEntry() {
     {
       field: "nGBId",
       title: "Greenbook ID",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true
     },
     {
       field: "nFormNo",
       title: "Form Number",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
       defaultSort: 'desc',
       field: "dtDate",
       title: "Date",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       },
       render: rowData => Moment(rowData.dtDate).format(sDateFormat)
     },
@@ -127,16 +138,20 @@ export default function SarsoNewGBEntry() {
       sorting: false,
       export: false,
       render: rowData =>
-        <Button onClick={() => { history.push('/NewEntry/' + rowData.nFormNo); }} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
+        <Button size={"small"} onClick={() => { history.push('/NewEntry/' + rowData.nFormNo); }} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
           <span className="btn-wrapper--icon">
 
             <AddIcon />
           </span>
         </Button>,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
+        textAlign: "center",
+        padding: '5px'
       }
     },
   ];
@@ -166,7 +181,7 @@ export default function SarsoNewGBEntry() {
           <MaterialTable
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="New Entry"
             columns={columns}
             data={dataAPI}

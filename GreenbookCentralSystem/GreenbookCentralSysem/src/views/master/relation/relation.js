@@ -13,8 +13,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
 
-const tableIcons = oTableIcons;
-
 const useStyles = makeStyles(() => ({
 }));
 
@@ -51,23 +49,31 @@ export default function Relation() {
       field: "id",
       title: "Sr No.",
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true
     },
     {
       field: "sRelation",
       title: "Relation",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
-      align:"center",
       field: 'edit',
       title: 'Edit',
       filtering: false,
@@ -78,12 +84,15 @@ export default function Relation() {
       >
         <EditOutlinedIcon />
       </IconButton>,
-      cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
   ];
 
@@ -95,7 +104,7 @@ export default function Relation() {
       id: tableRowArray["id"],
       relation: tableRowArray["sRelation"]
     });
-  }
+  };
 
   const editAPICall = (relationObj) => {
     setisLoading(true);
@@ -126,6 +135,7 @@ export default function Relation() {
         //console.log(release); => udefined
       });
   };
+
   const addAPICall = (relationObj) => {
     setisLoading(true);
     axios.post(`/Relation/AddRelation/`, relationObj)
@@ -189,7 +199,7 @@ export default function Relation() {
           <MaterialTable
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="Relation"
             columns={columns}
             data={dataAPI}

@@ -17,14 +17,10 @@ import { AddDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
 import { storeDataAPI } from 'actions/masters/featureAction';
 import { setCurrentSelectedFeature } from 'actions/masters/featureAction';
-import { aPageSizeArray } from '../../../config/commonConfig';
-import { nPageSize } from '../../../config/commonConfig';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop';
 import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
 import handleError from '../../../auth/_helpers/handleError';
-
-const tableIcons = oTableIcons;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,7 +67,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
 export default function Feature() {
   const dataAPI = useSelector(state => state.FeatureReducer.lFeature);
   let history = useHistory();
@@ -81,8 +76,6 @@ export default function Feature() {
   const [editModal, setEditModal] = React.useState(false);
   const [addModal, setAddModal] = useState(false);
   const [Id, setId] = React.useState('');
-  const [pageSize, setpageSize] = useState(nPageSize);
-  const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
   const [backdrop, setBackdrop] = React.useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -113,9 +106,15 @@ export default function Feature() {
       field: "id",
       title: "Sr No.",
       hidden: true,
-      cellStyle: {
-        padding: '5px',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "sFeature",
@@ -126,15 +125,17 @@ export default function Feature() {
         width: '7%',
         textAlign: 'left'
       },
-      cellStyle: {
-        padding: '10px',
-        width: '7%',
-        textAlign: 'left'
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
-      align: "center",
       field: "edit",
       title: "Edit",
       sorting: false,
@@ -150,12 +151,15 @@ export default function Feature() {
         width: '1%',
         textAlign: 'center'
       },
-      cellStyle: {
-        padding: '0px',
-        width: '1%',
-        textAlign: 'center'
-
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     }
   ];
 
@@ -166,7 +170,7 @@ export default function Feature() {
     }));
     setId(tableRowArray['id']);
     setEditModal(true);
-  }
+  };
 
   const editAPICall = (feature) => {
     setBackdrop(true);
@@ -261,7 +265,7 @@ export default function Feature() {
   </Breadcrumbs>*/}
         <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
           isLoading={isLoading}
-          icons={tableIcons}
+          icons={oTableIcons}
           title="Feature"
           columns={columns}
           data={dataAPI}

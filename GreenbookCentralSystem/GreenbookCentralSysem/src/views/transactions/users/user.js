@@ -14,8 +14,6 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
 
-const tableIcons = oTableIcons;
-
 const useStyles = makeStyles({
   root: {
     height: '100%',
@@ -104,44 +102,71 @@ export default function Users() {
       field: "oUser.id",
       title: "Sr No.",
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
+        textAlign: "center",
+        padding: '5px'
       },
       export: true
     },
     {
       field: "oUser.sUsername",
       title: "Username",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
       field: "oUser.sFullname",
       title: "Fullname",
-      cellStyle: {
-        padding: '5px'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "sUserRightsName",
       title: "Rights",
-      cellStyle: {
-        padding: '5px'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "oUser.sOffice",
       title: "Office Name",
-      cellStyle: {
-        padding: '5px'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
-      align:"center",
+      align: "center",
       field: 'edit',
       title: 'Edit',
       filtering: false,
@@ -152,10 +177,14 @@ export default function Users() {
       >
         <EditOutlinedIcon />
       </IconButton>,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
+        textAlign: "center",
+        padding: '5px'
       }
     }
   ];
@@ -237,7 +266,7 @@ export default function Users() {
       lUserRights: lUserRights
     });
     setEditModal(true);
-  }
+  };
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -288,7 +317,7 @@ export default function Users() {
           <MaterialTable
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="Users"
             columns={columns}
             data={dataAPI}
@@ -296,7 +325,7 @@ export default function Users() {
             actions={[
               {
                 icon: oTableIcons.Add,
-                tooltip: 'Add User',
+                tooltip: 'Add a User',
                 isFreeAction: true,
                 onClick: (event) => setAddModal(true)
               },

@@ -13,8 +13,6 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
 
-const tableIcons = oTableIcons;
-
 const useStyles = makeStyles(() => ({
 }));
 
@@ -52,32 +50,44 @@ export default function Region() {
       field: "id",
       title: "Sr No.",
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true
     },
     {
       field: "sRegion_code",
       title: "Region ID",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
       field: "sRegion_name",
       title: "Region",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
-      align:"center",
       field: 'edit',
       title: 'Edit',
       filtering: false,
@@ -88,10 +98,14 @@ export default function Region() {
       >
         <EditOutlinedIcon />
       </IconButton>,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
+        textAlign: "center",
+        padding: '5px'
       }
     },
   ];
@@ -106,7 +120,7 @@ export default function Region() {
       regionId: tableRowArray["sRegion_code"],
       region: tableRowArray["sRegion_name"]
     });
-  }
+  };
 
   const editAPICall = (regionObj) => {
     setisLoading(true);
@@ -137,6 +151,7 @@ export default function Region() {
         //console.log(release); => udefined
       });
   };
+
   const addAPICall = (regionObj) => {
     setisLoading(true);
     axios.post(`/Region/AddRegion/`, regionObj)
@@ -201,7 +216,7 @@ export default function Region() {
           <MaterialTable
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="Region"
             columns={columns}
             data={dataAPI}

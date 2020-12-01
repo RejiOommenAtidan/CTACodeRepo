@@ -15,8 +15,6 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
 
-const tableIcons = oTableIcons;
-
 const useStyles = makeStyles(() => ({
   // MTableOverride = {
   //   //MuiTableSortLabel-root.MuiTableSortLabel-active:
@@ -56,32 +54,44 @@ export default function Chatrel() {
       field: "id",
       title: "Sr No.",
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true
     },
     {
       field: "sKey",
       title: "Key",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
       field: "sValue",
       title: "Value",
-      cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
-      align: "center",
       field: 'edit',
       title: 'Edit',
       filtering: false,
@@ -92,10 +102,14 @@ export default function Chatrel() {
       >
         <EditOutlinedIcon />
       </IconButton>,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
+        textAlign: "center",
+        padding: '5px'
       }
     },
   ];
@@ -192,10 +206,10 @@ export default function Chatrel() {
       <Grid container className={classes.box}>
         <Grid item xs={12}>
           <MaterialTable
-          className={classes.MTableOverride}
+            className={classes.MTableOverride}
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="CTA Configuration"
             columns={columns}
             data={dataAPI}

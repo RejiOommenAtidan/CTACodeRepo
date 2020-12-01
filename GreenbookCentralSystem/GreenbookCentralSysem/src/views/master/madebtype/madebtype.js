@@ -14,8 +14,6 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
 
-const tableIcons = oTableIcons;
-
 const useStyles = makeStyles(() => ({
   /*root: {
     backgroundColor: theme.palette.background.dark,
@@ -75,11 +73,7 @@ export default function EnhancedTable() {
   const [madebTypePK, setMadebTypePK] = React.useState(0);
   const [madebTypeObj, setMadebTypeObj] = useState({});
 
-  
-  const [rowsPerPage, setRowsPerPage] = useState(process.env.REACT_APP_ROWS_PER_PAGE);
-  const [currentPage, setCurrentPage] = useState(0);
   const [dataChanged, setDataChanged] = useState(false);
-  
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -95,50 +89,66 @@ export default function EnhancedTable() {
   };
 
   const [filtering, setFiltering] = React.useState(false);
-
   oOptions.filtering = filtering;
-  const history = useHistory();
+
+  let history = useHistory();
 
   const columns = [
     {
       field: "id",
       title: "Sr No.",
       hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px'
+        textAlign: "center",
+        padding: '5px'
       },
       export: true
     },
     {
       field: "sMadebType",
       title: "Madeb Type",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
       field: "sMadebDisplayName",
       title: "Madeb Display Name",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
       field: "sMadebDisplayKey",
       title: "Madeb DisplayKey",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft: '10px',
-        borderLeft: '0'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
-      align: "center",
       field: "edit",
       title: "Edit",
       filtering: false,
@@ -149,13 +159,16 @@ export default function EnhancedTable() {
       >
         <EditOutlinedIcon />
       </IconButton>,
-      cellStyle: {
-        padding: '5px',
-        borderRight: '0',
-        width: '10%'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
-
   ];
 
   const editClick = (tableRowArray) => {
@@ -165,11 +178,11 @@ export default function EnhancedTable() {
     setMadebTypeObj({
       id: tableRowArray["id"],
       madebType: tableRowArray["sMadebType"],
-      sMadebDisplayName : tableRowArray["sMadebDisplayName"],
+      sMadebDisplayName: tableRowArray["sMadebDisplayName"],
       sMadebDisplayKey: tableRowArray["sMadebDisplayKey"],
       nMadebFeatureId: tableRowArray["nMadebFeatureId"]
     });
-  }
+  };
 
   const editAPICall = (obj) => {
     // let MadebTypeID = madebTypePK;
@@ -178,7 +191,6 @@ export default function EnhancedTable() {
     //   sMadebTypeID: madebTypeID,
     //   sMadebType: madebTypeName,
     // };
-    console.log(obj);
     axios.post(`/MadebType/EditMadebType/madebTypeID=` + madebTypePK, obj)
       .then(resp => {
         if (resp.status === 200) {
@@ -201,8 +213,8 @@ export default function EnhancedTable() {
         handleError(error, history);
       })
   };
-  const addAPICall = (madebTypeObj) => {
 
+  const addAPICall = (madebTypeObj) => {
     // let madebTypeToAdd = {
     //   sMadebTypeID: madebTypeID,
     //   sMadebType: madebTypeName,
@@ -230,7 +242,6 @@ export default function EnhancedTable() {
   };
 
   const deleteClick = (tableRowArray) => {
-
     setDeleteModal(true);
     setMadebTypePK(tableRowArray["id"]);
     setMadebType(tableRowArray["sMadebType"]);
@@ -239,7 +250,6 @@ export default function EnhancedTable() {
 
   const handleClose = () => {
     setDeleteModal(false);
-
   };
 
   const deleteAPICall = () => {
@@ -313,24 +323,23 @@ export default function EnhancedTable() {
             </Typography> */}
       <Grid container className={classes.box}>
         <Grid item xs={12}>
-
           <MaterialTable
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
-            icons={tableIcons}
+            icons={oTableIcons}
             title="Madeb Types"
             data={dataAPI}
             columns={columns}
             options={oOptions}
             actions={[
-              {
-                icon: oTableIcons.Add,
-                tooltip: 'Add Madeb Type',
-                isFreeAction: true,
-                onClick: (event) => setAddModal(true)
-              },
+              // {
+              //   icon: oTableIcons.Add,
+              //   tooltip: 'Add Madeb Type',
+              //   isFreeAction: true,
+              //   onClick: (event) => setAddModal(true)
+              // },
               {
                 icon: oTableIcons.Filter,
-                tooltip: 'Show Filter',
+                tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
               }

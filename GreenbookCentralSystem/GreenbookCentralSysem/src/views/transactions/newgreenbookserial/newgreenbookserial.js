@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import {Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link} from '@material-ui/core';
+import { Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
-//import theme from '../../../theme/theme/theme'
-
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 import Moment from 'moment';
-import MaterialTable, { MTableToolbar }  from 'material-table';
+import MaterialTable from 'material-table';
 import { oOptions, oTableIcons } from '../../../config/commonConfig';
-import FilterList from '@material-ui/icons/FilterList';
-import AddBox from '@material-ui/icons/AddBox';
 import { useHistory } from 'react-router-dom';
 import { Alerts } from '../../alerts';
 import handleError from "../../../auth/_helpers/handleError";
@@ -23,8 +18,6 @@ import EmailIcon from '@material-ui/icons/Email';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { AddDialog } from './dialog';
 import { Assign } from './assign';
-
-const tableIcons = oTableIcons;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
       main: '#11cb5f',
     },
   }
-
 }));
 
 
@@ -86,7 +78,6 @@ export default () => {
   const [gbSerialObj, setGBSerialObj] = useState({});
   oOptions.filtering = filtering;
 
-
   let history = useHistory();
 
   const [alertMessage, setAlertMessage] = useState("");
@@ -94,119 +85,143 @@ export default () => {
   const alertObj = {
     alertMessage: alertMessage,
     alertType: alertType
-  }
+  };
 
-  const columns =[
-
+  const columns = [
     {
       field: "id",
       title: "Sr No.",
-      hidden:true,
-      cellStyle: {
-        padding:'5px',
+      hidden: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "nFormNumber",
       title: "Form Number",
       filterPlaceholder: "Search...",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft:'10px',
-        width: '10%'
-      },
-      headerStyle:{
-        padding:'5px',
-        width: '15%'
-        
-      },
-      
+        textAlign: "center",
+        padding: '5px'
+      }
     },
-    
     {
       field: "sGBID",
       title: "  GB Id",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding: '5px',
-        paddingLeft:'5px',
-        width: '10%'
-      },
-      headerStyle:{
-        padding:'8px',
-        width: '15%',
-        
-      },
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "dtReceived",
       title: "Received on",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
       cellStyle: {
-        padding:'5px',
-        width: '15%'
+        textAlign: "center",
+        padding: '5px'
       },
       render: rowData => rowData['dtReceived'] ? Moment(rowData['dtReceived']).format('YYYY-MM-DD') : undefined
     },
-    { 
+    {
       field: "sName",
       title: "Name",
-      cellStyle: {
-        padding:'5px',
-        width: '20%'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "sMadebType",
       title: "Madeb Type",
-      cellStyle: {
-        padding:'5px',
-        width: '15%'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "sAuthRegion",
       title: "Authority Region",
-      cellStyle: {
-        padding:'5px',
-        width: '15%'
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
-      
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: "edit",
       title: "Generate",
       sorting: false,
-      export:false,
-      filtering:false,
-       render: rowData => 
-//<Button onClick={(e) => {
-//                                e.preventDefault();
-//                                e.stopPropagation();
-//                                 addClick(rowData);
-//                              }}   className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
-//       <span className="btn-wrapper--icon">
-//         <CreateNewFolderIcon />
-//       </span>
-// </Button>,
-      <IconButton 
-                          color="primary" 
-                          aria-label="upload picture" 
-                          component="span"
-                           onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                             addClick(rowData);
-                          }}  
-                          style={{padding:'0px'}}
-                        >
-                          <CreateNewFolderIcon />
-                        </IconButton> ,
-      cellStyle: {
-        padding: '0px',
-        paddingLeft:'15px',
-        width: '15%'
+      export: false,
+      filtering: false,
+      render: rowData =>
+        //<Button onClick={(e) => {
+        //                                e.preventDefault();
+        //                                e.stopPropagation();
+        //                                 addClick(rowData);
+        //                              }}   className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
+        //       <span className="btn-wrapper--icon">
+        //         <CreateNewFolderIcon />
+        //       </span>
+        // </Button>,
+        <IconButton
+          color="primary"
+          aria-label="upload picture"
+          component="span"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            addClick(rowData);
+          }}
+          style={{ padding: '0px' }}
+        >
+          <CreateNewFolderIcon />
+        </IconButton>,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
       },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     // {
     //   field: "Assign",
@@ -221,9 +236,7 @@ export default () => {
     // }
   ];
 
-
   const addClick = (tableRowArray) => {
-
     setGBSerialObj({
       id: tableRowArray['id'],
       nFormNumber: tableRowArray['nFormNumber'],
@@ -232,18 +245,14 @@ export default () => {
       sName: tableRowArray['sName'],
       sMadebType: tableRowArray['sMadebType'],
       sAuthRegion: tableRowArray['sAuthRegion'],
-      
     });
-      console.log("Table Array: ", tableRowArray);
-      console.log("gbSerialObj: ", gbSerialObj);
-
-      setAddModal(true);
-      //alert("Opening modal...");
-  }
-
+    console.log("Table Array: ", tableRowArray);
+    console.log("gbSerialObj: ", gbSerialObj);
+    setAddModal(true);
+    //alert("Opening modal...");
+  };
 
   const addAPICall = (gbSerialObj, clicked) => {
-    
     setLoading(true);
     console.log(gbSerialObj);
     axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, gbSerialObj)
@@ -251,7 +260,7 @@ export default () => {
         if (resp.status === 200) {
           console.log(resp.data);
           setAddModal(false);
-          if(clicked){
+          if (clicked) {
             history.push("/GreenBookSerial");
             return;
           }
@@ -276,29 +285,24 @@ export default () => {
       })
   };
 
-
-  const selectDatafunction = () =>{
+  const selectDatafunction = () => {
     axios.get(`GreenBookSerialNumber/GetNewEmptyGreenBookSerialRecord`)
-    .then(resp => {
-      if (resp.status === 200) {
-        setSelectData(resp.data);
-        console.log("New Record Data\n", resp.data);
-
-        
-      // setdataAPI(resp.data)
-      }
-    })
-    .catch(error => {
-      console.log(error.config);
-      console.log(error.message);
-    })
+      .then(resp => {
+        if (resp.status === 200) {
+          setSelectData(resp.data);
+          console.log("New Record Data\n", resp.data);
+          // setdataAPI(resp.data)
+        }
+      })
+      .catch(error => {
+        console.log(error.config);
+        console.log(error.message);
+      })
   };
 
   const handleAddClickClose = () => {
     setAddModal(false);
   };
-
-
 
   useEffect(() => {
     axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumberAssignList`)
@@ -317,52 +321,51 @@ export default () => {
       })
   }, []);
 
-
   return (
     <>
       <Grid container spacing={1}>
-      <Grid item xs={12}>
+        <Grid item xs={12}>
           {/*<Breadcrumbs aria-label="breadcrumb">
             <Link color="inherit" href="/Home" >
               Home
             </Link>
             <Typography color="textPrimary">Give GreenBook Serial Number</Typography>
   </Breadcrumbs>*/}
-          <MaterialTable 
-            style={{padding:'10px',width:'100%', border:'2px solid grey',borderRadius:'10px'}}
-            isLoading = {loading}
-            icons={tableIcons}
+          <MaterialTable
+            style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+            isLoading={loading}
+            icons={oTableIcons}
             title="Give GreenBook Serial Number"
             columns={columns}
-            data={dataAPI}        
+            data={dataAPI}
             options={oOptions}
             actions={
               [
-                
                 {
-                  icon: Search,
+                  icon: oTableIcons.Search,
                   tooltip: 'Show Filter',
                   isFreeAction: true,
                   onClick: (event) => {
-                    setFiltering(currentFilter => !currentFilter)}
+                    setFiltering(currentFilter => !currentFilter)
+                  }
                 }
               ]
             }
-            onRowClick= {(event, rowData) => {
+            onRowClick={(event, rowData) => {
               //alert ("Row clicked");
               event.preventDefault();
               event.stopPropagation();
             }}
           />
-             {addModal && <AddDialog
-              addModal={addModal}
-              selectData={selectData}
-              classes={classes}
-              gbSerialObj = {gbSerialObj}
-              handleAddClickClose={handleAddClickClose}
-              addAPICall={addAPICall}
-            />}
-            {/*{editModal && <EditDialog
+          {addModal && <AddDialog
+            addModal={addModal}
+            selectData={selectData}
+            classes={classes}
+            gbSerialObj={gbSerialObj}
+            handleAddClickClose={handleAddClickClose}
+            addAPICall={addAPICall}
+          />}
+          {/*{editModal && <EditDialog
               editModal={editModal}
               selectData={selectData}
               classes={classes}
@@ -370,11 +373,8 @@ export default () => {
               editAPICall={editAPICall}
               gbSerialObj={gbSerialObj}
             />} */}
-            
         </Grid>
       </Grid>
     </>
-
-
   );
 }
