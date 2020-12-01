@@ -689,9 +689,9 @@ const SidebarMenu = (props) => {
                   </span>
                 Chatrel
               </NavLink>
-              </li>
+            </li>*/}
             
-                      <li>
+                     <li>
                 <a
                   href="#/"
                   onClick={toggleReport}
@@ -828,7 +828,7 @@ const SidebarMenu = (props) => {
 
                   </ul>
                 </Collapse>
-            </li>*/}
+            </li>
               <div style={{paddingTop:'100px'}}>
               </div>
           </ul> 
