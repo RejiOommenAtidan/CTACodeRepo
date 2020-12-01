@@ -1,5 +1,40 @@
 Use ctadb;
 
+CREATE TABLE `lstOfficeOfTibetan` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sOOT_Place` varchar(100) DEFAULT NULL,
+  `sCuurency_Name` varchar(100) DEFAULT NULL,
+  `sCuurency_Code` varchar(5) DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO `ctadb`.`lstofficeoftibetan`
+(`Id`,
+`sOOT_Place`,
+`sCuurency_Name`,
+`sCuurency_Code`,
+`dtEntered`,
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`)
+VALUES
+(1,'Office of Tibet DC','US Dollar','USD',now(),1,now(),1),
+(2,'Switzerland','Swiss Franc','CHF',now(),1,now(),1),
+(3,'England','Pound Sterling','GBP',now(),1,now(),1),
+(4,'Australia','Australian Dollar','AUD',now(),1,now(),1),
+(5,'France','Euro','EUR',now(),1,now(),1),
+(6,'Japan','Yen','JPY',now(),1,now(),1),
+(7,'Russia','Russian Ruble','RUB',now(),1,now(),1),
+(8,'Taiwan','New Taiwan Dollar','TWD',now(),1,now(),1),
+(9,'South Africa','Rand','ZAR',now(),1,now(),1),
+(10,'Belgium','Euro','EUR',now(),1,now(),1);
+
+
 CREATE TABLE `lstRegion` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sRegion_name` varchar(100) DEFAULT NULL,
@@ -434,6 +469,7 @@ CREATE TABLE `lstCountry` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `sCountryID` text DEFAULT NULL,
   `sCountry` text DEFAULT NULL,
+  `nDefaultAuthRegionID` int(11) NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime DEFAULT NULL,
@@ -488,6 +524,12 @@ INSERT INTO `lstCountry` (`sCountryID`, `sCountry`, `dtEntered`,`nEnteredBy`,`dt
 ('UY','Uruguay',now(),1,now(),1),('UZ','Uzbekistan',now(),1,now(),1),('VU','Vanuatu',now(),1,now(),1),('VA','Vatican City State',now(),1,now(),1),('VE','Venezuela',now(),1,now(),1),('VN','Viet Nam',now(),1,now(),1),
 ('VG','Virgin Is(British)',now(),1,now(),1),('VI','Virgin Is(US)',now(),1,now(),1),('WF','Wallis and Futuna',now(),1,now(),1),('EH','Western Sahara',now(),1,now(),1),('YE','Yemen',now(),1,now(),1),
 ('YU','Yugoslavia',now(),1,now(),1),('ZR','Zaire',now(),1,now(),1),('ZM','Zambia',now(),1,now(),1),('ZW','Zimbabwe',now(),1,now(),1),('TB','Tibet',now(),1,now(),1);
+
+update lstcountry 
+	set nDefaultAuthRegionID = (select lstauthregion.id 
+								from lstauthregion 
+								where lstauthregion.sCountryID = lstcountry.sCountryID 
+								group by lstauthregion.sCountryID);
 
 CREATE TABLE `lstoccupation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -600,7 +642,6 @@ INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`, `dtEntered`,`nEnteredBy`
 INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Issue',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Edit',now(),1,now(),1);
 INSERT INTO `ctadb`.`lstUserRights` (`sUserRightsName`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Admin',now(),1,now(),1);
-
 
 
 CREATE TABLE `tbluser` (
@@ -838,7 +879,7 @@ CREATE TABLE `tblGreenBook` (
   `sResidenceNumber` varchar(255) DEFAULT NULL,
   `sQualificationID` varchar(255) DEFAULT NULL,
   `sOccupationID` varchar(255) DEFAULT NULL,
-  `sAliasName` varchar(200) NOT NULL,
+  `sAliasName` varchar(200) DEFAULT NULL,
   
   `sOldGreenBKNo` varchar(255) DEFAULT NULL,
   `sFstGreenBkNo` varchar(255) DEFAULT NULL,
@@ -876,7 +917,10 @@ CREATE TABLE `tblGreenBook` (
   `TBUOriginVillage` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `TBUFathersName` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `TBUMothersName` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `TBUSpouseName` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `TBUSpouseName` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  
+  `sLoginGmail` varchar(255) DEFAULT NULL,
+  `dtLastSuccessfullLogin` DateTime DEFAULT NULL,
   
   `sEnteredDateTime` text DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
@@ -999,10 +1043,37 @@ CREATE TABLE `tblchatrelpayment` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+CREATE TABLE `tblchatrelBulkData` (
+	`Id` int(11) NOT NULL AUTO_INCREMENT,
+	`SNo` varchar(255) DEFAULT NULL,
+	`IDNo` varchar(255) DEFAULT NULL,
+	`Name` varchar(255) DEFAULT NULL,
+	`Chatrel` varchar(255) DEFAULT NULL,
+	`Meal` varchar(255) DEFAULT NULL, 
+	`Year` varchar(255) DEFAULT NULL,
+	`ArrearsPlusLateFees` varchar(255) DEFAULT NULL,
+	`ArrearsFrom` varchar(255) DEFAULT NULL,
+	`ArrearsTo` varchar(255) DEFAULT NULL,
+	`Salary` varchar(255) DEFAULT NULL,
+	`PendingFrom` varchar(255) DEFAULT NULL,
+	`PendingTo` varchar(255) DEFAULT NULL,
+	`BusinessDonation` varchar(255) DEFAULT NULL,
+	`AdditionalDonation` varchar(255) DEFAULT NULL,
+	`TotalAmount` varchar(255) DEFAULT NULL,
+	`RecieptNo` varchar(255) DEFAULT NULL,
+	`PaymentDate` varchar(255) DEFAULT NULL,
+	`Region` varchar(255) DEFAULT NULL,
+	`Country` varchar(255) DEFAULT NULL,
+	`Currency` varchar(255) DEFAULT NULL,
+	`dtEntered` datetime DEFAULT NULL,
+	`nEnteredBy` int(11) NOT NULL,
+ PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 -- -------------------------
 -- --Link Tables------------
 -- -------------------------
+
 
 CREATE TABLE `lnkGBRelation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1176,13 +1247,29 @@ DROP procedure IF EXISTS `spDeleteGreenBook`;
 DELIMITER $$
 
 CREATE PROCEDURE `spDeleteGreenBook`(IN sGBIDIN VARCHAR(255), OUT result INT)
+
 BEGIN
-    DELETE FROM tblgreenbook WHERE tblgreenbook.sGBID = sGBIDIN;
+	
+    SET SQL_SAFE_UPDATES=0;
+ 
+	DELETE FROM lnkGBRelation WHERE lnkGBRelation.sGBID = sGBIDIN;
+	DELETE FROM lnkGBDocument WHERE lnkGBDocument.sGBID = sGBIDIN;
+	DELETE FROM lnkGBNote WHERE lnkGBNote.sGBID = sGBIDIN;
+	DELETE FROM lnkGBChildren WHERE lnkGBChildren.sGBIDParent = sGBIDIN;
+
+	DELETE FROM tblGivenGBID WHERE tblGivenGBID.nGBID = sGBIDIN;
+	DELETE FROM tblGreenBookIssued WHERE tblGreenBookIssued.nGBID = sGBIDIN;
+	DELETE FROM tblGreenBookSerial WHERE tblGreenBookSerial.sGBID = sGBIDIN;
+
+	DELETE FROM tblRecentlySearchedGB WHERE tblRecentlySearchedGB.nGBID = sGBIDIN;
+	DELETE FROM tblAuditLog WHERE tblAuditLog.sGBID = sGBIDIN;
+	DELETE FROM tblMadeb WHERE tblMadeb.sGBID = sGBIDIN;
+	DELETE FROM tblgreenbook WHERE tblgreenbook.sGBID = sGBIDIN;
+    
     SET result = row_count();
 END$$
 
 DELIMITER ;
-
 
 DROP procedure IF EXISTS `spGetUserAuthorization`;
 
@@ -1739,6 +1826,8 @@ where
     DEALLOCATE PREPARE stmt;
 END$$
 DELIMITER ;
+
+
 
 
 CREATE INDEX MDB_GBID ON tblmadeb(sGBID);
