@@ -341,12 +341,12 @@ export default () => {
 
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <Breadcrumbs aria-label="breadcrumb">
+          {/*<Breadcrumbs aria-label="breadcrumb">
             <Link color="inherit" href="/Home" >
               Home
             </Link>
             <Typography color="textPrimary">Make List</Typography>
-          </Breadcrumbs>
+  </Breadcrumbs>*/}
       <br />
       <Paper style={{padding:'15px',paddingTop:'20px'}}>
   

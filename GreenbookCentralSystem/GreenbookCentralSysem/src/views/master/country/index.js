@@ -21,12 +21,12 @@ const CoverCountry = () => {
   const classes = useStyles();
   return (
     <Container maxWidth={false}>
-      <Breadcrumbs aria-label="breadcrumb">
+      {/*<Breadcrumbs aria-label="breadcrumb">
         <Link color="inherit" href="/Home" >
           Home
         </Link>
         <Typography color="textPrimary">Country</Typography>
-      </Breadcrumbs>
+  </Breadcrumbs>*/}
       <Country />
     </Container>
 

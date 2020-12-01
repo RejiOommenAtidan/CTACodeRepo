@@ -60,8 +60,8 @@ export default function LogingPage(props) {
         window.location.reload("/Search");
       },
       error => {
-        setAlertMessage("Invalid Username/Password");
-        setAlertType('error');
+        setAlertMessage("Please Check your User name & Password");
+        setAlertType('info');
         snackbarOpen();
         dispatch(removeAuthDetails());
         setsPassword("");
@@ -81,7 +81,9 @@ export default function LogingPage(props) {
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid item md={10} lg={8} xl={4} className="mx-auto">
                       <div className="text-center">
-                        <h1 className="display-4 mb-1 font-weight-bold">CTA Login</h1>
+                        <h1 className="display-4 mb-1 font-weight-bold">
+                        New CTA's Green Book Database
+                        </h1>
                         <br />
                       </div>
                       <div>
@@ -108,7 +110,7 @@ export default function LogingPage(props) {
                             })}
                           />
                           {_.get("name_sUsername.type", errors) === "required" && (
-                            <span style={{ color: 'red' }}>This field is required</span>
+                            <span style={{ color: 'red' }}>Please Enter Username</span>
                           )}
                         </div>
                         <div className="mb-3">
@@ -133,7 +135,7 @@ export default function LogingPage(props) {
                             })}
                           />
                           {_.get("name_sPassword.type", errors) === "required" && (
-                            <span style={{ color: 'red' }}>This field is required</span>
+                            <span style={{ color: 'red' }}>Please Enter Password</span>
                           )}
                         </div>
                         <div className="text-center py-4">

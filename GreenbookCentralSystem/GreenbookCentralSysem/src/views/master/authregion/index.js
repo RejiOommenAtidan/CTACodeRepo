@@ -26,13 +26,13 @@ const Dashboard = () => {
   return (
    
       <Container maxWidth={false}>
-        <Breadcrumbs aria-label="breadcrumb">
+        {/*<Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/Home" >
             Home
         </Link>
 
           <Typography color="textPrimary"> AuthRegion</Typography>
-        </Breadcrumbs>
+  </Breadcrumbs>*/}
         <AuthRegion />
       </Container>
 

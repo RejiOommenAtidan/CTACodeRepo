@@ -22,12 +22,12 @@ const CoverUserrights = () => {
 
   return (
     <Container maxWidth={false}>
-      <Breadcrumbs aria-label="breadcrumb">
+      {/*<Breadcrumbs aria-label="breadcrumb">
         <Link color="inherit" href="/Home" >
           Home
         </Link>
         <Typography color="textPrimary">UserRights</Typography>
-      </Breadcrumbs>
+  </Breadcrumbs>*/}
       <UserRights />
     </Container>
   );

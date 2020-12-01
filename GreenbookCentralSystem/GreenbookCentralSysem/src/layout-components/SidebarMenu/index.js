@@ -315,9 +315,9 @@ const SidebarMenu = (props) => {
                           onClick={toggleSidebarMobile}
                           className="nav-link-simple"
                           to="/NewGreenBookSerial">
-                          <span className="sidebar-icon">
+                          {/*<span className="sidebar-icon">
                             <FormatListNumberedRtlIcon />
-                          </span>
+                    </span>*/}
                       Give Book Serial Number
                     </NavLink>
                       </li>}
@@ -329,9 +329,9 @@ const SidebarMenu = (props) => {
                           onClick={toggleSidebarMobile}
                           className="nav-link-simple"
                           to="/GreenBookSerial">
-                          <span className="sidebar-icon">
+                          {/*<span className="sidebar-icon">
                             <FormatListNumberedRtlIcon />
-                          </span>
+                    </span>*/}
                         Edit Book Serial Number
                       </NavLink>
                       </li>}
@@ -479,8 +479,6 @@ const SidebarMenu = (props) => {
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 32)) !== undefined
                 ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined
-                ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 34)) !== undefined
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 35)) !== undefined)
@@ -570,7 +568,8 @@ const SidebarMenu = (props) => {
                       </NavLink>
                       </li>
                     }
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined
+                    {/*
+                      authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -578,7 +577,7 @@ const SidebarMenu = (props) => {
                           to="/Feature">
                           Feature
                       </NavLink>
-                      </li>
+                      </li>*/
                     }
                     {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 35)) !== undefined
                       &&
@@ -691,7 +690,7 @@ const SidebarMenu = (props) => {
               </NavLink>
             </li>*/}
             
-                     <li>
+                     {/*<li>
                 <a
                   href="#/"
                   onClick={toggleReport}
@@ -828,7 +827,7 @@ const SidebarMenu = (props) => {
 
                   </ul>
                 </Collapse>
-            </li>
+                     </li>*/}
               <div style={{paddingTop:'100px'}}>
               </div>
           </ul> 

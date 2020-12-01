@@ -633,12 +633,12 @@ export default function SearchPage() {
       <Grid container spacing={1}>
 
         <Grid item xs={12} sm={9}>
-          <Breadcrumbs aria-label="breadcrumb">
+          {/*<Breadcrumbs aria-label="breadcrumb">
             <Link color="inherit" href="/Home" >
               Home
             </Link>
             <Typography color="textPrimary">Search</Typography>
-          </Breadcrumbs>
+  </Breadcrumbs>*/}
           {dataFromAPI.length == 0 &&
             <Paper>  <Typography color="textPrimary" align="center">No records to display </Typography> </Paper>
           }
@@ -745,7 +745,7 @@ export default function SearchPage() {
                     <TextField
 
                       id="id_SpouseName"
-                      label="SpouseName"
+                      label="Spouse Name"
                       type="text"
                       onChange={(e) => { setSpouseName(e.target.value) }}
                     />
