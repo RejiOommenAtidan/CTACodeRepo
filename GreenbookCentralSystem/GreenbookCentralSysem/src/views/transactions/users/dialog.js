@@ -13,7 +13,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
+import {
+  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
+  sButtonColor, sButtonSize, sButtonVariant
+} from "../../../config/commonConfig";
 
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
@@ -96,7 +100,11 @@ export const AddDialog = (props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+        <Button onClick={props.handleAddClickClose}
+          variant={sButtonVariant}
+          color={sButtonColor}
+          size={sButtonSize}
+        >Cancel</Button>
         <Button onClick={() => {
           props.addAPICall(
             {
@@ -105,11 +113,15 @@ export const AddDialog = (props) => {
               nUserRightsId,
               sPassword,
               sOffice,
-              nEnteredBy:userId,
-              nUpdatedBy:userId
+              nEnteredBy: userId,
+              nUpdatedBy: userId
             }
           )
-        }} color="primary">Save</Button>
+        }}
+          variant={sButtonVariant}
+          color={sButtonColor}
+          size={sButtonSize}
+        >Save</Button>
       </DialogActions>
     </Dialog>
   );
@@ -201,7 +213,12 @@ export const EditDialog = (props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
+        <Button
+          onClick={props.handleEditClickClose}
+          variant={sButtonVariant}
+          color={sButtonColor}
+          size={sButtonSize}
+        >Cancel</Button>
         <Button onClick={() => {
           props.editAPICall({
             Id,
@@ -210,10 +227,14 @@ export const EditDialog = (props) => {
             nUserRightsId,
             sPassword,
             sOffice,
-            nUpdatedBy:userId
+            nUpdatedBy: userId
           })
         }
-        } color="primary">Save</Button>
+        }
+          variant={sButtonVariant}
+          color={sButtonColor}
+          size={sButtonSize}
+        >Save</Button>
       </DialogActions>
     </Dialog>
   );

@@ -345,7 +345,7 @@ export default function Users() {
                 onClick: (event) => setAddModal(true)
               },
               {
-                icon: oTableIcons.Filter,
+                icon: oTableIcons.Search,
                 tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
