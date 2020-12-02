@@ -114,15 +114,34 @@ namespace CTAWebAPI.Controllers.Masters
                     IEnumerable<Feature> lFeatures = _featureRepository.GetAllFeatures();
                     foreach(Feature oFeature in lFeatures)
                     {
-                        FeatureUserrights lnkFeatureUserrights = new FeatureUserrights
+                        //1-Login
+                        //2-Home
+                        //19-Change Password
+                        //20-Search
+                        if (oFeature.Id == 1 || oFeature.Id == 2 || oFeature.Id == 19 || oFeature.Id == 20)
                         {
-                            nFeatureID = oFeature.Id,
-                            nUserRightsID = addedUserRight.Id,
-                            bRights = true, //Making Rights Initially to True
-                            dtEntered = DateTime.Now,
-                            nEnteredBy = userRights.nEnteredBy
-                        };
-                        _featureUserrightsRepository.Add(lnkFeatureUserrights);
+                            FeatureUserrights lnkFeatureUserrights = new FeatureUserrights
+                            {
+                                nFeatureID = oFeature.Id,
+                                nUserRightsID = addedUserRight.Id,
+                                bRights = true,
+                                dtEntered = DateTime.Now,
+                                nEnteredBy = userRights.nEnteredBy
+                            };
+                            _featureUserrightsRepository.Add(lnkFeatureUserrights);
+                        }
+                        else {
+                            
+                            FeatureUserrights lnkFeatureUserrights = new FeatureUserrights
+                            {
+                                nFeatureID = oFeature.Id,
+                                nUserRightsID = addedUserRight.Id,
+                                bRights = false, //Making Rights Initially to False, let Admin Give Rights
+                                dtEntered = DateTime.Now,
+                                nEnteredBy = userRights.nEnteredBy
+                            };
+                            _featureUserrightsRepository.Add(lnkFeatureUserrights);
+                        }
                     }
                     #endregion
 

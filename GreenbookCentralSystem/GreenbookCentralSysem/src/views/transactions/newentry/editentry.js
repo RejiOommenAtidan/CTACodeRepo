@@ -2363,6 +2363,7 @@ export default function EditEntry(props) {
       {/*Document*/}
       {addDocumentModal && (
         <AddDocumentDialog
+          lGBDocument = {lGBDocument}
           addDocumentModal={addDocumentModal}
           sGBID={sGBID}
           classes={classes}

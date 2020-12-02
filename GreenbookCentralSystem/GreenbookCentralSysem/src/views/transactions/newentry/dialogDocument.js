@@ -37,6 +37,12 @@ export const AddDocumentDialog = (props) => {
     const [binFileDoc, setbinFileDoc] = useState("");
     const [sFileExtension, setsFileExtension] = useState("");
     const [nRegisterDate, setnRegisterDate] = useState(0);
+    const [lGBDocument, setlGBDocument] = useState(props.lGBDocument);
+
+
+
+    let result = lGBDocument.find(document => document.sDocType === "Photo Identity");
+    debugger;
 
     const handleUploadChange = (event) => {
         let files = document.getElementById("id_binDocFile").files;
@@ -99,7 +105,7 @@ export const AddDocumentDialog = (props) => {
                                         className={props.classes.textField}
                                         onChange={(event) => { handleSelectChange(event) }}
                                     >
-                                        <MenuItem value={"Photo Identity"}>Photo Identity</MenuItem>
+                                        <MenuItem disabled={result !== undefined} value={"Photo Identity"}>Photo Identity</MenuItem>
                                         <MenuItem value={"Support Document"}>Support Document</MenuItem>
                                     </Select>
                                 </FormControl>
@@ -264,6 +270,7 @@ export const EditDocumentDialog = (props) => {
                                         margin="dense"
                                         className={props.classes.textField}
                                         onChange={(event) => { handleSelectChange(event) }}
+                                        disabled
                                     >
                                         <MenuItem value={"Photo Identity"}>Photo Identity</MenuItem>
                                         <MenuItem value={"Support Document"}>Support Document</MenuItem>
