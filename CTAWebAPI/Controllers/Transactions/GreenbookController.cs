@@ -970,6 +970,9 @@ namespace CTAWebAPI.Controllers.Transactions
                 {
 
                     gBDocument.dtEntered = DateTime.Now;
+                    
+                    
+
                     _gbDocumentRepository.Add(gBDocument);
 
                     #region Information Logging 

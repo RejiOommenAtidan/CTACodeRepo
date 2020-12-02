@@ -517,6 +517,8 @@ export default function SearchPage() {
     axios.get(`RecentlySearchedGB/GetRecentlySearchedGBs?records=20&nUserId=` + userId)
       .then(resp => {
         if (resp.status === 200) {
+
+          console.log(resp.data);
           setRecentGBData(resp.data);
         }
       })
@@ -929,7 +931,7 @@ export default function SearchPage() {
                         <span className="ribbon-horizontal ribbon-horizontal--bottom ribbon-horizontal--danger"><span>{row.nGBID}</span></span>
                         <div className="card-img-wrapper">
                           {row.sPhoto != null &&
-                            <img src={`data:image/gif;base64,${row.sPhoto}`} style={{ width: '100px' }} className="card-img-top rounded" alt="..." />}
+                            <img src={`data:image/`+row.sFileExtension+`;base64,${row.sPhoto}`} style={{ width: '100px' }} className="card-img-top rounded" alt="..." />}
                           {row.sPhoto == null &&
                             <img alt="..." className="img-fluid" style={{ width: '100px' }} src={stock} />}
 

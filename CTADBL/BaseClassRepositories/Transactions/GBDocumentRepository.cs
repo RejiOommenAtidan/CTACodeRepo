@@ -98,8 +98,36 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Add Call
         public void Add(GBDocument gbdocument)
         {
+            gbdocument.binFileDoc = gbdocument.binFileDoc.Substring(gbdocument.binFileDoc.IndexOf("base64,") + 7);
+            byte[] newbytes = Convert.FromBase64String(gbdocument.binFileDoc);
+            gbdocument.binFileDoc = string.Empty;
             var builder = new SqlQueryBuilder<GBDocument>(gbdocument);
-            ExecuteCommand(builder.GetInsertCommand());
+            
+            MySqlCommand command = builder.GetInsertCommand();
+
+            _connection.Open();
+            MySqlTransaction transaction = _connection.BeginTransaction();
+            command.Transaction = transaction;
+            command.Connection = _connection;
+
+            try
+            {
+               
+                command.ExecuteNonQuery();
+                long insertId = command.LastInsertedId;
+                string sql = @"UPDATE lnkgbdocument SET binFileDoc = @newbytes WHERE id = @insertId;";
+                command.CommandText = sql;
+                command.CommandType = CommandType.Text;
+                command.Parameters.AddWithValue("newbytes", newbytes);
+                command.Parameters.AddWithValue("insertId", insertId);
+                command.Transaction = transaction;
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            catch (MySqlException ex)
+            {
+                transaction.Rollback();
+            }
         }
         #endregion
 

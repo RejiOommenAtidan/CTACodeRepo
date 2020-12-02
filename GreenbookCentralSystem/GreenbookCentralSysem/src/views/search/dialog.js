@@ -173,7 +173,7 @@ export const ViewDialog = (props) => {
                     <div className="d-block p-0 avatar-icon-wrapper m-0 border-3">
                       <div className=" border-3 border-white overflow-hidden">
                        {data.sPhoto!= null  && 
-                        <img alt="..." className="img-fluid" style={{width:'100px' }} src={`data:image/gif;base64,${data.sPhoto}`} /> }
+                        <img alt="..." className="img-fluid" style={{width:'100px' }}src={`data:image/`+data.sFileExtension+`;base64,${data.sPhoto}`} /> }
                         {data.sPhoto == null  &&  
                         <img alt="..." className="img-fluid" style={{width:'100px' }} src={stock} />}
                       </div>
@@ -742,10 +742,10 @@ export const ViewDialog = (props) => {
                                 <td scope="row">{index+1}</td>
                                 <td>{row.dtEntered ? Moment(row.dtEntered).format('DD-MM-YYYY'): ''}</td> 
                                 <td>{row.nEnteredBy}</td>                              
-                            <td>{row.sDocType}</td>        
+                            <td>{row.sTitle}</td>        
                                 <td style={{textAlign:'center'}}>
                          
-                                 <a href={`data:application/octet-stream;base64,${row.binFileDoc}`} download={row.sDocType+row.sFileExtension} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
+                                 <a href={`data:application/octet-stream;base64,${row.binFileDoc}`} download={row.sTitle+"."+row.sFileExtension} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
                                    <span className="btn-wrapper--icon">
                                     <GetAppIcon/>
                                     </span></a>
