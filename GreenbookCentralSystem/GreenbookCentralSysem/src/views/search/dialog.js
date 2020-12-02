@@ -728,7 +728,7 @@ export const ViewDialog = (props) => {
                                 <th> Entered By </th>
                                 <th> Title </th>
                                 <th style={{width:'5%'}}> Download </th>
-                                <th style={{width:'5%'}}> Delete </th>
+                                
                                
                                 
                  
@@ -751,13 +751,13 @@ export const ViewDialog = (props) => {
                                     </span></a>
                                  
                                   </td>        
-                                <td>
+                              {/*  <td>
                                 <Button onClick={()=>gbDocumentDelete(row)} className="btn-neutral-danger btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
                                     <span className="btn-wrapper--icon">
                                     <DeleteForeverIcon/>
                                     </span>
                                  </Button>  
-                                </td>        
+                                </td>  */}      
                               
 
                              
