@@ -11,9 +11,12 @@ import IconButton from '@material-ui/core/IconButton';
 // Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
+import {
+  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
+  sButtonColor, sButtonSize, sButtonVariant
+} from "../../../config/commonConfig";
 
 const useStyles = makeStyles(() => ({
   //   root: {
@@ -103,11 +106,13 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width: "15%"
       },
       export: true
     },
@@ -118,11 +123,13 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "15%"
       }
     },
     {
@@ -131,11 +138,13 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "20%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "20%"
       }
     },
     {
@@ -144,11 +153,13 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "30%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "30%"
       }
     },
     {
@@ -157,11 +168,13 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "15%"
       }
     },
     {
@@ -178,11 +191,13 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        width: "15%"
       }
     },
 
@@ -368,8 +383,8 @@ export default function EnhancedTable() {
                 onClick: (event) => setAddModal(true)
               },
               {
-                icon: oTableIcons.Filter,
-                tooltip: 'Show Filter',
+                icon: oTableIcons.Search,
+                tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
               }

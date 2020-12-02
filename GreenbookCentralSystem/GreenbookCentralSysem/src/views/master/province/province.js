@@ -98,11 +98,13 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width: "15%"
       },
       export: true
     },
@@ -112,11 +114,13 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "70%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "70%"
       }
     },
 
@@ -134,11 +138,13 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        width: "15%"
       }
     },
   ];
@@ -283,8 +289,8 @@ export default function EnhancedTable() {
                 onClick: (event) => setAddModal(true)
               },
               {
-                icon: oTableIcons.Filter,
-                tooltip: 'Show Filter',
+                icon: oTableIcons.Search,
+                tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
               }

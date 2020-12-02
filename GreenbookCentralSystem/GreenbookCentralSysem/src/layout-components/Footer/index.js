@@ -12,16 +12,15 @@ const Footer = (props) => {
   return (
     <>
       <div
-        className={clsx('app-footer text-black-50', {
+        className={clsx('app-footer text-black-100', {
           'app-footer--shadow': footerShadow,
           'app-footer--opacity-bg': footerBgTransparent
         })}>
         
         <div className="app-footer--second">
-           CTA
+           <b>CTA
            ©
-          2020 
-          
+          2020</b> 
         </div>
       </div>
     </>

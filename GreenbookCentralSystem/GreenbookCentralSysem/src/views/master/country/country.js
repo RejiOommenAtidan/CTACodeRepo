@@ -11,13 +11,16 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import { AddDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import { Alerts } from '../../alerts';
 import handleError from "../../../auth/_helpers/handleError";
 //import { onFilterChanged } from './test';
 //import MTableFilterRow from './myfilter';
 import MyComp from '../../common/filtercomponent';
+import {
+  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
+  sButtonColor, sButtonSize, sButtonVariant
+} from "../../../config/commonConfig";
 
 const useStyles = makeStyles(() => ({
   /*root: {
@@ -67,8 +70,7 @@ const useStyles = makeStyles(() => ({
 */
 }));
 
-export default function EnhancedTable() {
-  console.log("Rendering...");
+export default function Country() {
   const classes = useStyles();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = React.useState([]);
@@ -129,7 +131,6 @@ export default function EnhancedTable() {
     setMyArray(tmp);
   };
 
-
   const updateArray = (newObj) => {
     const newArray = myarray.map(d => {
       if (d.id === newObj.id) {
@@ -149,7 +150,7 @@ export default function EnhancedTable() {
     //setMyElement(e.target);
     setCurrId(e.target.id);
     //setVal(e.target.value);
-  }
+  };
 
   let tableRef = useRef(null);
 
@@ -161,11 +162,13 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width: "15%"
       },
       export: true
     },
@@ -175,11 +178,13 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "15%"
       },
       filterComponent: () =>
         <MyComp
@@ -198,11 +203,13 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "60%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "60%"
       },
       filterComponent: () =>
         <MyComp
@@ -219,7 +226,6 @@ export default function EnhancedTable() {
     {
       sorting: false,
       filtering: false,
-      align: "center",
       field: 'edit',
       title: 'Edit',
       filtering: false,
@@ -232,11 +238,13 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        width: "15%"
       }
     },
     {
@@ -250,7 +258,7 @@ export default function EnhancedTable() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
@@ -265,7 +273,7 @@ export default function EnhancedTable() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
@@ -617,7 +625,7 @@ export default function EnhancedTable() {
                 onClick: (event) => setAddModal(true)
               },
               {
-                icon: oTableIcons.Filter,
+                icon: oTableIcons.Search,
                 tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
