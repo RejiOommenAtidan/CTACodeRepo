@@ -118,7 +118,7 @@ INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy
 INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Pays de la loire', 'FR',now(),1,now(),1);
 INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Picardie', 'FS',now(),1,now(),1);
 INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Poitou Charentes', 'FT',now(),1,now(),1);
-INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Provence-Alpes-Cote d\'Asur', 'FU',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Provence-Alpes-Cote d''Asur', 'FU',now(),1,now(),1);
 INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Rhone-Alpes', 'FV',now(),1,now(),1);
 INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Alabama', 'AL',now(),1,now(),1);
 INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Alaska', 'AK',now(),1,now(),1);
@@ -233,7 +233,7 @@ INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy
 INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Walkato', 'WKO',now(),1,now(),1);
 INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bay of Plenty', 'BOP',now(),1,now(),1);
 INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Gisbone', 'GIS',now(),1,now(),1);
-INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Hawke\'s Bay', 'HKB',now(),1,now(),1);
+INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Hawke''s Bay', 'HKB',now(),1,now(),1);
 INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Taranaki', 'TKI',now(),1,now(),1);
 INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Manawtu-Wanganui', 'MWT',now(),1,now(),1);
 INSERT INTO `lstregion` (`sRegion_name`, `sRegion_code`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Wellington', 'WGN',now(),1,now(),1);
