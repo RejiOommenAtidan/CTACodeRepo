@@ -13,7 +13,10 @@ import { InputParams } from './inputparams';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import Moment from 'moment';
 import MaterialTable, { MTableToolbar } from 'material-table';
-import { oOptions, oTableIcons } from '../../config/commonConfig';
+import {
+  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
+  sButtonColor, sButtonSize, sButtonVariant
+} from "../../config/commonConfig";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -94,11 +97,13 @@ export default () => {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "5%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width: "5%"
       }
     },
     {
@@ -107,11 +112,13 @@ export default () => {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "15%"
       }
     },
     {
@@ -120,11 +127,13 @@ export default () => {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "15%"
       }
     },
     {
@@ -133,11 +142,13 @@ export default () => {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "15%"
       }
     },
     {
@@ -146,11 +157,13 @@ export default () => {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "5%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width: "5%"
       }
     },
     {
@@ -159,11 +172,13 @@ export default () => {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "10%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width: "10%"
       }
     },
     {
@@ -172,11 +187,13 @@ export default () => {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        width: "15%"
       }
     },
     {
@@ -185,11 +202,13 @@ export default () => {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "25%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "25%"
       }
     }
   ];
@@ -308,9 +327,9 @@ export default () => {
                       <MTableToolbar {...props} />
                       {makeTable && (<div>
                         <Button
-                          variant="outlined"
-                          size="small"
-                          color="secondary"
+                        variant={sButtonVariant}
+                        color={sButtonColor}
+                        size={sButtonSize}
                           className={classes.button}
                           startIcon={<DoneAllIcon />}
                           onClick={() => {

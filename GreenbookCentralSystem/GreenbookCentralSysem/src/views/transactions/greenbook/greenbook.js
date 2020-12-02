@@ -11,7 +11,10 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import MaterialTable from 'material-table';
 import handleError from '../../../auth/_helpers/handleError';
 import IconButton from '@material-ui/core/IconButton';
-import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
+import {
+  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
+  sButtonColor, sButtonSize, sButtonVariant
+} from "../../../config/commonConfig";
 import Moment from 'moment';
 
 const useStyles = makeStyles(() => ({
@@ -33,11 +36,13 @@ export default function GBList(props) {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "5%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width: "5%"
       },
       export: true,
       render: rowData => <Button size="small" color="primary"
@@ -51,11 +56,13 @@ export default function GBList(props) {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "20%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "20%"
       },
       export: true,
       render: rowData => (rowData["sFirstName"] === null ? "" : rowData["sFirstName"]) + " " + (rowData["sMiddleName"] === null ? "" : rowData["sMiddleName"]) + " " + (rowData["sLastName"] === null ? "" : rowData["sLastName"]),
@@ -65,11 +72,13 @@ export default function GBList(props) {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "3%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width: "3%"
       },
       export: true,
       render: rowData => rowData["dtDOB"] === null ? "NA" : Moment().diff(rowData["dtDOB"], 'years')
@@ -88,11 +97,13 @@ export default function GBList(props) {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "2%"
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        width: "2%"
       }
     }
   ];
@@ -105,6 +116,7 @@ export default function GBList(props) {
     axios.get(`/Greenbook/GetGreenbooks`)
       .then(resp => {
         if (resp.status === 200) {
+          //sCountryID
           console.log(resp.data);
           setdataAPI(resp.data);
           setisLoading(false);
@@ -139,8 +151,8 @@ export default function GBList(props) {
             options={oOptions}
             actions={[
               {
-                icon: oTableIcons.Filter,
-                tooltip: 'Show Filter',
+                icon: oTableIcons.Search,
+                tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
               }

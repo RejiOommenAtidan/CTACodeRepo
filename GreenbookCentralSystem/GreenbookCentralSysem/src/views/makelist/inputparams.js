@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link, Select, Table } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash/fp";
-import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-import { forwardRef } from 'react';
-import { red } from '@material-ui/core/colors';
-
+import { sButtonColor, sButtonSize, sButtonVariant } from "../../config/commonConfig";
 
 export const InputParams = (props) => {
-
-
   const selectStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -72,8 +67,8 @@ export const InputParams = (props) => {
 
   return (
 
-    <div style={{maxWidth: '1090px'}} >
-      <form  onSubmit={handleSubmit(handleFormSubmit)}>
+    <div style={{ maxWidth: '1090px' }} >
+      <form onSubmit={handleSubmit(handleFormSubmit)}>
 
         <Grid container spacing={1}>
           <Grid item xs>
@@ -122,117 +117,117 @@ export const InputParams = (props) => {
             </FormControl>
           </Grid>
           <Grid item xs >
-            <FormControl style={{paddingRight: '20px'}}>
+            <FormControl style={{ paddingRight: '20px' }}>
               <Controller
                 render={props => (
                   <Autocomplete
-                  {...props}  
-                  openOnFocus
-                  clearOnEscape
-                  autoComplete = {true}
-                  autoHighlight = {true}
-                  onChange={
-                    (e, value) => {
-                      props.onChange(value);
-                      if (value !== null) {
-                        console.log("Madeb id changed to:", value.id);
-                        setMadebTypeId(value.id);
-                      }
-                      else {
-                        setMadebTypeId(0);
+                    {...props}
+                    openOnFocus
+                    clearOnEscape
+                    autoComplete={true}
+                    autoHighlight={true}
+                    onChange={
+                      (e, value) => {
+                        props.onChange(value);
+                        if (value !== null) {
+                          console.log("Madeb id changed to:", value.id);
+                          setMadebTypeId(value.id);
+                        }
+                        else {
+                          setMadebTypeId(0);
+                        }
                       }
                     }
-                  }
-                  style={{ width: 180 }}
-                  value={valueMadebTypes}
-                  id="id_nMadebTypeId"
-                  options={madebTypes}
-                  getOptionLabel={(option) => option.sMadebDisplayName}
-                  renderOption={(option) => (
-                    <React.Fragment>
-                      <span>{option.sMadebDisplayName}</span>
-                    </React.Fragment>
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Why Issued"
-                      variant="standard"
-                      //className={props.classes.textField}
-                      inputProps={{
-                        ...params.inputProps,
-                        autoComplete: 'off', // disable autocomplete and autofill
-                      }}
-                    />
-                  )}
+                    style={{ width: 180 }}
+                    value={valueMadebTypes}
+                    id="id_nMadebTypeId"
+                    options={madebTypes}
+                    getOptionLabel={(option) => option.sMadebDisplayName}
+                    renderOption={(option) => (
+                      <React.Fragment>
+                        <span>{option.sMadebDisplayName}</span>
+                      </React.Fragment>
+                    )}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Why Issued"
+                        variant="standard"
+                        //className={props.classes.textField}
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'off', // disable autocomplete and autofill
+                        }}
+                      />
+                    )}
                   />
-                  )}
-                  name="Madebs"
-                  control={control}
-                  rules={{ required: true }}
-                />
-                {errors.Madebs && <span style={{color: 'red'}}>Select Madeb Type</span>}
-                
-                
-              
+                )}
+                name="Madebs"
+                control={control}
+                rules={{ required: true }}
+              />
+              {errors.Madebs && <span style={{ color: 'red' }}>Select Madeb Type</span>}
+
+
+
             </FormControl>
           </Grid>
           <Grid item xs >
-            <FormControl style={{paddingRight: '20px'}} >
+            <FormControl style={{ paddingRight: '20px' }} >
               <Controller
-               render={props => (
-              <Autocomplete
-              {...props}  
-                openOnFocus
-                clearOnEscape
-                autoComplete = {true}
-                  autoHighlight = {true}
-                onChange={
-                  (e, value) => {
-                    props.onChange(value);
-                    if (value !== null) {
-                      console.log("AuthRegion id changed to:", value.id);
-                      setAuthRegionId(value.id);
+                render={props => (
+                  <Autocomplete
+                    {...props}
+                    openOnFocus
+                    clearOnEscape
+                    autoComplete={true}
+                    autoHighlight={true}
+                    onChange={
+                      (e, value) => {
+                        props.onChange(value);
+                        if (value !== null) {
+                          console.log("AuthRegion id changed to:", value.id);
+                          setAuthRegionId(value.id);
+                        }
+                        else {
+                          setAuthRegionId(0);
+                        }
+                      }
                     }
-                    else {
-                      setAuthRegionId(0);
-                    }
-                  }
-                }
-                style={{ width: 180 }}
-                value={valueAuthRegion}
-                id="id_nAuthorityId"
-                options={authRegions}
-                
-                getOptionLabel={(option) => option.sAuthRegion}
-                renderOption={(option) => (
-                  <React.Fragment>
-                    <span>{option.sAuthRegion}</span>
-                  </React.Fragment>
-                )}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Where Issued"
-                    //className={props.classes.textField}
-                    variant="standard"
-                    inputProps={{
-                      ...params.inputProps,
-                      autoComplete: 'off', // disable autocomplete and autofill
-                    }}
+                    style={{ width: 180 }}
+                    value={valueAuthRegion}
+                    id="id_nAuthorityId"
+                    options={authRegions}
+
+                    getOptionLabel={(option) => option.sAuthRegion}
+                    renderOption={(option) => (
+                      <React.Fragment>
+                        <span>{option.sAuthRegion}</span>
+                      </React.Fragment>
+                    )}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Where Issued"
+                        //className={props.classes.textField}
+                        variant="standard"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'off', // disable autocomplete and autofill
+                        }}
+                      />
+                    )}
                   />
                 )}
+                name="AuthRegion"
+                control={control}
+                rules={{ required: true }}
               />
-              )}
-                  name="AuthRegion"
-                  control={control}
-                  rules={{ required: true }}
-              />
-              {errors.AuthRegion && <span style={{color: 'red'}}>Select Authority Region</span>}
+              {errors.AuthRegion && <span style={{ color: 'red' }}>Select Authority Region</span>}
             </FormControl>
           </Grid>
           <Grid item  >
-            <FormControl style={{paddingRight: '20px'}} >
+            <FormControl style={{ paddingRight: '20px' }} >
               <InputLabel id="Printed/Not">Print Status</InputLabel>
               <Controller
                 render={props => (
@@ -249,20 +244,24 @@ export const InputParams = (props) => {
                   </Select>
                 )}
                 name="Printed"
-                  control={control}
-                  rules={{ required: true }}
+                control={control}
+                rules={{ required: true }}
               />
-              {errors.Printed && <span style={{color: 'red'}}>Select Print Status</span>}
+              {errors.Printed && <span style={{ color: 'red' }}>Select Print Status</span>}
             </FormControl>
           </Grid>
           <Grid item  >
             <FormControl >
-              <Button variant="outlined" type="submit" color="primary" style={{ fontSize: '1em' }}>Make List</Button>
+              <Button
+                variant={sButtonVariant}
+                color={sButtonColor}
+                size={sButtonSize}
+                type="submit"
+                style={{ fontSize: '1em' }}>Make List</Button>
             </FormControl>
           </Grid>
         </Grid>
       </form>
     </div>
   );
-
 };
