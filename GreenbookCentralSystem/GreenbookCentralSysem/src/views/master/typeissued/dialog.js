@@ -13,6 +13,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { useSelector } from 'react-redux';
+import {
+  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
+  sButtonColor, sButtonSize, sButtonVariant
+} from "../../../config/commonConfig";
 
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
@@ -56,9 +60,19 @@ export const AddDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+          <Button
+            onClick={props.handleAddClickClose}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Cancel</Button>
           {/* <Button onClick={() => props.addAPICall({ sTypeIssued: typeIssued })} color="primary">Save</Button> */}
-          <Button type="submit" color="primary">Save</Button>
+          <Button
+            type="submit"
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>
@@ -109,8 +123,18 @@ export const EditDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-          <Button type="submit" color="primary">Save</Button>
+          <Button
+            onClick={props.handleEditClickClose}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Cancel</Button>
+          <Button
+            type="submit"
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Save</Button>
           {/* <Button onClick={() => props.editAPICall({ id: props.typeIssuedObj.id, sTypeIssued: Name })} color="primary">Save</Button> */}
         </DialogActions>
       </form>

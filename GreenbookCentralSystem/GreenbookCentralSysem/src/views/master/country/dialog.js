@@ -15,8 +15,12 @@ import Slide from '@material-ui/core/Slide';
 import MuiAlert from '@material-ui/lab/Alert';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import {
+  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
+  sButtonColor, sButtonSize, sButtonVariant
+} from "../../../config/commonConfig";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -41,26 +45,26 @@ export const EditDialog = (props) => {
     setSnackbarOpen(false);
   };
   //console.log("nDefaultAuthRegionID is ", nDefaultAuthRegionID);
-  
+
   const regions = authRegions && authRegions.filter((a) => {
     return a.sCountryID === props.countryObj.countryId;
-      
-    
+
+
   })
   //console.log ("Regions are", regions);
-  
+
   const valueAuthRegion = authRegions && nDefaultAuthRegionID && authRegions.find((element) => element.id === nDefaultAuthRegionID);
-  console.log ("valueauthregion is", valueAuthRegion);
+  console.log("valueauthregion is", valueAuthRegion);
 
   const handleSubmitEditRecord = () => {
     //props.editAPICall(madeb);
     props.editAPICall(
-      { 
-        id: props.countryObj.id, 
-        sCountryID: props.countryObj.countryId, 
+      {
+        id: props.countryObj.id,
+        sCountryID: props.countryObj.countryId,
         sCountry: Name,
         nDefaultAuthRegionID,
-        nUpdatedBy: userId 
+        nUpdatedBy: userId
       }
     )
   }
@@ -106,49 +110,49 @@ export const EditDialog = (props) => {
                 </Grid>
                 <Grid item xs={12} >
                   <FormControl className={props.classes.formControl}>
-                  <Autocomplete
+                    <Autocomplete
 
-                    openOnFocus
-                    clearOnEscape
-                    autoComplete = {true}
-                    autoHighlight = {true}
-                    onChange={
-                      (e, value) => {
-                        if (value !== null) {
-                          console.log("AuthRegion id changed to:", value.id);
-                          setDefaultAuthRegionID(value.id);
-                        }
-                        else {
-                          setDefaultAuthRegionID(0);
+                      openOnFocus
+                      clearOnEscape
+                      autoComplete={true}
+                      autoHighlight={true}
+                      onChange={
+                        (e, value) => {
+                          if (value !== null) {
+                            console.log("AuthRegion id changed to:", value.id);
+                            setDefaultAuthRegionID(value.id);
+                          }
+                          else {
+                            setDefaultAuthRegionID(0);
+                          }
                         }
                       }
-                    }
-                    style={{ width: 180 }}
-                value={valueAuthRegion}
-                id="id_nAuthorityId"
-                options={regions}
-                
-                getOptionLabel={(option) => option.sAuthRegion}
-                renderOption={(option) => (
-                  <React.Fragment>
-                    <span>{option.sAuthRegion}</span>
-                  </React.Fragment>
-                )}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Authority Region"
-                    //className={props.classes.textField}
-                    variant="standard"
-                    inputProps={{
-                      ...params.inputProps,
-                      autoComplete: 'off', // disable autocomplete and autofill
-                    }}
-                  />
-                )}
-              />
-              
-                 
+                      style={{ width: 180 }}
+                      value={valueAuthRegion}
+                      id="id_nAuthorityId"
+                      options={regions}
+
+                      getOptionLabel={(option) => option.sAuthRegion}
+                      renderOption={(option) => (
+                        <React.Fragment>
+                          <span>{option.sAuthRegion}</span>
+                        </React.Fragment>
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Authority Region"
+                          //className={props.classes.textField}
+                          variant="standard"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'off', // disable autocomplete and autofill
+                          }}
+                        />
+                      )}
+                    />
+
+
                   </FormControl>
                 </Grid>
               </Grid>
@@ -156,9 +160,19 @@ export const EditDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
+          <Button
+            onClick={props.handleEditClickClose}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Cancel</Button>
           {/* <Button onClick={() => props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })} color="primary">Save</Button> */}
-          <Button type="submit" color="primary">Save</Button>
+          <Button
+            type="submit"
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>
@@ -199,16 +213,25 @@ export const AddDialog = (props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+        <Button
+          onClick={props.handleAddClickClose}
+          variant={sButtonVariant}
+          color={sButtonColor}
+          size={sButtonSize}
+        >Cancel</Button>
         <Button onClick={() => props.addAPICall(
-          { 
-            sCountryID: countryId, 
+          {
+            sCountryID: countryId,
             sCountry: countryName,
             nEnteredBy: userId,
-            nUpdatedBy: userId 
+            nUpdatedBy: userId
           }
-          )
-        } color="primary">Save</Button>
+        )
+        }
+          variant={sButtonVariant}
+          color={sButtonColor}
+          size={sButtonSize}
+        >Save</Button>
       </DialogActions>
     </Dialog>
   );
