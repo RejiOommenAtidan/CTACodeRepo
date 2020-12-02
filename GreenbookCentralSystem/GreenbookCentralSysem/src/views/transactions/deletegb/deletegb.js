@@ -110,7 +110,7 @@ export default function GiveGBId(){
         left: '60%', 
         top: '50%',
         transform: 'translate(-50%, -50%)',
-        border: '1px solid red'
+        //border: '1px solid red'
         
     }}
 >

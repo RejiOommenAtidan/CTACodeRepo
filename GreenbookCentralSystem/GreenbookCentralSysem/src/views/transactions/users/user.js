@@ -115,7 +115,7 @@ export default function Users() {
     },
     {
       field: "oUser.sUsername",
-      title: "Username",
+      title: "User Name",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -128,7 +128,7 @@ export default function Users() {
     },
     {
       field: "oUser.sFullname",
-      title: "Fullname",
+      title: "Full Name",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
