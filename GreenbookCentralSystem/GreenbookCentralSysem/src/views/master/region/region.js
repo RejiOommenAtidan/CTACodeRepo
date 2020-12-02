@@ -9,9 +9,12 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import { AddDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
+import {
+  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
+  sButtonColor, sButtonSize, sButtonVariant
+} from "../../../config/commonConfig";
 
 const useStyles = makeStyles(() => ({
 }));
@@ -53,11 +56,13 @@ export default function Region() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width: "15%"
       },
       export: true
     },
@@ -67,11 +72,13 @@ export default function Region() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "10%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "10%"
       }
     },
     {
@@ -80,11 +87,13 @@ export default function Region() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "60%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "60%"
       }
     },
     {
@@ -101,11 +110,13 @@ export default function Region() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "10%"
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        width: "10%"
       }
     },
   ];
@@ -229,7 +240,7 @@ export default function Region() {
                 onClick: (event) => setAddModal(true)
               },
               {
-                icon: oTableIcons.Filter,
+                icon: oTableIcons.Search,
                 tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }

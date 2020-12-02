@@ -8,7 +8,7 @@ import {
   Select,
 } from '@material-ui/core';
 
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -18,6 +18,10 @@ import Slide from '@material-ui/core/Slide';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import {
+  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
+  sButtonColor, sButtonSize, sButtonVariant
+} from "../../../config/commonConfig";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -32,21 +36,22 @@ export const EditDialog = (props) => {
   const [authRegion, setAuthRegion] = useState(props.authRegionObj.authRegion);
   const [countryID, setCountryID] = useState(props.authRegionObj.countryID);
   const [sCurrencyCode, setCurrencyCode] = useState(props.authRegionObj.sCurrencyCode);
-  
+
   const ids = props.countryList.map((data) => data.sCountryID);
-  let value ="";
+  let value = "";
   ids.forEach(element => {
-    if(element === countryID){
+    if (element === countryID) {
       value = element;
     }
   });
-  const children =  () => { 
-    return (props.countryList.map((country) =>  (<option value={country.sCountryID}>{country.sCountry}</option>)))};
+  const children = () => {
+    return (props.countryList.map((country) => (<option value={country.sCountryID}>{country.sCountry}</option>)))
+  };
   const opts = children();
 
   let valueCountry = [];
   props.countryList.forEach(element => {
-    if(element.sCountryID === countryID){
+    if (element.sCountryID === countryID) {
       valueCountry = element;
     }
   })
@@ -55,12 +60,12 @@ export const EditDialog = (props) => {
 
   const handleSubmitEditRecord = () => {
     props.editAPICall(
-      { 
-        ID: props.authRegionObj.ID, 
-        sCountryID: countryID, 
+      {
+        ID: props.authRegionObj.ID,
+        sCountryID: countryID,
         sAuthRegion: authRegion,
         sCurrencyCode,
-        nUpdatedBy: userId 
+        nUpdatedBy: userId
       }
     )
   }
@@ -69,17 +74,17 @@ export const EditDialog = (props) => {
     <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Authority Region</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
-      <DialogContent>
-        <DialogContentText>
+        <DialogContent>
+          <DialogContentText>
             <Grid container>
-            <Grid item xs={12} sm= {12}>
-                <FormControl  className={props.classes.formControl}>
+              <Grid item xs={12} sm={12}>
+                <FormControl className={props.classes.formControl}>
                   <Autocomplete
                     openOnFocus
                     fullWidth
                     style={{ width: 250 }}
                     clearOnEscape
-                    onChange={  
+                    onChange={
                       (e, value) => {
                         if (value !== null) {
                           console.log(value.sCountryID);
@@ -91,7 +96,7 @@ export const EditDialog = (props) => {
                       }
                     }
                     style={{ width: 180 }}
-                    value={valueCountry} 
+                    value={valueCountry}
                     id="id_sCountryID"
                     options={props.countryList}
                     autoHighlight
@@ -118,8 +123,8 @@ export const EditDialog = (props) => {
                     )}
                   />
                   {_.get("text_country.type", errors) === "required" && (
-                        <span style={{color: 'red'}}>This field is required</span>
-                    )}
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
                 </FormControl>
               </Grid>
               {/*<Grid item xs={12}>
@@ -160,13 +165,23 @@ export const EditDialog = (props) => {
                 </FormControl>
               </Grid>
             </Grid>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.editAPICall({ ID: props.authRegionObj.ID, sCountryID: countryID, sAuthRegion: authRegion })} color="primary">Save</Button> */}
-        <Button type="submit" color="primary">Save</Button> 
-      </DialogActions>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={props.handleEditClickClose}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Cancel</Button>
+          {/* <Button onClick={() => props.editAPICall({ ID: props.authRegionObj.ID, sCountryID: countryID, sAuthRegion: authRegion })} color="primary">Save</Button> */}
+          <Button
+            type="submit"
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Save</Button>
+        </DialogActions>
       </form>
     </Dialog>
   );
@@ -207,23 +222,24 @@ export const AddDialog = (props) => {
   const [sCurrencyCode, setCurrencyCode] = useState('');
   // const children =  () => { 
   //   return (ids.filter((data, index, array) => (array.indexOf(data) == index)).map((filteredData) =>  (<option value={filteredData}>{filteredData}</option>)))};
-    const children =  () => { 
-      return (props.countryList.map((country) =>  (<option value={country.sCountryID}>{country.sCountry}</option>)))};
-    
-    const opts = children();
+  const children = () => {
+    return (props.countryList.map((country) => (<option value={country.sCountryID}>{country.sCountry}</option>)))
+  };
+
+  const opts = children();
   //const opts1 = (<option>CJ</option>);
 
   let valueCountry = [];
-  
+
 
   const handleSubmitAddRecord = () => {
     props.addAPICall(
-      { 
-        sCountryID: countryID, 
+      {
+        sCountryID: countryID,
         sAuthRegion: authRegion,
         nEnteredBy: userId,
         sCurrencyCode,
-        nUpdatedBy: userId 
+        nUpdatedBy: userId
       }
     )
   }
@@ -232,15 +248,15 @@ export const AddDialog = (props) => {
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Authority Region</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitAddRecord)}>
-      <DialogContent>
-        <DialogContentText>
-          <Grid container>
-          <Grid item xs={12} sm={12} lg={12} >
+        <DialogContent>
+          <DialogContentText>
+            <Grid container>
+              <Grid item xs={12} sm={12} lg={12} >
                 <FormControl >
                   <Autocomplete
                     openOnFocus
                     clearOnEscape
-                    onChange={  
+                    onChange={
                       (e, value) => {
                         if (value !== null) {
                           console.log(value.sCountryID);
@@ -279,11 +295,11 @@ export const AddDialog = (props) => {
                     )}
                   />
                   {_.get("text_country.type", errors) === "required" && (
-                        <span style={{color: 'red'}}>This field is required</span>
-                    )}
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
                 </FormControl>
               </Grid>
-            {/* <Grid item xs={12}>
+              {/* <Grid item xs={12}>
             <FormControl className={props.classes.formControl}>
               <Select 
                 id="countryID"
@@ -295,24 +311,24 @@ export const AddDialog = (props) => {
               </Select>
             </FormControl>
           </Grid> */}
-            <Grid item xs={12} >
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_AuthRegion"
-                  name="sAuthRegion"
-                  label="Auth Region"
-                  type="text"
-                  onChange={(e) => { setAuthRegion(e.target.value) }}
-                  inputRef={register({
-                    required: true
-                  })}
-                />
-                {_.get("sAuthRegion.type", errors) === "required" && (
-                      <span style={{color: 'red'}}>This field is required</span>
-                    )}
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} >
+              <Grid item xs={12} >
+                <FormControl className={props.classes.formControl}>
+                  <TextField
+                    id="id_AuthRegion"
+                    name="sAuthRegion"
+                    label="Auth Region"
+                    type="text"
+                    onChange={(e) => { setAuthRegion(e.target.value) }}
+                    inputRef={register({
+                      required: true
+                    })}
+                  />
+                  {_.get("sAuthRegion.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} >
                 <FormControl>
                   <TextField
                     id="id_CurrencyCode"
@@ -323,15 +339,25 @@ export const AddDialog = (props) => {
                   />
                 </FormControl>
               </Grid>
-          </Grid>
+            </Grid>
 
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-        {/* <Button onClick={() => props.addAPICall({ sCountryID: countryID, sAuthRegion: authRegion })} color="primary">Save</Button> */}
-        <Button type="submit" color="primary">Save</Button> 
-      </DialogActions>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={props.handleAddClickClose}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Cancel</Button>
+          {/* <Button onClick={() => props.addAPICall({ sCountryID: countryID, sAuthRegion: authRegion })} color="primary">Save</Button> */}
+          <Button
+            type="submit"
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Save</Button>
+        </DialogActions>
       </form>
     </Dialog>
   );

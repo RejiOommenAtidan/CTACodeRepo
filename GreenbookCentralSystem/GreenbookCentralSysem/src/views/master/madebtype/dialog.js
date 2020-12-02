@@ -18,6 +18,10 @@ import Slide from '@material-ui/core/Slide';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { useSelector } from 'react-redux';
+import {
+  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
+  sButtonColor, sButtonSize, sButtonVariant
+} from "../../../config/commonConfig";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -58,7 +62,7 @@ export const EditDialog = (props) => {
                       name="sMadabType"
                       label={<p>Madeb Type<span style={{ color: "red" }} > *</span></p>}
                       type="text"
-                      
+
                       value={madebType}
                       onChange={(e) => { setMadebType(e.target.value) }}
                       inputRef={register({
@@ -70,8 +74,8 @@ export const EditDialog = (props) => {
                     )}
                   </FormControl>
                 </Grid>
-              
-              
+
+
                 <Grid item xs={12} >
                   <FormControl className={props.classes.formControl}>
                     <TextField
@@ -79,7 +83,7 @@ export const EditDialog = (props) => {
                       name="sMadebDisplayName"
                       label={<p>Display Name<span style={{ color: "red" }} > *</span></p>}
                       type="text"
-                      
+
                       value={sMadebDisplayName}
                       onChange={(e) => { setMadebDisplayName(e.target.value) }}
                       inputRef={register({
@@ -91,8 +95,8 @@ export const EditDialog = (props) => {
                     )}
                   </FormControl>
                 </Grid>
-              
-              
+
+
                 <Grid item xs={12} >
                   <FormControl className={props.classes.formControl}>
                     <TextField
@@ -100,7 +104,7 @@ export const EditDialog = (props) => {
                       name="sMadebDisplayKey"
                       label={<p>Display Key<span style={{ color: "red" }} > *</span></p>}
                       type="text"
-                      
+
                       value={sMadebDisplayKey}
                       onChange={(e) => { setMadebDisplayKey(e.target.value) }}
                       inputRef={register({
@@ -117,9 +121,19 @@ export const EditDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
+          <Button
+            onClick={props.handleEditClickClose}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Cancel</Button>
           {/* <Button onClick={() => props.editAPICall({ id: props.madebTypeObj.id, sMadebType: madebType })} color="primary">Save</Button> */}
-          <Button type="submit" color="primary">Save</Button>
+          <Button
+            type="submit"
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>
@@ -184,7 +198,7 @@ export const AddDialog = (props) => {
                     id="id_madebType"
                     name="sMadebType"
                     label={<p>Madeb Type<span style={{ color: "red" }} > *</span></p>}
-                    
+
                     type="text"
                     onChange={(e) => { setMadebType(e.target.value) }}
                     inputRef={register({
@@ -197,48 +211,58 @@ export const AddDialog = (props) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12} >
-                  <FormControl className={props.classes.formControl}>
-                    <TextField
-                      id="id_MadebType"
-                      name="sMadebDisplayName"
-                      label={<p>Display Name<span style={{ color: "red" }} > *</span></p>}
-                      type="text"
-                      
-                      onChange={(e) => { setMadebDisplayName(e.target.value) }}
-                      inputRef={register({
-                        required: true
-                      })}
-                    />
-                    {_.get("sMadebDisplayName.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} >
-                  <FormControl className={props.classes.formControl}>
-                    <TextField
-                      id="id_MadebType"
-                      name="sMadebDisplayKey"
-                      label={<p>Display Key<span style={{ color: "red" }} > *</span></p>}
-                      type="text"
-                      
-                      onChange={(e) => { setMadebDisplayKey(e.target.value) }}
-                      inputRef={register({
-                        required: true
-                      })}
-                    />
-                    {_.get("sMadebDisplayKey.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
-                  </FormControl>
-                </Grid>
+                <FormControl className={props.classes.formControl}>
+                  <TextField
+                    id="id_MadebType"
+                    name="sMadebDisplayName"
+                    label={<p>Display Name<span style={{ color: "red" }} > *</span></p>}
+                    type="text"
+
+                    onChange={(e) => { setMadebDisplayName(e.target.value) }}
+                    inputRef={register({
+                      required: true
+                    })}
+                  />
+                  {_.get("sMadebDisplayName.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} >
+                <FormControl className={props.classes.formControl}>
+                  <TextField
+                    id="id_MadebType"
+                    name="sMadebDisplayKey"
+                    label={<p>Display Key<span style={{ color: "red" }} > *</span></p>}
+                    type="text"
+
+                    onChange={(e) => { setMadebDisplayKey(e.target.value) }}
+                    inputRef={register({
+                      required: true
+                    })}
+                  />
+                  {_.get("sMadebDisplayKey.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
+                </FormControl>
+              </Grid>
             </Grid>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+          <Button
+            onClick={props.handleAddClickClose}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Cancel</Button>
           {/* <Button onClick={() => props.addAPICall({sMadebType: madebType })} color="primary">Save</Button> */}
-          <Button type="submit" color="primary">Save</Button>
+          <Button
+            type="submit"
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>

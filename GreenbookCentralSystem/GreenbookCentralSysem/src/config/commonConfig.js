@@ -80,4 +80,9 @@ export const oTableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} color={"primary"} ref={ref} />)
 };
 
+export const sButtonColor = "primary";
+
+export const sButtonVariant = "contained";
+
+export const sButtonSize = "small";
 
