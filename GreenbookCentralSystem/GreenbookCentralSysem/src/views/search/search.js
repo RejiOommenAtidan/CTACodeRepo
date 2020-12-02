@@ -110,6 +110,11 @@ const useStyles = makeStyles((theme) => ({
   },
   labelAsterisk: {
     color: "red"
+  },
+  link: {
+    text: {
+      textDecoration: 'underline'
+    }
   }
 }));
 
@@ -182,20 +187,61 @@ export default function SearchPage() {
   const columns = [
     {
       field: "nSerialNo",
-      title: "Sr No.",
+      title: "#",
       hidden: false,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: '1%'
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
-      }
+        padding: '0px',
+        margin: '0px',
+        width: '1%'
+      },
+      searchable: false,
+      filtering: false
     },
+    // {
+    //   render: rowData => <div onContextMenu={(e) => { handleClick(e) }} style={{ cursor: 'context-menu' }} > <Button className="m-2 btn-transparent btn-link btn-link-first" size={"large"} onClick={() => { viewGb(rowData['sGBID']) }}><span><u>{rowData['sCountryID'] + rowData['sGBID']}</u></span></Button>
+    //     <Menu
+    //       keepMounted
+    //       open={contextState.mouseY !== null}
+    //       onClose={() => { handleClose() }}
+    //       anchorReference="anchorPosition"
+    //       anchorPosition={
+    //         contextState.mouseY !== null && contextState.mouseX !== null
+    //           ? { top: contextState.mouseY, left: contextState.mouseX }
+    //           : undefined
+    //       }
+    //     >
+    //       <MenuItem onClick={() => { handleView(rowData['sGBID']) }}>View</MenuItem>
+    //       <MenuItem onClick={() => { handleEdit(rowData['id']) }}>Edit</MenuItem>
+    //     </Menu>
+    //   </div>
+    //   ,
+    //   field: "sGBID",
+    //   title: "GB ID",
+    //   filterPlaceholder: 'Search..',
+    //   headerStyle: {
+    //     textAlign: "center",
+    //     textAlignLast: "center",
+    //     verticalAlign: "middle",
+    //     padding: '0px',
+    //     margin: '0px',
+    //     width: '3%'
+    //   },
+    //   cellStyle: {
+    //     textAlign: "left",
+    //     padding: '0px',
+    //     margin: '0px',
+    //     width: '3%'
+    //   }
+    // },
     {
-      render: rowData => <div onContextMenu={(e) => { handleClick(e) }} style={{ cursor: 'context-menu' }} > <Button className="m-2 btn-transparent btn-link btn-link-second" size={"small"} onClick={() => { viewGb(rowData['sGBID']) }}><span>{rowData['sCountryID'] + rowData['sGBID']}</span></Button>
+      render: rowData => <div onContextMenu={(e) => { handleClick(e) }} style={{ cursor: 'context-menu' }} > <Button className="m-2 btn-transparent btn-link btn-link-first" size={"large"} onClick={() => { viewGb(rowData['sGBID']) }}><span><u>{rowData['sGBIDCombo']}</u></span></Button>
         <Menu
           keepMounted
           open={contextState.mouseY !== null}
@@ -212,39 +258,49 @@ export default function SearchPage() {
         </Menu>
       </div>
       ,
-      field: "sGBID",
-      title: "GB ID",
+      field: "sGBIDCombo",
+      title: "GBIDCombo",
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        padding: '0px',
+        margin: '0px',
+        width: '3%'
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '0px',
+        margin: '0px',
+        width: '3%'
       }
     },
     {
-      render: rowData => (rowData['sFirstName'] ? rowData['sFirstName'] : '') + " " + (rowData['sLastName'] ? rowData['sLastName'] : ''),
+      //render: rowData => (rowData['sFirstName'] ? rowData['sFirstName'] : '') + " " + (rowData['sLastName'] ? rowData['sLastName'] : ''),
       field: "sFirstName",
       title: "Name",
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
+        //textAlignLast: "center",
+        verticalAlign: "middle",
+        padding: '0px',
+        margin: '0px',
+        width: '8%'
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '0px',
+        margin: '0px',
+        width: '8%'
       }
     },
     {
       field: "sLastName",
-      title: "sLastName",
+      title: "Last Name",
       filterPlaceholder: 'Search..',
-      hidden: true,
+      //hidden: true,
       searchable: true,
       headerStyle: {
         textAlign: "center",
@@ -252,8 +308,8 @@ export default function SearchPage() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '0px'
       }
     },
     {
@@ -266,14 +322,29 @@ export default function SearchPage() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '0px'
       }
     },
+    // {
+    //   field: "dtDOB",
+    //   title: "DOB",
+    //   render: rowData => rowData.dtDOB ? Moment(rowData.dtDOB).format('DD-MM-YYYY') : '',
+    //   filterPlaceholder: 'Search..',
+    //   headerStyle: {
+    //     textAlign: "center",
+    //     textAlignLast: "center",
+    //     verticalAlign: "middle"
+    //   },
+    //   cellStyle: {
+    //     textAlign: "center",
+    //     padding: '0px'
+    //   }
+    // },
     {
-      field: "dtDOB",
+      field: "dtDOBFormatted",
       title: "DOB",
-      render: rowData => rowData.dtDOB ? Moment(rowData.dtDOB).format('DD-MM-YYYY') : '',
+      // render: rowData => rowData.dtDOB ? Moment(rowData.dtDOB).format('DD-MM-YYYY') : '',
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
@@ -282,7 +353,7 @@ export default function SearchPage() {
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '0px'
       }
     },
     {
@@ -290,18 +361,20 @@ export default function SearchPage() {
       title: "Age",
       filterPlaceholder: 'Search..',
       headerStyle: {
-        textAlign: "center",
+        textAlign: "right",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: '1%'
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '0px',
+        width: '1%'
       }
     },
     {
       field: "sFathersName",
-      title: "Father's Name",
+      title: "Father",
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
@@ -310,12 +383,12 @@ export default function SearchPage() {
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '0px'
       }
     },
     {
       field: "sMothersName",
-      title: "Mother's Name",
+      title: "Mother",
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
@@ -324,7 +397,7 @@ export default function SearchPage() {
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '0px'
       }
     },
     {
@@ -338,7 +411,7 @@ export default function SearchPage() {
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '0px'
       }
     }
   ];
@@ -397,6 +470,8 @@ export default function SearchPage() {
             console.log(resp.data);
             resp.data.forEach((element) => {
               element.nSerialNo = i;
+              element.sGBIDCombo = element.sCountryID+element.sGBID;
+              element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format("DD-MM-YYYY") : '';
               i++;
             })
             setdataFromAPI(resp.data);
@@ -472,6 +547,8 @@ export default function SearchPage() {
           console.log(resp.data);
           resp.data.forEach((element) => {
             element.nSerialNo = i;
+            element.sGBIDCombo = element.sCountryID+element.sGBID;
+              element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format("DD-MM-YYYY") : '';
             i++;
           })
 

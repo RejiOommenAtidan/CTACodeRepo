@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Grid,
     Button,
@@ -53,7 +53,7 @@ export const EditDialog = (props) => {
     //const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject.split('T')[0]);
     const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject ? (props.sarsoObj.dtReject).split('T')[0] : undefined);
     const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
-    const { register, handleSubmit, errors ,control} = useForm();
+    const { register, handleSubmit, errors ,control, setValue} = useForm();
     const onSubmit = data => {
         props.editAPICall(madeb)
     };
@@ -91,7 +91,15 @@ export const EditDialog = (props) => {
             console.log(element);
         }
     });
-
+    useEffect(() => {
+      console.log("Inside useEffect()");
+      const region = props.selectData['authRegions'].find((x) => x.id === nAuthRegionID);
+      setTimeout(() => setValue("AuthRegion", region, {
+        shouldValidate: true,
+        shouldDirty: true
+      }), 0);
+  
+    });
     return (
         <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Edit Sarso Madeb</DialogTitle>
@@ -149,11 +157,37 @@ export const EditDialog = (props) => {
                                     <Controller
                       render={props => (
                         <Autocomplete
-                          openOnFocus
+                          {...props}
+                          openOnFocus={true}
                           clearOnEscape
+                          autoComplete={true}
+                          autoHighlight={true}
+                          options={authRegions}
+                          getOptionLabel={(option) => option.sAuthRegion}
+                          renderOption={(option) => (
+                            <React.Fragment>
+                              <span>{option.sAuthRegion}</span>
+                            </React.Fragment>
+                          )}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label={<p>Authority<span style={{ color: "red" }} > *</span></p>}
+                              variant="standard"
+                              name="authority_text"
+                              inputRef={register({
+                                required: true
+                              })}
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'off', // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
                           onChange={
                             (e, value) => {
                               props.onChange(value);
+                              //alert ("onChangeFired")
                               if (value !== null) {
                                 console.log(value.id);
                                 setAuthRegionId(value.id);
@@ -166,41 +200,9 @@ export const EditDialog = (props) => {
                             }
                           }
                           value={authRegion}
-                          inputRef={register({
-                            required: true
-                          })}
-                          id="id_nAuthorityId"
-                          options={authRegions}
-                          /*  classes={{
-                                option: classes.option,
-                            }}
-                            className={classes.textField}*/
-                          autoHighlight
-                          getOptionLabel={(option) => option.sAuthRegion}
-                          renderOption={(option) => (
-                            <React.Fragment>
-                              <span>{option.sAuthRegion}</span>
-                            </React.Fragment>
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              
-                              label={<p>Authority<span style={{ color: "red" }} > *</span></p>}
-                              variant="standard"
-
-                              inputRef={register({
-                                required: true
-                              })}
-                              name="name_authority"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'off', // disable autocomplete and autofill
-                              }}
-                            />
-
-                          )}
-                        />)}
+                        //defaultValue={[]}
+                        />
+                      )}
                       name="AuthRegion"
                       control={control}
                       rules={{ required: true }}
@@ -288,6 +290,9 @@ export const EditDialog = (props) => {
                                             className={props.classes.textField}
                                             InputLabelProps={{
                                                 shrink: true,
+                                            }}
+                                            InputProps={{
+                                              readOnly: true
                                             }}
 
                                             onChange={(e) => { setIssueActionDate(e.target.value) }}

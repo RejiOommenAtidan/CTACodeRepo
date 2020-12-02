@@ -180,7 +180,7 @@ export const ViewDialog = (props) => {
                     </div>
                   </div>
                   <h4 className="font-size-lg font-weight-bold my-2">
-                    {data.greenBook.sFirstName + ' ' + data.greenBook.sLastName ? data.greenBook.sLastName : ""}
+                    {data.greenBook.sFirstName + ' ' + data.greenBook.sLastName ? data.greenBook.sLastName: ""}
                   </h4>
                   <h4 className="font-size-lg font-weight-bold my-2">
                     {data.greenBook.sCountryID+data.greenBook.sGBID }
@@ -191,22 +191,22 @@ export const ViewDialog = (props) => {
                   <div className="divider my-4" />
                   <Grid container spacing={1} style={{ textAlign: 'left' }}>
                     <Grid item sm={6}>
-                      Gender : {data.greenBook.sGender == 'M' ? 'Male' : 'Female'}
+                      Gender: {data.greenBook.sGender == 'M' ? 'Male' : 'Female'}
                     </Grid>
                     <Grid item sm={6}>
-                      Father's Name : {data.relations.sFathersName}
+                      Father's Name: {data.relations.sFathersName}
                     </Grid>
                     <Grid item sm={6}>
-                      DOB : {data.greenBook.dtDOB ? Moment(data.greenBook.dtDOB).format('DD-MM-YYYY'): ''}
+                      DOB: {data.greenBook.dtDOB ? Moment(data.greenBook.dtDOB).format('DD-MM-YYYY'): ''}
                     </Grid>
                     <Grid item sm={6}>
-                      Mother's Name : {data.relations.sMothersName}
+                      Mother's Name: {data.relations.sMothersName}
                     </Grid>
                     <Grid item sm={6}>
-                      Age :{data.nAge}
+                      Age: {data.nAge}
                     </Grid> 
                     <Grid item sm={6}>
-                      Family Name : {data.greenBook.sFamilyName}
+                      Family Name: {data.greenBook.sFamilyName}
                     </Grid>
                   </Grid>
                   <div className="divider my-4" />
@@ -307,42 +307,42 @@ export const ViewDialog = (props) => {
                         </Grid>
                         <Grid item sm={6}>
                         <FormControl className={props.classes.formControl}>
-                          Address 2 : {data.greenBook.sAddress2}
+                          Address 2: {data.greenBook.sAddress2}
                          </FormControl>
                           </Grid>
                         <Grid item sm={6}>
-                        City : {data.greenBook.sCity}
+                        City: {data.greenBook.sCity}
                          
                         </Grid>
                         <Grid item xs={6}>
-                             State : {data.greenBook.sState}
+                             State: {data.greenBook.sState}
                                 
                             </Grid>
                         <Grid item sm={6}>
-                             Pin Code : {data.greenBook.sPCode}
+                             Pin Code: {data.greenBook.sPCode}
                                
                             </Grid>
                             <Grid item sm={6}>
-                            Country :  {data.sCountry}
+                            Country:  {data.sCountry}
                                  
                             </Grid>
                             <Grid item sm={6}>
-                              Fax Number : {data.greenBook.sFax}
+                              Fax Number: {data.greenBook.sFax}
                                   
                             </Grid>
                                  
                             <Grid item sm={6}>
-                            Email : {data.greenBook.sEmail}
+                            Email: {data.greenBook.sEmail}
                                 
                           </Grid>
                             <Grid item sm={6}>
-                              Phone Number : {data.greenBook.sPhone}
+                              Phone Number: {data.greenBook.sPhone}
                             </Grid>
                             <Grid item sm={6}>
-                              Form Date : {data.greenBook.dtFormDate ? Moment(data.greenBook.dtFormDate).format('DD-MM-YYYY'): ''}
+                              Form Date: {data.greenBook.dtFormDate ? Moment(data.greenBook.dtFormDate).format('DD-MM-YYYY'): ''}
                             </Grid>
                             <Grid item sm={6}>
-                             Authority Region : {data.sAuthRegion}
+                             Authority Region: {data.sAuthRegion}
                                   
                             </Grid>
                       
@@ -369,31 +369,31 @@ export const ViewDialog = (props) => {
                       <Grid item xs={6} >
                         <Grid container spacing={2}>                        
                         <Grid item xs={12}>
-                          Place Of Birth : {data.greenBook.sBirthPlace}
+                          Place Of Birth: {data.greenBook.sBirthPlace}
                                   
                           </Grid>
                           <Grid item xs={12}>
-                            Origin Village : {data.greenBook.sOriginVillage}
+                            Origin Village: {data.greenBook.sOriginVillage}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          ཕ་ཡུལ། : {data.greenBook.tbuPlaceOfBirth}
+                          ཕ་ཡུལ།: {data.greenBook.tbuPlaceOfBirth}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                         Old GB Number : {data.greenBook.sOldGreenBKNo}
+                         Old GB Number: {data.greenBook.sOldGreenBKNo}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                         RC Number : {data.greenBook.sResidenceNumber}
+                         RC Number: {data.greenBook.sResidenceNumber}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                         Other Documents : {data.greenBook.sOtherDocuments}
+                         Other Documents: {data.greenBook.sOtherDocuments}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                         Marital Status : {data.greenBook.sMarried}
+                         Marital Status: {data.greenBook.sMarried}
                                 
                           </Grid>
                           
@@ -404,19 +404,19 @@ export const ViewDialog = (props) => {
                       <Grid item xs={6} >
                       <Grid container spacing={2}>  
                       <Grid item xs={12}>
-                          Birth Country : {data.sBirthCountry}
+                          Birth Country: {data.sBirthCountry}
                                   
                           </Grid>
                           <Grid item xs={12}>
-                            Province : {data.sProvince}
+                            Province: {data.sProvince}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                            First GB number : {data.greenBook.sFstGreenBkNo}
+                            First GB number: {data.greenBook.sFstGreenBkNo}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                            Qualification : {data.sQualification}
+                            Qualification: {data.sQualification}
                                 
                           </Grid>
                           <Grid item xs={12}>
@@ -424,7 +424,7 @@ export const ViewDialog = (props) => {
                                 
                           </Grid>
                           <Grid item xs={12}>
-                         Occupation : {data.sOccupationDesc}
+                         Occupation: {data.sOccupationDesc}
                                 
                           </Grid>
                         
@@ -453,7 +453,7 @@ export const ViewDialog = (props) => {
                       <Grid item xs={6} >
                         <Grid container spacing={2}>                        
                         <Grid item xs={12}>
-                          Father's Name : {data.relations.sFathersName}
+                          Father's Name: {data.relations.sFathersName}
                                   
                           </Grid>
                           <Grid item xs={12}>
@@ -461,23 +461,23 @@ export const ViewDialog = (props) => {
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Father's Old GB : {data.greenBook.sFathersID}
+                          Father's Old GB: {data.greenBook.sFathersID}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Father's GB : {data.relations.sFathersGBID ?  <Button  onClick={()=>props.openRelationGB(data.relations.sFathersGBID)} className="m-2 btn-transparent btn-link btn-link-second" >  <h4 className="font-size-lg font-weight-bold my-2">{data.relations.sFathersGBID}</h4></Button> : ''}
+                          Father's GB: {data.relations.sFathersGBID ?  <Button  onClick={()=>props.openRelationGB(data.relations.sFathersGBID)} className="m-2 btn-transparent btn-link btn-link-second" >  <h4 className="font-size-lg font-weight-bold my-2">{data.relations.sFathersGBID}</h4></Button> : ''}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Mother's Name : {data.relations.sMothersName}
+                          Mother's Name: {data.relations.sMothersName}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          མའི་མིང་། : {data.greenBook.tbuMothersName}
+                          མའི་མིང་།: {data.greenBook.tbuMothersName}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                         Number of Male Children : {data.greenBook.nChildrenM}
+                         Number of Male Children: {data.greenBook.nChildrenM}
                                 
                           </Grid>
                           
@@ -488,33 +488,33 @@ export const ViewDialog = (props) => {
                       <Grid item xs={6} >
                       <Grid container spacing={2}>  
                       <Grid item xs={12}>
-                          Mother's OLD GB : {data.greenBook.sMothersID}
+                          Mother's OLD GB: {data.greenBook.sMothersID}
                                   
                           </Grid>
                           <Grid item xs={12}>
-                          Mother's GB : {data.relations.sMothersGBID ?  <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={()=>{props.openRelationGB(data.relations.sMothersGBID)}} >  <h4 className="font-size-lg font-weight-bold my-2">{data.relations.sMothersGBID}</h4></Button> : ''}
+                          Mother's GB: {data.relations.sMothersGBID ?  <Button className="m-2 btn-transparent btn-link btn-link-second" onClick={()=>{props.openRelationGB(data.relations.sMothersGBID)}} >  <h4 className="font-size-lg font-weight-bold my-2">{data.relations.sMothersGBID}</h4></Button> : ''}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Spouse Name : {data.relations.sSpouseName}
+                          Spouse Name: {data.relations.sSpouseName}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          ཟ་ཟླའི་མིང་། : {data.greenBook.tbuSpouseName}
+                          ཟ་ཟླའི་མིང་།: {data.greenBook.tbuSpouseName}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Spouse Old GB : {data.greenBook.sSpouseID}
+                          Spouse Old GB: {data.greenBook.sSpouseID}
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          Spouse GB :{data.relations.sSpouseGBID ?  <Button  onClick={()=>{props.openRelationGB(data.relations.sSpouseGBID)}} className="m-2 btn-transparent btn-link btn-link-second" style={{padding:'0px'}} >  <h4 className="font-size-lg font-weight-bold my-2">{data.relations.sSpouseGBID}</h4></Button> : ''}
+                          Spouse GB: {data.relations.sSpouseGBID ?  <Button  onClick={()=>{props.openRelationGB(data.relations.sSpouseGBID)}} className="m-2 btn-transparent btn-link btn-link-second" style={{padding:'0px'}} >  <h4 className="font-size-lg font-weight-bold my-2">{data.relations.sSpouseGBID}</h4></Button> : ''}
                         
 
                                 
                           </Grid>
                           <Grid item xs={12}>
-                          No of Female Children : {data.greenBook.nChildrenF}
+                          No of Female Children: {data.greenBook.nChildrenF}
                                 
                           </Grid>
                         
@@ -647,7 +647,7 @@ export const ViewDialog = (props) => {
                                 <td >{row.auditLog.sFieldValuesNew }</td>
                                 <td >{row.sEnteredBy}</td>
                                 <td >{row.sOffice}</td>
-                                <td >{row.auditLog.dtEntered ? Moment(row.auditLog.dtEntered).format('DD-MM-YYYY'): ''}</td>
+                                <td >{row.auditLog.dtEntered ? Moment(row.auditLog.dtEntered).format('DD-MM-YYYY, h:mm a'): ''}</td>
                              
                               
                                                                     

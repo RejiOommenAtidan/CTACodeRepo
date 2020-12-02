@@ -135,7 +135,10 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        "&:hover": {
+          color: "blue"
+        }
       },
       cellStyle: {
         textAlign: "center",
@@ -149,7 +152,8 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        
       },
       cellStyle: {
         textAlign: "center",
