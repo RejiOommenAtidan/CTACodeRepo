@@ -9,9 +9,9 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import { AddDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
+import { oOptions, oTableIcons } from "../../../config/commonConfig";
 
 const useStyles = makeStyles(() => ({
   /*root: {
@@ -97,26 +97,29 @@ export default function UserRights() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width: "15%"
       },
       export: true
     },
-
     {
       field: "sUserRightsName",
       title: "User Rights",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "70%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "70%"
       }
     },
     {
@@ -133,11 +136,13 @@ export default function UserRights() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        width: "15%"
       }
     },
   ];

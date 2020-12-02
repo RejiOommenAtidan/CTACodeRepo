@@ -180,11 +180,13 @@ export default function FeatureUserrights() {
               headerStyle: {
                 textAlign: "center",
                 textAlignLast: "center",
-                verticalAlign: "middle"
+                verticalAlign: "middle",
+                width: "17.5%"
               },
               cellStyle: {
-                textAlign: "center",
-                padding: '5px'
+                textAlign: "left",
+                padding: '5px',
+                width: "17.5%"
               }
             }
           );
@@ -196,11 +198,13 @@ export default function FeatureUserrights() {
                 headerStyle: {
                   textAlign: "center",
                   textAlignLast: "center",
-                  verticalAlign: "middle"
+                  verticalAlign: "middle",
+                  //width: "15%"
                 },
                 cellStyle: {
                   textAlign: "center",
-                  padding: '5px'
+                  padding: '5px',
+                  //width: "15%"
                 },
                 render: rowData => <Checkbox
                   color="primary"

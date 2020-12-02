@@ -10,9 +10,12 @@ import MaterialTable from 'material-table';
 import IconButton from '@material-ui/core/IconButton';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { AddDialog, EditDialog } from './dialog';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
+import {
+  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
+  sButtonColor, sButtonSize, sButtonVariant
+} from "../../../config/commonConfig";
 
 const useStyles = makeStyles({
   root: {
@@ -78,7 +81,7 @@ const useStyles = makeStyles({
 });
 
 export default function Users() {
-  const history = useHistory();
+  let history = useHistory();
   const [isLoading, setisLoading] = React.useState(true);
   const classes = useStyles();
   const [editModal, setEditModal] = React.useState(false);
@@ -105,11 +108,13 @@ export default function Users() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width: "15%"
       },
       export: true
     },
@@ -119,11 +124,13 @@ export default function Users() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "20%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "20%"
       }
     },
     {
@@ -132,11 +139,13 @@ export default function Users() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "30%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "30%"
       }
     },
     {
@@ -145,11 +154,13 @@ export default function Users() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "15%"
       }
     },
     {
@@ -158,11 +169,13 @@ export default function Users() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "20%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "20%"
       }
     },
     {
@@ -180,11 +193,13 @@ export default function Users() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "15%"
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        width: "15%"
       }
     }
   ];
