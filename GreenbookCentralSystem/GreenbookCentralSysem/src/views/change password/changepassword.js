@@ -11,6 +11,10 @@ import handleError from '../../auth/_helpers/handleError';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAuthDetails } from "../../actions/userAuthenticateAction";
 import { Alerts } from '../alerts';
+import {
+  sSnackbarAddMessage, sSnackbarUpdateMessages, sButtonColor, sButtonSize, sButtonVariant
+} from "../../config/commonConfig";
+
 const useStyles = makeStyles({
   root: {
     height: '100%',
@@ -64,12 +68,13 @@ export default function ChangePassword() {
   const dispatch = useDispatch();
   const currentUser = authenticationService.currentUserValue;
   const oUserAuthUser = JSON.parse(currentUser.UserAuthenticationReducer);
- // let nUserId = oUserAuthUser.oUserAuth.oUser.id;
-  const nUserId=  useSelector(state =>{ 
-      if(state.UserAuthenticationReducer.oUserAuth){
-        return state.UserAuthenticationReducer.oUserAuth.oUser.id;
-      }});
-    
+  // let nUserId = oUserAuthUser.oUserAuth.oUser.id;
+  const nUserId = useSelector(state => {
+    if (state.UserAuthenticationReducer.oUserAuth) {
+      return state.UserAuthenticationReducer.oUserAuth.oUser.id;
+    }
+  });
+
   const classes = useStyles();
   const { register, handleSubmit, errors } = useForm();
   const [sOldPassword, setsOldPassword] = useState('');
@@ -79,50 +84,48 @@ export default function ChangePassword() {
   // password.current = watch("name_sNewPassword", "");
   // console.log(password);
 
-//Alert
-const [alertMessage, setAlertMessage] = useState("");
-const [alertType, setAlertType] = useState("");
-const alertObj = {
-  alertMessage: alertMessage,
-  alertType: alertType
-}
-const [snackbar, setSnackbar] = React.useState(false);
-const snackbarOpen = () => {
-  setSnackbar(true);
-}
-const snackbarClose = () => {
-  setSnackbar(false);
-};
+  //Alert
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
 
+  const [snackbar, setSnackbar] = React.useState(false);
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
 
   useEffect(() => {
-   
-  },[]);
+  }, []);
   const onSubmit = () => {
-    if(sNewPassword===sConfirmNewPassword){  
-    let changePassword = {
-      nUserId,
-      sOldPassword,
-      sNewPassword,
-      sConfirmNewPassword
-    };
-    
-    axios.post(`/User/ChangePassword`, changePassword)
-      .then(resp => {
-        if (resp.status === 200) {
-          dispatch(removeAuthDetails());
-          history.push('/Login',{changepassword:true});
-    
-        }
-      })
-      .catch(error => {
-        handleError(error, history);
-      })
-      .then(release => {
-        //console.log(release); => udefined
-      });
+    if (sNewPassword === sConfirmNewPassword) {
+      let changePassword = {
+        nUserId,
+        sOldPassword,
+        sNewPassword,
+        sConfirmNewPassword
+      };
+
+      axios.post(`/User/ChangePassword`, changePassword)
+        .then(resp => {
+          if (resp.status === 200) {
+            dispatch(removeAuthDetails());
+            history.push('/Login', { changepassword: true });
+          }
+        })
+        .catch(error => {
+          handleError(error, history);
+        })
+        .then(release => {
+          //console.log(release); => udefined
+        });
     }
-    else{
+    else {
       setAlertMessage('New Passwords do not match');
       setAlertType('error');
       snackbarOpen();
@@ -202,17 +205,27 @@ const snackbarClose = () => {
             <br />
             <br /><br />
             <Grid item xs={12}>
-              <Button variant="outlined" type="submit" color="primary">Save</Button>&nbsp;
-              <Button variant="outlined" onClick={() => { history.push("/Home") }}>Cancel</Button>
+              <Button
+                onClick={() => { history.push("/Home") }}
+                variant={sButtonVariant}
+                color={sButtonColor}
+                size={sButtonSize}
+              >Cancel</Button> &nbsp;
+              <Button
+                type="submit"
+                variant={sButtonVariant}
+                color={sButtonColor}
+                size={sButtonSize}
+              >Save</Button>
             </Grid>
           </Grid>
         </form>
       </Container>
       {snackbar && <Alerts
-          alertObj={alertObj}
-          snackbar={snackbar}
-          snackbarClose={snackbarClose}
-        />}
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />}
 
     </>
   );
