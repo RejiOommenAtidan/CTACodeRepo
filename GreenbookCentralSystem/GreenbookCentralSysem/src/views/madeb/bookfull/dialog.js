@@ -246,12 +246,12 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="nFormNumber"
-                      label="Form Number"
+                      label={<p>Form Number<span style={{ color: "red" }} > *</span></p>}
                       type="number"
                       InputProps={{
                         readOnly: true,
                       }}
-                      value={formNumber}
+                      defaultValue={formNumber}
                       onChange={(e) => { setFormNumber(e.target.value) }}
 
                     />
@@ -262,7 +262,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="dtDate"
                       name="dtDate"
-                      label="Received Date"
+                      label={<p>Received Date<span style={{ color: "red" }} > *</span></p>}
                       type="date"
                       defaultValue={receivedDate}
                       className={props.classes.textField}
@@ -284,10 +284,10 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sGBID"
-                      label="GBID"
+                      label={<p>GBID<span style={{ color: "red" }} > *</span></p>}
                       name="sGBID"
                       //required={true}
-                      value={sGBID}
+                      defaultValue={sGBID}
                       onChange={(e) => { handleChangeGBID(e.target.value) }}
                       inputRef={register({
                         required: true
@@ -321,7 +321,7 @@ export const EditDialog = (props) => {
                           renderInput={params => (
                             <TextField
                               {...params}
-                              label="Authority"
+                              label={<p>Authority<span style={{ color: "red" }} > *</span></p>}
                               variant="standard"
                               name="authority_text"
                               inputRef={register({
@@ -364,9 +364,9 @@ export const EditDialog = (props) => {
                     <TextField
                       id="sName"
                       name="sName"
-                      label="Name"
+                      label={<p>Name<span style={{ color: "red" }} > *</span></p>}
                       //required={true}
-                      value={sName}
+                      defaultValue={sName}
                       onChange={(e) => {
                         setValue("sName", e.target.value);
                         setName(e.target.value)
@@ -386,7 +386,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="sFathersName"
                       label="Father's Name"
-                      value={sFathersName}
+                      defaultValue={sFathersName}
                       onChange={(e) => { setFname(e.target.value) }}
                     />
                   </FormControl>
@@ -400,7 +400,7 @@ export const EditDialog = (props) => {
                       id="sfn"
                       label="Saney Form No"
                       type='number'
-                      value={saney}
+                      defaultValue={saney}
                       onChange={(e) => {
                         setSaney(parseInt(e.target.value));
                         console.log("Value of saney changed to:", e.target.value);
@@ -413,10 +413,10 @@ export const EditDialog = (props) => {
                     <TextField
                       id="nCurrentGBSno"
                       name="nCurrentGBSno"
-                      label="Current GB SNo."
+                      label={<p>Current GB SNo.<span style={{ color: "red" }} > *</span></p>}
                       type='number'
                       //required={true}
-                      value={currentGBSno}
+                      defaultValue={currentGBSno}
                       onChange={(e) => {
                         setCurrentGBSNo(parseInt(e.target.value));
                         console.log("Value of currentGB changed to:", parseInt(e.target.value));
@@ -438,7 +438,7 @@ export const EditDialog = (props) => {
                       label="Previous GB SNo"
                       type='number'
                       // required={true}
-                      value={previousGBSno}
+                      defaultValue={previousGBSno}
                       onChange={(e) => {
                         setPreviousGBSNo(parseInt(e.target.value));
                         console.log("Value of previousGB changed to:", e.target.value);
@@ -500,7 +500,7 @@ export const EditDialog = (props) => {
                       name="sMadebStatusRemark"
                       label="Status Remarks"
                       //required={true}
-                      value={sMadebStatusRemark}
+                      defaultValue={sMadebStatusRemark}
                       onChange={(e) => { setMadebStatusRemark(e.target.value) }}
 
                     />
@@ -800,12 +800,12 @@ export const AddDialog = (props) => {
                     <TextField
                       id="number"
                       name="nFormNumber"
-                      label="Form Number"
+                      label={<p>Form Number<span style={{ color: "red" }} > *</span></p>}
                       type="number"
                       // InputProps={{
                       //     readOnly: true
                       // }}
-                      value={formNumber}
+                      defaultValue={formNumber}
                       onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
                       inputRef={register({
                         required: true
@@ -819,7 +819,7 @@ export const AddDialog = (props) => {
                     <TextField
                       id="dtDate"
                       name="dtDate"
-                      label="Received Date"
+                      label={<p>Received Date<span style={{ color: "red" }} > *</span></p>}
                       type="date"
                       defaultValue={receivedDate}
                       className={props.classes.textField}
@@ -856,7 +856,7 @@ export const AddDialog = (props) => {
                           renderInput={params => (
                             <TextField
                               {...params}
-                              label="Authority"
+                              label={<p>Authority<span style={{ color: "red" }} > *</span></p>}
                               variant="standard"
                               name="sAuthRegionText"
                               inputRef={register({
@@ -898,10 +898,10 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sGBID"
-                      label="sGBID"
+                     label={<p>GBID<span style={{ color: "red" }} > *</span></p>}
                       //required={true}
                       name="sGBID"
-                      value={sGBID}
+                      defaultValue={sGBID}
                       onChange={(e) => { handleChangeGBID(e.target.value) }}
                       //onBlur={(e) => {formPopulate(e.target.value)}}
                       inputRef={register({
@@ -918,10 +918,10 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sName"
-                      label="Name"
+                      label={<p>Name<span style={{ color: "red" }} > *</span></p>}
                       name="sName"
                       //required={true}
-                      value={sName}
+                      defaultValue={sName}
                       onChange={(e) => { setName(e.target.value) }}
                       inputRef={register({
                         required: true
@@ -963,11 +963,11 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="nCurrentGBSno"
-                      label="Current GB SNo."
+                      label={<p>Current GB SNo.<span style={{ color: "red" }} > *</span></p>}
                       type='number'
                       name='nCurrentGBSno'
                       //required={true}
-                      value={currentGBSno}
+                      defaultValue={currentGBSno}
                       onChange={(e) => {
                         setCurrentGBSNo(parseInt(e.target.value));
                         console.log("Value of currentGB changed to:", parseInt(e.target.value));

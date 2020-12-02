@@ -235,15 +235,19 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="nFormNumber"
-                      label="Form Number"
+                      name="nFormNumber"
+                      label={<p>Form Number<span style={{ color: "red" }} > *</span></p>}
                       type="number"
                       InputProps={{
                         readOnly: true,
                       }}
-                      value={nFormNumber}
+                      defaultValue={nFormNumber}
                       onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
 
                     />
+                    {_.get("nFormNumber.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -251,7 +255,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="dtReceived"
                       name="dtReceived"
-                      label="Received Date"
+                      label={<p>Received Date<span style={{ color: "red" }} > *</span></p>}
                       type="date"
                       defaultValue={dtReceived}
                       className={props.classes.textField}
@@ -306,7 +310,7 @@ export const EditDialog = (props) => {
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              label="Authority"
+                              label={<p>Authority<span style={{ color: "red" }} > *</span></p>}
                               variant="standard"
                               inputProps={{
                                 ...params.inputProps,
@@ -331,9 +335,9 @@ export const EditDialog = (props) => {
                     <TextField
                       id="sName"
                       name="sName"
-                      label="Name"
+                      label={<p>Name<span style={{ color: "red" }} > *</span></p>}
                       //required={true}
-                      value={sName}
+                      defaultValue={sName}
                       onChange={(e) => { setName(e.target.value) }}
                       inputRef={register({
                         required: true
@@ -348,10 +352,10 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sAlias"
-                      label="Alias"
+                      label={<p>Alias<span style={{ color: "red" }} > *</span></p>}
                       name="sAlias"
                       //required={true}
-                      value={sAlias}
+                      defaultValue={sAlias}
                       onChange={(e) => { setAlias(e.target.value) }}
                       inputRef={register({
                         required: true
@@ -367,10 +371,10 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sGBID"
-                      label="GBID"
+                      label={<p>GBID<span style={{ color: "red" }} > *</span></p>}
                       name="sGBID"
                       //required={true}
-                      value={sGBID}
+                      defaultValue={sGBID}
                       onChange={(e) => { setGbId(e.target.value) }}
                       inputRef={register({
                         required: true
@@ -781,13 +785,19 @@ export const AddDialog = (props) => {
                     <TextField
                       id="nFormNumber"
                       name="nFormNumber"
-                      label="Form Number"
+                      label={<p>Form Number<span style={{ color: "red" }} > *</span></p>}
                       type="number"
                       InputProps={{
                         readOnly: true
                       }}
-                      value={nFormNumber}
+                      inputRef={register({
+                        required: true
+                      })}
+                      defaultValue={nFormNumber}
                     />
+                     {_.get("nFormNumber.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -795,7 +805,7 @@ export const AddDialog = (props) => {
                     <TextField
                       id="dtReceived"
                       name="dtReceived"
-                      label="Received Date"
+                      label={<p>Received Date<span style={{ color: "red" }} > *</span></p>}
                       type="date"
                       defaultValue={dtReceived}
                       className={props.classes.textField}
@@ -849,7 +859,7 @@ export const AddDialog = (props) => {
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              label="Authority"
+                              label={<p>Authority<span style={{ color: "red" }} > *</span></p>}
                               variant="standard"
                               name="authority_text"
                               inputProps={{
@@ -878,10 +888,9 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sGBID"
-                      label="sGBID"
-                      //required={true}
+                      label={<p>GBID<span style={{ color: "red" }} > *</span></p>}
                       name="sGBID"
-                      value={sGBID}
+                      defaultValue={sGBID}
                       onChange={(e) => { handleChangeGBID(e.target.value) }}
                       //onBlur={(e) => {formPopulate(e.target.value)}}
                       inputRef={register({
@@ -901,10 +910,10 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sName"
-                      label="Name"
+                      label={<p>Name<span style={{ color: "red" }} > *</span></p>}
                       name="sName"
                       //required={true}
-                      value={sName}
+                      defaultValue={sName}
                       onChange={(e) => { setName(e.target.value) }}
                       inputRef={register({
                         required: true
@@ -920,10 +929,10 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sAlias"
-                      label="Alias"
+                      label={<p>Alias<span style={{ color: "red" }} > *</span></p>}
                       name="sAlias"
                       //required={true}
-                      value={sAlias}
+                      defaultValue={sAlias}
                       onChange={(e) => { setAlias(e.target.value) }}
                       inputRef={register({
                         required: true
@@ -959,13 +968,9 @@ export const AddDialog = (props) => {
                         setReceiptNo(parseInt(e.target.value));
                         console.log("Value of Receipt changed to:", e.target.value);
                       }}
-                      inputRef={register({
-                        required: true
-                      })}
+                     
                     />
-                    {_.get("sGBID.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                    
                   </FormControl>
                 </Grid>
 
@@ -998,13 +1003,9 @@ export const AddDialog = (props) => {
                         setCurrentGBSNo(parseInt(e.target.value));
                         console.log("Value of currentGB changed to:", parseInt(e.target.value));
                       }}
-                      inputRef={register({
-                        required: true
-                      })}
+                     
                     />
-                    {_.get("nCurrentGBSno.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                   
 
                   </FormControl>
                 </Grid>
