@@ -21,6 +21,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CancelIcon from '@material-ui/icons/Cancel';
+import { sButtonColor, sButtonSize, sButtonVariant } from '../../config/commonConfig';
 
 const StyledBadge = withStyles({
   badge: {
@@ -150,26 +151,26 @@ const HeaderUserbox = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Logout ?</DialogTitle>
+        <DialogTitle id="alert-dialog-title">Logout?</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to Logout ?
+            Are you sure you want to Logout?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
-            variant="contained"
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
             onClick={handleLogoutConfirmationClose}
-            color="primary"
             startIcon={<CancelIcon />}
-            size={"small"}
           >
             No
           </Button>
           <Button
-            size={"small"}
-            color={"primary"}
-            variant="contained"
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
             onClick={logUserOut}
             autoFocus
             startIcon={<ExitToAppIcon />}

@@ -20,7 +20,10 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import WarningIcon from '@material-ui/icons/Warning';
-import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import {
+  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
+  sButtonColor, sButtonSize, sButtonVariant
+} from "../../../config/commonConfig";
 
 const useStyles = makeStyles({
   root: {
@@ -255,29 +258,29 @@ export default function FeatureUserrights() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Change Mapping ?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Change Mapping?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure to change this mapping ?
+            Are you sure to change this mapping?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
             onClick={handleClose}
-            variant="contained"
-            size={"small"}
-            color={"primary"}
             startIcon={<CancelIcon />}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
           >
             No
           </Button>
           <Button
             onClick={editAPICall}
             autoFocus
-            variant="contained"
-            size={"small"}
-            color={"primary"}
             startIcon={<WarningIcon />}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
           >
             Yes
           </Button>
