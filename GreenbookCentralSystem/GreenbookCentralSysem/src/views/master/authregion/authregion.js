@@ -392,7 +392,7 @@ export default function EnhancedTable() {
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={loading}
             icons={oTableIcons}
-            title="Authority Regions"
+            title="Authority Region"
             data={dataAPI}
             columns={columns}
             options={oOptions}

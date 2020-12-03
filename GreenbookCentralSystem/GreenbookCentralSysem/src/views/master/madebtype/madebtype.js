@@ -362,7 +362,7 @@ export default function EnhancedTable() {
           <MaterialTable
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={oTableIcons}
-            title="Madeb Types"
+            title="Madeb Type"
             data={dataAPI}
             columns={columns}
             options={oOptions}
