@@ -11,7 +11,9 @@ import { AddDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
-import { oOptions, oTableIcons } from "../../../config/commonConfig";
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles(() => ({
   /*root: {
@@ -70,11 +72,30 @@ export default function UserRights() {
   const [userRights, setUserRights] = React.useState('');
   const [userRightsPK, setUserRightsPK] = React.useState(0);
   const [userRightsObj, setUserRightsObj] = useState({});
-  const [dataChanged, setDataChanged] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
   let history = useHistory();
   const [isLoading, setisLoading] = React.useState(true);
+
+  //#region Alert & Snackbar
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -92,24 +113,24 @@ export default function UserRights() {
   const columns = [
     {
       field: "id",
-      title: "Sr No.",
+      title: "#",
       hidden: true,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       },
       export: true
     },
     {
       field: "sUserRightsName",
-      title: "Roles",
+      title: "ROLES",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -124,7 +145,7 @@ export default function UserRights() {
     },
     {
       field: "edit",
-      title: "Edit",
+      title: "EDIT",
       filtering: false,
       export: false,
       sorting: false,
@@ -137,12 +158,12 @@ export default function UserRights() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       }
     },
   ];
@@ -158,6 +179,7 @@ export default function UserRights() {
   };
 
   const editAPICall = (userRightsObj) => {
+    setBackdrop(true);
     axios.post(`/UserRights/EditUserRights/ID=` + userRightsPK, userRightsObj/*UserRightsToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
@@ -166,7 +188,10 @@ export default function UserRights() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
-                setDataChanged(true);
+                setAlertMessage(sSnackbarUpdateMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -180,6 +205,7 @@ export default function UserRights() {
   };
 
   const addAPICall = (userRightsObj) => {
+    setBackdrop(true);
     axios.post(`/UserRights/AddUserRights/`, userRightsObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -188,6 +214,10 @@ export default function UserRights() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
+                setAlertMessage(sSnackbarAddMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -210,7 +240,7 @@ export default function UserRights() {
     setDeleteModal(false);
   };
 
-  useEffect(() => {
+  const loadUserRights = () => {
     axios.get(`/UserRights/GetUserRights`)
       .then(resp => {
         if (resp.status === 200) {
@@ -221,6 +251,10 @@ export default function UserRights() {
       .catch(error => {
         handleError(error, history);
       });
+  };
+
+  useEffect(() => {
+    loadUserRights();
   }, []);
 
   return (
@@ -250,7 +284,7 @@ export default function UserRights() {
             actions={[
               {
                 icon: oTableIcons.Add,
-                tooltip: 'Add User Right',
+                tooltip: 'Add Role',
                 isFreeAction: true,
                 onClick: (event) => setAddModal(true)
               },
@@ -276,6 +310,15 @@ export default function UserRights() {
         classes={classes}
         handleEditClickClose={handleEditClickClose}
         editAPICall={editAPICall}
+      />}
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
       />}
     </Container>
   );

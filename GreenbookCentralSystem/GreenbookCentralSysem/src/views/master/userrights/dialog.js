@@ -14,10 +14,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { useSelector } from 'react-redux';
-import {
-  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
-  sButtonColor, sButtonSize, sButtonVariant
-} from "../../../config/commonConfig";
+import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 
 export const EditDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
@@ -35,7 +32,7 @@ export const EditDialog = (props) => {
   const [Name, setUserRights] = useState(props.userRightsObj.userRights);
   return (
     <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">UserRights</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Role</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
         <DialogContent>
           <DialogContentText>
@@ -47,7 +44,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_UserRights"
                       name="sUserRights"
-                      label="UserRights"
+                      label="Role"
                       type="text"
                       value={Name} // Set country name from local variable Name.
                       onChange={(e) => { setUserRights(e.target.value) }}
@@ -127,7 +124,7 @@ export const AddDialog = (props) => {
   const [userRights, setUserRights] = useState('');
   return (
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add UserRights</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add Role</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitAddRecord)}>
         <DialogContent>
           <DialogContentText>
@@ -138,7 +135,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_UserRights"
                     name="sUserRights"
-                    label="UserRights"
+                    label="Role"
                     type="text"
                     onChange={(e) => { setUserRights(e.target.value) }}
                     inputRef={register({

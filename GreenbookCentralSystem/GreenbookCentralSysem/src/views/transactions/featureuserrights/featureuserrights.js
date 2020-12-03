@@ -24,6 +24,8 @@ import {
   oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
   sButtonColor, sButtonSize, sButtonVariant
 } from "../../../config/commonConfig";
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles({
   root: {
@@ -108,6 +110,26 @@ export default function FeatureUserrights() {
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
 
+  //#region Alert & Snackbar
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
+
   const handleClickOpen = (tableRow, userightName, roleID) => {
     setOpenDialog(true);
     settableRow(tableRow);
@@ -131,7 +153,7 @@ export default function FeatureUserrights() {
     // console.log(roleID);
     //bRights
     setOpenDialog(false);
-    setIsLoading(true);
+    setBackdrop(true);
     let lnkObj = {
       Id: 0,
       nFeatureID: tableRow["nFeatureID"],
@@ -144,8 +166,11 @@ export default function FeatureUserrights() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data.lFeatureUserRightsPivot);
-                setIsLoading(false);
-                window.location.reload();
+                setAlertMessage("Mapping Changed Successfully");
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
+                setTimeout(() => { window.location.reload(); }, 3000);
               }
             })
             .catch(error => {
@@ -164,7 +189,7 @@ export default function FeatureUserrights() {
       });
   };
 
-  useEffect(() => {
+  const loadUserRightsMapping = () => {
     //#region user rights mapping
     axios.get(`/FeatureUserrights/GetFeatureUserrightsMapping`)
       .then(resp => {
@@ -176,7 +201,7 @@ export default function FeatureUserrights() {
           generatedColumns.push(
             {
               field: "sFeature",
-              title: "Feature",
+              title: "FEATURE",
               headerStyle: {
                 textAlign: "center",
                 textAlignLast: "center",
@@ -185,7 +210,7 @@ export default function FeatureUserrights() {
               },
               cellStyle: {
                 textAlign: "left",
-                padding: '5px',
+                padding: '3.75px',
                 width: "17.5%"
               }
             }
@@ -194,7 +219,7 @@ export default function FeatureUserrights() {
             generatedColumns.push(
               {
                 sorting: false,
-                title: role.sUserRightsName,
+                title: role.sUserRightsName.toUpperCase(),
                 headerStyle: {
                   textAlign: "center",
                   textAlignLast: "center",
@@ -203,7 +228,7 @@ export default function FeatureUserrights() {
                 },
                 cellStyle: {
                   textAlign: "center",
-                  padding: '5px',
+                  padding: '3.75px',
                   //width: "15%"
                 },
                 render: rowData => <Checkbox
@@ -230,6 +255,9 @@ export default function FeatureUserrights() {
         //console.log(release); => udefined
       });
     //#endregion
+  };
+  useEffect(() => {
+    loadUserRightsMapping();
   }, []);
 
   return (
@@ -246,7 +274,7 @@ export default function FeatureUserrights() {
             data={dataAPI}
             options={{
               ...oOptions,
-              exportButton:false
+              exportButton: false
             }}
             actions={[
               {
@@ -293,6 +321,15 @@ export default function FeatureUserrights() {
           </Button>
         </DialogActions>
       </Dialog>
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
+      />}
     </Container>
   );
 }

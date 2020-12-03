@@ -12,10 +12,9 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { AddDialog, EditDialog } from './dialog';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
-import {
-  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
-  sButtonColor, sButtonSize, sButtonVariant
-} from "../../../config/commonConfig";
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles({
   root: {
@@ -100,27 +99,47 @@ export default function Users() {
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
 
+  //#region Alert & Snackbar
+const [snackbar, setSnackbar] = React.useState(false);
+const [backdrop, setBackdrop] = React.useState(false);
+const [alertMessage, setAlertMessage] = useState("");
+const [alertType, setAlertType] = useState("");
+
+const alertObj = {
+  alertMessage: alertMessage,
+  alertType: alertType
+};
+
+const snackbarOpen = () => {
+  setSnackbar(true);
+};
+
+const snackbarClose = () => {
+  setSnackbar(false);
+};
+//#endregion
+
   const columns = [
     {
       field: "oUser.id",
-      title: "Sr No.",
+      title: "#",
       hidden: true,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       },
       export: true
     },
     {
       field: "oUser.sUsername",
-      title: "User Name",
+      title: "USERNAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -135,7 +154,7 @@ export default function Users() {
     },
     {
       field: "oUser.sFullname",
-      title: "Full Name",
+      title: "FULL NAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -150,7 +169,7 @@ export default function Users() {
     },
     {
       field: "sUserRightsName",
-      title: "Rights",
+      title: "ROLES",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -165,7 +184,7 @@ export default function Users() {
     },
     {
       field: "oUser.sOffice",
-      title: "Office Name",
+      title: "OFFICE NAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -181,7 +200,7 @@ export default function Users() {
     {
       align: "center",
       field: 'edit',
-      title: 'Edit',
+      title: 'EDIT',
       filtering: false,
       sorting: false,
       export: false,
@@ -194,18 +213,18 @@ export default function Users() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       }
     }
   ];
 
   const addAPICall = (userObj) => {
-    setisLoading(true);
+    setBackdrop(true);
     axios.post(`/User/AddUser/`, userObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -214,7 +233,10 @@ export default function Users() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
-                setisLoading(false);
+                setAlertMessage(sSnackbarAddMessage);
+setAlertType('success');
+snackbarOpen();
+setBackdrop(false);
               }
             })
             .catch(error => {
@@ -234,7 +256,7 @@ export default function Users() {
   };
 
   const editAPICall = (userObj) => {
-    setisLoading(true);
+    setBackdrop(true);
     axios.post(`/User/EditUser/Id=` + Id, userObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -243,7 +265,10 @@ export default function Users() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
-                setisLoading(false);
+                setAlertMessage(sSnackbarUpdateMessage);
+setAlertType('success');
+snackbarOpen();
+setBackdrop(false);
               }
             })
             .catch(error => {
@@ -296,7 +321,7 @@ export default function Users() {
     setAddModal(false);
   };
 
-  useEffect(() => {
+  const loadUserData =() =>{
     axios.get(`/UserRights/GetUserRights`)
       .then(resp => {
         if (resp.status === 200) {
@@ -322,6 +347,10 @@ export default function Users() {
       .then(release => {
         //console.log(release); => udefined
       });
+  };
+
+  useEffect(() => {
+    loadUserData();
   }, []);
 
   return (
@@ -340,7 +369,7 @@ export default function Users() {
             actions={[
               {
                 icon: oTableIcons.Add,
-                tooltip: 'Add a User',
+                tooltip: 'Add User',
                 isFreeAction: true,
                 onClick: (event) => setAddModal(true)
               },
@@ -368,6 +397,15 @@ export default function Users() {
         handleEditClickClose={handleEditClickClose}
         editAPICall={editAPICall}
       />}
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+    {backdrop && <BackdropComponent
+        backdrop={backdrop}
+    />}
     </Container>
   );
 }

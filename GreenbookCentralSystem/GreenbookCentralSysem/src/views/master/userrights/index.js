@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CoverUserrights = () => {
+const CoverUserRights = () => {
   const classes = useStyles();
 
   return (
@@ -33,4 +33,4 @@ const CoverUserrights = () => {
   );
 };
 
-export default CoverUserrights;
+export default CoverUserRights;

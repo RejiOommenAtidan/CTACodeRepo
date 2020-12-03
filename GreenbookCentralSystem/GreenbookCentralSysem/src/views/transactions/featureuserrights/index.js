@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CoverFeatureUserrights = () => {
+const CoverFeatureUserRights = () => {
   const classes = useStyles();
   return (
     <Container maxWidth={false}>
@@ -32,4 +32,4 @@ const CoverFeatureUserrights = () => {
   );
 };
 
-export default CoverFeatureUserrights;
+export default CoverFeatureUserRights;
