@@ -173,9 +173,9 @@ export const ViewDialog = (props) => {
                     <div className="d-block p-0 avatar-icon-wrapper m-0 border-3">
                       <div className=" border-3 border-white overflow-hidden">
                        {data.sPhoto!= null  && 
-                        <img alt="..." className="img-fluid" style={{width:'100px' }}src={`data:image/`+data.sFileExtension+`;base64,${data.sPhoto}`} /> }
+                        <img alt="..." className="img-fluid" style={{width:'150px',height:'200px' }}src={`data:image/`+data.sFileExtension+`;base64,${data.sPhoto}`} /> }
                         {data.sPhoto == null  &&  
-                        <img alt="..." className="img-fluid" style={{width:'100px' }} src={stock} />}
+                        <img alt="..." className="img-fluid" style={{width:'150px' }} src={stock} />}
                       </div>
                     </div>
                   </div>
