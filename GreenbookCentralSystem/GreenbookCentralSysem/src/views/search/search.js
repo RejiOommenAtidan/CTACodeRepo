@@ -259,7 +259,7 @@ export default function SearchPage() {
       </div>
       ,
       field: "sGBIDCombo",
-      title: "GBIDCombo",
+      title: "GB ID",
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
