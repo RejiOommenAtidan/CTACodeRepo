@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import {
-  Box,
-  Container,
   Grid,
   Button,
-  Typography,
   FormControl,
   TextField
 } from '@material-ui/core';
@@ -18,10 +15,7 @@ import Slide from '@material-ui/core/Slide';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { useSelector } from 'react-redux';
-import {
-  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
-  sButtonColor, sButtonSize, sButtonVariant
-} from "../../../config/commonConfig";
+import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -164,7 +158,6 @@ export const DeleteDialog = (props) => {
       </DialogActions>
     </Dialog>
   );
-
 }
 
 export const AddDialog = (props) => {

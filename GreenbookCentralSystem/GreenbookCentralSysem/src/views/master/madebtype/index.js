@@ -1,4 +1,3 @@
-//Hi
 import React from 'react';
 import {
   Container,
@@ -7,7 +6,6 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-
 
 import MadebType from './madebtype';
 
@@ -20,11 +18,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverMadebType = () => {
   const classes = useStyles();
-
   return (
-   
       <Container maxWidth={false}>
         {/*<Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/Home" >
@@ -35,8 +31,7 @@ const Dashboard = () => {
   </Breadcrumbs>*/}
         <MadebType />
       </Container>
-
   );
 };
 
-export default Dashboard;
+export default CoverMadebType;

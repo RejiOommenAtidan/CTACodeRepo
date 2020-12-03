@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Container,
-  Grid
-} from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -11,39 +8,61 @@ import { AddDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
-import {
-  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
-  sButtonColor, sButtonSize, sButtonVariant
-} from "../../../config/commonConfig";
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles(() => ({
 }));
 
 export default function Region() {
+
   let history = useHistory();
   const classes = useStyles();
   const [isLoading, setisLoading] = React.useState(true);
-  const [editModal, setEditModal] = React.useState(false);
-  const [dataAPI, setdataAPI] = useState([]);
-  const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
+  const [editModal, setEditModal] = React.useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [dataAPI, setdataAPI] = useState([]);
   const [regionID, setRegionID] = React.useState('');
   const [region, setRegion] = React.useState('');
   const [regionPK, setRegionPK] = React.useState(0);
   const [regionObj, setRegionObj] = useState({});
-  const [dataChanged, setDataChanged] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
+
+  //#region Alert & Snackbar
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
 
   const handleEditClickOpen = () => {
     setEditModal(true);
   };
+
   const handleEditClickClose = () => {
     setEditModal(false);
   };
+
   const handleAddClickOpen = () => {
     setAddModal(true);
   };
+
   const handleAddClickClose = () => {
     setAddModal(false);
   };
@@ -51,24 +70,24 @@ export default function Region() {
   const columns = [
     {
       field: "id",
-      title: "Sr No.",
+      title: "#",
       hidden: true,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       },
       export: true
     },
     {
       field: "sRegion_code",
-      title: "Region ID",
+      title: "REGION ID",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -83,22 +102,22 @@ export default function Region() {
     },
     {
       field: "sRegion_name",
-      title: "Region",
+      title: "REGION",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "60%"
+        width: "70%"
       },
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "60%"
+        width: "70%"
       }
     },
     {
       field: 'edit',
-      title: 'Edit',
+      title: 'EDIT',
       filtering: false,
       sorting: false,
       export: false,
@@ -134,7 +153,7 @@ export default function Region() {
   };
 
   const editAPICall = (regionObj) => {
-    setisLoading(true);
+    setBackdrop(true);
     axios.post(`/Region/EditRegion/ID=` + regionPK, regionObj/*RegionToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
@@ -143,11 +162,14 @@ export default function Region() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
-                setDataChanged(true);
-                setisLoading(false);
+                setAlertMessage(sSnackbarUpdateMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
+              //TODO: Error discussion
               handleError(error, history);
             })
             .then(release => {
@@ -164,7 +186,7 @@ export default function Region() {
   };
 
   const addAPICall = (regionObj) => {
-    setisLoading(true);
+    setBackdrop(true);
     axios.post(`/Region/AddRegion/`, regionObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -173,7 +195,10 @@ export default function Region() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
-                setisLoading(false);
+                setAlertMessage(sSnackbarAddMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -203,7 +228,7 @@ export default function Region() {
     setDeleteModal(false);
   };
 
-  useEffect(() => {
+  const loadRegions = () => {
     axios.get(`/Region/GetRegion`)
       .then(resp => {
         if (resp.status === 200) {
@@ -217,6 +242,10 @@ export default function Region() {
       .then(release => {
         //console.log(release); => udefined
       });
+  };
+
+  useEffect(() => {
+    loadRegions();
   }, []);
 
   return (
@@ -261,6 +290,15 @@ export default function Region() {
         classes={classes}
         handleEditClickClose={handleEditClickClose}
         editAPICall={editAPICall}
+      />}
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
       />}
     </Container>
   );

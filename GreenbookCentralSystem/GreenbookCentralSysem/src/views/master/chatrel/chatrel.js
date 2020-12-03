@@ -11,10 +11,12 @@ import IconButton from '@material-ui/core/IconButton';
 import { AddDialog, EditDialog } from './dialog';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
 import Moment from 'moment';
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage, sDateFormat } from "../../../config/commonConfig";
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles(() => ({
 }));
@@ -36,6 +38,26 @@ export default function Chatrel() {
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
 
+  //#region Alert & Snackbar
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
+
   const handleEditClickOpen = () => {
     setEditModal(true);
   };
@@ -52,71 +74,71 @@ export default function Chatrel() {
   const columns = [
     {
       field: "id",
-      title: "Sr No.",
+      title: "#",
       hidden: true,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       },
       export: true
     },
     {
       field: "sChatrelKey",
-      title: "Chatrel Term",
+      title: "CHATREL TERM",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "25%"
+        width: "30%"
       },
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "25%"
+        width: "30%"
       }
     },
     {
       field: "nChatrelValue",
-      title: "Value",
+      title: "VALUE",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "10%"
+        width: "15%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "10%"
+        width: "15%"
       }
     },
     {
       render: rowData => Moment(rowData['dtChatrelFrom']).format(sDateFormat),
       field: "dtChatrelFrom",
-      title: "Starting From",
+      title: "STARTING FROM",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "20%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "15%"
+        width: "20%"
       }
     },
     {
       align: "center",
       field: 'edit',
-      title: 'Edit',
+      title: 'EDIT',
       filtering: false,
       sorting: false,
       export: false,
@@ -129,12 +151,12 @@ export default function Chatrel() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       }
     },
   ];
@@ -154,7 +176,7 @@ export default function Chatrel() {
   };
 
   const editAPICall = (chatrelObj) => {
-    setisLoading(true);
+    setBackdrop(true);
     axios.post(`/Chatrel/EditChatrel/ID=` + nChatrelPK, chatrelObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -163,7 +185,10 @@ export default function Chatrel() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
-                setisLoading(false);
+                setAlertMessage(sSnackbarUpdateMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -183,7 +208,7 @@ export default function Chatrel() {
   };
 
   const addAPICall = (chatrelObj) => {
-    setisLoading(true);
+    setBackdrop(true);
     axios.post(`/Chatrel/AddChatrel`, chatrelObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -192,7 +217,10 @@ export default function Chatrel() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
-                setisLoading(false);
+                setAlertMessage(sSnackbarAddMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -211,7 +239,7 @@ export default function Chatrel() {
       });
   };
 
-  useEffect(() => {
+  const loadChatrelConfig = () => {
     axios.get(`/Chatrel/GetAllChatrel`)
       .then(resp => {
         if (resp.status === 200) {
@@ -225,6 +253,10 @@ export default function Chatrel() {
       .then(release => {
         //console.log(release); => udefined
       });
+  };
+
+  useEffect(() => {
+    loadChatrelConfig();
   }, []);
 
   return (
@@ -270,6 +302,15 @@ export default function Chatrel() {
         handleEditClickClose={handleEditClickClose}
         editAPICall={editAPICall}
       />}
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+    {backdrop && <BackdropComponent
+        backdrop={backdrop}
+    />}
     </Container>
   );
 }

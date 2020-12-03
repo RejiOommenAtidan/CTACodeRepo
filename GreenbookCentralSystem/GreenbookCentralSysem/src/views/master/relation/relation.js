@@ -8,10 +8,12 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import { AddDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { makeStyles } from '@material-ui/core/styles';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles(() => ({
 }));
@@ -27,9 +29,28 @@ export default function Relation() {
   const [relation, setRelation] = React.useState('');
   const [relationPK, setRelationPK] = React.useState(0);
   const [relationObj, setRelationObj] = useState({});
-  const [dataChanged, setDataChanged] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
+
+  //#region Alert & Snackbar
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -47,39 +68,39 @@ export default function Relation() {
   const columns = [
     {
       field: "id",
-      title: "Sr No.",
+      title: "#",
       hidden: true,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       },
       export: true
     },
     {
       field: "sRelation",
-      title: "Relation",
+      title: "RELATION",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "70%"
+        width: "80%"
       },
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "70%"
+        width: "80%"
       }
     },
     {
       field: 'edit',
-      title: 'Edit',
+      title: 'EDIT',
       filtering: false,
       sorting: false,
       export: false,
@@ -92,12 +113,12 @@ export default function Relation() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       }
     },
   ];
@@ -113,7 +134,7 @@ export default function Relation() {
   };
 
   const editAPICall = (relationObj) => {
-    setisLoading(true);
+    setBackdrop(true);
     axios.post(`/Relation/EditRelation/ID=` + relationPK, relationObj/*RelationToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
@@ -122,8 +143,10 @@ export default function Relation() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
-                setDataChanged(true);
-                setisLoading(false);
+                setAlertMessage(sSnackbarUpdateMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -143,7 +166,7 @@ export default function Relation() {
   };
 
   const addAPICall = (relationObj) => {
-    setisLoading(true);
+    setBackdrop(true);
     axios.post(`/Relation/AddRelation/`, relationObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -152,7 +175,10 @@ export default function Relation() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
-                setisLoading(false);
+                setAlertMessage(sSnackbarAddMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -181,7 +207,7 @@ export default function Relation() {
     setDeleteModal(false);
   };
 
-  useEffect(() => {
+  const loadRelations = () => {
     axios.get(`/Relation/GetRelation`)
       .then(resp => {
         if (resp.status === 200) {
@@ -195,6 +221,10 @@ export default function Relation() {
       .then(release => {
         //console.log(release); => udefined
       });
+  };
+
+  useEffect(() => {
+    loadRelations();
   }, []);
 
   return (
@@ -239,6 +269,15 @@ export default function Relation() {
         classes={classes}
         handleEditClickClose={handleEditClickClose}
         editAPICall={editAPICall}
+      />}
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
       />}
     </Container>
   );

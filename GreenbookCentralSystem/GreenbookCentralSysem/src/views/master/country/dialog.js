@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import {
   Grid,
   Button,
@@ -11,24 +10,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import MuiAlert from '@material-ui/lab/Alert';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { useSelector } from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
-  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
   sButtonColor, sButtonSize, sButtonVariant
 } from "../../../config/commonConfig";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 export const EditDialog = (props) => {
   debugger
@@ -131,7 +119,6 @@ export const EditDialog = (props) => {
                       value={valueAuthRegion}
                       id="id_nAuthorityId"
                       options={regions}
-
                       getOptionLabel={(option) => option.sAuthRegion}
                       renderOption={(option) => (
                         <React.Fragment>
@@ -151,8 +138,6 @@ export const EditDialog = (props) => {
                         />
                       )}
                     />
-
-
                   </FormControl>
                 </Grid>
               </Grid>

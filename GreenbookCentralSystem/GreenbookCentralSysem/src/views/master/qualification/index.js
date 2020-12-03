@@ -8,18 +8,16 @@ import {
   Link
 } from '@material-ui/core';
 
-
 import Qualification from './qualification';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
-    minHeight: '100%',
-
+    minHeight: '100%'
   }
 }));
 
-const Dashboard = () => {
+const CoverQualification = () => {
   const classes = useStyles();
 
   return (
@@ -38,4 +36,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default CoverQualification;

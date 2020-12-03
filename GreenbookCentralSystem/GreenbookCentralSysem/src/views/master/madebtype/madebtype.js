@@ -7,12 +7,13 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import IconButton from '@material-ui/core/IconButton';
-// Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles(() => ({
   /*root: {
@@ -73,7 +74,25 @@ export default function EnhancedTable() {
   const [madebTypePK, setMadebTypePK] = React.useState(0);
   const [madebTypeObj, setMadebTypeObj] = useState({});
 
-  const [dataChanged, setDataChanged] = useState(false);
+  //#region Alert & Snackbar
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -96,39 +115,39 @@ export default function EnhancedTable() {
   const columns = [
     {
       field: "id",
-      title: "Sr No.",
+      title: "#",
       hidden: true,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       },
       export: true
     },
     {
       field: "sMadebType",
-      title: "Madeb Type",
+      title: "MADEB TYPE",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "20%"
+        width: "15%"
       },
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "20%"
+        width: "15%"
       }
     },
     {
       field: "sMadebDisplayName",
-      title: "Madeb Display Name",
+      title: "MADEB DISPLAY NAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -143,17 +162,17 @@ export default function EnhancedTable() {
     },
     {
       field: "sMadebDisplayKey",
-      title: "Madeb DisplayKey",
+      title: "MADEB DISPLAY KEY",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "10%"
+        width: "15%"
       },
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "10%"
+        width: "15%"
       }
     },
     {
@@ -171,12 +190,12 @@ export default function EnhancedTable() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       }
     },
   ];
@@ -201,17 +220,19 @@ export default function EnhancedTable() {
     //   sMadebTypeID: madebTypeID,
     //   sMadebType: madebTypeName,
     // };
+    setBackdrop(true);
     axios.post(`/MadebType/EditMadebType/madebTypeID=` + madebTypePK, obj)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
           setEditModal(false);
           axios.get(`/MadebType/GetMadebTypes`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
-                setDataChanged(true);
+                setAlertMessage(sSnackbarUpdateMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -229,16 +250,19 @@ export default function EnhancedTable() {
     //   sMadebTypeID: madebTypeID,
     //   sMadebType: madebTypeName,
     // };
+    setBackdrop(true);
     axios.post(`/MadebType/AddMadebType/`, madebTypeObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           axios.get(`/MadebType/GetMadebTypes`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
+                setAlertMessage(sSnackbarAddMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -255,7 +279,6 @@ export default function EnhancedTable() {
     setDeleteModal(true);
     setMadebTypePK(tableRowArray["id"]);
     setMadebType(tableRowArray["sMadebType"]);
-
   };
 
   const handleClose = () => {
@@ -292,12 +315,11 @@ export default function EnhancedTable() {
       })
   };
 
-  useEffect(() => {
+  const loadMadebTypes = () => {
     axios.get(`/MadebType/GetMadebTypes`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
-          setdataAPI(resp.data)
+          setdataAPI(resp.data);
         }
       })
       .catch(error => {
@@ -315,6 +337,10 @@ export default function EnhancedTable() {
       .then(release => {
         //console.log(release); => udefined
       });
+  };
+
+  useEffect(() => {
+    loadMadebTypes();
   }, []);
 
   return (
@@ -376,6 +402,15 @@ export default function EnhancedTable() {
         madebType={madebType}
         handleClose={handleClose}
         deleteAPICall={deleteAPICall}
+      />}
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
       />}
     </Container>
   );

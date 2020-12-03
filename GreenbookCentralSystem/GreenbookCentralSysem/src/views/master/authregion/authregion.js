@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Container,
-  Grid,
-} from '@material-ui/core';
-
+import { Container, Grid } from '@material-ui/core';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import IconButton from '@material-ui/core/IconButton';
-// Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
 import { useHistory } from 'react-router-dom';
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 import handleError from "../../../auth/_helpers/handleError";
-import {
-  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
-  sButtonColor, sButtonSize, sButtonVariant
-} from "../../../config/commonConfig";
 
 const useStyles = makeStyles(() => ({
   //   root: {
@@ -66,6 +60,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function EnhancedTable() {
+
+  let history = useHistory();
   const classes = useStyles();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
@@ -73,27 +69,45 @@ export default function EnhancedTable() {
   const [addModal, setAddModal] = useState(false);
   const [countryList, setCountryList] = useState([]);
   const [loading, setLoading] = useState(true);
-  //VAR
   const [countryID, setCountryID] = React.useState('');
   const [authRegion, setAuthRegion] = React.useState('');
   const [authRegionPK, setAuthRegionPK] = React.useState(0);
   const [authRegionObj, setAuthRegionObj] = useState({});
-  const [countryName, setCountryName] = useState('');
-  const [dataChanged, setDataChanged] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
 
-  let history = useHistory();
+  //#region Alert & Snackbar
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
 
   const handleEditClickOpen = () => {
     setEditModal(true);
   };
+
   const handleEditClickClose = () => {
     setEditModal(false);
   };
+
   const handleAddClickOpen = () => {
     setAddModal(true);
   };
+
   const handleAddClickClose = () => {
     setAddModal(false);
   };
@@ -101,24 +115,24 @@ export default function EnhancedTable() {
   const columns = [
     {
       field: "id",
-      title: "Sr No.",
+      title: "#",
       hidden: true,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       },
       export: true
     },
     {
       field: "sCountryID",
-      title: "Short Name",
+      title: "SHORT NAME",
       hidden: true,
       headerStyle: {
         textAlign: "center",
@@ -134,7 +148,7 @@ export default function EnhancedTable() {
     },
     {
       field: "sCountry",
-      title: "Country",
+      title: "COUNTRY",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -149,7 +163,7 @@ export default function EnhancedTable() {
     },
     {
       field: "sAuthRegion",
-      title: "Authority Region",
+      title: "AUTHORITY REGION",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -164,7 +178,7 @@ export default function EnhancedTable() {
     },
     {
       field: "sCurrencyCode",
-      title: "Currency",
+      title: "CURRENCY",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -179,7 +193,7 @@ export default function EnhancedTable() {
     },
     {
       field: "edit",
-      title: "Edit",
+      title: "EDIT",
       filtering: false,
       sorting: false,
       export: false,
@@ -192,12 +206,12 @@ export default function EnhancedTable() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       }
     },
 
@@ -223,6 +237,7 @@ export default function EnhancedTable() {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
+    setBackdrop(true);
     axios.post(`/AuthRegion/EditAuthRegion/RegionID=` + authRegionPK, authRegionObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -231,9 +246,11 @@ export default function EnhancedTable() {
           axios.get(`/AuthRegionCountry/GetAllAuthRegionsCountryName`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
-                setDataChanged(true);
+                setAlertMessage(sSnackbarUpdateMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -253,16 +270,19 @@ export default function EnhancedTable() {
     //   sCountryID: countryID,
     //   sCountry: countryName,
     // };
+    setBackdrop(true);
     axios.post(`/AuthRegion/AddAuthRegion/`, authRegionObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           axios.get(`/AuthRegionCountry/GetAllAuthRegionsCountryName`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
+                setAlertMessage(sSnackbarAddMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -303,14 +323,11 @@ export default function EnhancedTable() {
     };
     axios.post(`/AuthRegion/DeleteAuthRegion/`, authRegionToDelete)
       .then(resp => {
-        console.log(authRegionToDelete);
         if (resp.status === 200) {
-          console.log(resp.data);
           setDeleteModal(false);
           axios.get(`/AuthRegion/GetAuthRegions`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data)
               }
             })
@@ -326,7 +343,7 @@ export default function EnhancedTable() {
       });
   };
 
-  useEffect(() => {
+  const loadAuthRegions = () => {
     axios.get(`/AuthRegionCountry/GetAllAuthRegionsCountryName`)
       .then(resp => {
         if (resp.status === 200) {
@@ -348,6 +365,10 @@ export default function EnhancedTable() {
         console.log(error.message);
         console.log(error.config);
       });
+  };
+
+  useEffect(() => {
+    loadAuthRegions();
   }, []);
 
 
@@ -414,6 +435,15 @@ export default function EnhancedTable() {
         authRegion={authRegion}
         handleClose={handleClose}
         deleteAPICall={deleteAPICall}
+      />}
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
       />}
     </Container>
   );

@@ -1,4 +1,3 @@
-//Hi
 import React from 'react';
 import {
   Container,
@@ -7,7 +6,6 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-
 
 import Province from './province';
 
@@ -20,9 +18,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverProvince = () => {
   const classes = useStyles();
-
   return (
    
       <Container maxWidth={false}>
@@ -35,8 +32,7 @@ const Dashboard = () => {
   </Breadcrumbs>*/}
         <Province />
       </Container>
-
   );
 };
 
-export default Dashboard;
+export default CoverProvince;

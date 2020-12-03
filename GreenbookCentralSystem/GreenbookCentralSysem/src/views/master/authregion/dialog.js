@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-
 import {
   Grid,
   Button,
   FormControl,
   TextField,
-  Select,
 } from '@material-ui/core';
 
 import { useSelector } from 'react-redux';
@@ -19,7 +17,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import {
-  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
   sButtonColor, sButtonSize, sButtonVariant
 } from "../../../config/commonConfig";
 

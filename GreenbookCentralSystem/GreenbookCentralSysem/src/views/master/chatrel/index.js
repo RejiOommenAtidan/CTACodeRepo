@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CoverChatrel = () => {
+const CoverChatrelConfig = () => {
   const classes = useStyles();
   return (
     <Container maxWidth={false}>
@@ -32,4 +32,4 @@ const CoverChatrel = () => {
   );
 };
 
-export default CoverChatrel;
+export default CoverChatrelConfig;

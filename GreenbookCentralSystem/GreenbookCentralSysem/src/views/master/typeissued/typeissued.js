@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import {
   Container,
@@ -10,9 +9,11 @@ import IconButton from '@material-ui/core/IconButton';
 import { AddDialog, EditDialog } from './dialog';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles(() => ({
 }));
@@ -32,6 +33,26 @@ export default function TypeIssued() {
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
 
+  //#region Alert & Snackbar
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
+
   const handleEditClickOpen = () => {
     setEditModal(true);
   };
@@ -48,34 +69,34 @@ export default function TypeIssued() {
   const columns = [
     {
       field: "id",
-      title: "Sr No.",
+      title: "#",
       hidden: true,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       },
       export: true
     },
     {
       field: "sTypeIssued",
-      title: "Type Issued",
+      title: "TYPE ISSUED",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "70%"
+        width: "80%"
       },
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "70%"
+        width: "80%"
       }
       // customFilterAndSearch: (term, rowData)=>{
       //   console.log(term);
@@ -85,7 +106,7 @@ export default function TypeIssued() {
     },
     {
       field: 'edit',
-      title: 'Edit',
+      title: 'EDIT',
       filtering: false,
       sorting: false,
       export: false,
@@ -98,12 +119,12 @@ export default function TypeIssued() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       }
     },
   ];
@@ -119,7 +140,7 @@ export default function TypeIssued() {
   };
 
   const editAPICall = (typeIssuedObj) => {
-    setisLoading(true);
+    setBackdrop(true);
     axios.post(`/TypeIssued/EditTypeIssued/ID=` + typeIssuedPK, typeIssuedObj/*TypeIssuedToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
@@ -128,8 +149,10 @@ export default function TypeIssued() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
-                setDataChanged(true);
-                setisLoading(false);
+                setAlertMessage(sSnackbarUpdateMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -149,7 +172,7 @@ export default function TypeIssued() {
   };
 
   const addAPICall = (typeIssuedObj) => {
-    setisLoading(true);
+    setBackdrop(true);
     axios.post(`/TypeIssued/AddTypeIssued/`, typeIssuedObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -158,7 +181,10 @@ export default function TypeIssued() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
-                setisLoading(false);
+                setAlertMessage(sSnackbarAddMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -187,7 +213,7 @@ export default function TypeIssued() {
     setDeleteModal(false);
   };
 
-  useEffect(() => {
+  const loadTypeIssued = () => {
     axios.get(`/TypeIssued/GetTypeIssued`)
       .then(resp => {
         if (resp.status === 200) {
@@ -201,6 +227,10 @@ export default function TypeIssued() {
       .then(release => {
         //console.log(release); => udefined
       });
+  };
+
+  useEffect(() => {
+    loadTypeIssued();
   }, []);
 
   return (
@@ -219,7 +249,7 @@ export default function TypeIssued() {
             actions={[
               {
                 icon: oTableIcons.Add,
-                tooltip: 'Add TypeIssued',
+                tooltip: 'Add Type Issued',
                 isFreeAction: true,
                 onClick: (event) => setAddModal(true)
               },
@@ -245,6 +275,15 @@ export default function TypeIssued() {
         classes={classes}
         handleEditClickClose={handleEditClickClose}
         editAPICall={editAPICall}
+      />}
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
       />}
     </Container>
   );

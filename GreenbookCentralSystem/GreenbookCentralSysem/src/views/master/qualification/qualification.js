@@ -7,12 +7,13 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import IconButton from '@material-ui/core/IconButton';
-// Local import
 import { AddDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles(() => ({
   /*root: {
@@ -73,10 +74,29 @@ export default function Qualification() {
   const [qualification, setQualification] = React.useState('');
   const [qualificationPK, setQualificationPK] = React.useState(0);
   const [qualificationObj, setQualificationObj] = useState({});
-  const [dataChanged, setDataChanged] = useState(false);
   let history = useHistory();
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
+
+  //#region Alert & Snackbar
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -94,54 +114,54 @@ export default function Qualification() {
   const columns = [
     {
       field: "id",
-      title: "Sr No.",
+      title: "#",
       hidden: true,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       },
       export: true
     },
     {
       field: "sQualificationID",
-      title: "Qualification ID",
+      title: "QUALIFICATION ID",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "10%"
+        width: "15%"
       },
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "10%"
+        width: "15%"
       }
     },
     {
       field: "sQualification",
-      title: "Qualification",
+      title: "QUALIFICATION",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "30%"
+        width: "50%"
       },
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "30%"
+        width: "50%"
       }
     },
     {
       field: "edit",
-      title: "Edit",
+      title: "EDIT",
       filtering: false,
       export: false,
       sorting: false,
@@ -154,12 +174,12 @@ export default function Qualification() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       }
     },
   ];
@@ -177,16 +197,19 @@ export default function Qualification() {
   };
 
   const editAPICall = (qualificationObj) => {
+    setBackdrop(true);
     axios.post(`/Qualification/EditQualification/ID=` + qualificationPK, qualificationObj/*QualificationToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
           setEditModal(false);
           axios.get(`/Qualification/GetQualification`)
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
-                setDataChanged(true);
+                setAlertMessage(sSnackbarUpdateMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -200,6 +223,7 @@ export default function Qualification() {
   };
 
   const addAPICall = (qualificationObj) => {
+    setBackdrop(true);
     axios.post(`/Qualification/AddQualification/`, qualificationObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -207,7 +231,11 @@ export default function Qualification() {
           axios.get(`/Qualification/GetQualification`)
             .then(resp => {
               if (resp.status === 200) {
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
+                setAlertMessage(sSnackbarAddMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -231,7 +259,7 @@ export default function Qualification() {
     setDeleteModal(false);
   };
 
-  useEffect(() => {
+  const loadQualifications = () => {
     axios.get(`/Qualification/GetQualification`)
       .then(resp => {
         if (resp.status === 200) {
@@ -241,6 +269,10 @@ export default function Qualification() {
       .catch(error => {
         handleError(error, history);
       });
+  };
+
+  useEffect(() => {
+    loadQualifications();
   }, []);
 
   return (
@@ -295,6 +327,15 @@ export default function Qualification() {
         classes={classes}
         handleEditClickClose={handleEditClickClose}
         editAPICall={editAPICall}
+      />}
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
       />}
     </Container>
   );

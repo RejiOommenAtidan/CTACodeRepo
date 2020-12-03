@@ -10,9 +10,11 @@ import IconButton from '@material-ui/core/IconButton';
 // Local import
 import { AddDialog, DeleteDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles(() => ({
   /*root: {
@@ -73,7 +75,26 @@ export default function EnhancedTable() {
   const [occupationDesc, setOccupationDesc] = React.useState('');
   const [occupationDescTibetan, setOccupationDescTibetan] = React.useState('');
   const [occupationObj, setOccupationObj] = useState({});
-  const [dataChanged, setDataChanged] = useState(false);
+
+  //#region Alert & Snackbar
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
 
   const handleEditClickOpen = () => {
     setEditModal(true);
@@ -95,24 +116,24 @@ export default function EnhancedTable() {
   const columns = [
     {
       field: "id",
-      title: "Sr No.",
+      title: "#",
       hidden: true,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       },
       export: true
     },
     {
       field: "sOccupationDesc",
-      title: "Occupation",
+      title: "OCCUPATION",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -127,7 +148,7 @@ export default function EnhancedTable() {
     },
     {
       field: "sOccupationDescTibetan",
-      title: "Occupation (in Tibetan)",
+      title: "OCCUPATION (IN TIBETAN)",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -142,7 +163,7 @@ export default function EnhancedTable() {
     },
     {
       field: "edit",
-      title: "Edit",
+      title: "EDIT",
       filtering: false,
       export: false,
       sorting: false,
@@ -155,15 +176,14 @@ export default function EnhancedTable() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "15%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "15%"
+        width: "10%"
       }
     },
-
   ];
 
   const editClick = (tableRowArray) => {
@@ -179,6 +199,7 @@ export default function EnhancedTable() {
   };
 
   const editAPICall = (occupationObj) => {
+    setBackdrop(true);
     axios.post(`/Occupation/EditOccupation/occupationId=` + occupationPK, occupationObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -188,31 +209,36 @@ export default function EnhancedTable() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
-                setDataChanged(true);
+                setAlertMessage(sSnackbarUpdateMessage);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
               handleError(error, history);
             });
-
         }
       })
       .catch(error => {
         handleError(error, history);
       });
-
   };
 
   const addAPICall = (occupationObj) => {
+    setBackdrop(true);
     axios.post(`/Occupation/AddOccupation`, occupationObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
+          setAlertMessage(sSnackbarAddMessage);
+          setAlertType('success');
+          snackbarOpen();
+          setBackdrop(false);
           axios.get(`/Occupation/GetOccupations`)
             .then(resp => {
               if (resp.status === 200) {
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
               }
             })
             .catch(error => {
@@ -263,7 +289,7 @@ export default function EnhancedTable() {
       });
   };
 
-  useEffect(() => {
+  const loadOccupations = () => {
     axios.get(`/Occupation/GetOccupations`)
       .then(resp => {
         if (resp.status === 200) {
@@ -273,7 +299,10 @@ export default function EnhancedTable() {
       .catch(error => {
         handleError(error, history);
       });
+  };
 
+  useEffect(() => {
+    loadOccupations();
   }, []);
 
   return (
@@ -334,6 +363,15 @@ export default function EnhancedTable() {
         occupationDesc={occupationDesc}
         handleClose={handleClose}
         deleteAPICall={deleteAPICall}
+      />}
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
       />}
     </Container>
   );
