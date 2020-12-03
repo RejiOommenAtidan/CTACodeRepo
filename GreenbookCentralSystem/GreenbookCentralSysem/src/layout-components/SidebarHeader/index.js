@@ -1,13 +1,9 @@
 import React from 'react';
-
 import clsx from 'clsx';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Tooltip } from '@material-ui/core';
-
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-
 import {
   setSidebarToggle,
   setSidebarToggleMobile
@@ -52,7 +48,7 @@ const SidebarHeader = (props) => {
             </div>
           </NavLink>
         </div>
-        <Tooltip title="Collapse sidebar" placement="right" arrow>
+        <Tooltip title="Collapse Sidebar" placement="right" arrow>
           <Button
             onClick={toggleSidebar}
             className="btn btn-sm collapse-sidebar-btn">
@@ -69,7 +65,7 @@ const SidebarHeader = (props) => {
             <span className="hamburger-inner" />
           </span>
         </Button>
-        <Tooltip title="Expand sidebar" placement="right" arrow>
+        <Tooltip title="Expand Sidebar" placement="right" arrow>
           <Button
             onClick={toggleSidebar}
             className="expand-sidebar-btn btn btn-sm">

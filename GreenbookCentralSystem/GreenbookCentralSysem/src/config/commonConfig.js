@@ -17,6 +17,7 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 
 export const sAPIBASEURL = "http://localhost:52013/api";
 // export const sAPIBASEURL = "https://cta-portal-webapi.azurewebsites.net/api";
+
 export const sAdminEmail = "admin@CTA.com";
 export const sSnackbarAddMessage = "Record added successfully";
 export const sSnackbarUpdateMessage = "Record updated successfully";
@@ -29,7 +30,7 @@ export const oOptions = {
     // searchFieldAlignment:"left",
     // selection:true,
     // tableLayout: "auto",
-    // padding: "dense",
+    //padding: "dense",
     //emptyRowsWhenPaging: false,
     draggable: false,
     maxBodyHeight: 575,
@@ -38,24 +39,24 @@ export const oOptions = {
     exportButton: true,
     exportAllData: true,
     headerStyle: {
-        backgroundColor: '#3b3e66',
-        color: '#FFF',
+        backgroundColor: '#253053',
+        color: '#FFFFFF',
         fontSize: '15px',
         padding: '0px',
         margin: '0px',
-        border: '1px solid lightgrey',
+        border: '1.25px solid lightgrey',
+        height: '30px',
+        fontWeight: 'bold'
     },
     pageSize: nPageSize,
     pageSizeOptions: aPageSizeArray,
     rowStyle: x => {
-
         if (x.tableData.id % 2) {
             return { backgroundColor: "#f2f2f2", padding: '0' }
         }
         else {
             return { padding: '0' }
         }
-
     }
 };
 
