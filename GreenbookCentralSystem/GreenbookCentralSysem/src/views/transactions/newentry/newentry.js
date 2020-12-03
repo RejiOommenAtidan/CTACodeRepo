@@ -1190,7 +1190,7 @@ export default function NewEntry(props) {
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'new-password'
+                              autoComplete: 'off'
                             }}
                           />
                         )}

@@ -244,7 +244,7 @@ export const EditDialog = (props) => {
                       InputProps={{
                         readOnly: false,
                       }}
-                      defaultValue={formNumber}
+                      value={formNumber}
                       onChange={(e) => { setFormNumber(e.target.value) }}
 
                     />
@@ -257,7 +257,7 @@ export const EditDialog = (props) => {
                      
                       label={<p>Received Date<span style={{ color: "red" }} > *</span></p>}
                       type="date"
-                      defaultValue={receivedDate}
+                      value={receivedDate}
                       className={props.classes.textField}
                       InputLabelProps={{
                         shrink: true,
@@ -336,7 +336,7 @@ export const EditDialog = (props) => {
                       label={<p>GBID<span style={{ color: "red" }} > *</span></p>}
                       //required={true}
                       name="sGBID"
-                      defaultValue={sGBID}
+                      value={sGBID}
                       onChange={(e) => { handleChangeGBID(e.target.value) }}
                     //onBlur={(e) => {formPopulate(e.target.value)}}
                     />
@@ -360,7 +360,7 @@ export const EditDialog = (props) => {
                       id="sChangeField"
                       label={<p>Change Field</p>}
                       name="sChangeField"
-                      defaultValue={sChangeField}
+                      value={sChangeField}
                       onChange={(e) => { setChangeField(e.target.value) }}
                     />
                   </FormControl>
@@ -371,7 +371,7 @@ export const EditDialog = (props) => {
                       id="da"
                   
                       label={<p>Document Attached<span style={{ color: "red" }} > *</span></p>}
-                      defaultValue={documents}
+                      value={documents}
                       onChange={(e) => { setDocument(e.target.value) }}
                     />
                   </FormControl>
@@ -383,7 +383,7 @@ export const EditDialog = (props) => {
                       label={<p>Receipt Number</p>}
                       type="number"
                       name='receipt'
-                      defaultValue={receipt}
+                      value={receipt}
                       onChange={(e) => { setReceipt(parseInt(e.target.value)) }}
 
                     />
@@ -447,7 +447,7 @@ export const EditDialog = (props) => {
                       id="date"
                       label="Issue Action Date"
                       type="date"
-                      defaultValue={issueActionDate}
+                      value={issueActionDate}
                       className={props.classes.textField}
                       InputLabelProps={{
                         shrink: true,
@@ -508,7 +508,7 @@ export const EditDialog = (props) => {
                       id="date"
                       label="Return Date"
                       type="date"
-                      defaultValue={returnDate}
+                      value={returnDate}
                       className={props.classes.textField}
                       InputLabelProps={{
                         shrink: true,
@@ -524,7 +524,7 @@ export const EditDialog = (props) => {
                       id="date"
                       label="Reject Date"
                       type="date"
-                      defaultValue={rejectDate}
+                      value={rejectDate}
                       className={props.classes.textField}
                       InputLabelProps={{
                         shrink: true,
@@ -603,8 +603,9 @@ export const AddDialog = (props) => {
           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
           const lname = resp.data.sLastName ? resp.data.sLastName : '';
+          //setName(`${name} ${mname} ${lname}`);
+          console.log(name);
           setName(`${name} ${mname} ${lname}`);
-
 
           clearErrors("sName");
           //setValue("sName");
@@ -713,7 +714,7 @@ export const AddDialog = (props) => {
                       InputProps={{
                         readOnly: false,
                       }}
-                      defaultValue={formNumber}
+                      value={formNumber}
                       onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
 
                     />
@@ -734,7 +735,7 @@ export const AddDialog = (props) => {
                       label={<p>Received Date<span style={{ color: "red" }} > *</span></p>}
                       type="date"
                       name="name_receivedDate"
-                      defaultValue={receivedDate}
+                      value={receivedDate}
                       inputRef={register({
                         required: true
                       })}
@@ -818,7 +819,7 @@ export const AddDialog = (props) => {
                       label={<p>GBID<span style={{ color: "red" }} > *</span></p>}
                       //required={true}
                       name="sGBID"
-                      defaultValue={sGBID}
+                      value={sGBID}
                       onChange={(e) => { handleChangeGBID(e.target.value) }}
                       //onBlur={(e) => {formPopulate(e.target.value)}}
                       inputRef={register({
@@ -836,7 +837,7 @@ export const AddDialog = (props) => {
                     <TextField
                       id="name"
                       label={<p>Name<span style={{ color: "red" }} > *</span></p>}
-                      defaultValue={name}
+                      value={name}
                       name='name'
                       inputRef={register({
                         required: true

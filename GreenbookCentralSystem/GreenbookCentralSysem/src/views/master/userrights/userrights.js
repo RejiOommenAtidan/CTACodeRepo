@@ -109,7 +109,7 @@ export default function UserRights() {
     },
     {
       field: "sUserRightsName",
-      title: "User Rights",
+      title: "Roles",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -243,7 +243,7 @@ export default function UserRights() {
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
             icons={oTableIcons}
-            title="User Rights"
+            title="Roles"
             data={dataAPI}
             columns={columns}
             options={oOptions}

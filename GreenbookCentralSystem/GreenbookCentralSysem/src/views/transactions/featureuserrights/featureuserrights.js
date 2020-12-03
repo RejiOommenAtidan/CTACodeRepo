@@ -241,10 +241,13 @@ export default function FeatureUserrights() {
             isLoading={isLoading}
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={oTableIcons}
-            title="Feature Roles"
+            title="Feature Rights"
             columns={columns}
             data={dataAPI}
-            options={oOptions}
+            options={{
+              ...oOptions,
+              exportButton:false
+            }}
             actions={[
               {
                 icon: oTableIcons.Search,
