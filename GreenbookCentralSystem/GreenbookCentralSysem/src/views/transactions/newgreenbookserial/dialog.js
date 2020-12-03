@@ -170,7 +170,7 @@ export const AddDialog = (props) => {
 
   return (
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Generate GreenBook Serial Number</DialogTitle>
+      <DialogTitle id="form-dialog-title">Generate Green Book Serial Number</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
       <DialogContent>
         <DialogContentText>

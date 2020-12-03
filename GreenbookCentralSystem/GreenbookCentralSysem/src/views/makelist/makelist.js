@@ -107,7 +107,7 @@ export default () => {
       }
     },
     {
-      field: "sName",
+      field: "sFirstName",
       title: "Name",
       headerStyle: {
         textAlign: "center",
@@ -336,7 +336,7 @@ export default () => {
                             setPrinted();
                           }}
                         >
-                          Set Printed
+                          Mark Printed
               </Button> </div>)}
                     </div>
                   ),
