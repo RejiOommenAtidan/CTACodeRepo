@@ -125,11 +125,14 @@ export default function EnhancedTable() {
 
   const isChecked = (row) => {
     if (row.sRegion_code && row.sRegion_code != null) {
+      setAlertMessage('Record Added to Print List');
+      setAlertType('info');
+      snackbarOpen();
       handleChange(row);
     }
     else {
       setAlertMessage('Please Select Region');
-      setAlertType('error');
+      setAlertType('info');
       snackbarOpen();
     }
   };
@@ -429,6 +432,7 @@ export default function EnhancedTable() {
                         ))}
                       </tbody>
                     </Table>
+                    <i style={{ textAlign: 'left' }}>* Maximum 4 on a Single A4 Page</i>
                     <Typography color="textPrimary">Print Preview</Typography>
                     <Button
                       variant={sButtonVariant}
