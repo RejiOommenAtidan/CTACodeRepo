@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
 import { AddDialog, EditDialog } from './dialog';
+import { sDateFormat } from './../../../config/commonConfig'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,7 +85,13 @@ export default () => {
     alertMessage: alertMessage,
     alertType: alertType
   };
-
+  const [snackbar, setSnackbar] = React.useState(false);
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
   const columns = [
     {
       field: "greenBookSerialNumber.id",
@@ -96,13 +103,13 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
       field: "greenBookSerialNumber.dtDate",
-      title: "Date",
+      title: "DATE",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
       headerStyle: {
@@ -111,84 +118,85 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       },
-      render: rowData => rowData['greenBookSerialNumber']['dtDate'] ? Moment(rowData['greenBookSerialNumber']['dtDate']).format('YYYY-MM-DD') : undefined
+      render: rowData => rowData['greenBookSerialNumber']['dtDate'] ? Moment(rowData['greenBookSerialNumber']['dtDate']).format(sDateFormat) : undefined
     },
     {
       field: "greenBookSerialNumber.nBookNo",
-      title: "Book Serial No",
+      title: "BOOK SERIAL NO",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "12%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width: "12%"
       }
     },
     {
       field: "greenBookSerialNumber.sName",
-      title: "Name",
+      title: "NAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "12%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "12%"
       }
     },
     {
       field: "greenBookSerialNumber.sCountryID",
-      title: "Country Code",
+      title: "COUNTRY CODE",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width: "2%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "left",
+        padding: '5px',
+        width: "2%"
       }
     },
     {
       field: "greenBookSerialNumber.sGBID",
-      title: "GB Id",
+      title: "GB ID",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
       field: "sMadebType",
-      title: "Madeb Type",
+      title: "MADEB TYPE",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
       field: "greenBookSerialNumber.nFormNumber",
-      title: "Form Number",
+      title: "FORM NUMBER",
       filterPlaceholder: "Search...",
       headerStyle: {
         textAlign: "center",
@@ -196,39 +204,39 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
       field: "sAuthRegion",
-      title: "Authority",
+      title: "AUTHORITY",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
       field: "greenBookSerialNumber.remarks",
-      title: "Remarks",
+      title: "REMARKS",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
       field: "edit",
-      title: "Edit",
+      title: "EDIT",
       sorting: false,
       export: false,
       filtering: false,
@@ -265,6 +273,13 @@ export default () => {
         }
       })
       .catch(error => {
+        if(error.response){
+          if(error.response.status === 401){
+            setAlertMessage("You have been logged out of the system. Login again.");
+            setAlertType("error");
+            snackbarOpen();
+          }
+        }
         console.log(error.config);
         console.log(error.message);
       })
@@ -332,6 +347,9 @@ export default () => {
           //console.log(resp.data);
           //setResult(true);
           setEditModal(false);
+          setAlertMessage('Record updated successfully.');
+          setAlertType('success');
+          snackbarOpen();
           axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/`)
             .then(resp => {
               if (resp.status === 200) {
@@ -352,6 +370,9 @@ export default () => {
       .catch(error => {
         console.log(error.config);
         console.log(error.message);
+        setAlertMessage(`Record updation failed. \nError:${error.message}.`);
+        setAlertType('error');
+        snackbarOpen();
       })
   };
 
@@ -366,6 +387,13 @@ export default () => {
         }
       })
       .catch(error => {
+        if(error.response){
+          if(error.response.status === 401){
+            setAlertMessage("You have been logged out of the system. Login again.");
+            setAlertType("error");
+            snackbarOpen();
+          }
+        }
         console.log(error.config);
         console.log(error.message);
         setLoading(false);
@@ -386,7 +414,7 @@ export default () => {
             style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={loading}
             icons={oTableIcons}
-            title="Edit GreenBook Serial Number"
+            title="Edit Green Book Serial Number"
             columns={columns}
             data={dataAPI}
             options={oOptions}
@@ -422,6 +450,12 @@ export default () => {
             editAPICall={editAPICall}
             gbSerialObj={gbSerialObj}
           />}
+          {snackbar && <Alerts
+            alertObj={alertObj}
+            snackbar={snackbar}
+            snackbarClose={snackbarClose}
+          />
+          }
         </Grid>
       </Grid>
     </>

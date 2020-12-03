@@ -17,6 +17,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { AddDialog } from './dialog';
+import { sDateFormat } from './../../../config/commonConfig'
 import { Assign } from './assign';
 
 const useStyles = makeStyles((theme) => ({
@@ -80,13 +81,22 @@ export default () => {
 
   let history = useHistory();
 
+  //Alerts
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const alertObj = {
     alertMessage: alertMessage,
     alertType: alertType
   };
+  const [snackbar, setSnackbar] = React.useState(false);
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
 
+  //Data columns
   const columns = [
     {
       field: "id",
@@ -104,7 +114,7 @@ export default () => {
     },
     {
       field: "nFormNumber",
-      title: "Form Number",
+      title: "FORM NUMBER",
       filterPlaceholder: "Search...",
       headerStyle: {
         textAlign: "center",
@@ -118,7 +128,7 @@ export default () => {
     },
     {
       field: "sGBID",
-      title: "  GB Id",
+      title: "  GB ID",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -131,7 +141,7 @@ export default () => {
     },
     {
       field: "dtReceived",
-      title: "Received on",
+      title: "RECEIVED ON",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
       headerStyle: {
@@ -143,11 +153,11 @@ export default () => {
         textAlign: "center",
         padding: '5px'
       },
-      render: rowData => rowData['dtReceived'] ? Moment(rowData['dtReceived']).format('YYYY-MM-DD') : undefined
+      render: rowData => rowData['dtReceived'] ? Moment(rowData['dtReceived']).format(sDateFormat) : undefined
     },
     {
       field: "sName",
-      title: "Name",
+      title: "NAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -160,7 +170,7 @@ export default () => {
     },
     {
       field: "sMadebType",
-      title: "Madeb Type",
+      title: "MADEB TYPE",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -173,7 +183,7 @@ export default () => {
     },
     {
       field: "sAuthRegion",
-      title: "Authority Region",
+      title: "AUTHORITY REGION",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -186,7 +196,7 @@ export default () => {
     },
     {
       field: "edit",
-      title: "Generate",
+      title: "GENERATE",
       sorting: false,
       export: false,
       filtering: false,
@@ -252,16 +262,22 @@ export default () => {
     //alert("Opening modal...");
   };
 
-  const addAPICall = (gbSerialObj, clicked) => {
+  const addAPICall = (obj, clicked) => {
     setLoading(true);
-    console.log(gbSerialObj);
-    axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, gbSerialObj)
+    console.log(obj);
+    axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, obj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
+          setAlertMessage(`Greenbook Serial Number ${obj.nBookNo} assigned to Form No. ${obj.nFormNumber} for ${gbSerialObj.sMadebType} madeb.`);
+          setAlertType('success');
+          snackbarOpen();
           setAddModal(false);
+          
           if (clicked) {
-            history.push("/GreenBookSerial");
+            setTimeout(() => {
+              history.push("/GreenBookSerial");
+            }, 3000);
             return;
           }
           axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumberAssignList`)
@@ -280,6 +296,9 @@ export default () => {
         }
       })
       .catch(error => {
+        setAlertMessage(`Assigning Serial Number Failed. \nError:${error.message}.`);
+        setAlertType('error');
+        snackbarOpen();
         console.log(error.message);
         console.log(error.config);
       })
@@ -335,7 +354,7 @@ export default () => {
             style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={loading}
             icons={oTableIcons}
-            title="Give GreenBook Serial Number"
+            title="Give Green Book Serial Number"
             columns={columns}
             data={dataAPI}
             options={oOptions}
@@ -373,6 +392,12 @@ export default () => {
               editAPICall={editAPICall}
               gbSerialObj={gbSerialObj}
             />} */}
+            {snackbar && <Alerts
+            alertObj={alertObj}
+            snackbar={snackbar}
+            snackbarClose={snackbarClose}
+          />
+          }
         </Grid>
       </Grid>
     </>

@@ -105,7 +105,7 @@ export const EditDialog = (props) => {
 
   return (
     <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Edit GreenBook Serial Number</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Green Book Serial Number</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
       <DialogContent>
         <DialogContentText>
@@ -170,7 +170,7 @@ export const EditDialog = (props) => {
                                           readOnly: true
                                         }}
                                         color="text.disabled"
-                                   
+                                        disabled
                                         value={sName}
                                         onChange={(e) => { setName(e.target.value) }}
                                         inputRef={register({
@@ -186,6 +186,7 @@ export const EditDialog = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                     <Autocomplete
+                                      disabled
                                       openOnFocus
                                       clearOnEscape
                                       onChange={  
@@ -243,6 +244,7 @@ export const EditDialog = (props) => {
                                       id="sGBID"
                                       label="GBID"
                                       name="sGBID"
+                                      disabled
                                       //required={true}
                                       value={sGBID}
                                       onChange={(e) => { setGbId(e.target.value) }}
@@ -259,6 +261,7 @@ export const EditDialog = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                     <Autocomplete
+                                      disabled
                                       openOnFocus
                                       clearOnEscape
                                       onChange={  
@@ -309,7 +312,7 @@ export const EditDialog = (props) => {
                                             }}
                                             value={nFormNumber}
                                             onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
-
+                                            disabled
                                         />
                                     </FormControl>
                                 </Grid>
@@ -317,6 +320,7 @@ export const EditDialog = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                     <Autocomplete
+                                      disabled
                                       openOnFocus
                                       clearOnEscape
                                       onChange={  
