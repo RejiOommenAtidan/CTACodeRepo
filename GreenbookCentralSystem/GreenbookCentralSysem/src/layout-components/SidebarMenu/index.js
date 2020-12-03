@@ -445,7 +445,7 @@ const SidebarMenu = (props) => {
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/FeatureRoles">
-                          Manage Feature Roles
+                          Manage Feature Rights
                     </NavLink>
                       </li>}
                     {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
@@ -454,7 +454,7 @@ const SidebarMenu = (props) => {
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/UserRights">
-                          Manage User Rights
+                          Manage Roles
                     </NavLink>
                       </li>}
                   </ul>
