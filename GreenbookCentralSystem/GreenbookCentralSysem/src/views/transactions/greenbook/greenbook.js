@@ -32,17 +32,17 @@ export default function GBList(props) {
   const columns = [
     {
       field: "sGBID",
-      title: "Green Book ID",
+      title: "GREEN BOOK ID",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "5%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "5%"
+        width: "10%"
       },
       export: true,
       render: rowData => <Button size="small" color="primary"
@@ -52,40 +52,40 @@ export default function GBList(props) {
       </Button>,
     },
     {
-      title: "Full Name",
+      title: "FULL NAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "20%"
+        width: "30%"
       },
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "20%"
+        width: "30%"
       },
       export: true,
       render: rowData => (rowData["sFirstName"] === null ? "" : rowData["sFirstName"]) + " " + (rowData["sMiddleName"] === null ? "" : rowData["sMiddleName"]) + " " + (rowData["sLastName"] === null ? "" : rowData["sLastName"]),
     },
     {
-      title: "Age",
+      title: "AGE",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "3%"
+        width: "5%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "3%"
+        width: "5%"
       },
       export: true,
       render: rowData => rowData["dtDOB"] === null ? "NA" : Moment().diff(rowData["dtDOB"], 'years')
     },
     {
       field: 'edit',
-      title: 'Edit',
+      title: 'EDIT',
       filtering: false,
       sorting: false,
       export: false,
@@ -98,12 +98,12 @@ export default function GBList(props) {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: "2%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "2%"
+        width: "10%"
       }
     }
   ];
