@@ -164,7 +164,7 @@ export default function EnhancedTable() {
 
     if (gbId == "") {
       setAlertMessage("Enter Green Book ID");
-      setAlertType("error");
+      setAlertType("info");
       snackbarOpen();
     }
     else {
