@@ -90,50 +90,56 @@ export default function SarsoNewGBEntry() {
   const columns = [
     {
       field: "nGBId",
-      title: "Greenbook ID",
+      title: "GREEN BOOK ID",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width:"10%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width:"10%"
       },
       export: true
     },
     {
       field: "nFormNo",
-      title: "Form Number",
+      title: "FORM NUMBER",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width:"10%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width:"10%"
       }
     },
     {
       defaultSort: 'desc',
       field: "dtDate",
-      title: "Date",
+      title: "DATE",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width:"10%"
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width:"10%"
       },
       render: rowData => Moment(rowData.dtDate).format(sDateFormat)
     },
     {
       align: "center",
       field: 'gbentry',
-      title: 'GB Entry',
+      title: 'GB ENTRY',
       filtering: false,
       sorting: false,
       export: false,
@@ -147,11 +153,13 @@ export default function SarsoNewGBEntry() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width:"10%"
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        width:"10%"
       }
     },
   ];

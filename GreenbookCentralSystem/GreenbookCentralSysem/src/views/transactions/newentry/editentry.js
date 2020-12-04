@@ -46,6 +46,9 @@ import handleError from "../../../auth/_helpers/handleError";
 import {
   sDateFormat,
   sDateFormatMUIDatepicker,
+  sButtonColor,
+  sButtonSize,
+  sButtonVariant
 } from "../../../config/commonConfig";
 import { IssueBookTable } from "../issuebooktable";
 import { BackdropComponent } from "../../backdrop/pageBackDrop";
@@ -536,43 +539,43 @@ export default function EditEntry(props) {
   const { register, handleSubmit, errors } = useForm();
 
 
-  const RelationObj =[
-        {
-          sGBID:sGBID,
-          sGBIDRelation:sFathersGBID,
-          nRelationID:1
-        },
-        {
-          sGBID:sGBID,
-          sGBIDRelation:sMothersGBID,
-          nRelationID:2
-        },
-        {
-          sGBID:sGBID,
-          sGBIDRelation:sSpouseGBID,
-          nRelationID:3
-        }
-      ]
+  const RelationObj = [
+    {
+      sGBID: sGBID,
+      sGBIDRelation: sFathersGBID,
+      nRelationID: 1
+    },
+    {
+      sGBID: sGBID,
+      sGBIDRelation: sMothersGBID,
+      nRelationID: 2
+    },
+    {
+      sGBID: sGBID,
+      sGBIDRelation: sSpouseGBID,
+      nRelationID: 3
+    }
+  ]
   const onSubmit = () => {
     //e.preventDefault();
-    const RelationObj =[
+    const RelationObj = [
       {
-        sGBID:sGBID,
-        sGBIDRelation:sFathersGBID,
-        nRelationID:1,
+        sGBID: sGBID,
+        sGBIDRelation: sFathersGBID,
+        nRelationID: 1,
         nUpdatedBy: userId
 
       },
       {
-        sGBID:sGBID,
-        sGBIDRelation:sMothersGBID,
-        nRelationID:2,
+        sGBID: sGBID,
+        sGBIDRelation: sMothersGBID,
+        nRelationID: 2,
         nUpdatedBy: userId,
       },
       {
-        sGBID:sGBID,
-        sGBIDRelation:sSpouseGBID,
-        nRelationID:3,
+        sGBID: sGBID,
+        sGBIDRelation: sSpouseGBID,
+        nRelationID: 3,
         nUpdatedBy: userId
       }
     ]
@@ -639,18 +642,18 @@ export default function EditEntry(props) {
       )
       .then((resp) => {
         if (resp.status === 200) {
-          axios.post(`/GBRelation/HandleGreenBookUpdate`,RelationObj)
-          .then((resp) => {
-            if (resp.status === 200) {    
-              history.push("/Greenbooks");
-            }
-          })
-          .catch((error) => {
-            handleError(error, history);
-          })
-          .then((release) => {
-            //console.log(release); => udefined
-          });
+          axios.post(`/GBRelation/HandleGreenBookUpdate`, RelationObj)
+            .then((resp) => {
+              if (resp.status === 200) {
+                history.push("/Greenbooks");
+              }
+            })
+            .catch((error) => {
+              handleError(error, history);
+            })
+            .then((release) => {
+              //console.log(release); => udefined
+            });
 
 
         }
@@ -667,7 +670,7 @@ export default function EditEntry(props) {
     <Container maxWidth="lg" disableGutters={true}>
       <br />
       <Typography variant="h4" gutterBottom>
-        Edit Greenbook - {sGBID}
+        Edit Green Book - {sGBID}
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.box}>
         <Grid container className={classes.box}>
@@ -696,7 +699,7 @@ export default function EditEntry(props) {
                       <TextField
                         id="id_sGBID"
                         name="name_sGBID"
-                        label="Greenbook ID"
+                        label="Green Book ID"
                         type="text"
                         value={sGBID}
                         onChange={(e) => {
@@ -707,7 +710,7 @@ export default function EditEntry(props) {
                         className={classes.textField}
                         inputRef={register({
                           required: true,
-                          minLength: 7,
+                          //minLength: 7,
                           maxLength: 7,
                         })}
                         InputProps={{
@@ -719,11 +722,11 @@ export default function EditEntry(props) {
                           This field is required
                         </span>
                       )}
-                      {_.get("name_sGBID.type", errors) === "minLength" && (
+                      {/*{_.get("name_sGBID.type", errors) === "minLength" && (
                         <span style={{ color: "red" }}>
                           GBID cannot subceed 7 characters
                         </span>
-                      )}
+                      )}*/}
                       {_.get("name_sGBID.type", errors) === "maxLength" && (
                         <span style={{ color: "red" }}>
                           GBID cannot exceed 7 characters
@@ -1113,16 +1116,16 @@ export default function EditEntry(props) {
                           margin="dense"
                           className={classes.textField}
                           inputRef={register({
-                            minLength: 7,
+                            //minLength: 7,
                             maxLength: 7,
                           })}
                         />
-                        {_.get("name_sFathersGBID.type", errors) ===
+                        {/*{_.get("name_sFathersGBID.type", errors) ===
                           "minLength" && (
                             <span style={{ color: "red" }}>
                               Father's GB ID cannot subceed 7 characters
                             </span>
-                          )}
+                          )}*/}
                         {_.get("name_sFathersGBID.type", errors) ===
                           "maxLength" && (
                             <span style={{ color: "red" }}>
@@ -1200,16 +1203,16 @@ export default function EditEntry(props) {
                           margin="dense"
                           className={classes.textField}
                           inputRef={register({
-                            minLength: 7,
+                            //minLength: 7,
                             maxLength: 7,
                           })}
                         />
-                        {_.get("name_sMothersGBID.type", errors) ===
+                        {/*{_.get("name_sMothersGBID.type", errors) ===
                           "minLength" && (
                             <span style={{ color: "red" }}>
                               Mother's GB ID cannot subceed 7 characters
                             </span>
-                          )}
+                          )}*/}
                         {_.get("name_sMothersGBID.type", errors) ===
                           "maxLength" && (
                             <span style={{ color: "red" }}>
@@ -1900,16 +1903,16 @@ export default function EditEntry(props) {
                             margin="dense"
                             className={classes.textField}
                             inputRef={register({
-                              minLength: 7,
+                              //minLength: 7,
                               maxLength: 7,
                             })}
                           />
-                          {_.get("name_sSpouseGBID.type", errors) ===
+                          {/*{_.get("name_sSpouseGBID.type", errors) ===
                             "minLength" && (
                               <span style={{ color: "red" }}>
                                 Spouse's GB ID No cannot subceed 7 characters
                               </span>
-                            )}
+                            )}*/}
                           {_.get("name_sSpouseGBID.type", errors) ===
                             "maxLength" && (
                               <span style={{ color: "red" }}>
@@ -2271,15 +2274,18 @@ export default function EditEntry(props) {
             <br />
             <Grid item xs={12}>
               <Button
-                variant="outlined"
+                variant={sButtonVariant}
+                size={sButtonSize}
+                color={sButtonColor}
                 type="submit"
-                color="primary"
                 style={{ marginRight: "10px" }}
               >
                 Save
               </Button>
               <Button
-                variant="outlined"
+                variant={sButtonVariant}
+                size={sButtonSize}
+                color={sButtonColor}
                 onClick={() => {
                   props.history.goBack();
                   // history.push(props.location);
@@ -2363,7 +2369,7 @@ export default function EditEntry(props) {
       {/*Document*/}
       {addDocumentModal && (
         <AddDocumentDialog
-          lGBDocument = {lGBDocument}
+          lGBDocument={lGBDocument}
           addDocumentModal={addDocumentModal}
           sGBID={sGBID}
           classes={classes}
