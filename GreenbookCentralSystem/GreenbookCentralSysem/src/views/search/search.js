@@ -272,7 +272,7 @@ export default function SearchPage() {
       }
     },
     {
-      //render: rowData => (rowData['sFirstName'] ? rowData['sFirstName'] : '') + " " + (rowData['sLastName'] ? rowData['sLastName'] : ''),
+      //render: rowData  => (rowData['sFirstName'] ? rowData['sFirstName'] : '') + " " + (rowData['sLastName'] ? rowData['sLastName'] : ''),
       field: "sFullName",
       title: "NAME",
       filterPlaceholder: 'Search..',
@@ -465,7 +465,7 @@ export default function SearchPage() {
             resp.data.forEach((element) => {
               element.nSerialNo = i;
               element.sGBIDCombo = element.sCountryID + element.sGBID;
-              element.sFullName=element.sFirstName+' '+element.sLastName;
+              element.sFullName=(element.sFirstName?element.sFirstName:'')+(element.sLastName?(' '+element.sLastName):'');
               element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format("DD-MM-YYYY") : '';
               i++;
             })
@@ -544,7 +544,7 @@ export default function SearchPage() {
           resp.data.forEach((element) => {
             element.nSerialNo = i;
             element.sGBIDCombo = element.sCountryID + element.sGBID;
-            element.sFullName=element.sFirstName+' '+element.sLastName;
+            element.sFullName=(element.sFirstName?element.sFirstName:'')+(element.sLastName?(' '+element.sLastName):'');
             element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format("DD-MM-YYYY") : '';
             i++;
           })
