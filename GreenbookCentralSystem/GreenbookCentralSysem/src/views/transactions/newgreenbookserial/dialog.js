@@ -363,7 +363,7 @@ export const AddDialog = (props) => {
                                          InputProps={{
                                            ...params.inputProps,
                                            autoComplete: 'off', // disable autocomplete and autofill
-                                           readOnly
+                                           readOnly: true
                                          }}
                                          inputRef={register({
                                           required: true
@@ -381,7 +381,7 @@ export const AddDialog = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
-                                            disabled
+                                            
                                             id="nFormNumber"
                                             label="Form Number"
                                             name="nFormNumber"
@@ -474,9 +474,10 @@ export const AddDialog = (props) => {
                                               inputRef={register({
                                                 required: true
                                               })}
-                                              inputProps={{
+                                              InputProps={{
                                                 ...params.inputProps,
                                                 autoComplete: 'off', // disable autocomplete and autofill
+                                                readOnly: true
                                               }}
                                             />
                                           )}
