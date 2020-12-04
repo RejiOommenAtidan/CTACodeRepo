@@ -543,7 +543,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 nAuthRegionID = (int)reader["nAuthRegionID"],
                 dtReceived = reader.IsDBNull("dtReceived") ? null : (DateTime?)reader["dtReceived"],
                 dtIssueAction = reader.IsDBNull("dtIssueAction") ? null : (DateTime?)reader["dtIssueAction"],
-                nIssuedOrNotID = reader.IsDBNull("nMadebTypeID") ? null : (int?)reader["nIssuedOrNotID"],
+                nIssuedOrNotID = reader.IsDBNull("nIssuedOrNotID") ? null : (int?)reader["nIssuedOrNotID"],
                 nType = (int)reader["nType"],
                 sChangeField = reader.IsDBNull("sChangeField") ? null : (string?)(reader["sChangeField"]),
                 sOfficeOfTibetan = reader.IsDBNull("sOfficeOfTibetan") ? null : (string?)(reader["sOfficeOfTibetan"]),
