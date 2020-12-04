@@ -36,6 +36,7 @@ export const EditDialog = (props) => {
     const [alertType, setAlertType] = React.useState('');
     const [authRegions, setAuthRegions] = React.useState(props.selectData['authRegions']);
     const [typeIssuedData, settypeIssuedData] = React.useState(props.selectData['typeIssued']);
+    const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);
     const [id, setId] = React.useState(props.sarsoObj.id);
     const [formNumber, setFormNumber] = React.useState(props.sarsoObj.nFormNumber);
     const [nAuthRegionID, setAuthRegionId] = React.useState(props.sarsoObj.nAuthRegionID);
@@ -52,6 +53,10 @@ export const EditDialog = (props) => {
     //const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject.split('T')[0]);
     const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject ? (props.sarsoObj.dtReject).split('T')[0] : undefined);
     const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
+    const [nMadebStatusID, setMadebStatusID] = React.useState(props.sarsoObj.nMadebStatusID);
+    const [sMadebStatusRemark, setMadebStatusRemark] = React.useState(props.sarsoObj.sMadebStatusRemark);
+    let valueMadebStatus = [];
+    valueMadebStatus = madebStatuses.find((x) => x.id === nMadebStatusID);
     const { register, handleSubmit, errors, control, setValue } = useForm();
     const onSubmit = data => {
         props.editAPICall(madeb)
@@ -64,6 +69,8 @@ export const EditDialog = (props) => {
         sGBID: sGBID,
         sFathersName: fname,
         nAuthRegionID: nAuthRegionID,
+        nMadebStatusID,
+        sMadebStatusRemark,
         dtReceived: receivedDate,
         dtIssueAction: issueActionDate,
         nIssuedOrNotID: issueAction,
@@ -274,7 +281,65 @@ export const EditDialog = (props) => {
                                         )}
                                     </FormControl>
                                 </Grid>
+                                
+
+
                                 <Grid item xs={12} sm={6}>
+                                <FormControl className={props.classes.formControl}>
+                                    <Autocomplete
+                                    openOnFocus
+                                    clearOnEscape
+                                    onChange={
+                                        (e, value) => {
+                                        if (value !== null) {
+                                            console.log(value.id);
+                                            setMadebStatusID(value.id);
+                                        }
+                                        else {
+                                            setMadebStatusID(0);
+                                        }
+                                        }
+                                    }
+                                    value={valueMadebStatus}
+                                    id="id_nMadebStatusID"
+                                    options={madebStatuses}
+                                    autoHighlight
+                                    getOptionLabel={(option) => option.sMadebStatus}
+                                    renderOption={(option) => (
+                                        <React.Fragment>
+                                        <span>{option.sMadebStatus}</span>
+                                        </React.Fragment>
+                                    )}
+                                    renderInput={(params) => (
+                                        <TextField
+                                        {...params}
+                                        label="Madeb Status"
+                                        variant="standard"
+                                        inputProps={{
+                                            ...params.inputProps,
+                                            autoComplete: 'off', // disable autocomplete and autofill
+                                        }}
+                                        />
+                                    )}
+                                    />
+                                </FormControl>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                <FormControl className={props.classes.formControl}>
+                                    <TextField
+                                    id="sMadebStatusRemark"
+                                    name="sMadebStatusRemark"
+                                    label="Status Remarks"
+                                    //required={true}
+                                    value={sMadebStatusRemark}
+                                    onChange={(e) => { setMadebStatusRemark(e.target.value) }}
+
+                                    />
+
+                                </FormControl>
+                                </Grid>
+                               {/* <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
                                             id="date"
@@ -294,49 +359,20 @@ export const EditDialog = (props) => {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
-                                        <Autocomplete
-                                            openOnFocus
-                                            clearOnEscape
-                                            onChange={
-                                                (e, value) => {
-                                                    if (value !== null) {
-                                                        console.log(value.id);
-                                                        setIssueAction(value.id);
-                                                    }
-                                                    else {
-                                                        setIssueAction(0);
-                                                    }
-                                                }
-                                            }
-                                            value={valueTypeIssued}
+                                        <TextField
+                                            id="sTypeIssued"
+                                            name="sTypeIssued"
+                                            label="Issue Action"
+                                            //required={true}
+                                            value={valueTypeIssued.sTypeIssued}
+                                            InputProps={{
+                                                readOnly: true
+                                            }}
 
-                                            id="id_nIssuedOrNotId"
-                                            options={typeIssuedData}
-                                            /*  classes={{
-                                                  option: classes.option,
-                                              }}
-                                              className={classes.textField}*/
-                                            autoHighlight
-                                            getOptionLabel={(option) => option.sTypeIssued}
-                                            renderOption={(option) => (
-                                                <React.Fragment>
-                                                    <span>{option.sTypeIssued}</span>
-                                                </React.Fragment>
-                                            )}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    label="Issue Action"
-                                                    variant="standard"
-                                                    inputProps={{
-                                                        ...params.inputProps,
-                                                        autoComplete: 'off', // disable autocomplete and autofill
-                                                    }}
-                                                />
-                                            )}
                                         />
+ 
                                     </FormControl>
-                                </Grid>
+                                        </Grid>*/}
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
@@ -410,7 +446,11 @@ export const AddDialog = (props) => {
     const [fname, setFname] = React.useState('');
     const [saney, setSaney] = React.useState(0);
     const [documents, setDocument] = React.useState('');
-
+    const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);   
+    const [nMadebStatusID, setMadebStatusID] = React.useState(1);
+    const [sMadebStatusRemark, setMadebStatusRemark] = React.useState('');
+    const[ valueMadebStatus,setValueMadebStatus] =React.useState( madebStatuses.find((x) => x.id === 1));
+   
     const madeb = {
         nFormNumber: formNumber,
         nMadebTypeID: madebType,
@@ -418,7 +458,9 @@ export const AddDialog = (props) => {
         sFathersName: fname,
         nAuthRegionID: nAuthRegionID,
         dtReceived: receivedDate,
-        nIssuedOrNotID: 1,
+        nMadebStatusID,
+        sMadebStatusRemark,
+        //nIssuedOrNotID: 1,
         sDocumentAttached: documents,
         nSaneyFormNo: saney,
         nEnteredBy: userId,
@@ -585,6 +627,70 @@ export const AddDialog = (props) => {
                                             <p style={{ color: "red" }}>This field is required</p>
                                         )}
                                     </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                <FormControl className={props.classes.formControl}>
+                                    <Autocomplete
+                                    openOnFocus
+                                    clearOnEscape
+                                    onChange={
+                                        (e, value) => {
+                                        if (value !== null) {
+                                            console.log(value.id);
+                                            setMadebStatusID(value.id);
+                                            setValueMadebStatus(value);
+                                        }
+                                        else {
+                                            setMadebStatusID(0);
+                                            setValueMadebStatus([]);
+                                        }
+                                        }
+                                    }
+                                    value={valueMadebStatus}
+                                    id="id_nMadebStatusID"
+                                    options={madebStatuses}
+                                    autoHighlight
+                                    getOptionLabel={(option) => option.sMadebStatus}
+                                    renderOption={(option) => (
+                                        <React.Fragment>
+                                        <span>{option.sMadebStatus}</span>
+                                        </React.Fragment>
+                                    )}
+                                    renderInput={(params) => (
+                                        <TextField
+                                        {...params}
+                                        label="Madeb Status"
+                                        name="madebStatusName"
+                                        variant="standard"
+                                        inputRef={register({
+                                            required: true
+                                        })}
+                                        inputProps={{
+                                            ...params.inputProps,
+                                            autoComplete: 'off', // disable autocomplete and autofill
+                                        }}
+                                        />
+                                    )}
+                                    />
+                                     {_.get("madebStatusName.type", errors) === "required" && (
+                                            <p style={{ color: "red" }}>This field is required</p>
+                                        )}
+                                </FormControl>
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
+                                <FormControl className={props.classes.formControl}>
+                                    <TextField
+                                    id="sMadebStatusRemark"
+                                    name="sMadebStatusRemark"
+                                    label="Status Remarks"
+                                    //required={true}
+                                    value={sMadebStatusRemark}
+                                    onChange={(e) => { setMadebStatusRemark(e.target.value) }}
+
+                                    />
+
+                                </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>

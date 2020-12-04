@@ -191,6 +191,7 @@ export const EditDialog = (props) => {
     nIssuedOrNotID: issueAction,
     sDocumentAttached: documents,
     nMadebStatusID,
+    sMadebStatusRemark,
     dtReturnEmail: returnDate,
     dtReject: rejectDate,
     nUpdatedBy: userId

@@ -262,6 +262,32 @@ export default function EnhancedTable() {
       }
     },
     {
+      field: "sMadebStatus",
+      title: "STATUS",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "left",
+        padding: '5px'
+      }
+    },
+    {
+      field: "madeb.sMadebStatusRemark",
+      title: "REMARK",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
       field: "madeb.dtIssueAction",
       title: "ISSUE ACTION DATE",
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : '',
@@ -346,16 +372,12 @@ export default function EnhancedTable() {
       sorting: false,
       export: false,
       filtering: false,
-      render: rowData => <>{rowData.madeb.nIssuedOrNotID == 2 && <IconButton color="primary" aria-label="upload picture" component="span"
-        onClick={() => { editClick(rowData) }} disabled style={{ padding: '0px' }}
+      render: rowData => <><IconButton color="primary" aria-label="upload picture" component="span"
+        onClick={() => { editClick(rowData) }} disabled={rowData.madeb.nIssuedOrNotID} style={{ padding: '0px' }}
       >
         <EditOutlinedIcon />
-      </IconButton>}
-        {rowData.madeb.nIssuedOrNotID != 2 && <IconButton color="primary" aria-label="upload picture" component="span"
-          onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
-        >
-          <EditOutlinedIcon />
-        </IconButton>}
+      </IconButton>
+       
       </>,
       headerStyle: {
         textAlign: "center",
@@ -443,7 +465,9 @@ export default function EnhancedTable() {
       sDocumentAttached: tableRowArray['madeb']['sDocumentAttached'],
       dtIssueAction: tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
-      dtReturnEmail: tableRowArray['madeb']['dtReturnEmail']
+      dtReturnEmail: tableRowArray['madeb']['dtReturnEmail'],
+      nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
+      sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
     });
 
     console.log(sarsoObj);
