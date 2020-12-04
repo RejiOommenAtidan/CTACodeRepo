@@ -63,13 +63,19 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
 
         #region Add GBID to Sarso Form
-        public void AddGBIDByFormNo(int nFormNumber, string sGBID)
+        public bool AddGBIDByFormNo(int nFormNumber, string sGBID)
         {
             Madeb madeb = GetMadebByFormNumber(nFormNumber);
+            if(madeb.nMadebTypeID != 1)
+            {
+                return false;
+            }
             madeb.sGBID = sGBID;
+            madeb.nIssuedOrNotID = 1;
             madeb.dtUpdated = DateTime.Now;
             madeb.dtIssueAction = DateTime.Now;
             this.Update(madeb);
+            return true;
         }
         #endregion
 
@@ -85,11 +91,11 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Update Madeb with assigned serial numbers
-        public void UpdateSerialNumber(string sGBID, int nFormNumber,  int? nCurrentGBSno, int? nPreviousGBSno = null)
+        public void UpdateSerialNumber(string sGBID, int nFormNumber,  int? nCurrentGBSno, int nIssuedOrNotId)
         {
             Madeb madeb = GetMadebByGBIDAndFormNumber(sGBID, nFormNumber);
             madeb.nCurrentGBSno = nCurrentGBSno;
-            madeb.nPreviousGBSno = nPreviousGBSno;
+            madeb.nIssuedOrNotID = nIssuedOrNotId;
             
             string msg = this.Update(madeb);
 
@@ -363,7 +369,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                                    FROM tblgivengbid 
                                    WHERE nFormNo IS NOT NULL)
                            AND tblmadeb.nMadebTypeID = 1 
-                           AND tblmadeb.nIssuedOrNotID = 1
+                           AND tblmadeb.nMadebStatusID = 2
                            ORDER BY tblmadeb.nFormNumber DESC";
             using (var command = new MySqlCommand(sql))
             {

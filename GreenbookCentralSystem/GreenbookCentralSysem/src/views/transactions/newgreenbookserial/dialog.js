@@ -228,7 +228,7 @@ export const AddDialog = (props) => {
                                 <Grid item xs={12} sm={6}>
                                   <FormControl className={props.classes.formControl}>
                                     <TextField
-                                      disabled
+                                      
                                       id="sGBID"
                                       label="GBID"
                                       name="sGBID"
@@ -255,7 +255,7 @@ export const AddDialog = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
-                                            disabled
+                                            
                                             id="sName"
                                             name="sName"
                                             label="Name"
@@ -277,7 +277,7 @@ export const AddDialog = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                     <Autocomplete
-                                      disabled
+                                      
                                       openOnFocus
                                       clearOnEscape
                                       aria-required = {true}
@@ -313,9 +313,10 @@ export const AddDialog = (props) => {
                                          label="Country"
                                          name="sCountry"
                                          variant="standard"
-                                         inputProps={{
+                                         InputProps={{
                                            ...params.inputProps,
-                                           autoComplete: 'off', // disable autocomplete and autofill
+                                           autoComplete: 'off', // disable autocomplete and autofill,
+                                           readOnly: true
                                          }}
                                          
                                         />
@@ -328,7 +329,7 @@ export const AddDialog = (props) => {
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                     <Autocomplete
-                                      disabled
+                                      //disabled
                                       openOnFocus
                                       clearOnEscape
                                       onChange={  
@@ -359,9 +360,10 @@ export const AddDialog = (props) => {
                                          label="Madeb Type"
                                          name ="sMadebType"
                                          variant="standard"
-                                         inputProps={{
+                                         InputProps={{
                                            ...params.inputProps,
                                            autoComplete: 'off', // disable autocomplete and autofill
+                                           readOnly
                                          }}
                                          inputRef={register({
                                           required: true

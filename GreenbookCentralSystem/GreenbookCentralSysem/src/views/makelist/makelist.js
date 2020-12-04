@@ -15,8 +15,9 @@ import Moment from 'moment';
 import MaterialTable, { MTableToolbar } from 'material-table';
 import {
   oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
-  sButtonColor, sButtonSize, sButtonVariant
+  sButtonColor, sButtonSize, sButtonVariant , modifyHeaders
 } from "../../config/commonConfig";
+import { Alerts } from '../alerts';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -89,11 +90,27 @@ export default () => {
   const [filtering, setFiltering] = React.useState(false);
   const [makeListParams, setMakeListParams] = useState({});
 
+  //Alert
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+  const [snackbar, setSnackbar] = React.useState(false);
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+
+
 
   const columns = [
     {
       field: "nSerialNo",
-      title: "Sr No.",
+      title: "SR NO.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -108,7 +125,7 @@ export default () => {
     },
     {
       field: "sFirstName",
-      title: "Name",
+      title: "NAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -123,7 +140,7 @@ export default () => {
     },
     {
       field: "sFathersName",
-      title: "Father's Name",
+      title: "FATHER'S NAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -138,7 +155,7 @@ export default () => {
     },
     {
       field: "sCity",
-      title: "City",
+      title: "CITY",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -153,7 +170,7 @@ export default () => {
     },
     {
       field: "sOldGreenBkNo",
-      title: "Old Book No",
+      title: "OLD BOOK NO",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -168,7 +185,7 @@ export default () => {
     },
     {
       field: "sGBID",
-      title: "New GB No.",
+      title: "NEW GB NO.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -183,7 +200,7 @@ export default () => {
     },
     {
       field: "signature",
-      title: "Signature",
+      title: "SIGNATURE",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -198,7 +215,7 @@ export default () => {
     },
     {
       field: "sAddress1",
-      title: "Address",
+      title: "ADDRESS",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -219,10 +236,16 @@ export default () => {
       .then(resp => {
         if (resp.status === 200) {
           console.log("Printed marked. ", resp.data);
+          setAlertMessage('Marked Records Printed.');
+          setAlertType('success');
+          snackbarOpen();
           setdataAPI([]);
         }
       })
       .catch(error => {
+        setAlertMessage(`Failed to Mark Printed. \nError:${error.message && error.message}.`);
+        setAlertType('error');
+        snackbarOpen();
         console.log(error.config);
         console.log(error.message);
       });
@@ -364,6 +387,12 @@ export default () => {
                 }
               />
             }
+            {snackbar && <Alerts
+            alertObj={alertObj}
+            snackbar={snackbar}
+            snackbarClose={snackbarClose}
+          />
+          }
           </Paper>
         </Grid>
         {/* <Grid item xs={12} sm={12} style={{justifyContent: 'center', display: 'flex' }}>

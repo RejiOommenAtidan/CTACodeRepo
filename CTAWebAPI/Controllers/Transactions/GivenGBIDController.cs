@@ -109,20 +109,28 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
-                    /* Changed by Rajen*/
-                    givenGBID.dtDate = DateTime.Now;
-                    /* Changed by Rajen*/
+                    
+                    if (_madebRepository.AddGBIDByFormNo(givenGBID.nFormNo, givenGBID.nGBId.ToString()))
+                    {
+                        /* Changed by Rajen*/
+                        givenGBID.dtDate = DateTime.Now;
+                        /* Changed by Rajen*/
 
-                    givenGBID.dtEntered = DateTime.Now;
-                    givenGBID.dtUpdated = DateTime.Now;
-                    _givenGBIDRepository.Add(givenGBID);
-                    _madebRepository.AddGBIDByFormNo(givenGBID.nFormNo, givenGBID.nGBId.ToString());
+                        givenGBID.dtEntered = DateTime.Now;
+                        givenGBID.dtUpdated = DateTime.Now;
+                        _givenGBIDRepository.Add(givenGBID);
+                        #region Information Logging 
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, givenGBID.nEnteredBy);
+                        #endregion
 
-                    #region Information Logging 
-                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, givenGBID.nEnteredBy);
-                    #endregion
+                        return Ok(givenGBID);
+                    }
+                    else
+                    {
+                        return BadRequest("Madeb is not Sarso Madeb");
+                    }
 
-                    return Ok(givenGBID);
+                    
                 }
                 else
                 {
