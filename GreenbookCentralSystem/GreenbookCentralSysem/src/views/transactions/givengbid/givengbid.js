@@ -82,31 +82,35 @@ export default function GiveGBId() {
   const columns = [
     {
       field: "nFormNumber",
-      title: "Form Number",
+      title: "FORM NUMBER",
       //filterPlaceholder: "Search...",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width:'10%'
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width:'10%'
       }
     },
     {
       field: "dtReceived",
-      title: "Received Date",
+      title: "RECEIVED DATE",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width:'10%'
       },
       cellStyle: {
-        textAlign: "center",
-        padding: '5px'
+        textAlign: "right",
+        padding: '5px',
+        width:'10%'
       },
       render: rowData => Moment(rowData['dtReceived']).format(sDateFormat),
     },
@@ -130,7 +134,7 @@ export default function GiveGBId() {
     // },
     {
       field: "edit",
-      title: "Generate",
+      title: "GENERATE",
       sorting: false,
       export: false,
       filtering: false,
@@ -142,11 +146,13 @@ export default function GiveGBId() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        width:'5%'
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        width:'5%'
       },
     }
   ];

@@ -77,8 +77,8 @@ export default function GiveGBId() {
         .then(resp => {
           if (resp.status === 200) {
             //setSelectData(resp.data);
-            console.log("GreenBook ID Deleted from GreenBook\n", resp.data);
-            setAlertMessage(`GreenBook with Id ${sGBID} deleted successfully.`);
+            console.log("Green Book ID Deleted from Green Book\n", resp.data);
+            setAlertMessage(`Green Book with Id ${sGBID} deleted successfully.`);
             setAlertType('success');
             snackbarOpen();
             setBackdrop(false);
@@ -91,7 +91,7 @@ export default function GiveGBId() {
           console.log(error.config);
           console.log(error.message);
 
-          setAlertMessage(`GreenBook with Id ${sGBID} deletion failed.`);
+          setAlertMessage(`Green Book with Id ${sGBID} deletion failed.`);
           setAlertType('error');
           snackbarOpen();
           setBackdrop(false);
