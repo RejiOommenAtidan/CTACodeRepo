@@ -1,4 +1,3 @@
-//Hi
 import React from 'react';
 import {
   Container,
@@ -7,7 +6,6 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-
 
 import Bhorlak from './bhorlak';
 
@@ -20,17 +18,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverBhorlak = () => {
   const classes = useStyles();
-
   return (
-   
       <Container maxWidth={false}>
-        
         <Bhorlak />
       </Container>
-
   );
 };
 
-export default Dashboard;
+export default CoverBhorlak;

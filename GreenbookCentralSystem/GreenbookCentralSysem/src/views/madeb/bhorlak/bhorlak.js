@@ -17,7 +17,7 @@ import { AddDialog, EditDialog } from './dialog';
 import { EmailDialog } from '../email';
 import { Alerts } from '../../alerts';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat,modifyHeaders,sButtonSize } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, modifyHeaders, sButtonSize } from '../../../config/commonConfig';
 import { ViewDialog } from '../../search/dialog';
 
 const useStyles = makeStyles((theme) => ({
@@ -380,16 +380,12 @@ export default function EnhancedTable() {
       sorting: false,
       export: false,
       filtering: false,
-      render: rowData => <>{rowData.madeb.nIssuedOrNotID == 2 && <IconButton color="primary" aria-label="upload picture" component="span"
-        onClick={() => { editClick(rowData) }} disabled style={{ padding: '0px' }}
-      >
-        <EditOutlinedIcon />
-      </IconButton>}
-        {rowData.madeb.nIssuedOrNotID != 2 && <IconButton color="primary" aria-label="upload picture" component="span"
-          onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+      render: rowData => <>
+        <IconButton color="primary" aria-label="upload picture" component="span"
+          onClick={() => { editClick(rowData) }} disabled={rowData.madeb.nIssuedOrNotID} style={{ padding: '0px' }}
         >
           <EditOutlinedIcon />
-        </IconButton>}
+        </IconButton>
       </>,
       headerStyle: {
         textAlign: "center",
@@ -476,6 +472,7 @@ export default function EnhancedTable() {
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
       dtReturnEmail: tableRowArray['madeb']['dtReturnEmail'],
       nCurrentGBSno: tableRowArray['madeb']['nCurrentGBSno'],
+      nPreviousGBSno: tableRowArray['madeb']['nPreviousGBSno'],
       nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
       sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
     });

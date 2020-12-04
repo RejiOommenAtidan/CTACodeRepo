@@ -3,13 +3,12 @@ import { useForm, Controller } from "react-hook-form";
 import _ from "lodash/fp";
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { Box, Container, Grid, Button, Typography, FormControl, TextField, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { Grid, Button, FormControl, TextField } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Alerts } from '../../alerts';
 import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
@@ -140,6 +139,7 @@ export const EditDialog = (props) => {
     setName('');
     setFname('');
     setAuthRegion([]);
+    setPreviousGBSNo('');
   }
 
   const formPopulate = (value) => {
@@ -692,6 +692,7 @@ export const AddDialog = (props) => {
     setName('');
     setFname('');
     setAuthRegion([]);
+    setPreviousGBSNo('');
   }
   const formPopulate = (value) => {
     if (value === '') {
