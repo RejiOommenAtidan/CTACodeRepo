@@ -454,16 +454,12 @@ export default () => {
       sorting: false,
       export: false,
       filtering: false,
-      render: rowData => <>{rowData.madeb.nIssuedOrNotID == 2 && <IconButton color="primary" aria-label="upload picture" component="span"
-        onClick={() => { editClick(rowData) }} disabled style={{ padding: '0px' }}
-      >
-        <EditOutlinedIcon />
-      </IconButton>}
-        {rowData.madeb.nIssuedOrNotID != 2 && <IconButton color="primary" aria-label="upload picture" component="span"
-          onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+      render: rowData => <>
+        <IconButton color="primary" aria-label="upload picture" component="span"
+          onClick={() => { editClick(rowData) }} disabled={rowData.madeb.nIssuedOrNotID} style={{ padding: '0px' }}
         >
           <EditOutlinedIcon />
-        </IconButton>}
+        </IconButton>
       </>,
       headerStyle: {
         textAlign: "center",
@@ -571,7 +567,6 @@ export default () => {
   };
 
   const addAPICall = (madeb) => {
-    debugger
     console.log(madeb);
     axios.post(`/Madeb/AddMadeb/`, madeb)
       .then(resp => {

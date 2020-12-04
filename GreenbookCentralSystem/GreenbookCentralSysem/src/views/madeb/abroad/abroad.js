@@ -459,12 +459,11 @@ export default function EnhancedTable() {
       export: false,
       filtering: false,
       render: rowData => <>
-      {<IconButton color="primary" aria-label="upload picture" component="span"
-        onClick={() => { editClick(rowData) }} disabled={rowData.madeb.nIssuedOrNotID} style={{ padding: '0px' }}
-      >
-        <EditOutlinedIcon />
-      </IconButton>}
-        
+        <IconButton color="primary" aria-label="upload picture" component="span"
+          onClick={() => { editClick(rowData) }} disabled={rowData.madeb.nIssuedOrNotID} style={{ padding: '0px' }}
+        >
+          <EditOutlinedIcon />
+        </IconButton>
       </>,
       headerStyle: {
         textAlign: "center",

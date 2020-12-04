@@ -1,4 +1,3 @@
-//Hi
 import React from 'react';
 import {
   Container,
@@ -7,7 +6,6 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-
 
 import Abroad from './abroad';
 
@@ -20,17 +18,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverAbroad = () => {
   const classes = useStyles();
-
   return (
-   
       <Container maxWidth={false}>
-        
         <Abroad />
       </Container>
-
   );
 };
 
-export default Dashboard;
+export default CoverAbroad;

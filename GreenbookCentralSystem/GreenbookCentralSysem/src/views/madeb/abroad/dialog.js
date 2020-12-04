@@ -468,8 +468,12 @@ export const EditDialog = (props) => {
                       id="nPreviousGBSno"
                       name="nPreviousGBSno"
                       label="Previous GB SNo"
-                      //type='number'
+                      type='number'
                       // required={true}
+                      InputProps={{
+                        readOnly: true
+                      }}
+                      InputLabelProps={{shrink:true}}
                       value={nPreviousGBSno}
                       onChange={(e) => {
                         setPreviousGBSNo(parseInt(e.target.value));

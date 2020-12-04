@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
 
 const CoverBriefGB = () => {
   const classes = useStyles();
-
   return (
       <Container maxWidth={false}>
         <BriefGB />
