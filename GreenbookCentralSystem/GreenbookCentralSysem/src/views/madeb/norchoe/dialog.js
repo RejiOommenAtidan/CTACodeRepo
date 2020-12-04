@@ -442,7 +442,7 @@ export const EditDialog = (props) => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                {/*<Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="date"
@@ -478,10 +478,10 @@ export const EditDialog = (props) => {
 
                       id="id_nIssuedOrNotId"
                       options={typeIssuedData}
-                      /*  classes={{
+                        classes={{
                             option: classes.option,
                         }}
-                        className={classes.textField}*/
+                        className={classes.textField}
                       autoHighlight
                       getOptionLabel={(option) => option.sTypeIssued}
                       renderOption={(option) => (
@@ -502,7 +502,7 @@ export const EditDialog = (props) => {
                       )}
                     />
                   </FormControl>
-                </Grid>
+                </Grid>*/}
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
@@ -561,6 +561,7 @@ export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
+  
   const alertObj = {
     alertMessage: alertMessage,
     alertType: alertType
@@ -669,6 +670,11 @@ export const AddDialog = (props) => {
   const [name, setName] = React.useState('');
   const [authRegion, setAuthRegion] = React.useState([]);
   const [documents, setDocument] = React.useState('');
+  const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);   
+  const [nMadebStatusID, setMadebStatusID] = React.useState(1);
+  const [sMadebStatusRemark, setMadebStatusRemark] = React.useState('');
+  let valueMadebStatus = [];
+  valueMadebStatus = madebStatuses.find((x) => x.id === nMadebStatusID);
 
   const madeb = {
     nFormNumber: formNumber,
@@ -680,7 +686,8 @@ export const AddDialog = (props) => {
     sChangeField: sChangeField,
     sDocumentAttached: documents,
     nReceiptNo: receipt,
-    nIssuedOrNotID: 1,
+    nMadebStatusID,
+    sMadebStatusRemark,
     nEnteredBy: userId,
     nUpdatedBy: userId
   }
@@ -910,6 +917,58 @@ export const AddDialog = (props) => {
                                                 <p>First name cannot exceed 20 characters</p>
                                             )*/}
 
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl className={props.classes.formControl}>
+                    <Autocomplete
+                      openOnFocus
+                      clearOnEscape
+                      onChange={
+                        (e, value) => {
+                          if (value !== null) {
+                            console.log(value.id);
+                            setMadebStatusID(value.id);
+                          }
+                          else {
+                            setMadebStatusID(0);
+                          }
+                        }
+                      }
+                      value={valueMadebStatus}
+                      id="id_nMadebStatusID"
+                      options={madebStatuses}
+                      autoHighlight
+                      getOptionLabel={(option) => option.sMadebStatus}
+                      renderOption={(option) => (
+                        <React.Fragment>
+                          <span>{option.sMadebStatus}</span>
+                        </React.Fragment>
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Madeb Status"
+                          variant="standard"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'off', // disable autocomplete and autofill
+                          }}
+                        />
+                      )}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="sMadebStatusRemark"
+                      name="sMadebStatusRemark"
+                      label="Status Remarks"
+                      //required={true}
+                      value={sMadebStatusRemark}
+                      onChange={(e) => { setMadebStatusRemark(e.target.value) }}
+                    />
                   </FormControl>
                 </Grid>
               </Grid>
