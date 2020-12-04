@@ -1,4 +1,3 @@
-//Hi
 import React from 'react';
 import {
   Container,
@@ -7,7 +6,6 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-
 
 import Sarso from './sarso';
 
@@ -20,17 +18,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverSarsoMadeb = () => {
   const classes = useStyles();
-
   return (
-   
       <Container maxWidth={false}>
-        
         <Sarso />
       </Container>
 
   );
 };
 
-export default Dashboard;
+export default CoverSarsoMadeb;

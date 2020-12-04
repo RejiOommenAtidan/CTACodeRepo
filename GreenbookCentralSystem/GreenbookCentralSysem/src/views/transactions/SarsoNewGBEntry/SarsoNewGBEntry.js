@@ -196,7 +196,7 @@ export default function SarsoNewGBEntry() {
             options={oOptions}
             actions={[
               {
-                icon: oTableIcons.Filter,
+                icon: oTableIcons.Search,
                 tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
