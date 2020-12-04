@@ -8,6 +8,8 @@ export default function Home() {
         <img
           alt="CTA"
           src={projectLogo}
+          width={"30%"}
+          //height={}
         />
         {/*<h1>CTA</h1>*/}
         <h1>བཙན་འབྱོལ་བོད་མིའི་རང་དབང་</h1>

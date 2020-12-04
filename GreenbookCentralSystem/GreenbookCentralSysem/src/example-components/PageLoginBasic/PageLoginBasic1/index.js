@@ -55,6 +55,7 @@ export default function LogingPage(props) {
     authenticationService.login(sUsername, sPassword).then(
       user => {
         dispatch(storeAuthDetails(user));
+        console.info(user);
         //history.push('/Home');
         //Using Window.location.reload to /Home for refersh and read proper value from LS
         window.location.reload("/Search");
