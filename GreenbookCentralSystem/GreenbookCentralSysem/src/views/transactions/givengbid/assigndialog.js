@@ -33,7 +33,7 @@ export const AssignDialog = (props) => {
   return(
     <div>
       <Dialog open={props.assignModal} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Generate GreenBook ID</DialogTitle>
+        <DialogTitle id="form-dialog-title">Generate Green Book ID</DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent>
             <DialogContentText>

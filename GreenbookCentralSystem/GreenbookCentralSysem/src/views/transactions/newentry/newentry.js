@@ -270,7 +270,16 @@ export default function NewEntry(props) {
           let apiDataGivenGBID = resp.data.oGivenGBIDMadebVM.oGivenGBID;
           setnAuthRegionID(apiDataMadeb===null?null:apiDataMadeb.nAuthRegionID);
           setsGBID(apiDataMadeb===null?null:apiDataMadeb.sGBID);
-          setsFirstName(apiDataMadeb===null?null:apiDataMadeb.sName);
+          if(apiDataMadeb!==null){
+            if(apiDataMadeb.sName.includes(" ")){
+              setsFirstName(apiDataMadeb.sName.split(" ")[0]);
+              setsMiddleName(apiDataMadeb.sName.split(/ (.+)/)[1]);
+            }
+            else{
+              setsFirstName(apiDataMadeb.sName);
+            }
+          }
+      
           setsFathersName(apiDataMadeb===null?null:apiDataMadeb.sFathersName);
           setsOtherDocuments(apiDataMadeb===null?null:apiDataMadeb.sDocumentAttached);
           setsFstGreenBkNo(apiDataMadeb===null?null:apiDataMadeb.nCurrentGBSno);

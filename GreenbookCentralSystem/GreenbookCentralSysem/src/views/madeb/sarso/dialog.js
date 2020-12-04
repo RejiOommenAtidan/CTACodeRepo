@@ -16,6 +16,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash/fp";
 import { useSelector } from 'react-redux';
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage, sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -30,12 +31,10 @@ export const EditDialog = (props) => {
         }
         setSnackbarOpen(false);
     };
-   
+
     const [message, setMessage] = React.useState('');
     const [alertType, setAlertType] = React.useState('');
-  
     const [authRegions, setAuthRegions] = React.useState(props.selectData['authRegions']);
-
     const [typeIssuedData, settypeIssuedData] = React.useState(props.selectData['typeIssued']);
     const [id, setId] = React.useState(props.sarsoObj.id);
     const [formNumber, setFormNumber] = React.useState(props.sarsoObj.nFormNumber);
@@ -53,7 +52,7 @@ export const EditDialog = (props) => {
     //const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject.split('T')[0]);
     const [rejectDate, setRejectDate] = React.useState(props.sarsoObj.dtReject ? (props.sarsoObj.dtReject).split('T')[0] : undefined);
     const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
-    const { register, handleSubmit, errors ,control, setValue} = useForm();
+    const { register, handleSubmit, errors, control, setValue } = useForm();
     const onSubmit = data => {
         props.editAPICall(madeb)
     };
@@ -72,16 +71,15 @@ export const EditDialog = (props) => {
         nSaneyFormNo: saney,
         dtReturnEmail: returnDate,
         dtReject: rejectDate,
-        nUpdatedBy:userId
+        nUpdatedBy: userId
     }
     let valueAuthRegion = [];
     authRegions.forEach(element => {
-      if (element.id === nAuthRegionID) {
-        valueAuthRegion = element;
-        console.log(valueAuthRegion);
-      }
+        if (element.id === nAuthRegionID) {
+            valueAuthRegion = element;
+            console.log(valueAuthRegion);
+        }
     });
-  
 
     let valueTypeIssued = [];
     // console.log(issueAction);
@@ -92,13 +90,12 @@ export const EditDialog = (props) => {
         }
     });
     useEffect(() => {
-      console.log("Inside useEffect()");
-      const region = props.selectData['authRegions'].find((x) => x.id === nAuthRegionID);
-      setTimeout(() => setValue("AuthRegion", region, {
-        shouldValidate: true,
-        shouldDirty: true
-      }), 0);
-  
+        console.log("Inside useEffect()");
+        const region = props.selectData['authRegions'].find((x) => x.id === nAuthRegionID);
+        setTimeout(() => setValue("AuthRegion", region, {
+            shouldValidate: true,
+            shouldDirty: true
+        }), 0);
     });
     return (
         <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
@@ -123,9 +120,8 @@ export const EditDialog = (props) => {
                                             })}
                                             value={formNumber}
                                             onChange={(e) => { setFormNumber(e.target.value) }}
-
                                         />
-                                         {_.get("form_number.type", errors) === "required" && (
+                                        {_.get("form_number.type", errors) === "required" && (
                                             <p style={{ color: "red" }}>This field is required</p>
                                         )}
                                     </FormControl>
@@ -134,7 +130,7 @@ export const EditDialog = (props) => {
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
                                             id="date"
-                                            name="date"   
+                                            name="date"
                                             label={<p>Received Date<span style={{ color: "red" }} > *</span></p>}
                                             type="date"
                                             value={receivedDate}
@@ -147,67 +143,67 @@ export const EditDialog = (props) => {
                                             })}
                                             onChange={(e) => { setReceivedDate(e.target.value) }}
                                         />
-                                         {_.get("date.type", errors) === "required" && (
+                                        {_.get("date.type", errors) === "required" && (
                                             <p style={{ color: "red" }}>This field is required</p>
                                         )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
-                                    <Controller
-                      render={props => (
-                        <Autocomplete
-                          {...props}
-                          openOnFocus={true}
-                          clearOnEscape
-                          autoComplete={true}
-                          autoHighlight={true}
-                          options={authRegions}
-                          getOptionLabel={(option) => option.sAuthRegion}
-                          renderOption={(option) => (
-                            <React.Fragment>
-                              <span>{option.sAuthRegion}</span>
-                            </React.Fragment>
-                          )}
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              label={<p>Authority<span style={{ color: "red" }} > *</span></p>}
-                              variant="standard"
-                              name="authority_text"
-                              inputRef={register({
-                                required: true
-                              })}
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'off', // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
-                          onChange={
-                            (e, value) => {
-                              props.onChange(value);
-                              //alert ("onChangeFired")
-                              if (value !== null) {
-                                console.log(value.id);
-                                setAuthRegionId(value.id);
-                                setAuthRegion(value);
-                              }
-                              else {
-                                setAuthRegionId(null);
-                                setAuthRegion([]);
-                              }
-                            }
-                          }
-                          value={authRegion}
-                        //value={[]}
-                        />
-                      )}
-                      name="AuthRegion"
-                      control={control}
-                      rules={{ required: true }}
-                    />
-                    {errors.AuthRegion && <span style={{ color: 'red' }}>Enter Authority Region</span>}
+                                        <Controller
+                                            render={props => (
+                                                <Autocomplete
+                                                    {...props}
+                                                    openOnFocus={true}
+                                                    clearOnEscape
+                                                    autoComplete={true}
+                                                    autoHighlight={true}
+                                                    options={authRegions}
+                                                    getOptionLabel={(option) => option.sAuthRegion}
+                                                    renderOption={(option) => (
+                                                        <React.Fragment>
+                                                            <span>{option.sAuthRegion}</span>
+                                                        </React.Fragment>
+                                                    )}
+                                                    renderInput={params => (
+                                                        <TextField
+                                                            {...params}
+                                                            label={<p>Authority<span style={{ color: "red" }} > *</span></p>}
+                                                            variant="standard"
+                                                            name="authority_text"
+                                                            inputRef={register({
+                                                                required: true
+                                                            })}
+                                                            inputProps={{
+                                                                ...params.inputProps,
+                                                                autoComplete: 'off', // disable autocomplete and autofill
+                                                            }}
+                                                        />
+                                                    )}
+                                                    onChange={
+                                                        (e, value) => {
+                                                            props.onChange(value);
+                                                            //alert ("onChangeFired")
+                                                            if (value !== null) {
+                                                                console.log(value.id);
+                                                                setAuthRegionId(value.id);
+                                                                setAuthRegion(value);
+                                                            }
+                                                            else {
+                                                                setAuthRegionId(null);
+                                                                setAuthRegion([]);
+                                                            }
+                                                        }
+                                                    }
+                                                    value={authRegion}
+                                                //value={[]}
+                                                />
+                                            )}
+                                            name="AuthRegion"
+                                            control={control}
+                                            rules={{ required: true }}
+                                        />
+                                        {errors.AuthRegion && <span style={{ color: 'red' }}>Enter Authority Region</span>}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -223,9 +219,9 @@ export const EditDialog = (props) => {
                                             value={name}
                                             onChange={(e) => { setName(e.target.value) }}
                                         />
-                                         {_.get("name.type", errors) === "required" && (
+                                        {_.get("name.type", errors) === "required" && (
                                             <p style={{ color: "red" }}>This field is required</p>
-                                        )}   
+                                        )}
 
                                     </FormControl>
                                 </Grid>
@@ -242,9 +238,9 @@ export const EditDialog = (props) => {
                                             value={fname}
                                             onChange={(e) => { setFname(e.target.value) }}
                                         />
-                                             {_.get("name_fname.type", errors) === "required" && (
+                                        {_.get("name_fname.type", errors) === "required" && (
                                             <p style={{ color: "red" }}>This field is required</p>
-                                        )}  
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -258,8 +254,6 @@ export const EditDialog = (props) => {
                                             value={saney}
                                             onChange={(e) => { setSaney(e.target.value) }}
                                         />
-                                        
-                                     
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -268,16 +262,16 @@ export const EditDialog = (props) => {
                                         <TextField
                                             id="da"
                                             name="name_da"
-                                            label={<p>Document attached<span style={{ color: "red" }} > *</span></p>}
+                                            label={<p>Document Attached<span style={{ color: "red" }} > *</span></p>}
                                             value={documents}
                                             inputRef={register({
                                                 required: true
                                             })}
                                             onChange={(e) => { setDocument(e.target.value) }}
                                         />
-                                       {_.get("name_da.type", errors) === "required" && (
+                                        {_.get("name_da.type", errors) === "required" && (
                                             <p style={{ color: "red" }}>This field is required</p>
-                                        )}  
+                                        )}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -292,9 +286,8 @@ export const EditDialog = (props) => {
                                                 shrink: true,
                                             }}
                                             InputProps={{
-                                              readOnly: true
+                                                readOnly: true
                                             }}
-
                                             onChange={(e) => { setIssueActionDate(e.target.value) }}
                                         />
                                     </FormControl>
@@ -371,7 +364,6 @@ export const EditDialog = (props) => {
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
-
                                             onChange={(e) => { setRejectDate(e.target.value) }}
                                         />
                                     </FormControl>
@@ -381,17 +373,24 @@ export const EditDialog = (props) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-
+                    <Button 
+                    onClick={props.handleEditClickClose} 
+                    color={sButtonColor}
+                    variant={sButtonVariant}
+                    size={sButtonSize}
+                    >Cancel</Button>
                     {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
-
                     <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={snackbarClose} >
                         <Alert onClose={snackbarClose} severity={alertType}  >
                             {message}
                         </Alert>
                     </Snackbar>
-
-                    <Button type='submit' color="primary">Save</Button>
+                    <Button 
+                    type='submit' 
+                    color={sButtonColor}
+                    variant={sButtonVariant}
+                    size={sButtonSize}
+                    >Save</Button>
                 </DialogActions>
             </form>
         </Dialog>
@@ -422,8 +421,8 @@ export const AddDialog = (props) => {
         nIssuedOrNotID: 1,
         sDocumentAttached: documents,
         nSaneyFormNo: saney,
-        nEnteredBy:userId,
-        nUpdatedBy:userId
+        nEnteredBy: userId,
+        nUpdatedBy: userId
     }
     const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
     const onSubmit = data => {
@@ -452,7 +451,7 @@ export const AddDialog = (props) => {
                                             InputProps={{
                                                 readOnly: false,
                                             }}
-                                       
+
                                             value={formNumber}
                                             onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
 
@@ -490,65 +489,65 @@ export const AddDialog = (props) => {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
-                                    <Controller
-                      render={props => (
-                        <Autocomplete
-                          openOnFocus
-                          clearOnEscape
-                          onChange={
-                            (e, value) => {
-                              props.onChange(value);
-                              if (value !== null) {
-                                console.log(value.id);
-                                setAuthRegionId(value.id);
-                                setAuthRegion(value);
-                              }
-                              else {
-                                setAuthRegionId(null);
-                                setAuthRegion([]);
-                              }
-                            }
-                          }
-                          value={authRegion}
-                          inputRef={register({
-                            required: true
-                          })}
-                          id="id_nAuthorityId"
-                          options={authRegions}
-                          /*  classes={{
-                                option: classes.option,
-                            }}
-                            className={classes.textField}*/
-                          autoHighlight
-                          getOptionLabel={(option) => option.sAuthRegion}
-                          renderOption={(option) => (
-                            <React.Fragment>
-                              <span>{option.sAuthRegion}</span>
-                            </React.Fragment>
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              
-                              label={<p>Authority<span style={{ color: "red" }} > *</span></p>}
-                              variant="standard"
+                                        <Controller
+                                            render={props => (
+                                                <Autocomplete
+                                                    openOnFocus
+                                                    clearOnEscape
+                                                    onChange={
+                                                        (e, value) => {
+                                                            props.onChange(value);
+                                                            if (value !== null) {
+                                                                console.log(value.id);
+                                                                setAuthRegionId(value.id);
+                                                                setAuthRegion(value);
+                                                            }
+                                                            else {
+                                                                setAuthRegionId(null);
+                                                                setAuthRegion([]);
+                                                            }
+                                                        }
+                                                    }
+                                                    value={authRegion}
+                                                    inputRef={register({
+                                                        required: true
+                                                    })}
+                                                    id="id_nAuthorityId"
+                                                    options={authRegions}
+                                                    /*  classes={{
+                                                          option: classes.option,
+                                                      }}
+                                                      className={classes.textField}*/
+                                                    autoHighlight
+                                                    getOptionLabel={(option) => option.sAuthRegion}
+                                                    renderOption={(option) => (
+                                                        <React.Fragment>
+                                                            <span>{option.sAuthRegion}</span>
+                                                        </React.Fragment>
+                                                    )}
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            {...params}
 
-                              inputRef={register({
-                                required: true
-                              })}
-                              name="name_authority"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'off', // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
-                        />)}
-                      name="AuthRegion"
-                      control={control}
-                      rules={{ required: true }}
-                    />
-                    {errors.AuthRegion && <span style={{ color: 'red' }}>Enter Authority Region</span>}
+                                                            label={<p>Authority<span style={{ color: "red" }} > *</span></p>}
+                                                            variant="standard"
+
+                                                            inputRef={register({
+                                                                required: true
+                                                            })}
+                                                            name="name_authority"
+                                                            inputProps={{
+                                                                ...params.inputProps,
+                                                                autoComplete: 'off', // disable autocomplete and autofill
+                                                            }}
+                                                        />
+                                                    )}
+                                                />)}
+                                            name="AuthRegion"
+                                            control={control}
+                                            rules={{ required: true }}
+                                        />
+                                        {errors.AuthRegion && <span style={{ color: 'red' }}>Enter Authority Region</span>}
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -623,8 +622,18 @@ export const AddDialog = (props) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-                    <Button type="submit" color="primary">Save</Button>
+                    <Button 
+                    onClick={props.handleAddClickClose} 
+                    color={sButtonColor}
+                    variant={sButtonVariant}
+                    size={sButtonSize}
+                    >Cancel</Button>
+                    <Button 
+                    type="submit" 
+                    color={sButtonColor}
+                    variant={sButtonVariant}
+                    size={sButtonSize}
+                    >Save</Button>
                 </DialogActions>
             </form>
         </Dialog>

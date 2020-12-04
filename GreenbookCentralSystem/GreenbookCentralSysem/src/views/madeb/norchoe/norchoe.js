@@ -17,7 +17,7 @@ import { EmailDialog } from '../email';
 import { Alerts } from '../../alerts';
 import { ViewDialog } from '../../search/dialog';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat,modifyHeaders } from '../../../config/commonConfig';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -154,15 +154,21 @@ export default function EnhancedTable() {
     {
       align: 'center',
       field: "madeb.id",
-      title: "Sr No.",
+      title: "#",
       hidden: true,
-      // cellStyle: {
-      //   padding: '5px'
-      // }
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "right",
+        padding: '5px'
+      }
     },
     {
       field: "madeb.nFormNumber",
-      title: "Form No.",
+      title: "FORM NO.",
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
@@ -170,13 +176,13 @@ export default function EnhancedTable() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
       field: "madeb.dtReceived",
-      title: "Received Date",
+      title: "RECEIVED DATE",
       render: rowData => Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD'),
       headerStyle: {
         textAlign: "center",
@@ -184,33 +190,33 @@ export default function EnhancedTable() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
       field: "sAuthRegion",
-      title: "Authority",
+      title: "AUTHORITY",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
       field: "madeb.sName",
-      title: "Name",
+      title: "NAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
@@ -224,13 +230,13 @@ export default function EnhancedTable() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
       field: "madeb.sChangeField",
-      title: "Change Field",
+      title: "CHANGE FIELD",
       hidden: false,
       headerStyle: {
         textAlign: "center",
@@ -238,52 +244,52 @@ export default function EnhancedTable() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
       field: "madeb.sDocumentAttached",
-      title: "Document Attached",
+      title: "DOCUMENT ATTACHED",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
       field: "madeb.nReceiptNo",
-      title: "Receipt No.",
+      title: "RECEIPT NO.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
       field: "sMadebStatus",
-      title: "Status",
+      title: "STATUS",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
       field: "madeb.sMadebStatusRemark",
-      title: "Remark",
+      title: "REMARK",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -296,7 +302,7 @@ export default function EnhancedTable() {
     },
     {
       field: "madeb.dtIssueAction",
-      title: "Issue Action Date",
+      title: "ISSUE ACTION DATE",
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD') : '',
       // render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
       headerStyle: {
@@ -305,26 +311,26 @@ export default function EnhancedTable() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
       field: "sTypeIssued",
-      title: "Issue Action",
+      title: "ISSUE ACTION",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
       field: "madeb.dtReturnEmail",
-      title: "Return Date",
+      title: "RETURN DATE",
       //render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
       render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD') : '',
       headerStyle: {
@@ -333,13 +339,13 @@ export default function EnhancedTable() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
       field: "madeb.dtReject",
-      title: "Reject Date",
+      title: "REJECT DATE",
       render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD') : '',
       headerStyle: {
         textAlign: "center",
@@ -347,13 +353,13 @@ export default function EnhancedTable() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
       field: "email",
-      title: "Email",
+      title: "EMAIL",
       filtering: false,
       sorting: false,
       export: false,
@@ -374,7 +380,7 @@ export default function EnhancedTable() {
     },
     {
       field: "edit",
-      title: "Edit",
+      title: "EDIT",
       sorting: false,
       export: false,
       filtering: false,
@@ -401,7 +407,7 @@ export default function EnhancedTable() {
     },
     {
       field: 'Verified By',
-      title: 'Verified By',
+      title: 'VERIFIED BY',
       sort: false,
       export: true,
       filtering: false,
@@ -418,7 +424,7 @@ export default function EnhancedTable() {
     },
     {
       field: 'Re-Verified By',
-      title: 'Re-Verified By',
+      title: 'RE-VERIFIED BY',
       sort: false,
       export: true,
       filtering: false,
@@ -436,11 +442,9 @@ export default function EnhancedTable() {
   ];
 
   const emailClick = (tableRowArray) => {
-
     setId(tableRowArray['madeb']['id']);
     setFormNumber(tableRowArray['madeb']['nFormNumber']);
     setName(tableRowArray['madeb']['sName']);
-
     setEmailInObj({
       id: tableRowArray['madeb']['id'],
       nFormNumber: tableRowArray['madeb']['nFormNumber'],
@@ -451,23 +455,19 @@ export default function EnhancedTable() {
     setEmailModal(true);
   }
   const editClick = (tableRowArray) => {
-
     setId(tableRowArray['madeb']['id']);
     setFormNumber(tableRowArray['madeb']['nFormNumber']);
     setAuthority(tableRowArray['sAuthRegion']);
     setReceivedDate(tableRowArray['madeb']['dtReceived']);
     setName(tableRowArray['madeb']['sName']);
-
     setGbId(tableRowArray['madeb']['sGBID']);
     setReceiptNo(tableRowArray['madeb']['nReceiptNo']);
     setChangeField(tableRowArray['madeb']['sChangeField']);
     setStatus(tableRowArray['madeb']['sApprovedReject'])
-
     setDocument(tableRowArray['madeb']['sDocumentAttached']);
     setIssueActionDate(tableRowArray['madeb']['dtIssueAction']);
     setIssueAction(tableRowArray['madeb']['nIssuedOrNotID']);
     setReturnDate(tableRowArray['madeb']['dtReturnEmail']);
-
     setNorchoeObj({
       id: tableRowArray['madeb']['id'],
       nFormNumber: tableRowArray['madeb']['nFormNumber'],
@@ -661,6 +661,7 @@ export default function EnhancedTable() {
           setdataAPI(resp.data);
           selectDatafunction();
           setisLoading(false);
+          modifyHeaders();
         }
       })
       .catch(error => {
