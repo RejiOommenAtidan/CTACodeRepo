@@ -12,11 +12,11 @@ import Slide from '@material-ui/core/Slide';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Alerts } from '../../alerts';
 import { useSelector } from 'react-redux';
+import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
 
 export const EditDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
@@ -38,20 +38,15 @@ export const EditDialog = (props) => {
   const handleChangeGBID = (value) => {
     setGbId(value);
     setName('');
-
     setAuthRegion([]);
-  }
-
-
+  };
 
   const handleSubmitEditRecord = () => {
     props.editAPICall(madeb);
-
     // setMessage("Record Successfully Edited");
     // setAlertType('success');
     // setSnackbarOpen(true)
-  }
-
+  };
 
   const [authRegions, setAuthRegionData] = React.useState(props.selectData['authRegions']);
   const [typeIssuedData, setTypeIssuedData] = React.useState(props.selectData['typeIssued']);
@@ -67,7 +62,7 @@ export const EditDialog = (props) => {
   const [sFathersName, setFname] = React.useState(props.abroadObj.sFathersName);
   const [nReceiptNo, setReceiptNo] = React.useState(props.abroadObj.nReceiptNo);
   const [nSaneyFormNo, setSaney] = React.useState(props.abroadObj.nSaneyFormNo);
-  const [nCurrentGBSno, setCurrentGBSNo] = useState(props.abroadObj.nCurrentGBSno);
+  //const [nCurrentGBSno, setCurrentGBSNo] = useState(props.abroadObj.nCurrentGBSno);
   const [nPreviousGBSno, setPreviousGBSNo] = useState(props.abroadObj.nPreviousGBSno);
   const [sApprovedReject, setApprovedReject] = useState(props.abroadObj.sApprovedReject);
   const [dtIssueAction, setIssueActionDate] = React.useState(props.abroadObj.dtIssueAction ? (props.abroadObj.dtIssueAction).split('T')[0] : undefined);
@@ -75,7 +70,11 @@ export const EditDialog = (props) => {
   const [nIssuedOrNotID, setIssueAction] = React.useState(props.abroadObj.nIssuedOrNotID);
   const [dtReturnEmail, setReturnDate] = React.useState(props.abroadObj.dtReturnEmail ? (props.abroadObj.dtReturnEmail).split('T')[0] : undefined);
   const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
+  const [nMadebStatusID, setMadebStatusID] = React.useState(props.abroadObj.nMadebStatusID);
+  const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);
+  const [sMadebStatusRemark, setMadebStatusRemark] = React.useState(props.abroadObj.sMadebStatusRemark);
 
+  let valueMadebStatus = props.selectData['madebStatuses'].find((x) => x.id === nMadebStatusID);
 
   const madeb = {
     id: id,
@@ -89,15 +88,20 @@ export const EditDialog = (props) => {
     sFathersName,
     nReceiptNo,
     nSaneyFormNo,
-    nCurrentGBSno,
+    //nCurrentGBSno,
     nPreviousGBSno,
     sApprovedReject,
     dtIssueAction,
     dtReject,
     nIssuedOrNotID,
     dtReturnEmail,
+    nMadebStatusID,
+    sMadebStatusRemark,
     nUpdatedBy: userId
-  }
+  };
+
+  // let valueMadebStatus = [];
+
   console.log("Madeb Edit Object received in dialog", madeb);
   //  const childrenAuthRegion =  () => { 
   //         return (authRegions.map((data) => (<option value={data.id}>{data.sAuthRegion}</option> )  ))
@@ -110,7 +114,7 @@ export const EditDialog = (props) => {
       snackbarOpen();
       return;
     }
-    console.log("Value in GBID: ", value);
+    console.log("Value in Form Abroad GBID: ", value);
     const gbid = value;
     const event = new Event('change', {
       bubbles: true
@@ -120,7 +124,7 @@ export const EditDialog = (props) => {
      * Must talk to Malay.
     */
     const sNameElement = document.getElementById("sName");
-    const nCurrentGBSnoElement = document.getElementById("nCurrentGBSno");
+    //const nCurrentGBSnoElement = document.getElementById("nCurrentGBSno");
     const nPreviousGBSnoElement = document.getElementById("nPreviousGBSno");
     axios.get(`Greenbook/GetPersonalDetailsFromGBID/?sGBID=` + gbid)
       .then(resp => {
@@ -131,7 +135,8 @@ export const EditDialog = (props) => {
           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
           const lname = resp.data.sLastName ? resp.data.sLastName : '';
           setName(`${name} ${mname} ${lname}`);
-
+          setPreviousGBSNo(resp.data.nPreviousSrNo);
+          //clearErrors("nPreviousSrNo");
           clearErrors("sName");
           //setValue("sName");
           const region = authRegions.find((x) => x.sAuthRegion === resp.data.sAuthRegion)
@@ -159,7 +164,7 @@ export const EditDialog = (props) => {
         }
         else {
           setName('');
-
+          setPreviousGBSNo('');
           setAuthRegion([]);
           console.log("Not found", resp);
           setAlertMessage(`No record found for GB Id: ${gbid}.`);
@@ -170,7 +175,7 @@ export const EditDialog = (props) => {
       .catch((error) => {
         if (error.response.status === 404) {
           setName('');
-
+          setPreviousGBSNo('');
           setAuthRegion([]);
           console.log("Not found", error.response.data);
           setAlertMessage(`${error.response.data}`);
@@ -435,7 +440,7 @@ export const EditDialog = (props) => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                {/*<Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="nCurrentGBSno"
@@ -456,14 +461,14 @@ export const EditDialog = (props) => {
                       <span style={{ color: 'red' }}>This field is required</span>
                     )}
                   </FormControl>
-                </Grid>
+                    </Grid>*/}
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="nPreviousGBSno"
                       name="nPreviousGBSno"
                       label="Previous GB SNo"
-                      type='number'
+                      //type='number'
                       // required={true}
                       value={nPreviousGBSno}
                       onChange={(e) => {
@@ -586,13 +591,69 @@ export const EditDialog = (props) => {
                     />
                   </FormControl>
                 </Grid>
-
+                <Grid item xs={12} sm={6}>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="sMadebStatusRemark"
+                      name="sMadebStatusRemark"
+                      label="Status Remarks"
+                      //required={true}
+                      value={sMadebStatusRemark}
+                      onChange={(e) => { setMadebStatusRemark(e.target.value) }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl className={props.classes.formControl}>
+                    <Autocomplete
+                      openOnFocus
+                      clearOnEscape
+                      onChange={
+                        (e, value) => {
+                          if (value !== null) {
+                            console.log(value.id);
+                            setMadebStatusID(value.id);
+                          }
+                          else {
+                            setMadebStatusID(0);
+                          }
+                        }
+                      }
+                      value={valueMadebStatus}
+                      id="id_nMadebStatusID"
+                      options={madebStatuses}
+                      autoHighlight
+                      getOptionLabel={(option) => option.sMadebStatus}
+                      renderOption={(option) => (
+                        <React.Fragment>
+                          <span>{option.sMadebStatus}</span>
+                        </React.Fragment>
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Madeb Status"
+                          variant="standard"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'off', // disable autocomplete and autofill
+                          }}
+                        />
+                      )}
+                    />
+                  </FormControl>
+                </Grid>
               </Grid>
             </div>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
+          <Button
+            onClick={props.handleEditClickClose}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Cancel</Button>
 
           {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
 
@@ -602,7 +663,12 @@ export const EditDialog = (props) => {
         </Alert>
       </Snackbar> */}
 
-          <Button type="submit" color="primary">Save</Button>
+          <Button
+            type="submit"
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>
@@ -666,6 +732,7 @@ export const AddDialog = (props) => {
           const lname = resp.data.sLastName ? resp.data.sLastName : '';
           setName(`${name} ${mname} ${lname}`);
           setFname(resp.data.sFathersName);
+          setPreviousGBSNo(resp.data.nPreviousSrNo);
 
           clearErrors("sName");
           //setValue("sName");
@@ -731,9 +798,12 @@ export const AddDialog = (props) => {
   const [sFathersName, setFname] = React.useState('');
   const [nReceiptNo, setReceiptNo] = React.useState(0);
   const [nSaneyFormNo, setSaney] = React.useState();
-  const [nCurrentGBSno, setCurrentGBSNo] = useState();
+  //const [nCurrentGBSno, setCurrentGBSNo] = useState();
   const [nPreviousGBSno, setPreviousGBSNo] = useState();
   const [authRegion, setAuthRegion] = React.useState([]);
+  const [nMadebStatusID, setMadebStatusID] = React.useState(1);
+  const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);
+  const [sMadebStatusRemark, setMadebStatusRemark] = React.useState("");
 
   const madeb = {
     id: id,
@@ -747,15 +817,19 @@ export const AddDialog = (props) => {
     sFathersName,
     nReceiptNo,
     nSaneyFormNo,
-    nCurrentGBSno,
+    //nCurrentGBSno,
     nPreviousGBSno,
-    nIssuedOrNotID: 1,
+    //nIssuedOrNotID: 1,
+    nMadebStatusID,
+    sMadebStatusRemark,
     nEnteredBy: userId,
     nUpdatedBy: userId
   }
 
   let valueAuthRegion = [];
   let valueTypeIssued = [];
+  let valueMadebStatus = props.selectData['madebStatuses'].find((x) => x.id === nMadebStatusID);
+
 
   const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
   console.log("Madeb Object in Add dialog", madeb);
@@ -795,7 +869,7 @@ export const AddDialog = (props) => {
                       })}
                       value={nFormNumber}
                     />
-                     {_.get("nFormNumber.type", errors) === "required" && (
+                    {_.get("nFormNumber.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
                     )}
                   </FormControl>
@@ -968,9 +1042,9 @@ export const AddDialog = (props) => {
                         setReceiptNo(parseInt(e.target.value));
                         console.log("Value of Receipt changed to:", e.target.value);
                       }}
-                     
+
                     />
-                    
+
                   </FormControl>
                 </Grid>
 
@@ -990,7 +1064,7 @@ export const AddDialog = (props) => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                {/*<Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="nCurrentGBSno"
@@ -1005,16 +1079,19 @@ export const AddDialog = (props) => {
                       }}
                      
                     />
-                   
-
                   </FormControl>
-                </Grid>
+                    </Grid>*/}
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="nPreviousGBSno"
                       label="Previous GB SNo"
                       type='number'
+                      InputProps={{
+                        readOnly: true
+                      }}
+                      InputLabelProps={{shrink:true}}
+
                       name='nPreviousGBSno'
                       //required={true}
                       value={nPreviousGBSno}
@@ -1022,6 +1099,58 @@ export const AddDialog = (props) => {
                         setPreviousGBSNo(parseInt(e.target.value));
                         console.log("Value of previousGB changed to:", parseInt(e.target.value));
                       }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl className={props.classes.formControl}>
+                    <Autocomplete
+                      openOnFocus
+                      clearOnEscape
+                      onChange={
+                        (e, value) => {
+                          if (value !== null) {
+                            console.log(value.id);
+                            setMadebStatusID(value.id);
+                          }
+                          else {
+                            setMadebStatusID(0);
+                          }
+                        }
+                      }
+                      value={valueMadebStatus}
+                      id="id_nMadebStatusID"
+                      options={madebStatuses}
+                      autoHighlight
+                      getOptionLabel={(option) => option.sMadebStatus}
+                      renderOption={(option) => (
+                        <React.Fragment>
+                          <span>{option.sMadebStatus}</span>
+                        </React.Fragment>
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Madeb Status"
+                          variant="standard"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'off', // disable autocomplete and autofill
+                          }}
+                        />
+                      )}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="sMadebStatusRemark"
+                      name="sMadebStatusRemark"
+                      label="Status Remarks"
+                      //required={true}
+                      value={sMadebStatusRemark}
+                      onChange={(e) => { setMadebStatusRemark(e.target.value) }}
                     />
                   </FormControl>
                 </Grid>
@@ -1036,7 +1165,12 @@ export const AddDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+          <Button
+            onClick={props.handleAddClickClose}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Cancel</Button>
 
           {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
 
@@ -1046,7 +1180,12 @@ export const AddDialog = (props) => {
         </Alert>
       </Snackbar> */}
 
-          <Button type="submit" color="primary">Save</Button>
+          <Button
+            type="submit"
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>
