@@ -20,7 +20,7 @@ namespace CTADBL.BaseClasses.Transactions
         private int _nAuthRegionID;
         private DateTime? _dtReceived = null;
         private DateTime? _dtIssueAction = null;
-        private int _nIssuedOrNotID;
+        private int? _nIssuedOrNotID;
         private int _nType;
         private string? _sChangeField;
         private string? _sOfficeOfTibetan;
@@ -56,7 +56,7 @@ namespace CTADBL.BaseClasses.Transactions
         [Required]
         public DateTime? dtReceived { get { return _dtReceived; } set { _dtReceived = value; } }
         public DateTime? dtIssueAction { get { return _dtIssueAction; } set { _dtIssueAction = value; } }
-        public int nIssuedOrNotID { get { return _nIssuedOrNotID; } set { _nIssuedOrNotID = value; } }
+        public int? nIssuedOrNotID { get { return _nIssuedOrNotID; } set { _nIssuedOrNotID = value; } }
         public int nType { get { return _nType; } set { _nType = value; } }
         public string? sChangeField { get { return _sChangeField; } set { _sChangeField = value; } }
         public string? sOfficeOfTibetan { get { return _sOfficeOfTibetan; } set { _sOfficeOfTibetan = value; } }

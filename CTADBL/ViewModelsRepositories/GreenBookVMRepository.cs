@@ -66,7 +66,7 @@ namespace CTADBL.ViewModelsRepositories
         {
             //string sql = @"SELECT ar.sAuthRegion, gb.nAuthRegionID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sFathersName, gb.sMothersName FROM tblgreenbook as gb LEFT JOIN lstauthregion ar ON ar.ID = gb.nAuthRegionID WHERE gb.sGBID = @sGBID;";
 
-            string sql = @"SELECT ar.sAuthRegion, gb.nAuthRegionID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sFathersName, gb.sMothersName, (SELECT Max(nBookNo) FROM tblgreenbookserial t2 WHERE sGBID = @sGBID ) AS sPreviousSrNo FROM tblgreenbook as gb LEFT JOIN lstauthregion ar ON ar.ID = gb.nAuthRegionID WHERE gb.sGBID = @sGBID;";
+            string sql = @"SELECT ar.sAuthRegion, gb.nAuthRegionID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sFathersName, gb.sMothersName, (SELECT Max(nBookNo) FROM tblgreenbookserial t2 WHERE sGBID = @sGBID ) AS nPreviousSrNo FROM tblgreenbook as gb LEFT JOIN lstauthregion ar ON ar.ID = gb.nAuthRegionID WHERE gb.sGBID = @sGBID;";
 
             using (var command = new MySqlCommand(sql))
             {
@@ -87,7 +87,7 @@ namespace CTADBL.ViewModelsRepositories
                     sFamilyName = row.Field<string>("sFamilyName"),
                     sFathersName = row.Field<string>("sFathersName"),
                     sMothersName = row.Field<string>("sMothersName"),
-                    sPreviousSrNo = row.Field<string>("sPreviousSrNo")
+                    nPreviousSrNo = row.Field<int?>("nPreviousSrNo")
                 }).FirstOrDefault();
                 return result;
             }
