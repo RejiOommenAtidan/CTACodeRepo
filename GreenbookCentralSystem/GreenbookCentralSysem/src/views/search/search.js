@@ -273,7 +273,7 @@ export default function SearchPage() {
     },
     {
       //render: rowData => (rowData['sFirstName'] ? rowData['sFirstName'] : '') + " " + (rowData['sLastName'] ? rowData['sLastName'] : ''),
-      field: "sFirstName",
+      field: "sFullName",
       title: "NAME",
       filterPlaceholder: 'Search..',
       headerStyle: {
@@ -291,7 +291,7 @@ export default function SearchPage() {
         width: '8%'
       }
     },
-    {
+  /*  {
       field: "sLastName",
       title: "LAST NAME",
       filterPlaceholder: 'Search..',
@@ -306,7 +306,7 @@ export default function SearchPage() {
         textAlign: "left",
         padding: '0px'
       }
-    },
+    },*/
     {
       field: "sFamilyName",
       title: "FAMILY NAME",
@@ -465,6 +465,7 @@ export default function SearchPage() {
             resp.data.forEach((element) => {
               element.nSerialNo = i;
               element.sGBIDCombo = element.sCountryID + element.sGBID;
+              element.sFullName=element.sFirstName+' '+element.sLastName;
               element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format("DD-MM-YYYY") : '';
               i++;
             })
@@ -543,6 +544,7 @@ export default function SearchPage() {
           resp.data.forEach((element) => {
             element.nSerialNo = i;
             element.sGBIDCombo = element.sCountryID + element.sGBID;
+            element.sFullName=element.sFirstName+' '+element.sLastName;
             element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format("DD-MM-YYYY") : '';
             i++;
           })
