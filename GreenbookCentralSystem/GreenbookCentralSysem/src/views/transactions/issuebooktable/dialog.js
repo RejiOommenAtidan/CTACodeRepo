@@ -39,7 +39,7 @@ function Alert(props) {
 
    const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
    const [madebData,setMadebData]= React.useState(props.selectData['madebTypes']);
-   const [typeIssuedData,setTypeIssuedData]= React.useState(props.selectData['typeIssued']);
+   const [typeIssuedDataAll,setTypeIssuedDataAll]= React.useState(props.selectData['typeIssued']);
    
    const [formNumber, setFormNumber] = React.useState(props.editObj['sFormNumber']);
    const [id, setId] = React.useState(props.editObj['id']);
@@ -64,7 +64,13 @@ function Alert(props) {
   
    }
    
-  
+   let typeIssuedData=[]
+  typeIssuedDataAll.forEach(i=>{
+      //console.log(i);
+      if(i.id===2 ||i.id===3 ||i.id===4 ){
+        typeIssuedData.push(i);
+      }
+  });
  
    let valueAuthRegion =[];
    authorityData.forEach(element => {
@@ -305,37 +311,15 @@ export const SaveDialog = (props) => {
   console.log(props.saveObj);
   const [authorityData,setAuthoritData]= React.useState(props.selectData['authRegions']);
   const [madebData,setMadebData]= React.useState(props.selectData['madebTypes']);
-  const [typeIssuedData,setTypeIssuedData]= React.useState([ {
-    "id": 1,
-    "sTypeIssued": "On Progress",
-    "dtEntered": null,
-    "nEnteredBy": 1,
-    "dtUpdated": null,
-    "nUpdatedBy": 1
-},
-{
-    "id": 2,
-    "sTypeIssued": "Issued",
-    "dtEntered": null,
-    "nEnteredBy": 1,
-    "dtUpdated": null,
-    "nUpdatedBy": 1
-},
-{
-    "id": 3,
-    "sTypeIssued": "Rejected",
-    "dtEntered": null,
-    "nEnteredBy": 1,
-    "dtUpdated": null,
-    "nUpdatedBy": 1
-}]);
+ // const [typeIssuedData,setTypeIssuedData]= React.useState(props.selectData['typeIssued']);
+  const [typeIssuedDataAll,setTypeIssuedDataAll]= React.useState(props.selectData['typeIssued']);
   const [formNumber, setFormNumber] = React.useState(props.saveObj['nFormNumber']);
   const [id, setId] = React.useState(props.saveObj['id']);
   const [madebType,setMadebType]= React.useState(props.saveObj['nMadebTypeID']);
   const [authorityId, setAuthorityId] = React.useState(props.saveObj['nAuthRegionID']);
   const [receivedDate, setReceivedDate] = React.useState(props.saveObj.dtReceived ? (props.saveObj.dtReceived).split('T')[0] : undefined);
   const [gbId, setGbId] = React.useState(parseInt(props.saveObj['sGBID']));
-  const [issuedOrNotId, setIssuedOrNotId] = React.useState(props.saveObj['nIssuedOrNotID'] == 0  ?  1 : props.saveObj['nIssuedOrNotID']);
+  const [issuedOrNotId, setIssuedOrNotId] = React.useState(2);
 
   const [printed, setPrinted] = React.useState(false);
   const [remarks, setRemarks] = React.useState('');
@@ -353,9 +337,16 @@ export const SaveDialog = (props) => {
   }
   const changeObj ={
     id:id,
-    nIssuedOrNotID: 2
+    nIssuedOrNotID: issuedOrNotId
   }
- 
+  let typeIssuedData=[]
+  typeIssuedDataAll.forEach(i=>{
+      //console.log(i);
+      if(i.id===2 ||i.id===3 ||i.id===4 ){
+        typeIssuedData.push(i);
+      }
+  });
+
 
   let valueAuthRegion =[];
   authorityData.forEach(element => {
@@ -379,6 +370,10 @@ export const SaveDialog = (props) => {
     valueMadebType = element;
   }
 });
+    useEffect(() => { 
+      //  console.log(typeIssuedDataAll);
+          
+     }, []);
   return (
  <>
 
