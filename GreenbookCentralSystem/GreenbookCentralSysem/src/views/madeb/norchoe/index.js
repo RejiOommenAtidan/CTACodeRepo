@@ -8,7 +8,6 @@ import {
   Link
 } from '@material-ui/core';
 
-
 import Norchoe from './norchoe';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,17 +19,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverNorchoeMadeb = () => {
   const classes = useStyles();
-
   return (
-   
       <Container maxWidth={false}>
-      
         <Norchoe />
       </Container>
-
   );
 };
 
-export default Dashboard;
+export default CoverNorchoeMadeb;

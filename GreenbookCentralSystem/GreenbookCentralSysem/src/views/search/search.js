@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { authenticationService } from '../../auth/_services';
-import { oOptions, oTableIcons } from '../../config/commonConfig';
+import { oOptions, oTableIcons, modifyHeaders,sButtonSize } from '../../config/commonConfig';
 
 import {
   Grid,
@@ -25,11 +25,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-
 import { ViewDialog } from './dialog';
 import MaterialTable from 'material-table';
-import { aPageSizeArray } from '../../config/commonConfig';
-import { nPageSize } from '../../config/commonConfig';
 import { Alerts } from '../alerts/index';
 import { BackdropComponent } from '../backdrop/index';
 import DateFnsUtils from '@date-io/date-fns';
@@ -132,9 +129,7 @@ export default function SearchPage() {
   const [dataFromAPI, setdataFromAPI] = React.useState([]);
   const [recentGBData, setRecentGBData] = React.useState([]);
   const [sGBID, setsGBID] = React.useState('');
-
   const [searchType, setSearchType] = React.useState('simple');
-
   const handleChange = (event) => {
     setSearchType(event.target.value);
   };
@@ -196,7 +191,7 @@ export default function SearchPage() {
         width: '1%'
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '0px',
         margin: '0px',
         width: '1%'
@@ -241,7 +236,7 @@ export default function SearchPage() {
     //   }
     // },
     {
-      render: rowData => <div onContextMenu={(e) => { handleClick(e) }} style={{ cursor: 'context-menu' }} > <Button className="m-2 btn-transparent btn-link btn-link-first" size={"large"} onClick={() => { viewGb(rowData['sGBID']) }}><span><u>{rowData['sGBIDCombo']}</u></span></Button>
+      render: rowData => <div onContextMenu={(e) => { handleClick(e) }} style={{ cursor: 'context-menu' }} > <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewGb(rowData['sGBID']) }}><span><u>{rowData['sGBIDCombo']}</u></span></Button>
         <Menu
           keepMounted
           open={contextState.mouseY !== null}
@@ -270,7 +265,7 @@ export default function SearchPage() {
         width: '3%'
       },
       cellStyle: {
-        textAlign: "left",
+        textAlign: "center",
         padding: '0px',
         margin: '0px',
         width: '3%'
@@ -279,7 +274,7 @@ export default function SearchPage() {
     {
       //render: rowData => (rowData['sFirstName'] ? rowData['sFirstName'] : '') + " " + (rowData['sLastName'] ? rowData['sLastName'] : ''),
       field: "sFirstName",
-      title: "Name",
+      title: "NAME",
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
@@ -298,7 +293,7 @@ export default function SearchPage() {
     },
     {
       field: "sLastName",
-      title: "Last Name",
+      title: "LAST NAME",
       filterPlaceholder: 'Search..',
       //hidden: true,
       searchable: true,
@@ -314,7 +309,7 @@ export default function SearchPage() {
     },
     {
       field: "sFamilyName",
-      title: "Family Name",
+      title: "FAMILY NAME",
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
@@ -352,13 +347,13 @@ export default function SearchPage() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '0px'
       }
     },
     {
       field: "nAge",
-      title: "Age",
+      title: "AGE",
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "right",
@@ -367,14 +362,14 @@ export default function SearchPage() {
         width: '1%'
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '0px',
         width: '1%'
       }
     },
     {
       field: "sFathersName",
-      title: "Father",
+      title: "FATHER",
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
@@ -382,13 +377,13 @@ export default function SearchPage() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '0px'
       }
     },
     {
       field: "sMothersName",
-      title: "Mother",
+      title: "MOTHER",
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
@@ -396,13 +391,13 @@ export default function SearchPage() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '0px'
       }
     },
     {
       field: "sCity",
-      title: "City/Town",
+      title: "CITY/TOWN",
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
@@ -410,7 +405,7 @@ export default function SearchPage() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '0px'
       }
     }
@@ -458,7 +453,6 @@ export default function SearchPage() {
     //setSearchField(e.target.value,console.log(searchField))
     if (e.target.value.length > 0) {
       const simpleObj = {
-
         sSearchField: searchFilter,
         sSearchValue: e.target.value
       }
@@ -470,7 +464,7 @@ export default function SearchPage() {
             console.log(resp.data);
             resp.data.forEach((element) => {
               element.nSerialNo = i;
-              element.sGBIDCombo = element.sCountryID+element.sGBID;
+              element.sGBIDCombo = element.sCountryID + element.sGBID;
               element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format("DD-MM-YYYY") : '';
               i++;
             })
@@ -517,7 +511,6 @@ export default function SearchPage() {
     axios.get(`RecentlySearchedGB/GetRecentlySearchedGBs?records=20&nUserId=` + userId)
       .then(resp => {
         if (resp.status === 200) {
-
           console.log(resp.data);
           setRecentGBData(resp.data);
         }
@@ -549,12 +542,10 @@ export default function SearchPage() {
           console.log(resp.data);
           resp.data.forEach((element) => {
             element.nSerialNo = i;
-            element.sGBIDCombo = element.sCountryID+element.sGBID;
-              element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format("DD-MM-YYYY") : '';
+            element.sGBIDCombo = element.sCountryID + element.sGBID;
+            element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format("DD-MM-YYYY") : '';
             i++;
           })
-
-
           setdataFromAPI(resp.data);
           setisLoading(false);
         }
@@ -595,7 +586,7 @@ export default function SearchPage() {
         if (resp.status === 200) {
           setCountryData(resp.data);
           getRecentGB();
-          // 
+          modifyHeaders();
         }
       })
       .catch(error => {
@@ -657,7 +648,6 @@ export default function SearchPage() {
                 }
               ]}
             />}
-
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper style={{ padding: '10px' }}>
@@ -718,7 +708,6 @@ export default function SearchPage() {
                 <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
                     <TextField
-
                       id="id_SecondName"
                       label="Second Name"
                       type="text"
@@ -739,7 +728,6 @@ export default function SearchPage() {
                 <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
                     <TextField
-
                       id="id_SpouseName"
                       label="Spouse Name"
                       type="text"
@@ -760,7 +748,6 @@ export default function SearchPage() {
                 <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
                     <TextField
-
                       id="id_MotherName"
                       label="Mother's Name"
                       type="text"
@@ -916,7 +903,6 @@ export default function SearchPage() {
             <Grid container spacing={4}>
                 {recentGBData.map((row, index) => (
                   index < 20 &&
-
                   <Grid item xs={12} sm={6}>
                     {/*
                       <Card className="overflow-visible" style={{width:'90%' ,textAlign:'center'}} >
@@ -931,10 +917,9 @@ export default function SearchPage() {
                         <span className="ribbon-horizontal ribbon-horizontal--bottom ribbon-horizontal--danger"><span>{row.nGBID}</span></span>
                         <div className="card-img-wrapper">
                           {row.sPhoto != null &&
-                            <img src={`data:image/`+row.sFileExtension+`;base64,${row.sPhoto}`} style={{ width: '100px' }} className="card-img-top rounded" alt="..." />}
+                            <img src={`data:image/` + row.sFileExtension + `;base64,${row.sPhoto}`} style={{ width: '100px' }} className="card-img-top rounded" alt="..." />}
                           {row.sPhoto == null &&
                             <img alt="..." className="img-fluid" style={{ width: '100px' }} src={stock} />}
-
                         </div>
                       </Card>
                     </a>
@@ -950,7 +935,6 @@ export default function SearchPage() {
           sGBID={sGBID}
           openRelationGB={openRelationGB}
         />}
-
         {snackbar && <Alerts
           alertObj={alertObj}
           snackbar={snackbar}

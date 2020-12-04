@@ -7,7 +7,6 @@ import {
   Link
 } from '@material-ui/core';
 
-
 import BriefGB from './briefgb';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,17 +18,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverBriefGB = () => {
   const classes = useStyles();
 
   return (
-   
       <Container maxWidth={false}>
-        
         <BriefGB />
       </Container>
 
   );
 };
 
-export default Dashboard;
+export default CoverBriefGB;
