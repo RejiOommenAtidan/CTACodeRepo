@@ -484,7 +484,7 @@ export const EditDialog = (props) => {
                                       )} */}
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                {/*<Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="dtIssueAction"
@@ -500,7 +500,7 @@ export const EditDialog = (props) => {
                       onChange={(e) => { setIssueActionDate(e.target.value) }}
                     />
                   </FormControl>
-                </Grid>
+                    </Grid>*/}
                 {/* <Grid item xs={12} sm={6}>
                                     <FormControl className={props.classes.formControl}>
                                         <InputLabel id="issue-label"> Issue Action</InputLabel>
@@ -517,7 +517,7 @@ export const EditDialog = (props) => {
                                         </Select>
                                     </FormControl>
                                 </Grid> */}
-                <Grid item xs={12} sm={6}>
+                {/*<Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <Autocomplete
                       openOnFocus
@@ -556,7 +556,7 @@ export const EditDialog = (props) => {
                       )}
                     />
                   </FormControl>
-                </Grid>
+                        </Grid>*/}
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
