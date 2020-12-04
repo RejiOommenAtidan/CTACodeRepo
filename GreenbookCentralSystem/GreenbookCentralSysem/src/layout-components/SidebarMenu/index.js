@@ -269,7 +269,7 @@ const SidebarMenu = (props) => {
                   activeClassName="active"
                   onClick={toggleSidebarMobile}
                   className="nav-link-simple"
-                  to="/GivenGBID">
+                  to="/GiveGBID">
                   <span className="sidebar-icon">
                     <FormatListNumberedIcon />
                   </span>

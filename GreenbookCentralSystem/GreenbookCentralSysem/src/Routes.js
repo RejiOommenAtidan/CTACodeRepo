@@ -223,7 +223,7 @@ const Routes = () => {
                 '/IssueBook',
                 '/Greenbooks',
                 '/SarsoNewGBEntry',
-                '/GivenGBID',
+                '/GiveGBID',
                 '/DeleteGB',
                 '/GreenBookSerial',
                 '/NewGreenBookSerial',
@@ -268,7 +268,7 @@ const Routes = () => {
 
                     {/*Private Routes Go Here*/}
                     <PrivateRoute path="/Home" feature={2} component={Home} />
-                    <PrivateRoute path="/GivenGBID" feature={3} component={GivenGBID} />
+                    <PrivateRoute path="/GiveGBID" feature={3} component={GivenGBID} />
                     <PrivateRoute path="/DeleteGB" feature={4} component={DeleteGB} />
                     <PrivateRoute path="/Users" feature={5} component={Users} />
                     <PrivateRoute path="/EditEntry/:GBID" feature={7} component={EditEntry} />

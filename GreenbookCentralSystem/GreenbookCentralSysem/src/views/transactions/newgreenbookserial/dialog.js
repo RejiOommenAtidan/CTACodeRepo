@@ -546,7 +546,7 @@ export const AddDialog = (props) => {
       </Snackbar> */}
 
       <Button type="submit" color="primary" name="submit" value="Save">Save</Button> 
-      <Button type="submit" color="primary" onClick={() => clicked=true} name="submit" value="Redirect">Save &amp; Redirect to Edit</Button>
+      <Button type="submit" color="primary" onClick={() => clicked=true} name="submit" value="Redirect">Save &amp; Redirect to Edit List</Button>
       </DialogActions>
       </form>
     </Dialog>
