@@ -7,7 +7,7 @@ import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 
 import Moment from 'moment';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, modifyHeaders } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import { Alerts } from '../../alerts';
 import handleError from "../../../auth/_helpers/handleError";
@@ -17,7 +17,6 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import EmailIcon from '@material-ui/icons/Email';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { AddDialog } from './dialog';
-import { sDateFormat } from './../../../config/commonConfig'
 import { Assign } from './assign';
 
 const useStyles = makeStyles((theme) => ({
@@ -323,6 +322,8 @@ export default () => {
     setAddModal(false);
   };
 
+  
+  
   useEffect(() => {
     axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumberAssignList`)
       .then(resp => {
@@ -338,6 +339,7 @@ export default () => {
         console.log(error.message);
         setLoading(false);
       })
+      modifyHeaders();
   }, []);
 
   return (

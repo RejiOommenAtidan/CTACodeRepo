@@ -60,6 +60,25 @@ export const oOptions = {
     }
 };
 
+export const modifyHeaders = () =>{
+
+  const headers = document.getElementsByClassName('MuiTableSortLabel-root');
+  const arrows = document.getElementsByClassName('MuiTableSortLabel-icon');
+  for (var i = 0; i < headers.length; i++) {
+    headers[i].style.color = 'white';
+    // var color = headers[i].style.color;
+    // headers[i].addEventListener('mouseenter', e => {
+    //   headers[i].style.color = 'cyan';
+    // });
+    // headers[i].addEventListener('mouseleave', e => {
+    //   headers[i].style.color = 'white';
+    // });
+  } 
+  for(var i = 0; i < arrows.length; i++){
+    arrows[i].style.color = 'cyan';
+  }
+};
+
 export const oTableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} color={"primary"} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} color={"primary"} ref={ref} />),
