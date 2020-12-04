@@ -442,7 +442,7 @@ export const EditDialog = (props) => {
                       InputProps={{
                         readOnly: true
                       }}
-                      InputLabelProps={{shrink:true}}
+                      InputLabelProps={nPreviousGBSno && {shrink:true}}
                       value={nPreviousGBSno}
                       onChange={(e) => {
                         const val = parseInt(e.target.value);
@@ -1012,7 +1012,7 @@ export const AddDialog = (props) => {
                       InputProps={{
                         readOnly: true
                       }}
-                      InputLabelProps={{ shrink: true }}
+                      InputLabelProps={ nPreviousGBSno && { shrink: true }}
                       value={nPreviousGBSno}
                       onChange={(e) => {
                         const val = parseInt(e.target.value);

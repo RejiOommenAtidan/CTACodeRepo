@@ -39,6 +39,7 @@ export const EditDialog = (props) => {
     setGbId(value);
     setName('');
     setAuthRegion([]);
+    setPreviousGBSNo('');
   };
 
   const handleSubmitEditRecord = () => {
@@ -380,7 +381,7 @@ export const EditDialog = (props) => {
                       name="sGBID"
                       //required={true}
                       value={sGBID}
-                      onChange={(e) => { setGbId(e.target.value) }}
+                      onChange={(e) => { handleChangeGBID(e.target.value) }}
                       inputRef={register({
                         required: true
                       })}
@@ -473,7 +474,7 @@ export const EditDialog = (props) => {
                       InputProps={{
                         readOnly: true
                       }}
-                      InputLabelProps={{shrink:true}}
+                      InputLabelProps={nPreviousGBSno && {shrink:true}}
                       value={nPreviousGBSno}
                       onChange={(e) => {
                         setPreviousGBSNo(parseInt(e.target.value));
@@ -1094,7 +1095,7 @@ export const AddDialog = (props) => {
                       InputProps={{
                         readOnly: true
                       }}
-                      InputLabelProps={{shrink:true}}
+                      InputLabelProps={nPreviousGBSno && {shrink:true}}
 
                       name='nPreviousGBSno'
                       //required={true}
