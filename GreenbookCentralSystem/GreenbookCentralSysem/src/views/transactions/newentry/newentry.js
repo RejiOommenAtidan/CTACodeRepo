@@ -27,7 +27,7 @@ import {
 } from '@material-ui/pickers';
 import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
-import { sDateFormatMUIDatepicker } from '../../../config/commonConfig';
+import { sDateFormatMUIDatepicker,sButtonColor,sButtonSize,sButtonVariant } from '../../../config/commonConfig';
 import { BackdropComponent } from '../../backdrop/pageBackDrop';
 import { Alerts } from '../../alerts/index';
 import {useSelector} from 'react-redux';
@@ -317,7 +317,7 @@ export default function NewEntry(props) {
                       <TextField
                         id="id_sGBID"
                         name="name_sGBID"
-                        label="Greenbook ID"
+                        label="Green Book ID"
                         type="text"
                         onChange={(e) => { setsGBID(e.target.value); }}
                         fullWidth
@@ -325,7 +325,7 @@ export default function NewEntry(props) {
                         className={classes.textField}
                         inputRef={register({
                           required: true,
-                          minLength: 7,
+                          //minLength: 7,
                           maxLength: 7
                         })}
                         InputProps={{
@@ -336,9 +336,9 @@ export default function NewEntry(props) {
                       {_.get("name_sGBID.type", errors) === "required" && (
                         <span style={{ color: 'red' }}>This field is required</span>
                       )}
-                      {_.get("name_sGBID.type", errors) === "minLength" && (
+                      {/*{_.get("name_sGBID.type", errors) === "minLength" && (
                         <span style={{ color: 'red' }}>GBID cannot subceed 7 characters</span>
-                      )}
+                      )}*/}
                       {_.get("name_sGBID.type", errors) === "maxLength" && (
                         <span style={{ color: 'red' }}>GBID cannot exceed 7 characters</span>
                       )}
@@ -677,13 +677,13 @@ export default function NewEntry(props) {
                         className={classes.textField}
                         defaultValue={sFathersGBID}
                         inputRef={register({
-                          minLength: 7,
+                          //minLength: 7,
                           maxLength: 7
                         })}
                       />
-                      {_.get("name_sFathersGBID.type", errors) === "minLength" && (
+                      {/*{_.get("name_sFathersGBID.type", errors) === "minLength" && (
                         <span style={{ color: 'red' }}>Father's GB ID cannot subceed 7 characters</span>
-                      )}
+                      )}*/}
                       {_.get("name_sFathersGBID.type", errors) === "maxLength" && (
                         <span style={{ color: 'red' }}>Father's GB ID cannot exceed 7 characters</span>
                       )}
@@ -747,13 +747,13 @@ export default function NewEntry(props) {
                         className={classes.textField}
                         defaultValue={sMothersGBID}
                         inputRef={register({
-                          minLength: 7,
+                          //minLength: 7,
                           maxLength: 7
                         })}
                       />
-                      {_.get("name_sMothersGBID.type", errors) === "minLength" && (
+                      {/*{_.get("name_sMothersGBID.type", errors) === "minLength" && (
                         <span style={{ color: 'red' }}>Mother's GB ID cannot subceed 7 characters</span>
-                      )}
+                      )}*/}
                       {_.get("name_sMothersGBID.type", errors) === "maxLength" && (
                         <span style={{ color: 'red' }}>Mother's GB ID cannot exceed 7 characters</span>
                       )}
@@ -1385,13 +1385,13 @@ export default function NewEntry(props) {
                         className={classes.textField}
                         defaultValue={sSpouseGBID}
                         inputRef={register({
-                          minLength: 7,
+                          //minLength: 7,
                           maxLength: 7
                         })}
                       />
-                      {_.get("name_sSpouseGBID.type", errors) === "minLength" && (
+                      {/*{_.get("name_sSpouseGBID.type", errors) === "minLength" && (
                         <span style={{ color: 'red' }}>Spouse's GB ID No cannot subceed 7 characters</span>
-                      )}
+                      )}*/}
                       {_.get("name_sSpouseGBID.type", errors) === "maxLength" && (
                         <span style={{ color: 'red' }}>Spouse's GB No cannot exceed 7 characters</span>
                       )}
@@ -1478,16 +1478,19 @@ export default function NewEntry(props) {
             <br />
             <Grid item xs={12}>
               <Button
-                variant="outlined"
+                variant={sButtonVariant}
+                size={sButtonSize}
+                color={sButtonColor}
                 type="submit"
-                color="primary"
                 onClick={() => {setExpanded('panel1') }}
                 style={{ marginRight: "10px" }}>Save</Button>
-              <Button variant="outlined"
+              <Button 
+              variant={sButtonVariant}
+              size={sButtonSize}
+              color={sButtonColor}
                 onClick={() => { history.push('/SarsoNewGBEntry') }}
               >Cancel
               </Button>
-            
             </Grid>
           </Grid>
         </Grid>
