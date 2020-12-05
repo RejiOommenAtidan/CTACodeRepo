@@ -364,7 +364,7 @@ export default () => {
               [
                 {
                   icon: oTableIcons.Search,
-                  tooltip: 'Show Filter',
+                  tooltip: 'Toggle Filter',
                   isFreeAction: true,
                   onClick: (event) => {
                     setFiltering(currentFilter => !currentFilter)

@@ -26,6 +26,7 @@ import _ from "lodash/fp";
 import axios from 'axios';
 import { Alerts } from '../../alerts';
 import { useSelector } from 'react-redux';
+import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -239,7 +240,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="number"
-                      
+
                       label={<p>Form Number<span style={{ color: "red" }} > *</span></p>}
                       type="number"
                       InputProps={{
@@ -255,7 +256,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="date"
-                     
+
                       label={<p>Received Date<span style={{ color: "red" }} > *</span></p>}
                       type="date"
                       value={receivedDate}
@@ -370,7 +371,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="da"
-                  
+
                       label={<p>Document Attached<span style={{ color: "red" }} > *</span></p>}
                       value={documents}
                       onChange={(e) => { setDocument(e.target.value) }}
@@ -540,7 +541,12 @@ export const EditDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
+          <Button
+            onClick={props.handleEditClickClose}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Cancel</Button>
           {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
           {snackbar && <Alerts
             alertObj={alertObj}
@@ -548,7 +554,12 @@ export const EditDialog = (props) => {
             snackbarClose={snackbarClose}
           />
           }
-          <Button type='submit' color="primary">Save</Button>
+          <Button
+            type='submit'
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>
@@ -561,7 +572,7 @@ export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
-  
+
   const alertObj = {
     alertMessage: alertMessage,
     alertType: alertType
@@ -670,7 +681,7 @@ export const AddDialog = (props) => {
   const [name, setName] = React.useState('');
   const [authRegion, setAuthRegion] = React.useState([]);
   const [documents, setDocument] = React.useState('');
-  const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);   
+  const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);
   const [nMadebStatusID, setMadebStatusID] = React.useState(1);
   const [sMadebStatusRemark, setMadebStatusRemark] = React.useState('');
   let valueMadebStatus = [];
@@ -711,7 +722,7 @@ export const AddDialog = (props) => {
                       id="form_number"
                       label={<p>Form Number<span style={{ color: "red" }} > *</span></p>}
                       variant="standard"
-                  
+
 
                       type="number"
                       name='form_number'
@@ -739,7 +750,7 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="id_receivedDate"
-               
+
                       label={<p>Received Date<span style={{ color: "red" }} > *</span></p>}
                       type="date"
                       name="name_receivedDate"
@@ -880,7 +891,7 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="da"
-              
+
                       label={<p>Document Attached<span style={{ color: "red" }} > *</span></p>}
                       name="name_da"
                       //value='Aayush Pandya'
@@ -900,7 +911,7 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="receipt"
-                  
+
                       label={<p>Receipt Number<span style={{ color: "red" }} > *</span></p>}
                       type="number"
                       name='receipt'
@@ -982,8 +993,17 @@ export const AddDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
-          <Button type="submit" color="primary">Save</Button>
+          <Button onClick={props.handleAddClickClose}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Cancel</Button>
+          <Button
+            type="submit"
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>

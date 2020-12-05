@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,11 +10,8 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import { Alerts } from '../../alerts';
 import handleError from "../../../auth/_helpers/handleError";
-import Search from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import EmailIcon from '@material-ui/icons/Email';
-import { AddDialog, EditDialog } from './dialog';
+import { EditDialog } from './dialog';
 import { sDateFormat } from './../../../config/commonConfig'
 
 const useStyles = makeStyles((theme) => ({
@@ -273,8 +270,8 @@ export default () => {
         }
       })
       .catch(error => {
-        if(error.response){
-          if(error.response.status === 401){
+        if (error.response) {
+          if (error.response.status === 401) {
             setAlertMessage("You have been logged out of the system. Login again.");
             setAlertType("error");
             snackbarOpen();
@@ -387,8 +384,8 @@ export default () => {
         }
       })
       .catch(error => {
-        if(error.response){
-          if(error.response.status === 401){
+        if (error.response) {
+          if (error.response.status === 401) {
             setAlertMessage("You have been logged out of the system. Login again.");
             setAlertType("error");
             snackbarOpen();
@@ -428,7 +425,7 @@ export default () => {
                 // },
                 {
                   icon: oTableIcons.Search,
-                  tooltip: 'Show Filter',
+                  tooltip: 'Toogle Filter',
                   isFreeAction: true,
                   onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
                 }

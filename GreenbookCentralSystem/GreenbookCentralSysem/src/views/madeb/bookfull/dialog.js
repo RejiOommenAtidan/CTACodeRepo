@@ -26,6 +26,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import MuiAlert from '@material-ui/lab/Alert';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -631,8 +632,18 @@ export const EditDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleEditClickClose} color="primary">Cancel</Button>
-          <Button type="submit" color="primary">Save</Button>
+          <Button
+            onClick={props.handleEditClickClose}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Cancel</Button>
+          <Button
+            type="submit"
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>
@@ -917,7 +928,7 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sGBID"
-                     label={<p>GBID<span style={{ color: "red" }} > *</span></p>}
+                      label={<p>GBID<span style={{ color: "red" }} > *</span></p>}
                       //required={true}
                       name="sGBID"
                       value={sGBID}
@@ -942,7 +953,7 @@ export const AddDialog = (props) => {
                       name="nPreviousGBSno"
                       //required={true}
                       value={previousGBSno}
-                      InputLabelProps={previousGBSno && {shrink:true}}
+                      InputLabelProps={previousGBSno && { shrink: true }}
                       onChange={(e) => {
                         setPreviousGBSNo(parseInt(e.target.value));
                         console.log("Value of previousGB changed to:", parseInt(e.target.value));
@@ -981,7 +992,7 @@ export const AddDialog = (props) => {
                     />
                   </FormControl>
                 </Grid>
-                
+
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
@@ -1018,7 +1029,7 @@ export const AddDialog = (props) => {
                     )}
                   </FormControl>
                 </Grid> */}
-                
+
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <Autocomplete
@@ -1082,7 +1093,12 @@ export const AddDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleAddClickClose} color="primary">Cancel</Button>
+          <Button
+            onClick={props.handleAddClickClose}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Cancel</Button>
 
           {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
 
@@ -1092,7 +1108,12 @@ export const AddDialog = (props) => {
         </Alert>
       </Snackbar> */}
 
-          <Button type="submit" color="primary">Save</Button>
+          <Button
+            type="submit"
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>

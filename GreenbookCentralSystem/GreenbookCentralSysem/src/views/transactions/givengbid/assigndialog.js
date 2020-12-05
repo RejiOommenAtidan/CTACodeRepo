@@ -1,26 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
-  Box,
-  Container,
   Grid,
   Button,
-  Typography,
   FormControl,
-  TextField,
-  InputLabel,
-  MenuItem,
-  Select
+  TextField
 } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-import { Label } from '@material-ui/icons';
-
+import { sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
 
 export const AssignDialog = (props) => {
   console.log("Props object: \n", props);
@@ -28,7 +18,6 @@ export const AssignDialog = (props) => {
     e.preventDefault();
     console.log("Handle submit called");
     props.handleAssignGBID();
-
   }
   return(
     <div>
@@ -38,7 +27,6 @@ export const AssignDialog = (props) => {
           <DialogContent>
             <DialogContentText>
               <Grid container spacing={3}>
-                
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
@@ -68,7 +56,6 @@ export const AssignDialog = (props) => {
                                               readOnly: true,
                                             }}
                                           />
-                                         
                                     </FormControl>
                                 </Grid>      
                 <Grid item xs={12} sm={6}>
@@ -85,16 +72,24 @@ export const AssignDialog = (props) => {
                   </FormControl>
                 </Grid>
               </Grid>
-
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={props.handleDialogClose} color="primary">Cancel</Button>
-            <Button type="submit" color="primary">Submit</Button> 
+            <Button 
+            onClick={props.handleDialogClose} 
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+            >Cancel</Button>
+            <Button 
+            type="submit" 
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+            >Submit</Button> 
           </DialogActions>
         </form>
       </Dialog>
     </div>
-
   );
 }

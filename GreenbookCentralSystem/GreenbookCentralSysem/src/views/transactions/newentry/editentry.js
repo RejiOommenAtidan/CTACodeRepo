@@ -2061,7 +2061,9 @@ export default function EditEntry(props) {
                       </div>
                     )}
                     <Button
-                      variant="contained"
+                      color={sButtonColor}
+                      variant={sButtonVariant}
+                      size={sButtonSize}
                       onClick={() => {
                         setaddChildModal(true);
                       }}
@@ -2167,7 +2169,9 @@ export default function EditEntry(props) {
                     </div>
                   )}
                   <Button
-                    variant="contained"
+                    color={sButtonColor}
+                    variant={sButtonVariant}
+                    size={sButtonSize}
                     onClick={() => {
                       setaddNoteModal(true);
                     }}
@@ -2259,7 +2263,9 @@ export default function EditEntry(props) {
                     </div>
                   )}
                   <Button
-                    variant="contained"
+                    color={sButtonColor}
+                    variant={sButtonVariant}
+                    size={sButtonSize}
                     onClick={() => {
                       setaddDocumentModal(true);
                     }}

@@ -21,7 +21,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { sDateFormatMUIDatepicker } from '../../../config/commonConfig';
+import { sDateFormatMUIDatepicker,sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
 
 export const AddChildDialog = (props) => {
   Moment.locale('en');
@@ -159,8 +159,18 @@ export const AddChildDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleAddChildClickClose} color="primary">Cancel</Button>
-          <Button type="submit" color="primary">Save</Button>
+          <Button 
+          onClick={props.handleAddChildClickClose} 
+          color={sButtonColor}
+          variant={sButtonVariant}
+          size={sButtonSize}
+          >Cancel</Button>
+          <Button 
+          type="submit" 
+          color={sButtonColor}
+          variant={sButtonVariant}
+          size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>
@@ -306,8 +316,18 @@ export const EditChildDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleEditChildClickClose} color="primary">Cancel</Button>
-          <Button type="submit" color="primary">Save</Button>
+          <Button 
+          onClick={props.handleEditChildClickClose} 
+          color={sButtonColor}
+          variant={sButtonVariant}
+          size={sButtonSize}
+          >Cancel</Button>
+          <Button 
+          type="submit" 
+          color={sButtonColor}
+          variant={sButtonVariant}
+          size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>

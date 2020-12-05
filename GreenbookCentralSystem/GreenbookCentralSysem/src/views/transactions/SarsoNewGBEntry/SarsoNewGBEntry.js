@@ -13,7 +13,7 @@ import Moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
 
 const useStyles = makeStyles({
   root: {
@@ -95,12 +95,12 @@ export default function SarsoNewGBEntry() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width:"10%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width:"10%"
+        width: "10%"
       },
       export: true
     },
@@ -111,12 +111,12 @@ export default function SarsoNewGBEntry() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width:"10%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width:"10%"
+        width: "10%"
       }
     },
     {
@@ -127,12 +127,12 @@ export default function SarsoNewGBEntry() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width:"10%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width:"10%"
+        width: "10%"
       },
       render: rowData => Moment(rowData.dtDate).format(sDateFormat)
     },
@@ -144,9 +144,13 @@ export default function SarsoNewGBEntry() {
       sorting: false,
       export: false,
       render: rowData =>
-        <Button size={"small"} onClick={() => { history.push('/NewEntry/' + rowData.nFormNo); }} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
+        <Button
+          color={sButtonColor}
+          variant={sButtonVariant}
+          size={sButtonSize}
+          onClick={() => { history.push('/NewEntry/' + rowData.nFormNo); }} 
+          className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
           <span className="btn-wrapper--icon">
-
             <AddIcon />
           </span>
         </Button>,
@@ -154,12 +158,12 @@ export default function SarsoNewGBEntry() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width:"10%"
+        width: "10%"
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width:"10%"
+        width: "10%"
       }
     },
   ];
@@ -168,7 +172,6 @@ export default function SarsoNewGBEntry() {
     axios.get(`/GivenGBID/GetGivenGBIDs`)
       .then(resp => {
         if (resp.status === 200) {
-          console.info(resp.data);
           setdataAPI(resp.data);
           setisLoading(false);
         }

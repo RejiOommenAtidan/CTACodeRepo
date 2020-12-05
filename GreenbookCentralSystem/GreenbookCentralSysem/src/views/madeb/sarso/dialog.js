@@ -16,7 +16,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash/fp";
 import { useSelector } from 'react-redux';
-import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage, sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
+import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;

@@ -12,6 +12,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
+import { sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
+
 
 export const AddNoteDialog = (props) => {
   const { register, handleSubmit, errors } = useForm();
@@ -54,8 +56,18 @@ export const AddNoteDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleAddNoteClickClose} color="primary">Cancel</Button>
-          <Button type="submit" color="primary">Save</Button>
+          <Button
+            onClick={props.handleAddNoteClickClose}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Cancel</Button>
+          <Button
+            type="submit"
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>
@@ -109,8 +121,18 @@ export const EditNoteDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleEditNoteClickClose} color="primary">Cancel</Button>
-          <Button type="submit" color="primary">Save</Button>
+          <Button
+            onClick={props.handleEditNoteClickClose}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Cancel</Button>
+          <Button
+            type="submit"
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Save</Button>
         </DialogActions>
       </form>
     </Dialog>

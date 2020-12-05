@@ -1,12 +1,8 @@
 import React from 'react';
 import {
   Container,
-  Typography,
-  makeStyles,
-  Breadcrumbs,
-  Link
+  makeStyles
 } from '@material-ui/core';
-
 
 import NewGreenBookSerial from './newgreenbookserial';
 
@@ -19,17 +15,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverNewGBSN = () => {
   const classes = useStyles();
-
   return (
-   
       <Container maxWidth={false}>
-        
         <NewGreenBookSerial />
       </Container>
-
   );
 };
 
-export default Dashboard;
+export default CoverNewGBSN;

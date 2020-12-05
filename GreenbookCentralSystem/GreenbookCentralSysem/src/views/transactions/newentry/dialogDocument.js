@@ -16,7 +16,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
-
+import { sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
 
 export const AddDocumentDialog = (props) => {
     const { register, handleSubmit, errors } = useForm();
@@ -39,10 +39,7 @@ export const AddDocumentDialog = (props) => {
     const [nRegisterDate, setnRegisterDate] = useState(0);
     const [lGBDocument, setlGBDocument] = useState(props.lGBDocument);
 
-
-
     let result = lGBDocument.find(document => document.sDocType === "Photo Identity");
-    debugger;
 
     const handleUploadChange = (event) => {
         let files = document.getElementById("id_binDocFile").files;
@@ -57,9 +54,6 @@ export const AddDocumentDialog = (props) => {
                 var Extension = file.type.split("/").pop()
                 setsTitle(Name);
                 setsFileExtension(Extension);
-                console.log(file.name);
-                console.log(Name);
-                console.log(Extension);
             }
         }
     };
@@ -179,8 +173,18 @@ export const AddDocumentDialog = (props) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.handleAddDocumentClickClose} color="primary">Cancel</Button>
-                    <Button type="submit" color="primary">Save</Button>
+                    <Button
+                        onClick={props.handleAddDocumentClickClose}
+                        color={sButtonColor}
+                        variant={sButtonVariant}
+                        size={sButtonSize}
+                    >Cancel</Button>
+                    <Button
+                        type="submit"
+                        color={sButtonColor}
+                        variant={sButtonVariant}
+                        size={sButtonSize}
+                    >Save</Button>
                 </DialogActions>
             </form>
         </Dialog>
@@ -223,9 +227,6 @@ export const EditDocumentDialog = (props) => {
                 var Extension = file.type.split("/").pop()
                 setsTitle(Name);
                 setsFileExtension(Extension);
-                console.log(file.name);
-                console.log(Name);
-                console.log(Extension);
             }
         }
     };
@@ -234,7 +235,6 @@ export const EditDocumentDialog = (props) => {
 
     reader.addEventListener("load", function () {
         setbinFileDoc(reader.result);
-        console.log(reader.result);
     }, false);
 
     const handleSelectChange = (event) => {
@@ -346,8 +346,18 @@ export const EditDocumentDialog = (props) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={props.handleEditDocumentClickClose} color="primary">Cancel</Button>
-                    <Button type="submit" color="primary">Save</Button>
+                    <Button
+                        onClick={props.handleEditDocumentClickClose}
+                        color={sButtonColor}
+                        variant={sButtonVariant}
+                        size={sButtonSize}
+                    >Cancel</Button>
+                    <Button
+                        type="submit"
+                        color={sButtonColor}
+                        variant={sButtonVariant}
+                        size={sButtonSize}
+                    >Save</Button>
                 </DialogActions>
             </form>
         </Dialog>
