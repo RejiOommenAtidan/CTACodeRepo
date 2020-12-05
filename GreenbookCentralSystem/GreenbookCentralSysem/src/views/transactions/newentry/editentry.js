@@ -699,7 +699,8 @@ export default function EditEntry(props) {
                       <TextField
                         id="id_sGBID"
                         name="name_sGBID"
-                        label="Green Book ID"
+                      
+                        label={<>Green Book ID <span style={{color:'red'}}> *</span></>}
                         type="text"
                         value={sGBID}
                         onChange={(e) => {
@@ -765,7 +766,8 @@ export default function EditEntry(props) {
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            label="Authority Region"
+                     
+                            label={<>Authority Region <span style={{color:'red'}}> *</span></>}
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
@@ -790,7 +792,8 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sFirstName"
-                        label="First Name"
+                        
+                        label={<>First Name <span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => {
                           setsFirstName(e.target.value);
@@ -849,7 +852,8 @@ export default function EditEntry(props) {
                       <TextField
                         id="id_TibetanName"
                         name="name_TibetanName"
-                        label="Tibetan Name (Tibetan) མིང་།"
+                        
+                        label={<>Tibetan Name (Tibetan) མིང་། <span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => {
                           setTibetanName(e.target.value);
@@ -875,7 +879,8 @@ export default function EditEntry(props) {
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_TBUPlaceOfBirth"
-                          label="Place Of Birth (Tibetan) སྐྱེས་ཡུལ།"
+                     
+                          label={<> Place Of Birth (Tibetan) སྐྱེས་ཡུལ།<span style={{color:'red'}}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setTBUPlaceOfBirth(e.target.value);
@@ -901,7 +906,8 @@ export default function EditEntry(props) {
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_TBUOriginVillage"
-                          label="Origin Village (Tibetan) ཕ་ཡུལ།"
+                        
+                          label={<> Origin Village (Tibetan) ཕ་ཡུལ།<span style={{color:'red'}}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setTBUOriginVillage(e.target.value);
@@ -934,7 +940,8 @@ export default function EditEntry(props) {
                           margin="dense"
                           id="id_dtDOB"
                           name="name_dtDOB"
-                          label="Date of Birth"
+                        
+                          label={<> Date of Birth<span style={{color:'red'}}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           onChange={(date) => {
                             setdtDOB(date);
@@ -991,6 +998,7 @@ export default function EditEntry(props) {
                             <TextField
                               {...params}
                               label="Choose a Birth Country"
+                              label={<>Choose a Birth Country <span style={{color:'red'}}> *</span></>}
                               variant="standard"
                               inputProps={{
                                 ...params.inputProps,
@@ -1016,7 +1024,8 @@ export default function EditEntry(props) {
                         <TextField
                           value={sBirthPlace}
                           id="id_sBirthPlace"
-                          label="Place of Birth"
+                        
+                          label={<>Place of Birth <span style={{color:'red'}}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setsBirthPlace(e.target.value);
@@ -1051,7 +1060,8 @@ export default function EditEntry(props) {
                           margin="dense"
                           id="id_dtFormDate"
                           name="name_dtFormDate"
-                          label="Sarso Form Date"
+                     
+                          label={<>Sarso Form Date <span style={{color:'red'}}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           onChange={(date) => {
                             setdtFormDate(date);
@@ -1080,7 +1090,8 @@ export default function EditEntry(props) {
                         <TextField
                           value={sFathersName}
                           id="id_sFathersName"
-                          label="Father's Name"
+                         
+                          label={<>Father's Name <span style={{color:'red'}}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setsFathersName(e.target.value);
@@ -1140,7 +1151,7 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUFathersName"
-                        label="Father's Name (Tibetan) ཕ་མིང་།"
+                        label={<>Father's Name (Tibetan) ཕ་མིང་། <span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => {
                           setTBUFathersName(e.target.value);
@@ -1167,7 +1178,8 @@ export default function EditEntry(props) {
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_sMothersName"
-                          label="Mother's Name"
+                          
+                          label={<>Mother's Name <span style={{color:'red'}}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setsMothersName(e.target.value);
@@ -1227,7 +1239,8 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUMothersName"
-                        label="Mother's Name (Tibetan) མ་མིང་།"
+                        
+                        label={<> Mother's Name (Tibetan) མ་མིང་།<span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => {
                           setTBUMothersName(e.target.value);
@@ -1253,7 +1266,8 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sAddress1"
-                        label="Address 1"
+     
+                        label={<>Address 1 <span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => {
                           setsAddress1(e.target.value);
@@ -1317,7 +1331,8 @@ export default function EditEntry(props) {
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_sState"
-                          label="State"
+                         
+                          label={<>State <span style={{color:'red'}}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setsState(e.target.value);
@@ -1371,7 +1386,8 @@ export default function EditEntry(props) {
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              label="Country"
+                              
+                              label={<>Country <span style={{color:'red'}}> *</span></>}
                               variant="standard"
                               inputProps={{
                                 ...params.inputProps,
