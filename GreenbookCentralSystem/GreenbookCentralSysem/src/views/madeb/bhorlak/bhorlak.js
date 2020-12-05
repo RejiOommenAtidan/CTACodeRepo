@@ -216,7 +216,7 @@ export default function EnhancedTable() {
       }
     },
     {
-      //field: "madeb.sGBID",
+      field: "madeb.sGBID",
       render: rowData => rowData['madeb']['sGBID'] ? <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewGb(rowData['madeb']['sGBID']) }}><span>{rowData['madeb']['sGBID']}</span></Button> : '',
       title: "GB ID",
       headerStyle: {

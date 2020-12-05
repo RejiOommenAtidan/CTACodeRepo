@@ -104,7 +104,7 @@ namespace CTADBL.QueryBuilder
                 }
                 else
                 {
-                    result = String.Format("'{0}' as {1},", property.Value, propertyInfo.Name);
+                    result = String.Format("'{0}' as {1},", property.Value.Replace("\'", "\'\'").Replace("\\", "\\\\"), propertyInfo.Name);
                 }
                 
             }
@@ -173,7 +173,7 @@ namespace CTADBL.QueryBuilder
                 }
                 else
                 {
-                    result = String.Format("{0}='{1}',", propertyInfo.Name, property.Value);
+                    result = String.Format("{0}='{1}',", propertyInfo.Name, property.Value.Replace("\'", "\'\'").Replace("\\","\\\\"));
                 }
             }
             // datetime

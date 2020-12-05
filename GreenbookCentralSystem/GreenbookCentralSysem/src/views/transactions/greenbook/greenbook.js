@@ -13,6 +13,7 @@ import handleError from '../../../auth/_helpers/handleError';
 import IconButton from '@material-ui/core/IconButton';
 import {oOptions, oTableIcons, modifyHeaders} from "../../../config/commonConfig";
 import Moment from 'moment';
+import MyComp from '../../common/filtercomponent';
 
 const useStyles = makeStyles(() => ({
 }));
@@ -26,6 +27,46 @@ export default function GBList(props) {
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
 
+  // For Custom Filter
+
+  const [myarray, setMyArray] = useState([]);
+  // const [myElement, setMyElement] = useState(null);
+  // const [myValue, setMyValue] = useState({});
+  const [currId, setCurrId] = useState('');
+  //let ele = null;
+  const [searching, setSearching] = useState(false);
+  console.log("myarray: ", myarray);
+
+  const buildArray = () => {
+    let tmp = []
+    if (columns) {
+      columns.forEach(col => tmp.push({ id: col.field, val: '' }));
+    }
+    setMyArray(tmp);
+  };
+
+  const updateArray = (newObj) => {
+    const newArray = myarray.map(d => {
+      if (d.id === newObj.id) {
+        return newObj;
+      }
+      else {
+        return d;
+      }
+    });
+    setMyArray(newArray);
+  };
+
+  const changeHandler = (e) => {
+    updateArray({ id: e.target.id, val: e.target.value });
+    //searchColumn(e.target.value, e.target);
+    setSearching(true);
+    //setMyElement(e.target);
+    setCurrId(e.target.id);
+    //setVal(e.target.value);
+  };
+ // end custom filter
+ 
   const columns = [
     {
       field: "sGBID",

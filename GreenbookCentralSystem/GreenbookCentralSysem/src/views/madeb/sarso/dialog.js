@@ -444,7 +444,7 @@ export const AddDialog = (props) => {
     const [receivedDate, setReceivedDate] = React.useState('');
     const [name, setName] = React.useState('');
     const [fname, setFname] = React.useState('');
-    const [saney, setSaney] = React.useState(0);
+    const [saney, setSaney] = React.useState();
     const [documents, setDocument] = React.useState('');
     const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);   
     const [nMadebStatusID, setMadebStatusID] = React.useState(1);

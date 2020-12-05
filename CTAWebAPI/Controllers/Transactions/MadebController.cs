@@ -575,6 +575,9 @@ namespace CTAWebAPI.Controllers.Transactions
                         smtpClient.Send(message);
                         smtpClient.Disconnect(true);
                         smtpClient.Dispose();
+                        Madeb madeb = _madebRepository.GetMadebByFormNumber(email.nFormNumber);
+                        madeb.dtReject = DateTime.Now;
+                        _madebRepository.Update(madeb);
                         return Ok("Email sent successfully.");
                     }
                 }

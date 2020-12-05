@@ -26,7 +26,7 @@ namespace CTADBL.ViewModelsRepositories
         #region Get Call
         public IEnumerable<PrintGreenBookVM> GetPrintList(int records = 0)
         {
-            string sql = @"select gb.sCountryID, gb.sGBID, concat(gb.sFirstName, ' ' , ifnull(gb.sMiddleName, ''), ' ', ifnull(gb.sLastName, '')) AS sName, gb.dtDOB, gb.sDOBApprox, gb.TibetanName, gb.TBUOriginVillage, gbsn.nBookNo from (select nBookNo, sGBID FROM tblgreenbookserial ORDER BY nbookno desc limit 10) as gbsn inner join tblgreenbook as gb on gb.sGBID = gbsn.sGBID;";
+            string sql = @"SELECT gb.sCountryID, gb.sGBID, CONCAT(gb.sFirstName, ' ' , IFNULL(gb.sMiddleName, ''), ' ', IFNULL(gb.sLastName, '')) AS sName, gb.dtDOB, gb.sDOBApprox, gb.TibetanName, gb.TBUOriginVillage, gbsn.nBookNo FROM (SELECT  max(nBookNo) AS nBookNo, sGBID FROM tblgreenbookserial GROUP BY sGBID ORDER BY nbookno DESC  LIMIT 10) AS gbsn INNER JOIN  tblgreenbook AS gb ON gb.sGBID = gbsn.sGBID;";
 
             //sql += records > 0 ? (@" LIMIT " + records + ";") : sql += ";";
 
@@ -44,10 +44,10 @@ namespace CTADBL.ViewModelsRepositories
 
         #region Insert Previous Book Number into object
         private void AddPreviousBookNo(IEnumerable<PrintGreenBookVM> result)
-        {
+            {
             foreach (var item in result)
             {
-                string sql = @"select nBookNo From tblgreenbookserial where sGBId = @sGBID";
+                string sql = @"SELECT  nBookNo FROM  tblgreenbookserial WHERE  sGBId = @sGBID ORDER BY nBookNo DESC ";
                 using (var command = new MySqlCommand(sql))
                 {
                     command.Parameters.AddWithValue("sGBID", item.sGBID);
@@ -87,7 +87,7 @@ namespace CTADBL.ViewModelsRepositories
         #region Get Green Book by passing GreenBookSerial Number.
         public PrintGreenBookVM GetGreenBookByGBID(string sGBID)
         {
-            string sql = "SELECT gb.sCountryID, gb.sGBID, concat(gb.sFirstName, ' ' , ifnull(gb.sMiddleName, ''), ' ', ifnull(gb.sLastName, '')) AS sName, gb.dtDOB, gb.sDOBApprox, gb.TibetanName, gb.TBUOriginVillage, gbsn.nBookNo FROM tblgreenbookserial AS gbsn INNER JOIN tblgreenbook AS gb ON gb.sGBID = gbsn.sGBID WHERE gbsn.sGBID = @sGBID ORDER BY gbsn.nBookNo desc;";
+            string sql = "SELECT gb.sCountryID, gb.sGBID, CONCAT(gb.sFirstName, ' ' , IFNULL(gb.sMiddleName, ''), ' ', IFNULL(gb.sLastName, '')) AS sName, gb.dtDOB, gb.sDOBApprox, gb.TibetanName, gb.TBUOriginVillage, gbsn.nBookNo FROM tblgreenbookserial AS gbsn INNER JOIN tblgreenbook AS gb ON gb.sGBID = gbsn.sGBID WHERE gbsn.sGBID = '8059360' ORDER BY gbsn.nBookNo DESC LIMIT 1;";
 
             using (var command = new MySqlCommand(sql))
             {
