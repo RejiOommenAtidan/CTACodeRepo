@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import {
   Grid,
   Button,
@@ -12,17 +11,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
 import axios from 'axios';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop';
-
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import { sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
 
 export const EmailDialog = (props) => {
   let history = useHistory();
@@ -31,11 +25,11 @@ export const EmailDialog = (props) => {
   const alertObj = {
     alertMessage: alertMessage,
     alertType: alertType
-  }
+  };
   const [snackbar, setSnackbar] = React.useState(false);
   const snackbarOpen = () => {
     setSnackbar(true);
-  }
+  };
   const snackbarClose = () => {
     setSnackbar(false);
   };
@@ -58,7 +52,7 @@ export const EmailDialog = (props) => {
     sReceiver: recipient,
     sSubject: subject,
     sBody: body
-  }
+  };
 
   const SendEmail = ((emailObj) => {
     setBackdrop(true);
@@ -165,14 +159,23 @@ export const EmailDialog = (props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleEmailClickClose} color="primary">Cancel</Button>
+        <Button onClick={props.handleEmailClickClose}
+          color={sButtonColor}
+          variant={sButtonVariant}
+          size={sButtonSize}
+        >Cancel</Button>
         {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
         {/*<Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
           <Alert  onClose={snackbarClose} severity={alertType}  >
            {message}
           </Alert>
         </Snackbar>*/}
-        <Button onClick={() => SendEmail(emailOutObj)} color="primary">Send</Button>
+        <Button
+          onClick={() => SendEmail(emailOutObj)}
+          color={sButtonColor}
+          variant={sButtonVariant}
+          size={sButtonSize}
+        >Send</Button>
       </DialogActions>
       {snackbar && <Alerts
         alertObj={alertObj}
