@@ -396,6 +396,7 @@ export const SaveDialog = (props) => {
                                         <Grid item xs={12} sm={6}>
                                             <FormControl className={props.classes.formControl}>
                                                 <Autocomplete
+                                                    disabled
                                                     openOnFocus
                                                     clearOnEscape
                                                     onChange={
@@ -438,6 +439,7 @@ export const SaveDialog = (props) => {
                                         <Grid item xs={12} sm={6}>
                                             <FormControl className={props.classes.formControl}>
                                                 <Autocomplete
+                                                    disabled
                                                     openOnFocus
                                                     clearOnEscape
                                                     onChange={

@@ -110,7 +110,7 @@ export default () => {
   const columns = [
     {
       field: "nSerialNo",
-      title: "SR NO.",
+      title: "#",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -124,7 +124,8 @@ export default () => {
       }
     },
     {
-      field: "sFirstName",
+      //field: "sFirstName",
+      render: rowData  => (rowData['sFirstName'] ? rowData['sFirstName'] : '') + " " + (rowData['sLastName'] ? rowData['sLastName'] : ''),
       title: "NAME",
       headerStyle: {
         textAlign: "center",

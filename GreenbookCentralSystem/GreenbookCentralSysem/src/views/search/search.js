@@ -275,7 +275,7 @@ export default function SearchPage() {
       //render: rowData  => (rowData['sFirstName'] ? rowData['sFirstName'] : '') + " " + (rowData['sLastName'] ? rowData['sLastName'] : ''),
       field: "sFullName",
       title: "NAME",
-      filterPlaceholder: 'Search..',
+      //filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
         //textAlignLast: "center",
