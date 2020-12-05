@@ -326,7 +326,7 @@ export default function NewEntry(props) {
                       <TextField
                         id="id_sGBID"
                         name="name_sGBID"
-                        label="Green Book ID"
+                        label={<>Green Book ID<span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setsGBID(e.target.value); }}
                         fullWidth
@@ -385,7 +385,8 @@ export default function NewEntry(props) {
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            label="Authority Region"
+                          
+                            label={<>Authority Region<span style={{color:'red'}}> *</span></>}
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
@@ -407,7 +408,8 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sFirstName"
-                        label="First Name"
+                       
+                        label={<>First Name<span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setsFirstName(e.target.value); }}
                         autoFocus
@@ -430,6 +432,7 @@ export default function NewEntry(props) {
                       <TextField
                         id="id_sMiddleName"
                         label="Middle Name"
+                        
                         type="text"
                         onChange={(e) => { setsMiddleName(e.target.value); }}
                         fullWidth
@@ -457,7 +460,8 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TibetanName"
-                        label="Tibetan Name (Tibetan) མིང་།"
+                      
+                        label={<>Tibetan Name (Tibetan) མིང་། <span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setTibetanName(e.target.value); }}
                         fullWidth
@@ -479,7 +483,8 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUPlaceOfBirth"
-                        label="Place Of Birth (Tibetan) སྐྱེས་ཡུལ།"
+                       
+                        label={<> Place Of Birth (Tibetan) སྐྱེས་ཡུལ།<span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setTBUPlaceOfBirth(e.target.value); }}
                         fullWidth
@@ -500,7 +505,8 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUOriginVillage"
-                        label="Origin Village (Tibetan) ཕ་ཡུལ།"
+                        
+                        label={<>Origin Village (Tibetan) ཕ་ཡུལ། <span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setTBUOriginVillage(e.target.value); }}
                         fullWidth
@@ -531,7 +537,8 @@ export default function NewEntry(props) {
                           inputRef={register({
                             required: true
                           })}
-                          label="DOB"
+                          
+                          label={<> DOB<span style={{color:'red'}}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           onChange={date => { setdtDOB(date) }}
                           value={dtDOB}
@@ -580,7 +587,8 @@ export default function NewEntry(props) {
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            label="Choose a Birth Country"
+                           
+                            label={<>Choose a Birth Country <span style={{color:'red'}}> *</span></>}
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
@@ -602,7 +610,8 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sBirthPlace"
-                        label="Place of Birth"
+                  
+                        label={<>Place of Birth <span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setsBirthPlace(e.target.value); }}
                         fullWidth
@@ -633,7 +642,8 @@ export default function NewEntry(props) {
                           margin="dense"
                           id="id_dtFormDate"
                           name="name_dtFormDate"
-                          label="Sarso Form Date"
+                         
+                          label={<> Sarso Form Date<span style={{color:'red'}}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           onChange={date => { setdtFormDate(date) }}
                           value={dtFormDate}
@@ -657,7 +667,8 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sFathersName"
-                        label="Father's Name"
+                        
+                        label={<>Father's Name <span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setsFathersName(e.target.value); }}
                         fullWidth
@@ -679,7 +690,8 @@ export default function NewEntry(props) {
                       <TextField
                         id="id_sFathersGBID"
                         name="name_sFathersGBID"
-                        label="Father's GB No"
+                        
+                        label={<>Father's GB No </>}
                         type="text"
                         onChange={(e) => { setsFathersGBID(e.target.value); }}
                         fullWidth
@@ -704,7 +716,8 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUFathersName"
-                        label="Father's Name (Tibetan) ཕ་མིང་།"
+                  
+                        label={<> Father's Name (Tibetan) ཕ་མིང་།<span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setTBUFathersName(e.target.value); }}
                         fullWidth
@@ -727,7 +740,8 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sMothersName"
-                        label="Mother's Name"
+                 
+                        label={<> Mother's Name<span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setsMothersName(e.target.value); }}
                         fullWidth
@@ -749,7 +763,8 @@ export default function NewEntry(props) {
                       <TextField
                         id="id_sMothersGBID"
                         name="name_sMothersGBID"
-                        label="Mother's GB No"
+                        label={<>Mother's GB No</>}
+                     
                         type="text"
                         onChange={(e) => { setsMothersGBID(e.target.value); }}
                         fullWidth
@@ -774,7 +789,8 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUMothersName"
-                        label="Mother's Name (Tibetan) མ་མིང་།"
+                        
+                        label={<>Mother's Name (Tibetan) མ་མིང་།<span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setTBUMothersName(e.target.value); }}
                         fullWidth
@@ -795,7 +811,8 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sAddress1"
-                        label="Address 1"
+                        
+                        label={<>Address 1 <span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setsAddress1(e.target.value); }}
                         fullWidth
@@ -851,7 +868,8 @@ export default function NewEntry(props) {
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_sState"
-                          label="State"
+                          
+                          label={<> State<span style={{color:'red'}}> *</span></>}
                           type="text"
                           onChange={(e) => { setsState(e.target.value); }}
                           fullWidth
@@ -902,7 +920,8 @@ export default function NewEntry(props) {
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              label="Country"
+                              
+                              label={<> Country<span style={{color:'red'}}> *</span></>}
                               variant="standard"
                               inputProps={{
                                 ...params.inputProps,
