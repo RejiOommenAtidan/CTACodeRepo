@@ -17,7 +17,7 @@ import { AddDialog, EditDialog } from './dialog';
 import { EmailDialog } from '../email';
 import { Alerts } from '../../alerts';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat, sButtonSize, modifyHeaders } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, modifyHeaders } from '../../../config/commonConfig';
 import { ViewDialog } from '../../search/dialog';
 
 

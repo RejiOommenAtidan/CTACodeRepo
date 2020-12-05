@@ -11,7 +11,7 @@ import { AddDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
-import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage, modifyHeaders } from "../../../config/commonConfig";
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
 
@@ -246,6 +246,7 @@ export default function UserRights() {
         if (resp.status === 200) {
           setdataAPI(resp.data);
           setisLoading(false);
+          modifyHeaders();
         }
       })
       .catch(error => {

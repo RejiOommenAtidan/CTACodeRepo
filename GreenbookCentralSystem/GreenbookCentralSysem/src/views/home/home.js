@@ -8,7 +8,7 @@ export default function Home() {
         <img
           alt="CTA"
           src={projectLogo}
-          width={"30%"}
+          width={"25%"}
           //height={}
         />
         {/*<h1>CTA</h1>*/}

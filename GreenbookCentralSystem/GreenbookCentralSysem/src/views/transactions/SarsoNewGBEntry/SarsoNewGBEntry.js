@@ -13,7 +13,7 @@ import Moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders} from '../../../config/commonConfig';
 
 const useStyles = makeStyles({
   root: {
@@ -174,6 +174,7 @@ export default function SarsoNewGBEntry() {
         if (resp.status === 200) {
           setdataAPI(resp.data);
           setisLoading(false);
+          modifyHeaders();
         }
       })
       .catch(error => {

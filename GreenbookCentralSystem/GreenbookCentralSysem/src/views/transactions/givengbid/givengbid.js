@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-import MaterialTable, { MTableToolbar } from 'material-table';
+import MaterialTable from 'material-table';
 import Moment from 'moment';
 import { useDispatch } from 'react-redux';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import IconButton from '@material-ui/core/IconButton';
 import { red } from '@material-ui/core/colors';
-import { assign, filter } from 'lodash';
+
 import { useHistory } from 'react-router-dom';
 //Local
 import { AssignDialog } from './assigndialog';
-import { oOptions, oTableIcons, sDateFormat } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, modifyHeaders } from '../../../config/commonConfig';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -216,9 +216,9 @@ export default function GiveGBId() {
       .then(resp => {
         debugger
         if (resp.status === 200) {
-          //console.log(resp.data);
           setdataAPI(resp.data);
           setLoading(false);
+          modifyHeaders();
         }
       })
       .catch(error => {

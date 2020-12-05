@@ -6,13 +6,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import Moment from 'moment';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import { oOptions, oTableIcons,sDateFormat, modifyHeaders } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import { Alerts } from '../../alerts';
 import handleError from "../../../auth/_helpers/handleError";
 import IconButton from '@material-ui/core/IconButton';
 import { EditDialog } from './dialog';
-import { sDateFormat } from './../../../config/commonConfig'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -377,10 +376,10 @@ export default () => {
     axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setdataAPI(resp.data);
           selectDatafunction();
           setLoading(false);
+          modifyHeaders();
         }
       })
       .catch(error => {

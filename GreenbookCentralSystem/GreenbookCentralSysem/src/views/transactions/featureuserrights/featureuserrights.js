@@ -21,8 +21,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import WarningIcon from '@material-ui/icons/Warning';
 import {
-  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
-  sButtonColor, sButtonSize, sButtonVariant
+  oOptions, oTableIcons, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders
 } from "../../../config/commonConfig";
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
@@ -246,6 +245,7 @@ export default function FeatureUserrights() {
           setColumns(generatedColumns);
           setdataAPI(resp.data.lFeatureUserRightsPivot);
           setIsLoading(false);
+          modifyHeaders();
         }
       })
       .catch(error => {

@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link, Card, Table, Paper, Dialog, DialogContent, DialogContentText
-} from '@material-ui/core';
-
+import { Grid, Button, Paper, } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
@@ -11,13 +8,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import { InputParams } from './inputparams';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
-import Moment from 'moment';
 import MaterialTable, { MTableToolbar } from 'material-table';
 import {
-  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
-  sButtonColor, sButtonSize, sButtonVariant , modifyHeaders
+  oOptions, oTableIcons,
+  sButtonColor, sButtonSize, sButtonVariant, modifyHeaders
 } from "../../config/commonConfig";
 import { Alerts } from '../alerts';
+import Moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
       main: '#11cb5f',
     },
   }
-
 }));
 
 export default () => {
@@ -125,7 +121,7 @@ export default () => {
     },
     {
       //field: "sFirstName",
-      render: rowData  => (rowData['sFirstName'] ? rowData['sFirstName'] : '') + " " + (rowData['sLastName'] ? rowData['sLastName'] : ''),
+      render: rowData => (rowData['sFirstName'] ? rowData['sFirstName'] : '') + " " + (rowData['sLastName'] ? rowData['sLastName'] : ''),
       title: "NAME",
       headerStyle: {
         textAlign: "center",
@@ -298,6 +294,7 @@ export default () => {
           console.log("Got List of AuthRegions & MadebTypes\n", resp.data);
           setDataReady(true);
           // setdataAPI(resp.data)
+          modifyHeaders();
         }
       })
       .catch(error => {
@@ -351,9 +348,9 @@ export default () => {
                       <MTableToolbar {...props} />
                       {makeTable && (<div>
                         <Button
-                        variant={sButtonVariant}
-                        color={sButtonColor}
-                        size={sButtonSize}
+                          variant={sButtonVariant}
+                          color={sButtonColor}
+                          size={sButtonSize}
                           className={classes.button}
                           startIcon={<DoneAllIcon />}
                           onClick={() => {
@@ -389,11 +386,11 @@ export default () => {
               />
             }
             {snackbar && <Alerts
-            alertObj={alertObj}
-            snackbar={snackbar}
-            snackbarClose={snackbarClose}
-          />
-          }
+              alertObj={alertObj}
+              snackbar={snackbar}
+              snackbarClose={snackbarClose}
+            />
+            }
           </Paper>
         </Grid>
         {/* <Grid item xs={12} sm={12} style={{justifyContent: 'center', display: 'flex' }}>

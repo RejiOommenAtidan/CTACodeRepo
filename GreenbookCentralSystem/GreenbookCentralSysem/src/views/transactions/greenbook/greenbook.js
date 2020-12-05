@@ -11,10 +11,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import MaterialTable from 'material-table';
 import handleError from '../../../auth/_helpers/handleError';
 import IconButton from '@material-ui/core/IconButton';
-import {
-  oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessages,
-  sButtonColor, sButtonSize, sButtonVariant
-} from "../../../config/commonConfig";
+import {oOptions, oTableIcons, modifyHeaders} from "../../../config/commonConfig";
 import Moment from 'moment';
 
 const useStyles = makeStyles(() => ({
@@ -117,9 +114,9 @@ export default function GBList(props) {
       .then(resp => {
         if (resp.status === 200) {
           //sCountryID
-          console.log(resp.data);
           setdataAPI(resp.data);
           setisLoading(false);
+          modifyHeaders();
         }
       })
       .catch(error => {
