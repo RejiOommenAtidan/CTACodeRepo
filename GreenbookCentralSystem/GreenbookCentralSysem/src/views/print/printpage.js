@@ -432,7 +432,7 @@ export default function EnhancedTable() {
                           ))}
                         </tbody>
                       </Table>
-                      <i style={{ textAlign: 'left' }}>* Maximum Four on a Single A4 Page</i>
+                    <div style={{ textAlign: 'left' }}> <i>* Maximum Four on a Single A4 Page</i></div>
                     </div>
                     <Typography color="textPrimary">Print Preview</Typography>
                     <Button
