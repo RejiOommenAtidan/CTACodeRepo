@@ -174,7 +174,7 @@ export const AddDialog = (props) => {
                     <TextField
                       id="dtDate"
                       name="dtDate"
-                      label="Date"
+                      label={<>Date<span style={{ color: 'red' }}> *</span></>}
                       type="date"
                       defaultValue={dtDate}
                       className={props.classes.textField}
@@ -250,7 +250,7 @@ export const AddDialog = (props) => {
                       id="sName"
                       name="sName"
                       label="Name"
-                      required={true}
+                     
                       InputProps={{
                         readOnly: true
                       }}

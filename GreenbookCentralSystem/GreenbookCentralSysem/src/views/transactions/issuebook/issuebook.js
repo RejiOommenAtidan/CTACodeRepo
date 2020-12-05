@@ -251,7 +251,7 @@ export default function EnhancedTable() {
                     <Table className="table table-hover table-striped table-bordered">
                       <thead className="thead-light">
                         <tr>
-                          <th > Issued Date </th>
+                          <th > Madeb Date </th>
                           <th > GB ID </th>
                           <th > Why </th>
                           <th > Where </th>

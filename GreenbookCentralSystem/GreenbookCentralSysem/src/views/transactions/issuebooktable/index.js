@@ -306,7 +306,7 @@ const saveModalClose =() =>{
 const saveAPICall = (obj,changeObj) =>{
   setSaveModal(false);
   console.log(obj);
- axios.post(`IssueBook/AddIssueBook/MadebId=`+changeObj.id+`&nIssuedOrNotID=`+changeObj.nIssuedOrNotID,obj)
+ axios.post(`IssueBook/AddIssueBook/MadebId=`+changeObj.id+`&nIssuedOrNotID=`+changeObj.nIssuedOrNotID+`&dtIssuedDate=`+changeObj.dtIssuedDate,obj)
   .then(resp => {
     if (resp.status === 200) {
       
@@ -467,7 +467,7 @@ const editAPICall = (obj) =>{
                             <thead className="thead-light">
                             <tr>
                               
-                                <th > Issued Date </th>
+                                <th > Madeb Date </th>
                                 <th > Why </th>
                                 <th > Where </th>
                                 <th > Form No </th>

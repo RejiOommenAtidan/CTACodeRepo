@@ -99,6 +99,9 @@ export const EditDialog = (props) => {
                                                     InputLabelProps={{
                                                         shrink: true,
                                                     }}
+                                                    InputProps={{
+                                                        readOnly: true,
+                                                    }}
                                                     onChange={(e) => { setIssuedDate(e.target.value) }}
                                                 />
                                             </FormControl>
@@ -107,6 +110,10 @@ export const EditDialog = (props) => {
                                             <FormControl className={props.classes.formControl}>
                                                 <Autocomplete
                                                     openOnFocus
+                                                    disabled
+                                                    InputProps={{
+                                                        readOnly: true,
+                                                    }}
                                                     clearOnEscape
                                                     onChange={
                                                         (e, value) => {
@@ -149,6 +156,7 @@ export const EditDialog = (props) => {
                                             <FormControl className={props.classes.formControl}>
                                                 <Autocomplete
                                                     openOnFocus
+                                                    disabled
                                                     clearOnEscape
                                                     onChange={
                                                         (e, value) => {
@@ -194,7 +202,7 @@ export const EditDialog = (props) => {
                                                     label="Form Number"
                                                     type="number"
                                                     InputProps={{
-                                                        readOnly: false,
+                                                        readOnly: true,
                                                     }}
                                                     value={formNumber}
                                                     onChange={(e) => { setFormNumber(e.target.value) }}
@@ -206,6 +214,7 @@ export const EditDialog = (props) => {
                                             <FormControl className={props.classes.formControl}>
                                                 <Autocomplete
                                                     openOnFocus
+                                                    disabled
                                                     clearOnEscape
                                                     onChange={
                                                         (e, value) => {
@@ -328,6 +337,7 @@ export const SaveDialog = (props) => {
     }
     const changeObj = {
         id: id,
+        dtIssuedDate: receivedDate,
         nIssuedOrNotID: issuedOrNotId
     }
     let typeIssuedData = []
@@ -382,7 +392,7 @@ export const SaveDialog = (props) => {
                                             <FormControl className={props.classes.formControl}>
                                                 <TextField
                                                     id="date"
-                                                    label="Issued Date"
+                                                    label={<>Issued Date<span style={{color:"red"}}> *</span></>}
                                                     type="date"
                                                     defaultValue={receivedDate}
                                                     className={props.classes.textField}
@@ -486,7 +496,7 @@ export const SaveDialog = (props) => {
                                                     label="Form Number"
                                                     type="number"
                                                     InputProps={{
-                                                        readOnly: false,
+                                                        readOnly: true,
                                                     }}
                                                     value={formNumber}
                                                     onChange={(e) => { setFormNumber(e.target.value) }}

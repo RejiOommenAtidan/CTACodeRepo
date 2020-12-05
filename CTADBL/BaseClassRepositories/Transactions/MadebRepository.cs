@@ -80,12 +80,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Update Madeb TypeIssued after IssueBook 
-        public void UpdateTypeIssued(string Id, int nIssuedOrNotID)
+        public void UpdateTypeIssued(string Id, int nIssuedOrNotID,DateTime dtIssuedDate)
         {
             Madeb madeb = GetMadebById(Id);
             madeb.nIssuedOrNotID = nIssuedOrNotID;
             madeb.dtUpdated = DateTime.Now;
-            madeb.dtIssueAction = DateTime.Now;
+            madeb.dtIssueAction = dtIssuedDate;
             this.Update(madeb);
         }
         #endregion

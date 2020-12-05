@@ -104,8 +104,8 @@ namespace CTAWebAPI.Controllers.Transactions
 
         #region Add Call
         [Route("[action]")]
-        [HttpPost("AddIssueBook/MadebId={MadebId}&nIssuedOrNotID={nIssuedOrNotID:int}")]
-        public IActionResult AddIssueBook(string MadebId , int nIssuedOrNotID, [FromBody] IssueBook issueBook)
+        [HttpPost("AddIssueBook/MadebId={MadebId}&nIssuedOrNotID={nIssuedOrNotID:int}&dtIssuedDate={dtIssuedDate}")]
+        public IActionResult AddIssueBook(string MadebId , int nIssuedOrNotID,DateTime dtIssuedDate, [FromBody] IssueBook issueBook)
         {
             
             #region Add IssueBook
@@ -117,7 +117,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     issueBook.dtUpdated = DateTime.Now;
                     issueBook.sFormNumber = issueBook.nFormNumber.ToString();
                     _issueBookRepository.Add(issueBook);
-                    _madebRepository.UpdateTypeIssued(MadebId, nIssuedOrNotID);
+                    _madebRepository.UpdateTypeIssued(MadebId, nIssuedOrNotID , dtIssuedDate);
                     #region Information Logging 
                     string sActionType = Enum.GetName(typeof(Operations), 1);
                     string sModuleName = (GetType().Name).Replace("Controller", "");

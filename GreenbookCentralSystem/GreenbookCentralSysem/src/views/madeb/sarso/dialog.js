@@ -126,7 +126,7 @@ export const EditDialog = (props) => {
                                                 required: true
                                             })}
                                             value={formNumber}
-                                            onChange={(e) => { setFormNumber(e.target.value) }}
+                                            onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
                                         />
                                         {_.get("form_number.type", errors) === "required" && (
                                             <p style={{ color: "red" }}>This field is required</p>
@@ -259,7 +259,7 @@ export const EditDialog = (props) => {
                                             label="Saney Form No"
                                             type='number'
                                             value={saney}
-                                            onChange={(e) => { setSaney(e.target.value) }}
+                                            onChange={(e) => { setSaney(parseInt(e.target.value)) }}
                                         />
                                     </FormControl>
                                 </Grid>

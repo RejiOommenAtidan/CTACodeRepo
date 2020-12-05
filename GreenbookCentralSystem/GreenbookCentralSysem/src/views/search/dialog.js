@@ -180,7 +180,7 @@ export const ViewDialog = (props) => {
                     </div>
                   </div>
                   <h4 className="font-size-lg font-weight-bold my-2">
-                    {data.greenBook.sFirstName + ' ' + data.greenBook.sLastName ? data.greenBook.sLastName: ""}
+                    {data.greenBook.sFirstName + ' ' + (data.greenBook.sLastName ? data.greenBook.sLastName: "")}
                   </h4>
                   <h4 className="font-size-lg font-weight-bold my-2">
                     {data.greenBook.sCountryID+data.greenBook.sGBID }
@@ -647,7 +647,7 @@ export const ViewDialog = (props) => {
                                 <td >{row.auditLog.sFieldValuesNew }</td>
                                 <td >{row.sEnteredBy}</td>
                                 <td >{row.sOffice}</td>
-                                <td >{row.auditLog.dtEntered ? Moment(row.auditLog.dtEntered).format('DD-MM-YYYY, h:mm a'): ''}</td>
+                                <td >{row.auditLog.dtEntered ? Moment(row.auditLog.dtEntered).format('DD-MM-YYYY HH:mm:ss'): ''}</td>
                              
                               
                                                                     
