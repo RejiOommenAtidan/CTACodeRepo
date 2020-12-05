@@ -402,37 +402,38 @@ export default function EnhancedTable() {
                       ))}
                     </tbody>
                   </Table>}
-
                 {selected.length != 0 &&
                   <>
                     <Typography color="textPrimary">Print List</Typography>
-                    <Table className="table table-hover table-striped table-bordered" size={"small"} >
-                      <thead className="thead-light">
-                        <tr>
-                          <th>Book Sr No</th>
-                          <th>GB ID</th>
-                          <th>Name</th>
-                          <th>Region</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {selected.map((row1, index) => (
-                          <tr style={{ padding: '0px' }}>
-                            <td>{row1.nCurrentBookNo}</td>
-                            <td>{row1.sGBID}</td>
-                            <td>{row1.sName}</td>
-                            <td>{row1.sRegion_name}</td>
-                            <td>
-                              <IconButton color="primary" onClick={() => { removeFromFinal(row1) }} aria-label="upload picture" component="span" style={{ padding: '0px' }}>
-                                <DeleteIcon />
-                              </IconButton>
-                            </td>
+                    <div>
+                      <Table className="table table-hover table-striped table-bordered" size={"small"} >
+                        <thead className="thead-light">
+                          <tr>
+                            <th>Book Sr No</th>
+                            <th>GB ID</th>
+                            <th>Name</th>
+                            <th>Region</th>
+                            <th></th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </Table>
-                    <i style={{ textAlign: 'left' }}>* Maximum 4 on a Single A4 Page</i>
+                        </thead>
+                        <tbody>
+                          {selected.map((row1, index) => (
+                            <tr style={{ padding: '0px' }}>
+                              <td>{row1.nCurrentBookNo}</td>
+                              <td>{row1.sGBID}</td>
+                              <td>{row1.sName}</td>
+                              <td>{row1.sRegion_name}</td>
+                              <td>
+                                <IconButton color="primary" onClick={() => { removeFromFinal(row1) }} aria-label="upload picture" component="span" style={{ padding: '0px' }}>
+                                  <DeleteIcon />
+                                </IconButton>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                      <i style={{ textAlign: 'left' }}>* Maximum Four on a Single A4 Page</i>
+                    </div>
                     <Typography color="textPrimary">Print Preview</Typography>
                     <Button
                       variant={sButtonVariant}

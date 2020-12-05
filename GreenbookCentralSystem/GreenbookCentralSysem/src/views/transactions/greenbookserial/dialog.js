@@ -143,7 +143,6 @@ export const EditDialog = (props) => {
                       inputRef={register({
                         required: true
                       })}
-                      disabled
                     />
                     {_.get("nBookNo.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
@@ -161,7 +160,6 @@ export const EditDialog = (props) => {
                         readOnly: true
                       }}
                       color="text.disabled"
-                      disabled
                       value={sName}
                       onChange={(e) => { setName(e.target.value) }}
                       inputRef={register({
@@ -207,7 +205,8 @@ export const EditDialog = (props) => {
                           variant="standard"
                           inputProps={{
                             ...params.inputProps,
-                            autoComplete: 'off', // disable autocomplete and autofill
+                            autoComplete: 'off',
+
                           }}
                         />
                       )}
@@ -231,7 +230,9 @@ export const EditDialog = (props) => {
                       id="sGBID"
                       label="GBID"
                       name="sGBID"
-                      disabled
+                      InputProps={{
+                        readOnly: true
+                      }}
                       //required={true}
                       value={sGBID}
                       onChange={(e) => { setGbId(e.target.value) }}
@@ -278,7 +279,8 @@ export const EditDialog = (props) => {
                           variant="standard"
                           inputProps={{
                             ...params.inputProps,
-                            autoComplete: 'off', // disable autocomplete and autofill
+                            autoComplete: 'off',
+
                           }}
                         />
                       )}
@@ -296,7 +298,6 @@ export const EditDialog = (props) => {
                       }}
                       value={nFormNumber}
                       onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
-                      disabled
                     />
                   </FormControl>
                 </Grid>
@@ -334,7 +335,8 @@ export const EditDialog = (props) => {
                           variant="standard"
                           inputProps={{
                             ...params.inputProps,
-                            autoComplete: 'off', // disable autocomplete and autofill
+                            autoComplete: 'off',
+
                           }}
                         />
                       )}
@@ -628,9 +630,9 @@ export const AddDialog = (props) => {
                       name="sName"
                       label="Name"
                       //required={true}
-                      // InputProps={{
-                      //   readOnly: true
-                      // }}
+                      InputProps={{
+                        readOnly: true
+                      }}
                       value={sName}
                       onChange={(e) => { setName(e.target.value) }}
                       inputRef={register({
@@ -748,9 +750,9 @@ export const AddDialog = (props) => {
                       label="Form Number"
                       name="nFormNumber"
                       type="number"
-                      // InputProps={{
-                      //     readOnly: true,
-                      // }}
+                      InputProps={{
+                        readOnly: true,
+                      }}
                       value={nFormNumber}
                       onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
                       inputRef={register({

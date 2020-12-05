@@ -626,6 +626,7 @@ export default function NewEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+                          disabled={true}
                           variant="dialog"
                           openTo="year"
                           views={["year", "month", "date"]}
