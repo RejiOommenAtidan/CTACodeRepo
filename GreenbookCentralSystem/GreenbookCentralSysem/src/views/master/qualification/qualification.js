@@ -11,7 +11,7 @@ import { AddDialog, EditDialog } from './dialog';
 import MaterialTable from 'material-table';
 import { useHistory } from 'react-router-dom';
 import handleError from "../../../auth/_helpers/handleError";
-import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage,modifyHeaders } from "../../../config/commonConfig";
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
 
@@ -83,6 +83,7 @@ export default function Qualification() {
   const [backdrop, setBackdrop] = React.useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
+  const [isLoading, setisLoading] = React.useState(true);
 
   const alertObj = {
     alertMessage: alertMessage,
@@ -263,7 +264,9 @@ export default function Qualification() {
     axios.get(`/Qualification/GetQualification`)
       .then(resp => {
         if (resp.status === 200) {
-          setdataAPI(resp.data)
+          setdataAPI(resp.data);
+          setisLoading(false);
+          modifyHeaders();
         }
       })
       .catch(error => {
@@ -295,6 +298,7 @@ export default function Qualification() {
             style={{ padding: '10px', border: '2px solid grey', borderRadius: '10px' }}
             icons={oTableIcons}
             title="Qualification"
+            isLoading={isLoading}
             data={dataAPI}
             columns={columns}
             options={oOptions}

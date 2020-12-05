@@ -11,7 +11,7 @@ import MaterialTable from 'material-table';
 import { makeStyles } from '@material-ui/core/styles';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
-import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage,modifyHeaders } from "../../../config/commonConfig";
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
 
@@ -213,6 +213,7 @@ export default function Relation() {
         if (resp.status === 200) {
           setdataAPI(resp.data);
           setisLoading(false);
+          modifyHeaders();
         }
       })
       .catch(error => {
