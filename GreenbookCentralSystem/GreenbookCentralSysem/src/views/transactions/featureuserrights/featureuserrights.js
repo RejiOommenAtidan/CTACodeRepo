@@ -276,13 +276,14 @@ export default function FeatureUserrights() {
               ...oOptions,
               exportButton: false
             }}
+            localization={{ toolbar: { searchPlaceholder: 'Search Feature' } }}
             actions={[
-              {
-                icon: oTableIcons.Search,
-                tooltip: 'Toggle Filter',
-                isFreeAction: true,
-                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
-              }
+              // {
+              //   icon: oTableIcons.Search,
+              //   tooltip: 'Toggle Filter',
+              //   isFreeAction: true,
+              //   onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+              // }
             ]}
           />
         </Grid>
