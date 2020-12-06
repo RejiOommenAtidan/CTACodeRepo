@@ -147,27 +147,30 @@ export default function EnhancedTable() {
 
   const columns = [
     {
+      width: "5%",
       field: "madeb.id",
       title: "#",
       hidden: true,
+      export: true,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
       }
     },
     {
+      width: "6%",
       field: "madeb.nFormNumber",
-      title: "FORM NUMBER",
+      title: "FORM NO.",
       filterPlaceholder: "Search...",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
       },
       cellStyle: {
         textAlign: "right",
@@ -175,6 +178,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "8%",
       field: "madeb.dtReceived",
       title: "RECEIVED DATE",
       // type: 'date',
@@ -191,6 +195,7 @@ export default function EnhancedTable() {
       render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined
     },
     {
+      width: "9%",
       field: "sAuthRegion",
       title: "AUTHORITY",
       headerStyle: {
@@ -204,6 +209,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "10%",
       field: "madeb.sName",
       title: "NAME",
       headerStyle: {
@@ -217,6 +223,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "8%",
       field: "madeb.sAlias",
       title: "ALIAS",
       headerStyle: {
@@ -230,8 +237,11 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "8%",
       field: "madeb.sGBID",
-      render: rowData => rowData['madeb']['sGBID'] ? <Button className="m-2 btn-transparent btn-link btn-link-first" size={"small"} onClick={() => { viewGb(rowData['madeb']['sGBID']) }}><span>{rowData['madeb']['sGBID']}</span></Button> : '',
+      render: rowData => 
+      rowData['madeb']['sGBID'] ? 
+      <Button className="btn-transparent btn-link btn-link-first" size={"small"} onClick={() => { viewGb(rowData['madeb']['sGBID']) }}><span>{rowData['madeb']['sGBID']}</span></Button> : '',
       title: "GB ID",
       headerStyle: {
         textAlign: "center",
@@ -244,6 +254,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "10%",
       field: "madeb.sFathersName",
       title: "FATHER'S NAME",
       headerStyle: {
@@ -257,6 +268,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "6%",
       field: "madeb.nReceiptNo",
       title: "RECEIPT NO.",
       headerStyle: {
@@ -270,6 +282,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "6%",
       field: "madeb.nSaneyFormNo",
       title: "SANEY FORM NO.",
       headerStyle: {
@@ -283,8 +296,9 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "6%",
       field: "madeb.nCurrentGBSno",
-      title: "Current GB SNo.",
+      title: "CURRENT GB SNO.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -296,6 +310,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "6%",
       field: "madeb.nPreviousGBSno",
       title: "PREVIOUS GB SNO.",
       headerStyle: {
@@ -310,6 +325,7 @@ export default function EnhancedTable() {
     },
 
     {
+      width: "6%",
       field: 'Verified By',
       title: 'VERIFIED BY',
       sorting: false,
@@ -327,6 +343,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "6%",
       field: 'Re-Verified By',
       title: 'RE-VERIFIED BY',
       sorting: false,
@@ -344,6 +361,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "6%",
       field: "sMadebStatus",
       title: "STATUS",
       headerStyle: {
@@ -357,6 +375,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "8%",
       field: "madeb.sMadebStatusRemark",
       title: "REMARK",
       headerStyle: {
@@ -370,6 +389,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "8%",
       field: "madeb.dtIssueAction",
       title: "ISSUE ACTION DATE",
       // type: 'date',
@@ -386,6 +406,7 @@ export default function EnhancedTable() {
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
     },
     {
+      width: "6%",
       field: "sTypeIssued",
       title: "ISSUE ACTION",
       headerStyle: {
@@ -399,6 +420,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "8%",
       field: "madeb.dtReject",
       title: "REJECT DATE",
       // type: 'date',
@@ -415,6 +437,7 @@ export default function EnhancedTable() {
       render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined
     },
     {
+      width: "8%",
       field: "madeb.dtReturnEmail",
       title: "RETURN DATE",
       //type: 'date',
@@ -431,6 +454,7 @@ export default function EnhancedTable() {
       render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : ''
     },
     {
+      width: "6%",
       field: "email",
       title: "EMAIL",
       filtering: false,
@@ -452,6 +476,7 @@ export default function EnhancedTable() {
       },
     },
     {
+      width: "6%",
       field: "edit",
       title: "EDIT",
       sorting: false,
@@ -727,7 +752,10 @@ export default function EnhancedTable() {
             title="Abroad"
             columns={columns}
             data={dataAPI}
-            options={oOptions}
+            options={{
+              ...oOptions,
+              tableLayout: "fixed"
+            }}
             actions={[
               {
                 icon: oTableIcons.Add,

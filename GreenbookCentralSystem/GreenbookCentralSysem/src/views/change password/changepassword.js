@@ -11,9 +11,8 @@ import handleError from '../../auth/_helpers/handleError';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAuthDetails } from "../../actions/userAuthenticateAction";
 import { Alerts } from '../alerts';
-import {
-  sSnackbarAddMessage, sSnackbarUpdateMessages, sButtonColor, sButtonSize, sButtonVariant
-} from "../../config/commonConfig";
+import { sButtonColor, sButtonSize, sButtonVariant } from "../../config/commonConfig";
+import { BackdropComponent } from '../backdrop/pageBackDrop';
 
 const useStyles = makeStyles({
   root: {
@@ -74,7 +73,7 @@ export default function ChangePassword() {
       return state.UserAuthenticationReducer.oUserAuth.oUser.id;
     }
   });
-
+  const [backdrop, setBackdrop] = React.useState(false);
   const classes = useStyles();
   const { register, handleSubmit, errors } = useForm();
   const [sOldPassword, setsOldPassword] = useState('');
@@ -100,8 +99,8 @@ export default function ChangePassword() {
     setSnackbar(false);
   };
 
-  useEffect(() => {
-  }, []);
+  // useEffect(() => {
+  // }, []);
   const onSubmit = () => {
     if (sNewPassword === sConfirmNewPassword) {
       let changePassword = {
@@ -110,12 +109,18 @@ export default function ChangePassword() {
         sNewPassword,
         sConfirmNewPassword
       };
-
+      setBackdrop(true);
       axios.post(`/User/ChangePassword`, changePassword)
         .then(resp => {
           if (resp.status === 200) {
-            dispatch(removeAuthDetails());
-            history.push('/Login', { changepassword: true });
+            setBackdrop(false);
+            setAlertMessage("Password Updated Successfully, Please Login in again with New Password");
+            setAlertType('success');
+            snackbarOpen();
+            setTimeout(() => { 
+              dispatch(removeAuthDetails());
+              history.push('/Login', { changepassword: true })
+            }, 3000);
           }
         })
         .catch(error => {
@@ -226,7 +231,9 @@ export default function ChangePassword() {
         snackbar={snackbar}
         snackbarClose={snackbarClose}
       />}
-
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
+      />}
     </>
   );
 }

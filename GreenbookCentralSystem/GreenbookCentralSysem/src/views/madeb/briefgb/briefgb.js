@@ -140,6 +140,7 @@ export default () => {
 
   const columns = [
     {
+      width: "5%",
       field: "madeb.id",
       title: "#",
       hidden: true,
@@ -154,6 +155,7 @@ export default () => {
       }
     },
     {
+      width: "6%",
       field: "madeb.nFormNumber",
       title: "FORM NUMBER",
       filterPlaceholder: "Search...",
@@ -168,6 +170,7 @@ export default () => {
       }
     },
     {
+      width: "8%",
       field: "madeb.dtReceived",
       title: "RECEIVED DATE",
       // type: 'date',
@@ -184,6 +187,7 @@ export default () => {
       render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined
     },
     {
+      width: "8%",
       field: "sAuthRegion",
       title: "AUTHORITY",
       headerStyle: {
@@ -197,6 +201,7 @@ export default () => {
       }
     },
     {
+      width: "7%",
       field: "madeb.sName",
       title: "NAME",
       headerStyle: {
@@ -210,6 +215,7 @@ export default () => {
       }
     },
     {
+      width: "8%",
       field: "madeb.sGBID",
       render: rowData => rowData['madeb']['sGBID'] ? <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewGb(rowData['madeb']['sGBID']) }}><span>{rowData['madeb']['sGBID']}</span></Button> : '',
       title: "GB ID",
@@ -224,6 +230,7 @@ export default () => {
       }
     },
     {
+      width: "10%",
       field: "madeb.sFathersName",
       title: "FATHER'S NAME",
       headerStyle: {
@@ -237,6 +244,7 @@ export default () => {
       }
     },
     {
+      width: "8%",
       field: "madeb.nReceiptNo",
       title: "RECEIPT NO.",
       headerStyle: {
@@ -250,6 +258,7 @@ export default () => {
       }
     },
     {
+      width: "6%",
       field: "madeb.nSaneyFormNo",
       title: "SANEY FORM NO.",
       headerStyle: {
@@ -263,6 +272,7 @@ export default () => {
       }
     },
     {
+      width: "6%",
       field: "madeb.nCurrentGBSno",
       title: "CURRENT GB SNO.",
       headerStyle: {
@@ -276,6 +286,7 @@ export default () => {
       }
     },
     {
+      width: "6%",
       field: "madeb.nPreviousGBSno",
       title: "PREVIOUS GB SNO.",
       headerStyle: {
@@ -307,6 +318,7 @@ export default () => {
 
     // },
     {
+      width: "8%",
       field: 'Verified By',
       title: 'VERIFIED BY',
       sorting: false,
@@ -324,6 +336,7 @@ export default () => {
       }
     },
     {
+      width: "8%",
       field: 'Re-Verified By',
       title: 'RE-VERIFIED BY',
       sorting: false,
@@ -341,6 +354,7 @@ export default () => {
       }
     },
     {
+      width: "9%",
       field: "madeb.dtIssueAction",
       title: "ISSUE ACTION DATE",
       // type: 'date',
@@ -357,6 +371,7 @@ export default () => {
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
     },
     {
+      width: "8%",
       field: "sTypeIssued",
       title: "ISSUE ACTION",
       headerStyle: {
@@ -369,8 +384,8 @@ export default () => {
         padding: '5px'
       }
     },
-
     {
+      width: "8%",
       field: "madeb.dtReject",
       title: "REJECT DATE",
       // type: 'date',
@@ -387,6 +402,7 @@ export default () => {
       render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined
     },
     {
+      width: "8%",
       field: "madeb.dtReturnEmail",
       title: "RETURN DATE",
       //type: 'date',
@@ -403,6 +419,7 @@ export default () => {
       render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : ''
     },
     {
+      width: "8%",
       field: "sMadebStatus",
       title: "STATUS",
       headerStyle: {
@@ -416,6 +433,7 @@ export default () => {
       },
     },
     {
+      width: "8%",
       field: "madeb.sMadebStatusRemark",
       title: "STATUS REMARK",
       headerStyle: {
@@ -428,8 +446,8 @@ export default () => {
         padding: '5px'
       },
     },
-
     {
+      width: "6%",
       field: "email",
       title: "EMAIL",
       filtering: false,
@@ -451,6 +469,7 @@ export default () => {
       }
     },
     {
+      width: "6%",
       field: "edit",
       title: "EDIT",
       sorting: false,
@@ -625,13 +644,21 @@ export default () => {
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <MaterialTable
-            style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+            style={{ 
+              padding: '10px', 
+              width: '100%', 
+              border: '2px solid grey', 
+              borderRadius: '10px'
+             }}
             isLoading={loading}
             icons={oTableIcons}
             title="Brief Green Book Madeb"
             columns={columns}
             data={dataAPI}
-            options={oOptions}
+            options={{
+              ...oOptions,
+              tableLayout: "fixed"
+            }}
             actions={
               [
                 {

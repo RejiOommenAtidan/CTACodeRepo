@@ -15,8 +15,14 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
+//Local
 export const sAPIBASEURL = "http://localhost:52013/api";
+
+//QA
 // export const sAPIBASEURL = "https://cta-portal-webapi.azurewebsites.net/api";
+
+//UAT
+// export const sAPIBASEURL = "https://cta-portal-webapi-uat.azurewebsites.net/api";
 
 export const sAdminEmail = "admin@CTA.com";
 export const sSnackbarAddMessage = "Record added successfully";
@@ -29,7 +35,7 @@ export const oOptions = {
     // loadingType:"linear",
     // searchFieldAlignment:"left",
     // selection:true,
-    // tableLayout: "auto",
+    tableLayout: "auto",
     //padding: "dense",
     //emptyRowsWhenPaging: false,
     draggable: false,
