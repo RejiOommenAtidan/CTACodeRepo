@@ -1,4 +1,4 @@
-Use ctadb;
+Use ctauatdb;
 
 CREATE TABLE `lstOfficeOfTibetan` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -933,7 +933,7 @@ CREATE TABLE `tblGreenBook` (
 
   PRIMARY KEY (`id`),
   KEY `nAuthRegionID` (`nAuthRegionID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tblGivenGBID` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1201,6 +1201,7 @@ CREATE TABLE `lnkFeatureUserRights` (
 DROP procedure IF EXISTS `spGetGreenBookByGBID`;
 
 DELIMITER $$
+
 CREATE PROCEDURE `spGetGreenBookByGBID` (IN sGBIDIN VARCHAR(255))
 BEGIN
 	SELECT * FROM tblgreenbook where sGBID = sGBIDIN;
@@ -1232,6 +1233,7 @@ DELIMITER ;
 DROP procedure IF EXISTS `spGetNewMadebData`;
 
 DELIMITER $$
+
 CREATE PROCEDURE `spGetNewMadebData` ()
 BEGIN
 	select Id, sMadebDisplayName from lstmadebtype;

@@ -1,5 +1,5 @@
 ﻿
-use ctadb;
+use ctauatdb;
 -- SELECT @@GLOBAL.sql_mode global, @@SESSION.sql_mode session;
 
 -- set session sql_mode = ''
@@ -19,20 +19,20 @@ Insert into tbluser
     `tbluser`.`dtUpdated`,
     `tbluser`.`nUpdatedBy`
 )
-SELECT 
-	`user`.`id`,
-	`user`.`id`,
-	`user`.`username`,
-	`user`.`name`,
-	`user`.`Office`,
-	`user`.`password`,
-	`user`.`rights`,
-	IF(`user`.`deleteTab`=1,0,1),
-	now(),
-	1,
-	now(),
-	1
-FROM `greenbookprime`.`user`;
+SELECT `tbluser`.`Id`,
+    `tbluser`.`_Id`,
+    `tbluser`.`sUsername`,
+    `tbluser`.`sFullName`,
+    `tbluser`.`sOffice`,
+    `tbluser`.`sPassword`,
+    `tbluser`.`nUserRightsId`,
+    `tbluser`.`bActive`,
+    `tbluser`.`dtEntered`,
+    `tbluser`.`nEnteredBy`,
+    `tbluser`.`dtUpdated`,
+    `tbluser`.`nUpdatedBy`
+FROM `ctadb`.`tbluser`;
+
 
 INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
 	VALUES ('pankaj', 'Pankaj Gupta', 'TCRC Office', 'pankaj123', '5', '1',now(),1,now(),1);
@@ -53,10 +53,10 @@ INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserR
 	VALUES ('kamlesh', 'Kamlesh', 'TCRC Office', 'kamlesh123', '5', '1',now(),1,now(),1);
     
 SET sql_mode = 'allow_invalid_dates';
+-- SET SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 insert into  tblgreenbook
 (
-`tblgreenbook`.`Id`,
 `tblgreenbook`.`_Id`,
     `tblgreenbook`.`sGBID`,
     `tblgreenbook`.`nAuthRegionID`,
@@ -116,66 +116,66 @@ insert into  tblgreenbook
     `tblgreenbook`.`dtUpdated`,
     `tblgreenbook`.`nUpdatedBy`
 )
-SELECT `ident`.`id`,
-`ident`.`id`,
-    `ident`.`IdentityID`,
-    if(`ident`.`AuthRegionID` REGEXP '^-?[0-9]+$',`ident`.`AuthRegionID`,1) AS 'AuthRegionID',
-    `ident`.`FirstName`,
-    null,
-    `ident`.`SecondName`,
-    `ident`.`FamilyName`,
-    `ident`.`Sex`,
-	if(`ident`.`DOB`='0000-00-00',null,`ident`.`DOB`) as DOB,
-    `ident`.`DOBApprox`,
-    `ident`.`BirthPlace`,
-    `ident`.`BirthCountryID`,
-    `ident`.`OriginVillage`,
-    `ident`.`OriginProvinceID`,
-    `ident`.`Married`,
-    `ident`.`OtherDocuments`,
-    `ident`.`ResidenceID`,
-    `ident`.`QualificationID`,
-    `ident`.`OccupationID`,
-    `ident`.`alias`,
-    `ident`.`OldGreenBKNo`,
-    `ident`.`FstGreenBkNo`,
-    if(`ident`.`FormDate` REGEXP '\^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$',`ident`.`FormDate`,"2001-01-01") AS 'dtFormDate',
-    `ident`.`FathersName`,
-    `ident`.`FathersID`,
-    `ident`.`FathersIdentityID`,
-    `ident`.`MothersName`,
-    `ident`.`MothersID`,
-    `ident`.`MothersIdentityID`,
-    `ident`.`SpouseName`,
-    `ident`.`SpouseID`,
-    `ident`.`SpouseIdentityID`,
-    `ident`.`ChildrenM`,
-    `ident`.`ChildrenF`,
-    `ident`.`Address`,
-    `ident`.`Address2`,
-    `ident`.`City`,
-    `ident`.`State`,
-    `ident`.`PCode`,
-    `ident`.`CountryID`,
-    `ident`.`Email`,
-    `ident`.`Phone`,
-    `ident`.`Fax`,
-	if(`ident`.`Deceased`='0000-00-00',null,`ident`.`Deceased`) as Deceased,
-    `ident`.`BookIssued`,
-	if(`ident`.`ValidityDate`='0000-00-00',null,`ident`.`ValidityDate`) as ValidityDate,
-    `ident`.`PaidUntil`,
-    `ident`.`TibetanName`,
-    `ident`.`TBUPlaceOfBirth`,
-    `ident`.`TBUOriginVillage`,
-    `ident`.`TBUFathersName`,
-    `ident`.`TBUMothersName`,
-    `ident`.`TBUSpouseName`,
-	if(`ident`.`Entered`='0000-00-00',null,`ident`.`Entered`) as Entered,
-    now(),
-    if(`ident`.`EnteredBy` REGEXP '^-?[0-9]+$',`ident`.`EnteredBy`,1) AS 'nEnteredBy',
-    now(),
-    if(`ident`.`EnteredBy` REGEXP '^-?[0-9]+$',`ident`.`EnteredBy`,1) AS 'nUpdatedBy'
-FROM `greenbookprime`.`ident`;
+SELECT 
+    `tblgreenbook`.`_Id`,
+    `tblgreenbook`.`sGBID`,
+    `tblgreenbook`.`nAuthRegionID`,
+    `tblgreenbook`.`sFirstName`,
+    `tblgreenbook`.`sMiddleName`,
+    `tblgreenbook`.`sLastName`,
+    `tblgreenbook`.`sFamilyName`,
+    `tblgreenbook`.`sGender`,
+    `tblgreenbook`.`dtDOB`,
+    `tblgreenbook`.`sDOBApprox`,
+    `tblgreenbook`.`sBirthPlace`,
+    `tblgreenbook`.`sBirthCountryID`,
+    `tblgreenbook`.`sOriginVillage`,
+    `tblgreenbook`.`sOriginProvinceID`,
+    `tblgreenbook`.`sMarried`,
+    `tblgreenbook`.`sOtherDocuments`,
+    `tblgreenbook`.`sResidenceNumber`,
+    `tblgreenbook`.`sQualificationID`,
+    `tblgreenbook`.`sOccupationID`,
+    `tblgreenbook`.`sAliasName`,
+    `tblgreenbook`.`sOldGreenBKNo`,
+    `tblgreenbook`.`sFstGreenBkNo`,
+    `tblgreenbook`.`dtFormDate`,
+    `tblgreenbook`.`sFathersName`,
+    `tblgreenbook`.`sFathersID`,
+    `tblgreenbook`.`sFathersGBID`,
+    `tblgreenbook`.`sMothersName`,
+    `tblgreenbook`.`sMothersID`,
+    `tblgreenbook`.`sMothersGBID`,
+    `tblgreenbook`.`sSpouseName`,
+    `tblgreenbook`.`sSpouseID`,
+    `tblgreenbook`.`sSpouseGBID`,
+    `tblgreenbook`.`nChildrenM`,
+    `tblgreenbook`.`nChildrenF`,
+    `tblgreenbook`.`sAddress1`,
+    `tblgreenbook`.`sAddress2`,
+    `tblgreenbook`.`sCity`,
+    `tblgreenbook`.`sState`,
+    `tblgreenbook`.`sPCode`,
+    `tblgreenbook`.`sCountryID`,
+    `tblgreenbook`.`sEmail`,
+    `tblgreenbook`.`sPhone`,
+    `tblgreenbook`.`sFax`,
+    `tblgreenbook`.`dtDeceased`,
+    `tblgreenbook`.`sBookIssued`,
+    `tblgreenbook`.`dtValidityDate`,
+    `tblgreenbook`.`sPaidUntil`,
+    `tblgreenbook`.`TibetanName`,
+    `tblgreenbook`.`TBUPlaceOfBirth`,
+    `tblgreenbook`.`TBUOriginVillage`,
+    `tblgreenbook`.`TBUFathersName`,
+    `tblgreenbook`.`TBUMothersName`,
+    `tblgreenbook`.`TBUSpouseName`,
+    `tblgreenbook`.`sEnteredDateTime`,
+    `tblgreenbook`.`dtEntered`,
+    `tblgreenbook`.`nEnteredBy`,
+    `tblgreenbook`.`dtUpdated`,
+    `tblgreenbook`.`nUpdatedBy`
+FROM `ctadb`.`tblgreenbook`;
 
 
 Insert into tblmadeb
@@ -211,41 +211,6 @@ Insert into tblmadeb
     `tblmadeb`.`nUpdatedBy`
 )
 SELECT 
-	`madeb`.`Id`,
-	`madeb`.`FormNo`,
-	null,
-	1,
-	`madeb`.`Name`,
-	`madeb`.`FathersName`,
-	`madeb`.`AuthRegionID`,
-	`madeb`.`ReceivedDate`,
-	`madeb`.`IssueActionDate`,
-	`madeb`.`IssuedOrNot`,
-	`madeb`.`Type`,
-	null,
-	`madeb`.`OOT`,
-	`madeb`.`DA`,
-	null,
-	null,
-	null,
-	null,
-	null,
-	`madeb`.`Email`,
-	null,
-	null,
-	null,
-	`madeb`.`RejectDate`,
-	`madeb`.`ReturnDate`,
-	now(),
-	`madeb`.`EnteredBy`,
-	now(),
-	`madeb`.`EnteredBy`
-
-FROM `greenbookprime`.`madeb`;
-
-
-Insert into tblmadeb
-(
     `tblmadeb`.`_Id`,
     `tblmadeb`.`nFormNumber`,
     `tblmadeb`.`sGBID`,
@@ -275,334 +240,7 @@ Insert into tblmadeb
     `tblmadeb`.`nEnteredBy`,
     `tblmadeb`.`dtUpdated`,
     `tblmadeb`.`nUpdatedBy`
-
-)
-SELECT 
-`madebchange`.`Id`,
-    `madebchange`.`FormNo`,
-    `madebchange`.`IdentityID`,
-    2,
-    `madebchange`.`Name`,
-    null,
-    `madebchange`.`AuthRegionID`,
-    `madebchange`.`ReceivedDate`,
-    `madebchange`.`IssueActionDate`,
-    `madebchange`.`IssuedOrNot`,
-    `madebchange`.`Type`,
-    `madebchange`.`ChangeField`,
-    null,
-    `madebchange`.`DA`,
-    null,
-    null,
-    null,
-    `madebchange`.`ReceiptNo`,
-    `madebchange`.`Email`,
-    null,
-    `madebchange`.`ApprovedReject`,
-IF(`madebchange`.`ApprovedReject` IS null or `madebchange`.`ApprovedReject` = '', null, 
-		IF(`madebchange`.`ApprovedReject` = 'Approved', 2,
-			IF(`madebchange`.`ApprovedReject` like 'Reject%', 3, 
-				IF(`madebchange`.`ApprovedReject` like 'Cancel%', 4, 
-					IF(`madebchange`.`ApprovedReject` like 'Close%', 5, 
-						null))))) as nMadebStatusID,
-IF(`madebchange`.`ApprovedReject` IS null or `madebchange`.`ApprovedReject` = '', null, 
-		IF(`madebchange`.`ApprovedReject` = 'Approved', null,
-			IF(`madebchange`.`ApprovedReject` like 'Reject%', `madebchange`.`ApprovedReject`,`madebchange`.`ApprovedReject`))) as nMadebStatusRemark,
-    `madebchange`.`RejectDate`,
-    `madebchange`.`ReturnDate`,
-   now(),
-    `madebchange`.`EnteredBy`,
-   now(),
-    `madebchange`.`EnteredBy`
-FROM `greenbookprime`.`madebchange`;
-
-
-
-
-Insert into tblmadeb
-(
-    `tblmadeb`.`_Id`,
-    `tblmadeb`.`nFormNumber`,
-    `tblmadeb`.`sGBID`,
-    `tblmadeb`.`nMadebTypeID`,
-    `tblmadeb`.`sName`,
-    `tblmadeb`.`sFathersName`,
-    `tblmadeb`.`nAuthRegionID`,
-    `tblmadeb`.`dtReceived`,
-    `tblmadeb`.`dtIssueAction`,
-    `tblmadeb`.`nIssuedOrNotID`,
-    `tblmadeb`.`nType`,
-    `tblmadeb`.`sChangeField`,
-    `tblmadeb`.`sOfficeOfTibetan`,
-    `tblmadeb`.`sDocumentAttached`,
-    `tblmadeb`.`nCurrentGBSno`,
-    `tblmadeb`.`nPreviousGBSno`,
-    `tblmadeb`.`nSaneyFormNo`,
-    `tblmadeb`.`nReceiptNo`,
-    `tblmadeb`.`dtEmailSend`,
-    `tblmadeb`.`sAlias`,
-    `tblmadeb`.`sApprovedReject`,
-    `tblmadeb`.`nMadebStatusID`,
-    `tblmadeb`.`sMadebStatusRemark`,
-    `tblmadeb`.`dtReject`,
-    `tblmadeb`.`dtReturnEmail`,
-    `tblmadeb`.`dtEntered`,
-    `tblmadeb`.`nEnteredBy`,
-    `tblmadeb`.`dtUpdated`,
-    `tblmadeb`.`nUpdatedBy`
-)
-SELECT 
-	`madeblost`.`Id`,
-	`madeblost`.`FormNo`,
-	`madeblost`.`IdentityID`,
-	3,
-	`madeblost`.`Name`,
-	null,
-	`madeblost`.`AuthRegionID`,
-	`madeblost`.`ReceivedDate`,
-	`madeblost`.`IssueActionDate`,
-	`madeblost`.`IssuedOrNot`,
-	`madeblost`.`Type`,
-	`madeblost`.`ChangeField`,
-	null,
-	`madeblost`.`DA`,
-	null,
-	null,
-	null,
-	`madeblost`.`ReceiptNo`,
-	`madeblost`.`Email`,
-	null,
-	`madeblost`.`ApprovedReject`,
-	IF(`madeblost`.`ApprovedReject` IS null or `madeblost`.`ApprovedReject` = '', null, 
-		IF(`madeblost`.`ApprovedReject` = 'Approved', 2,
-			IF(`madeblost`.`ApprovedReject` like 'Reject%', 3, 
-				IF(`madeblost`.`ApprovedReject` like 'Cancel%', 4, 
-					IF(`madeblost`.`ApprovedReject` like 'Close%', 5, 
-						null))))) as nMadebStatusID,
-	IF(`madeblost`.`ApprovedReject` IS null or `madeblost`.`ApprovedReject` = '', null, 
-		IF(`madeblost`.`ApprovedReject` = 'Approved', null,
-			IF(`madeblost`.`ApprovedReject` like 'Reject%', `madeblost`.`ApprovedReject`,`madeblost`.`ApprovedReject`))) as nMadebStatusRemark,
-	`madeblost`.`RejectDate`,
-	`madeblost`.`ReturnDate`,
-	now(),
-	`madeblost`.`EnteredBy`,
-	now(),
-	`madeblost`.`EnteredBy`
-FROM `greenbookprime`.`madeblost`;
-
-
-
-Insert into tblmadeb
-(
-    `tblmadeb`.`_Id`,
-    `tblmadeb`.`nFormNumber`,
-    `tblmadeb`.`sGBID`,
-    `tblmadeb`.`nMadebTypeID`,
-    `tblmadeb`.`sName`,
-    `tblmadeb`.`sFathersName`,
-    `tblmadeb`.`nAuthRegionID`,
-    `tblmadeb`.`dtReceived`,
-    `tblmadeb`.`dtIssueAction`,
-    `tblmadeb`.`nIssuedOrNotID`,
-    `tblmadeb`.`nType`,
-    `tblmadeb`.`sChangeField`,
-    `tblmadeb`.`sOfficeOfTibetan`,
-    `tblmadeb`.`sDocumentAttached`,
-    `tblmadeb`.`nCurrentGBSno`,
-    `tblmadeb`.`nPreviousGBSno`,
-    `tblmadeb`.`nSaneyFormNo`,
-    `tblmadeb`.`nReceiptNo`,
-    `tblmadeb`.`dtEmailSend`,
-    `tblmadeb`.`sAlias`,
-    `tblmadeb`.`sApprovedReject`,
-    `tblmadeb`.`nMadebStatusID`,
-    `tblmadeb`.`sMadebStatusRemark`,
-    `tblmadeb`.`dtReject`,
-    `tblmadeb`.`dtReturnEmail`,
-    `tblmadeb`.`dtEntered`,
-    `tblmadeb`.`nEnteredBy`,
-    `tblmadeb`.`dtUpdated`,
-    `tblmadeb`.`nUpdatedBy`
-)
-SELECT 
-	`abroad`.`Id`,
-	`abroad`.`FormNo`,
-	`abroad`.`GB`,
-	4,
-	`abroad`.`Name`,
-	`abroad`.`FathersName`,
-	`abroad`.`AuthRegionID`,
-	`abroad`.`ReceivedDate`,
-	`abroad`.`IssueActionDate`,
-	`abroad`.`IssuedOrNot`,
-	`abroad`.`Type`,
-	null,
-	`abroad`.`OOT`,
-	null,
-	`abroad`.`CurrentGBSno`,
-	`abroad`.`PreviousGBSno`,
-	`abroad`.`SaneyFormNo`,
-	`abroad`.`ReceiptNo`,
-	`abroad`.`Email`,
-	`abroad`.`Alias`,
-	null,
-	null,
-	null,
-	`abroad`.`RejectDate`,
-	`abroad`.`ReturnDate`,
-	now(),
-	`abroad`.`EnteredBy`,
-	now(),
-	`abroad`.`EnteredBy`
-FROM `greenbookprime`.`abroad`;
-
-
-
-Insert into tblmadeb
-(
-    `tblmadeb`.`_Id`,
-    `tblmadeb`.`nFormNumber`,
-    `tblmadeb`.`sGBID`,
-    `tblmadeb`.`nMadebTypeID`,
-    `tblmadeb`.`sName`,
-    `tblmadeb`.`sFathersName`,
-    `tblmadeb`.`nAuthRegionID`,
-    `tblmadeb`.`dtReceived`,
-    `tblmadeb`.`dtIssueAction`,
-    `tblmadeb`.`nIssuedOrNotID`,
-    `tblmadeb`.`nType`,
-    `tblmadeb`.`sChangeField`,
-    `tblmadeb`.`sOfficeOfTibetan`,
-    `tblmadeb`.`sDocumentAttached`,
-    `tblmadeb`.`nCurrentGBSno`,
-    `tblmadeb`.`nPreviousGBSno`,
-    `tblmadeb`.`nSaneyFormNo`,
-    `tblmadeb`.`nReceiptNo`,
-    `tblmadeb`.`dtEmailSend`,
-    `tblmadeb`.`sAlias`,
-    `tblmadeb`.`sApprovedReject`,
-    `tblmadeb`.`nMadebStatusID`,
-    `tblmadeb`.`sMadebStatusRemark`,
-    `tblmadeb`.`dtReject`,
-    `tblmadeb`.`dtReturnEmail`,
-    `tblmadeb`.`dtEntered`,
-    `tblmadeb`.`nEnteredBy`,
-    `tblmadeb`.`dtUpdated`,
-    `tblmadeb`.`nUpdatedBy`
-)
-SELECT 
-	`bookfull`.`Id`,
-	`bookfull`.`FormNo`,
-	`bookfull`.`GB`,
-	5,
-	`bookfull`.`Name`,
-	`bookfull`.`FathersName`,
-	`bookfull`.`AuthRegionID`,
-	`bookfull`.`ReceivedDate`,
-	`bookfull`.`IssueActionDate`,
-	`bookfull`.`IssuedOrNot`,
-	`bookfull`.`Type`,
-	null,
-	`bookfull`.`OOT`,
-	null,
-	`bookfull`.`CurrentGBSno`,
-	`bookfull`.`PreviousGBSno`,
-	`bookfull`.`SaneyFormNo`,
-	null,
-	`bookfull`.`Email`,
-	null,
-	null,
-	null,
-	null,
-	`bookfull`.`RejectDate`,
-	`bookfull`.`ReturnDate`,
-	now(),
-	`bookfull`.`EnteredBy`,
-	now(),
-	`bookfull`.`EnteredBy`
-FROM `greenbookprime`.`bookfull`;
-
-
-
-Insert into tblmadeb
-(
-    `tblmadeb`.`_Id`,
-    `tblmadeb`.`nFormNumber`,
-    `tblmadeb`.`sGBID`,
-    `tblmadeb`.`nMadebTypeID`,
-    `tblmadeb`.`sName`,
-    `tblmadeb`.`sFathersName`,
-    `tblmadeb`.`nAuthRegionID`,
-    `tblmadeb`.`dtReceived`,
-    `tblmadeb`.`dtIssueAction`,
-    `tblmadeb`.`nIssuedOrNotID`,
-    `tblmadeb`.`nType`,
-    `tblmadeb`.`sChangeField`,
-    `tblmadeb`.`sOfficeOfTibetan`,
-    `tblmadeb`.`sDocumentAttached`,
-    `tblmadeb`.`nCurrentGBSno`,
-    `tblmadeb`.`nPreviousGBSno`,
-    `tblmadeb`.`nSaneyFormNo`,
-    `tblmadeb`.`nReceiptNo`,
-    `tblmadeb`.`dtEmailSend`,
-    `tblmadeb`.`sAlias`,
-    `tblmadeb`.`sApprovedReject`,
-    `tblmadeb`.`nMadebStatusID`,
-    `tblmadeb`.`sMadebStatusRemark`,
-    `tblmadeb`.`dtReject`,
-    `tblmadeb`.`dtReturnEmail`,
-    `tblmadeb`.`dtEntered`,
-    `tblmadeb`.`nEnteredBy`,
-    `tblmadeb`.`dtUpdated`,
-    `tblmadeb`.`nUpdatedBy`
-)
-SELECT 
-`briefgb`.`Id`,
-    `briefgb`.`FormNo`,
-    `briefgb`.`GB`,
-	6,
-    `briefgb`.`Name`,
-    `briefgb`.`FathersName`,
-    `briefgb`.`AuthRegionID`,
-    `briefgb`.`ReceivedDate`,
-    `briefgb`.`IssueActionDate`,
-    `briefgb`.`IssuedOrNot`,
-    `briefgb`.`Type`,
-	null,
-    `briefgb`.`OOT`,
-	null,
-    `briefgb`.`CurrentGBSno`,
-    `briefgb`.`PreviousGBSno`,
-    `briefgb`.`SaneyFormNo`,
-    `briefgb`.`ReceiptNo`,
-    `briefgb`.`Email`,
-	null,
-	null,
-	null,
-	null,
-    `briefgb`.`RejectDate`,
-    `briefgb`.`ReturnDate`,
-	now(),
-    `briefgb`.`EnteredBy`,
-	now(),
-    `briefgb`.`EnteredBy`
-FROM `greenbookprime`.`briefgb`;
-
-
-
--- Correcting Data
-
-
--- SELECT * FROM tblmadeb where dtReceived = '0000-00-00';
--- SELECT * FROM tblmadeb where dtIssueAction = '0000-00-00';
--- SELECT * FROM tblmadeb where dtEmailSend = '0000-00-00';
--- SELECT * FROM tblmadeb where dtReject = '0000-00-00';
--- SELECT * FROM tblmadeb where dtReturnEmail = '0000-00-00';
--- SELECT * FROM tblmadeb where sName = '';
--- SELECT * FROM tblgreenbook where dtDOB = '0000-00-00';
--- SELECT * FROM tblgreenbook where dtFormDate = '0000-00-00';
--- SELECT * FROM tblgreenbook where dtDeceased = '0000-00-00';
--- SELECT * FROM tblgreenbook where dtValidityDate = '0000-00-00';
+FROM `ctadb`.`tblmadeb`;
 
 SET SQL_SAFE_UPDATES=0;
 
@@ -693,29 +331,31 @@ update `tblgreenbook`
 set `dtValidityDate` = null
 where `dtValidityDate` =  '0000-00-00';
 
+
 INSERT INTO `tblgivengbid`
-SELECT 
-	`gbnogiven`.`id`,
-	 `gbnogiven`.`id`,
-	`gbnogiven`.`IdentityID`,
-	`gbnogiven`.`formNo`,
-	`gbnogiven`.`date`,
-	`gbnogiven`.`GivenOrNot`,
-	IF(`gbnogiven`.`deleteTab`=1,0,1),
-	now(),
-	1,
-	now(),
-	1
-FROM `greenbookprime`.`gbnogiven`;
+SELECT  `tblgivengbid`.`Id`,
+    `tblgivengbid`.`_Id`,
+    `tblgivengbid`.`nGBId`,
+    `tblgivengbid`.`nFormNo`,
+    `tblgivengbid`.`dtDate`,
+    `tblgivengbid`.`bGivenOrNot`,
+    `tblgivengbid`.`bActive`,
+    `tblgivengbid`.`dtEntered`,
+    `tblgivengbid`.`nEnteredBy`,
+    `tblgivengbid`.`dtUpdated`,
+    `tblgivengbid`.`nUpdatedBy`
+FROM `ctadb`.`tblgivengbid`;
+
 
 INSERT INTO `tblgreenbookissued`
-(`Id`,
+(
 `nGBId`,
 `dtIssuedDate`,
 `sWhyIssued`,
 `nMadebTypeId`,
 `nTypeIssuedId`,
 `sFormNumber`,
+`nFormNumber`,
 `nWhereIssued`,
 `nAuthRegionId`,
 `bPrinted`,
@@ -724,24 +364,23 @@ INSERT INTO `tblgreenbookissued`
 `nEnteredBy`,
 `dtUpdated`,
 `nUpdatedBy`)
-
 SELECT 
-	`ident_bookissued`.`BookIssuedID`,
-	`ident_bookissued`.`IdentityID`,
-	`ident_bookissued`.`IssuedDate`,
-	`ident_bookissued`.`WhyIssued`,
-	null,
-	`ident_bookissued`.`IssuedOrNot`,
-	`ident_bookissued`.`FormNo`,
-	`ident_bookissued`.`WhereIssued`,
-	`ident_bookissued`.`WhereIssued`,
-	`ident_bookissued`.`Printed`,
-	`ident_bookissued`.`Remarks`,
-	`ident_bookissued`.`Entered`,
-	`ident_bookissued`.`EnteredBy`,
-	`ident_bookissued`.`Entered`,
-	`ident_bookissued`.`EnteredBy`
-FROM `greenbookprime`.`ident_bookissued`;
+    `tblgreenbookissued`.`nGBId`,
+    `tblgreenbookissued`.`dtIssuedDate`,
+    `tblgreenbookissued`.`sWhyIssued`,
+    `tblgreenbookissued`.`nMadebTypeId`,
+    `tblgreenbookissued`.`nTypeIssuedId`,
+    `tblgreenbookissued`.`sFormNumber`,
+    `tblgreenbookissued`.`nFormNumber`,
+    `tblgreenbookissued`.`nWhereIssued`,
+    `tblgreenbookissued`.`nAuthRegionId`,
+    `tblgreenbookissued`.`bPrinted`,
+    `tblgreenbookissued`.`sRemarks`,
+    `tblgreenbookissued`.`dtEntered`,
+    `tblgreenbookissued`.`nEnteredBy`,
+    `tblgreenbookissued`.`dtUpdated`,
+    `tblgreenbookissued`.`nUpdatedBy`
+FROM `ctadb`.`tblgreenbookissued`;
 
 SET SQL_SAFE_UPDATES=0;
 UPDATE tblgreenbookissued a
@@ -757,56 +396,37 @@ UPDATE tblgreenbookissued
 SET sRemarks = null
 WHERE sRemarks = '';
 
+update tblgreenbookissued
+set nFormNumber=ceil(cast(sFormNumber AS char(7)));
+
+update tblgreenbookissued
+set nFormNumber = null
+where nformNumber = 0;
 
 
 INSERT INTO `tblgreenbookserial`
-SELECT 
-	`ident_bookserial`.`ID`,
-	`ident_bookserial`.`BookNo`,
-	`ident_bookserial`.`IDNo`,
-	`ident_bookserial`.`Remarks`,
-	`ident_bookserial`.`Date`,
-	`ident_bookserial`.`Name`,
-	`ident_bookserial`.`CountryID`,
-    If(SarsoFormNo is null or SarsoFormNo = 0,
-		If(ChangeFormNo is null or ChangeFormNo = 0,
-			If(LostFormNo is null or LostFormNo = 0,
-				If(Abroad is null or Abroad = 0,
-					If(BookFull is null or BookFull = 0,
-						If(BriefGB is null or BriefGB = 0,Null,
-						6),
-							5),
-								4),
-									3),
-										2),
-											1) as nMadebTypeID,
-	If(SarsoFormNo is null or SarsoFormNo = 0,
-		If(ChangeFormNo is null or ChangeFormNo = 0,
-			If(LostFormNo is null or LostFormNo = 0,
-				If(Abroad is null or Abroad = 0,
-					If(BookFull is null or BookFull = 0,
-						If(BriefGB is null or BriefGB = 0,Null,
-						BriefGB),
-							BookFull),
-								Abroad),
-									LostFormNo),
-										ChangeFormNo),
-											SarsoFormNo) as nFormNumber,
-	`ident_bookserial`.`AuthRegionID`,
-	null,
-	now(),
-	1,
-	now(),
-	1
-FROM greenbookprime.ident_bookserial;
-
+SELECT `tblgreenbookserial`.`Id`,
+    `tblgreenbookserial`.`nBookNo`,
+    `tblgreenbookserial`.`sGBID`,
+    `tblgreenbookserial`.`Remarks`,
+    `tblgreenbookserial`.`dtDate`,
+    `tblgreenbookserial`.`sName`,
+    `tblgreenbookserial`.`sCountryID`,
+    `tblgreenbookserial`.`nMadebTypeID`,
+    `tblgreenbookserial`.`nFormNumber`,
+    `tblgreenbookserial`.`sAuthRegion`,
+    `tblgreenbookserial`.`nAuthRegionID`,
+    `tblgreenbookserial`.`dtEntered`,
+    `tblgreenbookserial`.`nEnteredBy`,
+    `tblgreenbookserial`.`dtUpdated`,
+    `tblgreenbookserial`.`nUpdatedBy`
+FROM `ctadb`.`tblgreenbookserial`;
 
 SET SQL_SAFE_UPDATES=0;
 UPDATE tblgreenbookserial a
 INNER JOIN lstauthregion b 
 	ON a.sAuthRegion = b.sAuthRegion
 SET a.nAuthRegionId = b.Id;
-
 
 INSERT INTO `tblrecentlysearchedgb`
 (
@@ -816,12 +436,13 @@ INSERT INTO `tblrecentlysearchedgb`
     `tblrecentlysearchedgb`.`nEnteredBy`
 )
 SELECT 
-    `recentlysearchedgb`.`IdentityID`,
-    `recentlysearchedgb`.`UserID`,
-    now(),
-	1
- FROM `greenbookprime`.`recentlysearchedgb`;
- 
+    `tblrecentlysearchedgb`.`nGBID`,
+    `tblrecentlysearchedgb`.`nUserID`,
+    `tblrecentlysearchedgb`.`dtEntered`,
+    `tblrecentlysearchedgb`.`nEnteredBy`
+FROM `ctadb`.`tblrecentlysearchedgb`;
+
+
 
 INSERT INTO `lnkgbchildren`
 (`Id`,
@@ -834,17 +455,17 @@ INSERT INTO `lnkgbchildren`
 `dtEntered`,
 `nEnteredBy`
 )
-SELECT 
-	`ident_children`.`ID`,
-	`ident_children`.`ParentID`,
-	`ident_children`.`Name`,
-	`ident_children`.`DOB`,
-	`ident_children`.`Gender`,
-	`ident_children`.`ChildID`,
-	`ident_children`.`ChildIdentityID`,
-	now(),
-	1
-FROM `greenbookprime`.`ident_children`;
+SELECT `lnkgbchildren`.`Id`,
+    `lnkgbchildren`.`sGBIDParent`,
+    `lnkgbchildren`.`sName`,
+    `lnkgbchildren`.`dtDOB`,
+    `lnkgbchildren`.`sGender`,
+    `lnkgbchildren`.`sChildID`,
+    `lnkgbchildren`.`sGBIDChild`,
+    `lnkgbchildren`.`dtEntered`,
+    `lnkgbchildren`.`nEnteredBy`
+FROM `ctadb`.`lnkgbchildren`;
+
 
 
 INSERT INTO `lnkgbnote`
@@ -853,12 +474,12 @@ INSERT INTO `lnkgbnote`
 `sNote`,
 `dtEntered`,
 `nEnteredBy`)
-SELECT `ident_note`.`NoteID`,
-    `ident_note`.`IdentityID`,
-    `ident_note`.`Note`,
-    `ident_note`.`Entered`,
-    `ident_note`.`EnteredBy`
-FROM `greenbookprime`.`ident_note`;
+SELECT `lnkgbnote`.`Id`,
+    `lnkgbnote`.`sGBId`,
+    `lnkgbnote`.`sNote`,
+    `lnkgbnote`.`dtEntered`,
+    `lnkgbnote`.`nEnteredBy`
+FROM `ctadb`.`lnkgbnote`;
 
 
 
@@ -873,84 +494,20 @@ dtUpdated,
 nUpdatedBy
 )
 SELECT 
-    g.sGBID AS sGBID,
-    f.sGBID AS sGBIDRelation,
-    1 as nRelationID,
-    now(),
-    1,
-    now(),
-    1
-FROM
-    tblgreenbook g
-INNER JOIN tblgreenbook f ON 
-    f.sGBID = g.sFathersGBID and  g.sFathersGBID is not null
-ORDER BY 
-    sGBID;
-	
-
-INSERT INTO lnkgbrelation
-(
-sGBID,
-sGBIDRelation,
-nRelationID,
-dtEntered,
-nEnteredBy,
-dtUpdated,
-nUpdatedBy
-)
-SELECT 
-    g.sGBID AS sGBID,
-    f.sGBID AS sGBIDRelation,
-    2 as nRelationID,
-    now(),
-    1,
-    now(),
-    1
-FROM
-    tblgreenbook g
-INNER JOIN tblgreenbook f ON 
-    f.sGBID = g.sMothersGBID and  g.sMothersGBID is not null
-ORDER BY 
-    sGBID;
-	
-
-INSERT INTO lnkgbrelation
-(
-sGBID,
-sGBIDRelation,
-nRelationID,
-dtEntered,
-nEnteredBy,
-dtUpdated,
-nUpdatedBy
-)
-SELECT 
-    g.sGBID AS sGBID,
-    f.sGBID AS sGBIDRelation,
-    3 as nRelationID,
-    now(),
-    1,
-    now(),
-    1
-FROM
-    tblgreenbook g
-INNER JOIN tblgreenbook f ON 
-    f.sGBID = g.sSpouseGBID and  g.sSpouseGBID is not null
-ORDER BY 
-    sGBID;
-
-delete from tblgivengbid where id = 14898 and  nGBID = 8278214;
+    `lnkgbrelation`.`sGBID`,
+    `lnkgbrelation`.`sGBIDRelation`,
+    `lnkgbrelation`.`nRelationID`,
+    `lnkgbrelation`.`dtEntered`,
+    `lnkgbrelation`.`nEnteredBy`,
+    `lnkgbrelation`.`dtUpdated`,
+    `lnkgbrelation`.`nUpdatedBy`
+FROM `ctadb`.`lnkgbrelation`;
 
 
 -- ALTER TABLE tblgreenbookissued
 -- ADD COLUMN nFormNumber int(11) DEFAULT NULL AFTER sFormNumber;
 
-update tblgreenbookissued
-set nFormNumber=ceil(cast(sFormNumber AS char(7)));
 
-update tblgreenbookissued
-set nFormNumber = null
-where nformNumber = 0;
 
 DROP table IF EXISTS `lnkFeatureUserRights`;
 
@@ -1164,9 +721,6 @@ INSERT INTO `lnkFeatureUserRights` (`Id`, `nFeatureID`, `nUserRightsID`, `bRight
 (184, 36, 1, 0, now(), 1),
 (185, 37, 1, 0, now(), 1);
 
-SET SQL_SAFE_UPDATES=0;
-update tblmadeb set dtReceived = dtIssueAction WHERE id in (63639, 44338, 45636);
-
 
 
 INSERT INTO `tblchatrelpayment`
@@ -1267,26 +821,23 @@ SELECT
 	nUpdatedBy
 from tblchatrelpayment;
 
-SET SQL_SAFE_UPDATES=0;
-UPDATE `lnkgbchatrel` a
-INNER JOIN `tblgreenbook` b ON a.sGBID = b.sGBID
-SET a.nAuthRegionID =  b.nAuthRegionId;
-
-UPDATE `lnkgbchatrel` a
-INNER JOIN `tblgreenbook` b ON a.sGBID = b.sGBID
-SET a.sCountryID =  b.sCountryID;
-
-update tblgivengbid
-set bActive = 0
-where nFormNo in (350,
-348,
-327,
-315,
-274,
-3,
-1,
-0);
-
-update tblgivengbid
-set bActive = 0
-where nGBId = 0;
+INSERT INTO `ctauatdb`.`lnkgbdocument`
+(`id`,
+`sGBId`,
+`sTitle`,
+`sDocType`,
+`binFileDoc`,
+`sFileExtension`,
+`nRegisterDate`,
+`dtEntered`,
+`nEnteredBy`)
+SELECT `lnkgbdocument`.`id`,
+    `lnkgbdocument`.`sGBId`,
+    `lnkgbdocument`.`sTitle`,
+    `lnkgbdocument`.`sDocType`,
+    `lnkgbdocument`.`binFileDoc`,
+    `lnkgbdocument`.`sFileExtension`,
+    `lnkgbdocument`.`nRegisterDate`,
+    `lnkgbdocument`.`dtEntered`,
+    `lnkgbdocument`.`nEnteredBy`
+FROM `ctadb`.`lnkgbdocument`;
