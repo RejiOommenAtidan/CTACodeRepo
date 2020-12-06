@@ -82,6 +82,16 @@ export default function GBList(props) {
         padding: '5px',
         width: "10%"
       },
+      filterComponent: () =>
+        <MyComp
+          field="sGBID"
+          name="GREEN BOOK ID"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"sGBID"}
+        />,
       export: true,
       render: rowData => <Button size="small" color="primary"
         onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
@@ -90,7 +100,8 @@ export default function GBList(props) {
       </Button>,
     },
     {
-      title: "FULL NAME",
+      field: "sFirstName",
+      title: "FIRST NAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -103,9 +114,47 @@ export default function GBList(props) {
         width: "30%"
       },
       export: true,
-      render: rowData => (rowData["sFirstName"] === null ? "" : rowData["sFirstName"]) + " " + (rowData["sMiddleName"] === null ? "" : rowData["sMiddleName"]) + " " + (rowData["sLastName"] === null ? "" : rowData["sLastName"]),
+      //render: rowData => (rowData["sFirstName"] === null ? "" : rowData["sFirstName"]) + " " + (rowData["sLastName"] === null ? "" : rowData["sLastName"]),
+      filterComponent: () =>
+        <MyComp
+          name="FIRST NAME"
+          field="sFirstName"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"sFirstName"}
+        />
     },
     {
+      field: "sLastName",
+      title: "LAST NAME",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        width: "30%"
+      },
+      cellStyle: {
+        textAlign: "left",
+        padding: '5px',
+        width: "30%"
+      },
+      export: true,
+      //render: rowData => (rowData["sFirstName"] === null ? "" : rowData["sFirstName"]) + " " + (rowData["sLastName"] === null ? "" : rowData["sLastName"]),
+      filterComponent: () =>
+        <MyComp
+          name="LAST NAME"
+          field="sLastName"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"sLastName"}
+        />
+    },
+    {
+      field: 'dtDOB',
       title: "AGE",
       headerStyle: {
         textAlign: "center",
@@ -146,11 +195,59 @@ export default function GBList(props) {
     }
   ];
 
+
+  useEffect(() => {
+    console.log("Searching useEffect. Searching is", searching);
+
+    if (searching) {
+      let searchObj = {};
+      myarray.map(item => {
+        if (item.id === "madeb.id" || item.id === 'Re-Verified By' || item.id === 'Verified By' || item.id === 'edit' || item.id === 'email') {
+          return;
+          console.log("Changed id to", item.val);
+        };
+
+        if (item.id === 'madeb.nCurrentGBSno' || item.id === 'madeb.nFormNumber' || item.id === 'madeb.nPreviousGBSno' || item.id === 'madeb.nSaneyFormNo') {
+          item.val = parseInt(item.val) || null;
+        }
+        var id = item.id;
+        if (item.id.startsWith('madeb')) {
+          id = item.id.substring(6);
+        }
+        searchObj = { ...searchObj, [id]: item.val };
+      });
+      console.log("Search Object: Inside useEffect", searchObj);
+
+      axios.post(`/Greenbook/GetGreenbooksForEdit`, searchObj)
+        .then(resp => {
+          if (resp.status === 200) {
+            debugger
+            console.log("Got filter Data");
+            setdataAPI([...resp.data]);
+            setSearching(false);
+            //setTimeout(() => ele.focus(), 2000);
+
+          }
+          if (resp.status === 204) {
+            console.log("Got  Empty data set");
+            setdataAPI([...resp.data]);
+            setSearching(false);
+          }
+        })
+        .catch(error => {
+          console.log(error.message);
+          //handleError(error, history);
+        })
+    }
+  }, [myarray]);
+
+
   const editClick = (tableRowArray) => {
     history.push("/EditEntry/" + tableRowArray.id);
   };
 
   useEffect(() => {
+    buildArray();
     axios.get(`/Greenbook/GetGreenbooks`)
       .then(resp => {
         if (resp.status === 200) {

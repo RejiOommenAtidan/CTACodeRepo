@@ -4,6 +4,7 @@ using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using CTADBL.ViewModels;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -309,7 +310,56 @@ namespace CTADBL.ViewModelsRepositories
                 return result;
             }
         }
+        #region Get Green books list for edit as per column search parameters
+        public IEnumerable<object> GetGreenbooksForEdit(string parameters)
+        {
+            string addToSql = @"SELECT sGBID, sFirstName, sLastName, dtDOB FROM tblgreenbook WHERE ";
 
+            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(parameters);
+
+            using (var command = new MySqlCommand())
+            {
+                foreach (KeyValuePair<string, dynamic> item in dictionary)
+                {
+                    if (item.Value != null)
+                    {
+                        if (item.Value.GetType() == typeof(Int32) || item.Value.GetType() == typeof(Int64))
+                        {
+                            addToSql += String.Format(@"{0} LIKE @{1} AND ", item.Key, item.Key);
+                            command.Parameters.AddWithValue(item.Key.ToString(), item.Value + '%');
+                        }
+
+                        if (item.Value.GetType() == typeof(string))
+                        {
+                            if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                            {
+                                addToSql += String.Format(@"{0} LIKE @{1} AND ", item.Key, item.Key);
+                                command.Parameters.AddWithValue(item.Key.ToString(), item.Value + '%');
+                            }
+                        }
+                    }
+                }
+                addToSql += "1 = 1 LIMIT 100";
+                command.CommandText = addToSql;
+                command.CommandType = CommandType.Text;
+                command.Connection = _connection;
+                DataSet ds = new DataSet();
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var result = tables[0].AsEnumerable().Select(row => new
+                {
+                    sGBID = row.Field<string>("sGBID"),
+                    sFirstName = row.Field<string>("sFirstName"),
+                    sLastName = row.Field<string>("sLastName"),
+                    dtDOB = row.Field<DateTime>("dtDOB"),
+                });
+                return result;
+            }
+
+
+        }
+        #endregion
         #region Populate Records
         public override GreenBookVM PopulateRecord(MySqlDataReader reader)
         {

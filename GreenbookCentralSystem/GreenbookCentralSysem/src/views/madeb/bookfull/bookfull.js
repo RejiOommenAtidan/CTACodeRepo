@@ -220,7 +220,7 @@ export default function EnhancedTable() {
       },
       filterComponent: () =>
         <MyComp
-          name="Form Number"
+          name="FORM NUMBER"
           field="madeb.nFormNumber"
           changeHandler={changeHandler}
           myarray={myarray}
@@ -246,7 +246,7 @@ export default function EnhancedTable() {
       render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined,
       filterComponent: () =>
         <MyComp
-          name="Received Date"
+          name="RECEIVED DATE"
           field="madeb.dtReceived"
           changeHandler={changeHandler}
           myarray={myarray}
@@ -269,7 +269,7 @@ export default function EnhancedTable() {
       },
       filterComponent: () =>
         <MyComp
-          name="Authority"
+          name="AUTHORITY"
           field="sAuthRegion"
           changeHandler={changeHandler}
           myarray={myarray}
@@ -292,7 +292,7 @@ export default function EnhancedTable() {
       },
       filterComponent: () =>
         <MyComp
-          name="Name"
+          name="NAME"
           field="madeb.sName"
           changeHandler={changeHandler}
           myarray={myarray}
@@ -318,7 +318,7 @@ export default function EnhancedTable() {
       filterComponent: () =>
         <MyComp
           field="madeb.sGBID"
-          name="GB Id"
+          name="GB ID"
           changeHandler={changeHandler}
           myarray={myarray}
           updateArray={updateArray}
@@ -342,7 +342,7 @@ export default function EnhancedTable() {
       filterComponent: () =>
         <MyComp
           field="madeb.sFathersName"
-          name="Father's Name"
+          name="FATHER'S NAME"
           changeHandler={changeHandler}
           myarray={myarray}
           updateArray={updateArray}
@@ -365,7 +365,7 @@ export default function EnhancedTable() {
       filterComponent: () =>
         <MyComp
           field="madeb.nSaneyFormNo"
-          name="Saney Form No"
+          name="SANEY FORM NO"
           changeHandler={changeHandler}
           myarray={myarray}
           updateArray={updateArray}
@@ -388,7 +388,7 @@ export default function EnhancedTable() {
       filterComponent: () =>
         <MyComp
           field="madeb.nCurrentGBSno"
-          name="Current GB SNo."
+          name="CURRENT GB SNO."
           changeHandler={changeHandler}
           myarray={myarray}
           updateArray={updateArray}
@@ -411,7 +411,7 @@ export default function EnhancedTable() {
       filterComponent: () =>
         <MyComp
           field="madeb.nPreviousGBSno"
-          name="Previous GB SNo"
+          name="PREVIOUS GB SNO"
           changeHandler={changeHandler}
           myarray={myarray}
           updateArray={updateArray}
@@ -471,7 +471,7 @@ export default function EnhancedTable() {
       filterComponent: () =>
         <MyComp
           field="madeb.dtIssueAction"
-          name="Issue Action Date"
+          name="ISSUE ACTION DATE"
           changeHandler={changeHandler}
           myarray={myarray}
           updateArray={updateArray}
@@ -495,7 +495,7 @@ export default function EnhancedTable() {
       filterComponent: () =>
         <MyComp
           field="sTypeIssued"
-          name="Issue Action"
+          name="ISSUE ACTION"
           changeHandler={changeHandler}
           myarray={myarray}
           updateArray={updateArray}
@@ -518,7 +518,7 @@ export default function EnhancedTable() {
       filterComponent: () =>
         <MyComp
           field="sMadebStatus"
-          name="Status"
+          name="STATUS"
           changeHandler={changeHandler}
           myarray={myarray}
           updateArray={updateArray}
@@ -542,7 +542,7 @@ export default function EnhancedTable() {
       filterComponent: () =>
         <MyComp
           field="madeb.sMadebStatusRemark"
-          name="Status Remark"
+          name="STATUS REMARK"
           changeHandler={changeHandler}
           myarray={myarray}
           updateArray={updateArray}
@@ -568,7 +568,7 @@ export default function EnhancedTable() {
       filterComponent: () =>
         <MyComp
           field="madeb.dtReject"
-          name="Reject Date"
+          name="REJECT DATE"
           changeHandler={changeHandler}
           myarray={myarray}
           updateArray={updateArray}
@@ -594,7 +594,7 @@ export default function EnhancedTable() {
       filterComponent: () =>
         <MyComp
           field="madeb.dtReturnEmail"
-          name="Return Date"
+          name="RETURN DATE"
           changeHandler={changeHandler}
           myarray={myarray}
           updateArray={updateArray}

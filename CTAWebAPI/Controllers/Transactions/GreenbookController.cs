@@ -351,6 +351,38 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult GetGreenbooksForEdit([FromBody] Object searchObject)
+        {
+            if(searchObject == null)
+            {
+                return BadRequest("Missing parameters to search");
+            }
+            try
+            {
+                IEnumerable<Object> result = _greenBookVMRepository.GetGreenbooksForEdit(searchObject.ToString());
+                if(result != null && result.Count() > 0)
+                {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status204NoContent, "No records found for search criteria");
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
         #endregion
 
         #region Add Call
