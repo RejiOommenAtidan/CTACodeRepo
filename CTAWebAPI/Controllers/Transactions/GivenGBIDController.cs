@@ -100,9 +100,10 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Add Call
-        [HttpPost]
+       
         [Route("[action]")]
-        public IActionResult AddGivenGBID(GivenGBID givenGBID)
+        [HttpPost("AddGivenGBID/dtReceived={dtReceived}")]
+        public IActionResult AddGivenGBID(DateTime dtReceived,GivenGBID givenGBID)
         {
             #region Add Given GBID
             try
@@ -110,7 +111,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 if (ModelState.IsValid)
                 {
                     
-                    if (_madebRepository.AddGBIDByFormNo(givenGBID.nFormNo, givenGBID.nGBId.ToString()))
+                    if (_madebRepository.AddGBIDByFormNo(givenGBID.nFormNo, dtReceived, givenGBID.nGBId.ToString()))
                     {
                         /* Changed by Rajen*/
                         givenGBID.dtDate = DateTime.Now;

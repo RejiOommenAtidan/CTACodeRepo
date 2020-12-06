@@ -63,7 +63,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
 
         #region Add GBID to Sarso Form
-        public bool AddGBIDByFormNo(int nFormNumber, string sGBID)
+        public bool AddGBIDByFormNo(int nFormNumber,DateTime dtReceived, string sGBID)
         {
             Madeb madeb = GetMadebByFormNumber(nFormNumber);
             if(madeb.nMadebTypeID != 1)
@@ -73,7 +73,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             madeb.sGBID = sGBID;
             madeb.nIssuedOrNotID = 1;
             madeb.dtUpdated = DateTime.Now;
-            madeb.dtIssueAction = DateTime.Now;
+            madeb.dtIssueAction = dtReceived;
             this.Update(madeb);
             return true;
         }
@@ -83,10 +83,20 @@ namespace CTADBL.BaseClassRepositories.Transactions
         public void UpdateTypeIssued(string Id, int nIssuedOrNotID,DateTime dtIssuedDate)
         {
             Madeb madeb = GetMadebById(Id);
-            madeb.nIssuedOrNotID = nIssuedOrNotID;
-            madeb.dtUpdated = DateTime.Now;
-            madeb.dtIssueAction = dtIssuedDate;
-            this.Update(madeb);
+            if (madeb.nMadebTypeID == 1)
+            {
+                madeb.nIssuedOrNotID = nIssuedOrNotID;
+                madeb.dtUpdated = DateTime.Now;
+                
+                this.Update(madeb);
+            }
+            else {
+                madeb.nIssuedOrNotID = nIssuedOrNotID;
+                madeb.dtUpdated = DateTime.Now;
+                madeb.dtIssueAction = dtIssuedDate;
+                this.Update(madeb);
+            }
+            
         }
         #endregion
 

@@ -200,12 +200,14 @@ export default function GiveGBId() {
     const gbidObj = {
       nGBId: randomGBID,
       nFormNo: nFormNumber,
+      
       bGivenOrNot: false,
       bActive: true
     };
     console.log("GBID Object:\n", gbidObj);
+    console.log("date", dtReceived);
     setBackdrop(true);
-    axios.post(`GivenGBID/AddGivenGBID`, gbidObj)
+    axios.post(`GivenGBID/AddGivenGBID/dtReceived=`+dtReceived, gbidObj)
       .then(resp => {
         if (resp.status === 200) {
           setAssignModal(false);
