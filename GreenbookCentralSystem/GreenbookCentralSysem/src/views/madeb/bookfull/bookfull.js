@@ -18,8 +18,9 @@ import { EmailDialog } from '../email';
 import { Alerts } from '../../alerts';
 import { AddDialog, EditDialog } from './dialog';
 import { ViewDialog } from '../../search/dialog';
-import { oOptions, oTableIcons, sDateFormat,sButtonSize,modifyHeaders } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, modifyHeaders } from '../../../config/commonConfig';
 import MyComp from '../../common/filtercomponent';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,11 +94,11 @@ export default function EnhancedTable() {
   const [issueAction, setIssueAction] = React.useState(0);
   const [returnDate, setReturnDate] = React.useState('');
   const [bookFullObj, setBookFullObj] = useState({});
-  const [dataChanged, setDataChanged] = useState(false);
   const [emailInObj, setEmailInObj] = useState({});
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
   const [isLoading, setisLoading] = React.useState(true);
+  const [backdrop, setBackdrop] = React.useState(false);
 
 
   //View GB
@@ -632,7 +633,7 @@ export default function EnhancedTable() {
       >
         <EditOutlinedIcon />
       </IconButton>}
-        
+
       </>,
       headerStyle: {
         textAlign: "center",
@@ -751,7 +752,7 @@ export default function EnhancedTable() {
     madeb.dtReceived = madeb.dtReceived === "" ? null : madeb.dtReceived;
     madeb.dtIssueAction = madeb.dtIssueAction === "" ? null : madeb.dtIssueAction;
     madeb.dtReturnEmail = madeb.dtReturnEmail === "" ? null : madeb.dtReturnEmail;
-
+    setBackdrop(true);
     axios.post(`Madeb/EditMadeb/Id=` + madeb.id, madeb)
       .then(resp => {
         if (resp.status === 200) {
@@ -759,14 +760,15 @@ export default function EnhancedTable() {
           setAlertMessage('Record updated successfully.');
           setAlertType('success');
           snackbarOpen();
+          setBackdrop(false);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
               }
             })
             .catch(error => {
+              setBackdrop(false);
               console.log(error.config);
               console.log(error.message);
             })
@@ -778,6 +780,7 @@ export default function EnhancedTable() {
         setAlertMessage(`Record updation failed. \nError:${error.message}.`);
         setAlertType('error');
         snackbarOpen();
+        setBackdrop(false);
       })
   };
 
@@ -786,7 +789,6 @@ export default function EnhancedTable() {
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
-          // setdataAPI(resp.data)
         }
       })
       .catch(error => {
@@ -806,23 +808,24 @@ export default function EnhancedTable() {
       });
   }
   const addAPICall = (madeb) => {
+    setBackdrop(true);
     axios.post(`Madeb/AddMadeb/`, madeb)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           setAlertMessage('Created new record successfully.');
           setAlertType('success');
           snackbarOpen();
+          setBackdrop(false);
           selectDatafunction();
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
               }
             })
             .catch(error => {
+              setBackdrop(false);
               console.log(error.message);
               console.log(error.config);
             })
@@ -834,6 +837,7 @@ export default function EnhancedTable() {
         setAlertMessage(`Record creation failed. \nError:${error.message}.`);
         setAlertType('error');
         snackbarOpen();
+        setBackdrop(false);
       })
   };
 
@@ -935,6 +939,9 @@ export default function EnhancedTable() {
             handleEmailClickClose={handleEmailClickClose}
           //emailAPICall={emailAPICall}
           />}
+          {backdrop && <BackdropComponent
+            backdrop={backdrop}
+        />}
         </Grid>
       </Grid>
     </>

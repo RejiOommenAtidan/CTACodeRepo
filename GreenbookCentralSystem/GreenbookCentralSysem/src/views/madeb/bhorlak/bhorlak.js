@@ -19,6 +19,7 @@ import { Alerts } from '../../alerts';
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons, sDateFormat, modifyHeaders, sButtonSize } from '../../../config/commonConfig';
 import { ViewDialog } from '../../search/dialog';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -90,7 +91,6 @@ export default function EnhancedTable() {
   const [rejectDate, setRejectDate] = React.useState('');
   const [bhorlakObj, setBhorlakObj] = useState({});
   const [emailInObj, setEmailInObj] = useState({});
-  const [dataChanged, setDataChanged] = useState(false);
   const [isLoading, setisLoading] = React.useState(true);
   const [gbId, setGbId] = React.useState('');
   const [filtering, setFiltering] = React.useState(false);
@@ -119,6 +119,7 @@ export default function EnhancedTable() {
     alertType: alertType
   };
   const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
   const snackbarOpen = () => {
     setSnackbar(true);
   };
@@ -489,26 +490,23 @@ export default function EnhancedTable() {
     //   sCountry: countryName,
     // };
     console.log(madeb);
-
+    setBackdrop(true);
     axios.post(`/Madeb/EditMadeb/ID=` + id, madeb/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
           setEditModal(false);
           setAlertMessage('Record Successfully Edited');
           setAlertType('success');
           snackbarOpen();
+          setBackdrop(false);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=3`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
-
-                setDataChanged(true);
               }
             })
             .catch(error => {
-
+              setBackdrop(false);
               if (error.response) {
                 console.error(error.response.data);
                 console.error(error.response.status);
@@ -544,6 +542,7 @@ export default function EnhancedTable() {
         setAlertMessage('Error! ' + error.message);
         setAlertType('error');
         snackbarOpen();
+        setBackdrop(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -565,8 +564,6 @@ export default function EnhancedTable() {
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
-
-          // setdataAPI(resp.data)
         }
       })
       .catch(error => {
@@ -587,26 +584,27 @@ export default function EnhancedTable() {
   };
 
   const addAPICall = (madeb) => {
+    setBackdrop(true);
     axios.post(`/Madeb/AddMadeb/`, madeb)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           setAlertMessage('Record Successfully Added');
           setAlertType('success');
           snackbarOpen();
+          setBackdrop(false);
           selectDatafunction();
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=3`)
             .then(resp => {
               if (resp.status === 200) {
-                //console.log(resp.data);
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
               }
             })
             .catch(error => {
               setAlertMessage('Error! ' + error.message);
               setAlertType('error');
               snackbarOpen();
+              setBackdrop(false);
               if (error.response) {
                 console.error(error.response.data);
                 console.error(error.response.status);
@@ -628,6 +626,7 @@ export default function EnhancedTable() {
         setAlertMessage('Error! ' + error.message);
         setAlertType('error');
         snackbarOpen();
+        setBackdrop(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -735,6 +734,9 @@ export default function EnhancedTable() {
             alertObj={alertObj}
             snackbar={snackbar}
             snackbarClose={snackbarClose}
+          />}
+          {backdrop && <BackdropComponent
+            backdrop={backdrop}
           />}
         </Grid>
       </Grid>

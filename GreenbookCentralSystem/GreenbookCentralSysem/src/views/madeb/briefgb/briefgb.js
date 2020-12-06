@@ -13,6 +13,7 @@ import { ViewDialog } from '../../search/dialog';
 import { Alerts } from '../../alerts';
 import { AddDialog, EditDialog } from './dialog';
 import { oOptions, oTableIcons, sDateFormat, sButtonSize, modifyHeaders } from 'config/commonConfig';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -97,6 +98,7 @@ export default () => {
 
   //View GB
   const [viewModal, setViewModal] = useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
   const handleViewClickClose = () => {
     setViewModal(false);
   };
@@ -518,6 +520,7 @@ export default () => {
     madeb.dtIssueAction = madeb.dtIssueAction === "" ? null : madeb.dtIssueAction;
     madeb.dtReturnEmail = madeb.dtReturnEmail === "" ? null : madeb.dtReturnEmail;
 
+    setBackdrop(true);
     axios.post(`Madeb/EditMadeb/Id=` + madeb.id, madeb)
       .then(resp => {
         if (resp.status === 200) {
@@ -526,18 +529,18 @@ export default () => {
           setAlertMessage('Record updated successfully.');
           setAlertType('success');
           snackbarOpen();
+          setBackdrop(false);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=6`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
-                //setDataChanged(true);
               }
               else {
                 console.log("Response received:\n", resp);
               }
             })
             .catch(error => {
+              setBackdrop(false);
               console.log(error.config);
               console.log(error.message);
             })
@@ -547,6 +550,7 @@ export default () => {
         setAlertMessage(`Madeb Updation Failed. Error:${error.response.data}.`);
         setAlertType('error');
         snackbarOpen();
+        setBackdrop(false);
       })
 
   };
@@ -568,23 +572,24 @@ export default () => {
 
   const addAPICall = (madeb) => {
     console.log(madeb);
+    setBackdrop(true);
     axios.post(`/Madeb/AddMadeb/`, madeb)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           selectDatafunction();
           setAlertMessage('Created new record successfully.');
           setAlertType('success');
           snackbarOpen();
+          setBackdrop(false);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=6`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
               }
             })
             .catch(error => {
+              setBackdrop(false);
               console.log(error.message);
               console.log(error.config);
             })
@@ -594,6 +599,7 @@ export default () => {
         setAlertMessage(`Failed to create new Madeb. Error:${error.response.data}.`);
         setAlertType('error');
         snackbarOpen();
+        setBackdrop(false);
       })
   };
 
@@ -677,6 +683,9 @@ export default () => {
             alertObj={alertObj}
             snackbar={snackbar}
             snackbarClose={snackbarClose}
+          />}
+          {backdrop && <BackdropComponent
+            backdrop={backdrop}
           />}
         </Grid>
       </Grid>

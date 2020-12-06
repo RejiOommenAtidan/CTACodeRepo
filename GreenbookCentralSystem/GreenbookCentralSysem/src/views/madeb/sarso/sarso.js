@@ -13,8 +13,9 @@ import IconButton from '@material-ui/core/IconButton';
 import EmailIcon from '@material-ui/icons/Email';
 import { AddDialog, EditDialog } from './dialog';
 import { EmailDialog } from '../email';
-import { Alerts } from '../../alerts';
 import MaterialTable from 'material-table';
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 import { oOptions, oTableIcons, sDateFormat,modifyHeaders } from '../../../config/commonConfig';
 
 const useStyles = makeStyles((theme) => ({
@@ -88,8 +89,8 @@ export default function EnhancedTable() {
   const [rejectDate, setRejectDate] = React.useState('');
   const [sarsoObj, setSarsoObj] = useState({});
   const [emailInObj, setEmailInObj] = useState({});
-  const [dataChanged, setDataChanged] = useState(false);
   const [isLoading, setisLoading] = React.useState(true);
+  const [backdrop, setBackdrop] = React.useState(false);
 
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
@@ -481,7 +482,7 @@ export default function EnhancedTable() {
     //   sCountry: countryName,
     // };
     console.log(madeb);
-
+    setBackdrop(true);
     axios.post(`/Madeb/EditMadeb/ID=` + id, madeb/*countryToUpdate*/)
       .then(resp => {
         if (resp.status === 200) {
@@ -490,17 +491,15 @@ export default function EnhancedTable() {
           setAlertMessage('Record Successfully Edited');
           setAlertType('success');
           snackbarOpen();
+          setBackdrop(false);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=1`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
-
-                setDataChanged(true);
               }
             })
             .catch(error => {
-
+              setBackdrop(false);
               if (error.response) {
                 console.error(error.response.data);
                 console.error(error.response.status);
@@ -536,6 +535,7 @@ export default function EnhancedTable() {
         setAlertMessage('Error! ' + error.message);
         setAlertType('error');
         snackbarOpen();
+        setBackdrop(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -576,26 +576,27 @@ export default function EnhancedTable() {
       });
   }
   const addAPICall = (madeb) => {
+    setBackdrop(true);
     axios.post(`/Madeb/AddMadeb/`, madeb)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAddModal(false);
           setAlertMessage('Record Successfully Added');
           setAlertType('success');
           snackbarOpen();
+          setBackdrop(false);
           selectDatafunction();
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=1`)
             .then(resp => {
               if (resp.status === 200) {
-                //console.log(resp.data);
-                setdataAPI(resp.data)
+                setdataAPI(resp.data);
               }
             })
             .catch(error => {
               setAlertMessage('Error! ' + error.message);
               setAlertType('error');
               snackbarOpen();
+              setBackdrop(false);
               if (error.response) {
                 console.error(error.response.data);
                 console.error(error.response.status);
@@ -617,6 +618,7 @@ export default function EnhancedTable() {
         setAlertMessage('Error! ' + error.message);
         setAlertType('error');
         snackbarOpen();
+        setBackdrop(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -724,6 +726,9 @@ export default function EnhancedTable() {
             snackbar={snackbar}
             snackbarClose={snackbarClose}
           />}
+          {backdrop && <BackdropComponent
+            backdrop={backdrop}
+        />}
         </Grid>
       </Grid>
     </>
