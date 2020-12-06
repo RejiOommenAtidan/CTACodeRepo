@@ -132,6 +132,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.id",
       title: "#",
+     
       hidden: true,
       headerStyle: {
         textAlign: "center",
@@ -151,6 +152,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.nFormNumber",
       title: "FORM NO.",
+      width: "7%",
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
@@ -167,6 +169,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReceived",
       title: "RECEIVED DATE",
+      width: "8%",
       render: rowData => Moment(rowData['madeb']['dtReceived']).format(sDateFormat),
       headerStyle: {
         textAlign: "center",
@@ -182,6 +185,7 @@ export default function EnhancedTable() {
     },
     {
       field: "sAuthRegion",
+      width: "6%",
       title: "AUTHORITY",
       headerStyle: {
         textAlign: "center",
@@ -198,6 +202,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.sName",
       title: "NAME",
+      width: "8%",
       headerStyle: {
         textAlign: "left",
         textAlignLast: "center",
@@ -205,13 +210,14 @@ export default function EnhancedTable() {
         
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
       field: "madeb.sGBID",
       title: "GB ID",
+      width: "8%",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -225,6 +231,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.sFathersName",
       title: "FATHER'S NAME",
+      width: "8%",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -238,6 +245,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.nSaneyFormNo",
       title: "SANEY FORM NO",
+      width: "6%",
       hidden: false,
       headerStyle: {
         textAlign: "center",
@@ -252,6 +260,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.sDocumentAttached",
       title: "DOCUMENT ATTACHED",
+      width: "6%",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -264,6 +273,7 @@ export default function EnhancedTable() {
     },
     {
       field: "sMadebStatus",
+      width: "8%",
       title: "STATUS",
       headerStyle: {
         textAlign: "center",
@@ -277,6 +287,7 @@ export default function EnhancedTable() {
     },
     {
       field: "madeb.sMadebStatusRemark",
+      width: "8%",
       title: "REMARK",
       headerStyle: {
         textAlign: "center",
@@ -284,12 +295,14 @@ export default function EnhancedTable() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
       field: "madeb.dtIssueAction",
+
+      width: "8%",
       title: "ISSUE ACTION DATE",
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : '',
       // render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
@@ -305,6 +318,7 @@ export default function EnhancedTable() {
     },
     {
       field: "sTypeIssued",
+      width: "8%",
       title: "ISSUE ACTION",
       headerStyle: {
         textAlign: "center",
@@ -318,6 +332,7 @@ export default function EnhancedTable() {
     },
     {
       field: "madeb.dtReturnEmail",
+      width: "8%",
       title: "RETURN DATE",
       //render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
       render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : '',
@@ -334,6 +349,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReject",
       title: "REJECT DATE",
+      width: "8%",
      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : '',
       headerStyle: {
         textAlign: "center",
@@ -349,6 +365,7 @@ export default function EnhancedTable() {
     {
       field: "email",
       title: "EMAIL",
+      width: "3%",
       filtering: false,
       sorting: false,
       export: false,
@@ -369,6 +386,7 @@ export default function EnhancedTable() {
     },
     {
       field: "edit",
+      width: "3 %",
       title: "EDIT",
       sorting: false,
       export: false,
