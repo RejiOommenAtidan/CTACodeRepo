@@ -87,7 +87,7 @@ namespace CTADBL.ViewModelsRepositories
         #region Get Green Book by passing GreenBookSerial Number.
         public PrintGreenBookVM GetGreenBookByGBID(string sGBID)
         {
-            string sql = "SELECT gb.sCountryID, gb.sGBID, CONCAT(gb.sFirstName, ' ' , IFNULL(gb.sMiddleName, ''), ' ', IFNULL(gb.sLastName, '')) AS sName, gb.dtDOB, gb.sDOBApprox, gb.TibetanName, gb.TBUOriginVillage, gbsn.nBookNo FROM tblgreenbookserial AS gbsn INNER JOIN tblgreenbook AS gb ON gb.sGBID = gbsn.sGBID WHERE gbsn.sGBID = '8059360' ORDER BY gbsn.nBookNo DESC LIMIT 1;";
+            string sql = "SELECT gb.sCountryID, gb.sGBID, CONCAT(gb.sFirstName, ' ' , IFNULL(gb.sMiddleName, ''), ' ', IFNULL(gb.sLastName, '')) AS sName, gb.dtDOB, gb.sDOBApprox, gb.TibetanName, gb.TBUOriginVillage, gbsn.nBookNo FROM tblgreenbookserial AS gbsn INNER JOIN tblgreenbook AS gb ON gb.sGBID = gbsn.sGBID WHERE gbsn.sGBID = @sGBID ORDER BY gbsn.nBookNo DESC LIMIT 1;";
 
             using (var command = new MySqlCommand(sql))
             {
