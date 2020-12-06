@@ -247,7 +247,7 @@ export const EditDialog = (props) => {
                         readOnly: false,
                       }}
                       value={formNumber}
-                      onChange={(e) => { setFormNumber(e.target.value) }}
+                      onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
 
                     />
                   </FormControl>

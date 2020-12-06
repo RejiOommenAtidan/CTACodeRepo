@@ -5,7 +5,7 @@ import { authenticationService } from '../../../auth/_services';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { storeAuthDetails, removeAuthDetails } from "../../../actions/userAuthenticateAction";
-
+import projectLogo from '../../../assets/images/ctalogo.png';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import {
   Grid,
@@ -82,6 +82,14 @@ export default function LogingPage(props) {
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid item md={10} lg={8} xl={4} className="mx-auto">
                       <div className="text-center">
+                      <img
+                        alt="CTA"
+                        src={projectLogo}
+                        width={"300px"}
+                        //height={}
+                        style={{marginBottom:'20px'}}
+                      />
+                      
                         <h1 className="display-4 mb-1 font-weight-bold">
                         New CTA's Green Book Database
                         </h1>
