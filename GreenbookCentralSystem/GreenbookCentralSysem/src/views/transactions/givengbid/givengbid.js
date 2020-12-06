@@ -8,11 +8,11 @@ import { useDispatch } from 'react-redux';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import IconButton from '@material-ui/core/IconButton';
 import { red } from '@material-ui/core/colors';
-
 import { useHistory } from 'react-router-dom';
-//Local
 import { AssignDialog } from './assigndialog';
 import { oOptions, oTableIcons, sDateFormat, modifyHeaders } from '../../../config/commonConfig';
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,7 +61,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
 export default function GiveGBId() {
   // Common properties
   const classes = useStyles();
@@ -78,7 +77,27 @@ export default function GiveGBId() {
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
 
-  // Table Column def
+  //#region Alert & Snackbar
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
+
+
   const columns = [
     {
       field: "nFormNumber",
@@ -88,12 +107,12 @@ export default function GiveGBId() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width:'10%'
+        width: '10%'
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width:'10%'
+        width: '10%'
       }
     },
     {
@@ -105,12 +124,12 @@ export default function GiveGBId() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width:'10%'
+        width: '10%'
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width:'10%'
+        width: '10%'
       },
       render: rowData => Moment(rowData['dtReceived']).format(sDateFormat),
     },
@@ -147,12 +166,12 @@ export default function GiveGBId() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width:'5%'
+        width: '5%'
       },
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width:'5%'
+        width: '5%'
       },
     }
   ];
@@ -185,16 +204,18 @@ export default function GiveGBId() {
       bActive: true
     };
     console.log("GBID Object:\n", gbidObj);
-
+    setBackdrop(true);
     axios.post(`GivenGBID/AddGivenGBID`, gbidObj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log("Added record to givengbid table");
           setAssignModal(false);
+          setAlertMessage("GB ID Assigned Successfully");
+          setAlertType('success');
+          snackbarOpen();
+          setBackdrop(false);
           axios.get(`Madeb/GetFormsWithoutGBId`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log("Added record & reload.", resp.data);
                 setdataAPI(resp.data);
                 setLoading(false);
               }
@@ -202,12 +223,21 @@ export default function GiveGBId() {
             .catch(error => {
               console.log(error.config);
               console.log(error.message);
+              setAlertMessage("Couldn't Assign GB ID, Something went wrong");
+              setAlertType('error');
+              snackbarOpen();
+              setBackdrop(false);
               setLoading(false);
             })
         }
       })
       .catch((error) => {
         console.log(error);
+        setAlertMessage("Couldn't Assign GB ID, Something went wrong");
+        setAlertType('error');
+        snackbarOpen();
+        setBackdrop(false);
+        setLoading(false);
       });
   };
 
@@ -254,7 +284,6 @@ export default function GiveGBId() {
               }
             ]}
           ></MaterialTable>
-
           {assignModal && <AssignDialog
             assignModal={assignModal}
             nFormNumber={nFormNumber}
@@ -263,6 +292,15 @@ export default function GiveGBId() {
             classes={classes}
             handleDialogClose={handleDialogClose}
             handleAssignGBID={handleAssignGBID}
+          />}
+          {snackbar && <Alerts
+            alertObj={alertObj}
+            snackbar={snackbar}
+            snackbarClose={snackbarClose}
+          />
+          }
+          {backdrop && <BackdropComponent
+            backdrop={backdrop}
           />}
         </Grid>
       </Grid>
