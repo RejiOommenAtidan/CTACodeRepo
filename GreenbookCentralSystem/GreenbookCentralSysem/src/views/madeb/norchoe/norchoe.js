@@ -184,7 +184,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReceived",
       title: "RECEIVED DATE",
-      render: rowData => Moment(rowData['madeb']['dtReceived']).format('YYYY-MM-DD'),
+      render: rowData => Moment(rowData['madeb']['dtReceived']).format(sDateFormat),
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -304,7 +304,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtIssueAction",
       title: "ISSUE ACTION DATE",
-      render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD') : '',
+      render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : '',
       // render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
       headerStyle: {
         textAlign: "center",
@@ -333,7 +333,7 @@ export default function EnhancedTable() {
       field: "madeb.dtReturnEmail",
       title: "RETURN DATE",
       //render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
-      render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD') : '',
+      render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : '',
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -347,7 +347,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReject",
       title: "REJECT DATE",
-      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format('YYYY-MM-DD') : '',
+      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : '',
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",

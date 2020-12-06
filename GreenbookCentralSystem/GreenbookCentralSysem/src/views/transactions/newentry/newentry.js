@@ -123,7 +123,7 @@ export default function NewEntry(props) {
   const [sGBID, setsGBID] = useState('');
   const [nAuthRegionID, setnAuthRegionID] = useState('');
   const [sFirstName, setsFirstName] = useState('');
-  const [sMiddleName, setsMiddleName] = useState('');
+  const [sLastName, setsLastName] = useState('');
   const [sFamilyName, setsFamilyName] = useState('');
   const [sGender, setsGender] = useState('');
   const [dtDOB, setdtDOB] = useState(null);
@@ -186,7 +186,7 @@ export default function NewEntry(props) {
       sGBID,
       nAuthRegionID,
       sFirstName,
-      sMiddleName,
+      sLastName,
       sFamilyName,
       sGender,
       dtDOB,
@@ -273,7 +273,7 @@ export default function NewEntry(props) {
           if(apiDataMadeb!==null){
             if(apiDataMadeb.sName.includes(" ")){
               setsFirstName(apiDataMadeb.sName.split(" ")[0]);
-              setsMiddleName(apiDataMadeb.sName.split(/ (.+)/)[1]);
+              setsLastName(apiDataMadeb.sName.split(/ (.+)/)[1]);
             }
             else{
               setsFirstName(apiDataMadeb.sName);
@@ -430,15 +430,15 @@ export default function NewEntry(props) {
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
-                        id="id_sMiddleName"
-                        label="Middle Name"
+                        id="id_sLastName"
+                        label="Last Name"
                         
                         type="text"
-                        onChange={(e) => { setsMiddleName(e.target.value); }}
+                        onChange={(e) => { setsLastName(e.target.value); }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        defaultValue={sMiddleName}
+                        defaultValue={sLastName}
                       />
                     </FormControl>
                   </Grid>
