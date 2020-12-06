@@ -156,6 +156,7 @@ export default function GBList(props) {
     {
       field: 'dtDOB',
       title: "AGE",
+      filtering: false,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
