@@ -116,9 +116,9 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         //1-Login
                         //2-Home
-                        //19-Change Password
-                        //20-Search
-                        if (oFeature.Id == 1 || oFeature.Id == 2 || oFeature.Id == 19 || oFeature.Id == 20)
+                        //3-Search
+                        //34-Change Password
+                        if (oFeature.Id == 1 || oFeature.Id == 2 || oFeature.Id == 3 || oFeature.Id == 34)
                         {
                             FeatureUserrights lnkFeatureUserrights = new FeatureUserrights
                             {

@@ -299,11 +299,11 @@ const Routes = () => {
                     <PrivateRoute path="/CTAConfig" feature={33} component={CTAConfig} />
                     <PrivateRoute path="/ChangePassword" feature={34} component={ChangePassword} />
 
-                    <PrivateRoute path="/Chatrel" component={Chatrel} exact />
-                    <PrivateRoute path="/ChatrelPay" component={ChatrelPay} exact />
-                    <PrivateRoute path="/ChatrelPay/MainPage" component={MainPage} exact />
-                    <PrivateRoute path="/ChatrelPay/PaymentPage" component={PaymentPage} exact />
-                    <PrivateRoute path="/ChatrelPay/ChatrelList" component={ChatrelList} exact />
+                    <Route path="/Chatrel" component={Chatrel} exact />
+                    <Route path="/ChatrelPay" component={ChatrelPay} exact />
+                    <Route path="/ChatrelPay/MainPage" component={MainPage} exact />
+                    <Route path="/ChatrelPay/PaymentPage" component={PaymentPage} exact />
+                    <Route path="/ChatrelPay/ChatrelList" component={ChatrelList} exact />
                     <Route path="/Reports/GreenBookIssuedOverall" component={ReportIssuedOverAll} exact />
                     <Route path="/Reports/GreenBookIssuedIndividual" component={ReportIssuedIndividual} exact />
                     <Route path="/Reports/ChangesLog" component={ReportChangesLog} exact />
