@@ -282,13 +282,13 @@ export default function SearchPage() {
         verticalAlign: "middle",
         padding: '0px',
         margin: '0px',
-        width: '8%'
+        width: '12%'
       },
       cellStyle: {
         textAlign: "left",
         padding: '0px',
         margin: '0px',
-        width: '8%'
+        width: '12%'
       }
     },
   /*  {
@@ -356,15 +356,15 @@ export default function SearchPage() {
       title: "AGE",
       filterPlaceholder: 'Search..',
       headerStyle: {
-        textAlign: "right",
+        textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: '1%'
+        width: '3%'
       },
       cellStyle: {
-        textAlign: "right",
+        textAlign: "center",
         padding: '0px',
-        width: '1%'
+        width: '3%'
       }
     },
     {
