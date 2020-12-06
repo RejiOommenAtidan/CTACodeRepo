@@ -69,8 +69,9 @@ export default function GBList(props) {
  
   const columns = [
     {
+      defaultSort: 'asc',
       field: "sGBID",
-      title: "GREEN BOOK ID",
+      title: "GB ID",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",

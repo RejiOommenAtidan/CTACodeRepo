@@ -167,7 +167,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReceived",
       title: "RECEIVED DATE",
-      render: rowData => Moment(rowData['madeb']['dtReceived']).format(sDateFormat),
+    //  render: rowData => Moment(rowData['madeb']['dtReceived']).format(sDateFormat),
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -291,7 +291,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtIssueAction",
       title: "ISSUE ACTION DATE",
-      render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : '',
+     // render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : '',
       // render: rowData => Moment(rowData['madeb']['dtIssueAction']).format('YYYY-MM-DD'),
       headerStyle: {
         textAlign: "center",
@@ -320,7 +320,7 @@ export default function EnhancedTable() {
       field: "madeb.dtReturnEmail",
       title: "RETURN DATE",
       //render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
-      render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : '',
+    //  render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : '',
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -334,7 +334,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.dtReject",
       title: "REJECT DATE",
-      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : '',
+   //   render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : '',
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -649,6 +649,16 @@ export default function EnhancedTable() {
           //   ...singleMadeb,
           //   singleMaded.dtReceived
           // });
+          resp.data.forEach((element) => {
+            element.madeb.dtReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : '';
+            element.madeb.dtIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : '';
+            element.madeb.dtReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : '';
+            element.madeb.dtReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : '';
+            
+
+
+
+          })
           setdataAPI(resp.data);
           selectDatafunction();
           setisLoading(false);
