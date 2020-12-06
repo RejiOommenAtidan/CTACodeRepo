@@ -313,7 +313,7 @@ namespace CTADBL.ViewModelsRepositories
         #region Get Green books list for edit as per column search parameters
         public IEnumerable<object> GetGreenbooksForEdit(string parameters)
         {
-            string addToSql = @"SELECT sGBID, sFirstName, sLastName, dtDOB FROM tblgreenbook WHERE ";
+            string addToSql = @"SELECT CAST(sGBID AS UNSIGNED) AS sGBID, sFirstName, sLastName, dtDOB FROM tblgreenbook WHERE ";
 
             var dictionary = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(parameters);
 
@@ -339,7 +339,7 @@ namespace CTADBL.ViewModelsRepositories
                         }
                     }
                 }
-                addToSql += "1 = 1 LIMIT 100";
+                addToSql += "1 = 1 ORDER BY sGBID LIMIT 100";
                 command.CommandText = addToSql;
                 command.CommandType = CommandType.Text;
                 command.Connection = _connection;
@@ -349,7 +349,7 @@ namespace CTADBL.ViewModelsRepositories
                 DataTableCollection tables = ds.Tables;
                 var result = tables[0].AsEnumerable().Select(row => new
                 {
-                    sGBID = row.Field<string>("sGBID"),
+                    sGBID = row.Field<System.UInt64>("sGBID").ToString(),
                     sFirstName = row.Field<string>("sFirstName"),
                     sLastName = row.Field<string>("sLastName"),
                     dtDOB = row.Field<DateTime>("dtDOB"),
