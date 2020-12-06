@@ -367,7 +367,7 @@ export default function EditEntry(props) {
   const [sGBID, setsGBID] = useState("");
   const [nAuthRegionID, setnAuthRegionID] = useState("");
   const [sFirstName, setsFirstName] = useState("");
-  const [sMiddleName, setsMiddleName] = useState("");
+  const [sLastName, setsLastName] = useState("");
   const [sFamilyName, setsFamilyName] = useState("");
   const [sGender, setsGender] = useState("");
   const [dtDOB, setdtDOB] = useState(new Date());
@@ -448,7 +448,7 @@ export default function EditEntry(props) {
                 setsGBID(resp.data.sGBID);
                 setnAuthRegionID(resp.data.nAuthRegionID);
                 setsFirstName(resp.data.sFirstName);
-                setsMiddleName(resp.data.sMiddleName);
+                setsLastName(resp.data.sLastName);
                 setsFamilyName(resp.data.sFamilyName);
                 setsGender(resp.data.sGender);
                 setdtDOB(resp.data.dtDOB);
@@ -584,7 +584,7 @@ export default function EditEntry(props) {
       sGBID,
       nAuthRegionID,
       sFirstName,
-      sMiddleName,
+      sLastName,
       sFamilyName,
       sGender,
       dtDOB,
@@ -818,15 +818,15 @@ export default function EditEntry(props) {
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
-                        id="id_sMiddleName"
-                        label="Middle Name"
+                        id="id_sLastName"
+                        label="Last Name"
                         type="text"
                         onChange={(e) => {
-                          setsMiddleName(e.target.value);
+                          setsLastName(e.target.value);
                         }}
                         fullWidth
                         margin="dense"
-                        value={sMiddleName}
+                        value={sLastName}
                         className={classes.textField}
                       />
                     </FormControl>
