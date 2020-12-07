@@ -11,6 +11,7 @@ import {
   FormControl,
   TextField
 } from '@material-ui/core';
+import {useSelector} from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import _ from "lodash/fp";
 import { red } from '@material-ui/core/colors';
@@ -28,9 +29,8 @@ import {
 import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
 import { sDateFormatMUIDatepicker,sButtonColor,sButtonSize,sButtonVariant } from '../../../config/commonConfig';
-import { BackdropComponent } from '../../backdrop/pageBackDrop';
-import { Alerts } from '../../alerts/index';
-import {useSelector} from 'react-redux';
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/pageBackDrop';;
 
 const useStyles = makeStyles({
   root: {
@@ -173,6 +173,25 @@ export default function NewEntry(props) {
   const [TBUMothersName, setTBUMothersName] = useState('');
   const [TBUSpouseName, setTBUSpouseName] = useState('');
 
+  //#region Alert & Snackbar
+const [snackbar, setSnackbar] = React.useState(false);
+const [alertMessage, setAlertMessage] = useState("");
+const [alertType, setAlertType] = useState("");
+
+const alertObj = {
+  alertMessage: alertMessage,
+  alertType: alertType
+};
+
+const snackbarOpen = () => {
+  setSnackbar(true);
+};
+
+const snackbarClose = () => {
+  setSnackbar(false);
+};
+//#endregion
+
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
     console.log(isExpanded ? panel : false);
@@ -182,6 +201,7 @@ export default function NewEntry(props) {
 
   const onSubmit = () => {
   
+    setBackdrop(true);
     let greenbook = {
       sGBID,
       nAuthRegionID,
@@ -238,11 +258,15 @@ export default function NewEntry(props) {
       nEnteredBy:userId,
       nUpdatedBy:userId
     };
-    console.log(greenbook);
+
     axios.post(`/Greenbook/AddGreenbook/`, greenbook)
       .then(resp => {
         if (resp.status === 200) {
-          history.push("/SarsoNewGBEntry");
+          setAlertMessage("Green Book Created Successfully, Hold on being Redirected");
+          setAlertType('success');
+          snackbarOpen();
+          setBackdrop(false);
+          setTimeout(() => { history.push("/SarsoNewGBEntry"); }, 3000);
         }
       })
       .catch(error => {
@@ -1524,9 +1548,15 @@ export default function NewEntry(props) {
           </Grid>
         </Grid>
       </form>  
-{backdrop && <BackdropComponent
-  backdrop={backdrop}
-/>}
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+    {backdrop && <BackdropComponent
+        backdrop={backdrop}
+    />}
     </Container>
   );
 }

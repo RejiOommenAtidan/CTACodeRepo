@@ -8,10 +8,11 @@ import Moment from 'moment';
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons,sDateFormat, modifyHeaders } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
-import { Alerts } from '../../alerts';
-import handleError from "../../../auth/_helpers/handleError";
 import IconButton from '@material-ui/core/IconButton';
 import { EditDialog } from './dialog';
+import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
+import handleError from "../../../auth/_helpers/handleError";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,6 +77,7 @@ export default () => {
   let history = useHistory();
 
   const [alertMessage, setAlertMessage] = useState("");
+  const [backdrop, setBackdrop] = React.useState(false);
   const [alertType, setAlertType] = useState("");
   const alertObj = {
     alertMessage: alertMessage,
@@ -337,11 +339,11 @@ export default () => {
   };
 
   const editAPICall = (gbSerialObj) => {
+    setBackdrop(true);
     axios.post(`GreenBookSerialNumber/EditGreenbookSerialNumber/Id=` + gbSerialObj.id, gbSerialObj)
       .then(resp => {
         if (resp.status === 200) {
-          //console.log(resp.data);
-          //setResult(true);
+          setBackdrop(false);
           setEditModal(false);
           setAlertMessage('Record updated successfully.');
           setAlertType('success');
@@ -349,26 +351,27 @@ export default () => {
           axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data);
-                //setDataChanged(true);
               }
               else {
+                setBackdrop(false);
                 console.log("Response received:\n", resp);
               }
             })
             .catch(error => {
+              setBackdrop(false);
               console.log(error.config);
               console.log(error.message);
             })
         }
       })
       .catch(error => {
-        console.log(error.config);
-        console.log(error.message);
-        setAlertMessage(`Record updation failed. \nError:${error.message}.`);
+        setBackdrop(false);
+        setAlertMessage(`Record Updation Failed. \nError:${error.message}.`);
         setAlertType('error');
         snackbarOpen();
+        console.log(error.config);
+        console.log(error.message);
       })
   };
 
@@ -452,6 +455,9 @@ export default () => {
             snackbarClose={snackbarClose}
           />
           }
+          {backdrop && <BackdropComponent
+            backdrop={backdrop}
+        />}
         </Grid>
       </Grid>
     </>

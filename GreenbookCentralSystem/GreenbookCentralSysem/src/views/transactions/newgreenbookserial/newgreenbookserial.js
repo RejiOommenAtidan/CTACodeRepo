@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
-
 import Moment from 'moment';
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons, sDateFormat, modifyHeaders } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import { Alerts } from '../../alerts';
-import handleError from "../../../auth/_helpers/handleError";
-import Search from '@material-ui/icons/Search';
 import IconButton from '@material-ui/core/IconButton';
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import EmailIcon from '@material-ui/icons/Email';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { AddDialog } from './dialog';
+import handleError from "../../../auth/_helpers/handleError";
 import { Assign } from './assign';
+import { BackdropComponent } from '../../backdrop/index';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,8 +63,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
-
 export default () => {
   const classes = useStyles();
   const [dataAPI, setdataAPI] = useState([]);
@@ -82,6 +77,7 @@ export default () => {
 
   //Alerts
   const [alertMessage, setAlertMessage] = useState("");
+  const [backdrop, setBackdrop] = React.useState(false);
   const [alertType, setAlertType] = useState("");
   const alertObj = {
     alertMessage: alertMessage,
@@ -99,7 +95,7 @@ export default () => {
   const columns = [
     {
       field: "id",
-      title: "Sr No.",
+      title: "#",
       hidden: true,
       headerStyle: {
         textAlign: "center",
@@ -107,7 +103,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
@@ -121,7 +117,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
@@ -149,7 +145,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       },
       render: rowData => rowData['dtReceived'] ? Moment(rowData['dtReceived']).format(sDateFormat) : undefined
@@ -163,7 +159,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
@@ -176,7 +172,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
@@ -189,7 +185,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
@@ -263,16 +259,15 @@ export default () => {
 
   const addAPICall = (obj, clicked) => {
     setLoading(true);
-    console.log(obj);
+    setBackdrop(true);
     axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, obj)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setAlertMessage(`Greenbook Serial Number ${obj.nBookNo} assigned to Form No. ${obj.nFormNumber} for ${gbSerialObj.sMadebType} madeb.`);
           setAlertType('success');
           snackbarOpen();
           setAddModal(false);
-          
+          setBackdrop(false);
           if (clicked) {
             setTimeout(() => {
               history.push("/GreenBookSerial");
@@ -282,19 +277,20 @@ export default () => {
           axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumberAssignList`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log(resp.data);
                 setdataAPI(resp.data)
                 selectDatafunction();
                 setLoading(false);
               }
             })
             .catch(error => {
+              setBackdrop(false);
               console.log(error.message);
               console.log(error.config);
             })
         }
       })
       .catch(error => {
+        setBackdrop(false);
         setAlertMessage(`Assigning Serial Number Failed. \nError:${error.message}.`);
         setAlertType('error');
         snackbarOpen();
@@ -322,13 +318,12 @@ export default () => {
     setAddModal(false);
   };
 
-  
-  
+
+
   useEffect(() => {
     axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumberAssignList`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log(resp.data);
           setdataAPI(resp.data);
           selectDatafunction();
           setLoading(false);
@@ -339,7 +334,7 @@ export default () => {
         console.log(error.message);
         setLoading(false);
       })
-      modifyHeaders();
+    modifyHeaders();
   }, []);
 
   return (
@@ -394,12 +389,14 @@ export default () => {
               editAPICall={editAPICall}
               gbSerialObj={gbSerialObj}
             />} */}
-            {snackbar && <Alerts
+          {snackbar && <Alerts
             alertObj={alertObj}
             snackbar={snackbar}
             snackbarClose={snackbarClose}
-          />
-          }
+          />}
+          {backdrop && <BackdropComponent
+            backdrop={backdrop}
+          />}
         </Grid>
       </Grid>
     </>
