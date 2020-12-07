@@ -42,7 +42,10 @@ export const oOptions = {
     maxBodyHeight: 575,
     columnsButton: true,
     filtering: true,
-    exportButton: true,
+    exportButton: {
+      csv: true,
+      pdf: false,
+    },
     exportAllData: true,
     headerStyle: {
         backgroundColor: '#253053',

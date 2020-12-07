@@ -635,6 +635,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "2%",
       field: 'Verified By',
       title: 'VERIFIED BY',
       sorting: false,
@@ -652,6 +653,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "2%",
       field: 'Re-Verified By',
       title: 'RE-VERIFIED BY',
       sorting: false,
