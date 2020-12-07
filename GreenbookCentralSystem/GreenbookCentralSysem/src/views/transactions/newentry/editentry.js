@@ -12,8 +12,7 @@ import {
   FormControl,
   TextField,
   Table,
-  IconButton,
-  Paper,
+  IconButton
 } from "@material-ui/core";
 
 import { useSelector } from "react-redux";
@@ -48,10 +47,14 @@ import {
   sDateFormatMUIDatepicker,
   sButtonColor,
   sButtonSize,
-  sButtonVariant
+  sButtonVariant,
+  sSnackbarAddMessage,
+  sSnackbarUpdateMessage
 } from "../../../config/commonConfig";
 import { IssueBookTable } from "../issuebooktable";
+import { Alerts } from '../../alerts';
 import { BackdropComponent } from "../../backdrop/pageBackDrop";
+import { BackdropComponent as BackdropDialogComponent } from "../../backdrop/index";
 
 const useStyles = makeStyles({
   root: {
@@ -131,7 +134,6 @@ const useStyles = makeStyles({
 
 export default function EditEntry(props) {
   Moment.locale("en");
-  const [backdrop, setBackdrop] = React.useState(true);
   const classes = useStyles();
   let history = useHistory();
   const [expanded, setExpanded] = React.useState("");
@@ -169,6 +171,27 @@ export default function EditEntry(props) {
     setoDelete(rowObject);
   };
 
+  //#region Alert & Snackbar
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(true);
+  const [dialogBackdrop, setdialogBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
+
   const handleDeleteDialogClose = () => {
     setopenDeleteDialog(false);
     setoDelete({});
@@ -193,15 +216,21 @@ export default function EditEntry(props) {
       sGBID: sGBID,
       sNote: sNote,
     };
+    setdialogBackdrop(true);
     axios
       .post(`/Greenbook/AddNote`, noteObj)
       .then((resp) => {
         if (resp.status === 200) {
           setlGBNote(resp.data);
           setaddNoteModal(false);
+          setAlertMessage(sSnackbarAddMessage);
+          setAlertType('success');
+          snackbarOpen();
+          setdialogBackdrop(false);
         }
       })
       .catch((error) => {
+        setdialogBackdrop(false);
         handleError(error, history);
       })
       .then((release) => {
@@ -214,15 +243,21 @@ export default function EditEntry(props) {
   };
 
   const editNoteAPICall = (oNote) => {
+    setdialogBackdrop(true);
     axios
       .post(`/Greenbook/EditNote/Id=` + oNote.id, oNote)
       .then((resp) => {
         if (resp.status === 200) {
           setlGBNote(resp.data);
           seteditNoteModal(false);
+          setAlertMessage(sSnackbarUpdateMessage);
+          setAlertType('success');
+          snackbarOpen();
+          setdialogBackdrop(false);
         }
       })
       .catch((error) => {
+        setdialogBackdrop(false);
         handleError(error, history);
       })
       .then((release) => {
@@ -249,15 +284,21 @@ export default function EditEntry(props) {
   };
 
   const addChildAPICall = (childObj) => {
+    setdialogBackdrop(true);
     axios
       .post(`/Greenbook/AddChild`, childObj)
       .then((resp) => {
         if (resp.status === 200) {
           setlGBChildren(resp.data);
           setaddChildModal(false);
+          setAlertMessage(sSnackbarAddMessage);
+          setAlertType('success');
+          snackbarOpen();
+          setdialogBackdrop(false);
         }
       })
       .catch((error) => {
+        setdialogBackdrop(false);
         handleError(error, history);
       })
       .then((release) => {
@@ -270,15 +311,21 @@ export default function EditEntry(props) {
   };
 
   const editChildAPICall = (childObj) => {
+    setdialogBackdrop(true);
     axios
       .post(`/Greenbook/EditChild/Id=` + childObj.id, childObj)
       .then((resp) => {
         if (resp.status === 200) {
           setlGBChildren(resp.data);
           seteditChildModal(false);
+          setAlertMessage(sSnackbarUpdateMessage);
+          setAlertType('success');
+          snackbarOpen();
+          setdialogBackdrop(false);
         }
       })
       .catch((error) => {
+        setdialogBackdrop(false);
         handleError(error, history);
       })
       .then((release) => {
@@ -301,16 +348,21 @@ export default function EditEntry(props) {
   };
 
   const handleDeleteDocumentRowClick = () => {
-    //console.log(oDelete);
+    setdialogBackdrop(true);
     axios
       .post(`/Greenbook/DeleteDocument`, oDelete)
       .then((resp) => {
         if (resp.status === 200) {
           setlGBDocument(resp.data);
           handleDeleteDialogClose();
+          setAlertMessage("Document Deleted Successfully");
+          setAlertType('success');
+          snackbarOpen();
+          setdialogBackdrop(false);
         }
       })
       .catch((error) => {
+        setdialogBackdrop(false);
         handleError(error, history);
       })
       .then((release) => {
@@ -324,15 +376,21 @@ export default function EditEntry(props) {
 
   const addDocumentAPICall = (documentObject) => {
     //console.log(documentObject);
+    setdialogBackdrop(true);
     axios
       .post(`/Greenbook/AddDocument`, documentObject)
       .then((resp) => {
         if (resp.status === 200) {
           setlGBDocument(resp.data);
           setaddDocumentModal(false);
+          setAlertMessage(sSnackbarAddMessage);
+          setAlertType('success');
+          snackbarOpen();
+          setdialogBackdrop(false);
         }
       })
       .catch((error) => {
+        setdialogBackdrop(false);
         handleError(error, history);
       })
       .then((release) => {
@@ -345,16 +403,21 @@ export default function EditEntry(props) {
   };
 
   const editDocumentAPICall = (documentObject) => {
-    console.log(documentObject);
+    setdialogBackdrop(true);
     axios
       .post(`/Greenbook/EditDocument/Id=` + documentObject.id, documentObject)
       .then((resp) => {
         if (resp.status === 200) {
           setlGBDocument(resp.data);
           seteditDocumentModal(false);
+          setAlertMessage(sSnackbarUpdateMessage);
+          setAlertType('success');
+          snackbarOpen();
+          setdialogBackdrop(false);
         }
       })
       .catch((error) => {
+        setdialogBackdrop(false);
         handleError(error, history);
       })
       .then((release) => {
@@ -558,13 +621,13 @@ export default function EditEntry(props) {
   ]
   const onSubmit = () => {
     //e.preventDefault();
+    setBackdrop(true);
     const RelationObj = [
       {
         sGBID: sGBID,
         sGBIDRelation: sFathersGBID,
         nRelationID: 1,
         nUpdatedBy: userId
-
       },
       {
         sGBID: sGBID,
@@ -645,7 +708,11 @@ export default function EditEntry(props) {
           axios.post(`/GBRelation/HandleGreenBookUpdate`, RelationObj)
             .then((resp) => {
               if (resp.status === 200) {
-                history.push("/Greenbooks");
+                setAlertMessage(sSnackbarUpdateMessage + " Hold on being Redirected");
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
+                setTimeout(() => { history.push("/Greenbooks"); }, 3000);
               }
             })
             .catch((error) => {
@@ -654,8 +721,6 @@ export default function EditEntry(props) {
             .then((release) => {
               //console.log(release); => udefined
             });
-
-
         }
       })
       .catch((error) => {
@@ -699,8 +764,8 @@ export default function EditEntry(props) {
                       <TextField
                         id="id_sGBID"
                         name="name_sGBID"
-                      
-                        label={<>Green Book ID <span style={{color:'red'}}> *</span></>}
+
+                        label={<>Green Book ID <span style={{ color: 'red' }}> *</span></>}
                         type="text"
                         value={sGBID}
                         onChange={(e) => {
@@ -766,8 +831,8 @@ export default function EditEntry(props) {
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                     
-                            label={<>Authority Region <span style={{color:'red'}}> *</span></>}
+
+                            label={<>Authority Region <span style={{ color: 'red' }}> *</span></>}
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
@@ -792,8 +857,8 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sFirstName"
-                        
-                        label={<>First Name <span style={{color:'red'}}> *</span></>}
+
+                        label={<>First Name <span style={{ color: 'red' }}> *</span></>}
                         type="text"
                         onChange={(e) => {
                           setsFirstName(e.target.value);
@@ -852,8 +917,8 @@ export default function EditEntry(props) {
                       <TextField
                         id="id_TibetanName"
                         name="name_TibetanName"
-                        
-                        label={<>Tibetan Name (Tibetan) མིང་། <span style={{color:'red'}}> *</span></>}
+
+                        label={<>Tibetan Name (Tibetan) མིང་། <span style={{ color: 'red' }}> *</span></>}
                         type="text"
                         onChange={(e) => {
                           setTibetanName(e.target.value);
@@ -879,8 +944,8 @@ export default function EditEntry(props) {
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_TBUPlaceOfBirth"
-                     
-                          label={<> Place Of Birth (Tibetan) སྐྱེས་ཡུལ།<span style={{color:'red'}}> *</span></>}
+
+                          label={<> Place Of Birth (Tibetan) སྐྱེས་ཡུལ།<span style={{ color: 'red' }}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setTBUPlaceOfBirth(e.target.value);
@@ -906,8 +971,8 @@ export default function EditEntry(props) {
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_TBUOriginVillage"
-                        
-                          label={<> Origin Village (Tibetan) ཕ་ཡུལ།<span style={{color:'red'}}> *</span></>}
+
+                          label={<> Origin Village (Tibetan) ཕ་ཡུལ།<span style={{ color: 'red' }}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setTBUOriginVillage(e.target.value);
@@ -940,8 +1005,8 @@ export default function EditEntry(props) {
                           margin="dense"
                           id="id_dtDOB"
                           name="name_dtDOB"
-                        
-                          label={<> Date of Birth<span style={{color:'red'}}> *</span></>}
+
+                          label={<> Date of Birth<span style={{ color: 'red' }}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           onChange={(date) => {
                             setdtDOB(date);
@@ -998,7 +1063,7 @@ export default function EditEntry(props) {
                             <TextField
                               {...params}
                               label="Choose a Birth Country"
-                              label={<>Choose a Birth Country <span style={{color:'red'}}> *</span></>}
+                              label={<>Choose a Birth Country <span style={{ color: 'red' }}> *</span></>}
                               variant="standard"
                               inputProps={{
                                 ...params.inputProps,
@@ -1024,8 +1089,8 @@ export default function EditEntry(props) {
                         <TextField
                           value={sBirthPlace}
                           id="id_sBirthPlace"
-                        
-                          label={<>Place of Birth <span style={{color:'red'}}> *</span></>}
+
+                          label={<>Place of Birth <span style={{ color: 'red' }}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setsBirthPlace(e.target.value);
@@ -1060,8 +1125,8 @@ export default function EditEntry(props) {
                           margin="dense"
                           id="id_dtFormDate"
                           name="name_dtFormDate"
-                     
-                          label={<>Sarso Form Date <span style={{color:'red'}}> *</span></>}
+
+                          label={<>Sarso Form Date <span style={{ color: 'red' }}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           onChange={(date) => {
                             setdtFormDate(date);
@@ -1090,8 +1155,8 @@ export default function EditEntry(props) {
                         <TextField
                           value={sFathersName}
                           id="id_sFathersName"
-                         
-                          label={<>Father's Name <span style={{color:'red'}}> *</span></>}
+
+                          label={<>Father's Name <span style={{ color: 'red' }}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setsFathersName(e.target.value);
@@ -1151,7 +1216,7 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUFathersName"
-                        label={<>Father's Name (Tibetan) ཕ་མིང་། <span style={{color:'red'}}> *</span></>}
+                        label={<>Father's Name (Tibetan) ཕ་མིང་། <span style={{ color: 'red' }}> *</span></>}
                         type="text"
                         onChange={(e) => {
                           setTBUFathersName(e.target.value);
@@ -1178,8 +1243,8 @@ export default function EditEntry(props) {
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_sMothersName"
-                          
-                          label={<>Mother's Name <span style={{color:'red'}}> *</span></>}
+
+                          label={<>Mother's Name <span style={{ color: 'red' }}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setsMothersName(e.target.value);
@@ -1239,8 +1304,8 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUMothersName"
-                        
-                        label={<> Mother's Name (Tibetan) མ་མིང་།<span style={{color:'red'}}> *</span></>}
+
+                        label={<> Mother's Name (Tibetan) མ་མིང་།<span style={{ color: 'red' }}> *</span></>}
                         type="text"
                         onChange={(e) => {
                           setTBUMothersName(e.target.value);
@@ -1266,8 +1331,8 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sAddress1"
-     
-                        label={<>Address 1 <span style={{color:'red'}}> *</span></>}
+
+                        label={<>Address 1 <span style={{ color: 'red' }}> *</span></>}
                         type="text"
                         onChange={(e) => {
                           setsAddress1(e.target.value);
@@ -1331,8 +1396,8 @@ export default function EditEntry(props) {
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_sState"
-                         
-                          label={<>State <span style={{color:'red'}}> *</span></>}
+
+                          label={<>State <span style={{ color: 'red' }}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setsState(e.target.value);
@@ -1386,8 +1451,8 @@ export default function EditEntry(props) {
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              
-                              label={<>Country <span style={{color:'red'}}> *</span></>}
+
+                              label={<>Country <span style={{ color: 'red' }}> *</span></>}
                               variant="standard"
                               inputProps={{
                                 ...params.inputProps,
@@ -2349,8 +2414,6 @@ export default function EditEntry(props) {
         </DialogActions>
       </Dialog>
 
-      {backdrop && <BackdropComponent backdrop={backdrop} />}
-
       {/*Note*/}
       {addNoteModal && (
         <AddNoteDialog
@@ -2409,6 +2472,18 @@ export default function EditEntry(props) {
           editDocumentAPICall={editDocumentAPICall}
         />
       )}
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
+      />}
+      {dialogBackdrop && <BackdropDialogComponent
+        backdrop={dialogBackdrop}
+      />}
     </Container>
   );
 }
