@@ -2302,7 +2302,7 @@ export default function EditEntry(props) {
                             <th scope="col" style={{ width: "70%" }}>
                               Title
                             </th>
-                            <th scope="col">Register Date</th>
+                            {/*<th scope="col">Register Date</th>*/}
                             <th scope="col">Entered By</th>
                             <th scope="col">Edit</th>
                             <th scope="col">Delete</th>
@@ -2312,7 +2312,7 @@ export default function EditEntry(props) {
                           {lGBDocument.map((row, index) => (
                             <tr>
                               <td scope="row">{row.sTitle}</td>
-                              <td scope="row">{row.nRegisterDate}</td>
+                              {/*<td scope="row">{row.nRegisterDate}</td>*/}
                               <td scope="row">{row.nEnteredBy}</td>
                               <td scope="row">
                                 <IconButton
@@ -2401,12 +2401,18 @@ export default function EditEntry(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteDialogClose} color="primary">
+          <Button onClick={handleDeleteDialogClose}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >
             No
           </Button>
           <Button
             onClick={handleDeleteDocumentRowClick}
-            color="primary"
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
             autoFocus
           >
             Yes

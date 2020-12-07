@@ -129,7 +129,7 @@ export const AddDocumentDialog = (props) => {
                                     >File Uploaded, File Name: {sTitle}</Typography>
                                 </FormControl>
                             </Grid>}
-                            <Grid item xs={12} >
+                            {/*<Grid item xs={12} >
                                 <FormControl className={props.classes.formControl}>
                                     <TextField
                                         id="id_nRegisterDate"
@@ -146,7 +146,7 @@ export const AddDocumentDialog = (props) => {
                                         <span style={{ color: 'red' }}>This field is required</span>
                                     )}
                                 </FormControl>
-                            </Grid>
+                                    </Grid>*/}
                             <Grid item xs={12} >
                                 <FormControl className={props.classes.formControl}>
                                     <TextField
@@ -302,7 +302,7 @@ export const EditDocumentDialog = (props) => {
                                     >File Uploaded, File Name: {sTitle}</Typography>
                                 </FormControl>
                             </Grid>}
-                            <Grid item xs={12} >
+                            {/*<Grid item xs={12} >
                                 <FormControl className={props.classes.formControl}>
                                     <TextField
                                         id="id_nRegisterDate"
@@ -319,7 +319,7 @@ export const EditDocumentDialog = (props) => {
                                         <span style={{ color: 'red' }}>This field is required</span>
                                     )}
                                 </FormControl>
-                            </Grid>
+                                    </Grid>*/}
                             <Grid item xs={12} >
                                 <FormControl className={props.classes.formControl}>
                                     <TextField
