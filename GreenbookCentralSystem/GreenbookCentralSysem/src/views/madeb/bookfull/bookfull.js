@@ -206,6 +206,7 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "2%",
       field: "madeb.nFormNumber",
       title: "FORM NUMBER",
       filterPlaceholder: "Search...",
@@ -216,7 +217,7 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        paddingRight: '5px'
       },
       filterComponent: () =>
         <MyComp
@@ -230,6 +231,7 @@ export default function EnhancedTable() {
         />
     },
     {
+      width: "5%",
       field: "madeb.dtReceived",
       title: "RECEIVED DATE",
       // type: 'date',
@@ -241,7 +243,7 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        paddingRight: '5px'
       },
       render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined,
       filterComponent: () =>
@@ -256,6 +258,7 @@ export default function EnhancedTable() {
         />
     },
     {
+      width: "8%",
       field: "sAuthRegion",
       title: "AUTHORITY",
       headerStyle: {
@@ -265,7 +268,7 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        paddingLeft: '5px'
       },
       filterComponent: () =>
         <MyComp
@@ -279,6 +282,7 @@ export default function EnhancedTable() {
         />
     },
     {
+      width: "12%",
       field: "madeb.sName",
       title: "NAME",
       headerStyle: {
@@ -288,7 +292,7 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        paddingLeft: '5px'
       },
       filterComponent: () =>
         <MyComp
@@ -303,6 +307,7 @@ export default function EnhancedTable() {
     },
 
     {
+      width: "3%",
       field: "madeb.sGBID",
       render: rowData => rowData['madeb']['sGBID'] ? <Button className="m-2 btn-transparent btn-link btn-link-first" size={"small"} onClick={() => { viewGb(rowData['madeb']['sGBID']) }}><span>{rowData['madeb']['sGBID']}</span></Button> : '',
       title: "GB ID",
@@ -312,8 +317,8 @@ export default function EnhancedTable() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "left",
-        padding: '5px'
+        textAlign: "right",
+        paddingRight: '3px'
       },
       filterComponent: () =>
         <MyComp
@@ -328,6 +333,7 @@ export default function EnhancedTable() {
     },
 
     {
+      width: "10%",
       field: "madeb.sFathersName",
       title: "FATHER'S NAME",
       headerStyle: {
@@ -337,7 +343,7 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        paddingLeft: '5px'
       },
       filterComponent: () =>
         <MyComp
@@ -351,6 +357,7 @@ export default function EnhancedTable() {
         />
     },
     {
+      width: "5%",
       field: "madeb.nSaneyFormNo",
       title: "SANEY FORM NO",
       headerStyle: {
@@ -360,7 +367,7 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        paddingRight: '5px'
       },
       filterComponent: () =>
         <MyComp
@@ -374,16 +381,18 @@ export default function EnhancedTable() {
         />
     },
     {
+      width: "5%",
       field: "madeb.nCurrentGBSno",
       title: "CURRENT GB SNO.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        paddingRight:"5px"
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        paddingRight: '5px'
       },
       filterComponent: () =>
         <MyComp
@@ -397,16 +406,18 @@ export default function EnhancedTable() {
         />
     },
     {
+      width: "5%",
       field: "madeb.nPreviousGBSno",
       title: "PREVIOUS GB SNO.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        paddingRight: "5px"
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        paddingRight: '5px'
       },
       filterComponent: () =>
         <MyComp
@@ -418,6 +429,210 @@ export default function EnhancedTable() {
           currId={currId}
           key={"madeb.nPreviousGBSno"}
         />
+    },
+    {
+      width: "5%",
+      field: "sMadebStatus",
+      title: "STATUS",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "left",
+        paddingLeft: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          field="sMadebStatus"
+          name="STATUS"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"sMadebStatus"}
+        />
+    },
+
+    {
+      width: "8%",
+      field: "madeb.sMadebStatusRemark",
+      title: "STATUS REMARK",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "left",
+        paddingLeft: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          field="madeb.sMadebStatusRemark"
+          name="STATUS REMARK"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.sMadebStatusRemark"}
+        />
+    },
+    
+
+    {
+      width: "5%",
+      field: "madeb.dtIssueAction",
+      title: "ISSUE ACTION DATE",
+      // type: 'date',
+      // dateSetting: {locale: 'en-GB'},
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "right",
+        paddingRight: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          field="madeb.dtIssueAction"
+          name="ISSUE ACTION DATE"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.dtIssueAction"}
+        />,
+      render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
+    },
+    {
+      width: "5%",
+      field: "sTypeIssued",
+      title: "ISSUE ACTION",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "left",
+        paddingLeft: '5px'
+      },
+      filterComponent: () =>
+        <MyComp
+          field="sTypeIssued"
+          name="ISSUE ACTION"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"sTypeIssued"}
+        />
+    },
+    
+    {
+      width: "5%",
+      field: "madeb.dtReject",
+      title: "REJECT DATE",
+      // type: 'date',
+      // dateSetting: {locale: 'en-GB'},
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        paddingRight: '5px'
+      },
+      cellStyle: {
+        textAlign: "right",
+        paddingRight: '5px'
+      },
+      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined,
+      filterComponent: () =>
+        <MyComp
+          field="madeb.dtReject"
+          name="REJECT DATE"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.dtReject"}
+        />
+    },
+    {
+      width: "5%",
+      field: "madeb.dtReturnEmail",
+      title: "RETURN DATE",
+      //type: 'date',
+      //dateSetting: {locale: 'en-IN'},
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "right",
+        paddingRight: '5px'
+      },
+      render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : undefined,
+      filterComponent: () =>
+        <MyComp
+          field="madeb.dtReturnEmail"
+          name="RETURN DATE"
+          changeHandler={changeHandler}
+          myarray={myarray}
+          updateArray={updateArray}
+          currId={currId}
+          key={"madeb.dtReturnEmail"}
+        />
+    },
+    {
+      width: "5%",
+      field: "email",
+      title: "EMAIL",
+      filtering: false,
+      sorting: false,
+      export: false,
+      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
+        onClick={() => { emailClick(rowData) }} style={{ padding: '0px' }}
+      >
+        <EmailIcon />
+      </IconButton>,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        paddingRight: "5px"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      width: "3%",
+      field: "edit",
+      title: "EDIT",
+      sorting: false,
+      export: false,
+      filtering: false,
+      render: rowData => <>{<IconButton color="primary" aria-label="upload picture" component="span" onClick={() => { editClick(rowData) }} disabled={rowData.madeb.nIssuedOrNotID} style={{ padding: '0px' }}
+      >
+        <EditOutlinedIcon />
+      </IconButton>}
+
+      </>,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
     },
     {
       field: 'Verified By',
@@ -453,198 +668,6 @@ export default function EnhancedTable() {
         padding: '5px'
       }
     },
-
-    {
-      field: "madeb.dtIssueAction",
-      title: "ISSUE ACTION DATE",
-      // type: 'date',
-      // dateSetting: {locale: 'en-GB'},
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "right",
-        padding: '5px'
-      },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.dtIssueAction"
-          name="ISSUE ACTION DATE"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.dtIssueAction"}
-        />,
-      render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
-    },
-    {
-      field: "sTypeIssued",
-      title: "ISSUE ACTION",
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "left",
-        padding: '5px'
-      },
-      filterComponent: () =>
-        <MyComp
-          field="sTypeIssued"
-          name="ISSUE ACTION"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"sTypeIssued"}
-        />
-    },
-    {
-      field: "sMadebStatus",
-      title: "STATUS",
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "left",
-        padding: '5px'
-      },
-      filterComponent: () =>
-        <MyComp
-          field="sMadebStatus"
-          name="STATUS"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"sMadebStatus"}
-        />
-    },
-
-    {
-      field: "madeb.sMadebStatusRemark",
-      title: "STATUS REMARK",
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "left",
-        padding: '5px'
-      },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.sMadebStatusRemark"
-          name="STATUS REMARK"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.sMadebStatusRemark"}
-        />
-    },
-    {
-      field: "madeb.dtReject",
-      title: "REJECT DATE",
-      // type: 'date',
-      // dateSetting: {locale: 'en-GB'},
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "right",
-        padding: '5px'
-      },
-      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined,
-      filterComponent: () =>
-        <MyComp
-          field="madeb.dtReject"
-          name="REJECT DATE"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.dtReject"}
-        />
-    },
-    {
-      field: "madeb.dtReturnEmail",
-      title: "RETURN DATE",
-      //type: 'date',
-      //dateSetting: {locale: 'en-IN'},
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "right",
-        padding: '5px'
-      },
-      render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : undefined,
-      filterComponent: () =>
-        <MyComp
-          field="madeb.dtReturnEmail"
-          name="RETURN DATE"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.dtReturnEmail"}
-        />
-    },
-    {
-      field: "email",
-      title: "EMAIL",
-      filtering: false,
-      sorting: false,
-      export: false,
-      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-        onClick={() => { emailClick(rowData) }} style={{ padding: '0px' }}
-      >
-        <EmailIcon />
-      </IconButton>,
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "center",
-        padding: '5px'
-      }
-    },
-    {
-      field: "edit",
-      title: "EDIT",
-      sorting: false,
-      export: false,
-      filtering: false,
-      render: rowData => <>{<IconButton color="primary" aria-label="upload picture" component="span" onClick={() => { editClick(rowData) }} disabled={rowData.madeb.nIssuedOrNotID} style={{ padding: '0px' }}
-      >
-        <EditOutlinedIcon />
-      </IconButton>}
-
-      </>,
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "center",
-        padding: '5px'
-      }
-    }
   ];
 
   useEffect(() => {
