@@ -550,6 +550,7 @@ export default function EnhancedTable() {
       dtIssueAction: tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
       dtReturnEmail: tableRowArray['madeb']['dtReturnEmail'],
+      dtReject: tableRowArray['madeb']['dtReject'],
       nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
       sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
     });

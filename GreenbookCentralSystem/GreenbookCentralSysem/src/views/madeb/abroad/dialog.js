@@ -57,7 +57,7 @@ export const EditDialog = (props) => {
   const [madebType, setMadebType] = React.useState(4);
   const [id, setId] = React.useState(props.abroadObj.id);
   const [nFormNumber, setFormNumber] = React.useState(props.abroadObj.nFormNumber);
-  const [dtReceived, setReceivedDate] = React.useState((props.abroadObj.dtReceived) ? props.abroadObj.dtReceived.split('T')[0] : undefined);
+  const [dtReceived, setReceivedDate] = React.useState((props.abroadObj.dtReceived) ? props.abroadObj.dtReceived.split('T')[0] : null);
   const [nAuthRegionID, setAuthRegionId] = React.useState(props.abroadObj.nAuthRegionID);
   const [sAlias, setAlias] = React.useState(props.abroadObj.sAlias);
   const [sName, setName] = React.useState(props.abroadObj.sName);
@@ -68,10 +68,10 @@ export const EditDialog = (props) => {
   //const [nCurrentGBSno, setCurrentGBSNo] = useState(props.abroadObj.nCurrentGBSno);
   const [nPreviousGBSno, setPreviousGBSNo] = useState(props.abroadObj.nPreviousGBSno);
   const [sApprovedReject, setApprovedReject] = useState(props.abroadObj.sApprovedReject);
-  const [dtIssueAction, setIssueActionDate] = React.useState(props.abroadObj.dtIssueAction ? (props.abroadObj.dtIssueAction).split('T')[0] : undefined);
-  const [dtReject, setRejectDate] = useState(props.abroadObj.dtReject ? (props.abroadObj.dtReject).split('T')[0] : undefined);
+  const [dtIssueAction, setIssueActionDate] = React.useState(props.abroadObj.dtIssueAction ? (props.abroadObj.dtIssueAction).split('T')[0] : null);
+  const [dtReject, setRejectDate] = useState(props.abroadObj.dtReject ? (props.abroadObj.dtReject).split('T')[0] : null);
   const [nIssuedOrNotID, setIssueAction] = React.useState(props.abroadObj.nIssuedOrNotID);
-  const [dtReturnEmail, setReturnDate] = React.useState(props.abroadObj.dtReturnEmail ? (props.abroadObj.dtReturnEmail).split('T')[0] : undefined);
+  const [dtReturnEmail, setReturnDate] = React.useState(props.abroadObj.dtReturnEmail ? (props.abroadObj.dtReturnEmail).split('T')[0] : null);
   const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
   const [nMadebStatusID, setMadebStatusID] = React.useState(props.abroadObj.nMadebStatusID);
   const [madebStatuses, setMadebStatuses] = React.useState(props.selectData['madebStatuses']);
@@ -83,7 +83,7 @@ export const EditDialog = (props) => {
     id: id,
     nMadebTypeID: madebType,
     nFormNumber,
-    dtReceived: Moment(dtReceived).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReceived).format('YYYY-MM-DD') : '',
+    dtReceived: Moment(dtReceived).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReceived).format('YYYY-MM-DD') : null,
     //dtReceived,
     nAuthRegionID,
     sName,
@@ -96,10 +96,10 @@ export const EditDialog = (props) => {
     nPreviousGBSno,
     sApprovedReject,
     dtIssueAction,
-    dtReject: Moment(dtReject).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReject).format('YYYY-MM-DD') : '',
+    dtReject: Moment(dtReject).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReject).format('YYYY-MM-DD') : null,
     //dtReject,
     nIssuedOrNotID,
-    dtReturnEmail: Moment(dtReturnEmail).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReturnEmail).format('YYYY-MM-DD') : '',
+    dtReturnEmail: Moment(dtReturnEmail).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReturnEmail).format('YYYY-MM-DD') : null,
     //dtReturnEmail,
     nMadebStatusID,
     sMadebStatusRemark,
