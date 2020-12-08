@@ -650,7 +650,8 @@ export default function EditEntry(props) {
       sLastName,
       sFamilyName,
       sGender,
-      dtDOB,
+      dtDOB:Moment(dtDOB).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtDOB).format('YYYY-MM-DD') : '',
+      //dtDOB,
       sDOBApprox,
       sBirthPlace,
       sBirthCountryID,
@@ -698,6 +699,8 @@ export default function EditEntry(props) {
       TBUSpouseName,
       nUpdatedBy: userId,
     };
+    console.log(greenbook);
+    debugger;
     axios
       .post(
         `/Greenbook/EditGreenbook/Id=` + props.match.params.GBID.toString(),
@@ -1005,10 +1008,15 @@ export default function EditEntry(props) {
                           margin="dense"
                           id="id_dtDOB"
                           name="name_dtDOB"
-
+                          
                           label={<> Date of Birth<span style={{ color: 'red' }}> *</span></>}
                           format={sDateFormatMUIDatepicker}
+                          returnMoment={true}
                           onChange={(date) => {
+                            //console.log(date.toISOString().split("T")[0]);
+                            //console.log(date.toDateString());
+                            // console.log(date.toLocaleDateString());
+                            //console.log(date);
                             setdtDOB(date);
                           }}
                           value={dtDOB}
