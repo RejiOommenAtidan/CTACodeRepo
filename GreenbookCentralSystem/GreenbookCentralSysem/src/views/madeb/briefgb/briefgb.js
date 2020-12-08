@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -46,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
   box: {
     marginBottom: theme.spacing(1.5),
     marginTop: theme.spacing(1.5)
+  },
+  dateField: {
+    marginTop: 0.25,
+    marginBottom: 0.25,
   },
   button: {
     margin: theme.spacing(1),
@@ -528,7 +532,6 @@ export default () => {
       nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
       sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
     });
-    //console.log(tableRowArray);
     setEditModal(true);
   };
 
