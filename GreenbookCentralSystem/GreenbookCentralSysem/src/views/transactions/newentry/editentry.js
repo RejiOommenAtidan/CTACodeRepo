@@ -650,7 +650,7 @@ export default function EditEntry(props) {
       sLastName,
       sFamilyName,
       sGender,
-      dtDOB:Moment(dtDOB).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtDOB).format('YYYY-MM-DD') : '',
+      dtDOB: Moment(dtDOB).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtDOB).format('YYYY-MM-DD') : null,
       //dtDOB,
       sDOBApprox,
       sBirthPlace,
@@ -665,7 +665,8 @@ export default function EditEntry(props) {
       sAliasName,
       sOldGreenBKNo,
       sFstGreenBkNo,
-      dtFormDate,
+      dtFormDate: Moment(dtFormDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtFormDate).format('YYYY-MM-DD') : null,
+      //dtFormDate,
       sFathersName,
       sFathersID,
       sFathersGBID,
@@ -686,9 +687,11 @@ export default function EditEntry(props) {
       sEmail,
       sPhone,
       sFax,
-      dtDeceased,
+      dtDeceased: Moment(dtDeceased).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtDeceased).format('YYYY-MM-DD') : null,
+      //dtDeceased,
       sBookIssued,
-      dtValidityDate,
+      dtValidityDate: Moment(dtValidityDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtValidityDate).format('YYYY-MM-DD') : null,
+      //dtValidityDate,
       sPaidUntil,
       sEnteredDateTime,
       TibetanName,
@@ -1008,7 +1011,7 @@ export default function EditEntry(props) {
                           margin="dense"
                           id="id_dtDOB"
                           name="name_dtDOB"
-                          
+
                           label={<> Date of Birth<span style={{ color: 'red' }}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           returnMoment={true}

@@ -11,7 +11,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import MaterialTable from 'material-table';
 import handleError from '../../../auth/_helpers/handleError';
 import IconButton from '@material-ui/core/IconButton';
-import {oOptions, oTableIcons, modifyHeaders} from "../../../config/commonConfig";
+import { oOptions, oTableIcons, modifyHeaders, sButtonColor, sButtonSize } from "../../../config/commonConfig";
 import Moment from 'moment';
 import MyComp from '../../common/filtercomponent';
 
@@ -65,8 +65,8 @@ export default function GBList(props) {
     setCurrId(e.target.id);
     //setVal(e.target.value);
   };
- // end custom filter
- 
+  // end custom filter
+
   const columns = [
     {
       defaultSort: 'asc',
@@ -94,7 +94,10 @@ export default function GBList(props) {
           key={"sGBID"}
         />,
       export: true,
-      render: rowData => <Button size="small" color="primary"
+      render: rowData => <Button
+        className="m-2 btn-transparent btn-link btn-link-first"
+        size={sButtonSize}
+        color={sButtonColor}
         onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
       >
         {rowData["sGBID"]}

@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import {useSelector} from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Moment from 'moment';
 import _ from "lodash/fp";
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
@@ -209,7 +210,8 @@ const snackbarClose = () => {
       sLastName,
       sFamilyName,
       sGender,
-      dtDOB,
+      dtDOB: Moment(dtDOB).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtDOB).format('YYYY-MM-DD') : null,
+      //dtDOB,
       sDOBApprox,
       sBirthPlace,
       sBirthCountryID,
@@ -223,7 +225,8 @@ const snackbarClose = () => {
       sAliasName,
       sOldGreenBKNo,
       sFstGreenBkNo,
-      dtFormDate,
+      dtFormDate: Moment(dtFormDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtFormDate).format('YYYY-MM-DD') : null,
+      //dtDOB,
       sFathersName,
       sFathersID,
       sFathersGBID,
@@ -244,9 +247,11 @@ const snackbarClose = () => {
       sEmail,
       sPhone,
       sFax,
-      dtDeceased,
+      dtDeceased: Moment(dtDeceased).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtDeceased).format('YYYY-MM-DD') : null,
+      //dtDeceased,
       sBookIssued,
-      dtValidityDate,
+      dtValidityDate: Moment(dtValidityDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtValidityDate).format('YYYY-MM-DD') : null,
+      //dtValidityDate,
       sPaidUntil,
       // sEnteredDateTime,
       TibetanName,
