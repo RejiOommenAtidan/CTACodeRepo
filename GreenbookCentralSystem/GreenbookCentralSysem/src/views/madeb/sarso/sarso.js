@@ -471,6 +471,7 @@ export default function EnhancedTable() {
     setIssueActionDate(tableRowArray['madeb']['dtIssueAction']);
     setIssueAction(tableRowArray['madeb']['nIssuedOrNotID']);
     setReturnDate(tableRowArray['madeb']['dtReturnEmail']);
+    setRejectDate(tableRowArray['madeb']['dtReject']);
 
     setSarsoObj({
       id: tableRowArray['madeb']['id'],
@@ -485,6 +486,7 @@ export default function EnhancedTable() {
       dtIssueAction: tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
       dtReturnEmail: tableRowArray['madeb']['dtReturnEmail'],
+      dtReject: tableRowArray['madeb']['dtReject'],
       nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
       sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
     });

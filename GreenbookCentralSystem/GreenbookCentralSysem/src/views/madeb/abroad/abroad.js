@@ -56,6 +56,10 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
+  dateField: {
+    marginTop: 0.25,
+    marginBottom: 0.25,
+  },
   palette: {
     primary: {
       // Purple and green play nicely together.
@@ -546,6 +550,7 @@ export default function EnhancedTable() {
       dtIssueAction: tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
       dtReturnEmail: tableRowArray['madeb']['dtReturnEmail'],
+      dtReject: tableRowArray['madeb']['dtReject'],
       nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],
       sMadebStatusRemark: tableRowArray['madeb']['sMadebStatusRemark']
     });
