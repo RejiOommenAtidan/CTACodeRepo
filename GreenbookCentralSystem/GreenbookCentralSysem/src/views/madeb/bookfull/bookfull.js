@@ -677,43 +677,74 @@ export default function EnhancedTable() {
 
     if (searching) {
       let searchObj = {};
+      let shouldSearch = true;
+      let value;
       myarray.map(item => {
+        
+        // items to ignore
         if (item.id === "madeb.id" || item.id === 'Re-Verified By' || item.id === 'Verified By' || item.id === 'edit' || item.id === 'email') {
           return;
-          console.log("Changed id to", item.val);
         };
-
-        if (item.id === 'madeb.nCurrentGBSno' || item.id === 'madeb.nFormNumber' || item.id === 'madeb.nPreviousGBSno' || item.id === 'madeb.nSaneyFormNo') {
-          item.val = parseInt(item.val) || null;
+        // date items
+        if(item.id.startsWith('madeb.dt')){
+          //console.log("Value in ", item.id, " is", item.val);
+          if(item.val){
+            const date = Moment(item.val, 'D-M-YYYY', true);
+            if(!date._isValid){
+              shouldSearch = false;
+              return;
+            }
+            else{
+              
+              value = Moment(item.val, 'D-M-YYYY').format('YYYY-MM-DD');
+              //console.log("date is valid?", date._isValid, value);
+            }
+          }
         }
+        // integer items
+        else if (item.id === 'madeb.nCurrentGBSno' || item.id === 'madeb.nFormNumber' || item.id === 'madeb.nPreviousGBSno' || item.id === 'madeb.nSaneyFormNo') {
+          value = parseInt(item.val) || null;
+        }
+        else{
+          value = item.val;
+        }
+
         var id = item.id;
+        
         if (item.id.startsWith('madeb')) {
           id = item.id.substring(6);
         }
-        searchObj = { ...searchObj, [id]: item.val };
+        searchObj = { ...searchObj, [id]: value };
       });
+      console.log("Should search:", shouldSearch);
       console.log("Search Object: Inside useEffect", searchObj);
-
-      axios.post(`/MadebAuthRegionVM/ColumnSearchMadeb/madebType=5`, searchObj)
+      if(shouldSearch){
+        setisLoading(true);
+        axios.post(`/MadebAuthRegionVM/ColumnSearchMadeb/madebType=5`, searchObj)
         .then(resp => {
           if (resp.status === 200) {
-            debugger
+            //debugger
             console.log("Got filter Data");
             setdataAPI([...resp.data]);
             setSearching(false);
+            setisLoading(false);
             //setTimeout(() => ele.focus(), 2000);
 
           }
           if (resp.status === 204) {
             console.log("Got  Empty data set");
+            setisLoading(false);
             setdataAPI([...resp.data]);
             setSearching(false);
           }
         })
         .catch(error => {
+          setisLoading(false);
           console.log(error.message);
           //handleError(error, history);
-        })
+        })  
+      }
+      
     }
   }, [myarray]);
 

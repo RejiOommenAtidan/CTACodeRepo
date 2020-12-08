@@ -493,6 +493,7 @@ export default function EnhancedTable() {
       dtIssueAction: tableRowArray['madeb']['dtIssueAction'],
       nIssuedOrNotID: tableRowArray['madeb']['nIssuedOrNotID'],
       dtReturnEmail: tableRowArray['madeb']['dtReturnEmail'],
+      dtReject: tableRowArray['madeb']['dtReject'],
       nCurrentGBSno: tableRowArray['madeb']['nCurrentGBSno'],
       nPreviousGBSno: tableRowArray['madeb']['nPreviousGBSno'],
       nMadebStatusID: tableRowArray['madeb']['nMadebStatusID'],

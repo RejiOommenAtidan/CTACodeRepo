@@ -12,6 +12,10 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Alerts } from '../../alerts';
 import { useSelector } from 'react-redux';
 import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
+import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider,  KeyboardDatePicker, } from "@material-ui/pickers";
+import {  sDateFormatMUIDatepicker} from "../../../config/commonConfig";
+import Moment from 'moment';
 
 export const EditDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
@@ -50,7 +54,7 @@ export const EditDialog = (props) => {
   const [madebType, setMadebType] = React.useState(3);
   const [id, setId] = React.useState(props.bhorlakObj.id);
   const [nFormNumber, setFormNumber] = React.useState(props.bhorlakObj.nFormNumber);
-  const [dtReceived, setReceivedDate] = React.useState((props.bhorlakObj.dtReceived) ? props.bhorlakObj.dtReceived.split('T')[0] : undefined);
+  const [dtReceived, setReceivedDate] = React.useState((props.bhorlakObj.dtReceived) ? props.bhorlakObj.dtReceived.split('T')[0] : null);
   const [nAuthRegionID, setAuthRegionId] = React.useState(props.bhorlakObj.nAuthRegionID);
 
   const [sName, setName] = React.useState(props.bhorlakObj.sName);
@@ -64,9 +68,9 @@ export const EditDialog = (props) => {
   const [sMadebStatusRemark, setMadebStatusRemark] = React.useState(props.bhorlakObj.sMadebStatusRemark);
   const [sApprovedReject, setApprovedReject] = useState(props.bhorlakObj.sApprovedReject);
   const [dtIssueAction, setIssueActionDate] = React.useState(props.bhorlakObj.dtIssueAction ? (props.bhorlakObj.dtIssueAction).split('T')[0] : undefined);
-  const [dtReject, setRejectDate] = useState(props.bhorlakObj.dtReject ? (props.bhorlakObj.dtReject).split('T')[0] : undefined);
+  const [dtReject, setRejectDate] = useState(props.bhorlakObj.dtReject ? (props.bhorlakObj.dtReject).split('T')[0] : null);
   const [nIssuedOrNotID, setIssueAction] = React.useState(props.bhorlakObj.nIssuedOrNotID);
-  const [dtReturnEmail, setReturnDate] = React.useState(props.bhorlakObj.dtReturnEmail ? (props.bhorlakObj.dtReturnEmail).split('T')[0] : undefined);
+  const [dtReturnEmail, setReturnDate] = React.useState(props.bhorlakObj.dtReturnEmail ? (props.bhorlakObj.dtReturnEmail).split('T')[0] : null);
 
   const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.id === nAuthRegionID));
 
@@ -74,7 +78,7 @@ export const EditDialog = (props) => {
     id: id,
     nMadebTypeID: madebType,
     nFormNumber,
-    dtReceived,
+    dtReceived: Moment(dtReceived).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReceived).format('YYYY-MM-DD') : '',
     nAuthRegionID,
     sName,
     sGBID,
@@ -86,9 +90,9 @@ export const EditDialog = (props) => {
     sMadebStatusRemark,
     sApprovedReject,
     dtIssueAction,
-    dtReject,
+    dtReject: Moment(dtReject).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReject).format('YYYY-MM-DD') : null,
     nIssuedOrNotID,
-    dtReturnEmail,
+    dtReturnEmail: Moment(dtReturnEmail).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReturnEmail).format('YYYY-MM-DD') : null,
     nUpdatedBy: userId
   }
   console.log("Madeb Edit Object received in dialog", madeb);
@@ -246,7 +250,7 @@ export const EditDialog = (props) => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <FormControl className={props.classes.formControl}>
+                  {/* <FormControl className={props.classes.formControl}>
                     <TextField
                       id="dtReceived"
                       name="dtReceived"
@@ -266,8 +270,41 @@ export const EditDialog = (props) => {
                     {_.get("dtReceived.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
                     )}
-                  </FormControl>
-                </Grid>
+                  </FormControl> */}
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <FormControl className={props.classes.formControl} >
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          variant="dialog"
+                          margin="dense"
+                          id="dtReceived"
+                          name="dtReceived"
+                          label={<> Received Date<span style={{ color: 'red' }}> *</span></>}
+                          format={sDateFormatMUIDatepicker}
+                          returnMoment={true}
+                          onChange={(date) => {
+                            setReceivedDate(date);
+                          }}
+                          value={dtReceived}
+                          KeyboardButtonProps={{
+                            "aria-label": "change date",
+                          }}
+                          
+                          //className={classes.dateField}
+                          inputRef={register({
+                            required: true,
+                          })}
+                        />
+                      </MuiPickersUtilsProvider>
+                      {_.get("dtReceived.type", errors) === "required" && (
+                        <span style={{ color: "red" }}>
+                          This field is required
+                        </span>
+                      )}
+                    </FormControl>
+                  </Grid>
+                
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <Controller
@@ -577,7 +614,7 @@ export const EditDialog = (props) => {
                     />
                   </FormControl>
                         </Grid>*/}
-                <Grid item xs={12} sm={6}>
+                {/* <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="dtReject"
@@ -593,8 +630,30 @@ export const EditDialog = (props) => {
                       onChange={(e) => { setRejectDate(e.target.value) }}
                     />
                   </FormControl>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12} sm={6}>
+                    <FormControl className={props.classes.formControl}>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          variant="dialog"
+                          margin="dense"
+                          id="dtReject"
+                          name="dtReject"
+                          label="Reject Date"
+                          format={sDateFormatMUIDatepicker}
+                          onChange={(date) => {
+                            setRejectDate(date);
+                          }}
+                          value={dtReject}
+                          KeyboardButtonProps={{
+                            "aria-label": "change date",
+                          }}
+                          //className={classes.dateField}
+                        />
+                      </MuiPickersUtilsProvider>
+                    </FormControl>
+                  </Grid>
+                {/* <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="dtReturnEmail"
@@ -610,7 +669,32 @@ export const EditDialog = (props) => {
                       onChange={(e) => { setReturnDate(e.target.value) }}
                     />
                   </FormControl>
-                </Grid>
+                </Grid> */}
+                <Grid item xs={12} sm={6}>
+                    <FormControl className={props.classes.formControl}>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          variant="dialog"
+                          margin="dense"
+                          id="dtReturnEmail"
+                          name="dtReturnEmail"
+                          label="Return Date"
+                          format={sDateFormatMUIDatepicker}
+                          onChange={(date) => {
+                            setReturnDate(date);
+                          }}
+                          value={dtReturnEmail}
+                          KeyboardButtonProps={{
+                            "aria-label": "change date",
+                          }}
+                          
+                          //className={classes.dateField}
+                         
+                        />
+                      </MuiPickersUtilsProvider>
+                     
+                    </FormControl>
+                  </Grid>
               </Grid>
             </div>
           </DialogContentText>
@@ -774,7 +858,7 @@ export const AddDialog = (props) => {
     id: id,
     nMadebTypeID: madebType,
     nFormNumber,
-    dtReceived,
+    dtReceived: Moment(dtReceived).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtReceived).format('YYYY-MM-DD') : null,
     nAuthRegionID,
     sName,
     sGBID,
@@ -832,7 +916,7 @@ export const AddDialog = (props) => {
                     )}
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                {/* <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="dtReceived"
@@ -854,7 +938,39 @@ export const AddDialog = (props) => {
                       <span style={{ color: 'red' }}>This field is required</span>
                     )}
                   </FormControl>
-                </Grid>
+                </Grid> */}
+                <Grid item xs={12} sm={6}>
+                    <FormControl className={props.classes.formControl}>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          variant="dialog"
+                          margin="dense"
+                          id="dtReceived"
+                          name="dtReceived"
+                          label={<>Received Date<span style={{ color: 'red' }}> *</span></>}
+                          format={sDateFormatMUIDatepicker}
+                          returnMoment={true}
+                          onChange={(date) => {
+                            setReceivedDate(date);
+                          }}
+                          value={dtReceived}
+                          KeyboardButtonProps={{
+                            "aria-label": "change date",
+                          }}
+                          fullWidth
+                          //className={classes.dateField}
+                          inputRef={register({
+                            required: true,
+                          })}
+                        />
+                      </MuiPickersUtilsProvider>
+                      {_.get("dtReceived.type", errors) === "required" && (
+                        <span style={{ color: "red" }}>
+                          This field is required
+                        </span>
+                      )}
+                    </FormControl>
+                  </Grid>
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <Controller
