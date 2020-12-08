@@ -83,13 +83,13 @@ export const EditDialog = (props) => {
         nAuthRegionID: nAuthRegionID,
         nMadebStatusID,
         sMadebStatusRemark,
-        dtReceived: Moment(receivedDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(receivedDate).format('YYYY-MM-DD') : '',
+        dtReceived: Moment(receivedDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(receivedDate).format('YYYY-MM-DD') : null,
         dtIssueAction: issueActionDate,
         nIssuedOrNotID: issueAction,
         sDocumentAttached: documents,
         nSaneyFormNo: saney,
-        dtReturnEmail:  Moment(returnDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(returnDate).format('YYYY-MM-DD') : '',
-        dtReject:  Moment(rejectDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(rejectDate).format('YYYY-MM-DD') : '',
+        dtReturnEmail:  Moment(returnDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(returnDate).format('YYYY-MM-DD') : null,
+        dtReject:  Moment(rejectDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(rejectDate).format('YYYY-MM-DD') : null,
         nUpdatedBy: userId
     }
     let valueAuthRegion = [];
@@ -524,7 +524,7 @@ export const AddDialog = (props) => {
         sName: name,
         sFathersName: fname,
         nAuthRegionID: nAuthRegionID,
-        dtReceived:  Moment(receivedDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(receivedDate).format('YYYY-MM-DD') : '',
+        dtReceived:  Moment(receivedDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(receivedDate).format('YYYY-MM-DD') : null,
         nMadebStatusID,
         sMadebStatusRemark,
         //nIssuedOrNotID: 1,
