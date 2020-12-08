@@ -2303,7 +2303,7 @@ export default function EditEntry(props) {
                               Title
                             </th>
                             {/*<th scope="col">Register Date</th>*/}
-                            <th scope="col">Entered By</th>
+                            {/*<th scope="col">Entered By</th>*/}
                             <th scope="col">Edit</th>
                             <th scope="col">Delete</th>
                           </tr>
@@ -2313,7 +2313,7 @@ export default function EditEntry(props) {
                             <tr>
                               <td scope="row">{row.sTitle}</td>
                               {/*<td scope="row">{row.nRegisterDate}</td>*/}
-                              <td scope="row">{row.nEnteredBy}</td>
+                              {/*<td scope="row">{row.nEnteredBy}</td>*/}
                               <td scope="row">
                                 <IconButton
                                   color="primary"
