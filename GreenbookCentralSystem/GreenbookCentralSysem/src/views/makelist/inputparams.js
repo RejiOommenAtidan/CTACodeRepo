@@ -7,6 +7,17 @@ import { useForm, Controller } from "react-hook-form";
 import _ from "lodash/fp";
 import { makeStyles } from '@material-ui/core/styles';
 import { sButtonColor, sButtonSize, sButtonVariant } from "../../config/commonConfig";
+import Moment from 'moment';
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+
+import {
+  sDateFormatMUIDatepicker,
+} from "../../config/commonConfig";
+
 
 export const InputParams = (props) => {
   const selectStyles = makeStyles((theme) => ({
@@ -23,8 +34,8 @@ export const InputParams = (props) => {
   //validations
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
 
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [authRegions, setAuthRegionData] = React.useState(props.selectData['authRegions']);
   const [madebTypes, setMadebTypesData] = React.useState(props.selectData['madebTypes']);
   const [nMadebTypeId, setMadebTypeId] = React.useState(0);
@@ -50,8 +61,8 @@ export const InputParams = (props) => {
   };
 
   const makeListParams = {
-    startDate,
-    endDate,
+    startDate: Moment(startDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(startDate).format('YYYY-MM-DD') : null,
+    endDate: Moment(endDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(endDate).format('YYYY-MM-DD') : null,
     nMadebTypeId,
     nAuthRegionId,
     bPrinted
@@ -73,51 +84,81 @@ export const InputParams = (props) => {
         <Grid container spacing={1}>
           <Grid item xs>
             <FormControl>
-              <TextField
-                id="startDate"
-                name="startDate"
-                label="Date From"
-                type="date"
-                //defaultValue={dtDate}
-                className={props.classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(e) => { setStartDate(e.target.value) }}
-                inputRef={register({
-                  required: true
-                })}
-              />
               {/* {_.get("startDate.type", errors) === "required" && (
                 <span style={{ color: 'red' }}>This field is required</span>
               )} */}
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          variant="dialog"
+                          //openTo="year"
+                          //views={["year", "month", "date"]}
+                          margin="dense"
+                          id="startDate"
+                          name="startDate"
+                          
+                          label={<> Date From<span style={{ color: 'red' }}> *</span></>}
+                          format={sDateFormatMUIDatepicker}
+                          returnMoment={true}
+                          onChange={(date) => {
+                            //console.log(date.toISOString().split("T")[0]);
+                            //console.log(date.toDateString());
+                            // console.log(date.toLocaleDateString());
+                            //console.log(date);
+                            setStartDate(date);
+                          }}
+                          value={startDate}
+                          KeyboardButtonProps={{
+                            "aria-label": "change date",
+                          }}
+                         // fullWidth
+                          //className={classes.dateField}
+                          inputRef={register({
+                            required: true,
+                          })}
+                        />
+                         </MuiPickersUtilsProvider>
               {errors.startDate && <span style={{ color: 'red' }}>Date From is required</span>}
             </FormControl>
           </Grid>
-          <Grid item xs >
+          <Grid item xs  >
             <FormControl>
-              <TextField
-                id="endDate"
-                name="endDate"
-                label="Date To"
-                type="date"
-                //defaultValue={dtDate}
-                className={props.classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(e) => { setEndDate(e.target.value) }}
-                inputRef={register({
-                  required: true
-                })}
-              />
+            <MuiPickersUtilsProvider utils={DateFnsUtils} >
+                        <KeyboardDatePicker
+                          variant="dialog"
+                          //openTo="year"
+                          //views={["year", "month", "date"]}
+                          margin="dense"
+                          id="endDate"
+               		  name="endDate"
+                          
+                          label={<> Date To<span style={{ color: 'red' }}> *</span></>}
+                          format={sDateFormatMUIDatepicker}
+                          returnMoment={true}
+                          onChange={(date) => {
+                            //console.log(date.toISOString().split("T")[0]);
+                            //console.log(date.toDateString());
+                            // console.log(date.toLocaleDateString());
+                            //console.log(date);
+                            setEndDate(date);
+                          }}
+                          value={endDate}
+                          KeyboardButtonProps={{
+                            "aria-label": "change date",
+                          }}
+                         // fullWidth
+                          //className={classes.dateField}
+                          inputRef={register({
+                            required: true,
+                          })}
+                        />
+                         </MuiPickersUtilsProvider>
               {_.get("endDate.type", errors) === "required" && (
                 <span style={{ color: 'red' }}>Date To is required</span>
               )}
             </FormControl>
           </Grid>
           <Grid item xs >
-            <FormControl style={{ paddingRight: '20px' }}>
+            <FormControl style={{ paddingRight: '20px' , marginTop: '4.5px' }}>
               <Controller
                 render={props => (
                   <Autocomplete
@@ -151,7 +192,8 @@ export const InputParams = (props) => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Why Issued"
+                        
+                        label={<> Why Issued<span style={{ color: 'red' }}> *</span></>}
                         variant="standard"
                         //className={props.classes.textField}
                         inputProps={{
@@ -173,7 +215,7 @@ export const InputParams = (props) => {
             </FormControl>
           </Grid>
           <Grid item xs >
-            <FormControl style={{ paddingRight: '20px' }} >
+            <FormControl style={{ paddingRight: '20px' , marginTop: '4.5px' }} >
               <Controller
                 render={props => (
                   <Autocomplete
@@ -209,6 +251,7 @@ export const InputParams = (props) => {
                       <TextField
                         {...params}
                         label="Where Issued"
+                        label={<> Where Issued<span style={{ color: 'red' }}> *</span></>}
                         //className={props.classes.textField}
                         variant="standard"
                         inputProps={{
@@ -227,8 +270,8 @@ export const InputParams = (props) => {
             </FormControl>
           </Grid>
           <Grid item  >
-            <FormControl style={{ paddingRight: '20px' }} >
-              <InputLabel id="Printed/Not">Print Status</InputLabel>
+            <FormControl style={{ paddingRight: '20px' , marginTop: '4.5px' }} >
+              <InputLabel id="Printed/Not">Print Status {<span style={{ color: 'red' }}>*</span>}</InputLabel>
               <Controller
                 render={props => (
                   <Select
@@ -257,7 +300,7 @@ export const InputParams = (props) => {
                 color={sButtonColor}
                 size={sButtonSize}
                 type="submit"
-                style={{ fontSize: '1em' }}>Make List</Button>
+                style={{ fontSize: '1em' , marginTop: '16px', marginLeft: '10px' }}>Make List</Button>
             </FormControl>
           </Grid>
         </Grid>
