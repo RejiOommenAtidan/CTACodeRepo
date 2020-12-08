@@ -340,6 +340,7 @@ export default () => {
 
   const editAPICall = (gbSerialObj) => {
     setBackdrop(true);
+    setLoading(true);
     axios.post(`GreenBookSerialNumber/EditGreenbookSerialNumber/Id=` + gbSerialObj.id, gbSerialObj)
       .then(resp => {
         if (resp.status === 200) {
@@ -352,14 +353,17 @@ export default () => {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
+                setLoading(false);
               }
               else {
                 setBackdrop(false);
+                setLoading(false);
                 console.log("Response received:\n", resp);
               }
             })
             .catch(error => {
               setBackdrop(false);
+              setLoading(false);
               console.log(error.config);
               console.log(error.message);
             })

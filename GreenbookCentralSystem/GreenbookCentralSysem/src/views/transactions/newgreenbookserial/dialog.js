@@ -9,11 +9,17 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker } from '../../../config/commonConfig';
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import Moment from "moment";
 
-import { sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
 
 export const AddDialog = (props) => {
-
+  Moment.locale("en");
   console.log("Hello from Add dialog");
 
   console.log("gbSerialObj Object received in Add dialog: ", props.gbSerialObj);
@@ -65,7 +71,8 @@ export const AddDialog = (props) => {
     nBookNo,
     sGBID,
     remarks,
-    dtDate,
+    dtDate: Moment(dtDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtDate).format('YYYY-MM-DD') : '',
+    //dtDate,
     //sName,
     sCountryID,
     nMadebTypeId,
@@ -169,7 +176,7 @@ export const AddDialog = (props) => {
           <DialogContentText>
             <div>
               <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
+                {/*<Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="dtDate"
@@ -188,6 +195,40 @@ export const AddDialog = (props) => {
                     />
                     {_.get("dtDate.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                  </FormControl>
+                    </Grid>*/}
+                <Grid item xs={12} sm={6}>
+                  <FormControl className={props.classes.formControl}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <KeyboardDatePicker
+                        variant="dialog"
+                        // openTo="year"
+                        // views={["year", "month", "date"]}
+                        margin="dense"
+                        id="id_dtDate"
+                        name="name_dtDate"
+                        label={<>Date<span style={{ color: 'red' }}> *</span></>}
+                        format={sDateFormatMUIDatepicker}
+                        returnMoment={true}
+                        onChange={(date) => {
+                          setDate(date);
+                        }}
+                        value={dtDate}
+                        KeyboardButtonProps={{
+                          "aria-label": "change date",
+                        }}
+                        fullWidth
+                        //className={props.classes.dateField}
+                        inputRef={register({
+                          required: true,
+                        })}
+                      />
+                    </MuiPickersUtilsProvider>
+                    {_.get("name_dtDate.type", errors) === "required" && (
+                      <span style={{ color: "red" }}>
+                        This field is required
+                      </span>
                     )}
                   </FormControl>
                 </Grid>
@@ -250,7 +291,7 @@ export const AddDialog = (props) => {
                       id="sName"
                       name="sName"
                       label="Name"
-                     
+
                       InputProps={{
                         readOnly: true
                       }}

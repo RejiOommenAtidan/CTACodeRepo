@@ -130,7 +130,7 @@ export default () => {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
