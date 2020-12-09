@@ -137,7 +137,7 @@ export default function Report() {
 
         }
         else{
-          axios.get(`/Report/GetReportCTAMadebRegionOrCountryWise/?sMadebDisplayKey=`+madebType+`&dtRecordFrom=`+dtFrom+`&dtRecordTo=`+dtTo+`&sGroupBy=`+groupBy+`&sOrderBy=`+orderBy)
+          axios.get(`/Report/GetReportCTAMadebRegionOrCountryWise/?sMadebDisplayKey=`+madebType+`&dtRecordFrom=`+dtFrom+`&dtRecordTo=`+dtTo+`&sOrderBy=`+orderBy)
           .then(resp => {
             if (resp.status === 200) {
             
