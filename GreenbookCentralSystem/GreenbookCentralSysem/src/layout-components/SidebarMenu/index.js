@@ -693,7 +693,7 @@ const SidebarMenu = (props) => {
               </NavLink>
             </li>*/}
 
-            {/*<li>
+            <li>
                 <a
                   href="#/"
                   onClick={toggleReport}
@@ -830,7 +830,7 @@ const SidebarMenu = (props) => {
 
                   </ul>
                 </Collapse>
-                     </li>*/}
+                     </li>
             <div style={{ paddingTop: '100px' }}>
             </div>
           </ul>

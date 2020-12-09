@@ -237,7 +237,7 @@ export default function SearchPage() {
     // },
     {
       render: rowData => <div onContextMenu={(e) => { handleClick(e) }} style={{ cursor: 'context-menu' }} > <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewGb(rowData['sGBID']) }}><span><u>{rowData['sGBIDCombo']}</u></span></Button>
-        <Menu
+       {/* <Menu
           keepMounted
           open={contextState.mouseY !== null}
           onClose={() => { handleClose() }}
@@ -249,8 +249,8 @@ export default function SearchPage() {
           }
         >
           <MenuItem onClick={() => { handleView(rowData['sGBID']) }}>View</MenuItem>
-          <MenuItem onClick={() => { handleEdit(rowData['id']) }}>Edit</MenuItem>
-        </Menu>
+          <MenuItem onClick={() => { handleEdit(rowData['sGBID']) }}>Edit</MenuItem>
+        </Menu>*/}
       </div>
       ,
       field: "sGBIDCombo",
@@ -438,10 +438,10 @@ export default function SearchPage() {
     setContextState(initialState);
     viewGb(sGBID)
   };
-  const handleEdit = (id) => {
+  const handleEdit = (sGBID) => {
     window.onscroll = () => { };
     setContextState(initialState);
-    history.push("/EditEntry/" + id);
+    history.push("/EditEntry/" + sGBID);
   };
   const openRelationGB = (newsGBID) => {
     handleViewClickClose();
