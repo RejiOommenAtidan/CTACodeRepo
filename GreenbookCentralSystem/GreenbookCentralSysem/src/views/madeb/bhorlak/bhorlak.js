@@ -149,6 +149,7 @@ export default function EnhancedTable() {
 
   const columns = [
     {
+      width: "3%",
       field: "madeb.id",
       title: "#",
       hidden: true,
@@ -174,11 +175,11 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '5px'
+        padding: '5px'
       }
     },
     {
-      width: "5%",
+      width: "8%",
       field: "madeb.dtReceived",
       title: "RECEIVED DATE",
       render: rowData => Moment(rowData['madeb']['dtReceived']).format(sDateFormat),
@@ -189,11 +190,11 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '5px'
+        padding: '5px'
       }
     },
     {
-      width: "8%",
+      width: "9%",
       field: "sAuthRegion",
       title: "AUTHORITY",
       headerStyle: {
@@ -203,7 +204,7 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        paddingLeft: '5px'
+        padding: '5px'
       }
     },
     {
@@ -213,18 +214,18 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle",
-        paddingLeft: '3px'
+        verticalAlign: "middle"
       },
       cellStyle: {
         textAlign: "left",
-        paddingLeft: '3px'
+        padding: '5px'
       }
     },
     {
-      width: "3%",
+      width: "9%",
       field: "madeb.sGBID",
-      render: rowData => rowData['madeb']['sGBID'] ? <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewGb(rowData['madeb']['sGBID']) }}><span>{rowData['madeb']['sGBID']}</span></Button> : '',
+      render: rowData => rowData['madeb']['sGBID'] ?
+        <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewGb(rowData['madeb']['sGBID']) }}><span>{rowData['madeb']['sGBID']}</span></Button> : '',
       title: "GB ID",
       headerStyle: {
         textAlign: "center",
@@ -232,28 +233,26 @@ export default function EnhancedTable() {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "right",
-        paddingRight: '3px'
+        textAlign: "center",
+        padding: '5px'
       }
     },
     {
-      width: "5%",
+      width: "8%",
       field: "madeb.nCurrentGBSno",
       title: "BOOK SERIAL NO.",
-      hidden: false,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle",
-        paddingRight: '5px'
+        verticalAlign: "middle"
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '5px'
+        padding: '5px'
       }
     },
     {
-      width: "5%",
+      width: "10%",
       field: "madeb.sDocumentAttached",
       title: "DOCUMENT ATTACHED",
       headerStyle: {
@@ -263,11 +262,11 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        paddingLeft: '8px'
+        padding: '5px'
       }
     },
     {
-      width: "5%",
+      width: "8%",
       field: "madeb.nReceiptNo",
       title: "RECEIPT NO.",
       headerStyle: {
@@ -277,11 +276,11 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '3px'
+        padding: '5px'
       }
     },
     {
-      width: "5%",
+      width: "8%",
       field: "sMadebStatus",
       title: "STATUS",
       headerStyle: {
@@ -291,11 +290,11 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        paddingLeft: '3px'
+        padding: '5px'
       }
     },
     {
-      width: "10%",
+      width: "8%",
       field: "madeb.sMadebStatusRemark",
       title: "STATUS REMARK",
       headerStyle: {
@@ -305,11 +304,11 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        paddingLeft: '5px'
+        padding: '5px'
       }
     },
     {
-      width: "5%",
+      width: "8%",
       field: "madeb.dtIssueAction",
       title: "ISSUE ACTION DATE",
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : '',
@@ -321,11 +320,11 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '5px'
+        padding: '5px'
       }
     },
     {
-      width: "5%",
+      width: "9%",
       field: "sTypeIssued",
       title: "ISSUE ACTION",
       headerStyle: {
@@ -335,11 +334,11 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        paddingLeft: '5px'
+        padding: '5px'
       }
     },
     {
-      width: "5%",
+      width: "8%",
       field: "madeb.dtReturnEmail",
       title: "RETURN DATE",
       //render: rowData => Moment(rowData['madeb']['dtReturnEmail']).format('YYYY-MM-DD'),
@@ -351,11 +350,11 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '3px'
+        padding: '5px'
       }
     },
     {
-      width: "5%",
+      width: "8%",
       field: "madeb.dtReject",
       title: "REJECT DATE",
       render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : '',
@@ -366,7 +365,7 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '3px'
+        padding: '5px'
       }
     },
 
@@ -385,7 +384,6 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        paddingRight: "5px",
         verticalAlign: "middle"
       },
       cellStyle: {
@@ -394,7 +392,7 @@ export default function EnhancedTable() {
       }
     },
     {
-      width: "3%",
+      width: "5%",
       field: "edit",
       title: "EDIT",
       sorting: false,
@@ -410,7 +408,6 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        
         verticalAlign: "middle"
       },
       cellStyle: {
@@ -419,7 +416,7 @@ export default function EnhancedTable() {
       }
     },
     {
-      
+
       field: 'Verified By',
       title: 'VERIFIED BY',
       sort: false,
@@ -706,7 +703,7 @@ export default function EnhancedTable() {
             title="Bhorlak Madeb"
             columns={columns}
             data={dataAPI}
-            options={oOptions}
+            options={{ ...oOptions, tableLayout: "fixed" }}
             actions={[
               {
                 icon: oTableIcons.Add,
