@@ -226,7 +226,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 }
                 else
                 {
-                    return NotFound(String.Format(@"No records found for sGBID having value {0}", sGBID));
+                    return NotFound(String.Format(@"No records found for Greenbook ID having value {0}", sGBID));
                 }
             }
             catch (Exception ex)
@@ -259,7 +259,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 }
                 else
                 {
-                    return NotFound(String.Format(@"No records found for sGBID having value {0}", sGBID));
+                    return NotFound(String.Format(@"No records found for Greenbook ID having value {0}", sGBID));
                 }
             }
             catch (Exception ex)
@@ -292,7 +292,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 }
                 else
                 {
-                    return NotFound(String.Format(@"No records found for sGBID having value {0}", sGBID));
+                    return NotFound(String.Format(@"No records found for Greenbook ID having value {0}", sGBID));
                 }
             }
             catch (Exception ex)

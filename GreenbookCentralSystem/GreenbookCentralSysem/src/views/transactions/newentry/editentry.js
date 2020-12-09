@@ -500,10 +500,9 @@ export default function EditEntry(props) {
           setlProvince(resp.data.lProvince);
           setlQualification(resp.data.lQualification);
           //Get GB Details
-          axios
-            .get(
-              `/Greenbook/GetGreenbook/Id=` + props.match.params.GBID.toString()
-            )
+          //axios.get(`/Greenbook/GetGreenbook/Id=` + props.match.params.GBID.toString())
+          //axios.get(`/Greenbook/GetGreenbook/sGBID=`+props.match.params.GBID.toString())
+          axios.get(`/Greenbook/GetGreenbook/Id=` + props.location.state.Id.toString())
             .then((resp) => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -584,6 +583,7 @@ export default function EditEntry(props) {
               }
             })
             .catch((error) => {
+              console.log(error.message);
               handleError(error, history);
             })
             .then((release) => {

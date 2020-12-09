@@ -2,6 +2,7 @@
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
 using System;
+
 using System.Runtime.InteropServices;
 
 namespace CTAWebAPI.Services
@@ -77,7 +78,7 @@ namespace CTAWebAPI.Services
                 {
                     AuditLog auditLogger = new AuditLog()
                     {
-                        dtEntered = DateTime.Now,
+                        dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
                         nFeatureID = nFeatureID,
                         nRegionID = nRegionID,
                         nRecordID = nRecordID,

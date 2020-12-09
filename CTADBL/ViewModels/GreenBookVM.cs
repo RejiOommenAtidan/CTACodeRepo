@@ -37,6 +37,7 @@ namespace CTADBL.ViewModels
         private string? _sBirthCountry;
         private string? _sCountry;
         private string? _sEnteredBy;
+        private string? _sUpdatedBy;
         private string? _sPhoto = null;
         //private int? _nAge = null;
 
@@ -241,6 +242,18 @@ namespace CTADBL.ViewModels
             set
             {
                 _sEnteredBy = value;
+            }
+        }
+
+        public string sUpdatedBy
+        {
+            get
+            {
+                return _sUpdatedBy;
+            }
+            set
+            {
+                _sUpdatedBy = value;
             }
         }
 
