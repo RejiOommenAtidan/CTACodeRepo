@@ -95,6 +95,14 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 if (ModelState.IsValid)
                 {
+                    DuplicateCheck<Region> check = new DuplicateCheck<Region>(region, _info.sConnectionString);
+                    string[] props = { "sRegion_code", "sRegion_name" };
+                    string message;
+                    if (check.IsDuplicate(region.Id, props, out message))
+                    {
+                        return Problem(message, null, 403);
+                    }
+
                     region.dtEntered = DateTime.Now;
                     region.dtUpdated = DateTime.Now;
 
@@ -137,6 +145,14 @@ namespace CTAWebAPI.Controllers.Masters
                    
                     if (RegionExists(ID))
                     {
+                        DuplicateCheck<Region> check = new DuplicateCheck<Region>(region, _info.sConnectionString);
+                        string[] props = { "sRegion_code", "sRegion_name" };
+                        string message;
+                        if (check.IsDuplicate(region.Id, props, out message))
+                        {
+                            return Problem(message, null, 403);
+                        }
+
                         Region fetchedregion = _regionRepository.GetRegionById(ID);
                         region.dtEntered = fetchedregion.dtEntered;
                         region.nEnteredBy = fetchedregion.nEnteredBy;

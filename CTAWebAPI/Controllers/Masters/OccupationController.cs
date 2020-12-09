@@ -104,6 +104,13 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 if (ModelState.IsValid)
                 {
+                    DuplicateCheck<Occupation> check = new DuplicateCheck<Occupation>(occupation, _info.sConnectionString);
+                    string[] props = { "sOccupationDesc"};
+                    string message;
+                    if (check.IsDuplicate(occupation.Id, props, out message))
+                    {
+                        return Problem(message, null, 403);
+                    }
                     occupation.dtEntered = DateTime.Now;
                     occupation.dtUpdated = DateTime.Now;
                     
@@ -158,6 +165,13 @@ namespace CTAWebAPI.Controllers.Masters
                 {
                     if (ModelState.IsValid)
                     {
+                        DuplicateCheck<Occupation> check = new DuplicateCheck<Occupation>(occupation, _info.sConnectionString);
+                        string[] props = { "sOccupationDesc" };
+                        string message;
+                        if (check.IsDuplicate(occupation.Id, props, out message))
+                        {
+                            return Problem(message, null, 403);
+                        }
                         occupationToUpdate.nEnteredBy = occupation.nEnteredBy;
                         occupationToUpdate.dtEntered = occupation.dtEntered;
                         occupationToUpdate.dtUpdated = DateTime.Now;

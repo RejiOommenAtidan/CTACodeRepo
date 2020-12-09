@@ -321,6 +321,17 @@ export default function Country() {
         }
       })
       .catch(error => {
+        if(error.response){
+          if(error.response.status === 403){
+            console.log(error);
+            setAlertMessage(error.response.data.detail.substring(1));
+            setAlertType("error");
+            snackbarOpen();
+            setBackdrop(false);
+            return;
+          }
+
+        }
         handleError(error, history);
       })
       .then(release => {
@@ -336,15 +347,16 @@ export default function Country() {
           setAlertMessage(sSnackbarAddMessage);
           setAlertType('success');
           snackbarOpen();
-          setBackdrop(false);
           axios.get(`/Country/GetCountries`)
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
+                setBackdrop(false);
               }
             })
             .catch(error => {
               handleError(error, history);
+              setBackdrop(false);
             })
             .then(release => {
               //console.log(release); => udefined
@@ -352,6 +364,17 @@ export default function Country() {
         }
       })
       .catch(error => {
+        if(error.response){
+          if(error.response.status === 403){
+            console.log(error);
+            setAlertMessage(error.response.data.detail.substring(1));
+            setAlertType("error");
+            snackbarOpen();
+            setBackdrop(false);
+            return;
+          }
+
+        }
         handleError(error, history);
       })
       .then(release => {

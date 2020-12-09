@@ -114,10 +114,19 @@ namespace CTAWebAPI.Controllers.Masters
                     //{
                     //    return BadRequest("Country cannot be NULL");
                     //}
-                    if (_countryRepository.CountryIdExists(country.sCountryID))
+                    //if (_countryRepository.CountryIdExists(country.sCountryID))
+                    //{
+                    //    return StatusCode(StatusCodes.Status400BadRequest, "CountryID already exists.");
+                    //}
+
+                    DuplicateCheck<Country> check = new DuplicateCheck<Country>(country, _info.sConnectionString);
+                    string[] props = { "sCountryID", "sCountry" };
+                    string message;
+                    if (check.IsDuplicate(country.ID, props, out message))
                     {
-                        return StatusCode(StatusCodes.Status400BadRequest, "CountryID already exists.");
+                        return Problem(message, null, 403);
                     }
+
                     country.dtEntered = DateTime.Now;
                     country.dtUpdated = DateTime.Now;
                     
@@ -174,6 +183,14 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         if (ModelState.IsValid)
                         {
+                            DuplicateCheck<Country> check = new DuplicateCheck<Country>(countryToUpdate, _info.sConnectionString);
+                            string[] props = { "sCountryID", "sCountry" };
+                            string message;
+                            if (check.IsDuplicate(countryToUpdate.ID, props, out message))
+                            {
+                                return Problem(message, null, 403);
+                            }
+
                             countryToUpdate.nEnteredBy = country.nEnteredBy;
                             countryToUpdate.dtEntered = country.dtEntered;
                             //to uncomment later
