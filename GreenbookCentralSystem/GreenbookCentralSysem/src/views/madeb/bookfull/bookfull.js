@@ -220,16 +220,16 @@ export default function EnhancedTable() {
         textAlign: "right",
         padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          name="FORM NUMBER"
-          field="madeb.nFormNumber"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"nFormNumber"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     name="FORM NUMBER"
+      //     field="madeb.nFormNumber"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"nFormNumber"}
+      //   />
     },
     {
       width: "8%",
@@ -247,16 +247,16 @@ export default function EnhancedTable() {
         padding: '5px'
       },
       render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined,
-      filterComponent: () =>
-        <MyComp
-          name="RECEIVED DATE"
-          field="madeb.dtReceived"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"dtReceived"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     name="RECEIVED DATE"
+      //     field="madeb.dtReceived"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"dtReceived"}
+      //   />
     },
     {
       width: "9%",
@@ -271,16 +271,16 @@ export default function EnhancedTable() {
         textAlign: "left",
         padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          name="AUTHORITY"
-          field="sAuthRegion"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"sAuthRegion"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     name="AUTHORITY"
+      //     field="sAuthRegion"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"sAuthRegion"}
+      //   />
     },
     {
       width: "12%",
@@ -295,16 +295,16 @@ export default function EnhancedTable() {
         textAlign: "left",
         padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          name="NAME"
-          field="madeb.sName"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.sName"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     name="NAME"
+      //     field="madeb.sName"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.sName"}
+      //   />
     },
 
     {
@@ -321,16 +321,16 @@ export default function EnhancedTable() {
         textAlign: "right",
         padding: '3px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.sGBID"
-          name="GB ID"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.sGBID"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.sGBID"
+      //     name="GB ID"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.sGBID"}
+      //   />
     },
 
     {
@@ -346,16 +346,16 @@ export default function EnhancedTable() {
         textAlign: "left",
         padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.sFathersName"
-          name="FATHER'S NAME"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.sFathersName"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.sFathersName"
+      //     name="FATHER'S NAME"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.sFathersName"}
+      //   />
     },
     {
       width: "6%",
@@ -370,16 +370,16 @@ export default function EnhancedTable() {
         textAlign: "right",
         padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.nSaneyFormNo"
-          name="SANEY FORM NO"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.nSaneyFormNo"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.nSaneyFormNo"
+      //     name="SANEY FORM NO"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.nSaneyFormNo"}
+      //   />
     },
     {
       width: "8%",
@@ -394,16 +394,16 @@ export default function EnhancedTable() {
         textAlign: "right",
         padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.nCurrentGBSno"
-          name="CURRENT GB SNO."
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.nCurrentGBSno"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.nCurrentGBSno"
+      //     name="CURRENT GB SNO."
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.nCurrentGBSno"}
+      //   />
     },
     {
       width: "8%",
@@ -418,16 +418,16 @@ export default function EnhancedTable() {
         textAlign: "right",
         padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.nPreviousGBSno"
-          name="PREVIOUS GB SNO"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.nPreviousGBSno"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.nPreviousGBSno"
+      //     name="PREVIOUS GB SNO"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.nPreviousGBSno"}
+      //   />
     },
     {
       width: "8%",
@@ -442,16 +442,16 @@ export default function EnhancedTable() {
         textAlign: "left",
         padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="sMadebStatus"
-          name="STATUS"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"sMadebStatus"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="sMadebStatus"
+      //     name="STATUS"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"sMadebStatus"}
+      //   />
     },
 
     {
@@ -467,16 +467,16 @@ export default function EnhancedTable() {
         textAlign: "left",
         padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.sMadebStatusRemark"
-          name="STATUS REMARK"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.sMadebStatusRemark"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.sMadebStatusRemark"
+      //     name="STATUS REMARK"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.sMadebStatusRemark"}
+      //   />
     },
 
 
@@ -495,16 +495,16 @@ export default function EnhancedTable() {
         textAlign: "right",
         padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.dtIssueAction"
-          name="ISSUE ACTION DATE"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.dtIssueAction"}
-        />,
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.dtIssueAction"
+      //     name="ISSUE ACTION DATE"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.dtIssueAction"}
+      //   />,
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
     },
     {
@@ -520,16 +520,16 @@ export default function EnhancedTable() {
         textAlign: "left",
         padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="sTypeIssued"
-          name="ISSUE ACTION"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"sTypeIssued"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="sTypeIssued"
+      //     name="ISSUE ACTION"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"sTypeIssued"}
+      //   />
     },
 
     {
@@ -548,16 +548,16 @@ export default function EnhancedTable() {
         padding: '5px'
       },
       render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined,
-      filterComponent: () =>
-        <MyComp
-          field="madeb.dtReject"
-          name="REJECT DATE"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.dtReject"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.dtReject"
+      //     name="REJECT DATE"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.dtReject"}
+      //   />
     },
     {
       width: "8%",
@@ -575,16 +575,16 @@ export default function EnhancedTable() {
         padding: '5px'
       },
       render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : undefined,
-      filterComponent: () =>
-        <MyComp
-          field="madeb.dtReturnEmail"
-          name="RETURN DATE"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.dtReturnEmail"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.dtReturnEmail"
+      //     name="RETURN DATE"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.dtReturnEmail"}
+      //   />
     },
     {
       width: "5%",
