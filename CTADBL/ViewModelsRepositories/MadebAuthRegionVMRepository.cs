@@ -157,11 +157,11 @@ namespace CTADBL.ViewModelsRepositories
                         LEFT JOIN `lstmadebstatus` ON `tblmadeb`.`nMadebStatusID` = `lstmadebstatus`.`ID`
                         WHERE `nMadebTypeID`= @madebType 
                         ORDER BY `tblmadeb`.`dtUpdated` DESC
-                        LIMIT @limit;";
+                        ";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("madebType", madebType);
-                command.Parameters.AddWithValue("limit", Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount")));
+                //command.Parameters.AddWithValue("limit", Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount")));
                 return GetRecords(command);
             }
         }
@@ -313,30 +313,40 @@ namespace CTADBL.ViewModelsRepositories
 
             var dictionary = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(madeb);
 
-
-            foreach (KeyValuePair<string, dynamic> item in dictionary)
+            using (var command = new MySqlCommand())
             {
-                if (item.Value != null)
+                foreach (KeyValuePair<string, dynamic> item in dictionary)
                 {
-                    if(item.Value.GetType() == typeof(Int32) || item.Value.GetType() == typeof(Int64))
+                    if (item.Value != null)
                     {
-                        addToSql += String.Format(@"{0} LIKE '{1}%' AND ", item.Key, item.Value);
-                    }
-                    
-                    if (item.Value.GetType() == typeof(string))
-                    {
-                        if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                        if (item.Value.GetType() == typeof(Int32) || item.Value.GetType() == typeof(Int64))
                         {
-                            addToSql += String.Format(@"{0} LIKE '%{1}%' AND ", item.Key, item.Value);
+                            addToSql += String.Format(@"{0} LIKE @{1} AND ", item.Key, item.Key);
+                            command.Parameters.AddWithValue(item.Key.ToString(), item.Value + '%');
+                        }
+
+                        if (item.Value.GetType() == typeof(string))
+                        {
+                            if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                            {
+                                addToSql += String.Format(@"{0} LIKE @{1} AND ", item.Key, item.Key);
+                                command.Parameters.AddWithValue(item.Key.ToString(),'%' + item.Value + '%');
+                            }
+                        }
+                        if(item.Value.GetType() == typeof(DateTime))
+                        {
+                            
+                            addToSql += String.Format(@"{0} = @{1} AND ", item.Key, item.Key);
+                            command.Parameters.AddWithValue(item.Key.ToString(), item.Value.ToString("yyyy-MM-dd"));
                         }
                     }
                 }
-            }
-            if (String.IsNullOrEmpty(addToSql))
-            {
-                return GetMadebsByType(madebType);
-            }
-            string sql = String.Format(@"SELECT `Id`,
+                if (String.IsNullOrEmpty(addToSql))
+                {
+                    return GetMadebsByType(madebType);
+                }
+
+                string sql = String.Format(@"SELECT `tblmadeb`.`Id`,
                             `_Id`,
                             `nFormNumber`,
                             `sGBID`,
@@ -344,8 +354,8 @@ namespace CTADBL.ViewModelsRepositories
                             `sName`,
                             `sFathersName`,
                             `nAuthRegionID`,
-                            STR_TO_DATE(`dtReceived`, '%d-%m-%Y' ) AS `dtReceived`,
-                            STR_TO_DATE(`dtIssueAction`, '%d-%m-%Y' ) AS `dtIssueAction`,
+                            `dtReceived`,
+                            `dtIssueAction`,
                             `nIssuedOrNotID`,
                             `nType`,
                             `sChangeField`,
@@ -355,33 +365,37 @@ namespace CTADBL.ViewModelsRepositories
                             `nPreviousGBSno`,
                             `nSaneyFormNo`,
                             `nReceiptNo`,
-                            STR_TO_DATE(`dtEmailSend`, '%d-%m-%Y' ) AS `dtEmailSend`,
+                            `dtEmailSend`,
                             `sAlias`,
                             `sApprovedReject`,
-                            STR_TO_DATE(`dtReject`, '%d-%m-%Y' ) AS `dtReject`,
-                            STR_TO_DATE(`dtReturnEmail`, '%d-%m-%Y' ) AS `dtReturnEmail`,
-                            STR_TO_DATE(`dtEntered`, '%d-%m-%Y' ) AS `dtEntered`,
-                            `nEnteredBy`,
-                            STR_TO_DATE(`dtUpdated`, '%d-%m-%Y' ) AS `dtUpdated`,
-                            `nUpdatedBy`,
+                            `dtReject`,
+                            `dtReturnEmail`,
+                            `tblmadeb`.`dtEntered`,
+                            `tblmadeb`.`nEnteredBy`,
+                            `tblmadeb`.`dtUpdated`,
+                            `tblmadeb`.`nUpdatedBy`,
                             `sAuthRegion`,
                             `sTypeIssued`, 
-                            `sMadebStatus`,
-                            `nMadebStatusID`,
+                            `lstmadebstatus`.`sMadebStatus`,
+                            `tblmadeb`.`nMadebStatusID`,
                             `sMadebStatusRemark`
-                        FROM `myview` 
+                        FROM `tblmadeb` 
+                        LEFT JOIN 
+                             `lstauthregion` ON `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
+                        LEFT JOIN 
+                             `lsttypeissued` ON `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
+                        LEFT JOIN 
+                             `lstmadebstatus` ON `tblmadeb`.`nMadebStatusID` = `lstmadebstatus`.`ID`
                         WHERE {0} 
-                        `nMadebTypeID`= @madebType 
-                        ORDER BY `dtUpdated` DESC
-                        LIMIT @limit;", addToSql);
-
-            using (var command = new MySqlCommand(sql))
-            {
+                             `nMadebTypeID`= @madebType 
+                        LIMIT 
+                             @limit;", addToSql);
+                command.CommandText = sql;
                 command.Parameters.AddWithValue("madebType", madebType);
                 command.Parameters.AddWithValue("limit", Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount")));
                 return GetRecords(command);
+
             }
-            
         }
 
         #endregion
