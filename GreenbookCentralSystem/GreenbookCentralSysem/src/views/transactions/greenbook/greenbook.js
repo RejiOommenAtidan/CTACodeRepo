@@ -248,7 +248,7 @@ export default function GBList(props) {
 
 
   const editClick = (tableRowArray) => {
-    history.push("/EditEntry/" + tableRowArray.id);
+    history.push("/EditEntry/" + tableRowArray.sGBID, {Id: tableRowArray.id});
   };
 
   useEffect(() => {
