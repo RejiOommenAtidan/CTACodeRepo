@@ -192,6 +192,7 @@ export default function EnhancedTable() {
 
   const columns = [
     {
+      width: "5%",
       field: "madeb.id",
       title: "#",
       hidden: true,
@@ -206,9 +207,9 @@ export default function EnhancedTable() {
       }
     },
     {
-      width: "2%",
+      width: "5%",
       field: "madeb.nFormNumber",
-      title: "FORM NUMBER",
+      title: "FORM NO.",
       filterPlaceholder: "Search...",
       headerStyle: {
         textAlign: "center",
@@ -217,21 +218,21 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '5px'
+        padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          name="FORM NUMBER"
-          field="madeb.nFormNumber"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"nFormNumber"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     name="FORM NUMBER"
+      //     field="madeb.nFormNumber"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"nFormNumber"}
+      //   />
     },
     {
-      width: "5%",
+      width: "8%",
       field: "madeb.dtReceived",
       title: "RECEIVED DATE",
       // type: 'date',
@@ -243,22 +244,22 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '5px'
+        padding: '5px'
       },
       render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined,
-      filterComponent: () =>
-        <MyComp
-          name="RECEIVED DATE"
-          field="madeb.dtReceived"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"dtReceived"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     name="RECEIVED DATE"
+      //     field="madeb.dtReceived"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"dtReceived"}
+      //   />
     },
     {
-      width: "8%",
+      width: "9%",
       field: "sAuthRegion",
       title: "AUTHORITY",
       headerStyle: {
@@ -268,18 +269,18 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        paddingLeft: '5px'
+        padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          name="AUTHORITY"
-          field="sAuthRegion"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"sAuthRegion"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     name="AUTHORITY"
+      //     field="sAuthRegion"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"sAuthRegion"}
+      //   />
     },
     {
       width: "12%",
@@ -292,22 +293,22 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        paddingLeft: '5px'
+        padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          name="NAME"
-          field="madeb.sName"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.sName"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     name="NAME"
+      //     field="madeb.sName"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.sName"}
+      //   />
     },
 
     {
-      width: "3%",
+      width: "9%",
       field: "madeb.sGBID",
       render: rowData => rowData['madeb']['sGBID'] ? <Button className="m-2 btn-transparent btn-link btn-link-first" size={"small"} onClick={() => { viewGb(rowData['madeb']['sGBID']) }}><span>{rowData['madeb']['sGBID']}</span></Button> : '',
       title: "GB ID",
@@ -318,18 +319,18 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '3px'
+        padding: '3px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.sGBID"
-          name="GB ID"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.sGBID"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.sGBID"
+      //     name="GB ID"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.sGBID"}
+      //   />
     },
 
     {
@@ -343,21 +344,21 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        paddingLeft: '5px'
+        padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.sFathersName"
-          name="FATHER'S NAME"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.sFathersName"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.sFathersName"
+      //     name="FATHER'S NAME"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.sFathersName"}
+      //   />
     },
     {
-      width: "5%",
+      width: "6%",
       field: "madeb.nSaneyFormNo",
       title: "SANEY FORM NO",
       headerStyle: {
@@ -367,71 +368,69 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '5px'
+        padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.nSaneyFormNo"
-          name="SANEY FORM NO"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.nSaneyFormNo"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.nSaneyFormNo"
+      //     name="SANEY FORM NO"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.nSaneyFormNo"}
+      //   />
     },
     {
-      width: "5%",
+      width: "8%",
       field: "madeb.nCurrentGBSno",
       title: "CURRENT GB SNO.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle",
-        paddingRight:"5px"
+        verticalAlign: "middle"
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '5px'
+        padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.nCurrentGBSno"
-          name="CURRENT GB SNO."
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.nCurrentGBSno"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.nCurrentGBSno"
+      //     name="CURRENT GB SNO."
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.nCurrentGBSno"}
+      //   />
     },
     {
-      width: "5%",
+      width: "8%",
       field: "madeb.nPreviousGBSno",
       title: "PREVIOUS GB SNO.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle",
-        paddingRight: "5px"
+        verticalAlign: "middle"
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '5px'
+        padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.nPreviousGBSno"
-          name="PREVIOUS GB SNO"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.nPreviousGBSno"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.nPreviousGBSno"
+      //     name="PREVIOUS GB SNO"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.nPreviousGBSno"}
+      //   />
     },
     {
-      width: "5%",
+      width: "8%",
       field: "sMadebStatus",
       title: "STATUS",
       headerStyle: {
@@ -441,22 +440,22 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        paddingLeft: '5px'
+        padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="sMadebStatus"
-          name="STATUS"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"sMadebStatus"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="sMadebStatus"
+      //     name="STATUS"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"sMadebStatus"}
+      //   />
     },
 
     {
-      width: "8%",
+      width: "10%",
       field: "madeb.sMadebStatusRemark",
       title: "STATUS REMARK",
       headerStyle: {
@@ -466,23 +465,23 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        paddingLeft: '5px'
+        padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.sMadebStatusRemark"
-          name="STATUS REMARK"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.sMadebStatusRemark"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.sMadebStatusRemark"
+      //     name="STATUS REMARK"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.sMadebStatusRemark"}
+      //   />
     },
-    
+
 
     {
-      width: "5%",
+      width: "8%",
       field: "madeb.dtIssueAction",
       title: "ISSUE ACTION DATE",
       // type: 'date',
@@ -494,22 +493,22 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '5px'
+        padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="madeb.dtIssueAction"
-          name="ISSUE ACTION DATE"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.dtIssueAction"}
-        />,
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.dtIssueAction"
+      //     name="ISSUE ACTION DATE"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.dtIssueAction"}
+      //   />,
       render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
     },
     {
-      width: "5%",
+      width: "8%",
       field: "sTypeIssued",
       title: "ISSUE ACTION",
       headerStyle: {
@@ -519,22 +518,22 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        paddingLeft: '5px'
+        padding: '5px'
       },
-      filterComponent: () =>
-        <MyComp
-          field="sTypeIssued"
-          name="ISSUE ACTION"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"sTypeIssued"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="sTypeIssued"
+      //     name="ISSUE ACTION"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"sTypeIssued"}
+      //   />
     },
-    
+
     {
-      width: "5%",
+      width: "8%",
       field: "madeb.dtReject",
       title: "REJECT DATE",
       // type: 'date',
@@ -542,27 +541,26 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle",
-        paddingRight: '5px'
+        verticalAlign: "middle"
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '5px'
+        padding: '5px'
       },
       render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined,
-      filterComponent: () =>
-        <MyComp
-          field="madeb.dtReject"
-          name="REJECT DATE"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.dtReject"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.dtReject"
+      //     name="REJECT DATE"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.dtReject"}
+      //   />
     },
     {
-      width: "5%",
+      width: "8%",
       field: "madeb.dtReturnEmail",
       title: "RETURN DATE",
       //type: 'date',
@@ -574,19 +572,19 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        paddingRight: '5px'
+        padding: '5px'
       },
       render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : undefined,
-      filterComponent: () =>
-        <MyComp
-          field="madeb.dtReturnEmail"
-          name="RETURN DATE"
-          changeHandler={changeHandler}
-          myarray={myarray}
-          updateArray={updateArray}
-          currId={currId}
-          key={"madeb.dtReturnEmail"}
-        />
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="madeb.dtReturnEmail"
+      //     name="RETURN DATE"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"madeb.dtReturnEmail"}
+      //   />
     },
     {
       width: "5%",
@@ -603,8 +601,7 @@ export default function EnhancedTable() {
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle",
-        paddingRight: "5px"
+        verticalAlign: "middle"
       },
       cellStyle: {
         textAlign: "center",
@@ -612,7 +609,7 @@ export default function EnhancedTable() {
       }
     },
     {
-      width: "3%",
+      width: "5%",
       field: "edit",
       title: "EDIT",
       sorting: false,
@@ -680,22 +677,22 @@ export default function EnhancedTable() {
       let shouldSearch = true;
       let value;
       myarray.map(item => {
-        
+
         // items to ignore
         if (item.id === "madeb.id" || item.id === 'Re-Verified By' || item.id === 'Verified By' || item.id === 'edit' || item.id === 'email') {
           return;
         };
         // date items
-        if(item.id.startsWith('madeb.dt')){
+        if (item.id.startsWith('madeb.dt')) {
           //console.log("Value in ", item.id, " is", item.val);
-          if(item.val){
+          if (item.val) {
             const date = Moment(item.val, 'D-M-YYYY', true);
-            if(!date._isValid){
+            if (!date._isValid) {
               shouldSearch = false;
               return;
             }
-            else{
-              
+            else {
+
               value = Moment(item.val, 'D-M-YYYY').format('YYYY-MM-DD');
               //console.log("date is valid?", date._isValid, value);
             }
@@ -705,12 +702,12 @@ export default function EnhancedTable() {
         else if (item.id === 'madeb.nCurrentGBSno' || item.id === 'madeb.nFormNumber' || item.id === 'madeb.nPreviousGBSno' || item.id === 'madeb.nSaneyFormNo') {
           value = parseInt(item.val) || null;
         }
-        else{
+        else {
           value = item.val;
         }
 
         var id = item.id;
-        
+
         if (item.id.startsWith('madeb')) {
           id = item.id.substring(6);
         }
@@ -718,33 +715,33 @@ export default function EnhancedTable() {
       });
       console.log("Should search:", shouldSearch);
       console.log("Search Object: Inside useEffect", searchObj);
-      if(shouldSearch){
+      if (shouldSearch) {
         setisLoading(true);
         axios.post(`/MadebAuthRegionVM/ColumnSearchMadeb/madebType=5`, searchObj)
-        .then(resp => {
-          if (resp.status === 200) {
-            //debugger
-            console.log("Got filter Data");
-            setdataAPI([...resp.data]);
-            setSearching(false);
-            setisLoading(false);
-            //setTimeout(() => ele.focus(), 2000);
+          .then(resp => {
+            if (resp.status === 200) {
+              //debugger
+              console.log("Got filter Data");
+              setdataAPI([...resp.data]);
+              setSearching(false);
+              setisLoading(false);
+              //setTimeout(() => ele.focus(), 2000);
 
-          }
-          if (resp.status === 204) {
-            console.log("Got  Empty data set");
+            }
+            if (resp.status === 204) {
+              console.log("Got  Empty data set");
+              setisLoading(false);
+              setdataAPI([...resp.data]);
+              setSearching(false);
+            }
+          })
+          .catch(error => {
             setisLoading(false);
-            setdataAPI([...resp.data]);
-            setSearching(false);
-          }
-        })
-        .catch(error => {
-          setisLoading(false);
-          console.log(error.message);
-          //handleError(error, history);
-        })  
+            console.log(error.message);
+            //handleError(error, history);
+          })
       }
-      
+
     }
   }, [myarray]);
 
@@ -943,7 +940,7 @@ export default function EnhancedTable() {
             title="Book Full Madeb"
             columns={columns}
             data={dataAPI}
-            options={oOptions}
+            options={{ ...oOptions, tableLayout: "fixed" }}
             actions={[
               {
                 icon: oTableIcons.Add,
@@ -997,7 +994,7 @@ export default function EnhancedTable() {
           />}
           {backdrop && <BackdropComponent
             backdrop={backdrop}
-        />}
+          />}
         </Grid>
       </Grid>
     </>

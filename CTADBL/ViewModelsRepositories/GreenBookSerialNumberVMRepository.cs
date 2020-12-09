@@ -36,13 +36,13 @@ namespace CTADBL.ViewModelsRepositories
                              gb.dtUpdated,
                              gb.nUpdatedBy FROM tblgreenbookserial AS gb
                              order by gb.nBookNo DESC
-                             LIMIT @records) as gbsn
+                             LIMIT 200) as gbsn
                              LEFT JOIN tblgreenbook AS grbk
                              ON gbsn.sGBId = grbk.sGBID
                              LEFT JOIN lstmadebtype AS md
                              ON gbsn.nMadebTypeId = md.Id
                              LEFT JOIN lstauthregion AS au
-                             ON gbsn.nAuthRegionId = au.ID";
+                             ON gbsn.nAuthRegionId = au.ID ORDER BY gbsn.nBookNo DESC";
 
             //sql += records > 0 ? (@" LIMIT " + records + ";") : sql += ";";
 
