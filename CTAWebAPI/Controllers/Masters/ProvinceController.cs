@@ -107,6 +107,13 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 if (ModelState.IsValid)
                 {
+                    DuplicateCheck<Province> check = new DuplicateCheck<Province>(province, _info.sConnectionString);
+                    string[] props = { "sProvince" };
+                    string message;
+                    if (check.IsDuplicate(province.Id, props, out message))
+                    {
+                        return Problem(message, null, 403);
+                    }
                     province.dtEntered = DateTime.Now;
                     province.dtUpdated = DateTime.Now;
 
@@ -165,6 +172,13 @@ namespace CTAWebAPI.Controllers.Masters
 
                     if (ModelState.IsValid)
                     {
+                        DuplicateCheck<Province> check = new DuplicateCheck<Province>(provinceToUpdate, _info.sConnectionString);
+                        string[] props = { "sProvince" };
+                        string message;
+                        if (check.IsDuplicate(provinceToUpdate.Id, props, out message))
+                        {
+                            return Problem(message, null, 403);
+                        }
                         provinceToUpdate.nEnteredBy = province.nEnteredBy;
                         provinceToUpdate.dtEntered = province.dtEntered;
                         provinceToUpdate.dtUpdated = DateTime.Now;

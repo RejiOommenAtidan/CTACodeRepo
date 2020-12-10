@@ -46,6 +46,7 @@ export const EditDialog = (props) => {
                       name="sUserRights"
                       label="Role"
                       type="text"
+                      autoFocus
                       value={Name} // Set country name from local variable Name.
                       onChange={(e) => { setUserRights(e.target.value) }}
                       inputRef={register({
@@ -137,6 +138,7 @@ export const AddDialog = (props) => {
                     name="sUserRights"
                     label="Role"
                     type="text"
+                    autoFocus
                     onChange={(e) => { setUserRights(e.target.value) }}
                     inputRef={register({
                       required: true

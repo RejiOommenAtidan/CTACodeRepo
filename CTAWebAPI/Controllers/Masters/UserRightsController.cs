@@ -101,6 +101,13 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 if (ModelState.IsValid)
                 {
+                    DuplicateCheck<UserRights> check = new DuplicateCheck<UserRights>(userRights, _info.sConnectionString);
+                    string[] props = { "sUserRightsName" };
+                    string message;
+                    if (check.IsDuplicate(userRights.Id, props, out message))
+                    {
+                        return Problem(message, null, 403);
+                    }
                     userRights.dtEntered = DateTime.Now;
                     userRights.dtUpdated = DateTime.Now;
 
@@ -173,7 +180,7 @@ namespace CTAWebAPI.Controllers.Masters
         #region Edit Call
         [HttpPost("EditUserRights/ID={ID}")]
         [Route("[action]")]
-        public IActionResult EditUserRights(string ID, [FromBody] UserRights userrights)
+        public IActionResult EditUserRights(string ID, [FromBody] UserRights userRights)
         {
             #region Edit UserRights
             try
@@ -183,18 +190,25 @@ namespace CTAWebAPI.Controllers.Masters
                    
                     if (UserRightsExists(ID))
                     {
-                        UserRights fetcheduserrights = _userRightsRepository.GetUserRightsById(ID);
-                        userrights.nEnteredBy = fetcheduserrights.nEnteredBy;
-                        userrights.dtEntered = fetcheduserrights.dtEntered;
-                        userrights.dtUpdated = DateTime.Now;
-                        _userRightsRepository.Update(userrights);
+                        DuplicateCheck<UserRights> check = new DuplicateCheck<UserRights>(userRights, _info.sConnectionString);
+                        string[] props = { "sUserRightsName" };
+                        string message;
+                        if (check.IsDuplicate(userRights.Id, props, out message))
+                        {
+                            return Problem(message, null, 403);
+                        }
+                        UserRights fetcheduserRights = _userRightsRepository.GetUserRightsById(ID);
+                        userRights.nEnteredBy = fetcheduserRights.nEnteredBy;
+                        userRights.dtEntered = fetcheduserRights.dtEntered;
+                        userRights.dtUpdated = DateTime.Now;
+                        _userRightsRepository.Update(userRights);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetcheduserrights, userrights, null, null, 36, fetcheduserrights.Id, userrights.nUpdatedBy);
+                        CTALogger.LogAuditRecord(fetcheduserRights, userRights, null, null, 36, fetcheduserRights.Id, userRights.nUpdatedBy);
                         #endregion
 
                         #region Alert Logging 
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, userrights.nUpdatedBy);
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, userRights.nUpdatedBy);
                         #endregion
 
                         return Ok("UserRights with ID: " + ID + " updated Successfully");

@@ -10,16 +10,19 @@ namespace CTADBL.BaseClassRepositories.Masters
 {
     public class AuthRegionRepository : ADORepository<AuthRegion>
     {
+        private string _sConnectionString;
         #region Constructor
         public AuthRegionRepository(string connectionString) : base(connectionString)
         {
-
+            _sConnectionString = connectionString;
         }
         #endregion
 
         #region AuthRegion Add Call
         public int Add(AuthRegion region)
         {
+            
+            
             var builder = new SqlQueryBuilder<AuthRegion>(region);
             return ExecuteCommand(builder.GetInsertCommand());
         }
@@ -58,6 +61,48 @@ namespace CTADBL.BaseClassRepositories.Masters
                 return GetRecord(command);
             }
         }
+        #endregion
+
+        #region Duplicity Check
+        public bool isDuplicate(AuthRegion region, string[] properties, out string message)
+        {
+            string s = String.Join(", ", properties);
+            string disp="";
+            string objValue = "";
+            foreach(string prop in properties)
+            {
+                objValue += region.GetType().GetProperty(prop).GetValue(region).ToString().ToUpper();
+                disp += prop.Substring(1) + ", ";
+            }
+            string sql = String.Format(@"SELECT {0} FROM {1} WHERE Id != {2}", s, "lstauthregion", region.ID);
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Connection = new MySqlConnection(_sConnectionString);
+                command.CommandType = CommandType.Text;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                foreach (DataRow row in tables[0].Rows)
+                {
+                    string dbValue = "";
+                    foreach(string prop in properties)
+                    {
+                        dbValue += row[prop].ToString().ToUpper();
+                    }
+                    if (dbValue == objValue)
+                    {
+                        message = String.Format("{0} combination value Duplicate", disp);
+                        return true;
+                    }
+                }
+
+                
+                message = "";
+                return false;
+            }
+        }
+             
         #endregion
 
         #region Populate AuthRegion Records

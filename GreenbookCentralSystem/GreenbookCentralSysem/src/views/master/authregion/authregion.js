@@ -260,6 +260,17 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
+        if(error.response){
+          if(error.response.status === 403){
+            console.log(error);
+            setAlertMessage(error.response.data.detail);
+            setAlertType("error");
+            snackbarOpen();
+            setBackdrop(false);
+            return;
+          }
+
+        }
         console.log(error.message);
         console.log(error.config);
       });
@@ -296,6 +307,17 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
+        if(error.response){
+          if(error.response.status === 403){
+            console.log(error);
+            setAlertMessage(error.response.data.detail);
+            setAlertType("error");
+            snackbarOpen();
+            setBackdrop(false);
+            return;
+          }
+
+        }
         console.log(error.message);
         console.log(error.config);
       });

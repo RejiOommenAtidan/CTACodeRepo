@@ -128,6 +128,13 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 if (ModelState.IsValid)
                 {
+                    DuplicateCheck<CTAConfig> check = new DuplicateCheck<CTAConfig>(ctaConfig, _info.sConnectionString);
+                    string[] props = { "sKey" };
+                    string message;
+                    if (check.IsDuplicate(ctaConfig.Id, props, out message))
+                    {
+                        return Problem(message, null, 403);
+                    }
                     ctaConfig.dtUpdated = DateTime.Now;
                     _ctaConfigRepository.Add(ctaConfig);
 
@@ -170,6 +177,13 @@ namespace CTAWebAPI.Controllers.Masters
 
                     if (CTAConfigExists(ID))
                     {
+                        DuplicateCheck<CTAConfig> check = new DuplicateCheck<CTAConfig>(ctaConfig, _info.sConnectionString);
+                        string[] props = { "sKey" };
+                        string message;
+                        if (check.IsDuplicate(ctaConfig.Id, props, out message))
+                        {
+                            return Problem(message, null, 403);
+                        }
                         CTAConfig fetchedCTAConfig = _ctaConfigRepository.GetConfigById(ID);
                         ctaConfig.dtUpdated = fetchedCTAConfig.dtUpdated;
                         _ctaConfigRepository.Update(ctaConfig);

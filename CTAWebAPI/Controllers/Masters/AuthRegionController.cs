@@ -113,6 +113,11 @@ namespace CTAWebAPI.Controllers.Masters
                     //{
                     //    return BadRequest("User object cannot be NULL");
                     //}
+                    string message = "";
+                    if (_authRegionRepository.isDuplicate(authRegion, new string[] { "sCountryID", "sAuthRegion" }, out message))
+                    {
+                        return Problem(message, null, 403);
+                    }
                     authRegion.dtEntered = DateTime.Now;
                     authRegion.dtUpdated = DateTime.Now;
 

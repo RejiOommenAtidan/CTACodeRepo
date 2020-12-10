@@ -200,6 +200,17 @@ export default function UserRights() {
         }
       })
       .catch(error => {
+        if(error.response){
+          if(error.response.status === 403){
+            const err = error.response.data.detail;
+            setAlertMessage('Role name ' + err.substring(err.indexOf(' ')));
+            setAlertType("error");
+            snackbarOpen();
+            setBackdrop(false);
+            return;
+          }
+
+        }
         handleError(error, history);
       });
   };
@@ -226,6 +237,17 @@ export default function UserRights() {
         }
       })
       .catch(error => {
+        if(error.response){
+          if(error.response.status === 403){
+            const err = error.response.data.detail;
+            setAlertMessage('Role name ' + err.substring(err.indexOf(' ')));
+            setAlertType("error");
+            snackbarOpen();
+            setBackdrop(false);
+            return;
+          }
+
+        }
         handleError(error, history);
       });
   };
