@@ -1,4 +1,3 @@
-//Hi
 import React from 'react';
 import {
   Container,
@@ -19,9 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CoverQualification = () => {
   const classes = useStyles();
-
   return (
-   
       <Container maxWidth={false} >
         {/*<Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/Home" >
@@ -32,7 +29,6 @@ const CoverQualification = () => {
   </Breadcrumbs>*/}
         <Qualification />
       </Container>
-
   );
 };
 

@@ -194,7 +194,7 @@ export default function FeatureUserrights() {
       .then(resp => {
         if (resp.status === 200) {
           const roles = resp.data.lUserRights;
-          //console.log(resp.data);
+          console.log(resp.data);
           const generatedColumns = [];
           //Add feature to cols array & then all roles 1 by 1
           generatedColumns.push(
@@ -235,7 +235,12 @@ export default function FeatureUserrights() {
                   name="name_bRights"
                   id="id_bRights"
                   //checked={rowData["aUserRights"][role.id-1] === 1 ? true : false}
-                  disabled={role.id == 5} //5 is for Admin
+                  //5 is for Admin
+                  //1-Login
+                  //2-Home
+                  //3-Search
+                  //34-Change Password
+                  disabled={role.id === 5 || rowData.nFeatureID === 1 || rowData.nFeatureID === 2 || rowData.nFeatureID === 3 || rowData.nFeatureID === 34}
                   checked={rowData["aUserRights"][role.id - 1]}
                   onChange={() => { handleClickOpen(rowData, role.sUserRightsName, role.id) }}
                 />

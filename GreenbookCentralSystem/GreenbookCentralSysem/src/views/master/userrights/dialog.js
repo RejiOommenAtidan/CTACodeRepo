@@ -44,7 +44,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_UserRights"
                       name="sUserRights"
-                      label="Role"
+                      label={<>Role<span style={{ color: 'red' }}> *</span></>}
                       type="text"
                       autoFocus
                       value={Name} // Set country name from local variable Name.
@@ -136,7 +136,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_UserRights"
                     name="sUserRights"
-                    label="Role"
+                    label={<>Role<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     autoFocus
                     onChange={(e) => { setUserRights(e.target.value) }}

@@ -447,7 +447,7 @@ const SidebarMenu = (props) => {
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
-                          to="/FeatureRoles">
+                          to="/FeatureRights">
                           Manage Feature Rights
                     </NavLink>
                       </li>}

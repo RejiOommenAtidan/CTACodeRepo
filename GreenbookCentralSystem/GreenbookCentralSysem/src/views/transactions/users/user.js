@@ -100,24 +100,24 @@ export default function Users() {
   oOptions.filtering = filtering;
 
   //#region Alert & Snackbar
-const [snackbar, setSnackbar] = React.useState(false);
-const [backdrop, setBackdrop] = React.useState(false);
-const [alertMessage, setAlertMessage] = useState("");
-const [alertType, setAlertType] = useState("");
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
 
-const alertObj = {
-  alertMessage: alertMessage,
-  alertType: alertType
-};
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
 
-const snackbarOpen = () => {
-  setSnackbar(true);
-};
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
 
-const snackbarClose = () => {
-  setSnackbar(false);
-};
-//#endregion
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
 
   const columns = [
     {
@@ -234,9 +234,9 @@ const snackbarClose = () => {
               if (resp.status === 200) {
                 setdataAPI(resp.data);
                 setAlertMessage(sSnackbarAddMessage);
-setAlertType('success');
-snackbarOpen();
-setBackdrop(false);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -248,8 +248,8 @@ setBackdrop(false);
         }
       })
       .catch(error => {
-        if(error.response){
-          if(error.response.status === 403){
+        if (error.response) {
+          if (error.response.status === 403) {
             console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
@@ -277,9 +277,9 @@ setBackdrop(false);
               if (resp.status === 200) {
                 setdataAPI(resp.data);
                 setAlertMessage(sSnackbarUpdateMessage);
-setAlertType('success');
-snackbarOpen();
-setBackdrop(false);
+                setAlertType('success');
+                snackbarOpen();
+                setBackdrop(false);
               }
             })
             .catch(error => {
@@ -291,8 +291,8 @@ setBackdrop(false);
         }
       })
       .catch(error => {
-        if(error.response){
-          if(error.response.status === 403){
+        if (error.response) {
+          if (error.response.status === 403) {
             console.log(error);
             setAlertMessage(error.response.data.detail.substring(1));
             setAlertType("error");
@@ -333,17 +333,20 @@ setBackdrop(false);
   const handleEditClickOpen = () => {
     setEditModal(true);
   };
+
   const handleEditClickClose = () => {
     setEditModal(false);
   };
+
   const handleAddClickOpen = () => {
     setAddModal(true);
   };
+  
   const handleAddClickClose = () => {
     setAddModal(false);
   };
 
-  const loadUserData =() =>{
+  const loadUserData = () => {
     axios.get(`/UserRights/GetUserRights`)
       .then(resp => {
         if (resp.status === 200) {
@@ -426,9 +429,9 @@ setBackdrop(false);
         snackbarClose={snackbarClose}
       />
       }
-    {backdrop && <BackdropComponent
+      {backdrop && <BackdropComponent
         backdrop={backdrop}
-    />}
+      />}
     </Container>
   );
 }

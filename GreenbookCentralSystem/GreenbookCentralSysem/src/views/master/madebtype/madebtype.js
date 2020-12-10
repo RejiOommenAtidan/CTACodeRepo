@@ -176,29 +176,29 @@ export default function EnhancedTable() {
         width: "15%"
       }
     },
-    {
-      field: "edit",
-      title: "Edit",
-      filtering: false,
-      sorting: false,
-      export: false,
-      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-        onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
-      >
-        <EditOutlinedIcon />
-      </IconButton>,
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle",
-        width: "10%"
-      },
-      cellStyle: {
-        textAlign: "center",
-        padding: '5px',
-        width: "10%"
-      }
-    },
+    // {
+    //   field: "edit",
+    //   title: "Edit",
+    //   filtering: false,
+    //   sorting: false,
+    //   export: false,
+    //   render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
+    //     onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+    //   >
+    //     <EditOutlinedIcon />
+    //   </IconButton>,
+    //   headerStyle: {
+    //     textAlign: "center",
+    //     textAlignLast: "center",
+    //     verticalAlign: "middle",
+    //     width: "10%"
+    //   },
+    //   cellStyle: {
+    //     textAlign: "center",
+    //     padding: '5px',
+    //     width: "10%"
+    //   }
+    // }
   ];
 
   const editClick = (tableRowArray) => {

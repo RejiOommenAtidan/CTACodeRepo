@@ -52,7 +52,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_occupationDesc"
                       name="sOccupation"
-                      label="Occupation"
+                      label={<>Occupation<span style={{color:'red'}}> *</span></>}
                       type="text"
                       // InputProps={{
                       //   readOnly: true
@@ -72,7 +72,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="id_OccupationDescTibetan"
-                      label="Occupation (in Tibetan)"
+                      label={<>Occupation (Tibetan)<span style={{color:'red'}}> *</span></>}
                       type="text"
                       value={occupationDescTibetan}
                       onChange={(e) => { setOccupationDescTibetan(e.target.value) }}
@@ -155,7 +155,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_occupationDesc"
                     name="sOccupation"
-                    label="Occupation"
+                    label={<>Occupation<span style={{color:'red'}}> *</span></>}
                     type="text"
                     onChange={(e) => { setOccupationDesc(e.target.value) }}
                     inputRef={register({
@@ -171,7 +171,7 @@ export const AddDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <TextField
                     id="id_OccupationDescTibetan"
-                    label="Occupation (in Tibetan)"
+                    label={<>Occupation (Tibetan)<span style={{color:'red'}}>*</span></>}
                     type="text"
                     onChange={(e) => { setOccupationDescTibetan(e.target.value) }}
                   />

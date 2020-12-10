@@ -106,7 +106,7 @@ export const EditDialog = (props) => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Country"
+                        label={<>Country<span style={{color:'red'}}> *</span></>}
                         variant="standard"
                         inputRef={register({
                           required: true
@@ -143,7 +143,7 @@ export const EditDialog = (props) => {
                 <FormControl>
                   <TextField
                     id="id_AuthRegion"
-                    label="Auth Region"
+                    label={<>Authority Region<span style={{color:'red'}}> *</span></>}
                     type="text"
                     value={authRegion} // Set Auth Region name 
                     onChange={(e) => { setAuthRegion(e.target.value) }}
@@ -154,7 +154,7 @@ export const EditDialog = (props) => {
                 <FormControl>
                   <TextField
                     id="id_CurrencyCode"
-                    label="Currency Code"
+                    label={<>Currency Code<span style={{color:'red'}}> *</span></>}
                     type="text"
                     value={sCurrencyCode} // Set Auth Region name 
                     onChange={(e) => { setCurrencyCode(e.target.value) }}
@@ -278,7 +278,7 @@ export const AddDialog = (props) => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Country"
+                        label={<>Country<span style={{color:'red'}}> *</span></>}
                         variant="standard"
                         inputRef={register({
                           required: true
@@ -313,7 +313,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_AuthRegion"
                     name="sAuthRegion"
-                    label="Auth Region"
+                    label={<>Authority Region<span style={{color:'red'}}> *</span></>}
                     type="text"
                     onChange={(e) => { setAuthRegion(e.target.value) }}
                     inputRef={register({
@@ -329,7 +329,7 @@ export const AddDialog = (props) => {
                 <FormControl>
                   <TextField
                     id="id_CurrencyCode"
-                    label="Currency Code"
+                    label={<>Currency Code<span style={{color:'red'}}> *</span></>}
                     type="text"
                     value={sCurrencyCode} // Set Auth Region name 
                     onChange={(e) => { setCurrencyCode(e.target.value) }}
@@ -364,7 +364,7 @@ export const AddDialog = (props) => {
 const Children = (props) => {
   console.log("Children");
   return (props.dataAPI.map((data) => {
-    debugger
+    debugger;
     console.log(data);
     return (<option>{data.sCountryID}</option>)
   }));

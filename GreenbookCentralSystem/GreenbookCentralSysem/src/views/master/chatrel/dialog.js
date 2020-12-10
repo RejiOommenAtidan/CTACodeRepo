@@ -49,7 +49,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_sChatrelKey"
                     name="name_sChatrelKey"
-                    label="Chatrel Term"
+                    label={<>Chatrel Term<span style={{color:'red'}}> *</span></>}
                     type="text"
                     value={sChatrelKey}
                     onChange={(e) => { setsChatrelKey(e.target.value) }}
@@ -67,7 +67,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_nChatrelValue"
                     name="name_nChatrelValue"
-                    label="Value"
+                    label={<>Value<span style={{color:'red'}}> *</span></>}
                     type="number"
                     value={nChatrelValue}
                     onChange={(e) => { setnChatrelValue(e.target.value) }}
@@ -93,7 +93,7 @@ export const AddDialog = (props) => {
                       inputRef={register({
                         required: true
                       })}
-                      label="Chatrel From"
+                      label={<>Chatrel From<span style={{color:'red'}}> *</span></>}
                       format={sDateFormatMUIDatepicker}
                       onChange={date => { setdtChatrelFrom(date) }}
                       value={dtChatrelFrom}
@@ -162,7 +162,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_sChatrelKey"
                       name="name_sChatrelKey"
-                      label="Chatrel Term"
+                      label={<>Chatrel Term<span style={{color:'red'}}> *</span></>}
                       type="text"
                       value={sChatrelKey}
                       onChange={(e) => { setsChatrelKey(e.target.value) }}
@@ -178,7 +178,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_nChatrelValue"
                       name="name_nChatrelValue"
-                      label="Value"
+                      label={<>Value<span style={{color:'red'}}> *</span></>}
                       type="number"
                       value={nChatrelValue}
                       onChange={(e) => { setnChatrelValue(parseInt(e.target.value)) }}
@@ -204,7 +204,7 @@ export const EditDialog = (props) => {
                         inputRef={register({
                           required: true
                         })}
-                        label="Chatrel From"
+                        label={<>Chatrel From<span style={{color:'red'}}> *</span></>}
                         format={sDateFormatMUIDatepicker}
                         onChange={date => { setdtChatrelFrom(date) }}
                         value={dtChatrelFrom}

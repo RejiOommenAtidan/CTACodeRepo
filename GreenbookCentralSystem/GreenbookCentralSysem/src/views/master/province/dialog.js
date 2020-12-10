@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import {
-  Box,
-  Container,
   Grid,
   Button,
-  Typography,
   FormControl,
   TextField
 } from '@material-ui/core';
@@ -51,7 +48,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_provinceId"
                       name="sProvince"
-                      label="Province"
+                      label={<>Province<span style={{color:'red'}}> *</span></>}
                       type="text"
                       value={province}
                       onChange={(e) => { setProvince(e.target.value) }}
@@ -141,7 +138,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_province"
                     name="sProvince"
-                    label="Province"
+                    label={<>Province<span style={{color:'red'}}> *</span></>}
                     type="text"
                     onChange={(e) => { setProvince(e.target.value) }}
                     inputRef={register({

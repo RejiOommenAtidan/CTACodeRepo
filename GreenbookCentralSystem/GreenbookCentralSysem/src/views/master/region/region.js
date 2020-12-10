@@ -102,7 +102,7 @@ export default function Region() {
     },
     {
       field: "sRegion_name",
-      title: "REGION",
+      title: "REGION NAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",

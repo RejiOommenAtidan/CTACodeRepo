@@ -1,4 +1,3 @@
-//Hi
 import React from 'react';
 import {
   Container,
@@ -7,7 +6,6 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
-
 
 import AuthRegion from './authregion';
 
@@ -20,23 +18,21 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverAuthRegion = () => {
   const classes = useStyles();
 
   return (
-   
-      <Container maxWidth={false}>
-        {/*<Breadcrumbs aria-label="breadcrumb">
+    <Container maxWidth={false}>
+      {/*<Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/Home" >
             Home
         </Link>
 
           <Typography color="textPrimary"> AuthRegion</Typography>
   </Breadcrumbs>*/}
-        <AuthRegion />
-      </Container>
-
+      <AuthRegion />
+    </Container>
   );
 };
 
-export default Dashboard;
+export default CoverAuthRegion;

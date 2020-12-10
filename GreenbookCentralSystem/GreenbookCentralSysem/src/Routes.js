@@ -232,7 +232,7 @@ const Routes = () => {
                 '/ChangePassword',
                 '/Users',
                 '/Print',
-                '/FeatureRoles',
+                '/FeatureRights',
                 '/Search',
                 '/ChatrelPay',
                 '/ChatrelPay/MainPage',
@@ -283,7 +283,7 @@ const Routes = () => {
                     <PrivateRoute path="/EditEntry/:GBID" feature={17} component={EditEntry} />
                     <PrivateRoute path="/DeleteGB" feature={18} component={DeleteGB} />
                     <PrivateRoute path="/Users" feature={19} component={Users} />
-                    <PrivateRoute path="/FeatureRoles" feature={20} component={FeatureUserrights} />
+                    <PrivateRoute path="/FeatureRights" feature={20} component={FeatureUserrights} />
                     <PrivateRoute path="/UserRights" feature={21} component={UserRights} />
                     <PrivateRoute path="/Region" feature={22} component={Region} />
                     <PrivateRoute path="/AuthRegion" feature={23} component={AuthRegion} />

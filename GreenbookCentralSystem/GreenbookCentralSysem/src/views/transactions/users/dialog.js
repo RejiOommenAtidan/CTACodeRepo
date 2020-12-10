@@ -36,7 +36,7 @@ export const AddDialog = (props) => {
               <FormControl className={props.classes.formControl}>
                 <TextField
                   id="id_sUsername"
-                  label="Username"
+                  label={<>Username<span style={{ color: 'red' }}> *</span></>}
                   type="text"
                   value={sUsername}
                   onChange={(e) => { setsUsername(e.target.value) }}
@@ -47,7 +47,7 @@ export const AddDialog = (props) => {
               <FormControl className={props.classes.formControl}>
                 <TextField
                   id="id_sFullname"
-                  label="Fullname"
+                  label={<>Full name<span style={{ color: 'red' }}> *</span></>}
                   type="text"
                   value={sFullname}
                   onChange={(e) => { setsFullname(e.target.value) }}
@@ -58,7 +58,7 @@ export const AddDialog = (props) => {
               <FormControl className={props.classes.formControl}>
                 <TextField
                   id="id_sPassword"
-                  label="Password"
+                  label={<>Password<span style={{ color: 'red' }}> *</span></>}
                   type="password"
                   value={sPassword}
                   onChange={(e) => { setsPassword(e.target.value) }}
@@ -67,7 +67,7 @@ export const AddDialog = (props) => {
             </Grid>
             <Grid item xs={12}>
               <FormControl className={props.classes.formControl}>
-                <InputLabel id="id_sGender">Role</InputLabel>
+                <InputLabel id="id_sGender">Role<span style={{ color: 'red' }}> *</span></InputLabel>
                 <Select
                   id="id_nUserRightsId"
                   label="Role"
@@ -86,7 +86,7 @@ export const AddDialog = (props) => {
               <FormControl className={props.classes.formControl}>
                 <TextField
                   id="id_sOffice"
-                  label="Office Name"
+                  label={<>Office Name<span style={{ color: 'red' }}> *</span></>}
                   type="text"
                   value={sOffice}
                   onChange={(e) => { setsOffice(e.target.value) }}
@@ -145,7 +145,7 @@ export const EditDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <TextField
                     id="id_sUsername"
-                    label="Username"
+                    label={<>Username<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     InputProps={{
                       readOnly: true,
@@ -159,7 +159,7 @@ export const EditDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <TextField
                     id="id_sFullname"
-                    label="Fullname"
+                    label={<>Full name<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     value={sFullname}
                     onChange={(e) => { setsFullname(e.target.value) }}
@@ -170,7 +170,7 @@ export const EditDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <TextField
                     id="id_sPassword"
-                    label="Password"
+                    label={<>Password<span style={{ color: 'red' }}> *</span></>}
                     type="password"
                     value={sPassword}
                     onChange={(e) => { setsPassword(e.target.value) }}
@@ -179,7 +179,7 @@ export const EditDialog = (props) => {
               </Grid>
               <Grid item xs={12}>
                 <FormControl className={props.classes.formControl}>
-                  <InputLabel id="id_sGender">Role</InputLabel>
+                  <InputLabel id="id_sGender">Role<span style={{ color: 'red' }}> *</span></InputLabel>
                   <Select
                     id="id_nUserRightsId"
                     label="Role"
@@ -198,7 +198,7 @@ export const EditDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <TextField
                     id="id_sOffice"
-                    label="Office Name"
+                    label={<>Office Name<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     value={sOffice}
                     onChange={(e) => { setsOffice(e.target.value) }}

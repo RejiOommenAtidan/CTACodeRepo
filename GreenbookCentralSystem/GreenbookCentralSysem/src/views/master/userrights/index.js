@@ -6,6 +6,7 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
+
 import UserRights from './userrights';
 
 const useStyles = makeStyles((theme) => ({

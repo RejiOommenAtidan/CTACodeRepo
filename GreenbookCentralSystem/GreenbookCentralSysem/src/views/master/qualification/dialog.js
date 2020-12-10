@@ -52,7 +52,7 @@ export const EditDialog = (props) => {
                     <TextField
                       // style={{width:max}}
                       id="id_qualificationId"
-                      label="Qualification ID"
+                      label={<>Qualification ID<span style={{color:'red'}}> *</span></>}
                       type="text"
                       InputProps={{
                         readOnly: true
@@ -66,7 +66,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_Qualification"
                       name="sQualification"
-                      label="Qualification"
+                      label={<>Qualification<span style={{color:'red'}}> *</span></>}
                       type="text"
                       value={Name} // Set country name from local variable Name.
                       onChange={(e) => { setQualification(e.target.value) }}
@@ -155,7 +155,7 @@ export const AddDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <TextField
                     id="id_qualificationId"
-                    label="Qualification ID"
+                    label={<>Qualification ID<span style={{color:'red'}}> *</span></>}
                     type="text"
                     onChange={(e) => { setQualificationId(e.target.value) }}
                   />
@@ -166,7 +166,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_Qualification"
                     name="sQualification"
-                    label="Qualification"
+                    label={<>Qualification<span style={{color:'red'}}> *</span></>}
                     type="text"
                     onChange={(e) => { setQualification(e.target.value) }}
                     inputRef={register({

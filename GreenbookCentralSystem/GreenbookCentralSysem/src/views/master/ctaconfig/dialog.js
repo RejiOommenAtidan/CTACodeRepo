@@ -43,7 +43,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_sKey"
                     name="name_sKey"
-                    label="Key"
+                    label={<>Key<span style={{color:'red'}}> *</span></>}
                     type="text"
                     value={sKey}
                     onChange={(e) => { setsKey(e.target.value) }}
@@ -61,7 +61,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_sValue"
                     name="name_sValue"
-                    label="Value"
+                    label={<>Value<span style={{color:'red'}}> *</span></>}
                     type="text"
                     value={sValue}
                     onChange={(e) => { setsValue(e.target.value) }}
@@ -126,7 +126,7 @@ export const EditDialog = (props) => {
                       disabled
                       id="id_sKey"
                       name="name_sKey"
-                      label="Key"
+                      label={<>Key<span style={{color:'red'}}> *</span></>}
                       type="text"
                       value={sKey}
                       onChange={(e) => { setsKey(e.target.value) }}
@@ -144,7 +144,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_sValue"
                       name="name_sValue"
-                      label="Value"
+                      label={<>Value<span style={{color:'red'}}> *</span></>}
                       type="text"
                       value={sValue}
                       onChange={(e) => { setsValue(e.target.value) }}

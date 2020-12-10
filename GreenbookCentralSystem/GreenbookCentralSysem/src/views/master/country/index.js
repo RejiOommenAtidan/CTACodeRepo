@@ -6,6 +6,7 @@ import {
   Breadcrumbs,
   Link
 } from '@material-ui/core';
+
 import Country from './country';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +30,6 @@ const CoverCountry = () => {
   </Breadcrumbs>*/}
       <Country />
     </Container>
-
   );
 };
 

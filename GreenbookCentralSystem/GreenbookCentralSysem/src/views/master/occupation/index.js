@@ -15,10 +15,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Dashboard = () => {
+const CoverOccupation = () => {
   const classes = useStyles();
   return (
-   
       <Container maxWidth={false}>
         {/*<Breadcrumbs aria-label="breadcrumb">
           <Link color="inherit" href="/Home" >
@@ -29,8 +28,7 @@ const Dashboard = () => {
   </Breadcrumbs>*/}
         <Occupation />
       </Container>
-
   );
 };
 
-export default Dashboard;
+export default CoverOccupation;

@@ -56,7 +56,6 @@ export const EditDialog = (props) => {
                       name="sMadabType"
                       label={<p>Madeb Type<span style={{ color: "red" }} > *</span></p>}
                       type="text"
-
                       value={madebType}
                       onChange={(e) => { setMadebType(e.target.value) }}
                       inputRef={register({
@@ -77,7 +76,6 @@ export const EditDialog = (props) => {
                       name="sMadebDisplayName"
                       label={<p>Display Name<span style={{ color: "red" }} > *</span></p>}
                       type="text"
-
                       value={sMadebDisplayName}
                       onChange={(e) => { setMadebDisplayName(e.target.value) }}
                       inputRef={register({
@@ -98,7 +96,6 @@ export const EditDialog = (props) => {
                       name="sMadebDisplayKey"
                       label={<p>Display Key<span style={{ color: "red" }} > *</span></p>}
                       type="text"
-
                       value={sMadebDisplayKey}
                       onChange={(e) => { setMadebDisplayKey(e.target.value) }}
                       inputRef={register({
@@ -191,7 +188,6 @@ export const AddDialog = (props) => {
                     id="id_madebType"
                     name="sMadebType"
                     label={<p>Madeb Type<span style={{ color: "red" }} > *</span></p>}
-
                     type="text"
                     onChange={(e) => { setMadebType(e.target.value) }}
                     inputRef={register({
@@ -210,7 +206,6 @@ export const AddDialog = (props) => {
                     name="sMadebDisplayName"
                     label={<p>Display Name<span style={{ color: "red" }} > *</span></p>}
                     type="text"
-
                     onChange={(e) => { setMadebDisplayName(e.target.value) }}
                     inputRef={register({
                       required: true
@@ -228,7 +223,6 @@ export const AddDialog = (props) => {
                     name="sMadebDisplayKey"
                     label={<p>Display Key<span style={{ color: "red" }} > *</span></p>}
                     type="text"
-
                     onChange={(e) => { setMadebDisplayKey(e.target.value) }}
                     inputRef={register({
                       required: true

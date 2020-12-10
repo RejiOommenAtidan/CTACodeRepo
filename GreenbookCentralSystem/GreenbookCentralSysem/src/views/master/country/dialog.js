@@ -36,8 +36,6 @@ export const EditDialog = (props) => {
 
   const regions = authRegions && authRegions.filter((a) => {
     return a.sCountryID === props.countryObj.countryId;
-
-
   })
   //console.log ("Regions are", regions);
 
@@ -82,7 +80,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_CountryName"
                       name="sCountry"
-                      label="Country Name"
+                      label={<>Country Name<span style={{ color: 'red' }}> *</span></>}
                       type="text"
                       autoFocus={true}
                       value={Name}
@@ -129,6 +127,7 @@ export const EditDialog = (props) => {
                         <TextField
                           {...params}
                           label="Authority Region"
+                          //label={<>Authority Region<span style={{color:'red'}}> *</span></>}
                           //className={props.classes.textField}
                           variant="standard"
                           inputProps={{
@@ -178,7 +177,7 @@ export const AddDialog = (props) => {
               <FormControl className={props.classes.formControl}>
                 <TextField
                   id="id_countryId"
-                  label="Country ID"
+                  label={<>Country ID<span style={{ color: 'red' }}> *</span></>}
                   type="text"
                   onChange={(e) => { setCountryId(e.target.value) }}
                 />
@@ -188,7 +187,7 @@ export const AddDialog = (props) => {
               <FormControl className={props.classes.formControl}>
                 <TextField
                   id="id_CountryName"
-                  label="Country Name"
+                  label={<>Country Name<span style={{ color: 'red' }}> *</span></>}
                   type="text"
                   onChange={(e) => { setCountryName(e.target.value) }}
                 />

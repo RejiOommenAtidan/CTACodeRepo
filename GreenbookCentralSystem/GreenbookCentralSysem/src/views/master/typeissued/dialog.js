@@ -41,7 +41,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_TypeIssued"
                     name="sTypeIssued"
-                    label="TypeIssued"
+                    label={<>Type Issued<span style={{color:'red'}}> *</span></>}
                     type="text"
                     onChange={(e) => { setTypeIssued(e.target.value) }}
                     inputRef={register({
@@ -102,7 +102,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_TypeIssued"
                       name="sTypeIssued"
-                      label="TypeIssued"
+                      label={<>Type Issued<span style={{color:'red'}}> *</span></>}
                       type="text"
                       value={Name}
                       onChange={(e) => { setTypeIssued(e.target.value) }}

@@ -41,7 +41,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_Relation"
                     name="sRelation"
-                    label="Relation"
+                    label={<>Relation<span style={{color:'red'}}> *</span></>}
                     type="text"
                     autoFocus
                     onChange={(e) => { setRelation(e.target.value) }}
@@ -103,7 +103,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_Relation"
                       name="sRelation"
-                      label="Relation"
+                      label={<>Relation<span style={{color:'red'}}> *</span></>}
                       type="text"
                       value={Name}
                       onChange={(e) => { setRelation(e.target.value) }}

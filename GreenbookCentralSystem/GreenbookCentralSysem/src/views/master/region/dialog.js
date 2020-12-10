@@ -42,7 +42,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_regionId"
                     name="sRegionID"
-                    label="Region ID"
+                    label={<>Region ID<span style={{color:'red'}}> *</span></>}
                     type="text"
                     onChange={(e) => { setRegionId(e.target.value) }}
                     inputRef={register({
@@ -59,7 +59,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_Region"
                     name="sRegion"
-                    label="Region"
+                    label={<>Region Name<span style={{color:'red'}}> *</span></>}
                     type="text"
                     onChange={(e) => { setRegion(e.target.value) }}
                     inputRef={register({
@@ -120,7 +120,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl} >
                     <TextField
                       id="id_regionId"
-                      label="Region ID"
+                      label={<>Region ID<span style={{color:'red'}}> *</span></>}
                       type="text"
                       disabled
                       value={props.regionObj.regionId}
@@ -132,7 +132,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_Region"
                       name="sRegion"
-                      label="Region"
+                      label={<>Region Name<span style={{color:'red'}}> *</span></>}
                       type="text"
                       value={Name}
                       onChange={(e) => { setRegion(e.target.value) }}
