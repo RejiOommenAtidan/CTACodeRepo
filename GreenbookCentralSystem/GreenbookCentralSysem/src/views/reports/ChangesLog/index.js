@@ -68,7 +68,7 @@ export default function Report() {
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
     const classes = useStyles();
-    const [changesLogData, SetChangesLogData] = React.useState();
+    const [changesLogData, SetChangesLogData] = React.useState([]);
     
     const [dtFrom, SetdtFrom] = React.useState('');
     
@@ -277,14 +277,14 @@ export default function Report() {
                                         <Button type="button" variant='outlined' value="Report" onClick={()=>{changesLog();}} >Show</Button>
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
-                                        { changesLogData &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetChangesLogData();}} >Clear</Button>
+                                        { changesLogData.length >0 &&
+                                        <Button type="button" variant='outlined' onClick={()=>{SetChangesLogData([]);}} >Clear</Button>
                                         }
                                     </FormControl>
                                   
 
             {
-                changesLogData && 
+                changesLogData.length >0 && 
               
                   <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
                     //isLoading={isLoading}

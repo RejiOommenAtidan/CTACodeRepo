@@ -63,7 +63,7 @@ export default function Report() {
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
     const classes = useStyles();
-    const [issuedOverAllData, SetIssuedOverAllData] = React.useState();
+    const [issuedOverAllData, SetIssuedOverAllData] = React.useState([]);
     const [madebTypeData, SetMadebTypeData] = React.useState();
     const [madebType, SetMadebType] = React.useState('');
     const [dtFrom, SetdtFrom] = React.useState('');
@@ -335,13 +335,13 @@ export default function Report() {
                                         <Button type="button" variant='outlined' value="Report"  onClick={()=>{issuedOverAll();}} >Show</Button>
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
-                                        { issuedOverAllData &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetIssuedOverAllData();}} >Clear</Button>
+                                        { issuedOverAllData.length >0 &&
+                                        <Button type="button" variant='outlined' onClick={()=>{SetIssuedOverAllData([]);}} >Clear</Button>
                                         }
                                     </FormControl>
 
             {
-                issuedOverAllData && 
+                issuedOverAllData.length >0 && 
               
                   <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
                     //isLoading={isLoading}

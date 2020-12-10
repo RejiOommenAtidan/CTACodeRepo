@@ -63,7 +63,7 @@ export default function Report() {
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
     const classes = useStyles();
-    const [deceasedData, SetDeceasedData] = React.useState();
+    const [deceasedData, SetDeceasedData] = React.useState([]);
     const [madebTypeData, SetMadebTypeData] = React.useState();
     const [madebType, SetMadebType] = React.useState('');
     const [dtFrom, SetdtFrom] = React.useState('');
@@ -297,13 +297,13 @@ export default function Report() {
                                         <Button type="button" variant='outlined' value="Report"  onClick={()=>{deceased();}} >Show</Button>
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
-                                        { deceasedData &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetDeceasedData();}} >Clear</Button>
+                                        { deceasedData.length >0 &&
+                                        <Button type="button" variant='outlined' onClick={()=>{SetDeceasedData([]);}} >Clear</Button>
                                         }
                                     </FormControl>
 
             {
-                deceasedData && 
+                deceasedData.length >0 && 
               
                   <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
                     //isLoading={isLoading}

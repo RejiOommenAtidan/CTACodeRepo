@@ -279,6 +279,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
                     var relationDetails = tables[0].AsEnumerable().Select(row => new {
                         sPlaceName = row.Field<string>("sPlaceName"),
                         sPlaceID = row.Field<string>("sPlaceID").ToString(),
+                        MadebIssued = row.Field<decimal>("MadebIssued"),
+                        MadebRejected = row.Field<decimal>("MadebRejected"),
+                        MadebDouble = row.Field<decimal>("MadebDouble"),
+                        MadebCancelled = row.Field<decimal>("MadebCancelled"),
+                        MadebPending = row.Field<decimal>("MadebPending"),
+                        MadebTotalReceived = row.Field<Int64>("MadebTotalReceived"),
+         
 
 
                     }).ToList();

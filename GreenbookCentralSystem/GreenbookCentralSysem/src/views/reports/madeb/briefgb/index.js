@@ -36,9 +36,9 @@ import { oOptions, oTableIcons } from '../../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { aPageSizeArray } from '../../../../config/commonConfig';
 import { nPageSize } from '../../../../config/commonConfig';
-import { useForm, Controller } from "react-hook-form";
+
 import { Alerts } from '../../../alerts';
-import _ from "lodash/fp";
+import { BackdropComponent } from '../../../backdrop/index';
 const tableIcons = oTableIcons;
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -62,12 +62,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Report() {
 
-  const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
 
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
     const classes = useStyles();
-    const [briefgbData, SetBriefGBData] = React.useState();
+    const [briefData, SetBriefData] = React.useState([]);
     const [madebTypeData, SetMadebTypeData] = React.useState();
     const [madebType, SetMadebType] = React.useState('B');
     const [dtFrom, SetdtFrom] = React.useState('');
@@ -76,7 +75,7 @@ export default function Report() {
     const [groupBy, SetGroupBy] = React.useState('');
 
     const [filtering, setFiltering] = React.useState(false);
-
+    const [backdrop, setBackdrop] = React.useState(false);
 
     //Alert
   const [alertMessage, setAlertMessage] = useState("");
@@ -106,7 +105,7 @@ export default function Report() {
           // padding:'0px',
           padding: '5px',
           
-          textAlign: 'center'
+          textAlign: 'left'
   
         },
       },
@@ -127,9 +126,111 @@ export default function Report() {
   
         },
       },
+      {
+        field: "madebIssued",
+        title: "Madeb Issued",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
+      {
+        field: "madebRejected",
+        title: "Madeb Rejected",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
+      {
+        field: "madebDouble",
+        title: "Madeb Double",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
+      {
+        field: "madebCancelled",
+        title: "Madeb Cancelled",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
+      {
+        field: "madebPending",
+        title: "Madeb Pending",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
+      {
+        field: "madebTotalReceived",
+        title: "Total Received",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
      
     ]
-    const briefgb=()=>{
+    const brief=()=>{
         if(madebType === '' ||dtFrom === ''||dtTo === ''|| orderBy === ''  ){
           setAlertMessage('All fields are required !');
           setAlertType('error');
@@ -137,11 +238,12 @@ export default function Report() {
 
         }
         else{
-          axios.get(`/Report/GetReportCTAMadebRegionOrCountryWise/?sMadebDisplayKey=`+madebType+`&dtRecordFrom=`+dtFrom+`&dtRecordTo=`+dtTo+`&sOrderBy=`+orderBy)
+          setBackdrop(true);
+          axios.get(`/Report/GetReportCTAMadebRegionOrCountryWise/?sMadebDisplayKey=`+madebType+`&dtRecordFrom=`+dtFrom+`&dtRecordTo=`+dtTo+`&sGroupBy=`+groupBy+`&sOrderBy=`+orderBy)
           .then(resp => {
             if (resp.status === 200) {
-            
-              SetBriefGBData(resp.data);
+              setBackdrop(false);
+              SetBriefData(resp.data);
               console.log(resp.data);
             }
           })
@@ -172,8 +274,8 @@ export default function Report() {
     return (
     <>
       <Paper style={{padding:'30px',textAlign:'center'}} >
-        <h1>BriefGB Report</h1>
-        <form onSubmit={()=>{handleSubmit(briefgb())}}>
+        <h1>Brief Report</h1>
+      
        
                                         <FormControl className={classes.formControl}>
                                         
@@ -188,13 +290,9 @@ export default function Report() {
                                             InputLabelProps={{
                                               shrink: true,
                                             }}
-                                            inputRef={register({
-                                              required: true
-                                            })}
+                                           
                                           />
-                                           {errors.dtFrom && 
-                                            <span style={{ color: 'red' }}>This field is required</span>
-                                           }
+                                           
                                        </FormControl>
                                     <FormControl className={classes.formControl}>
                                        
@@ -210,11 +308,9 @@ export default function Report() {
                                             InputLabelProps={{
                                               shrink: true,
                                             }}
-                                            inputRef={register({
-                                              required: true
-                                            })}
+                                       
                                           />
-                                           {errors.dtTo && <span style={{ color: 'red' }}>This field is required</span>}
+                                          
                                   </FormControl>
                                   <FormControl className={classes.formControl}>
                                         <InputLabel id="orderbylbl">Order By</InputLabel>
@@ -223,34 +319,32 @@ export default function Report() {
                                             id="orderby"
                                             name="orderby"
                                             onChange={(e)=>{SetOrderBy(e.target.value)}}
-                                            inputRef={register({
-                                              required: true
-                                            })}
+                                           
                                             >
                                             <MenuItem value={'lstauthregion.sAuthRegion'}>Region Wise</MenuItem>
                                             <MenuItem value={'lstcountry.sCountry'}>Country Wise</MenuItem>
-                                            {errors.orderby && <span style={{ color: 'red' }}>This field is required</span>}
+                                         
                                         </Select>
                                    </FormControl>
                                    <FormControl className={classes.formControl}>
-                                        <Button type="button" variant='outlined' value="Report" onClick={()=>{briefgb();}} >Show</Button>
+                                        <Button type="button" variant='outlined' value="Report" onClick={()=>{brief();}} >Show</Button>
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
-                                        { briefgbData &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetBriefGBData();}} >Clear</Button>
+                                        { briefData.length>0 &&
+                                        <Button type="button" variant='outlined' onClick={()=>{SetBriefData([]);}} >Clear</Button>
                                         }
                                     </FormControl>
-                                    </form>
+                              
 
             {
-                briefgbData && 
+                briefData.length>0 && 
               
                   <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
                     //isLoading={isLoading}
                     icons={tableIcons}
-                    title="BriefGB Report"
+                    title="Brief Report"
                     columns={columns}
-                    data={briefgbData}
+                    data={briefData}
                     options={{
                       filtering,
                       exportButton: true,
@@ -283,6 +377,9 @@ export default function Report() {
             snackbar={snackbar}
             snackbarClose={snackbarClose}
           />}
+          {backdrop && <BackdropComponent
+            backdrop={backdrop}
+            />}
     </>
   );
 }

@@ -36,9 +36,9 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { aPageSizeArray } from '../../../config/commonConfig';
 import { nPageSize } from '../../../config/commonConfig';
-import { useForm, Controller } from "react-hook-form";
+
 import { Alerts } from '../../alerts';
-import _ from "lodash/fp";
+
 import { BackdropComponent } from '../../backdrop/index';
 const tableIcons = oTableIcons;
 const useStyles = makeStyles((theme) => ({
@@ -63,12 +63,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Report() {
 
-  const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
   const [backdrop, setBackdrop] = React.useState(false);
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
     const classes = useStyles();
-    const [below6yearsData, SetBelow6yearsData] = React.useState();
+    const [below6yearsData, SetBelow6yearsData] = React.useState([]);
     const [madebTypeData, SetMadebTypeData] = React.useState();
     const [madebType, SetMadebType] = React.useState('');
     const [dtFrom, SetdtFrom] = React.useState('');
@@ -224,7 +223,7 @@ export default function Report() {
     <>
       <Paper style={{padding:'30px',textAlign:'center'}} >
         <h1>Below 6 Year Region or Country Wise</h1>
-        <form onSubmit={()=>{handleSubmit(below6years())}}>
+      
        
                                   <FormControl className={classes.formControl}>
                                         <InputLabel id="orderbylbl">Order By</InputLabel>
@@ -233,27 +232,25 @@ export default function Report() {
                                             id="orderby"
                                             name="orderby"
                                             onChange={(e)=>{SetOrderBy(e.target.value);}}
-                                            inputRef={register({
-                                              required: true
-                                            })}
+                                           
                                             >
                                             <MenuItem value={'lstauthregion.sAuthRegion'}>Region Wise</MenuItem>
                                             <MenuItem value={'lstcountry.sCountry'}>Country Wise</MenuItem>
-                                            {errors.orderby && <span style={{ color: 'red' }}>This field is required</span>}
+                                          
                                         </Select>
                                    </FormControl>
                                    <FormControl className={classes.formControl}>
                                         <Button type="button" variant='outlined' value="Report" onClick={()=>{below6years();}} >Show</Button>
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
-                                        { below6yearsData &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetBelow6yearsData();}} >Clear</Button>
+                                        { below6yearsData.length >0 &&
+                                        <Button type="button" variant='outlined' onClick={()=>{SetBelow6yearsData([]);}} >Clear</Button>
                                         }
                                     </FormControl>
-                                    </form>
+                               
 
             {
-                below6yearsData && 
+                below6yearsData.length >0 && 
               
                   <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
                     //isLoading={isLoading}

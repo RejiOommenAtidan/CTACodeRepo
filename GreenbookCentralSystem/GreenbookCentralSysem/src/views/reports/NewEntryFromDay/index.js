@@ -35,7 +35,7 @@ import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { aPageSizeArray } from '../../../config/commonConfig';
 import { nPageSize } from '../../../config/commonConfig';
-import { useForm, Controller } from "react-hook-form";
+
 import { Alerts } from '../../alerts';
 import _ from "lodash/fp";
 import { BackdropComponent } from '../../backdrop/index';
@@ -62,12 +62,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Report() {
 
-  const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
+ 
   const [backdrop, setBackdrop] = React.useState(false);
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
     const classes = useStyles();
-    const [newEntryFromDayData, SetNewEntryFromDayData] = React.useState();
+    const [newEntryFromDayData, SetNewEntryFromDayData] = React.useState([]);
     const [madebTypeData, SetMadebTypeData] = React.useState();
     const [madebType, SetMadebType] = React.useState('');
     const [dtFrom, SetdtFrom] = React.useState('');
@@ -259,27 +259,23 @@ export default function Report() {
                                             InputLabelProps={{
                                               shrink: true,
                                             }}
-                                            inputRef={register({
-                                              required: true
-                                            })}
+                                        
                                           />
-                                           {errors.dtFrom && 
-                                            <span style={{ color: 'red' }}>This field is required</span>
-                                           }
+                                        
                                        </FormControl>
                                  
                                    <FormControl className={classes.formControl}>
                                         <Button type="button" variant='outlined' value="Report" onClick={()=>{newEntryFromDay();}} >Show</Button>
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
-                                        { newEntryFromDayData &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetNewEntryFromDayData();}} >Clear</Button>
+                                        { newEntryFromDayData.length >0 &&
+                                        <Button type="button" variant='outlined' onClick={()=>{SetNewEntryFromDayData([]);}} >Clear</Button>
                                         }
                                     </FormControl>
                             
 
             {
-                newEntryFromDayData && 
+                newEntryFromDayData.length >0 && 
               
                   <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
                     //isLoading={isLoading}

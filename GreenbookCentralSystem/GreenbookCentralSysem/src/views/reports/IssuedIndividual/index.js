@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Report() {
   const classes = useStyles();
-  const [issuedIndividualData, SetIssuedIndividualData] = React.useState();
+  const [issuedIndividualData, SetIssuedIndividualData] = React.useState([]);
   const [madebTypeData, SetMadebTypeData] = React.useState();
   const [madebType, SetMadebType] = React.useState('');
   const [dtFrom, SetdtFrom] = React.useState('');
@@ -243,17 +243,17 @@ export default function Report() {
             onClick={() => { issuedIndividual(); }} >Show</Button>
           </FormControl>
           <FormControl className={classes.formControl}>
-            {issuedIndividualData &&
+            {issuedIndividualData.length >0 &&
               <Button 
               type="button" 
               variant='outlined' 
-              onClick={() => { SetIssuedIndividualData(); }} >Clear</Button>
+              onClick={() => { SetIssuedIndividualData([]); }} >Clear</Button>
             }
           </FormControl>
         </form>
 
         {
-          issuedIndividualData &&
+          issuedIndividualData.length >0 &&
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             //isLoading={isLoading}
             icons={oTableIcons}

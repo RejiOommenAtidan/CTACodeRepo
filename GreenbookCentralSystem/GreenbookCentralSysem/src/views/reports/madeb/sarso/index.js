@@ -36,9 +36,9 @@ import { oOptions, oTableIcons } from '../../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { aPageSizeArray } from '../../../../config/commonConfig';
 import { nPageSize } from '../../../../config/commonConfig';
-import { useForm, Controller } from "react-hook-form";
+
 import { Alerts } from '../../../alerts';
-import _ from "lodash/fp";
+import { BackdropComponent } from '../../../backdrop/index';
 const tableIcons = oTableIcons;
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -62,12 +62,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Report() {
 
-  const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
 
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
     const classes = useStyles();
-    const [sarsoData, SetSarsoData] = React.useState();
+    const [sarsoData, SetSarsoData] = React.useState([]);
     const [madebTypeData, SetMadebTypeData] = React.useState();
     const [madebType, SetMadebType] = React.useState('F');
     const [dtFrom, SetdtFrom] = React.useState('');
@@ -76,7 +75,7 @@ export default function Report() {
     const [groupBy, SetGroupBy] = React.useState('');
 
     const [filtering, setFiltering] = React.useState(false);
-
+    const [backdrop, setBackdrop] = React.useState(false);
 
     //Alert
   const [alertMessage, setAlertMessage] = useState("");
@@ -106,13 +105,115 @@ export default function Report() {
           // padding:'0px',
           padding: '5px',
           
-          textAlign: 'center'
+          textAlign: 'left'
   
         },
       },
       {
         field: "sPlaceID",
         title: "Place ID",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
+      {
+        field: "madebIssued",
+        title: "Madeb Issued",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
+      {
+        field: "madebRejected",
+        title: "Madeb Rejected",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
+      {
+        field: "madebDouble",
+        title: "Madeb Double",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
+      {
+        field: "madebCancelled",
+        title: "Madeb Cancelled",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
+      {
+        field: "madebPending",
+        title: "Madeb Pending",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
+      {
+        field: "madebTotalReceived",
+        title: "Total Received",
         filterPlaceholder: 'Search..',
         headerStyle: {
           padding: '5px',
@@ -137,10 +238,11 @@ export default function Report() {
 
         }
         else{
+          setBackdrop(true);
           axios.get(`/Report/GetReportCTAMadebRegionOrCountryWise/?sMadebDisplayKey=`+madebType+`&dtRecordFrom=`+dtFrom+`&dtRecordTo=`+dtTo+`&sGroupBy=`+groupBy+`&sOrderBy=`+orderBy)
           .then(resp => {
             if (resp.status === 200) {
-            
+              setBackdrop(false);
               SetSarsoData(resp.data);
               console.log(resp.data);
             }
@@ -173,7 +275,7 @@ export default function Report() {
     <>
       <Paper style={{padding:'30px',textAlign:'center'}} >
         <h1>Sarso Report</h1>
-        <form onSubmit={()=>{handleSubmit(sarso())}}>
+      
        
                                         <FormControl className={classes.formControl}>
                                         
@@ -188,13 +290,9 @@ export default function Report() {
                                             InputLabelProps={{
                                               shrink: true,
                                             }}
-                                            inputRef={register({
-                                              required: true
-                                            })}
+                                           
                                           />
-                                           {errors.dtFrom && 
-                                            <span style={{ color: 'red' }}>This field is required</span>
-                                           }
+                                           
                                        </FormControl>
                                     <FormControl className={classes.formControl}>
                                        
@@ -210,11 +308,9 @@ export default function Report() {
                                             InputLabelProps={{
                                               shrink: true,
                                             }}
-                                            inputRef={register({
-                                              required: true
-                                            })}
+                                       
                                           />
-                                           {errors.dtTo && <span style={{ color: 'red' }}>This field is required</span>}
+                                          
                                   </FormControl>
                                   <FormControl className={classes.formControl}>
                                         <InputLabel id="orderbylbl">Order By</InputLabel>
@@ -223,27 +319,25 @@ export default function Report() {
                                             id="orderby"
                                             name="orderby"
                                             onChange={(e)=>{SetOrderBy(e.target.value)}}
-                                            inputRef={register({
-                                              required: true
-                                            })}
+                                           
                                             >
                                             <MenuItem value={'lstauthregion.sAuthRegion'}>Region Wise</MenuItem>
                                             <MenuItem value={'lstcountry.sCountry'}>Country Wise</MenuItem>
-                                            {errors.orderby && <span style={{ color: 'red' }}>This field is required</span>}
+                                         
                                         </Select>
                                    </FormControl>
                                    <FormControl className={classes.formControl}>
                                         <Button type="button" variant='outlined' value="Report" onClick={()=>{sarso();}} >Show</Button>
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
-                                        { sarsoData &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetSarsoData();}} >Clear</Button>
+                                        { sarsoData.length>0 &&
+                                        <Button type="button" variant='outlined' onClick={()=>{SetSarsoData([]);}} >Clear</Button>
                                         }
                                     </FormControl>
-                                    </form>
+                              
 
             {
-                sarsoData && 
+                sarsoData.length>0 && 
               
                   <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
                     //isLoading={isLoading}
@@ -283,6 +377,9 @@ export default function Report() {
             snackbar={snackbar}
             snackbarClose={snackbarClose}
           />}
+          {backdrop && <BackdropComponent
+            backdrop={backdrop}
+            />}
     </>
   );
 }
