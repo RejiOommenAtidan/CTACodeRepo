@@ -31,9 +31,9 @@ export const AddDocumentDialog = (props) => {
         });
     };
 
-    const [sAccept, setsAccept] = useState("image/*");
+    const [sAccept, setsAccept] = useState("application/msword, application/pdf");
     const [sTitle, setsTitle] = useState("");
-    const [sDocType, setsDocType] = useState("Photo Identity");
+    const [sDocType, setsDocType] = useState("Support Document");
     const [binFileDoc, setbinFileDoc] = useState("");
     const [sFileExtension, setsFileExtension] = useState("");
     const [nRegisterDate, setnRegisterDate] = useState(0);
@@ -99,8 +99,12 @@ export const AddDocumentDialog = (props) => {
                                         className={props.classes.textField}
                                         onChange={(event) => { handleSelectChange(event) }}
                                     >
-                                        <MenuItem disabled={result !== undefined} value={"Photo Identity"}>Photo Identity</MenuItem>
-                                        <MenuItem value={"Support Document"}>Support Document</MenuItem>
+                                    <MenuItem value={"Support Document"}>Support Document</MenuItem>
+                                        <MenuItem 
+                                        hidden={result !== undefined} 
+                                        value={"Photo Identity"}
+                                        >Photo Identity</MenuItem>
+                                        
                                     </Select>
                                 </FormControl>
                             </Grid>
@@ -272,8 +276,8 @@ export const EditDocumentDialog = (props) => {
                                         onChange={(event) => { handleSelectChange(event) }}
                                         disabled
                                     >
+                                    <MenuItem value={"Support Document"}>Support Document</MenuItem>
                                         <MenuItem value={"Photo Identity"}>Photo Identity</MenuItem>
-                                        <MenuItem value={"Support Document"}>Support Document</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Grid>
