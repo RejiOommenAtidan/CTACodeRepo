@@ -69,7 +69,7 @@ export default function GBList(props) {
 
   const columns = [
     {
-      defaultSort: 'asc',
+      //defaultSort: 'asc',
       field: "sGBID",
       title: "GB ID",
       headerStyle: {
