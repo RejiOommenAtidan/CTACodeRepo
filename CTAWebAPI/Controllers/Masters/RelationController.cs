@@ -95,6 +95,13 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 if (ModelState.IsValid)
                 {
+                    DuplicateCheck<Relation> check = new DuplicateCheck<Relation>(relation, _info.sConnectionString);
+                    string[] props = { "sRelation" };
+                    string message;
+                    if (check.IsDuplicate(relation.Id, props, out message))
+                    {
+                        return Problem(message, null, 403);
+                    }
                     relation.dtEntered = DateTime.Now;
                     relation.dtUpdated = DateTime.Now;
 
@@ -137,6 +144,14 @@ namespace CTAWebAPI.Controllers.Masters
                     
                     if (RelationExists(ID))
                     {
+                        DuplicateCheck<Relation> check = new DuplicateCheck<Relation>(relation, _info.sConnectionString);
+                        string[] props = { "sRelation" };
+                        string message;
+                        if (check.IsDuplicate(relation.Id, props, out message))
+                        {
+                            return Problem(message, null, 403);
+                        }
+
                         Relation fetchedrelation = _relationRepository.GetRelationById(ID);
                         relation.nEnteredBy = fetchedrelation.nEnteredBy;
                         relation.dtEntered = fetchedrelation.dtEntered;

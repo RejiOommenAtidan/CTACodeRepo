@@ -158,6 +158,17 @@ export default function Relation() {
         }
       })
       .catch(error => {
+        if(error.response){
+          if(error.response.status === 403){
+            console.log(error);
+            setAlertMessage(error.response.data.detail.substring(1));
+            setAlertType("error");
+            snackbarOpen();
+            setBackdrop(false);
+            return;
+          }
+
+        }
         handleError(error, history);
       })
       .then(release => {
@@ -190,6 +201,17 @@ export default function Relation() {
         }
       })
       .catch(error => {
+        if(error.response){
+          if(error.response.status === 403){
+            console.log(error);
+            setAlertMessage(error.response.data.detail.substring(1));
+            setAlertType("error");
+            snackbarOpen();
+            setBackdrop(false);
+            return;
+          }
+
+        }
         handleError(error, history);
       })
       .then(release => {

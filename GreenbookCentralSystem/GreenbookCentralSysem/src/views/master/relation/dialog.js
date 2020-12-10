@@ -43,6 +43,7 @@ export const AddDialog = (props) => {
                     name="sRelation"
                     label="Relation"
                     type="text"
+                    autoFocus
                     onChange={(e) => { setRelation(e.target.value) }}
                     inputRef={register({
                       required: true

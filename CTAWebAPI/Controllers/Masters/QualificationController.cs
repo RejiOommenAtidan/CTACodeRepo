@@ -96,6 +96,14 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 if (ModelState.IsValid)
                 {
+                    DuplicateCheck<Qualification> check = new DuplicateCheck<Qualification>(qualification, _info.sConnectionString);
+                    string[] props = { "sQualificationID", "sQualification" };
+                    string message;
+                    if (check.IsDuplicate(qualification.Id, props, out message))
+                    {
+                        return Problem(message, null, 403);
+                    }
+
                     qualification.dtEntered = DateTime.Now;
                     qualification.dtUpdated = DateTime.Now;
 
@@ -137,6 +145,14 @@ namespace CTAWebAPI.Controllers.Masters
                     
                     if (QualificationExists(ID))
                     {
+                        DuplicateCheck<Qualification> check = new DuplicateCheck<Qualification>(qualification, _info.sConnectionString);
+                        string[] props = { "sQualificationID", "sQualification" };
+                        string message;
+                        if (check.IsDuplicate(qualification.Id, props, out message))
+                        {
+                            return Problem(message, null, 403);
+                        }
+
                         Qualification fetchedqualification = _qualificationRepository.GetQualificationById(ID);
                         qualification.nEnteredBy = fetchedqualification.nEnteredBy;
                         qualification.dtEntered = fetchedqualification.dtEntered;
