@@ -39,6 +39,7 @@ import { nPageSize } from '../../../config/commonConfig';
 import { useForm, Controller } from "react-hook-form";
 import { Alerts } from '../../alerts';
 import _ from "lodash/fp";
+import { BackdropComponent } from '../../backdrop/index';
 const tableIcons = oTableIcons;
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -72,7 +73,7 @@ export default function Report() {
     const [dtFrom, SetdtFrom] = React.useState('');
     
     const [filtering, setFiltering] = React.useState(false);
-
+    const [backdrop, setBackdrop] = React.useState(false);
 
     //Alert
   const [alertMessage, setAlertMessage] = useState("");
@@ -219,8 +220,10 @@ export default function Report() {
 
         }
         else{
+          setBackdrop(true);
           axios.get(`/Report/GetReportCTAChangesLog/?&dtRecordFrom=`+dtFrom)
           .then(resp => {
+            setBackdrop(false);
             if (resp.status === 200) {
             
               SetChangesLogData(resp.data);
@@ -320,6 +323,9 @@ export default function Report() {
             alertObj={alertObj}
             snackbar={snackbar}
             snackbarClose={snackbarClose}
+          />}
+           {backdrop && <BackdropComponent
+            backdrop={backdrop}
           />}
     </>
   );

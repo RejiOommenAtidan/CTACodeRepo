@@ -706,7 +706,7 @@ export default function EditEntry(props) {
     debugger;
     axios
       .post(
-        `/Greenbook/EditGreenbook/Id=` + props.match.params.GBID.toString(),
+        `/Greenbook/EditGreenbook/Id=` + props.location.state.Id.toString(),
         greenbook
       )
       .then((resp) => {

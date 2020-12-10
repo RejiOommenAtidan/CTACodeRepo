@@ -38,6 +38,7 @@ import { aPageSizeArray } from '../../../config/commonConfig';
 import { nPageSize } from '../../../config/commonConfig';
 import { useForm, Controller } from "react-hook-form";
 import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 import _ from "lodash/fp";
 const tableIcons = oTableIcons;
 const useStyles = makeStyles((theme) => ({
@@ -76,7 +77,7 @@ export default function Report() {
     const [groupBy, SetGroupBy] = React.useState('');
 
     const [filtering, setFiltering] = React.useState(false);
-
+    const [backdrop, setBackdrop] = React.useState(false);
 
     //Alert
   const [alertMessage, setAlertMessage] = useState("");
@@ -137,10 +138,11 @@ export default function Report() {
 
         }
         else{
+          setBackdrop(true);
           axios.get(`/Report/GetReportIssuedIndividual/?sMadebDisplayKey=`+madebType+`&dtRecordFrom=`+dtFrom+`&dtRecordTo=`+dtTo+`&sGroupBy=`+groupBy+`&sOrderBy=`+orderBy)
           .then(resp => {
             if (resp.status === 200) {
-            
+              setBackdrop(false);
               SetIssuedIndividualData(resp.data);
               console.log(resp.data);
             }
@@ -269,13 +271,23 @@ export default function Report() {
                                             labelId="orderbylbl"
                                             id="orderby"
                                             name="orderby"
-                                            onChange={(e)=>{SetOrderBy((e.target.value).split(':')[1]);SetGroupBy((e.target.value).split(':')[0]);}}
+                                            onChange={(e)=>{
+                                              if(e.target.value==="Region"){
+                                                SetOrderBy('lstauthregion.sAuthRegion');
+                                                SetGroupBy('lstauthregion.ID'); 
+                                              }
+                                              else if(e.target.value==="Country"){
+                                                SetOrderBy('lstcountry.sCountry');
+                                                SetGroupBy('lstcountry.sCountry'); 
+                                              }
+                                              
+                                            }}
                                             inputRef={register({
                                               required: true
                                             })}
                                             >
-                                            <MenuItem value={'lstauthregion.ID:lstauthregion.sAuthRegion'}>Region Wise</MenuItem>
-                                            <MenuItem value={'lstcountry.sCountry:lstcountry.sCountry'}>Country Wise</MenuItem>
+                                            <MenuItem value={'Region'}>Region Wise</MenuItem>
+                                            <MenuItem value={'Country'}>Country Wise</MenuItem>
                                             {errors.orderby && <span style={{ color: 'red' }}>This field is required</span>}
                                         </Select>
                                    </FormControl>
@@ -329,6 +341,9 @@ export default function Report() {
             alertObj={alertObj}
             snackbar={snackbar}
             snackbarClose={snackbarClose}
+          />}
+           {backdrop && <BackdropComponent
+            backdrop={backdrop}
           />}
     </>
   );

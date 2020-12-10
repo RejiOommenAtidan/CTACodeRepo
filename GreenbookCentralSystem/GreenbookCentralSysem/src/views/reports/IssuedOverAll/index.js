@@ -37,6 +37,7 @@ import Search from '@material-ui/icons/Search';
 import { aPageSizeArray } from '../../../config/commonConfig';
 import { nPageSize } from '../../../config/commonConfig';
 import { Alerts } from '../../alerts';
+import { BackdropComponent } from '../../backdrop/index';
 const tableIcons = oTableIcons;
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -82,7 +83,7 @@ export default function Report() {
     const snackbarClose = () => {
       setSnackbar(false);
     };
-
+    const [backdrop, setBackdrop] = React.useState(false);
     const [filtering, setFiltering] = React.useState(false);
     const columns=[
       {
@@ -213,10 +214,11 @@ export default function Report() {
         snackbarOpen();
       }
       else{
+        setBackdrop(true);
         axios.get(`/Report/GetReportIssuedOverAll/?sMadebDisplayKey=`+madebType+`&dtRecordFrom=`+dtFrom+`&dtRecordTo=`+dtTo+`&sOrderBy=`+orderBy)
         .then(resp => {
           if (resp.status === 200) {
-          
+            setBackdrop(false);
             SetIssuedOverAllData(resp.data);
           }
         })
@@ -378,6 +380,9 @@ export default function Report() {
             alertObj={alertObj}
             snackbar={snackbar}
             snackbarClose={snackbarClose}
+          />}
+           {backdrop && <BackdropComponent
+            backdrop={backdrop}
           />}
     </>
   );

@@ -39,6 +39,7 @@ import { nPageSize } from '../../../config/commonConfig';
 import { useForm, Controller } from "react-hook-form";
 import { Alerts } from '../../alerts';
 import _ from "lodash/fp";
+import { BackdropComponent } from '../../backdrop/index';
 const tableIcons = oTableIcons;
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -63,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Report() {
 
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
-
+  const [backdrop, setBackdrop] = React.useState(false);
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
     const classes = useStyles();
@@ -189,10 +190,11 @@ export default function Report() {
 
         }
         else{
+          setBackdrop(true);
           axios.get(`/Report/GetReportCTABelow6Years/?sOrderBy=`+orderBy)
           .then(resp => {
             if (resp.status === 200) {
-            
+              setBackdrop(false);
               SetBelow6yearsData(resp.data);
               console.log(resp.data);
             }
@@ -290,6 +292,9 @@ export default function Report() {
             alertObj={alertObj}
             snackbar={snackbar}
             snackbarClose={snackbarClose}
+          />}
+           {backdrop && <BackdropComponent
+            backdrop={backdrop}
           />}
     </>
   );
