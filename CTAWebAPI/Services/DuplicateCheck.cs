@@ -45,13 +45,16 @@ namespace CTAWebAPI.Services
                 DataTableCollection tables = ds.Tables;
                 foreach(DataRow row in tables[0].Rows)
                 {
-                    foreach(string prop in properties)
+                    //PropertyInfo commonPI = type.GetProperty(pi.Name);
+                    //object[] displayNameAttributeCommon = commonPI.GetCustomAttributes(typeof(DisplayNameAttribute), false);
+                    //string sDisplayNameCommon = displayNameAttributeCommon.Length > 0 ? (displayNameAttributeCommon[0] as DisplayNameAttribute).DisplayName : pi.Name;
+                    foreach (string prop in properties)
                     {
                         var dbValue = row[prop].ToString().ToUpper();
                         var objValue = dict[prop].ToString().ToUpper();
                         if(dbValue == objValue)
                         {
-                            message = String.Format("{0} value Duplicate", prop);
+                            message = String.Format("{0} already exists", prop);
                             return true;
                         }
                     }
