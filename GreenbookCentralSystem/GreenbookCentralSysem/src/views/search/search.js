@@ -137,7 +137,7 @@ export default function SearchPage() {
   const [searchFilter, setSearchFilter] = React.useState('sGBID');
 
   const [firstName, setFirstName] = React.useState('');
-  const [secondName, setSecondName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
   const [familyName, setFamilyName] = React.useState('');
   const [spouseName, setSpouseName] = React.useState('');
   const [fatherName, setFatherName] = React.useState('');
@@ -493,7 +493,7 @@ export default function SearchPage() {
   }
   const complexObj = {
     sFirstName: firstName,
-    sMiddleName: secondName,
+    sLastName: lastName,
     sFamilyName: familyName,
     sSpouseName: spouseName,
     sFathersName: fatherName,
@@ -610,15 +610,15 @@ export default function SearchPage() {
 
   useEffect(() => {
     //console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
-    if (firstName.length > 3 || secondName.length > 3 ||
-      familyName.length > 3 || spouseName.length > 3 ||
-      fatherName.length > 3 || motherName.length > 3 ||
-      city.length > 2 || state.length > 3 || gender.length == 1 ||
+    if (firstName.length > 2 || lastName.length > 2 ||
+      familyName.length > 2 || spouseName.length > 2 ||
+      fatherName.length > 2 || motherName.length > 2 ||
+      city.length > 2 || state.length > 2 || gender.length == 1 ||
       Moment(dob).format('YYYY-MM-DD') != 'Invalid date' || country || minAge > 0 || maxAge > 0) {
       console.log(complexObj);
       handleComplexSearch();
     }
-  }, [firstName, secondName, familyName, spouseName, fatherName, motherName, city, state, dob, country, gender, minAge, maxAge]);
+  }, [firstName, lastName, familyName, spouseName, fatherName, motherName, city, state, dob, country, gender, minAge, maxAge]);
 
   return (
     <>
@@ -710,10 +710,10 @@ export default function SearchPage() {
                 <Grid item xs={12}>
                   <FormControl className={classes.formControl}>
                     <TextField
-                      id="id_SecondName"
-                      label="Second Name"
+                      id="id_LastName"
+                      label="Last Name"
                       type="text"
-                      onChange={(e) => { setSecondName(e.target.value) }}
+                      onChange={(e) => { setLastName(e.target.value) }}
                     />
                   </FormControl>
                 </Grid>

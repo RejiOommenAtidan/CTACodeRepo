@@ -95,6 +95,13 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 if (ModelState.IsValid)
                 {
+                    DuplicateCheck<TypeIssued> check = new DuplicateCheck<TypeIssued>(typeissued, _info.sConnectionString);
+                    string[] props = { "sTypeIssued" };
+                    string message;
+                    if (check.IsDuplicate(typeissued.Id, props, out message))
+                    {
+                        return Problem(message, null, 403);
+                    }
                     typeissued.dtEntered = DateTime.Now;
                     typeissued.dtUpdated = DateTime.Now;
 
@@ -138,7 +145,13 @@ namespace CTAWebAPI.Controllers.Masters
                     
                     if (TypeIssuedExists(ID))
                     {
-
+                        DuplicateCheck<TypeIssued> check = new DuplicateCheck<TypeIssued>(typeissued, _info.sConnectionString);
+                        string[] props = { "sTypeIssued" };
+                        string message;
+                        if (check.IsDuplicate(typeissued.Id, props, out message))
+                        {
+                            return Problem(message, null, 403);
+                        }
                         TypeIssued fetchedtypeissued = _typedIssuedRepository.GetTypeIssuedById(ID);
                         typeissued.nEnteredBy = fetchedtypeissued.nEnteredBy;
                         typeissued.dtEntered = fetchedtypeissued.dtEntered;

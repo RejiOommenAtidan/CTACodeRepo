@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 import DateFnsUtils from "@date-io/date-fns";
 import Moment from 'moment';
+
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -147,7 +148,7 @@ export const EditDialog = (props) => {
                                 </Grid>
                 <Grid item sm={6} xs={12}>
                     <FormControl className={props.classes.formControl}>
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <MuiPickersUtilsProvider utils={ DateFnsUtils}>
                         <KeyboardDatePicker
                           variant="dialog"
                         //  openTo="year"
