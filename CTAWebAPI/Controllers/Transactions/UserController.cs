@@ -150,6 +150,13 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
+                    DuplicateCheck<User> check = new DuplicateCheck<User>(user, _info.sConnectionString);
+                    string[] props = { "sUsername" };
+                    string message;
+                    if (check.IsDuplicate(user.Id, props, out message))
+                    {
+                        return Problem(message, null, 403);
+                    }
                     user.dtEntered = DateTime.Now;
                     user.dtUpdated = DateTime.Now;
                     user.bActive = true;
@@ -203,6 +210,13 @@ namespace CTAWebAPI.Controllers.Transactions
 
                     if (UserExists(Id))
                     {
+                        DuplicateCheck<User> check = new DuplicateCheck<User>(user, _info.sConnectionString);
+                        string[] props = { "sUsername" };
+                        string message;
+                        if (check.IsDuplicate(user.Id, props, out message))
+                        {
+                            return Problem(message, null, 403);
+                        }
                         User fetchedUser = _userRepository.GetUserById(Id);
                         user.nEnteredBy = fetchedUser.nEnteredBy;
                         user.dtEntered = fetchedUser.dtEntered;
