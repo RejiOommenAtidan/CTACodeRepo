@@ -183,7 +183,7 @@ export default function EnhancedTable() {
     },
     {
       width: "8%",
-      field: "madeb.dtReceived",
+      field: "madeb.dtFormattedReceived",
       title: "RECEIVED DATE",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
@@ -196,7 +196,7 @@ export default function EnhancedTable() {
         textAlign: "right",
         padding: '5px'
       },
-      render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined
+      //render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined
     },
     {
       width: "9%",
@@ -394,7 +394,7 @@ export default function EnhancedTable() {
     },
     {
       width: "8%",
-      field: "madeb.dtIssueAction",
+      field: "madeb.dtFormattedIssueAction",
       title: "ISSUE ACTION DATE",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
@@ -407,7 +407,7 @@ export default function EnhancedTable() {
         textAlign: "right",
         padding: '5px'
       },
-      render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
+   //   render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
     },
     {
       width: "6%",
@@ -425,7 +425,7 @@ export default function EnhancedTable() {
     },
     {
       width: "8%",
-      field: "madeb.dtReject",
+      field: "madeb.dtFormattedReject",
       title: "REJECT DATE",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
@@ -438,11 +438,11 @@ export default function EnhancedTable() {
         textAlign: "right",
         padding: '5px'
       },
-      render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined
+     // render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined
     },
     {
       width: "8%",
-      field: "madeb.dtReturnEmail",
+      field: "madeb.dtFormattedReturnEmail",
       title: "RETURN DATE",
       //type: 'date',
       //dateSetting: {locale: 'en-IN'},
@@ -455,7 +455,7 @@ export default function EnhancedTable() {
         textAlign: "right",
         padding: '5px'
       },
-      render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : ''
+      //render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : ''
     },
     {
       width: "6%",
@@ -576,6 +576,12 @@ export default function EnhancedTable() {
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=4`)
             .then(resp => {
               if (resp.status === 200) {
+                resp.data.forEach((element) => {
+                  element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
+                  element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
+                  element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
+                  element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
+                })
                 setdataAPI(resp.data);
               }
             })
@@ -670,6 +676,12 @@ export default function EnhancedTable() {
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=4`)
             .then(resp => {
               if (resp.status === 200) {
+                resp.data.forEach((element) => {
+                  element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
+                  element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
+                  element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
+                  element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
+                })
                 setdataAPI(resp.data);
               }
             })
@@ -724,6 +736,12 @@ export default function EnhancedTable() {
     axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=4`)
       .then(resp => {
         if (resp.status === 200) {
+          resp.data.forEach((element) => {
+            element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
+            element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
+            element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
+            element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
+          })
           setdataAPI(resp.data);
           selectDatafunction();
           setisLoading(false);
