@@ -135,7 +135,7 @@ export default () => {
       }
     },
     {
-      field: "dtReceived",
+      field: "dtFormattedReceived",
       title: "RECEIVED ON",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
@@ -148,7 +148,7 @@ export default () => {
         textAlign: "right",
         padding: '5px'
       },
-      render: rowData => rowData['dtReceived'] ? Moment(rowData['dtReceived']).format(sDateFormat) : undefined
+      //render: rowData => rowData['dtReceived'] ? Moment(rowData['dtReceived']).format(sDateFormat) : undefined
     },
     {
       field: "sName",
@@ -277,6 +277,9 @@ export default () => {
           axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumberAssignList`)
             .then(resp => {
               if (resp.status === 200) {
+                resp.data.forEach((element) => {
+                  element.dtFormattedReceived = element.dtReceived ? Moment(element.dtReceived).format(sDateFormat) : null;
+                });
                 setdataAPI(resp.data)
                 selectDatafunction();
                 setLoading(false);
@@ -324,6 +327,9 @@ export default () => {
     axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumberAssignList`)
       .then(resp => {
         if (resp.status === 200) {
+          resp.data.forEach((element) => {
+            element.dtFormattedReceived = element.dtReceived ? Moment(element.dtReceived).format(sDateFormat) : null;
+          });
           setdataAPI(resp.data);
           selectDatafunction();
           setLoading(false);

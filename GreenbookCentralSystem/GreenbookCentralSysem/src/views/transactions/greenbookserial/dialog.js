@@ -212,7 +212,7 @@ export const EditDialog = (props) => {
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <Autocomplete
-                      disabled
+                      
                       openOnFocus
                       clearOnEscape
                       onChange={
@@ -241,6 +241,9 @@ export const EditDialog = (props) => {
                           {...params}
                           label="Country"
                           variant="standard"
+                          InputProps={{
+                            readOnly: true
+                          }}
                           inputProps={{
                             ...params.inputProps,
                             autoComplete: 'off',
@@ -286,7 +289,7 @@ export const EditDialog = (props) => {
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <Autocomplete
-                      disabled
+                      
                       openOnFocus
                       clearOnEscape
                       onChange={
@@ -315,6 +318,9 @@ export const EditDialog = (props) => {
                           {...params}
                           label="Madeb Type"
                           variant="standard"
+                          InputProps={{
+                            readOnly: true
+                          }}
                           inputProps={{
                             ...params.inputProps,
                             autoComplete: 'off',
@@ -342,7 +348,7 @@ export const EditDialog = (props) => {
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <Autocomplete
-                      disabled
+
                       openOnFocus
                       clearOnEscape
                       onChange={
@@ -374,7 +380,9 @@ export const EditDialog = (props) => {
                           inputProps={{
                             ...params.inputProps,
                             autoComplete: 'off',
-
+                          }}
+                          InputProps={{
+                            readOnly: true
                           }}
                         />
                       )}

@@ -106,7 +106,7 @@ export default () => {
       }
     },
     {
-      field: "greenBookSerialNumber.dtDate",
+      field: "greenBookSerialNumber.dtFormattedDate",
       title: "DATE",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
@@ -119,7 +119,7 @@ export default () => {
         textAlign: "right",
         padding: '5px'
       },
-      render: rowData => rowData['greenBookSerialNumber']['dtDate'] ? Moment(rowData['greenBookSerialNumber']['dtDate']).format(sDateFormat) : undefined
+      //render: rowData => rowData['greenBookSerialNumber']['dtDate'] ? Moment(rowData['greenBookSerialNumber']['dtDate']).format(sDateFormat) : undefined
     },
     {
       field: "greenBookSerialNumber.nBookNo",
@@ -352,6 +352,9 @@ export default () => {
           axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/`)
             .then(resp => {
               if (resp.status === 200) {
+                resp.data.forEach((element) => {
+                element.greenBookSerialNumber.dtFormattedDate = element.greenBookSerialNumber.dtDate ? Moment(element.greenBookSerialNumber.dtDate).format(sDateFormat) : null;
+              })
                 setdataAPI(resp.data);
                 setLoading(false);
               }
@@ -383,6 +386,10 @@ export default () => {
     axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/`)
       .then(resp => {
         if (resp.status === 200) {
+          resp.data.forEach((element) => {
+            element.greenBookSerialNumber.dtFormattedDate = element.greenBookSerialNumber.dtDate ? Moment(element.greenBookSerialNumber.dtDate).format(sDateFormat) : null;
+            
+          })
           setdataAPI(resp.data);
           selectDatafunction();
           setLoading(false);

@@ -95,7 +95,7 @@ export const InputParams = (props) => {
                           margin="dense"
                           id="startDate"
                           name="startDate"
-                          
+                          autoFocus
                           label={<> Date From<span style={{ color: 'red' }}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           returnMoment={true}

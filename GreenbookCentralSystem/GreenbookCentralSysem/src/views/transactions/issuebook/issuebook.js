@@ -158,10 +158,12 @@ export default function EnhancedTable() {
   const show = () => {
     console.log(bookIssueData);
   };
-  const handleSubmit = () => {
+  const handleSubmit = ((e) => {
     //console.log(gbId);
     //setGbId(tempGbId.toString());
-
+    // alert ("form submitted");
+    // console.log("event ", e);
+    e.preventDefault();
     if (gbId == "") {
       setAlertMessage("Enter Green Book ID");
       setAlertType("info");
@@ -171,7 +173,7 @@ export default function EnhancedTable() {
       setLatestDataTable(false);
       setHistoryTable(true);
     }
-  };
+  });
   const handleLatestSubmit = (sGBID) => {
     setGbId(sGBID);
     setLatestDataTable(false);
@@ -219,29 +221,31 @@ export default function EnhancedTable() {
             <Grid item xs={12} style={{ textAlign: 'center' }}>
               <Paper elevation={3} style={{ padding: 30 }}>
                 <Typography color="textPrimary">Enter Green Book Number To Issue Book:</Typography>
+                <form onSubmit={(e) => handleSubmit(e)}>
                 <TextField id="standard-basic" type='number' label="Green Book No."
                   onChange={(e) => { setGbId(e.target.value.toString()) }}
-                  value={gbId}
+                  //value={gbId}
+                  autoFocus
                 />
                 { /* <Button   style={{marginTop:8,marginLeft:5 }} type='submit' onClick={searchGbId}  variant="outlined">Show</Button>*/}
                 <Button
                   style={{ marginTop: 8, marginLeft: 5 }}
                   type='submit'
-                  onClick={() => { handleSubmit() }}
+                  onClick={(e) => { handleSubmit(e) }}
                   variant={sButtonVariant}
                   color={sButtonColor}
-                  size={sButtonSize}
+                  size={sButtonSize}  
                 >Search
              </Button>
                 <Button
                   style={{ marginTop: 8, marginLeft: 5 }}
-                  type='submit'
                   onClick={() => { setHistoryTable(false); setLatestDataTable(true); setGbId('') }}
                   variant={sButtonVariant}
                   color={sButtonColor}
                   size={sButtonSize}
-                >Show Latest</Button>
+                >Show Latest</Button></form>
                 <br />
+                
                 {/*  <IssueBookTable
               gbId={gbId}
               />
