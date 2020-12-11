@@ -813,7 +813,6 @@ export default function EnhancedTable() {
           setAlertMessage('Record updated successfully.');
           setAlertType('success');
           snackbarOpen();
-          
           setBackdrop(false);
           selectDatafunction();
           setisLoading(true);
@@ -848,16 +847,16 @@ export default function EnhancedTable() {
   };
 
   const selectDatafunction = () => {
-    setBackdrop(true);
+    
     axios.get(`Madeb/GetNewEmptyMadeb`)
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
-          setBackdrop(false);
+         
         }
       })
       .catch(error => {
-        setBackdrop(false);
+        
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);

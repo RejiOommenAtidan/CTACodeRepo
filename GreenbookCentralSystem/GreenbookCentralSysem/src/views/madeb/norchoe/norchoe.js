@@ -591,7 +591,7 @@ export default function EnhancedTable() {
   };
 
   const selectDatafunction = () => {
-    setBackdrop(true);
+    
     axios.get(`Madeb/GetNewEmptyMadeb`)
       .then(resp => {
         if (resp.status === 200) {
@@ -601,7 +601,7 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
-        setBackdrop(false);
+        
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);

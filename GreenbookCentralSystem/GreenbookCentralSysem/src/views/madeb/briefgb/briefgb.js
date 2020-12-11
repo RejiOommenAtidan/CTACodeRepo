@@ -170,7 +170,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -186,7 +187,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
     //  render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined
     },
@@ -201,7 +203,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -215,7 +218,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -230,7 +234,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -244,7 +249,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -258,7 +264,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -272,7 +279,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -286,7 +294,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -300,7 +309,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     // {
@@ -370,7 +380,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
      // render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
     },
@@ -385,7 +396,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -401,7 +413,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
     //  render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined
     },
@@ -418,7 +431,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
      // render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : ''
     },
@@ -433,7 +447,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
     },
     {
@@ -447,7 +462,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
     },
     {
@@ -469,7 +485,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -586,17 +603,17 @@ export default () => {
   };
 
   const selectDatafunction = () => {
-    setBackdrop(true);
+    
     axios.get(`Madeb/GetNewEmptyMadeb`)
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
-          setBackdrop(false);
+          
           // setdataAPI(resp.data)
         }
       })
       .catch(error => {
-        setBackdrop(false);
+        
         console.log(error.config);
         console.log(error.message);
       })
@@ -674,7 +691,7 @@ export default () => {
             style={{ 
               padding: '10px', 
               width: '100%', 
-              border: '2px solid grey', 
+              border: '2px solid black', 
               borderRadius: '10px'
              }}
             isLoading={loading}
