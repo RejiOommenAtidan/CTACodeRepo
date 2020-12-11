@@ -21,7 +21,7 @@ CREATE TABLE `lnkgbchatrel` (
   `sCountryID` varchar(255) DEFAULT NULL,
   `sPaymentCurrency` varchar(255) DEFAULT NULL,
   `sAuthRegionCurrency` varchar(255) DEFAULT NULL,
-  `nConversionRate` decimal(15,2) DEFAULT NULL,
+  `nConversionRate` decimal(15,4) DEFAULT NULL,
   `sPaidByGBId` varchar(255) DEFAULT NULL,
   `dtPayment` datetime DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `lnkgbchatreldonation` (
   `sCountryID` varchar(255) DEFAULT NULL,
   `sPaymentCurrency` varchar(255) DEFAULT NULL,
   `sAuthRegionCurrency` varchar(255) DEFAULT NULL,
-  `nConversionRate` decimal(15,2) DEFAULT NULL,
+  `nConversionRate` decimal(15,4) DEFAULT NULL,
   `sPaidByGBId` varchar(255) DEFAULT NULL,
   `dtPayment` datetime DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
@@ -135,7 +135,7 @@ CREATE TABLE `tblchatrelpayment` (
   `dtUpdated` datetime DEFAULT NULL,
   `nUpdatedBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=113938 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 
@@ -166,6 +166,8 @@ CREATE TABLE `tblgreenbook` (
   `sPhone` varchar(255) DEFAULT NULL,
   `sFax` varchar(255) DEFAULT NULL,
   `sPaidUntil` text NOT NULL,
+  `sLoginGmail` varchar(255) DEFAULT NULL,
+  `dtLastSuccessfullLogin` DateTime DEFAULT NULL,
   `sEnteredDateTime` text DEFAULT NULL,
   `dtEntered` datetime DEFAULT NULL,
   `nEnteredBy` int(11) NOT NULL,
@@ -375,6 +377,7 @@ SELECT `lstcountry`.`ID`,
 FROM `ctadb`.`lstcountry`;
 
 
+
 INSERT INTO `chatreldb`.`lnkgbrelation`
 (`Id`,
 `sGBID`,
@@ -438,8 +441,8 @@ SELECT
 FROM ctadb.lstrelation;
 
 
-INSERT INTO `tblchatrelpayment`
-(`Id`,
+INSERT INTO `ctadb`.`tblchatrelpayment`
+(
 `sGBId`,
 `nChatrelYear`,
 `nChatrelTotalAmount`,
@@ -458,7 +461,7 @@ INSERT INTO `tblchatrelpayment`
 `nEnteredBy`,
 `dtUpdated`,
 `nUpdatedBy`)
-SELECT `tblchatrelpayment`.`Id`,
+SELECT 
     `tblchatrelpayment`.`sGBId`,
     `tblchatrelpayment`.`nChatrelYear`,
     `tblchatrelpayment`.`nChatrelTotalAmount`,
