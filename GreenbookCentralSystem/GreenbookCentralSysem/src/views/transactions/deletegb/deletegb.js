@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link, Card } from '@material-ui/core';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-import { forwardRef } from 'react';
-import { red } from '@material-ui/core/colors';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import { useForm } from "react-hook-form";
+import CancelIcon from '@material-ui/icons/Cancel';
+import WarningIcon from '@material-ui/icons/Warning';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop';
 import {
   sSnackbarAddMessage, sSnackbarUpdateMessages,
   sButtonColor, sButtonSize, sButtonVariant
 } from "../../../config/commonConfig";
+import { text } from '@fortawesome/fontawesome-svg-core';
 
 
 const useStyles = makeStyles({
@@ -27,6 +32,13 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
+  span: {
+    color: 'red'
+  },
+  cardaction: {
+    display: 'flex', 
+    justifyContent: 'center'
+  }
 });
 
 export default function GiveGBId() {
@@ -34,9 +46,13 @@ export default function GiveGBId() {
   const classes = useStyles();
   const [gbidToDelete, setGBIDToDelete] = useState(0);
   const [backdrop, setBackdrop] = React.useState(false);
-
+  const [openDialog, setOpenDialog] = React.useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
+  const [sGBID, setGBID] = useState('');
+  const [span, setSpan] = useState();
+  const [textBox, setTextBox] = useState();
+  const [canSubmit, setCanSubmit] = useState(false);
   const alertObj = {
     alertMessage: alertMessage,
     alertType: alertType
@@ -49,57 +65,82 @@ export default function GiveGBId() {
     setSnackbar(false);
   };
 
-  const handleValidation = (val) => {
-    console.log("inside validation");
-    const span = document.getElementById("error");
-    if (!val) {
-      const element = document.getElementById("gbid");
-      span.innerText = "Please enter GB ID to delete";
-      element.focus();
-      return false;
-    }
-    else {
-      span.innerText = "";
-    }
-    return true;
+  const handleClose = () => {
+    setOpenDialog(false);
+    textBox.focus();
   };
 
-  const handleSubmit = (e) => {
-    console.log("Submit Event\n", e);
-    e.preventDefault();
-    const element = document.getElementById("gbid");
-    if (handleValidation(element.value)) {
-      //const sGBID = parseInt(element.value);
-      const sGBID = element.value;
-      console.log("gbid entered", sGBID);
-      setBackdrop(true);
+  const isEmpty = (val) => {
+    if (!val) {
+      span.innerText = "Please enter GB ID to delete";
+      textBox.focus();
+      setCanSubmit(false);
+      return true;
+    }
+    else{
+      span.innerText = '';
+      setCanSubmit(true);
+      return false;
+    }
+  };
+
+  const handleSubmit = () => {
+    const sGBIDEntered = textBox.value;
+    console.log("gbid entered", sGBIDEntered);
+
+    if(isEmpty(sGBIDEntered)){
+      return;
+    }
+    console.log("Submit Event\n");
+    setOpenDialog(true);
+  };
+
+  const submit = () => {
+    setBackdrop(true);
       axios.post(`GreenBook/DeleteGreenBookByGBID/?sGBID=` + sGBID)
         .then(resp => {
           if (resp.status === 200) {
-            //setSelectData(resp.data);
-            console.log("Green Book ID Deleted from Green Book\n", resp.data);
-            setAlertMessage(`Green Book with Id ${sGBID} deleted successfully.`);
+            setAlertMessage(`Green Book ID ${sGBID} deleted successfully.`);
             setAlertType('success');
             snackbarOpen();
             setBackdrop(false);
-            element.value = '';
-            element.focus();
-            // setdataAPI(resp.data)
+            setGBID('');
+            textBox.value = '';
+            textBox.focus();
           }
         })
         .catch(error => {
-          console.log(error.config);
           console.log(error.message);
-
-          setAlertMessage(`Green Book with Id ${sGBID} deletion failed.`);
+          if(error.response){
+            if(error.response.status === 403){
+              //setAlertMessage(`Green Book ID ${sGBID} does not exists`);
+              // setAlertType('error');
+              // snackbarOpen();
+              setBackdrop(false);
+              span.innerText = `Green Book ID '${sGBID}' does not exist`;
+              return;
+            }
+            if(error.response.status === 500){
+              setAlertMessage(`Deletion of Green Book ID '${sGBID}' failed`);
+              setAlertType('error');
+              snackbarOpen();
+              setBackdrop(false);
+              return;
+            }
+          }
+          setAlertMessage(error.message);
           setAlertType('error');
           snackbarOpen();
+          //element.value = '';
+          textBox.focus();
           setBackdrop(false);
-          element.value = '';
-          element.focus();
         })
-    }
   };
+
+  useEffect(() => {
+    setSpan(document.getElementById("error"));
+    setTextBox(document.getElementById('gbid'))
+  });
   return (
     <>
       <div
@@ -112,10 +153,15 @@ export default function GiveGBId() {
         }}
       >
         <Card className={classes.root} raised>
+        <form onSubmit = {(e) => {
+          e.preventDefault();
+          handleSubmit();
+          }}>
           <CardContent>
             <Typography className={classes.title} color="textPrimary" gutterBottom variant="subtitle1" component="h2" >
               Delete Green Book
             </Typography>
+            
             <FormControl>
               <TextField
                 id="gbid"
@@ -123,26 +169,27 @@ export default function GiveGBId() {
                 margin="dense"
                 variant="outlined"
                 autoFocus="true"
-                label="Green Book Id"
+                label="Green Book ID"
                 helperText="Enter Green Book ID"
-                required={true}
-                onChange={(e) => { handleValidation(e.target.value) }}
+                onChange={(e) => { setGBID(e.target.value); isEmpty(e.target.value); }}
               // inputRef={register({
               //   required: true
               // })}
               >
               </TextField>
-              <span id='error'></span>
+              <span id='error' className={classes.span}></span>
             </FormControl>
           </CardContent>
-          <CardActions>
+          <CardActions className={classes.cardaction} >
             <Button
-              onClick={handleSubmit}
+              onClick={(handleSubmit)}
               variant={sButtonVariant}
               color={sButtonColor}
               size={sButtonSize}
             >Delete</Button>
+            
           </CardActions>
+          </form>
           {backdrop && <BackdropComponent
             backdrop={backdrop}
 
@@ -161,6 +208,39 @@ export default function GiveGBId() {
           snackbarClose={snackbarClose}
         />}
       </div>
+      <Dialog
+        open={openDialog}
+        onClose={handleClose}
+        
+      >
+        <DialogTitle id="alert-dialog-title">{`Delete Green book ID?`}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {`Do you want to delete Green book ID ${sGBID}?`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            autoFocus
+            startIcon={<CancelIcon />}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={submit}
+            startIcon={<WarningIcon />}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

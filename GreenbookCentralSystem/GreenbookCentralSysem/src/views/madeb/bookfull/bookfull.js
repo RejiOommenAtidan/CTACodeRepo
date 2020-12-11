@@ -813,7 +813,10 @@ export default function EnhancedTable() {
           setAlertMessage('Record updated successfully.');
           setAlertType('success');
           snackbarOpen();
+          
           setBackdrop(false);
+          selectDatafunction();
+          setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
             .then(resp => {
               if (resp.status === 200) {
@@ -824,10 +827,11 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
+                setisLoading(false);
               }
             })
             .catch(error => {
-              setBackdrop(false);
+              setisLoading(false);
               console.log(error.config);
               console.log(error.message);
             })
@@ -844,13 +848,16 @@ export default function EnhancedTable() {
   };
 
   const selectDatafunction = () => {
+    setBackdrop(true);
     axios.get(`Madeb/GetNewEmptyMadeb`)
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
+          setBackdrop(false);
         }
       })
       .catch(error => {
+        setBackdrop(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -877,6 +884,7 @@ export default function EnhancedTable() {
           snackbarOpen();
           setBackdrop(false);
           selectDatafunction();
+          setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
             .then(resp => {
               if (resp.status === 200) {
@@ -887,10 +895,11 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
+                setisLoading(false);
               }
             })
             .catch(error => {
-              setBackdrop(false);
+              setisLoading(false);
               console.log(error.message);
               console.log(error.config);
             })

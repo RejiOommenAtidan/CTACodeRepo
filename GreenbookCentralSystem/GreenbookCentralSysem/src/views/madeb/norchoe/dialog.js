@@ -366,7 +366,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sGBID"
-                      label={<p>GBID<span style={{ color: "red" }} > *</span></p>}
+                      label={<p>GB ID<span style={{ color: "red" }} > *</span></p>}
                       //required={true}
                       name="sGBID"
                       value={sGBID}
@@ -918,7 +918,7 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sGBID"
-                      label={<p>GBID<span style={{ color: "red" }} > *</span></p>}
+                      label={<p>GB ID<span style={{ color: "red" }} > *</span></p>}
                       //required={true}
                       name="sGBID"
                       value={sGBID}

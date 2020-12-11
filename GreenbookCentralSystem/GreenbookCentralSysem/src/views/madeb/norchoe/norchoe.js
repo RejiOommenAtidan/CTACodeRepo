@@ -521,6 +521,8 @@ export default function EnhancedTable() {
           setAlertType('success');
           snackbarOpen();
           setBackdrop(false);
+          selectDatafunction();
+          setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=2`)
             .then(resp => {
               if (resp.status === 200) {
@@ -531,10 +533,11 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
+                setisLoading(false);
               }
             })
             .catch(error => {
-              setBackdrop(false);
+              setisLoading(false);
               if (error.response) {
                 console.error(error.response.data);
                 console.error(error.response.status);
@@ -588,6 +591,7 @@ export default function EnhancedTable() {
   };
 
   const selectDatafunction = () => {
+    setBackdrop(true);
     axios.get(`Madeb/GetNewEmptyMadeb`)
       .then(resp => {
         if (resp.status === 200) {
@@ -597,6 +601,7 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
+        setBackdrop(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -623,6 +628,7 @@ export default function EnhancedTable() {
           snackbarOpen();
           setBackdrop(false);
           selectDatafunction();
+          setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=2`)
             .then(resp => {
               if (resp.status === 200) {
@@ -633,13 +639,14 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
+                setisLoading(false);
               }
             })
             .catch(error => {
+              setisLoading(false);
               setAlertMessage('Error! ' + error.message);
               setAlertType('error');
               snackbarOpen();
-              setBackdrop(false);
               if (error.response) {
                 console.error(error.response.data);
                 console.error(error.response.status);
@@ -699,6 +706,7 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
+        setisLoading(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);

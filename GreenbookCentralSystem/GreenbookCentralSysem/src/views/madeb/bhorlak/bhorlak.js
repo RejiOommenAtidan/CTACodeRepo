@@ -517,7 +517,10 @@ export default function EnhancedTable() {
           setAlertMessage('Record Successfully Edited');
           setAlertType('success');
           snackbarOpen();
+          selectDatafunction();
           setBackdrop(false);
+          setisLoading(true);    
+
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=3`)
             .then(resp => {
               if (resp.status === 200) {
@@ -528,10 +531,11 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
+                setisLoading(false);
               }
             })
             .catch(error => {
-              setBackdrop(false);
+              setisLoading(true);
               if (error.response) {
                 console.error(error.response.data);
                 console.error(error.response.status);
@@ -546,21 +550,6 @@ export default function EnhancedTable() {
             .then(release => {
               //console.log(release); => udefined
             });
-          //window.location = window.location;
-          // setdataAPI(dataAPI.map((data) => {
-          //   console.log(data);
-          //   if(data.id === countryObj.id){
-          //     console.log(data);
-          //     return {
-          //       ...data,
-          //       ...countryObj
-          //     };
-          //   }
-          //   else{
-          //     console.log(data)
-          //     return data;
-          //   }
-          // }))
         }
       })
       .catch(error => {
@@ -618,6 +607,7 @@ export default function EnhancedTable() {
           setAlertType('success');
           snackbarOpen();
           setBackdrop(false);
+          setisLoading(true);
           selectDatafunction();
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=3`)
             .then(resp => {
@@ -629,13 +619,14 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
+                setisLoading(false);
               }
             })
             .catch(error => {
+              setisLoading(false);
               setAlertMessage('Error! ' + error.message);
               setAlertType('error');
               snackbarOpen();
-              setBackdrop(false);
               if (error.response) {
                 console.error(error.response.data);
                 console.error(error.response.status);
@@ -695,6 +686,7 @@ export default function EnhancedTable() {
         }
       })
       .catch(error => {
+        setisLoading(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -705,6 +697,7 @@ export default function EnhancedTable() {
           console.error('Error', error.message);
         }
         console.log(error.config);
+
       })
       .then(release => {
         //console.log(release); => udefined

@@ -417,7 +417,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sGBID"
-                      label={<p>GBID<span style={{ color: "red" }} > *</span></p>}
+                      label={<p>GB ID<span style={{ color: "red" }} > *</span></p>}
                       name="sGBID"
                       //required={true}
                       value={sGBID}
@@ -1095,7 +1095,7 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="sGBID"
-                      label={<p>GBID<span style={{ color: "red" }} > *</span></p>}
+                      label={<p>GB ID<span style={{ color: "red" }} > *</span></p>}
                       name="sGBID"
                       value={sGBID}
                       onChange={(e) => { handleChangeGBID(e.target.value) }}

@@ -547,11 +547,12 @@ export default () => {
       .then(resp => {
         if (resp.status === 200) {
           setEditModal(false);
-          selectDatafunction();
           setAlertMessage('Record updated successfully.');
           setAlertType('success');
           snackbarOpen();
           setBackdrop(false);
+          selectDatafunction();
+          setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=6`)
             .then(resp => {
               if (resp.status === 200) {
@@ -562,13 +563,14 @@ export default () => {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
+                setisLoading(false);
               }
               else {
                 console.log("Response received:\n", resp);
               }
             })
             .catch(error => {
-              setBackdrop(false);
+              setisLoading(false);
               console.log(error.config);
               console.log(error.message);
             })
@@ -584,15 +586,17 @@ export default () => {
   };
 
   const selectDatafunction = () => {
+    setBackdrop(true);
     axios.get(`Madeb/GetNewEmptyMadeb`)
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
-
+          setBackdrop(false);
           // setdataAPI(resp.data)
         }
       })
       .catch(error => {
+        setBackdrop(false);
         console.log(error.config);
         console.log(error.message);
       })
@@ -605,11 +609,12 @@ export default () => {
       .then(resp => {
         if (resp.status === 200) {
           setAddModal(false);
-          selectDatafunction();
           setAlertMessage('Created new record successfully.');
           setAlertType('success');
           snackbarOpen();
           setBackdrop(false);
+          selectDatafunction();
+          setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=6`)
             .then(resp => {
               if (resp.status === 200) {
@@ -620,10 +625,11 @@ export default () => {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
+                setisLoading(false);
               }
             })
             .catch(error => {
-              setBackdrop(false);
+              setisLoading(false);
               console.log(error.message);
               console.log(error.config);
             })

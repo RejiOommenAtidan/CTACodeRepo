@@ -611,6 +611,12 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (!String.IsNullOrEmpty(sGBID))
                 {
+                    Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
+                    if (greenbook == null)
+                    {
+                        return Problem(String.Format("Green book ID {0} not found", sGBID), null, 403);
+                    }
+
                     int rowsAffected = _greenbookRepository.DeleteGreenBook(sGBID);
                     if (rowsAffected > 0)
                     {

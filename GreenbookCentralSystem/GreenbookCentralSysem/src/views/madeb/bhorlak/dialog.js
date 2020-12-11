@@ -388,7 +388,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="sGBID"
 
-                      label={<p>GBID<span style={{ color: "red" }} > *</span></p>}
+                      label={<p>GB ID<span style={{ color: "red" }} > *</span></p>}
 
                       name="sGBID"
                       //required={true}
@@ -1035,7 +1035,7 @@ export const AddDialog = (props) => {
                     <TextField
                       id="sGBID"
 
-                      label={<p>GBID <span style={{ color: "red" }} > *</span></p>}
+                      label={<p>GB ID <span style={{ color: "red" }} > *</span></p>}
                       //required={true}
                       name="sGBID"
                       value={sGBID}
