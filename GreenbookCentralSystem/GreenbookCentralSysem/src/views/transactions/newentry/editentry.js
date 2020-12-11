@@ -2404,10 +2404,10 @@ export default function EditEntry(props) {
         aria-describedby="alert-dialog-description"
         onEscapeKeyDown={handleDeleteDialogClose}
       >
-        <DialogTitle id="alert-dialog-title">{"Delete Document ?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Delete Document?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to Delete this document ? (Document Name:{" "}
+            Are you sure you want to Delete this document? (Document Name:{" "}
             {oDelete.sTitle})
           </DialogContentText>
         </DialogContent>
