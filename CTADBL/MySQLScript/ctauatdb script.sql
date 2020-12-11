@@ -783,8 +783,13 @@ INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtUpdated`, `nUpdatedBy`) V
 (1, 'UITableNumberOfRowsInPage', '20', now(), 1),
 (2, 'SelectTotalRecordCount', '1000', now(), 1),
 (3, 'DateFormat', 'DD-MM-YYYY', now(), 1),
-(4, 'CTAAdminEmail', 'malay.doshi@atidan.com', now(), 1),
-(5, 'CTAAdminEmailPassword', 'xxxxxxxxxxx', now(), 1);
+(4, 'CTAAdminEmail', 'set email here', now(), 1),
+(5, 'CTAAdminEmailPassword', 'set password here', now(), 1),
+(6, 'CTAEmailRelayServer', 'set email relay server here', now(), 1),
+(7, 'CTAEmailServerPort', 'set email server port here', now(), 1),
+(8, 'CTAEmailUseSSL', 'set ssl here', now(), 1),
+(9, 'CTAEmailCC', 'set cc email here', now(), 1);
+
 
 
 CREATE TABLE `lstChatrel` (
@@ -1839,5 +1844,8 @@ CREATE INDEX GREENBOOK_GBID ON tblgreenbook(sGBID);
 CREATE INDEX GBID_RELATION ON lnkgbrelation(sgbidrelation, nrelationid);
 CREATE INDEX GB_DOC_GBID ON lnkgbdocument (sGBID);
 
+ALTER TABLE `ctauatdb`.`tblgreenbook`
+DROP COLUMN `dtLastSuccessfullLogin`,
+DROP COLUMN `sLoginGmail`;
 
-
+-- SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));

@@ -787,7 +787,7 @@ INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtUpdated`, `nUpdatedBy`) V
 (6, 'CTAEmailRelayServer', 'set email relay server here', now(), 1),
 (7, 'CTAEmailServerPort', 'set email server port here', now(), 1),
 (8, 'CTAEmailUseSSL', 'set ssl here', now(), 1),
-(9, 'CTAEmailCC', 'set cc email here', now(), 1),
+(9, 'CTAEmailCC', 'set cc email here', now(), 1);
 
 
 CREATE TABLE `lstChatrel` (
@@ -1640,8 +1640,14 @@ BEGIN
 	-- declare SQLText varchar(5000);
 
 	SET @SQLText = CONCAT('SELECT 
-				DISTINCT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.sAuthRegion", "lstcountry.sCountry" ),') as sPlaceName, 
-				CONVERT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.ID" , "lstcountry.sCountryID" ),',CHAR) as sPlaceID
+				DISTINCT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.sAuthRegion", "lstcountry.sCountry" ),') as sPlaceName 
+				,CONVERT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.ID" , "lstcountry.sCountryID" ),',CHAR) as sPlaceID
+				,sum(tblMadeb.nIssuedOrNotID = 2) as MadebIssued
+				,sum(tblMadeb.nIssuedOrNotID = 3) as MadebRejected
+				,sum(tblMadeb.nIssuedOrNotID = 4) as MadebDouble
+				,sum(tblMadeb.nIssuedOrNotID = 5) as MadebCancelled
+				,sum(tblMadeb.nIssuedOrNotID <= 1) as MadebPending
+				,Count(tblMadeb.nIssuedOrNotID) as MadebTotalReceived
 			FROM 
 				tblMadeb 
 			INNER JOIN ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion
