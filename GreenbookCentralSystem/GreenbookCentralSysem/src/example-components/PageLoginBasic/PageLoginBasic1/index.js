@@ -18,7 +18,7 @@ import { Alerts } from '../../../views/alerts';
 import loginBackground from '../../../assets/images/LoginBG.jpg';
 
 export default function LogingPage(props) {
- 
+
   let LoggedInOrNot = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
   let history = useHistory();
   const dispatch = useDispatch();
@@ -42,12 +42,12 @@ export default function LogingPage(props) {
   };
 
   useEffect(() => {
-  // console.log('Props:',props);
-    
-    
+    // console.log('Props:',props);
+
+
     // Redirect to Home if Data Present in Redux
     if (LoggedInOrNot !== null) {
-      
+
       history.push('/Search');
     }
   }, []);
@@ -74,16 +74,16 @@ export default function LogingPage(props) {
 
   return (
     <>
-      <div 
-      className="app-wrapper bg-white min-vh-100"
-      style={{
-        //opacity:0.40,
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.725), rgba(255,255,255,0.725)), url(${loginBackground})`,
+      <div
+        className="app-wrapper bg-white min-vh-100"
+        style={{
+          //opacity:0.40,
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.725), rgba(255,255,255,0.725)), url(${loginBackground})`,
           height: '100%',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover'
-      }}
+        }}
       >
         <div className="app-main min-vh-100">
           <div className="app-content p-0">
@@ -93,31 +93,31 @@ export default function LogingPage(props) {
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid item md={10} lg={8} xl={4} className="mx-auto">
                       <div className="text-center">
-                      <img
-                        alt="CTA"
-                        src={projectLogo}
-                        width={"300px"}
-                        //height={}
-                        style={{marginBottom:'20px'}}
-                      />
-                      
+                        <img
+                          alt="CTA"
+                          src={projectLogo}
+                          width={"300px"}
+                          //height={}
+                          style={{ marginBottom: '20px' }}
+                        />
+
                         <h1 className="display-4 mb-1 font-weight-bold">
-                        New CTA's Green Book Database
+                          New CTA's Green Book Database
                         </h1>
                         <br />
                       </div>
                       <div>
-                        <div className="mb-4">
+                        <div className="mb-4 text-center">
                           <TextField
                             autoFocus
-                            fullWidth
+                            //fullWidth
                             variant="outlined"
                             type="text"
                             label="Username"
                             InputProps={{
                               startAdornment: (
                                 <InputAdornment position="start">
-                                  <PermIdentityIcon/>
+                                  <PermIdentityIcon />
                                 </InputAdornment>
                               )
                             }}
@@ -133,9 +133,9 @@ export default function LogingPage(props) {
                             <span style={{ color: 'red' }}>Please Enter Username</span>
                           )}
                         </div>
-                        <div className="mb-3">
+                        <div className="mb-3 text-center">
                           <TextField
-                            fullWidth
+                            //fullWidth
                             variant="outlined"
                             label="Password"
                             type="password"
@@ -159,7 +159,7 @@ export default function LogingPage(props) {
                           )}
                         </div>
                         <div className="text-center py-4">
-                          <Button className="btn-second font-weight-bold w-50 my-2" type="submit">
+                          <Button className="btn-second font-weight-bold my-2" type="submit">
                             Login
                         </Button>
                         </div>
