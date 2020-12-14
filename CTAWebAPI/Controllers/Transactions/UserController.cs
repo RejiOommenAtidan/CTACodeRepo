@@ -426,7 +426,7 @@ namespace CTAWebAPI.Controllers.Transactions
                             return Ok("User with Id: " + fetchedFromDB.Id + " Password Updated Successfully");
                         }
                         else
-                            return BadRequest("New Password & Coonfirm New Password are Different");
+                            return BadRequest("New Password & Confirm New Password are Different");
                     }
                     else
                         return BadRequest("Incorrect Old Password");
