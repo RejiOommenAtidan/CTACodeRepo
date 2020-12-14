@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 import { Alerts } from '../../../views/alerts';
+import loginBackground from '../../../assets/images/LoginBG.jpg';
 
 export default function LogingPage(props) {
  
@@ -73,7 +74,17 @@ export default function LogingPage(props) {
 
   return (
     <>
-      <div className="app-wrapper bg-white min-vh-100">
+      <div 
+      className="app-wrapper bg-white min-vh-100"
+      style={{
+        //opacity:0.40,
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url(${loginBackground})`,
+          height: '100%',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover'
+      }}
+      >
         <div className="app-main min-vh-100">
           <div className="app-content p-0">
             <div className="app-content--inner d-flex align-items-center">
@@ -106,7 +117,7 @@ export default function LogingPage(props) {
                             InputProps={{
                               startAdornment: (
                                 <InputAdornment position="start">
-                                  <PermIdentityIcon />
+                                  <PermIdentityIcon/>
                                 </InputAdornment>
                               )
                             }}

@@ -198,6 +198,22 @@ export default function Users() {
       }
     },
     {
+      //render: rowData => (rowData['oUser']['bActive'] ? "Active" : "Inactive"),
+      field: "sActiveFormatted",
+      title: "STATUS",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        width: "10%"
+      },
+      cellStyle: {
+        textAlign: "left",
+        padding: '5px',
+        width: "10%"
+      }
+    },
+    {
       align: "center",
       field: 'edit',
       title: 'EDIT',
@@ -232,6 +248,9 @@ export default function Users() {
           axios.get(`/User/GetAllUsers`)
             .then(resp => {
               if (resp.status === 200) {
+                resp.data.forEach((element) => {
+                  element.sActiveFormatted = element.oUser.bActive ? "Active" : "disabled"
+                });
                 setdataAPI(resp.data);
                 setAlertMessage(sSnackbarAddMessage);
                 setAlertType('success');
@@ -275,6 +294,9 @@ export default function Users() {
           axios.get(`/User/GetAllUsers`)
             .then(resp => {
               if (resp.status === 200) {
+                resp.data.forEach((element) => {
+                  element.sActiveFormatted = element.oUser.bActive ? "Active" : "disabled"
+                });
                 setdataAPI(resp.data);
                 setAlertMessage(sSnackbarUpdateMessage);
                 setAlertType('success');
@@ -325,6 +347,7 @@ export default function Users() {
       nUserRightsId: tableRowArray["oUser"]["nUserRightsId"],
       sUserRightsName: tableRowArray["oUser"]["sUserRightsName"],
       sOffice: tableRowArray["oUser"]["sOffice"],
+      bActive: tableRowArray["oUser"]["bActive"],
       lUserRights: lUserRights
     });
     setEditModal(true);
@@ -341,7 +364,7 @@ export default function Users() {
   const handleAddClickOpen = () => {
     setAddModal(true);
   };
-  
+
   const handleAddClickClose = () => {
     setAddModal(false);
   };
@@ -354,6 +377,11 @@ export default function Users() {
           axios.get(`/User/GetAllUsers`)
             .then(resp => {
               if (resp.status === 200) {
+                console.log(resp.data);
+                resp.data.forEach((element) => {
+                  element.sActiveFormatted = element.oUser.bActive ? "Active" : "disabled"
+                });
+
                 setdataAPI(resp.data);
                 setisLoading(false);
                 modifyHeaders();

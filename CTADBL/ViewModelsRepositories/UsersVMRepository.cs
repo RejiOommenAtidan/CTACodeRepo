@@ -34,7 +34,6 @@ namespace CTADBL.ViewModelsRepositories
 	                        `userrights`.`sUserRightsName`
                         FROM tbluser AS users
                         INNER JOIN lstuserrights AS userrights ON users.nUserRightsId = userrights.Id 
-                        WHERE `users`.`bActive` = 1
                         ORDER BY users.Id DESC
                         LIMIT @rows;";
             using (var command = new MySqlCommand(sql))

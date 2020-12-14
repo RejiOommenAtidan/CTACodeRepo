@@ -3,7 +3,9 @@ import {
   Grid,
   Button,
   FormControl,
-  TextField
+  TextField,
+  Checkbox,
+  Switch
 } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -15,6 +17,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useSelector } from 'react-redux';
 import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
@@ -26,6 +30,7 @@ export const AddDialog = (props) => {
   const [sUserRightsName, setsUserRightsName] = React.useState('');
   const [sPassword, setsPassword] = React.useState('');
   const [sOffice, setsOffice] = React.useState('');
+  const [bActive, setbActive] = React.useState(true);
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add User</DialogTitle>
@@ -93,6 +98,30 @@ export const AddDialog = (props) => {
                 />
               </FormControl>
             </Grid>
+            <Grid item xs={12}>
+              <FormControl className={props.classes.formControl}>
+                <FormGroup row>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        size="small"
+                        color={"primary"}
+                        id="id_bActive"
+                        checked={bActive}
+                        onChange={(e) => { setbActive(e.target.checked) }}
+                        name="name_bActive"
+                      />
+                    }
+                    //labelPlacement="top"
+                    label={
+                      bActive ?
+                        <>Status: Active</> :
+                        <>Status: Inactive</>
+                    }
+                  />
+                </FormGroup>
+              </FormControl>
+            </Grid>
           </Grid>
         </DialogContentText>
       </DialogContent>
@@ -110,6 +139,7 @@ export const AddDialog = (props) => {
               nUserRightsId,
               sPassword,
               sOffice,
+              bActive,
               nEnteredBy: userId,
               nUpdatedBy: userId
             }
@@ -134,6 +164,7 @@ export const EditDialog = (props) => {
   const [sUserRightsName, setsUserRightsName] = React.useState(props.oUserObj.sUserRightsName);
   const [sPassword, setsPassword] = React.useState(props.oUserObj.sPassword);
   const [sOffice, setsOffice] = React.useState(props.oUserObj.sOffice);
+  const [bActive, setbActive] = React.useState(props.oUserObj.bActive);
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">User</DialogTitle>
@@ -205,6 +236,30 @@ export const EditDialog = (props) => {
                   />
                 </FormControl>
               </Grid>
+              <Grid item xs={12}>
+              <FormControl className={props.classes.formControl}>
+                <FormGroup row>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        size="small"
+                        color={"primary"}
+                        id="id_bActive"
+                        checked={bActive}
+                        onChange={(e) => { setbActive(e.target.checked) }}
+                        name="name_bActive"
+                      />
+                    }
+                    //labelPlacement="top"
+                    label={
+                      bActive ?
+                        <>Status: Active</> :
+                        <>Status: Inactive</>
+                    }
+                  />
+                </FormGroup>
+              </FormControl>
+            </Grid>
             </Grid>
           </div>
         </DialogContentText>
@@ -224,6 +279,7 @@ export const EditDialog = (props) => {
             nUserRightsId,
             sPassword,
             sOffice,
+            bActive,
             nUpdatedBy: userId
           })
         }

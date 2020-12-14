@@ -38,7 +38,7 @@ export const oOptions = {
     tableLayout: "auto",
     //padding: "dense",
     //emptyRowsWhenPaging: false,
-    draggable: false,
+    draggable: true,
     maxBodyHeight: 575,
     columnsButton: true,
     filtering: true,

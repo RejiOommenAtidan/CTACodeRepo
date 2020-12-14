@@ -100,7 +100,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `dtUpdated`,
                             `nUpdatedBy`
                         FROM `tbluser`
-                        WHERE sUsername = @sUsername;";
+                        WHERE sUsername = @sUsername AND bActive=1;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sUsername", sUsername);
