@@ -116,7 +116,7 @@ export default function GiveGBId() {
       }
     },
     {
-      field: "dtReceived",
+      field: "dtReceivedFormatted",
       title: "RECEIVED DATE",
       // type: 'date',
       // dateSetting: {locale: 'en-GB'},
@@ -200,14 +200,14 @@ export default function GiveGBId() {
     const gbidObj = {
       nGBId: randomGBID,
       nFormNo: nFormNumber,
-      
+
       bGivenOrNot: false,
       bActive: true
     };
     console.log("GBID Object:\n", gbidObj);
     console.log("date", dtReceived);
     setBackdrop(true);
-    axios.post(`GivenGBID/AddGivenGBID/dtReceived=`+Moment().format(sISODateFormat), gbidObj)
+    axios.post(`GivenGBID/AddGivenGBID/dtReceived=` + Moment().format(sISODateFormat), gbidObj)
       .then(resp => {
         if (resp.status === 200) {
           setAssignModal(false);
@@ -218,6 +218,9 @@ export default function GiveGBId() {
           axios.get(`Madeb/GetFormsWithoutGBId`)
             .then(resp => {
               if (resp.status === 200) {
+                resp.data.forEach((element) => {
+                  element.dtReceivedFormatted = element.dtReceived ? Moment(element.dtReceived).format(sDateFormat) : null;
+                });
                 setdataAPI(resp.data);
                 setLoading(false);
               }
@@ -246,8 +249,10 @@ export default function GiveGBId() {
   useEffect(() => {
     axios.get(`Madeb/GetFormsWithoutGBId`)
       .then(resp => {
-        //debugger
         if (resp.status === 200) {
+          resp.data.forEach((element) => {
+            element.dtReceivedFormatted = element.dtReceived ? Moment(element.dtReceived).format(sDateFormat) : null;
+          });
           setdataAPI(resp.data);
           setLoading(false);
           modifyHeaders();
