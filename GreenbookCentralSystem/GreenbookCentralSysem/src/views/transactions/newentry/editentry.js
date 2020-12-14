@@ -49,7 +49,8 @@ import {
   sButtonSize,
   sButtonVariant,
   sSnackbarAddMessage,
-  sSnackbarUpdateMessage
+  sSnackbarUpdateMessage,
+  sDDMMYYYYRegex
 } from "../../../config/commonConfig";
 import { IssueBookTable } from "../issuebooktable";
 import { Alerts } from '../../alerts';
@@ -599,7 +600,7 @@ export default function EditEntry(props) {
       });
   }, []);
 
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, setValue } = useForm();
 
 
   const RelationObj = [
@@ -1011,16 +1012,26 @@ export default function EditEntry(props) {
                           margin="dense"
                           id="id_dtDOB"
                           name="name_dtDOB"
-
+                          inputRef={register({
+                            required: true,
+                            pattern:
+                            {
+                              value: new RegExp(sDDMMYYYYRegex),
+                              message: "Invalid Date"
+                            }
+                          })}
                           label={<> Date of Birth<span style={{ color: 'red' }}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           returnMoment={true}
-                          onChange={(date) => {
+                          onChange={date => {
                             //console.log(date.toISOString().split("T")[0]);
                             //console.log(date.toDateString());
                             // console.log(date.toLocaleDateString());
                             //console.log(date);
-                            setdtDOB(date);
+                            if (date) {
+                              setdtDOB(date);
+                              setValue('name_dtDOB', date, { shouldValidate: true });
+                            }
                           }}
                           value={dtDOB}
                           KeyboardButtonProps={{
@@ -1028,9 +1039,6 @@ export default function EditEntry(props) {
                           }}
                           fullWidth
                           className={classes.dateField}
-                          inputRef={register({
-                            required: true,
-                          })}
                         />
                       </MuiPickersUtilsProvider>
                       {_.get("name_dtDOB.type", errors) === "required" && (
@@ -1732,15 +1740,27 @@ export default function EditEntry(props) {
                           views={["year", "month", "date"]}
                           margin="dense"
                           id="id_dtValidityDate"
+                          name="name_dtValidityDate"
                           label="Validity Date"
                           format={sDateFormatMUIDatepicker}
-                          onChange={(date) => {
-                            setdtValidityDate(date);
-                          }}
+                          onChange={date => {
+                            if (date) {
+                              setdtValidityDate(date);
+                              setValue('name_dtValidityDate', date, { shouldValidate: true });
+                            }
+                          }
+                          }
                           value={dtValidityDate}
                           KeyboardButtonProps={{
                             "aria-label": "change date",
                           }}
+                          inputRef={register({
+                            pattern:
+                            {
+                              value: new RegExp(sDDMMYYYYRegex),
+                              message: "Invalid Date"
+                            }
+                          })}
                           fullWidth
                           className={classes.dateField}
                         />
@@ -1889,11 +1909,23 @@ export default function EditEntry(props) {
                           views={["year", "month", "date"]}
                           margin="dense"
                           id="id_dtDeceased"
+                          name="name_dtDeceased"
                           label="Deceased Date"
                           format={sDateFormatMUIDatepicker}
-                          onChange={(date) => {
-                            setdtDeceased(date);
-                          }}
+                          onChange={date => {
+                            if (date) {
+                              setdtDeceased(date);
+                              setValue('name_dtDeceased', date, { shouldValidate: true });
+                            }
+                          }
+                          }
+                          inputRef={register({
+                            pattern:
+                            {
+                              value: new RegExp(sDDMMYYYYRegex),
+                              message: "Invalid Date"
+                            }
+                          })}
                           value={dtDeceased}
                           KeyboardButtonProps={{
                             "aria-label": "change date",
