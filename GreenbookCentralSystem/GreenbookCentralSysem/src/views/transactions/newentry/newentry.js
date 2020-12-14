@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from "react-hook-form";
+import { useForm, Controller, setVa } from "react-hook-form";
 import {
   Container,
   Grid,
@@ -29,7 +29,7 @@ import {
 } from '@material-ui/pickers';
 import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
-import { sDateFormatMUIDatepicker,sButtonColor,sButtonSize,sButtonVariant } from '../../../config/commonConfig';
+import { sDateFormatMUIDatepicker,sButtonColor,sButtonSize,sButtonVariant,sDDMMYYYYRegex } from '../../../config/commonConfig';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/pageBackDrop';;
 
@@ -198,7 +198,7 @@ const snackbarClose = () => {
     console.log(isExpanded ? panel : false);
   };
 
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, setValue } = useForm();
 
   const onSubmit = () => {
   
@@ -556,31 +556,40 @@ const snackbarClose = () => {
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                          id="id_dtDOB"
-                          name="name_dtDOB"
-                          variant="dialog"
-                          openTo="year"
-                          views={["year", "month", "date"]}
-                          margin="dense"
-                          inputRef={register({
-                            required: true
-                          })}
-                          
-                          label={<> DOB<span style={{color:'red'}}> *</span></>}
-                          format={sDateFormatMUIDatepicker}
-                          onChange={date => { setdtDOB(date) }}
-                          value={dtDOB}
-                          KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                          }}
-                          fullWidth
-                          className={classes.dateField}
-                        />
+                            <KeyboardDatePicker
+                              id="id_dtDOB"
+                              name="name_dtDOB"
+                              variant="dialog"
+                              openTo="year"
+                              views={["year", "month", "date"]}
+                              margin="dense"
+                              inputRef={register({
+                                required: true,
+                                pattern: 
+                                {
+                                  value: new RegExp(sDDMMYYYYRegex),
+                                  message: "Invalid Date"
+                                }
+                              })}
+                              label={<> DOB<span style={{ color: 'red' }}> *</span></>}
+                              format={sDateFormatMUIDatepicker}
+                              onChange={date => { 
+                                if(date){
+                                  setdtDOB(date); 
+                                  setValue('name_dtDOB', date, {shouldValidate: true});
+                                }
+                              }}
+                              value={dtDOB}
+                              KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                              }}
+                              fullWidth
+                              className={classes.dateField}
+                            />
                       </MuiPickersUtilsProvider>
                       {_.get("name_dtDOB.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
+                          <span style={{ color: 'red' }}>This field is required</span>
+                        )}
                     </FormControl>
                   </Grid>
                   <Grid xs={12} style={{ display: 'flex' }}>
