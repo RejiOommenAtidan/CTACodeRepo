@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { authenticationService } from '../../auth/_services';
-import { oOptions, oTableIcons, modifyHeaders,sButtonSize } from '../../config/commonConfig';
+import { oOptions, oTableIcons, modifyHeaders,sButtonSize, sDateFormat } from '../../config/commonConfig';
 
 import {
   Grid,
@@ -466,7 +466,7 @@ export default function SearchPage() {
               element.nSerialNo = i;
               element.sGBIDCombo = element.sCountryID + element.sGBID;
               element.sFullName=(element.sFirstName?element.sFirstName:'')+(element.sLastName?(' '+element.sLastName):'');
-              element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format("DD-MM-YYYY") : '';
+              element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format(sDateFormat) : '';
               i++;
             })
             setdataFromAPI(resp.data);
@@ -545,7 +545,7 @@ export default function SearchPage() {
             element.nSerialNo = i;
             element.sGBIDCombo = element.sCountryID + element.sGBID;
             element.sFullName=(element.sFirstName?element.sFirstName:'')+(element.sLastName?(' '+element.sLastName):'');
-            element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format("DD-MM-YYYY") : '';
+            element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format(sDateFormat) : '';
             i++;
           })
           setdataFromAPI(resp.data);

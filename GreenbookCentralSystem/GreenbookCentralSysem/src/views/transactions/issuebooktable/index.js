@@ -15,7 +15,7 @@ import { SaveDialog, EditDialog } from './dialog';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
 import SaveIcon from '@material-ui/icons/Save';
-import { sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
+import { sDateFormat, sSnackbarAddMessage, sSnackbarUpdateMessage } from "../../../config/commonConfig";
 
 const getMuiTheme = () => createMuiTheme({
   overrides: {
@@ -371,8 +371,8 @@ export const IssueBookTable = (props) => {
                     {historyData.map((row, index) => (
                       <tr>
                         <td scope="row">{index + 1}</td>
-                        <td scope="row">{row.dtIssuedDate ? Moment(row.dtIssuedDate).format('DD-MM-YYYY') : ''}</td>
-                        <td scope="row">{row.dtEntered ? Moment(row.dtEntered).format('DD-MM-YYYY') : ''}</td>
+                        <td scope="row">{row.dtIssuedDate ? Moment(row.dtIssuedDate).format(sDateFormat) : ''}</td>
+                        <td scope="row">{row.dtEntered ? Moment(row.dtEntered).format(sDateFormat) : ''}</td>
                         <td scope="row">{row.sMadebDisplayName}</td>
                         <td scope="row">{row.sAuthRegion}</td>
                         <td scope="row">{row.sFormNumber}</td>
@@ -402,7 +402,7 @@ export const IssueBookTable = (props) => {
                   <tbody>
                     {pendingData.map((row1, index) => (
                       <tr>
-                        <td scope="row">{row1.dtReceived ? Moment(row1.dtReceived).format('DD-MM-YYYY') : ''}</td>
+                        <td scope="row">{row1.dtReceived ? Moment(row1.dtReceived).format(sDateFormat) : ''}</td>
                         <td scope="row">{row1.sMadebDisplayName}</td>
                         <td scope="row">{row1.sAuthRegion}</td>
                         <td scope="row">{row1.nFormNumber}</td>
