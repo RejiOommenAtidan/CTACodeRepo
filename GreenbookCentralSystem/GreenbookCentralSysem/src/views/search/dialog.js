@@ -54,6 +54,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Rowing } from '@material-ui/icons';
+import { sDateFormat } from 'config/commonConfig';
 /*const findImg = (obj) =>{
   var str="";
   obj.map((row) => {
@@ -197,7 +198,7 @@ export const ViewDialog = (props) => {
                       Father's Name: {data.relations.sFathersName}
                     </Grid>
                     <Grid item sm={6}>
-                      DOB: {data.greenBook.dtDOB ? Moment(data.greenBook.dtDOB).format('DD-MM-YYYY'): ''}
+                      DOB: {data.greenBook.dtDOB ? Moment(data.greenBook.dtDOB).format(sDateFormat): ''}
                     </Grid>
                     <Grid item sm={6}>
                       Mother's Name: {data.relations.sMothersName}
@@ -339,7 +340,7 @@ export const ViewDialog = (props) => {
                               Phone Number: {data.greenBook.sPhone}
                             </Grid>
                             <Grid item sm={6}>
-                              Form Date: {data.greenBook.dtFormDate ? Moment(data.greenBook.dtFormDate).format('DD-MM-YYYY'): ''}
+                              Form Date: {data.greenBook.dtFormDate ? Moment(data.greenBook.dtFormDate).format(sDateFormat): ''}
                             </Grid>
                             <Grid item sm={6}>
                              Authority Region: {data.sAuthRegion}
@@ -420,7 +421,7 @@ export const ViewDialog = (props) => {
                                 
                           </Grid>
                           <Grid item xs={12}>
-                            Deceased: {data.greenBook.dtDeceased ? data.greenBook.dtDeceased : 'Not Deceased'}
+                            Deceased: {data.greenBook.dtDeceased ? Moment(data.greenBook.dtDeceased).format(sDateFormat) : 'Not Deceased'}
                                 
                           </Grid>
                           <Grid item xs={12}>
@@ -592,11 +593,11 @@ export const ViewDialog = (props) => {
                             <tbody style={{padding:0}}>
                             {data.booksIssued.map((row, index) => (
                             <tr>
-                                <td scope="row">{row.issueBook.dtIssuedDate  ? Moment(row.issueBook.dtIssuedDate).format('DD-MM-YYYY'): ''}</td>
+                                <td scope="row">{row.issueBook.dtIssuedDate  ? Moment(row.issueBook.dtIssuedDate).format(sDateFormat): ''}</td>
                                 <td scope="row">{row.sMadebDisplayName}</td>
                                 <td scope="row">{row.sAuthRegion}</td>
                                 <td scope="row">{row.issueBook.sFormNumber}</td>
-                                <td scope="row">{row.issueBook.dtEntered ? Moment(row.issueBook.dtEntered).format('DD-MM-YYYY'): ''}</td>
+                                <td scope="row">{row.issueBook.dtEntered ? Moment(row.issueBook.dtEntered).format(sDateFormat): ''}</td>
                              
                               
                                                                     
@@ -691,7 +692,7 @@ export const ViewDialog = (props) => {
                             <tr>
 
                                 <td scope="row">{row.sNote}</td>
-                                <td scope="row">{row.dtEntered ? Moment(row.dtEntered).format('DD-MM-YYYY'): ''}</td>
+                                <td scope="row">{row.dtEntered ? Moment(row.dtEntered).format(sDateFormat): ''}</td>
                              
                               
                                                                     
@@ -734,13 +735,13 @@ export const ViewDialog = (props) => {
                  
                             </tr>
                             </thead>
-                            
+                        
                             <tbody style={{padding:0}}>
                             {data.gbDocuments.map((row, index) => (
                             <tr>
 
                                 <td scope="row">{index+1}</td>
-                                <td>{row.dtEntered ? Moment(row.dtEntered).format('DD-MM-YYYY'): ''}</td> 
+                                <td>{row.dtEntered ? Moment(row.dtEntered).format(sDateFormat): ''}</td> 
                                 <td>{row.nEnteredBy}</td>                              
                             <td>{row.sTitle}</td>        
                                 <td style={{textAlign:'center'}}>

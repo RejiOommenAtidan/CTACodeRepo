@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider,  KeyboardDatePicker, } from "@material-ui/pickers";
-import {  sDateFormatMUIDatepicker} from "../../../config/commonConfig";
+import {  sDateFormatMUIDatepicker,sDDMMYYYYRegex} from "../../../config/commonConfig";
 import Moment from 'moment';
 
 export const EditDialog = (props) => {
@@ -283,17 +283,27 @@ export const EditDialog = (props) => {
                           label={<> Received Date<span style={{ color: 'red' }}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           returnMoment={true}
-                          onChange={(date) => {
-                            setReceivedDate(date);
-                          }}
+                         
                           value={dtReceived}
                           KeyboardButtonProps={{
                             "aria-label": "change date",
                           }}
                           
                           //className={classes.dateField}
+                          onChange={(date) => {
+                            if(date){
+                                setReceivedDate(date); 
+                                setValue('dtReceived', date, {shouldValidate: true});
+                                    }
+                        
+                          }}
                           inputRef={register({
                             required: true,
+                            pattern: 
+                            {
+                            value: new RegExp(sDDMMYYYYRegex),
+                            message: "Invalid Date"
+                            }
                           })}
                         />
                       </MuiPickersUtilsProvider>
@@ -950,17 +960,27 @@ export const AddDialog = (props) => {
                           label={<>Received Date<span style={{ color: 'red' }}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           returnMoment={true}
-                          onChange={(date) => {
-                            setReceivedDate(date);
-                          }}
+                       
                           value={dtReceived}
                           KeyboardButtonProps={{
                             "aria-label": "change date",
                           }}
                           fullWidth
                           //className={classes.dateField}
+                          onChange={(date) => {
+                            if(date){
+                                setReceivedDate(date); 
+                                setValue('dtReceived', date, {shouldValidate: true});
+                                    }
+                        
+                          }}
                           inputRef={register({
                             required: true,
+                            pattern: 
+                            {
+                            value: new RegExp(sDDMMYYYYRegex),
+                            message: "Invalid Date"
+                            }
                           })}
                         />
                       </MuiPickersUtilsProvider>

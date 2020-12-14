@@ -26,7 +26,7 @@ import _ from "lodash/fp";
 import axios from 'axios';
 import { Alerts } from '../../alerts';
 import { useSelector } from 'react-redux';
-import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
+import { sButtonColor, sButtonSize, sButtonVariant,sDDMMYYYYRegex } from "../../../config/commonConfig";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -274,22 +274,28 @@ export const EditDialog = (props) => {
                           label={<> Received Date<span style={{ color: 'red' }}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           returnMoment={true}
-                          onChange={(date) => {
-                            //console.log(date.toISOString().split("T")[0]);
-                            //console.log(date.toDateString());
-                            // console.log(date.toLocaleDateString());
-                            //console.log(date);
-                            setReceivedDate(date);
-                          }}
+                        
                           value={receivedDate}
                           KeyboardButtonProps={{
                             "aria-label": "change date",
                           }}
                           
                          // className={classes.dateField}
-                          inputRef={register({
-                            required: true,
-                          })}
+                         onChange={(date) => {
+                          if(date){
+                              setReceivedDate(date); 
+                              setValue('name_dtDate', date, {shouldValidate: true});
+                                  }
+                      
+                        }}
+                        inputRef={register({
+                          required: true,
+                          pattern: 
+                          {
+                          value: new RegExp(sDDMMYYYYRegex),
+                          message: "Invalid Date"
+                          }
+                        })}
                         />
                       </MuiPickersUtilsProvider>
                       {_.get("name_dtDate.type", errors) === "required" && (
@@ -827,22 +833,28 @@ export const AddDialog = (props) => {
                           label={<> Received Date<span style={{ color: 'red' }}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           returnMoment={true}
-                          onChange={(date) => {
-                            //console.log(date.toISOString().split("T")[0]);
-                            //console.log(date.toDateString());
-                            // console.log(date.toLocaleDateString());
-                            //console.log(date);
-                            setReceivedDate(date);
-                          }}
+                        
                           value={receivedDate}
                           KeyboardButtonProps={{
                             "aria-label": "change date",
                           }}
                           
                          // className={classes.dateField}
-                          inputRef={register({
-                            required: true,
-                          })}
+                         onChange={(date) => {
+                          if(date){
+                              setReceivedDate(date); 
+                              setValue('name_dtDate', date, {shouldValidate: true});
+                                  }
+                      
+                        }}
+                        inputRef={register({
+                          required: true,
+                          pattern: 
+                          {
+                          value: new RegExp(sDDMMYYYYRegex),
+                          message: "Invalid Date"
+                          }
+                        })}
                         />
                       </MuiPickersUtilsProvider>
                       {_.get("name_dtDate.type", errors) === "required" && (

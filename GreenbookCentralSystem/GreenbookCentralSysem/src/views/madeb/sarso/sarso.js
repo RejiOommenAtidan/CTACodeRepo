@@ -229,6 +229,20 @@ export default function EnhancedTable() {
       }
     },
     {
+      width: "8%",
+      field: "madeb.nCurrentGBSno",
+      title: "BOOK SERIAL NO.",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "right",
+        padding: '5px'
+      }
+    },
+    {
       field: "madeb.sFathersName",
       title: "FATHER'S NAME",
       width: "8%",
@@ -667,12 +681,13 @@ export default function EnhancedTable() {
     axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=1`)
       .then(resp => {
         if (resp.status === 200) {
-          // console.log(resp.data[0].madeb.dtReceived);
+           console.log(resp.data);
           // myApiData = resp.data;
           // myApiData = myApiData.map(singleMadeb=>{
           //   ...singleMadeb,
           //   singleMaded.dtReceived
           // });
+
           resp.data.forEach((element) => {
             element.madeb.dtFormattedReceived = element.madeb.dtReceived ? Moment(element.madeb.dtReceived).format(sDateFormat) : null;
             element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;

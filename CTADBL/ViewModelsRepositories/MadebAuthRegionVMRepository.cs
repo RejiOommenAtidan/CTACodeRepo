@@ -156,7 +156,7 @@ namespace CTADBL.ViewModelsRepositories
                         LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         LEFT JOIN `lstmadebstatus` ON `tblmadeb`.`nMadebStatusID` = `lstmadebstatus`.`ID`
                         WHERE `nMadebTypeID`= @madebType 
-                        ORDER BY `tblmadeb`.`dtUpdated` DESC
+                        ORDER BY `tblmadeb`.`nFormNumber` DESC
                         ";
             using (var command = new MySqlCommand(sql))
             {
