@@ -44,7 +44,7 @@ export const AddDialog = (props) => {
     btn1.style.backgroundColor = 'grey';
     btn2.style.cursor = 'not-allowed';
     btn2.style.backgroundColor = 'grey';
-    ///props.addAPICall(gbSerialObj, clicked);
+    props.addAPICall(gbSerialObj, clicked);
 
     // setMessage("Record Successfully Edited");
     // setAlertType('success');
