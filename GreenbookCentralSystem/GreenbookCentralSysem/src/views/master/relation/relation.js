@@ -264,12 +264,12 @@ export default function Relation() {
             data={dataAPI}
             options={oOptions}
             actions={[
-              {
-                icon: oTableIcons.Add,
-                tooltip: 'Add Relation',
-                isFreeAction: true,
-                onClick: (event) => setAddModal(true)
-              },
+              // {
+              //   icon: oTableIcons.Add,
+              //   tooltip: 'Add Relation',
+              //   isFreeAction: true,
+              //   onClick: (event) => setAddModal(true)
+              // },
               {
                 icon: oTableIcons.Search,
                 tooltip: 'Toggle Filter',

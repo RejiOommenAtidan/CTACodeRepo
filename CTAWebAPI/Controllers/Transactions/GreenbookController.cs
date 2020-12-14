@@ -871,13 +871,26 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
-                    Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(gBChildren.sGBIDChild);
-                    if (fetchedGB == null)
-                    {
-                        return BadRequest("Child with GBID: " + gBChildren.sGBIDChild + " Doesn't Exists");
-                    }
+                    
+                    //Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(gBChildren.sGBIDChild);
+                    //if (fetchedGB == null)
+                    //{
+                    //    return BadRequest("Child with GBID: " + gBChildren.sGBIDChild + " Doesn't Exists");
+                    //}
                     gBChildren.dtEntered = DateTime.Now;
                     _gbChildrenRepository.Add(gBChildren);
+                    Greenbook parent = _greenbookRepository.GetGreenbookByGBID(gBChildren.sGBIDParent);
+                    if (gBChildren.sGender == "M")
+                    {
+                        parent.nChildrenM = parent.nChildrenM + 1;
+                    }
+                    else
+                    {
+                        parent.nChildrenF = parent.nChildrenF + 1;
+                    }
+                    parent.nUpdatedBy = gBChildren.nEnteredBy;
+                    parent.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    _greenbookRepository.Update(parent);
 
                     #region Information Logging 
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, gBChildren.nEnteredBy);

@@ -139,17 +139,9 @@ export const AddChildDialog = (props) => {
                     value={sGBIDChild}
                     onChange={(e) => { setsGBIDChild(e.target.value) }}
                     inputRef={register({
-                      required: true,
-                      minLength: 7,
                       maxLength: 7
                     })}
                   />
-                  {_.get("name_sGBIDChild.type", errors) === "required" && (
-                    <span style={{ color: 'red' }}>This field is required</span>
-                  )}
-                  {_.get("name_sGBIDChild.type", errors) === "minLength" && (
-                    <span style={{ color: 'red' }}>Child GB ID No cannot subceed 7 characters</span>
-                  )}
                   {_.get("name_sGBIDChild.type", errors) === "maxLength" && (
                     <span style={{ color: 'red' }}>Child GB No cannot exceed 7 characters</span>
                   )}
@@ -296,17 +288,9 @@ export const EditChildDialog = (props) => {
                     value={sGBIDChild}
                     onChange={(e) => { setsGBIDChild(e.target.value) }}
                     inputRef={register({
-                      required: true,
-                      minLength: 7,
                       maxLength: 7
                     })}
                   />
-                  {_.get("name_sGBIDChild.type", errors) === "required" && (
-                    <span style={{ color: 'red' }}>This field is required</span>
-                  )}
-                  {_.get("name_sGBIDChild.type", errors) === "minLength" && (
-                    <span style={{ color: 'red' }}>Child GB ID No cannot subceed 7 characters</span>
-                  )}
                   {_.get("name_sGBIDChild.type", errors) === "maxLength" && (
                     <span style={{ color: 'red' }}>Child GB No cannot exceed 7 characters</span>
                   )}

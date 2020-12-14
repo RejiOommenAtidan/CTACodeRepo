@@ -203,7 +203,7 @@ export default function UserRights() {
         if(error.response){
           if(error.response.status === 403){
             const err = error.response.data.detail;
-            setAlertMessage('Role name ' + err.substring(err.indexOf(' ')));
+            setAlertMessage('Role ' + err.substring(err.indexOf(' ')));
             setAlertType("error");
             snackbarOpen();
             setBackdrop(false);
@@ -240,7 +240,7 @@ export default function UserRights() {
         if(error.response){
           if(error.response.status === 403){
             const err = error.response.data.detail;
-            setAlertMessage('Role name ' + err.substring(err.indexOf(' ')));
+            setAlertMessage('Role ' + err.substring(err.indexOf(' ')));
             setAlertType("error");
             snackbarOpen();
             setBackdrop(false);
