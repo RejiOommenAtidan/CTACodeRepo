@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import Moment from 'moment';
 import MaterialTable, { MTableToolbar } from 'material-table';
-import { oOptions, oTableIcons,sDateFormat, modifyHeaders, sDateFormatMUIDatepicker, sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, modifyHeaders, sDateFormatMUIDatepicker, sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import { EditDialog } from './dialog';
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   dateBoxes: {
     //border: '1px solid red',
-    display: 'flex', 
+    display: 'flex',
     justifyContent: 'center',
     paddingBottom: '10px'
   },
@@ -216,7 +216,7 @@ export default () => {
     {
       field: "greenBookSerialNumber.nFormNumber",
       title: "FORM NUMBER",
-      filterPlaceholder: "Search...",
+      //filterPlaceholder: "Search...",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -390,8 +390,8 @@ export default () => {
       .then(resp => {
         if (resp.status === 200) {
           resp.data.forEach((element) => {
-          element.greenBookSerialNumber.dtFormattedDate = element.greenBookSerialNumber.dtDate ? Moment(element.greenBookSerialNumber.dtDate).format(sDateFormat) : null;
-        })
+            element.greenBookSerialNumber.dtFormattedDate = element.greenBookSerialNumber.dtDate ? Moment(element.greenBookSerialNumber.dtDate).format(sDateFormat) : null;
+          })
           setdataAPI(resp.data);
           setLoading(false);
         }
@@ -411,7 +411,7 @@ export default () => {
   }
 
   const filterDates = () => {
-    
+
     let dateFrom = startDate ? Moment(startDate).format("YYYY-MM-DD") : null;
     let dateUpto = endDate ? Moment(endDate).format("YYYY-MM-DD") : null;
     console.log("Start Date:", dateFrom);
@@ -427,8 +427,7 @@ export default () => {
         if (resp.status === 200) {
           resp.data.forEach((element) => {
             element.greenBookSerialNumber.dtFormattedDate = element.greenBookSerialNumber.dtDate ? Moment(element.greenBookSerialNumber.dtDate).format(sDateFormat) : null;
-            
-          })
+          });
           setdataAPI(resp.data);
           selectDatafunction();
           setLoading(false);
@@ -451,76 +450,76 @@ export default () => {
 
   return (
     <>
-    <div className={classes.dateBoxes}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                          className={classes.dateField}
-                          clearable
-                          variant="dialog"
-                          //openTo="year"
-                          //views={["year", "month", "date"]}
-                          margin="dense"
-                          id="startDate"
-                          name="startDate"
-                          label='Date From'
-                          format={sDateFormatMUIDatepicker}
-                          returnMoment={true}
-                          onChange={(date) => {
-                            //console.log(date.toISOString().split("T")[0]);
-                            //console.log(date.toDateString());
-                            // console.log(date.toLocaleDateString());
-                            //console.log(date);
-                            setStartDate(date);
-                          }}
-                          value={startDate}
-                          KeyboardButtonProps={{
-                            "aria-label": "change date",
-                          }}
-                         // fullWidth
-                          //className={classes.dateField}
-                          
-                        />
-                    </MuiPickersUtilsProvider>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                        className={classes.dateField}
-                          variant="dialog"
-                          //openTo="year"
-                          //views={["year", "month", "date"]}
-                          margin="dense"
-                          id="endDate"
-                          name="endDate"
-                          label='Date Upto'
-                          format={sDateFormatMUIDatepicker}
-                          returnMoment={true}
-                          onChange={(date) => {
-                            //console.log(date.toISOString().split("T")[0]);
-                            //console.log(date.toDateString());
-                            // console.log(date.toLocaleDateString());
-                            //console.log(date);
-                            setEndDate(date);
-                          }}
-                          value={endDate}
-                          KeyboardButtonProps={{
-                            "aria-label": "change date",
-                          }}
-                         // fullWidth
-                          //className={classes.dateField}
-                          
-                        />
-                      </MuiPickersUtilsProvider>    
-                      <Button
-                        onClick={(filterDates)}
-                        variant={sButtonVariant}
-                        color={sButtonColor}
-                        size='small'
-                        className={classes.searchButton}
-                        //size={sButtonSize}
-                      > Search
+      <div className={classes.dateBoxes}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            className={classes.dateField}
+            clearable
+            variant="dialog"
+            //openTo="year"
+            //views={["year", "month", "date"]}
+            margin="dense"
+            id="startDate"
+            name="startDate"
+            label='Date From'
+            format={sDateFormatMUIDatepicker}
+            returnMoment={true}
+            onChange={(date) => {
+              //console.log(date.toISOString().split("T")[0]);
+              //console.log(date.toDateString());
+              // console.log(date.toLocaleDateString());
+              //console.log(date);
+              setStartDate(date);
+            }}
+            value={startDate}
+            KeyboardButtonProps={{
+              "aria-label": "change date",
+            }}
+          // fullWidth
+          //className={classes.dateField}
+
+          />
+        </MuiPickersUtilsProvider>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            className={classes.dateField}
+            variant="dialog"
+            //openTo="year"
+            //views={["year", "month", "date"]}
+            margin="dense"
+            id="endDate"
+            name="endDate"
+            label='Date Upto'
+            format={sDateFormatMUIDatepicker}
+            returnMoment={true}
+            onChange={(date) => {
+              //console.log(date.toISOString().split("T")[0]);
+              //console.log(date.toDateString());
+              // console.log(date.toLocaleDateString());
+              //console.log(date);
+              setEndDate(date);
+            }}
+            value={endDate}
+            KeyboardButtonProps={{
+              "aria-label": "change date",
+            }}
+          // fullWidth
+          //className={classes.dateField}
+
+          />
+        </MuiPickersUtilsProvider>
+        <Button
+          onClick={(filterDates)}
+          variant={sButtonVariant}
+          color={sButtonColor}
+          size='small'
+          className={classes.searchButton}
+        //size={sButtonSize}
+        > Search
                       </Button>
-                  </div>
+      </div>
       <Grid container spacing={1}>
-      
+
         <Grid item xs={12}>
           {/*<Breadcrumbs aria-label="breadcrumb">
             <Link color="inherit" href="/Home" >
@@ -540,7 +539,7 @@ export default () => {
             //   Toolbar: props => (
             //     <div>
             //       <MTableToolbar {...props} />
-                  
+
             //     </div>
             //   ),
             // }}
@@ -584,7 +583,7 @@ export default () => {
           }
           {backdrop && <BackdropComponent
             backdrop={backdrop}
-        />}
+          />}
         </Grid>
       </Grid>
     </>

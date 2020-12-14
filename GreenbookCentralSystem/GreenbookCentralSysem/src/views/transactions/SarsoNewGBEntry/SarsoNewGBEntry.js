@@ -13,7 +13,7 @@ import Moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders} from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders } from '../../../config/commonConfig';
 
 const useStyles = makeStyles({
   root: {
@@ -120,8 +120,8 @@ export default function SarsoNewGBEntry() {
       }
     },
     {
-      defaultSort: 'desc',
-      field: "dtDate",
+      //defaultSort: 'desc',
+      field: "dtDateFormatted",
       title: "DATE",
       headerStyle: {
         textAlign: "center",
@@ -148,7 +148,7 @@ export default function SarsoNewGBEntry() {
           color={sButtonColor}
           variant={sButtonVariant}
           size={sButtonSize}
-          onClick={() => { history.push('/NewEntry/' + rowData.nFormNo); }} 
+          onClick={() => { history.push('/NewEntry/' + rowData.nFormNo); }}
           className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
           <span className="btn-wrapper--icon">
             <AddIcon />
@@ -172,6 +172,9 @@ export default function SarsoNewGBEntry() {
     axios.get(`/GivenGBID/GetGivenGBIDs`)
       .then(resp => {
         if (resp.status === 200) {
+          resp.data.forEach((element) => {
+            element.dtDateFormatted = element.dtDate ? Moment(element.dtDate).format(sDateFormat) : null;
+          });
           setdataAPI(resp.data);
           setisLoading(false);
           modifyHeaders();
