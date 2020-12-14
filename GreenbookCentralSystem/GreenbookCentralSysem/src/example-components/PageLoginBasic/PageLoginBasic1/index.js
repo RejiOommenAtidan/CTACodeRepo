@@ -78,7 +78,7 @@ export default function LogingPage(props) {
       className="app-wrapper bg-white min-vh-100"
       style={{
         //opacity:0.40,
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url(${loginBackground})`,
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.725), rgba(255,255,255,0.725)), url(${loginBackground})`,
           height: '100%',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
