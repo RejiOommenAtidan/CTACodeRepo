@@ -41,23 +41,24 @@ export const AssignDialog = (props) => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                                    <FormControl className={props.classes.formControl}>
-                                        <TextField
-                                            id="dtReceived"
-                                            name="dtReceived"
-                                            label="Received Date"
-                                            type="date"
-                                            defaultValue={props.dtReceived.split('T')[0]}
-                                            className={props.classes.textField}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                            InputProps={{
-                                              readOnly: true,
-                                            }}
-                                          />
-                                    </FormControl>
-                                </Grid>      
+                    <FormControl className={props.classes.formControl}>
+                        <TextField
+                            id="dtReceived"
+                            name="dtReceived"
+                            label="Generate Date"
+                            type="date"
+                            //defaultValue={props.dtReceived.split('T')[0]}
+                            defaultValue={props.dtReceived}
+                            className={props.classes.textField}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            InputProps={{
+                              readOnly: true,
+                            }}
+                          />
+                    </FormControl>
+                </Grid>      
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField

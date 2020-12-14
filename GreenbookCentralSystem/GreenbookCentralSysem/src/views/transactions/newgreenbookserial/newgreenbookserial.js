@@ -60,7 +60,8 @@ const useStyles = makeStyles((theme) => ({
       // This is green.A700 as hex.
       main: '#11cb5f',
     },
-  }
+  },
+  
 }));
 
 export default () => {
@@ -258,7 +259,7 @@ export default () => {
   };
 
   const addAPICall = (obj, clicked) => {
-    setLoading(true);
+    console.log("Serial number save called.");
     setBackdrop(true);
     axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, obj)
       .then(resp => {
@@ -268,6 +269,7 @@ export default () => {
           snackbarOpen();
           setAddModal(false);
           setBackdrop(false);
+          setLoading(true);
           if (clicked) {
             setTimeout(() => {
               history.push("/GreenBookSerial");
@@ -286,7 +288,7 @@ export default () => {
               }
             })
             .catch(error => {
-              setBackdrop(false);
+              setLoading(false);
               console.log(error.message);
               console.log(error.config);
             })

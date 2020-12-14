@@ -45,19 +45,15 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetGreenBookSerialNumbers()
+        public IActionResult GetGreenBookSerialNumbers(DateTime? dtFrom = null, DateTime? dtUpto = null)
         {
             #region Get GreenBookSerialNumbers limit by 'records'.
-            //
-            // To do
-            // Get number of records from config file. Default set at 1000.
-            //
             try
             {
                 int records = Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount"));
-                IEnumerable<GreenBookSerialNumberVM> result = _greenBookSerialNumberVMRepository.GetGreenBookSerialNumbers(records);
+                IEnumerable<GreenBookSerialNumberVM> result = _greenBookSerialNumberVMRepository.GetGreenBookSerialNumbers(records, dtFrom, dtUpto);
 
-                if (result != null & result.Count() > 0)
+                if (result != null)
                 {
                     #region Information Logging 
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");

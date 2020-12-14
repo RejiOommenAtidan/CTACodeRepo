@@ -36,14 +36,22 @@ export const AddDialog = (props) => {
     console.log("Plain", e);
     console.log("Clicked state", clicked);
     //alert("Submission Called.");
-
-
-    props.addAPICall(gbSerialObj, clicked);
+    const btn1 = document.getElementById('save');
+    const btn2 = document.getElementById('saveEdit');
+    btn1.disabled = true;
+    btn2.disabled = true;
+    btn1.style.cursor = 'not-allowed';
+    btn1.style.backgroundColor = 'grey';
+    btn2.style.cursor = 'not-allowed';
+    btn2.style.backgroundColor = 'grey';
+    ///props.addAPICall(gbSerialObj, clicked);
 
     // setMessage("Record Successfully Edited");
     // setAlertType('success');
     // setSnackbarOpen(true)
   }
+  const [saveBtn, setSaveBtn] = React.useState();
+  const [saveEditBtn, setSaveEditBtn] = React.useState();
   const [message, setMessage] = React.useState('');
   const [alertType, setAlertType] = React.useState('');
 
@@ -81,7 +89,8 @@ export const AddDialog = (props) => {
   }
   console.log("Object gbSerial modified as: ", gbSerialObj);
 
-
+  console.log("Save button", saveBtn);
+  console.log("SaveEdit button", saveEditBtn);
 
   const formPopulate = (value) => {
     console.log("Value in GBID: ", value);
@@ -166,6 +175,9 @@ export const AddDialog = (props) => {
 
   useEffect(() => {
     formPopulate(sGBID);
+    setSaveBtn(document.getElementById('save'));
+    setSaveEditBtn(document.getElementById('saveEdit'));
+    
   }, []);
 
   return (
@@ -572,19 +584,23 @@ export const AddDialog = (props) => {
         </Alert>
       </Snackbar> */}
 
-          <Button type="submit"
+          <Button 
+            id="save"
+            type="submit"
             color={sButtonColor}
             variant={sButtonVariant}
             size={sButtonSize}
             name="submit"
             value="Save">Save</Button>
           <Button
-            type="submit"
+            id='saveEdit'
             color={sButtonColor}
             variant={sButtonVariant}
             size={sButtonSize}
-            onClick={() => clicked = true}
-            name="submit"
+            onClick={() => {
+              this.disabled = true;
+              clicked = true;
+            }}
             value="Redirect">Save &amp; Redirect to Edit List</Button>
         </DialogActions>
       </form>

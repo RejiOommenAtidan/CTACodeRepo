@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { red } from '@material-ui/core/colors';
 import { useHistory } from 'react-router-dom';
 import { AssignDialog } from './assigndialog';
-import { oOptions, oTableIcons, sDateFormat, modifyHeaders } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, modifyHeaders, sISODateFormat } from '../../../config/commonConfig';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
 
@@ -207,7 +207,7 @@ export default function GiveGBId() {
     console.log("GBID Object:\n", gbidObj);
     console.log("date", dtReceived);
     setBackdrop(true);
-    axios.post(`GivenGBID/AddGivenGBID/dtReceived=`+dtReceived, gbidObj)
+    axios.post(`GivenGBID/AddGivenGBID/dtReceived=`+Moment().format(sISODateFormat), gbidObj)
       .then(resp => {
         if (resp.status === 200) {
           setAssignModal(false);
@@ -246,7 +246,7 @@ export default function GiveGBId() {
   useEffect(() => {
     axios.get(`Madeb/GetFormsWithoutGBId`)
       .then(resp => {
-        debugger
+        //debugger
         if (resp.status === 200) {
           setdataAPI(resp.data);
           setLoading(false);
@@ -290,7 +290,7 @@ export default function GiveGBId() {
             assignModal={assignModal}
             nFormNumber={nFormNumber}
             randomGBID={randomGBID}
-            dtReceived={dtReceived}
+            dtReceived={Moment().format(sISODateFormat)}
             classes={classes}
             handleDialogClose={handleDialogClose}
             handleAssignGBID={handleAssignGBID}

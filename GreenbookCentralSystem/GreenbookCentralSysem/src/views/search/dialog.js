@@ -218,7 +218,7 @@ export const ViewDialog = (props) => {
                       Entered By: {data.sEnteredBy}
                     </Grid>
                     <Grid item sm={6}>
-                      Edited On: {data.greenBook.dtUpdated ? Moment(data.greenBook.dtUpdated).format('DD-MM-YYYY'): ''}
+                      Edited On: {data.greenBook.dtUpdated ? Moment(data.greenBook.dtUpdated).format('DD-MM-YYYY h:m:s a'): ''}
                     </Grid>
                   </Grid>
                   <div className="divider my-4" />

@@ -25,9 +25,20 @@ namespace CTADBL.ViewModelsRepositories
 
         #region Get Calls
 
-        public IEnumerable<GreenBookSerialNumberVM> GetGreenBookSerialNumbers(int records)
+        public IEnumerable<GreenBookSerialNumberVM> GetGreenBookSerialNumbers(int records, DateTime? dtFrom, DateTime? dtUpto)
         {
-            string sql = @"SELECT md.sMadebType, au.sAuthRegion, concat(grbk.sFirstName, ' ' , IFNULL(grbk.sMiddleName, ''), ' ', IFNULL(grbk.sLastName, '')) as sName, gbsn.*  FROM (SELECT gb.Id, gb.nBookNo, gb.sGBId, gb.Remarks, gb.dtDate, gb.sName, gb.sCountryID, 
+            string addToSql = String.Empty;
+            string append = String.Empty;
+            if(dtFrom != null && dtUpto != null)
+            {
+                addToSql = String.Format(@"AND dtDate >= '{0}' AND dtDate <= '{1}' ORDER BY dtDate", dtFrom.GetValueOrDefault().ToString("yyyy-MM-dd"), dtUpto.GetValueOrDefault().ToString("yyyy-MM-dd"));
+            }
+            else
+            {
+                addToSql = String.Format(@" ORDER BY gb.nBookNo DESC LIMIT 200");
+                append = String.Format(@" ORDER BY gbsn.nBookNo DESC");
+            }
+            string sql = String.Format(@"SELECT md.sMadebType, au.sAuthRegion, concat(grbk.sFirstName, ' ' , IFNULL(grbk.sMiddleName, ''), ' ', IFNULL(grbk.sLastName, '')) as sName, gbsn.*  FROM (SELECT gb.Id, gb.nBookNo, gb.sGBId, gb.Remarks, gb.dtDate, gb.sName, gb.sCountryID, 
                              gb.nMadebTypeId, 
                              gb.nFormNumber, 
                              gb.nAuthRegionId, 
@@ -35,14 +46,14 @@ namespace CTADBL.ViewModelsRepositories
                              gb.nEnteredBy,
                              gb.dtUpdated,
                              gb.nUpdatedBy FROM tblgreenbookserial AS gb
-                             order by gb.nBookNo DESC
-                             LIMIT 200) as gbsn
+                             WHERE 1 = 1 {0}
+                             ) as gbsn
                              LEFT JOIN tblgreenbook AS grbk
                              ON gbsn.sGBId = grbk.sGBID
                              LEFT JOIN lstmadebtype AS md
                              ON gbsn.nMadebTypeId = md.Id
                              LEFT JOIN lstauthregion AS au
-                             ON gbsn.nAuthRegionId = au.ID ORDER BY gbsn.nBookNo DESC";
+                             ON gbsn.nAuthRegionId = au.ID {1}", addToSql, append);
 
             //sql += records > 0 ? (@" LIMIT " + records + ";") : sql += ";";
 

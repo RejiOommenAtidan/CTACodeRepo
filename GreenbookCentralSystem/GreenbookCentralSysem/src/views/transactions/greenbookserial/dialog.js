@@ -64,7 +64,7 @@ export const EditDialog = (props) => {
     nBookNo,
     sGBID,
     remarks,
-    dtDate: Moment(dtDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtDate).format('YYYY-MM-DD') : '',
+    dtDate: Moment(dtDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtDate).format('YYYY-MM-DD') : null,
     //dtDate,
     //sName,
     sCountryID,
