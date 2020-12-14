@@ -18,7 +18,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import { useSelector } from 'react-redux';
-import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker } from "../../../config/commonConfig";
+import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker, sDDMMYYYYRegex } from "../../../config/commonConfig";
 
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
@@ -49,7 +49,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_sChatrelKey"
                     name="name_sChatrelKey"
-                    label={<>Chatrel Term<span style={{color:'red'}}> *</span></>}
+                    label={<>Chatrel Term<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     value={sChatrelKey}
                     onChange={(e) => { setsChatrelKey(e.target.value) }}
@@ -67,7 +67,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_nChatrelValue"
                     name="name_nChatrelValue"
-                    label={<>Value<span style={{color:'red'}}> *</span></>}
+                    label={<>Value<span style={{ color: 'red' }}> *</span></>}
                     type="number"
                     value={nChatrelValue}
                     onChange={(e) => { setnChatrelValue(e.target.value) }}
@@ -93,7 +93,7 @@ export const AddDialog = (props) => {
                       inputRef={register({
                         required: true
                       })}
-                      label={<>Chatrel From<span style={{color:'red'}}> *</span></>}
+                      label={<>Chatrel From<span style={{ color: 'red' }}> *</span></>}
                       format={sDateFormatMUIDatepicker}
                       onChange={date => { setdtChatrelFrom(date) }}
                       value={dtChatrelFrom}
@@ -134,7 +134,7 @@ export const AddDialog = (props) => {
 
 export const EditDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, setValue } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(
       {
@@ -162,7 +162,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_sChatrelKey"
                       name="name_sChatrelKey"
-                      label={<>Chatrel Term<span style={{color:'red'}}> *</span></>}
+                      label={<>Chatrel Term<span style={{ color: 'red' }}> *</span></>}
                       type="text"
                       value={sChatrelKey}
                       onChange={(e) => { setsChatrelKey(e.target.value) }}
@@ -178,7 +178,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_nChatrelValue"
                       name="name_nChatrelValue"
-                      label={<>Value<span style={{color:'red'}}> *</span></>}
+                      label={<>Value<span style={{ color: 'red' }}> *</span></>}
                       type="number"
                       value={nChatrelValue}
                       onChange={(e) => { setnChatrelValue(parseInt(e.target.value)) }}
@@ -202,11 +202,22 @@ export const EditDialog = (props) => {
                         views={["year", "month", "date"]}
                         margin="dense"
                         inputRef={register({
-                          required: true
+                          required: true,
+                          pattern:
+                          {
+                            value: new RegExp(sDDMMYYYYRegex),
+                            message: "Invalid Date"
+                          }
                         })}
-                        label={<>Chatrel From<span style={{color:'red'}}> *</span></>}
+                        label={<>Chatrel From<span style={{ color: 'red' }}> *</span></>}
                         format={sDateFormatMUIDatepicker}
-                        onChange={date => { setdtChatrelFrom(date) }}
+                        onChange={date => {
+                          if (date) {
+                            setdtChatrelFrom(date);
+                            setValue('name_dtChatrelFrom', date, { shouldValidate: true });
+                          }
+                        }
+                        }
                         value={dtChatrelFrom}
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
