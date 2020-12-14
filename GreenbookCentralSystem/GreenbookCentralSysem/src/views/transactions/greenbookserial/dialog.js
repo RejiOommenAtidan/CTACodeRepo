@@ -10,7 +10,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useSelector } from 'react-redux';
-import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker } from '../../../config/commonConfig';
+import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker, sDDMMYYYYRegex } from '../../../config/commonConfig';
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -22,7 +22,7 @@ export const EditDialog = (props) => {
   Moment.locale("en");
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   console.log("Hello from Edit Dialog");
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, watch, errors, setValue } = useForm();
 
 
   console.log(props.gbSerialObj);
@@ -143,7 +143,10 @@ export const EditDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
-                          setDate(date);
+                          if (date) {
+                            setDate(date);
+                            setValue('name_dtDate', date, { shouldValidate: true });
+                          }
                         }}
                         value={dtDate}
                         KeyboardButtonProps={{
@@ -153,6 +156,11 @@ export const EditDialog = (props) => {
                         //className={props.classes.dateField}
                         inputRef={register({
                           required: true,
+                          pattern:
+                          {
+                            value: new RegExp(sDDMMYYYYRegex),
+                            message: "Invalid Date"
+                          }
                         })}
                       />
                     </MuiPickersUtilsProvider>
@@ -212,7 +220,7 @@ export const EditDialog = (props) => {
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <Autocomplete
-                      
+
                       openOnFocus
                       clearOnEscape
                       onChange={
@@ -289,7 +297,7 @@ export const EditDialog = (props) => {
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <Autocomplete
-                      
+
                       openOnFocus
                       clearOnEscape
                       onChange={
@@ -698,7 +706,6 @@ export const AddDialog = (props) => {
                       onChange={
                         (e, value) => {
                           if (value !== null) {
-                            debugger
                             console.log("Value in Country id:", value.sCountryID);
                             setCountryID(value.sCountryID);
                             setValueCountryName(value);
@@ -859,7 +866,6 @@ export const AddDialog = (props) => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={12}>
-
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="remarks"

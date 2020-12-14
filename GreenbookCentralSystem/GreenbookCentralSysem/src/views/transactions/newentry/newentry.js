@@ -1208,15 +1208,30 @@ const snackbarClose = () => {
                           views={["year", "month", "date"]}
                           margin="dense"
                           id="id_dtValidityDate"
+                          name="name_dtValidityDate"
                           label="Validity Date"
                           format={sDateFormatMUIDatepicker}
-                          onChange={date => { setdtValidityDate(date) }}
+                          onChange={date => 
+                            { 
+                              if(date){
+                                setdtValidityDate(date); 
+                                setValue('name_dtValidityDate', date, {shouldValidate: true});
+                              }
+                            }
+                          }
                           value={dtValidityDate}
                           KeyboardButtonProps={{
                             'aria-label': 'change date',
                           }}
                           fullWidth
                           className={classes.dateField}
+                          inputRef={register({
+                            pattern: 
+                            {
+                              value: new RegExp(sDDMMYYYYRegex),
+                              message: "Invalid Date"
+                            }
+                          })}
                         />
                       </MuiPickersUtilsProvider>
                     </FormControl>
@@ -1358,15 +1373,30 @@ const snackbarClose = () => {
                           views={["year", "month", "date"]}
                           margin="dense"
                           id="id_dtDeceased"
+                          name="name_dtDeceased"
                           label="Deceased Date"
                           format={sDateFormatMUIDatepicker}
-                          onChange={date => { setdtDeceased(date) }}
+                          onChange={date => 
+                            { 
+                              if(date){
+                                setdtDeceased(date); 
+                                setValue('name_dtDeceased', date, {shouldValidate: true});
+                              }
+                            }
+                          }
                           value={dtDeceased}
                           KeyboardButtonProps={{
                             'aria-label': 'change date',
                           }}
                           fullWidth
                           className={classes.dateField}
+                          inputRef={register({
+                            pattern: 
+                            {
+                              value: new RegExp(sDDMMYYYYRegex),
+                              message: "Invalid Date"
+                            }
+                          })}
                         />
                       </MuiPickersUtilsProvider>
                     </FormControl>

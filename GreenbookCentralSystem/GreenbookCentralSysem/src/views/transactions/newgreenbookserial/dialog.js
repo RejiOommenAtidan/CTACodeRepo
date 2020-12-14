@@ -9,7 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker } from '../../../config/commonConfig';
+import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker, sDDMMYYYYRegex } from '../../../config/commonConfig';
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -177,7 +177,7 @@ export const AddDialog = (props) => {
     formPopulate(sGBID);
     setSaveBtn(document.getElementById('save'));
     setSaveEditBtn(document.getElementById('saveEdit'));
-    
+
   }, []);
 
   return (
@@ -224,7 +224,10 @@ export const AddDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
-                          setDate(date);
+                          if (date) {
+                            setDate(date);
+                            setValue('name_dtDate', date, { shouldValidate: true });
+                          }
                         }}
                         value={dtDate}
                         KeyboardButtonProps={{
@@ -234,6 +237,11 @@ export const AddDialog = (props) => {
                         //className={props.classes.dateField}
                         inputRef={register({
                           required: true,
+                          pattern:
+                          {
+                            value: new RegExp(sDDMMYYYYRegex),
+                            message: "Invalid Date"
+                          }
                         })}
                       />
                     </MuiPickersUtilsProvider>
@@ -584,7 +592,7 @@ export const AddDialog = (props) => {
         </Alert>
       </Snackbar> */}
 
-          <Button 
+          <Button
             id="save"
             type="submit"
             color={sButtonColor}
