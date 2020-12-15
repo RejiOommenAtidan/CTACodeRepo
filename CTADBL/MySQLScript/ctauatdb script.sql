@@ -579,6 +579,24 @@ INSERT INTO `lstprovince` (`sProvince`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nU
 INSERT INTO `lstprovince` (`sProvince`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Unknown',now(),1,now(),1);
 
 
+CREATE TABLE `lstMaritalStatus` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sMaritalStatusText` varchar(50) DEFAULT NULL,
+  `sMaritalStatusId` varchar(10) DEFAULT NULL,
+  `dtEntered` datetime DEFAULT NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime DEFAULT NULL,
+  `nUpdatedBy` int(11) Not NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
+
+INSERT INTO `lstMaritalStatus` (`sMaritalStatusText`,`sMaritalStatusId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Single','S',now(),1,now(),1);
+INSERT INTO `lstMaritalStatus` (`sMaritalStatusText`,`sMaritalStatusId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Married','M',now(),1,now(),1);
+INSERT INTO `lstMaritalStatus` (`sMaritalStatusText`,`sMaritalStatusId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Divorced','D',now(),1,now(),1);
+INSERT INTO `lstMaritalStatus` (`sMaritalStatusText`,`sMaritalStatusId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Widower','R',now(),1,now(),1);
+INSERT INTO `lstMaritalStatus` (`sMaritalStatusText`,`sMaritalStatusId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Widow','W',now(),1,now(),1);
+
+
 CREATE TABLE `lstQualification` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sQualificationID` varchar(1) NOT NULL DEFAULT '',
@@ -679,8 +697,8 @@ CREATE TABLE `lstRelation` (
 INSERT INTO `lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Father',now(),1,now(),1);
 INSERT INTO `lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Mother',now(),1,now(),1);
 INSERT INTO `lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Spouse',now(),1,now(),1);
-INSERT INTO `lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('MaleChild',now(),1,now(),1);
-INSERT INTO `lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('FemaleChild',now(),1,now(),1);
+INSERT INTO `lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Male Child',now(),1,now(),1);
+INSERT INTO `lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Female Child',now(),1,now(),1);
 -- INSERT INTO `lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brother',now(),1,now(),1);
 -- INSERT INTO `lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sister',now(),1,now(),1);
 
@@ -713,9 +731,9 @@ CREATE TABLE `lstMadebType` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
-INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso (New)','First Issued','F',13,now(),1,now(),1);
-INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe (Change)','Modified Issued','M',14,now(),1,now(),1);
-INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak (Lost)','Lost Issued','L',15,now(),1,now(),1);
+INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso','First Issued','F',13,now(),1,now(),1);
+INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe','Modified Issued','M',14,now(),1,now(),1);
+INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak','Lost Issued','L',15,now(),1,now(),1);
 INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad','Abroad','A',18,now(),1,now(),1);
 INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full','Book Full','U',16,now(),1,now(),1);
 INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB','Brief GB','B',17,now(),1,now(),1);
@@ -1224,8 +1242,8 @@ BEGIN
 	select ID, sAuthRegion, sCountryID from lstauthregion;
     select ID, sCountry, sCountryID from lstcountry ;
     select Id, sProvince from lstProvince;
-    select Id, sQualification, sQualificationID from lstQualification;
-    select Id, sOccupationDesc from lstoccupation;
+    select Id, sQualification, sQualificationID from lstQualification order by sQualification;
+    select Id, sOccupationDesc from lstoccupation order by sOccupationDesc;
     select Id, sDOBApproxID, sDOBApproxName from lstDOBApprox;
     select tblgivengbid.nGBId as nGBId, tblMadeb.* from tblMadeb 
     inner join tblgivengbid on tblMadeb.nFormNumber = tblgivengbid.nFormNo
@@ -1644,8 +1662,14 @@ BEGIN
 	-- declare SQLText varchar(5000);
 
 	SET @SQLText = CONCAT('SELECT 
-				DISTINCT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.sAuthRegion", "lstcountry.sCountry" ),') as sPlaceName, 
-				CONVERT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.ID" , "lstcountry.sCountryID" ),',CHAR) as sPlaceID
+				DISTINCT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.sAuthRegion", "lstcountry.sCountry" ),') as sPlaceName 
+				,CONVERT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.ID" , "lstcountry.sCountryID" ),',CHAR) as sPlaceID
+				,sum(tblMadeb.nIssuedOrNotID = 2) as MadebIssued
+				,sum(tblMadeb.nIssuedOrNotID = 3) as MadebRejected
+				,sum(tblMadeb.nIssuedOrNotID = 4) as MadebDouble
+				,sum(tblMadeb.nIssuedOrNotID = 5) as MadebCancelled
+				,sum(tblMadeb.nIssuedOrNotID <= 1) as MadebPending
+				,Count(tblMadeb.nIssuedOrNotID) as MadebTotalReceived
 			FROM 
 				tblMadeb 
 			INNER JOIN ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion
@@ -1658,13 +1682,14 @@ BEGIN
 				lstMadebType.sMadebDisplayKey=''', sMadebDisplayKey ,''' 
 			and DATE(tblMadeb.dtReceived) >= ''', dtRecordFrom ,''' 
 			and DATE(tblMadeb.dtReceived) < ''', dtRecordTo ,'''
-		ORDER BY  ', sOrderBy );
+	GROUP BY ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.sAuthRegion", "lstcountry.sCountry" ),'
+	ORDER BY  ', sOrderBy );
         
           
-        --	select @SQLText;
-    PREPARE stmt FROM @SQLText;
-    EXECUTE stmt;
-    DEALLOCATE PREPARE stmt;
+  --	select @SQLText;
+  PREPARE stmt FROM @SQLText;
+  EXECUTE stmt;
+  DEALLOCATE PREPARE stmt;
 END$$
 DELIMITER ;
 
