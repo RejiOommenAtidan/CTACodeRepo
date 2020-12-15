@@ -84,7 +84,7 @@ export const AddDocumentDialog = (props) => {
 
     return (
         <Dialog fullWidth={true} maxWidth='md' open={props.addDocumentModal} onEscapeKeyDown={props.handleAddDocumentClickClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Add a Document for {props.sGBID}</DialogTitle>
+            <DialogTitle id="form-dialog-title">Add a Photo/Document for {props.sGBID}</DialogTitle>
             <form onSubmit={handleSubmit(handleSubmitAddDocumentRecord)}>
                 <DialogContent>
                     <DialogContentText>
@@ -262,7 +262,7 @@ export const EditDocumentDialog = (props) => {
 
     return (
         <Dialog fullWidth={true} maxWidth='md' open={props.editDocumentModal} onEscapeKeyDown={props.handleEditDocumentClickClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Edit Document for {props.oDocument.sGBID}</DialogTitle>
+            <DialogTitle id="form-dialog-title">Edit {props.oDocument.sDocType === "Photo Identity" ? "Photo" : "Support Document"} for {props.oDocument.sGBID}</DialogTitle>
             <form onSubmit={handleSubmit(handleSubmitEditDocumentRecord)}>
                 <DialogContent>
                     <DialogContentText>

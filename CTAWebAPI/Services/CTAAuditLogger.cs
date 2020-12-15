@@ -43,14 +43,14 @@ namespace CTAWebAPI.Services
                         object sOldvalue = type.GetProperty(pi.Name).GetValue(oOld, null);
                         object sNewValue = type.GetProperty(pi.Name).GetValue(oNew, null);
 
-                        //PropertyInfo commonPI = type.GetProperty(pi.Name);
-                        //object[] displayNameAttributeCommon = commonPI.GetCustomAttributes(typeof(DisplayNameAttribute), false);
-                        //string sDisplayNameCommon = displayNameAttributeCommon.Length > 0 ? (displayNameAttributeCommon[0] as DisplayNameAttribute).DisplayName : pi.Name;
+                        PropertyInfo commonPI = type.GetProperty(pi.Name);
+                        object[] displayNameAttributeCommon = commonPI.GetCustomAttributes(typeof(DisplayNameAttribute), false);
+                        string sDisplayNameCommon = displayNameAttributeCommon.Length > 0 ? (displayNameAttributeCommon[0] as DisplayNameAttribute).DisplayName : pi.Name;
 
                         if (sOldvalue != sNewValue && (sOldvalue == null || !sOldvalue.Equals(sNewValue)) && sOldvalue!=null && sNewValue!=null)
                         {
-                            string sOldStringToJoin = pi.Name + " " + "=" + " " + sOldvalue.ToString();
-                            string sNewStringToJoin = pi.Name + " " + "=" + " " + sNewValue.ToString();
+                            string sOldStringToJoin = sDisplayNameCommon + " " + "=" + " " + sOldvalue.ToString();
+                            string sNewStringToJoin = sDisplayNameCommon + " " + "=" + " " + sNewValue.ToString();
 
                             lFieldValuesOld.Add(sOldStringToJoin);
                             lFieldValuesNew.Add(sNewStringToJoin);

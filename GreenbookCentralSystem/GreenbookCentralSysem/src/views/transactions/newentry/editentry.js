@@ -2397,7 +2397,7 @@ export default function EditEntry(props) {
                       setaddDocumentModal(true);
                     }}
                   >
-                    Add a Document
+                    Add a Photo/Document
                   </Button>
                 </Grid>
               </ExpansionPanelDetails>
@@ -2438,11 +2438,10 @@ export default function EditEntry(props) {
         aria-describedby="alert-dialog-description"
         onEscapeKeyDown={handleDeleteDialogClose}
       >
-        <DialogTitle id="alert-dialog-title">{"Delete Document?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Delete "}{oDelete.sDocType === "Photo Identity" ? "Photo" : "Support Document"}?</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to Delete this document? (Document Name:{" "}
-            {oDelete.sTitle})
+            Are you sure you want to Delete this {oDelete.sDocType === "Photo Identity" ? "Photo" : "Support Document"}? (Document Name:{" "}{oDelete.sTitle})
           </DialogContentText>
         </DialogContent>
         <DialogActions>
