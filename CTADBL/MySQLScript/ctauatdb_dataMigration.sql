@@ -383,6 +383,14 @@ SELECT
 FROM `ctadb`.`tblgreenbookissued`;
 
 SET SQL_SAFE_UPDATES=0;
+UPDATE tblgreenbook 
+SET sMarried = 'S'
+where sMarried = 'N';
+
+UPDATE tblgreenbook 
+SET sMarried = null
+where sMarried = '';
+
 UPDATE tblgreenbookissued a
 INNER JOIN lstmadebtype b 
 	ON a.sWhyIssued = b.sMadebDisplayKey

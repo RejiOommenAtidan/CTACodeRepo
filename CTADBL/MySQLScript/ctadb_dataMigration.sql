@@ -744,6 +744,38 @@ SELECT
 FROM `greenbookprime`.`ident_bookissued`;
 
 SET SQL_SAFE_UPDATES=0;
+UPDATE tblgreenbook 
+SET sMarried = 'S'
+where sMarried = 'N';
+
+UPDATE tblgreenbook 
+SET sMarried = null
+where sMarried = '';
+
+SET session sql_mode = '';
+UPDATE `tblgreenbook`
+SET
+`dtEntered` = null;
+
+UPDATE `tblgreenbook`
+SET
+`dtEntered` = STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y %H:%i:%s')
+WHERE (sEnteredDateTime like '%AM' OR sEnteredDateTime like '%PM' )
+    and   STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y %H:%i:%s') < CURDATE();
+
+
+UPDATE `tblgreenbook`
+SET
+`dtEntered` = STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y %H:%i:%s')
+WHERE (sEnteredDateTime like '%AM' OR sEnteredDateTime like '%PM' )
+    and    STR_TO_DATE(sEnteredDateTime, '%m/%d/%Y %H:%i:%s') < CURDATE();
+
+UPDATE `tblgreenbook`
+SET
+`dtEntered` = dtUpdated
+where dtEntered is null;
+
+
 UPDATE tblgreenbookissued a
 INNER JOIN lstmadebtype b 
 	ON a.sWhyIssued = b.sMadebDisplayKey
