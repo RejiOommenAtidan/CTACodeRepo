@@ -19,7 +19,7 @@ using System.Net;
 namespace CTAWebAPI.Controllers.Transactions
 {
 
-   // [Authorize]
+    [Authorize]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]
