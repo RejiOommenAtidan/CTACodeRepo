@@ -165,6 +165,10 @@ export default function Chatrel() {
           axios.get(`/CTAConfig/GetAllCTAConfig`)
             .then(resp => {
               if (resp.status === 200) {
+                resp.data.forEach((item,index)=>{
+                  if(item.sKey === "CTAAdminEmailPassword" )
+                  resp.data[index].sValue = '*****' 
+               });
                 setdataAPI(resp.data);
                 setAlertMessage(sSnackbarUpdateMessage);
                 setAlertType('success');
@@ -208,6 +212,10 @@ export default function Chatrel() {
           axios.get(`/CTAConfig/GetAllCTAConfig`)
             .then(resp => {
               if (resp.status === 200) {
+                resp.data.forEach((item,index)=>{
+                  if(item.sKey === "CTAAdminEmailPassword" )
+                  resp.data[index].sValue = '*****' 
+               });
                 setdataAPI(resp.data);
                 setAlertMessage(sSnackbarAddMessage);
                 setAlertType('success');
@@ -246,6 +254,11 @@ export default function Chatrel() {
     axios.get(`/CTAConfig/GetAllCTAConfig`)
       .then(resp => {
         if (resp.status === 200) {
+          console.log(resp.data);
+          resp.data.forEach((item,index)=>{
+            if(item.sKey === "CTAAdminEmailPassword" )
+            resp.data[index].sValue = '*****' 
+         });
           setdataAPI(resp.data);
           setisLoading(false);
           modifyHeaders();
