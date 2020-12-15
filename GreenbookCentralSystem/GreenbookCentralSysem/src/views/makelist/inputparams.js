@@ -6,18 +6,13 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash/fp";
 import { makeStyles } from '@material-ui/core/styles';
-import { sButtonColor, sButtonSize, sButtonVariant } from "../../config/commonConfig";
+import { sButtonColor, sButtonSize, sButtonVariant, sDDMMYYYYRegex, sDateFormatMUIDatepicker } from "../../config/commonConfig";
 import Moment from 'moment';
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-
-import {
-  sDateFormatMUIDatepicker,
-} from "../../config/commonConfig";
-
 
 export const InputParams = (props) => {
   const selectStyles = makeStyles((theme) => ({
@@ -74,8 +69,6 @@ export const InputParams = (props) => {
     props.makeList(makeListParams);
   }
 
-
-
   return (
 
     <div style={{ maxWidth: '1090px' }} >
@@ -87,78 +80,89 @@ export const InputParams = (props) => {
               {/* {_.get("startDate.type", errors) === "required" && (
                 <span style={{ color: 'red' }}>This field is required</span>
               )} */}
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                          variant="dialog"
-                          //openTo="year"
-                          //views={["year", "month", "date"]}
-                          margin="dense"
-                          id="startDate"
-                          name="startDate"
-                          autoFocus
-                          label={<> Date From<span style={{ color: 'red' }}> *</span></>}
-                          format={sDateFormatMUIDatepicker}
-                          returnMoment={true}
-                          onChange={(date) => {
-                            //console.log(date.toISOString().split("T")[0]);
-                            //console.log(date.toDateString());
-                            // console.log(date.toLocaleDateString());
-                            //console.log(date);
-                            setStartDate(date);
-                          }}
-                          value={startDate}
-                          KeyboardButtonProps={{
-                            "aria-label": "change date",
-                          }}
-                         // fullWidth
-                          //className={classes.dateField}
-                          inputRef={register({
-                            required: true,
-                          })}
-                        />
-                         </MuiPickersUtilsProvider>
-              {errors.startDate && <span style={{ color: 'red' }}>Date From is required</span>}
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  variant="dialog"
+                  //openTo="year"
+                  //views={["year", "month", "date"]}
+                  margin="dense"
+                  id="startDate"
+                  name="startDate"
+                  autoFocus
+                  label={<> Date From<span style={{ color: 'red' }}> *</span></>}
+                  format={sDateFormatMUIDatepicker}
+                  returnMoment={true}
+                  onChange={(date) => {
+                    if (date) {
+                      setStartDate(date);
+                      setValue('startDate', date, { shouldValidate: true });
+                    };
+                  }}
+                  value={startDate}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                  // fullWidth
+                  //className={classes.dateField}
+                  inputRef={register({
+                    required: true,
+                    pattern:
+                    {
+                      value: new RegExp(sDDMMYYYYRegex),
+                      message: "Invalid Date"
+                    }
+                  })}
+                />
+              </MuiPickersUtilsProvider>
+              {/*{errors.startDate && <span style={{ color: 'red' }}>Date From is required</span>}*/}
+              {_.get("startDate.type", errors) === "required" && (
+                <span style={{ color: 'red' }}>Date From is required</span>
+              )}
             </FormControl>
           </Grid>
           <Grid item xs  >
             <FormControl>
-            <MuiPickersUtilsProvider utils={DateFnsUtils} >
-                        <KeyboardDatePicker
-                          variant="dialog"
-                          //openTo="year"
-                          //views={["year", "month", "date"]}
-                          margin="dense"
-                          id="endDate"
-               		  name="endDate"
-                          
-                          label={<> Date To<span style={{ color: 'red' }}> *</span></>}
-                          format={sDateFormatMUIDatepicker}
-                          returnMoment={true}
-                          onChange={(date) => {
-                            //console.log(date.toISOString().split("T")[0]);
-                            //console.log(date.toDateString());
-                            // console.log(date.toLocaleDateString());
-                            //console.log(date);
-                            setEndDate(date);
-                          }}
-                          value={endDate}
-                          KeyboardButtonProps={{
-                            "aria-label": "change date",
-                          }}
-                         // fullWidth
-                          //className={classes.dateField}
-                          inputRef={register({
-                            required: true,
-                          })}
-                        />
-                         </MuiPickersUtilsProvider>
+              <MuiPickersUtilsProvider utils={DateFnsUtils} >
+                <KeyboardDatePicker
+                  variant="dialog"
+                  //openTo="year"
+                  //views={["year", "month", "date"]}
+                  margin="dense"
+                  id="endDate"
+                  name="endDate"
+
+                  label={<> Date To<span style={{ color: 'red' }}> *</span></>}
+                  format={sDateFormatMUIDatepicker}
+                  returnMoment={true}
+                  onChange={(date) => {
+                    if (date) {
+                      setEndDate(date);
+                      setValue('endDate', date, { shouldValidate: true });
+                    }
+                  }}
+                  value={endDate}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                  // fullWidth
+                  //className={classes.dateField}
+                  inputRef={register({
+                    required: true,
+                    pattern:
+                    {
+                      value: new RegExp(sDDMMYYYYRegex),
+                      message: "Invalid Date"
+                    }
+                  })}
+                />
+              </MuiPickersUtilsProvider>
               {_.get("endDate.type", errors) === "required" && (
                 <span style={{ color: 'red' }}>Date To is required</span>
               )}
             </FormControl>
           </Grid>
           <Grid item xs >
-            <FormControl style={{ paddingRight: '20px' , marginTop: '4.5px' }}>
+            <FormControl style={{ paddingRight: '20px', marginTop: '4.5px' }}>
               <Controller
                 render={props => (
                   <Autocomplete
@@ -192,7 +196,7 @@ export const InputParams = (props) => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        
+
                         label={<> Why Issued<span style={{ color: 'red' }}> *</span></>}
                         variant="standard"
                         //className={props.classes.textField}
@@ -215,7 +219,7 @@ export const InputParams = (props) => {
             </FormControl>
           </Grid>
           <Grid item xs >
-            <FormControl style={{ paddingRight: '20px' , marginTop: '4.5px' }} >
+            <FormControl style={{ paddingRight: '20px', marginTop: '4.5px' }} >
               <Controller
                 render={props => (
                   <Autocomplete
@@ -270,7 +274,7 @@ export const InputParams = (props) => {
             </FormControl>
           </Grid>
           <Grid item  >
-            <FormControl style={{ paddingRight: '20px' , marginTop: '4.5px' }} >
+            <FormControl style={{ paddingRight: '20px', marginTop: '4.5px' }} >
               <InputLabel id="Printed/Not">Print Status {<span style={{ color: 'red' }}>*</span>}</InputLabel>
               <Controller
                 render={props => (
@@ -300,7 +304,7 @@ export const InputParams = (props) => {
                 color={sButtonColor}
                 size={sButtonSize}
                 type="submit"
-                style={{ fontSize: '1em' , marginTop: '16px', marginLeft: '10px' }}>Make List</Button>
+                style={{ fontSize: '1em', marginTop: '16px', marginLeft: '10px' }}>Make List</Button>
             </FormControl>
           </Grid>
         </Grid>

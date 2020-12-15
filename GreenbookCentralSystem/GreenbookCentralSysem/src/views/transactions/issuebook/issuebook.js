@@ -22,7 +22,7 @@ import IconButton from '@material-ui/core/IconButton';
 import SaveIcon from '@material-ui/icons/Save';
 import { IssueBookTable } from '../issuebooktable';
 import { Alerts } from '../../alerts';
-import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
+import { sButtonColor, sButtonSize, sButtonVariant, sDateFormat } from "../../../config/commonConfig";
 
 const getMuiTheme = () => createMuiTheme({
   overrides: {
@@ -267,7 +267,7 @@ export default function EnhancedTable() {
                       <tbody>
                         {latestData.map((row1, index) => (
                           <tr>
-                            <td >{row1.dtReceived ? Moment(row1.dtReceived).format('DD-MM-YYYY') : ''}</td>
+                            <td >{row1.dtReceived ? Moment(row1.dtReceived).format(sDateFormat) : ''}</td>
                             <td>{row1.sGBID} </td>
                             <td>{row1.sMadebDisplayName}</td>
                             <td>{row1.sAuthRegion}</td>

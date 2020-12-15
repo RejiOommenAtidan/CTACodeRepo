@@ -14,7 +14,7 @@ import MaterialTable from 'material-table';
 import handleError from "../../../auth/_helpers/handleError";
 import { useHistory } from 'react-router-dom';
 import Moment from 'moment';
-import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage, sDateFormat,modifyHeaders } from "../../../config/commonConfig";
+import { oOptions, oTableIcons, sSnackbarAddMessage, sSnackbarUpdateMessage, sDateFormat, modifyHeaders } from "../../../config/commonConfig";
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
 
@@ -120,8 +120,8 @@ export default function Chatrel() {
       }
     },
     {
-      render: rowData => Moment(rowData['dtChatrelFrom']).format(sDateFormat),
-      field: "dtChatrelFrom",
+      //render: rowData => Moment(rowData['dtChatrelFrom']).format(sDateFormat),
+      field: "dtChatrelFromFormatted",
       title: "STARTING FROM",
       headerStyle: {
         textAlign: "center",
@@ -184,6 +184,9 @@ export default function Chatrel() {
           axios.get(`/Chatrel/GetAllChatrel`)
             .then(resp => {
               if (resp.status === 200) {
+                resp.data.forEach((element) => {
+                  element.dtChatrelFromFormatted = element.dtChatrelFrom ? Moment(element.dtChatrelFrom).format(sDateFormat) : null;
+                });
                 setdataAPI(resp.data);
                 setAlertMessage(sSnackbarUpdateMessage);
                 setAlertType('success');
@@ -216,6 +219,9 @@ export default function Chatrel() {
           axios.get(`/Chatrel/GetAllChatrel`)
             .then(resp => {
               if (resp.status === 200) {
+                resp.data.forEach((element) => {
+                  element.dtChatrelFromFormatted = element.dtChatrelFrom ? Moment(element.dtChatrelFrom).format(sDateFormat) : null;
+                });
                 setdataAPI(resp.data);
                 setAlertMessage(sSnackbarAddMessage);
                 setAlertType('success');
@@ -243,6 +249,9 @@ export default function Chatrel() {
     axios.get(`/Chatrel/GetAllChatrel`)
       .then(resp => {
         if (resp.status === 200) {
+          resp.data.forEach((element) => {
+            element.dtChatrelFromFormatted = element.dtChatrelFrom ? Moment(element.dtChatrelFrom).format(sDateFormat) : null;
+          });
           setdataAPI(resp.data);
           setisLoading(false);
           modifyHeaders();
@@ -309,9 +318,9 @@ export default function Chatrel() {
         snackbarClose={snackbarClose}
       />
       }
-    {backdrop && <BackdropComponent
+      {backdrop && <BackdropComponent
         backdrop={backdrop}
-    />}
+      />}
     </Container>
   );
 }

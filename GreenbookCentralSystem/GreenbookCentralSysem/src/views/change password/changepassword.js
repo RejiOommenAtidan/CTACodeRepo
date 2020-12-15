@@ -117,14 +117,34 @@ export default function ChangePassword() {
             setAlertMessage("Password Updated Successfully, Please Login in again with New Password");
             setAlertType('success');
             snackbarOpen();
-            setTimeout(() => { 
+            setTimeout(() => {
               dispatch(removeAuthDetails());
               history.push('/Login', { changepassword: true })
             }, 3000);
           }
         })
         .catch(error => {
-          handleError(error, history);
+          if (error.response.data === "Incorrect Old Password") {
+            setBackdrop(false);
+            setAlertMessage('Incorrect Old Password, Hold on Refreshing');
+            setAlertType('error');
+            snackbarOpen();
+            setTimeout(() => {
+              window.location.reload(true)
+            }, 2000);
+            ;
+          }
+          else if (error.response.data === "New Password & Confirm New Password are Different") {
+            setBackdrop(false);
+            setAlertMessage('New Passwords do not match, Hold on Refreshing');
+            setAlertType('error');
+            snackbarOpen();
+            setTimeout(() => {
+              window.location.reload(true)
+            }, 2000);
+          }
+          else
+            handleError(error, history);
         })
         .then(release => {
           //console.log(release); => udefined
