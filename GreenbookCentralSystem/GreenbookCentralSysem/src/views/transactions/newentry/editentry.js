@@ -2322,7 +2322,7 @@ export default function EditEntry(props) {
                 className={classes.expansionPanel}
               >
                 <Typography className={classes.expansionHeading}>
-                  Documents
+                  Photo & Documents
                 </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
