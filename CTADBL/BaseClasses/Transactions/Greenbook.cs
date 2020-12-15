@@ -9,7 +9,7 @@ namespace CTADBL.BaseClasses.Transactions
     [Table("tblgreenbook")]
     public class Greenbook : CommonProps
     {
-        #region Private Greenbook Properties
+        #region Private Green Book Properties
         private int _Id;
         private int? __Id;
         private string _sGBID;
@@ -67,12 +67,12 @@ namespace CTADBL.BaseClasses.Transactions
         private string _sEnteredDateTime;
         #endregion
 
-        #region Public Greenbook Properties
+        #region Public Green Book Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
         [DisplayName("Previous system ID")]
         public int? _id { get { return __Id; } set { __Id = value; } }
-        [DisplayName("Greenbook ID")]
+        [DisplayName("Green Book ID")]
         public string sGBID { get { return _sGBID; } set { _sGBID = value; } }
         [DisplayName("Authority Region ID")]
         public int nAuthRegionID { get { return _nAuthRegionID; } set { _nAuthRegionID = value; } }
@@ -110,9 +110,8 @@ namespace CTADBL.BaseClasses.Transactions
         public string sOccupationID { get { return _sOccupationID; } set { _sOccupationID = value; } }
         [DisplayName("Alias")]
         public string sAliasName { get { return _sAliasName; } set { _sAliasName = value; } }
-        [DisplayName("Old Greenbook Number")]
         public string sOldGreenBKNo { get { return _sOldGreenBKNo; } set { _sOldGreenBKNo = value; } }
-        [DisplayName("First Greenbook Number")]
+        [DisplayName("First Green Book Number")]
         public string sFstGreenBkNo { get { return _sFstGreenBkNo; } set { _sFstGreenBkNo = value; } }
         [DisplayName("Form Date")]
         public DateTime? dtFormDate { get { return _dtFormDate; } set { _dtFormDate = value; } }
@@ -120,19 +119,19 @@ namespace CTADBL.BaseClasses.Transactions
         public string sFathersName { get { return _sFathersName; } set { _sFathersName = value; } }
         [DisplayName("Father's ID")]
         public string sFathersID { get { return _sFathersID; } set { _sFathersID = value; } }
-        [DisplayName("Father's Greenbook ID")]
+        [DisplayName("Father's Green Book ID")]
         public string sFathersGBID { get { return _sFathersGBID; } set { _sFathersGBID = value; } }
         [DisplayName("Mother's Name")]
         public string sMothersName { get { return _sMothersName; } set { _sMothersName = value; } }
         [DisplayName("Mother's ID")]
         public string sMothersID { get { return _sMothersID; } set { _sMothersID = value; } }
-        [DisplayName("Mother's Greenbook ID")]
+        [DisplayName("Mother's Green Book ID")]
         public string sMothersGBID { get { return _sMothersGBID; } set { _sMothersGBID = value; } }
         [DisplayName("Spouse Name")]
         public string sSpouseName { get { return _sSpouseName; } set { _sSpouseName = value; } }
         [DisplayName("Spouse's ID")]
         public string sSpouseID { get { return _sSpouseID; } set { _sSpouseID = value; } }
-        [DisplayName("Spouse's Greenbook ID")]
+        [DisplayName("Spouse's Green Book ID")]
         public string sSpouseGBID { get { return _sSpouseGBID; } set { _sSpouseGBID = value; } }
         [DisplayName("Male Child Number")]
         public int nChildrenM { get { return _nChildrenM; } set { _nChildrenM = value; } }

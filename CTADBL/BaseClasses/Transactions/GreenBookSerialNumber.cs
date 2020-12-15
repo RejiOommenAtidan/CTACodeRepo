@@ -51,7 +51,7 @@ namespace CTADBL.BaseClasses.Transactions
             }
         }
         [Required]
-        [DisplayName("Greenbook ID")]
+        [DisplayName("Green Book ID")]
         public string? sGBID
         {
             get
@@ -164,9 +164,6 @@ namespace CTADBL.BaseClasses.Transactions
                 _nAuthRegionId = value;
             }
         }
-
-
         #endregion
-
     }
 }

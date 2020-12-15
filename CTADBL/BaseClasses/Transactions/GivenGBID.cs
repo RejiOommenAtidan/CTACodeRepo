@@ -24,7 +24,7 @@ namespace CTADBL.BaseClasses.Transactions
         public int Id { get { return _Id; } set { _Id = value; } }
         [DisplayName("Previous system ID")]
         public int? _id { get { return __Id; } set { __Id = value; } }
-        [DisplayName("Greenbook ID")]
+        [DisplayName("Green Book ID")]
         public int nGBId { get { return _nGBId; } set { _nGBId = value; } }
         [DisplayName("Form Number")]
         public int nFormNo { get { return _nFormNo; } set { _nFormNo = value; } }

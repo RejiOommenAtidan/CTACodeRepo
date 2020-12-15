@@ -33,7 +33,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _Id = value;
             }
         }
-        [DisplayName("Parent Greenbook ID")]
+        [DisplayName("Parent Green Book ID")]
         public string sGBIDParent
         {
             get
@@ -93,7 +93,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _sChildID = value;
             }
         }
-        [DisplayName("Child Greenbook ID")]
+        [DisplayName("Child Green Book ID")]
         public string sGBIDChild
         {
             get

@@ -23,7 +23,7 @@ namespace CTADBL.BaseClasses.Transactions
         #region Public GBDocument Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
-        [DisplayName("Greenbook ID")]
+        [DisplayName("Green Book ID")]
         public string sGBID { get { return _sGBID; } set { _sGBID = value; } }
         [DisplayName("Title")]
         public string sTitle { get { return _sTitle; } set { _sTitle = value; } }

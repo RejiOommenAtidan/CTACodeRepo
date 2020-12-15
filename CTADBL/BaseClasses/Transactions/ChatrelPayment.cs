@@ -46,7 +46,7 @@ namespace CTADBL.BaseClasses.Transactions
 
         #region Public Properties
         public int Id { get { return _Id; } set { _Id = value; } }
-        [DisplayName("Greenbook ID")]
+        [DisplayName("Green Book ID")]
         public string? sGBId { get { return _sGBId; } set { _sGBId = value; } }
         [DisplayName("Chatrel Year")]
         public int nChatrelYear { get { return _nChatrelYear; } set { _nChatrelYear = value; } }
@@ -60,7 +60,7 @@ namespace CTADBL.BaseClasses.Transactions
         public string? sPaymentMode { get { return _sPaymentMode; } set { _sPaymentMode = value; } }
         [DisplayName("Chatrel Currency")]
         public string? sPaymentCurrency { get { return _sPaymentCurrency; } set { _sPaymentCurrency = value; } }
-        [DisplayName("Paid By Greenbook ID")]
+        [DisplayName("Paid By Green Book ID")]
         public string? sPaidByGBId { get { return _sPaidByGBId; } set { _sPaidByGBId = value; } }
         [DisplayName("PayPal Status")]
         public string? sPayPal_Status { get { return _sPayPal_Status; } set { _sPayPal_Status = value; } }

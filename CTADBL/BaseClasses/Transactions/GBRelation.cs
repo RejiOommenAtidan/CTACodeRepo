@@ -18,9 +18,9 @@ namespace CTADBL.BaseClasses.Transactions
         #region Public GBRelation Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
-        [DisplayName("Greenbook ID")]
+        [DisplayName("Green Book ID")]
         public string sGBID { get { return _sGBID; } set { _sGBID = value; } }
-        [DisplayName("Greenbook ID of Relation")]
+        [DisplayName("Green Book ID of Relation")]
         public string sGBIDRelation { get { return _sGBIDRelation; } set { _sGBIDRelation = value; } }
         [DisplayName("Relation ID")]
         public int nRelationID { get { return _nRelationID; } set { _nRelationID = value; } }

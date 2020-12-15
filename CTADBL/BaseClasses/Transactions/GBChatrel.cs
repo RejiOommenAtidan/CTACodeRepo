@@ -43,7 +43,7 @@ namespace CTADBL.BaseClasses.Transactions
         public int Id { get { return _Id; } set { _Id = value; } }
         [DisplayName("ChatrelPayment ID")]
         public int chatrelpaymentID { get { return _chatrelpaymentID; } set { _chatrelpaymentID = value; } }
-        [DisplayName("Greenbook ID")]
+        [DisplayName("Green Book ID")]
         public string sGBId { get { return _sGBId; } set { _sGBId = value; } }
         [DisplayName("Chatrel Amount")]
         public decimal nChatrelAmount { get { return _nChatrelAmount; } set { _nChatrelAmount = value; } }
@@ -81,7 +81,7 @@ namespace CTADBL.BaseClasses.Transactions
         public string? sAuthRegionCurrency { get { return _sAuthRegionCurrency; } set { _sAuthRegionCurrency = value; } }
         [DisplayName("Conversion Rate")]
         public decimal? nConversionRate { get { return _nConversionRate; } set { _nConversionRate = value; } }
-        [DisplayName("Paid by Greenbook ID")]
+        [DisplayName("Paid by Green Book ID")]
         public string? sPaidByGBId { get { return _sPaidByGBId; } set { _sPaidByGBId = value; } }
         [DisplayName("Payment Date")]
         public DateTime dtPayment { get { return _dtPayment; } set { _dtPayment = value; } }

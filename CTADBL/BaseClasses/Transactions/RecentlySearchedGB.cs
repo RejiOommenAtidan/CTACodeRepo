@@ -20,7 +20,7 @@ namespace CTADBL.BaseClasses.Transactions
         [Key]
         public int ID { get { return _ID; } set { _ID = value; } }
 
-        [DisplayName("Greenbook ID")]
+        [DisplayName("Green Book ID")]
         public int nGBID { get { return _nGBID; } set { _nGBID = value; } }
         [DisplayName("User ID")]
         public int nUserID { get { return _nUserID; } set { _nUserID = value; } }
