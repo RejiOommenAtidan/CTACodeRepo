@@ -19,8 +19,11 @@ import { useSelector } from 'react-redux';
 import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import _ from "lodash/fp";
+import { useForm, Controller } from "react-hook-form";
 
 export const AddDialog = (props) => {
+  const { register, handleSubmit, errors, control } = useForm();
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [lUserRights, setlUserRights] = React.useState(props.lUserRights);
   const [Id, setId] = React.useState('')
@@ -31,130 +34,179 @@ export const AddDialog = (props) => {
   const [sPassword, setsPassword] = React.useState('');
   const [sOffice, setsOffice] = React.useState('');
   const [bActive, setbActive] = React.useState(true);
+  const handleSubmitAddUserRecord = () => {
+    props.addAPICall(
+      {
+        sUsername,
+        sFullname,
+        nUserRightsId,
+        sPassword,
+        sOffice,
+        bActive,
+        nEnteredBy: userId,
+        nUpdatedBy: userId
+      }
+    )
+  };
   return (
     <Dialog open={props.addModal} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add User</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          <Grid container>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_sUsername"
-                  label={<>Username<span style={{ color: 'red' }}> *</span></>}
-                  type="text"
-                  value={sUsername}
-                  onChange={(e) => { setsUsername(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} >
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_sFullname"
-                  label={<>Full name<span style={{ color: 'red' }}> *</span></>}
-                  type="text"
-                  value={sFullname}
-                  onChange={(e) => { setsFullname(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_sPassword"
-                  label={<>Password<span style={{ color: 'red' }}> *</span></>}
-                  type="password"
-                  value={sPassword}
-                  onChange={(e) => { setsPassword(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <InputLabel id="id_sGender">Role<span style={{ color: 'red' }}> *</span></InputLabel>
-                <Select
-                  id="id_nUserRightsId"
-                  label="Role"
-                  value={nUserRightsId}
-                  onChange={(e) => { setnUserRightsId(e.target.value) }}
-                >
-                  {lUserRights.map((right) => (
-                    <MenuItem key={right.id} value={right.id}>
-                      {right.sUserRightsName}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <TextField
-                  id="id_sOffice"
-                  label={<>Office Name<span style={{ color: 'red' }}> *</span></>}
-                  type="text"
-                  value={sOffice}
-                  onChange={(e) => { setsOffice(e.target.value) }}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <FormGroup row>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        size="small"
-                        color={"primary"}
-                        id="id_bActive"
-                        checked={bActive}
-                        onChange={(e) => { setbActive(e.target.checked) }}
-                        name="name_bActive"
-                      />
-                    }
-                    //labelPlacement="top"
-                    label={
-                      bActive ?
-                        <>Status: Active</> :
-                        <>Status: Inactive</>
-                    }
+      <form onSubmit={handleSubmit(handleSubmitAddUserRecord)}>
+        <DialogContent>
+          <DialogContentText>
+            <Grid container>
+              <Grid item xs={12}>
+                <FormControl className={props.classes.formControl}>
+                  <TextField
+                    id="id_sUsername"
+                    name="name_sUsername"
+                    label={<>Username<span style={{ color: 'red' }}> *</span></>}
+                    type="text"
+                    value={sUsername}
+                    onChange={(e) => { setsUsername(e.target.value) }}
+                    inputRef={register({
+                      required: true
+                    })}
                   />
-                </FormGroup>
-              </FormControl>
+                  {_.get("name_sUsername.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} >
+                <FormControl className={props.classes.formControl}>
+                  <TextField
+                    id="id_sFullname"
+                    name="name_sFullname"
+                    label={<>Full name<span style={{ color: 'red' }}> *</span></>}
+                    type="text"
+                    value={sFullname}
+                    onChange={(e) => { setsFullname(e.target.value) }}
+                    inputRef={register({
+                      required: true
+                    })}
+                  />
+                  {_.get("name_sFullname.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl className={props.classes.formControl}>
+                  <TextField
+                    id="id_sPassword"
+                    name="name_sPassword"
+                    label={<>Password<span style={{ color: 'red' }}> *</span></>}
+                    type="password"
+                    value={sPassword}
+                    onChange={(e) => { setsPassword(e.target.value) }}
+                    inputRef={register({
+                      required: true
+                    })}
+                  />
+                  {_.get("name_sPassword.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl className={props.classes.formControl}>
+                  <InputLabel id="id_sGender">Role<span style={{ color: 'red' }}> *</span></InputLabel>
+                  <Controller
+                    render={props => (
+                      <Select
+                        id="id_nUserRightsId"
+                        name="name_nUserRightsId"
+                        label="Role"
+                        value={nUserRightsId}
+                        onChange={(e) => { 
+                          props.onChange(e.target.value);
+                          setnUserRightsId(e.target.value); 
+                        }}
+
+                      >
+                        {lUserRights.map((right) => (
+                          <MenuItem key={right.id} value={right.id}>
+                            {right.sUserRightsName}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    )}
+                    name="name_nUserRightsIdController"
+                    control={control}
+                    rules={{ required: true }}
+                  />
+                  {errors.name_nUserRightsIdController && <span style={{ color: 'red' }}>This field is required</span>}
+                  {/*{_.get("name_nUserRightsIdController.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}*/}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl className={props.classes.formControl}>
+                  <TextField
+                    id="id_sOffice"
+                    name="name_sOffice"
+                    label={<>Office Name<span style={{ color: 'red' }}> *</span></>}
+                    type="text"
+                    value={sOffice}
+                    onChange={(e) => { setsOffice(e.target.value) }}
+                    inputRef={register({
+                      required: true
+                    })}
+                  />
+                  {_.get("name_sOffice.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl className={props.classes.formControl}>
+                  <FormGroup row>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          size="small"
+                          color={"primary"}
+                          id="id_bActive"
+                          checked={bActive}
+                          onChange={(e) => { setbActive(e.target.checked) }}
+                          name="name_bActive"
+                        />
+                      }
+                      //labelPlacement="top"
+                      label={
+                        bActive ?
+                          <>Status: Active</> :
+                          <>Status: Inactive</>
+                      }
+                    />
+                  </FormGroup>
+                </FormControl>
+              </Grid>
             </Grid>
-          </Grid>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleAddClickClose}
-          variant={sButtonVariant}
-          color={sButtonColor}
-          size={sButtonSize}
-        >Cancel</Button>
-        <Button onClick={() => {
-          props.addAPICall(
-            {
-              sUsername,
-              sFullname,
-              nUserRightsId,
-              sPassword,
-              sOffice,
-              bActive,
-              nEnteredBy: userId,
-              nUpdatedBy: userId
-            }
-          )
-        }}
-          variant={sButtonVariant}
-          color={sButtonColor}
-          size={sButtonSize}
-        >Save</Button>
-      </DialogActions>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleAddClickClose}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Cancel</Button>
+          <Button
+            type="submit"
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Save</Button>
+        </DialogActions>
+      </form>
     </Dialog>
   );
 }
 
 export const EditDialog = (props) => {
+  const { register, handleSubmit, errors, control } = useForm();
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [lUserRights, setlUserRights] = React.useState(props.oUserObj.lUserRights);
   const [Id, setId] = React.useState(props.oUserObj.id)
@@ -165,130 +217,156 @@ export const EditDialog = (props) => {
   const [sPassword, setsPassword] = React.useState(props.oUserObj.sPassword);
   const [sOffice, setsOffice] = React.useState(props.oUserObj.sOffice);
   const [bActive, setbActive] = React.useState(props.oUserObj.bActive);
+  const handleSubmitEditUserRecord = () => {
+    props.editAPICall({
+      Id,
+      sUsername: props.oUserObj.sUsername,
+      sFullname,
+      nUserRightsId,
+      sPassword,
+      sOffice,
+      bActive,
+      nUpdatedBy: userId
+    })
+  };
   return (
     <Dialog open={props.editModal} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">User</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          <div>
-            <Grid container>
-              <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_sUsername"
-                    label={<>Username<span style={{ color: 'red' }}> *</span></>}
-                    type="text"
-                    InputProps={{
-                      readOnly: true,
-                      disabled: true
-                    }}
-                    value={sUsername}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} >
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_sFullname"
-                    label={<>Full name<span style={{ color: 'red' }}> *</span></>}
-                    type="text"
-                    value={sFullname}
-                    onChange={(e) => { setsFullname(e.target.value) }}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_sPassword"
-                    label={<>Password<span style={{ color: 'red' }}> *</span></>}
-                    type="password"
-                    value={sPassword}
-                    onChange={(e) => { setsPassword(e.target.value) }}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
-                  <InputLabel id="id_sGender">Role<span style={{ color: 'red' }}> *</span></InputLabel>
-                  <Select
-                    id="id_nUserRightsId"
-                    label="Role"
-                    value={nUserRightsId}
-                    onChange={(e) => { setnUserRightsId(e.target.value) }}
-                  >
-                    {lUserRights.map((right) => (
-                      <MenuItem key={right.id} value={right.id}>
-                        {right.sUserRightsName}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="id_sOffice"
-                    label={<>Office Name<span style={{ color: 'red' }}> *</span></>}
-                    type="text"
-                    value={sOffice}
-                    onChange={(e) => { setsOffice(e.target.value) }}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-              <FormControl className={props.classes.formControl}>
-                <FormGroup row>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        size="small"
-                        color={"primary"}
-                        id="id_bActive"
-                        checked={bActive}
-                        onChange={(e) => { setbActive(e.target.checked) }}
-                        name="name_bActive"
+      <DialogTitle id="form-dialog-title">Edit User</DialogTitle>
+      <form onSubmit={handleSubmit(handleSubmitEditUserRecord)}>
+        <DialogContent>
+          <DialogContentText>
+            <div>
+              <Grid container>
+                <Grid item xs={12}>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="id_sUsername"
+                      name="name_sUsername"
+                      label={<>Username<span style={{ color: 'red' }}> *</span></>}
+                      type="text"
+                      InputProps={{
+                        readOnly: true,
+                        disabled: true
+                      }}
+                      value={sUsername}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} >
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="id_sFullname"
+                      name="name_sFullname"
+                      label={<>Full name<span style={{ color: 'red' }}> *</span></>}
+                      type="text"
+                      value={sFullname}
+                      onChange={(e) => { setsFullname(e.target.value) }}
+                      inputRef={register({
+                        required: true
+                      })}
+                    />
+                    {_.get("name_sFullname.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="id_sPassword"
+                      name="name_sPassword"
+                      label={<>Password<span style={{ color: 'red' }}> *</span></>}
+                      type="password"
+                      value={sPassword}
+                      onChange={(e) => { setsPassword(e.target.value) }}
+                      inputRef={register({
+                        required: true
+                      })}
+                    />
+                    {_.get("name_sPassword.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={props.classes.formControl}>
+                    <InputLabel id="id_sGender">Role<span style={{ color: 'red' }}> *</span></InputLabel>
+                    <Select
+                      id="id_nUserRightsId"
+                      name="name_nUserRightsId"
+                      label="Role"
+                      value={nUserRightsId}
+                      onChange={(e) => { setnUserRightsId(e.target.value) }}
+                    >
+                      {lUserRights.map((right) => (
+                        <MenuItem key={right.id} value={right.id}>
+                          {right.sUserRightsName}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="id_sOffice"
+                      name="name_sOffice"
+                      label={<>Office Name<span style={{ color: 'red' }}> *</span></>}
+                      type="text"
+                      value={sOffice}
+                      onChange={(e) => { setsOffice(e.target.value) }}
+                      inputRef={register({
+                        required: true
+                      })}
+                    />
+                    {_.get("name_sOffice.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={props.classes.formControl}>
+                    <FormGroup row>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            size="small"
+                            color={"primary"}
+                            id="id_bActive"
+                            checked={bActive}
+                            onChange={(e) => { setbActive(e.target.checked) }}
+                            name="name_bActive"
+                          />
+                        }
+                        //labelPlacement="top"
+                        label={
+                          bActive ?
+                            <>Status: Active</> :
+                            <>Status: Inactive</>
+                        }
                       />
-                    }
-                    //labelPlacement="top"
-                    label={
-                      bActive ?
-                        <>Status: Active</> :
-                        <>Status: Inactive</>
-                    }
-                  />
-                </FormGroup>
-              </FormControl>
-            </Grid>
-            </Grid>
-          </div>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button
-          onClick={props.handleEditClickClose}
-          variant={sButtonVariant}
-          color={sButtonColor}
-          size={sButtonSize}
-        >Cancel</Button>
-        <Button onClick={() => {
-          props.editAPICall({
-            Id,
-            sUsername: props.oUserObj.sUsername,
-            sFullname,
-            nUserRightsId,
-            sPassword,
-            sOffice,
-            bActive,
-            nUpdatedBy: userId
-          })
-        }
-        }
-          variant={sButtonVariant}
-          color={sButtonColor}
-          size={sButtonSize}
-        >Save</Button>
-      </DialogActions>
+                    </FormGroup>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={props.handleEditClickClose}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Cancel</Button>
+          <Button
+            type="submit"
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >Save</Button>
+        </DialogActions>
+      </form>
     </Dialog>
   );
 }
