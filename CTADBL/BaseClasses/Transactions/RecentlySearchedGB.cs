@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,9 +19,14 @@ namespace CTADBL.BaseClasses.Transactions
         #region Public recently Searched GB properties
         [Key]
         public int ID { get { return _ID; } set { _ID = value; } }
+
+        [DisplayName("Greenbook ID")]
         public int nGBID { get { return _nGBID; } set { _nGBID = value; } }
+        [DisplayName("User ID")]
         public int nUserID { get { return _nUserID; } set { _nUserID = value; } }
+        [DisplayName("Entered Date")]
         public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
+        [DisplayName("Entered By")]
         public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
         #endregion
     }

@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using CTADBL.BaseClasses.Common;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -36,6 +37,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _Id = value;
             }
         }
+        [DisplayName("Book Serial Number")]
         [Required]
         public int nBookNo
         {
@@ -49,6 +51,7 @@ namespace CTADBL.BaseClasses.Transactions
             }
         }
         [Required]
+        [DisplayName("Greenbook ID")]
         public string? sGBID
         {
             get
@@ -61,6 +64,7 @@ namespace CTADBL.BaseClasses.Transactions
             }
         }
 
+        [DisplayName("Remarks")]
         public string? Remarks
         {
             get
@@ -72,6 +76,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _Remarks = value;
             }
         }
+        [DisplayName("Date")]
         [Required]
         public DateTime? dtDate
         {
@@ -84,7 +89,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _dtDate = value;
             }
         }
-
+        [DisplayName("Name")]
         public string? sName
         {
             get
@@ -96,7 +101,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _sName = value;
             }
         }
-
+        [DisplayName("Country ID")]
         public string? sCountryID
         {
             get
@@ -108,6 +113,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _sCountryID = value;
             }
         }
+        [DisplayName("Madeb Type ID")]
         [Required]
         public int? nMadebTypeId
         {
@@ -120,6 +126,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _nMadebTypeId = value;
             }
         }
+        [DisplayName("Form Number")]
         [Required]
         public int? nFormNumber
         {
@@ -132,7 +139,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _nFormNumber = value;
             }
         }
-
+        [DisplayName("Authority Region")]
         public string? sAuthRegion
         {
             get
@@ -144,6 +151,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _sAuthRegion = value;
             }
         }
+        [DisplayName("Authority Region ID")]
         [Required]
         public int? nAuthRegionId
         {

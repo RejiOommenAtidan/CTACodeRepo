@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,9 +19,13 @@ namespace CTADBL.BaseClasses.Transactions
         #region Public GBNote Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
+        [DisplayName("Greenbook ID")]
         public string sGBID { get { return _sGBID; } set { _sGBID = value; } }
-        public string sNote { get { return _sNote; } set { _sNote = value; } }    
+        [DisplayName("Note")]
+        public string sNote { get { return _sNote; } set { _sNote = value; } }
+        [DisplayName("Entered Date")]
         public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
+        [DisplayName("Entered By")]
         public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
         #endregion
     }

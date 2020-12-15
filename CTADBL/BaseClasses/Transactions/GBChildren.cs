@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -32,7 +33,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _Id = value;
             }
         }
-
+        [DisplayName("Parent Greenbook ID")]
         public string sGBIDParent
         {
             get
@@ -44,7 +45,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _sGBIDParent = value;
             }
         }
-
+        [DisplayName("Name")]
         public string sName
         {
             get
@@ -56,6 +57,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _sName = value;
             }
         }
+        [DisplayName("Birth Date")]
         public DateTime? dtDOB
         {
             get
@@ -67,6 +69,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _dtDOB = value;
             }
         }
+        [DisplayName("Gender")]
         public string sGender
         {
             get
@@ -78,6 +81,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _sGender = value;
             }
         }
+        [DisplayName("Child ID")]
         public string sChildID
         {
             get
@@ -89,6 +93,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _sChildID = value;
             }
         }
+        [DisplayName("Child Greenbook ID")]
         public string sGBIDChild
         {
             get
@@ -100,7 +105,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _sGBIDChild = value;
             }
         }
-
+        [DisplayName("Date Entered")]
         public DateTime? dtEntered
         {
             get
@@ -112,7 +117,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _dtEntered = value;
             }
         }
-
+        [DisplayName("Entered By")]
         public int nEnteredBy
         {
             get
