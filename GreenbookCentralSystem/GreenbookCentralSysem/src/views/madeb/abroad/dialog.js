@@ -11,7 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Alerts } from '../../alerts';
 import { useSelector } from 'react-redux';
-import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker } from "../../../config/commonConfig";
+import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker, sDDMMYYYYRegex } from "../../../config/commonConfig";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -298,7 +298,10 @@ export const EditDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
+                          if(date){
+                            setValue('name_dtReceived', date, {shouldValidate: true});
                           setReceivedDate(date);
+                          }
                         }}
                         value={dtReceived}
                         KeyboardButtonProps={{
@@ -308,6 +311,11 @@ export const EditDialog = (props) => {
                         className={props.classes.dateField}
                         inputRef={register({
                           required: true,
+                          pattern: 
+                              {
+                              value: new RegExp(sDDMMYYYYRegex),
+                              message: "Invalid Date"
+                              }
                         })}
                       />
                     </MuiPickersUtilsProvider>
@@ -633,7 +641,10 @@ export const EditDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
+                          if(date){
+                            setValue('name_dtReject', date, {shouldValidate: true});
                           setRejectDate(date);
+                          }
                         }}
                         value={dtReject}
                         KeyboardButtonProps={{
@@ -641,6 +652,14 @@ export const EditDialog = (props) => {
                         }}
                         fullWidth
                         className={props.classes.dateField}
+                        inputRef={register({
+                            
+                          pattern: 
+                              {
+                              value: new RegExp(sDDMMYYYYRegex),
+                              message: "Invalid Date"
+                              }
+                        })}
                       />
                     </MuiPickersUtilsProvider>
                   </FormControl>
@@ -676,7 +695,10 @@ export const EditDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
+                          if(date){
                           setReturnDate(date);
+                          setValue('name_dtReturnEmail', date, {shouldValidate: true});
+                            }
                         }}
                         value={dtReturnEmail}
                         KeyboardButtonProps={{
@@ -684,6 +706,14 @@ export const EditDialog = (props) => {
                         }}
                         fullWidth
                         className={props.classes.dateField}
+                        inputRef={register({
+                            
+                          pattern: 
+                              {
+                              value: new RegExp(sDDMMYYYYRegex),
+                              message: "Invalid Date"
+                              }
+                        })}
                       />
                     </MuiPickersUtilsProvider>
                   </FormControl>
@@ -1009,7 +1039,11 @@ export const AddDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
+                          if(date){
+                              
+                            setValue('name_dtReceived', date, {shouldValidate: true});
                           setReceivedDate(date);
+                          }
                         }}
                         value={dtReceived}
                         KeyboardButtonProps={{
@@ -1019,6 +1053,11 @@ export const AddDialog = (props) => {
                         className={props.classes.dateField}
                         inputRef={register({
                           required: true,
+                          pattern: 
+                              {
+                              value: new RegExp(sDDMMYYYYRegex),
+                              message: "Invalid Date"
+                              }
                         })}
                       />
                     </MuiPickersUtilsProvider>
