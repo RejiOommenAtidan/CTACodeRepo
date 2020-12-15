@@ -21,19 +21,23 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { sDateFormatMUIDatepicker,sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
+import { sDateFormatMUIDatepicker, sButtonColor, sButtonSize, sButtonVariant, sDDMMYYYYRegex } from '../../../config/commonConfig';
+import { useSelector } from 'react-redux';
 
 export const AddChildDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   Moment.locale('en');
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, setValue } = useForm();
   const handleSubmitAddChildRecord = () => {
     props.addChildAPICall({
-      sGBIDParent:props.sGBID,
+      sGBIDParent: props.sGBID,
       sName: sName,
       dtDOB: dtDOB,
       sGender: sGender,
       sChildID: sChildID,
-      sGBIDChild: sGBIDChild
+      sGBIDChild: sGBIDChild,
+      nEnteredBy: userId,
+      nUpdatedBy: userId
     });
   }
 
@@ -81,16 +85,27 @@ export const AddChildDialog = (props) => {
                       name="name_dtDOB"
                       label="Date Of Birth"
                       format={sDateFormatMUIDatepicker}
-                      onChange={date => { setdtDOB(date) }}
+                      inputRef={register({
+                        required: true,
+                        pattern:
+                        {
+                          value: new RegExp(sDDMMYYYYRegex),
+                          message: "Invalid Date"
+                        }
+                      })}
+                      onChange={date => {
+                        if (date) {
+                          setdtDOB(date);
+                          setValue('name_dtDOB', date, { shouldValidate: true });
+                        }
+                      }
+                      }
                       value={dtDOB}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
                       fullWidth
                       className={props.classes.dateField}
-                      inputRef={register({
-                        required: true
-                      })}
                     />
                   </MuiPickersUtilsProvider>
                   {_.get("name_dtDOB.type", errors) === "required" && (
@@ -151,17 +166,17 @@ export const AddChildDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button 
-          onClick={props.handleAddChildClickClose} 
-          color={sButtonColor}
-          variant={sButtonVariant}
-          size={sButtonSize}
+          <Button
+            onClick={props.handleAddChildClickClose}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
           >Cancel</Button>
-          <Button 
-          type="submit" 
-          color={sButtonColor}
-          variant={sButtonVariant}
-          size={sButtonSize}
+          <Button
+            type="submit"
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
           >Save</Button>
         </DialogActions>
       </form>
@@ -170,18 +185,20 @@ export const AddChildDialog = (props) => {
 }
 
 export const EditChildDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   Moment.locale('en');
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, setValue } = useForm();
   const handleSubmitEditChildRecord = () => {
     props.editChildAPICall(
       {
         id: props.oChild.id,
-        sGBIDParent:props.oChild.sGBIDParent,
+        sGBIDParent: props.oChild.sGBIDParent,
         sName: sName,
         dtDOB: dtDOB,
         sGender: sGender,
         sChildID: sChildID,
-        sGBIDChild: sGBIDChild
+        sGBIDChild: sGBIDChild,
+        nUpdatedBy: userId
       }
     );
   }
@@ -230,16 +247,28 @@ export const EditChildDialog = (props) => {
                       name="name_dtDOB"
                       label="Date Of Birth"
                       format={sDateFormatMUIDatepicker}
-                      onChange={date => { setdtDOB(date) }}
+                      inputRef={register({
+                        required: true,
+                        pattern:
+                        {
+                          value: new RegExp(sDDMMYYYYRegex),
+                          message: "Invalid Date"
+                        }
+                      })}
+                      onChange={date => {
+                        if (date) {
+                          setdtDOB(date);
+                          setValue('name_dtDOB', date, { shouldValidate: true });
+                        }
+                      }
+                      }
                       value={dtDOB}
                       KeyboardButtonProps={{
                         'aria-label': 'change date',
                       }}
                       fullWidth
                       className={props.classes.dateField}
-                      inputRef={register({
-                        required: true
-                      })}
+
                     />
                   </MuiPickersUtilsProvider>
                   {_.get("name_dtDOB.type", errors) === "required" && (
@@ -300,17 +329,17 @@ export const EditChildDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button 
-          onClick={props.handleEditChildClickClose} 
-          color={sButtonColor}
-          variant={sButtonVariant}
-          size={sButtonSize}
+          <Button
+            onClick={props.handleEditChildClickClose}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
           >Cancel</Button>
-          <Button 
-          type="submit" 
-          color={sButtonColor}
-          variant={sButtonVariant}
-          size={sButtonSize}
+          <Button
+            type="submit"
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
           >Save</Button>
         </DialogActions>
       </form>

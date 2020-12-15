@@ -17,8 +17,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
+import { useSelector } from 'react-redux';
 
 export const AddDocumentDialog = (props) => {
+    const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
     const { register, handleSubmit, errors } = useForm();
     const handleSubmitAddDocumentRecord = () => {
         props.addDocumentAPICall({
@@ -27,7 +29,9 @@ export const AddDocumentDialog = (props) => {
             sDocType: sDocType,
             binFileDoc: binFileDoc,
             sFileExtension: sFileExtension,
-            nRegisterDate: nRegisterDate
+            nRegisterDate: nRegisterDate,
+            nEnteredBy: userId,
+            nUpdatedBy: userId
         });
     };
 
@@ -99,12 +103,12 @@ export const AddDocumentDialog = (props) => {
                                         className={props.classes.textField}
                                         onChange={(event) => { handleSelectChange(event) }}
                                     >
-                                    <MenuItem value={"Support Document"}>Support Document</MenuItem>
-                                        <MenuItem 
-                                        hidden={result !== undefined} 
-                                        value={"Photo Identity"}
+                                        <MenuItem value={"Support Document"}>Support Document</MenuItem>
+                                        <MenuItem
+                                            hidden={result !== undefined}
+                                            value={"Photo Identity"}
                                         >Photo Identity</MenuItem>
-                                        
+
                                     </Select>
                                 </FormControl>
                             </Grid>
@@ -196,6 +200,7 @@ export const AddDocumentDialog = (props) => {
 }
 
 export const EditDocumentDialog = (props) => {
+    const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
     const { register, handleSubmit, errors } = useForm();
     const handleSubmitEditDocumentRecord = () => {
         props.editDocumentAPICall(
@@ -206,7 +211,8 @@ export const EditDocumentDialog = (props) => {
                 sDocType: sDocType,
                 binFileDoc: binFileDoc,
                 sFileExtension: sFileExtension,
-                nRegisterDate: nRegisterDate
+                nRegisterDate: nRegisterDate,
+                nUpdatedBy: userId
             }
         );
     }
@@ -276,7 +282,7 @@ export const EditDocumentDialog = (props) => {
                                         onChange={(event) => { handleSelectChange(event) }}
                                         disabled
                                     >
-                                    <MenuItem value={"Support Document"}>Support Document</MenuItem>
+                                        <MenuItem value={"Support Document"}>Support Document</MenuItem>
                                         <MenuItem value={"Photo Identity"}>Photo Identity</MenuItem>
                                     </Select>
                                 </FormControl>

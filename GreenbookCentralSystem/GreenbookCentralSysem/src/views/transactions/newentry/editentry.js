@@ -216,6 +216,8 @@ export default function EditEntry(props) {
     let noteObj = {
       sGBID: sGBID,
       sNote: sNote,
+      nEnteredBy: userId,
+      nUpdatedBy: userId
     };
     setdialogBackdrop(true);
     axios

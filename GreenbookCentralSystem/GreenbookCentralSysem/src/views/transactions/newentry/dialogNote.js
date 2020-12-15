@@ -13,7 +13,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
-
+import { useSelector } from 'react-redux';
 
 export const AddNoteDialog = (props) => {
   const { register, handleSubmit, errors } = useForm();
@@ -75,13 +75,15 @@ export const AddNoteDialog = (props) => {
 }
 
 export const EditNoteDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, errors } = useForm();
   const handleSubmitEditNoteRecord = () => {
     props.editNoteAPICall(
       {
         id: props.oNote.id,
         sNote: sNote,
-        sGBID: props.oNote.sGBID
+        sGBID: props.oNote.sGBID,
+        nUpdatedBy: userId
       }
     );
   }

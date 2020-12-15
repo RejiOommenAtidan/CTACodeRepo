@@ -816,6 +816,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         GBNote fetchedGBNote = _gbNoteRepository.GetGBNoteById(Id);
                         Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(fetchedGBNote.sGBID);
                         gBNote.dtEntered = fetchedGBNote.dtEntered;
+                        gBNote.nEnteredBy = fetchedGBNote.nEnteredBy;
                         _gbNoteRepository.Update(gBNote);
 
                         #region Audit Log
@@ -945,6 +946,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         GBChildren fetchedGBChild = _gbChildrenRepository.GetGBChildrenById(Id);
                         Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(fetchedGBChild.sGBIDParent);
+                        gBChild.nEnteredBy = fetchedGBChild.nEnteredBy;
                         gBChild.dtEntered = fetchedGBChild.dtEntered;
                         _gbChildrenRepository.Update(gBChild);
 
@@ -1075,6 +1077,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         GBDocument fetchedGBDocument = _gbDocumentRepository.GetDocumentById(Id);
                         gBDocument.dtEntered = fetchedGBDocument.dtEntered;
+                        gBDocument.nEnteredBy = fetchedGBDocument.nEnteredBy;
                         Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(fetchedGBDocument.sGBID);
                         _gbDocumentRepository.Update(gBDocument);
 
