@@ -33,7 +33,7 @@ namespace CTADBL.BaseClasses.Transactions
         [DisplayName("Given")]
         public bool bGivenOrNot { get { return _bGivenOrNot; } set { _bGivenOrNot = value; } }
         [DisplayName("Active")]
-        public bool bActiveti { get { return _bActive; } set { _bActive = value; } }
+        public bool bActive { get { return _bActive; } set { _bActive = value; } }
         #endregion 
     }
 }
