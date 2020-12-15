@@ -1,13 +1,11 @@
 ﻿using CTADBL.BaseClasses.Common;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CTADBL.BaseClasses.Masters
 {
-    [Table("lstcountry")]
+    [Table("lstmadebstatus")]
     public class MadebStatus : CommonProps
     {
         #region Private Properties
@@ -17,30 +15,10 @@ namespace CTADBL.BaseClasses.Masters
 
         #region Public Properties
         [Key]
-        public int Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                _Id = value;
-            }
-        }
+        public int Id { get { return _Id; } set { _Id = value; } }
         [Required]
-        public string sMadebStatus
-        {
-            get
-            {
-                return _sMadebStatus;
-            }
-            set
-            {
-                _sMadebStatus = value;
-            }
-        }
-
+        [DisplayName("Madeb Status")]
+        public string sMadebStatus { get { return _sMadebStatus; } set { _sMadebStatus = value; } }
         #endregion
     }
 }
