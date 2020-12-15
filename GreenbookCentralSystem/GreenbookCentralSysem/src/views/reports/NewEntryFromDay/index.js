@@ -31,7 +31,7 @@ import axios from 'axios';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Rowing } from '@material-ui/icons';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import { oOptions, oTableIcons,sDateFormat } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { aPageSizeArray } from '../../../config/commonConfig';
 import { nPageSize } from '../../../config/commonConfig';
@@ -111,8 +111,8 @@ export default function Report() {
       },
     },
     {
-      field: "sFirstName",
-      title: "First Name",
+      field: "sName",
+      title: "Name",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
@@ -123,31 +123,15 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
         
-        textAlign: 'center'
+        textAlign: 'left'
 
       },
     },
+  
     {
-      field: "sLastName",
-      title: "Last Name",
-      filterPlaceholder: 'Search..',
-      headerStyle: {
-        padding: '5px',
-        
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-        
-        textAlign: 'center'
-
-      },
-    },
-    {
-      field: "dtEntered",
+      field: "dtFormattedEntered",
       title: "Date Entered",
-      render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
+   //   render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
@@ -164,7 +148,7 @@ export default function Report() {
     },
     {
       field: "sFullName",
-      title: "Full Name",
+      title: "Entered By",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
@@ -175,7 +159,7 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
         
-        textAlign: 'center'
+        textAlign: 'left'
 
       },
     },
@@ -192,7 +176,7 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
         
-        textAlign: 'center'
+        textAlign: 'left'
 
       },
     },
@@ -212,7 +196,9 @@ export default function Report() {
           .then(resp => {
             if (resp.status === 200) {
               setBackdrop(false);
-            
+              resp.data.forEach((element) => {
+                element.dtFormattedEntered = element.dtEntered ? Moment(element.dtEntered).format(sDateFormat) : null;
+              })
               SetNewEntryFromDayData(resp.data);
               console.log(resp.data);
             }
@@ -283,18 +269,7 @@ export default function Report() {
                     title="New Entry From Day"
                     columns={columns}
                     data={newEntryFromDayData}
-                    options={{
-                      filtering,
-                      exportButton: true,
-                      exportAllData: true,
-                      headerStyle: {
-                        padding: '0',
-                        paddingLeft: '10px',
-                        border: '1px solid lightgrey',
-                      },
-                      pageSize: pageSize,
-                      pageSizeOptions: pageSizeArray
-                    }}
+                    options={{ ...oOptions, tableLayout: "fixed" }}
                     actions={[
         
                       {

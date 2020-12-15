@@ -34,7 +34,7 @@ import { Rowing } from '@material-ui/icons';
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
-import { aPageSizeArray } from '../../../config/commonConfig';
+import { aPageSizeArray,sDateFormat } from '../../../config/commonConfig';
 import { nPageSize } from '../../../config/commonConfig';
 import { useForm, Controller } from "react-hook-form";
 import { Alerts } from '../../alerts';
@@ -120,7 +120,7 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
         
-        textAlign: 'center'
+        textAlign: 'left'
 
       },
     },
@@ -137,7 +137,7 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
         
-        textAlign: 'center'
+        textAlign: 'left'
 
       },
     },
@@ -155,7 +155,7 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
         
-        textAlign: 'center'
+        textAlign: 'left'
 
       },
     },
@@ -172,13 +172,13 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
         
-        textAlign: 'center'
+        textAlign: 'left'
 
       },
     },
     {
       field: "sFullName",
-      title: "Full Name",
+      title: "Entered By",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
@@ -189,14 +189,14 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
         
-        textAlign: 'center'
+        textAlign: 'left'
 
       },
     },
     {
-      field: "dtEntered",
+      field: "dtFormattedEntered",
       title: "Date Entered",
-      render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
+   //   render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
@@ -225,6 +225,9 @@ export default function Report() {
           .then(resp => {
             if (resp.status === 200) {
               setBackdrop(false);
+              resp.data.forEach((element) => {
+                element.dtFormattedEntered = element.dtEntered ? Moment(element.dtEntered).format(sDateFormat) : null;
+              })
               SetChildChangesLogData(resp.data);
               console.log(resp.data);
             }
@@ -291,18 +294,7 @@ export default function Report() {
                     title="Child Changes Log"
                     columns={columns}
                     data={childchangesLogData}
-                    options={{
-                      filtering,
-                      exportButton: true,
-                      exportAllData: true,
-                      headerStyle: {
-                        padding: '0',
-                        paddingLeft: '10px',
-                        border: '1px solid lightgrey',
-                      },
-                      pageSize: pageSize,
-                      pageSizeOptions: pageSizeArray
-                    }}
+                    options={{ ...oOptions, tableLayout: "fixed" }}
                     actions={[
         
                       {

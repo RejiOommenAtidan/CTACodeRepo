@@ -32,7 +32,7 @@ import axios from 'axios';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Rowing } from '@material-ui/icons';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import { oOptions, oTableIcons ,sDateFormat} from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { aPageSizeArray } from '../../../config/commonConfig';
 import { nPageSize } from '../../../config/commonConfig';
@@ -104,8 +104,8 @@ export default function Report() {
         },
       },
       {
-        field: "sFirstName",
-        title: "First Name",
+        field: "sName",
+        title: "Name",
         filterPlaceholder: 'Search..',
         headerStyle: {
           padding: '5px',
@@ -116,31 +116,15 @@ export default function Report() {
           // padding:'0px',
           padding: '5px',
           
-          textAlign: 'center'
+          textAlign: 'left'
   
         },
       },
+    
       {
-        field: "sLastName",
-        title: "Last Name",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
-      },
-      {
-        field: "dtDOB",
+        field: "dtFormattedDOB",
         title: "Date of Birth",
-        render: rowData => rowData.dtDOB ? Moment(rowData.dtDOB).format('DD-MM-YYYY') : '',
+     //   render: rowData => rowData.dtDOB ? Moment(rowData.dtDOB).format('DD-MM-YYYY') : '',
         filterPlaceholder: 'Search..',
         headerStyle: {
           padding: '5px',
@@ -156,9 +140,9 @@ export default function Report() {
         },
       },
       {
-        field: "dtDeceased",
+        field: "dtFormattedDeceased",
         title: "Deceased Date",
-        render: rowData => rowData.dtDeceased ? Moment(rowData.dtDeceased).format('DD-MM-YYYY') : '',
+     //   render: rowData => rowData.dtDeceased ? Moment(rowData.dtDeceased).format('DD-MM-YYYY') : '',
         filterPlaceholder: 'Search..',
         headerStyle: {
           padding: '5px',
@@ -173,24 +157,6 @@ export default function Report() {
   
         },
       },
-      {
-        field: "sPlace",
-        title: "Place",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
-      },
-   
       {
         field: "deathAge",
         title: "Death Age",
@@ -208,6 +174,25 @@ export default function Report() {
   
         },
       },
+      {
+        field: "sPlace",
+        title: "Region/Country",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'left'
+  
+        },
+      },
+   
+    
     ]
     const deceased=()=>{
       if(dtFrom === ''||dtTo === ''|| orderBy === ''  ){
@@ -221,6 +206,10 @@ export default function Report() {
         .then(resp => {
           if (resp.status === 200) {
             setBackdrop(false);
+            resp.data.forEach((element) => {
+              element.dtFormattedDOB = element.dtDOB ? Moment(element.dtDOB).format(sDateFormat) : null;
+              element.dtFormattedDeceased = element.dtDeceased ? Moment(element.dtDeceased).format(sDateFormat) : null;
+            })
             SetDeceasedData(resp.data);
           }
         })
@@ -311,18 +300,7 @@ export default function Report() {
                     title="Deceased Region or Country Wise"
                     columns={columns}
                     data={deceasedData}
-                    options={{
-                      filtering,
-                      exportButton: true,
-                      exportAllData: true,
-                      headerStyle: {
-                        padding: '0',
-                        paddingLeft: '10px',
-                        border: '1px solid lightgrey',
-                      },
-                      pageSize: pageSize,
-                      pageSizeOptions: pageSizeArray
-                    }}
+                    options={{ ...oOptions, tableLayout: "fixed" }}
                     actions={[
         
                       {

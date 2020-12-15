@@ -32,7 +32,7 @@ import axios from 'axios';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Rowing } from '@material-ui/icons';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import { oOptions, oTableIcons ,sDateFormat} from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { aPageSizeArray } from '../../../config/commonConfig';
 import { nPageSize } from '../../../config/commonConfig';
@@ -120,7 +120,7 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
         
-        textAlign: 'center'
+        textAlign: 'left'
 
       },
     },
@@ -137,7 +137,7 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
         
-        textAlign: 'center'
+        textAlign: 'left'
 
       },
     },
@@ -155,7 +155,7 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
         
-        textAlign: 'center'
+        textAlign: 'left'
 
       },
     },
@@ -172,13 +172,13 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
         
-        textAlign: 'center'
+        textAlign: 'left'
 
       },
     },
     {
       field: "sFullName",
-      title: "Full Name",
+      title: "Entered By",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
@@ -189,14 +189,14 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
         
-        textAlign: 'center'
+        textAlign: 'left'
 
       },
     },
     {
-      field: "dtEntered",
+      field: "dtFormattedEntered",
       title: "Date Entered",
-      render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
+     // render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
@@ -225,7 +225,9 @@ export default function Report() {
           .then(resp => {
             setBackdrop(false);
             if (resp.status === 200) {
-            
+              resp.data.forEach((element) => {
+                element.dtFormattedEntered = element.dtEntered ? Moment(element.dtEntered).format(sDateFormat) : null;
+              })
               SetChangesLogData(resp.data);
               console.log(resp.data);
             }
@@ -277,8 +279,8 @@ export default function Report() {
                                         <Button type="button" variant='outlined' value="Report" onClick={()=>{changesLog();}} >Show</Button>
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
-                                        { changesLogData.length >0 &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetChangesLogData([]);}} >Clear</Button>
+                                        { dtFrom &&
+                                        <Button type="button" variant='outlined' onClick={()=>{SetChangesLogData([]);SetdtFrom(null);}} >Clear</Button>
                                         }
                                     </FormControl>
                                   
@@ -292,7 +294,7 @@ export default function Report() {
                     title="Changes Log"
                     columns={columns}
                     data={changesLogData}
-                    options={{
+                    /*options={{
                       filtering,
                       exportButton: true,
                       exportAllData: true,
@@ -303,7 +305,8 @@ export default function Report() {
                       },
                       pageSize: pageSize,
                       pageSizeOptions: pageSizeArray
-                    }}
+                    }}*/
+                    options={{ ...oOptions, tableLayout: "fixed" }}
                     actions={[
         
                       {

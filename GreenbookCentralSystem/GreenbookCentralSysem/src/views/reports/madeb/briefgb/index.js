@@ -91,145 +91,129 @@ export default function Report() {
   const snackbarClose = () => {
     setSnackbar(false);
   };
-    const columns=[
-      {
-        field: "sPlaceName",
-        title: "Place Name",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'left'
-  
-        },
+  const columns=[
+    {
+      field: "sPlaceName",
+      title: "Region/Country",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
       },
-      {
-        field: "sPlaceID",
-        title: "Place ID",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'left'
+
       },
-      {
-        field: "madebIssued",
-        title: "Madeb Issued",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+    },
+    {
+      field: "madebPending",
+      title: "Madeb Pending",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
       },
-      {
-        field: "madebRejected",
-        title: "Madeb Rejected",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
       },
-      {
-        field: "madebDouble",
-        title: "Madeb Double",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+    },
+    {
+      field: "madebIssued",
+      title: "Madeb Issued",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
       },
-      {
-        field: "madebCancelled",
-        title: "Madeb Cancelled",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
       },
-      {
-        field: "madebPending",
-        title: "Madeb Pending",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+    },
+    {
+      field: "madebRejected",
+      title: "Madeb Rejected",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
       },
-      {
-        field: "madebTotalReceived",
-        title: "Total Received",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
       },
-     
-    ]
+    },
+    {
+      field: "madebDouble",
+      title: "Madeb Double",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
+      },
+    },
+    {
+      field: "madebCancelled",
+      title: "Madeb Cancelled",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
+      },
+    },
+  
+    {
+      field: "madebTotalReceived",
+      title: "Total Received",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
+      },
+    },
+   
+  ]
     const brief=()=>{
         if(madebType === '' ||dtFrom === ''||dtTo === ''|| orderBy === ''  ){
           setAlertMessage('All fields are required !');
@@ -345,18 +329,7 @@ export default function Report() {
                     title="Brief Report"
                     columns={columns}
                     data={briefData}
-                    options={{
-                      filtering,
-                      exportButton: true,
-                      exportAllData: true,
-                      headerStyle: {
-                        padding: '0',
-                        paddingLeft: '10px',
-                        border: '1px solid lightgrey',
-                      },
-                      pageSize: pageSize,
-                      pageSizeOptions: pageSizeArray
-                    }}
+                    options={oOptions}
                     actions={[
         
                       {

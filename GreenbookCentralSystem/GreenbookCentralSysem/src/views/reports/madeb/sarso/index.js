@@ -94,7 +94,7 @@ export default function Report() {
     const columns=[
       {
         field: "sPlaceName",
-        title: "Place Name",
+        title: "Region/Country",
         filterPlaceholder: 'Search..',
         headerStyle: {
           padding: '5px',
@@ -110,8 +110,8 @@ export default function Report() {
         },
       },
       {
-        field: "sPlaceID",
-        title: "Place ID",
+        field: "madebPending",
+        title: "Madeb Pending",
         filterPlaceholder: 'Search..',
         headerStyle: {
           padding: '5px',
@@ -194,23 +194,7 @@ export default function Report() {
   
         },
       },
-      {
-        field: "madebPending",
-        title: "Madeb Pending",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
-      },
+    
       {
         field: "madebTotalReceived",
         title: "Total Received",
@@ -345,18 +329,7 @@ export default function Report() {
                     title="Sarso Report"
                     columns={columns}
                     data={sarsoData}
-                    options={{
-                      filtering,
-                      exportButton: true,
-                      exportAllData: true,
-                      headerStyle: {
-                        padding: '0',
-                        paddingLeft: '10px',
-                        border: '1px solid lightgrey',
-                      },
-                      pageSize: pageSize,
-                      pageSizeOptions: pageSizeArray
-                    }}
+                    options={oOptions}
                     actions={[
         
                       {
