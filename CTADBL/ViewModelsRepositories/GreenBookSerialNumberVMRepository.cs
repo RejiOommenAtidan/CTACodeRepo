@@ -32,6 +32,7 @@ namespace CTADBL.ViewModelsRepositories
             if(dtFrom != null && dtUpto != null)
             {
                 addToSql = String.Format(@"AND dtDate >= '{0}' AND dtDate <= '{1}' ORDER BY dtDate", dtFrom.GetValueOrDefault().ToString("yyyy-MM-dd"), dtUpto.GetValueOrDefault().ToString("yyyy-MM-dd"));
+                append = @"ORDER BY dtDate";
             }
             else
             {

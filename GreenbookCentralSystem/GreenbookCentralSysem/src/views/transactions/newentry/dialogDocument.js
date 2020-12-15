@@ -91,7 +91,7 @@ export const AddDocumentDialog = (props) => {
                         <Grid container>
                             <Grid item xs={12}>
                                 <FormControl className={props.classes.formControl}>
-                                    <InputLabel id="id_sDocType">Document Type</InputLabel>
+                                    <InputLabel id="id_sDocType">{<>Document Type<span style={{ color: "red" }} > *</span></>}</InputLabel>
                                     <Select
                                         value={sDocType}
                                         id="id_sDocType"

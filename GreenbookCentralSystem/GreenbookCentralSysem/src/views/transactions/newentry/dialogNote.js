@@ -36,7 +36,7 @@ export const AddNoteDialog = (props) => {
                     autoFocus
                     id="id_sNote"
                     name="name_sNote"
-                    label="Note"
+                    label={<>Note<span style={{ color: "red" }} > *</span></>}
                     type="text"
                     value={sNote}
                     onChange={(e) => { setsNote(e.target.value) }}
@@ -103,7 +103,7 @@ export const EditNoteDialog = (props) => {
                     autoFocus
                     id="id_sNote"
                     name="name_sNote"
-                    label="Note"
+                    label={<>Note<span style={{ color: "red" }} > *</span></>}
                     type="text"
                     value={sNote}
                     onChange={(e) => { setsNote(e.target.value) }}
