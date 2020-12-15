@@ -192,7 +192,6 @@ export default function EnhancedTable() {
 
   const columns = [
     {
-      width: "5%",
       field: "madeb.id",
       title: "#",
       hidden: true,
@@ -218,7 +217,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -244,7 +244,9 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey',
+    
       },
      // render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined,
       // filterComponent: () =>
@@ -269,7 +271,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -293,7 +296,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -319,7 +323,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '3px'
+        padding: '3px',
+        borderRight: '1px solid grey'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -344,7 +349,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -368,7 +374,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -392,7 +399,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -416,7 +424,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -440,7 +449,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -465,7 +475,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -481,7 +492,7 @@ export default function EnhancedTable() {
 
 
     {
-      width: "8%",
+      width: "10%",
       field: "madeb.dtFormattedIssueAction",
       title: "ISSUE ACTION DATE",
       // type: 'date',
@@ -493,7 +504,9 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey',
+      
       },
       // filterComponent: () =>
       //   <MyComp
@@ -518,7 +531,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       // filterComponent: () =>
       //   <MyComp
@@ -545,7 +559,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
      // render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined,
       // filterComponent: () =>
@@ -572,7 +587,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
   //    render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : undefined,
       // filterComponent: () =>
@@ -605,7 +621,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {

@@ -151,7 +151,6 @@ export default function EnhancedTable() {
 
   const columns = [
     {
-      width: "5%",
       field: "madeb.id",
       title: "#",
       hidden: true,
@@ -163,7 +162,7 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px',
+        padding: '5px'
       }
     },
     {
@@ -178,7 +177,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -194,7 +194,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       //render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined
     },
@@ -209,7 +210,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -223,7 +225,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -237,7 +240,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -254,7 +258,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -268,7 +273,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -282,7 +288,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -296,7 +303,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -310,7 +318,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -324,7 +333,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
 
@@ -343,7 +353,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -361,7 +372,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -375,7 +387,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -389,7 +402,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -405,7 +419,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
    //   render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
     },
@@ -420,7 +435,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -436,7 +452,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
      // render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined
     },
@@ -453,7 +470,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       //render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : ''
     },
@@ -476,7 +494,8 @@ export default function EnhancedTable() {
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
     },
     {
