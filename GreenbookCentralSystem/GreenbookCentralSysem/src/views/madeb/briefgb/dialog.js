@@ -11,7 +11,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Alerts } from '../../alerts';
-import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker } from "../../../config/commonConfig";
+import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker, sDDMMYYYYRegex } from "../../../config/commonConfig";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -40,7 +40,7 @@ export const EditDialog = (props) => {
 
   const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
 
-  console.log(props.briefGBObj);
+  console.log("Props object", props.briefGBObj);
 
   const handleSubmitEditRecord = () => {
     //alert("Form Submitted.");
@@ -298,8 +298,6 @@ export const EditDialog = (props) => {
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
                         variant="dialog"
-                        // openTo="year"
-                        // views={["year", "month", "date"]}
                         margin="dense"
                         id="id_dtReceived"
                         name="name_dtReceived"
@@ -307,7 +305,11 @@ export const EditDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
-                          setReceivedDate(date);
+                          if(date){
+                            
+                            setValue('name_dtReceived', date, {shouldValidate: true});
+                            setReceivedDate(date);
+                          }
                         }}
                         value={dtReceived}
                         KeyboardButtonProps={{
@@ -317,14 +319,25 @@ export const EditDialog = (props) => {
                         className={props.classes.dateField}
                         inputRef={register({
                           required: true,
+                          pattern: 
+                              {
+                              value: new RegExp(sDDMMYYYYRegex),
+                              message: "Invalid Date"
+                              }
                         })}
                       />
                     </MuiPickersUtilsProvider>
-                    {_.get("name_dtReceived.type", errors) === "required" && (
+                    {/* {errors.name_dtReceived && <span style={{ color: "red" }}>{errors.name_dtReceived.message}</span>} */}
+                     {_.get("name_dtReceived.type", errors) === "required" && (
                       <span style={{ color: "red" }}>
                         This field is required
                       </span>
                     )}
+                    {/*{_.get("name_dtReceived.type", errors) === "pattern" && (
+                      <span style={{ color: "red" }}>
+                        Invalid Date
+                      </span>
+                    )} */}
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -662,7 +675,11 @@ export const EditDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
+                          if(date){
+                            
+                            setValue('name_dtReject', date, {shouldValidate: true});
                           setRejectDate(date);
+                          }
                         }}
                         value={dtReject}
                         KeyboardButtonProps={{
@@ -670,8 +687,22 @@ export const EditDialog = (props) => {
                         }}
                         fullWidth
                         className={props.classes.dateField}
+                        inputRef={register({
+                          pattern: 
+                                {
+                                value: new RegExp(sDDMMYYYYRegex),
+                                message: "Invalid Date"
+                                }
+                        }
+                        )}
                       />
                     </MuiPickersUtilsProvider>
+                    {/* {errors.name_dtReject && <span style={{ color: "red" }}>{errors.name_dtReject.message}</span>} */}
+                    {_.get("name_dtReject.type", errors) === "required" && (
+                      <span style={{ color: "red" }}>
+                        This field is required
+                      </span>
+                    )}
                   </FormControl>
                 </Grid>
                 {/*<Grid item xs={12} sm={6}>
@@ -704,7 +735,10 @@ export const EditDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
-                          setReturnDate(date);
+                          if(date){
+                            setValue('name_dtReturnEmail', date, {shouldValidate: true});
+                            setReturnDate(date);
+                          }
                         }}
                         value={dtReturnEmail}
                         KeyboardButtonProps={{
@@ -712,8 +746,23 @@ export const EditDialog = (props) => {
                         }}
                         fullWidth
                         className={props.classes.dateField}
+                        inputRef={register({
+                          pattern: 
+                                {
+                                value: new RegExp(sDDMMYYYYRegex),
+                                message: "Invalid Date"
+                                }
+                          
+                        }
+                        )}
                       />
                     </MuiPickersUtilsProvider>
+                    {/* {errors.name_dtReturnEmail && <span style={{ color: "red" }}>{errors.name_dtReturnEmail.message}</span>} */}
+                    {_.get("name_dtReturnEmail.type", errors) === "required" && (
+                      <span style={{ color: "red" }}>
+                        This field is required
+                      </span>
+                    )}
                   </FormControl>
                 </Grid>
                 {snackbar && <Alerts
@@ -1006,7 +1055,11 @@ export const AddDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
-                          setReceivedDate(date);
+                          if(date){
+                            
+                            setValue('name_dtReceived', date, {shouldValidate: true});
+                            setReceivedDate(date);
+                          }
                         }}
                         value={dtReceived}
                         KeyboardButtonProps={{
@@ -1016,14 +1069,20 @@ export const AddDialog = (props) => {
                         className={props.classes.dateField}
                         inputRef={register({
                           required: true,
+                          pattern: 
+                              {
+                              value: new RegExp(sDDMMYYYYRegex),
+                              message: "Invalid Date"
+                              }
                         })}
                       />
                     </MuiPickersUtilsProvider>
                     {_.get("name_dtReceived.type", errors) === "required" && (
-                      <span style={{ color: "red" }}>
-                        This field is required
-                      </span>
-                    )}
+                        <span style={{ color: "red" }}>
+                          This field is required
+                        </span>
+                      )}
+                      
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
