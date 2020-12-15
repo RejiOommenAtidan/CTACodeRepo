@@ -1,4 +1,5 @@
 ﻿using CTADBL.BaseClasses.Common;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,6 +24,7 @@ namespace CTADBL.BaseClasses.Masters
             }
         }
         [Required]
+        [DisplayName("Province Name")]
         public string sProvince
         {
             get
