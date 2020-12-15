@@ -45,13 +45,13 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetGreenBookSerialNumbers(DateTime? dtFrom = null, DateTime? dtUpto = null)
+        public IActionResult GetGreenBookSerialNumbers(DateTime? dtFrom = null, DateTime? dtUpto = null, int? nBookNo = null)
         {
             #region Get GreenBookSerialNumbers limit by 'records'.
             try
             {
                 int records = Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount"));
-                IEnumerable<GreenBookSerialNumberVM> result = _greenBookSerialNumberVMRepository.GetGreenBookSerialNumbers(records, dtFrom, dtUpto);
+                IEnumerable<GreenBookSerialNumberVM> result = _greenBookSerialNumberVMRepository.GetGreenBookSerialNumbers(records, dtFrom, dtUpto, nBookNo);
 
                 if (result != null)
                 {

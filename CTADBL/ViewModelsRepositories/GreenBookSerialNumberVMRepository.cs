@@ -25,7 +25,7 @@ namespace CTADBL.ViewModelsRepositories
 
         #region Get Calls
 
-        public IEnumerable<GreenBookSerialNumberVM> GetGreenBookSerialNumbers(int records, DateTime? dtFrom, DateTime? dtUpto)
+        public IEnumerable<GreenBookSerialNumberVM> GetGreenBookSerialNumbers(int records, DateTime? dtFrom, DateTime? dtUpto, int? nBookNo)
         {
             string addToSql = String.Empty;
             string append = String.Empty;
@@ -33,6 +33,11 @@ namespace CTADBL.ViewModelsRepositories
             {
                 addToSql = String.Format(@"AND dtDate >= '{0}' AND dtDate <= '{1}' ORDER BY dtDate", dtFrom.GetValueOrDefault().ToString("yyyy-MM-dd"), dtUpto.GetValueOrDefault().ToString("yyyy-MM-dd"));
                 append = @"ORDER BY dtDate";
+            }
+            else if (nBookNo != null)
+            {
+                addToSql = String.Format(@"AND nBookNo LIKE '{0}%'", nBookNo);
+                append = @"ORDER BY nBookNo";
             }
             else
             {

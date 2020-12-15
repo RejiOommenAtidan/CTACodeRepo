@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, TextField } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -46,7 +46,8 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
+    paddingRight: '10px'
   },
   dateBoxes: {
     //border: '1px solid red',
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchButton: {
     marginTop: '15px',
-    marginBottom: '5px'
+    paddingLeft: '5px'
   },
   box: {
     marginBottom: theme.spacing(1.5),
@@ -92,6 +93,9 @@ export default () => {
   const [selectData, setSelectData] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [searchBook, setSearchBook] = useState(null);
+  const [isBookSearch, setIsBookSearch] = useState(false);
+  const [isDateSearch, setIsDateSearch] = useState(false);
   const [gbSerialObj, setGBSerialObj] = useState({});
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
@@ -370,11 +374,20 @@ export default () => {
           setAlertMessage('Record updated successfully.');
           setAlertType('success');
           snackbarOpen();
+          if(isDateSearch){
+            filterDates();
+            return;
+          }
+          if(isBookSearch){
+            searchByBookNo();
+            return;
+          }
           loadData();
         }
       })
       .catch(error => {
         setBackdrop(false);
+        setLoading(false);
         setAlertMessage(`Record Updation Failed. \nError:${error.message}.`);
         setAlertType('error');
         snackbarOpen();
@@ -383,10 +396,15 @@ export default () => {
       })
   };
 
-  const loadData = () => {
-    let dateFrom = startDate ? Moment(startDate).format("YYYY-MM-DD") : null;
-    let dateUpto = endDate ? Moment(endDate).format("YYYY-MM-DD") : null;
-    axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/?dtFrom=${dateFrom}&dtUpto=${dateUpto}`)
+  const loadData = (dateFrom = null, dateUpto = null, nBookNo = null) => {
+    let str = '';
+    if(dateFrom !== null && dateUpto !== null){
+      str = `?dtFrom=${dateFrom}&dtUpto=${dateUpto}`;
+    }
+    if(nBookNo !== null){
+      str = `?nBookNo=${nBookNo}`
+    }
+    axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/${str}`)
       .then(resp => {
         if (resp.status === 200) {
           resp.data.forEach((element) => {
@@ -412,13 +430,29 @@ export default () => {
 
   const filterDates = () => {
 
-    let dateFrom = startDate ? Moment(startDate).format("YYYY-MM-DD") : null;
-    let dateUpto = endDate ? Moment(endDate).format("YYYY-MM-DD") : null;
+    let dateFrom = Moment(startDate).isValid() ? Moment(startDate).format("YYYY-MM-DD") : null;
+    let dateUpto = Moment(endDate).isValid() ? Moment(endDate).format("YYYY-MM-DD") : null;
     console.log("Start Date:", dateFrom);
     console.log("Upto Date:", dateUpto);
-    setLoading(true);
-    loadData();
+    
+    if(dateFrom && dateUpto){
+      setIsDateSearch(true);
+      setLoading(true);
+      loadData(dateFrom, dateUpto);
+    }
+    else{
+      setAlertMessage("Enter Valid Dates");
+      setAlertType("error");
+      snackbarOpen();
+    }
 
+  };
+
+  const searchByBookNo = () => {
+    console.log("book no. to search", searchBook);
+    setIsBookSearch(true);
+    setLoading(true);
+    loadData(null, null, searchBook);
   };
 
   useEffect(() => {
@@ -451,6 +485,8 @@ export default () => {
   return (
     <>
       <div className={classes.dateBoxes}>
+       
+          <form onSubmit={(e) => {e.preventDefault(); filterDates();}}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             className={classes.dateField}
@@ -509,15 +545,46 @@ export default () => {
           />
         </MuiPickersUtilsProvider>
         <Button
-          onClick={(filterDates)}
+          type='submit'
+          //onClick={(filterDates)}
           variant={sButtonVariant}
           color={sButtonColor}
           size='small'
           className={classes.searchButton}
         //size={sButtonSize}
         > Search
-                      </Button>
-      </div>
+        </Button>
+        </form>
+        </div>
+        
+        <div className={classes.dateBoxes}>
+          <form onSubmit={(e) => {e.preventDefault(); searchByBookNo()}}>
+          <TextField
+            id='serialBookNo'
+            name='serialBookNo'
+            type='number'
+            label='Enter Book Number'
+            InputProps={{
+              pattern: /[0-9]/,
+              inputProps: { min: 1 }
+            }}
+            className={classes.textField}
+            onChange={(e) => setSearchBook(e.target.value)}
+          />
+          <Button
+          type='submit'
+          //onClick={searchByBookNo}
+          variant={sButtonVariant}
+          color={sButtonColor}
+          size='small'
+          className={classes.searchButton}
+        //size={sButtonSize}
+        > Search
+        </Button>
+          </form>
+        </div>
+
+      
       <Grid container spacing={1}>
 
         <Grid item xs={12}>
