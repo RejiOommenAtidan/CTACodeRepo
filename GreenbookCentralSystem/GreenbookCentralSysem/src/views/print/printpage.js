@@ -314,6 +314,7 @@ export default function EnhancedTable() {
               <Paper elevation={3} style={{ padding: 30 }}>
 
                 <Typography color="textPrimary">Enter Green Book Number To Print:</Typography>
+                <form onSubmit={(e) => {e.preventDefault();search(sGBID);}}>
                 <TextField id="standard-basic" type='number' label="Green Book No."
                   onChange={(e) => { setsGBID(e.target.value) }}
                 />
@@ -321,12 +322,13 @@ export default function EnhancedTable() {
                 { /*     <Button   style={{marginTop:8,marginLeft:5 }} type='submit' onClick={()=>{setHistoryTable(true);setGbId(tempGbId.toString());}}  variant="outlined">Show</Button> */}
                 <Button
                   style={{ marginTop: 8, marginLeft: 5 }}
+                  type='submit'
                   onClick={() => { search(sGBID) }}
                   variant={sButtonVariant}
                   color={sButtonColor}
                   size={sButtonSize}
                 >Search</Button>
-
+                </form>
                 <br />
                 <br />
 
