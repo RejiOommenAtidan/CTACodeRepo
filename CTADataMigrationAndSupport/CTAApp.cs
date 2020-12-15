@@ -1494,26 +1494,29 @@ namespace CTADataMigrationAndSupport
                         foreach (DataRow row in dtNew.Rows)
                         {
                             chatrelPayment.Id = Convert.ToInt32(row["SNo"]);
+                            chatrelPayment.nSNo = Convert.ToInt32(row["SNo"]);
                             chatrelPayment.sGBId = row["IDNo"].ToString();
+                            chatrelPayment.sName = row["Name"].ToString();
+                            chatrelPayment.sPaidBy = row["PaidBy"].ToString();
+                            chatrelPayment.sCurrency = row["Currency"].ToString();
                             chatrelPayment.nChatrelAmount = Convert.ToInt32(row["Chatrel"]);
                             chatrelPayment.nChatrelMeal = Convert.ToInt32(row["Meal"]);
-                            chatrelPayment.nChatrelMeal = Convert.ToInt32(row["Meal"]);
-                            chatrelPayment.nChatrelYear = Convert.ToInt32(row["Year"]);
-                            chatrelPayment.nChatrelLateFeesPercentage = Convert.ToInt32(row["ArrearsPlusLateFees"]);
-                            chatrelPayment.dtArrearsFrom = Convert.ToDateTime(row["ArrearsFrom"]);
-                            chatrelPayment.dtArrearsTo = Convert.ToDateTime(row["ArrearsTo"]);
                             chatrelPayment.nChatrelSalaryAmt = Convert.ToInt32(row["Salary"]);
-                            chatrelPayment.dtChatrelSalaryFrom = Convert.ToDateTime(row["PendigFrom"]);
-                            chatrelPayment.dtChatrelSalaryTo = Convert.ToDateTime(row["PendingTo"]);
+                            chatrelPayment.dtChatrelFrom = Convert.ToDateTime(row["From"] == DBNull.Value ? null : row["From"]);
+                            chatrelPayment.dtChatrelTo = Convert.ToDateTime(row["To"] == DBNull.Value ? null : row["To"]);
+                            chatrelPayment.sChatrelFinancialYear = row["FinancialYear"].ToString();
+                            chatrelPayment.nChatrelArrearsPlusLateFees = Convert.ToInt32(row["ArrearsPlusLateFees"]);
+                            chatrelPayment.dtArrearsFrom = Convert.ToDateTime(row["ArrearsFrom"] == DBNull.Value ? null : row["ArrearsFrom"]);
+                            chatrelPayment.dtArrearsTo = Convert.ToDateTime(row["ArrearsTo"] == DBNull.Value ? null : row["ArrearsTo"]); 
                             chatrelPayment.nChatrelBusinessDonationAmt = Convert.ToInt32(row["BusinessDonation"]);
                             chatrelPayment.nChatrelAdditionalDonationAmt = Convert.ToInt32(row["AdditionalDonation"]);
-                            chatrelPayment.nChatrelTotalAmount = Convert.ToInt32(row["TotalAmout"]);
-                            chatrelPayment.nChatrelRecieptNumber = Convert.ToInt32(row["RecieptNo"]);
-                            chatrelPayment.dtEntered = Convert.ToDateTime(row["PaymentDate"]);
-                            chatrelPayment.nAuthRegionID = Convert.ToInt32(row["Region"]);
-                            chatrelPayment.sCountryID = row["Country"].ToString();
-                            chatrelPayment.sPaymentCurrency = row["CurrencyCode"].ToString();
-
+                            chatrelPayment.nChatrelTotalAmount = Convert.ToInt32(row["TotalAmount"]);
+                            chatrelPayment.nChatrelRecieptNumber = Convert.ToInt32(row["ChatrelRecieptNo"]);
+                            chatrelPayment.dtChatrel = Convert.ToDateTime(row["ChatrelDate"] == DBNull.Value ? null : row["ChatrelDate"]);
+                            chatrelPayment.sAuthRegionName = row["AuthorityRegion"].ToString();
+                            chatrelPayment.sCountryName = row["Country"].ToString();
+                            chatrelPayment.sChatrelStatus = "Sucess";
+                            chatrelPayment.sChatrelMode = row["ModeOfChatrel"].ToString();
 
                         }
 
@@ -1586,7 +1589,8 @@ namespace CTADataMigrationAndSupport
                 {
                     cnn.Open();
                     //string query = "select sGBID," + sDummyColumn + " from tblmadeb Limit 1000";
-                    string query = "select ID as sGBId," + sDummyColumn + " from tblmadeb";
+                    //string query = "select ID as sGBId," + sDummyColumn + " from tblmadeb";
+                    string query = "select ID as sGBId," + sDummyColumn + " from tblmadeb where id >= 38067";
                     MySqlCommand cmd = new MySqlCommand(query, cnn);
                     MySqlDataAdapter returnVal = new MySqlDataAdapter(query, cnn);
                     DataTable dt = new DataTable("tblmadeb");
@@ -1707,54 +1711,62 @@ namespace CTADataMigrationAndSupport
         {
             #region Private  Properties 
             private int _Id;
+            private int _nSNo;
             private string? _sGBId;
+            private string? _sName;
+            private string? _sPaidBy;
+            private string? _sCurrency;
             private decimal? _nChatrelAmount;
             private decimal? _nChatrelMeal;
-            private int? _nChatrelYear;
-            private int? _nChatrelLateFeesPercentage;
-            private decimal? _nArrearsAmount;
+            private decimal? _nChatrelSalaryAmt;
+            private DateTime? _dtChatrelFrom;
+            private DateTime? _dtChatrelTo;
+            private string? _sChatrelFinancialYear;
+            private int? _nChatrelArrearsPlusLateFees;
             private DateTime? _dtArrearsFrom;
             private DateTime? _dtArrearsTo;
-            private decimal? _nChatrelSalaryAmt;
-            private DateTime? _dtChatrelSalaryFrom;
-            private DateTime? _dtChatrelSalaryTo;
-            private decimal? _nChatrelAdditionalDonationAmt;
             private decimal? _nChatrelBusinessDonationAmt;
+            private decimal? _nChatrelAdditionalDonationAmt;
             private decimal? _nChatrelTotalAmount;
             private int? _nChatrelRecieptNumber;
+            private DateTime? _dtChatrel;
             private int? _nAuthRegionID;
+            private string? _sAuthRegionName;
             private string? _sCountryID;
-            private string? _sPaymentStatus;
-            private string? _sPaymentMode;
-            private string? _sPaymentCurrency;
-            private string? _sPaidByGBId;
+            private string? _sCountryName;
+            private string? _sChatrelStatus;
+            private string? _sChatrelMode;
             private DateTime? _dtEntered;
             private int _nEnteredBy;
             #endregion
 
             #region Public Properties
             public int Id { get { return _Id; } set { _Id = value; } }
+            public int nSNo { get { return _nSNo; } set { _nSNo = value; } }
             public string? sGBId { get { return _sGBId; } set { _sGBId = value; } }
+            public string? sName { get { return _sName; } set { _sName = value; } }
+            public string? sPaidBy { get { return _sPaidBy; } set { _sPaidBy = value; } }
+            public string? sCurrency { get { return _sCurrency; } set { _sCurrency = value; } }
             public decimal? nChatrelAmount { get { return _nChatrelAmount; } set { _nChatrelAmount = value; } }
             public decimal? nChatrelMeal { get { return _nChatrelMeal; } set { _nChatrelMeal = value; } }
-            public int? nChatrelYear { get { return _nChatrelYear; } set { _nChatrelYear = value; } }
-            public int? nChatrelLateFeesPercentage { get { return _nChatrelLateFeesPercentage; } set { _nChatrelLateFeesPercentage = value; } }
-            public decimal? nArrearsAmount { get { return _nArrearsAmount; } set { _nArrearsAmount = value; } }
+            public decimal? nChatrelSalaryAmt { get { return _nChatrelSalaryAmt; } set { _nChatrelSalaryAmt = value; } }
+            public DateTime? dtChatrelFrom { get { return _dtChatrelFrom; } set { _dtChatrelFrom = value; } }
+            public DateTime? dtChatrelTo { get { return _dtChatrelTo; } set { _dtChatrelTo = value; } }
+            public string? sChatrelFinancialYear { get { return _sChatrelFinancialYear; } set { _sChatrelFinancialYear = value; } }
+            public int? nChatrelArrearsPlusLateFees { get { return _nChatrelArrearsPlusLateFees; } set { _nChatrelArrearsPlusLateFees = value; } }
             public DateTime? dtArrearsFrom { get { return _dtArrearsFrom; } set { _dtArrearsFrom = value; } }
             public DateTime? dtArrearsTo { get { return _dtArrearsTo; } set { _dtArrearsTo = value; } }
-            public decimal? nChatrelSalaryAmt { get { return _nChatrelSalaryAmt; } set { _nChatrelSalaryAmt = value; } }
-            public DateTime? dtChatrelSalaryFrom { get { return _dtChatrelSalaryFrom; } set { _dtChatrelSalaryFrom = value; } }
-            public DateTime? dtChatrelSalaryTo { get { return _dtChatrelSalaryTo; } set { _dtChatrelSalaryTo = value; } }
-            public decimal? nChatrelAdditionalDonationAmt { get { return _nChatrelAdditionalDonationAmt; } set { _nChatrelAdditionalDonationAmt = value; } }
             public decimal? nChatrelBusinessDonationAmt { get { return _nChatrelBusinessDonationAmt; } set { _nChatrelBusinessDonationAmt = value; } }
+            public decimal? nChatrelAdditionalDonationAmt { get { return _nChatrelAdditionalDonationAmt; } set { _nChatrelAdditionalDonationAmt = value; } }
             public decimal? nChatrelTotalAmount { get { return _nChatrelTotalAmount; } set { _nChatrelTotalAmount = value; } }
             public int? nChatrelRecieptNumber { get { return _nChatrelRecieptNumber; } set { _nChatrelRecieptNumber = value; } }
             public int? nAuthRegionID { get { return _nAuthRegionID; } set { _nAuthRegionID = value; } }
+            public string? sAuthRegionName { get { return _sAuthRegionName; } set { _sAuthRegionName = value; } }
             public string? sCountryID { get { return _sCountryID; } set { _sCountryID = value; } }
-            public string? sPaymentStatus { get { return _sPaymentStatus; } set { _sPaymentStatus = value; } }
-            public string? sPaymentMode { get { return _sPaymentMode; } set { _sPaymentMode = value; } }
-            public string? sPaymentCurrency { get { return _sPaymentCurrency; } set { _sPaymentCurrency = value; } }
-            public string? sPaidByGBId { get { return _sPaidByGBId; } set { _sPaidByGBId = value; } }
+            public string? sCountryName { get { return _sCountryName; } set { _sCountryName = value; } }
+            public string? sChatrelStatus { get { return _sChatrelStatus; } set { _sChatrelStatus = value; } }
+            public string? sChatrelMode { get { return _sChatrelMode; } set { _sChatrelMode = value; } }
+            public DateTime? dtChatrel { get { return _dtChatrel; } set { _dtChatrel = value; } }
             public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
             public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
 
@@ -1771,6 +1783,11 @@ namespace CTADataMigrationAndSupport
             {
                 textBoxDummyProfilePath.Visible = false;
             }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -38,6 +38,8 @@
             this.lblResultRelation = new System.Windows.Forms.Label();
             this.btnNoGBID = new System.Windows.Forms.Button();
             this.tabPageImageMigration = new System.Windows.Forms.TabPage();
+            this.checkBoxDummyProfile = new System.Windows.Forms.CheckBox();
+            this.textBoxDummyProfilePath = new System.Windows.Forms.TextBox();
             this.lblResult = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnImageMigration = new System.Windows.Forms.Button();
@@ -87,8 +89,6 @@
             this.txtLogFolderPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.progressBarProcess = new System.Windows.Forms.ProgressBar();
-            this.textBoxDummyProfilePath = new System.Windows.Forms.TextBox();
-            this.checkBoxDummyProfile = new System.Windows.Forms.CheckBox();
             this.tabControlCTA.SuspendLayout();
             this.tabPageRelationDataClincing.SuspendLayout();
             this.tabPageImageMigration.SuspendLayout();
@@ -210,6 +210,27 @@
             this.tabPageImageMigration.Text = "Image Migration";
             this.tabPageImageMigration.UseVisualStyleBackColor = true;
             // 
+            // checkBoxDummyProfile
+            // 
+            this.checkBoxDummyProfile.AutoSize = true;
+            this.checkBoxDummyProfile.Checked = true;
+            this.checkBoxDummyProfile.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxDummyProfile.Location = new System.Drawing.Point(270, 53);
+            this.checkBoxDummyProfile.Name = "checkBoxDummyProfile";
+            this.checkBoxDummyProfile.Size = new System.Drawing.Size(117, 19);
+            this.checkBoxDummyProfile.TabIndex = 36;
+            this.checkBoxDummyProfile.Text = "Is Dummy Profile";
+            this.checkBoxDummyProfile.UseVisualStyleBackColor = true;
+            this.checkBoxDummyProfile.CheckedChanged += new System.EventHandler(this.checkBoxDummyProfile_CheckedChanged);
+            // 
+            // textBoxDummyProfilePath
+            // 
+            this.textBoxDummyProfilePath.Location = new System.Drawing.Point(393, 51);
+            this.textBoxDummyProfilePath.Name = "textBoxDummyProfilePath";
+            this.textBoxDummyProfilePath.Size = new System.Drawing.Size(346, 23);
+            this.textBoxDummyProfilePath.TabIndex = 35;
+            this.textBoxDummyProfilePath.Text = "D:\\Reji\\CTA-Chatrel\\CTADataMigrationAndSupport\\avatars\\";
+            // 
             // lblResult
             // 
             this.lblResult.AutoSize = true;
@@ -256,7 +277,7 @@
             this.tabPageCTAChartel.Location = new System.Drawing.Point(4, 24);
             this.tabPageCTAChartel.Name = "tabPageCTAChartel";
             this.tabPageCTAChartel.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCTAChartel.Size = new System.Drawing.Size(759, 432);
+            this.tabPageCTAChartel.Size = new System.Drawing.Size(759, 435);
             this.tabPageCTAChartel.TabIndex = 2;
             this.tabPageCTAChartel.Text = "CTA Chartel";
             this.tabPageCTAChartel.UseVisualStyleBackColor = true;
@@ -344,7 +365,7 @@
             this.tabPageDummyData.Location = new System.Drawing.Point(4, 24);
             this.tabPageDummyData.Name = "tabPageDummyData";
             this.tabPageDummyData.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDummyData.Size = new System.Drawing.Size(759, 432);
+            this.tabPageDummyData.Size = new System.Drawing.Size(759, 435);
             this.tabPageDummyData.TabIndex = 3;
             this.tabPageDummyData.Text = "CTA Dummy Data";
             this.tabPageDummyData.UseVisualStyleBackColor = true;
@@ -685,7 +706,7 @@
             this.tabPageBulkInsert.Controls.Add(this.textBox2);
             this.tabPageBulkInsert.Location = new System.Drawing.Point(4, 24);
             this.tabPageBulkInsert.Name = "tabPageBulkInsert";
-            this.tabPageBulkInsert.Size = new System.Drawing.Size(759, 432);
+            this.tabPageBulkInsert.Size = new System.Drawing.Size(759, 435);
             this.tabPageBulkInsert.TabIndex = 6;
             this.tabPageBulkInsert.Text = "Chatrel Bulk Insert";
             this.tabPageBulkInsert.UseVisualStyleBackColor = true;
@@ -699,6 +720,7 @@
             this.btnSave.TabIndex = 3;
             this.btnSave.Text = "Save Records";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnUploadfile
             // 
@@ -749,27 +771,6 @@
             this.progressBarProcess.Name = "progressBarProcess";
             this.progressBarProcess.Size = new System.Drawing.Size(763, 23);
             this.progressBarProcess.TabIndex = 20;
-            // 
-            // textBoxDummyProfilePath
-            // 
-            this.textBoxDummyProfilePath.Location = new System.Drawing.Point(393, 51);
-            this.textBoxDummyProfilePath.Name = "textBoxDummyProfilePath";
-            this.textBoxDummyProfilePath.Size = new System.Drawing.Size(346, 23);
-            this.textBoxDummyProfilePath.TabIndex = 35;
-            this.textBoxDummyProfilePath.Text = "D:\\Reji\\CTA-Chatrel\\CTADataMigrationAndSupport\\avatars\\";
-            // 
-            // checkBoxDummyProfile
-            // 
-            this.checkBoxDummyProfile.AutoSize = true;
-            this.checkBoxDummyProfile.Checked = true;
-            this.checkBoxDummyProfile.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDummyProfile.Location = new System.Drawing.Point(270, 53);
-            this.checkBoxDummyProfile.Name = "checkBoxDummyProfile";
-            this.checkBoxDummyProfile.Size = new System.Drawing.Size(117, 19);
-            this.checkBoxDummyProfile.TabIndex = 36;
-            this.checkBoxDummyProfile.Text = "Is Dummy Profile";
-            this.checkBoxDummyProfile.UseVisualStyleBackColor = true;
-            this.checkBoxDummyProfile.CheckedChanged += new System.EventHandler(this.checkBoxDummyProfile_CheckedChanged);
             // 
             // CTAApp
             // 
