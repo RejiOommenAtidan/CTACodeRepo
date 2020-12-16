@@ -170,11 +170,14 @@ export default function Report() {
             }
             else{
             let x = 1;
+            let total=0;
             resp.data.forEach((element) => {
               //element.dtFormattedIssuedDate = element.dtIssuedDate ? Moment(element.dtIssuedDate).format(sDateFormat) : null;
               element.no=x;
+              total=total+element.nCount;
               x=x+1;
             })
+            resp.data.push({'no':'','individualPlace':'Total','nCount':total})
             SetIssuedIndividualData(resp.data);
           }
           }
