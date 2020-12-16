@@ -146,7 +146,7 @@ namespace CTAWebAPI.Controllers.Masters
                         _chatrelRepository.Update(chatrel);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedChatrel, chatrel, null, null, 25, fetchedChatrel.Id, chatrel.nEnteredBy);
+                        CTALogger.LogAuditRecord(fetchedChatrel, chatrel, null, null, 31, fetchedChatrel.Id, chatrel.nEnteredBy);
                         #endregion
 
                         #region Alert Logging 

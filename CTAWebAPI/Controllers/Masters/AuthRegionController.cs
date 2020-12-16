@@ -186,7 +186,7 @@ namespace CTAWebAPI.Controllers.Masters
                         if (updated > 0)
                         {
                             #region Audit Log
-                            CTALogger.LogAuditRecord(region, regionToUpdate, null, null, 27, region.ID, regionToUpdate.nUpdatedBy);
+                            CTALogger.LogAuditRecord(region, regionToUpdate, null, null, 22, region.ID, regionToUpdate.nUpdatedBy);
                             #endregion
 
                             #region Alert Logging

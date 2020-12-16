@@ -160,7 +160,7 @@ namespace CTAWebAPI.Controllers.Masters
                         _qualificationRepository.Update(qualification);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedqualification, qualification, null, null, 31, fetchedqualification.Id, qualification.nUpdatedBy);
+                        CTALogger.LogAuditRecord(fetchedqualification, qualification, null, null, 26, fetchedqualification.Id, qualification.nUpdatedBy);
                         #endregion
 
                         #region Alert Logging 

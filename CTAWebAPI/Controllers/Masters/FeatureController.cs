@@ -156,7 +156,7 @@ namespace CTAWebAPI.Controllers.Masters
                         _featureRepository.Update(feature);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedFeature, feature, null, null, 33, fetchedFeature.Id, feature.nUpdatedBy);
+                        CTALogger.LogAuditRecord(fetchedFeature, feature, null, null, 28, fetchedFeature.Id, feature.nUpdatedBy);
                         #endregion
 
                         #region Alert Logging 

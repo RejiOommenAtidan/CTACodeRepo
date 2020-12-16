@@ -523,7 +523,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _greenbookRepository.Update(greenbook);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedGreenbook, greenbook, greenbook.sGBID, greenbook.nAuthRegionID, 7, fetchedGreenbook.Id, greenbook.nUpdatedBy);
+                        CTALogger.LogAuditRecord(fetchedGreenbook, greenbook, greenbook.sGBID, greenbook.nAuthRegionID, 16, fetchedGreenbook.Id, greenbook.nUpdatedBy);
                         #endregion
 
                         #region Alert Logging 
@@ -820,7 +820,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _gbNoteRepository.Update(gBNote);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedGBNote, gBNote, fetchedGBNote.sGBID, fetchedGB.nAuthRegionID, 7, fetchedGBNote.Id, (int)gBNote.nEnteredBy);
+                        CTALogger.LogAuditRecord(fetchedGBNote, gBNote, fetchedGBNote.sGBID, fetchedGB.nAuthRegionID, 16, fetchedGBNote.Id, (int)gBNote.nEnteredBy);
                         #endregion
 
                         #region Alert Logging 
@@ -967,7 +967,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _greenbookRepository.Update(parent);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedGBChild, gBChild, fetchedGBChild.sGBIDParent, fetchedGB.nAuthRegionID, 7, fetchedGBChild.Id, (int)gBChild.nEnteredBy);
+                        CTALogger.LogAuditRecord(fetchedGBChild, gBChild, fetchedGBChild.sGBIDParent, fetchedGB.nAuthRegionID, 16, fetchedGBChild.Id, (int)gBChild.nEnteredBy);
                         #endregion
 
                         #region Alert Logging 
@@ -1098,7 +1098,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _gbDocumentRepository.Update(gBDocument);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedGBDocument, gBDocument, fetchedGBDocument.sGBID, fetchedGB.nAuthRegionID, 7, fetchedGBDocument.Id, gBDocument.nEnteredBy);
+                        CTALogger.LogAuditRecord(fetchedGBDocument, gBDocument, fetchedGBDocument.sGBID, fetchedGB.nAuthRegionID, 16, fetchedGBDocument.Id, gBDocument.nEnteredBy);
                         #endregion
 
                         #region Alert Logging 

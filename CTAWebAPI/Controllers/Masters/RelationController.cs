@@ -159,7 +159,7 @@ namespace CTAWebAPI.Controllers.Masters
                         _relationRepository.Update(relation);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedrelation, relation, null, null, 32, fetchedrelation.Id, relation.nUpdatedBy);
+                        CTALogger.LogAuditRecord(fetchedrelation, relation, null, null, 27, fetchedrelation.Id, relation.nUpdatedBy);
                         #endregion
 
                         #region Alert Logging 

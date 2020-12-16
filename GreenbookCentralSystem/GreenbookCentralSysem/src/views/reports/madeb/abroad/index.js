@@ -253,12 +253,19 @@ export default function Report() {
               }
               else{
               let x = 1;
+              let total={'no':'','sPlaceName':'Total','madebPending':0,'madebIssued':0,'madebRejected':0,'madebDouble':0,'madebCancelled':0,'madebTotalReceived':0};
               resp.data.forEach((element) => {
-                          
+                           //element.dtFormattedIssuedDate = element.dtIssuedDate ? Moment(element.dtIssuedDate).format(sDateFormat) : null;
                            element.no=x;
                            x=x+1;
-                           
+                           total.madebPending += element.madebPending;
+                           total.madebIssued += element.madebIssued;
+                           total.madebRejected += element.madebRejected;
+                           total.madebDouble += element.madebDouble;
+                           total.madebCancelled += element.madebCancelled;
+                           total.madebTotalReceived += element.madebTotalReceived; 
                          })
+                         resp.data.push(total);
               SetAbroadData(resp.data);
               console.log(resp.data);
                         }
