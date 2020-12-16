@@ -950,6 +950,22 @@ namespace CTAWebAPI.Controllers.Transactions
                         gBChild.dtEntered = fetchedGBChild.dtEntered;
                         _gbChildrenRepository.Update(gBChild);
 
+                        Greenbook parent = _greenbookRepository.GetGreenbookByGBID(gBChild.sGBIDParent);
+                        if (gBChild.sGender == "M" && fetchedGBChild.sGender == "F")
+                        {
+                            parent.nChildrenM = parent.nChildrenM + 1;
+                            parent.nChildrenF = parent.nChildrenF - 1;
+                        }
+                        if (gBChild.sGender == "F" && fetchedGBChild.sGender == "M")
+                        {
+                            parent.nChildrenM = parent.nChildrenM - 1;
+                            parent.nChildrenF = parent.nChildrenF + 1;
+                        }
+                        
+                        parent.nUpdatedBy = gBChild.nEnteredBy;
+                        parent.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        _greenbookRepository.Update(parent);
+
                         #region Audit Log
                         CTALogger.LogAuditRecord(fetchedGBChild, gBChild, fetchedGBChild.sGBIDParent, fetchedGB.nAuthRegionID, 7, fetchedGBChild.Id, (int)gBChild.nEnteredBy);
                         #endregion
