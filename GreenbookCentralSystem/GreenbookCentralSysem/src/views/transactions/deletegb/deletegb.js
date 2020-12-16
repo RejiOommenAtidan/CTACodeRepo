@@ -96,6 +96,7 @@ export default function GiveGBId() {
   };
 
   const submit = () => {
+    setOpenDialog(false);
     setBackdrop(true);
       axios.post(`GreenBook/DeleteGreenBookByGBID/?sGBID=` + sGBID)
         .then(resp => {

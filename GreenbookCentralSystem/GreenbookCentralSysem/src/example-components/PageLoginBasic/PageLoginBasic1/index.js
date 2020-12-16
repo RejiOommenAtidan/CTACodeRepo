@@ -118,8 +118,8 @@ export default function LogingPage(props) {
                             //fullWidth
                             variant="outlined"
                             type="text"
-                            label="Username"
-                            InputProps={{
+                            //label="Username"
+                            label={<span style={{color: errors.name_sUsername && 'red' }}>Username</span>}                            InputProps={{
                               startAdornment: (
                                 <InputAdornment position="start">
                                   <PermIdentityIcon />
@@ -134,15 +134,15 @@ export default function LogingPage(props) {
                               required: true
                             })}
                           />
-                          {_.get("name_sUsername.type", errors) === "required" && (
+                          {/* {_.get("name_sUsername.type", errors) === "required" && (
                             <span style={{ color: 'red' }}>Please Enter Username</span>
-                          )}
+                          )} */}
                         </div>
                         <div className="mb-3 text-center">
                           <TextField
                             //fullWidth
                             variant="outlined"
-                            label="Password"
+                            label={<span style={{color: errors.name_sPassword && 'red' }}>Password</span>} 
                             type="password"
                             InputProps={{
                               startAdornment: (
@@ -159,9 +159,9 @@ export default function LogingPage(props) {
                               required: true
                             })}
                           />
-                          {_.get("name_sPassword.type", errors) === "required" && (
+                          {/* {_.get("name_sPassword.type", errors) === "required" && (
                             <span style={{ color: 'red' }}>Please Enter Password</span>
-                          )}
+                          )} */}
                         </div>
                         <div className="text-center py-4">
                           <Button className="btn-second font-weight-bold my-2" type="submit">
