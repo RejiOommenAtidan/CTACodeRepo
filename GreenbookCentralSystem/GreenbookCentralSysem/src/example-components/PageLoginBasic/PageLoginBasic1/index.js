@@ -119,7 +119,10 @@ export default function LogingPage(props) {
                             variant="outlined"
                             type="text"
                             //label="Username"
-                            label={<span style={{color: errors.name_sUsername && 'red' }}>Username</span>}                            InputProps={{
+                            label={<span style={{color: errors.name_sUsername && 'red' }}>Username</span>}
+                            error={errors.name_sUsername}
+                            helperText={errors.name_sUsername && 'Please Enter Username'}
+                            InputProps={{
                               startAdornment: (
                                 <InputAdornment position="start">
                                   <PermIdentityIcon />
@@ -143,6 +146,8 @@ export default function LogingPage(props) {
                             //fullWidth
                             variant="outlined"
                             label={<span style={{color: errors.name_sPassword && 'red' }}>Password</span>} 
+                            error={errors.name_sPassword}
+                            helperText={errors.name_sPassword && 'Please Enter Password'}
                             type="password"
                             InputProps={{
                               startAdornment: (
