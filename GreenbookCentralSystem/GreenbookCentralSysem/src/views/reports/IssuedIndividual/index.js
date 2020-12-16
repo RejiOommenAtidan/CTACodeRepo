@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 //import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Moment from 'moment';
 import {
   Box,
@@ -63,6 +64,7 @@ export default function Report() {
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
     const classes = useStyles();
+    let history = useHistory();
     const [issuedIndividualData, SetIssuedIndividualData] = React.useState([]);
     const [madebTypeData, SetMadebTypeData] = React.useState();
     const [madebType, SetMadebType] = React.useState('');
@@ -86,6 +88,25 @@ export default function Report() {
     const [backdrop, setBackdrop] = React.useState(false);
     const [filtering, setFiltering] = React.useState(false);
     const columns=[
+      {
+        field: "no",
+        title: "#",
+        filterPlaceholder: 'Search..',
+        width:'5%',
+        //hidden:true,
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
       {
         field: "nGBId",
         title: "GBID",
@@ -187,10 +208,20 @@ export default function Report() {
         .then(resp => {
           if (resp.status === 200) {
             setBackdrop(false);
+            if(resp.data.length==0){
+              setAlertMessage('No Records to display');
+              setAlertType('info');
+              snackbarOpen();
+            }
+            else{
+            let x = 1;
             resp.data.forEach((element) => {
               element.dtFormattedIssuedDate = element.dtIssuedDate ? Moment(element.dtIssuedDate).format(sDateFormat) : null;
+              element.no=x;
+              x=x+1;
             })
             SetIssuedIndividualData(resp.data);
+          }
           }
         })
         .catch(error => {
@@ -307,7 +338,7 @@ export default function Report() {
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
                                         { issuedIndividualData.length >0 &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetIssuedIndividualData([]);}} >Clear</Button>
+                                        <Button type="button" variant='outlined' onClick={()=>{history.go(0);}} >Clear</Button>
                                         }
                                     </FormControl>
 
