@@ -726,7 +726,7 @@ const SidebarMenu = (props) => {
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/GreenBookIssuedOverall">
-                          Green Book Issued Over All
+                          Green Book Issued Overall
                     </NavLink>
                       </li>}
                     {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 34)) !== undefined

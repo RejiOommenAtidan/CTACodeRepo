@@ -1,47 +1,22 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-//import { useNavigate } from 'react-router-dom';
 import Moment from 'moment';
 import {
-  Box,
-  Container,
-  Grid,
   Button,
-  Typography,
   FormControl,
   TextField,
-  Breadcrumbs,
-  Link,
-  Paper,
-  Checkbox,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-  Table,
-  TableBody,
-  TableHead,
-  TableCell,
-  TableRow,
-  Select,
-  InputLabel,
-  MenuItem
-  
+  Paper
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Rowing } from '@material-ui/icons';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons ,sDateFormat} from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
-import { aPageSizeArray } from '../../../config/commonConfig';
-import { nPageSize } from '../../../config/commonConfig';
-import { useForm, Controller } from "react-hook-form";
 import { Alerts } from '../../alerts';
 import _ from "lodash/fp";
 import { BackdropComponent } from '../../backdrop/index';
-const tableIcons = oTableIcons;
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -66,23 +41,22 @@ export default function Report() {
 
   let history = useHistory();
 
-  const [pageSize, setpageSize] = useState(nPageSize);
-  const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
-    const classes = useStyles();
-    const [changesLogData, SetChangesLogData] = React.useState([]);
-    
-    const [dtFrom, SetdtFrom] = React.useState('');
-    
-    const [filtering, setFiltering] = React.useState(false);
-    const [backdrop, setBackdrop] = React.useState(false);
+  const classes = useStyles();
+  const [changesLogData, SetChangesLogData] = React.useState([]);
 
-    //Alert
+  const [dtFrom, SetdtFrom] = React.useState('');
+
+  const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
+  const [backdrop, setBackdrop] = React.useState(false);
+
+  //Alert
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const alertObj = {
     alertMessage: alertMessage,
     alertType: alertType
-  }
+  };
   const [snackbar, setSnackbar] = React.useState(false);
   const snackbarOpen = () => {
     setSnackbar(true);
@@ -90,277 +64,284 @@ export default function Report() {
   const snackbarClose = () => {
     setSnackbar(false);
   };
-  const columns=[
+  const columns = [
     {
       field: "no",
       title: "#",
       filterPlaceholder: 'Search..',
-      width:'5%',
+      width: '5%',
       //hidden:true,
       headerStyle: {
         padding: '5px',
-        
+
         textAlign: 'center'
       },
       cellStyle: {
         // padding:'0px',
         padding: '5px',
-        
+
         textAlign: 'center'
 
       },
     },
     {
       field: "sGBId",
-      title: "GBID",
+      title: "GB ID",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
-        
+
         textAlign: 'center'
       },
       cellStyle: {
         // padding:'0px',
         padding: '5px',
-        
+
         textAlign: 'center'
 
       },
     },
     {
       field: "sName",
-      title: "Name",
+      title: "NAME",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
-        
+
         textAlign: 'center'
       },
       cellStyle: {
         // padding:'0px',
         padding: '5px',
-        
+
         textAlign: 'left'
 
       },
     },
     {
       field: "sFeature",
-      title: "Feature",
+      title: "FEATURE",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
-        
+
         textAlign: 'center'
       },
       cellStyle: {
         // padding:'0px',
         padding: '5px',
-        
+
         textAlign: 'left'
 
       },
     },
-    
+
     {
       field: "sFieldValuesOld",
-      title: "Old Value",
+      title: "OLD VALUE",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
-        
+
         textAlign: 'center'
       },
       cellStyle: {
         // padding:'0px',
         padding: '5px',
-        
+
         textAlign: 'left'
 
       },
     },
     {
       field: "sFieldValuesNew",
-      title: "New Value",
+      title: "NEW VALUE",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
-        
+
         textAlign: 'center'
       },
       cellStyle: {
         // padding:'0px',
         padding: '5px',
-        
+
         textAlign: 'left'
 
       },
     },
     {
       field: "sFullName",
-      title: "Entered By",
+      title: "ENTERED BY",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
-        
+
         textAlign: 'center'
       },
       cellStyle: {
         // padding:'0px',
         padding: '5px',
-        
+
         textAlign: 'left'
 
       },
     },
     {
       field: "dtFormattedEntered",
-      title: "Date Entered",
-     // render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
+      title: "DATE ENTERED",
+      // render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
-        
+
         textAlign: 'center'
       },
       cellStyle: {
         // padding:'0px',
         padding: '5px',
-        
+
         textAlign: 'center'
 
       },
     },
   ]
-    const changesLog=()=>{
-        if(dtFrom === ''){
-          setAlertMessage('Date From field is required !');
-          setAlertType('error');
-          snackbarOpen();
+  const changesLog = () => {
+    if (dtFrom === '') {
+      setAlertMessage('Date From field is required !');
+      setAlertType('error');
+      snackbarOpen();
 
-        }
-        else{
-          setBackdrop(true);
-          axios.get(`/Report/GetReportCTAChangesLog/?&dtRecordFrom=`+dtFrom)
-          .then(resp => {
-            
-            if (resp.status === 200) {
-              setBackdrop(false);
-              if(resp.data.length==0){
-                setAlertMessage('No Records to display');
-                setAlertType('info');
-                snackbarOpen();
-              }
-              else{
-              let x=1;
+    }
+    else {
+      setBackdrop(true);
+      axios.get(`/Report/GetReportCTAChangesLog/?&dtRecordFrom=` + dtFrom)
+        .then(resp => {
+
+          if (resp.status === 200) {
+            setBackdrop(false);
+            if (resp.data.length == 0) {
+              setAlertMessage('No Records to display');
+              setAlertType('info');
+              snackbarOpen();
+            }
+            else {
+              let x = 1;
               resp.data.forEach((element) => {
-                element.no=x;
-                x=x+1;
+                element.no = x;
+                x = x + 1;
                 element.dtFormattedEntered = element.dtEntered ? Moment(element.dtEntered).format(sDateFormat) : null;
               })
               SetChangesLogData(resp.data);
               console.log(resp.data);
             }
-            }
-          })
-          .catch(error => {
-            if (error.response) {
-              console.error(error.response.data);
-              console.error(error.response.status);
-              console.error(error.response.headers);
-            } else if (error.request) {
-              console.warn(error.request);
-            } else {
-              console.error('Error', error.message);
-            }
-            console.log(error.config);
-          })
-          .then(release => {
-            //console.log(release); => udefined
-          });
-        }
-
-      
-     
+          }
+        })
+        .catch(error => {
+          if (error.response) {
+            console.error(error.response.data);
+            console.error(error.response.status);
+            console.error(error.response.headers);
+          } else if (error.request) {
+            console.warn(error.request);
+          } else {
+            console.error('Error', error.message);
+          }
+          console.log(error.config);
+        })
+        .then(release => {
+          //console.log(release); => udefined
+        });
     }
-   
-    return (
+
+
+
+  }
+
+  return (
     <>
-      <Paper style={{padding:'30px',textAlign:'center'}} >
+      <Paper style={{ padding: '30px', textAlign: 'center' }} >
         <h1>Changes Log Report</h1>
 
-                                        <FormControl className={classes.formControl}>
-                                        
-                                          <TextField
-                                            type="date" 
-                                            id='dtFrom'
-                                            name='dtFrom'
-                                            onChange={(e)=>{SetdtFrom(e.target.value);}}
-                                             value={dtFrom} 
-                                            label="Date From"
-                                            className={classes.textField}
-                                            InputLabelProps={{
-                                              shrink: true,
-                                            }}
-                                   
-                                          />
-                                         
-                                       </FormControl>
-                                       <FormControl className={classes.formControl}>
-                                        <Button type="button" variant='outlined' value="Report" onClick={()=>{changesLog();}} >Show</Button>
-                                        </FormControl>
-                                   <FormControl className={classes.formControl}>
-                                        { changesLogData.length >0 &&
-                                        <Button type="button" variant='outlined' onClick={()=>{history.go(0);}} >Clear</Button>
-                                        }
-                                    </FormControl>
-                                  
+        <FormControl className={classes.formControl}>
 
-            {
-                changesLogData.length >0 && 
-              
-                  <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
-                    //isLoading={isLoading}
-                    icons={tableIcons}
-                    title="Changes Log"
-                    columns={columns}
-                    data={changesLogData}
-                    /*options={{
-                      filtering,
-                      exportButton: true,
-                      exportAllData: true,
-                      headerStyle: {
-                        padding: '0',
-                        paddingLeft: '10px',
-                        border: '1px solid lightgrey',
-                      },
-                      pageSize: pageSize,
-                      pageSizeOptions: pageSizeArray
-                    }}*/
-                    options={{ ...oOptions, tableLayout: "fixed" }}
-                    actions={[
-        
-                      {
-                        icon: Search,
-                        tooltip: 'Show Filter',
-                        isFreeAction: true,
-                        onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
-                      }
-                    ]}
-                  />
-            }
+          <TextField
+            type="date"
+            id='dtFrom'
+            name='dtFrom'
+            onChange={(e) => { SetdtFrom(e.target.value); }}
+            value={dtFrom}
+            label="Date From"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+
+          />
+
+        </FormControl>
+        <FormControl className={classes.formControl}>
+          <Button
+            type="button"
+            size={sButtonSize}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            value="Report" onClick={() => { changesLog(); }} >Show</Button>
+        </FormControl>
+        <FormControl className={classes.formControl}>
+          {changesLogData.length > 0 &&
+            <Button
+              type="button"
+              size={sButtonSize}
+              color={sButtonColor}
+              variant={sButtonVariant}
+              onClick={() => { history.go(0); }} >Clear</Button>
+          }
+        </FormControl>
 
 
+        {
+          changesLogData.length > 0 &&
 
+          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+            //isLoading={isLoading}
+            icons={oTableIcons}
+            title="Changes Log"
+            columns={columns}
+            data={changesLogData}
+            /*options={{
+              filtering,
+              exportButton: true,
+              exportAllData: true,
+              headerStyle: {
+                padding: '0',
+                paddingLeft: '10px',
+                border: '1px solid lightgrey',
+              },
+              pageSize: pageSize,
+              pageSizeOptions: pageSizeArray
+            }}*/
+            options={{ ...oOptions, tableLayout: "fixed" }}
+            actions={[
+
+              {
+                icon: Search,
+                tooltip: 'Toggle Filter',
+                isFreeAction: true,
+                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+              }
+            ]}
+          />
+        }
       </Paper>
       {snackbar && <Alerts
-            alertObj={alertObj}
-            snackbar={snackbar}
-            snackbarClose={snackbarClose}
-          />}
-           {backdrop && <BackdropComponent
-            backdrop={backdrop}
-          />}
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />}
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
+      />}
     </>
   );
 }
