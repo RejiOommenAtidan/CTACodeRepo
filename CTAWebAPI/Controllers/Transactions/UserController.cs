@@ -223,7 +223,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _userRepository.Update(user);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedUser, user, null, null, 5, fetchedUser.Id, user.nUpdatedBy);
+                        CTALogger.LogAuditRecord(fetchedUser, user, null, null, 18, fetchedUser.Id, user.nUpdatedBy);
                         #endregion
 
                         #region Alert Logging 

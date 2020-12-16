@@ -186,8 +186,12 @@ namespace CTAWebAPI.Controllers.Transactions
                         //featureUserright.nEnteredBy;: TODO
                         _featureUserrightsRepository.Update(featureUserright);
 
-                        #region Alert Logging 
-                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, featureUserright.nEnteredBy);
+                    #region Audit Log
+                    CTALogger.LogAuditRecord(fetchedFeatureUserright, featureUserright, null, null, 19, fetchedFeatureUserright.Id, featureUserright.nEnteredBy);
+                    #endregion
+
+                    #region Alert Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 3), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called", null, featureUserright.nEnteredBy);
                         #endregion
 
                         return Ok("Mapping with ID: " + Id + " updated Successfully");

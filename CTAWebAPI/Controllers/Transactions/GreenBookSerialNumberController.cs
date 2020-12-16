@@ -286,7 +286,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _greenBookSerialNumberRepository.Update(gbsn);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetch, gbsn, fetch.sGBID, fetch.nAuthRegionId, 11, fetch.Id, gbsn.nUpdatedBy);
+                        CTALogger.LogAuditRecord(fetch, gbsn, fetch.sGBID, fetch.nAuthRegionId, 12, fetch.Id, gbsn.nUpdatedBy);
                         #endregion
 
                         #region Alert Logging 

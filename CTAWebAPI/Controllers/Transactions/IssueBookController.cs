@@ -184,7 +184,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _issueBookRepository.Update(issueBook);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedIssueBook, issueBook, issueBook.nGBID.ToString(), issueBook.nAuthRegionId, 8, fetchedIssueBook.Id, issueBook.nUpdatedBy);
+                        CTALogger.LogAuditRecord(fetchedIssueBook, issueBook, issueBook.nGBID.ToString(), issueBook.nAuthRegionId, 14, fetchedIssueBook.Id, issueBook.nUpdatedBy);
                         #endregion
 
                         #region Alert Logging 
