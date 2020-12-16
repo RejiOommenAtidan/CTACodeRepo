@@ -165,11 +165,11 @@ export default function FeatureUserrights() {
             .then(resp => {
               if (resp.status === 200) {
                 setdataAPI(resp.data.lFeatureUserRightsPivot);
-                setAlertMessage("Mapping Changed Successfully");
+                setAlertMessage("Mapping Changed Successfully, Hold on Page Being Refreshed");
                 setAlertType('success');
                 snackbarOpen();
                 setBackdrop(false);
-                setTimeout(() => { window.location.reload(); }, 3000);
+                setTimeout(() => { window.location.reload(); }, 2000);
               }
             })
             .catch(error => {
@@ -236,11 +236,10 @@ export default function FeatureUserrights() {
                   id="id_bRights"
                   //checked={rowData["aUserRights"][role.id-1] === 1 ? true : false}
                   //5 is for Admin
-                  //1-Login
-                  //2-Home
-                  //3-Search
-                  //34-Change Password
-                  disabled={role.id === 5 || rowData.nFeatureID === 1 || rowData.nFeatureID === 2 || rowData.nFeatureID === 3 || rowData.nFeatureID === 34}
+                  //1-Home
+                  //2-Search
+                  //46-Change Password
+                  disabled={role.id === 5 || rowData.nFeatureID === 1 || rowData.nFeatureID === 2 || rowData.nFeatureID === 46}
                   checked={rowData["aUserRights"][role.id - 1]}
                   onChange={() => { handleClickOpen(rowData, role.sUserRightsName, role.id) }}
                 />

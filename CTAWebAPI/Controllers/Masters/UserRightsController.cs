@@ -121,11 +121,10 @@ namespace CTAWebAPI.Controllers.Masters
                     IEnumerable<Feature> lFeatures = _featureRepository.GetAllFeatures();
                     foreach(Feature oFeature in lFeatures)
                     {
-                        //1-Login
-                        //2-Home
-                        //3-Search
-                        //34-Change Password
-                        if (oFeature.Id == 1 || oFeature.Id == 2 || oFeature.Id == 3 || oFeature.Id == 34)
+                        //1-Home
+                        //2-Search
+                        //46-Change Password
+                        if (oFeature.Id == 1 || oFeature.Id == 2 || oFeature.Id == 46)
                         {
                             FeatureUserrights lnkFeatureUserrights = new FeatureUserrights
                             {

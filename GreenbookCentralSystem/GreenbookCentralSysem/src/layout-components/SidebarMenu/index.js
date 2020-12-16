@@ -148,7 +148,7 @@ const SidebarMenu = (props) => {
         {sidebarUserbox && <SidebarUserbox />}
         <div className="sidebar-navigation">
           <ul>
-            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 2)) !== undefined
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 1)) !== undefined
               &&
               <li>
                 <NavLink
@@ -162,7 +162,7 @@ const SidebarMenu = (props) => {
                 Home
               </NavLink>
               </li>}
-            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 3)) !== undefined
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 2)) !== undefined
               &&
               <li>
                 <NavLink
@@ -178,7 +178,9 @@ const SidebarMenu = (props) => {
               </li>}
             {authUser
               &&
-              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 4)) !== undefined
+              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 3)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 4)) !== undefined
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 5)) !== undefined
                 ||
@@ -186,9 +188,7 @@ const SidebarMenu = (props) => {
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 7)) !== undefined
                 ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 8)) !== undefined
-                ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 9)) !== undefined)
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 8)) !== undefined)
               &&
               <li>
                 <a
@@ -205,7 +205,7 @@ const SidebarMenu = (props) => {
                 </a>
                 <Collapse in={madebOpen}>
                   <ul>
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 4)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 3)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -214,7 +214,7 @@ const SidebarMenu = (props) => {
                           Sarso Madeb
                     </NavLink>
                       </li>}
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 5)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 4)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -223,7 +223,7 @@ const SidebarMenu = (props) => {
                           Norchoe Madeb
                     </NavLink>
                       </li>}
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 6)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 5)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -232,7 +232,7 @@ const SidebarMenu = (props) => {
                           Bhorlak Madeb
                     </NavLink>
                       </li>}
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 7)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 6)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -241,7 +241,7 @@ const SidebarMenu = (props) => {
                           Book Full
                     </NavLink>
                       </li>}
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 8)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 7)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -250,7 +250,7 @@ const SidebarMenu = (props) => {
                           Brief GB
                     </NavLink>
                       </li>}
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 9)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 8)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -262,7 +262,7 @@ const SidebarMenu = (props) => {
                   </ul>
                 </Collapse>
               </li>}
-            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 10)) !== undefined
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 9)) !== undefined
               &&
               <li>
                 <NavLink
@@ -276,7 +276,7 @@ const SidebarMenu = (props) => {
                   Give GB ID
                 </NavLink>
               </li>}
-            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 11)) !== undefined
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 10)) !== undefined
               &&
               <li>
                 <NavLink
@@ -291,9 +291,9 @@ const SidebarMenu = (props) => {
                   </NavLink>
               </li>}
             {authUser &&
-              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 12)) !== undefined
+              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 11)) !== undefined
                 ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 13)) !== undefined)
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 12)) !== undefined)
               &&
               <li>
                 <a
@@ -310,7 +310,7 @@ const SidebarMenu = (props) => {
                 </a>
                 <Collapse in={bookSerialOpen}>
                   <ul>
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 12)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 11)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -324,7 +324,7 @@ const SidebarMenu = (props) => {
                       Give Book Serial Number
                     </NavLink>
                       </li>}
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 13)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 12)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -341,7 +341,7 @@ const SidebarMenu = (props) => {
                   </ul>
                 </Collapse>
               </li>}
-            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 14)) !== undefined
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 13)) !== undefined
               &&
               <li>
                 <NavLink
@@ -355,7 +355,7 @@ const SidebarMenu = (props) => {
                 Print
               </NavLink>
               </li>}
-            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 15)) !== undefined
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 14)) !== undefined
               &&
               <li>
                 <NavLink
@@ -369,7 +369,7 @@ const SidebarMenu = (props) => {
                 Issue Book
               </NavLink>
               </li>}
-            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 16)) !== undefined
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 15)) !== undefined
               &&
               <li>
                 <NavLink
@@ -383,7 +383,7 @@ const SidebarMenu = (props) => {
                 Make List
               </NavLink>
               </li>}
-            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 17)) !== undefined
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 16)) !== undefined
               &&
               <li>
                 <NavLink
@@ -397,7 +397,7 @@ const SidebarMenu = (props) => {
                   Edit GB
                 </NavLink>
               </li>}
-            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 18)) !== undefined
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 17)) !== undefined
               &&
               <li>
                 <NavLink
@@ -412,11 +412,11 @@ const SidebarMenu = (props) => {
                   </NavLink>
               </li>}
             {authUser &&
-              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 19)) !== undefined
+              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 18)) !== undefined
                 ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 20)) !== undefined
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 19)) !== undefined
                 ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 21)) !== undefined)
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 20)) !== undefined)
               &&
               <li>
                 <a
@@ -433,7 +433,7 @@ const SidebarMenu = (props) => {
                 </a>
                 <Collapse in={usersOpen}>
                   <ul>
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 19)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 18)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -442,7 +442,7 @@ const SidebarMenu = (props) => {
                           Manage Users
                     </NavLink>
                       </li>}
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 20)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 19)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -451,7 +451,7 @@ const SidebarMenu = (props) => {
                           Manage Feature Rights
                     </NavLink>
                       </li>}
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 21)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 20)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -464,7 +464,9 @@ const SidebarMenu = (props) => {
                 </Collapse>
               </li>}
             {authUser &&
-              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 22)) !== undefined
+              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 21)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 22)) !== undefined
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 23)) !== undefined
                 ||
@@ -476,15 +478,13 @@ const SidebarMenu = (props) => {
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 27)) !== undefined
                 ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 28)) !== undefined
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 29)) !== undefined
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 30)) !== undefined
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 31)) !== undefined
                 ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 32)) !== undefined
-                ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined)
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 32)) !== undefined)
               &&
               <li>
                 <a
@@ -501,7 +501,7 @@ const SidebarMenu = (props) => {
                 </a>
                 <Collapse in={mastersOpen}>
                   <ul>
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 22)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 21)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -511,7 +511,7 @@ const SidebarMenu = (props) => {
                       </NavLink>
                       </li>
                     }
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 23)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 22)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -521,7 +521,7 @@ const SidebarMenu = (props) => {
                       </NavLink>
                       </li>
                     }
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 24)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 23)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -531,7 +531,7 @@ const SidebarMenu = (props) => {
                       </NavLink>
                       </li>
                     }
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 25)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 24)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -541,7 +541,7 @@ const SidebarMenu = (props) => {
                       </NavLink>
                       </li>
                     }
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 26)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 25)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -551,7 +551,7 @@ const SidebarMenu = (props) => {
                       </NavLink>
                       </li>
                     }
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 27)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 26)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -561,7 +561,7 @@ const SidebarMenu = (props) => {
                       </NavLink>
                       </li>
                     }
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 28)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 27)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -582,7 +582,7 @@ const SidebarMenu = (props) => {
                       </NavLink>
                       </li>*/
                     }
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 30)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 29)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -592,7 +592,7 @@ const SidebarMenu = (props) => {
                       </NavLink>
                       </li>
                     }
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 31)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 30)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -602,7 +602,7 @@ const SidebarMenu = (props) => {
                       </NavLink>
                       </li>
                     }
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 32)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 31)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -612,7 +612,7 @@ const SidebarMenu = (props) => {
                       </NavLink>
                       </li>
                     }
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 32)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -664,20 +664,6 @@ const SidebarMenu = (props) => {
                 Reports
               </NavLink>
             </li>*/}
-            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 34)) !== undefined
-              &&
-              <li>
-                <NavLink
-                  activeClassName="active"
-                  onClick={toggleSidebarMobile}
-                  className="nav-link-simple"
-                  to="/ChangePassword">
-                  <span className="sidebar-icon">
-                    <VpnKeyIcon />
-                  </span>
-                Change Password
-              </NavLink>
-              </li>}
             { /* authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
               &&
               <li>
@@ -692,8 +678,34 @@ const SidebarMenu = (props) => {
                 Chatrel
               </NavLink>
             </li>*/}
-
-            <li>
+            {authUser &&
+              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 34)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 35)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 38)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 39)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 40)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 41)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 42)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 43)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 44)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 45)) !== undefined)
+              &&
+              <li>
                 <a
                   href="#/"
                   onClick={toggleReport}
@@ -708,129 +720,171 @@ const SidebarMenu = (props) => {
                 </a>
                 <Collapse in={reportOpen}>
                   <ul>
-                   
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined
+                      &&
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/GreenBookIssuedOverall">
-                          Green Book Issued Over all
+                          Green Book Issued Over All
                     </NavLink>
-                      </li>
-                 
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 34)) !== undefined
+                      &&
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/GreenBookIssuedIndividual">
                           Green Book Issued Individual
                     </NavLink>
-                      </li>
-                
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 35)) !== undefined
+                      &&
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/ChangesLog">
                           Changes Log
                     </NavLink>
-                      </li>
-                       
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
+                      &&
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/ChildChangesLog">
                           Child Changes Log
                     </NavLink>
-                      </li>
-                  
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
+                      &&
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/NewEntryFromDay">
                           New Entry From Day
                     </NavLink>
-                      </li>
-                  
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 38)) !== undefined
+                      &&
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/Below6Years">
-                          Below 6 Year Region Wise
+                          Below 6 Year Region/Country Wise
                     </NavLink>
-                      </li>
-                      
+                      </li>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 39)) !== undefined
+                      &&
                       <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/Deceased">
-                          Deceased Region or Country Wise
+                          Deceased Region/Country Wise
                     </NavLink>
-                      </li>
-                 
+                      </li>}
+                    {authUser &&
+                      ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 40)) !== undefined
+                        ||
+                        (authUser.lFeatureUserrights.find(x => x.nFeatureID === 41)) !== undefined
+                        ||
+                        (authUser.lFeatureUserrights.find(x => x.nFeatureID === 42)) !== undefined
+                        ||
+                        (authUser.lFeatureUserrights.find(x => x.nFeatureID === 43)) !== undefined
+                        ||
+                        (authUser.lFeatureUserrights.find(x => x.nFeatureID === 44)) !== undefined
+                        ||
+                        (authUser.lFeatureUserrights.find(x => x.nFeatureID === 45)) !== undefined)
+                      &&
                       <li>
-                <a
-                  href="#/"
-                  onClick={toggleReportMadeb}
-                  className={clsx({ active: reportMadebOpen })}>
-                  
-                  <span className="sidebar-item-label">Madeb Report</span>
-                  <span className="sidebar-icon-indicator">
-                    <ChevronRightTwoToneIcon />
-                  </span>
-                </a>
-                <Collapse in={reportMadebOpen}>
-                  <ul>
-                  
-                      <li>
-                        <NavLink
-                          onClick={toggleSidebarMobile}
-                          to="/Reports/Madeb/Sarso">
-                          Sarso Report
+                        <a
+                          href="#/"
+                          onClick={toggleReportMadeb}
+                          className={clsx({ active: reportMadebOpen })}>
+
+                          <span className="sidebar-item-label">Madeb Report</span>
+                          <span className="sidebar-icon-indicator">
+                            <ChevronRightTwoToneIcon />
+                          </span>
+                        </a>
+                        <Collapse in={reportMadebOpen}>
+                          <ul>
+                            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 40)) !== undefined
+                              &&
+                              <li>
+                                <NavLink
+                                  onClick={toggleSidebarMobile}
+                                  to="/Reports/Madeb/Sarso">
+                                  Sarso Report
                     </NavLink>
-                      </li>
-                   
-                      <li>
-                        <NavLink
-                          onClick={toggleSidebarMobile}
-                          to="/Reports/Madeb/Norchoe">
-                          Norchoe Report
+                              </li>}
+                            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 41)) !== undefined
+                              &&
+                              <li>
+                                <NavLink
+                                  onClick={toggleSidebarMobile}
+                                  to="/Reports/Madeb/Norchoe">
+                                  Norchoe Report
                     </NavLink>
-                      </li>
-                   
-                      <li>
-                        <NavLink
-                          onClick={toggleSidebarMobile}
-                          to="/Reports/Madeb/Bhorlak">
-                          Bhorlak Report
+                              </li>}
+                            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 42)) !== undefined
+                              &&
+                              <li>
+                                <NavLink
+                                  onClick={toggleSidebarMobile}
+                                  to="/Reports/Madeb/Bhorlak">
+                                  Bhorlak Report
                     </NavLink>
-                      </li>
-                      <li>
-                        <NavLink
-                          onClick={toggleSidebarMobile}
-                          to="/Reports/Madeb/BookFull">
-                          BookFull Report
+                              </li>}
+                            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 43)) !== undefined
+                              &&
+                              <li>
+                                <NavLink
+                                  onClick={toggleSidebarMobile}
+                                  to="/Reports/Madeb/BookFull">
+                                  Book Full Report
                     </NavLink>
-                      </li>
-                      <li>
-                        <NavLink
-                          onClick={toggleSidebarMobile}
-                          to="/Reports/Madeb/BriefGB">
-                          BriefGB Report
+                              </li>}
+                            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 44)) !== undefined
+                              &&
+                              <li>
+                                <NavLink
+                                  onClick={toggleSidebarMobile}
+                                  to="/Reports/Madeb/BriefGB">
+                                  Brief GB Report
                     </NavLink>
-                      </li>
-                      <li>
-                        <NavLink
-                          onClick={toggleSidebarMobile}
-                          to="/Reports/Madeb/Abroad">
-                          Abroad Report
+                              </li>}
+                            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 45)) !== undefined
+                              &&
+                              <li>
+                                <NavLink
+                                  onClick={toggleSidebarMobile}
+                                  to="/Reports/Madeb/Abroad">
+                                  Abroad Report
                     </NavLink>
-                      </li>
-                      
-                  </ul>
-                </Collapse>
-              </li>  
+                              </li>}
+
+                          </ul>
+                        </Collapse>
+                      </li>}
 
                   </ul>
                 </Collapse>
-                     </li>
+              </li>}
+            {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 46)) !== undefined
+              &&
+              <li>
+                <NavLink
+                  activeClassName="active"
+                  onClick={toggleSidebarMobile}
+                  className="nav-link-simple"
+                  to="/ChangePassword">
+                  <span className="sidebar-icon">
+                    <VpnKeyIcon />
+                  </span>
+                        Change Password
+                      </NavLink>
+              </li>}
             <div style={{ paddingTop: '100px' }}>
             </div>
           </ul>

@@ -57,6 +57,11 @@ export default function LogingPage(props) {
       user => {
         dispatch(storeAuthDetails(user));
         console.info(user);
+        // //Hour to seconds conversion
+        // setTimeout(()=>{
+        //   dispatch(removeAuthDetails());
+        //   history.push('/Login');
+        // },user.nTimeoutInDays*3600);
         //history.push('/Home');
         //Using Window.location.reload to /Home for refersh and read proper value from LS
         window.location.reload("/Search");
