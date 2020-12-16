@@ -678,7 +678,7 @@ const SidebarMenu = (props) => {
                 Chatrel
               </NavLink>
             </li>*/}
-            {authUser &&
+            {/*{authUser &&
               ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 34)) !== undefined
@@ -726,7 +726,7 @@ const SidebarMenu = (props) => {
                         <NavLink
                           onClick={toggleSidebarMobile}
                           to="/Reports/GreenBookIssuedOverall">
-                          Green Book Issued Over All
+                          Green Book Issued Overall
                     </NavLink>
                       </li>}
                     {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 34)) !== undefined
@@ -870,7 +870,7 @@ const SidebarMenu = (props) => {
 
                   </ul>
                 </Collapse>
-              </li>}
+              </li>}*/}
             {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 46)) !== undefined
               &&
               <li>
@@ -884,7 +884,7 @@ const SidebarMenu = (props) => {
                   </span>
                         Change Password
                       </NavLink>
-              </li>}
+            </li>}
             <div style={{ paddingTop: '100px' }}>
             </div>
           </ul>
