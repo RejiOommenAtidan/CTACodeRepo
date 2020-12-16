@@ -51,7 +51,26 @@ INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserR
 	
 INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
 	VALUES ('kamlesh', 'Kamlesh', 'TCRC Office', 'kamlesh123', '5', '1',now(),1,now(),1);
-    
+
+INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('admin', 'Admin User', 'TCRC Office', 'admin123', '5', '1',now(),1,now(),1);
+
+INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('edit', 'Edit User', 'TCRC Office', 'edit123', '4', '1',now(),1,now(),1);
+	
+INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('bookissue', 'Book Issue User', 'TCRC Office', 'bookissue123', '3', '1',now(),1,now(),1);
+
+INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('entry', 'Entry User', 'TCRC Office', 'entry123', '2', '1',now(),1,now(),1);
+
+INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('search', 'Search User', 'TCRC Office', 'search123', '1', '1',now(),1,now(),1);
+	
+INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('sherab', 'sherab gyatso', '', 'jojo', '4', '1',now(),1,now(),1);
+
+
 SET sql_mode = 'allow_invalid_dates';
 -- SET SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
@@ -517,219 +536,6 @@ FROM `ctadb`.`lnkgbrelation`;
 
 
 
-DROP table IF EXISTS `lnkFeatureUserRights`;
-
-CREATE TABLE `lnkFeatureUserRights` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `nFeatureID` int(11) Not NULL,
-  `nUserRightsID` int(11) Not NULL,
-  `bRights` tinyint(1) NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) Not NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 ;
-
-
-
-
---
--- Dumping data for table `lnkFeatureUserRights`
---
-
-
--- lnk feature user rights insert statement changes
-INSERT INTO `lnkFeatureUserRights` (`Id`, `nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`) VALUES
-(1, 1, 5, 1, now(), 1),
-(2, 2, 5, 1, now(), 1),
-(3, 3, 5, 1, now(), 1),
-(4, 4, 5, 1, now(), 1),
-(5, 5, 5, 1, now(), 1),
-(6, 6, 5, 1, now(), 1),
-(7, 7, 5, 1, now(), 1),
-(8, 8, 5, 1, now(), 1),
-(9, 9, 5, 1, now(), 1),
-(10, 10, 5, 1, now(), 1),
-(11, 11, 5, 1, now(), 1),
-(12, 12, 5, 1, now(), 1),
-(13, 13, 5, 1, now(), 1),
-(14, 14, 5, 1, now(), 1),
-(15, 15, 5, 1, now(), 1),
-(16, 16, 5, 1, now(), 1),
-(17, 17, 5, 1, now(), 1),
-(18, 18, 5, 1, now(), 1),
-(19, 19, 5, 1, now(), 1),
-(20, 20, 5, 1, now(), 1),
-(21, 21, 5, 1, now(), 1),
-(22, 22, 5, 1, now(), 1),
-(23, 23, 5, 1, now(), 1),
-(24, 24, 5, 1, now(), 1),
-(25, 25, 5, 1, now(), 1),
-(26, 26, 5, 1, now(), 1),
-(27, 27, 5, 1, now(), 1),
-(28, 28, 5, 1, now(), 1),
-(29, 29, 5, 1, now(), 1),
-(30, 30, 5, 1, now(), 1),
-(31, 31, 5, 1, now(), 1),
-(32, 32, 5, 1, now(), 1),
-(33, 33, 5, 1, now(), 1),
-(34, 34, 5, 1, now(), 1),
-(35, 35, 5, 1, now(), 1),
-(36, 36, 5, 1, now(), 1),
-(37, 37, 5, 1, now(), 1),
-
-(38, 1, 4, 1, now(), 1),
-(39, 2, 4, 1, now(), 1),
-(40, 3, 4, 0, now(), 1),
-(41, 4, 4, 0, now(), 1),
-(42, 5, 4, 0, now(), 1),
-(43, 6, 4, 0, now(), 1),
-(44, 7, 4, 1, now(), 1),
-(45, 8, 4, 1, now(), 1),
-(46, 9, 4, 1, now(), 1),
-(47, 10, 4, 1, now(), 1),
-(48, 11, 4, 1, now(), 1),
-(49, 12, 4, 1, now(), 1),
-(50, 13, 4, 1, now(), 1),
-(51, 14, 4, 1, now(), 1),
-(52, 15, 4, 1, now(), 1),
-(53, 16, 4, 1, now(), 1),
-(54, 17, 4, 1, now(), 1),
-(55, 18, 4, 1, now(), 1),
-(56, 19, 4, 1, now(), 1),
-(57, 20, 4, 1, now(), 1),
-(58, 21, 4, 1, now(), 1),
-(59, 22, 4, 0, now(), 1),
-(60, 23, 4, 0, now(), 1),
-(61, 24, 4, 0, now(), 1),
-(62, 25, 4, 0, now(), 1),
-(63, 26, 4, 0, now(), 1),
-(64, 27, 4, 0, now(), 1),
-(65, 28, 4, 0, now(), 1),
-(66, 29, 4, 0, now(), 1),
-(67, 30, 4, 0, now(), 1),
-(68, 31, 4, 0, now(), 1),
-(69, 32, 4, 0, now(), 1),
-(70, 33, 4, 0, now(), 1),
-(71, 34, 4, 0, now(), 1),
-(72, 35, 4, 0, now(), 1),
-(73, 36, 4, 0, now(), 1),
-(74, 37, 4, 0, now(), 1),
-
-(75, 1, 3, 1, now(), 1),
-(76, 2, 3, 1, now(), 1),
-(77, 3, 3, 0, now(), 1),
-(78, 4, 3, 0, now(), 1),
-(79, 5, 3, 0, now(), 1),
-(80, 6, 3, 0, now(), 1),
-(81, 7, 3, 0, now(), 1),
-(82, 8, 3, 1, now(), 1),
-(83, 9, 3, 1, now(), 1),
-(84, 10, 3, 1, now(), 1),
-(85, 11, 3, 1, now(), 1),
-(86, 12, 3, 1, now(), 1),
-(87, 13, 3, 1, now(), 1),
-(88, 14, 3, 1, now(), 1),
-(89, 15, 3, 1, now(), 1),
-(90, 16, 3, 1, now(), 1),
-(91, 17, 3, 1, now(), 1),
-(92, 18, 3, 1, now(), 1),
-(93, 19, 3, 1, now(), 1),
-(94, 20, 3, 1, now(), 1),
-(95, 21, 3, 1, now(), 1),
-(96, 22, 3, 0, now(), 1),
-(97, 23, 3, 0, now(), 1),
-(98, 24, 3, 0, now(), 1),
-(99, 25, 3, 0, now(), 1),
-(100, 26, 3, 0, now(), 1),
-(101, 27, 3, 0, now(), 1),
-(102, 28, 3, 0, now(), 1),
-(103, 29, 3, 0, now(), 1),
-(104, 30, 3, 0, now(), 1),
-(105, 31, 3, 0, now(), 1),
-(106, 32, 3, 0, now(), 1),
-(107, 33, 3, 0, now(), 1),
-(108, 34, 3, 0, now(), 1),
-(109, 35, 3, 0, now(), 1),
-(110, 36, 3, 0, now(), 1),
-(111, 37, 3, 0, now(), 1),
-
-(112, 1, 2, 1, now(), 1),
-(113, 2, 2, 1, now(), 1),
-(114, 3, 2, 0, now(), 1),
-(115, 4, 2, 0, now(), 1),
-(116, 5, 2, 0, now(), 1),
-(117, 6, 2, 0, now(), 1),
-(118, 7, 2, 1, now(), 1),
-(119, 8, 2, 0, now(), 1),
-(120, 9, 2, 0, now(), 1),
-(121, 10, 2, 0, now(), 1),
-(122, 11, 2, 0, now(), 1),
-(123, 12, 2, 1, now(), 1),
-(124, 13, 2, 0, now(), 1),
-(125, 14, 2, 0, now(), 1),
-(126, 15, 2, 0, now(), 1),
-(127, 16, 2, 0, now(), 1),
-(128, 17, 2, 0, now(), 1),
-(129, 18, 2, 0, now(), 1),
-(130, 19, 2, 1, now(), 1),
-(131, 20, 2, 1, now(), 1),
-(132, 21, 2, 1, now(), 1),
-(133, 22, 2, 0, now(), 1),
-(134, 23, 2, 0, now(), 1),
-(135, 24, 2, 0, now(), 1),
-(136, 25, 2, 0, now(), 1),
-(137, 26, 2, 0, now(), 1),
-(138, 27, 2, 0, now(), 1),
-(139, 28, 2, 0, now(), 1),
-(140, 29, 2, 0, now(), 1),
-(141, 30, 2, 0, now(), 1),
-(142, 31, 2, 0, now(), 1),
-(143, 32, 2, 0, now(), 1),
-(144, 33, 2, 0, now(), 1),
-(145, 34, 2, 0, now(), 1),
-(146, 35, 2, 0, now(), 1),
-(147, 36, 2, 0, now(), 1),
-(148, 37, 2, 0, now(), 1),
-
-(149, 1, 1, 1, now(), 1),
-(150, 2, 1, 1, now(), 1),
-(151, 3, 1, 0, now(), 1),
-(152, 4, 1, 0, now(), 1),
-(153, 5, 1, 0, now(), 1),
-(154, 6, 1, 0, now(), 1),
-(155, 7, 1, 0, now(), 1),
-(156, 8, 1, 0, now(), 1),
-(157, 9, 1, 0, now(), 1),
-(158, 10, 1, 0, now(), 1),
-(159, 11, 1, 0, now(), 1),
-(160, 12, 1, 0, now(), 1),
-(161, 13, 1, 0, now(), 1),
-(162, 14, 1, 0, now(), 1),
-(163, 15, 1, 0, now(), 1),
-(164, 16, 1, 0, now(), 1),
-(165, 17, 1, 0, now(), 1),
-(166, 18, 1, 0, now(), 1),
-(167, 19, 1, 1, now(), 1),
-(168, 20, 1, 1, now(), 1),
-(169, 21, 1, 0, now(), 1),
-(170, 22, 1, 0, now(), 1),
-(171, 23, 1, 0, now(), 1),
-(172, 24, 1, 0, now(), 1),
-(173, 25, 1, 0, now(), 1),
-(174, 26, 1, 0, now(), 1),
-(175, 27, 1, 0, now(), 1),
-(176, 28, 1, 0, now(), 1),
-(177, 29, 1, 0, now(), 1),
-(178, 30, 1, 0, now(), 1),
-(179, 31, 1, 0, now(), 1),
-(180, 32, 1, 0, now(), 1),
-(181, 33, 1, 0, now(), 1),
-(182, 34, 1, 0, now(), 1),
-(183, 35, 1, 0, now(), 1),
-(184, 36, 1, 0, now(), 1),
-(185, 37, 1, 0, now(), 1);
-
-
 
 INSERT INTO `tblchatrelpayment`
 (
@@ -829,7 +635,7 @@ SELECT
 	nUpdatedBy
 from tblchatrelpayment;
 
-INSERT INTO `ctauatdb`.`lnkgbdocument`
+INSERT INTO `lnkgbdocument`
 (`id`,
 `sGBId`,
 `sTitle`,

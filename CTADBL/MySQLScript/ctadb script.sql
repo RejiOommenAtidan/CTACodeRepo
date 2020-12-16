@@ -480,7 +480,7 @@ CREATE TABLE `lstCountry` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 INSERT INTO `lstCountry` (`sCountryID`, `sCountry`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('AF','Afghanistan',now(),1,now(),1),
-('AL','Albania',now(),1,now(),1),('DZ','Algeria',now(),1,now(),1),('AS','Austria',now(),1,now(),1),('AD','Andorra',now(),1,now(),1),('AO','Angola',now(),1,now(),1),
+('AL','Albania',now(),1,now(),1),('DZ','Algeria',now(),1,now(),1),('AD','Andorra',now(),1,now(),1),('AO','Angola',now(),1,now(),1),
 ('AI','Anguilla',now(),1,now(),1),('AQ','Antarctica',now(),1,now(),1),('AG','Antigua and Barbuda',now(),1,now(),1),('AR','Argentina',now(),1,now(),1),
 ('AM','Armenia',now(),1,now(),1),('AW','Aruba',now(),1,now(),1),('AU','Australia',now(),1,now(),1),('AS','Austria',now(),1,now(),1),('AZ','Azerbaijan',now(),1,now(),1),
 ('BS','Bahamas',now(),1,now(),1),('BH','Bahrain',now(),1,now(),1),('BD','Bangladesh',now(),1,now(),1),('BB','Barbados',now(),1,now(),1),('BY','Belarus',now(),1,now(),1),
@@ -578,6 +578,7 @@ INSERT INTO `lstprovince` (`sProvince`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nU
 INSERT INTO `lstprovince` (`sProvince`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Utsang',now(),1,now(),1);
 INSERT INTO `lstprovince` (`sProvince`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Unknown',now(),1,now(),1);
 
+
 CREATE TABLE `lstMaritalStatus` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sMaritalStatusText` varchar(50) DEFAULT NULL,
@@ -594,8 +595,6 @@ INSERT INTO `lstMaritalStatus` (`sMaritalStatusText`,`sMaritalStatusId`,`dtEnter
 INSERT INTO `lstMaritalStatus` (`sMaritalStatusText`,`sMaritalStatusId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Divorced','D',now(),1,now(),1);
 INSERT INTO `lstMaritalStatus` (`sMaritalStatusText`,`sMaritalStatusId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Widower','R',now(),1,now(),1);
 INSERT INTO `lstMaritalStatus` (`sMaritalStatusText`,`sMaritalStatusId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Widow','W',now(),1,now(),1);
-
-
 
 
 CREATE TABLE `lstQualification` (
@@ -732,14 +731,14 @@ CREATE TABLE `lstMadebType` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
-INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso','First Issued','F',13,now(),1,now(),1);
-INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe','Modified Issued','M',14,now(),1,now(),1);
-INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak','Lost Issued','L',15,now(),1,now(),1);
-INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad','Abroad','A',18,now(),1,now(),1);
-INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full','Book Full','U',16,now(),1,now(),1);
-INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB','Brief GB','B',17,now(),1,now(),1);
+INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso','First Issued','F',3,now(),1,now(),1);
+INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe','Modified Issued','M',4,now(),1,now(),1);
+INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak','Lost Issued','L',5,now(),1,now(),1);
+INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad','Abroad','A',8,now(),1,now(),1);
+INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full','Book Full','U',6,now(),1,now(),1);
+INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB','Brief GB','B',7,now(),1,now(),1);
 
--- lstFeature
+DROP TABLE IF EXISTS `lstFeature`;
 CREATE TABLE `lstFeature` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sFeature` text NOT NULL, 
@@ -750,43 +749,57 @@ CREATE TABLE `lstFeature` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Login',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Home',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Search',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso Madeb',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe Madeb',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak Madeb',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Give GB ID',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New Entry',now(),1,now(),1); -- *2
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Give Book Serial No',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Edit Book Serial No',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Print',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Issue Book',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Make List',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Edit GB',now(),1,now(),1); -- *2
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Delete',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Users',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Feature Rights',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Role (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Region (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Authority Region (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Country (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Occupation (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Province (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Qualification (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Relation (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Feature (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Madeb Type (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Type Issued (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chatrel Configuration (Master)',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('CTA Configuration (Master)',now(),1,now(),1);
--- INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Reports',now(),1,now(),1);
--- INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chatrel',now(),1,now(),1);
-INSERT INTO `ctadb`.`lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Change Password',now(),1,now(),1);
+-- INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Login',now(),1,now(),1);
 
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Home',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Search',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso Madeb',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe Madeb',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak Madeb',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Give GB ID',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New Entry',now(),1,now(),1); -- *2
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Give Book Serial No',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Edit Book Serial No',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Print',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Issue Book',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Make List',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Edit GB',now(),1,now(),1); -- *2
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Delete',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Users',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Feature Rights',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Role (Master)',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Region (Master)',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Authority Region (Master)',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Country (Master)',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Occupation (Master)',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Province (Master)',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Qualification (Master)',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Relation (Master)',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Feature (Master)',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Madeb Type (Master)',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Type Issued (Master)',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chatrel Configuration (Master)',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('CTA Configuration (Master)',now(),1,now(),1);
+
+-- INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chatrel',now(),1,now(),1);
+
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Green Book Issued Over All',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Green Book Issued Individual',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Changes Log',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Child Changes Log',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New Entry From Day',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Below 6 Year Region/Country Wise',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Deceased Region/Country Wise',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso Report',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe Report',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak Report',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full Report',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB Report',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad Report',now(),1,now(),1);
+INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Change Password',now(),1,now(),1);
 
 CREATE TABLE `lstCTAConfig` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -807,6 +820,7 @@ INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtUpdated`, `nUpdatedBy`) V
 (7, 'CTAEmailServerPort', 'set email server port here', now(), 1),
 (8, 'CTAEmailUseSSL', 'set ssl here', now(), 1),
 (9, 'CTAEmailCC', 'set cc email here', now(), 1);
+
 
 
 CREATE TABLE `lstChatrel` (
@@ -955,7 +969,7 @@ CREATE TABLE `tblGreenBook` (
 
   PRIMARY KEY (`id`),
   KEY `nAuthRegionID` (`nAuthRegionID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tblGivenGBID` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1206,6 +1220,9 @@ CREATE TABLE `lnkGBChildren` (
   KEY `sGBIDParent` (`sGBIDParent`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
+
+DROP TABLE IF EXISTS `lnkFeatureUserRights`;
+    
 CREATE TABLE `lnkFeatureUserRights` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `nFeatureID` int(11) Not NULL,
@@ -1216,6 +1233,254 @@ CREATE TABLE `lnkFeatureUserRights` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
+INSERT INTO `lnkFeatureUserRights` (`Id`, `nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`) 
+VALUES
+
+-- ADMIN ROLE
+
+(1, 1, 5, 1, now(), 1),
+(2, 2, 5, 1, now(), 1),
+(3, 3, 5, 1, now(), 1),
+(4, 4, 5, 1, now(), 1),
+(5, 5, 5, 1, now(), 1),
+(6, 6, 5, 1, now(), 1),
+(7, 7, 5, 1, now(), 1),
+(8, 8, 5, 1, now(), 1),
+(9, 9, 5, 1, now(), 1),
+(10, 10, 5, 1, now(), 1),
+(11, 11, 5, 1, now(), 1),
+(12, 12, 5, 1, now(), 1),
+(13, 13, 5, 1, now(), 1),
+(14, 14, 5, 1, now(), 1),
+(15, 15, 5, 1, now(), 1),
+(16, 16, 5, 1, now(), 1),
+(17, 17, 5, 1, now(), 1),
+(18, 18, 5, 1, now(), 1),
+(19, 19, 5, 1, now(), 1),
+(20, 20, 5, 1, now(), 1),
+(21, 21, 5, 1, now(), 1),
+(22, 22, 5, 1, now(), 1),
+(23, 23, 5, 1, now(), 1),
+(24, 24, 5, 1, now(), 1),
+(25, 25, 5, 1, now(), 1),
+(26, 26, 5, 1, now(), 1),
+(27, 27, 5, 1, now(), 1),
+(28, 28, 5, 1, now(), 1),
+(29, 29, 5, 1, now(), 1),
+(30, 30, 5, 1, now(), 1),
+(31, 31, 5, 1, now(), 1),
+(32, 32, 5, 1, now(), 1),
+(33, 33, 5, 1, now(), 1),
+(34, 34, 5, 1, now(), 1),
+(35, 35, 5, 1, now(), 1),
+(36, 36, 5, 1, now(), 1),
+(37, 37, 5, 1, now(), 1),
+(38, 38, 5, 1, now(), 1),
+(39, 39, 5, 1, now(), 1),
+(40, 40, 5, 1, now(), 1),
+(41, 41, 5, 1, now(), 1),
+(42, 42, 5, 1, now(), 1),
+(43, 43, 5, 1, now(), 1),
+(44, 44, 5, 1, now(), 1),
+(45, 45, 5, 1, now(), 1),
+(46, 46, 5, 1, now(), 1),
+
+-- EDIT ROLE
+
+(47, 1, 4, 1, now(), 1),
+(48, 2, 4, 1, now(), 1),
+(49, 3, 4, 1, now(), 1),
+(50, 4, 4, 1, now(), 1),
+(51, 5, 4, 1, now(), 1),
+(52, 6, 4, 1, now(), 1),
+(53, 7, 4, 1, now(), 1),
+(54, 8, 4, 1, now(), 1),
+(55, 9, 4, 0, now(), 1),
+(56, 10, 4, 1, now(), 1),
+(57, 11, 4, 1, now(), 1),
+(58, 12, 4, 1, now(), 1),
+(59, 13, 4, 1, now(), 1),
+(60, 14, 4, 1, now(), 1),
+(61, 15, 4, 1, now(), 1),
+(62, 16, 4, 1, now(), 1),
+(63, 17, 4, 0, now(), 1),
+(64, 18, 4, 0, now(), 1),
+(65, 19, 4, 0, now(), 1),
+(66, 20, 4, 0, now(), 1),
+(67, 21, 4, 0, now(), 1),
+(68, 22, 4, 0, now(), 1),
+(69, 23, 4, 0, now(), 1),
+(70, 24, 4, 0, now(), 1),
+(71, 25, 4, 0, now(), 1),
+(72, 26, 4, 0, now(), 1),
+(73, 27, 4, 0, now(), 1),
+(74, 28, 4, 0, now(), 1),
+(75, 29, 4, 0, now(), 1),
+(76, 30, 4, 0, now(), 1),
+(77, 31, 4, 0, now(), 1),
+(78, 32, 4, 0, now(), 1),
+(79, 33, 4, 0, now(), 1),
+(80, 34, 4, 0, now(), 1),
+(81, 35, 4, 0, now(), 1),
+(82, 36, 4, 0, now(), 1),
+(83, 37, 4, 0, now(), 1),
+(84, 38, 4, 0, now(), 1),
+(85, 39, 4, 0, now(), 1),
+(86, 40, 4, 0, now(), 1),
+(87, 41, 4, 0, now(), 1),
+(88, 42, 4, 0, now(), 1),
+(89, 43, 4, 0, now(), 1),
+(90, 44, 4, 0, now(), 1),
+(91, 45, 4, 0, now(), 1),
+(92, 46, 4, 1, now(), 1),
+
+-- BOOK ISSUE ROLE
+
+(93, 1, 3, 1, now(), 1),
+(94, 2, 3, 1, now(), 1),
+(95, 3, 3, 1, now(), 1),
+(96, 4, 3, 1, now(), 1),
+(97, 5, 3, 1, now(), 1),
+(98, 6, 3, 1, now(), 1),
+(99, 7, 3, 1, now(), 1),
+(100, 8, 3, 1, now(), 1),
+(101, 9, 3, 0, now(), 1),
+(102, 10, 3, 1, now(), 1),
+(103, 11, 3, 1, now(), 1),
+(104, 12, 3, 1, now(), 1),
+(105, 13, 3, 1, now(), 1),
+(106, 14, 3, 1, now(), 1),
+(107, 15, 3, 1, now(), 1),
+(108, 16, 3, 0, now(), 1),
+(109, 17, 3, 0, now(), 1),
+(110, 18, 3, 0, now(), 1),
+(111, 19, 3, 0, now(), 1),
+(112, 20, 3, 0, now(), 1),
+(113, 21, 3, 0, now(), 1),
+(114, 22, 3, 0, now(), 1),
+(115, 23, 3, 0, now(), 1),
+(116, 24, 3, 0, now(), 1),
+(117, 25, 3, 0, now(), 1),
+(118, 26, 3, 0, now(), 1),
+(119, 27, 3, 0, now(), 1),
+(120, 28, 3, 0, now(), 1),
+(121, 29, 3, 0, now(), 1),
+(122, 30, 3, 0, now(), 1),
+(123, 31, 3, 0, now(), 1),
+(124, 32, 3, 0, now(), 1),
+(125, 33, 3, 0, now(), 1),
+(126, 34, 3, 0, now(), 1),
+(127, 35, 3, 0, now(), 1),
+(128, 36, 3, 0, now(), 1),
+(129, 37, 3, 0, now(), 1),
+(130, 38, 3, 0, now(), 1),
+(131, 39, 3, 0, now(), 1),
+(132, 40, 3, 0, now(), 1),
+(133, 41, 3, 0, now(), 1),
+(134, 42, 3, 0, now(), 1),
+(135, 43, 3, 0, now(), 1),
+(136, 44, 3, 0, now(), 1),
+(137, 45, 3, 0, now(), 1),
+(138, 46, 3, 1, now(), 1),
+
+-- ENTRY ROLE
+
+(139, 1, 2, 1, now(), 1),
+(140, 2, 2, 1, now(), 1),
+(141, 3, 2, 0, now(), 1),
+(142, 4, 2, 0, now(), 1),
+(143, 5, 2, 0, now(), 1),
+(144, 6, 2, 0, now(), 1),
+(145, 7, 2, 0, now(), 1),
+(146, 8, 2, 0, now(), 1),
+(147, 9, 2, 0, now(), 1),
+(148, 10, 2, 1, now(), 1),
+(149, 11, 2, 0, now(), 1),
+(150, 12, 2, 0, now(), 1),
+(151, 13, 2, 0, now(), 1),
+(152, 14, 2, 0, now(), 1),
+(153, 15, 2, 0, now(), 1),
+(154, 16, 2, 1, now(), 1),
+(155, 17, 2, 0, now(), 1),
+(156, 18, 2, 0, now(), 1),
+(157, 19, 2, 0, now(), 1),
+(158, 20, 2, 0, now(), 1),
+(159, 21, 2, 0, now(), 1),
+(160, 22, 2, 0, now(), 1),
+(161, 23, 2, 0, now(), 1),
+(162, 24, 2, 0, now(), 1),
+(163, 25, 2, 0, now(), 1),
+(164, 26, 2, 0, now(), 1),
+(165, 27, 2, 0, now(), 1),
+(166, 28, 2, 0, now(), 1),
+(167, 29, 2, 0, now(), 1),
+(168, 30, 2, 0, now(), 1),
+(169, 31, 2, 0, now(), 1),
+(170, 32, 2, 0, now(), 1),
+(171, 33, 2, 0, now(), 1),
+(172, 34, 2, 0, now(), 1),
+(173, 35, 2, 0, now(), 1),
+(174, 36, 2, 0, now(), 1),
+(175, 37, 2, 0, now(), 1),
+(176, 38, 2, 0, now(), 1),
+(177, 39, 2, 0, now(), 1),
+(178, 40, 2, 0, now(), 1),
+(179, 41, 2, 0, now(), 1),
+(180, 42, 2, 0, now(), 1),
+(181, 43, 2, 0, now(), 1),
+(182, 44, 2, 0, now(), 1),
+(183, 45, 2, 0, now(), 1),
+(184, 46, 2, 1, now(), 1),
+
+-- SEARCH ROLE
+
+(185, 1, 1, 1, now(), 1),
+(186, 2, 1, 1, now(), 1),
+(187, 3, 1, 0, now(), 1),
+(188, 4, 1, 0, now(), 1),
+(189, 5, 1, 0, now(), 1),
+(190, 6, 1, 0, now(), 1),
+(191, 7, 1, 0, now(), 1),
+(192, 8, 1, 0, now(), 1),
+(193, 9, 1, 0, now(), 1),
+(194, 10, 1, 0, now(), 1),
+(195, 11, 1, 0, now(), 1),
+(196, 12, 1, 0, now(), 1),
+(197, 13, 1, 0, now(), 1),
+(198, 14, 1, 0, now(), 1),
+(199, 15, 1, 0, now(), 1),
+(200, 16, 1, 0, now(), 1),
+(201, 17, 1, 0, now(), 1),
+(202, 18, 1, 0, now(), 1),
+(203, 19, 1, 0, now(), 1),
+(204, 20, 1, 0, now(), 1),
+(205, 21, 1, 0, now(), 1),
+(206, 22, 1, 0, now(), 1),
+(207, 23, 1, 0, now(), 1),
+(208, 24, 1, 0, now(), 1),
+(209, 25, 1, 0, now(), 1),
+(210, 26, 1, 0, now(), 1),
+(211, 27, 1, 0, now(), 1),
+(212, 28, 1, 0, now(), 1),
+(213, 29, 1, 0, now(), 1),
+(214, 30, 1, 0, now(), 1),
+(215, 31, 1, 0, now(), 1),
+(216, 32, 1, 0, now(), 1),
+(217, 33, 1, 0, now(), 1),
+(218, 34, 1, 0, now(), 1),
+(219, 35, 1, 0, now(), 1),
+(220, 36, 1, 0, now(), 1),
+(221, 37, 1, 0, now(), 1),
+(222, 38, 1, 0, now(), 1),
+(223, 39, 1, 0, now(), 1),
+(224, 40, 1, 0, now(), 1),
+(225, 41, 1, 0, now(), 1),
+(226, 42, 1, 0, now(), 1),
+(227, 43, 1, 0, now(), 1),
+(228, 44, 1, 0, now(), 1),
+(229, 45, 1, 0, now(), 1),
+(230, 46, 1, 1, now(), 1);
+
 -- 
 -- Store Procedure GreenBook By GBID
 -- 
@@ -1223,6 +1488,7 @@ CREATE TABLE `lnkFeatureUserRights` (
 DROP procedure IF EXISTS `spGetGreenBookByGBID`;
 
 DELIMITER $$
+
 CREATE PROCEDURE `spGetGreenBookByGBID` (IN sGBIDIN VARCHAR(255))
 BEGIN
 	SELECT * FROM tblgreenbook where sGBID = sGBIDIN;
@@ -1254,6 +1520,7 @@ DELIMITER ;
 DROP procedure IF EXISTS `spGetNewMadebData`;
 
 DELIMITER $$
+
 CREATE PROCEDURE `spGetNewMadebData` ()
 BEGIN
 	select Id, sMadebDisplayName from lstmadebtype;
@@ -1402,52 +1669,10 @@ BEGIN
     SELECT result;
 END$$
 DELIMITER ;
-
-
 DROP procedure IF EXISTS `spReportGreenBookIssuedOverAll`;
 
 DELIMITER $$
 CREATE PROCEDURE spReportGreenBookIssuedOverAll
-(
-    IN sMadebDisplayKey varchar(5)
-    ,IN dtRecordFrom date
-    ,IN dtRecordTo date
-    ,IN sOrderBy varchar(255)
-)
-BEGIN
-
-    SET @SQLText = CONCAT('select 
-		DISTINCT tblgreenbookissued.nGBId, 
-		tblgreenbook.sFirstName, 
-		tblgreenbook.sMiddleName, 
-		tblgreenbook.sLastName, 
-		tblgreenbookissued.dtIssuedDate, 
-		tblgreenbookserial.nBookNo, 
-		lstauthregion.sAuthRegion,
-        lstauthregion.sCountryID
-	from 
-		tblgreenbookissued
-	inner join (tblgreenbook, tblgreenbookserial, lstauthregion) 
-		on 
-			(
-				tblgreenbookissued.nGBId=tblgreenbook.sGBId 
-				and tblgreenbook.sGBId = tblgreenbookserial.sGBID
-				and tblgreenbook.nAuthRegionID=lstauthregion.ID
-			) 
-	where 
-		tblgreenbookissued.sWhyIssued=''', sMadebDisplayKey 
-		,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' > ''' ,  dtRecordFrom
-		,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' <= ''', dtRecordTo
-	,''' order by ',sOrderBy );
-    PREPARE stmt FROM @SQLText;
-    EXECUTE stmt;
-    DEALLOCATE PREPARE stmt;
-END$$
-DELIMITER ;
-
-DROP procedure IF EXISTS `spReportGreenBookIssuedIndividual`;
-DELIMITER $$
-CREATE PROCEDURE spReportGreenBookIssuedIndividual
 (
     IN sMadebDisplayKey varchar(5)
     ,IN dtRecordFrom date
@@ -1480,6 +1705,49 @@ where
 END$$
 DELIMITER ;
 
+DROP procedure IF EXISTS `spReportGreenBookIssuedIndividual`;
+
+DELIMITER $$
+CREATE PROCEDURE spReportGreenBookIssuedIndividual
+(
+    IN sMadebDisplayKey varchar(5)
+    ,IN dtRecordFrom date
+    ,IN dtRecordTo date
+    ,IN sOrderBy varchar(255)
+)
+BEGIN
+
+    SET @SQLText = CONCAT('select 
+		DISTINCT tblgreenbookissued.nGBId, 
+		-- tblgreenbook.sFirstName, 
+		-- tblgreenbook.sMiddleName, 
+		-- tblgreenbook.sLastName, 
+        CONCAT(COALESCE(tblgreenbook.sFirstName,''''), '' '', COALESCE(tblgreenbook.sLastName,'''')) as sName,
+		tblgreenbookissued.dtIssuedDate, 
+		tblgreenbookserial.nBookNo, 
+		-- lstauthregion.sAuthRegion,
+        -- lstauthregion.sCountryID
+        ', IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstauthregion.sAuthRegion", "lstCountry.sCountry" ) ,'
+	from 
+		tblgreenbookissued
+	inner join (tblgreenbook, tblgreenbookserial, ', IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstauthregion", "lstCountry" ) ,') 
+		on 
+			(
+				tblgreenbookissued.nGBId=tblgreenbook.sGBId 
+				and tblgreenbook.sGBId = tblgreenbookserial.sGBID
+                 ', IF(sOrderBy like '%lstauthregion.sAuthRegion%', "and tblgreenbook.nAuthRegionID=lstauthregion.ID", "and tblgreenbook.sCountryID = lstCountry.sCountryID" ) ,'
+			) 
+	where 
+		tblgreenbookissued.sWhyIssued=''', sMadebDisplayKey 
+		,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' > ''' ,  dtRecordFrom
+		,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' <= ''', dtRecordTo
+	,''' order by ',sOrderBy );
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
 DROP procedure IF EXISTS `spReportCTAChangesLog`;
 DELIMITER $$
 CREATE PROCEDURE spReportCTAChangesLog
@@ -1491,8 +1759,8 @@ BEGIN
     declare SQLText varchar(5000);
     SET @SQLText = CONCAT('select 
 			tblauditlog.sGBID, 
-			concat(tblgreenbook.sFirstName, tblgreenbook.sLastName) as sName, 
-		   lstfeature.sFeature, 
+			CONCAT(COALESCE(tblgreenbook.sFirstName,''''), '' '', COALESCE(tblgreenbook.sLastName,'''')) as sName,
+			lstfeature.sFeature, 
 			tblauditlog.sFieldValuesOld, 
 			tblauditlog.sFieldValuesNew, 
 			tbluser.sFullName, 
@@ -1524,7 +1792,7 @@ BEGIN
     declare SQLText varchar(5000);
     SET @SQLText = CONCAT('select 
 			tblauditlog.sGBID, 
-			concat(tblgreenbook.sFirstName, tblgreenbook.sLastName) as sName, 
+			CONCAT(COALESCE(tblgreenbook.sFirstName,''''), '' '', COALESCE(tblgreenbook.sLastName,'''')) as sName,
 		   lstfeature.sFeature, 
 			tblauditlog.sFieldValuesOld, 
 			tblauditlog.sFieldValuesNew, 
@@ -1538,7 +1806,7 @@ BEGIN
 			on tblauditlog.sGBID = tblgreenbook.sGBID
 		Left Join lstfeature
 			on tblauditlog.nFeatureID = lstfeature.Id
-		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') > ',dtRecordFrom );
+		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') > ''',dtRecordFrom ,'''');
     -- select @SQLText;
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
@@ -1558,8 +1826,7 @@ BEGIN
     declare SQLText varchar(5000);
     SET @SQLText = CONCAT('SELECT 
 		tblgreenbook.sGBID, 
-		tblgreenbook.sFirstName, 
-		tblgreenbook.sLastName, 
+        CONCAT(COALESCE(tblgreenbook.sFirstName,''''), '' '', COALESCE(tblgreenbook.sLastName,'''')) as sName,
 		tblgreenbook.dtEntered, 
 		tbluser.sFullName, 
 		tbluser.sOffice
@@ -1571,7 +1838,7 @@ BEGIN
 				tblgreenbook.nEnteredBy=tblUser.id
 			) 
 	WHERE 
-		DATE_FORMAT(tblgreenbook.dtEntered, ''%Y-%m-%d'') > ',dtRecordFrom );
+		DATE_FORMAT(tblgreenbook.dtEntered, ''%Y-%m-%d'') > ''',dtRecordFrom ,'''');
     -- select @SQLText;
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
@@ -1591,8 +1858,9 @@ BEGIN
 
     SET @SQLText = CONCAT('select 
 		tblgreenbook.sGBId, 
-		tblgreenbook.sFirstName, 
-		tblgreenbook.sLastName, 
+		-- tblgreenbook.sFirstName, 
+		-- tblgreenbook.sLastName, 
+        CONCAT(COALESCE(tblgreenbook.sFirstName,''''), '' '', COALESCE(tblgreenbook.sLastName,'''')) as sName,
 		tblgreenbook.dtDOB, 
 		',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion.sAuthRegion", "lstcountry.sCountry" ),' as sPlace
 	from 
@@ -1622,8 +1890,9 @@ BEGIN
     -- declare SQLText varchar(5000);
     SET @SQLText = CONCAT('select 
             tblgreenbook.sGBID, 
-            tblgreenbook.sFirstName, 
-            tblgreenbook.sLastName, 
+            -- tblgreenbook.sFirstName, 
+            -- tblgreenbook.sLastName, 
+            CONCAT(COALESCE(tblgreenbook.sFirstName,''''), '' '', COALESCE(tblgreenbook.sLastName,'''')) as sName,
             tblgreenbook.dtDOB, 
             tblgreenbook.dtDeceased, 
             ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstauthregion.sAuthRegion", "lstcountry.sCountry" ),' as sPlace, 
@@ -1860,11 +2129,13 @@ DELIMITER ;
 
 
 
-
 CREATE INDEX MDB_GBID ON tblmadeb(sGBID);
 CREATE INDEX GREENBOOK_GBID ON tblgreenbook(sGBID);
 CREATE INDEX GBID_RELATION ON lnkgbrelation(sgbidrelation, nrelationid);
 CREATE INDEX GB_DOC_GBID ON lnkgbdocument (sGBID);
 
+ALTER TABLE `tblgreenbook`
+DROP COLUMN `dtLastSuccessfullLogin`,
+DROP COLUMN `sLoginGmail`;
 
-
+-- SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
