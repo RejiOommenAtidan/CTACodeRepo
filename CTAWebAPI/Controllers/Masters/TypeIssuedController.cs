@@ -159,7 +159,7 @@ namespace CTAWebAPI.Controllers.Masters
                         _typedIssuedRepository.Update(typeissued);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedtypeissued, typeissued, null, null, 26, fetchedtypeissued.Id, typeissued.nUpdatedBy);
+                        CTALogger.LogAuditRecord(fetchedtypeissued, typeissued, null, null, 30, fetchedtypeissued.Id, typeissued.nUpdatedBy);
                         #endregion
 
                         #region Alert Logging 

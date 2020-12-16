@@ -203,7 +203,7 @@ namespace CTAWebAPI.Controllers.Masters
                         _userRightsRepository.Update(userRights);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetcheduserRights, userRights, null, null, 36, fetcheduserRights.Id, userRights.nUpdatedBy);
+                        CTALogger.LogAuditRecord(fetcheduserRights, userRights, null, null, 20, fetcheduserRights.Id, userRights.nUpdatedBy);
                         #endregion
 
                         #region Alert Logging 
