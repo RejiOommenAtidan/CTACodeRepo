@@ -30,7 +30,7 @@ namespace CTAWebAPI.Controllers.Transactions
     public class UserController : ControllerBase
     {
         #region Constructor
-        private readonly double dTimeout = 1;
+        private readonly double dTimeout = 10;
         private readonly DBConnectionInfo _info;
         private readonly UserRepository _userRepository;
         private readonly UserVMRepository _userVMRepository;
