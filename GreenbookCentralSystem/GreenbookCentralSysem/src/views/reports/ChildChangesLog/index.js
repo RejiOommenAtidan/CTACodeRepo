@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 //import { useNavigate } from 'react-router-dom';
 import Moment from 'moment';
+import { useHistory } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -63,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Report() {
 
-
+  let history = useHistory();
 
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
@@ -90,6 +91,25 @@ export default function Report() {
     setSnackbar(false);
   };
   const columns=[
+    {
+      field: "no",
+      title: "#",
+      filterPlaceholder: 'Search..',
+      width:'5%',
+      //hidden:true,
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
+      },
+    },
     {
       field: "sGBId",
       title: "GBID",
@@ -225,11 +245,21 @@ export default function Report() {
           .then(resp => {
             if (resp.status === 200) {
               setBackdrop(false);
+              if(resp.data.length==0){
+                setAlertMessage('No Records to display');
+                setAlertType('info');
+                snackbarOpen();
+              }
+              else{
+              let x = 1;
               resp.data.forEach((element) => {
+                element.no=x;
+                x=x+1;
                 element.dtFormattedEntered = element.dtEntered ? Moment(element.dtEntered).format(sDateFormat) : null;
               })
               SetChildChangesLogData(resp.data);
               console.log(resp.data);
+            }
             }
           })
           .catch(error => {
@@ -280,7 +310,7 @@ export default function Report() {
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
                                         { childchangesLogData.length >0 &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetChildChangesLogData([]);}} >Clear</Button>
+                                        <Button type="button" variant='outlined' onClick={()=>{history.go(0);}} >Clear</Button>
                                         }
                                     </FormControl>
                                   

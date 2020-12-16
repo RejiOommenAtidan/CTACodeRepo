@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 //import { useNavigate } from 'react-router-dom';
 import Moment from 'moment';
 import {
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Report() {
 
-
+  let history = useHistory();
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
     const classes = useStyles();
@@ -92,6 +93,25 @@ export default function Report() {
     setSnackbar(false);
   };
     const columns=[
+      {
+        field: "no",
+        title: "#",
+        filterPlaceholder: 'Search..',
+        width:'5%',
+        //hidden:true,
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
       {
         field: "sPlaceName",
         title: "Region/Country",
@@ -227,9 +247,23 @@ export default function Report() {
           .then(resp => {
             if (resp.status === 200) {
               setBackdrop(false);
+              if(resp.data.length==0){
+                setAlertMessage('No Records to display');
+                setAlertType('info');
+                snackbarOpen();
+              }
+              else{
+              let x = 1;
+              resp.data.forEach((element) => {
+                           //element.dtFormattedIssuedDate = element.dtIssuedDate ? Moment(element.dtIssuedDate).format(sDateFormat) : null;
+                           element.no=x;
+                           x=x+1;
+                           
+                         })
+            
               SetSarsoData(resp.data);
               console.log(resp.data);
-            }
+            }}
           })
           .catch(error => {
             if (error.response) {
@@ -315,7 +349,7 @@ export default function Report() {
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
                                         { sarsoData.length>0 &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetSarsoData([]);}} >Clear</Button>
+                                        <Button type="button" variant='outlined' onClick={()=>{history.go(0);}} >Clear</Button>
                                         }
                                     </FormControl>
                               

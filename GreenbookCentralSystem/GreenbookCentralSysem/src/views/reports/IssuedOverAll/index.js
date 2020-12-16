@@ -38,6 +38,7 @@ import { aPageSizeArray } from '../../../config/commonConfig';
 import { nPageSize } from '../../../config/commonConfig';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
+import { useHistory } from 'react-router-dom';
 const tableIcons = oTableIcons;
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -60,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Report() {
+  let history = useHistory();
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
     const classes = useStyles();
@@ -91,7 +93,8 @@ export default function Report() {
         field: "no",
         title: "#",
         filterPlaceholder: 'Search..',
-        hidden:true,
+        width:'5%',
+        //hidden:true,
         headerStyle: {
           padding: '5px',
           
@@ -143,6 +146,10 @@ export default function Report() {
       },
       
     ]
+
+     
+
+    
     const issuedIndividual=()=>{
       if(madebType === '' ||dtFrom === ''||dtTo === ''|| orderBy === ''  ){
         setAlertMessage('All fields are required !');
@@ -154,7 +161,14 @@ export default function Report() {
         axios.get(`/Report/GetReportIssuedOverAll/?sMadebDisplayKey=` + madebType + `&dtRecordFrom=` + dtFrom + `&dtRecordTo=` + dtTo + `&sGroupBy=` + groupBy + `&sOrderBy=` + orderBy)
         .then(resp => {
           if (resp.status === 200) {
+
             setBackdrop(false);
+            if(resp.data.length==0){
+              setAlertMessage('No Records to display');
+              setAlertType('info');
+              snackbarOpen();
+            }
+            else{
             let x = 1;
             resp.data.forEach((element) => {
               //element.dtFormattedIssuedDate = element.dtIssuedDate ? Moment(element.dtIssuedDate).format(sDateFormat) : null;
@@ -162,6 +176,7 @@ export default function Report() {
               x=x+1;
             })
             SetIssuedIndividualData(resp.data);
+          }
           }
         })
         .catch(error => {
@@ -214,7 +229,7 @@ export default function Report() {
     return (
     <>
       <Paper style={{padding:'30px',textAlign:'center'}} >
-        <h1>Green Book Issued Individual </h1>
+        <h1>Green Book Issued Overall </h1>
         <FormControl className={classes.formControl}>
                        <InputLabel id="madebTypelbl">Madeb Type</InputLabel>
                                           <Select
@@ -287,7 +302,7 @@ export default function Report() {
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
                                         { issuedIndividualData.length >0 &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetIssuedIndividualData([]);}} >Clear</Button>
+                                        <Button type="button" variant='outlined' onClick={()=>{ history.go(0);}} >Clear</Button>
                                         }
                                     </FormControl>
 
@@ -297,7 +312,7 @@ export default function Report() {
                   <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
                     //isLoading={isLoading}
                     icons={tableIcons}
-                    title="Green Book Issued Individual"
+                    title="Green Book Issued Overall"
                     columns={columns}
                     data={issuedIndividualData}
                     options={oOptions}

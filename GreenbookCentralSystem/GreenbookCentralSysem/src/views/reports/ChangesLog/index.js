@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 //import { useNavigate } from 'react-router-dom';
 import Moment from 'moment';
 import {
@@ -63,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Report() {
 
-
+  let history = useHistory();
 
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
@@ -90,6 +91,25 @@ export default function Report() {
     setSnackbar(false);
   };
   const columns=[
+    {
+      field: "no",
+      title: "#",
+      filterPlaceholder: 'Search..',
+      width:'5%',
+      //hidden:true,
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
+      },
+    },
     {
       field: "sGBId",
       title: "GBID",
@@ -223,13 +243,24 @@ export default function Report() {
           setBackdrop(true);
           axios.get(`/Report/GetReportCTAChangesLog/?&dtRecordFrom=`+dtFrom)
           .then(resp => {
-            setBackdrop(false);
+            
             if (resp.status === 200) {
+              setBackdrop(false);
+              if(resp.data.length==0){
+                setAlertMessage('No Records to display');
+                setAlertType('info');
+                snackbarOpen();
+              }
+              else{
+              let x=1;
               resp.data.forEach((element) => {
+                element.no=x;
+                x=x+1;
                 element.dtFormattedEntered = element.dtEntered ? Moment(element.dtEntered).format(sDateFormat) : null;
               })
               SetChangesLogData(resp.data);
               console.log(resp.data);
+            }
             }
           })
           .catch(error => {
@@ -279,8 +310,8 @@ export default function Report() {
                                         <Button type="button" variant='outlined' value="Report" onClick={()=>{changesLog();}} >Show</Button>
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
-                                        { dtFrom &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetChangesLogData([]);SetdtFrom(null);}} >Clear</Button>
+                                        { changesLogData.length >0 &&
+                                        <Button type="button" variant='outlined' onClick={()=>{history.go(0);}} >Clear</Button>
                                         }
                                     </FormControl>
                                   
