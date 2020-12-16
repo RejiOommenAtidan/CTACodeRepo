@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 //import { useNavigate } from 'react-router-dom';
 import Moment from 'moment';
 import {
@@ -32,7 +33,7 @@ import axios from 'axios';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Rowing } from '@material-ui/icons';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import { oOptions, oTableIcons ,sDateFormat} from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { aPageSizeArray } from '../../../config/commonConfig';
 import { nPageSize } from '../../../config/commonConfig';
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Report() {
-
+  let history = useHistory();
   const [backdrop, setBackdrop] = React.useState(false);
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
@@ -94,6 +95,25 @@ export default function Report() {
   };
     const columns=[
       {
+        field: "no",
+        title: "#",
+        filterPlaceholder: 'Search..',
+        width:'5%',
+        //hidden:true,
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'center'
+  
+        },
+      },
+      {
         field: "sGBId",
         title: "GBId",
         filterPlaceholder: 'Search..',
@@ -110,9 +130,10 @@ export default function Report() {
   
         },
       },
+     
       {
-        field: "sFirstName",
-        title: "First Name",
+        field: "sName",
+        title: "Name",
         filterPlaceholder: 'Search..',
         headerStyle: {
           padding: '5px',
@@ -123,31 +144,14 @@ export default function Report() {
           // padding:'0px',
           padding: '5px',
           
-          textAlign: 'center'
+          textAlign: 'left'
   
         },
       },
       {
-        field: "sLastName",
-        title: "Last Name",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
-      },
-      {
-        field: "dtDOB",
+        field: "dtFormattedDOB",
         title: "Date of Birth",
-        render: rowData => rowData.dtdtDOBEntered ? Moment(rowData.dtDOB).format('DD-MM-YYYY') : '',
+       // render: rowData => rowData.dtdtDOBEntered ? Moment(rowData.dtDOB).format('DD-MM-YYYY') : '',
         filterPlaceholder: 'Search..',
         headerStyle: {
           padding: '5px',
@@ -164,7 +168,7 @@ export default function Report() {
       },
       {
         field: "sPlace",
-        title: "Place",
+        title: "Region/Country",
         filterPlaceholder: 'Search..',
         headerStyle: {
           padding: '5px',
@@ -175,7 +179,7 @@ export default function Report() {
           // padding:'0px',
           padding: '5px',
           
-          textAlign: 'center'
+          textAlign: 'left'
   
         },
       },
@@ -194,8 +198,23 @@ export default function Report() {
           .then(resp => {
             if (resp.status === 200) {
               setBackdrop(false);
+              if(resp.data.length==0){
+                setAlertMessage('No Records to display');
+                setAlertType('info');
+                snackbarOpen();
+              }
+              else{
+                
+              let x = 1;
+              resp.data.forEach((element) => {
+                element.no=x;
+                x=x+1;
+              
+                element.dtFormattedDOB = element.dtDOB ? Moment(element.dtDOB).format(sDateFormat) : null;
+              })
               SetBelow6yearsData(resp.data);
               console.log(resp.data);
+            }
             }
           })
           .catch(error => {
@@ -244,7 +263,7 @@ export default function Report() {
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
                                         { below6yearsData.length >0 &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetBelow6yearsData([]);}} >Clear</Button>
+                                        <Button type="button" variant='outlined' onClick={()=>{history.go(0);}} >Clear</Button>
                                         }
                                     </FormControl>
                                
@@ -258,18 +277,7 @@ export default function Report() {
                     title="Below 6 Year Region or Country Wise"
                     columns={columns}
                     data={below6yearsData}
-                    options={{
-                      filtering,
-                      exportButton: true,
-                      exportAllData: true,
-                      headerStyle: {
-                        padding: '0',
-                        paddingLeft: '10px',
-                        border: '1px solid lightgrey',
-                      },
-                      pageSize: pageSize,
-                      pageSizeOptions: pageSizeArray
-                    }}
+                    options={{ ...oOptions, tableLayout: "fixed" }}
                     actions={[
         
                       {

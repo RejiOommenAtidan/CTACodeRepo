@@ -43,15 +43,15 @@ namespace CTAWebAPI.Controllers.Transactions
 
         #region Get Calls
 
-        #region GetReportGreenBookIssuedIndividual
+        #region GetReportGreenBookIssuedOverAll
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetReportIssuedIndividual(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sGroupBy, string sOrderBy)
+        public IActionResult GetReportIssuedOverAll(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sGroupBy, string sOrderBy)
         {
           
             try
             {
-                var result = _reportRepository.GetReportGreenBookIssuedIndividual(sMadebDisplayKey, dtRecordFrom, dtRecordTo, sGroupBy, sOrderBy);
+                var result = _reportRepository.GetReportGreenBookIssuedOverAll(sMadebDisplayKey, dtRecordFrom, dtRecordTo, sGroupBy, sOrderBy);
                 if (result != null)
                 {
                     return Ok(result);
@@ -71,15 +71,15 @@ namespace CTAWebAPI.Controllers.Transactions
         }
         #endregion
 
-        #region GetReportGreenBookIssuedOverAll
+        #region GetReportGreenBookIssuedIndividual
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetReportIssuedOverAll(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
+        public IActionResult GetReportIssuedIndividual(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
         {
            
             try
             {
-                var result = _reportRepository.GetReportGreenBookIssuedOverAll(sMadebDisplayKey, dtRecordFrom, dtRecordTo, sOrderBy);
+                var result = _reportRepository.GetReportGreenBookIssuedIndividual(sMadebDisplayKey, dtRecordFrom, dtRecordTo, sOrderBy);
                 if (result != null)
                 {
                     return Ok(result);

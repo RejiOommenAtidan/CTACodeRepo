@@ -367,6 +367,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     userVMFromDB.sJWTToken = tokenHandler.WriteToken(token);
                     //Make Password NULL
                     userVMFromDB.oUser.sPassword = null;
+                    userVMFromDB.nTimeoutInDays = dTimeout;
                     return Ok(userVMFromDB);
                     #endregion
                 }

@@ -1,4 +1,4 @@
-
+import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 //import { useNavigate } from 'react-router-dom';
 import Moment from 'moment';
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Report() {
-
+  let history = useHistory();
 
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
@@ -91,145 +91,148 @@ export default function Report() {
   const snackbarClose = () => {
     setSnackbar(false);
   };
-    const columns=[
-      {
-        field: "sPlaceName",
-        title: "Place Name",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'left'
-  
-        },
+  const columns=[
+    {
+      field: "no",
+      title: "#",
+      filterPlaceholder: 'Search..',
+      width:'5%',
+      //hidden:true,
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
       },
-      {
-        field: "sPlaceID",
-        title: "Place ID",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
       },
-      {
-        field: "madebIssued",
-        title: "Madeb Issued",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+    },
+    {
+      field: "sPlaceName",
+      title: "Region/Country",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
       },
-      {
-        field: "madebRejected",
-        title: "Madeb Rejected",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'left'
+
       },
-      {
-        field: "madebDouble",
-        title: "Madeb Double",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+    },
+    {
+      field: "madebPending",
+      title: "Madeb Pending",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
       },
-      {
-        field: "madebCancelled",
-        title: "Madeb Cancelled",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
       },
-      {
-        field: "madebPending",
-        title: "Madeb Pending",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+    },
+    {
+      field: "madebIssued",
+      title: "Madeb Issued",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
       },
-      {
-        field: "madebTotalReceived",
-        title: "Total Received",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
       },
-     
-    ]
+    },
+    {
+      field: "madebRejected",
+      title: "Madeb Rejected",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
+      },
+    },
+    {
+      field: "madebDouble",
+      title: "Madeb Double",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
+      },
+    },
+    {
+      field: "madebCancelled",
+      title: "Madeb Cancelled",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
+      },
+    },
+  
+    {
+      field: "madebTotalReceived",
+      title: "Total Received",
+      filterPlaceholder: 'Search..',
+      headerStyle: {
+        padding: '5px',
+        
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        
+        textAlign: 'center'
+
+      },
+    },
+   
+  ]
     const bhorlak=()=>{
         if(madebType === '' ||dtFrom === ''||dtTo === ''|| orderBy === ''  ){
           setAlertMessage('All fields are required !');
@@ -243,9 +246,22 @@ export default function Report() {
           .then(resp => {
             if (resp.status === 200) {
               setBackdrop(false);
+              if(resp.data.length==0){
+                setAlertMessage('No Records to display');
+                setAlertType('info');
+                snackbarOpen();
+              }
+              else{
+              let x = 1;
+ resp.data.forEach((element) => {
+             
+              element.no=x;
+              x=x+1;
+              
+            })
               SetBhorlakData(resp.data);
               console.log(resp.data);
-            }
+            }}
           })
           .catch(error => {
             if (error.response) {
@@ -331,7 +347,7 @@ export default function Report() {
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
                                         { bhorlakData.length>0 &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetBhorlakData([]);}} >Clear</Button>
+                                        <Button type="button" variant='outlined' onClick={()=>{history.go(0);}} >Clear</Button>
                                         }
                                     </FormControl>
                               
@@ -345,18 +361,7 @@ export default function Report() {
                     title="Bhorlak Report"
                     columns={columns}
                     data={bhorlakData}
-                    options={{
-                      filtering,
-                      exportButton: true,
-                      exportAllData: true,
-                      headerStyle: {
-                        padding: '0',
-                        paddingLeft: '10px',
-                        border: '1px solid lightgrey',
-                      },
-                      pageSize: pageSize,
-                      pageSizeOptions: pageSizeArray
-                    }}
+                    options={oOptions}
                     actions={[
         
                       {

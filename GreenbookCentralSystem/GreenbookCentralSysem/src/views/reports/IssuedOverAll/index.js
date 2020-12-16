@@ -32,12 +32,13 @@ import axios from 'axios';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Rowing } from '@material-ui/icons';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import { oOptions, oTableIcons,sDateFormat } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { aPageSizeArray } from '../../../config/commonConfig';
 import { nPageSize } from '../../../config/commonConfig';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
+import { useHistory } from 'react-router-dom';
 const tableIcons = oTableIcons;
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -60,15 +61,17 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Report() {
+  let history = useHistory();
   const [pageSize, setpageSize] = useState(nPageSize);
   const [pageSizeArray, setpageSizeArray] = useState(aPageSizeArray);
     const classes = useStyles();
-    const [issuedOverAllData, SetIssuedOverAllData] = React.useState([]);
+    const [issuedIndividualData, SetIssuedIndividualData] = React.useState([]);
     const [madebTypeData, SetMadebTypeData] = React.useState();
     const [madebType, SetMadebType] = React.useState('');
     const [dtFrom, SetdtFrom] = React.useState('');
     const [dtTo, SetdtTo] = React.useState('');
     const [orderBy, SetOrderBy] = React.useState('');
+    const [groupBy, SetGroupBy] = React.useState('');
     //Alert
     const [alertMessage, setAlertMessage] = useState("");
     const [alertType, setAlertType] = useState("");
@@ -87,9 +90,11 @@ export default function Report() {
     const [filtering, setFiltering] = React.useState(false);
     const columns=[
       {
-        field: "nGBId",
-        title: "GBID",
+        field: "no",
+        title: "#",
         filterPlaceholder: 'Search..',
+        width:'5%',
+        //hidden:true,
         headerStyle: {
           padding: '5px',
           
@@ -100,12 +105,31 @@ export default function Report() {
           padding: '5px',
           
           textAlign: 'center'
+  
+        },
+      },
+     
+      {
+        field: "individualPlace",
+        title: "Region/Country",
+        filterPlaceholder: 'Search..',
+        headerStyle: {
+          padding: '5px',
+          
+          textAlign: 'center'
+        },
+        cellStyle: {
+          // padding:'0px',
+          padding: '5px',
+          
+          textAlign: 'left'
   
         },
       },
       {
-        field: "sFirstName",
-        title: "First Name",
+        field: "nCount",
+        title: "Count",
+       // render: rowData => rowData.dtIssuedDate ? Moment(rowData.dtIssuedDate).format('DD-MM-YYYY') : '',
         filterPlaceholder: 'Search..',
         headerStyle: {
           padding: '5px',
@@ -120,94 +144,13 @@ export default function Report() {
   
         },
       },
-      {
-        field: "sLastName",
-        title: "Last Name",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
-      },
-      {
-        field: "dtIssuedDate",
-        title: "Issued Date",
-        render: rowData => rowData.dtIssuedDate ? Moment(rowData.dtIssuedDate).format('DD-MM-YYYY') : '',
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
-      },
-      {
-        field: "nBookNo",
-        title: "Book No.",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
-      },
-      {
-        field: "sAuthRegion",
-        title: "Authority Region",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
-      },
-      {
-        field: "sCountryID",
-        title: "Country ID",
-        filterPlaceholder: 'Search..',
-        headerStyle: {
-          padding: '5px',
-          
-          textAlign: 'center'
-        },
-        cellStyle: {
-          // padding:'0px',
-          padding: '5px',
-          
-          textAlign: 'center'
-  
-        },
-      },
+      
     ]
-    const issuedOverAll=()=>{
+
+     
+
+    
+    const issuedIndividual=()=>{
       if(madebType === '' ||dtFrom === ''||dtTo === ''|| orderBy === ''  ){
         setAlertMessage('All fields are required !');
         setAlertType('error');
@@ -215,11 +158,25 @@ export default function Report() {
       }
       else{
         setBackdrop(true);
-        axios.get(`/Report/GetReportIssuedOverAll/?sMadebDisplayKey=`+madebType+`&dtRecordFrom=`+dtFrom+`&dtRecordTo=`+dtTo+`&sOrderBy=`+orderBy)
+        axios.get(`/Report/GetReportIssuedOverAll/?sMadebDisplayKey=` + madebType + `&dtRecordFrom=` + dtFrom + `&dtRecordTo=` + dtTo + `&sGroupBy=` + groupBy + `&sOrderBy=` + orderBy)
         .then(resp => {
           if (resp.status === 200) {
+
             setBackdrop(false);
-            SetIssuedOverAllData(resp.data);
+            if(resp.data.length==0){
+              setAlertMessage('No Records to display');
+              setAlertType('info');
+              snackbarOpen();
+            }
+            else{
+            let x = 1;
+            resp.data.forEach((element) => {
+              //element.dtFormattedIssuedDate = element.dtIssuedDate ? Moment(element.dtIssuedDate).format(sDateFormat) : null;
+              element.no=x;
+              x=x+1;
+            })
+            SetIssuedIndividualData(resp.data);
+          }
           }
         })
         .catch(error => {
@@ -272,7 +229,7 @@ export default function Report() {
     return (
     <>
       <Paper style={{padding:'30px',textAlign:'center'}} >
-        <h1>Green Book Issued Overall Report</h1>
+        <h1>Green Book Issued Overall </h1>
         <FormControl className={classes.formControl}>
                        <InputLabel id="madebTypelbl">Madeb Type</InputLabel>
                                           <Select
@@ -319,48 +276,46 @@ export default function Report() {
                                   </FormControl>
                                   <FormControl className={classes.formControl}>
                                         <InputLabel id="orderbylbl">Order By</InputLabel>
+                                        
                                         <Select
-                                            labelId="orderbylbl"
-                                            id="orderby"
-                                            onChange={(e)=>{SetOrderBy(e.target.value);}}
-                                           // onChange={handleChange}
-                                            >
-                                            <MenuItem value={'lstauthregion.sAuthRegion'}>Region Wise</MenuItem>
-                                            <MenuItem value={'lstauthregion.sCountryID'}>Country Wise</MenuItem>
-                                            
-                                        </Select>
+                                                      labelId="orderbylbl"
+                                                      id="orderby"
+                                                      name="orderby"
+                                                      onChange={(e) => {
+                                                        if (e.target.value === "Region") {
+                                                          SetOrderBy('lstauthregion.sAuthRegion');
+                                                          SetGroupBy('lstauthregion.ID');
+                                                        }
+                                                        else if (e.target.value === "Country") {
+                                                          SetOrderBy('lstcountry.sCountry');
+                                                          SetGroupBy('lstcountry.sCountry');
+                                                        }
+                                                      }}
+                                                    >
+                                                      <MenuItem value={'Region'}>Region Wise</MenuItem>
+                                                      <MenuItem value={'Country'}>Country Wise</MenuItem>
+                                                    </Select>
                                    </FormControl>
                     
                                     <FormControl className={classes.formControl}>
-                                        <Button type="button" variant='outlined' value="Report"  onClick={()=>{issuedOverAll();}} >Show</Button>
+                                        <Button type="button" variant='outlined' value="Report"  onClick={()=>{issuedIndividual();}} >Show</Button>
                                         </FormControl>
                                    <FormControl className={classes.formControl}>
-                                        { issuedOverAllData.length >0 &&
-                                        <Button type="button" variant='outlined' onClick={()=>{SetIssuedOverAllData([]);}} >Clear</Button>
+                                        { issuedIndividualData.length >0 &&
+                                        <Button type="button" variant='outlined' onClick={()=>{ history.go(0);}} >Clear</Button>
                                         }
                                     </FormControl>
 
             {
-                issuedOverAllData.length >0 && 
+                issuedIndividualData.length >0 && 
               
                   <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
                     //isLoading={isLoading}
                     icons={tableIcons}
-                    title="Green Book Issued Overall Report"
+                    title="Green Book Issued Overall"
                     columns={columns}
-                    data={issuedOverAllData}
-                    options={{
-                      filtering,
-                      exportButton: true,
-                      exportAllData: true,
-                      headerStyle: {
-                        padding: '0',
-                        paddingLeft: '10px',
-                        border: '1px solid lightgrey',
-                      },
-                      pageSize: pageSize,
-                      pageSizeOptions: pageSizeArray
-                    }}
+                    data={issuedIndividualData}
+                    options={oOptions}
                     actions={[
         
                       {

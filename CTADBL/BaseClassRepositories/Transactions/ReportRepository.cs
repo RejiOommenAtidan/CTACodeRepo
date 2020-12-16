@@ -23,10 +23,10 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
 
-        public IEnumerable<Object> GetReportGreenBookIssuedIndividual(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sGroupBy ,string sOrderBy)
+        public IEnumerable<Object> GetReportGreenBookIssuedOverAll(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sGroupBy ,string sOrderBy)
         {
 
-            using (var command = new MySqlCommand("spReportGreenBookIssuedIndividual"))
+            using (var command = new MySqlCommand("spReportGreenBookIssuedOverAll"))
             {
                 command.Parameters.AddWithValue("sMadebDisplayKey", sMadebDisplayKey);
                 command.Parameters.AddWithValue("dtRecordFrom", dtRecordFrom);
@@ -55,16 +55,23 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
 
         }
-        public IEnumerable<Object> GetReportGreenBookIssuedOverAll(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
+        public IEnumerable<Object> GetReportGreenBookIssuedIndividual(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
         {
 
-            using (var command = new MySqlCommand("spReportGreenBookIssuedOverAll"))
+            using (var command = new MySqlCommand("spReportGreenBookIssuedIndividual"))
             {
                 command.Parameters.AddWithValue("sMadebDisplayKey", sMadebDisplayKey);
                 command.Parameters.AddWithValue("dtRecordFrom", dtRecordFrom);
                 command.Parameters.AddWithValue("dtRecordTo", dtRecordTo);
                 command.Parameters.AddWithValue("sOrderBy", sOrderBy);
-
+                var sPlace = "";
+                if (sOrderBy == "lstcountry.sCountry") {
+                    sPlace = "sCountry";
+                }
+                else if (sOrderBy == "lstauthregion.sAuthRegion")   
+                {
+                    sPlace = "sAuthRegion";
+                }
                 command.Connection = _connection;
                 command.CommandType = CommandType.StoredProcedure;
                 MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
@@ -76,13 +83,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
                     var relationDetails = tables[0].AsEnumerable().Select(row => new {
 
                         nGBId = row.Field<int?>("nGBId"),
-                        sFirstName = row.Field<string>("sFirstName"),
-                        sMiddleName = row.Field<string>("sMiddleName"),
-                        sLastName = row.Field<string>("sLastName"),
+                        sName = row.Field<string>("sName"),
+                      
                         dtIssuedDate = row.Field<DateTime?>("dtIssuedDate"),
                         nBookNo = row.Field<int?>("nBookNo"),
-                        sAuthRegion = row.Field<string>("sAuthRegion"),
-                        sCountryID = row.Field<string>("sCountryID"),
+                        sPlace = row.Field<string>(sPlace),
+                        
                     }).ToList();
                     return relationDetails;
                 }
@@ -112,8 +118,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 {
                     var relationDetails = tables[0].AsEnumerable().Select(row => new {
                         sGBId = row.Field<string>("sGBId"),
-                        sFirstName = row.Field<string>("sFirstName"),
-                        sLastName = row.Field<string>("sLastName"),
+                        sName = row.Field<string>("sName"),
+                        
                         dtDOB = row.Field<DateTime>("dtDOB"),
                         sPlace = row.Field<string>("sPlace"),
 
@@ -142,8 +148,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 {
                     var relationDetails = tables[0].AsEnumerable().Select(row => new {
                         sGBId = row.Field<string>("sGBId"),
-                        sFirstName = row.Field<string>("sFirstName"),
-                        sLastName = row.Field<string>("sLastName"),
+                     
+                        sName = row.Field<string>("sName"),
                         dtEntered = row.Field<DateTime>("dtEntered"),
                         sFullName = row.Field<string>("sFullName"),
                         sOffice = row.Field<string>("sOffice"),
@@ -242,8 +248,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 {
                     var relationDetails = tables[0].AsEnumerable().Select(row => new {
                         sGBID = row.Field<string>("sGBID"),
-                        sFirstName = row.Field<string>("sFirstName"),
-                        sLastName = row.Field<string>("sLastName"),
+                        sName = row.Field<string>("sName"),
+                        
                         dtDOB = row.Field<DateTime>("dtDOB"),
                         dtDeceased = row.Field<DateTime>("dtDeceased"),
                         sPlace = row.Field<string>("sPlace"),
