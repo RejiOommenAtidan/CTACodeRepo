@@ -112,6 +112,12 @@ const useStyles = makeStyles((theme) => ({
     text: {
       textDecoration: 'underline'
     }
+  },
+  expansionHeading:{
+    color:'#ffffff'
+  },
+  expansionPanel:{
+    backgroundColor:'#4e5287'
   }
 }));
 

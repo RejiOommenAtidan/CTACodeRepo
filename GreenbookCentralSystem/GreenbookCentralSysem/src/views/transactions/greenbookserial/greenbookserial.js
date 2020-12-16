@@ -5,8 +5,8 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import Moment from 'moment';
-import MaterialTable, { MTableToolbar } from 'material-table';
-import { oOptions, oTableIcons, sDateFormat, modifyHeaders, sDateFormatMUIDatepicker, sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
+import MaterialTable from 'material-table';
+import { oOptions, oTableIcons, sDateFormat, modifyHeaders, sDateFormatMUIDatepicker, sButtonColor, sButtonSize, sButtonVariant, sDDMMYYYYRegex } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import { EditDialog } from './dialog';
@@ -17,7 +17,8 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-
+import _ from "lodash/fp";
+import { useForm } from "react-hook-form";
 import handleError from "../../../auth/_helpers/handleError";
 
 const useStyles = makeStyles((theme) => ({
@@ -83,7 +84,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default () => {
-
+  const { register, handleSubmit, errors, setValue } = useForm();
+  const { 
+    register: register2,
+    errors: errors2,
+    handleSubmit: handleSubmit2
+  } = useForm();
   const classes = useStyles();
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
@@ -374,11 +380,11 @@ export default () => {
           setAlertMessage('Record updated successfully.');
           setAlertType('success');
           snackbarOpen();
-          if(isDateSearch){
+          if (isDateSearch) {
             filterDates();
             return;
           }
-          if(isBookSearch){
+          if (isBookSearch) {
             searchByBookNo();
             return;
           }
@@ -398,10 +404,10 @@ export default () => {
 
   const loadData = (dateFrom = null, dateUpto = null, nBookNo = null) => {
     let str = '';
-    if(dateFrom !== null && dateUpto !== null){
+    if (dateFrom !== null && dateUpto !== null) {
       str = `?dtFrom=${dateFrom}&dtUpto=${dateUpto}`;
     }
-    if(nBookNo !== null){
+    if (nBookNo !== null) {
       str = `?nBookNo=${nBookNo}`
     }
     axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/${str}`)
@@ -409,7 +415,8 @@ export default () => {
         if (resp.status === 200) {
           resp.data.forEach((element) => {
             element.greenBookSerialNumber.dtFormattedDate = element.greenBookSerialNumber.dtDate ? Moment(element.greenBookSerialNumber.dtDate).format(sDateFormat) : null;
-          })
+          });
+          setBackdrop(false);
           setdataAPI(resp.data);
           setLoading(false);
         }
@@ -426,7 +433,7 @@ export default () => {
         console.log(error.message);
       })
 
-  }
+  };
 
   const filterDates = () => {
 
@@ -434,13 +441,14 @@ export default () => {
     let dateUpto = Moment(endDate).isValid() ? Moment(endDate).format("YYYY-MM-DD") : null;
     console.log("Start Date:", dateFrom);
     console.log("Upto Date:", dateUpto);
-    
-    if(dateFrom && dateUpto){
+
+    if (dateFrom && dateUpto) {
       setIsDateSearch(true);
+      setBackdrop(true);
       setLoading(true);
       loadData(dateFrom, dateUpto);
     }
-    else{
+    else {
       setAlertMessage("Enter Valid Dates");
       setAlertType("error");
       snackbarOpen();
@@ -451,6 +459,7 @@ export default () => {
   const searchByBookNo = () => {
     console.log("book no. to search", searchBook);
     setIsBookSearch(true);
+    setBackdrop(true);
     setLoading(true);
     loadData(null, null, searchBook);
   };
@@ -485,106 +494,140 @@ export default () => {
   return (
     <>
       <div className={classes.dateBoxes}>
-       
-          <form onSubmit={(e) => {e.preventDefault(); filterDates();}}>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            className={classes.dateField}
-            clearable
-            variant="dialog"
-            //openTo="year"
-            //views={["year", "month", "date"]}
-            margin="dense"
-            id="startDate"
-            name="startDate"
-            label='Date From'
-            format={sDateFormatMUIDatepicker}
-            returnMoment={true}
-            onChange={(date) => {
-              //console.log(date.toISOString().split("T")[0]);
-              //console.log(date.toDateString());
-              // console.log(date.toLocaleDateString());
-              //console.log(date);
-              setStartDate(date);
-            }}
-            value={startDate}
-            KeyboardButtonProps={{
-              "aria-label": "change date",
-            }}
-          // fullWidth
-          //className={classes.dateField}
 
-          />
-        </MuiPickersUtilsProvider>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            className={classes.dateField}
-            variant="dialog"
-            //openTo="year"
-            //views={["year", "month", "date"]}
-            margin="dense"
-            id="endDate"
-            name="endDate"
-            label='Date Upto'
-            format={sDateFormatMUIDatepicker}
-            returnMoment={true}
-            onChange={(date) => {
-              //console.log(date.toISOString().split("T")[0]);
-              //console.log(date.toDateString());
-              // console.log(date.toLocaleDateString());
-              //console.log(date);
-              setEndDate(date);
-            }}
-            value={endDate}
-            KeyboardButtonProps={{
-              "aria-label": "change date",
-            }}
-          // fullWidth
-          //className={classes.dateField}
+        <form
+          onSubmit={handleSubmit(filterDates)}
+        >
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              placeholder="DD-MM-YYYY"
+              className={classes.dateField}
+              clearable
+              variant="dialog"
+              //openTo="year"
+              //views={["year", "month", "date"]}
+              margin="dense"
+              id="startDate"
+              name="startDate"
+              label='Date From'
+              format={sDateFormatMUIDatepicker}
+              returnMoment={true}
+              inputRef={register({
+                required: true,
+                pattern:
+                {
+                  value: new RegExp(sDDMMYYYYRegex),
+                  message: "Invalid Date"
+                }
+              })}
+              onChange={(date) => {
+                if (date) {
+                  setValue('startDate', date, { shouldValidate: true });
+                  setStartDate(date);
+                }
+              }}
+              value={startDate}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            // fullWidth
+            //className={classes.dateField}
 
-          />
-        </MuiPickersUtilsProvider>
-        <Button
-          type='submit'
-          //onClick={(filterDates)}
-          variant={sButtonVariant}
-          color={sButtonColor}
-          size='small'
-          className={classes.searchButton}
-        //size={sButtonSize}
-        > Search
+            />
+            {_.get("startDate.type", errors) === "required" && (
+              <span style={{ color: "red" }}>
+                Date From is required
+              </span>
+            )}
+          </MuiPickersUtilsProvider>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              placeholder="DD-MM-YYYY"
+              className={classes.dateField}
+              variant="dialog"
+              //openTo="year"
+              //views={["year", "month", "date"]}
+              margin="dense"
+              id="endDate"
+              name="endDate"
+              label='Date Upto'
+              format={sDateFormatMUIDatepicker}
+              returnMoment={true}
+              inputRef={register({
+                required: true,
+                pattern:
+                {
+                  value: new RegExp(sDDMMYYYYRegex),
+                  message: "Invalid Date"
+                }
+              })}
+              onChange={(date) => {
+                if (date) {
+                  setValue('endDate', date, { shouldValidate: true });
+                  setEndDate(date);
+                }
+              }}
+              value={endDate}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            // fullWidth
+            //className={classes.dateField}
+
+            />
+            {_.get("endDate.type", errors) === "required" && (
+              <span style={{ color: "red" }}>
+                Date Upto is required
+              </span>
+            )}
+          </MuiPickersUtilsProvider>
+          <Button
+            type='submit'
+            //onClick={(filterDates)}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+            className={classes.searchButton}
+          //size={sButtonSize}
+          > Search
         </Button>
         </form>
-        </div>
-        
-        <div className={classes.dateBoxes}>
-          <form onSubmit={(e) => {e.preventDefault(); searchByBookNo()}}>
+      </div>
+
+      <div className={classes.dateBoxes}>
+        <form onSubmit={handleSubmit2(searchByBookNo)}>
           <TextField
             id='serialBookNo'
             name='serialBookNo'
             type='number'
-            label='Enter Book Number'
+            label='Enter Book Serial No'
             InputProps={{
               pattern: /[0-9]/,
               inputProps: { min: 1 }
             }}
+            inputRef={register2({
+              required: true
+            })}
             className={classes.textField}
             onChange={(e) => setSearchBook(e.target.value)}
           />
+          {_.get("serialBookNo.type", errors2) === "required" && (
+            <span style={{ color: 'red' }}>Book Serial Number is required</span>
+          )}
           <Button
-          type='submit'
-          //onClick={searchByBookNo}
-          variant={sButtonVariant}
-          color={sButtonColor}
-          size='small'
-          className={classes.searchButton}
-        //size={sButtonSize}
-        > Search
+            type='submit'
+            //onClick={searchByBookNo}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+            className={classes.searchButton}
+          //size={sButtonSize}
+          > Search
         </Button>
-          </form>
-        </div>
+        </form>
+      </div>
 
-      
+
       <Grid container spacing={1}>
 
         <Grid item xs={12}>

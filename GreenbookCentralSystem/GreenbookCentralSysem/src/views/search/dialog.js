@@ -293,11 +293,15 @@ export const ViewDialog = (props) => {
                           onChange={handleAccordionChange('panel1')}
                         >
                           <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMoreIcon className={props.classes.expansionHeading} />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
+                            className={props.classes.expansionPanel}
                           >
-                            <Typography className="font-size-lg font-weight-bold my-2">Contact Information</Typography>
+                            <Typography
+
+                              className={props.classes.expansionHeading}
+                            >Contact Information</Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
                             <Grid container spacing={2} >
@@ -360,11 +364,14 @@ export const ViewDialog = (props) => {
                           onChange={handleAccordionChange('panel2')}
                         >
                           <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMoreIcon className={props.classes.expansionHeading} />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
+                            className={props.classes.expansionPanel}
                           >
-                            <Typography className="font-size-lg font-weight-bold my-2">Personal Information</Typography>
+                            <Typography
+                              className={props.classes.expansionHeading}
+                            >Personal Information</Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
                             <Grid item xs={6} >
@@ -442,11 +449,14 @@ export const ViewDialog = (props) => {
                           onChange={handleAccordionChange('panel3')}
                         >
                           <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMoreIcon className={props.classes.expansionHeading} />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
+                            className={props.classes.expansionPanel}
                           >
-                            <Typography className="font-size-lg font-weight-bold my-2">Relation Details</Typography>
+                            <Typography
+                              className={props.classes.expansionHeading}
+                            >Relation Details</Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
                             <div>
@@ -572,11 +582,14 @@ export const ViewDialog = (props) => {
                           onChange={handleAccordionChange('panel4')}
                         >
                           <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMoreIcon className={props.classes.expansionHeading} />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
+                            className={props.classes.expansionPanel}
                           >
-                            <Typography className="font-size-lg font-weight-bold my-2">Book Issued Details</Typography>
+                            <Typography
+                              className={props.classes.expansionHeading}
+                            >Book Issued Details</Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
                             {data.booksIssued.length != 0 &&
@@ -618,11 +631,14 @@ export const ViewDialog = (props) => {
                           onChange={handleAccordionChange('panel5')}
                         >
                           <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMoreIcon className={props.classes.expansionHeading} />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
+                            className={props.classes.expansionPanel}
                           >
-                            <Typography className="font-size-lg font-weight-bold my-2">History</Typography>
+                            <Typography
+                              className={props.classes.expansionHeading}
+                            >History</Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
                             {data.auditLogs.length != 0 &&
@@ -670,11 +686,12 @@ export const ViewDialog = (props) => {
                           onChange={handleAccordionChange('panel6')}
                         >
                           <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMoreIcon className={props.classes.expansionHeading} />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
+                            className={props.classes.expansionPanel}
                           >
-                            <Typography className="font-size-lg font-weight-bold my-2">Notes</Typography>
+                            <Typography className={props.classes.expansionHeading}>Notes</Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
                             {data.gbNotes.length != 0 &&
@@ -714,11 +731,12 @@ export const ViewDialog = (props) => {
                           onChange={handleAccordionChange('panel7')}
                         >
                           <ExpansionPanelSummary
-                            expandIcon={<ExpandMoreIcon />}
+                            expandIcon={<ExpandMoreIcon className={props.classes.expansionHeading} />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
+                            className={props.classes.expansionPanel}
                           >
-                            <Typography className="font-size-lg font-weight-bold my-2">Documents</Typography>
+                            <Typography className={props.classes.expansionHeading}>Documents</Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
                             {data.gbDocuments.length > 0 &&
