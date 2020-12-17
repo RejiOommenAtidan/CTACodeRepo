@@ -249,7 +249,7 @@ export default function Users() {
             .then(resp => {
               if (resp.status === 200) {
                 resp.data.forEach((element) => {
-                  element.sActiveFormatted = element.oUser.bActive ? "Active" : "disabled"
+                  element.sActiveFormatted = element.oUser.bActive ? "Active" : "Disabled"
                 });
                 setdataAPI(resp.data);
                 setAlertMessage(sSnackbarAddMessage);
