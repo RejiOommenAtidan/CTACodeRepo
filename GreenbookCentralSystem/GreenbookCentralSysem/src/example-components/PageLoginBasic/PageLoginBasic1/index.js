@@ -67,12 +67,22 @@ export default function LogingPage(props) {
         window.location.reload("/Search");
       },
       error => {
-        setAlertMessage("Please Check your User name & Password");
-        setAlertType('info');
-        snackbarOpen();
-        dispatch(removeAuthDetails());
-        setsPassword("");
-        setsUsername("");
+        if (error.response.data === "User disabled for login, please contact administrator") {
+          setAlertMessage("User disabled for login, please contact administrator");
+          setAlertType('info');
+          snackbarOpen();
+          dispatch(removeAuthDetails());
+          setsPassword("");
+          setsUsername("");
+        }
+        else {
+          setAlertMessage("Please Check your User name & Password");
+          setAlertType('info');
+          snackbarOpen();
+          dispatch(removeAuthDetails());
+          setsPassword("");
+          setsUsername("");
+        }
       }
     );
   };
@@ -119,7 +129,7 @@ export default function LogingPage(props) {
                             variant="outlined"
                             type="text"
                             //label="Username"
-                            label={<span style={{color: errors.name_sUsername && 'red' }}>Username</span>}
+                            label={<span style={{ color: errors.name_sUsername && 'red' }}>Username</span>}
                             error={errors.name_sUsername}
                             helperText={errors.name_sUsername && 'Please Enter Username'}
                             InputProps={{
@@ -145,7 +155,7 @@ export default function LogingPage(props) {
                           <TextField
                             //fullWidth
                             variant="outlined"
-                            label={<span style={{color: errors.name_sPassword && 'red' }}>Password</span>} 
+                            label={<span style={{ color: errors.name_sPassword && 'red' }}>Password</span>}
                             error={errors.name_sPassword}
                             helperText={errors.name_sPassword && 'Please Enter Password'}
                             type="password"

@@ -341,6 +341,10 @@ namespace CTAWebAPI.Controllers.Transactions
                 {
                     return NotFound("User Not Found with Username: " + userFromUI.sUsername);
                 }
+                //Check for Active
+                if (!userFromDB.bActive) {
+                    return BadRequest("User disabled for login, please contact administrator");
+                }
                 //Note: Equals is Case Sensitive
                 if (userFromUI.sPassword.Equals(userFromDB.sPassword))
                 {
