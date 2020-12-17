@@ -1674,7 +1674,7 @@ DROP procedure IF EXISTS `spReportGreenBookIssuedOverAll`;
 DELIMITER $$
 CREATE PROCEDURE spReportGreenBookIssuedOverAll
 (
-    IN sMadebDisplayKey varchar(5)
+    IN nMadebTypeId int
     ,IN dtRecordFrom date
     ,IN dtRecordTo date
     ,IN sGroupBy varchar(255)
@@ -1693,9 +1693,9 @@ inner join (',IF(sOrderBy = 'lstauthregion.sAuthRegion', "lstauthregion", "tblgr
             and tblgreenbook.sCountryID=lstcountry.sCountryID" ),'
         )
 where 
-    tblgreenbookissued.sWhyIssued= ''', sMadebDisplayKey 
-    ,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' > ''' ,  dtRecordFrom
-    ,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' <= ''', dtRecordTo
+    tblgreenbookissued.nMadebTypeId= ', nMadebTypeId 
+    ,' and ',IF(nMadebTypeId = 1, "tblgreenbookissued.dtEntered", "tblgreenbookissued.dtIssuedDate" ),' > ''' ,  dtRecordFrom
+    ,''' and ',IF(nMadebTypeId = 1, "tblgreenbookissued.dtEntered", "tblgreenbookissued.dtIssuedDate" ),' <= ''', dtRecordTo
     ,''' group by ',sGroupBy 
      ,' order by ',sOrderBy );
     -- select @SQLText;
@@ -1710,7 +1710,7 @@ DROP procedure IF EXISTS `spReportGreenBookIssuedIndividual`;
 DELIMITER $$
 CREATE PROCEDURE spReportGreenBookIssuedIndividual
 (
-    IN sMadebDisplayKey varchar(5)
+    IN nMadebTypeId int
     ,IN dtRecordFrom date
     ,IN dtRecordTo date
     ,IN sOrderBy varchar(255)
@@ -1738,9 +1738,9 @@ BEGIN
                  ', IF(sOrderBy like '%lstauthregion.sAuthRegion%', "and tblgreenbook.nAuthRegionID=lstauthregion.ID", "and tblgreenbook.sCountryID = lstCountry.sCountryID" ) ,'
 			) 
 	where 
-		tblgreenbookissued.sWhyIssued=''', sMadebDisplayKey 
-		,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' > ''' ,  dtRecordFrom
-		,''' and ',IF(sMadebDisplayKey = 'F', "tblgreenbookissued.dtIssuedDate", "tblgreenbookissued.dtEntered" ),' <= ''', dtRecordTo
+		tblgreenbookissued.nMadebTypeId=', nMadebTypeId 
+		,' and ',IF(nMadebTypeId = 1, "tblgreenbookissued.dtEntered", "tblgreenbookissued.dtIssuedDate" ),' > ''' ,  dtRecordFrom
+		,''' and ',IF(nMadebTypeId = 1, "tblgreenbookissued.dtEntered", "tblgreenbookissued.dtIssuedDate" ),' <= ''', dtRecordTo
 	,''' order by ',sOrderBy );
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
@@ -1919,7 +1919,7 @@ DROP procedure IF EXISTS `spReportCTAMadebRegionOrCountryWise`;
 DELIMITER $$
 CREATE PROCEDURE spReportCTAMadebRegionOrCountryWise
 (
-	IN sMadebDisplayKey varchar(255)
+	IN nMadebTypeId int
 	,IN dtRecordFrom date
     ,IN dtRecordTo date
     ,IN sOrderBy varchar(255)
@@ -1945,7 +1945,7 @@ BEGIN
 			INNER JOIN lstMadebType
 				ON tblMadeb.nMadebTypeID=lstMadebType.ID
 			WHERE
-				lstMadebType.sMadebDisplayKey=''', sMadebDisplayKey ,''' 
+				lstMadebType.ID =', nMadebTypeId ,' 
 			and DATE(tblMadeb.dtReceived) >= ''', dtRecordFrom ,''' 
 			and DATE(tblMadeb.dtReceived) < ''', dtRecordTo ,'''
 	GROUP BY ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.sAuthRegion", "lstcountry.sCountry" ),'
@@ -2126,7 +2126,6 @@ where
     DEALLOCATE PREPARE stmt;
 END$$
 DELIMITER ;
-
 
 
 CREATE INDEX MDB_GBID ON tblmadeb(sGBID);
