@@ -226,6 +226,7 @@ export default function Report() {
               setAlertMessage('No Records to display');
               setAlertType('info');
               snackbarOpen();
+              SetChildChangesLogData([]);
             }
             else {
               let x = 1;

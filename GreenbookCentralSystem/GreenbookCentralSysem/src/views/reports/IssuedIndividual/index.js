@@ -191,6 +191,7 @@ export default function Report() {
               setAlertMessage('No Records to display');
               setAlertType('info');
               snackbarOpen();
+              SetIssuedIndividualData([]);
             }
             else {
               let x = 1;

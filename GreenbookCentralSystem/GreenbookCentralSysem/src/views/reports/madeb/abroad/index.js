@@ -247,6 +247,7 @@ export default function Report() {
               setAlertMessage('No Records to display');
               setAlertType('info');
               snackbarOpen();
+              SetAbroadData([]);
             }
             else {
               let x = 1;
