@@ -62,7 +62,7 @@ export default function Report() {
   const classes = useStyles();
   const [norchoeData, SetNorchoeData] = React.useState([]);
   const [madebTypeData, SetMadebTypeData] = React.useState();
-  const [madebType, SetMadebType] = React.useState('M');
+  const [madebType, SetMadebType] = React.useState(2);
   const [dtFrom, SetdtFrom] = React.useState('');
   const [dtTo, SetdtTo] = React.useState('');
   const [orderBy, SetOrderBy] = React.useState('');

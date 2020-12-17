@@ -62,7 +62,7 @@ export default function Report() {
   const classes = useStyles();
   const [bookfullData, SetBookfullData] = React.useState([]);
   const [madebTypeData, SetMadebTypeData] = React.useState();
-  const [madebType, SetMadebType] = React.useState('U');
+  const [madebType, SetMadebType] = React.useState(5);
   const [dtFrom, SetdtFrom] = React.useState('');
   const [dtTo, SetdtTo] = React.useState('');
   const [orderBy, SetOrderBy] = React.useState('');

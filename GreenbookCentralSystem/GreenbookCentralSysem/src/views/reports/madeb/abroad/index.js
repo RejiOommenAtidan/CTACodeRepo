@@ -64,7 +64,7 @@ export default function Report() {
   const classes = useStyles();
   const [abroadData, SetAbroadData] = React.useState([]);
   const [madebTypeData, SetMadebTypeData] = React.useState();
-  const [madebType, SetMadebType] = React.useState('A');
+  const [madebType, SetMadebType] = React.useState(4);
   const [dtFrom, SetdtFrom] = React.useState('');
   const [dtTo, SetdtTo] = React.useState('');
   const [orderBy, SetOrderBy] = React.useState('');

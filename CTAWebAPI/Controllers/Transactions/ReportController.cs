@@ -46,7 +46,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #region GetReportGreenBookIssuedOverAll
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetReportIssuedOverAll(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sGroupBy, string sOrderBy)
+        public IActionResult GetReportIssuedOverAll(int sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sGroupBy, string sOrderBy)
         {
           
             try
@@ -74,7 +74,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #region GetReportGreenBookIssuedIndividual
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetReportIssuedIndividual(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
+        public IActionResult GetReportIssuedIndividual(int sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
         {
            
             try
@@ -214,7 +214,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #region GetReportCTAMadebRegionOrCountryWise
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetReportCTAMadebRegionOrCountryWise(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
+        public IActionResult GetReportCTAMadebRegionOrCountryWise(int sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
         {
 
             try

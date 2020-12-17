@@ -23,7 +23,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
 
-        public IEnumerable<Object> GetReportGreenBookIssuedOverAll(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sGroupBy ,string sOrderBy)
+        public IEnumerable<Object> GetReportGreenBookIssuedOverAll(int sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sGroupBy ,string sOrderBy)
         {
 
             using (var command = new MySqlCommand("spReportGreenBookIssuedOverAll"))
@@ -55,7 +55,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
 
         }
-        public IEnumerable<Object> GetReportGreenBookIssuedIndividual(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
+        public IEnumerable<Object> GetReportGreenBookIssuedIndividual(int sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
         {
 
             using (var command = new MySqlCommand("spReportGreenBookIssuedIndividual"))
@@ -263,7 +263,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
         }
 
-        public IEnumerable<Object> GetReportCTAMadebRegionOrCountryWise(string sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
+        public IEnumerable<Object> GetReportCTAMadebRegionOrCountryWise(int sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
         {
 
             using (var command = new MySqlCommand("spReportCTAMadebRegionOrCountryWise"))

@@ -263,7 +263,7 @@ export default function Report() {
             onChange={(e) => { SetMadebType(e.target.value); }}
           >
             {madebTypeData && madebTypeData.map((row) => (
-              <MenuItem value={row.sMadebDisplayKey}>{row.sMadebDisplayName}</MenuItem>
+              <MenuItem value={row.id}>{row.sMadebDisplayName}</MenuItem>
             ))}
 
 

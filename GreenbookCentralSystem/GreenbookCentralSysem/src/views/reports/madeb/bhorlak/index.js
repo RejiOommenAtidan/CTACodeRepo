@@ -64,7 +64,7 @@ export default function Report() {
   const classes = useStyles();
   const [bhorlakData, SetBhorlakData] = React.useState([]);
   const [madebTypeData, SetMadebTypeData] = React.useState();
-  const [madebType, SetMadebType] = React.useState('L');
+  const [madebType, SetMadebType] = React.useState(3);
   const [dtFrom, SetdtFrom] = React.useState('');
   const [dtTo, SetdtTo] = React.useState('');
   const [orderBy, SetOrderBy] = React.useState('');

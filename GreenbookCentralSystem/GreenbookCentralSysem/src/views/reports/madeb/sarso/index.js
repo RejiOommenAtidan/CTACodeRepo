@@ -48,7 +48,7 @@ export default function Report() {
   const classes = useStyles();
   const [sarsoData, SetSarsoData] = React.useState([]);
   const [madebTypeData, SetMadebTypeData] = React.useState();
-  const [madebType, SetMadebType] = React.useState('F');
+  const [madebType, SetMadebType] = React.useState(1);
   const [dtFrom, SetdtFrom] = React.useState('');
   const [dtTo, SetdtTo] = React.useState('');
   const [orderBy, SetOrderBy] = React.useState('');
