@@ -290,7 +290,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                         MadebDouble = row.Field<decimal>("MadebDouble"),
                         MadebCancelled = row.Field<decimal>("MadebCancelled"),
                         MadebPending = row.Field<decimal>("MadebPending"),
-                        MadebTotalReceived = row.Field<Int64>("MadebTotalReceived"),
+                        MadebTotalReceived = row.Field<decimal>("MadebTotalReceived"),
          
 
 
