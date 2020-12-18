@@ -263,9 +263,9 @@ export const EditDialog = (props) => {
                       id="nFormNumber"
                       label={<p>Form Number<span style={{ color: "red" }} > *</span></p>}
                       type="number"
-                      InputProps={{
-                        readOnly: true,
-                      }}
+                      // InputProps={{
+                      //   readOnly: true,
+                      // }}
                       value={formNumber}
                       onChange={(e) => { setFormNumber(e.target.value) }}
 

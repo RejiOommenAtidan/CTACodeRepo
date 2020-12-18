@@ -249,9 +249,9 @@ export const EditDialog = (props) => {
                       name="nFormNumber"
                       label={<p>Form Number<span style={{ color: "red" }} > *</span></p>}
                       type="number"
-                      InputProps={{
-                        readOnly: true,
-                      }}
+                      // InputProps={{
+                      //   readOnly: true,
+                      // }}
                       value={nFormNumber}
                       onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
 
@@ -990,9 +990,9 @@ export const AddDialog = (props) => {
                       name="nFormNumber"
                       label={<p>Form Number<span style={{ color: "red" }} > *</span></p>}
                       type="number"
-                      InputProps={{
-                        readOnly: true
-                      }}
+                      // InputProps={{
+                      //   readOnly: true
+                      // }}
                       inputRef={register({
                         required: true
                       })}

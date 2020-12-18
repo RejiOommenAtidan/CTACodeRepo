@@ -14,7 +14,7 @@ namespace CTADBL.BaseClasses.Transactions
         private int? __Id;
         private int _nFormNumber;
         private string? _sGBID;
-        private int? _nMadebTypeID;
+        private int _nMadebTypeID;
         private string? _sName;
         private string? _sFathersName;
         private int _nAuthRegionID;
@@ -49,7 +49,7 @@ namespace CTADBL.BaseClasses.Transactions
         public string? sGBID { get { return _sGBID; } set { _sGBID = value; } }
         [Required]
         [DisplayName("Madeb Type ID")]
-        public int? nMadebTypeID { get { return _nMadebTypeID; } set { _nMadebTypeID = value; } }
+        public int nMadebTypeID { get { return _nMadebTypeID; } set { _nMadebTypeID = value; } }
         [Required]
         [DisplayName("Name")]
         public string? sName { get { return _sName; } set { _sName = value; } }

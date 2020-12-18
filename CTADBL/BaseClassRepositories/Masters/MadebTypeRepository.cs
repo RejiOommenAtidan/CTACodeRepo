@@ -17,25 +17,25 @@ namespace CTADBL.BaseClassRepositories.Masters
         #endregion
 
         #region MadebType Add Call
-        public int Add(MadebType madeb)
+        public int Add(MadebType madebType)
         {
-            var builder = new SqlQueryBuilder<MadebType>(madeb);
+            var builder = new SqlQueryBuilder<MadebType>(madebType);
             return ExecuteCommand(builder.GetInsertCommand());
         }
         #endregion
 
         #region MadebType Update Call
-        public int Update(MadebType madeb)
+        public int Update(MadebType madebType)
         {
-            var builder = new SqlQueryBuilder<MadebType>(madeb);
+            var builder = new SqlQueryBuilder<MadebType>(madebType);
             return ExecuteCommand(builder.GetUpdateCommand());
         }
         #endregion
 
         #region MadebType Delete Call
-        public int Delete(MadebType madeb)
+        public int Delete(MadebType madebType)
         {
-            var builder = new SqlQueryBuilder<MadebType>(madeb);
+            var builder = new SqlQueryBuilder<MadebType>(madebType);
             return ExecuteCommand(builder.GetDeleteCommand());
         }
         #endregion
@@ -44,14 +44,14 @@ namespace CTADBL.BaseClassRepositories.Masters
         public IEnumerable<MadebType> GetAllMadebTypes()
         {
             // DBAs across the country are having strokes over this next command!
-            using (var command = new MySqlCommand("SELECT Id, sMadebType, sMadebDisplayName, sMadebDisplayKey, nMadebFeatureId, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstmadebtype"))
+            using (var command = new MySqlCommand("SELECT Id, sMadebType, sMadebDisplayName, sMadebDisplayKey, nMadebFeatureId, nMadebLastFormNumber, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstmadebtype"))
             {
                 return GetRecords(command);
             }
         }
         public MadebType GetMadebTypeById(string id)
         {
-            using (var command = new MySqlCommand("SELECT Id, sMadebType, sMadebDisplayName, sMadebDisplayKey, nMadebFeatureId, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstmadebtype WHERE ID = @id"))
+            using (var command = new MySqlCommand("SELECT Id, sMadebType, sMadebDisplayName, sMadebDisplayKey, nMadebFeatureId, nMadebLastFormNumber, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lstmadebtype WHERE ID = @id"))
             {
                 command.Parameters.AddWithValue("id", id);
                 return GetRecord(command);
@@ -83,6 +83,7 @@ namespace CTADBL.BaseClassRepositories.Masters
                 nMadebFeatureId = (int)reader["nMadebFeatureId"],
                 sMadebDisplayName = (string)reader["sMadebDisplayName"],
                 sMadebDisplayKey = (string)reader["sMadebDisplayKey"],
+                nMadebLastFormNumber =(int)reader["nMadebLastFormNumber"],
                 dtEntered = dtEntered,
                 nEnteredBy = (int)reader["nEnteredBy"],
                 dtUpdated = dtUpdated,

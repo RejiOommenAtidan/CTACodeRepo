@@ -45,10 +45,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
             ExecuteCommand(builder.GetDeleteCommand());
             #endregion
         }
-        
+
         #endregion
 
-        #region Get Given GBID/GBIDs Call
+        #region Get Calls
+
+        #region GetAll Given GBID
         public IEnumerable<GivenGBID> GetAllGivenGBID()
         {
             
@@ -75,7 +77,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 return GetRecords(command);
             }
         }
+        #endregion
 
+        #region Get Given GBID by Id
         public GivenGBID GetGivenGBID(string Id)
         {
             string sql = @"SELECT `Id`,
@@ -98,6 +102,22 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
         }
         #endregion
+
+        #region Get Given GBID for a particular date
+        public IEnumerable<GivenGBID> GetGivenGBIDByDate(DateTime date)
+        {
+            string sql = @"SELECT Id, _Id, nGBId, nFormNo, dtDate, bGivenOrNot, bActive, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM tblgivengbid t WHERE dtDate = @date;";
+
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("date", date.ToString("yyyy-MM-dd"));
+                var result = GetRecords(command);
+                return result;
+            }
+        }
+        #endregion
+
+        #endregion End all Get Calls
 
         #region Get Random GBID
         public int GetRandomGBID()

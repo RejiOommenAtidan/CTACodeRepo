@@ -4,8 +4,9 @@ import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import Refresh from '@material-ui/icons/Refresh';
 import Moment from 'moment';
-import MaterialTable from 'material-table';
+import MaterialTable, { MTableToolbar } from 'material-table';
 import { oOptions, oTableIcons, sDateFormat, modifyHeaders, sDateFormatMUIDatepicker, sButtonColor, sButtonSize, sButtonVariant, sDDMMYYYYRegex } from '../../../config/commonConfig';
 import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
@@ -88,11 +89,12 @@ export default () => {
   const searchButton = useRef(null);
   
   const endDateTextField = useRef(null);
-  const { register, handleSubmit, errors, setValue } = useForm();
+  const { register, handleSubmit, errors, setValue, clearErrors } = useForm();
   const { 
     register: register2,
     errors: errors2,
-    handleSubmit: handleSubmit2
+    handleSubmit: handleSubmit2,
+    clearErrors: clearErrors2
   } = useForm();
   const classes = useStyles();
   const [editModal, setEditModal] = React.useState(false);
@@ -421,18 +423,18 @@ export default () => {
           resp.data.forEach((element) => {
             element.greenBookSerialNumber.dtFormattedDate = element.greenBookSerialNumber.dtDate ? Moment(element.greenBookSerialNumber.dtDate).format(sDateFormat) : null;
           });
-          setBackdrop(false);
+          //setBackdrop(false);
           setdataAPI(resp.data);
           setLoading(false);
         }
         else {
-          setBackdrop(false);
+          //setBackdrop(false);
           setLoading(false);
           console.log("Response received:\n", resp);
         }
       })
       .catch(error => {
-        setBackdrop(false);
+        //setBackdrop(false);
         setLoading(false);
         console.log(error.config);
         console.log(error.message);
@@ -441,7 +443,7 @@ export default () => {
   };
 
   const filterDates = () => {
-
+    clearErrors2(['serialBookNo']);
     let dateFrom = Moment(startDate).isValid() ? Moment(startDate).format("YYYY-MM-DD") : null;
     let dateUpto = Moment(endDate).isValid() ? Moment(endDate).format("YYYY-MM-DD") : null;
     console.log("Start Date:", dateFrom);
@@ -449,7 +451,7 @@ export default () => {
 
     if (dateFrom && dateUpto) {
       setIsDateSearch(true);
-      setBackdrop(true);
+      //setBackdrop(true);
       setLoading(true);
       loadData(dateFrom, dateUpto);
     }
@@ -462,44 +464,52 @@ export default () => {
   };
 
   const searchByBookNo = () => {
+    clearErrors(['startDate', 'endDate']);
     console.log("book no. to search", searchBook);
     setIsBookSearch(true);
-    setBackdrop(true);
+    //setBackdrop(true);
     setLoading(true);
     loadData(null, null, searchBook);
   };
+
+  const initialLoad = () => {
+    setLoading(true);
+    clearErrors(['startDate', 'endDate']);
+    clearErrors2(['serialBookNo']);
+    axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/`)
+    .then(resp => {
+      if (resp.status === 200) {
+        resp.data.forEach((element) => {
+          element.greenBookSerialNumber.dtFormattedDate = element.greenBookSerialNumber.dtDate ? Moment(element.greenBookSerialNumber.dtDate).format(sDateFormat) : null;
+        });
+        setdataAPI(resp.data);
+        selectDatafunction();
+        setLoading(false);
+        modifyHeaders();
+        // setStartDateTextField(document.getElementById('startDate'));
+        // setEndDateTextField(document.getElementById('endDate'));
+        // setSearchButton(document.getElementById('searchButton'));
+        
+      }
+    })
+    .catch(error => {
+      if (error.response) {
+        if (error.response.status === 401) {
+          setAlertMessage("You have been logged out of the system. Login again.");
+          setAlertType("error");
+          snackbarOpen();
+        }
+      }
+      console.log(error.config);
+      console.log(error.message);
+      setLoading(false);
+    })
+  }
   
   useEffect(() => {
     
-    console.log("Elements", startDateTextField, endDateTextField, searchButton);
-    axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/`)
-      .then(resp => {
-        if (resp.status === 200) {
-          resp.data.forEach((element) => {
-            element.greenBookSerialNumber.dtFormattedDate = element.greenBookSerialNumber.dtDate ? Moment(element.greenBookSerialNumber.dtDate).format(sDateFormat) : null;
-          });
-          setdataAPI(resp.data);
-          selectDatafunction();
-          setLoading(false);
-          modifyHeaders();
-          // setStartDateTextField(document.getElementById('startDate'));
-          // setEndDateTextField(document.getElementById('endDate'));
-          // setSearchButton(document.getElementById('searchButton'));
-          
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          if (error.response.status === 401) {
-            setAlertMessage("You have been logged out of the system. Login again.");
-            setAlertType("error");
-            snackbarOpen();
-          }
-        }
-        console.log(error.config);
-        console.log(error.message);
-        setLoading(false);
-      })
+    initialLoad();
+    
   }, []);
 
   return (
@@ -517,12 +527,12 @@ export default () => {
               className={classes.dateField}
               clearable
               variant="dialog"
-              //openTo="year"
-              //views={["year", "month", "date"]}
+              error={errors.startDate}
+              
               margin="dense"
               id="startDate"
               name="startDate"
-              label={<span style={{color: errors.endDate && 'red' }}>Date From</span>}
+              label={<span style={{color: errors.startDate && 'red' }}>Date From</span>}
               format={sDateFormatMUIDatepicker}
               returnMoment={true}
               inputRef={register({
@@ -558,6 +568,7 @@ export default () => {
               placeholder="DD-MM-YYYY"
               className={classes.dateField}
               variant="dialog"
+              error={errors.endDate}
               //openTo="year"
               //views={["year", "month", "date"]}
               margin="dense"
@@ -625,7 +636,9 @@ export default () => {
             })}
             className={classes.textField}
             onChange={(e) => setSearchBook(e.target.value)}
-            
+            //variant={errors2.serialBookNo && 'outlined'}
+            error={errors2.serialBookNo}
+            //helperText={errors2.serialBookNo && 'This field is required'}
           />
           
           
@@ -642,7 +655,12 @@ export default () => {
         </Button>
         </form>
       </div>
-      {/* {_.get("serialBookNo.type", errors2) === "required" && (<span style={{margin:'0px', padding:'0px'}}>This field is required</span>) }  */}
+      {/* <div className={classes.dateBoxes}>
+          {_.get("serialBookNo.type", errors2) === "required" && (
+            <span style={{ color: 'red', fontSize: '0.5vw' }}>This field is required</span>
+          )}
+      </div> */}
+      
 
       <Grid container spacing={1}>
 
@@ -665,18 +683,35 @@ export default () => {
             //   Toolbar: props => (
             //     <div>
             //       <MTableToolbar {...props} />
-
+            //         <Button
+            //           variant={sButtonVariant}
+            //           color={sButtonColor}
+            //           onClick={() => initialLoad()}
+            //           className={classes.button}
+            //           startIcon={<Refresh />}
+            //           >
+            //             Get Recent Records
+            //         </Button>
             //     </div>
             //   ),
             // }}
             actions={
               [
-                // {
-                //   icon: AddBox,
-                //   tooltip: 'Add GreenBook Serial Number',
-                //   isFreeAction: true,
-                //   onClick: () => setAddModal(true)
-                // },
+                {
+                  icon: oTableIcons.Refresh,
+                  // icon: () => <Button
+                  // variant={sButtonVariant}
+                  // color={sButtonColor}
+                  // //onClick={() => initialLoad()}
+                  // className={classes.button}
+                  // startIcon={<Refresh />}
+                  // >
+                    
+                //</Button>,
+                  tooltip: 'Show Recent',
+                  isFreeAction: true,
+                  onClick: () => initialLoad()
+                },
                 {
                   icon: oTableIcons.Search,
                   tooltip: 'Toogle Filter',

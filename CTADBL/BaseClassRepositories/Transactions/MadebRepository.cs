@@ -1,4 +1,6 @@
-﻿using CTADBL.BaseClasses.Transactions;
+﻿using CTADBL.BaseClasses.Masters;
+using CTADBL.BaseClasses.Transactions;
+using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using MySql.Data.MySqlClient;
@@ -14,12 +16,14 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
         private static MySqlConnection _connection;
         private GreenbookRepository _greenbookRepository;
+        private MadebTypeRepository _madebTypeRepository;
 
         #region Constructor
         public MadebRepository(string connectionString) : base(connectionString)
         {
             _connection = new MySqlConnection(connectionString);
             _greenbookRepository = new GreenbookRepository(connectionString);
+            _madebTypeRepository = new MadebTypeRepository(connectionString);
         }
         #endregion
 
@@ -34,9 +38,18 @@ namespace CTADBL.BaseClassRepositories.Transactions
                     return ("GBID does not exist.");
                 }
             }
-            madeb.nFormNumber = VerifyAndGetUniqueFormNumber(madeb.nFormNumber);
+            madeb.nFormNumber = VerifyAndGetUniqueFormNumber(madeb.nFormNumber, madeb.nMadebTypeID);
             var builder = new SqlQueryBuilder<Madeb>(madeb);
             int rowsAffected = ExecuteCommand(builder.GetInsertCommand());
+            if(rowsAffected > 0)
+            {
+                MadebType madebType = _madebTypeRepository.GetMadebTypeById(madeb.nMadebTypeID.ToString());
+                if(madebType.nMadebLastFormNumber < madeb.nFormNumber)
+                {
+                    madebType.nMadebLastFormNumber = madeb.nFormNumber;
+                }
+                _madebTypeRepository.Update(madebType);
+            }
             return rowsAffected > 0 ? "Success" : "Insert Failed";
         }
         #endregion
@@ -55,10 +68,19 @@ namespace CTADBL.BaseClassRepositories.Transactions
             Madeb existingMadeb = GetMadebById(madeb.Id.ToString());
             if (existingMadeb.nFormNumber != madeb.nFormNumber)
             {
-                madeb.nFormNumber = VerifyAndGetUniqueFormNumber(madeb.nFormNumber);
+                madeb.nFormNumber = VerifyAndGetUniqueFormNumber(madeb.nFormNumber, madeb.nMadebTypeID);
             }
             var builder = new SqlQueryBuilder<Madeb>(madeb);
             int rowsAffected = ExecuteCommand(builder.GetUpdateCommand());
+            if (rowsAffected > 0)
+            {
+                MadebType madebType = _madebTypeRepository.GetMadebTypeById(madeb.nMadebTypeID.ToString());
+                if (madebType.nMadebLastFormNumber < madeb.nFormNumber)
+                {
+                    madebType.nMadebLastFormNumber = madeb.nFormNumber;
+                }
+                _madebTypeRepository.Update(madebType);
+            }
             return rowsAffected > 0 ? "Success" : "Update Failed"; ;
         }
 
@@ -474,7 +496,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
 
         #region Verify form number uniqueness for insert and updates & return appropriate number
-        public int VerifyAndGetUniqueFormNumber(int nFormNumber)
+        public int VerifyAndGetUniqueFormNumber(int nFormNumber, int nMadebTypeId)
         {
 
             using (var command = new MySqlCommand("spGetFormNumber"))
@@ -482,6 +504,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 command.Connection = _connection;
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("formNumberIN", nFormNumber);
+                command.Parameters.AddWithValue("nMadebId", nMadebTypeId);
                 command.Parameters.Add("@result", MySqlDbType.UInt32);
                 command.Parameters["@result"].Direction = ParameterDirection.Output;
                 _connection.Open();
@@ -547,7 +570,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 _id = reader.IsDBNull("_Id") ? null : (int?)(reader["_Id"]),
                 nFormNumber = (int)reader["nFormNumber"],
                 sGBID = reader.IsDBNull("sGBID") ? null : (string?)(reader["sGBID"]),
-                nMadebTypeID = reader.IsDBNull("nMadebTypeID") ? null : (int?)(reader["nMadebTypeID"]),
+                nMadebTypeID = (int)(reader["nMadebTypeID"]),
                 sName = reader.IsDBNull("sName") ? null : (string?)reader["sName"],
                 sFathersName = reader.IsDBNull("sFathersName") ? null : (string?)(reader["sFathersName"]),
                 nAuthRegionID = (int)reader["nAuthRegionID"],

@@ -11,6 +11,7 @@ import FilterList from '@material-ui/icons/FilterList';
 import FirstPage from '@material-ui/icons/FirstPage';
 import LastPage from '@material-ui/icons/LastPage';
 import Remove from '@material-ui/icons/Remove';
+import Refresh from '@material-ui/icons/Refresh';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
@@ -45,7 +46,7 @@ export const oOptions = {
   filtering: true,
   exportButton: {
     csv: true,
-    pdf: false,
+    pdf: true,
   },
   exportAllData: true,
   headerStyle: {
@@ -90,6 +91,7 @@ export const modifyHeaders = () => {
 };
 
 export const oTableIcons = {
+  Refresh : forwardRef((props, ref) => <Refresh {...props} color={"primary"} ref={ref} />),
   Add: forwardRef((props, ref) => <AddBox {...props} color={"primary"} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} color={"primary"} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} color={"primary"} ref={ref} />),

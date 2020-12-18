@@ -29,12 +29,12 @@ namespace CTAWebAPI.Controllers
         #region Get Calls
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetNewEmptyMadeb()
+        public IActionResult GetNewEmptyMadeb(int nMadebTypeId)
         {
             #region Get Empty Madeb Record using SP call
             try
             {
-                MadebNewRecordVM madebNewRecord = _madebNewRecordVMRepository.GetNewEmptyMadeb();
+                MadebNewRecordVM madebNewRecord = _madebNewRecordVMRepository.GetNewEmptyMadeb(nMadebTypeId);
                 if(madebNewRecord != null)
                 {
                     return Ok(madebNewRecord);

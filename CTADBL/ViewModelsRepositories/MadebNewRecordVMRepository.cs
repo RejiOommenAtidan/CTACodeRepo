@@ -22,7 +22,7 @@ namespace CTADBL.ViewModelsRepositories
         #endregion
 
         #region Get New Madeb Record
-        public MadebNewRecordVM GetNewEmptyMadeb()
+        public MadebNewRecordVM GetNewEmptyMadeb(int nMadebTypeId)
         {
 
             using (var command = new MySqlCommand("spGetNewMadebData"))
@@ -30,6 +30,9 @@ namespace CTADBL.ViewModelsRepositories
                 //command.Parameters.AddWithValue("id", id);
                 command.Connection = _connection;
                 command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("nMadebTypeId", nMadebTypeId);
+                
+                
                 MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
                 DataSet ds = new DataSet();
                 mySqlDataAdapter.Fill(ds);

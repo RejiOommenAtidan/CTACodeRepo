@@ -14,6 +14,7 @@ namespace CTADBL.BaseClasses.Masters
         private string _sMadebDisplayName;
         private string _sMadebDisplayKey;
         private int _nMadebFeatureId;
+        private int _nMadebLastFormNumber;
         #endregion
 
         #region Public Madeb Type Properties
@@ -28,6 +29,9 @@ namespace CTADBL.BaseClasses.Masters
         public string sMadebDisplayKey { get { return _sMadebDisplayKey; } set { _sMadebDisplayKey = value; } }
         [DisplayName("Madeb Feature ID")]
         public int nMadebFeatureId { get { return _nMadebFeatureId; } set { _nMadebFeatureId = value; } }
+        [DisplayName("Last Form Number")]
+
+        public int nMadebLastFormNumber { get { return _nMadebLastFormNumber; } set { _nMadebLastFormNumber = value; } }
         #endregion
     }
 }

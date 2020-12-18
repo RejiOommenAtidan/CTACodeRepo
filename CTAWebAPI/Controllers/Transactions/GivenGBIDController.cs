@@ -35,11 +35,13 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Get Calls
+
+        #region Get All Given GBID
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetGivenGBIDs()
         {
-            #region Get Given GBIDs
+            
             try
             {
                 IEnumerable<GivenGBID> givenGBIDs = _givenGBIDRepository.GetAllGivenGBID();
@@ -58,9 +60,11 @@ namespace CTAWebAPI.Controllers.Transactions
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-            #endregion
+            
         }
+        #endregion
 
+        #region Get Given GBID record by Id
         [HttpGet("GetGivenGBID/Id={Id}")]
         [Route("[action]")]
         public IActionResult GetGivenGBID(string Id)
@@ -86,7 +90,10 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             #endregion
         }
+        #endregion
 
+
+        #region Get Random GBID
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetRandomGBID()
@@ -96,11 +103,44 @@ namespace CTAWebAPI.Controllers.Transactions
             return Ok(randomGBID);
             #endregion
         }
-
         #endregion
 
+        #region Get All Given GBID records for a date
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetGivenGBIDByDate (DateTime date)
+        {
+            try
+            {
+                IEnumerable<GivenGBID> result = _givenGBIDRepository.GetGivenGBIDByDate(date);
+                if(result != null)
+                {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
+                    return Ok(result);
+                }
+                else
+                {
+                    return NoContent();
+                }
+
+            }
+            catch(Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+                
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        #endregion
+
+        #endregion End all Get Calls
+
         #region Add Call
-       
+
         [Route("[action]")]
         [HttpPost("AddGivenGBID/dtReceived={dtReceived}")]
         public IActionResult AddGivenGBID(DateTime dtReceived,GivenGBID givenGBID)

@@ -598,15 +598,16 @@ export default function EnhancedTable() {
   };
 
   const selectDatafunction = () => {
-    
-    axios.get(`Madeb/GetNewEmptyMadeb`)
+    setBackdrop(true);
+    axios.get(`Madeb/GetNewEmptyMadeb/?nMadebTypeId=1`)
       .then(resp => {
         if (resp.status === 200) {
+          setBackdrop(false);
           setSelectData(resp.data);
         }
       })
       .catch(error => {
-        
+        setBackdrop(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -622,6 +623,7 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   }
+
   const addAPICall = (madeb) => {
     setBackdrop(true);
     axios.post(`/Madeb/AddMadeb/`, madeb)
@@ -712,9 +714,9 @@ export default function EnhancedTable() {
             element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
           })
           setdataAPI(resp.data);
-          selectDatafunction();
           setisLoading(false);
           modifyHeaders();
+          selectDatafunction();
         }
       })
       .catch(error => {

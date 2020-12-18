@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from "react-hook-form";
 import _ from "lodash/fp";
 import axios from 'axios';
+import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import { Grid, Button, FormControl, TextField } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
@@ -19,7 +20,12 @@ import {
 } from "@material-ui/pickers";
 import Moment from "moment";
 
+
+
+
+
 export const EditDialog = (props) => {
+  
   Moment.locale("en");
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
@@ -44,6 +50,7 @@ export const EditDialog = (props) => {
 
   const handleSubmitEditRecord = () => {
     //alert("Form Submitted.");
+    console.log("Submit edit form");
     props.editAPICall(madeb);
     // setMessage("Record Successfully Edited");
     // setAlertType('success');
@@ -793,9 +800,11 @@ export const EditDialog = (props) => {
 
           <Button
             type="submit"
+            disabled={formState.isSubmitting || formState.isSubmitted}
             color={sButtonColor}
             variant={sButtonVariant}
             size={sButtonSize}
+            classes = {{disabled: props.classes.button}}
           >Save</Button>
         </DialogActions>
       </form>
@@ -1401,9 +1410,11 @@ export const AddDialog = (props) => {
       </Snackbar> */}
           <Button
             type="submit"
+            className={props.classes.button}
             color={sButtonColor}
             variant={sButtonVariant}
             size={sButtonSize}
+            disabled={formState.isSubmitting}
           >Save</Button>
         </DialogActions>
       </form>

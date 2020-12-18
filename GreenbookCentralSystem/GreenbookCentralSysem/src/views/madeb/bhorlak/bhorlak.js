@@ -588,13 +588,16 @@ export default function EnhancedTable() {
   };
 
   const selectDatafunction = () => {
-    axios.get(`Madeb/GetNewEmptyMadeb`)
+    setBackdrop(true);
+    axios.get(`Madeb/GetNewEmptyMadeb/?nMadebTypeId=3`)
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
+          setBackdrop(false);
         }
       })
       .catch(error => {
+        setBackdrop(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -694,9 +697,9 @@ export default function EnhancedTable() {
             element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
           })
           setdataAPI(resp.data);
-          selectDatafunction()
           setisLoading(false);
           modifyHeaders();
+          selectDatafunction();
         }
       })
       .catch(error => {

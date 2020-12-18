@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { Grid } from '@material-ui/core';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import { Grid, Button } from '@material-ui/core';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 import Moment from 'moment';
+import { useForm } from "react-hook-form";
 import { useDispatch } from 'react-redux';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import IconButton from '@material-ui/core/IconButton';
 import { red } from '@material-ui/core/colors';
 import { useHistory } from 'react-router-dom';
 import { AssignDialog } from './assigndialog';
-import { oOptions, oTableIcons, sDateFormat, modifyHeaders, sISODateFormat } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, modifyHeaders, sISODateFormat, sDateFormatMUIDatepicker,sButtonColor, sButtonSize, sButtonVariant,sDDMMYYYYRegex } from '../../../config/commonConfig';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
 
@@ -24,6 +35,15 @@ const useStyles = makeStyles((theme) => ({
     'label + &': {
       marginTop: theme.spacing(3)
     }
+  },
+  dateBoxes: {
+    //border: '1px solid red',
+    display: 'flex',
+    justifyContent: 'center',
+    paddingBottom: '10px'
+  },
+  divInline:{
+    display: 'inline'
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -62,13 +82,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function GiveGBId() {
+  const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
+
+
   // Common properties
   const classes = useStyles();
   const [dataAPI, setdataAPI] = useState([]);
+  const [reportData, setReportData] = useState([]);
+  const [value, setRadioValue] = useState('generate');
   const [randomGBID, setRandomGBID] = useState(0);
   const [nFormNumber, setFormNumber] = useState(0);
   const [dtReceived, setReceivedDate] = useState('');
-  //const [gbidObj, setGBIDObj] = useState({});
+  const [reportDate, setReportDate] = useState(new Date(Date.now()));
+  const [disabled, setDisabled] = useState(true);
   let history = useHistory();
   const dispatch = useDispatch();
 
@@ -97,8 +123,96 @@ export default function GiveGBId() {
   };
   //#endregion
 
+  const columns2 = [
+    {
+    field: "nSerialNo",
+      title: "SR. NO.",
+      //filterPlaceholder: "Search...",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        width: '2%'
+      },
+      cellStyle: {
+        textAlign: "center",
+        paddingRight: '2px',
+        width: '2%'
+      }
+    },
+    
+    {
+      field: "nGBId",
+      title: "GREEN BOOK ID",
+      //hidden: true,
+      //filterPlaceholder: "Search...",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        width: '10%'
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px',
+        width: '10%'
+      }
+    },
+    {
+      field: "nFormNumber",
+      title: "FORM NUMBER",
+      //filterPlaceholder: "Search...",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        width: '10%'
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px',
+        width: '10%'
+      }
+    },
+    {
+      field: "dtDate",
+      title: "GENERATED DATE",
+      //hidden: true,
+      // type: 'date',
+      // dateSetting: {locale: 'en-GB'},
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        width: '10%'
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px',
+        width: '10%'
+      },
+      //render: rowData => Moment(rowData['dtReceived']).format(sDateFormat),
+    },
+  ];
 
   const columns = [
+    {
+      field: "nSerialNo",
+        title: "SR. NO.",
+        //filterPlaceholder: "Search...",
+        headerStyle: {
+          textAlign: "center",
+          textAlignLast: "center",
+          verticalAlign: "middle",
+          width: '2%'
+        },
+        cellStyle: {
+          textAlign: "center",
+          paddingRight: '2px',
+          width: '2%'
+        }
+      },
+      
     {
       field: "nFormNumber",
       title: "FORM NUMBER",
@@ -131,26 +245,9 @@ export default function GiveGBId() {
         padding: '5px',
         width: '10%'
       },
-      render: rowData => Moment(rowData['dtReceived']).format(sDateFormat),
+      //render: rowData => Moment(rowData['dtReceived']).format(sDateFormat),
     },
-    // {
-    //   field: "sAuthRegion",
-    //   title: "Authority",
-
-    //   cellStyle: {
-    //     padding:'5px',
-
-    //   },
-    // },
-    // {
-    //   field: "madeb.sName",
-    //   title: "Name",
-
-    //   cellStyle: {
-    //     padding:'5px',
-
-    //   },
-    // },
+    
     {
       field: "edit",
       title: "GENERATE",
@@ -175,6 +272,11 @@ export default function GiveGBId() {
       },
     }
   ];
+
+  // console.log("Columns:" , columns);
+  // var a = columns.find(c => c.field==='nFormNumber');
+  // a.hidden = true;
+  // console.log("Form number column", a);
 
   const assignClick = (rowData) => {
     axios.get(`GivenGBID/GetRandomGBID`)
@@ -221,6 +323,11 @@ export default function GiveGBId() {
                 resp.data.forEach((element) => {
                   element.dtReceivedFormatted = element.dtReceived ? Moment(element.dtReceived).format(sDateFormat) : null;
                 });
+                let i = 1;
+                resp.data.forEach((element) => {
+                  element.nSerialNo = i;
+                  i++;
+                })
                 setdataAPI(resp.data);
                 setLoading(false);
               }
@@ -246,16 +353,66 @@ export default function GiveGBId() {
       });
   };
 
-  useEffect(() => {
-    axios.get(`Madeb/GetFormsWithoutGBId`)
+  const showReport = () =>{
+
+    console.log("Date inserted", reportDate);
+    if(!reportDate){
+      setAlertMessage("Please Enter valid date...");
+      setAlertType('error');
+      snackbarOpen();
+      return;
+    }
+    columns.forEach(c => {
+      if(c.field === 'dtReceivedFormatted' || c.field === 'edit'){
+        c.hidden = true;
+      }
+      // if(c.field === 'nGBId' || c.field === 'dtDate'){
+      //   c.hidden = false;
+      // }
+    });
+    setLoading(true);
+    axios.get(`GivenGBID/GetGivenGBIDByDate/?date=`+ Moment(reportDate).format(sISODateFormat))
       .then(resp => {
-        if (resp.status === 200) {
+        if(resp.status === 200){
+          let i = 1;
           resp.data.forEach((element) => {
-            element.dtReceivedFormatted = element.dtReceived ? Moment(element.dtReceived).format(sDateFormat) : null;
+            element.dtDate = Moment(element.dtDate).format(sDateFormat);
+            element.nFormNumber = element.nFormNo;
+            element.nSerialNo = i;
+            i++;
           });
           setdataAPI(resp.data);
           setLoading(false);
-          modifyHeaders();
+        }
+      })
+      .catch(error =>{
+        console.log(error.config);
+        console.log(error.message);
+        setLoading(false);
+      });
+  };
+
+  const showGenerate = () => {
+    //var a = columns.find(c => c.field==='nGBId');
+    //a.hidden = true;
+    setdataAPI([]);
+    
+      // if(c.field === 'dtReceivedFormatted' || c.field === 'edit'){
+      //   c.hidden = false;
+      // }
+    
+    axios.get(`Madeb/GetFormsWithoutGBId`)
+      .then(resp => {
+        if (resp.status === 200) {
+          let i = 1;
+          resp.data.forEach((element) => {
+            element.dtReceivedFormatted = element.dtReceived ? Moment(element.dtReceived).format(sDateFormat) : null;
+            element.nSerialNo = i;
+            i++;
+          });
+          setdataAPI(resp.data);
+          setLoading(false);
+         
         }
       })
       .catch(error => {
@@ -263,23 +420,103 @@ export default function GiveGBId() {
         console.log(error.message);
         setLoading(false);
       })
+  }
+
+
+  useEffect(() => {
+    showGenerate();
+    modifyHeaders();
+    columns.forEach(c => {
+            
+      if(c.field === 'nGBId' || c.field === 'dtDate'){
+        c.hidden = true;
+      }
+      console.log("Column", c);
+    });
   }, []);
 
+  const handleChange = (event) => {
+    setRadioValue(event.target.value);
+    if(event.target.value === 'report'){
+      setDisabled(false);
+      showReport();
+    }
+    else{
+      setDisabled(true);
+      showGenerate();
+    }
+  };
+
   return (
-    <div>
-      <Grid container spacing={1}>
+    <>
+    <div className={classes.dateBoxes}>
+     
+      
+      <RadioGroup row aria-label="gender" name="gender1" value={value} onChange={handleChange}>
+        <FormControlLabel value="generate" control={<Radio />} label="Generate Green Book ID" />
+        <FormControlLabel value="report" control={<Radio />} label="" />
+        
+      </RadioGroup>
+      <div className={classes.dateBoxes}>
+      <form  onSubmit={handleSubmit(showReport)}>
+     
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            disabled={disabled}
+            variant="dialog"
+            margin="dense"
+            id="id_dtDate"
+            name="name_dtDate"
+            label={<>Report Date<span style={{ color: 'red' }}> *</span></>}
+            format={sDateFormatMUIDatepicker}
+            returnMoment={true}
+            defaultValue={reportDate}
+            KeyboardButtonProps={{
+              "aria-label": "change date",
+            }}
+            onChange={(date) => {
+              if(date){
+                setReportDate(date); 
+                setValue('name_dtDate', date, {shouldValidate: true});
+              }
+            }}
+            inputRef={register({
+              required: true,
+              pattern: 
+              {
+                value: new RegExp(sDDMMYYYYRegex),
+                message: "Invalid Date"
+              }
+            })}
+          />
+      </MuiPickersUtilsProvider>
+      {/* {_.get("name_dtDate.type", errors) === "required" && (
+        <span style={{ color: "red" }}>
+          This field is required
+        </span>
+      )} */}
+    
+   
+    <Button
+            type="submit"
+            // className={props.classes.button}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+            disabled={disabled}
+    >Report</Button>
+   
+    </form>
+    </div>
+    
+    </div>
+    <Grid container spacing={1}>
         <Grid item xs={12}>
-          {/*<Breadcrumbs aria-label="breadcrumb">
-            <Link color="inherit" href="/Home" >
-              Home
-            </Link>
-            <Typography color="textPrimary">Give GB ID</Typography>
-  </Breadcrumbs>*/}
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={loading}
             icons={oTableIcons}
             title="Give Green Book ID"
-            columns={columns}
+            columns={value === 'generate' ? columns : columns2}
             data={dataAPI}
             options={oOptions}
             actions={[
@@ -288,7 +525,8 @@ export default function GiveGBId() {
                 tooltip: 'Toggle Filter',
                 isFreeAction: true,
                 onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
-              }
+              },
+              
             ]}
           ></MaterialTable>
           {assignModal && <AssignDialog
@@ -311,6 +549,6 @@ export default function GiveGBId() {
           />}
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 }

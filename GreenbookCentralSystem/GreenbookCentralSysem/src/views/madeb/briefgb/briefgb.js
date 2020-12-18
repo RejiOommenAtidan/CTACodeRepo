@@ -24,8 +24,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     'label + &': {
       marginTop: theme.spacing(3)
-    }
+    },
+   
   },
+  
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
@@ -51,9 +53,21 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 0.25,
     marginBottom: 0.25,
   },
+  // button: {
+  //   margin: theme.spacing(1),
+  //   '&:disabled':{
+  //     backgroundColor: 'yellow',
+  //     cursor: 'not-allowed',
+  //   }
   button: {
-    margin: theme.spacing(1),
+    
+      backgroundColor: '#070910 !important',
+      color: '#a7acba !important',
+      //display: 'none'
+      //visibility: 'hidden'
+    
   },
+  
   palette: {
     primary: {
       // Purple and green play nicely together.
@@ -66,9 +80,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
+
 export default () => {
 
   const classes = useStyles();
+  
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   const [loading, setisLoading] = useState(true);
@@ -568,7 +585,7 @@ export default () => {
           setAlertType('success');
           snackbarOpen();
           setBackdrop(false);
-          selectDatafunction();
+          
           setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=6`)
             .then(resp => {
@@ -581,6 +598,7 @@ export default () => {
                 })
                 setdataAPI(resp.data);
                 setisLoading(false);
+                selectDatafunction();
               }
               else {
                 console.log("Response received:\n", resp);
@@ -594,26 +612,27 @@ export default () => {
         }
       })
       .catch(error => {
+        setBackdrop(false);
         setAlertMessage(`Madeb Updation Failed. Error:${error.response.data}.`);
         setAlertType('error');
         snackbarOpen();
-        setBackdrop(false);
+        
       })
 
   };
 
   const selectDatafunction = () => {
-    
-    axios.get(`Madeb/GetNewEmptyMadeb`)
+    setBackdrop(true);
+    axios.get(`Madeb/GetNewEmptyMadeb/?nMadebTypeId=6`)
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
-          
+          setBackdrop(false);
           // setdataAPI(resp.data)
         }
       })
       .catch(error => {
-        
+        setBackdrop(false);
         console.log(error.config);
         console.log(error.message);
       })
@@ -630,7 +649,6 @@ export default () => {
           setAlertType('success');
           snackbarOpen();
           setBackdrop(false);
-          selectDatafunction();
           setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=6`)
             .then(resp => {
@@ -643,6 +661,7 @@ export default () => {
                 })
                 setdataAPI(resp.data);
                 setisLoading(false);
+                selectDatafunction();
               }
             })
             .catch(error => {
@@ -653,10 +672,11 @@ export default () => {
         }
       })
       .catch(error => {
+        setBackdrop(false);
         setAlertMessage(`Failed to create new Madeb. Error:${error.response.data}.`);
         setAlertType('error');
         snackbarOpen();
-        setBackdrop(false);
+        
       })
   };
 
@@ -671,9 +691,9 @@ export default () => {
             element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
           })
           setdataAPI(resp.data);
-          selectDatafunction();
           setisLoading(false);
           modifyHeaders();
+          selectDatafunction();
         }
       })
       .catch(error => {
