@@ -70,7 +70,7 @@ export const PrintCard = (props) => {
     <>
      
      
-    <div  style={{display: 'inline-block', border: '1px dashed grey', paddingLeft:'10px',fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
+    <div  style={{display: 'inline-block',  paddingLeft:'10px',fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
     {console.log(props.data.id)}
       <table width={340} height={437} border={0}>
         <tbody>

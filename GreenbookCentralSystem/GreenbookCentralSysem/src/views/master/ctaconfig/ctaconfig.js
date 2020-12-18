@@ -291,12 +291,12 @@ export default function Chatrel() {
             data={dataAPI}
             options={oOptions}
             actions={[
-              {
-                icon: oTableIcons.Add,
-                tooltip: 'Add CTA Configuration',
-                isFreeAction: true,
-                onClick: (event) => setAddModal(true)
-              },
+              // {
+              //   icon: oTableIcons.Add,
+              //   tooltip: 'Add CTA Configuration',
+              //   isFreeAction: true,
+              //   onClick: (event) => setAddModal(true)
+              // },
               {
                 icon: oTableIcons.Search,
                 tooltip: 'Toggle Filter',
