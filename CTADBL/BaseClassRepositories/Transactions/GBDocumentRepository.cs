@@ -21,7 +21,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Get Calls
         public IEnumerable<GBDocument> GetGBDocumentsByGBID(string sGBID)
         {
-            string sql = String.Format(@"SELECT Id, sGBID, sTitle, sDocType, binFileDoc, sFileExtension, nRegisterDate, dtEntered, nEnteredBy FROM lnkgbdocument WHERE sGBID = @sGBID AND sDocType != 'Photo Identity'");
+            string sql = String.Format(@"SELECT l.Id, sGBID, sTitle, sDocType, binFileDoc, sFileExtension, nRegisterDate, l.dtEntered, l.nEnteredBy, t.sFullName FROM lnkgbdocument l LEFT JOIN tbluser t ON t.id = l.nEnteredBy WHERE sGBID = @sGBID;");
 
             try
             {

@@ -736,9 +736,14 @@ export const ViewDialog = (props) => {
                             id="panel1a-header"
                             className={props.classes.expansionPanel}
                           >
-                            <Typography className={props.classes.expansionHeading}>Documents</Typography>
+                            <Typography className={props.classes.expansionHeading}>Photos & Documents</Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
+                          {data.gbDocuments.length === 0 && (
+                            <Typography align="center" variant="h6" color="primary">
+                              No Records Found
+                            </Typography>
+                          )}
                             {data.gbDocuments.length > 0 &&
                               <Table className="table table-hover table-striped table-bordered " >
                                 <thead className="thead-light" style={{ padding: 0 }}>
@@ -748,10 +753,6 @@ export const ViewDialog = (props) => {
                                     <th> Entered By </th>
                                     <th> Title </th>
                                     <th style={{ width: '5%' }}> Download </th>
-
-
-
-
                                   </tr>
                                 </thead>
 
@@ -761,7 +762,7 @@ export const ViewDialog = (props) => {
 
                                       <td scope="row">{index + 1}</td>
                                       <td>{row.dtEntered ? Moment(row.dtEntered).format(sDateFormat) : ''}</td>
-                                      <td>{row.nEnteredBy}</td>
+                                      <td>{row.sFullname}</td>
                                       <td>{row.sTitle}</td>
                                       <td style={{ textAlign: 'center' }}>
 

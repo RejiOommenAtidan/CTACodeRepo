@@ -106,7 +106,7 @@ namespace CTADBL.ViewModelsRepositories
             //value = parameter == "sGBID" ? value : value + "%";
 
             string sql = String.Format(@"SELECT gb.sGBID, ar.sAuthRegion, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sFathersName, gb.sMothersName, gb.sGender, gb.dtDOB, gb.sDOBApprox, gb.sBirthPlace, gb.sBirthCountryID,  bctry.sCountry AS sBirthCountry, gb.sOriginVillage, pr.sProvince, gb.sMarried, gb.sOtherDocuments, gb.sResidenceNumber, qu.sQualification, occ.sOccupationDesc , gb.sAliasName, gb.sOldGreenBKNo, gb.sFstGreenBkNo,  gb.dtFormDate, gb.nChildrenM, gb.nChildrenF, gb.sAddress1, gb.sAddress2, gb.sCity, gb.sState, gb.sPCode, gb.sCountryID, ctry.sCountry AS sCountry, gb.sEmail, gb.sPhone, gb.sfax, gb.dtDeceased, gb.sBookIssued, gb.dtValidityDate, gb.sPaidUntil, gb.TibetanName, gb.TBUPlaceOfBirth, gb.TBUOriginVillage, gb.TBUFathersName, gb.TBUMothersName, gb.TBUSpouseName, gb.sEnteredDateTime, us.sFullName AS sEnteredBy, us1.sFullName AS sUpdatedBy, doc.binFileDoc AS sPhoto, gb.dtEntered, gb.dtUpdated FROM tblgreenbook as gb LEFT JOIN lstcountry ctry ON ctry.sCountryID = gb.sCountryID LEFT JOIN lstcountry bctry ON bctry.sCountryID = gb.sBirthCountryID  LEFT JOIN tbluser AS us ON us.Id = gb.nEnteredBy LEFT JOIN tbluser AS us1 ON us1.Id = gb.nUpdatedBy LEFT JOIN lstauthregion AS ar ON ar.ID = gb.nAuthRegionID LEFT JOIN lstprovince AS pr ON pr.Id = gb.sOriginProvinceID LEFT JOIN lstqualification AS qu ON qu.sQualificationID = gb.sQualificationID LEFT JOIN lstoccupation AS occ ON occ.Id = gb.sOccupationID LEFT JOIN lnkgbdocument AS doc ON gb.sGBId = doc.sGBId AND doc.sDocType = 'Photo Identity' WHERE gb.{0} {1} @value", parameter, operation);
-            
+
             try
             {
                 using (var command = new MySqlCommand(sql))
@@ -117,9 +117,9 @@ namespace CTADBL.ViewModelsRepositories
                     return GetRecord(command);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                
+
                 return null;
             }
         }
@@ -193,8 +193,8 @@ namespace CTADBL.ViewModelsRepositories
                     where = "gb." + parameter;
                     break;
             }
-            
-            string sql = String.Format(@"SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, CAST(year(curdate()) - year(dtDOB) AS UNSIGNED) as nAge,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID {0} FROM tblgreenbook as gb {1} WHERE {2} {3} @value ORDER BY {2} LIMIT 500", field, join, where, operation);
+
+            string sql = String.Format(@"SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sAliasName, gb.dtDeceased, gb.sLastName, gb.sFamilyName, gb.dtDOB, CAST(year(curdate()) - year(dtDOB) AS UNSIGNED) as nAge,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID {0} FROM tblgreenbook as gb {1} WHERE {2} {3} @value ORDER BY {2} LIMIT 500", field, join, where, operation);
 
             using (var command = new MySqlCommand(sql))
             {
@@ -211,10 +211,11 @@ namespace CTADBL.ViewModelsRepositories
                 DataTableCollection tables = ds.Tables;
                 var result = tables[0].AsEnumerable().Select(row => new
                 {
-                    Id= row.Field<int>("Id"),
+                    Id = row.Field<int>("Id"),
                     sGBID = row.Field<string>("sGBID"),
                     sFirstName = row.Field<string>("sFirstName"),
                     sMiddleName = row.Field<string>("sMiddleName"),
+                    sAliasName = row.Field<string>("sAliasName"),
                     sLastName = row.Field<string>("sLastName"),
                     sFamilyName = row.Field<string>("sFamilyName"),
                     dtDOB = row.Field<DateTime>("dtDOB"),
@@ -224,7 +225,8 @@ namespace CTADBL.ViewModelsRepositories
                     sCity = row.Field<string>("sCity"),
                     sCountryID = row.Field<string>("sCountryID"),
                     searchField = parameter,
-                    searchResult = row.Field<string>(parameter)
+                    searchResult = row.Field<string>(parameter),
+                    bDeceased = row.Field<DateTime?>("dtDeceased") == null ? false : true,
                 });
 
                 return result;
@@ -253,7 +255,7 @@ namespace CTADBL.ViewModelsRepositories
                             int year = DateTime.Now.Year - Convert.ToInt32(item.Value);
                             addToSql += String.Format(@"year(gb.dtDOB) <= {0} and ", year);
                         }
-                        
+
                     }
                     else if (item.Key == "nToAge")
                     {
@@ -262,20 +264,20 @@ namespace CTADBL.ViewModelsRepositories
                             int year = DateTime.Now.Year - Convert.ToInt32(item.Value);
                             addToSql += String.Format(@"year(gb.dtDOB) >= {0} and ", year);
                         }
-                        
+
                     }
-                    else if(item.Key == "dtDOB")
+                    else if (item.Key == "dtDOB")
                     {
                         if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
                         {
                             addToSql += String.Format(@"gb.{0} = '{1}' and ", item.Key, item.Value);
                         }
-                        
+
                     }
                     else
                     {
-                        if(!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
-                        addToSql += String.Format(@"gb.{0} LIKE '{1}%' and ", item.Key, item.Value);
+                        if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
+                            addToSql += String.Format(@"gb.{0} LIKE '{1}%' and ", item.Key, item.Value);
                     }
                 }
             }
@@ -372,7 +374,7 @@ namespace CTADBL.ViewModelsRepositories
             }
             GreenBookVM gvm = new GreenBookVM
             {
-                greenBook =  new Greenbook 
+                greenBook = new Greenbook
                 {
                     sGBID = reader.IsDBNull("sGBID") ? null : (string)reader["sGBID"],
                     sFirstName = reader.IsDBNull("sFirstName") ? null : (string)reader["sFirstName"],

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { authenticationService } from '../../auth/_services';
-import { oOptions, oTableIcons, modifyHeaders,sButtonSize, sDateFormat } from '../../config/commonConfig';
+import { oOptions, oTableIcons, modifyHeaders, sButtonSize, sDateFormat } from '../../config/commonConfig';
 
 import {
   Grid,
@@ -19,8 +19,11 @@ import {
   Select,
   InputLabel,
   Button,
-  Card, Menu
+  Card,
 } from '@material-ui/core';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSkullCrossbones } from '@fortawesome/free-solid-svg-icons'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
@@ -113,11 +116,11 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'underline'
     }
   },
-  expansionHeading:{
-    color:'#ffffff'
+  expansionHeading: {
+    color: '#ffffff'
   },
-  expansionPanel:{
-    backgroundColor:'#4e5287'
+  expansionPanel: {
+    backgroundColor: '#4e5287'
   }
 }));
 
@@ -243,7 +246,7 @@ export default function SearchPage() {
     // },
     {
       render: rowData => <div onContextMenu={(e) => { handleClick(e) }} style={{ cursor: 'context-menu' }} > <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewGb(rowData['sGBID']) }}><span><u>{rowData['sGBIDCombo']}</u></span></Button>
-       {/* <Menu
+        {/* <Menu
           keepMounted
           open={contextState.mouseY !== null}
           onClose={() => { handleClose() }}
@@ -297,12 +300,10 @@ export default function SearchPage() {
         width: '12%'
       }
     },
-  /*  {
-      field: "sLastName",
-      title: "LAST NAME",
+    {
+      field: "sAliasName",
+      title: "ALIAS NAME",
       filterPlaceholder: 'Search..',
-      //hidden: true,
-      searchable: true,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -310,9 +311,24 @@ export default function SearchPage() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '0px'
       }
-    },*/
+    },
+    /*  {
+        field: "sLastName",
+        title: "LAST NAME",
+        filterPlaceholder: 'Search..',
+        //hidden: true,
+        searchable: true,
+        headerStyle: {
+          textAlign: "center",
+          textAlignLast: "center",
+          verticalAlign: "middle"
+        },
+        cellStyle: {
+          textAlign: "left",
+          padding: '0px'
+        }
+      },*/
     {
       field: "sFamilyName",
       title: "FAMILY NAME",
@@ -360,6 +376,7 @@ export default function SearchPage() {
     {
       field: "nAge",
       title: "AGE",
+      render: rowData => rowData.bDeceased ? <FontAwesomeIcon icon={faSkullCrossbones} color={"red"} /> : rowData.nAge,
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
@@ -471,7 +488,7 @@ export default function SearchPage() {
             resp.data.forEach((element) => {
               element.nSerialNo = i;
               element.sGBIDCombo = element.sCountryID + element.sGBID;
-              element.sFullName=(element.sFirstName?element.sFirstName:'')+(element.sLastName?(' '+element.sLastName):'');
+              element.sFullName = (element.sFirstName ? element.sFirstName : '') + (element.sLastName ? (' ' + element.sLastName) : '');
               element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format(sDateFormat) : '';
               i++;
             })
@@ -495,7 +512,9 @@ export default function SearchPage() {
           //console.log(release); => udefined
         });
     }
-
+    else {
+      setdataFromAPI([]);
+    }
   }
   const complexObj = {
     sFirstName: firstName,
@@ -550,7 +569,7 @@ export default function SearchPage() {
           resp.data.forEach((element) => {
             element.nSerialNo = i;
             element.sGBIDCombo = element.sCountryID + element.sGBID;
-            element.sFullName=(element.sFirstName?element.sFirstName:'')+(element.sLastName?(' '+element.sLastName):'');
+            element.sFullName = (element.sFirstName ? element.sFirstName : '') + (element.sLastName ? (' ' + element.sLastName) : '');
             element.dtDOBFormatted = element.dtDOB ? Moment(element.dtDOB).format(sDateFormat) : '';
             i++;
           })
@@ -580,12 +599,12 @@ export default function SearchPage() {
       setDob(date)
     }
   }​​​​​*/
-  useEffect(() => {
-    //Use === instead of ==
-    if (authenticationService.currentUserValue === null) {
-      history.push('/Login');
-    }
-  }, []);
+  // useEffect(() => {
+  //   //Use === instead of ==
+  //   if (authenticationService.currentUserValue === null) {
+  //     history.push('/Login');
+  //   }
+  // }, []);
 
   useEffect(() => {
 
@@ -691,10 +710,11 @@ export default function SearchPage() {
                       <MenuItem value="sGBID">GB Number</MenuItem>
                       <MenuItem value="sOldGreenBkNo">Old GB Number</MenuItem>
                       <MenuItem value="sFstGreenBkNo">First GB Number</MenuItem>
-                      <MenuItem value="sResidenceNumber">Residence Number</MenuItem>
+                      <MenuItem value="sResidenceNumber">RC Number</MenuItem>
                       <MenuItem value="sFathersGBID">Father's GB Number</MenuItem>
                       <MenuItem value="sMothersGBID">Mother's GB Number</MenuItem>
                       <MenuItem value="sSpouseGBID">Spouse GB Number</MenuItem>
+                      <MenuItem value="sOtherDocuments">Other Documents</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -767,7 +787,7 @@ export default function SearchPage() {
                   <FormControl className={classes.formControl}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
-placeholder="DD-MM-YYYY"
+                        placeholder="DD-MM-YYYY"
                         margin="normal"
                         id="id_dtDOB"
                         label="DOB"
