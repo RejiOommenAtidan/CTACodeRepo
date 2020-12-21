@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import {
-  Box,
-  Container,
   Grid,
   Button,
-  Typography,
   FormControl,
   TextField
 } from '@material-ui/core';
@@ -14,19 +11,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { useSelector } from 'react-redux';
-import {sButtonColor, sButtonSize, sButtonVariant} from "../../../config/commonConfig";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 
 export const EditDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(
       {
@@ -52,7 +44,7 @@ export const EditDialog = (props) => {
                     <TextField
                       // style={{width:max}}
                       id="id_qualificationId"
-                      label={<>Qualification ID<span style={{color:'red'}}> *</span></>}
+                      label={<>Qualification ID<span style={{ color: 'red' }}> *</span></>}
                       type="text"
                       InputProps={{
                         readOnly: true
@@ -66,7 +58,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_Qualification"
                       name="sQualification"
-                      label={<>Qualification<span style={{color:'red'}}> *</span></>}
+                      label={<>Qualification<span style={{ color: 'red' }}> *</span></>}
                       type="text"
                       value={Name} // Set country name from local variable Name.
                       onChange={(e) => { setQualification(e.target.value) }}
@@ -92,6 +84,7 @@ export const EditDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.editAPICall({ id: props.qualificationObj.id, sQualificationID: props.qualificationObj.qualificationId, sQualification: Name })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -130,7 +123,7 @@ export const DeleteDialog = (props) => {
 
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitAddRecord = () => {
     props.addAPICall(
       {
@@ -155,7 +148,7 @@ export const AddDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <TextField
                     id="id_qualificationId"
-                    label={<>Qualification ID<span style={{color:'red'}}> *</span></>}
+                    label={<>Qualification ID<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     onChange={(e) => { setQualificationId(e.target.value) }}
                   />
@@ -166,7 +159,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_Qualification"
                     name="sQualification"
-                    label={<>Qualification<span style={{color:'red'}}> *</span></>}
+                    label={<>Qualification<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     onChange={(e) => { setQualification(e.target.value) }}
                     inputRef={register({
@@ -190,6 +183,7 @@ export const AddDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.addAPICall({ sQualificationID: qualificationId, sQualification: qualification })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}

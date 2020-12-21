@@ -18,7 +18,7 @@ import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commo
 
 export const EditDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(
       {
@@ -71,6 +71,7 @@ export const EditDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.editAPICall({ id: props.userRightsObj.id,  sUserRightsName: Name })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -110,7 +111,7 @@ export const DeleteDialog = (props) => {
 
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitAddRecord = () => {
     props.addAPICall(
       {
@@ -130,7 +131,6 @@ export const AddDialog = (props) => {
         <DialogContent>
           <DialogContentText>
             <Grid container>
-
               <Grid item xs={12} >
                 <FormControl className={props.classes.formControl}>
                   <TextField
@@ -150,7 +150,6 @@ export const AddDialog = (props) => {
                 </FormControl>
               </Grid>
             </Grid>
-
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -162,6 +161,7 @@ export const AddDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.addAPICall({ sUserRightsName: userRights })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}

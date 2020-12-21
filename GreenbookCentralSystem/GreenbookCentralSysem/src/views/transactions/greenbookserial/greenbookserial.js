@@ -521,14 +521,12 @@ export default () => {
         >
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
-              
+placeholder="DD-MM-YYYY"
               ref={startDateTextField}
-              placeholder="DD-MM-YYYY"
               className={classes.dateField}
               clearable
               variant="dialog"
               error={errors.startDate}
-              
               margin="dense"
               id="startDate"
               name="startDate"
@@ -565,7 +563,7 @@ export default () => {
           </MuiPickersUtilsProvider>
           <MuiPickersUtilsProvider ref={endDateTextField} utils={DateFnsUtils}>
             <KeyboardDatePicker
-              placeholder="DD-MM-YYYY"
+placeholder="DD-MM-YYYY"
               className={classes.dateField}
               variant="dialog"
               error={errors.endDate}

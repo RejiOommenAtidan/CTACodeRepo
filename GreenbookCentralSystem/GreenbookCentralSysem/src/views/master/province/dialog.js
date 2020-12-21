@@ -23,7 +23,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export const EditDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(
       {
@@ -48,7 +48,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_provinceId"
                       name="sProvince"
-                      label={<>Province<span style={{color:'red'}}> *</span></>}
+                      label={<>Province<span style={{ color: 'red' }}> *</span></>}
                       type="text"
                       value={province}
                       onChange={(e) => { setProvince(e.target.value) }}
@@ -74,6 +74,7 @@ export const EditDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.editAPICall({ id: props.provinceObj.id, sProvince: province })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -113,7 +114,7 @@ export const DeleteDialog = (props) => {
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
 
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitAddRecord = () => {
     props.addAPICall
       (
@@ -138,7 +139,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_province"
                     name="sProvince"
-                    label={<>Province<span style={{color:'red'}}> *</span></>}
+                    label={<>Province<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     onChange={(e) => { setProvince(e.target.value) }}
                     inputRef={register({
@@ -162,6 +163,7 @@ export const AddDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.addAPICall({ sProvince: province })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}

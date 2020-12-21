@@ -70,40 +70,40 @@ export const PrintCard = (props) => {
     <>
      
      
-    <div  style={{display: 'inline-block',  paddingLeft:'10px',fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
+    <div  style={{display: 'inline-block',  paddingLeft:'10px',paddingRight:'10px',fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
     {console.log(props.data.id)}
-      <table width={340} height={437} border={0}>
+      <table width={310} height={437} border={0}>
         <tbody>
           <tr>
             <td style={{fontSize: '20px', textAlign: 'center', padding: '1em 0 0 0'}}>ལག་ཁྱེར་ཨང་།</td>
             <td colSpan={2} style={{padding: '25px 0 0 0'}}>
-              <table border={0} width={190}>
+              <table border={0} width={170}>
                 <tbody><tr>
-                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
+                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
                       {props.data.sCountryID[0]}
                     </td>
-                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
+                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
                     {props.data.sCountryID[1]}
                     </td>
-                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
+                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
                     {props.data.sGBID[0]}
                     </td>
-                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
+                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
                     {props.data.sGBID[1]}
                     </td>
-                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
+                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
                     {props.data.sGBID[2]}
                     </td>
-                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
+                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
                     {props.data.sGBID[3]}
                     </td>
-                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
+                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
                     {props.data.sGBID[4]}
                     </td>
-                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
+                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
                     {props.data.sGBID[5]}
                     </td>
-                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '15px'}}>
+                    <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
                     {props.data.sGBID[6]}
                     </td>
                   </tr>

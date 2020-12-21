@@ -36,6 +36,8 @@ export const InputParams = (props) => {
   const [nMadebTypeId, setMadebTypeId] = React.useState(0);
   const [nAuthRegionId, setAuthRegionId] = React.useState(0);
   const [bPrinted, setPrintStatus] = useState(false);
+  const [sMadebType, setMadebType] = useState();
+  const [sAuthRegion, setAuthRegion] = useState();
 
   let valueAuthRegion = [];
   let valueMadebTypes = [];
@@ -66,7 +68,8 @@ export const InputParams = (props) => {
   function handleFormSubmit() {
     console.log("Form submission called.");
     console.log("MakeList parameters\n", makeListParams);
-    props.makeList(makeListParams);
+    
+    props.makeList(makeListParams, sAuthRegion, sMadebType );
   }
 
   return (
@@ -177,6 +180,7 @@ export const InputParams = (props) => {
                         if (value !== null) {
                           console.log("Madeb id changed to:", value.id);
                           setMadebTypeId(value.id);
+                          setMadebType(value.sMadebDisplayName);
                         }
                         else {
                           setMadebTypeId(0);
@@ -234,6 +238,7 @@ export const InputParams = (props) => {
                         if (value !== null) {
                           console.log("AuthRegion id changed to:", value.id);
                           setAuthRegionId(value.id);
+                          setAuthRegion(value.sAuthRegion);
                         }
                         else {
                           setAuthRegionId(0);

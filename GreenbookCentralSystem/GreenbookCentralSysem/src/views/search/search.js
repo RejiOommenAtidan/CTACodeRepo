@@ -767,6 +767,7 @@ export default function SearchPage() {
                   <FormControl className={classes.formControl}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                         margin="normal"
                         id="id_dtDOB"
                         label="DOB"

@@ -22,7 +22,7 @@ import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker, sD
 
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitAddRecord = () => {
     props.addAPICall(
       {
@@ -84,6 +84,7 @@ export const AddDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                       id="id_dtChatrelFrom"
                       name="name_dtChatrelFrom"
                       variant="dialog"
@@ -121,6 +122,7 @@ export const AddDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.addAPICall({ sTypeIssued: typeIssued })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -134,7 +136,7 @@ export const AddDialog = (props) => {
 
 export const EditDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors, setValue } = useForm();
+  const { register, handleSubmit, errors, setValue, formState } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(
       {
@@ -195,6 +197,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                         id="id_dtChatrelFrom"
                         name="name_dtChatrelFrom"
                         variant="dialog"
@@ -244,6 +247,7 @@ export const EditDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.editAPICall({ id: props.typeIssuedObj.id, sTypeIssued: Name })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}

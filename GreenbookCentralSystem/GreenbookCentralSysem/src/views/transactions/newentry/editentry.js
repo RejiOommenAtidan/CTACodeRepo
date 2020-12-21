@@ -602,7 +602,7 @@ export default function EditEntry(props) {
       });
   }, []);
 
-  const { register, handleSubmit, errors, setValue } = useForm();
+  const { register, handleSubmit, errors, setValue, formState } = useForm();
 
 
   const RelationObj = [
@@ -1008,6 +1008,7 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                           variant="dialog"
                           openTo="year"
                           views={["year", "month", "date"]}
@@ -1139,6 +1140,7 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                           disabled={true}
                           variant="dialog"
                           openTo="year"
@@ -1737,6 +1739,7 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                           variant="dialog"
                           openTo="year"
                           views={["year", "month", "date"]}
@@ -1906,6 +1909,7 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                           variant="dialog"
                           openTo="year"
                           views={["year", "month", "date"]}
@@ -2410,21 +2414,23 @@ export default function EditEntry(props) {
                 variant={sButtonVariant}
                 size={sButtonSize}
                 color={sButtonColor}
-                type="submit"
                 style={{ marginRight: "10px" }}
-              >
-                Save
-              </Button>
-              <Button
-                variant={sButtonVariant}
-                size={sButtonSize}
-                color={sButtonColor}
                 onClick={() => {
                   props.history.goBack();
                   // history.push(props.location);
                 }}
               >
                 Cancel
+              </Button>
+              <Button
+                disabled={formState.isSubmitting || formState.isSubmitted}
+                variant={sButtonVariant}
+                size={sButtonSize}
+                color={sButtonColor}
+                type="submit"
+
+              >
+                Save
               </Button>
             </Grid>
           </Grid>

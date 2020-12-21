@@ -85,6 +85,7 @@ export default () => {
   const [noRecords, setNoRecords] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
   const [makeListParams, setMakeListParams] = useState({});
+  const [addToTitle, setAddToTitle] = useState('');
 
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
@@ -248,10 +249,12 @@ export default () => {
       });
   }
 
-  const makeList = (makeListParams) => {
+  const makeList = (makeListParams, sAuthRegion, sMadebType) => {
     setLoading(true);
     setNoRecords(false);
     console.log("Make List Params recd. \n", makeListParams);
+    console.log("Authregion & madebtype", sAuthRegion, sMadebType);
+    setAddToTitle(`Authority Region: ${sAuthRegion}, Madeb Type: ${sMadebType}`);
     axios.post(`MakeList/MakeList`, makeListParams)
       .then(resp => {
         if (resp.status === 200) {
@@ -340,7 +343,7 @@ export default () => {
                 style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
                 //isLoading = {loading}
                 icons={oTableIcons}
-                title="Make List"
+                title={`Make List ${addToTitle}`}
                 columns={columns}
                 data={dataAPI}
                 components={{
@@ -363,7 +366,7 @@ export default () => {
                     </div>
                   ),
                 }}
-                options={oOptions}
+                options={{...oOptions, exportButton: {csv: true, pdf: true}}}
                 actions={
                   [
 

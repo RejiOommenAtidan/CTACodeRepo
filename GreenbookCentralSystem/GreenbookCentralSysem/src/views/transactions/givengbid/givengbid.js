@@ -144,6 +144,8 @@ export default function GiveGBId() {
     {
       field: "nGBId",
       title: "GREEN BOOK ID",
+      //hidden: true,
+      //filterPlaceholder: "Search...",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -159,7 +161,7 @@ export default function GiveGBId() {
     {
       field: "nFormNumber",
       title: "FORM NUMBER",
-
+      //filterPlaceholder: "Search...",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -175,6 +177,9 @@ export default function GiveGBId() {
     {
       field: "dtDate",
       title: "GENERATED DATE",
+      //hidden: true,
+      // type: 'date',
+      // dateSetting: {locale: 'en-GB'},
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -186,6 +191,7 @@ export default function GiveGBId() {
         padding: '5px',
         width: '10%'
       },
+      //render: rowData => Moment(rowData['dtReceived']).format(sDateFormat),
     },
   ];
 
@@ -193,6 +199,7 @@ export default function GiveGBId() {
     {
       field: "nSerialNo",
         title: "SR. NO.",
+        //filterPlaceholder: "Search...",
         headerStyle: {
           textAlign: "center",
           textAlignLast: "center",
@@ -209,6 +216,7 @@ export default function GiveGBId() {
     {
       field: "nFormNumber",
       title: "FORM NUMBER",
+      //filterPlaceholder: "Search...",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -224,6 +232,8 @@ export default function GiveGBId() {
     {
       field: "dtReceivedFormatted",
       title: "RECEIVED DATE",
+      // type: 'date',
+      // dateSetting: {locale: 'en-GB'},
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -235,6 +245,7 @@ export default function GiveGBId() {
         padding: '5px',
         width: '10%'
       },
+      //render: rowData => Moment(rowData['dtReceived']).format(sDateFormat),
     },
     
     {
@@ -261,6 +272,12 @@ export default function GiveGBId() {
       },
     }
   ];
+
+  // console.log("Columns:" , columns);
+  // var a = columns.find(c => c.field==='nFormNumber');
+  // a.hidden = true;
+  // console.log("Form number column", a);
+
   const assignClick = (rowData) => {
     axios.get(`GivenGBID/GetRandomGBID`)
       .then(resp => {
@@ -337,6 +354,7 @@ export default function GiveGBId() {
   };
 
   const showReport = () =>{
+
     console.log("Date inserted", reportDate);
     if(!reportDate){
       setAlertMessage("Please Enter valid date...");
@@ -344,6 +362,14 @@ export default function GiveGBId() {
       snackbarOpen();
       return;
     }
+    columns.forEach(c => {
+      if(c.field === 'dtReceivedFormatted' || c.field === 'edit'){
+        c.hidden = true;
+      }
+      // if(c.field === 'nGBId' || c.field === 'dtDate'){
+      //   c.hidden = false;
+      // }
+    });
     setLoading(true);
     axios.get(`GivenGBID/GetGivenGBIDByDate/?date=`+ Moment(reportDate).format(sISODateFormat))
       .then(resp => {
@@ -367,7 +393,14 @@ export default function GiveGBId() {
   };
 
   const showGenerate = () => {
+    //var a = columns.find(c => c.field==='nGBId');
+    //a.hidden = true;
     setdataAPI([]);
+    
+      // if(c.field === 'dtReceivedFormatted' || c.field === 'edit'){
+      //   c.hidden = false;
+      // }
+    
     axios.get(`Madeb/GetFormsWithoutGBId`)
       .then(resp => {
         if (resp.status === 200) {
@@ -393,6 +426,13 @@ export default function GiveGBId() {
   useEffect(() => {
     showGenerate();
     modifyHeaders();
+    columns.forEach(c => {
+            
+      if(c.field === 'nGBId' || c.field === 'dtDate'){
+        c.hidden = true;
+      }
+      console.log("Column", c);
+    });
   }, []);
 
   const handleChange = (event) => {
@@ -422,7 +462,7 @@ export default function GiveGBId() {
      
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
-            //error={errors.name_dtDate}
+placeholder="DD-MM-YYYY"
             disabled={disabled}
             variant="dialog"
             margin="dense"
@@ -465,7 +505,6 @@ export default function GiveGBId() {
             variant={sButtonVariant}
             size={sButtonSize}
             disabled={disabled}
-            
     >Report</Button>
    
     </form>

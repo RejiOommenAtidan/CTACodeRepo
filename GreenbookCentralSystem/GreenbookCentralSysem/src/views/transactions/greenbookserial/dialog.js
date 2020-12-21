@@ -22,7 +22,7 @@ export const EditDialog = (props) => {
   Moment.locale("en");
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   console.log("Hello from Edit Dialog");
-  const { register, handleSubmit, watch, errors, setValue } = useForm();
+  const { register, handleSubmit, watch, errors, setValue, formState } = useForm();
 
 
   console.log(props.gbSerialObj);
@@ -133,6 +133,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                         variant="dialog"
                         // openTo="year"
                         // views={["year", "month", "date"]}
@@ -435,6 +436,7 @@ export const EditDialog = (props) => {
       </Snackbar> */}
 
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             color={sButtonColor}
             variant={sButtonVariant}
@@ -449,7 +451,7 @@ export const EditDialog = (props) => {
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   console.log("Hello from Add dialog");
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, watch, errors, formState } = useForm();
   console.log("Serial Object\n", props.gbSerialObj);
   // const [snackbarOpen,setSnackbarOpen]=React.useState(false);
   // const snackbarClose = (event, reason) => {
@@ -903,6 +905,7 @@ export const AddDialog = (props) => {
       </Snackbar> */}
 
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             color={sButtonColor}
             variant={sButtonVariant}

@@ -287,6 +287,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                         variant="dialog"
                         // openTo="year"
                         // views={["year", "month", "date"]}
@@ -298,9 +299,9 @@ export const EditDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
-                          if(date){
-                            setValue('name_dtReceived', date, {shouldValidate: true});
-                          setReceivedDate(date);
+                          if (date) {
+                            setValue('name_dtReceived', date, { shouldValidate: true });
+                            setReceivedDate(date);
                           }
                         }}
                         value={dtReceived}
@@ -311,11 +312,11 @@ export const EditDialog = (props) => {
                         className={props.classes.dateField}
                         inputRef={register({
                           required: true,
-                          pattern: 
-                              {
-                              value: new RegExp(sDDMMYYYYRegex),
-                              message: "Invalid Date"
-                              }
+                          pattern:
+                          {
+                            value: new RegExp(sDDMMYYYYRegex),
+                            message: "Invalid Date"
+                          }
                         })}
                       />
                     </MuiPickersUtilsProvider>
@@ -631,6 +632,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                         variant="dialog"
                         // openTo="year"
                         // views={["year", "month", "date"]}
@@ -641,9 +643,9 @@ export const EditDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
-                          if(date){
-                            setValue('name_dtReject', date, {shouldValidate: true});
-                          setRejectDate(date);
+                          if (date) {
+                            setValue('name_dtReject', date, { shouldValidate: true });
+                            setRejectDate(date);
                           }
                         }}
                         value={dtReject}
@@ -653,12 +655,12 @@ export const EditDialog = (props) => {
                         fullWidth
                         className={props.classes.dateField}
                         inputRef={register({
-                            
-                          pattern: 
-                              {
-                              value: new RegExp(sDDMMYYYYRegex),
-                              message: "Invalid Date"
-                              }
+
+                          pattern:
+                          {
+                            value: new RegExp(sDDMMYYYYRegex),
+                            message: "Invalid Date"
+                          }
                         })}
                       />
                     </MuiPickersUtilsProvider>
@@ -685,6 +687,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                         variant="dialog"
                         // openTo="year"
                         // views={["year", "month", "date"]}
@@ -695,10 +698,10 @@ export const EditDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
-                          if(date){
-                          setReturnDate(date);
-                          setValue('name_dtReturnEmail', date, {shouldValidate: true});
-                            }
+                          if (date) {
+                            setReturnDate(date);
+                            setValue('name_dtReturnEmail', date, { shouldValidate: true });
+                          }
                         }}
                         value={dtReturnEmail}
                         KeyboardButtonProps={{
@@ -707,12 +710,12 @@ export const EditDialog = (props) => {
                         fullWidth
                         className={props.classes.dateField}
                         inputRef={register({
-                            
-                          pattern: 
-                              {
-                              value: new RegExp(sDDMMYYYYRegex),
-                              message: "Invalid Date"
-                              }
+
+                          pattern:
+                          {
+                            value: new RegExp(sDDMMYYYYRegex),
+                            message: "Invalid Date"
+                          }
                         })}
                       />
                     </MuiPickersUtilsProvider>
@@ -791,6 +794,7 @@ export const EditDialog = (props) => {
       </Snackbar> */}
 
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             color={sButtonColor}
             variant={sButtonVariant}
@@ -1029,6 +1033,7 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                         variant="dialog"
                         // openTo="year"
                         // views={["year", "month", "date"]}
@@ -1039,10 +1044,10 @@ export const AddDialog = (props) => {
                         format={sDateFormatMUIDatepicker}
                         returnMoment={true}
                         onChange={(date) => {
-                          if(date){
-                              
-                            setValue('name_dtReceived', date, {shouldValidate: true});
-                          setReceivedDate(date);
+                          if (date) {
+
+                            setValue('name_dtReceived', date, { shouldValidate: true });
+                            setReceivedDate(date);
                           }
                         }}
                         value={dtReceived}
@@ -1053,11 +1058,11 @@ export const AddDialog = (props) => {
                         className={props.classes.dateField}
                         inputRef={register({
                           required: true,
-                          pattern: 
-                              {
-                              value: new RegExp(sDDMMYYYYRegex),
-                              message: "Invalid Date"
-                              }
+                          pattern:
+                          {
+                            value: new RegExp(sDDMMYYYYRegex),
+                            message: "Invalid Date"
+                          }
                         })}
                       />
                     </MuiPickersUtilsProvider>
@@ -1353,6 +1358,7 @@ export const AddDialog = (props) => {
       </Snackbar> */}
 
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             color={sButtonColor}
             variant={sButtonVariant}

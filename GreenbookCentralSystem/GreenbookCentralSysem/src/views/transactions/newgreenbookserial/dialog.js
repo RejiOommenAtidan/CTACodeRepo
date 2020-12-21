@@ -214,6 +214,7 @@ export const AddDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                         variant="dialog"
                         // openTo="year"
                         // views={["year", "month", "date"]}
@@ -593,6 +594,7 @@ export const AddDialog = (props) => {
       </Snackbar> */}
 
           <Button
+          disabled={formState.isSubmitting || formState.isSubmitted}
             id="save"
             type="submit"
             color={sButtonColor}
@@ -601,6 +603,7 @@ export const AddDialog = (props) => {
             name="submit"
             value="Save">Save</Button>
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             id='saveEdit'
             color={sButtonColor}
             variant={sButtonVariant}

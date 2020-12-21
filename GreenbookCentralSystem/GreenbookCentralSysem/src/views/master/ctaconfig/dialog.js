@@ -13,11 +13,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { useSelector } from 'react-redux';
-import {sButtonColor, sButtonSize, sButtonVariant} from "../../../config/commonConfig";
+import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitAddRecord = () => {
     props.addAPICall(
       {
@@ -43,7 +43,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_sKey"
                     name="name_sKey"
-                    label={<>Key<span style={{color:'red'}}> *</span></>}
+                    label={<>Key<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     value={sKey}
                     onChange={(e) => { setsKey(e.target.value) }}
@@ -61,7 +61,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_sValue"
                     name="name_sValue"
-                    label={<>Value<span style={{color:'red'}}> *</span></>}
+                    label={<>Value<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     value={sValue}
                     onChange={(e) => { setsValue(e.target.value) }}
@@ -85,6 +85,7 @@ export const AddDialog = (props) => {
             size={sButtonSize}
           >Cancel</Button>
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -98,7 +99,7 @@ export const AddDialog = (props) => {
 
 export const EditDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(
       {
@@ -126,7 +127,7 @@ export const EditDialog = (props) => {
                       disabled
                       id="id_sKey"
                       name="name_sKey"
-                      label={<>Key<span style={{color:'red'}}> *</span></>}
+                      label={<>Key<span style={{ color: 'red' }}> *</span></>}
                       type="text"
                       value={sKey}
                       onChange={(e) => { setsKey(e.target.value) }}
@@ -144,7 +145,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_sValue"
                       name="name_sValue"
-                      label={<>Value<span style={{color:'red'}}> *</span></>}
+                      label={<>Value<span style={{ color: 'red' }}> *</span></>}
                       type="text"
                       value={sValue}
                       onChange={(e) => { setsValue(e.target.value) }}
@@ -169,6 +170,7 @@ export const EditDialog = (props) => {
             size={sButtonSize}
           >Cancel</Button>
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
