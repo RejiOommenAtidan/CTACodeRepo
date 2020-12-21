@@ -305,7 +305,7 @@ export default () => {
   };
 
   const selectDatafunction = () => {
-    axios.get(`GreenBookSerialNumber/GetNewEmptyGreenBookSerialRecord`)
+    axios.get(`GreenBookSerialNumber/GetNewEmptyGreenBookSerialRecordForAdd`)
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);

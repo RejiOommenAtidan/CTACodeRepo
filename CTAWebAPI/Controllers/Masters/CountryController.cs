@@ -14,7 +14,7 @@ using System.Text.Json;
 
 namespace CTAWebAPI.Controllers.Masters
 {
-    [Authorize]
+    //[AuthorizeRole(FeatureID:23)]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     [ApiController]

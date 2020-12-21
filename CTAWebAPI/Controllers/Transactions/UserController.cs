@@ -22,7 +22,7 @@ using System.Text;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
-    [Authorize]
+    [AuthorizeRole(FeatureID: 18)]
     [EnableCors("AllowOrigin")]
     //[APIKeyAuth]
     [Route("api/[controller]")]

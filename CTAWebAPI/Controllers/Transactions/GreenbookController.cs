@@ -16,7 +16,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
-    [Authorize]
+    //[Authorize]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]
@@ -52,6 +52,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Get Calls
+        [AuthorizeRole(FeatureID: 16)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetGreenbooks()
@@ -78,7 +79,7 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             #endregion
         }
-
+        [AuthorizeRole(FeatureID: 16)]
         [HttpGet("GetGreenbook/Id={Id}")]
         [Route("[action]")]
         public IActionResult GetGreenbook(string Id)
@@ -134,10 +135,9 @@ namespace CTAWebAPI.Controllers.Transactions
         //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         //    }
         //}
-
+        [AuthorizeRole(FeatureID: 2)]
         [HttpPost]
         [Route("[action]")]
-
         public IActionResult GetQuickResult(SimpleSearchVM simpleSearch)
         {
             if (String.IsNullOrEmpty(simpleSearch.sSearchField) || String.IsNullOrEmpty(simpleSearch.sSearchValue))
@@ -169,9 +169,10 @@ namespace CTAWebAPI.Controllers.Transactions
             }
         }
 
+
+        [AuthorizeRole(FeatureID: 2)]
         [HttpPost]
         [Route("[action]")]
-
         public IActionResult GetQuickResultComplex(DetailedSearchVM detailedSearch)
         {
             if (detailedSearch == null)
@@ -204,7 +205,7 @@ namespace CTAWebAPI.Controllers.Transactions
 
         }
 
-
+        [AuthorizeRole(FeatureID: 2)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetDetailsFromGBID(string sGBID, int nUserId)
@@ -351,6 +352,7 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
+        [AuthorizeRole(FeatureID: 16)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult GetGreenbooksForEdit([FromBody] Object searchObject)
@@ -386,6 +388,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Add Call
+        [AuthorizeRole(FeatureID: 10)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddGreenbook(Greenbook greenbook)
@@ -496,6 +499,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Edit Call
+        [AuthorizeRole(FeatureID: 16)]
         [HttpPost("EditGreenbook/Id={Id}")]
         [Route("[action]")]
         public IActionResult EditGreenbook(string Id, [FromBody] Greenbook greenbook)
@@ -558,6 +562,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Delete Call
+        [AuthorizeRole(FeatureID: 17)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult DeleteGreenbook(Greenbook greenbook)
@@ -603,6 +608,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Delete GreenBook by passing GB Id.
+        [AuthorizeRole(FeatureID: 17)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult DeleteGreenBookByGBID(string sGBID)
@@ -693,6 +699,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Get GB Link Data By GBID
+        [AuthorizeRole(FeatureID: 16)]
         [HttpGet]
         [Route("[action]/sGBID={sGBID}")]
         public IActionResult GetGBLinkDataByGBID(string sGBID)
@@ -750,6 +757,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Add Note
+        [AuthorizeRole(FeatureID: 16)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddNote(GBNote gBNote)
@@ -793,6 +801,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Edit Note
+        [AuthorizeRole(FeatureID: 16)]
         [HttpPost("EditNote/Id={Id}")]
         [Route("[action]")]
         public IActionResult EditNote(string Id, [FromBody] GBNote gBNote)
@@ -863,6 +872,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Child Part
 
         #region Add Child
+        [AuthorizeRole(FeatureID: 16)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddChild(GBChildren gBChildren)
@@ -924,6 +934,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Edit Child
+        [AuthorizeRole(FeatureID: 16)]
         [HttpPost("EditChild/Id={Id}")]
         [Route("[action]")]
         public IActionResult EditChild(string Id, [FromBody] GBChildren gBChild)
@@ -1028,6 +1039,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Document Part
 
         #region Add Document
+        [AuthorizeRole(FeatureID: 16)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddDocument(GBDocument gBDocument)
@@ -1071,6 +1083,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Edit Document
+        [AuthorizeRole(FeatureID: 16)]
         [HttpPost("EditDocument/Id={Id}")]
         [Route("[action]")]
         public IActionResult EditDocument(string Id, [FromBody] GBDocument gBDocument)
@@ -1137,6 +1150,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Delete Call
+        [AuthorizeRole(FeatureID: 16)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult DeleteDocument(GBDocument gBDocument)

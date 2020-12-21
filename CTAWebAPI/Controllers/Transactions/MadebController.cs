@@ -19,7 +19,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
-    [Authorize]
+    //[Authorize]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]
@@ -44,7 +44,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Get Calls
-
+        //[AuthorizeRole(FeatureID: 0)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetNewEmptyMadeb(int nMadebTypeId)
@@ -160,7 +160,7 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
-
+        [AuthorizeRole(FeatureID:0)]
         [HttpGet("GetMadebsByType/MadebType={madebType}")]
         [Route("[action]")]
         public IActionResult GetMadebsByType(int madebType)
@@ -294,7 +294,7 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
-
+        [AuthorizeRole(FeatureID: 9)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetFormsWithoutGBId()

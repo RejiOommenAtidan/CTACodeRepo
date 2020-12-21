@@ -121,6 +121,7 @@ namespace CTAWebAPI.Controllers
             #endregion
         }
 
+        [AuthorizeRole(FeatureID: 0)]
         [HttpGet("GetMadebsByType/MadebType={madebType}")]
         [Route("[action]")]
         public IActionResult GetMadebsByType(int madebType)

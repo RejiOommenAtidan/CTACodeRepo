@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers.Masters
 {
-    [Authorize]
+    
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     [ApiController]
@@ -28,7 +28,8 @@ namespace CTAWebAPI.Controllers.Masters
         }
         #endregion
 
-        #region Delete Call
+        #region Handle GreenBook Update
+        [AuthorizeRole(FeatureID: 16)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult HandleGreenBookUpdate(List<GBRelation> gbRelations)

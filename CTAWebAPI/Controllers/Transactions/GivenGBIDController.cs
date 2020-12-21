@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
-    [Authorize]
+    //[Authorize]
     [EnableCors("AllowOrigin")]
     //[APIKeyAuth]
     [Route("api/[controller]")]
@@ -37,6 +37,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Get Calls
 
         #region Get All Given GBID
+        [AuthorizeRole(FeatureID: 10)] // This call is made by New Entry only.
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetGivenGBIDs()
@@ -63,7 +64,7 @@ namespace CTAWebAPI.Controllers.Transactions
             
         }
         #endregion
-
+        [AuthorizeRole(FeatureID: 9)]
         #region Get Given GBID record by Id
         [HttpGet("GetGivenGBID/Id={Id}")]
         [Route("[action]")]
@@ -94,6 +95,7 @@ namespace CTAWebAPI.Controllers.Transactions
 
 
         #region Get Random GBID
+        [AuthorizeRole(FeatureID: 9)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetRandomGBID()
@@ -106,6 +108,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Get All Given GBID records for a date
+        [AuthorizeRole(FeatureID: 9)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetGivenGBIDByDate (DateTime date)
@@ -140,7 +143,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion End all Get Calls
 
         #region Add Call
-
+        [AuthorizeRole(FeatureID: 9)]
         [Route("[action]")]
         [HttpPost("AddGivenGBID/dtReceived={dtReceived}")]
         public IActionResult AddGivenGBID(DateTime dtReceived,GivenGBID givenGBID)
