@@ -77,6 +77,7 @@ export const AddChildDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                       variant="dialog"
                       openTo="year"
                       views={["year", "month", "date"]}
@@ -240,6 +241,7 @@ export const EditChildDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                       variant="dialog"
                       openTo="year"
                       views={["year", "month", "date"]}

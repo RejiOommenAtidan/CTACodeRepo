@@ -1008,6 +1008,7 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                           variant="dialog"
                           openTo="year"
                           views={["year", "month", "date"]}
@@ -1139,6 +1140,7 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                           disabled={true}
                           variant="dialog"
                           openTo="year"
@@ -1737,6 +1739,7 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                           variant="dialog"
                           openTo="year"
                           views={["year", "month", "date"]}
@@ -1906,6 +1909,7 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                           variant="dialog"
                           openTo="year"
                           views={["year", "month", "date"]}

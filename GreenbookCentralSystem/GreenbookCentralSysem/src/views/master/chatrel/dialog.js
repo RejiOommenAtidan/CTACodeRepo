@@ -84,6 +84,7 @@ export const AddDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                       id="id_dtChatrelFrom"
                       name="name_dtChatrelFrom"
                       variant="dialog"
@@ -196,6 +197,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                         id="id_dtChatrelFrom"
                         name="name_dtChatrelFrom"
                         variant="dialog"

@@ -152,6 +152,7 @@ export const EditDialog = (props) => {
                                     <FormControl className={props.classes.formControl}>
                                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                             <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                                                 variant="dialog"
                                                 //  openTo="year"
                                                 // views={["year", "month", "date"]}
@@ -416,6 +417,7 @@ export const EditDialog = (props) => {
                                     <FormControl className={props.classes.formControl}>
                                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                             <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                                                 variant="dialog"
                                                 //openTo="year"
                                                 //views={["year", "month", "date"]}
@@ -449,6 +451,7 @@ export const EditDialog = (props) => {
                                     <FormControl className={props.classes.formControl}>
                                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                             <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                                                 variant="dialog"
                                                 //openTo="year"
                                                 //views={["year", "month", "date"]}
@@ -587,6 +590,7 @@ export const AddDialog = (props) => {
                                     <FormControl className={props.classes.formControl}>
                                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                             <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                                                 variant="dialog"
                                                 //  openTo="year"
                                                 // views={["year", "month", "date"]}

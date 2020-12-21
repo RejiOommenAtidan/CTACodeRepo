@@ -306,6 +306,7 @@
                       <FormControl className={props.classes.formControl}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                           <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                             margin="normal"
                             id="id_dtDOB"
                             label="DOB"
@@ -360,6 +361,7 @@
                       <FormControl className={props.classes.formControl}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                           <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                             margin="normal"
                             id="id_dtFormDate"
                             label="Sarso Form Date"
@@ -705,6 +707,7 @@
                       <FormControl className={props.classes.formControl}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                           <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                             margin="normal"
                             id="id_dtValidityDate"
                             label="Validity Date"
@@ -798,6 +801,7 @@
                       <FormControl className={props.classes.formControl}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                           <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                             margin="normal"
                             id="id_dtDeceased"
                             label="Deceased Date"

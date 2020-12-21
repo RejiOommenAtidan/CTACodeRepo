@@ -557,6 +557,7 @@ const snackbarClose = () => {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                               id="id_dtDOB"
                               name="name_dtDOB"
                               variant="dialog"
@@ -673,6 +674,7 @@ const snackbarClose = () => {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                           disabled={true}
                           variant="dialog"
                           openTo="year"
@@ -1203,6 +1205,7 @@ const snackbarClose = () => {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                           variant="dialog"
                           openTo="year"
                           views={["year", "month", "date"]}
@@ -1368,6 +1371,7 @@ const snackbarClose = () => {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
                           variant="dialog"
                           openTo="year"
                           views={["year", "month", "date"]}

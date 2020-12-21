@@ -462,6 +462,7 @@ export default function GiveGBId() {
      
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
+placeholder="DD-MM-YYYY"
             disabled={disabled}
             variant="dialog"
             margin="dense"
