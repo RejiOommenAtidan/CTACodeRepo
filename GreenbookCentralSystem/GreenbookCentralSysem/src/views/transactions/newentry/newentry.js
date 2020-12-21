@@ -195,7 +195,7 @@ const snackbarClose = () => {
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
-    console.log(isExpanded ? panel : false);
+    //console.log(isExpanded ? panel : false);
   };
 
   const { register, handleSubmit, errors, setValue,formState } = useForm();
@@ -346,7 +346,7 @@ const snackbarClose = () => {
               >
                 <Typography
                   className={classes.expansionHeading}
-                >Basic Personal Details (Mandatory Fields)</Typography>
+                >Complete Details</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid item xs={6}>
@@ -553,6 +553,7 @@ const snackbarClose = () => {
                     </FormControl>
                   </Grid>
                   </Grid>
+
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -668,6 +669,273 @@ placeholder="DD-MM-YYYY"
                     </FormControl>
                   </Grid>
                 </Grid>
+                <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sAliasName"
+                        label="Alias Name"
+                        type="text"
+                        onChange={(e) => { setsAliasName(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sAliasName}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel id="id_sGender">Gender</InputLabel>
+                        <Select
+                          id="id_sGender"
+                          label="Gender"
+                          type="text"
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                          onChange={(e) => { setsGender(e.target.value) }}
+                          value={sGender}
+                        >
+                          <MenuItem value={"M"}>Male</MenuItem>
+                          <MenuItem value={"F"}>Female</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          id="id_sPaidUntil"
+                          label="Paid Until"
+                          onChange={(e) => { setsPaidUntil(e.target.value); }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                          defaultValue={sPaidUntil}
+                        />
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <Autocomplete
+                        value={lProvince.find(province => province.id.toString() === sOriginProvinceID)}
+                        openOnFocus
+                        clearOnEscape
+                        onChange={
+                          (e, value) => {
+                            if (value !== null) {
+                              setsOriginProvinceID(value.id.toString());
+                            }
+                            else {
+                              setsOriginProvinceID("0");
+                            }
+                          }
+                        }
+                        id="id_sOriginProvinceID"
+                        options={lProvince}
+                        classes={{
+                          option: classes.option,
+                        }}
+                        className={classes.textField}
+                        autoHighlight
+                        getOptionLabel={(option) => option.sProvince}
+                        renderOption={(option) => (
+                          <React.Fragment>
+                            <span>{option.sProvince}</span>
+                          </React.Fragment>
+                        )}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Province Name"
+                            variant="standard"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'off', // disable autocomplete and autofill
+                            }}
+                          />
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sFstGreenBkNo"
+                        label="First GB Number"
+                        type="text"
+                        onChange={(e) => { setsFstGreenBkNo(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sFstGreenBkNo}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <Autocomplete
+                        value={lQualification.find(qualification => qualification.sQualificationID === sQualificationID)}
+                        openOnFocus
+                        clearOnEscape
+                        onChange={
+                          (e, value) => {
+                            if (value !== null) {
+                              setsQualificationID(value.sQualificationID);
+                            }
+                            else {
+                              setsQualificationID("");
+                            }
+                          }
+                        }
+                        id="id_sQualificationID"
+                        options={lQualification}
+                        classes={{
+                          option: classes.option,
+                        }}
+                        className={classes.textField}
+                        autoHighlight
+                        getOptionLabel={(option) => option.sQualification}
+                        renderOption={(option) => (
+                          <React.Fragment>
+                            <span>{option.sQualification}</span>
+                          </React.Fragment>
+                        )}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Qualification"
+                            variant="standard"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'new-password'
+                            }}
+                          />
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sDocuments"
+                        label="Other Documents"
+                        type="text"
+                        onChange={(e) => { setsOtherDocuments(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sOtherDocuments}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id="id_sMarried">Marital Status</InputLabel>
+                      <Select
+                      MenuProps={{
+                        disableScrollLock: false,
+                      }}
+                        id="id_sMarried"
+                        label="Marital Status"
+                        type="text"
+                        onChange={(e) => { setsMarried(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        value={sMarried}
+                      >
+                        <MenuItem value={"Y"}>Married</MenuItem>
+                        <MenuItem value={"N"}>Single</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sFathersID"
+                        label="Father's Old GB No"
+                        type="text"
+                        onChange={(e) => { setsFathersID(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sFathersID}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sMothersID"
+                        label="Mother's Old GB No"
+                        type="text"
+                        onChange={(e) => { setsMothersID(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sMothersID}
+                      />
+                    </FormControl>
+                  </Grid>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sSpouseName"
+                        label="Spouse Name"
+                        type="text"
+                        onChange={(e) => { setsSpouseName(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sSpouseName}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sSpouseGBID"
+                        name="name_sSpouseGBID"
+                        label="Spouse GB No"
+                        type="text"
+                        onChange={(e) => { setsSpouseGBID(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sSpouseGBID}
+                        inputRef={register({
+                          //minLength: 7,
+                          maxLength: 7
+                        })}
+                      />
+                      {/*{_.get("name_sSpouseGBID.type", errors) === "minLength" && (
+                        <span style={{ color: 'red' }}>Spouse's GB ID No cannot subceed 7 characters</span>
+                      )}*/}
+                      {_.get("name_sSpouseGBID.type", errors) === "maxLength" && (
+                        <span style={{ color: 'red' }}>Spouse's GB No cannot exceed 7 characters</span>
+                      )}
+                    </FormControl>
+                  </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sSpouseID"
+                        label="Spouse's Old GB No"
+                        type="text"
+                        onChange={(e) => { setsSpouseID(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sSpouseID}
+                      />
+                    </FormControl>
+                  </Grid>
                 </Grid>
                 <Grid xs={6}>
                   <Grid item xs={12}>
@@ -994,213 +1262,6 @@ placeholder="DD-MM-YYYY"
                       </FormControl>
                     </Grid>
                   </Grid>
-                </Grid>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-          </Grid>
-
-          <Grid item xs={12}>
-            <ExpansionPanel
-              TransitionProps={{ unmountOnExit: true }}
-              expanded={expanded === 'panel2'}
-              onChange={handleAccordionChange('panel2')}
-            >
-              <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                className={classes.expansionPanel}
-              >
-                <Typography
-                  className={classes.expansionHeading}
-                >Personal Information</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Grid item xs={6}>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sAliasName"
-                        label="Alias Name"
-                        type="text"
-                        onChange={(e) => { setsAliasName(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sAliasName}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
-                    <Grid item xs={6}>
-                      <FormControl className={classes.formControl}>
-                        <InputLabel id="id_sGender">Gender</InputLabel>
-                        <Select
-                          id="id_sGender"
-                          label="Gender"
-                          type="text"
-                          fullWidth
-                          margin="dense"
-                          className={classes.textField}
-                          onChange={(e) => { setsGender(e.target.value) }}
-                          value={sGender}
-                        >
-                          <MenuItem value={"M"}>Male</MenuItem>
-                          <MenuItem value={"F"}>Female</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sPaidUntil"
-                          label="Paid Until"
-                          onChange={(e) => { setsPaidUntil(e.target.value); }}
-                          fullWidth
-                          margin="dense"
-                          className={classes.textField}
-                          defaultValue={sPaidUntil}
-                        />
-                      </FormControl>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <Autocomplete
-                        value={lProvince.find(province => province.id.toString() === sOriginProvinceID)}
-                        openOnFocus
-                        clearOnEscape
-                        onChange={
-                          (e, value) => {
-                            if (value !== null) {
-                              setsOriginProvinceID(value.id.toString());
-                            }
-                            else {
-                              setsOriginProvinceID("0");
-                            }
-                          }
-                        }
-                        id="id_sOriginProvinceID"
-                        options={lProvince}
-                        classes={{
-                          option: classes.option,
-                        }}
-                        className={classes.textField}
-                        autoHighlight
-                        getOptionLabel={(option) => option.sProvince}
-                        renderOption={(option) => (
-                          <React.Fragment>
-                            <span>{option.sProvince}</span>
-                          </React.Fragment>
-                        )}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Province Name"
-                            variant="standard"
-                            inputProps={{
-                              ...params.inputProps,
-                              autoComplete: 'off', // disable autocomplete and autofill
-                            }}
-                          />
-                        )}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sFstGreenBkNo"
-                        label="First GB Number"
-                        type="text"
-                        onChange={(e) => { setsFstGreenBkNo(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sFstGreenBkNo}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <Autocomplete
-                        value={lQualification.find(qualification => qualification.sQualificationID === sQualificationID)}
-                        openOnFocus
-                        clearOnEscape
-                        onChange={
-                          (e, value) => {
-                            if (value !== null) {
-                              setsQualificationID(value.sQualificationID);
-                            }
-                            else {
-                              setsQualificationID("");
-                            }
-                          }
-                        }
-                        id="id_sQualificationID"
-                        options={lQualification}
-                        classes={{
-                          option: classes.option,
-                        }}
-                        className={classes.textField}
-                        autoHighlight
-                        getOptionLabel={(option) => option.sQualification}
-                        renderOption={(option) => (
-                          <React.Fragment>
-                            <span>{option.sQualification}</span>
-                          </React.Fragment>
-                        )}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Qualification"
-                            variant="standard"
-                            inputProps={{
-                              ...params.inputProps,
-                              autoComplete: 'new-password'
-                            }}
-                          />
-                        )}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sDocuments"
-                        label="Other Documents"
-                        type="text"
-                        onChange={(e) => { setsOtherDocuments(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sOtherDocuments}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel id="id_sMarried">Marital Status</InputLabel>
-                      <Select
-                      MenuProps={{
-                        disableScrollLock: false,
-                      }}
-                        id="id_sMarried"
-                        label="Marital Status"
-                        type="text"
-                        onChange={(e) => { setsMarried(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        value={sMarried}
-                      >
-                        <MenuItem value={"Y"}>Married</MenuItem>
-                        <MenuItem value={"N"}>Single</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <Grid item xs={6}>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -1405,116 +1466,6 @@ placeholder="DD-MM-YYYY"
                       </MuiPickersUtilsProvider>
                     </FormControl>
                   </Grid>
-                </Grid>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-          </Grid>
-          {/*Relation Details*/}
-          <Grid item xs={12}>
-            <ExpansionPanel
-              TransitionProps={{ unmountOnExit: true }}
-              expanded={expanded === 'panel3'}
-              onChange={handleAccordionChange('panel3')}
-            >
-              <ExpansionPanelSummary
-                expandIcon={<ExpandMoreIcon className={classes.expansionHeading}/>}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                className={classes.expansionPanel}
-              >
-                <Typography
-                  className={classes.expansionHeading}
-                >Relation & Contact Details</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <Grid item xs={6}>
-                <Grid xs={12} style={{ display: 'flex' }}>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sFathersID"
-                        label="Father's Old GB No"
-                        type="text"
-                        onChange={(e) => { setsFathersID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sFathersID}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sMothersID"
-                        label="Mother's Old GB No"
-                        type="text"
-                        onChange={(e) => { setsMothersID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sMothersID}
-                      />
-                    </FormControl>
-                  </Grid>
-                  </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sSpouseName"
-                        label="Spouse Name"
-                        type="text"
-                        onChange={(e) => { setsSpouseName(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sSpouseName}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sSpouseGBID"
-                        name="name_sSpouseGBID"
-                        label="Spouse GB No"
-                        type="text"
-                        onChange={(e) => { setsSpouseGBID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sSpouseGBID}
-                        inputRef={register({
-                          //minLength: 7,
-                          maxLength: 7
-                        })}
-                      />
-                      {/*{_.get("name_sSpouseGBID.type", errors) === "minLength" && (
-                        <span style={{ color: 'red' }}>Spouse's GB ID No cannot subceed 7 characters</span>
-                      )}*/}
-                      {_.get("name_sSpouseGBID.type", errors) === "maxLength" && (
-                        <span style={{ color: 'red' }}>Spouse's GB No cannot exceed 7 characters</span>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sSpouseID"
-                        label="Spouse's Old GB No"
-                        type="text"
-                        onChange={(e) => { setsSpouseID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sSpouseID}
-                      />
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <Grid item xs={6}>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
@@ -1576,6 +1527,8 @@ placeholder="DD-MM-YYYY"
                 </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
+          </Grid>
+          <Grid item xs={12}>
             <br />
             <Grid item xs={12}>
               <Button 
@@ -1587,7 +1540,7 @@ placeholder="DD-MM-YYYY"
               >Cancel
               </Button>
               <Button
-              disabled={formState.isSubmitting || formState.isSubmitted}
+              //disabled={formState.isSubmitting || formState.isSubmitted}
                 variant={sButtonVariant}
                 size={sButtonSize}
                 color={sButtonColor}
