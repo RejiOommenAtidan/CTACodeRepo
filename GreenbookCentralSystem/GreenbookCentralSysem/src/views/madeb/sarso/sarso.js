@@ -219,36 +219,7 @@ export default function EnhancedTable() {
         borderRight: '1px solid grey'
       }
     },
-    {
-      field: "madeb.sGBID",
-      title: "GB ID",
-      width: "8%",
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "center",
-        padding: '5px',
-        borderRight: '1px solid grey'
-      }
-    },
-    {
-      width: "8%",
-      field: "madeb.nCurrentGBSno",
-      title: "BOOK SERIAL NO.",
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "right",
-        padding: '5px',
-        borderRight: '1px solid grey'
-      }
-    },
+   
     {
       field: "madeb.sFathersName",
       title: "FATHER'S NAME",
@@ -325,6 +296,37 @@ export default function EnhancedTable() {
         borderRight: '1px solid grey'
       }
     },
+    {
+      width: "8%",
+      field: "madeb.nCurrentGBSno",
+      title: "BOOK SERIAL NO.",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "right",
+        padding: '5px',
+        borderRight: '1px solid grey'
+      }
+    },
+    {
+      field: "madeb.sGBID",
+      title: "GB ID",
+      width: "8%",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px',
+        borderRight: '1px solid grey'
+      }
+    },
+
     {
       field: "madeb.dtFormattedIssueAction",
 

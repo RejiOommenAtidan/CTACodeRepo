@@ -132,7 +132,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 var forms = tables[0].AsEnumerable().Select(row => new {
                     Id = row.Field<int>("Id"),
                     nGBId = row.Field<int>("nGBId"),
-                    dtIssuedDate = row.Field<DateTime>("dtIssuedDate"),
+                    dtIssuedDate = row.Field<DateTime?>("dtIssuedDate"),
                     sWhyIssued = row.Field<string?>("sWhyIssued"),
                     nMadebTypeId = row.Field<int?>("nMadebTypeId"),
                     nTypeIssuedId = row.Field<int?>("nTypeIssuedId"),

@@ -425,21 +425,6 @@ export default function EnhancedTable() {
    //   render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
     },
     {
-      width: "6%",
-      field: "sTypeIssued",
-      title: "ISSUE ACTION",
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
-      }
-    },
-    {
       width: "8%",
       field: "madeb.dtFormattedReject",
       title: "REJECT DATE",
@@ -457,6 +442,22 @@ export default function EnhancedTable() {
       },
      // render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined
     },
+    {
+      width: "6%",
+      field: "sTypeIssued",
+      title: "ISSUE ACTION",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "left",
+        padding: '5px',
+        borderRight: '1px solid grey'
+      }
+    },
+  
     {
       width: "8%",
       field: "madeb.dtFormattedReturnEmail",

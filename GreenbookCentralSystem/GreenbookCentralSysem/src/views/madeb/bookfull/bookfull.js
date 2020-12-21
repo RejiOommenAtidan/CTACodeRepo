@@ -522,32 +522,6 @@ export default function EnhancedTable() {
     },
     {
       width: "8%",
-      field: "sTypeIssued",
-      title: "ISSUE ACTION",
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "left",
-        padding: '5px',
-        borderRight: '1px solid grey'
-      },
-      // filterComponent: () =>
-      //   <MyComp
-      //     field="sTypeIssued"
-      //     name="ISSUE ACTION"
-      //     changeHandler={changeHandler}
-      //     myarray={myarray}
-      //     updateArray={updateArray}
-      //     currId={currId}
-      //     key={"sTypeIssued"}
-      //   />
-    },
-
-    {
-      width: "8%",
       field: "madeb.dtFormattedReject",
       title: "REJECT DATE",
       // type: 'date',
@@ -574,6 +548,33 @@ export default function EnhancedTable() {
       //     key={"madeb.dtReject"}
       //   />
     },
+    {
+      width: "8%",
+      field: "sTypeIssued",
+      title: "ISSUE ACTION",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "left",
+        padding: '5px',
+        borderRight: '1px solid grey'
+      },
+      // filterComponent: () =>
+      //   <MyComp
+      //     field="sTypeIssued"
+      //     name="ISSUE ACTION"
+      //     changeHandler={changeHandler}
+      //     myarray={myarray}
+      //     updateArray={updateArray}
+      //     currId={currId}
+      //     key={"sTypeIssued"}
+      //   />
+    },
+
+   
     {
       width: "8%",
       field: "madeb.dtFormattedReturnEmail",
