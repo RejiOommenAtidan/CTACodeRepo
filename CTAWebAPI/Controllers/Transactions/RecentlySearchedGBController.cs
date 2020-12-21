@@ -35,7 +35,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Get Recently Searched GB's
-        [AuthorizeRole(FeatureID: 2)]
+        [AuthorizeRole(FeatureID = 2)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetRecentlySearchedGBs(int records, int nUserId)

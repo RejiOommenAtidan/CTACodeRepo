@@ -14,7 +14,7 @@ using System.Text.Json;
 
 namespace CTAWebAPI.Controllers.Masters
 {
-    //[AuthorizeRole(FeatureID:23)]
+    //[AuthorizeRole(FeatureID =23)]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     [ApiController]
@@ -64,7 +64,7 @@ namespace CTAWebAPI.Controllers.Masters
             #endregion
         }
 
-        [AuthorizeRole(FeatureID: 23)]
+        [AuthorizeRole(FeatureID = 23)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetCountries()
@@ -72,7 +72,7 @@ namespace CTAWebAPI.Controllers.Masters
             return GetCountriesCommon();
         }
 
-        [AuthorizeRole(FeatureID: 22)]
+        [AuthorizeRole(FeatureID = 22)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetCountriesForAuthRegion()
@@ -81,7 +81,7 @@ namespace CTAWebAPI.Controllers.Masters
         }
 
 
-        [AuthorizeRole(FeatureID: 2)]
+        [AuthorizeRole(FeatureID = 2)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetCountriesForSearch()
@@ -91,7 +91,7 @@ namespace CTAWebAPI.Controllers.Masters
 
         
 
-        [AuthorizeRole(FeatureID: 23)]
+        [AuthorizeRole(FeatureID = 23)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetCountryById(string Id)
@@ -128,7 +128,7 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Add Call
-        [AuthorizeRole(FeatureID: 23)]
+        [AuthorizeRole(FeatureID = 23)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddCountry(Country country)
@@ -199,7 +199,7 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Edit Call
-        [AuthorizeRole(FeatureID: 23)]
+        [AuthorizeRole(FeatureID = 23)]
         [HttpPost("EditCountry/CountryID={ID}")] /* Are we to match table id*/
         [Route("[action]")]
         public IActionResult EditCountry(string ID, [FromBody] Country countryToUpdate)
@@ -276,7 +276,7 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Delete Call
-        [AuthorizeRole(FeatureID: 23)]
+        [AuthorizeRole(FeatureID = 23)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult DeleteCountry(Country countryToDelete)
@@ -350,7 +350,7 @@ namespace CTAWebAPI.Controllers.Masters
         //        return StatusCode(StatusCodes.Status500InternalServerError);
         //    }
         //}
-        [AuthorizeRole(FeatureID: 23)]
+        [AuthorizeRole(FeatureID = 23)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult SearchCountries(Object country) 

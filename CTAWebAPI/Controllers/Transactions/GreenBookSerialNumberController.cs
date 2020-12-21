@@ -43,7 +43,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Get Calls
-        [AuthorizeRole(FeatureID: 12)]
+        [AuthorizeRole(FeatureID = 12)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetGreenBookSerialNumbers(DateTime? dtFrom = null, DateTime? dtUpto = null, int? nBookNo = null)
@@ -179,7 +179,7 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
-        [AuthorizeRole(FeatureID: 12)]
+        [AuthorizeRole(FeatureID = 12)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetNewEmptyGreenBookSerialRecordForEdit()
@@ -187,7 +187,7 @@ namespace CTAWebAPI.Controllers.Transactions
             return GetNewEmptyGreenBookSerialRecord();
         }
 
-        [AuthorizeRole(FeatureID: 11)]
+        [AuthorizeRole(FeatureID = 11)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetNewEmptyGreenBookSerialRecordForAdd()
@@ -195,7 +195,7 @@ namespace CTAWebAPI.Controllers.Transactions
             return GetNewEmptyGreenBookSerialRecord();
         }
 
-        [AuthorizeRole(FeatureID: 11)]
+        [AuthorizeRole(FeatureID = 11)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetGreenBookSerialNumberAssignList()
@@ -232,7 +232,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Add Calls
-        [AuthorizeRole(FeatureID: 11)]
+        [AuthorizeRole(FeatureID = 11)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddGreenBookSerialNumber(GreenBookSerialNumber gbsn)
@@ -276,7 +276,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Edit Call
-        [AuthorizeRole(FeatureID: 12)]
+        [AuthorizeRole(FeatureID = 12)]
         [HttpPost("EditGreenbookSerialNumber/Id={Id}")]
         [Route("[action]")]
         public IActionResult EditGreenBookSerialNumber(string Id, [FromBody] GreenBookSerialNumber gbsn)

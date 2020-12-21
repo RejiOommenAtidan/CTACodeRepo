@@ -14,7 +14,7 @@ using System.Linq;
 using System.Reflection;
 namespace CTAWebAPI.Controllers.Masters
 {
-    [AuthorizeRole(FeatureID: 19)]
+    [AuthorizeRole(FeatureID = 19)]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]

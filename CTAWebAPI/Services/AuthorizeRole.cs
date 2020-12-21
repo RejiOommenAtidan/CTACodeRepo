@@ -16,7 +16,8 @@ using System.Security.Claims;
 
 namespace CTAWebAPI.Services
 {
-    public class AuthorizeRole : AuthorizeAttribute, IAuthorizationFilter
+    [System.AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
+    public class AuthorizeRoleAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
         //public string Roles { get;  set; } 
 
@@ -25,11 +26,13 @@ namespace CTAWebAPI.Services
         private FeatureUserrightsRepository _featureUserrightsRepository;
         private UserRepository _userRepository;
         private int _FeatureID;
+        public int FeatureID { get; set; }
         
-        public AuthorizeRole(int FeatureID)
+        
+        public AuthorizeRoleAttribute()
         {
             // string[] myAllRoles = Roles.Split(','); This line gets you the 'Role' String if specified in the attribute decoration
-            _FeatureID = FeatureID;
+            //_FeatureID = FeatureID;
             
             
         }
@@ -38,7 +41,7 @@ namespace CTAWebAPI.Services
         {
             HttpRequest request = context.HttpContext.Request;
 
-            if (_FeatureID == 0)
+            if (FeatureID == 0)
             {
                 
                 var q = request.QueryString;
@@ -46,13 +49,22 @@ namespace CTAWebAPI.Services
                 {
                     string s = q.Value;
                     s = s.Substring(s.Length - 1);
-                    _FeatureID = Convert.ToInt32(s);
-                    
+                    _FeatureID = Convert.ToInt32(s) + 2;
+                   
                 }
                 else
                 {
-                    _FeatureID = Convert.ToInt32(context.RouteData.Values["madebType"]);
+                    _FeatureID = Convert.ToInt32(context.RouteData.Values["madebType"]) + 2;
                 }
+                if (_FeatureID > 8 || _FeatureID < 3)
+                {
+                    context.Result = new UnauthorizedResult();
+                    return;
+                }
+            }
+            else
+            {
+                _FeatureID = FeatureID;
             }
             
             

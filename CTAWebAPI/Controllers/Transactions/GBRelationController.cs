@@ -29,7 +29,7 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Handle GreenBook Update
-        [AuthorizeRole(FeatureID: 16)]
+        [AuthorizeRole(FeatureID = 16)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult HandleGreenBookUpdate(List<GBRelation> gbRelations)

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace CTAWebAPI.Controllers
 {
-    [AuthorizeRole(FeatureID: 22)]
+    [AuthorizeRole(FeatureID = 22)]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]

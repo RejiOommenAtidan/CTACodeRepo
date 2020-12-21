@@ -44,7 +44,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Get Calls
-        //[AuthorizeRole(FeatureID: 0)]
+        //[AuthorizeRole(FeatureID = 0)]
         //[HttpGet]
         //[Route("[action]")]
         [NonAction]
@@ -72,16 +72,16 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
-        [AuthorizeRole(FeatureID: 0)]
+        [AuthorizeRole(FeatureID = 0)]
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetNewEmptyMadeb(int nMadebTypeId)
+        public IActionResult GetNewEmptyMadeb(int nMadebType)
         {
-            return GetNewEmptyMadebCommon(nMadebTypeId);
+            return GetNewEmptyMadebCommon(nMadebType);
         }
 
 
-        [AuthorizeRole(FeatureID: 15)]
+        [AuthorizeRole(FeatureID = 15)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetNewEmptyMadebMakeList()
@@ -89,7 +89,7 @@ namespace CTAWebAPI.Controllers.Transactions
             return GetNewEmptyMadebCommon(0);
         }
 
-        [AuthorizeRole(FeatureID: 14)]
+        [AuthorizeRole(FeatureID = 14)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetNewEmptyMadebIssueBook()
@@ -185,7 +185,7 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
-        [AuthorizeRole(FeatureID:0)]
+        [AuthorizeRole(FeatureID =0)]
         [HttpGet("GetMadebsByType/MadebType={madebType}")]
         [Route("[action]")]
         public IActionResult GetMadebsByType(int madebType)
@@ -319,7 +319,7 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
-        [AuthorizeRole(FeatureID: 9)]
+        [AuthorizeRole(FeatureID = 9)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetFormsWithoutGBId()
@@ -336,7 +336,7 @@ namespace CTAWebAPI.Controllers.Transactions
 
         }
 
-        [AuthorizeRole(FeatureID: 14)]
+        [AuthorizeRole(FeatureID = 14)]
         [HttpGet("GetMadebforIssueBook/GBId={GBId}")]
         [Route("[action]")]
         public IActionResult GetMadebforIssueBook(string GBId)

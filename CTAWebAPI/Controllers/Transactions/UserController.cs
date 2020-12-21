@@ -55,7 +55,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Get Calls
         //[Authorize(Roles = User)]
         //[Authorize(Roles = Role.Admin,)]
-        [AuthorizeRole(FeatureID: 18)]
+        [AuthorizeRole(FeatureID = 18)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetUsers()
@@ -82,7 +82,7 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
-        [AuthorizeRole(FeatureID: 18)]
+        [AuthorizeRole(FeatureID = 18)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetAllUsers()
@@ -115,7 +115,7 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
-        [AuthorizeRole(FeatureID: 18)]
+        [AuthorizeRole(FeatureID = 18)]
         [HttpGet("GetUser/Id={Id}")]
         [Route("[action]")]
         public IActionResult GetUser(string Id)
@@ -144,7 +144,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Add Call
-        [AuthorizeRole(FeatureID: 18)]
+        [AuthorizeRole(FeatureID = 18)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddUser(User user)
@@ -192,7 +192,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Edit Call
-        [AuthorizeRole(FeatureID: 18)]
+        [AuthorizeRole(FeatureID = 18)]
         [HttpPost("EditUser/Id={Id}")]
         [Route("[action]")]
         public IActionResult EditUser(string Id, [FromBody] User user)
@@ -263,7 +263,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion 
 
         #region Delete Call
-        [AuthorizeRole(FeatureID: 18)]
+        [AuthorizeRole(FeatureID = 18)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult DeleteUser(User user)

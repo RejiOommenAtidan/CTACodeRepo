@@ -32,7 +32,7 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Get Calls
-        [AuthorizeRole(FeatureID: 13)]
+        [AuthorizeRole(FeatureID = 13)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetRegion()
@@ -58,7 +58,7 @@ namespace CTAWebAPI.Controllers.Masters
             }
             #endregion
         }
-        [AuthorizeRole(FeatureID: 21)]
+        [AuthorizeRole(FeatureID = 21)]
         [HttpGet("GetRegion/ID={ID}")]
         [Route("[action]")]
         public IActionResult GetRegion(string ID)
@@ -87,7 +87,7 @@ namespace CTAWebAPI.Controllers.Masters
         #region Add Call
         //TODO: Tell
         //[AllowAnonymous]
-        [AuthorizeRole(FeatureID: 21)]
+        [AuthorizeRole(FeatureID = 21)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddRegion(Region region)
@@ -135,7 +135,7 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Edit Call
-        [AuthorizeRole(FeatureID: 21)]
+        [AuthorizeRole(FeatureID = 21)]
         [HttpPost("EditRegion/ID={ID}")]
         [Route("[action]")]
         public IActionResult EditRegion(string ID, [FromBody] Region region)
@@ -194,7 +194,7 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Delete Call
-        [AuthorizeRole(FeatureID: 21)]
+        [AuthorizeRole(FeatureID = 21)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult DeleteRegion(Region region)

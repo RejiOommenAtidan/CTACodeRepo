@@ -14,7 +14,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers
 {
-    //[Authorize]
+    //[Authorize("Roles=Admin")]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]
@@ -121,8 +121,9 @@ namespace CTAWebAPI.Controllers
             #endregion
         }
 
-        [AuthorizeRole(FeatureID: 0)]
-        [HttpGet("GetMadebsByType/MadebType={madebType}")]
+        [AuthorizeRole(FeatureID = -10)]
+        //[HttpGet("GetMadebsByType/MadebType={madebType}")]
+        [HttpGet]
         [Route("[action]")]
         public IActionResult GetMadebsByType(int madebType)
         {
