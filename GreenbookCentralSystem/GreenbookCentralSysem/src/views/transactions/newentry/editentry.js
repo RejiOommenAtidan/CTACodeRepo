@@ -297,6 +297,7 @@ export default function EditEntry(props) {
           setAlertMessage(sSnackbarAddMessage);
           setAlertType('success');
           snackbarOpen();
+          childObj.sGender === "M" ? setnChildrenM(nChildrenM + 1) : setnChildrenF(nChildrenF + 1);
           setdialogBackdrop(false);
         }
       })
@@ -324,6 +325,14 @@ export default function EditEntry(props) {
           setAlertMessage(sSnackbarUpdateMessage);
           setAlertType('success');
           snackbarOpen();
+          if (childObj.sGender === "M" && oChild.sGender === "F") {
+            setnChildrenM(nChildrenM + 1);
+            setnChildrenF(nChildrenF - 1);
+          }
+          if (childObj.sGender === "F" && oChild.sGender === "M") {
+            setnChildrenM(nChildrenM - 1);
+            setnChildrenF(nChildrenF + 1);
+          }
           setdialogBackdrop(false);
         }
       })
@@ -460,8 +469,8 @@ export default function EditEntry(props) {
   const [sSpouseName, setsSpouseName] = useState("");
   const [sSpouseID, setsSpouseID] = useState("");
   const [sSpouseGBID, setsSpouseGBID] = useState("");
-  const [nChildrenM, setnChildrenM] = useState(0);
-  const [nChildrenF, setnChildrenF] = useState(0);
+  const [nChildrenM, setnChildrenM] = useState();
+  const [nChildrenF, setnChildrenF] = useState();
   const [sAddress1, setsAddress1] = useState("");
   const [sAddress2, setsAddress2] = useState("");
   const [sCity, setsCity] = useState("");
@@ -645,6 +654,9 @@ export default function EditEntry(props) {
         nUpdatedBy: userId
       }
     ]
+    console.log(nChildrenF);
+    console.log(nChildrenM);
+    debugger;
     let greenbook = {
       Id,
       sGBID,
@@ -1008,7 +1020,7 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
-placeholder="DD-MM-YYYY"
+                          placeholder="DD-MM-YYYY"
                           variant="dialog"
                           openTo="year"
                           views={["year", "month", "date"]}
@@ -1140,7 +1152,7 @@ placeholder="DD-MM-YYYY"
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
-placeholder="DD-MM-YYYY"
+                          placeholder="DD-MM-YYYY"
                           disabled={true}
                           variant="dialog"
                           openTo="year"
@@ -1739,7 +1751,7 @@ placeholder="DD-MM-YYYY"
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
-placeholder="DD-MM-YYYY"
+                          placeholder="DD-MM-YYYY"
                           variant="dialog"
                           openTo="year"
                           views={["year", "month", "date"]}
@@ -1909,7 +1921,7 @@ placeholder="DD-MM-YYYY"
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
-placeholder="DD-MM-YYYY"
+                          placeholder="DD-MM-YYYY"
                           variant="dialog"
                           openTo="year"
                           views={["year", "month", "date"]}
@@ -1919,10 +1931,14 @@ placeholder="DD-MM-YYYY"
                           label="Deceased Date"
                           format={sDateFormatMUIDatepicker}
                           onChange={date => {
+                            debugger;
                             if (date) {
                               setdtDeceased(date);
                               setValue('name_dtDeceased', date, { shouldValidate: true });
                             }
+                            // else{
+                            //   setdtDeceased(date);
+                            // }
                           }
                           }
                           inputRef={register({
