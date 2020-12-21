@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers
 {
-    [Authorize]
+    [AuthorizeRole(FeatureID: 15)]
     [EnableCors("AllowOrigin")]
     //[APIKeyAuth]
     [Route("api/[controller]")]
@@ -71,7 +71,7 @@ namespace CTAWebAPI.Controllers
         [Route("[action]")]
         public IActionResult SetPrinted([FromBody] Dictionary<string, dynamic> parameters)
         {
-            try
+                try
             {
                 string result = _makeListRepository.SetPrinted(parameters);
 

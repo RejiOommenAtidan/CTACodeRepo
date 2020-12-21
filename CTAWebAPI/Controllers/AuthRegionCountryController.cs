@@ -1,6 +1,7 @@
 ﻿using CTADBL.Entities;
 using CTADBL.ViewModels;
 using CTADBL.ViewModelsRepositories;
+using CTAWebAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +11,7 @@ using System.Collections.Generic;
 
 namespace CTAWebAPI.Controllers
 {
-    [Authorize]
+    [AuthorizeRole(FeatureID: 22)]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]

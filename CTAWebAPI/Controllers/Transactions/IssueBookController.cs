@@ -35,7 +35,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Get Calls
-
+        [AuthorizeRole(FeatureID: 14)]
         [HttpGet("GetIssueBookByGBId/GBId={GBId}")]
         [Route("[action]")]
         public IActionResult GetIssueBookByGbId(int GBId)
@@ -81,6 +81,7 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             #endregion
         }
+        [AuthorizeRole(FeatureID: 14)]
         [HttpGet("GetIssueBookJoin/GBId={GBId}")]
         [Route("[action]")]
         public IActionResult GetIssueBookJoin(int GBId)
@@ -88,6 +89,7 @@ namespace CTAWebAPI.Controllers.Transactions
             Object forms = _issueBookRepository.GetIssueBookJoin(GBId);
             return Ok(forms);
         }
+        [AuthorizeRole(FeatureID: 14)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetLatestIssueBookJoin()

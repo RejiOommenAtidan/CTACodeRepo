@@ -370,7 +370,7 @@ export default function EnhancedTable() {
       .then(resp => {
         if (resp.status === 200) {
           setdataAPI(resp.data)
-          axios.get(`/Country/GetCountries`)
+          axios.get(`/Country/GetCountriesForAuthRegion`)
             .then(resp => {
               if (resp.status === 200) {
                 setCountryList(resp.data)

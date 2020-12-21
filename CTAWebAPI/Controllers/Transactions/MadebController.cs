@@ -45,9 +45,10 @@ namespace CTAWebAPI.Controllers.Transactions
 
         #region Get Calls
         //[AuthorizeRole(FeatureID: 0)]
-        [HttpGet]
-        [Route("[action]")]
-        public IActionResult GetNewEmptyMadeb(int nMadebTypeId)
+        //[HttpGet]
+        //[Route("[action]")]
+        [NonAction]
+        public IActionResult GetNewEmptyMadebCommon(int nMadebTypeId)
         {
             #region Get Users using SP call
             try
@@ -71,6 +72,30 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
+        [AuthorizeRole(FeatureID: 0)]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetNewEmptyMadeb(int nMadebTypeId)
+        {
+            return GetNewEmptyMadebCommon(nMadebTypeId);
+        }
+
+
+        [AuthorizeRole(FeatureID: 15)]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetNewEmptyMadebMakeList()
+        {
+            return GetNewEmptyMadebCommon(0);
+        }
+
+        [AuthorizeRole(FeatureID: 14)]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetNewEmptyMadebIssueBook()
+        {
+            return GetNewEmptyMadebCommon(0);
+        }
 
         [HttpGet]
         [Route("[action]")]
@@ -311,6 +336,7 @@ namespace CTAWebAPI.Controllers.Transactions
 
         }
 
+        [AuthorizeRole(FeatureID: 14)]
         [HttpGet("GetMadebforIssueBook/GBId={GBId}")]
         [Route("[action]")]
         public IActionResult GetMadebforIssueBook(string GBId)

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CTAWebAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [EnableCors("AllowOrigin")]
     //[APIKeyAuth]
     [Route("api/[controller]")]

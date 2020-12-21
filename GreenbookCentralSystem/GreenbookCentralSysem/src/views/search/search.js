@@ -589,7 +589,7 @@ export default function SearchPage() {
 
   useEffect(() => {
 
-    axios.get(`Country/GetCountries`)
+    axios.get(`Country/GetCountriesForSearch`)
       .then(resp => {
         if (resp.status === 200) {
           setCountryData(resp.data);
