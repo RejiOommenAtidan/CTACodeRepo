@@ -13,11 +13,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { useSelector } from 'react-redux';
-import {sButtonColor, sButtonSize, sButtonVariant} from "../../../config/commonConfig";
+import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitAddRecord = () => {
     props.addAPICall(
       {
@@ -41,7 +41,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_Relation"
                     name="sRelation"
-                    label={<>Relation<span style={{color:'red'}}> *</span></>}
+                    label={<>Relation<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     autoFocus
                     onChange={(e) => { setRelation(e.target.value) }}
@@ -66,6 +66,7 @@ export const AddDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.addAPICall({ sRelation: relation })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -79,7 +80,7 @@ export const AddDialog = (props) => {
 
 export const EditDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(
       {
@@ -103,7 +104,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_Relation"
                       name="sRelation"
-                      label={<>Relation<span style={{color:'red'}}> *</span></>}
+                      label={<>Relation<span style={{ color: 'red' }}> *</span></>}
                       type="text"
                       value={Name}
                       onChange={(e) => { setRelation(e.target.value) }}
@@ -129,6 +130,7 @@ export const EditDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.editAPICall({ id: props.relationObj.id, sRelation: Name })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}

@@ -16,7 +16,7 @@ import { sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commo
 import { useSelector } from 'react-redux';
 
 export const AddNoteDialog = (props) => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitAddNoteRecord = () => {
     props.addNoteAPICall(sNote);
   }
@@ -63,6 +63,7 @@ export const AddNoteDialog = (props) => {
             size={sButtonSize}
           >Cancel</Button>
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             color={sButtonColor}
             variant={sButtonVariant}
@@ -76,7 +77,7 @@ export const AddNoteDialog = (props) => {
 
 export const EditNoteDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitEditNoteRecord = () => {
     props.editNoteAPICall(
       {
@@ -130,6 +131,7 @@ export const EditNoteDialog = (props) => {
             size={sButtonSize}
           >Cancel</Button>
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             color={sButtonColor}
             variant={sButtonVariant}

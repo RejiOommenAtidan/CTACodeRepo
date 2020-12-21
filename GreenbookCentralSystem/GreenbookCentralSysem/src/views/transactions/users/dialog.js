@@ -23,7 +23,7 @@ import _ from "lodash/fp";
 import { useForm, Controller } from "react-hook-form";
 
 export const AddDialog = (props) => {
-  const { register, handleSubmit, errors, control } = useForm();
+  const { register, handleSubmit, errors, control, formState } = useForm();
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [lUserRights, setlUserRights] = React.useState(props.lUserRights);
   const [Id, setId] = React.useState('')
@@ -119,9 +119,9 @@ export const AddDialog = (props) => {
                         name="name_nUserRightsId"
                         label="Role"
                         value={nUserRightsId}
-                        onChange={(e) => { 
+                        onChange={(e) => {
                           props.onChange(e.target.value);
-                          setnUserRightsId(e.target.value); 
+                          setnUserRightsId(e.target.value);
                         }}
 
                       >
@@ -194,6 +194,7 @@ export const AddDialog = (props) => {
             size={sButtonSize}
           >Cancel</Button>
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -206,7 +207,7 @@ export const AddDialog = (props) => {
 }
 
 export const EditDialog = (props) => {
-  const { register, handleSubmit, errors, control } = useForm();
+  const { register, handleSubmit, errors, control, formState } = useForm();
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [lUserRights, setlUserRights] = React.useState(props.oUserObj.lUserRights);
   const [Id, setId] = React.useState(props.oUserObj.id)
@@ -360,6 +361,7 @@ export const EditDialog = (props) => {
             size={sButtonSize}
           >Cancel</Button>
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}

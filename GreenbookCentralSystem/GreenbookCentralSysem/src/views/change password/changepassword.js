@@ -75,7 +75,7 @@ export default function ChangePassword() {
   });
   const [backdrop, setBackdrop] = React.useState(false);
   const classes = useStyles();
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const [sOldPassword, setsOldPassword] = useState('');
   const [sNewPassword, setsNewPassword] = useState('');
   const [sConfirmNewPassword, setsConfirmNewPassword] = useState('');
@@ -237,6 +237,7 @@ export default function ChangePassword() {
                 size={sButtonSize}
               >Cancel</Button> &nbsp;
               <Button
+                disabled={formState.isSubmitting || formState.isSubmitted}
                 type="submit"
                 variant={sButtonVariant}
                 color={sButtonColor}

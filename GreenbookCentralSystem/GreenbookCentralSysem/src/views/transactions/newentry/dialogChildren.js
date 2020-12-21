@@ -27,7 +27,7 @@ import { useSelector } from 'react-redux';
 export const AddChildDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   Moment.locale('en');
-  const { register, handleSubmit, errors, setValue } = useForm();
+  const { register, handleSubmit, errors, setValue, formState } = useForm();
   const handleSubmitAddChildRecord = () => {
     props.addChildAPICall({
       sGBIDParent: props.sGBID,
@@ -173,6 +173,7 @@ export const AddChildDialog = (props) => {
             size={sButtonSize}
           >Cancel</Button>
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             color={sButtonColor}
             variant={sButtonVariant}
@@ -187,7 +188,7 @@ export const AddChildDialog = (props) => {
 export const EditChildDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   Moment.locale('en');
-  const { register, handleSubmit, errors, setValue } = useForm();
+  const { register, handleSubmit, errors, setValue, formState } = useForm();
   const handleSubmitEditChildRecord = () => {
     props.editChildAPICall(
       {
@@ -336,6 +337,7 @@ export const EditChildDialog = (props) => {
             size={sButtonSize}
           >Cancel</Button>
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             color={sButtonColor}
             variant={sButtonVariant}

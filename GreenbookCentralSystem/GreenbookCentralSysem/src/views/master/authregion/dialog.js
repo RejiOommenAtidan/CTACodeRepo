@@ -29,7 +29,7 @@ export const EditDialog = (props) => {
 
   // console.log("Props object", props);
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const [authRegion, setAuthRegion] = useState(props.authRegionObj.authRegion);
   const [countryID, setCountryID] = useState(props.authRegionObj.countryID);
   const [sCurrencyCode, setCurrencyCode] = useState(props.authRegionObj.sCurrencyCode);
@@ -106,7 +106,7 @@ export const EditDialog = (props) => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label={<>Country<span style={{color:'red'}}> *</span></>}
+                        label={<>Country<span style={{ color: 'red' }}> *</span></>}
                         variant="standard"
                         inputRef={register({
                           required: true
@@ -143,7 +143,7 @@ export const EditDialog = (props) => {
                 <FormControl>
                   <TextField
                     id="id_AuthRegion"
-                    label={<>Authority Region<span style={{color:'red'}}> *</span></>}
+                    label={<>Authority Region<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     value={authRegion} // Set Auth Region name 
                     onChange={(e) => { setAuthRegion(e.target.value) }}
@@ -154,7 +154,7 @@ export const EditDialog = (props) => {
                 <FormControl>
                   <TextField
                     id="id_CurrencyCode"
-                    label={<>Currency Code<span style={{color:'red'}}> *</span></>}
+                    label={<>Currency Code<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     value={sCurrencyCode} // Set Auth Region name 
                     onChange={(e) => { setCurrencyCode(e.target.value) }}
@@ -173,6 +173,7 @@ export const EditDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.editAPICall({ ID: props.authRegionObj.ID, sCountryID: countryID, sAuthRegion: authRegion })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -212,7 +213,7 @@ export const DeleteDialog = (props) => {
 
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const ids = props.dataAPI.map((data) => data.sCountryID);
   const [countryID, setCountryID] = useState(ids[0]);
   const [authRegion, setAuthRegion] = useState('');
@@ -278,7 +279,7 @@ export const AddDialog = (props) => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label={<>Country<span style={{color:'red'}}> *</span></>}
+                        label={<>Country<span style={{ color: 'red' }}> *</span></>}
                         variant="standard"
                         inputRef={register({
                           required: true
@@ -313,7 +314,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_AuthRegion"
                     name="sAuthRegion"
-                    label={<>Authority Region<span style={{color:'red'}}> *</span></>}
+                    label={<>Authority Region<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     onChange={(e) => { setAuthRegion(e.target.value) }}
                     inputRef={register({
@@ -329,7 +330,7 @@ export const AddDialog = (props) => {
                 <FormControl>
                   <TextField
                     id="id_CurrencyCode"
-                    label={<>Currency Code<span style={{color:'red'}}> *</span></>}
+                    label={<>Currency Code<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     value={sCurrencyCode} // Set Auth Region name 
                     onChange={(e) => { setCurrencyCode(e.target.value) }}
@@ -349,6 +350,7 @@ export const AddDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.addAPICall({ sCountryID: countryID, sAuthRegion: authRegion })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}

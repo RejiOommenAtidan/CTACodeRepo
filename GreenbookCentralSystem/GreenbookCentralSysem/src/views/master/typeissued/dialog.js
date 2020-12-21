@@ -13,11 +13,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm } from "react-hook-form";
 import _ from "lodash/fp";
 import { useSelector } from 'react-redux';
-import {sButtonColor, sButtonSize, sButtonVariant} from "../../../config/commonConfig";
+import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitAddRecord = () => {
     props.addAPICall(
       {
@@ -41,7 +41,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_TypeIssued"
                     name="sTypeIssued"
-                    label={<>Type Issued<span style={{color:'red'}}> *</span></>}
+                    label={<>Type Issued<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     onChange={(e) => { setTypeIssued(e.target.value) }}
                     inputRef={register({
@@ -65,6 +65,7 @@ export const AddDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.addAPICall({ sTypeIssued: typeIssued })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -78,7 +79,7 @@ export const AddDialog = (props) => {
 
 export const EditDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(
       {
@@ -102,7 +103,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_TypeIssued"
                       name="sTypeIssued"
-                      label={<>Type Issued<span style={{color:'red'}}> *</span></>}
+                      label={<>Type Issued<span style={{ color: 'red' }}> *</span></>}
                       type="text"
                       value={Name}
                       onChange={(e) => { setTypeIssued(e.target.value) }}
@@ -127,6 +128,7 @@ export const EditDialog = (props) => {
             size={sButtonSize}
           >Cancel</Button>
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}

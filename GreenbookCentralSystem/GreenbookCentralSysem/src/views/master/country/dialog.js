@@ -21,7 +21,7 @@ import {
 export const EditDialog = (props) => {
   debugger
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [nDefaultAuthRegionID, setDefaultAuthRegionID] = React.useState(props.countryObj.nDefaultAuthRegionID);
   const [authRegions, setAuthRegions] = React.useState(props.authRegions);
@@ -152,6 +152,7 @@ export const EditDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}

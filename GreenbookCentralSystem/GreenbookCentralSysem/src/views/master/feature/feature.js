@@ -136,30 +136,30 @@ export default function Feature() {
       }
     },
     {
-      field: "edit",
-      title: "Edit",
-      sorting: false,
-      export: false,
-      filtering: false,
-      render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-        onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
-      >
-        <EditOutlinedIcon />
-      </IconButton>,
-      headerStyle: {
-        padding: '0px',
-        width: '1%',
-        textAlign: 'center'
-      },
-      headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
-      },
-      cellStyle: {
-        textAlign: "center",
-        padding: '5px'
-      }
+      // field: "edit",
+      // title: "Edit",
+      // sorting: false,
+      // export: false,
+      // filtering: false,
+      // render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
+      //   onClick={() => { editClick(rowData) }} style={{ padding: '0px' }}
+      // >
+      //   <EditOutlinedIcon />
+      // </IconButton>,
+      // headerStyle: {
+      //   padding: '0px',
+      //   width: '1%',
+      //   textAlign: 'center'
+      // },
+      // headerStyle: {
+      //   textAlign: "center",
+      //   textAlignLast: "center",
+      //   verticalAlign: "middle"
+      // },
+      // cellStyle: {
+      //   textAlign: "center",
+      //   padding: '5px'
+      // }
     }
   ];
 
@@ -271,12 +271,12 @@ export default function Feature() {
           data={dataAPI}
           options={oOptions}
           actions={[
-            {
-              icon: oTableIcons.Add,
-              tooltip: 'Add Feature',
-              isFreeAction: true,
-              onClick: () => setAddModal(true)
-            },
+            // {
+            //   icon: oTableIcons.Add,
+            //   tooltip: 'Add Feature',
+            //   isFreeAction: true,
+            //   onClick: () => setAddModal(true)
+            // },
             {
               icon: oTableIcons.Search,
               tooltip: 'Toggle Filter',

@@ -198,7 +198,7 @@ const snackbarClose = () => {
     console.log(isExpanded ? panel : false);
   };
 
-  const { register, handleSubmit, errors, setValue } = useForm();
+  const { register, handleSubmit, errors, setValue,formState } = useForm();
 
   const onSubmit = () => {
   
@@ -1574,20 +1574,22 @@ const snackbarClose = () => {
             </ExpansionPanel>
             <br />
             <Grid item xs={12}>
-              <Button
-                variant={sButtonVariant}
-                size={sButtonSize}
-                color={sButtonColor}
-                type="submit"
-                onClick={() => {setExpanded('panel1') }}
-                style={{ marginRight: "10px" }}>Save</Button>
               <Button 
               variant={sButtonVariant}
               size={sButtonSize}
               color={sButtonColor}
                 onClick={() => { history.push('/SarsoNewGBEntry') }}
+                style={{ marginRight: "10px" }}
               >Cancel
               </Button>
+              <Button
+              disabled={formState.isSubmitting || formState.isSubmitted}
+                variant={sButtonVariant}
+                size={sButtonSize}
+                color={sButtonColor}
+                type="submit"
+                onClick={() => {setExpanded('panel1') }}
+                >Save</Button>
             </Grid>
           </Grid>
         </Grid>

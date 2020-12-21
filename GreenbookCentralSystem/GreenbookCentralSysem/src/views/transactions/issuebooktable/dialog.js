@@ -331,7 +331,7 @@ export const EditDialog = (props) => {
 }
 
 export const SaveDialog = (props) => {
-	const { register, handleSubmit, errors, setValue } = useForm();
+	const { register, handleSubmit, errors, setValue, formState } = useForm();
 	console.log(props.selectData);
 	console.log(props.saveObj);
 	const [authorityData, setAuthoritData] = React.useState(props.selectData['authRegions']);
@@ -641,6 +641,7 @@ export const SaveDialog = (props) => {
 							size={sButtonSize}
 						>Cancel</Button>
 						<Button
+							disabled={formState.isSubmitting || formState.isSubmitted}
 							type={"submit"}
 							//onClick={() => props.saveAPICall(saveObj, changeObj)}
 							color={sButtonColor}

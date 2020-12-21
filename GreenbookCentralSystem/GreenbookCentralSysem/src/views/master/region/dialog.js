@@ -17,7 +17,7 @@ import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commo
 
 export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitAddRecord = () => {
     props.addAPICall(
       {
@@ -42,7 +42,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_regionId"
                     name="sRegionID"
-                    label={<>Region ID<span style={{color:'red'}}> *</span></>}
+                    label={<>Region ID<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     onChange={(e) => { setRegionId(e.target.value) }}
                     inputRef={register({
@@ -59,7 +59,7 @@ export const AddDialog = (props) => {
                   <TextField
                     id="id_Region"
                     name="sRegion"
-                    label={<>Region Name<span style={{color:'red'}}> *</span></>}
+                    label={<>Region Name<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     onChange={(e) => { setRegion(e.target.value) }}
                     inputRef={register({
@@ -83,6 +83,7 @@ export const AddDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.addAPICall({ sRegionID: regionId, sRegion: region })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -96,7 +97,7 @@ export const AddDialog = (props) => {
 
 export const EditDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(
       {
@@ -120,7 +121,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl} >
                     <TextField
                       id="id_regionId"
-                      label={<>Region ID<span style={{color:'red'}}> *</span></>}
+                      label={<>Region ID<span style={{ color: 'red' }}> *</span></>}
                       type="text"
                       disabled
                       value={props.regionObj.regionId}
@@ -132,7 +133,7 @@ export const EditDialog = (props) => {
                     <TextField
                       id="id_Region"
                       name="sRegion"
-                      label={<>Region Name<span style={{color:'red'}}> *</span></>}
+                      label={<>Region Name<span style={{ color: 'red' }}> *</span></>}
                       type="text"
                       value={Name}
                       onChange={(e) => { setRegion(e.target.value) }}
@@ -158,6 +159,7 @@ export const EditDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.editAPICall({ id: props.regionObj.id, sRegion_code: props.regionObj.regionId, sRegion_name: Name })} color="primary">Save</Button> */}
           <Button
+            disabled={formState.isSubmitting || formState.isSubmitted}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}

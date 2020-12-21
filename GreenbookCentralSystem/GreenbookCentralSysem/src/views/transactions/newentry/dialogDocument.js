@@ -21,7 +21,7 @@ import { useSelector } from 'react-redux';
 
 export const AddDocumentDialog = (props) => {
     const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors, formState } = useForm();
     const handleSubmitAddDocumentRecord = () => {
         props.addDocumentAPICall({
             sGBID: props.sGBID,
@@ -188,6 +188,7 @@ export const AddDocumentDialog = (props) => {
                         size={sButtonSize}
                     >Cancel</Button>
                     <Button
+                        disabled={formState.isSubmitting || formState.isSubmitted}
                         type="submit"
                         color={sButtonColor}
                         variant={sButtonVariant}
@@ -201,7 +202,7 @@ export const AddDocumentDialog = (props) => {
 
 export const EditDocumentDialog = (props) => {
     const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors, formState } = useForm();
     const handleSubmitEditDocumentRecord = () => {
         props.editDocumentAPICall(
             {
@@ -363,6 +364,7 @@ export const EditDocumentDialog = (props) => {
                         size={sButtonSize}
                     >Cancel</Button>
                     <Button
+                        disabled={formState.isSubmitting || formState.isSubmitted}
                         type="submit"
                         color={sButtonColor}
                         variant={sButtonVariant}
