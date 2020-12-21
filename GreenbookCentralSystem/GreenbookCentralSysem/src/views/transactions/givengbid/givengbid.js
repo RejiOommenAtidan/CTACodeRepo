@@ -431,7 +431,7 @@ export default function GiveGBId() {
             label={<>Report Date<span style={{ color: 'red' }}> *</span></>}
             format={sDateFormatMUIDatepicker}
             returnMoment={true}
-            defaultValue={reportDate}
+            value={reportDate}
             KeyboardButtonProps={{
               "aria-label": "change date",
             }}
