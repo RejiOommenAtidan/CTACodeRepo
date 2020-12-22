@@ -85,7 +85,7 @@ export const AddDialog = (props) => {
             size={sButtonSize}
           >Cancel</Button>
           <Button
-            disabled={formState.isSubmitting || formState.isSubmitted}
+            disabled={formState.isSubmitting && formState.isValid}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -170,7 +170,7 @@ export const EditDialog = (props) => {
             size={sButtonSize}
           >Cancel</Button>
           <Button
-            disabled={formState.isSubmitting || formState.isSubmitted}
+            disabled={formState.isSubmitting && formState.isValid}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}

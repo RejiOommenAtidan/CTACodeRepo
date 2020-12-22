@@ -623,12 +623,17 @@ namespace CTAWebAPI.Controllers.Transactions
                         return Problem(String.Format("Green book ID {0} not found", sGBID), null, 403);
                     }
 
-                    int rowsAffected = _greenbookRepository.DeleteGreenBook(sGBID);
-                    if (rowsAffected > 0)
+                    
+                    int rows = _greenbookRepository.DeleteGreenBook(sGBID);
+                    if (rows == 0)
                     {
                         #region Alert Logging
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called");
                         #endregion
+                        #region Audit Log
+                        CTALogger.LogAuditRecord(greenbook, greenbook, greenbook.sGBID, greenbook.nAuthRegionID, 16, greenbook.Id, greenbook.nUpdatedBy);
+                        #endregion
+
                         return Ok(String.Format("Deleted GreenBook with id {0} successfully.", sGBID));
                     }
                     else

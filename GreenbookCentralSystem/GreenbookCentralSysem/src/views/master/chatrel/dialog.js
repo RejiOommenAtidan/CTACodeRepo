@@ -122,7 +122,7 @@ placeholder="DD-MM-YYYY"
           >Cancel</Button>
           {/* <Button onClick={() => props.addAPICall({ sTypeIssued: typeIssued })} color="primary">Save</Button> */}
           <Button
-            disabled={formState.isSubmitting || formState.isSubmitted}
+            disabled={formState.isSubmitting && formState.isValid}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -247,7 +247,7 @@ placeholder="DD-MM-YYYY"
           >Cancel</Button>
           {/* <Button onClick={() => props.editAPICall({ id: props.typeIssuedObj.id, sTypeIssued: Name })} color="primary">Save</Button> */}
           <Button
-            disabled={formState.isSubmitting || formState.isSubmitted}
+            disabled={formState.isSubmitting && formState.isValid}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}

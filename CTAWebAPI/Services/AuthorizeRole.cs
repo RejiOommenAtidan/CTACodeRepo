@@ -82,9 +82,14 @@ namespace CTAWebAPI.Services
                 if (bodyContent != null)
                 {
                     Madeb madeb = JsonConvert.DeserializeObject<Madeb>(bodyContent);
-                    if (madeb != null)
+                    if (madeb != null && madeb.nMadebTypeID > 0)
                     {
                         _FeatureID = madeb.nMadebTypeID + 2;
+                    }
+                    else
+                    {
+                        context.Result = new UnauthorizedResult();
+                        return;
                     }
                 }
             }

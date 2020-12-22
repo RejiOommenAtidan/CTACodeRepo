@@ -237,7 +237,7 @@ export default function ChangePassword() {
                 size={sButtonSize}
               >Cancel</Button> &nbsp;
               <Button
-                disabled={formState.isSubmitting || formState.isSubmitted}
+                disabled={formState.isSubmitting && formState.isValid}
                 type="submit"
                 variant={sButtonVariant}
                 color={sButtonColor}

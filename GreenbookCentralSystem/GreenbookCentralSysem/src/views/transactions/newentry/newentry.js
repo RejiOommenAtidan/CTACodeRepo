@@ -1540,7 +1540,7 @@ placeholder="DD-MM-YYYY"
               >Cancel
               </Button>
               <Button
-              //disabled={formState.isSubmitting || formState.isSubmitted}
+              //disabled={formState.isSubmitting && formState.isValid}
                 variant={sButtonVariant}
                 size={sButtonSize}
                 color={sButtonColor}

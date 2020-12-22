@@ -594,7 +594,7 @@ placeholder="DD-MM-YYYY"
       </Snackbar> */}
 
           <Button
-          disabled={formState.isSubmitting || formState.isSubmitted}
+          disabled={formState.isSubmitting && formState.isValid}
             id="save"
             type="submit"
             color={sButtonColor}
@@ -603,7 +603,7 @@ placeholder="DD-MM-YYYY"
             name="submit"
             value="Save">Save</Button>
           <Button
-            disabled={formState.isSubmitting || formState.isSubmitted}
+            disabled={formState.isSubmitting && formState.isValid}
             id='saveEdit'
             color={sButtonColor}
             variant={sButtonVariant}

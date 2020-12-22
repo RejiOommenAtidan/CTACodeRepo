@@ -90,7 +90,7 @@ export const EditDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.editAPICall({ id: props.occupationObj.id, sOccupationDesc: occupationDesc, sOccupationDescTibetan: occupationDescTibetan })} color="primary">Save</Button> */}
           <Button
-            disabled={formState.isSubmitting || formState.isSubmitted}
+            disabled={formState.isSubmitting && formState.isValid}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -188,7 +188,7 @@ export const AddDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.addAPICall({ sOccupationDesc: occupationDesc, sOccupationDescTibetan: occupationDescTibetan })} color="primary">Save</Button> */}
           <Button
-            disabled={formState.isSubmitting || formState.isSubmitted}
+            disabled={formState.isSubmitting && formState.isValid}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}

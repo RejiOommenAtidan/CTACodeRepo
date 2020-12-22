@@ -803,7 +803,7 @@ placeholder="DD-MM-YYYY"
 
           <Button
             type="submit"
-            disabled={formState.isSubmitting || formState.isSubmitted}
+            disabled={formState.isSubmitting && formState.isValid}
             color={sButtonColor}
             variant={sButtonVariant}
             size={sButtonSize}
@@ -1418,7 +1418,7 @@ placeholder="DD-MM-YYYY"
             color={sButtonColor}
             variant={sButtonVariant}
             size={sButtonSize}
-            disabled={formState.isSubmitting || formState.isSubmitted}
+            disabled={formState.isSubmitting && formState.isValid}
           >Save</Button>
         </DialogActions>
       </form>

@@ -19,7 +19,6 @@ import {
 } from "../../../config/commonConfig";
 
 export const EditDialog = (props) => {
-  debugger
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, errors, formState } = useForm();
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -43,7 +42,7 @@ export const EditDialog = (props) => {
   console.log("valueauthregion is", valueAuthRegion);
 
   const handleSubmitEditRecord = () => {
-    //props.editAPICall(madeb);
+  
     props.editAPICall(
       {
         id: props.countryObj.id,
@@ -152,7 +151,7 @@ export const EditDialog = (props) => {
           >Cancel</Button>
           {/* <Button onClick={() => props.editAPICall({ id: props.countryObj.id, sCountryID: props.countryObj.countryId, sCountry: Name })} color="primary">Save</Button> */}
           <Button
-            disabled={formState.isSubmitting || formState.isSubmitted}
+            disabled={formState.isSubmitting && formState.isValid}
             type="submit"
             variant={sButtonVariant}
             color={sButtonColor}
@@ -168,9 +167,24 @@ export const AddDialog = (props) => {
   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [countryId, setCountryId] = useState('');
   const [countryName, setCountryName] = useState('');
+  const { register, handleSubmit, errors, formState } = useForm();
+
+  const handleSubmitAddRecord = () => {
+    //props.editAPICall(madeb);
+    props.addAPICall(
+      {
+        sCountryID: countryId,
+        sCountry: countryName,
+        nEnteredBy: userId,
+        nUpdatedBy: userId
+      }
+    )
+  }
+
   return (
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Add Country</DialogTitle>
+      <form onSubmit={handleSubmit(handleSubmitAddRecord)}>
       <DialogContent>
         <DialogContentText>
           <Grid container>
@@ -178,9 +192,13 @@ export const AddDialog = (props) => {
               <FormControl className={props.classes.formControl}>
                 <TextField
                   id="id_countryId"
+                  name="name_countryId"
                   label={<>Country ID<span style={{ color: 'red' }}> *</span></>}
                   type="text"
                   onChange={(e) => { setCountryId(e.target.value) }}
+                  inputRef={register({
+                    required: true
+                  })}
                 />
               </FormControl>
             </Grid>
@@ -188,15 +206,20 @@ export const AddDialog = (props) => {
               <FormControl className={props.classes.formControl}>
                 <TextField
                   id="id_CountryName"
+                  name="name_CountryName"
                   label={<>Country Name<span style={{ color: 'red' }}> *</span></>}
                   type="text"
                   onChange={(e) => { setCountryName(e.target.value) }}
+                  inputRef={register({
+                    required: true
+                  })}
                 />
               </FormControl>
             </Grid>
           </Grid>
         </DialogContentText>
       </DialogContent>
+      </form>
       <DialogActions>
         <Button
           onClick={props.handleAddClickClose}
@@ -204,15 +227,9 @@ export const AddDialog = (props) => {
           color={sButtonColor}
           size={sButtonSize}
         >Cancel</Button>
-        <Button onClick={() => props.addAPICall(
-          {
-            sCountryID: countryId,
-            sCountry: countryName,
-            nEnteredBy: userId,
-            nUpdatedBy: userId
-          }
-        )
-        }
+        <Button 
+          disabled={formState.isSubmitting && formState.isValid}
+          type="submit"
           variant={sButtonVariant}
           color={sButtonColor}
           size={sButtonSize}
