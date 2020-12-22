@@ -611,7 +611,7 @@ namespace CTAWebAPI.Controllers.Transactions
         [AuthorizeRole(FeatureID = 17)]
         [HttpPost]
         [Route("[action]")]
-        public IActionResult DeleteGreenBookByGBID(string sGBID)
+        public IActionResult DeleteGreenBookByGBID(string sGBID, int nUserId)
         {
             try
             {
@@ -642,7 +642,7 @@ namespace CTAWebAPI.Controllers.Transactions
                             sGBID = sGBID,
                             sFieldValuesOld = String.Format("Greenbook Id {0} Deleted", sGBID),
                             sFieldValuesNew = String.Format("Greenbook Id {0} Deleted", sGBID),
-                            nEnteredBy = greenbook.nUpdatedBy
+                            nEnteredBy = nUserId
                         };
                         _auditLogRepository.Add(auditLogger);
 

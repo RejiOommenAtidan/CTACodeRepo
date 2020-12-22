@@ -48,7 +48,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `nUserRightsID`,
                             `bRights`,
                             `dtEntered`,
-                            `nEnteredBy`
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
                         FROM `lnkfeatureuserrights`;";
             using (var command = new MySqlCommand(sql))
             {
@@ -63,7 +65,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `nUserRightsID`,
                             `bRights`,
                             `dtEntered`,
-                            `nEnteredBy`
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
                         FROM `lnkfeatureuserrights`
                         WHERE Id = @Id;";
             using (var command = new MySqlCommand(sql))
@@ -80,7 +84,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `nUserRightsID`,
                             `bRights`,
                             `dtEntered`,
-                            `nEnteredBy`
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
                         FROM `lnkfeatureuserrights`
                         WHERE nFeatureID = @nFeatureID AND nUserRightsID=@nUserRightsId;";
             using (var command = new MySqlCommand(sql))
@@ -100,8 +106,10 @@ namespace CTADBL.BaseClassRepositories.Transactions
             featureUserrights.nFeatureID = (int)reader["nFeatureID"]; ;
             featureUserrights.bRights = (bool)reader["bRights"]; ;
             featureUserrights.nUserRightsID = (int)reader["nUserRightsID"]; ;
-            featureUserrights.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
+            featureUserrights.dtEntered = (DateTime)(reader["dtEntered"]);
             featureUserrights.nEnteredBy = (int)reader["nEnteredBy"];
+            featureUserrights.dtUpdated = (DateTime)(reader["dtUpdated"]);
+            featureUserrights.nUpdatedBy = (int)reader["nUpdatedBy"];
             return featureUserrights;
         }
         #endregion

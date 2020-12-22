@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from "react-hook-form";
+import { useSelector } from 'react-redux';
 import _ from "lodash/fp";
 import axios from 'axios';
 import { Grid, Button, FormControl, TextField } from '@material-ui/core';
@@ -19,6 +20,7 @@ import Moment from "moment";
 
 
 export const AddDialog = (props) => {
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   Moment.locale("en");
   console.log("Hello from Add dialog");
 
@@ -85,7 +87,8 @@ export const AddDialog = (props) => {
     sCountryID,
     nMadebTypeId,
     nFormNumber,
-    nAuthRegionId
+    nAuthRegionId,
+    nEnteredBy: userId
   }
   console.log("Object gbSerial modified as: ", gbSerialObj);
 

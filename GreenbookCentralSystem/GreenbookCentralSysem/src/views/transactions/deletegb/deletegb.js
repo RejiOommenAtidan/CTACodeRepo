@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Box, Container, Grid, Button, Typography, FormControl, TextField, Breadcrumbs, Link, Card } from '@material-ui/core';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -43,6 +44,7 @@ const useStyles = makeStyles({
 
 export default function GiveGBId() {
   //const { register, handleSubmit, errors } = useForm();
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const classes = useStyles();
   const [gbidToDelete, setGBIDToDelete] = useState(0);
   const [backdrop, setBackdrop] = React.useState(false);
@@ -98,7 +100,7 @@ export default function GiveGBId() {
   const submit = () => {
     setOpenDialog(false);
     setBackdrop(true);
-      axios.post(`GreenBook/DeleteGreenBookByGBID/?sGBID=` + sGBID)
+      axios.post(`GreenBook/DeleteGreenBookByGBID/?sGBID=${sGBID}&nUserId=${userId}`)
         .then(resp => {
           if (resp.status === 200) {
             setAlertMessage(`Green Book ID ${sGBID} deleted successfully.`);
