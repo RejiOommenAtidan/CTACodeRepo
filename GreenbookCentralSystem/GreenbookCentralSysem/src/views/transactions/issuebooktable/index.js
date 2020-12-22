@@ -199,7 +199,7 @@ export const IssueBookTable = (props) => {
   };
 
   const selectDatafunction = () => {
-    axios.get(`Madeb/GetNewEmptyMadeb`)
+    axios.get(`Madeb/GetNewEmptyMadebIssueBook`)
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);

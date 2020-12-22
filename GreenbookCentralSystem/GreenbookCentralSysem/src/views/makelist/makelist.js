@@ -291,7 +291,7 @@ export default () => {
   };
 
   useEffect(() => {
-    axios.get(`Madeb/GetNewEmptyMadeb`)
+    axios.get(`Madeb/GetNewEmptyMadebMakeList`)
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);

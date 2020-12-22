@@ -631,7 +631,21 @@ namespace CTAWebAPI.Controllers.Transactions
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 4), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 2), MethodBase.GetCurrentMethod().Name + " Method Called");
                         #endregion
                         #region Audit Log
-                        CTALogger.LogAuditRecord(greenbook, greenbook, greenbook.sGBID, greenbook.nAuthRegionID, 16, greenbook.Id, greenbook.nUpdatedBy);
+                        //CTALogger.LogAuditRecord(greenbook, greenbook, greenbook.sGBID, greenbook.nAuthRegionID, 16, greenbook.Id, greenbook.nUpdatedBy);
+
+                        AuditLog auditLogger = new AuditLog()
+                        {
+                            dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                            nFeatureID = 17,
+                            nRegionID = greenbook.nAuthRegionID,
+                            nRecordID = greenbook.Id,
+                            sGBID = sGBID,
+                            sFieldValuesOld = "Greenbook Id Deleted,
+                            sFieldValuesNew = sDifference[1],
+                            nEnteredBy = greenbook.nUpdatedBy
+                        };
+                        _auditLogRepository.Add(auditLogger);
+
                         #endregion
 
                         return Ok(String.Format("Deleted GreenBook with id {0} successfully.", sGBID));
