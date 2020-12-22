@@ -231,49 +231,49 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
-        [HttpGet("GetMadebByFormNumber/formNumber={formNumber}")]
-        [Route("[action]")]
-        public IActionResult GetMadebByFormNumber(int formNumber)
-        {
-            #region Get Madeb
-            try
-            {
-                Madeb madeb = _madebRepository.GetMadebByFormNumber(formNumber);
-                if (madeb != null)
-                {
-                    #region Information Logging 
-                    string sActionType = Enum.GetName(typeof(Operations), 2);
-                    string sModuleName = (GetType().Name).Replace("Controller", "");
-                    string sEventName = Enum.GetName(typeof(LogLevels), 1);
-                    string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                    string sDescription = currentMethodName + " Method Called";
-                    CTALogger logger = new CTALogger(_info);
-                    logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
-                    #endregion
+        //[HttpGet("GetMadebByFormNumber/formNumber={formNumber}")]
+        //[Route("[action]")]
+        //public IActionResult GetMadebByFormNumber(int formNumber)
+        //{
+        //    #region Get Madeb
+        //    try
+        //    {
+        //        Madeb madeb = _madebRepository.GetMadebByFormNumber(formNumber);
+        //        if (madeb != null)
+        //        {
+        //            #region Information Logging 
+        //            string sActionType = Enum.GetName(typeof(Operations), 2);
+        //            string sModuleName = (GetType().Name).Replace("Controller", "");
+        //            string sEventName = Enum.GetName(typeof(LogLevels), 1);
+        //            string currentMethodName = MethodBase.GetCurrentMethod().Name;
+        //            string sDescription = currentMethodName + " Method Called";
+        //            CTALogger logger = new CTALogger(_info);
+        //            logger.LogRecord(sActionType, sModuleName, sEventName, sDescription);
+        //            #endregion
 
-                    return Ok(madeb);
-                }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound);
-                }
-            }
-            catch (Exception ex)
-            {
-                #region Exception Logging 
-                string sActionType = Enum.GetName(typeof(Operations), 2);
-                string sModuleName = (GetType().Name).Replace("Controller", "");
-                string sEventName = Enum.GetName(typeof(LogLevels), 3);
-                string currentMethodName = MethodBase.GetCurrentMethod().Name;
-                string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
-                CTALogger logger = new CTALogger(_info);
-                logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, ex.StackTrace);
-                #endregion
+        //            return Ok(madeb);
+        //        }
+        //        else
+        //        {
+        //            return StatusCode(StatusCodes.Status404NotFound);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        #region Exception Logging 
+        //        string sActionType = Enum.GetName(typeof(Operations), 2);
+        //        string sModuleName = (GetType().Name).Replace("Controller", "");
+        //        string sEventName = Enum.GetName(typeof(LogLevels), 3);
+        //        string currentMethodName = MethodBase.GetCurrentMethod().Name;
+        //        string sDescription = "Exception in " + currentMethodName + ", Message: " + ex.Message;
+        //        CTALogger logger = new CTALogger(_info);
+        //        logger.LogRecord(sActionType, sModuleName, sEventName, sDescription, ex.StackTrace);
+        //        #endregion
 
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-            #endregion
-        }
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //    #endregion
+        //}
 
         [HttpGet("GetMadebByAuthRegion/authRegion={authRegion}")]
         [Route("[action]")]
@@ -608,7 +608,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         smtpClient.Send(message);
                         smtpClient.Disconnect(true);
                         smtpClient.Dispose();
-                        Madeb madeb = _madebRepository.GetMadebByFormNumber(email.nFormNumber);
+                        Madeb madeb = _madebRepository.GetMadebByFormNumber(email.nFormNumber, email.nMadebTypeId);
                         madeb.dtReject = DateTime.Now;
                         _madebRepository.Update(madeb);
                         return Ok("Email sent successfully.");

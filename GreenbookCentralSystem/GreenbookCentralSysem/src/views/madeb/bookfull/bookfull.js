@@ -773,7 +773,8 @@ export default function EnhancedTable() {
       id: tableRowArray['madeb']['id'],
       nFormNumber: tableRowArray['madeb']['nFormNumber'],
       sName: tableRowArray['madeb']['sName'],
-      madebName: 'Brief GreenBook'
+      madebName: 'Brief GreenBook',
+      nMadebTypeId: 5
     });
 
     setEmailModal(true);

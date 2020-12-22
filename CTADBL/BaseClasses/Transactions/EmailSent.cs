@@ -10,6 +10,7 @@ namespace CTADBL.BaseClasses.Transactions
 
         private int _Id;
         private int _nFormNumber;
+        private int _nMadebTypeId;
         private string _sName;
         private string _sFrom;
         private string _sReceiver;
@@ -106,6 +107,19 @@ namespace CTADBL.BaseClasses.Transactions
                 _sBody = value;
             }
         }
+
+        public int nMadebTypeId
+        {
+            get
+            {
+                return _nMadebTypeId;
+            }
+            set
+            {
+                _nMadebTypeId = value;
+            }
+        }
+
         #endregion
     }
 }

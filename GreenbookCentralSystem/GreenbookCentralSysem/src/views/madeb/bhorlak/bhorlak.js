@@ -474,7 +474,8 @@ export default function EnhancedTable() {
       id: tableRowArray['madeb']['id'],
       nFormNumber: tableRowArray['madeb']['nFormNumber'],
       sName: tableRowArray['madeb']['sName'],
-      madebName: 'Bhorlak'
+      madebName: 'Bhorlak',
+      nMadebTypeId: 3,
     });
     setEmailModal(true);
   };

@@ -87,11 +87,11 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Add GBID to Sarso Form
         public bool AddGBIDByFormNo(int nFormNumber,DateTime dtReceived, string sGBID)
         {
-            Madeb madeb = GetMadebByFormNumber(nFormNumber);
-            if(madeb.nMadebTypeID != 1)
-            {
-                return false;
-            }
+            Madeb madeb = GetMadebByFormNumber(nFormNumber, 1);
+            //if(madeb.nMadebTypeID != 1)
+            //{
+            //    return false;
+            //}
             madeb.sGBID = sGBID;
             madeb.nIssuedOrNotID = 1;
             madeb.dtUpdated = DateTime.Now;
@@ -123,9 +123,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Update Madeb with assigned serial numbers
-        public void UpdateSerialNumber(string sGBID, int nFormNumber,  int? nCurrentGBSno, int nIssuedOrNotId)
+        public void UpdateSerialNumber(string sGBID, int nFormNumber, int nMadebTypeId, int? nCurrentGBSno, int nIssuedOrNotId)
         {
-            Madeb madeb = GetMadebByGBIDAndFormNumber(sGBID, nFormNumber);
+            Madeb madeb = GetMadebByGBIDAndFormNumber(sGBID, nFormNumber, nMadebTypeId);
             madeb.nCurrentGBSno = nCurrentGBSno;
             madeb.nIssuedOrNotID = nIssuedOrNotId;
             
@@ -266,7 +266,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
         }
 
-        public Madeb GetMadebByFormNumber(int formNumber)
+        public Madeb GetMadebByFormNumber(int formNumber, int madebTypeID)
         {
             string sql = @"SELECT `Id`,
                             `_Id`,
@@ -299,15 +299,17 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `dtUpdated`,
                             `nUpdatedBy`
                         FROM `tblmadeb`
-                        WHERE nFormNumber=@formNumber;";
+                        WHERE nFormNumber=@formNumber
+                        AND nMadebTypeID=@madebTypeID;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("formNumber", formNumber);
+                command.Parameters.AddWithValue("madebTypeID", madebTypeID);
                 return GetRecord(command);
             }
         }
 
-        public Madeb GetMadebByGBIDAndFormNumber(string sGBID, int nFormNumber)
+        public Madeb GetMadebByGBIDAndFormNumber(string sGBID, int nFormNumber, int nMadebTypeId)
         {
             string sql = @"SELECT `Id`,
                             `_Id`,
@@ -341,11 +343,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `nUpdatedBy`
                         FROM `tblmadeb`
                         WHERE sGBID = @sGBID
-                        AND nFormNumber=@nFormNumber;";
+                        AND nFormNumber=@nFormNumber
+                        AND nMadebTypeId=@nMadebTypeId;";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sGBID", sGBID);
                 command.Parameters.AddWithValue("nFormNumber", nFormNumber);
+                command.Parameters.AddWithValue("nMadebTypeId", nMadebTypeId); 
                 return GetRecord(command);
             }
         }
