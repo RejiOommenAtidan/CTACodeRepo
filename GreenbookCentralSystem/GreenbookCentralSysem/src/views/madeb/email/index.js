@@ -54,6 +54,7 @@ export const EmailDialog = (props) => {
       id: id,
       nFormNumber: formNumber,
       sName: name,
+      nMadebTypeId: props.emailInObj.nMadebTypeId,
       sFrom: sender,
       sReceiver: recipient,
       sSubject: subject,

@@ -135,7 +135,8 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         return Problem(message, null, 403);
                     }
-                    ctaConfig.dtUpdated = DateTime.Now;
+                    ctaConfig.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    ctaConfig.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                     _ctaConfigRepository.Add(ctaConfig);
 
                     #region Information Logging
@@ -185,7 +186,8 @@ namespace CTAWebAPI.Controllers.Masters
                             return Problem(message, null, 403);
                         }
                         CTAConfig fetchedCTAConfig = _ctaConfigRepository.GetConfigById(ID);
-                        ctaConfig.dtUpdated = fetchedCTAConfig.dtUpdated;
+                        ctaConfig.dtEntered = fetchedCTAConfig.dtEntered;
+                        ctaConfig.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         _ctaConfigRepository.Update(ctaConfig);
 
                         #region Audit Log
