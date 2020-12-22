@@ -134,7 +134,7 @@ export const AddDocumentDialog = (props) => {
                                     <Typography
                                         variant="p"
                                         color="primary"
-                                    >File Uploaded, File Name: {sTitle}</Typography>
+                                    >File Added for Upload, File Name: {sTitle}</Typography>
                                 </FormControl>
                             </Grid>}
                             {/*<Grid item xs={12} >

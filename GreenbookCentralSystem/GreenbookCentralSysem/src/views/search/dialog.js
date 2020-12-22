@@ -807,7 +807,7 @@ export const ViewDialog = (props) => {
 
                                         <td scope="row">{index + 1}</td>
                                         <td>{row.dtEntered ? Moment(row.dtEntered).format(sDateFormat) : ''}</td>
-                                        <td>{row.sFullname}</td>
+                                        <td>{row.sFullName}</td>
                                         <td>{row.sTitle}</td>
                                         <td style={{ textAlign: 'center' }}>
 
