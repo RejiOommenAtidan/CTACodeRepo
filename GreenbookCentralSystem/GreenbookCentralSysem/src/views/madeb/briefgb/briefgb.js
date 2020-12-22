@@ -541,7 +541,8 @@ export default () => {
       id: tableRowArray['madeb']['id'],
       nFormNumber: tableRowArray['madeb']['nFormNumber'],
       sName: tableRowArray['madeb']['sName'],
-      madebName: 'Brief GreenBook'
+      madebName: 'Brief GreenBook',
+      nMadebTypeId:6
     });
     setEmailModal(true);
   };

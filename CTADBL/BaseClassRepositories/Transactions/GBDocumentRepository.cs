@@ -120,7 +120,6 @@ namespace CTADBL.BaseClassRepositories.Transactions
         {
             gbdocument.binFileDoc = gbdocument.binFileDoc.Substring(gbdocument.binFileDoc.IndexOf("base64,") + 7);
             byte[] newbytes = Convert.FromBase64String(gbdocument.binFileDoc);
-            gbdocument.binFileDoc = string.Empty;
             var builder = new SqlQueryBuilder<GBDocument>(gbdocument);
             
             MySqlCommand command = builder.GetInsertCommand();
@@ -156,7 +155,6 @@ namespace CTADBL.BaseClassRepositories.Transactions
         {
             gbdocument.binFileDoc = gbdocument.binFileDoc.Substring(gbdocument.binFileDoc.IndexOf("base64,") + 7);
             byte[] newbytes = Convert.FromBase64String(gbdocument.binFileDoc);
-            gbdocument.binFileDoc = string.Empty;
             var builder = new SqlQueryBuilder<GBDocument>(gbdocument);
             //ExecuteCommand(builder.GetUpdateCommand());
             MySqlCommand command = builder.GetUpdateCommand();
