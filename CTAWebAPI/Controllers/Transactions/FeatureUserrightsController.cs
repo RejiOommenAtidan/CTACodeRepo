@@ -130,7 +130,8 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
-                    featureUserrights.dtEntered = DateTime.Now;
+                    featureUserrights.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")); 
+                    featureUserrights.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                     _featureUserrightsRepository.Add(featureUserrights);
 
                     #region Information Logging
@@ -188,8 +189,9 @@ namespace CTAWebAPI.Controllers.Transactions
                         featureUserright.bRights = !fetchedFeatureUserright.bRights;
                         featureUserright.dtEntered = fetchedFeatureUserright.dtEntered;
                         featureUserright.nEnteredBy = fetchedFeatureUserright.nEnteredBy;
-                        //featureUserright.nEnteredBy;: TODO
-                        _featureUserrightsRepository.Update(featureUserright);
+                        fetchedFeatureUserright.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    //featureUserright.nEnteredBy;: TODO
+                    _featureUserrightsRepository.Update(featureUserright);
 
                     #region Audit Log
                     CTALogger.LogAuditRecord(fetchedFeatureUserright, featureUserright, null, null, 19, fetchedFeatureUserright.Id, featureUserright.nEnteredBy);

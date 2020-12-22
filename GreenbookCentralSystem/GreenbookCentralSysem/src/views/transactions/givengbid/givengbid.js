@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -83,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GiveGBId() {
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
-
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
 
   // Common properties
   const classes = useStyles();
@@ -285,7 +286,7 @@ export default function GiveGBId() {
     const gbidObj = {
       nGBId: randomGBID,
       nFormNo: nFormNumber,
-
+      nEnteredBy: userId,
       bGivenOrNot: false,
       bActive: true
     };
