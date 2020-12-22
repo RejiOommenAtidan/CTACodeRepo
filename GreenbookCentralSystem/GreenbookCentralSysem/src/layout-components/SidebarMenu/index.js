@@ -687,8 +687,8 @@ const SidebarMenu = (props) => {
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 35)) !== undefined
                 ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
-                ||
+               /* (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
+                ||*/
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 38)) !== undefined
@@ -749,7 +749,7 @@ const SidebarMenu = (props) => {
                           Changes Log
                     </NavLink>
                       </li>}
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
+                    {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -757,7 +757,7 @@ const SidebarMenu = (props) => {
                           to="/Reports/ChildChangesLog">
                           Child Changes Log
                     </NavLink>
-                      </li>}
+                      </li>*/}
                     {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
                       &&
                       <li>
