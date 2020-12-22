@@ -96,7 +96,9 @@ namespace CTADBL.BaseClassRepositories.Masters
                             `nChatrelValue`,
                             `dtChatrelFrom`,
                             `dtEntered`,
-                            `nEnteredBy`
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
                         FROM `lstchatrel`;";
             using (var command = new MySqlCommand(sql))
             {
@@ -111,7 +113,9 @@ namespace CTADBL.BaseClassRepositories.Masters
                             `nChatrelValue`,
                             `dtChatrelFrom`,
                             `dtEntered`,
-                            `nEnteredBy`
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
                         FROM `lstchatrel`
                         WHERE Id = @Id;";
             using (var command = new MySqlCommand(sql))
@@ -128,7 +132,9 @@ namespace CTADBL.BaseClassRepositories.Masters
                             `nChatrelValue`,
                             `dtChatrelFrom`,
                             `dtEntered`,
-                            `nEnteredBy`
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
                         FROM `lstchatrel`
                         WHERE sChatrelKey = @sChatrelKey;";
             using (var command = new MySqlCommand(sql))
@@ -196,7 +202,9 @@ namespace CTADBL.BaseClassRepositories.Masters
             chatrel.sChatrelKey = (string)reader["sChatrelKey"];
             chatrel.nChatrelValue = (int)reader["nChatrelValue"];
             chatrel.dtChatrelFrom = reader.IsDBNull("dtChatrelFrom") ? null : (DateTime?)(reader["dtChatrelFrom"]);
-            chatrel.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
+            chatrel.dtEntered = (DateTime)reader["dtEntered"];
+            chatrel.dtUpdated = (DateTime)reader["dtUpdated"];
+            chatrel.nUpdatedBy = (int)reader["nUpdatedBy"];
             chatrel.nEnteredBy = (int)reader["nEnteredBy"];
             return chatrel;
         }
