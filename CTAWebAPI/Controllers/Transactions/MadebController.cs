@@ -75,9 +75,9 @@ namespace CTAWebAPI.Controllers.Transactions
         [AuthorizeRole(FeatureID = 0)]
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetNewEmptyMadeb(int nMadebType)
+        public IActionResult GetNewEmptyMadeb(int nMadebTypeId)
         {
-            return GetNewEmptyMadebCommon(nMadebType);
+            return GetNewEmptyMadebCommon(nMadebTypeId);
         }
 
 
@@ -351,6 +351,8 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Add Call
+
+        [AuthorizeRole(FeatureID = -1)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddMadeb(Madeb madeb)
@@ -410,6 +412,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Edit Call
+        [AuthorizeRole(FeatureID = -1)]
         [HttpPost("EditMadeb/Id={Id}")]
         [Route("[action]")]
         public IActionResult EditMadeb(string Id, [FromBody] Madeb madeb)
@@ -495,6 +498,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Delete Call
+        [AuthorizeRole(FeatureID = -1)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult DeleteMadeb(Madeb madeb)

@@ -1,4 +1,5 @@
-﻿using CTADBL.BaseClassRepositories.Masters;
+﻿using CTADBL.BaseClasses.Transactions;
+using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,7 +33,7 @@ namespace CTAWebAPI.Services
         
         public AuthorizeRoleAttribute()
         {
-            // string[] myAllRoles = Roles.Split(','); This line gets you the 'Role' String if specified in the attribute decoration
+            // string[] myAllRoles = Roles.Split(','); This line gets you the 'Role' String if specified in the attribute decoration and constructor
             //_FeatureID = FeatureID;
             
             
@@ -40,10 +42,12 @@ namespace CTAWebAPI.Services
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             HttpRequest request = context.HttpContext.Request;
+            var controller = request.RouteValues["controller"].ToString();
+            var action = request.RouteValues["action"].ToString();
 
+            // If madeb id is available in query string or get request route
             if (FeatureID == 0)
             {
-                
                 var q = request.QueryString;
                 if(q.HasValue)
                 {
@@ -60,6 +64,28 @@ namespace CTAWebAPI.Services
                 {
                     context.Result = new UnauthorizedResult();
                     return;
+                }
+            }
+            // If madeb is in body (usually in Post request)
+            else if (FeatureID == -1)
+            {
+                context.HttpContext.Request.EnableBuffering();
+                context.HttpContext.Request.Body.Position = 0;
+
+                string bodyContent = null;
+
+                using (var streamReader = new StreamReader(context.HttpContext.Request.Body, leaveOpen: true))
+                {
+                    bodyContent = streamReader.ReadToEnd();
+                    context.HttpContext.Request.Body.Position = 0;
+                }
+                if (bodyContent != null)
+                {
+                    Madeb madeb = JsonConvert.DeserializeObject<Madeb>(bodyContent);
+                    if (madeb != null)
+                    {
+                        _FeatureID = madeb.nMadebTypeID + 2;
+                    }
                 }
             }
             else
@@ -88,27 +114,10 @@ namespace CTAWebAPI.Services
             AllRoles = _userRightsRepository.GetAllUserRights().Select(x => x.sUserRightsName).ToList();
 
             // Get the controller & action where we are called
-            var controller = request.RouteValues["controller"].ToString();
-            var action = request.RouteValues["action"].ToString();
-            
-            //context.HttpContext.Request.EnableBuffering();
-            //context.HttpContext.Request.Body.Position = 0;
-
-            //string bodyContent = null;
-
-            //using (var streamReader = new StreamReader(context.HttpContext.Request.Body))
-            //{
-            //    bodyContent = streamReader.ReadToEnd();
-            //}
             
             
 
-            //context.HttpContext.Request.Body.Position = 0;
-            
-            
-            //request.
-            
-            
+
             var userId = context.HttpContext.User.Claims.Where(claim => claim.Type == ClaimTypes.Name).Select(claim => claim.Value).FirstOrDefault();
             
             string userRoleFromJW = context.HttpContext.User.Claims.Where(claim => claim.Type == ClaimTypes.Role).Select(claim => claim.Value).FirstOrDefault().ToString();
