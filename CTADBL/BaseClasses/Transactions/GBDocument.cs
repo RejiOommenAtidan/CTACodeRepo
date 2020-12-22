@@ -1,4 +1,4 @@
-﻿using System;
+﻿using CTADBL.BaseClasses.Common;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CTADBL.BaseClasses.Transactions
 {
     [Table("lnkgbdocument")]
-    public class GBDocument
+    public class GBDocument : CommonProps
     {
-        #region Private GBDocument Properties 
+        #region Private GB Document Properties 
         private int _Id;
         private string _sGBID;
         private string _sTitle;
@@ -16,11 +16,9 @@ namespace CTADBL.BaseClasses.Transactions
         private string? _binFileDoc;
         private string? _sFileExtension;
         private int? _nRegisterDate;
-        private DateTime? _dtEntered;
-        private int _nEnteredBy;
         #endregion
 
-        #region Public GBDocument Properties
+        #region Public GB Document Properties
         [Key]
         public int Id { get { return _Id; } set { _Id = value; } }
         [DisplayName("Green Book ID")]
@@ -35,10 +33,6 @@ namespace CTADBL.BaseClasses.Transactions
         public string? sFileExtension { get { return _sFileExtension; } set { _sFileExtension = value; } }
         [DisplayName("Register Date")]
         public int? nRegisterDate { get { return _nRegisterDate; } set { _nRegisterDate = value; } }
-        [DisplayName("Entered Date")]
-        public DateTime? dtEntered { get { return _dtEntered; } set { _dtEntered = value; } }
-        [DisplayName("Entered By")]
-        public int nEnteredBy { get { return _nEnteredBy; } set { _nEnteredBy = value; } }
         #endregion
     }
 }

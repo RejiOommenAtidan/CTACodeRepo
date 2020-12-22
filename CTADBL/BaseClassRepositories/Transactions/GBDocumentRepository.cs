@@ -21,7 +21,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Get Calls
         public IEnumerable<Object> GetGBDocumentsByGBID(string sGBID)
         {
-            string sql = String.Format(@"SELECT l.Id, sGBID, sTitle, sDocType, binFileDoc, sFileExtension, nRegisterDate, l.dtEntered, l.nEnteredBy, t.sFullName FROM lnkgbdocument l LEFT JOIN tbluser t ON t.id = l.nEnteredBy WHERE sGBID = @sGBID;");
+            string sql = String.Format(@"SELECT l.Id, sGBID, sTitle, sDocType, binFileDoc, sFileExtension, nRegisterDate, l.dtEntered, l.nEnteredBy, l.dtUpdatedBy, l.nUpdatedBy, t.sFullName FROM lnkgbdocument l LEFT JOIN tbluser t ON t.id = l.nEnteredBy WHERE sGBID = @sGBID;");
 
             try
             {
@@ -77,7 +77,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                            `sFileExtension`,
                            `nRegisterDate`,
                            `dtEntered`,
-                           `nEnteredBy`
+                           `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
                         FROM `lnkgbdocument`
                         WHERE sGBID = @sGBID;";
             using (var command = new MySqlCommand(sql))
@@ -107,8 +109,10 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 sDocType = reader.IsDBNull("sDocType") ? null : (string)reader["sDocType"],
                 sFileExtension = reader.IsDBNull("sFileExtension") ? null : (string?)reader["sFileExtension"],
                 nRegisterDate = reader.IsDBNull("nRegisterDate") ? null : (int?)reader["nRegisterDate"],
-                dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)reader["dtEntered"],
+                dtEntered = (DateTime)reader["dtEntered"],
+                dtUpdated = (DateTime)reader["dtUpdated"],
                 nEnteredBy = (int)(reader["nEnteredBy"]),
+                nUpdatedBy = (int)(reader["nUpdatedBy"]),
                 binFileDoc = binFileDoc
             };
             return document;

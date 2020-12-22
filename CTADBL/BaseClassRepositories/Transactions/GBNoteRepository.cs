@@ -20,7 +20,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Get Calls
         public IEnumerable<GBNote> GetGBNoteByGBID(string sGBID)
         {
-            string sql = String.Format(@"SELECT Id, sGBID, sNote, dtEntered, nEnteredBy FROM lnkgbnote WHERE sGBID = @sGBID");
+            string sql = String.Format(@"SELECT Id, sGBID, sNote, dtEntered, nEnteredBy , dtUpdated , nUpdatedBy FROM lnkgbnote WHERE sGBID = @sGBID");
             try
             {
                 using (var command = new MySqlCommand(sql))
@@ -44,7 +44,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sGBId`,
                             `sNote`,
                             `dtEntered`,
-                            `nEnteredBy`
+                            `nEnteredBy`,
+                            ` dtUpdated` ,
+                            `nUpdatedBy`    
                         FROM `lnkgbnote`
                         WHERE Id = @Id;";
             using (var command = new MySqlCommand(sql))
@@ -88,8 +90,10 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 Id = (int)reader["Id"],
                 sGBID = reader.IsDBNull("sGBID") ? null : (string)reader["sGBID"],
                 sNote = reader.IsDBNull("sNote") ? null : (string)reader["sNote"],
-                dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
-                nEnteredBy = (int)(reader["nEnteredBy"])
+                dtEntered = (DateTime)(reader["dtEntered"]),
+                nEnteredBy = (int)reader["nEnteredBy"],
+                dtUpdated = (DateTime)(reader["dtUpdated"]),
+                nUpdatedBy = (int)reader["nUpdatedBy"]
             };
 
             return note;

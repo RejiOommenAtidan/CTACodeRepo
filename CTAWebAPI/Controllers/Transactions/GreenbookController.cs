@@ -786,7 +786,8 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
-                    gBNote.dtEntered = DateTime.Now;
+                    gBNote.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    gBNote.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                     _gbNoteRepository.Add(gBNote);
 
                     #region Information Logging 
@@ -845,6 +846,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(fetchedGBNote.sGBID);
                         gBNote.dtEntered = fetchedGBNote.dtEntered;
                         gBNote.nEnteredBy = fetchedGBNote.nEnteredBy;
+                        gBNote.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         _gbNoteRepository.Update(gBNote);
 
                         #region Audit Log
