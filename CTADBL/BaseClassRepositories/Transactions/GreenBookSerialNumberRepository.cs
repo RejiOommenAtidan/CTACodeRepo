@@ -206,9 +206,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 sAuthRegion = reader.IsDBNull("sAuthRegion") ? null : (string?)(reader["sAuthRegion"]),
                 nAuthRegionId = reader.IsDBNull("nAuthRegionId") ? null : (int?)(reader["nAuthRegionId"]),
                 //Common Props
-                dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
+                dtEntered = (DateTime)(reader["dtEntered"]),
                 nEnteredBy = (int)reader["nEnteredBy"],
-                dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]),
+                dtUpdated = (DateTime)(reader["dtUpdated"]),
                 nUpdatedBy = (int)reader["nUpdatedBy"]
             };
             return gbsn;

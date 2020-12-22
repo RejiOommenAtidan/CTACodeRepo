@@ -149,29 +149,15 @@ namespace CTADBL.BaseClassRepositories.Masters
         #region Populate Country Records
         public override Country PopulateRecord(MySqlDataReader reader)
         {
-            int colIndex1 = reader.GetOrdinal("dtEntered");
-            int colIndex2 = reader.GetOrdinal("dtUpdated");
-
-            DateTime? dtEntered = null;
-            DateTime? dtUpdated = null;
-            if (!reader.IsDBNull(colIndex1))
-            {
-                dtEntered = (DateTime)reader["dtEntered"];
-            }
-            if (!reader.IsDBNull(colIndex2))
-            {
-                dtUpdated = (DateTime)reader["dtUpdated"];
-            }
             return new Country
             {
                 ID = (int)reader["ID"],
                 sCountryID = (string)reader["sCountryID"],
                 sCountry = (string)reader["sCountry"],
                 nDefaultAuthRegionID = reader.IsDBNull("nDefaultAuthRegionID") ? null : (int?)(reader["nDefaultAuthRegionID"]),
-                //dtEntered = dtEntered,
-                dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
+                dtEntered = (DateTime)(reader["dtEntered"]),
                 nEnteredBy = (int)reader["nEnteredBy"],
-                dtUpdated = dtUpdated,
+                dtUpdated = (DateTime)reader["dtUpdated"],
                 nUpdatedBy = (int)reader["nUpdatedBy"]
             };
         }

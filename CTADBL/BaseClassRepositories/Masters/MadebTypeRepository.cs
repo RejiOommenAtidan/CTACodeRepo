@@ -62,20 +62,6 @@ namespace CTADBL.BaseClassRepositories.Masters
         #region Populate MadebType Records
         public override MadebType PopulateRecord(MySqlDataReader reader)
         {
-            int colIndex1 = reader.GetOrdinal("dtEntered");
-            int colIndex2 = reader.GetOrdinal("dtUpdated");
-
-            DateTime? dtEntered = null;
-            DateTime? dtUpdated = null;
-            if (!reader.IsDBNull(colIndex1))
-            {
-                dtEntered = (DateTime)reader["dtEntered"];
-            }
-            if (!reader.IsDBNull(colIndex2))
-            {
-                dtUpdated = (DateTime)reader["dtUpdated"];
-            }
-
             return new MadebType
             {
                 Id = (int)reader["Id"],
@@ -84,9 +70,9 @@ namespace CTADBL.BaseClassRepositories.Masters
                 sMadebDisplayName = (string)reader["sMadebDisplayName"],
                 sMadebDisplayKey = (string)reader["sMadebDisplayKey"],
                 nMadebLastFormNumber =(int)reader["nMadebLastFormNumber"],
-                dtEntered = dtEntered,
+                dtEntered = (DateTime)reader["dtEntered"],
                 nEnteredBy = (int)reader["nEnteredBy"],
-                dtUpdated = dtUpdated,
+                dtUpdated = (DateTime)reader["dtUpdated"],
                 nUpdatedBy = (int)reader["nUpdatedBy"]
             };
         }

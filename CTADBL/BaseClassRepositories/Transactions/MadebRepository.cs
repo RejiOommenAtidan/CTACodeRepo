@@ -597,9 +597,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 nMadebStatusID = reader.IsDBNull("nMadebStatusID") ? null : (int?)(reader["nMadebStatusID"]),
                 sMadebStatusRemark = reader.IsDBNull("sMadebStatusRemark") ? null : (string?)(reader["sMadebStatusRemark"]),
                 //Common Props
-                dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
+                dtEntered = (DateTime)(reader["dtEntered"]),
                 nEnteredBy = (int)reader["nEnteredBy"],
-                dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]),
+                dtUpdated = (DateTime)(reader["dtUpdated"]),
                 nUpdatedBy = (int)reader["nUpdatedBy"]
             };
         }

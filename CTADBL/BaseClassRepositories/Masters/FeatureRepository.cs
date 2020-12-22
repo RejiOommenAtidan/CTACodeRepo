@@ -81,9 +81,9 @@ namespace CTADBL.BaseClassRepositories.Masters
             feature.Id= (int)reader["Id"];
             feature.sFeature = (string)reader["sFeature"];
             //Common Props
-            feature.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
+            feature.dtEntered = (DateTime)(reader["dtEntered"]);
             feature.nEnteredBy = (int)reader["nEnteredBy"];
-            feature.dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]);
+            feature.dtUpdated = (DateTime)(reader["dtUpdated"]);
             feature.nUpdatedBy = (int)reader["nUpdatedBy"];
             return feature;
         }

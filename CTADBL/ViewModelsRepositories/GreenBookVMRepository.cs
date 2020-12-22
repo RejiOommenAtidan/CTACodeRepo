@@ -431,8 +431,8 @@ namespace CTADBL.ViewModelsRepositories
                     TBUMothersName = (string)reader["TBUMothersName"],
                     TBUSpouseName = (string)reader["TBUSpouseName"],
                     sEnteredDateTime = reader.IsDBNull("sEnteredDateTime") ? null : (string)reader["sEnteredDateTime"],
-                    dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
-                    dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]),
+                    dtEntered = (DateTime)(reader["dtEntered"]),
+                    dtUpdated = (DateTime)(reader["dtUpdated"]),
 
                 },
                 sAuthRegion = reader.IsDBNull("sAuthRegion") ? null : (string)reader["sAuthRegion"],

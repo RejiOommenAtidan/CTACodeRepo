@@ -263,9 +263,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 bPrinted = (bool)(reader["bPrinted"]),
                 sRemarks = reader.IsDBNull("sRemarks") ? null : (string)(reader["sRemarks"]),
                 //Common Props
-                dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
+                dtEntered = (DateTime)(reader["dtEntered"]),
                 nEnteredBy = (int)reader["nEnteredBy"],
-                dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]),
+                dtUpdated = (DateTime)(reader["dtUpdated"]),
                 nUpdatedBy = (int)reader["nUpdatedBy"],
                 nTypeIssuedId = reader.IsDBNull("nTypeIssuedId") ? null : (int?)(reader["nTypeIssuedId"]),
 

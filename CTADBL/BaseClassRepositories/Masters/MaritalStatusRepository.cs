@@ -47,9 +47,9 @@ namespace CTADBL.BaseClassRepositories.Masters
                 Id = (int)reader["Id"],
                 sMaritalStatusId = reader.IsDBNull("sMaritalStatusId") ? null : (string)reader["sMaritalStatusId"],
                 sMaritalStatusText = reader.IsDBNull("sMaritalStatusText") ? null : (string)reader["sMaritalStatusText"],
-                dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
+                dtEntered = (DateTime)(reader["dtEntered"]),
                 nEnteredBy = (int)reader["nEnteredBy"],
-                dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]),
+                dtUpdated = (DateTime)(reader["dtUpdated"]),
                 nUpdatedBy = (int)reader["nUpdatedBy"],
             };
         }

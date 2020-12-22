@@ -67,28 +67,14 @@ namespace CTADBL.BaseClassRepositories.Masters
         #region Populate TypeIssued Records
         public override TypeIssued PopulateRecord(MySqlDataReader reader)
         {
-            int colIndex1 = reader.GetOrdinal("dtEntered");
-            int colIndex2 = reader.GetOrdinal("dtUpdated");
-
-            DateTime? dtEntered = null;
-            DateTime? dtUpdated = null;
-            if (!reader.IsDBNull(colIndex1))
-            {
-                dtEntered = (DateTime)reader["dtEntered"];
-            }
-            if (!reader.IsDBNull(colIndex2))
-            {
-                dtUpdated = (DateTime)reader["dtUpdated"];
-            }
             return new TypeIssued
             {
                 Id = (int)reader["Id"],
-
                 sTypeIssued = (string)reader["sTypeIssued"],
-                 nEnteredBy = (int)reader["nEnteredBy"],
+                nEnteredBy = (int)reader["nEnteredBy"],
                 nUpdatedBy = (int)reader["nUpdatedBy"],
-                dtEntered = dtEntered,
-                dtUpdated = dtUpdated
+                dtEntered = (DateTime)reader["dtEntered"],
+                dtUpdated = (DateTime)reader["dtUpdated"]
             };
         }
         #endregion

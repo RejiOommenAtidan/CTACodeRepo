@@ -123,9 +123,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
             user.nUserRightsId = (int)reader["nUserRightsId"];
             user.bActive = (bool)reader["bActive"];
             //Common Properties
-            user.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
+            user.dtEntered = (DateTime)(reader["dtEntered"]);
             user.nEnteredBy = (int)reader["nEnteredBy"];
-            user.dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]);
+            user.dtUpdated = (DateTime)(reader["dtUpdated"]);
             user.nUpdatedBy = (int)reader["nUpdatedBy"];
 
             return user;

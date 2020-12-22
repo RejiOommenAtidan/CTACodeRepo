@@ -108,28 +108,15 @@ namespace CTADBL.BaseClassRepositories.Masters
         #region Populate AuthRegion Records
         public override AuthRegion PopulateRecord(MySqlDataReader reader)
         {
-            int colIndex1 = reader.GetOrdinal("dtEntered");
-            int colIndex2 = reader.GetOrdinal("dtUpdated");
-
-            DateTime? dtEntered = null;
-            DateTime? dtUpdated = null;
-            if (!reader.IsDBNull(colIndex1))
-            {
-                dtEntered = (DateTime)reader["dtEntered"];
-            }
-            if (!reader.IsDBNull(colIndex2))
-            {
-                dtUpdated = (DateTime)reader["dtUpdated"];
-            }
             return new AuthRegion
             {
                 ID = (int)reader["ID"],
                 sAuthRegion = (string)reader["sAuthRegion"],
                 sCountryID = (string)reader["sCountryID"],
                 sCurrencyCode = reader.IsDBNull("sCurrencyCode") ? null : (string)(reader["sCurrencyCode"]),
-                dtEntered = dtEntered,
+                dtEntered = (DateTime)reader["dtEntered"],
                 nEnteredBy = (int)reader["nEnteredBy"],
-                dtUpdated = dtUpdated,
+                dtUpdated = (DateTime)reader["dtUpdated"],
                 nUpdatedBy = (int)reader["nUpdatedBy"]
             };
         }

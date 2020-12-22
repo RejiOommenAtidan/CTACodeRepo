@@ -354,9 +354,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
             greenbook.TBUSpouseName = (string)reader["TBUSpouseName"];
             greenbook.sEnteredDateTime = reader.IsDBNull("sEnteredDateTime") ? null : (string)reader["sEnteredDateTime"];
             //Common Props
-            greenbook.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
+            greenbook.dtEntered = (DateTime)(reader["dtEntered"]);
             greenbook.nEnteredBy = (int)reader["nEnteredBy"];
-            greenbook.dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]);
+            greenbook.dtUpdated = (DateTime)(reader["dtUpdated"]);
             greenbook.nUpdatedBy = (int)reader["nUpdatedBy"];
 
             return greenbook;

@@ -39,9 +39,9 @@ namespace CTADBL.BaseClassRepositories.Masters
             MadebStatus status = new MadebStatus();
             status.Id = (int)reader["Id"];
             status.sMadebStatus = (string)reader["sMadebStatus"];
-            status.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
+            status.dtEntered = (DateTime)(reader["dtEntered"]);
             status.nEnteredBy = (int)reader["nEnteredBy"];
-            status.dtUpdated = reader.IsDBNull("dtUpdated") ? null : (DateTime?)(reader["dtUpdated"]);
+            status.dtUpdated = (DateTime)(reader["dtUpdated"]);
             status.nUpdatedBy = (int)reader["nUpdatedBy"];
             
             return status;

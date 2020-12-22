@@ -62,28 +62,14 @@ namespace CTADBL.BaseClassRepositories.Masters
         #region Populate Occupation Records
         public override Occupation PopulateRecord(MySqlDataReader reader)
         {
-            int colIndex1 = reader.GetOrdinal("dtEntered");
-            int colIndex2 = reader.GetOrdinal("dtUpdated");
-
-            DateTime? dtEntered = null;
-            DateTime? dtUpdated = null;
-            if (!reader.IsDBNull(colIndex1))
-            {
-                dtEntered = (DateTime)reader["dtEntered"];
-            }
-            if (!reader.IsDBNull(colIndex2))
-            {
-                dtUpdated = (DateTime)reader["dtUpdated"];
-            }
-
             return new Occupation
                 {
                     Id = (int)reader["Id"],
                     sOccupationDesc = (string)reader["sOccupationDesc"],
                     sOccupationDescTibetan = (string)reader["sOccupationDescTibetan"],
-                    dtEntered = dtEntered,
+                    dtEntered = (DateTime)reader["dtEntered"],
                     nEnteredBy = (int)reader["nEnteredBy"],
-                    dtUpdated = dtUpdated,
+                    dtUpdated = (DateTime)reader["dtUpdated"],
                     nUpdatedBy = (int)reader["nUpdatedBy"]
                 };
         }
