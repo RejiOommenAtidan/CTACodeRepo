@@ -143,13 +143,18 @@ namespace CTADBL.ViewModelsRepositories
             try
             {
                 GreenBookVM greenBookVM = GetDetails(GetGreenbookVMRecord("sGBID", sGBID));
-                RecentlySearchedGB recentlySearched = new RecentlySearchedGB
-                {
-                    dtEntered = DateTime.Now,
-                    nEnteredBy = nUserId,
-                    nGBID = Convert.ToInt32(sGBID),
-                    nUserID = nUserId
-                };
+                //RecentlySearchedGB recentlySearched = new RecentlySearchedGB
+                //{
+                //    dtEntered = DateTime.Now,
+                //    nEnteredBy = nUserId,
+                //    nGBID = Convert.ToInt32(sGBID),
+                //    nUserID = nUserId
+                //};
+                RecentlySearchedGB recentlySearched = new RecentlySearchedGB();
+                recentlySearched.dtEntered = DateTime.Now;
+                recentlySearched.nEnteredBy = nUserId;
+                recentlySearched.nGBID = Convert.ToInt32(sGBID);
+                recentlySearched.nUserID = nUserId;
                 _recentlySearchedGBRepository.Add(recentlySearched);
                 return greenBookVM;
             }
