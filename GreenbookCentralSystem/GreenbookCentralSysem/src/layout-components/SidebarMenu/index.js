@@ -478,6 +478,8 @@ const SidebarMenu = (props) => {
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 27)) !== undefined
                 ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 28)) !== undefined
+                ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 29)) !== undefined
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 30)) !== undefined
@@ -571,8 +573,8 @@ const SidebarMenu = (props) => {
                       </NavLink>
                       </li>
                     }
-                    {/*
-                      authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined
+                    {
+                      authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 28)) !== undefined
                       &&
                       <li>
                         <NavLink
@@ -580,7 +582,7 @@ const SidebarMenu = (props) => {
                           to="/Feature">
                           Feature
                       </NavLink>
-                      </li>*/
+                      </li>
                     }
                     {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 29)) !== undefined
                       &&

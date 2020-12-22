@@ -465,6 +465,7 @@ export default function GiveGBId() {
             variant={sButtonVariant}
             size={sButtonSize}
             disabled={disabled}
+            style={{marginTop:'20px',marginLeft:'10px'}}
             
     >Report</Button>
    

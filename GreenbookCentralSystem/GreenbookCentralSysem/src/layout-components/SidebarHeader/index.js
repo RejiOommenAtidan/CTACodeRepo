@@ -43,7 +43,7 @@ const SidebarHeader = (props) => {
             </div>
             <div className="app-sidebar-logo--text">
               <span style={{ color: "white", paddingTop: 15 }}>
-                <h6>Green Book Database</h6>
+                <h6 style={{fontSize:'15px'}}>Green Book Database</h6>
               </span>
             </div>
           </NavLink>

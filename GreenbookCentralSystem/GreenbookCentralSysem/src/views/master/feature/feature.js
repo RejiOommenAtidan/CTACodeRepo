@@ -118,7 +118,7 @@ export default function Feature() {
     },
     {
       field: "sFeature",
-      title: "Feature Name",
+      title: "FEATURE NAME",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '0px',
@@ -126,16 +126,16 @@ export default function Feature() {
         textAlign: 'left'
       },
       headerStyle: {
-        textAlign: "center",
-        textAlignLast: "center",
-        verticalAlign: "middle"
+        textAlign: "left",
+        // textAlignLast: "center",
+        // verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
-    {
+    //{
       // field: "edit",
       // title: "Edit",
       // sorting: false,
@@ -160,7 +160,7 @@ export default function Feature() {
       //   textAlign: "center",
       //   padding: '5px'
       // }
-    }
+    //}
   ];
 
   const editClick = (tableRowArray) => {

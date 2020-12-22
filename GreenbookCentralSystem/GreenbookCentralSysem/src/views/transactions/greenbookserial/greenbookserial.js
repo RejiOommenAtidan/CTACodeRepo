@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchButton: {
     marginTop: '15px',
-    paddingLeft: '5px'
+    marginLeft: '5px'
   },
   box: {
     marginBottom: theme.spacing(1.5),
@@ -87,10 +87,10 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const startDateTextField = useRef(null);
   const searchButton = useRef(null);
-  
+
   const endDateTextField = useRef(null);
   const { register, handleSubmit, errors, setValue, clearErrors } = useForm();
-  const { 
+  const {
     register: register2,
     errors: errors2,
     handleSubmit: handleSubmit2,
@@ -477,39 +477,39 @@ export default () => {
     clearErrors(['startDate', 'endDate']);
     clearErrors2(['serialBookNo']);
     axios.get(`GreenBookSerialNumber/GetGreenBookSerialNumbers/`)
-    .then(resp => {
-      if (resp.status === 200) {
-        resp.data.forEach((element) => {
-          element.greenBookSerialNumber.dtFormattedDate = element.greenBookSerialNumber.dtDate ? Moment(element.greenBookSerialNumber.dtDate).format(sDateFormat) : null;
-        });
-        setdataAPI(resp.data);
-        selectDatafunction();
-        setLoading(false);
-        modifyHeaders();
-        // setStartDateTextField(document.getElementById('startDate'));
-        // setEndDateTextField(document.getElementById('endDate'));
-        // setSearchButton(document.getElementById('searchButton'));
-        
-      }
-    })
-    .catch(error => {
-      if (error.response) {
-        if (error.response.status === 401) {
-          setAlertMessage("You have been logged out of the system. Login again.");
-          setAlertType("error");
-          snackbarOpen();
+      .then(resp => {
+        if (resp.status === 200) {
+          resp.data.forEach((element) => {
+            element.greenBookSerialNumber.dtFormattedDate = element.greenBookSerialNumber.dtDate ? Moment(element.greenBookSerialNumber.dtDate).format(sDateFormat) : null;
+          });
+          setdataAPI(resp.data);
+          selectDatafunction();
+          setLoading(false);
+          modifyHeaders();
+          // setStartDateTextField(document.getElementById('startDate'));
+          // setEndDateTextField(document.getElementById('endDate'));
+          // setSearchButton(document.getElementById('searchButton'));
+
         }
-      }
-      console.log(error.config);
-      console.log(error.message);
-      setLoading(false);
-    })
+      })
+      .catch(error => {
+        if (error.response) {
+          if (error.response.status === 401) {
+            setAlertMessage("You have been logged out of the system. Login again.");
+            setAlertType("error");
+            snackbarOpen();
+          }
+        }
+        console.log(error.config);
+        console.log(error.message);
+        setLoading(false);
+      })
   }
-  
+
   useEffect(() => {
-    
+
     initialLoad();
-    
+
   }, []);
 
   return (
@@ -521,7 +521,7 @@ export default () => {
         >
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
-placeholder="DD-MM-YYYY"
+              placeholder="DD-MM-YYYY"
               ref={startDateTextField}
               className={classes.dateField}
               clearable
@@ -530,7 +530,7 @@ placeholder="DD-MM-YYYY"
               margin="dense"
               id="startDate"
               name="startDate"
-              label={<span style={{color: errors.startDate && 'red' }}>Date From</span>}
+              label={<span style={{ color: errors.startDate && 'red' }}>Date From</span>}
               format={sDateFormatMUIDatepicker}
               returnMoment={true}
               inputRef={register({
@@ -563,7 +563,7 @@ placeholder="DD-MM-YYYY"
           </MuiPickersUtilsProvider>
           <MuiPickersUtilsProvider ref={endDateTextField} utils={DateFnsUtils}>
             <KeyboardDatePicker
-placeholder="DD-MM-YYYY"
+              placeholder="DD-MM-YYYY"
               className={classes.dateField}
               variant="dialog"
               error={errors.endDate}
@@ -572,7 +572,7 @@ placeholder="DD-MM-YYYY"
               margin="dense"
               id="endDate"
               name="endDate"
-              label={<span style={{color: errors.endDate && 'red' }}>Date Upto</span>}
+              label={<span style={{ color: errors.endDate && 'red' }}>Date Upto</span>}
               format={sDateFormatMUIDatepicker}
               returnMoment={true}
               inputRef={register({
@@ -619,12 +619,12 @@ placeholder="DD-MM-YYYY"
 
       <div className={classes.dateBoxes}>
         <form onSubmit={handleSubmit2(searchByBookNo)}>
-          
+
           <TextField
             id='serialBookNo'
             name='serialBookNo'
             type='number'
-            label={<span style={{color: errors2.serialBookNo && 'red' }}>Enter Book Serial No</span>}
+            label={<span style={{ color: errors2.serialBookNo && 'red' }}>Enter Book Serial No</span>}
             InputProps={{
               pattern: /[0-9]/,
               inputProps: { min: 1 }
@@ -636,10 +636,10 @@ placeholder="DD-MM-YYYY"
             onChange={(e) => setSearchBook(e.target.value)}
             //variant={errors2.serialBookNo && 'outlined'}
             error={errors2.serialBookNo}
-            //helperText={errors2.serialBookNo && 'This field is required'}
+          //helperText={errors2.serialBookNo && 'This field is required'}
           />
-          
-          
+
+
           <Button
             type='submit'
             ref={searchButton}
@@ -658,7 +658,7 @@ placeholder="DD-MM-YYYY"
             <span style={{ color: 'red', fontSize: '0.5vw' }}>This field is required</span>
           )}
       </div> */}
-      
+
 
       <Grid container spacing={1}>
 
@@ -704,8 +704,8 @@ placeholder="DD-MM-YYYY"
                   // className={classes.button}
                   // startIcon={<Refresh />}
                   // >
-                    
-                //</Button>,
+
+                  //</Button>,
                   tooltip: 'Show Recent',
                   isFreeAction: true,
                   onClick: () => initialLoad()

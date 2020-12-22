@@ -390,7 +390,7 @@ export default function EditEntry(props) {
     //console.log(documentObject);
     setdialogBackdrop(true);
     axios
-      .post(`/Greenbook/AddDocument`, documentObject)
+      .post(`/Greenbook/AddDocumentForEdit`, documentObject)
       .then((resp) => {
         if (resp.status === 200) {
           setlGBDocument(resp.data);

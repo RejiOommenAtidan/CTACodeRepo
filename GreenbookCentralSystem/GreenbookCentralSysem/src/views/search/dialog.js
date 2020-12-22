@@ -93,7 +93,7 @@ export const ViewDialog = (props) => {
   const addDocumentAPICall = (documentObject) => {
     setdialogBackdrop(true);
     axios
-      .post(`/Greenbook/AddDocument`, documentObject)
+      .post(`/Greenbook/AddDocumentForSearch`, documentObject)
       .then((resp) => {
         if (resp.status === 200) {
           data.gbDocuments = resp.data;
