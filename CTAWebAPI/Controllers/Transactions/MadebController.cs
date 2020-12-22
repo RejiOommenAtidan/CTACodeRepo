@@ -601,6 +601,9 @@ namespace CTAWebAPI.Controllers.Transactions
 
                         SmtpClient smtpClient = new SmtpClient();
                         smtpClient.Connect(sEmailRelayServer, nPort, bUseSSL);
+                        // Note: since we don't have an OAuth2 token, disable
+                        // the XOAUTH2 authentication mechanism.
+                        smtpClient.AuthenticationMechanisms.Remove("XOAUTH2");
                         smtpClient.Authenticate(email.sFrom, sEmailPwd);
                         smtpClient.Send(message);
                         smtpClient.Disconnect(true);

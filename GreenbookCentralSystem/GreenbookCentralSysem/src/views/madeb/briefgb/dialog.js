@@ -1414,7 +1414,7 @@ placeholder="DD-MM-YYYY"
       </Snackbar> */}
           <Button
             type="submit"
-            className={props.classes.button}
+            //className={props.classes.button}
             color={sButtonColor}
             variant={sButtonVariant}
             size={sButtonSize}

@@ -17,9 +17,12 @@ import { useHistory } from 'react-router-dom';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop';
 import { sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
+import { useForm } from "react-hook-form";
+import _ from "lodash/fp";
 
 export const EmailDialog = (props) => {
   let history = useHistory();
+  const { register, handleSubmit, errors, formState } = useForm();
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const alertObj = {
@@ -44,19 +47,20 @@ export const EmailDialog = (props) => {
   const [backdrop, setBackdrop] = React.useState(false);
 
   console.log(props.emailInObj);
-  const emailOutObj = {
-    id: id,
-    nFormNumber: formNumber,
-    sName: name,
-    sFrom: sender,
-    sReceiver: recipient,
-    sSubject: subject,
-    sBody: body
-  };
 
-  const SendEmail = ((emailObj) => {
+
+  const SendEmail = () => {
+    const emailOutObj = {
+      id: id,
+      nFormNumber: formNumber,
+      sName: name,
+      sFrom: sender,
+      sReceiver: recipient,
+      sSubject: subject,
+      sBody: body
+    };
     setBackdrop(true);
-    axios.post(`Madeb/SendEmail`, emailObj)
+    axios.post(`Madeb/SendEmail`, emailOutObj)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
@@ -75,8 +79,7 @@ export const EmailDialog = (props) => {
         snackbarOpen();
         setBackdrop(false);
       });
-
-  });
+  };
 
   useEffect(() => {
     axios.get(`/CTAConfig/GetCTAConfigByKey/Key=CTAAdminEmail`)
@@ -97,95 +100,119 @@ export const EmailDialog = (props) => {
   return (
     <Dialog open={props.emailModal} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Email {madebName} Madeb</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          <div>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="sender"
-                    label="Sender"
-                    type="text"
-                    required={true}
-                    InputProps={{
-                      // readOnly: true,
-                      disabled: true
-                    }}
-                    // className={props.classes.textField}
-                    value={sender}
-                    onChange={(e) => { setSender(e.target.value) }}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="recipient"
-                    label="Recipient"
-                    type="email"
-                    required={true}
-                    onChange={(e) => { setRecipient(e.target.value) }}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
+      <form onSubmit={handleSubmit(SendEmail)}>
+        <DialogContent>
+          <DialogContentText>
+            <div>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="sender"
+                      name="name_sender"
+                      //label="Sender"
+                      type="text"
+                      label={<>Sender<span style={{ color: 'red' }}> *</span></>}
+                      InputProps={{
+                        // readOnly: true,
+                        disabled: true
+                      }}
+                      // className={props.classes.textField}
+                      value={sender}
+                      onChange={(e) => { setSender(e.target.value) }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="recipient"
+                      name="name_recipient"
+                      //label="Recipient"
+                      type="email"
+                      label={<>Recipient<span style={{ color: 'red' }}> *</span></>}
+                      onChange={(e) => { setRecipient(e.target.value) }}
+                      inputRef={register({
+                        required: true
+                      })}
+                    />
+                    {_.get("name_recipient.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
 
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="subject"
-                    label="Subject"
-                    required={true}
-                    value={subject}
-                    onChange={(e) => { setSubject(e.target.value) }}
-                  />
-                </FormControl>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="subject"
+                      name="name_subject"
+                      label={<>Subject<span style={{ color: 'red' }}> *</span></>}
+                      value={subject}
+                      onChange={(e) => { setSubject(e.target.value) }}
+                      inputRef={register({
+                        required: true
+                      })}
+                    />
+                    {_.get("name_subject.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={props.classes.formControl}>
+                    <TextField
+                      id="message"
+                      name="name_message"
+                      label={<>Message<span style={{ color: 'red' }}> *</span></>}
+                      //required={true}
+                      multiline
+                      rowsMax={4}
+                      value={body}
+                      onChange={(e) => { setBody(e.target.value) }}
+                      inputRef={register({
+                        required: true
+                      })}
+                    />
+                    {_.get("name_message.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                  </FormControl>
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <FormControl className={props.classes.formControl}>
-                  <TextField
-                    id="message"
-                    label="Message"
-                    required={true}
-                    multiline
-                    rowsMax={4}
-                    value={body}
-                    onChange={(e) => { setBody(e.target.value) }}
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
-          </div>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleEmailClickClose}
-          color={sButtonColor}
-          variant={sButtonVariant}
-          size={sButtonSize}
-        >Cancel</Button>
-        {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
-        {/*<Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
+            </div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleEmailClickClose}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Cancel</Button>
+          {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
+          {/*<Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
           <Alert  onClose={snackbarClose} severity={alertType}  >
            {message}
           </Alert>
         </Snackbar>*/}
-        <Button
-          onClick={() => SendEmail(emailOutObj)}
-          color={sButtonColor}
-          variant={sButtonVariant}
-          size={sButtonSize}
-        >Send</Button>
-      </DialogActions>
-      {snackbar && <Alerts
-        alertObj={alertObj}
-        snackbar={snackbar}
-        snackbarClose={snackbarClose}
-      />
-      }
-      {backdrop && <BackdropComponent
-        backdrop={backdrop}
-      />}
+          <Button
+            type="submit"
+            //onClick={() => SendEmail(emailOutObj)}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+          >Send</Button>
+        </DialogActions>
+        {snackbar && <Alerts
+          alertObj={alertObj}
+          snackbar={snackbar}
+          snackbarClose={snackbarClose}
+        />
+        }
+        {backdrop && <BackdropComponent
+          backdrop={backdrop}
+        />}
+      </form>
     </Dialog>
   );
 }

@@ -477,8 +477,8 @@ const SidebarMenu = (props) => {
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 26)) !== undefined
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 27)) !== undefined
-                ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 28)) !== undefined
+                //||
+                //(authUser.lFeatureUserrights.find(x => x.nFeatureID === 28)) !== undefined
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 29)) !== undefined
                 ||
@@ -573,7 +573,7 @@ const SidebarMenu = (props) => {
                       </NavLink>
                       </li>
                     }
-                    {
+                    {/*{
                       authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 28)) !== undefined
                       &&
                       <li>
@@ -583,7 +583,7 @@ const SidebarMenu = (props) => {
                           Feature
                       </NavLink>
                       </li>
-                    }
+                    }*/}
                     {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 29)) !== undefined
                       &&
                       <li>
@@ -886,7 +886,7 @@ const SidebarMenu = (props) => {
                   </span>
                         Change Password
                       </NavLink>
-            </li>}
+              </li>}
             <div style={{ paddingTop: '100px' }}>
             </div>
           </ul>
