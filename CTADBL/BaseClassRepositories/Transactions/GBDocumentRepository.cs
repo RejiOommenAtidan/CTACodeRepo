@@ -19,7 +19,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Get Calls
-        public IEnumerable<GBDocument> GetGBDocumentsByGBID(string sGBID)
+        public IEnumerable<Object> GetGBDocumentsByGBID(string sGBID)
         {
             string sql = String.Format(@"SELECT l.Id, sGBID, sTitle, sDocType, binFileDoc, sFileExtension, nRegisterDate, l.dtEntered, l.nEnteredBy, t.sFullName FROM lnkgbdocument l LEFT JOIN tbluser t ON t.id = l.nEnteredBy WHERE sGBID = @sGBID;");
 
@@ -28,7 +28,27 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 using (var command = new MySqlCommand(sql))
                 {
                     command.Parameters.AddWithValue("sGBID", sGBID);
-                    return GetRecords(command);
+                    command.Connection = _connection;
+                    command.CommandType = CommandType.Text;
+                    MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                    DataSet ds = new DataSet();
+                    mySqlDataAdapter.Fill(ds);
+                    DataTableCollection tables = ds.Tables;
+                    var result = tables[0].AsEnumerable().Select(row => new
+                    {
+                        Id = row.Field<int>("Id"),
+                        sGBID = row.Field<string>("sGBID"),
+                        sTitle = row.Field<string>("sTitle"),
+                        sDocType = row.Field<string>("sDocType"),
+                        binFileDoc = Convert.ToBase64String(row.Field<byte[]>("binFileDoc")),
+                        sFileExtension = row.Field<string>("sFileExtension"),
+                        nRegisterDate = row.Field<int>("nRegisterDate"),
+                        dtEntered = row.Field<DateTime>("dtEntered"),
+                        sFullName = row.Field<string>("sFullName"),
+
+                    });
+                    //return GetRecords(command);
+                    return result;
                 }
             }
             catch(Exception ex)

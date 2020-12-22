@@ -25,7 +25,7 @@ namespace CTADBL.ViewModels
         private IEnumerable<GBChildren>? _children = null;
         private IEnumerable<IssueBookVM>? _booksIssued = null;
         private IEnumerable<GBNote>? _gbNotes = null;
-        private IEnumerable<GBDocument> _gbDocuments = null;
+        private IEnumerable<Object> _gbDocuments = null;
         private IEnumerable<AuditLogVM> _auditLogs = null;
         private string _sAuthRegion;
         private string? _sProvince;
@@ -103,7 +103,7 @@ namespace CTADBL.ViewModels
             }
         }
 
-        public IEnumerable<GBDocument>? gbDocuments
+        public IEnumerable<Object>? gbDocuments
         {
             get
             {
