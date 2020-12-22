@@ -1039,9 +1039,10 @@ namespace CTAWebAPI.Controllers.Transactions
         #region Document Part
 
         #region Add Document
-        [AuthorizeRole(FeatureID = 16)]
-        [HttpPost]
-        [Route("[action]")]
+        //[AuthorizeRole(FeatureID = 16)]
+        //[HttpPost]
+        //[Route("[action]")]
+        [NonAction]
         public IActionResult AddDocument(GBDocument gBDocument)
         {
             #region Add Document
@@ -1081,6 +1082,22 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
         #endregion
+
+        [AuthorizeRole(FeatureID = 2)]
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult AddDocumentForSearch(GBDocument gBDocument)
+        {
+            return AddDocument(gBDocument);
+        }
+
+        [AuthorizeRole(FeatureID = 16)]
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult AddDocumentForEdit(GBDocument gBDocument)
+        {
+            return AddDocument(gBDocument);
+        }
 
         #region Edit Document
         [AuthorizeRole(FeatureID = 16)]
