@@ -586,9 +586,6 @@ export default () => {
           setAlertMessage('Record updated successfully.');
           setAlertType('success');
           snackbarOpen();
-          setBackdrop(false);
-          
-          setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=6`)
             .then(resp => {
               if (resp.status === 200) {
@@ -599,7 +596,6 @@ export default () => {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
-                setisLoading(false);
                 selectDatafunction();
               }
               else {
@@ -607,7 +603,7 @@ export default () => {
               }
             })
             .catch(error => {
-              setisLoading(false);
+              setBackdrop(false);
               console.log(error.config);
               console.log(error.message);
             })
@@ -618,7 +614,6 @@ export default () => {
         setAlertMessage(`Madeb Updation Failed. Error:${error.response.data}.`);
         setAlertType('error');
         snackbarOpen();
-        
       })
 
   };
@@ -650,8 +645,6 @@ export default () => {
           setAlertMessage('Created new record successfully.');
           setAlertType('success');
           snackbarOpen();
-          setBackdrop(false);
-          setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=6`)
             .then(resp => {
               if (resp.status === 200) {
@@ -662,12 +655,11 @@ export default () => {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
-                setisLoading(false);
                 selectDatafunction();
               }
             })
             .catch(error => {
-              setisLoading(false);
+              setBackdrop(false);
               console.log(error.message);
               console.log(error.config);
             })

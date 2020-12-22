@@ -532,10 +532,7 @@ export default function EnhancedTable() {
           setAlertMessage('Record Successfully Edited');
           setAlertType('success');
           snackbarOpen();
-          selectDatafunction();
-          setBackdrop(false);
-          setisLoading(true);    
-
+          
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=3`)
             .then(resp => {
               if (resp.status === 200) {
@@ -546,11 +543,11 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
-                setisLoading(false);
+                selectDatafunction();
               }
             })
             .catch(error => {
-              setisLoading(true);
+              setBackdrop(true);
               if (error.response) {
                 console.error(error.response.data);
                 console.error(error.response.status);
@@ -624,9 +621,6 @@ export default function EnhancedTable() {
           setAlertMessage('Record Successfully Added');
           setAlertType('success');
           snackbarOpen();
-          setBackdrop(false);
-          setisLoading(true);
-          selectDatafunction();
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=3`)
             .then(resp => {
               if (resp.status === 200) {
@@ -637,11 +631,11 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
-                setisLoading(false);
+                selectDatafunction();
               }
             })
             .catch(error => {
-              setisLoading(false);
+              setBackdrop(false);
               setAlertMessage('Error! ' + error.message);
               setAlertType('error');
               snackbarOpen();

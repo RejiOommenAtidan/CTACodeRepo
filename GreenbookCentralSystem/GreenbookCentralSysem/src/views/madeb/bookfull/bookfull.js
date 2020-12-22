@@ -832,9 +832,6 @@ export default function EnhancedTable() {
           setAlertMessage('Record updated successfully.');
           setAlertType('success');
           snackbarOpen();
-          setBackdrop(false);
-          selectDatafunction();
-          setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
             .then(resp => {
               if (resp.status === 200) {
@@ -845,11 +842,11 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
-                setisLoading(false);
+                selectDatafunction();
               }
             })
             .catch(error => {
-              setisLoading(false);
+              setBackdrop(false);
               console.log(error.config);
               console.log(error.message);
             })
@@ -900,9 +897,6 @@ export default function EnhancedTable() {
           setAlertMessage('Created new record successfully.');
           setAlertType('success');
           snackbarOpen();
-          setBackdrop(false);
-          selectDatafunction();
-          setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=5`)
             .then(resp => {
               if (resp.status === 200) {
@@ -913,11 +907,11 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
-                setisLoading(false);
+                selectDatafunction();
               }
             })
             .catch(error => {
-              setisLoading(false);
+              setBackdrop(false);
               console.log(error.message);
               console.log(error.config);
             })

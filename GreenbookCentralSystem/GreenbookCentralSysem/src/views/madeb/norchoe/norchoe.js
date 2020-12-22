@@ -536,9 +536,6 @@ export default function EnhancedTable() {
           setAlertMessage('Record Successfully Edited');
           setAlertType('success');
           snackbarOpen();
-          setBackdrop(false);
-          selectDatafunction();
-          setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=2`)
             .then(resp => {
               if (resp.status === 200) {
@@ -547,13 +544,13 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedIssueAction = element.madeb.dtIssueAction ? Moment(element.madeb.dtIssueAction).format(sDateFormat) : null;
                   element.madeb.dtFormattedReturnEmail = element.madeb.dtReturnEmail ? Moment(element.madeb.dtReturnEmail).format(sDateFormat) : null;
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
-                })
+                });
                 setdataAPI(resp.data);
-                setisLoading(false);
+                selectDatafunction();
               }
             })
             .catch(error => {
-              setisLoading(false);
+              setBackdrop(false);
               if (error.response) {
                 console.error(error.response.data);
                 console.error(error.response.status);
@@ -642,9 +639,6 @@ export default function EnhancedTable() {
           setAlertMessage('Record Successfully Added');
           setAlertType('success');
           snackbarOpen();
-          setBackdrop(false);
-          selectDatafunction();
-          setisLoading(true);
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=2`)
             .then(resp => {
               if (resp.status === 200) {
@@ -655,11 +649,11 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
-                setisLoading(false);
+                selectDatafunction();
               }
             })
             .catch(error => {
-              setisLoading(false);
+              setBackdrop(false);
               setAlertMessage('Error! ' + error.message);
               setAlertType('error');
               snackbarOpen();
