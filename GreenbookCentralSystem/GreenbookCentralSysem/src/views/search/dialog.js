@@ -777,13 +777,19 @@ export const ViewDialog = (props) => {
                             <Typography className={props.classes.expansionHeading}>Photos & Documents</Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
+                          <Grid container spacing={2}>
+                            <Grid item xs={12}>
                             {data.gbDocuments.length === 0 &&
+                            
                               <Typography align="center" variant="h6" color="primary">
                                 No Records Found
                               </Typography>
+                            
                             }
+                            </Grid>
+                            <Grid item xs={12}>
                             {data.gbDocuments.length > 0 &&
-                              <Grid xs={12}>
+                              
                                 <Table className="table table-hover table-striped table-bordered " >
                                   <thead className="thead-light" style={{ padding: 0 }}>
                                     <tr>
@@ -822,10 +828,11 @@ export const ViewDialog = (props) => {
                                     ))}
                                   </tbody>
                                 </Table>
-                              </Grid>
+                              
                             }
-                            <Grid xs={12}>
-                              <br />
+                          </Grid>
+                            <Grid item xs={12}>
+                              <div>
                               <Button
                                 color={sButtonColor}
                                 variant={sButtonVariant}
@@ -836,6 +843,8 @@ export const ViewDialog = (props) => {
                               >
                                 Add a Photo/Document
                             </Button>
+                            </div>
+                            </Grid>
                             </Grid>
                           </ExpansionPanelDetails>
                         </ExpansionPanel>
