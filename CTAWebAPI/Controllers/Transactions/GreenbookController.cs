@@ -640,8 +640,8 @@ namespace CTAWebAPI.Controllers.Transactions
                             nRegionID = greenbook.nAuthRegionID,
                             nRecordID = greenbook.Id,
                             sGBID = sGBID,
-                            sFieldValuesOld = "Greenbook Id Deleted,
-                            sFieldValuesNew = sDifference[1],
+                            sFieldValuesOld = String.Format("Greenbook Id {0} Deleted", sGBID),
+                            sFieldValuesNew = String.Format("Greenbook Id {0} Deleted", sGBID),
                             nEnteredBy = greenbook.nUpdatedBy
                         };
                         _auditLogRepository.Add(auditLogger);
