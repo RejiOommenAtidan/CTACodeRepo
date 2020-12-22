@@ -21,7 +21,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Get GBChildren
         public IEnumerable<GBChildren> GetGBChildrenByGBIDParent(string sGBIDParent)
         {
-            string sql = @"SELECT Id, sGBIDParent, sName, dtDOB, sGender, sChildID, sGBIDChild, dtEntered, nEnteredBy FROM ctadb.lnkgbchildren WHERE sGBIDParent = @sGBIDParent;";
+            string sql = @"SELECT Id, sGBIDParent, sName, dtDOB, sGender, sChildID, sGBIDChild, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM ctadb.lnkgbchildren WHERE sGBIDParent = @sGBIDParent;";
 
 
             using (var command = new MySqlCommand(sql))
@@ -41,7 +41,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sChildID`,
                             `sGBIDChild`,
                             `dtEntered`,
-                            `nEnteredBy`
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
                         FROM `lnkgbchildren`
                         WHERE Id = @Id;";
             using (var command = new MySqlCommand(sql))
@@ -64,12 +66,11 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 sGender = reader.IsDBNull("sGender") ? null : (string)reader["sGender"],
                 sChildID = reader.IsDBNull("sChildID") ? null : (string)reader["sChildID"],
                 sGBIDChild = reader.IsDBNull("sGBIDChild") ? null : (string)reader["sGBIDChild"],
-                dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]),
-                nEnteredBy = (int)(reader["nEnteredBy"])
+                dtEntered = (DateTime)(reader["dtEntered"]),
+                dtUpdated = (DateTime)(reader["dtUpdated"]),
+                nEnteredBy = (int)(reader["nEnteredBy"]),
+                nUpdatedBy = (int)(reader["nUpdatedBy"])
             };
-            
-            
-            
             return children;
         }
         #endregion
