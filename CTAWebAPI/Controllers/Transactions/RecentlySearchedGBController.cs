@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
-    [Authorize]
+    //[Authorize]
     [EnableCors("AllowOrigin")]
     //[APIKeyAuth]
     [Route("api/[controller]")]

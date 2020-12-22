@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers.Masters
 {
-    [Authorize]
+    //[Authorize]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     [ApiController]

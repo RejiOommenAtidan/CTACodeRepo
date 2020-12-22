@@ -165,6 +165,7 @@ export const IssueBookTable = (props) => {
           console.error('Error', error.message);
         }
         console.log(error.config);
+        console.log(error.message);
       })
       .then(release => {
         //console.log(release); => udefined
@@ -203,7 +204,7 @@ export const IssueBookTable = (props) => {
       .then(resp => {
         if (resp.status === 200) {
           setSelectData(resp.data);
-
+          historyGbId();
           // setdataAPI(resp.data)
         }
       })
@@ -342,7 +343,7 @@ export const IssueBookTable = (props) => {
   useEffect(() => {
     setGbId(props.gbId);
     selectDatafunction();
-    historyGbId();
+    //historyGbId();
   }, [props.gbId]);
 
   return (

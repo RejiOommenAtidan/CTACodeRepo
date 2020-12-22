@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace CTAWebAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [EnableCors("AllowOrigin")]
     //[APIKeyAuth]
     [Route("api/[controller]")]
