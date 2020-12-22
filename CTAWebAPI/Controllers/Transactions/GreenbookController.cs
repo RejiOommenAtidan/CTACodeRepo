@@ -909,7 +909,8 @@ namespace CTAWebAPI.Controllers.Transactions
                     //{
                     //    return BadRequest("Child with GBID: " + gBChildren.sGBIDChild + " Doesn't Exists");
                     //}
-                    gBChildren.dtEntered = DateTime.Now;
+                    gBChildren.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    gBChildren.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                     _gbChildrenRepository.Add(gBChildren);
                     Greenbook parent = _greenbookRepository.GetGreenbookByGBID(gBChildren.sGBIDParent);
                     if (gBChildren.sGender == "M")
@@ -980,6 +981,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(fetchedGBChild.sGBIDParent);
                         gBChild.nEnteredBy = fetchedGBChild.nEnteredBy;
                         gBChild.dtEntered = fetchedGBChild.dtEntered;
+                        gBChild.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         _gbChildrenRepository.Update(gBChild);
 
                         Greenbook parent = _greenbookRepository.GetGreenbookByGBID(gBChild.sGBIDParent);
@@ -1071,7 +1073,8 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
-                    gBDocument.dtEntered = DateTime.Now;
+                    gBDocument.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    gBDocument.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                     _gbDocumentRepository.Add(gBDocument);
 
                     #region Information Logging 
@@ -1144,6 +1147,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         GBDocument fetchedGBDocument = _gbDocumentRepository.GetDocumentById(Id);
                         gBDocument.dtEntered = fetchedGBDocument.dtEntered;
+                        gBDocument.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         gBDocument.nEnteredBy = fetchedGBDocument.nEnteredBy;
                         Greenbook fetchedGB = _greenbookRepository.GetGreenbookByGBID(fetchedGBDocument.sGBID);
                         _gbDocumentRepository.Update(gBDocument);
