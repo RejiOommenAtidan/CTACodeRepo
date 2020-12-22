@@ -2444,7 +2444,7 @@ export default function EditEntry(props) {
                 size={sButtonSize}
                 color={sButtonColor}
                 type="submit"
-
+                onClick={() => {setExpanded('panel1') }}
               >
                 Save
               </Button>
