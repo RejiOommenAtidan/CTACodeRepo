@@ -864,7 +864,9 @@ INSERT INTO `lnkgbchildren`
 `sChildID`,
 `sGBIDChild`,
 `dtEntered`,
-`nEnteredBy`
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`
 )
 SELECT 
 	`ident_children`.`ID`,
@@ -875,6 +877,8 @@ SELECT
 	`ident_children`.`ChildID`,
 	`ident_children`.`ChildIdentityID`,
 	now(),
+	1,
+	now(),
 	1
 FROM `greenbookprime`.`ident_children`;
 
@@ -884,11 +888,15 @@ INSERT INTO `lnkgbnote`
 `sGBId`,
 `sNote`,
 `dtEntered`,
-`nEnteredBy`)
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`)
 SELECT `ident_note`.`NoteID`,
     `ident_note`.`IdentityID`,
     `ident_note`.`Note`,
     `ident_note`.`Entered`,
+    `ident_note`.`EnteredBy`,
+	`ident_note`.`Entered`,
     `ident_note`.`EnteredBy`
 FROM `greenbookprime`.`ident_note`;
 
@@ -1090,13 +1098,13 @@ SELECT
 from tblchatrelpayment;
 
 SET SQL_SAFE_UPDATES=0;
-UPDATE `lnkgbchatrel` a
-INNER JOIN `tblgreenbook` b ON a.sGBID = b.sGBID
-SET a.nAuthRegionID =  b.nAuthRegionId;
+-- UPDATE `lnkgbchatrel` a
+-- INNER JOIN `tblgreenbook` b ON a.sGBID = b.sGBID
+-- SET a.nAuthRegionID =  b.nAuthRegionId;
 
-UPDATE `lnkgbchatrel` a
-INNER JOIN `tblgreenbook` b ON a.sGBID = b.sGBID
-SET a.sCountryID =  b.sCountryID;
+-- UPDATE `lnkgbchatrel` a
+-- INNER JOIN `tblgreenbook` b ON a.sGBID = b.sGBID
+-- SET a.sCountryID =  b.sCountryID;
 
 update tblgivengbid
 set bActive = 0
@@ -1112,3 +1120,14 @@ where nFormNo in (350,
 update tblgivengbid
 set bActive = 0
 where nGBId = 0;
+
+
+SET SQL_SAFE_UPDATES=0;
+UPDATE lstMadebType
+		,(SELECT tblmadeb.nMadebTypeID as ID, Max(tblmadeb.nFormNumber) AS LastFormNumber
+			FROM lstMadebType
+			INNER JOIN tblmadeb ON tblmadeb.nMadebTypeID = lstMadebType.ID
+			group by tblmadeb.nMadebTypeID
+			) as MaxNum
+        SET lstMadebType.nMadebLastFormNumber = MaxNum.LastFormNumber
+        where lstMadebType.ID = MaxNum.ID;

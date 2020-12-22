@@ -5,9 +5,9 @@ CREATE TABLE `lstOfficeOfTibetan` (
   `sOOT_Place` varchar(100) DEFAULT NULL,
   `sCuurency_Name` varchar(100) DEFAULT NULL,
   `sCuurency_Code` varchar(5) DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
@@ -39,9 +39,9 @@ CREATE TABLE `lstRegion` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sRegion_name` varchar(100) DEFAULT NULL,
   `sRegion_code` varchar(5) DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
@@ -284,10 +284,10 @@ CREATE TABLE `lstAuthRegion` (
   `sAuthRegion` text NOT NULL,
   `sCountryID` text NOT NULL,
   `sCurrencyCode` text DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
@@ -472,9 +472,9 @@ CREATE TABLE `lstCountry` (
   `sCountryID` text DEFAULT NULL,
   `sCountry` text DEFAULT NULL,
   `nDefaultAuthRegionID` int(11) NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -537,9 +537,9 @@ CREATE TABLE `lstoccupation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sOccupationDesc` text NOT NULL,
   `sOccupationDescTibetan` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -566,9 +566,9 @@ INSERT INTO `lstoccupation` (`sOccupationDesc`, `sOccupationDescTibetan`, `dtEnt
 CREATE TABLE `lstProvince` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sProvince` text NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -583,9 +583,9 @@ CREATE TABLE `lstMaritalStatus` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sMaritalStatusText` varchar(50) DEFAULT NULL,
   `sMaritalStatusId` varchar(10) DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -601,9 +601,9 @@ CREATE TABLE `lstQualification` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sQualificationID` varchar(1) NOT NULL DEFAULT '',
   `sQualification` varchar(50) DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -634,9 +634,9 @@ INSERT INTO `lstDOBApprox` (`sDOBApproxID`, `sDOBApproxName`) VALUES ('Y', 'Year
 CREATE TABLE `lstTypeIssued` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sTypeIssued` text NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -650,9 +650,9 @@ INSERT INTO `lstTypeIssued` (`sTypeIssued`, `dtEntered`,`nEnteredBy`,`dtUpdated`
 CREATE TABLE `lstUserRights` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sUserRightsName` text NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -673,10 +673,10 @@ CREATE TABLE `tbluser` (
   `sPassword` text NOT NULL,
   `nUserRightsId` int(11) NOT NULL,
   `bActive` tinyint(1) NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
@@ -687,9 +687,9 @@ CREATE TABLE `tbluser` (
 CREATE TABLE `lstRelation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sRelation` text NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -705,9 +705,9 @@ INSERT INTO `lstRelation` (`sRelation`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nU
 CREATE TABLE `lstMadebStatus` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sMadebStatus` text NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -717,16 +717,19 @@ INSERT INTO `lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdate
 INSERT INTO `lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Rejected',now(),1,now(),1);
 INSERT INTO `lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Cancelled',now(),1,now(),1);
 INSERT INTO `lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Closed',now(),1,now(),1);
+INSERT INTO `lstMadebStatus` (`sMadebStatus`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Double',now(),1,now(),1);
 
+DROP TABLE IF EXISTS `lstMadebType`;
 CREATE TABLE `lstMadebType` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sMadebType` text NOT NULL,
   `sMadebDisplayName` text NOT NULL,
   `sMadebDisplayKey` text NOT NULL,
   `nMadebFeatureId` int(11) NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `nMadebLastFormNumber` INT default NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -738,13 +741,15 @@ INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,
 INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full','Book Full','U',6,now(),1,now(),1);
 INSERT INTO `lstMadebType` (`sMadebType`,`sMadebDisplayName`,`sMadebDisplayKey`,`nMadebFeatureId`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB','Brief GB','B',7,now(),1,now(),1);
 
+
+		
 DROP TABLE IF EXISTS `lstFeature`;
 CREATE TABLE `lstFeature` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sFeature` text NOT NULL, 
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -801,25 +806,30 @@ INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpd
 INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad Report',now(),1,now(),1);
 INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Change Password',now(),1,now(),1);
 
+
+DROP TABLE IF EXISTS `lstCTAConfig`;
+ 
 CREATE TABLE `lstCTAConfig` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sKey` text NOT NULL,
   `sValue` MEDIUMTEXT NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
-INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtUpdated`, `nUpdatedBy`) VALUES
-(1, 'UITableNumberOfRowsInPage', '20', now(), 1),
-(2, 'SelectTotalRecordCount', '1000', now(), 1),
-(3, 'DateFormat', 'DD-MM-YYYY', now(), 1),
-(4, 'CTAAdminEmail', 'set email here', now(), 1),
-(5, 'CTAAdminEmailPassword', 'set password here', now(), 1),
-(6, 'CTAEmailRelayServer', 'set email relay server here', now(), 1),
-(7, 'CTAEmailServerPort', 'set email server port here', now(), 1),
-(8, 'CTAEmailUseSSL', 'set ssl here', now(), 1),
-(9, 'CTAEmailCC', 'set cc email here', now(), 1);
+INSERT INTO `lstctaconfig` (`Id`, `sKey`, `sValue`, `dtEntered`,`nEnteredBy`,`dtUpdated`, `nUpdatedBy`) VALUES
+(1, 'UITableNumberOfRowsInPage', '20', now(), 1, now(), 1),
+(2, 'SelectTotalRecordCount', '1000', now(), 1, now(), 1),
+(3, 'DateFormat', 'DD-MM-YYYY', now(), 1, now(), 1),
+(4, 'CTAAdminEmail', 'set email here', now(), 1, now(), 1),
+(5, 'CTAAdminEmailPassword', 'set password here', now(), 1, now(), 1),
+(6, 'CTAEmailRelayServer', 'set email relay server here', now(), 1, now(), 1),
+(7, 'CTAEmailServerPort', 'set email server port here', now(), 1, now(), 1),
+(8, 'CTAEmailUseSSL', 'set ssl here', now(), 1, now(), 1),
+(9, 'CTAEmailCC', 'set cc email here', now(), 1, now(), 1);
 
 
 
@@ -828,8 +838,10 @@ CREATE TABLE `lstChatrel` (
   `sChatrelKey` text NOT NULL,
   `nChatrelValue` int(11) NOT NULL,
   `dtChatrelFrom` date DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
@@ -854,7 +866,7 @@ CREATE TABLE `tblRecentlySearchedGB` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `nGBID` int(11) NOT NULL,
   `nUserID` int(11) NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -888,9 +900,9 @@ CREATE TABLE `tblMadeb` (
   `sMadebStatusRemark` varchar(200) DEFAULT NULL,
   `dtReject` date DEFAULT NULL,
   `dtReturnEmail` date DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`),
   KEY `nAuthRegionID` (`nAuthRegionID`)
@@ -899,7 +911,7 @@ CREATE TABLE `tblMadeb` (
 CREATE TABLE `tblGreenBook` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `_Id` int(11) DEFAULT NULL,
-  `sGBID` varchar(255) DEFAULT NULL,
+  `sGBID` varchar(255) NOT NULL,
   `nAuthRegionID` int(11) NOT NULL,
   
   `sFirstName` varchar(255) DEFAULT NULL,
@@ -962,9 +974,9 @@ CREATE TABLE `tblGreenBook` (
   `dtLastSuccessfullLogin` DateTime DEFAULT NULL,
   
   `sEnteredDateTime` text DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
 
   PRIMARY KEY (`id`),
@@ -979,9 +991,9 @@ CREATE TABLE `tblGivenGBID` (
   `dtDate` date NOT NULL,
   `bGivenOrNot` tinyint(1) NOT NULL,
   `bActive` tinyint(1) NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`),
   KEY `nGBId` (`nGBId`)
@@ -992,7 +1004,7 @@ CREATE TABLE `tblGivenGBID` (
 
 CREATE TABLE `tblGreenBookIssued` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `nGBId` int(11) DEFAULT NULL,
+  `nGBId` int(11) NOT NULL,
   `dtIssuedDate` date DEFAULT NULL,
   `sWhyIssued` varchar(10) DEFAULT NULL,
   `nMadebTypeId` int(11) DEFAULT NULL,
@@ -1003,9 +1015,9 @@ CREATE TABLE `tblGreenBookIssued` (
   `nAuthRegionId` int(11) DEFAULT NULL,
   `bPrinted` tinyint(1) NOT NULL,
   `sRemarks` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`),
   KEY `nGBId` (`nGBId`)
@@ -1015,7 +1027,7 @@ CREATE TABLE `tblGreenBookIssued` (
 CREATE TABLE `tblGreenBookSerial` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `nBookNo` int(11) DEFAULT NULL,
-  `sGBID` varchar(255) DEFAULT NULL,
+  `sGBID` varchar(255) NOT NULL,
   `Remarks` text NOT NULL,
   `dtDate` date DEFAULT NULL,
   `sName` varchar(200) DEFAULT NULL,
@@ -1024,9 +1036,9 @@ CREATE TABLE `tblGreenBookSerial` (
   `nFormNumber` int(11) DEFAULT NULL,
   `sAuthRegion` varchar(200) DEFAULT NULL,
   `nAuthRegionID` int(11) DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`),
   KEY `sGBId` (`sGBId`)
@@ -1040,14 +1052,14 @@ CREATE TABLE `tblActionLogger` (
   `sEventName` varchar(255) DEFAULT NULL,
   `sDescription` text DEFAULT NULL,
   `sStackTrace` text DEFAULT NULL,
-  `dtEntered` DateTime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 CREATE TABLE `tblAuditLog` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime NOT NULL,
   `nFeatureID` int(11) NOT NULL,
   `nRegionID` int(11) DEFAULT NULL,
   `nRecordID` int(11) NOT NULL,
@@ -1062,7 +1074,7 @@ CREATE TABLE `tblAuditLog` (
 
 CREATE TABLE `tblchatrelpayment` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `sGBId` varchar(255) DEFAULT NULL,
+  `sGBId` varchar(255) NOT NULL,
   `nChatrelYear` int(11) DEFAULT NULL,
   `nChatrelTotalAmount` decimal(15,2) DEFAULT NULL,
   `sChatrelReceiptNumber` varchar(255) DEFAULT NULL,
@@ -1076,10 +1088,10 @@ CREATE TABLE `tblchatrelpayment` (
   `sPayPal_Currency_Value` varchar(255) DEFAULT NULL,
   `sPayPal_Response_Object` varchar(5000) DEFAULT NULL,
   `dtPayment` datetime DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
@@ -1105,8 +1117,10 @@ CREATE TABLE `tblchatrelBulkData` (
 	`Region` varchar(255) DEFAULT NULL,
 	`Country` varchar(255) DEFAULT NULL,
 	`Currency` varchar(255) DEFAULT NULL,
-	`dtEntered` datetime DEFAULT NULL,
-	`nEnteredBy` int(11) NOT NULL,
+	`dtEntered` datetime Not NULL,
+	`nEnteredBy` int(11) Not NULL,
+	`dtUpdated` datetime Not NULL,
+	`nUpdatedBy` int(11) Not NULL,
  PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
@@ -1117,12 +1131,12 @@ CREATE TABLE `tblchatrelBulkData` (
 
 CREATE TABLE `lnkGBRelation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `sGBID` varchar(255) DEFAULT NULL,
+  `sGBID` varchar(255) NOT NULL,
   `sGBIDRelation` varchar(255) DEFAULT NULL,
   `nRelationID` int(11) NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime DEFAULT NULL,
+  `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -1130,7 +1144,7 @@ CREATE TABLE `lnkGBRelation` (
 CREATE TABLE `lnkgbchatrel` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `chatrelpaymentID` int(11) NOT NULL,
-  `sGBId` varchar(255) DEFAULT NULL,
+  `sGBId` varchar(255) NOT NULL,
   `nChatrelAmount` decimal(15,2) NOT NULL,
   `nChatrelMeal` decimal(15,2) DEFAULT NULL,
   `nChatrelYear` int(11) DEFAULT NULL,
@@ -1151,10 +1165,10 @@ CREATE TABLE `lnkgbchatrel` (
   `nConversionRate` decimal(15,4) DEFAULT NULL,
   `sPaidByGBId` varchar(255) DEFAULT NULL,
   `dtPayment` datetime DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
@@ -1162,7 +1176,7 @@ CREATE TABLE `lnkgbchatrel` (
 CREATE TABLE `lnkgbchatrelDonation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `chatrelpaymentID` int(11) NOT NULL,
-  `sGBId` varchar(255) DEFAULT NULL,
+  `sGBId` varchar(255) NOT NULL,
   `nChatrelAdditionalDonationAmt` decimal(15,2) DEFAULT NULL,
   `nChatrelBusinessDonationAmt` decimal(15,2) DEFAULT NULL,
   `sChatrelReceiptNumber` varchar(255) DEFAULT NULL,
@@ -1173,23 +1187,25 @@ CREATE TABLE `lnkgbchatrelDonation` (
   `nConversionRate` decimal(15,4) DEFAULT NULL,
   `sPaidByGBId` varchar(255) DEFAULT NULL,
   `dtPayment` datetime DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 CREATE TABLE `lnkGBDocument` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sGBId` varchar(255) DEFAULT NULL,
+  `sGBId` varchar(255) NOT NULL,
   `sTitle` varchar(255) DEFAULT NULL,
   `sDocType` varchar(255) DEFAULT NULL,
   `binFileDoc` longblob DEFAULT NULL,  
   `sFileExtension` varchar(255) DEFAULT NULL,
   `nRegisterDate` int(64) DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
@@ -1197,10 +1213,12 @@ CREATE TABLE `lnkGBDocument` (
 
 CREATE TABLE `lnkGBNote` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `sGBId` varchar(255) DEFAULT NULL,
+  `sGBId` varchar(255) NOT NULL,
   `sNote` longtext DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`),
   KEY `sGBId` (`sGBId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -1208,14 +1226,16 @@ CREATE TABLE `lnkGBNote` (
 
 CREATE TABLE `lnkGBChildren` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `sGBIDParent` varchar(255) DEFAULT NULL,
+  `sGBIDParent` varchar(255) NOT NULL,
   `sName` varchar(100) DEFAULT NULL,
   `dtDOB` datetime DEFAULT NULL,
   `sGender` varchar(1) DEFAULT NULL,
   `sChildID` varchar(50) DEFAULT NULL,
   `sGBIDChild` varchar(100) DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`ID`),
   KEY `sGBIDParent` (`sGBIDParent`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -1228,258 +1248,260 @@ CREATE TABLE `lnkFeatureUserRights` (
   `nFeatureID` int(11) Not NULL,
   `nUserRightsID` int(11) Not NULL,
   `bRights` tinyint(1) NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
-INSERT INTO `lnkFeatureUserRights` (`Id`, `nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`) 
+INSERT INTO `lnkFeatureUserRights` (`Id`, `nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
 VALUES
 
 -- ADMIN ROLE
 
-(1, 1, 5, 1, now(), 1),
-(2, 2, 5, 1, now(), 1),
-(3, 3, 5, 1, now(), 1),
-(4, 4, 5, 1, now(), 1),
-(5, 5, 5, 1, now(), 1),
-(6, 6, 5, 1, now(), 1),
-(7, 7, 5, 1, now(), 1),
-(8, 8, 5, 1, now(), 1),
-(9, 9, 5, 1, now(), 1),
-(10, 10, 5, 1, now(), 1),
-(11, 11, 5, 1, now(), 1),
-(12, 12, 5, 1, now(), 1),
-(13, 13, 5, 1, now(), 1),
-(14, 14, 5, 1, now(), 1),
-(15, 15, 5, 1, now(), 1),
-(16, 16, 5, 1, now(), 1),
-(17, 17, 5, 1, now(), 1),
-(18, 18, 5, 1, now(), 1),
-(19, 19, 5, 1, now(), 1),
-(20, 20, 5, 1, now(), 1),
-(21, 21, 5, 1, now(), 1),
-(22, 22, 5, 1, now(), 1),
-(23, 23, 5, 1, now(), 1),
-(24, 24, 5, 1, now(), 1),
-(25, 25, 5, 1, now(), 1),
-(26, 26, 5, 1, now(), 1),
-(27, 27, 5, 1, now(), 1),
-(28, 28, 5, 1, now(), 1),
-(29, 29, 5, 1, now(), 1),
-(30, 30, 5, 1, now(), 1),
-(31, 31, 5, 1, now(), 1),
-(32, 32, 5, 1, now(), 1),
-(33, 33, 5, 1, now(), 1),
-(34, 34, 5, 1, now(), 1),
-(35, 35, 5, 1, now(), 1),
-(36, 36, 5, 1, now(), 1),
-(37, 37, 5, 1, now(), 1),
-(38, 38, 5, 1, now(), 1),
-(39, 39, 5, 1, now(), 1),
-(40, 40, 5, 1, now(), 1),
-(41, 41, 5, 1, now(), 1),
-(42, 42, 5, 1, now(), 1),
-(43, 43, 5, 1, now(), 1),
-(44, 44, 5, 1, now(), 1),
-(45, 45, 5, 1, now(), 1),
-(46, 46, 5, 1, now(), 1),
+(1, 1, 5, 1, now(), 1, now(), 1),
+(2, 2, 5, 1, now(), 1, now(), 1),
+(3, 3, 5, 1, now(), 1, now(), 1),
+(4, 4, 5, 1, now(), 1, now(), 1),
+(5, 5, 5, 1, now(), 1, now(), 1),
+(6, 6, 5, 1, now(), 1, now(), 1),
+(7, 7, 5, 1, now(), 1, now(), 1),
+(8, 8, 5, 1, now(), 1, now(), 1),
+(9, 9, 5, 1, now(), 1, now(), 1),
+(10, 10, 5, 1, now(), 1, now(), 1),
+(11, 11, 5, 1, now(), 1, now(), 1),
+(12, 12, 5, 1, now(), 1, now(), 1),
+(13, 13, 5, 1, now(), 1, now(), 1),
+(14, 14, 5, 1, now(), 1, now(), 1),
+(15, 15, 5, 1, now(), 1, now(), 1),
+(16, 16, 5, 1, now(), 1, now(), 1),
+(17, 17, 5, 1, now(), 1, now(), 1),
+(18, 18, 5, 1, now(), 1, now(), 1),
+(19, 19, 5, 1, now(), 1, now(), 1),
+(20, 20, 5, 1, now(), 1, now(), 1),
+(21, 21, 5, 1, now(), 1, now(), 1),
+(22, 22, 5, 1, now(), 1, now(), 1),
+(23, 23, 5, 1, now(), 1, now(), 1),
+(24, 24, 5, 1, now(), 1, now(), 1),
+(25, 25, 5, 1, now(), 1, now(), 1),
+(26, 26, 5, 1, now(), 1, now(), 1),
+(27, 27, 5, 1, now(), 1, now(), 1),
+(28, 28, 5, 1, now(), 1, now(), 1),
+(29, 29, 5, 1, now(), 1, now(), 1),
+(30, 30, 5, 1, now(), 1, now(), 1),
+(31, 31, 5, 1, now(), 1, now(), 1),
+(32, 32, 5, 1, now(), 1, now(), 1),
+(33, 33, 5, 1, now(), 1, now(), 1),
+(34, 34, 5, 1, now(), 1, now(), 1),
+(35, 35, 5, 1, now(), 1, now(), 1),
+(36, 36, 5, 1, now(), 1, now(), 1),
+(37, 37, 5, 1, now(), 1, now(), 1),
+(38, 38, 5, 1, now(), 1, now(), 1),
+(39, 39, 5, 1, now(), 1, now(), 1),
+(40, 40, 5, 1, now(), 1, now(), 1),
+(41, 41, 5, 1, now(), 1, now(), 1),
+(42, 42, 5, 1, now(), 1, now(), 1),
+(43, 43, 5, 1, now(), 1, now(), 1),
+(44, 44, 5, 1, now(), 1, now(), 1),
+(45, 45, 5, 1, now(), 1, now(), 1),
+(46, 46, 5, 1, now(), 1, now(), 1),
 
 -- EDIT ROLE
 
-(47, 1, 4, 1, now(), 1),
-(48, 2, 4, 1, now(), 1),
-(49, 3, 4, 1, now(), 1),
-(50, 4, 4, 1, now(), 1),
-(51, 5, 4, 1, now(), 1),
-(52, 6, 4, 1, now(), 1),
-(53, 7, 4, 1, now(), 1),
-(54, 8, 4, 1, now(), 1),
-(55, 9, 4, 0, now(), 1),
-(56, 10, 4, 1, now(), 1),
-(57, 11, 4, 1, now(), 1),
-(58, 12, 4, 1, now(), 1),
-(59, 13, 4, 1, now(), 1),
-(60, 14, 4, 1, now(), 1),
-(61, 15, 4, 1, now(), 1),
-(62, 16, 4, 1, now(), 1),
-(63, 17, 4, 0, now(), 1),
-(64, 18, 4, 0, now(), 1),
-(65, 19, 4, 0, now(), 1),
-(66, 20, 4, 0, now(), 1),
-(67, 21, 4, 0, now(), 1),
-(68, 22, 4, 0, now(), 1),
-(69, 23, 4, 0, now(), 1),
-(70, 24, 4, 0, now(), 1),
-(71, 25, 4, 0, now(), 1),
-(72, 26, 4, 0, now(), 1),
-(73, 27, 4, 0, now(), 1),
-(74, 28, 4, 0, now(), 1),
-(75, 29, 4, 0, now(), 1),
-(76, 30, 4, 0, now(), 1),
-(77, 31, 4, 0, now(), 1),
-(78, 32, 4, 0, now(), 1),
-(79, 33, 4, 0, now(), 1),
-(80, 34, 4, 0, now(), 1),
-(81, 35, 4, 0, now(), 1),
-(82, 36, 4, 0, now(), 1),
-(83, 37, 4, 0, now(), 1),
-(84, 38, 4, 0, now(), 1),
-(85, 39, 4, 0, now(), 1),
-(86, 40, 4, 0, now(), 1),
-(87, 41, 4, 0, now(), 1),
-(88, 42, 4, 0, now(), 1),
-(89, 43, 4, 0, now(), 1),
-(90, 44, 4, 0, now(), 1),
-(91, 45, 4, 0, now(), 1),
-(92, 46, 4, 1, now(), 1),
+(47, 1, 4, 1, now(), 1, now(), 1),
+(48, 2, 4, 1, now(), 1, now(), 1),
+(49, 3, 4, 1, now(), 1, now(), 1),
+(50, 4, 4, 1, now(), 1, now(), 1),
+(51, 5, 4, 1, now(), 1, now(), 1),
+(52, 6, 4, 1, now(), 1, now(), 1),
+(53, 7, 4, 1, now(), 1, now(), 1),
+(54, 8, 4, 1, now(), 1, now(), 1),
+(55, 9, 4, 0, now(), 1, now(), 1),
+(56, 10, 4, 1, now(), 1, now(), 1),
+(57, 11, 4, 1, now(), 1, now(), 1),
+(58, 12, 4, 1, now(), 1, now(), 1),
+(59, 13, 4, 1, now(), 1, now(), 1),
+(60, 14, 4, 1, now(), 1, now(), 1),
+(61, 15, 4, 1, now(), 1, now(), 1),
+(62, 16, 4, 1, now(), 1, now(), 1),
+(63, 17, 4, 0, now(), 1, now(), 1),
+(64, 18, 4, 0, now(), 1, now(), 1),
+(65, 19, 4, 0, now(), 1, now(), 1),
+(66, 20, 4, 0, now(), 1, now(), 1),
+(67, 21, 4, 0, now(), 1, now(), 1),
+(68, 22, 4, 0, now(), 1, now(), 1),
+(69, 23, 4, 0, now(), 1, now(), 1),
+(70, 24, 4, 0, now(), 1, now(), 1),
+(71, 25, 4, 0, now(), 1, now(), 1),
+(72, 26, 4, 0, now(), 1, now(), 1),
+(73, 27, 4, 0, now(), 1, now(), 1),
+(74, 28, 4, 0, now(), 1, now(), 1),
+(75, 29, 4, 0, now(), 1, now(), 1),
+(76, 30, 4, 0, now(), 1, now(), 1),
+(77, 31, 4, 0, now(), 1, now(), 1),
+(78, 32, 4, 0, now(), 1, now(), 1),
+(79, 33, 4, 0, now(), 1, now(), 1),
+(80, 34, 4, 0, now(), 1, now(), 1),
+(81, 35, 4, 0, now(), 1, now(), 1),
+(82, 36, 4, 0, now(), 1, now(), 1),
+(83, 37, 4, 0, now(), 1, now(), 1),
+(84, 38, 4, 0, now(), 1, now(), 1),
+(85, 39, 4, 0, now(), 1, now(), 1),
+(86, 40, 4, 0, now(), 1, now(), 1),
+(87, 41, 4, 0, now(), 1, now(), 1),
+(88, 42, 4, 0, now(), 1, now(), 1),
+(89, 43, 4, 0, now(), 1, now(), 1),
+(90, 44, 4, 0, now(), 1, now(), 1),
+(91, 45, 4, 0, now(), 1, now(), 1),
+(92, 46, 4, 1, now(), 1, now(), 1),
 
 -- BOOK ISSUE ROLE
 
-(93, 1, 3, 1, now(), 1),
-(94, 2, 3, 1, now(), 1),
-(95, 3, 3, 1, now(), 1),
-(96, 4, 3, 1, now(), 1),
-(97, 5, 3, 1, now(), 1),
-(98, 6, 3, 1, now(), 1),
-(99, 7, 3, 1, now(), 1),
-(100, 8, 3, 1, now(), 1),
-(101, 9, 3, 0, now(), 1),
-(102, 10, 3, 1, now(), 1),
-(103, 11, 3, 1, now(), 1),
-(104, 12, 3, 1, now(), 1),
-(105, 13, 3, 1, now(), 1),
-(106, 14, 3, 1, now(), 1),
-(107, 15, 3, 1, now(), 1),
-(108, 16, 3, 0, now(), 1),
-(109, 17, 3, 0, now(), 1),
-(110, 18, 3, 0, now(), 1),
-(111, 19, 3, 0, now(), 1),
-(112, 20, 3, 0, now(), 1),
-(113, 21, 3, 0, now(), 1),
-(114, 22, 3, 0, now(), 1),
-(115, 23, 3, 0, now(), 1),
-(116, 24, 3, 0, now(), 1),
-(117, 25, 3, 0, now(), 1),
-(118, 26, 3, 0, now(), 1),
-(119, 27, 3, 0, now(), 1),
-(120, 28, 3, 0, now(), 1),
-(121, 29, 3, 0, now(), 1),
-(122, 30, 3, 0, now(), 1),
-(123, 31, 3, 0, now(), 1),
-(124, 32, 3, 0, now(), 1),
-(125, 33, 3, 0, now(), 1),
-(126, 34, 3, 0, now(), 1),
-(127, 35, 3, 0, now(), 1),
-(128, 36, 3, 0, now(), 1),
-(129, 37, 3, 0, now(), 1),
-(130, 38, 3, 0, now(), 1),
-(131, 39, 3, 0, now(), 1),
-(132, 40, 3, 0, now(), 1),
-(133, 41, 3, 0, now(), 1),
-(134, 42, 3, 0, now(), 1),
-(135, 43, 3, 0, now(), 1),
-(136, 44, 3, 0, now(), 1),
-(137, 45, 3, 0, now(), 1),
-(138, 46, 3, 1, now(), 1),
+(93, 1, 3, 1, now(), 1, now(), 1),
+(94, 2, 3, 1, now(), 1, now(), 1),
+(95, 3, 3, 1, now(), 1, now(), 1),
+(96, 4, 3, 1, now(), 1, now(), 1),
+(97, 5, 3, 1, now(), 1, now(), 1),
+(98, 6, 3, 1, now(), 1, now(), 1),
+(99, 7, 3, 1, now(), 1, now(), 1),
+(100, 8, 3, 1, now(), 1, now(), 1),
+(101, 9, 3, 0, now(), 1, now(), 1),
+(102, 10, 3, 1, now(), 1, now(), 1),
+(103, 11, 3, 1, now(), 1, now(), 1),
+(104, 12, 3, 1, now(), 1, now(), 1),
+(105, 13, 3, 1, now(), 1, now(), 1),
+(106, 14, 3, 1, now(), 1, now(), 1),
+(107, 15, 3, 1, now(), 1, now(), 1),
+(108, 16, 3, 0, now(), 1, now(), 1),
+(109, 17, 3, 0, now(), 1, now(), 1),
+(110, 18, 3, 0, now(), 1, now(), 1),
+(111, 19, 3, 0, now(), 1, now(), 1),
+(112, 20, 3, 0, now(), 1, now(), 1),
+(113, 21, 3, 0, now(), 1, now(), 1),
+(114, 22, 3, 0, now(), 1, now(), 1),
+(115, 23, 3, 0, now(), 1, now(), 1),
+(116, 24, 3, 0, now(), 1, now(), 1),
+(117, 25, 3, 0, now(), 1, now(), 1),
+(118, 26, 3, 0, now(), 1, now(), 1),
+(119, 27, 3, 0, now(), 1, now(), 1),
+(120, 28, 3, 0, now(), 1, now(), 1),
+(121, 29, 3, 0, now(), 1, now(), 1),
+(122, 30, 3, 0, now(), 1, now(), 1),
+(123, 31, 3, 0, now(), 1, now(), 1),
+(124, 32, 3, 0, now(), 1, now(), 1),
+(125, 33, 3, 0, now(), 1, now(), 1),
+(126, 34, 3, 0, now(), 1, now(), 1),
+(127, 35, 3, 0, now(), 1, now(), 1),
+(128, 36, 3, 0, now(), 1, now(), 1),
+(129, 37, 3, 0, now(), 1, now(), 1),
+(130, 38, 3, 0, now(), 1, now(), 1),
+(131, 39, 3, 0, now(), 1, now(), 1),
+(132, 40, 3, 0, now(), 1, now(), 1),
+(133, 41, 3, 0, now(), 1, now(), 1),
+(134, 42, 3, 0, now(), 1, now(), 1),
+(135, 43, 3, 0, now(), 1, now(), 1),
+(136, 44, 3, 0, now(), 1, now(), 1),
+(137, 45, 3, 0, now(), 1, now(), 1),
+(138, 46, 3, 1, now(), 1, now(), 1),
 
 -- ENTRY ROLE
 
-(139, 1, 2, 1, now(), 1),
-(140, 2, 2, 1, now(), 1),
-(141, 3, 2, 0, now(), 1),
-(142, 4, 2, 0, now(), 1),
-(143, 5, 2, 0, now(), 1),
-(144, 6, 2, 0, now(), 1),
-(145, 7, 2, 0, now(), 1),
-(146, 8, 2, 0, now(), 1),
-(147, 9, 2, 0, now(), 1),
-(148, 10, 2, 1, now(), 1),
-(149, 11, 2, 0, now(), 1),
-(150, 12, 2, 0, now(), 1),
-(151, 13, 2, 0, now(), 1),
-(152, 14, 2, 0, now(), 1),
-(153, 15, 2, 0, now(), 1),
-(154, 16, 2, 1, now(), 1),
-(155, 17, 2, 0, now(), 1),
-(156, 18, 2, 0, now(), 1),
-(157, 19, 2, 0, now(), 1),
-(158, 20, 2, 0, now(), 1),
-(159, 21, 2, 0, now(), 1),
-(160, 22, 2, 0, now(), 1),
-(161, 23, 2, 0, now(), 1),
-(162, 24, 2, 0, now(), 1),
-(163, 25, 2, 0, now(), 1),
-(164, 26, 2, 0, now(), 1),
-(165, 27, 2, 0, now(), 1),
-(166, 28, 2, 0, now(), 1),
-(167, 29, 2, 0, now(), 1),
-(168, 30, 2, 0, now(), 1),
-(169, 31, 2, 0, now(), 1),
-(170, 32, 2, 0, now(), 1),
-(171, 33, 2, 0, now(), 1),
-(172, 34, 2, 0, now(), 1),
-(173, 35, 2, 0, now(), 1),
-(174, 36, 2, 0, now(), 1),
-(175, 37, 2, 0, now(), 1),
-(176, 38, 2, 0, now(), 1),
-(177, 39, 2, 0, now(), 1),
-(178, 40, 2, 0, now(), 1),
-(179, 41, 2, 0, now(), 1),
-(180, 42, 2, 0, now(), 1),
-(181, 43, 2, 0, now(), 1),
-(182, 44, 2, 0, now(), 1),
-(183, 45, 2, 0, now(), 1),
-(184, 46, 2, 1, now(), 1),
+(139, 1, 2, 1, now(), 1, now(), 1),
+(140, 2, 2, 1, now(), 1, now(), 1),
+(141, 3, 2, 0, now(), 1, now(), 1),
+(142, 4, 2, 0, now(), 1, now(), 1),
+(143, 5, 2, 0, now(), 1, now(), 1),
+(144, 6, 2, 0, now(), 1, now(), 1),
+(145, 7, 2, 0, now(), 1, now(), 1),
+(146, 8, 2, 0, now(), 1, now(), 1),
+(147, 9, 2, 0, now(), 1, now(), 1),
+(148, 10, 2, 1, now(), 1, now(), 1),
+(149, 11, 2, 0, now(), 1, now(), 1),
+(150, 12, 2, 0, now(), 1, now(), 1),
+(151, 13, 2, 0, now(), 1, now(), 1),
+(152, 14, 2, 0, now(), 1, now(), 1),
+(153, 15, 2, 0, now(), 1, now(), 1),
+(154, 16, 2, 1, now(), 1, now(), 1),
+(155, 17, 2, 0, now(), 1, now(), 1),
+(156, 18, 2, 0, now(), 1, now(), 1),
+(157, 19, 2, 0, now(), 1, now(), 1),
+(158, 20, 2, 0, now(), 1, now(), 1),
+(159, 21, 2, 0, now(), 1, now(), 1),
+(160, 22, 2, 0, now(), 1, now(), 1),
+(161, 23, 2, 0, now(), 1, now(), 1),
+(162, 24, 2, 0, now(), 1, now(), 1),
+(163, 25, 2, 0, now(), 1, now(), 1),
+(164, 26, 2, 0, now(), 1, now(), 1),
+(165, 27, 2, 0, now(), 1, now(), 1),
+(166, 28, 2, 0, now(), 1, now(), 1),
+(167, 29, 2, 0, now(), 1, now(), 1),
+(168, 30, 2, 0, now(), 1, now(), 1),
+(169, 31, 2, 0, now(), 1, now(), 1),
+(170, 32, 2, 0, now(), 1, now(), 1),
+(171, 33, 2, 0, now(), 1, now(), 1),
+(172, 34, 2, 0, now(), 1, now(), 1),
+(173, 35, 2, 0, now(), 1, now(), 1),
+(174, 36, 2, 0, now(), 1, now(), 1),
+(175, 37, 2, 0, now(), 1, now(), 1),
+(176, 38, 2, 0, now(), 1, now(), 1),
+(177, 39, 2, 0, now(), 1, now(), 1),
+(178, 40, 2, 0, now(), 1, now(), 1),
+(179, 41, 2, 0, now(), 1, now(), 1),
+(180, 42, 2, 0, now(), 1, now(), 1),
+(181, 43, 2, 0, now(), 1, now(), 1),
+(182, 44, 2, 0, now(), 1, now(), 1),
+(183, 45, 2, 0, now(), 1, now(), 1),
+(184, 46, 2, 1, now(), 1, now(), 1),
 
 -- SEARCH ROLE
 
-(185, 1, 1, 1, now(), 1),
-(186, 2, 1, 1, now(), 1),
-(187, 3, 1, 0, now(), 1),
-(188, 4, 1, 0, now(), 1),
-(189, 5, 1, 0, now(), 1),
-(190, 6, 1, 0, now(), 1),
-(191, 7, 1, 0, now(), 1),
-(192, 8, 1, 0, now(), 1),
-(193, 9, 1, 0, now(), 1),
-(194, 10, 1, 0, now(), 1),
-(195, 11, 1, 0, now(), 1),
-(196, 12, 1, 0, now(), 1),
-(197, 13, 1, 0, now(), 1),
-(198, 14, 1, 0, now(), 1),
-(199, 15, 1, 0, now(), 1),
-(200, 16, 1, 0, now(), 1),
-(201, 17, 1, 0, now(), 1),
-(202, 18, 1, 0, now(), 1),
-(203, 19, 1, 0, now(), 1),
-(204, 20, 1, 0, now(), 1),
-(205, 21, 1, 0, now(), 1),
-(206, 22, 1, 0, now(), 1),
-(207, 23, 1, 0, now(), 1),
-(208, 24, 1, 0, now(), 1),
-(209, 25, 1, 0, now(), 1),
-(210, 26, 1, 0, now(), 1),
-(211, 27, 1, 0, now(), 1),
-(212, 28, 1, 0, now(), 1),
-(213, 29, 1, 0, now(), 1),
-(214, 30, 1, 0, now(), 1),
-(215, 31, 1, 0, now(), 1),
-(216, 32, 1, 0, now(), 1),
-(217, 33, 1, 0, now(), 1),
-(218, 34, 1, 0, now(), 1),
-(219, 35, 1, 0, now(), 1),
-(220, 36, 1, 0, now(), 1),
-(221, 37, 1, 0, now(), 1),
-(222, 38, 1, 0, now(), 1),
-(223, 39, 1, 0, now(), 1),
-(224, 40, 1, 0, now(), 1),
-(225, 41, 1, 0, now(), 1),
-(226, 42, 1, 0, now(), 1),
-(227, 43, 1, 0, now(), 1),
-(228, 44, 1, 0, now(), 1),
-(229, 45, 1, 0, now(), 1),
-(230, 46, 1, 1, now(), 1);
+(185, 1, 1, 1, now(), 1, now(), 1),
+(186, 2, 1, 1, now(), 1, now(), 1),
+(187, 3, 1, 0, now(), 1, now(), 1),
+(188, 4, 1, 0, now(), 1, now(), 1),
+(189, 5, 1, 0, now(), 1, now(), 1),
+(190, 6, 1, 0, now(), 1, now(), 1),
+(191, 7, 1, 0, now(), 1, now(), 1),
+(192, 8, 1, 0, now(), 1, now(), 1),
+(193, 9, 1, 0, now(), 1, now(), 1),
+(194, 10, 1, 0, now(), 1, now(), 1),
+(195, 11, 1, 0, now(), 1, now(), 1),
+(196, 12, 1, 0, now(), 1, now(), 1),
+(197, 13, 1, 0, now(), 1, now(), 1),
+(198, 14, 1, 0, now(), 1, now(), 1),
+(199, 15, 1, 0, now(), 1, now(), 1),
+(200, 16, 1, 0, now(), 1, now(), 1),
+(201, 17, 1, 0, now(), 1, now(), 1),
+(202, 18, 1, 0, now(), 1, now(), 1),
+(203, 19, 1, 0, now(), 1, now(), 1),
+(204, 20, 1, 0, now(), 1, now(), 1),
+(205, 21, 1, 0, now(), 1, now(), 1),
+(206, 22, 1, 0, now(), 1, now(), 1),
+(207, 23, 1, 0, now(), 1, now(), 1),
+(208, 24, 1, 0, now(), 1, now(), 1),
+(209, 25, 1, 0, now(), 1, now(), 1),
+(210, 26, 1, 0, now(), 1, now(), 1),
+(211, 27, 1, 0, now(), 1, now(), 1),
+(212, 28, 1, 0, now(), 1, now(), 1),
+(213, 29, 1, 0, now(), 1, now(), 1),
+(214, 30, 1, 0, now(), 1, now(), 1),
+(215, 31, 1, 0, now(), 1, now(), 1),
+(216, 32, 1, 0, now(), 1, now(), 1),
+(217, 33, 1, 0, now(), 1, now(), 1),
+(218, 34, 1, 0, now(), 1, now(), 1),
+(219, 35, 1, 0, now(), 1, now(), 1),
+(220, 36, 1, 0, now(), 1, now(), 1),
+(221, 37, 1, 0, now(), 1, now(), 1),
+(222, 38, 1, 0, now(), 1, now(), 1),
+(223, 39, 1, 0, now(), 1, now(), 1),
+(224, 40, 1, 0, now(), 1, now(), 1),
+(225, 41, 1, 0, now(), 1, now(), 1),
+(226, 42, 1, 0, now(), 1, now(), 1),
+(227, 43, 1, 0, now(), 1, now(), 1),
+(228, 44, 1, 0, now(), 1, now(), 1),
+(229, 45, 1, 0, now(), 1, now(), 1),
+(230, 46, 1, 1, now(), 1, now(), 1);
 
 -- 
 -- Store Procedure GreenBook By GBID
@@ -1521,17 +1543,25 @@ DROP procedure IF EXISTS `spGetNewMadebData`;
 
 DELIMITER $$
 
-CREATE PROCEDURE `spGetNewMadebData` ()
+CREATE PROCEDURE `spGetNewMadebData`(IN nMadebTypeId INT)
 BEGIN
-	select Id, sMadebDisplayName from lstmadebtype;
-select ID, sAuthRegion from lstauthregion;
-select Id, sTypeIssued from lsttypeissued;
-select Id, sMadebStatus from lstmadebstatus;
+SELECT Id, sMadebDisplayName FROM lstmadebtype;
+SELECT ID, sAuthRegion FROM lstauthregion;
+SELECT Id, sTypeIssued FROM lsttypeissued;
+SELECT Id, sMadebStatus FROM lstmadebstatus;
 -- select 7000 as nFormNumber;
-select IF(IFNULL(nFormNumber,0), IFNULL(nFormNumber,0) + 1,7000) as nFormNumber from tblmadeb order by nFormNumber desc limit 0,1;
+-- select IF(IFNULL(nFormNumber,0), IFNULL(nFormNumber,0) + 1,7000) as nFormNumber from tblmadeb order by nFormNumber desc limit 0,1;
+IF (nMadebTypeId > 0) THEN
+SELECT nMadebLastFormNumber + 1 FROM lstmadebtype WHERE Id = nMadebTypeId;
+ELSE
+SELECT 0;
+END IF;
 END$$
 
+
+
 DELIMITER ;
+
 
 DROP procedure IF EXISTS `spDeleteGreenBook`;
 
@@ -1540,10 +1570,22 @@ DELIMITER $$
 CREATE PROCEDURE `spDeleteGreenBook`(IN sGBIDIN VARCHAR(255), OUT result INT)
 
 BEGIN
-	
-    SET SQL_SAFE_UPDATES=0;
- 
-	DELETE FROM lnkGBRelation WHERE lnkGBRelation.sGBID = sGBIDIN;
+
+    -- SET result = row_count();
+	DECLARE errno INT;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+		GET CURRENT DIAGNOSTICS CONDITION 1 errno = MYSQL_ERRNO;
+		-- SELECT errno AS MYSQL_ERROR;
+        SET result = errno;
+		ROLLBACK;
+    END;
+    
+	SET SQL_SAFE_UPDATES=0;
+    
+    START TRANSACTION;
+
+    DELETE FROM lnkGBRelation WHERE lnkGBRelation.sGBID = sGBIDIN;
 	DELETE FROM lnkGBDocument WHERE lnkGBDocument.sGBID = sGBIDIN;
 	DELETE FROM lnkGBNote WHERE lnkGBNote.sGBID = sGBIDIN;
 	DELETE FROM lnkGBChildren WHERE lnkGBChildren.sGBIDParent = sGBIDIN;
@@ -1556,7 +1598,8 @@ BEGIN
 	DELETE FROM tblAuditLog WHERE tblAuditLog.sGBID = sGBIDIN;
 	DELETE FROM tblMadeb WHERE tblMadeb.sGBID = sGBIDIN;
 	DELETE FROM tblgreenbook WHERE tblgreenbook.sGBID = sGBIDIN;
-    
+
+    COMMIT WORK;
     SET result = row_count();
 END$$
 
@@ -1655,19 +1698,20 @@ DELIMITER ;
 
 DROP procedure IF EXISTS `spGetFormNumber`;
 DELIMITER $$
-CREATE PROCEDURE `spGetFormNumber`(IN formNumberIN INT, OUT result INT)
+CREATE PROCEDURE `spGetFormNumber`(IN formNumberIN INT, IN nMadebId INT, OUT result INT)
 BEGIN
     DECLARE exist BOOLEAN;
-   
-   
-    SELECT EXISTS (SELECT nFormNumber FROM tblmadeb WHERE nFormNumber = formNumberIN) INTO exist;
+  
+  
+    SELECT EXISTS (SELECT nFormNumber FROM tblmadeb WHERE nFormNumber = formNumberIN AND nMadebTypeID = nMadebId) INTO exist;
     IF (exist) THEN
-        SELECT MAX(nFormNumber+1) FROM tblmadeb INTO formNumberIN;
-       
+        SELECT MAX(nFormNumber+1) FROM tblmadeb WHERE nMadebTypeID = nMadebId INTO formNumberIN;
+      
     END IF;
     SET result = formNumberIN;
     SELECT result;
-END$$
+END
+
 DELIMITER ;
 DROP procedure IF EXISTS `spReportGreenBookIssuedOverAll`;
 
@@ -1773,7 +1817,7 @@ BEGIN
 			on tblauditlog.sGBID = tblgreenbook.sGBID
 		Left Join lstfeature
 			on tblauditlog.nFeatureID = lstfeature.Id
-		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') > ',dtRecordFrom );
+		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') > ''',dtRecordFrom ,'''');
     -- select @SQLText;
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
@@ -1914,6 +1958,8 @@ BEGIN
 END$$
 DELIMITER ;
 
+
+
 DROP procedure IF EXISTS `spReportCTAMadebRegionOrCountryWise`;
 
 DELIMITER $$
@@ -1926,16 +1972,21 @@ CREATE PROCEDURE spReportCTAMadebRegionOrCountryWise
 )
 BEGIN
 	-- declare SQLText varchar(5000);
-
+	SET session sql_mode = '';
 	SET @SQLText = CONCAT('SELECT 
 				DISTINCT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.sAuthRegion", "lstcountry.sCountry" ),') as sPlaceName 
 				,CONVERT(',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion.ID" , "lstcountry.sCountryID" ),',CHAR) as sPlaceID
-				,sum(tblMadeb.nIssuedOrNotID = 2) as MadebIssued
-				,sum(tblMadeb.nIssuedOrNotID = 3) as MadebRejected
-				,sum(tblMadeb.nIssuedOrNotID = 4) as MadebDouble
-				,sum(tblMadeb.nIssuedOrNotID = 5) as MadebCancelled
-				,sum(tblMadeb.nIssuedOrNotID <= 1) as MadebPending
-				,Count(tblMadeb.nIssuedOrNotID) as MadebTotalReceived
+				,if(sum(tblMadeb.nIssuedOrNotID = 2) is null,0,sum(tblMadeb.nIssuedOrNotID = 2)) as MadebIssued
+				,if(sum(tblMadeb.nIssuedOrNotID = 3) is null,0,sum(tblMadeb.nIssuedOrNotID = 3)) as MadebRejected
+				,if(sum(tblMadeb.nIssuedOrNotID = 4) is null,0,sum(tblMadeb.nIssuedOrNotID = 4)) as MadebDouble
+				,if(sum(tblMadeb.nIssuedOrNotID = 5) is null,0,sum(tblMadeb.nIssuedOrNotID = 5)) as MadebCancelled
+				,if(sum(tblMadeb.nIssuedOrNotID = 1 or tblMadeb.nIssuedOrNotID is null) is null,0,sum(tblMadeb.nIssuedOrNotID = 1  or tblMadeb.nIssuedOrNotID is null)) as MadebPending
+				-- ,Count(tblMadeb.nIssuedOrNotID) as MadebTotalReceived
+                ,if(sum(tblMadeb.nIssuedOrNotID = 2) is null,0,sum(tblMadeb.nIssuedOrNotID = 2)) +
+                if(sum(tblMadeb.nIssuedOrNotID = 3) is null,0,sum(tblMadeb.nIssuedOrNotID = 3)) +
+                if(sum(tblMadeb.nIssuedOrNotID = 4) is null,0,sum(tblMadeb.nIssuedOrNotID = 4)) +
+                if(sum(tblMadeb.nIssuedOrNotID = 5) is null,0,sum(tblMadeb.nIssuedOrNotID = 5)) +
+                if(sum(tblMadeb.nIssuedOrNotID = 1 or tblMadeb.nIssuedOrNotID is null) is null,0,sum(tblMadeb.nIssuedOrNotID = 1  or tblMadeb.nIssuedOrNotID is null)) as MadebTotalReceived
 			FROM 
 				tblMadeb 
 			INNER JOIN ',IF(sOrderBy like '%lstauthregion.sAuthRegion%', "lstAuthRegion
@@ -2126,7 +2177,6 @@ where
     DEALLOCATE PREPARE stmt;
 END$$
 DELIMITER ;
-
 
 CREATE INDEX MDB_GBID ON tblmadeb(sGBID);
 CREATE INDEX GREENBOOK_GBID ON tblgreenbook(sGBID);
