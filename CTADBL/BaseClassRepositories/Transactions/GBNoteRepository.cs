@@ -20,7 +20,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Get Calls
         public IEnumerable<GBNote> GetGBNoteByGBID(string sGBID)
         {
-            string sql = String.Format(@"SELECT Id, sGBID, sNote, dtEntered, nEnteredBy , dtUpdated , nUpdatedBy FROM lnkgbnote WHERE sGBID = @sGBID");
+            string sql = String.Format(@"SELECT Id, sGBID, sNote, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lnkgbnote WHERE sGBID = @sGBID");
             try
             {
                 using (var command = new MySqlCommand(sql))
@@ -44,8 +44,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sGBId`,
                             `sNote`,
                             `dtEntered`,
-                            `nEnteredBy`,
-                            ` dtUpdated` ,
+                            `nEnteredBy,
+                            `dtUpdated`,
                             `nUpdatedBy`    
                         FROM `lnkgbnote`
                         WHERE Id = @Id;";
