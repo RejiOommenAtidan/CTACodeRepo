@@ -17,21 +17,17 @@
 
 //import avatar1 from '../../../public/ctalogo.png';
 import avatar1 from '../../assets/images/avatars/avatar1.jpg';
-
 import avatar2 from '../../assets/images/avatars/avatar2.jpg';
 import avatar4 from '../../assets/images/avatars/avatar4.jpg';
 import avatar5 from '../../assets/images/avatars/avatar5.jpg';
 import avatar6 from '../../assets/images/avatars/avatar6.jpg';
 import avatar7 from '../../assets/images/avatars/avatar7.jpg';
-
 import stock from '../../assets/images/No_person.jpg';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import EmailIcon from '@material-ui/icons/Email';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Moment from 'moment';
 import axios from 'axios';
-
+import { useHistory } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
@@ -48,13 +44,16 @@ import {
   Table,
   CircularProgress
 } from '@material-ui/core';
+import { AddDocumentDialog } from "./dialogDocument";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { Rowing } from '@material-ui/icons';
-import { sDateFormat } from 'config/commonConfig';
+import { sDateFormat, sButtonColor, sButtonSize, sButtonVariant, sSnackbarAddMessage } from 'config/commonConfig';
+import { BackdropComponent as BackdropDialogComponent } from "../backdrop/index";
+import { Alerts } from '../alerts';
+import handleError from "../../auth/_helpers/handleError";
+
 /*const findImg = (obj) =>{
   var str="";
   obj.map((row) => {
@@ -66,6 +65,54 @@ import { sDateFormat } from 'config/commonConfig';
 }*/
 
 export const ViewDialog = (props) => {
+  let history = useHistory();
+  const [addDocumentModal, setaddDocumentModal] = useState(false);
+  const [dialogBackdrop, setdialogBackdrop] = useState(false);
+  const handleAddDocumentClickClose = () => {
+    setaddDocumentModal(false);
+  };
+  //#region Alert & Snackbar
+  const [snackbar, setSnackbar] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(true);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  const alertObj = {
+    alertMessage: alertMessage,
+    alertType: alertType
+  };
+
+  const snackbarOpen = () => {
+    setSnackbar(true);
+  };
+
+  const snackbarClose = () => {
+    setSnackbar(false);
+  };
+  //#endregion
+  const addDocumentAPICall = (documentObject) => {
+    setdialogBackdrop(true);
+    axios
+      .post(`/Greenbook/AddDocument`, documentObject)
+      .then((resp) => {
+        if (resp.status === 200) {
+          data.gbDocuments = resp.data;
+          setData(data);
+          setdialogBackdrop(false);
+          setaddDocumentModal(false);
+          setAlertMessage(sSnackbarAddMessage);
+          setAlertType('success');
+          snackbarOpen();
+        }
+      })
+      .catch((error) => {
+        setdialogBackdrop(false);
+        handleError(error, history);
+      })
+      .then((release) => {
+        //console.log(release); => udefined
+      });
+  };
   const [sFeature, setsFeature] = useState("");
   const [expanded, setExpanded] = React.useState('panel1');
   const [data, setData] = React.useState([]);
@@ -82,8 +129,6 @@ export const ViewDialog = (props) => {
       .then(resp => {
         if (resp.status === 200) {
           console.log('deleted');
-
-
         }
       })
       .catch(error => {
@@ -105,14 +150,12 @@ export const ViewDialog = (props) => {
 
 
   useEffect(() => {
-
     axios.get(`GreenBook/GetDetailsFromGBID?sGBID=` + props.sGBID + `&nUserId=` + userid)
       .then(resp => {
         if (resp.status === 200) {
           setData(resp.data);
           console.log(resp.data);
           // console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
-
 
         }
       })
@@ -140,11 +183,6 @@ export const ViewDialog = (props) => {
     };
 
   }, []);
-
-
-
-
-
   return (
     <>
       {data.length == 0 && <Dialog open={true}
@@ -160,7 +198,7 @@ export const ViewDialog = (props) => {
       </Dialog>}
 
       {data.length != 0 &&
-        <Dialog open={props.viewModal} onEscapeKeyDown={props.handleViewClickClose} fullWidth='true'
+        <Dialog open={props.viewModal} onEscapeKeyDown={props.handleViewClickClose} fullWidth
           maxWidth='xl' aria-labelledby="form-dialog-title">
           {/*  <DialogTitle id="form-dialog-title">Add Feature</DialogTitle>*/}
           <DialogContent>
@@ -739,58 +777,66 @@ export const ViewDialog = (props) => {
                             <Typography className={props.classes.expansionHeading}>Photos & Documents</Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
-                          {data.gbDocuments.length === 0 && (
-                            <Typography align="center" variant="h6" color="primary">
-                              No Records Found
-                            </Typography>
-                          )}
+                            {data.gbDocuments.length === 0 &&
+                              <Typography align="center" variant="h6" color="primary">
+                                No Records Found
+                              </Typography>
+                            }
                             {data.gbDocuments.length > 0 &&
-                              <Table className="table table-hover table-striped table-bordered " >
-                                <thead className="thead-light" style={{ padding: 0 }}>
-                                  <tr>
-                                    <th scope="col">Sr No.</th>
-                                    <th> Date </th>
-                                    <th> Entered By </th>
-                                    <th> Title </th>
-                                    <th style={{ width: '5%' }}> Download </th>
-                                  </tr>
-                                </thead>
-
-                                <tbody style={{ padding: 0 }}>
-                                  {data.gbDocuments.map((row, index) => (
+                              <Grid xs={12}>
+                                <Table className="table table-hover table-striped table-bordered " >
+                                  <thead className="thead-light" style={{ padding: 0 }}>
                                     <tr>
+                                      <th scope="col">Sr No.</th>
+                                      <th> Date </th>
+                                      <th> Entered By </th>
+                                      <th> Title </th>
+                                      <th style={{ width: '5%' }}> Download </th>
+                                    </tr>
+                                  </thead>
 
-                                      <td scope="row">{index + 1}</td>
-                                      <td>{row.dtEntered ? Moment(row.dtEntered).format(sDateFormat) : ''}</td>
-                                      <td>{row.sFullname}</td>
-                                      <td>{row.sTitle}</td>
-                                      <td style={{ textAlign: 'center' }}>
+                                  <tbody style={{ padding: 0 }}>
+                                    {data.gbDocuments.map((row, index) => (
+                                      <tr>
 
-                                        <a href={`data:application/octet-stream;base64,${row.binFileDoc}`} download={row.sTitle + "." + row.sFileExtension} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
-                                          <span className="btn-wrapper--icon">
-                                            <GetAppIcon />
-                                          </span></a>
+                                        <td scope="row">{index + 1}</td>
+                                        <td>{row.dtEntered ? Moment(row.dtEntered).format(sDateFormat) : ''}</td>
+                                        <td>{row.sFullname}</td>
+                                        <td>{row.sTitle}</td>
+                                        <td style={{ textAlign: 'center' }}>
 
-                                      </td>
-                                      {/*  <td>
+                                          <a href={`data:application/octet-stream;base64,${row.binFileDoc}`} download={row.sTitle + "." + row.sFileExtension} className="btn-neutral-primary btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
+                                            <span className="btn-wrapper--icon">
+                                              <GetAppIcon />
+                                            </span></a>
+
+                                        </td>
+                                        {/*  <td>
                                 <Button onClick={()=>gbDocumentDelete(row)} className="btn-neutral-danger btn-icon btn-animated-icon btn-transition-none d-40 p-0 m-2">
                                     <span className="btn-wrapper--icon">
                                     <DeleteForeverIcon/>
                                     </span>
                                  </Button>  
                                 </td>  */}
-
-
-
-
-
-                                    </tr>
-
-
-                                  ))}
-                                </tbody>
-                              </Table>}
-
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </Table>
+                              </Grid>
+                            }
+                            <Grid xs={12}>
+                              <br />
+                              <Button
+                                color={sButtonColor}
+                                variant={sButtonVariant}
+                                size={sButtonSize}
+                                onClick={() => {
+                                  setaddDocumentModal(true);
+                                }}
+                              >
+                                Add a Photo/Document
+                            </Button>
+                            </Grid>
                           </ExpansionPanelDetails>
                         </ExpansionPanel>
                       </Grid>
@@ -798,12 +844,8 @@ export const ViewDialog = (props) => {
                   </Grid>
                 </Grid>
               </Card>
-
-
-
             </DialogContentText>
           </DialogContent>
-
           <DialogActions>
             <Button
               onClick={props.handleViewClickClose}
@@ -811,10 +853,27 @@ export const ViewDialog = (props) => {
               variant={"contained"}
               size={"small"}
             >Close</Button>
-
           </DialogActions>
         </Dialog>}
-
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />
+      }
+      {addDocumentModal && (
+        <AddDocumentDialog
+          lGBDocument={data.gbDocuments}
+          addDocumentModal={addDocumentModal}
+          sGBID={props.sGBID}
+          classes={props.classes}
+          handleAddDocumentClickClose={handleAddDocumentClickClose}
+          addDocumentAPICall={addDocumentAPICall}
+        />
+      )}
+      {dialogBackdrop && <BackdropDialogComponent
+        backdrop={dialogBackdrop}
+      />}
     </>
   );
 }

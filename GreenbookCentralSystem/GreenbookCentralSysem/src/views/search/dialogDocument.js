@@ -24,7 +24,7 @@ export const AddDocumentDialog = (props) => {
     const { register, handleSubmit, errors, formState } = useForm();
     const handleSubmitAddDocumentRecord = () => {
         props.addDocumentAPICall({
-            sGBID: props.sGBID,
+            sGBID: props.sGBID.toString(),
             sTitle: sTitle,
             sDocType: sDocType,
             binFileDoc: binFileDoc,
