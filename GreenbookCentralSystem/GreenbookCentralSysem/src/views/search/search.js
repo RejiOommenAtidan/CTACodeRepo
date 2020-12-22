@@ -376,7 +376,7 @@ export default function SearchPage() {
     {
       field: "nAge",
       title: "AGE",
-      render: rowData => rowData.bDeceased ? <FontAwesomeIcon icon={faSkullCrossbones} color={"red"} /> : rowData.nAge,
+      render: rowData => rowData.bDeceased ? <span style={{color:"red"}}>{rowData.nAge}</span> : rowData.nAge,
       filterPlaceholder: 'Search..',
       headerStyle: {
         textAlign: "center",
