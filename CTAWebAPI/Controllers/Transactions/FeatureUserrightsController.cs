@@ -15,7 +15,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
-    [Authorize]
+    //[Authorize]
     [EnableCors("AllowOrigin")]
     //[APIKeyAuth]
     [Route("api/[controller]")]
@@ -37,6 +37,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Get Calls
+        [AuthorizeRole(FeatureID = 19)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetFeatureUserrights()
@@ -63,6 +64,7 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
+        [AuthorizeRole(FeatureID = 19)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetFeatureUserrightsMapping()
@@ -89,6 +91,7 @@ namespace CTAWebAPI.Controllers.Transactions
             #endregion
         }
 
+        [AuthorizeRole(FeatureID = 19)]
         [HttpGet("GetFeatureUserrightById/Id={Id}")]
         [Route("[action]")]
         public IActionResult GetFeatureUserrightById(string Id)
@@ -117,6 +120,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Add Call
+        [AuthorizeRole(FeatureID = 19)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddFeatureUserright(FeatureUserrights featureUserrights)
@@ -156,6 +160,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Edit Call
+        [AuthorizeRole(FeatureID = 19)]
         //TODO: Fix this STUFF
         [HttpPost("EditFeatureUserright/Id={Id}")]
         [Route("[action]")]
@@ -222,6 +227,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion 
 
         #region Delete Call
+        [AuthorizeRole(FeatureID = 19)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult DeleteFeatureUserright(FeatureUserrights featureUserrights)

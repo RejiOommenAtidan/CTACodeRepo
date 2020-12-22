@@ -252,6 +252,7 @@ export default () => {
   const makeList = (makeListParams, sAuthRegion, sMadebType) => {
     setLoading(true);
     setNoRecords(false);
+    setdataAPI([]);
     console.log("Make List Params recd. \n", makeListParams);
     console.log("Authregion & madebtype", sAuthRegion, sMadebType);
     setAddToTitle(`Authority Region: ${sAuthRegion}, Madeb Type: ${sMadebType}`);

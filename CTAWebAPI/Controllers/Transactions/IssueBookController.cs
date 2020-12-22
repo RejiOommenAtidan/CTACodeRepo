@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
-    [Authorize]
+    
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]
@@ -99,12 +99,10 @@ namespace CTAWebAPI.Controllers.Transactions
         }
 
 
-
-
-
         #endregion
 
         #region Add Call
+        [AuthorizeRole(FeatureID = 14)]
         [Route("[action]")]
         [HttpPost("AddIssueBook/MadebId={MadebId}&nIssuedOrNotID={nIssuedOrNotID:int}&dtIssuedDate={dtIssuedDate}")]
         public IActionResult AddIssueBook(string MadebId , int nIssuedOrNotID,DateTime dtIssuedDate, [FromBody] IssueBook issueBook)
@@ -159,6 +157,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Edit Call
+        [AuthorizeRole(FeatureID = 14)]
         [HttpPost("EditIssueBook/Id={Id}")]
         [Route("[action]")]
         public IActionResult EditIssueBook(string Id, [FromBody] IssueBook issueBook)
@@ -233,6 +232,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region Delete Call
+        [AuthorizeRole(FeatureID = 14)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult DeleteIssueBook(IssueBook issueBook)
