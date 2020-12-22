@@ -219,7 +219,7 @@ export const AddDialog = (props) => {
           </Grid>
         </DialogContentText>
       </DialogContent>
-      </form>
+     
       <DialogActions>
         <Button
           onClick={props.handleAddClickClose}
@@ -235,7 +235,9 @@ export const AddDialog = (props) => {
           size={sButtonSize}
         >Save</Button>
       </DialogActions>
+      </form>
     </Dialog>
+    
   );
 }
 

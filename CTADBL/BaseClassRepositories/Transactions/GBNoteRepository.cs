@@ -44,7 +44,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sGBId`,
                             `sNote`,
                             `dtEntered`,
-                            `nEnteredBy,
+                            `nEnteredBy`,
                             `dtUpdated`,
                             `nUpdatedBy`    
                         FROM `lnkgbnote`

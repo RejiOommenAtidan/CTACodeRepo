@@ -545,9 +545,8 @@ export default function EnhancedTable() {
           setAlertMessage('Record Successfully Edited');
           setAlertType('success');
           snackbarOpen();
-          setBackdrop(false);
-          selectDatafunction();
-          setisLoading(true);
+          
+       
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=1`)
             .then(resp => {
               if (resp.status === 200) {
@@ -558,7 +557,8 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
-                setisLoading(false);
+             
+                selectDatafunction();
               }
             })
             .catch(error => {
@@ -607,6 +607,7 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           setBackdrop(false);
           setSelectData(resp.data);
+
         }
       })
       .catch(error => {
@@ -636,9 +637,9 @@ export default function EnhancedTable() {
           setAlertMessage('Record Successfully Added');
           setAlertType('success');
           snackbarOpen();
-          setBackdrop(false);
-          selectDatafunction();
-          setisLoading(true);
+         
+          
+         
           axios.get(`MadebAuthRegionVM/GetMadebsByType/MadebType=1`)
             .then(resp => {
               if (resp.status === 200) {
@@ -649,7 +650,8 @@ export default function EnhancedTable() {
                   element.madeb.dtFormattedReject = element.madeb.dtReject ? Moment(element.madeb.dtReject).format(sDateFormat) : null;
                 })
                 setdataAPI(resp.data);
-                setisLoading(false);
+                
+                selectDatafunction();
               }
             })
             .catch(error => {

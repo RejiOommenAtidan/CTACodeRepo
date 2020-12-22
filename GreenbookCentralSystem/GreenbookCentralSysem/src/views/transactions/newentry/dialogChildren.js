@@ -32,7 +32,7 @@ export const AddChildDialog = (props) => {
     props.addChildAPICall({
       sGBIDParent: props.sGBID,
       sName: sName,
-      dtDOB: dtDOB,
+      dtDOB: Moment(dtDOB).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtDOB).format('YYYY-MM-DD') : null,
       sGender: sGender,
       sChildID: sChildID,
       sGBIDChild: sGBIDChild,
@@ -196,7 +196,7 @@ export const EditChildDialog = (props) => {
         id: props.oChild.id,
         sGBIDParent: props.oChild.sGBIDParent,
         sName: sName,
-        dtDOB: dtDOB,
+        dtDOB:  Moment(dtDOB).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtDOB).format('YYYY-MM-DD') : null,
         sGender: sGender,
         sChildID: sChildID,
         sGBIDChild: sGBIDChild,

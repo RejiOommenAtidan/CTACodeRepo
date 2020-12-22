@@ -153,8 +153,9 @@ export const ViewDialog = (props) => {
     axios.get(`GreenBook/GetDetailsFromGBID?sGBID=` + props.sGBID + `&nUserId=` + userid)
       .then(resp => {
         if (resp.status === 200) {
-          setData(resp.data);
           console.log(resp.data);
+          setData(resp.data);
+          
           // console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
 
         }

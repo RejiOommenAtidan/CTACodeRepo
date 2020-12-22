@@ -2443,6 +2443,7 @@ export default function EditEntry(props) {
                 variant={sButtonVariant}
                 size={sButtonSize}
                 color={sButtonColor}
+                disabled={formState.isSubmitting && formState.isValid}
                 type="submit"
                 onClick={() => {setExpanded('panel1') }}
               >
@@ -2479,6 +2480,7 @@ export default function EditEntry(props) {
             color={sButtonColor}
             variant={sButtonVariant}
             size={sButtonSize}
+            
             autoFocus
           >
             Yes

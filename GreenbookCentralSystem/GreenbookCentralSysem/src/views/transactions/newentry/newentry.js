@@ -1542,6 +1542,7 @@ placeholder="DD-MM-YYYY"
               <Button
               //disabled={formState.isSubmitting && formState.isValid}
                 variant={sButtonVariant}
+                disabled={formState.isSubmitting && formState.isValid}
                 size={sButtonSize}
                 color={sButtonColor}
                 type="submit"
