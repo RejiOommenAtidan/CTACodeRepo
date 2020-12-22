@@ -247,10 +247,19 @@ export const EditDialog = (props) => {
                       // InputProps={{
                       //   readOnly: false,
                       // }}
+                      name='form_number'
+                      inputRef={register({
+                        required: true,
+                        min: 0
+                      })}
                       value={formNumber}
                       onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
 
                     />
+                    {_.get("form_number.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+
                   </FormControl>
                 </Grid>
                 <Grid item sm={6} xs={12}>
