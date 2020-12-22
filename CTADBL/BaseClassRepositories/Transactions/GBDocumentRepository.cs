@@ -42,9 +42,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                         sDocType = row.Field<string>("sDocType"),
                         binFileDoc = Convert.ToBase64String(row.Field<byte[]>("binFileDoc")),
                         sFileExtension = row.Field<string>("sFileExtension"),
-                        nRegisterDate = row.Field<int>("nRegisterDate"),
+                        nRegisterDate = row.Field<int?>("nRegisterDate"),
                         dtEntered = row.Field<DateTime>("dtEntered"),
-                        sFullName = row.Field<string>("sFullName"),
+                        sFullName = row.Field<string?>("sFullName"),
 
                     });
                     //return GetRecords(command);
