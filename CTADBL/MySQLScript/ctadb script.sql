@@ -845,18 +845,18 @@ CREATE TABLE `lstChatrel` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
-INSERT INTO `lstChatrel` (`Id`, `sChatrelKey`, `nChatrelValue`, `dtChatrelFrom`, `dtEntered`, `nEnteredBy`) VALUES
-(1, 'USDYearChatrelAmount', '36', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
-(2, 'USDYearChatrelMeal', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
-(3, 'USDYearChatrelSalaryAmt', '50', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
-(4, 'USDChatrelLateFeesPercentage', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
-(5, 'USDChildMonthChatrelAmount', '1', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
-(6, 'INRYearChatrelAmount', '48', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
-(7, 'INRYearChatrelMeal', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
-(8, 'INRYearChatrelSalaryAmt', '0', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
-(9, 'INRChatrelLateFeesPercentage', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
-(10, 'INRChildMonthChatrelAmount', '1', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1),
-(11, 'ChatrelStartYear', '2011', NULL, now(), 1);
+INSERT INTO `lstChatrel` (`Id`, `sChatrelKey`, `nChatrelValue`, `dtChatrelFrom`, `dtEntered`, `nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES
+(1, 'USDYearChatrelAmount', '36', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(2, 'USDYearChatrelMeal', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(3, 'USDYearChatrelSalaryAmt', '50', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(4, 'USDChatrelLateFeesPercentage', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(5, 'USDChildMonthChatrelAmount', '1', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(6, 'INRYearChatrelAmount', '48', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(7, 'INRYearChatrelMeal', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(8, 'INRYearChatrelSalaryAmt', '0', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(9, 'INRChatrelLateFeesPercentage', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(10, 'INRChildMonthChatrelAmount', '1', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(11, 'ChatrelStartYear', '2011', NULL, now(), 1, now(), 1);
 
 -- -------------------------
 -- --Transactional Tables---

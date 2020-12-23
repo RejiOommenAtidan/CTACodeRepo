@@ -51,7 +51,22 @@ INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserR
 	
 INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
 	VALUES ('kamlesh', 'Kamlesh', 'TCRC Office', 'kamlesh123', '5', '1',now(),1,now(),1);
-    
+
+INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('admin', 'Admin User', 'TCRC Office', 'admin123', '5', '1',now(),1,now(),1);
+
+INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('edit', 'Edit User', 'TCRC Office', 'edit123', '4', '1',now(),1,now(),1);
+	
+INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('bookissue', 'Book Issue User', 'TCRC Office', 'bookissue123', '3', '1',now(),1,now(),1);
+
+INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('entry', 'Entry User', 'TCRC Office', 'entry123', '2', '1',now(),1,now(),1);
+
+INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
+	VALUES ('search', 'Search User', 'TCRC Office', 'search123', '1', '1',now(),1,now(),1);
+	
 SET sql_mode = 'allow_invalid_dates';
 
 insert into  tblgreenbook

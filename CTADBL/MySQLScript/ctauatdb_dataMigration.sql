@@ -34,39 +34,6 @@ SELECT `tbluser`.`Id`,
 FROM `ctadb`.`tbluser`;
 
 
-INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-	VALUES ('pankaj', 'Pankaj Gupta', 'TCRC Office', 'pankaj123', '5', '1',now(),1,now(),1);
-
-INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-	VALUES ('reji', 'Reji Oommen', 'TCRC Office', 'reji123', '5', '1',now(),1,now(),1);
-
-INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-	VALUES ('malay', 'Malay', 'TCRC Office', 'malay123', '5', '1',now(),1,now(),1);
-
-INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-	VALUES ('aayush', 'Aayush', 'TCRC Office', 'aayush123', '5', '1',now(),1,now(),1);
-	
-INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
-	VALUES ('rajen', 'Rajen', 'TCRC Office', 'rajen123', '5', '1',now(),1,now(),1);
-	
-INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
-	VALUES ('kamlesh', 'Kamlesh', 'TCRC Office', 'kamlesh123', '5', '1',now(),1,now(),1);
-
-INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
-	VALUES ('admin', 'Admin User', 'TCRC Office', 'admin123', '5', '1',now(),1,now(),1);
-
-INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
-	VALUES ('edit', 'Edit User', 'TCRC Office', 'edit123', '4', '1',now(),1,now(),1);
-	
-INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
-	VALUES ('bookissue', 'Book Issue User', 'TCRC Office', 'bookissue123', '3', '1',now(),1,now(),1);
-
-INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
-	VALUES ('entry', 'Entry User', 'TCRC Office', 'entry123', '2', '1',now(),1,now(),1);
-
-INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
-	VALUES ('search', 'Search User', 'TCRC Office', 'search123', '1', '1',now(),1,now(),1);
-	
 INSERT INTO `tblUser` (`sUsername`, `sFullName`, `sOffice`, `sPassword`, `nUserRightsId`, `bActive`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`)
 	VALUES ('sherab', 'sherab gyatso', '', 'jojo', '4', '1',now(),1,now(),1);
 
@@ -480,7 +447,9 @@ INSERT INTO `lnkgbchildren`
 `sChildID`,
 `sGBIDChild`,
 `dtEntered`,
-`nEnteredBy`
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`
 )
 SELECT `lnkgbchildren`.`Id`,
     `lnkgbchildren`.`sGBIDParent`,
@@ -490,7 +459,9 @@ SELECT `lnkgbchildren`.`Id`,
     `lnkgbchildren`.`sChildID`,
     `lnkgbchildren`.`sGBIDChild`,
     `lnkgbchildren`.`dtEntered`,
-    `lnkgbchildren`.`nEnteredBy`
+    `lnkgbchildren`.`nEnteredBy`,
+    `lnkgbchildren`.`dtUpdated`,
+    `lnkgbchildren`.`nUpdatedBy`
 FROM `ctadb`.`lnkgbchildren`;
 
 
@@ -500,11 +471,15 @@ INSERT INTO `lnkgbnote`
 `sGBId`,
 `sNote`,
 `dtEntered`,
-`nEnteredBy`)
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`)
 SELECT `lnkgbnote`.`Id`,
     `lnkgbnote`.`sGBId`,
     `lnkgbnote`.`sNote`,
     `lnkgbnote`.`dtEntered`,
+    `lnkgbnote`.`nEnteredBy`,
+	`lnkgbnote`.`dtEntered`,
     `lnkgbnote`.`nEnteredBy`
 FROM `ctadb`.`lnkgbnote`;
 
@@ -644,7 +619,9 @@ INSERT INTO `lnkgbdocument`
 `sFileExtension`,
 `nRegisterDate`,
 `dtEntered`,
-`nEnteredBy`)
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`)
 SELECT `lnkgbdocument`.`id`,
     `lnkgbdocument`.`sGBId`,
     `lnkgbdocument`.`sTitle`,
@@ -653,5 +630,7 @@ SELECT `lnkgbdocument`.`id`,
     `lnkgbdocument`.`sFileExtension`,
     `lnkgbdocument`.`nRegisterDate`,
     `lnkgbdocument`.`dtEntered`,
-    `lnkgbdocument`.`nEnteredBy`
+    `lnkgbdocument`.`nEnteredBy`,
+    `lnkgbdocument`.`dtUpdated`,
+    `lnkgbdocument`.`nUpdatedBy`
 FROM `ctadb`.`lnkgbdocument`;
