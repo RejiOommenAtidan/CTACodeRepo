@@ -124,11 +124,23 @@ namespace CTAWebAPI.Services
 
 
             var userId = context.HttpContext.User.Claims.Where(claim => claim.Type == ClaimTypes.Name).Select(claim => claim.Value).FirstOrDefault();
-            
+
+            var user = _userRepository.GetUserById(userId);
+
+            var userActive = user.bActive;
+            if (!userActive)
+            {
+                context.Result = new UnauthorizedResult();
+                return;
+            }
             string userRoleFromJW = context.HttpContext.User.Claims.Where(claim => claim.Type == ClaimTypes.Role).Select(claim => claim.Value).FirstOrDefault().ToString();
+            
+            // The following code gives the role as stored in the JWT Token. May not be the updated rights.
             //int rightsId = _userRightsRepository.GetUserRightsByUserRightsName(userRoleFromJW).Id;
 
-            int rightsId = _userRepository.GetUserById(userId).nUserRightsId;
+
+            //Get the current updated rights of the user
+            int rightsId = user.nUserRightsId;
 
             bool permit = _featureUserrightsRepository.GetFeatureUserrightsByFeatureAnduserRighstId(_FeatureID, rightsId).bRights;
             if (permit)

@@ -70,7 +70,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `tblgivengbid`
                             INNER JOIN tblMadeb
                             on tblMadeb.nFormNumber = tblgivengbid.nFormNo
-                            where bGivenOrNot = 0 and bActive = 1
+                            WHERE bGivenOrNot = 0 
+                            AND bActive = 1
+                            AND nMadebTypeID = 1
                             ORDER BY nFormNo DESC;";
             using (var command = new MySqlCommand(sql))
             {

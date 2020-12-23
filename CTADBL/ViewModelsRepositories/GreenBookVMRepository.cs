@@ -170,8 +170,7 @@ namespace CTADBL.ViewModelsRepositories
         {
             //string operation = parameter == "sGBID" ? "=" : "LIKE";
             string operation = "LIKE";
-            //value = parameter == "sGBID" ? value : value + "%";
-            value = value.Trim() + "%";
+            value = parameter == "sOtherDocuments" ? "%" + value.Trim() + "%" : value.Trim() + "%"; 
             string join = String.Empty;
             string field = String.Empty;
             string where = String.Empty;
@@ -205,7 +204,7 @@ namespace CTADBL.ViewModelsRepositories
             {
 
                 //command.Parameters.AddWithValue("parameter", "gb." + parameter);
-                command.Parameters.AddWithValue("value", value);
+                command.Parameters.AddWithValue("value", value.Replace("\\", "\\\\"));
 
                 command.Connection = _connection;
                 command.CommandType = CommandType.Text;
@@ -282,12 +281,14 @@ namespace CTADBL.ViewModelsRepositories
                     else
                     {
                         if (!String.IsNullOrEmpty(item.Value) && !String.IsNullOrWhiteSpace(item.Value))
-                            addToSql += String.Format(@"gb.{0} LIKE '{1}%' and ", item.Key, item.Value);
+                            addToSql += String.Format(@"gb.{0} LIKE '%{1}%' and ", item.Key, item.Value.Replace("\'", "\'\'"));
                     }
                 }
             }
 
-            string sql = String.Format(@"SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, CAST(year(curdate()) - year(dtDOB) AS UNSIGNED) as Age,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID  FROM tblgreenbook as gb WHERE {0} 1 = 1 LIMIT 500", addToSql);
+            addToSql = addToSql.Replace("\\", "\\\\\\\\");
+
+            string sql = "SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, CAST(year(curdate()) - year(dtDOB) AS UNSIGNED) as Age,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID  FROM tblgreenbook as gb WHERE " + addToSql +" 1 = 1 LIMIT 500";
 
             using (var command = new MySqlCommand(sql))
             {

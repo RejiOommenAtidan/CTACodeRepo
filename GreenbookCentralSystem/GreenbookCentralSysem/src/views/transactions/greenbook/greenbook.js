@@ -173,7 +173,7 @@ export default function GBList(props) {
         width: "5%"
       },
       export: true,
-      render: rowData => rowData["dtDOB"] === null ? "NA" : Moment().diff(rowData["dtDOB"], 'years')
+      //render: rowData => rowData["dtDOB"] === null ? "NA" : Moment().diff(rowData["dtDOB"], 'years')
     },
     {
       field: 'edit',
@@ -257,6 +257,9 @@ export default function GBList(props) {
       .then(resp => {
         if (resp.status === 200) {
           //sCountryID
+          resp.data.forEach((element) => {
+            element.dtDOB = element.dtDOB ? Moment().diff(element.dtDOB, 'years') : null;
+          });
           setdataAPI(resp.data);
           setisLoading(false);
           modifyHeaders();
