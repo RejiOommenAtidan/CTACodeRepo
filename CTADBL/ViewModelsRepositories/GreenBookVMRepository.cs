@@ -199,7 +199,7 @@ namespace CTADBL.ViewModelsRepositories
                     break;
             }
 
-            string sql = String.Format(@"SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sAliasName, gb.dtDeceased, gb.sLastName, gb.sFamilyName, gb.dtDOB, CAST(year(curdate()) - year(dtDOB) AS UNSIGNED) as nAge,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID {0} FROM tblgreenbook as gb {1} WHERE {2} {3} @value ORDER BY {2} LIMIT 500", field, join, where, operation);
+            string sql = String.Format(@"SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sAliasName, gb.dtDeceased, gb.sLastName, gb.sFamilyName, gb.dtDOB,if(gb.dtDeceased is null,CAST(year(curdate()) - year(dtDOB) AS UNSIGNED), CAST(year(gb.dtDeceased) - year(dtDOB) AS UNSIGNED)) as nAge,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID {0} FROM tblgreenbook as gb {1} WHERE {2} {3} @value ORDER BY {2} LIMIT 500", field, join, where, operation);
 
             using (var command = new MySqlCommand(sql))
             {
@@ -287,7 +287,7 @@ namespace CTADBL.ViewModelsRepositories
                 }
             }
 
-            string sql = String.Format(@"SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, CAST(year(curdate()) - year(dtDOB) AS UNSIGNED) as Age,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID  FROM tblgreenbook as gb WHERE {0} 1 = 1 LIMIT 500", addToSql);
+            string sql = String.Format(@"SELECT gb.Id, gb.sGBID, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.dtDOB, if(gb.dtDeceased is null,CAST(year(curdate()) - year(dtDOB) AS UNSIGNED), CAST(year(gb.dtDeceased) - year(dtDOB) AS UNSIGNED)) as Age,  gb.sFathersName, gb.sMothersName, gb.sCity, gb.sCountryID  FROM tblgreenbook as gb WHERE {0} 1 = 1 LIMIT 500", addToSql);
 
             using (var command = new MySqlCommand(sql))
             {
