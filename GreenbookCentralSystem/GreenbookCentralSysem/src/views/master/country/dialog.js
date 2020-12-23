@@ -197,9 +197,16 @@ export const AddDialog = (props) => {
                   type="text"
                   onChange={(e) => { setCountryId(e.target.value) }}
                   inputRef={register({
-                    required: true
+                    required: true,
+                    maxLength:2
                   })}
                 />
+                 {_.get("name_countryId.type", errors) === "required" && (
+                      <span style={{ color: 'red' }}>This field is required</span>
+                    )}
+                     {_.get("name_countryId.type", errors) === "maxLength" && (
+                      <span style={{ color: 'red' }}>Only 2 Characters allowed</span>
+                    )}
               </FormControl>
             </Grid>
             <Grid item xs={12} >
