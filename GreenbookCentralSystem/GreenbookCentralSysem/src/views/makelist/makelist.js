@@ -124,8 +124,8 @@ export default () => {
       }
     },
     {
-      //field: "sFirstName",
-      render: rowData => (rowData['sFirstName'] ? rowData['sFirstName'] : '') + " " + (rowData['sLastName'] ? rowData['sLastName'] : ''),
+      field: "sFirstName",
+     // render: rowData => (rowData['sFirstName'] ? rowData['sFirstName'] : '') + " " + (rowData['sLastName'] ? rowData['sLastName'] : ''),
       title: "NAME",
       headerStyle: {
         textAlign: "center",
@@ -268,6 +268,7 @@ export default () => {
             setNoRecords(true);
             setdataAPI([]);
             setLoading(false);
+
             return;
           }
           //console.log(resp.data);
@@ -275,6 +276,7 @@ export default () => {
           let i = 1;
           resp.data.forEach((element) => {
             element.nSerialNo = i;
+            element.sFirstName=element.sFirstName+(element.sLastName? ' '+ element.sLastName : '');
             i++;
           })
           setdataAPI(resp.data);
