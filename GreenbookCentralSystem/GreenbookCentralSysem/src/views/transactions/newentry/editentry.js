@@ -2543,6 +2543,7 @@ export default function EditEntry(props) {
         <EditDocumentDialog
           editDocumentModal={editDocumentModal}
           oDocument={oDocument}
+          lGBDocument={lGBDocument}
           classes={classes}
           handleEditDocumentClickClose={handleEditDocumentClickClose}
           editDocumentAPICall={editDocumentAPICall}
