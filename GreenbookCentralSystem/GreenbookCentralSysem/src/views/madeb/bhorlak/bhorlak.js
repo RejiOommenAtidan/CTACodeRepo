@@ -244,7 +244,7 @@ export default function EnhancedTable() {
     {
       width: "8%",
       field: "madeb.nCurrentGBSno",
-      title: "BOOK SERIAL NO.",
+      title: "CURRENT GB SNO.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -254,7 +254,22 @@ export default function EnhancedTable() {
         textAlign: "right",
         padding: '5px',
         borderRight: '1px solid grey'
-      }
+      },
+    },
+    {
+      width: "8%",
+      field: "madeb.nPreviousGBSno",
+      title: "PREVIOUS GB SNO.",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "right",
+        padding: '5px',
+        borderRight: '1px solid grey'
+      },
     },
     {
       width: "10%",

@@ -420,16 +420,12 @@ placeholder="DD-MM-YYYY"
                     <TextField
                       id="sDocumentAttached"
                       name="sDocumentAttached"
-                      label={<p>Document Attached <span style={{ color: "red" }} > *</span></p>}
+                      label={<p>Document Attached </p>}
                       value={sDocumentAttached}
                       onChange={(e) => { setDocument(e.target.value) }}
-                      inputRef={register({
-                        required: true
-                      })}
+                      
                     />
-                    {_.get("sDocumentAttached.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                 
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -438,20 +434,16 @@ placeholder="DD-MM-YYYY"
                       id="nReceiptNo"
                       name="nReceiptNo"
 
-                      label={<p>Receipt No <span style={{ color: "red" }} > *</span></p>}
+                      label={<p>Receipt No </p>}
                       type='number'
                       value={nReceiptNo}
                       onChange={(e) => {
                         setReceiptNo(parseInt(e.target.value));
                         console.log("Value of Receipt changed to:", e.target.value);
                       }}
-                      inputRef={register({
-                        required: true
-                      })}
+                     
                     />
-                    {_.get("nReceiptNo.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                   
                   </FormControl>
                 </Grid>
                 {/*<Grid item xs={12} sm={6}>
@@ -1102,20 +1094,16 @@ placeholder="DD-MM-YYYY"
                       id="nReceiptNo"
                       name="nReceiptNo"
 
-                      label={<p>Receipt No <span style={{ color: "red" }} > *</span></p>}
+                      label={<p>Receipt No</p>}
                       type='number'
                       value={nReceiptNo}
                       onChange={(e) => {
                         setReceiptNo(parseInt(e.target.value));
                         console.log("Value of Receipt changed to:", e.target.value);
                       }}
-                      inputRef={register({
-                        required: true
-                      })}
+                    
                     />
-                    {_.get("nReceiptNo.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                   
                   </FormControl>
                 </Grid>
                 {/*<Grid item xs={12} sm={6}>
@@ -1168,18 +1156,13 @@ placeholder="DD-MM-YYYY"
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="da"
-                      label={<p>Document Attached <span style={{ color: "red" }} > *</span></p>}
+                      label={<p>Document Attached </p>}
                       name="name_da"
                       //value='Aayush Pandya'
-                      inputRef={register({
-                        required: true
-
-                      })}
+                      
                       onChange={(e) => { setDocument(e.target.value) }}
                     />
-                    {_.get("name_da.type", errors) === "required" && (
-                      <p>This field is required</p>
-                    )}
+                   
 
                   </FormControl>
                 </Grid>

@@ -150,11 +150,155 @@ export const ViewDialog = (props) => {
 
 
   useEffect(() => {
+    let count=1;
     axios.get(`GreenBook/GetDetailsFromGBID?sGBID=` + props.sGBID + `&nUserId=` + userid)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
-          setData(resp.data);
+        // setData(resp.data);
+        setData(
+          {
+            "relations": {
+              "sFathersName": "Ting Tong's Father",
+              "sFathersID": "",
+              "sFathersGBID": null,
+              "sFathersPhoto": null,
+              "sMothersName": "dsafdf",
+              "sMothersID": "",
+              "sMothersGBID": null,
+              "sMothersPhoto": null,
+              "sSpouseName": "Ting's Wife",
+              "sSpouseID": "",
+              "sSpouseGBID": null,
+              "sSpousePhoto": null
+            },
+            "greenBook": {
+              "id": 0,
+              "_id": null,
+              "sGBID": "2975013",
+              "nAuthRegionID": 0,
+              "sFirstName": "Ting",
+              "sMiddleName": null,
+              "sLastName": "Tang",
+              "sFamilyName": "",
+              "sGender": "M",
+              "dtDOB": "1999-05-05T00:00:00",
+              "sDOBApprox": "",
+              "sBirthPlace": "Adelaide",
+              "sBirthCountryID": "AU",
+              "sOriginVillage": "",
+              "sOriginProvinceID": null,
+              "sMarried": "Y",
+              "sOtherDocuments": "Passport",
+              "sResidenceNumber": "",
+              "sQualificationID": null,
+              "sOccupationID": null,
+              "sAliasName": null,
+              "sOldGreenBKNo": "",
+              "sFstGreenBkNo": null,
+              "dtFormDate": "2020-12-11T00:00:00",
+              "sFathersName": "Ting Tong's Father",
+              "sFathersID": null,
+              "sFathersGBID": null,
+              "sMothersName": "dsafdf",
+              "sMothersID": null,
+              "sMothersGBID": null,
+              "sSpouseName": null,
+              "sSpouseID": null,
+              "sSpouseGBID": null,
+              "nChildrenM": 0,
+              "nChildrenF": 0,
+              "sAddress1": "Amritsar",
+              "sAddress2": "",
+              "sCity": "",
+              "sState": "Punjab",
+              "sPCode": "",
+              "sCountryID": "IN",
+              "sEmail": "",
+              "sPhone": "",
+              "sFax": "",
+              "dtDeceased": null,
+              "sBookIssued": "",
+              "dtValidityDate": null,
+              "sPaidUntil": "",
+              "tibetanName": "ཟ་ཟླའི་མིང་།:",
+              "tbuPlaceOfBirth": "ཟ་ཟླའི་མིང་།:",
+              "tbuOriginVillage": " ཟ་ཟླའི་མིང་།:",
+              "tbuFathersName": "ཟ་ཟླའི་མིང་།:",
+              "tbuMothersName": "ཟ་ཟླའི་མིང་།:",
+              "tbuSpouseName": "",
+              "sEnteredDateTime": null,
+              "dtEntered": "2020-12-23T20:43:18",
+              "nEnteredBy": 0,
+              "dtUpdated": "2020-12-23T22:29:19",
+              "nUpdatedBy": 0
+            },
+            "children": [],
+            "booksIssued": [],
+            "gbNotes": [
+              {
+                "id": 27870,
+                "sGBID": "2975013",
+                "sNote": "Test Note for Ting",
+                "dtEntered": "2020-12-23T21:14:50",
+                "nEnteredBy": 91,
+                "dtUpdated": "2020-12-23T21:14:50",
+                "nUpdatedBy": 91
+              }
+            ],
+            "gbDocuments": [],
+            "auditLogs": [
+              {
+                "auditLog": {
+                  "id": 7,
+                  "dtEntered": "2020-12-23T21:15:16",
+                  "nFeatureID": 16,
+                  "nRegionID": 48,
+                  "nRecordID": 156426,
+                  "sGBID": "2975013",
+                  "sFieldValuesOld": "[{\"Field\":\"Last Name\",\"PreviousValue\":\"Tong\",\"NewValue\":\"Tang\"},{\"Field\":\"Gender\",\"PreviousValue\":\"\",\"NewValue\":\"M\"},{\"Field\":\"Birth Country ID\",\"PreviousValue\":\"AR\",\"NewValue\":\"AU\"},{\"Field\":\"Origin Province ID\",\"PreviousValue\":\"\",\"NewValue\":\"3\"},{\"Field\":\"Married\",\"PreviousValue\":\"\",\"NewValue\":\"Y\"},{\"Field\":\"Qualification ID\",\"PreviousValue\":\"\",\"NewValue\":\"R\"},{\"Field\":\"Father's Name\",\"PreviousValue\":\"Ting's Father\",\"NewValue\":\"Ting Tong's Father\"},{\"Field\":\"Spouse Name\",\"PreviousValue\":\"\",\"NewValue\":\"Ting's Wife\"},{\"Field\":\"State\",\"PreviousValue\":\"sdfasd\",\"NewValue\":\"Karnataka\"},{\"Field\":\"Country ID\",\"PreviousValue\":\"AR\",\"NewValue\":\"IN\"}]",
+                  "sFieldValuesNew": "",
+                  "nEnteredBy": 91
+                },
+                "sEnteredBy": "Rajen",
+                "sAuthRegion": null,
+                "sOffice": "TCRC Office",
+                "sFeature": "Edit GB"
+              },
+              {
+                "auditLog": {
+                  "id": 8,
+                  "dtEntered": "2020-12-23T22:29:21",
+                  "nFeatureID": 16,
+                  "nRegionID": 48,
+                  "nRecordID": 156426,
+                  "sGBID": "2975013",
+                  "sFieldValuesOld": "[{\"Field\":\"Place Of Birth\",\"PreviousValue\":\"wrere\",\"NewValue\":\"Adelaide\"},{\"Field\":\"Occupation ID\",\"PreviousValue\":\"\",\"NewValue\":\"10\"},{\"Field\":\"Address1\",\"PreviousValue\":\"fdsf\",\"NewValue\":\"Amritsar\"},{\"Field\":\"State\",\"PreviousValue\":\"Karnataka\",\"NewValue\":\"Punjab\"},{\"Field\":\"Origin Village Tibetan\",\"PreviousValue\":\"dasfd\",\"NewValue\":\" ཟ་ཟླའི་མིང་།:\"}]",
+                  "sFieldValuesNew": "",
+                  "nEnteredBy": 91
+                },
+                "sEnteredBy": "Rajen",
+                "sAuthRegion": null,
+                "sOffice": "TCRC Office",
+                "sFeature": "Edit GB"
+              }
+            ],
+            "sAuthRegion": "Hunsur",
+            "sProvince": "Utsang",
+            "sQualification": "Post Graduation",
+            "sOccupationDesc": "Business",
+            "sFathersGBID": null,
+            "sMothersGBID": null,
+            "sSpouseGBID": null,
+            "sBirthCountry": "Australia",
+            "sCountry": "India",
+            "sEnteredBy": "Rajen",
+            "sUpdatedBy": "Rajen",
+            "sPhoto": null,
+            "nAge": 21
+          }            
+
+        );
           
           // console.log(JSON.parse(localStorage.getItem("currentUser")).oUser.id);
 
@@ -695,23 +839,28 @@ export const ViewDialog = (props) => {
                                   </tr>
                                 </thead>
                                 {
+                                  
                                   <tbody style={{ padding: 0 }}>
-                                    {data.auditLogs.map((row, index) => (
-                                      <tr>
-                                        <td scope='row'>{index + 1}</td>
-                                        <td >{row.sFeature}</td>
-                                        <td >{row.auditLog.sFieldValuesOld}</td>
-                                        <td >{row.auditLog.sFieldValuesNew}</td>
-                                        <td >{row.sEnteredBy}</td>
-                                        <td >{row.sOffice}</td>
-                                        <td >{row.auditLog.dtEntered ? Moment(row.auditLog.dtEntered).format('DD-MM-YYYY HH:mm:ss') : ''}</td>
-
-
-
+                                    
+                                    {
+                                    data.auditLogs.map((row1, i) => (
+                                     
+                                       JSON.parse(row1.auditLog.sFieldValuesOld).map((row2, j) => (
+                                         
+                                    <tr>
+                                        <td scope='row'>{'#'}</td>  
+                                        <td >{row2.Field}</td>
+                                        <td >{row2.PreviousValue}</td>
+                                        <td >{row2.NewValue}</td>
+                                        <td >{row1.sEnteredBy}</td>
+                                        <td >{row1.sOffice}</td>
+                                        <td >{row1.auditLog.dtEntered ? Moment(row1.auditLog.dtEntered).format('DD-MM-YYYY HH:mm:ss') : ''}</td>
                                       </tr>
+                                
 
-
-                                    ))}
+                                       ))
+                                              ))     
+                                       }
                                   </tbody>}
                               </Table>}
 

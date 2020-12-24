@@ -464,13 +464,9 @@ placeholder="DD-MM-YYYY"
                         setReceiptNo(parseInt(e.target.value));
                         console.log("Value of Receipt changed to:", e.target.value);
                       }}
-                      inputRef={register({
-                        required: true
-                      })}
+                     
                     />
-                    {_.get("nReceiptNo.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                  
                   </FormControl>
                 </Grid>
 

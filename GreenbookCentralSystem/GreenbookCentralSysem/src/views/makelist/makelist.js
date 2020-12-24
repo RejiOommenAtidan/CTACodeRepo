@@ -15,6 +15,7 @@ import {
 } from "../../config/commonConfig";
 import { Alerts } from '../alerts';
 import Moment from 'moment';
+import { NavigateBeforeSharp } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,6 +87,8 @@ export default () => {
   const [filtering, setFiltering] = React.useState(false);
   const [makeListParams, setMakeListParams] = useState({});
   const [addToTitle, setAddToTitle] = useState('');
+  const [sAuthRegion, setAuthRegion] = useState('');
+  const [sMadebType, setMadebType] = useState('');
 
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
@@ -255,6 +258,8 @@ export default () => {
     setdataAPI([]);
     console.log("Make List Params recd. \n", makeListParams);
     console.log("Authregion & madebtype", sAuthRegion, sMadebType);
+    setAuthRegion(sAuthRegion);
+    setMadebType(sMadebType);
     setAddToTitle(`Authority Region: ${sAuthRegion}, Madeb Type: ${sMadebType}`);
     axios.post(`MakeList/MakeList`, makeListParams)
       .then(resp => {
@@ -319,8 +324,8 @@ export default () => {
             <Typography color="textPrimary">Make List</Typography>
   </Breadcrumbs>*/}
           <br />
-          <Paper style={{ padding: '15px', paddingTop: '20px' }}>
-
+          <Paper style={{ padding: '15px', paddingTop: '20px',textAlign:'center' }}>
+            <h2>Make List</h2>
             {dataReady && (<InputParams
               selectData={selectData}
               classes={classes}
@@ -343,8 +348,10 @@ export default () => {
               <MaterialTable
                 style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
                 //isLoading = {loading}
+                // ${sAuthRegion}, Madeb Type: ${sMadebType}
                 icons={oTableIcons}
-                title={`Make List -  ${addToTitle}`}
+              //  title={<h5><b> Authority Region: </b> {sAuthRegion} &nbsp; &nbsp; &nbsp;  <b>Madeb Type:</b> {sMadebType} </h5>}
+              title={"Authority Region:"+sAuthRegion  +"  "  + "   Madeb Type:"+sMadebType}
                 columns={columns}
                 data={dataAPI}
                 components={{
