@@ -158,7 +158,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Update Call
         public void Update(GBDocument gbdocument)
         {
-            gbdocument.binFileDoc = gbdocument.binFileDoc.Substring(gbdocument.binFileDoc.IndexOf("base64,") + 7);
+            if (gbdocument.binFileDoc.IndexOf("base64,") > 0) {
+                gbdocument.binFileDoc = gbdocument.binFileDoc.Substring(gbdocument.binFileDoc.IndexOf("base64,") + 7);
+            }      
             byte[] newbytes = Convert.FromBase64String(gbdocument.binFileDoc);
             var builder = new SqlQueryBuilder<GBDocument>(gbdocument);
             gbdocument.binFileDoc = string.Empty;

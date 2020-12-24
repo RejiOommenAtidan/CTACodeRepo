@@ -25,7 +25,7 @@ export const AddDocumentDialog = (props) => {
     const handleSubmitAddDocumentRecord = () => {
         let resultNameTemp = lGBDocument.find(document => document.sTitle === sTitle);
         console.log(resultNameTemp);
-        setResultName(resultNameTemp);
+        //setResultName(resultNameTemp);
         
         if (resultNameTemp){
             setResultName('File name already exists');
@@ -237,19 +237,46 @@ export const AddDocumentDialog = (props) => {
 export const EditDocumentDialog = (props) => {
     const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
     const { register, handleSubmit, errors, formState } = useForm();
+    const [lGBDocument, setlGBDocument] = useState(props.lGBDocument);
+    console.log('old:',props.oDocument.binFileDoc);
     const handleSubmitEditDocumentRecord = () => {
-        props.editDocumentAPICall(
-            {
-                id: props.oDocument.id,
-                sGBID: props.oDocument.sGBID,
-                sTitle: sTitle,
-                sDocType: sDocType,
-                binFileDoc: binFileDoc,
-                sFileExtension: sFileExtension,
-                nRegisterDate: nRegisterDate,
-                nUpdatedBy: userId
-            }
-        );
+       
+        let resultNameTemp = lGBDocument.find(document => document.sTitle === sTitle);
+        console.log(resultNameTemp);
+        //setResultName(resultNameTemp);
+        
+        if (resultNameTemp){
+            setResultName('File name already exists');
+            console.log("No");
+            setsTitle("");
+            setsFileExtension("");
+            setbinFileDoc("")
+            return false
+        }
+        else if(binFileDoc){
+            console.log("Yes");
+            console.log('new',binFileDoc);
+            props.editDocumentAPICall(
+                {
+                    id: props.oDocument.id,
+                    sGBID: props.oDocument.sGBID,
+                    sTitle: sTitle,
+                    sDocType: sDocType,
+                    binFileDoc: binFileDoc,
+                    sFileExtension: sFileExtension,
+                    nRegisterDate: nRegisterDate,
+                    nUpdatedBy: userId
+                }
+            );
+        }
+        else{
+            setResultName('Please select a file');
+            console.log("No");
+            setsTitle("");
+            setsFileExtension("");
+            setbinFileDoc("")
+            return false
+        }
     }
 
     const [sAccept, setsAccept] = useState(props.oDocument.sDocType === "Photo Identity" ? "image/*" : "application/msword, application/pdf");
@@ -258,7 +285,7 @@ export const EditDocumentDialog = (props) => {
     const [binFileDoc, setbinFileDoc] = useState(props.oDocument.binFileDoc);
     const [sFileExtension, setsFileExtension] = useState(props.oDocument.sFileExtension);
     const [nRegisterDate, setnRegisterDate] = useState(props.oDocument.nRegisterDate);
-
+    const [resultName, setResultName] = useState();
     const handleUploadChange = (event) => {
         let files = document.getElementById("id_binDocFile").files;
         let file;
@@ -272,6 +299,7 @@ export const EditDocumentDialog = (props) => {
                 var Extension = file.type.split("/").pop()
                 setsTitle(Name);
                 setsFileExtension(Extension);
+                setResultName();
             }
         }
     };
@@ -350,6 +378,14 @@ export const EditDocumentDialog = (props) => {
                                     >File Uploaded, File Name: {sTitle}</Typography>
                                 </FormControl>
                             </Grid>}
+                            {resultName && <Grid item xs={12}>
+                                <FormControl className={props.classes.formControl}>
+                                    <Typography
+                                        variant="p"
+                                        style={{color:'red'}}   
+                                    >{resultName}</Typography>
+                                </FormControl>
+                            </Grid>}
                             {/*<Grid item xs={12} >
                                 <FormControl className={props.classes.formControl}>
                                     <TextField
@@ -380,10 +416,7 @@ export const EditDocumentDialog = (props) => {
                                         inputRef={register({
                                             required: true
                                         })}
-                                        InputProps={{
-                                            readOnly: true,
-                                            disabled: true
-                                        }}
+                                      
                                     />
                                     {_.get("name_sTitle.type", errors) === "required" && (
                                         <span style={{ color: 'red' }}>This field is required</span>
