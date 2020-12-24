@@ -343,7 +343,8 @@ export const SaveDialog = (props) => {
 	const [id, setId] = React.useState(props.saveObj['id']);
 	const [madebType, setMadebType] = React.useState(props.saveObj['nMadebTypeID']);
 	const [authorityId, setAuthorityId] = React.useState(props.saveObj['nAuthRegionID']);
-	const [receivedDate, setReceivedDate] = React.useState(props.saveObj.dtReceived ? (props.saveObj.dtReceived).split('T')[0] : undefined);
+  //const [receivedDate, setReceivedDate] = React.useState(props.saveObj.dtReceived ? (props.saveObj.dtReceived).split('T')[0] : undefined);
+  const [receivedDate, setReceivedDate] = React.useState(new Date());
 	const [gbId, setGbId] = React.useState(parseInt(props.saveObj['sGBID']));
 	const [issuedOrNotId, setIssuedOrNotId] = React.useState(2);
 
@@ -434,7 +435,7 @@ placeholder="DD-MM-YYYY"
 													}
 												}}
 												//defaultValue={receivedDate}
-												value={receivedDate}
+                        value={receivedDate}
 												KeyboardButtonProps={{
 													"aria-label": "change date",
 												}}

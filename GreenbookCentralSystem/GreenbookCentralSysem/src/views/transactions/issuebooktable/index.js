@@ -133,7 +133,7 @@ export const IssueBookTable = (props) => {
     alertType: alertType
   }
   const [snackbar, setSnackbar] = React.useState(false);
-  const [backdrop, setBackdrop] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(true);
   const snackbarOpen = () => {
     console.log('alert');
     setSnackbar(true);
@@ -152,9 +152,11 @@ export const IssueBookTable = (props) => {
           // console.log(resp.data);
           // setdataAPI(resp.data)
           pendingGbId();
+          
         }
       })
       .catch(error => {
+        setBackdrop(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -173,6 +175,7 @@ export const IssueBookTable = (props) => {
   };
 
   const pendingGbId = () => {
+    
     axios.get(`Madeb/GetMadebforIssueBook/GBId=` + props.gbId)
       .then(resp => {
         if (resp.status === 200) {
@@ -180,9 +183,11 @@ export const IssueBookTable = (props) => {
           setHistoryTable(true);
           console.log(resp.data);
           // setdataAPI(resp.data)
+          setBackdrop(false);
         }
       })
       .catch(error => {
+        setBackdrop(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -200,6 +205,7 @@ export const IssueBookTable = (props) => {
   };
 
   const selectDatafunction = () => {
+    setBackdrop(true);
     axios.get(`Madeb/GetNewEmptyMadebIssueBook`)
       .then(resp => {
         if (resp.status === 200) {
@@ -209,6 +215,7 @@ export const IssueBookTable = (props) => {
         }
       })
       .catch(error => {
+        setBackdrop(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -354,6 +361,8 @@ export const IssueBookTable = (props) => {
             <br />
             {historyTable && <>
               {historyData.length != 0 &&
+              <>
+              <p> Book Issue of {gbId}</p>
                 <Table className="table table-hover table-striped table-bordered">
                   <thead className="thead-light">
                     <tr>
@@ -387,7 +396,7 @@ export const IssueBookTable = (props) => {
                       </tr>
                     ))}
                   </tbody>
-                </Table>}
+                </Table> </>}
               {pendingData.length != 0 &&
                 <Table className="table table-hover table-striped table-bordered">
                   <thead className="thead-light">
