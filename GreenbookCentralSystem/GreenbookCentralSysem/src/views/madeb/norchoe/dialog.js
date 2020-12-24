@@ -412,7 +412,7 @@ placeholder="DD-MM-YYYY"
                     <TextField
                       id="da"
 
-                      label={<p>Document Attached<span style={{ color: "red" }} > *</span></p>}
+                      label={<p>Document Attached</p>}
                       value={documents}
                       onChange={(e) => { setDocument(e.target.value) }}
                     />
@@ -994,18 +994,13 @@ placeholder="DD-MM-YYYY"
                     <TextField
                       id="da"
 
-                      label={<p>Document Attached<span style={{ color: "red" }} > *</span></p>}
+                      label={<p>Document Attached</p>}
                       name="name_da"
                       //value='Aayush Pandya'
-                      inputRef={register({
-                        required: true
-
-                      })}
+                      
                       onChange={(e) => { setDocument(e.target.value) }}
                     />
-                    {_.get("name_da.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                    
                   </FormControl>
                 </Grid>
 
@@ -1014,18 +1009,16 @@ placeholder="DD-MM-YYYY"
                     <TextField
                       id="receipt"
 
-                      label={<p>Receipt Number<span style={{ color: "red" }} > *</span></p>}
+                      label={<p>Receipt Number</p>}
                       type="number"
                       name='receipt'
                       inputRef={register({
-                        required: true,
+                     
                         min: 0
                       })}
                       onChange={(e) => { setReceipt(parseInt(e.target.value)) }}
                     />
-                    {_.get("receipt.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                   
                     {/*_.get("form_number.type", errors) === "maxLength" && (
                                                 <p>First name cannot exceed 20 characters</p>
                                             )*/}

@@ -402,16 +402,6 @@ export default function EnhancedTable() {
         padding: '5px',
         borderRight: '1px solid grey'
       },
-      // filterComponent: () =>
-      //   <MyComp
-      //     field="madeb.nCurrentGBSno"
-      //     name="CURRENT GB SNO."
-      //     changeHandler={changeHandler}
-      //     myarray={myarray}
-      //     updateArray={updateArray}
-      //     currId={currId}
-      //     key={"madeb.nCurrentGBSno"}
-      //   />
     },
     {
       width: "8%",
@@ -427,16 +417,6 @@ export default function EnhancedTable() {
         padding: '5px',
         borderRight: '1px solid grey'
       },
-      // filterComponent: () =>
-      //   <MyComp
-      //     field="madeb.nPreviousGBSno"
-      //     name="PREVIOUS GB SNO"
-      //     changeHandler={changeHandler}
-      //     myarray={myarray}
-      //     updateArray={updateArray}
-      //     currId={currId}
-      //     key={"madeb.nPreviousGBSno"}
-      //   />
     },
     {
       width: "8%",

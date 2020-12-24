@@ -307,16 +307,14 @@ placeholder="DD-MM-YYYY"
                                         <TextField
                                             id="da"
                                             name="name_da"
-                                            label={<p>Document Attached<span style={{ color: "red" }} > *</span></p>}
+                                            label={<p>Document Attached</p>}
                                             value={documents}
                                             inputRef={register({
                                                 required: true
                                             })}
                                             onChange={(e) => { setDocument(e.target.value) }}
                                         />
-                                        {_.get("name_da.type", errors) === "required" && (
-                                            <p style={{ color: "red" }}>This field is required</p>
-                                        )}
+                                     
                                     </FormControl>
                                 </Grid>
 
@@ -817,18 +815,18 @@ placeholder="DD-MM-YYYY"
                                     <FormControl className={props.classes.formControl}>
                                         <TextField
                                             id="da"
-                                            label={<p>Document attached<span style={{ color: "red" }} > *</span></p>}
+                                            label={<p>Document attached</p>}
                                             name="name_da"
                                             //value='Aayush Pandya'
-                                            inputRef={register({
+                                           /* inputRef={register({
                                                 required: true
 
-                                            })}
+                                            })}*/
                                             onChange={(e) => { setDocument(e.target.value) }}
                                         />
-                                        {_.get("name_da.type", errors) === "required" && (
+                                        {/*_.get("name_da.type", errors) === "required" && (
                                             <p style={{ color: "red" }}>This field is required</p>
-                                        )}
+                                        )*/}
 
                                     </FormControl>
                                 </Grid>
