@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
@@ -14,14 +15,14 @@ namespace CTAWebAPI.Services
         /// <param name="oOld">Old Object</param>
         /// <param name="oNew">New Object</param>
         /// <returns></returns>
-        public static string[] ReturnStrings<T>(T oOld, T oNew) where T : class
+        public static string ReturnStrings<T>(T oOld, T oNew) where T : class
         {
             string sSeparator = ", ";
             List<string> lFieldValuesOld = new List<string>();
             List<string> lFieldValuesNew = new List<string>();
 
             string[] aStringReturn = new string[2];
-
+            List<object> changes = new List<object>();
             if (oOld != null && oNew != null)
             {
                 Type type = typeof(T);
@@ -36,6 +37,8 @@ namespace CTAWebAPI.Services
                     "binFileDoc"
                 };
                 #endregion
+
+                
 
                 foreach (PropertyInfo pi in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
                 {
@@ -55,16 +58,20 @@ namespace CTAWebAPI.Services
 
                             lFieldValuesOld.Add(sOldStringToJoin);
                             lFieldValuesNew.Add(sNewStringToJoin);
+
+                            var change = new { Field = sDisplayNameCommon, PreviousValue = sOldvalue.ToString(), NewValue = sNewValue.ToString() };
+                            changes.Add(change);
                         }
                     }
                 }
-
+                string changesStr = JsonConvert.SerializeObject(changes);
                 string sFieldValuesOld = string.Join(sSeparator, lFieldValuesOld);
                 string sFieldValuesNew = string.Join(sSeparator, lFieldValuesNew);
 
                 aStringReturn[0] = sFieldValuesOld;
                 aStringReturn[1] = sFieldValuesNew;
-                return aStringReturn;
+                //return aStringReturn;
+                return changesStr;
             }
             return null;
         }

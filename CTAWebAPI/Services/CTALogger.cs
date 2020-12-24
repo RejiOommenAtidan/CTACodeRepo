@@ -73,8 +73,9 @@ namespace CTAWebAPI.Services
             #region Add Audit Record
             try
             {
-                string[] sDifference = CTAAuditLogger.ReturnStrings(oOld, oNew);
-                if (sDifference != null & sDifference[0] != "" && sDifference[1] != "")
+                string sDifference = CTAAuditLogger.ReturnStrings(oOld, oNew);
+                //if (sDifference != null & sDifference[0] != "" && sDifference[1] != "")
+                if(!String.IsNullOrEmpty(sDifference))
                 {
                     AuditLog auditLogger = new AuditLog()
                     {
@@ -83,8 +84,10 @@ namespace CTAWebAPI.Services
                         nRegionID = nRegionID,
                         nRecordID = nRecordID,
                         sGBID = sGBID,
-                        sFieldValuesOld = sDifference[0],
-                        sFieldValuesNew = sDifference[1],
+                        //sFieldValuesOld = sDifference[0],
+                        //sFieldValuesNew = sDifference[1],
+                        sFieldValuesOld = sDifference,
+                        sFieldValuesNew = "",
                         nEnteredBy = nEnteredBy
                     };
                     _auditLogRepository.Add(auditLogger);
