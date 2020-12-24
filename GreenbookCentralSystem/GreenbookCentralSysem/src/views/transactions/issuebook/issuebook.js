@@ -23,7 +23,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import { IssueBookTable } from '../issuebooktable';
 import { Alerts } from '../../alerts';
 import { sButtonColor, sButtonSize, sButtonVariant, sDateFormat } from "../../../config/commonConfig";
-
+import { BackdropComponent } from '../../backdrop/index';
 const getMuiTheme = () => createMuiTheme({
   overrides: {
     MUIDataTableHeadCell: {
@@ -128,7 +128,7 @@ export default function EnhancedTable() {
   const snackbarClose = () => {
     setSnackbar(false);
   };
-
+  const [backdrop, setBackdrop] = React.useState(false);
   const searchGbId = () => {
     console.log(gbId);
     axios.get(`IssueBook/GetIssueBookJoin/GBId=` + gbId)
@@ -179,12 +179,13 @@ export default function EnhancedTable() {
     setLatestDataTable(false);
     setHistoryTable(true);
   };
-
-  useEffect(() => {
+  const GetLatestData = ()=>{
+    setBackdrop(true);
     axios.get(`IssueBook/GetLatestIssueBookJoin`)
       .then(resp => {
         if (resp.status === 200) {
           console.log(resp.data);
+          setBackdrop(false);
           setLatestData(resp.data);
           setLatestDataTable(true);
         }
@@ -204,6 +205,11 @@ export default function EnhancedTable() {
       .then(release => {
         //console.log(release); => udefined
       });
+  }
+  useEffect(() => {
+    setBackdrop(true);
+    GetLatestData();
+    
   }, []);
 
   return (
@@ -239,7 +245,7 @@ export default function EnhancedTable() {
              </Button>
                 <Button
                   style={{ marginTop: 8, marginLeft: 5 }}
-                  onClick={() => { setHistoryTable(false); setLatestDataTable(true); setGbId('') }}
+                  onClick={() => { setHistoryTable(false); GetLatestData(); setGbId('') }}
                   variant={sButtonVariant}
                   color={sButtonColor}
                   size={sButtonSize}
@@ -294,6 +300,9 @@ export default function EnhancedTable() {
             snackbar={snackbar}
             snackbarClose={snackbarClose}
           />}
+            {backdrop && <BackdropComponent
+              backdrop={backdrop}
+            />}
         </Grid>
       </Grid>
     </>

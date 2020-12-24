@@ -23,16 +23,41 @@ export const AddDocumentDialog = (props) => {
     const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
     const { register, handleSubmit, errors, formState } = useForm();
     const handleSubmitAddDocumentRecord = () => {
-        props.addDocumentAPICall({
-            sGBID: props.sGBID,
-            sTitle: sTitle,
-            sDocType: sDocType,
-            binFileDoc: binFileDoc,
-            sFileExtension: sFileExtension,
-            nRegisterDate: nRegisterDate,
-            nEnteredBy: userId,
-            nUpdatedBy: userId
-        });
+        let resultNameTemp = lGBDocument.find(document => document.sTitle === sTitle);
+        console.log(resultNameTemp);
+        setResultName(resultNameTemp);
+        
+        if (resultNameTemp){
+            setResultName('File name already exists');
+            console.log("No");
+            setsTitle("");
+            setsFileExtension("");
+            setbinFileDoc("")
+            return false
+        }
+        else if(binFileDoc){
+            console.log("Yes");
+            
+            props.addDocumentAPICall({
+                sGBID: props.sGBID,
+                sTitle: sTitle,
+                sDocType: sDocType,
+                binFileDoc: binFileDoc,
+                sFileExtension: sFileExtension,
+                nRegisterDate: nRegisterDate,
+                nEnteredBy: userId,
+                nUpdatedBy: userId
+            });
+        }
+        else{
+            setResultName('Please select a file');
+            console.log("No");
+            setsTitle("");
+            setsFileExtension("");
+            setbinFileDoc("")
+            return false
+        }
+     
     };
 
     const [sAccept, setsAccept] = useState("application/msword, application/pdf");
@@ -42,8 +67,9 @@ export const AddDocumentDialog = (props) => {
     const [sFileExtension, setsFileExtension] = useState("");
     const [nRegisterDate, setnRegisterDate] = useState(0);
     const [lGBDocument, setlGBDocument] = useState(props.lGBDocument);
-
+    const [resultName, setResultName] = useState();
     let result = lGBDocument.find(document => document.sDocType === "Photo Identity");
+
 
     const handleUploadChange = (event) => {
         let files = document.getElementById("id_binDocFile").files;
@@ -57,7 +83,10 @@ export const AddDocumentDialog = (props) => {
                 var Name = file.name.slice(0, Dot);
                 var Extension = file.type.split("/").pop()
                 setsTitle(Name);
-                setsFileExtension(Extension);
+             setsFileExtension(Extension);
+             setResultName();
+                
+                
             }
         }
     };
@@ -137,6 +166,14 @@ export const AddDocumentDialog = (props) => {
                                     >File Added for Upload, File Name: {sTitle}</Typography>
                                 </FormControl>
                             </Grid>}
+                            {resultName && <Grid item xs={12}>
+                                <FormControl className={props.classes.formControl}>
+                                    <Typography
+                                        variant="p"
+                                        style={{color:'red'}}   
+                                    >{resultName}</Typography>
+                                </FormControl>
+                            </Grid>}
                             {/*<Grid item xs={12} >
                                 <FormControl className={props.classes.formControl}>
                                     <TextField
@@ -167,10 +204,7 @@ export const AddDocumentDialog = (props) => {
                                         inputRef={register({
                                             required: true
                                         })}
-                                        InputProps={{
-                                            readOnly: true,
-                                            disabled: true
-                                        }}
+                                
                                     />
                                     {_.get("name_sTitle.type", errors) === "required" && (
                                         <span style={{ color: 'red' }}>This field is required</span>
@@ -286,6 +320,9 @@ export const EditDocumentDialog = (props) => {
                                         <MenuItem value={"Support Document"}>Support Document</MenuItem>
                                         <MenuItem value={"Photo Identity"}>Photo Identity</MenuItem>
                                     </Select>
+                                    { 
+                                    <span></span>
+                                    }
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12}>
