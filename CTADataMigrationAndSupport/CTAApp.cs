@@ -1515,37 +1515,16 @@ namespace CTADataMigrationAndSupport
                             chatrelPayment.dtChatrel = Convert.ToDateTime(row["ChatrelDate"] == DBNull.Value ? null : row["ChatrelDate"]);
                             chatrelPayment.sAuthRegionName = row["AuthorityRegion"].ToString();
                             chatrelPayment.sCountryName = row["Country"].ToString();
-                            chatrelPayment.sChatrelStatus = "Sucess";
+                            chatrelPayment.sChatrelStatus = "Success";
                             chatrelPayment.sChatrelMode = row["ModeOfChatrel"].ToString();
 
                         }
 
-                        //txtFile.Text = dialog.SafeFileName;
-                        //SourceURl = dialog.FileName;
-                        //if (dtNew.Rows != null && dtNew.Rows.ToString() != String.Empty)
-                        //{
-                        //    dgItems.DataSource = dtNew;
-                        //}
-                        //foreach (DataGridViewRow row in dgItems.Rows)
-                        //{
-                        //    if (Convert.ToString(row.Cells["LookupCode"].Value) == "" || row.Cells["LookupCode"].Value == null
-                        //        || Convert.ToString(row.Cells["ItemName"].Value) == "" || row.Cells["ItemName"].Value == null
-                        //        || Convert.ToString(row.Cells["DeptId"].Value) == "" || row.Cells["DeptId"].Value == null
-                        //        || Convert.ToString(row.Cells["Price"].Value) == "" || row.Cells["Price"].Value == null)
-                        //    {
-                        //        row.DefaultCellStyle.BackColor = Color.Red;
-                        //        inValidItem += 1;
-                        //    }
-                        //    else
-                        //    {
-                        //        ImportedRecord += 1;
-                        //    }
-                        //}
-                        //if (dgItems.Rows.Count == 0)
-                        //{
-                        //    btnSave.Enabled = false;
-                        //    MessageBox.Show("There is no data in this file", "GAUTAM POS", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        //}
+                        
+                        if (dtNew != null && dtNew.Rows.Count > 0)
+                        {
+                            BulkToMySQL(dtNew);
+                        }
                     }
                     else
                     {
@@ -1788,6 +1767,58 @@ namespace CTADataMigrationAndSupport
         private void btnSave_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private static void BulkToMySQL(DataTable dtNew)
+        {
+            string connetionString = null;
+            MySqlConnection cnn;
+            connetionString = "Server=127.0.0.1;Port=3306;Database=ctadb;Uid=root;allow zero datetime=no";
+            StringBuilder sCommand = new StringBuilder("INSERT INTO `tblchatrelbulkdata`(`SNo`,`IDNo`,`Name`,`PaidBy`,`Currency`,`Chatrel`,`Meal`,`Salary`,`ChatrelFrom`,`ChatrelTo`,`FinancialYear`,`ArrearsPlusLateFees`,`ArrearsFrom`,`ArrearsTo`,`BusinessDonation`,`AdditionalDonation`,`TotalAmount`,`RecieptNo`,`ChatrelDate`,`Region`,`Country`,`ModeOfChatrel`,`dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ");
+            using (MySqlConnection mConnection = new MySqlConnection(connetionString))
+            {
+                List<string> Rows = new List<string>();
+
+                foreach (DataRow row in dtNew.Rows)
+                {
+                    Rows.Add(string.Format("('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}','{21}','{22}','{23}','{24}','{25}')"
+                        , MySqlHelper.EscapeString(row["SNo"].ToString())
+                        , MySqlHelper.EscapeString(row["IDNo"].ToString())
+                        , MySqlHelper.EscapeString(row["Name"].ToString())
+                        , MySqlHelper.EscapeString(row["PaidBy"].ToString())
+                        , MySqlHelper.EscapeString(row["Currency"].ToString())
+                        , MySqlHelper.EscapeString(row["Chatrel"].ToString())
+                        , MySqlHelper.EscapeString(row["Meal"].ToString())
+                        , MySqlHelper.EscapeString(row["Salary"].ToString())
+                        , MySqlHelper.EscapeString(row["From"].ToString())
+                        , MySqlHelper.EscapeString(row["To"].ToString())
+                        , MySqlHelper.EscapeString(row["FinancialYear"].ToString())
+                        , MySqlHelper.EscapeString(row["ArrearsPlusLateFees"].ToString())
+                        , MySqlHelper.EscapeString(row["ArrearsFrom"].ToString())
+                        , MySqlHelper.EscapeString(row["ArrearsTo"].ToString())
+                        , MySqlHelper.EscapeString(row["BusinessDonation"].ToString())
+                        , MySqlHelper.EscapeString(row["AdditionalDonation"].ToString())
+                        , MySqlHelper.EscapeString(row["TotalAmount"].ToString())
+                        , MySqlHelper.EscapeString(row["ChatrelRecieptNo"].ToString())
+                        , MySqlHelper.EscapeString(row["ChatrelDate"].ToString())
+                        , MySqlHelper.EscapeString(row["AuthorityRegion"].ToString())
+                        , MySqlHelper.EscapeString(row["Country"].ToString())
+                        , MySqlHelper.EscapeString(row["ModeOfChatrel"].ToString())
+                        , DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")
+                        , 1
+                        , DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")
+                        , 1
+                        ));
+                }
+                sCommand.Append(string.Join(",", Rows));
+                sCommand.Append(";");
+                mConnection.Open();
+                using (MySqlCommand myCmd = new MySqlCommand(sCommand.ToString(), mConnection))
+                {
+                    myCmd.CommandType = CommandType.Text;
+                    myCmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }

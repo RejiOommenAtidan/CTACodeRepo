@@ -1137,6 +1137,29 @@ set bActive = 0
 where nGBId = 0;
 
 
+INSERT INTO `tblauditlog` 
+( 
+	`dtEntered`, 
+	`nFeatureID`, 
+	`nRegionID`, 
+	`nRecordID`, 
+	`sGBID`, 
+	`sFieldValuesOld`, 
+	`sFieldValuesNew`, 
+	`nEnteredBy`
+) 
+SELECT   
+	historychangeschild.ModifiedDate as dtEntered     
+	, 101 as nFeatureID     
+	, null as nRegionID     
+	, historychangeschild.ChildID as nRecordID     
+	, historychangeschild.ParentID as sGBID     
+	, concat(historychangeschild.FieldName, ' = ',historychangeschild.ChangesFrom) as sFieldValuesOld
+	, concat(historychangeschild.FieldName, ' = ',historychangeschild.ChangesFrom) as sFieldValuesNew
+	,if(concat('',historychangeschild.byWhom * 1) = historychangeschild.byWhom,historychangeschild.byWhom,1) as nEnteredBy 
+FROM greenbookprime.historychangeschild;
+
+
 SET SQL_SAFE_UPDATES=0;
 UPDATE lstMadebType
 		,(SELECT tblmadeb.nMadebTypeID as ID, Max(tblmadeb.nFormNumber) AS LastFormNumber
