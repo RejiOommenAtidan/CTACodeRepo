@@ -375,7 +375,7 @@ export default () => {
     setEditModal(true);
   };
 
-  const editAPICall = (gbSerialObj) => {
+  const editAPICall = (gbSerialObj, damaged) => {
     setBackdrop(true);
     setLoading(true);
     axios.post(`GreenBookSerialNumber/EditGreenbookSerialNumber/Id=` + gbSerialObj.id, gbSerialObj)
@@ -384,8 +384,14 @@ export default () => {
           setBackdrop(false);
           setEditModal(false);
           setLoading(false);
-          setAlertMessage('Record updated successfully.');
-          setAlertType('success');
+          if(damaged){
+            setAlertMessage(`Greenbook Serial Number ${gbSerialObj.nBookNo} marked as Damaged`);
+            setAlertType('warning');
+          }
+          else{
+            setAlertMessage(`Greenbook Serial Number ${gbSerialObj.nBookNo} assigned to Form No. ${gbSerialObj.nFormNumber} for ${gbSerialObj.sMadebType} madeb.`);
+            setAlertType('success');            
+          }
           snackbarOpen();
           if (isDateSearch) {
             filterDates();

@@ -13,7 +13,7 @@ namespace CTADBL.BaseClasses.Transactions
         #region Private Properties
         private int _Id;
         private int _nBookNo;
-        private string? _sGBID;
+        private string _sGBID;
         private string? _Remarks;
         private DateTime? _dtDate;
         private string? _sName;
@@ -52,7 +52,7 @@ namespace CTADBL.BaseClasses.Transactions
         }
         [Required]
         [DisplayName("Green Book ID")]
-        public string? sGBID
+        public string sGBID
         {
             get
             {
@@ -114,7 +114,7 @@ namespace CTADBL.BaseClasses.Transactions
             }
         }
         [DisplayName("Madeb Type ID")]
-        [Required]
+        //[Required]
         public int? nMadebTypeId
         {
             get
@@ -127,7 +127,7 @@ namespace CTADBL.BaseClasses.Transactions
             }
         }
         [DisplayName("Form Number")]
-        [Required]
+        //[Required]
         public int? nFormNumber
         {
             get
@@ -152,7 +152,7 @@ namespace CTADBL.BaseClasses.Transactions
             }
         }
         [DisplayName("Authority Region ID")]
-        [Required]
+        //[Required]
         public int? nAuthRegionId
         {
             get

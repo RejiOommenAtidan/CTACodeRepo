@@ -258,14 +258,20 @@ export default () => {
     //alert("Opening modal...");
   };
 
-  const addAPICall = (obj, clicked) => {
+  const addAPICall = (obj, clicked, damaged) => {
     console.log("Serial number save called.");
     setBackdrop(true);
     axios.post(`GreenBookSerialNumber/AddGreenbookSerialNumber/`, obj)
       .then(resp => {
         if (resp.status === 200) {
-          setAlertMessage(`Greenbook Serial Number ${obj.nBookNo} assigned to Form No. ${obj.nFormNumber} for ${gbSerialObj.sMadebType} madeb.`);
-          setAlertType('success');
+          if(damaged){
+            setAlertMessage(`Greenbook Serial Number ${obj.nBookNo} marked as Damaged`);
+            setAlertType('warning');
+          }
+          else{
+            setAlertMessage(`Greenbook Serial Number ${obj.nBookNo} assigned to Form No. ${obj.nFormNumber} for ${gbSerialObj.sMadebType} madeb.`);
+            setAlertType('success');            
+          }
           snackbarOpen();
           setAddModal(false);
           setBackdrop(false);

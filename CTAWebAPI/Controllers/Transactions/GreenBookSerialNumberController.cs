@@ -245,10 +245,12 @@ namespace CTAWebAPI.Controllers.Transactions
                     gbsn.dtEntered = DateTime.Now;
                     gbsn.dtUpdated = DateTime.Now;
                     _greenBookSerialNumberRepository.Add(gbsn);
-                    int? nCurrentGBSno = (int?)gbsn.nBookNo;
-                    int nIssuedOrNotID = 1;
-                    _madebRepository.UpdateSerialNumber(gbsn.sGBID, (int)gbsn.nFormNumber, (int)gbsn.nMadebTypeId, nCurrentGBSno, nIssuedOrNotID);
-
+                    if(gbsn.nFormNumber != null)
+                    {
+                        int? nCurrentGBSno = (int?)gbsn.nBookNo;
+                        int? nIssuedOrNotID = 1;
+                        _madebRepository.UpdateSerialNumber(gbsn.sGBID, (int)gbsn.nFormNumber, (int)gbsn.nMadebTypeId, nCurrentGBSno, nIssuedOrNotID);
+                    }
                     #region Information Logging 
                     _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, gbsn.nEnteredBy);
                     #endregion
@@ -303,6 +305,18 @@ namespace CTAWebAPI.Controllers.Transactions
                         gbsn.dtEntered = fetch.dtEntered;
                         gbsn.dtUpdated = DateTime.Now;
                         _greenBookSerialNumberRepository.Update(gbsn);
+                        if(gbsn.nFormNumber == null)
+                        {
+                            if(gbsn.nMadebTypeId == 1)
+                            {
+                                _madebRepository.UpdateSerialNumber(fetch.sGBID, (int)fetch.nFormNumber, (int)fetch.nMadebTypeId, null, 1);
+                            }
+                            else
+                            {
+                                _madebRepository.UpdateSerialNumber(fetch.sGBID, (int)fetch.nFormNumber, (int)fetch.nMadebTypeId, null, null);
+                            }
+                            
+                        }
 
                         #region Audit Log
                         CTALogger.LogAuditRecord(fetch, gbsn, fetch.sGBID, fetch.nAuthRegionId, 12, fetch.Id, gbsn.nUpdatedBy);

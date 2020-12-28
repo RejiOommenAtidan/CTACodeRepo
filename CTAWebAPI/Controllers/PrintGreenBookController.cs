@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers
 {
-    [AuthorizeRole(FeatureID = 13)]
+    //[AuthorizeRole(FeatureID = 13)]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]
@@ -33,6 +33,7 @@ namespace CTAWebAPI.Controllers
             _ctaLogger = new CTALogger(_info);
         }
         #endregion
+        [AuthorizeRole(FeatureID = 13)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetPrintList(int records)
@@ -58,6 +59,7 @@ namespace CTAWebAPI.Controllers
             #endregion
         }
 
+        [AuthorizeRole(FeatureID = 13)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetGreenBookByGBID(string sGBID)
@@ -82,6 +84,8 @@ namespace CTAWebAPI.Controllers
             }
             #endregion
         }
+
+        [AuthorizeRole(FeatureID = 13)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult AddPrintActionLog(int nUserId)

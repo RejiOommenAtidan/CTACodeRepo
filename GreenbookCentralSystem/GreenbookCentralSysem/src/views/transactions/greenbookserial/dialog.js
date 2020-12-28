@@ -8,6 +8,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import CancelIcon from '@material-ui/icons/Cancel';
+import WarningIcon from '@material-ui/icons/Warning';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { useSelector } from 'react-redux';
 import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker, sDDMMYYYYRegex } from '../../../config/commonConfig';
@@ -24,7 +26,7 @@ export const EditDialog = (props) => {
   console.log("Hello from Edit Dialog");
   const { register, handleSubmit, watch, errors, setValue, formState } = useForm();
 
-
+  const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
   console.log(props.gbSerialObj);
   // const [snackbarOpen,setSnackbarOpen]=React.useState(false);
   // const snackbarClose = (event, reason) => {
@@ -35,7 +37,7 @@ export const EditDialog = (props) => {
   //   setSnackbarOpen(false);
   // };
   const handleSubmitEditRecord = () => {
-    props.editAPICall(gbSerialObj);
+    props.editAPICall(gbSerialObj, damaged);
 
     // setMessage("Record Successfully Edited");
     // setAlertType('success');
@@ -59,6 +61,34 @@ export const EditDialog = (props) => {
   const [nFormNumber, setFormNumber] = React.useState(props.gbSerialObj.nFormNumber);
   const [nAuthRegionId, setAuthRegionId] = React.useState(props.gbSerialObj.nAuthRegionId);
 
+  // confirmation dialog for marking as damaged
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [damaged, setDamaged] = React.useState(false);
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+  };
+
+  const markBookAsDamaged = () => {
+    setOpenDialog(false);
+    console.log("Book no. to mark damaged:", nBookNo);
+    setGbId("BOOK MARKED DAMAGED");
+    setName('');
+    setCountryID(null);
+    //setValueCountryName(undefined);
+    valueAuthRegion = [];
+    setMadebTypeId(null);
+    //setValueMadebTypes(undefined);
+    valueMadebTypes = [];
+    setFormNumber(null);
+    setAuthRegionId(null);
+    //setAuthRegion(undefined);
+    valueAuthRegion = [];
+    setRemarks("BOOK MARKED DAMAGED");
+    setDamaged(true);
+  };
+
+
   const gbSerialObj = {
     id,
     nBookNo,
@@ -73,7 +103,7 @@ export const EditDialog = (props) => {
     nAuthRegionId,
     nUpdatedBy: userId
   }
-  console.log("gbSerialObj Object received in dialog", gbSerialObj);
+  console.log("gbSerialObj Object in dialog", gbSerialObj);
 
   let valueAuthRegion = [];
 
@@ -100,6 +130,7 @@ export const EditDialog = (props) => {
   });
 
   return (
+    <>
     <Dialog open={props.editModal} onEscapeKeyDown={props.handleEditClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Edit Green Book Serial Number</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
@@ -194,7 +225,9 @@ placeholder="DD-MM-YYYY"
                     {_.get("nBookNo.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
                     )}
+                    
                   </FormControl>
+                  <button type='button' style={btnstyles} onClick={() => setOpenDialog(true)}>Mark Book as 'Damaged'</button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
@@ -209,13 +242,13 @@ placeholder="DD-MM-YYYY"
                       color="text.disabled"
                       value={sName}
                       onChange={(e) => { setName(e.target.value) }}
-                      inputRef={register({
-                        required: true
-                      })}
+                      // inputRef={register({
+                      //   required: true
+                      // })}
                     />
-                    {_.get("sName.type", errors) === "required" && (
+                    {/* {_.get("sName.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                    )} */}
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -349,7 +382,7 @@ placeholder="DD-MM-YYYY"
                       InputProps={{
                         readOnly: true,
                       }}
-                      value={nFormNumber}
+                      value={nFormNumber ? nFormNumber : ''}
                       onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
                     />
                   </FormControl>
@@ -445,474 +478,508 @@ placeholder="DD-MM-YYYY"
         </DialogActions>
       </form>
     </Dialog>
-  );
-}
-
-export const AddDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-  console.log("Hello from Add dialog");
-  const { register, handleSubmit, watch, errors, formState } = useForm();
-  console.log("Serial Object\n", props.gbSerialObj);
-  // const [snackbarOpen,setSnackbarOpen]=React.useState(false);
-  // const snackbarClose = (event, reason) => {
-  //   if (reason === 'clickaway') {
-  //     return;
-  //   }
-
-  //   setSnackbarOpen(false);
-  // };
-  const handleSubmitEditRecord = () => {
-    props.addAPICall(gbSerialObj);
-
-    // setMessage("Record Successfully Edited");
-    // setAlertType('success');
-    // setSnackbarOpen(true)
-  }
-  const [message, setMessage] = React.useState('');
-  const [alertType, setAlertType] = React.useState('');
-
-  const [authRegions, setAuthRegionData] = React.useState(props.selectData['authRegions']);
-  const [madebTypes, setMadebTypesData] = React.useState(props.selectData['madebTypes']);
-  const [countries, setCountriesData] = React.useState(props.selectData['countries']);
-
-  const [id, setId] = React.useState(0);
-  const [nBookNo, setBookNo] = useState(props.selectData['nBookNo']);
-  const [sGBID, setGbId] = useState('');
-  const [remarks, setRemarks] = React.useState('');
-  const [dtDate, setDate] = React.useState(new Date(Date.now()).toISOString().substring(0, 10));
-  const [sName, setName] = React.useState('');
-  const [sCountryID, setCountryID] = React.useState('');
-  const [nMadebTypeId, setMadebTypeId] = React.useState(0);
-  const [nFormNumber, setFormNumber] = React.useState(0);
-  const [nAuthRegionId, setAuthRegionId] = React.useState(0);
-  const [valueCountryName, setValueCountryName] = React.useState([]);
-  const [valueAuthRegion, setValueAuthRegion] = React.useState([]);
-  const [valueMadebTypes, setValueMadebTypes] = React.useState([]);
-
-  const gbSerialObj = {
-    id,
-    nBookNo,
-    sGBID,
-    remarks,
-    dtDate,
-    //sName,
-    sCountryID,
-    nMadebTypeId,
-    nFormNumber,
-    nAuthRegionId,
-    nEnteredBy: userId,
-    nUpdatedBy: userId
-  }
-  console.log("gbSerialObj Object received in Add dialog", gbSerialObj);
-
-  // let valueAuthRegion = [];
-
-  //  authRegions.forEach(element => {
-  //     if(element.id === nAuthRegionId){
-  //         valueAuthRegion = element;
-  //     }
-  //   });
-
-  //let valueMadebTypes = [];
-  // //console.log(nMadebTypeId);
-  // madebTypes.forEach(element => {
-  //   if(element.id === nMadebTypeId){
-  //     valueMadebTypes = element;
-  //   }
-  // });
-
-  //let valueCountryName = [];
-  // console.log("Country list\n", countries);
-  // countries.forEach(element => {
-  //   if(element.sCountryID === sCountryID){
-  //     valueCountryName = element;
-  //     console.log("valueCountryName variable: ", valueCountryName);
-  //   }
-  // });
-
-
-  const formPopulate = (value) => {
-    console.log("Value in GBID: ", value);
-    const gbid = value;
-    const event = new Event('change', {
-      bubbles: true
-    });
-    /* Need Greenbook record by passing GBID
-     * from Greenbook controller. 
-     * Must talk to Malay.
-    */
-    const sNameElement = document.getElementById("sName");
-    const sCountryElement = document.getElementById("id_sCountryID");
-    const sAuthRegionElement = document.getElementById("id_nAuthorityId");
-
-    axios.get(`Greenbook/GetGreenbook/sGBID=` + gbid)
-      .then(resp => {
-        if (resp.status === 200) {
-          console.log("Got gb record\n", resp.data);
-          console.log("Name Element:", sNameElement);
-          const name = resp.data.sFirstName ? resp.data.sFirstName : '';
-          const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
-          const lname = resp.data.sLastName ? resp.data.sLastName : '';
-          const country = countries.find((x) => x.sCountryID === resp.data.sCountryID);
-          const region = authRegions.find((x) => x.id === resp.data.nAuthRegionID);
-          setCountryID(country.sCountryID);
-          setAuthRegionId(region.id);
-
-          // Handle validation on automatic field set. React fails to do this.
-
-          // For name
-          var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-            window.HTMLInputElement.prototype, "value").set;
-          nativeInputValueSetter.call(sNameElement, `${name} ${mname} ${lname}`);
-          setName(`${name} ${mname} ${lname}`);
-          var inputEvent = new Event("input", { bubbles: true });
-          sNameElement.dispatchEvent(inputEvent);
-
-          // For Country dropdown
-          var nivs = Object.getOwnPropertyDescriptor(
-            window.HTMLInputElement.prototype, "value").set;
-          setValueCountryName(country);
-          nivs.call(sCountryElement, country.sCountry);
-
-
-          var nivsInputEvent = new Event("input", { bubbles: true });
-          sCountryElement.dispatchEvent(nivsInputEvent);
-
-          // For Authority Regions drop down
-          const nivs1 = Object.getOwnPropertyDescriptor(
-            window.HTMLInputElement.prototype, "value").set;
-          nivs1.call(sAuthRegionElement, region.sAuthRegion);
-
-          sAuthRegionElement.dispatchEvent(new Event("input", { bubbles: true }));
-
-
-
-          //sAuthRegionElement.focus();
-        }
-        else {
-          setName('');
-          setCountryID('');
-          setAuthRegionId(0);
-          console.log(resp);
-        }
-      })
-      .catch((error) => {
-        setName('');
-
-        console.log(error);
-      });
-  };
-  const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
-
-  return (
-    <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Green Book Serial Number</DialogTitle>
-      <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
+    <Dialog
+        open={openDialog}
+        onClose={handleDialogClose}
+        
+      >
+        <DialogTitle id="alert-dialog-title">{`Mark as Damaged?`}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            <div>
-              <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
-                  <FormControl className={props.classes.formControl}>
-                    <TextField
-                      id="dtDate"
-                      name="dtDate"
-                      label="Date"
-                      type="date"
-                      defaultValue={dtDate}
-                      className={props.classes.textField}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      onChange={(e) => { setDate(e.target.value) }}
-                      inputRef={register({
-                        required: true
-                      })}
-                    />
-                    {_.get("dtDate.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-
-                  <FormControl className={props.classes.formControl}>
-                    <TextField
-                      id="nBookNo"
-                      name="nBookNo"
-                      label="Book Serial No"
-                      type='number'
-                      value={nBookNo}
-                      onChange={(e) => {
-                        setBookNo(parseInt(e.target.value));
-                        console.log("Value of Book Serial number changed to:", parseInt(e.target.value));
-                      }}
-                      InputProps={{
-                        readOnly: true
-                      }}
-                      inputRef={register({
-                        required: true
-                      })}
-                    />
-                    {_.get("nBookNo.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
-                  </FormControl>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <FormControl className={props.classes.formControl}>
-                    <TextField
-                      id="sGBID"
-                      label="GBID"
-                      name="sGBID"
-                      //required={true}
-                      value={sGBID}
-                      onChange={(e) => { setGbId(e.target.value) }}
-                      inputRef={register({
-                        required: true
-                      })}
-                    />
-                    {_.get("sGBID.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
-                  </FormControl>
-                  <button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl className={props.classes.formControl}>
-                    <TextField
-                      id="sName"
-                      name="sName"
-                      label="Name"
-                      //required={true}
-                      InputProps={{
-                        readOnly: true
-                      }}
-                      value={sName}
-                      onChange={(e) => { setName(e.target.value) }}
-                      inputRef={register({
-                        required: true
-                      })}
-                    />
-                    {_.get("sName.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl className={props.classes.formControl}>
-                    <Autocomplete
-                      openOnFocus
-                      clearOnEscape
-                      onChange={
-                        (e, value) => {
-                          if (value !== null) {
-                            console.log("Value in Country id:", value.sCountryID);
-                            setCountryID(value.sCountryID);
-                            setValueCountryName(value);
-                          }
-                          else {
-                            setCountryID('');
-                          }
-                        }
-                      }
-                      value={valueCountryName}
-                      id="id_sCountryID"
-                      name="sCountry_name"
-                      options={countries}
-                      autoHighlight
-                      getOptionLabel={(option) => option.sCountry}
-                      renderOption={(option) => (
-                        <React.Fragment>
-                          <span>{option.sCountry}</span>
-                        </React.Fragment>
-                      )}
-                      inputRef={register({
-                        required: true
-                      })}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          id="sCountry"
-                          label="Country"
-                          name="sCountry"
-                          variant="standard"
-                          inputProps={{
-                            ...params.inputProps,
-                            autoComplete: 'off', // disable autocomplete and autofill
-                          }}
-                        />
-                      )}
-                    />
-                    {_.get("sCountry_name.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl className={props.classes.formControl}>
-                    <Autocomplete
-                      openOnFocus
-                      clearOnEscape
-                      onChange={
-                        (e, value) => {
-                          if (value !== null) {
-                            console.log(value.id);
-                            setMadebTypeId(value.id);
-                            setValueMadebTypes(value);
-                          }
-                          else {
-                            setMadebTypeId(0);
-                          }
-                        }
-                      }
-                      value={valueMadebTypes}
-                      id="id_nMadebTypeId"
-                      options={madebTypes}
-                      autoHighlight
-                      getOptionLabel={(option) => option.sMadebType}
-                      renderOption={(option) => (
-                        <React.Fragment>
-                          <span>{option.sMadebType}</span>
-                        </React.Fragment>
-                      )}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="Madeb Type"
-                          name="sMadebType"
-                          variant="standard"
-                          inputProps={{
-                            ...params.inputProps,
-                            autoComplete: 'off', // disable autocomplete and autofill
-                          }}
-                          inputRef={register({
-                            required: true
-                          })}
-                        />
-                      )}
-                    />
-                    {_.get("sMadebType.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl className={props.classes.formControl}>
-                    <TextField
-                      id="nFormNumber"
-                      label="Form Number"
-                      name="nFormNumber"
-                      type="number"
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                      value={nFormNumber}
-                      onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
-                      inputRef={register({
-                        required: true
-                      })}
-                    />
-                    {_.get("sMadebType.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
-                  </FormControl>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <FormControl className={props.classes.formControl}>
-                    <Autocomplete
-                      openOnFocus
-                      clearOnEscape
-                      onChange={
-                        (e, value) => {
-                          if (value !== null) {
-                            console.log(value.id);
-                            setAuthRegionId(value.id);
-                          }
-                          else {
-                            setAuthRegionId(0);
-                          }
-                        }
-                      }
-                      value={valueAuthRegion}
-                      id="id_nAuthorityId"
-                      options={authRegions}
-                      autoHighlight
-                      getOptionLabel={(option) => option.sAuthRegion}
-                      renderOption={(option) => (
-                        <React.Fragment>
-                          <span>{option.sAuthRegion}</span>
-                        </React.Fragment>
-                      )}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="Authority Region"
-                          name="sAuthRegion"
-                          variant="standard"
-                          inputProps={{
-                            ...params.inputProps,
-                            autoComplete: 'off', // disable autocomplete and autofill
-                          }}
-                          inputRef={register({
-                            required: true
-                          })}
-                        />
-                      )}
-                    />
-                    {_.get("sAuthRegion.type", errors) === "required" && (
-                      <span style={{ color: 'red' }}>This field is required</span>
-                    )}
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={12}>
-                  <FormControl className={props.classes.formControl}>
-                    <TextField
-                      id="remarks"
-                      name="remarks"
-                      label="Remarks"
-                      multiline
-                      rows={2}
-                      rowsMax={2}
-                      value={remarks}
-                      onChange={(e) => {
-                        setRemarks(e.target.value);
-                        console.log("Value of remarks changed to:", e.target.value);
-                      }}
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </div>
+          <DialogContentText id="alert-dialog-description">
+            {`Do you want to Mark Book No ${nBookNo} as 'Damaged'?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={props.handleAddClickClose}
-            color={sButtonColor}
+            onClick={handleDialogClose}
+            autoFocus
+            startIcon={<CancelIcon />}
             variant={sButtonVariant}
+            color={sButtonColor}
             size={sButtonSize}
-          >Cancel</Button>
-
-          {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
-
-          {/* <Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
-        <Alert  onClose={snackbarClose} severity={alertType}  >
-         {message}
-        </Alert>
-      </Snackbar> */}
-
+          >
+            Cancel
+          </Button>
           <Button
-            disabled={formState.isSubmitting && formState.isValid}
-            type="submit"
-            color={sButtonColor}
+            onClick={markBookAsDamaged}
+            startIcon={<WarningIcon />}
             variant={sButtonVariant}
+            color={sButtonColor}
             size={sButtonSize}
-          >Save</Button>
+          >
+            Confirm
+          </Button>
         </DialogActions>
-      </form>
-    </Dialog>
+      </Dialog>
+    </>   
   );
-}
+};
+
+// export const AddDialog = (props) => {
+//   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+//   console.log("Hello from Add dialog");
+//   const { register, handleSubmit, watch, errors, formState } = useForm();
+//   console.log("Serial Object\n", props.gbSerialObj);
+//   // const [snackbarOpen,setSnackbarOpen]=React.useState(false);
+//   // const snackbarClose = (event, reason) => {
+//   //   if (reason === 'clickaway') {
+//   //     return;
+//   //   }
+
+//   //   setSnackbarOpen(false);
+//   // };
+//   const handleSubmitEditRecord = () => {
+//     props.addAPICall(gbSerialObj);
+
+//     // setMessage("Record Successfully Edited");
+//     // setAlertType('success');
+//     // setSnackbarOpen(true)
+//   }
+//   const [message, setMessage] = React.useState('');
+//   const [alertType, setAlertType] = React.useState('');
+
+//   const [authRegions, setAuthRegionData] = React.useState(props.selectData['authRegions']);
+//   const [madebTypes, setMadebTypesData] = React.useState(props.selectData['madebTypes']);
+//   const [countries, setCountriesData] = React.useState(props.selectData['countries']);
+
+//   const [id, setId] = React.useState(0);
+//   const [nBookNo, setBookNo] = useState(props.selectData['nBookNo']);
+//   const [sGBID, setGbId] = useState('');
+//   const [remarks, setRemarks] = React.useState('');
+//   const [dtDate, setDate] = React.useState(new Date(Date.now()).toISOString().substring(0, 10));
+//   const [sName, setName] = React.useState('');
+//   const [sCountryID, setCountryID] = React.useState('');
+//   const [nMadebTypeId, setMadebTypeId] = React.useState(0);
+//   const [nFormNumber, setFormNumber] = React.useState(0);
+//   const [nAuthRegionId, setAuthRegionId] = React.useState(0);
+//   const [valueCountryName, setValueCountryName] = React.useState([]);
+//   const [valueAuthRegion, setValueAuthRegion] = React.useState([]);
+//   const [valueMadebTypes, setValueMadebTypes] = React.useState([]);
+
+//   const gbSerialObj = {
+//     id,
+//     nBookNo,
+//     sGBID,
+//     remarks,
+//     dtDate,
+//     //sName,
+//     sCountryID,
+//     nMadebTypeId,
+//     nFormNumber,
+//     nAuthRegionId,
+//     nEnteredBy: userId,
+//     nUpdatedBy: userId
+//   }
+//   console.log("gbSerialObj Object received in Add dialog", gbSerialObj);
+
+//   // let valueAuthRegion = [];
+
+//   //  authRegions.forEach(element => {
+//   //     if(element.id === nAuthRegionId){
+//   //         valueAuthRegion = element;
+//   //     }
+//   //   });
+
+//   //let valueMadebTypes = [];
+//   // //console.log(nMadebTypeId);
+//   // madebTypes.forEach(element => {
+//   //   if(element.id === nMadebTypeId){
+//   //     valueMadebTypes = element;
+//   //   }
+//   // });
+
+//   //let valueCountryName = [];
+//   // console.log("Country list\n", countries);
+//   // countries.forEach(element => {
+//   //   if(element.sCountryID === sCountryID){
+//   //     valueCountryName = element;
+//   //     console.log("valueCountryName variable: ", valueCountryName);
+//   //   }
+//   // });
+
+
+//   const formPopulate = (value) => {
+//     console.log("Value in GBID: ", value);
+//     const gbid = value;
+//     const event = new Event('change', {
+//       bubbles: true
+//     });
+//     /* Need Greenbook record by passing GBID
+//      * from Greenbook controller. 
+//      * Must talk to Malay.
+//     */
+//     const sNameElement = document.getElementById("sName");
+//     const sCountryElement = document.getElementById("id_sCountryID");
+//     const sAuthRegionElement = document.getElementById("id_nAuthorityId");
+
+//     axios.get(`Greenbook/GetGreenbook/sGBID=` + gbid)
+//       .then(resp => {
+//         if (resp.status === 200) {
+//           console.log("Got gb record\n", resp.data);
+//           console.log("Name Element:", sNameElement);
+//           const name = resp.data.sFirstName ? resp.data.sFirstName : '';
+//           const mname = resp.data.sMiddleName ? resp.data.sMiddleName : '';
+//           const lname = resp.data.sLastName ? resp.data.sLastName : '';
+//           const country = countries.find((x) => x.sCountryID === resp.data.sCountryID);
+//           const region = authRegions.find((x) => x.id === resp.data.nAuthRegionID);
+//           setCountryID(country.sCountryID);
+//           setAuthRegionId(region.id);
+
+//           // Handle validation on automatic field set. React fails to do this.
+
+//           // For name
+//           var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+//             window.HTMLInputElement.prototype, "value").set;
+//           nativeInputValueSetter.call(sNameElement, `${name} ${mname} ${lname}`);
+//           setName(`${name} ${mname} ${lname}`);
+//           var inputEvent = new Event("input", { bubbles: true });
+//           sNameElement.dispatchEvent(inputEvent);
+
+//           // For Country dropdown
+//           var nivs = Object.getOwnPropertyDescriptor(
+//             window.HTMLInputElement.prototype, "value").set;
+//           setValueCountryName(country);
+//           nivs.call(sCountryElement, country.sCountry);
+
+
+//           var nivsInputEvent = new Event("input", { bubbles: true });
+//           sCountryElement.dispatchEvent(nivsInputEvent);
+
+//           // For Authority Regions drop down
+//           const nivs1 = Object.getOwnPropertyDescriptor(
+//             window.HTMLInputElement.prototype, "value").set;
+//           nivs1.call(sAuthRegionElement, region.sAuthRegion);
+
+//           sAuthRegionElement.dispatchEvent(new Event("input", { bubbles: true }));
+
+
+
+//           //sAuthRegionElement.focus();
+//         }
+//         else {
+//           setName('');
+//           setCountryID('');
+//           setAuthRegionId(0);
+//           console.log(resp);
+//         }
+//       })
+//       .catch((error) => {
+//         setName('');
+
+//         console.log(error);
+//       });
+//   };
+//   const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
+
+//   return (
+//     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
+//       <DialogTitle id="form-dialog-title">Add Green Book Serial Number</DialogTitle>
+//       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
+//         <DialogContent>
+//           <DialogContentText>
+//             <div>
+//               <Grid container spacing={3}>
+//                 <Grid item xs={12} sm={6}>
+//                   <FormControl className={props.classes.formControl}>
+//                     <TextField
+//                       id="dtDate"
+//                       name="dtDate"
+//                       label="Date"
+//                       type="date"
+//                       defaultValue={dtDate}
+//                       className={props.classes.textField}
+//                       InputLabelProps={{
+//                         shrink: true,
+//                       }}
+//                       onChange={(e) => { setDate(e.target.value) }}
+//                       inputRef={register({
+//                         required: true
+//                       })}
+//                     />
+//                     {_.get("dtDate.type", errors) === "required" && (
+//                       <span style={{ color: 'red' }}>This field is required</span>
+//                     )}
+//                   </FormControl>
+//                 </Grid>
+//                 <Grid item xs={12} sm={6}>
+
+//                   <FormControl className={props.classes.formControl}>
+//                     <TextField
+//                       id="nBookNo"
+//                       name="nBookNo"
+//                       label="Book Serial No"
+//                       type='number'
+//                       value={nBookNo}
+//                       onChange={(e) => {
+//                         setBookNo(parseInt(e.target.value));
+//                         console.log("Value of Book Serial number changed to:", parseInt(e.target.value));
+//                       }}
+//                       InputProps={{
+//                         readOnly: true
+//                       }}
+//                       inputRef={register({
+//                         required: true
+//                       })}
+//                     />
+//                     {_.get("nBookNo.type", errors) === "required" && (
+//                       <span style={{ color: 'red' }}>This field is required</span>
+//                     )}
+//                   </FormControl>
+//                 </Grid>
+
+//                 <Grid item xs={12} sm={6}>
+//                   <FormControl className={props.classes.formControl}>
+//                     <TextField
+//                       id="sGBID"
+//                       label="GBID"
+//                       name="sGBID"
+//                       //required={true}
+//                       value={sGBID}
+//                       onChange={(e) => { setGbId(e.target.value) }}
+//                       inputRef={register({
+//                         required: true
+//                       })}
+//                     />
+//                     {_.get("sGBID.type", errors) === "required" && (
+//                       <span style={{ color: 'red' }}>This field is required</span>
+//                     )}
+//                   </FormControl>
+//                   <button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button>
+//                 </Grid>
+//                 <Grid item xs={12} sm={6}>
+//                   <FormControl className={props.classes.formControl}>
+//                     <TextField
+//                       id="sName"
+//                       name="sName"
+//                       label="Name"
+//                       //required={true}
+//                       InputProps={{
+//                         readOnly: true
+//                       }}
+//                       value={sName}
+//                       onChange={(e) => { setName(e.target.value) }}
+//                       inputRef={register({
+//                         required: true
+//                       })}
+//                     />
+//                     {_.get("sName.type", errors) === "required" && (
+//                       <span style={{ color: 'red' }}>This field is required</span>
+//                     )}
+//                   </FormControl>
+//                 </Grid>
+//                 <Grid item xs={12} sm={6}>
+//                   <FormControl className={props.classes.formControl}>
+//                     <Autocomplete
+//                       openOnFocus
+//                       clearOnEscape
+//                       onChange={
+//                         (e, value) => {
+//                           if (value !== null) {
+//                             console.log("Value in Country id:", value.sCountryID);
+//                             setCountryID(value.sCountryID);
+//                             setValueCountryName(value);
+//                           }
+//                           else {
+//                             setCountryID('');
+//                           }
+//                         }
+//                       }
+//                       value={valueCountryName}
+//                       id="id_sCountryID"
+//                       name="sCountry_name"
+//                       options={countries}
+//                       autoHighlight
+//                       getOptionLabel={(option) => option.sCountry}
+//                       renderOption={(option) => (
+//                         <React.Fragment>
+//                           <span>{option.sCountry}</span>
+//                         </React.Fragment>
+//                       )}
+//                       inputRef={register({
+//                         required: true
+//                       })}
+//                       renderInput={(params) => (
+//                         <TextField
+//                           {...params}
+//                           id="sCountry"
+//                           label="Country"
+//                           name="sCountry"
+//                           variant="standard"
+//                           inputProps={{
+//                             ...params.inputProps,
+//                             autoComplete: 'off', // disable autocomplete and autofill
+//                           }}
+//                         />
+//                       )}
+//                     />
+//                     {_.get("sCountry_name.type", errors) === "required" && (
+//                       <span style={{ color: 'red' }}>This field is required</span>
+//                     )}
+//                   </FormControl>
+//                 </Grid>
+//                 <Grid item xs={12} sm={6}>
+//                   <FormControl className={props.classes.formControl}>
+//                     <Autocomplete
+//                       openOnFocus
+//                       clearOnEscape
+//                       onChange={
+//                         (e, value) => {
+//                           if (value !== null) {
+//                             console.log(value.id);
+//                             setMadebTypeId(value.id);
+//                             setValueMadebTypes(value);
+//                           }
+//                           else {
+//                             setMadebTypeId(0);
+//                           }
+//                         }
+//                       }
+//                       value={valueMadebTypes}
+//                       id="id_nMadebTypeId"
+//                       options={madebTypes}
+//                       autoHighlight
+//                       getOptionLabel={(option) => option.sMadebType}
+//                       renderOption={(option) => (
+//                         <React.Fragment>
+//                           <span>{option.sMadebType}</span>
+//                         </React.Fragment>
+//                       )}
+//                       renderInput={(params) => (
+//                         <TextField
+//                           {...params}
+//                           label="Madeb Type"
+//                           name="sMadebType"
+//                           variant="standard"
+//                           inputProps={{
+//                             ...params.inputProps,
+//                             autoComplete: 'off', // disable autocomplete and autofill
+//                           }}
+//                           inputRef={register({
+//                             required: true
+//                           })}
+//                         />
+//                       )}
+//                     />
+//                     {_.get("sMadebType.type", errors) === "required" && (
+//                       <span style={{ color: 'red' }}>This field is required</span>
+//                     )}
+//                   </FormControl>
+//                 </Grid>
+//                 <Grid item xs={12} sm={6}>
+//                   <FormControl className={props.classes.formControl}>
+//                     <TextField
+//                       id="nFormNumber"
+//                       label="Form Number"
+//                       name="nFormNumber"
+//                       type="number"
+//                       InputProps={{
+//                         readOnly: true,
+//                       }}
+//                       value={nFormNumber}
+//                       onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
+//                       inputRef={register({
+//                         required: true
+//                       })}
+//                     />
+//                     {_.get("sMadebType.type", errors) === "required" && (
+//                       <span style={{ color: 'red' }}>This field is required</span>
+//                     )}
+//                   </FormControl>
+//                 </Grid>
+
+//                 <Grid item xs={12} sm={6}>
+//                   <FormControl className={props.classes.formControl}>
+//                     <Autocomplete
+//                       openOnFocus
+//                       clearOnEscape
+//                       onChange={
+//                         (e, value) => {
+//                           if (value !== null) {
+//                             console.log(value.id);
+//                             setAuthRegionId(value.id);
+//                           }
+//                           else {
+//                             setAuthRegionId(0);
+//                           }
+//                         }
+//                       }
+//                       value={valueAuthRegion}
+//                       id="id_nAuthorityId"
+//                       options={authRegions}
+//                       autoHighlight
+//                       getOptionLabel={(option) => option.sAuthRegion}
+//                       renderOption={(option) => (
+//                         <React.Fragment>
+//                           <span>{option.sAuthRegion}</span>
+//                         </React.Fragment>
+//                       )}
+//                       renderInput={(params) => (
+//                         <TextField
+//                           {...params}
+//                           label="Authority Region"
+//                           name="sAuthRegion"
+//                           variant="standard"
+//                           inputProps={{
+//                             ...params.inputProps,
+//                             autoComplete: 'off', // disable autocomplete and autofill
+//                           }}
+//                           inputRef={register({
+//                             required: true
+//                           })}
+//                         />
+//                       )}
+//                     />
+//                     {_.get("sAuthRegion.type", errors) === "required" && (
+//                       <span style={{ color: 'red' }}>This field is required</span>
+//                     )}
+//                   </FormControl>
+//                 </Grid>
+//                 <Grid item xs={12} sm={12}>
+//                   <FormControl className={props.classes.formControl}>
+//                     <TextField
+//                       id="remarks"
+//                       name="remarks"
+//                       label="Remarks"
+//                       multiline
+//                       rows={2}
+//                       rowsMax={2}
+//                       value={remarks}
+//                       onChange={(e) => {
+//                         setRemarks(e.target.value);
+//                         console.log("Value of remarks changed to:", e.target.value);
+//                       }}
+//                     />
+//                   </FormControl>
+//                 </Grid>
+//               </Grid>
+//             </div>
+//           </DialogContentText>
+//         </DialogContent>
+//         <DialogActions>
+//           <Button
+//             onClick={props.handleAddClickClose}
+//             color={sButtonColor}
+//             variant={sButtonVariant}
+//             size={sButtonSize}
+//           >Cancel</Button>
+
+//           {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
+
+//           {/* <Snackbar open={snackbarOpen} autoHideDuration={3000}  onClose={snackbarClose} >
+//         <Alert  onClose={snackbarClose} severity={alertType}  >
+//          {message}
+//         </Alert>
+//       </Snackbar> */}
+
+//           <Button
+//             disabled={formState.isSubmitting && formState.isValid}
+//             type="submit"
+//             color={sButtonColor}
+//             variant={sButtonVariant}
+//             size={sButtonSize}
+//           >Save</Button>
+//         </DialogActions>
+//       </form>
+//     </Dialog>
+//   );
+// }

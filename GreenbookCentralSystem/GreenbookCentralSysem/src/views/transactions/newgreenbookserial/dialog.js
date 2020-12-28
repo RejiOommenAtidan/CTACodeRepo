@@ -9,6 +9,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CancelIcon from '@material-ui/icons/Cancel';
+import WarningIcon from '@material-ui/icons/Warning';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { sButtonColor, sButtonSize, sButtonVariant, sDateFormatMUIDatepicker, sDDMMYYYYRegex } from '../../../config/commonConfig';
 import DateFnsUtils from "@date-io/date-fns";
@@ -38,15 +42,15 @@ export const AddDialog = (props) => {
     console.log("Plain", e);
     console.log("Clicked state", clicked);
     //alert("Submission Called.");
-    const btn1 = document.getElementById('save');
-    const btn2 = document.getElementById('saveEdit');
-    btn1.disabled = true;
-    btn2.disabled = true;
-    btn1.style.cursor = 'not-allowed';
-    btn1.style.backgroundColor = 'grey';
-    btn2.style.cursor = 'not-allowed';
-    btn2.style.backgroundColor = 'grey';
-    props.addAPICall(gbSerialObj, clicked);
+    // const btn1 = document.getElementById('save');
+    // const btn2 = document.getElementById('saveEdit');
+    // btn1.disabled = true;
+    // btn2.disabled = true;
+    // btn1.style.cursor = 'not-allowed';
+    // btn1.style.backgroundColor = 'grey';
+    // btn2.style.cursor = 'not-allowed';
+    // btn2.style.backgroundColor = 'grey';
+    props.addAPICall(gbSerialObj, clicked, damaged);
 
     // setMessage("Record Successfully Edited");
     // setAlertType('success');
@@ -67,7 +71,7 @@ export const AddDialog = (props) => {
   const [remarks, setRemarks] = React.useState('');
   const [dtDate, setDate] = React.useState(new Date(Date.now()).toISOString().substring(0, 10));
   const [sName, setName] = React.useState(props.gbSerialObj.sName);
-  const [sCountryID, setCountryID] = React.useState('');
+  const [sCountryID, setCountryID] = React.useState();
   const [nMadebTypeId, setMadebTypeId] = React.useState(0);
   const [nFormNumber, setFormNumber] = React.useState(props.gbSerialObj.nFormNumber);
   const [nAuthRegionId, setAuthRegionId] = React.useState(0);
@@ -75,6 +79,30 @@ export const AddDialog = (props) => {
   //const [valueAuthRegion, setValueAuthRegion] = React.useState([]);
   const [authRegion, setAuthRegion] = React.useState(props.selectData['authRegions'].find((x) => x.sAuthRegion === props.gbSerialObj.sAuthRegion));
   const [valueMadebTypes, setValueMadebTypes] = React.useState([]);
+
+  // confirmation dialog for marking as damaged
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [damaged, setDamaged] = React.useState(false);
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+  };
+
+  const markBookAsDamaged = () => {
+    setOpenDialog(false);
+    console.log("Book no. to mark damaged:", nBookNo);
+    setGbId("BOOK MARKED DAMAGED");
+    setName('');
+    setCountryID(null);
+    setValueCountryName(undefined);
+    setMadebTypeId(null);
+    setValueMadebTypes(undefined);
+    setFormNumber(null);
+    setAuthRegionId(null);
+    setAuthRegion(undefined);
+    setRemarks("BOOK MARKED DAMAGED");
+    setDamaged(true);
+  };
 
   const gbSerialObj = {
     id,
@@ -88,7 +116,8 @@ export const AddDialog = (props) => {
     nMadebTypeId,
     nFormNumber,
     nAuthRegionId,
-    nEnteredBy: userId
+    nEnteredBy: userId,
+    nUpdatedBy: userId
   }
   console.log("Object gbSerial modified as: ", gbSerialObj);
 
@@ -147,17 +176,10 @@ export const AddDialog = (props) => {
           // var nivsInputEvent = new Event("input", {bubbles: true});
           // sCountryElement.dispatchEvent(nivsInputEvent);
 
-          // For Authority Regions drop down
-          // const nivs1 = Object.getOwnPropertyDescriptor(
-          //   window.HTMLInputElement.prototype, "value").set;
-          // nivs1.call(sAuthRegionElement, region.sAuthRegion);
-
-          // sAuthRegionElement.dispatchEvent(new Event("input", {bubbles: true}));
-
-          //setValueAuthRegion(region);
+          
           setValueMadebTypes(madeb);
 
-          //sAuthRegionElement.focus();
+          
         }
         else {
           setName('');
@@ -172,6 +194,8 @@ export const AddDialog = (props) => {
         console.log(error);
       });
   };
+  
+
   const btnstyles = { background: 'none', border: 'none', cursor: 'pointer', color: 'blue' };
 
 
@@ -184,6 +208,7 @@ export const AddDialog = (props) => {
   }, []);
 
   return (
+    <>
     <Dialog open={props.addModal} onEscapeKeyDown={props.handleAddClickClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Generate Green Book Serial Number</DialogTitle>
       <form onSubmit={handleSubmit(handleSubmitEditRecord)}>
@@ -283,8 +308,9 @@ placeholder="DD-MM-YYYY"
                       <span style={{ color: 'red' }}>This field is required</span>
                     )}
                   </FormControl>
+                  <button type='button' style={btnstyles} onClick={() => setOpenDialog(true)}>Mark Book as 'Damaged'</button>
                 </Grid>
-
+                
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
                     <TextField
@@ -320,14 +346,14 @@ placeholder="DD-MM-YYYY"
                         readOnly: true
                       }}
                       value={sName}
-                      onChange={(e) => { setName(e.target.value) }}
-                      inputRef={register({
-                        required: true
-                      })}
+                      //onChange={(e) => { setName(e.target.value) }}
+                      // inputRef={register({
+                      //   required: true
+                      // })}
                     />
-                    {_.get("sName.type", errors) === "required" && (
+                    {/* {_.get("sName.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                    )} */}
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -418,15 +444,15 @@ placeholder="DD-MM-YYYY"
                             autoComplete: 'off', // disable autocomplete and autofill
                             readOnly: true
                           }}
-                          inputRef={register({
-                            required: true
-                          })}
+                          // inputRef={register({
+                          //   required: true
+                          // })}
                         />
                       )}
                     />
-                    {_.get("sMadebType.type", errors) === "required" && (
+                    {/* {_.get("sMadebType.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                    )} */}
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -439,23 +465,20 @@ placeholder="DD-MM-YYYY"
                       label="Form Number"
                       name="nFormNumber"
                       type="number"
-                      // InputProps={{
-                      //     readOnly: true,
-                      // }}
-                      value={nFormNumber}
-                      onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
-                      inputRef={register({
-                        required: true
-                      })}
+                      value={nFormNumber ? nFormNumber : ''}
+                      // onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
+                      // inputRef={register({
+                      //   required: true
+                      // })}
                     />
-                    {_.get("sMadebType.type", errors) === "required" && (
+                    {/* {_.get("sMadebType.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                    )} */}
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>
-                    {/* <Autocomplete
+                    <Autocomplete
                                       openOnFocus
                                       clearOnEscape
                                       onChange={  
@@ -469,7 +492,7 @@ placeholder="DD-MM-YYYY"
                                           }
                                         }
                                       }
-                                     value={valueAuthRegion} 
+                                     value={authRegion} 
                                      id="id_nAuthorityId"
                                      options={authRegions}
                                      autoHighlight
@@ -479,9 +502,9 @@ placeholder="DD-MM-YYYY"
                                          <span>{option.sAuthRegion}</span>
                                        </React.Fragment>
                                      )}
-                                     inputRef={register({
-                                      required: true
-                                    })}
+                                    //  inputRef={register({
+                                    //   required: true
+                                    // })}
                                      renderInput={(params) => (
                                        <TextField
                                          {...params}
@@ -492,16 +515,16 @@ placeholder="DD-MM-YYYY"
                                            ...params.inputProps,
                                            autoComplete: 'off', // disable autocomplete and autofill
                                          }}
-                                         inputRef={register({
-                                          required: true
-                                        })}
+                                        //  inputRef={register({
+                                        //   required: true
+                                        // })}
                                         />
                                       )}
                                     />
-                                    {_.get("sAuthRegion.type", errors) === "required" && (
+                                    {/* {_.get("sAuthRegion.type", errors) === "required" && (
                                       <span style={{color: 'red'}}>This field is required</span>
                                     )} */}
-                    <Controller
+                    {/* <Controller
                       render={props => (
                         <Autocomplete
                           {...props}
@@ -553,9 +576,9 @@ placeholder="DD-MM-YYYY"
                       )}
                       name="AuthRegion"
                       control={control}
-                      rules={{ required: true }}
+                      //rules={{ required: true }}
                     />
-                    {errors.AuthRegion && <span style={{ color: 'red' }}>Enter Authority Region</span>}
+                    {errors.AuthRegion && <span style={{ color: 'red' }}>Enter Authority Region</span>} */}
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={12}>
@@ -619,5 +642,39 @@ placeholder="DD-MM-YYYY"
         </DialogActions>
       </form>
     </Dialog>
+    <Dialog
+        open={openDialog}
+        onClose={handleDialogClose}
+        
+      >
+        <DialogTitle id="alert-dialog-title">{`Mark as Damaged?`}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {`Do you want to Mark Book No ${nBookNo} as 'Damaged'?`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleDialogClose}
+            autoFocus
+            startIcon={<CancelIcon />}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={markBookAsDamaged}
+            startIcon={<WarningIcon />}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>   
   );
 }

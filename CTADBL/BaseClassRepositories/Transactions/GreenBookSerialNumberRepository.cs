@@ -39,6 +39,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
         #endregion
 
+        #region Add Damaged Book Record
+        
+        #endregion
+
+        #region Edit Book Record and Mark as Damaged Book
+        #endregion
+
         #region Delete Call
         public int Delete(GreenBookSerialNumber gbsn)
         {

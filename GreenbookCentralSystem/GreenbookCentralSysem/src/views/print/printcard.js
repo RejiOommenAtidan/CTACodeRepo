@@ -56,6 +56,8 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import { useStaticState } from '@material-ui/pickers';
+import { prop } from 'lodash/fp';
 
 
  
@@ -63,8 +65,14 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 
 export const PrintCard = (props) => {
 
-
-
+  const [sgbid, setSGBID] = useState(() => {
+    const zeros = 7 - props.data.sGBID.length;
+    let str = '';
+    for(let i=0; i< zeros; i++){
+      str +='0';
+    }
+    return str + props.data.sGBID;
+    });
   return (
 
     <>
@@ -86,25 +94,25 @@ export const PrintCard = (props) => {
                     {props.data.sCountryID[1]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
-                    {props.data.sGBID[0]}
+                    {sgbid[0]} 
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
-                    {props.data.sGBID[1]}
+                    {sgbid[1]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
-                    {props.data.sGBID[2]}
+                    {sgbid[2]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
-                    {props.data.sGBID[3]}
+                    {sgbid[3]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
-                    {props.data.sGBID[4]}
+                    {sgbid[4]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
-                    {props.data.sGBID[5]}
+                    {sgbid[5]}
                     </td>
                     <td valign="center" style={{fontSize: '11px', border: '1px solid #000', textAlign: 'center', width: '14px'}}>
-                    {props.data.sGBID[6]}
+                    {sgbid[6]}
                     </td>
                   </tr>
                 </tbody></table>

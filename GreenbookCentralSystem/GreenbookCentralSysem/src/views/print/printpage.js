@@ -189,7 +189,7 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           //console.log(resp.data);
           setRegionData(resp.data);
-
+          getData();
         }
       })
       .catch(error => {
@@ -210,6 +210,7 @@ export default function EnhancedTable() {
   };
 
   const search = (sGBID) => {
+    console.log("Search by GBID called...");
     if (sGBID === 0) {
       setAlertMessage('Enter GB Number');
       setAlertType('error');
@@ -292,7 +293,7 @@ export default function EnhancedTable() {
   useEffect(() => {
 
     getRegion();
-    getData();
+    //getData();
     //  setObj([{id:1},{id:2},{id:3},{id:4},{id:5}]);
 
   }, []);
@@ -323,7 +324,6 @@ export default function EnhancedTable() {
                 <Button
                   style={{ marginTop: 8, marginLeft: 5 }}
                   type='submit'
-                  onClick={() => { search(sGBID) }}
                   variant={sButtonVariant}
                   color={sButtonColor}
                   size={sButtonSize}

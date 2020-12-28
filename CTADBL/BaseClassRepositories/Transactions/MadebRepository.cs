@@ -123,7 +123,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Update Madeb with assigned serial numbers
-        public void UpdateSerialNumber(string sGBID, int nFormNumber, int nMadebTypeId, int? nCurrentGBSno, int nIssuedOrNotId)
+        public void UpdateSerialNumber(string sGBID, int nFormNumber, int nMadebTypeId, int? nCurrentGBSno, int? nIssuedOrNotId)
         {
             Madeb madeb = GetMadebByGBIDAndFormNumber(sGBID, nFormNumber, nMadebTypeId);
             madeb.nCurrentGBSno = nCurrentGBSno;
