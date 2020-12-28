@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Moment from 'moment';
 import {
@@ -12,7 +12,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat, sButtonVariant, sButtonColor, sButtonSize } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, sButtonVariant, sButtonColor, sButtonSize, modifyHeaders } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
@@ -48,7 +48,7 @@ export default function Report() {
   const [dtTo, SetdtTo] = React.useState('');
   const [orderBy, SetOrderBy] = React.useState('');
   const [groupBy, SetGroupBy] = React.useState('');
-
+  const [title, setTitle] =  React.useState();
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
 
@@ -69,7 +69,7 @@ export default function Report() {
   const columns = [
     {
       field: "no",
-      title: "#",
+      title: "Sr. No.",
       filterPlaceholder: 'Search..',
       width: '5%',
       //hidden:true,
@@ -82,7 +82,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -99,7 +100,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -117,7 +119,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'left'
+        textAlign: 'left',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -135,7 +138,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -152,7 +156,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'left'
+        textAlign: 'left',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -170,6 +175,8 @@ export default function Report() {
         .then(resp => {
           if (resp.status === 200) {
             setBackdrop(false);
+            const grouping = orderBy === 'lstcountry.sCountry' ? 'Country Wise' : 'Region Wise';
+            setTitle(`Below 6 years Report ${grouping}`);
             if (resp.data.length == 0) {
               setAlertMessage('No Records to display');
               setAlertType('info');
@@ -207,6 +214,10 @@ export default function Report() {
         });
     }
   };
+
+  useEffect(() => {
+    below6yearsData.length > 0 && modifyHeaders()
+  }, [below6yearsData]);
 
   return (
     <>
@@ -255,7 +266,7 @@ export default function Report() {
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             //isLoading={isLoading}
             icons={oTableIcons}
-            title="Below 6 Year Region or Country Wise"
+            title={title}
             columns={columns}
             data={below6yearsData}
             options={{ ...oOptions, tableLayout: "fixed" }}

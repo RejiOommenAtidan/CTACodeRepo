@@ -44,7 +44,6 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
 
-        /* Changes by Rajen */
         #region Delete Green Book Stored Procedure
         public int DeleteGreenBook(string sGBID)
         {
@@ -73,7 +72,42 @@ namespace CTADBL.BaseClassRepositories.Transactions
             #endregion
         }
         #endregion
-        /* Changes by Rajen */
+
+
+        #region Get GreenBook few details for New Entry page
+        public IEnumerable<Object> GetGreenBooks(int records)
+        {
+            string sql = @"SELECT `Id`,
+                            `sGBID`,
+                            `sFirstName`,
+                            `sLastName`,
+                            `dtDOB` FROM `tblgreenbook`
+                        ORDER BY Id DESC,
+                                dtUpdated DESC 
+                        LIMIT @records;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Connection = _connection;
+                command.CommandType = CommandType.Text;
+                command.Parameters.AddWithValue("records", records);
+                command.Connection = _connection;
+                DataSet ds = new DataSet();
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var result = tables[0].AsEnumerable().Select(row => new
+                {
+                    Id = row.Field<int>("Id"),
+                    sGBID = row.Field< string>("sGBID").ToString(),
+                    sFirstName = row.Field<string>("sFirstName"),
+                    sLastName = row.Field<string>("sLastName"),
+                    dtDOB = row.Field<DateTime?>("dtDOB"),
+                });
+                return result;
+            }
+        }
+        #endregion
+
 
         #region Get Green Book/Books
         public IEnumerable<Greenbook> GetAllGreenBooks(int records)

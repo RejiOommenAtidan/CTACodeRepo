@@ -19,7 +19,6 @@ using System.Net;
 namespace CTAWebAPI.Controllers.Transactions
 {
 
-    [Authorize]
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]
@@ -281,7 +280,7 @@ namespace CTAWebAPI.Controllers.Transactions
         [AuthorizeRole(FeatureID = 44)]
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetReportCTAMadebRegionOrCountryWiseBriefgb(int sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
+        public IActionResult GetReportCTAMadebRegionOrCountryWiseBriefGB(int sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
         {
             return GetReportCTAMadebRegionOrCountryWise(sMadebDisplayKey, dtRecordFrom, dtRecordTo, sOrderBy);
         }

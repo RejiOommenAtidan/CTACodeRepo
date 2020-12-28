@@ -120,7 +120,8 @@ export default () => {
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "5%"
+        width: "5%",
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -136,7 +137,8 @@ export default () => {
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "15%"
+        width: "15%",
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -151,7 +153,8 @@ export default () => {
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "15%"
+        width: "15%",
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -166,7 +169,8 @@ export default () => {
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "15%"
+        width: "15%",
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -181,7 +185,8 @@ export default () => {
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "5%"
+        width: "5%",
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -196,7 +201,8 @@ export default () => {
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "10%"
+        width: "10%",
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -211,7 +217,8 @@ export default () => {
       cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "15%"
+        width: "15%",
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -226,7 +233,8 @@ export default () => {
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "25%"
+        width: "25%",
+        borderRight: '1px solid grey'
       }
     }
   ];

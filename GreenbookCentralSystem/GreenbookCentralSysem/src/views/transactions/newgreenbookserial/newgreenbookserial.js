@@ -119,7 +119,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -132,7 +133,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -147,7 +149,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       //render: rowData => rowData['dtReceived'] ? Moment(rowData['dtReceived']).format(sDateFormat) : undefined
     },
@@ -161,7 +164,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -174,7 +178,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -187,7 +192,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {

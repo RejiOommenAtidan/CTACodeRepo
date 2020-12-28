@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Moment from 'moment';
 import {
@@ -30,7 +30,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sButtonColor, sButtonSize, sButtonVariant } from '../../../../config/commonConfig';
+import { oOptions, oTableIcons, sButtonColor, sButtonSize, sButtonVariant, sDateFormat, modifyHeaders } from '../../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { Alerts } from '../../../alerts';
 import { BackdropComponent } from '../../../backdrop/index';
@@ -67,6 +67,7 @@ export default function Report() {
   const [dtTo, SetdtTo] = React.useState('');
   const [orderBy, SetOrderBy] = React.useState('');
   const [groupBy, SetGroupBy] = React.useState('');
+  const [title, setTitle] = useState();
 
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
@@ -89,7 +90,7 @@ export default function Report() {
   const columns = [
     {
       field: "no",
-      title: "#",
+      title: "Sr. No.",
       filterPlaceholder: 'Search..',
       width: '5%',
       //hidden:true,
@@ -102,7 +103,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -119,7 +121,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'left'
+        textAlign: 'left',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -136,7 +139,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -153,7 +157,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -170,7 +175,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -187,7 +193,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -204,7 +211,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -222,7 +230,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -237,15 +246,18 @@ export default function Report() {
     }
     else {
       setBackdrop(true);
-      axios.get(`/Report/GetReportCTAMadebRegionOrCountryWise/?sMadebDisplayKey=` + madebType + `&dtRecordFrom=` + dtFrom + `&dtRecordTo=` + dtTo + `&sGroupBy=` + groupBy + `&sOrderBy=` + orderBy)
+      axios.get(`/Report/GetReportCTAMadebRegionOrCountryWiseNorchoe/?sMadebDisplayKey=` + madebType + `&dtRecordFrom=` + dtFrom + `&dtRecordTo=` + dtTo + `&sGroupBy=` + groupBy + `&sOrderBy=` + orderBy)
         .then(resp => {
           if (resp.status === 200) {
             setBackdrop(false);
+            const grouping = orderBy === 'lstcountry.sCountry' ? 'Country Wise' : 'Region Wise'
+            setTitle(`Madeb Norchoe ${grouping} Report from ${Moment(dtFrom).format(sDateFormat)} to ${Moment(dtTo).format(sDateFormat)}` );
             if (resp.data.length == 0) {
               setAlertMessage('No Records to display');
               setAlertType('info');
               snackbarOpen();
               SetNorchoeData([]);
+              
             }
             else {
               let x = 1;
@@ -286,10 +298,11 @@ export default function Report() {
           //console.log(release); => udefined
         });
     }
-
-
-
   }
+
+  useEffect(() => {
+    norchoeData.length > 0 && modifyHeaders()
+  }, [norchoeData]);
 
   return (
     <>
@@ -303,6 +316,7 @@ export default function Report() {
             type="date"
             id='dtFrom'
             name='dtFrom'
+            autoFocus
             onChange={(e) => { SetdtFrom(e.target.value); }}
             value={dtFrom}
             label="Date From"
@@ -371,7 +385,7 @@ export default function Report() {
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             //isLoading={isLoading}
             icons={tableIcons}
-            title="Norchoe Report"
+            title={title} 
             columns={columns}
             data={norchoeData}
             options={oOptions}

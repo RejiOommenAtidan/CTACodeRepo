@@ -23,12 +23,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
 
-        public IEnumerable<Object> GetReportGreenBookIssuedOverAll(int sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sGroupBy ,string sOrderBy)
+        public IEnumerable<Object> GetReportGreenBookIssuedOverAll(int nMadebTypeId, DateTime dtRecordFrom, DateTime dtRecordTo, string sGroupBy ,string sOrderBy)
         {
 
             using (var command = new MySqlCommand("spReportGreenBookIssuedOverAll"))
             {
-                command.Parameters.AddWithValue("sMadebDisplayKey", sMadebDisplayKey);
+                command.Parameters.AddWithValue("nMadebTypeId", nMadebTypeId);
                 command.Parameters.AddWithValue("dtRecordFrom", dtRecordFrom);
                 command.Parameters.AddWithValue("dtRecordTo", dtRecordTo);
                 command.Parameters.AddWithValue("sGroupBy", sGroupBy);
@@ -55,12 +55,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
 
         }
-        public IEnumerable<Object> GetReportGreenBookIssuedIndividual(int sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
+        public IEnumerable<Object> GetReportGreenBookIssuedIndividual(int nMadebTypeId, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
         {
 
             using (var command = new MySqlCommand("spReportGreenBookIssuedIndividual"))
             {
-                command.Parameters.AddWithValue("sMadebDisplayKey", sMadebDisplayKey);
+                command.Parameters.AddWithValue("nMadebTypeId", nMadebTypeId);
                 command.Parameters.AddWithValue("dtRecordFrom", dtRecordFrom);
                 command.Parameters.AddWithValue("dtRecordTo", dtRecordTo);
                 command.Parameters.AddWithValue("sOrderBy", sOrderBy);
@@ -263,12 +263,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
         }
 
-        public IEnumerable<Object> GetReportCTAMadebRegionOrCountryWise(int sMadebDisplayKey, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
+        public IEnumerable<Object> GetReportCTAMadebRegionOrCountryWise(int nMadebTypeId, DateTime dtRecordFrom, DateTime dtRecordTo, string sOrderBy)
         {
 
             using (var command = new MySqlCommand("spReportCTAMadebRegionOrCountryWise"))
             {
-                command.Parameters.AddWithValue("sMadebDisplayKey", sMadebDisplayKey);
+                command.Parameters.AddWithValue("nMadebTypeId", nMadebTypeId);
                 command.Parameters.AddWithValue("dtRecordFrom", dtRecordFrom);
                 command.Parameters.AddWithValue("dtRecordTo", dtRecordTo);
                 command.Parameters.AddWithValue("sOrderBy", sOrderBy);

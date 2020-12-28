@@ -81,7 +81,8 @@ export default function GBList(props) {
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "10%"
+        width: "10%",
+        borderRight: '1px solid grey'
       },
       filterComponent: () =>
         <MyComp
@@ -115,7 +116,8 @@ export default function GBList(props) {
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "30%"
+        width: "30%",
+        borderRight: '1px solid grey'
       },
       export: true,
       //render: rowData => (rowData["sFirstName"] === null ? "" : rowData["sFirstName"]) + " " + (rowData["sLastName"] === null ? "" : rowData["sLastName"]),
@@ -142,7 +144,8 @@ export default function GBList(props) {
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "30%"
+        width: "30%",
+        borderRight: '1px solid grey'
       },
       export: true,
       //render: rowData => (rowData["sFirstName"] === null ? "" : rowData["sFirstName"]) + " " + (rowData["sLastName"] === null ? "" : rowData["sLastName"]),
@@ -170,7 +173,8 @@ export default function GBList(props) {
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "5%"
+        width: "5%",
+        borderRight: '1px solid grey'
       },
       export: true,
       //render: rowData => rowData["dtDOB"] === null ? "NA" : Moment().diff(rowData["dtDOB"], 'years')
@@ -226,8 +230,10 @@ export default function GBList(props) {
       axios.post(`/Greenbook/GetGreenbooksForEdit`, searchObj)
         .then(resp => {
           if (resp.status === 200) {
-            debugger
             console.log("Got filter Data");
+            resp.data.forEach((element) => {
+              element.dtDOB = element.dtDOB ? Moment().diff(element.dtDOB, 'years') : null;
+            });
             setdataAPI([...resp.data]);
             setSearching(false);
             //setTimeout(() => ele.focus(), 2000);
@@ -260,6 +266,7 @@ export default function GBList(props) {
           resp.data.forEach((element) => {
             element.dtDOB = element.dtDOB ? Moment().diff(element.dtDOB, 'years') : null;
           });
+          console.log(resp.data);
           setdataAPI(resp.data);
           setisLoading(false);
           modifyHeaders();

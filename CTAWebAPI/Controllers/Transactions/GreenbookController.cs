@@ -61,7 +61,7 @@ namespace CTAWebAPI.Controllers.Transactions
             try
             {
                 int records = Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount"));
-                IEnumerable<Greenbook> greenbooks = _greenbookRepository.GetAllGreenBooks(records);
+                IEnumerable<Object> greenbooks = _greenbookRepository.GetGreenBooks(records);
 
                 #region Information Logging
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");

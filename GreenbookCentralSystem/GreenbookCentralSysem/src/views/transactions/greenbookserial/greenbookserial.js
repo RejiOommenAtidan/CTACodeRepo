@@ -154,7 +154,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
       //render: rowData => rowData['greenBookSerialNumber']['dtDate'] ? Moment(rowData['greenBookSerialNumber']['dtDate']).format(sDateFormat) : undefined
     },
@@ -170,7 +171,8 @@ export default () => {
       cellStyle: {
         textAlign: "right",
         padding: '5px',
-        width: "12%"
+        width: "12%",
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -185,7 +187,8 @@ export default () => {
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "12%"
+        width: "12%",
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -200,7 +203,8 @@ export default () => {
       cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "2%"
+        width: "2%",
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -213,7 +217,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -226,7 +231,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -240,7 +246,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -253,7 +260,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -266,7 +274,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -293,7 +302,8 @@ export default () => {
       },
       cellStyle: {
         textAlign: "center",
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       }
     }
   ];

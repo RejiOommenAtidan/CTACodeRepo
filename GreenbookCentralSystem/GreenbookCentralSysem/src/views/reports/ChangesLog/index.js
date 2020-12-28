@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Moment from 'moment';
 import {
@@ -11,7 +11,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { Alerts } from '../../alerts';
 import _ from "lodash/fp";
@@ -49,7 +49,7 @@ export default function Report() {
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
   const [backdrop, setBackdrop] = React.useState(false);
-
+  const [title, setTitle] =  React.useState();
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -80,7 +80,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -97,7 +98,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -114,7 +116,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'left'
+        textAlign: 'left',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -131,7 +134,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'left'
+        textAlign: 'left',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -148,6 +152,7 @@ export default function Report() {
       cellStyle: {
         // padding:'0px',
         padding: '5px',
+        borderRight: '1px solid grey',
 
         textAlign: 'left'
 
@@ -166,7 +171,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'left'
+        textAlign: 'left',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -183,7 +189,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'left'
+        textAlign: 'left',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -201,7 +208,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -254,10 +262,10 @@ export default function Report() {
           //console.log(release); => udefined
         });
     }
-
-
-
   }
+  useEffect(() => {
+    changesLogData.length > 0 && modifyHeaders()
+  }, [changesLogData]);
 
   return (
     <>
@@ -307,7 +315,7 @@ export default function Report() {
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             //isLoading={isLoading}
             icons={oTableIcons}
-            title="Changes Log"
+            title={`Changes Log for Date: ${dtFrom}`}
             columns={columns}
             data={changesLogData}
             /*options={{

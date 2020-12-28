@@ -25,6 +25,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { Alerts } from '../alerts';
 import { PrintCard } from './printcard';
 import { sButtonColor, sButtonSize, sButtonVariant } from "../../config/commonConfig";
+import { BackdropComponent } from '../backdrop/index';
 
 const getMuiTheme = () => createMuiTheme({
   overrides: {
@@ -98,6 +99,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable() {
   const classes = useStyles();
+  const [backdrop, setBackdrop] = React.useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const alertObj = {
@@ -184,6 +186,7 @@ export default function EnhancedTable() {
   };
 
   const getRegion = () => {
+    setBackdrop(true);
     axios.get(`Region/GetRegion`)
       .then(resp => {
         if (resp.status === 200) {
@@ -223,15 +226,18 @@ export default function EnhancedTable() {
   };
 
   const getSearchData = (sGBID) => {
+    setBackdrop(true);
     axios.get(`PrintGreenBook/GetGreenBookByGBID/?sGBID=` + sGBID)
       //  axios.get(`PrintGreenBook/GetPrintList/?records=10`)
       .then(resp => {
         if (resp.status === 200) {
           //console.log(resp.data);
           setObj([resp.data]);
+          setBackdrop(false);
         }
       })
       .catch(error => {
+        setBackdrop(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -255,9 +261,11 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           //alert(JSON.stringify(resp.data));
           setObj(resp.data.reverse());
+          setBackdrop(false);
         }
       })
       .catch(error => {
+        setBackdrop(false);
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -467,6 +475,9 @@ export default function EnhancedTable() {
         snackbar={snackbar}
         snackbarClose={snackbarClose}
       />}
+      {backdrop && <BackdropComponent
+            backdrop={backdrop}
+          />}
     </>
   );
 }

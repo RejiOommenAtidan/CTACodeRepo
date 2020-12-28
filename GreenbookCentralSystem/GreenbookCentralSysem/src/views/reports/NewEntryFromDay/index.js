@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Moment from 'moment';
 import {
@@ -10,7 +10,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { Alerts } from '../../alerts';
 import _ from "lodash/fp";
@@ -48,7 +48,7 @@ export default function Report() {
   const [dtTo, SetdtTo] = React.useState('');
   const [orderBy, SetOrderBy] = React.useState('');
   const [groupBy, SetGroupBy] = React.useState('');
-
+  const [title, setTitle] = useState();
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
 
@@ -69,7 +69,7 @@ export default function Report() {
   const columns = [
     {
       field: "no",
-      title: "#",
+      title: "Sr. No.",
       filterPlaceholder: 'Search..',
       width: '5%',
       //hidden:true,
@@ -82,7 +82,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -99,7 +100,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -116,7 +118,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'left'
+        textAlign: 'left',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -135,7 +138,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -152,7 +156,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'left'
+        textAlign: 'left',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -169,7 +174,8 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'left'
+        textAlign: 'left',
+        borderRight: '1px solid grey'
 
       },
     },
@@ -275,7 +281,7 @@ export default function Report() {
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             //isLoading={isLoading}
             icons={oTableIcons}
-            title="New Entry From Day"
+            title={`New Entry On Date: ${dtFrom}`}
             columns={columns}
             data={newEntryFromDayData}
             options={{ ...oOptions, tableLayout: "fixed" }}

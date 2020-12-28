@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
@@ -48,6 +48,7 @@ export default function Report() {
   const [dtFrom, SetdtFrom] = React.useState('');
   const [dtTo, SetdtTo] = React.useState('');
   const [orderBy, SetOrderBy] = React.useState('');
+  const [title, setTitle] = useState();
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -69,7 +70,7 @@ export default function Report() {
   const columns = [
     {
       field: "no",
-      title: "#",
+      title: "Sr. No.",
       filterPlaceholder: 'Search..',
       width: '5%',
       //hidden:true,
@@ -82,7 +83,9 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
+
 
       },
     },
@@ -99,7 +102,9 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
+
 
       },
     },
@@ -117,7 +122,9 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'left'
+        textAlign: 'left',
+        borderRight: '1px solid grey'
+
 
       },
     },
@@ -135,7 +142,9 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
+
 
       },
     },
@@ -152,7 +161,9 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRight: '1px solid grey'
+
 
       },
     },
@@ -170,7 +181,9 @@ export default function Report() {
         // padding:'0px',
         padding: '5px',
 
-        textAlign: 'left'
+        textAlign: 'left',
+        borderRight: '1px solid grey'
+
 
       },
     },
@@ -187,6 +200,9 @@ export default function Report() {
         .then(resp => {
           if (resp.status === 200) {
             setBackdrop(false);
+            const grouping = orderBy === 'lstcountry.sCountry' ? 'Country Wise' : 'Region Wise';
+            const madeb = madebTypeData.find((x) => x.id === madebType).sMadebDisplayName;
+            setTitle(`${madeb} ${grouping} Report from ${Moment(dtFrom).format(sDateFormat)} to ${Moment(dtTo).format(sDateFormat)}` );
             if (resp.data.length == 0) {
               setAlertMessage('No Records to display');
               setAlertType('info');
@@ -201,10 +217,12 @@ export default function Report() {
                 x = x + 1;
               })
               SetIssuedIndividualData(resp.data);
+              modifyHeaders();
             }
           }
         })
         .catch(error => {
+          setBackdrop(false);
           if (error.response) {
             console.error(error.response.data);
             console.error(error.response.status);
@@ -218,6 +236,7 @@ export default function Report() {
             snackbarOpen();
           }
           console.log(error.config);
+          console.log(error.message);
         })
         .then(release => {
           //console.log(release); => udefined
@@ -251,6 +270,9 @@ export default function Report() {
         //console.log(release); => udefined
       });
   }, []);
+  useEffect(() => {
+    issuedIndividualData.length > 0 && modifyHeaders()
+  }, [issuedIndividualData]);
   return (
     <>
       <Paper style={{ padding: '30px', textAlign: 'center' }} >
@@ -338,7 +360,7 @@ export default function Report() {
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             //isLoading={isLoading}
             icons={oTableIcons}
-            title="Green Book Issued Individual"
+            title={title}
             columns={columns}
             data={issuedIndividualData}
             options={oOptions}
