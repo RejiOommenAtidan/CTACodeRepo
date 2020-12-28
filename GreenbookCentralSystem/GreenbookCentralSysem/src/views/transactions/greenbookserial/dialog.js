@@ -72,7 +72,7 @@ export const EditDialog = (props) => {
   const markBookAsDamaged = () => {
     setOpenDialog(false);
     console.log("Book no. to mark damaged:", nBookNo);
-    setGbId("BOOK MARKED DAMAGED");
+    setGbId("DAMAGED");
     setName('');
     setCountryID(null);
     //setValueCountryName(undefined);

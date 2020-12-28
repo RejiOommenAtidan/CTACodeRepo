@@ -73,8 +73,8 @@ export const InputParams = (props) => {
   }
 
   return (
-
-    <div style={{ maxWidth: '1090px' }} >
+    //maxWidth: '1090px',
+    <div style={{  display: 'flex', justifyContent: 'center' }} >
       <form onSubmit={handleSubmit(handleFormSubmit)}>
 
         <Grid container spacing={1}>
