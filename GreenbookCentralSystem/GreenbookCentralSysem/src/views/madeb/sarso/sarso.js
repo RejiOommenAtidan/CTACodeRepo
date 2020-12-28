@@ -206,7 +206,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.sName",
       title: "NAME",
-      width: "8%",
+      width: "30%",
       headerStyle: {
         textAlign: "left",
         textAlignLast: "center",
@@ -223,7 +223,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.sFathersName",
       title: "FATHER'S NAME",
-      width: "8%",
+      width: "30%",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -238,7 +238,7 @@ export default function EnhancedTable() {
     {
       field: "madeb.nSaneyFormNo",
       title: "SANEY FORM NO",
-      width: "6%",
+      width: "5%",
       hidden: false,
       headerStyle: {
         textAlign: "center",
@@ -419,13 +419,13 @@ export default function EnhancedTable() {
     },
     {
       field: "edit",
-      width: "3 %",
+      width: "3%",
       title: "EDIT",
       sorting: false,
       export: false,
       filtering: false,
       render: rowData => <><IconButton color="primary" aria-label="upload picture" component="span"
-        onClick={() => { editClick(rowData) }} disabled={rowData.madeb.nIssuedOrNotID} style={{ padding: '0px' }}
+        onClick={() => { editClick(rowData) }}  style={{ padding: '0px' }}
       >
         <EditOutlinedIcon />
       </IconButton>
@@ -607,7 +607,7 @@ export default function EnhancedTable() {
         if (resp.status === 200) {
           setBackdrop(false);
           setSelectData(resp.data);
-
+          console.log("SelectData:",resp.data);
         }
       })
       .catch(error => {

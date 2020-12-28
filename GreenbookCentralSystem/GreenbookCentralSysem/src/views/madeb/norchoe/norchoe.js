@@ -217,7 +217,7 @@ export default function EnhancedTable() {
     },
     {
       field: "madeb.sName",
-      width: "8%",
+      width: "30%",
       title: "NAME",
       headerStyle: {
         textAlign: "center",
@@ -448,7 +448,7 @@ export default function EnhancedTable() {
       export: false,
       filtering: false,
       render: rowData => <IconButton color="primary" aria-label="upload picture" component="span"
-        onClick={() => { editClick(rowData) }} disabled={rowData.madeb.nIssuedOrNotID} style={{ padding: '0px' }}
+        onClick={() => { editClick(rowData) }}  style={{ padding: '0px' }}
       >
         <EditOutlinedIcon />
       </IconButton>,

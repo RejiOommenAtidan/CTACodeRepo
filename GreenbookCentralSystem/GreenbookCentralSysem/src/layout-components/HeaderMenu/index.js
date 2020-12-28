@@ -12,50 +12,255 @@ import {
   ListItem,
   Divider
 } from '@material-ui/core';
-
+import { NavLink } from 'react-router-dom';
 import CalendarTodayTwoToneIcon from '@material-ui/icons/CalendarTodayTwoTone';
 import CollectionsTwoToneIcon from '@material-ui/icons/CollectionsTwoTone';
 import DnsTwoToneIcon from '@material-ui/icons/DnsTwoTone';
 import HomeWorkTwoToneIcon from '@material-ui/icons/HomeWorkTwoTone';
 
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import StarBorder from '@material-ui/icons/StarBorder';
+
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+
+import ListIcon from '@material-ui/icons/List';
+import HomeIcon from '@material-ui/icons/Home';
+import AppsIcon from '@material-ui/icons/Apps';
+import SearchIcon from '@material-ui/icons/Search';
+import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import FormatListNumberedRtlIcon from '@material-ui/icons/FormatListNumberedRtl';
+import PrintIcon from '@material-ui/icons/Print';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import PeopleIcon from '@material-ui/icons/People';
+// import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+// import PaymentIcon from '@material-ui/icons/Payment';
+// import AssessmentIcon from '@material-ui/icons/Assessment';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+
+import projectLogo from '../../assets/images/ctalogo.png';
+import { useSelector } from 'react-redux';
+
 const HeaderMenu = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
+  
+const authUser = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
+  
+const open=(id)=>{
+  var btn = document.getElementById(id);
+  btn.style.backgroundColor = "#3c44b1";
+  btn.style.color = "#fff";
+}
+const close=(id)=>{
+  var btn = document.getElementById(id);
+  btn.style.backgroundColor = 'rgb(60, 68, 177, 0.15)';
+  btn.style.color = "#3c44b1";
+}
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  
+
+
+  const [anchorElGB, setAnchorElGB] = useState(null);
+  const openGB = Boolean(anchorElGB);
+  const idGB = openGB ? 'gb-popover' : undefined;
+  const handleGBClick = (event,id) => {
+    open(id);
+    setAnchorElGB(event.currentTarget);
+    
+    
+  };
+  const handleGBClose = (id) => {
+    close(id);
+    setAnchorElGB(null);
+  };
+  const [bookSerialOpen, setBookSerialOpen] = useState(false);
+  const handleBookSerialClick =()=>{
+    setBookSerialOpen(!bookSerialOpen);
+  }
+
+
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const openUser = Boolean(anchorElUser);
+  const idUser = openUser ? 'user-popover' : undefined;
+  const handleUserClick = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleUserClose = () => {
+    setAnchorElUser(null);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+
+  const [anchorElMadeb, setAnchorElMadeb] = useState(null);
+  const openMadeb = Boolean(anchorElMadeb);
+  const idMadeb = openMadeb ? 'madeb-popover' : undefined;
+  const handleMadebClick = (event) => {
+    setAnchorElMadeb(event.currentTarget);
+  };
+  const handleMadebClose = () => {
+    setAnchorElMadeb(null);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'mega-menu-popover' : undefined;
-
-  const [anchorElMenu, setAnchorElMenu] = useState(null);
-
-  const handleClickMenu = (event) => {
-    setAnchorElMenu(event.currentTarget);
+  const [anchorElMaster, setAnchorElMaster] = useState(null);
+  const openMaster = Boolean(anchorElMaster);
+  const idMaster = openMaster ? 'master-popover' : undefined;
+  const handleMasterClick = (event) => {
+    setAnchorElMaster(event.currentTarget);
+  };
+  const handleMasterClose = () => {
+    setAnchorElMaster(null);
   };
 
-  const handleCloseMenu = () => {
-    setAnchorElMenu(null);
-  };
+  const [anchorElReport, setAnchorElReport] = useState(null);
+  const openReport = Boolean(anchorElReport);
+  const idReport = openReport ? 'report-popover' : undefined;
 
+  const handleReportClick = (event) => {
+    setAnchorElReport(event.currentTarget);
+  };
+  const handleReportClose = () => {
+    setAnchorElReport(null);
+  };
+  /*const [madebOpen, setMadebOpen] = React.useState(false);
+
+  const handleMadebClick = () => {
+    setMadebOpen(!madebOpen);
+  };*/
   return (
     <>
+    <div className="app-sidebar-logo" style={{paddingRight:'20px'}}>
+          <NavLink
+            to="/Home"
+            //title="CTA"
+            className="app-sidebar-logo">
+            <div >
+              <img
+                style={{ width: '60px' }}
+                alt="CTA"
+                src={projectLogo}
+              />
+            </div>  
+            <div className="app-sidebar-logo--text">
+              <span style={{ color: 'black', paddingTop: 10 }}>
+                <h4>Green Book Database</h4>
+              </span>
+            </div>
+          </NavLink>
+        </div>
       <div className="app-header-menu">
+      {authUser
+              &&
+              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 3)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 4)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 5)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 6)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 7)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 8)) !== undefined)
+              &&
         <Button
           size="small"
-          onClick={handleClick}
+          onClick={handleMadebClick}
+          
           className="btn-transition-none btn-neutral-primary mr-3">
-          Mega menu
+          Madebs
+        </Button>}
+        <Button
+          id="id_GB"
+          size="small"
+          onClick={(e)=>{handleGBClick(e,"id_GB")}}
+          className="btn-transition-none btn-neutral-primary mr-3">
+          Green Book
         </Button>
+        
+        {authUser &&
+              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 34)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 35)) !== undefined
+                ||
+               /* (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
+                ||*/
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 38)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 39)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 40)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 41)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 42)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 43)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 44)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 45)) !== undefined)
+              &&
+        <Button
+          size="small"
+         onClick={handleReportClick}
+          className="btn-transition-none btn-neutral-primary mr-3">
+          Reports
+        </Button>}
+        {authUser &&
+              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 18)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 19)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 20)) !== undefined)
+              &&
+        <Button
+          size="small"
+          onClick={handleUserClick}
+          className="btn-transition-none btn-neutral-primary mr-3">
+          Users
+        </Button>}
+        {authUser &&
+              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 21)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 22)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 23)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 24)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 25)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 26)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 27)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 29)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 30)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 31)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 32)) !== undefined)
+              &&
+        <Button
+          size="small"
+          onClick={handleMasterClick}
+          className="btn-transition-none btn-neutral-primary mr-3">
+          Masters
+        </Button>}
+       
         <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
+          id={idGB}
+          open={openGB}
+          anchorEl={anchorElGB}
+          onClose={()=>{handleGBClose("id_GB")}}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left'
@@ -65,229 +270,192 @@ const HeaderMenu = () => {
             horizontal: 'left'
           }}>
           <div className="popover-custom-xxl p-0">
+        
             <Grid container spacing={0}>
+            <Grid item xs={4}>
+            <div className="divider-v divider-v-lg" />
+                <List component="div" className="nav-neutral-danger p-3">
+                 
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 2)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Search"
+                    >
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>Search</span>
+                  </ListItem>  }
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 9)) !== undefined
+                      &&
+                  
+                  <ListItem
+                    component="a"
+                    button
+                    href="/GiveGBID"
+                   >
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>Give GB ID</span>
+                  
+                  </ListItem>  }
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 10)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/SarsoNewGBEntry">
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span> New Entry</span>
+                  </ListItem>   }
+         
+                </List>
+              </Grid>
               <Grid item xs={4}>
                 <div className="divider-v divider-v-lg" />
                 <List component="div" className="nav-neutral-first p-3">
-                  <Typography
-                    component="div"
-                    className="pb-2 text-capitalize text-first font-size-lg">
-                    <span>Dashboards</span>
-                  </Typography>
-                  <ListItem
-                    component="a"
-                    button
-                    href="#/"
-                    onClick={(e) => e.preventDefault()}>
-                    <div className="mr-2">
+                {authUser &&
+              ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 11)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 12)) !== undefined)
+              &&
+            <>  
+              <ListItem
+                component="a"
+                button
+                href="#/"
+              // onClick={(e) => e.preventDefault()}
+              onClick={handleBookSerialClick}
+                >
+                <div className="mr-2" >
                       <FontAwesomeIcon
                         icon={['fas', 'chevron-right']}
                         className="font-size-xs opacity-3"
                       />
                     </div>
-                    <span>Analytics</span>
-                  </ListItem>
+                <span style={{paddingRight:'10px'}}>Book Serial Numbers</span>
+                {bookSerialOpen ?  <FontAwesomeIcon icon={['fas', 'chevron-up']} className="font-size-s opacity-3"/> : <FontAwesomeIcon icon={['fas', 'chevron-down']} className="font-size-xs opacity-3"/> }
+              </ListItem>
+              <Collapse in={bookSerialOpen} timeout="auto" unmountOnExit style={{paddingLeft:'25px'}}>
+              <List component="div" disablePadding>
+              {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 11)) !== undefined
+                      &&
+                <ListItem button href='/NewGreenBookSerial' component="a">Give Book Serial Number</ListItem>}
+              {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 12)) !== undefined
+                      &&  
+                <ListItem button href='/GreenBookSerial' component="a">Edit Book Serial Number</ListItem>}
+              </List>
+            </Collapse>
+          </>
+                   }
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 13)) !== undefined
+                     &&
                   <ListItem
-                    component="a"
-                    button
-                    href="#/"
-                    onClick={(e) => e.preventDefault()}>
-                    <div className="mr-2">
-                      <FontAwesomeIcon
-                        icon={['fas', 'chevron-right']}
-                        className="font-size-xs opacity-3"
-                      />
-                    </div>
-                    <span>Reports</span>
-                  </ListItem>
+                  component="a"
+                  button
+                  href="/Print">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Print</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 14)) !== undefined
+                     &&
                   <ListItem
-                    component="a"
-                    button
-                    href="#/"
-                    onClick={(e) => e.preventDefault()}>
-                    <div className="mr-2">
-                      <FontAwesomeIcon
-                        icon={['fas', 'chevron-right']}
-                        className="font-size-xs opacity-3"
-                      />
-                    </div>
-                    <span>Real Estate</span>
-                  </ListItem>
-                  <ListItem
-                    component="a"
-                    button
-                    href="#/"
-                    onClick={(e) => e.preventDefault()}>
-                    <div className="mr-2">
-                      <FontAwesomeIcon
-                        icon={['fas', 'chevron-right']}
-                        className="font-size-xs opacity-3"
-                      />
-                    </div>
-                    <span>Server Stats</span>
-                    <div className="ml-auto badge badge-pill badge-success">
-                      8
-                    </div>
-                  </ListItem>
-                  <Divider className="mt-3 mb-2" />
-                  <ListItem className="px-0 pb-0">
-                    <Button size="small" className="btn-outline-first w-100">
-                      <span className="btn-wrapper--label">Learn more</span>
-                    </Button>
-                  </ListItem>
+                  component="a"
+                  button
+                  href="/IssueBook">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Issue Book</span>
+                </ListItem>}
+                
+                  
                 </List>
               </Grid>
               <Grid item xs={4}>
-                <div className="divider-v divider-v-lg" />
+              <div className="divider-v divider-v-lg" />
                 <List component="div" className="nav-neutral-success p-3">
-                  <Typography className="pb-2 text-capitalize text-success font-size-lg">
-                    <span>Applications</span>
-                  </Typography>
+                 
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 15)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/MakeList">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Make List</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 16)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/Greenbooks">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Edit GB</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 17)) !== undefined
+                      &&
                   <ListItem
                     component="a"
                     button
-                    href="#/"
-                    onClick={(e) => e.preventDefault()}>
+                    href="/DeleteGB"
+                 >
                     <div className="mr-2">
                       <FontAwesomeIcon
                         icon={['fas', 'chevron-right']}
                         className="font-size-xs opacity-3"
                       />
                     </div>
-                    <span>Calendar</span>
-                  </ListItem>
-                  <ListItem
-                    component="a"
-                    button
-                    href="#/"
-                    onClick={(e) => e.preventDefault()}>
-                    <div className="mr-2">
-                      <FontAwesomeIcon
-                        icon={['fas', 'chevron-right']}
-                        className="font-size-xs opacity-3"
-                      />
-                    </div>
-                    <span>Chat</span>
-                  </ListItem>
-                  <ListItem
-                    component="a"
-                    button
-                    href="#/"
-                    onClick={(e) => e.preventDefault()}>
-                    <div className="mr-2">
-                      <FontAwesomeIcon
-                        icon={['fas', 'chevron-right']}
-                        className="font-size-xs opacity-3"
-                      />
-                    </div>
-                    <span>Contacts</span>
-                  </ListItem>
-                  <ListItem
-                    component="a"
-                    button
-                    href="#/"
-                    onClick={(e) => e.preventDefault()}>
-                    <div className="mr-2">
-                      <FontAwesomeIcon
-                        icon={['fas', 'chevron-right']}
-                        className="font-size-xs opacity-3"
-                      />
-                    </div>
-                    <span>File Manager</span>
-                  </ListItem>
-                  <Divider className="mt-3 mb-2" />
-                  <ListItem className="px-0 pb-0">
-                    <Button size="small" className="btn-outline-success w-100">
-                      <span className="btn-wrapper--label">Learn more</span>
-                    </Button>
-                  </ListItem>
+                    <span>Delete</span>
+                  </ListItem>}
+                 
                 </List>
               </Grid>
-              <Grid item xs={4}>
-                <List component="div" className="nav-neutral-danger p-3">
-                  <Typography className="pb-2 text-capitalize text-danger font-size-lg">
-                    <span>Components</span>
-                  </Typography>
-                  <ListItem
-                    component="a"
-                    button
-                    href="#/"
-                    onClick={(e) => e.preventDefault()}>
-                    <div className="mr-2">
-                      <FontAwesomeIcon
-                        icon={['fas', 'chevron-right']}
-                        className="font-size-xs opacity-3"
-                      />
-                    </div>
-                    <span>Cards examples</span>
-                  </ListItem>
-                  <ListItem
-                    component="a"
-                    button
-                    href="#/"
-                    onClick={(e) => e.preventDefault()}>
-                    <div className="mr-2">
-                      <FontAwesomeIcon
-                        icon={['fas', 'chevron-right']}
-                        className="font-size-xs opacity-3"
-                      />
-                    </div>
-                    <span>Tables</span>
-                    <div className="ml-auto badge badge-pill badge-neutral-danger text-danger">
-                      New
-                    </div>
-                  </ListItem>
-                  <ListItem
-                    component="a"
-                    button
-                    href="#/"
-                    onClick={(e) => e.preventDefault()}>
-                    <div className="mr-2">
-                      <FontAwesomeIcon
-                        icon={['fas', 'chevron-right']}
-                        className="font-size-xs opacity-3"
-                      />
-                    </div>
-                    <span>Form wizards</span>
-                  </ListItem>
-                  <ListItem
-                    component="a"
-                    button
-                    href="#/"
-                    onClick={(e) => e.preventDefault()}>
-                    <div className="mr-2">
-                      <FontAwesomeIcon
-                        icon={['fas', 'chevron-right']}
-                        className="font-size-xs opacity-3"
-                      />
-                    </div>
-                    <span>Pricing tables</span>
-                  </ListItem>
-                  <Divider className="mt-3 mb-2" />
-                  <ListItem className="px-0 pb-0">
-                    <Button size="small" className="btn-outline-danger w-100">
-                      <span className="btn-wrapper--label">Learn more</span>
-                    </Button>
-                  </ListItem>
-                </List>
-              </Grid>
+            
             </Grid>
           </div>
         </Popover>
 
-        <Button
-          onClick={handleClickMenu}
-          size="small"
-          className="btn-transition-none btn-neutral-primary mr-3">
-          Dashboards
-        </Button>
-        <Menu
-          anchorEl={anchorElMenu}
-          keepMounted
-          open={Boolean(anchorElMenu)}
-          onClose={handleCloseMenu}
-          classes={{ list: 'p-0' }}
-          getContentAnchorEl={null}
+
+
+        <Popover
+          id={idMadeb}
+          open={openMadeb}
+          anchorEl={anchorElMadeb}
+          onClose={handleMadebClose}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left'
@@ -296,72 +464,615 @@ const HeaderMenu = () => {
             vertical: 'top',
             horizontal: 'left'
           }}>
-          <Box className="overflow-hidden border-0 bg-midnight-bloom p-3 dropdown-mega-menu-md">
-            <div className="text-center">
-              <div className="font-weight-bold font-size-xl mb-1 text-white">
-                Dashboards
-              </div>
-              <p className="text-white-50 mb-3">
-                There are <b className="text-white">multiple</b> dashboard
-                layouts available!
-              </p>
-            </div>
-            <div className="d-flex flex-wrap">
-              <div className="w-50 p-2">
-                <Button
-                  href="#/"
-                  onClick={(e) => e.preventDefault()}
-                  className="d-block bg-white p-3 text-primary">
-                  <div>
-                    <CalendarTodayTwoToneIcon className="h1 d-block my-2 text-success" />
-                    <div className="text-black font-size-md font-weight-bold">
-                      Projects
+          <div className="popover-custom-xl p-0">
+            <Grid container spacing={0}>
+              <Grid item xs={6}>
+              <div className="divider-v divider-v-lg" />
+                <List component="div" className="nav-neutral-first p-3">
+                
+
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 3)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Sarso"
+                    >
+                    <div className="mr-2">
+                    <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
                     </div>
-                  </div>
-                </Button>
-              </div>
-              <div className="w-50 p-2">
-                <Button
-                  href="#/"
-                  onClick={(e) => e.preventDefault()}
-                  className="d-block bg-white p-3 text-primary">
-                  <div>
-                    <CollectionsTwoToneIcon className="h1 d-block my-2 text-danger" />
-                    <div className="text-black font-size-md font-weight-bold">
-                      Helpdesk
+                    <span>Sarso</span>
+                  </ListItem> }
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 4)) !== undefined
+                    &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Norchoe"
+                  // onClick={(e) => e.preventDefault()}
+                    >
+                    <div className="mr-2">
+                    <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
                     </div>
-                  </div>
-                </Button>
-              </div>
-              <div className="w-50 p-2">
-                <Button
-                  href="#/"
-                  onClick={(e) => e.preventDefault()}
-                  className="d-block bg-white p-3 text-primary">
-                  <div>
-                    <DnsTwoToneIcon className="h1 d-block my-2 text-warning" />
-                    <div className="text-black font-size-md font-weight-bold">
-                      CRM UI
+                    <span>Norchoe</span>
+                  </ListItem>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 5)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Bhorlak"
+                    //onClick={(e) => e.preventDefault()}
+                    >
+                  <div className="mr-2">
+                  <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
                     </div>
-                  </div>
-                </Button>
-              </div>
-              <div className="w-50 p-2">
-                <Button
-                  href="#/"
-                  onClick={(e) => e.preventDefault()}
-                  className="d-block bg-white p-3 text-primary">
-                  <div>
-                    <HomeWorkTwoToneIcon className="h1 d-block my-2 text-first" />
-                    <div className="text-black font-size-md font-weight-bold">
-                      Customers
+                    <span>Bhorlak</span>
+                  </ListItem>}
+                 
+              
+                 
+                </List>
+              </Grid>
+              <Grid item xs={6}>
+              <div className="divider-v divider-v-lg" />
+                <List component="div" className="nav-neutral-success p-3">
+                
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 7)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/BriefGB"
+                    >
+                    <div className="mr-2">
+                    <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
                     </div>
+                    <span>BriefGB</span>
+                  </ListItem>}
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 6)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/BookFull"
+                  // onClick={(e) => e.preventDefault()}
+                    >
+                    <div className="mr-2">
+                    <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>BookFull</span>
+                  </ListItem>}
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 8)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Abroad"
+                    //onClick={(e) => e.preventDefault()}
+                    >
+                  <div className="mr-2">
+                  <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>Abroad</span>
+                  </ListItem>}
+                 
+                  
+                </List>
+              </Grid>
+             
+            </Grid>
+          </div>
+        </Popover>
+        <Popover
+          id={idReport}
+          open={openReport}
+          anchorEl={anchorElReport}
+          onClose={handleReportClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left'
+          }}>
+          <div className="popover-custom-xxl p-0">
+        
+            <Grid container spacing={0}>
+            <Grid item xs={4}>
+            <div className="divider-v divider-v-lg" />
+                <List component="div" className="nav-neutral-danger p-3">
+                 
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Reports/GreenBookIssuedOverall"
+                    >
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>Issued Overall Report</span>
+                  </ListItem>  }
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 34)) !== undefined
+                      &&
+                  
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Reports/GreenBookIssuedIndividual"
+                   >
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>Issued Individual Report</span>
+                  
+                  </ListItem>  }
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 35)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Reports/ChangesLog">
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>Changes Log Report</span>
+                  </ListItem>   }
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Reports/NewEntryFromDay">
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>New Entry Report</span>
+                  </ListItem>
+                   }
+                 
+                 
+                 
+                </List>
+              </Grid>
+              <Grid item xs={4}>
+                <div className="divider-v divider-v-lg" />
+                <List component="div" className="nav-neutral-first p-3">
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 38)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/Reports/Below6Years">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
                   </div>
-                </Button>
-              </div>
-            </div>
-          </Box>
-        </Menu>
+                  <span>Below 6 Years Report</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 39)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/Reports/Deceased">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Deceased Report</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 40)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/Reports/Madeb/Sarso">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Sarso Report</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 41)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/Reports/Madeb/Norchoe">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Norchoe Report</span>
+                </ListItem>}
+                 
+                  
+                </List>
+              </Grid>
+              <Grid item xs={4}>
+              <div className="divider-v divider-v-lg" />
+                <List component="div" className="nav-neutral-success p-3">
+                 
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 42)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/Reports/Madeb/Bhorlak">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Bhorlak Report</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 43)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/Reports/Madeb/BookFull">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Book Full Report</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 44)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Reports/Madeb/BriefGB"
+                 >
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>Brief GB Report</span>
+                  </ListItem>}
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 45)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Reports/Madeb/Abroad"
+                 >
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>Abroad Report</span>
+                  </ListItem>}
+                 
+                </List>
+              </Grid>
+            
+            </Grid>
+          </div>
+        </Popover>
+        <Popover
+          id={idMaster}
+          open={openMaster}
+          anchorEl={anchorElMaster}
+          onClose={handleMasterClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left'
+          }}>
+          <div className="popover-custom-xxl p-0">
+        
+            <Grid container spacing={0}>
+            <Grid item xs={4}>
+            <div className="divider-v divider-v-lg" />
+                <List component="div" className="nav-neutral-danger p-3">
+                 
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 21)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Region"
+                    >
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>Region</span>
+                  </ListItem>  }
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 22)) !== undefined
+                      &&
+                  
+                  <ListItem
+                    component="a"
+                    button
+                    href="/AuthRegion"
+                   >
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>Authority Region</span>
+                  
+                  </ListItem>  }
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 23)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Country">
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>Country</span>
+                  </ListItem>   }
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 24)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Occupation">
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>Occupations</span>
+                  </ListItem>
+                   }
+                 
+                 
+                 
+                </List>
+              </Grid>
+              <Grid item xs={4}>
+                <div className="divider-v divider-v-lg" />
+                <List component="div" className="nav-neutral-first p-3">
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 25)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/Province">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Province</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 26)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/Qualification">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Qualification</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 27)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/Relation">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Relation</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 29)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/MadebType">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Madeb Type</span>
+                </ListItem>}
+                 
+                  
+                </List>
+              </Grid>
+              <Grid item xs={4}>
+              <div className="divider-v divider-v-lg" />
+                <List component="div" className="nav-neutral-success p-3">
+                 
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 30)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/TypeIssued">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Type Issued</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 31)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/ChatrelMaster">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Chatrel Configuration</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 32)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/CTAConfig"
+                 >
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span> CTA Configuration</span>
+                  </ListItem>}
+                 
+                </List>
+              </Grid>
+            
+            </Grid>
+          </div>
+        </Popover>
+        {/* User Popover  */}
+        <Popover
+          id={idUser}
+          open={openUser}
+          anchorEl={anchorElUser}
+          onClose={handleUserClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left'
+          }}>
+          <div className="popover-custom p-0">
+            <Grid container spacing={0}>
+              <Grid item xs={12}>
+                <List component="div" className="nav-neutral-danger p-3">
+                
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 18)) !== undefined
+                      &&
+                    <ListItem
+                      component="a"
+                      button
+                      href="/Users">
+                      <div className="mr-2">
+                        <FontAwesomeIcon
+                          icon={['fas', 'chevron-right']}
+                          className="font-size-xs opacity-3"
+                        />
+                      </div>
+                      <span>Manage Users</span>
+                    </ListItem>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 19)) !== undefined
+                      &&
+                    <ListItem
+                      component="a"
+                      button
+                      href="/FeatureRights">
+                      <div className="mr-2">
+                        <FontAwesomeIcon
+                          icon={['fas', 'chevron-right']}
+                          className="font-size-xs opacity-3"
+                        /> 
+                        
+                      </div>
+                      <span>  Manage Feature Rights</span>
+                    </ListItem>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 20)) !== undefined
+                      &&
+                    <ListItem
+                      component="a"
+                      button
+                      href="/UserRights">
+                      <div className="mr-2">
+                        <FontAwesomeIcon
+                          icon={['fas', 'chevron-right']}
+                          className="font-size-xs opacity-3"
+                        />
+                      </div>
+                      <span>Manage Roles</span>
+                    </ListItem>}
+                 
+                 
+                 
+                </List>
+              </Grid>
+            </Grid>
+          </div>
+        </Popover>
       </div>
     </>
   );

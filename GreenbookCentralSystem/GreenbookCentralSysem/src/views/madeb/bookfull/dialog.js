@@ -266,6 +266,9 @@ export const EditDialog = (props) => {
                       // InputProps={{
                       //   readOnly: true,
                       // }}
+                      InputProps={{
+                        readOnly: nIssuedOrNotID,
+                       }}
                       name='form_number'
                       inputRef={register({
                         required: true,
@@ -357,6 +360,9 @@ placeholder="DD-MM-YYYY"
                       inputRef={register({
                         required: true
                       })}
+                      InputProps={{
+                        readOnly: nIssuedOrNotID,
+                       }}
                     />
                     {_.get("sGBID.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
@@ -548,6 +554,9 @@ placeholder="DD-MM-YYYY"
                           {...params}
                           label="Madeb Status"
                           variant="standard"
+                          InputProps={{
+                            readOnly: nIssuedOrNotID,
+                           }}
                           inputProps={{
                             ...params.inputProps,
                             autoComplete: 'off', // disable autocomplete and autofill

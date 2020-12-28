@@ -244,9 +244,9 @@ export const EditDialog = (props) => {
 
                       label={<p>Form Number<span style={{ color: "red" }} > *</span></p>}
                       type="number"
-                      // InputProps={{
-                      //   readOnly: false,
-                      // }}
+                      InputProps={{
+                        readOnly: issueAction,
+                       }}
                       name='form_number'
                       inputRef={register({
                         required: true,
@@ -379,6 +379,9 @@ placeholder="DD-MM-YYYY"
                       //required={true}
                       name="sGBID"
                       value={sGBID}
+                      InputProps={{
+                        readOnly: issueAction,
+                       }}
                       onChange={(e) => { handleChangeGBID(e.target.value) }}
                     //onBlur={(e) => {formPopulate(e.target.value)}}
                     />
@@ -462,6 +465,9 @@ placeholder="DD-MM-YYYY"
                           {...params}
                           label="Madeb Status"
                           variant="standard"
+                          InputProps={{
+                            readOnly: issueAction,
+                           }}
                           inputProps={{
                             ...params.inputProps,
                             autoComplete: 'off', // disable autocomplete and autofill

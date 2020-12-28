@@ -260,9 +260,11 @@ export const EditDialog = (props) => {
                       type="number"
                       name="nFormNumber"
                       InputProps={{
+                        readOnly: nIssuedOrNotID,
                         pattern: /[0-9]/,
                         inputProps: { min: 1 }
                       }}
+                      
                       value={nFormNumber}
                       onChange={(e) => {
                         setFormNumber(parseInt(e.target.value));
@@ -355,6 +357,9 @@ placeholder="DD-MM-YYYY"
                       label={<p>GB ID<span style={{ color: "red" }} > *</span></p>}
                       name="sGBID"
                       //required={true}
+                      InputProps={{
+                        readOnly: nIssuedOrNotID,
+                       }}
                       value={sGBID}
                       onChange={(e) => { handleChangeGBID(e.target.value) }}
                       inputRef={register({
@@ -559,6 +564,9 @@ placeholder="DD-MM-YYYY"
                           {...params}
                           label="Madeb Status"
                           variant="standard"
+                          InputProps={{
+                            readOnly: nIssuedOrNotID,
+                           }}
                           inputProps={{
                             ...params.inputProps,
                             autoComplete: 'off', // disable autocomplete and autofill

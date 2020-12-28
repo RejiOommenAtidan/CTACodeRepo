@@ -37,7 +37,7 @@ function Alert(props) {
 }
 
 export const EditDialog = (props) => {
-    console.log("props", props.sarsoObj)
+    console.log("props", props)
     const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
     const snackbarClose = (event, reason) => {
@@ -112,6 +112,7 @@ export const EditDialog = (props) => {
         }
     });
     useEffect(() => {
+        
         console.log("Inside useEffect()");
         const region = props.selectData['authRegions'].find((x) => x.id === nAuthRegionID);
         setTimeout(() => setValue("AuthRegion", region, {
@@ -135,7 +136,7 @@ export const EditDialog = (props) => {
                                             label={<p>Form Number<span style={{ color: "red" }} > *</span></p>}
                                             type="number"
                                             InputProps={{
-                                                readOnly: false,
+                                                readOnly: issueAction,
                                             }}
                                             inputRef={register({
                                                 required: true
@@ -339,6 +340,7 @@ placeholder="DD-MM-YYYY"
                                             value={valueMadebStatus}
                                             id="id_nMadebStatusID"
                                             options={madebStatuses}
+                                          
                                             autoHighlight
                                             getOptionLabel={(option) => option.sMadebStatus}
                                             renderOption={(option) => (
@@ -351,6 +353,9 @@ placeholder="DD-MM-YYYY"
                                                     {...params}
                                                     label="Madeb Status"
                                                     variant="standard"
+                                                    InputProps={{
+                                                        readOnly: issueAction,
+                                                    }}
                                                     inputProps={{
                                                         ...params.inputProps,
                                                         autoComplete: 'off', // disable autocomplete and autofill

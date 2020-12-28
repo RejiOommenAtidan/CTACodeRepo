@@ -239,7 +239,9 @@ export const EditDialog = (props) => {
 
                       label={<p>Form Number<span style={{ color: "red" }} > *</span></p>}
                       type="number"
-
+                      InputProps={{
+                        readOnly: nIssuedOrNotID,
+                       }}
                       value={nFormNumber}
                       onChange={(e) => { setFormNumber(parseInt(e.target.value)) }}
                       name="nFormNumber"
@@ -400,7 +402,9 @@ placeholder="DD-MM-YYYY"
                       id="sGBID"
 
                       label={<p>GB ID<span style={{ color: "red" }} > *</span></p>}
-
+                      InputProps={{
+                        readOnly: nIssuedOrNotID,
+                       }}
                       name="sGBID"
                       //required={true}
                       value={sGBID}
@@ -522,6 +526,9 @@ placeholder="DD-MM-YYYY"
                         <TextField
                           {...params}
                           label="Madeb Status"
+                          InputProps={{
+                            readOnly: nIssuedOrNotID,
+                           }}
                           variant="standard"
                           inputProps={{
                             ...params.inputProps,
