@@ -955,7 +955,7 @@ export default function SearchPage() {
                         </div>
                     </Card>   
                     */}
-                    <a disabled="disabled" style={{ cursor: 'pointer' }} onClick={() => viewGb(row['nGBID'])} >
+                    <a disabled="disabled" style={{ cursor: 'pointer' }} onClick={() => viewGb(row['nGBID'].toString())} >
                       <Card className="overflow-visible" style={{ width: '90%', textAlign: 'center' }} >
                         <span className="ribbon-horizontal ribbon-horizontal--bottom ribbon-horizontal--danger"><span>{row.nGBID}</span></span>
                         <div className="card-img-wrapper">

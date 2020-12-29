@@ -715,7 +715,10 @@ export default () => {
             data={dataAPI}
             options={{
               ...oOptions,
-              tableLayout: "fixed"
+              tableLayout: "fixed",
+              exportButton: {
+                csv:true
+              }
             }}
             actions={
               [

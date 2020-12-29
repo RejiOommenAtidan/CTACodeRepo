@@ -789,7 +789,10 @@ export default function EnhancedTable() {
             data={dataAPI}
             options={{
               ...oOptions,
-              tableLayout: "fixed"
+              tableLayout: "fixed",
+              exportButton: {
+                csv:true
+              }
             }}
             actions={[
               {

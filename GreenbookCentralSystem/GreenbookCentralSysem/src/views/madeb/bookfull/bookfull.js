@@ -959,7 +959,13 @@ export default function EnhancedTable() {
             title="Book Full Madeb"
             columns={columns}
             data={dataAPI}
-            options={{ ...oOptions, tableLayout: "fixed" }}
+            options={{ 
+              ...oOptions, 
+              tableLayout: "fixed",
+              exportButton: {
+                csv:true
+              }
+             }}
             actions={[
               {
                 icon: oTableIcons.Add,

@@ -741,7 +741,13 @@ export default function EnhancedTable() {
             title="Bhorlak Madeb"
             columns={columns}
             data={dataAPI}
-            options={{ ...oOptions, tableLayout: "fixed" }}
+            options={{ 
+              ...oOptions, 
+              tableLayout: "fixed",
+              exportButton: {
+                csv:true
+              }
+             }}
             actions={[
               {
                 icon: oTableIcons.Add,

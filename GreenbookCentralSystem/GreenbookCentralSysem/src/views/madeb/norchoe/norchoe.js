@@ -776,7 +776,12 @@ export default function EnhancedTable() {
             columns={columns}
             data={dataAPI}
            // options={{...oOptions,tableLayout:"fixed"}}
-           options={oOptions}
+           options={{
+             ...oOptions,
+             exportButton: {
+               csv:true
+             }
+          }}
             actions={[
               {
                 icon: oTableIcons.Add,

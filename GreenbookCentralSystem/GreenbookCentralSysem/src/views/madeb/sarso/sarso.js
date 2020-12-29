@@ -752,7 +752,12 @@ export default function EnhancedTable() {
             title="Sarso Madeb"
             columns={columns}
             data={dataAPI}
-            options={oOptions}
+            options={{
+              ...oOptions,
+              exportButton: {
+                csv:true
+              }
+            }}
             actions={[
               {
                 icon: oTableIcons.Add,

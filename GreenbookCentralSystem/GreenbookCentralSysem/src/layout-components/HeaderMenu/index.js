@@ -540,7 +540,7 @@ const close=(id)=>{
                         className="font-size-xs opacity-3"
                       />
                     </div>
-                    <span>BriefGB</span>
+                    <span>Brief GB</span>
                   </ListItem>}
                   {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 6)) !== undefined
                       &&
@@ -556,7 +556,7 @@ const close=(id)=>{
                         className="font-size-xs opacity-3"
                       />
                     </div>
-                    <span>BookFull</span>
+                    <span>Book Full</span>
                   </ListItem>}
                   {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 8)) !== undefined
                       &&
