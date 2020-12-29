@@ -67,7 +67,7 @@ export default function Report() {
   const columns = [
     {
       field: "no",
-      title: "#",
+      title: "Sr. No.",
       filterPlaceholder: 'Search..',
       width: '5%',
       //hidden:true,
@@ -86,7 +86,7 @@ export default function Report() {
       },
     },
     {
-      field: "sGBId",
+      field: "GBId",
       title: "GB ID",
       filterPlaceholder: 'Search..',
       headerStyle: {
@@ -104,7 +104,7 @@ export default function Report() {
       },
     },
     {
-      field: "sName",
+      field: "name",
       title: "NAME",
       filterPlaceholder: 'Search..',
       headerStyle: {
@@ -122,8 +122,8 @@ export default function Report() {
       },
     },
     {
-      field: "sFeature",
-      title: "FEATURE",
+      field: "field",
+      title: "Name of Field",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
@@ -141,8 +141,8 @@ export default function Report() {
     },
 
     {
-      field: "sFieldValuesOld",
-      title: "OLD VALUE",
+      field: "previous",
+      title: "CHANGE FROM",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
@@ -159,8 +159,8 @@ export default function Report() {
       },
     },
     {
-      field: "sFieldValuesNew",
-      title: "NEW VALUE",
+      field: "new",
+      title: "CHANGED TO",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
@@ -177,8 +177,8 @@ export default function Report() {
       },
     },
     {
-      field: "sFullName",
-      title: "ENTERED BY",
+      field: "changedBy",
+      title: "CHANGED BY",
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
@@ -195,8 +195,8 @@ export default function Report() {
       },
     },
     {
-      field: "dtFormattedEntered",
-      title: "DATE ENTERED",
+      field: "changedAt",
+      title: "CHANGED AT",
       // render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
       filterPlaceholder: 'Search..',
       headerStyle: {
@@ -236,12 +236,33 @@ export default function Report() {
             }
             else {
               let x = 1;
-              resp.data.forEach((element) => {
-                element.no = x;
-                x = x + 1;
-                element.dtFormattedEntered = element.dtEntered ? Moment(element.dtEntered).format(sDateFormat) : null;
+              let arr=[];
+              resp.data.forEach((element1) => {
+                
+                
+               
+                JSON.parse(element1.sFieldValuesOld).forEach((element2) => {
+                  let row={};
+                  console.log(element2);
+                  row.no = x;
+                  
+
+                  row.GBId=element1.sGBId;
+                  row.name=element1.sName;
+                  row.field=element2.Field;
+                  row.previous=element2.PreviousValue;
+                  row.new=element2.NewValue;
+                  row.changedBy=element1.sFullName;
+                  row.changedAt=element1.dtEntered ? Moment(element1.dtEntered).format(sDateFormat) : null;
+                  arr.push(row);
+                  
+                  x = x + 1;
+                })
+                
+                
               })
-              SetChangesLogData(resp.data);
+             console.log("New",arr);
+              SetChangesLogData(arr);
               console.log(resp.data);
             }
           }

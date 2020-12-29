@@ -288,7 +288,7 @@ export const ViewDialog = (props) => {
                             {data.sPhoto != null &&
                               <img alt="..." className="img-fluid" style={{ width: '150px', height: '200px' }} src={`data:image/` + data.sFileExtension + `;base64,${data.sPhoto}`} />}
                             {data.sPhoto == null &&
-                              <img alt="..." className="img-fluid" style={{ width: '150px' }} src={stock} />}
+                              <img alt="..." className="img-fluid" style={{ width: '150px',height:'200px' }} src={stock} />}
                           </div>
                         </div>
                       </div>

@@ -14,7 +14,7 @@ import {
   Table,
   IconButton
 } from "@material-ui/core";
-
+import stock from '../../../assets/images/No_person.jpg';
 import { useSelector } from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -145,6 +145,7 @@ export default function EditEntry(props) {
   const [lOccupation, setlOccupation] = useState([]);
   const [lProvince, setlProvince] = useState([]);
   const [lQualification, setlQualification] = useState([]);
+  const [lMaritalStatus, setlMaritalStatus] = useState([]);
 
   //Linking Lists from API
   const [lGBChildren, setlGBChildren] = useState([]);
@@ -491,6 +492,9 @@ export default function EditEntry(props) {
   const [TBUFathersName, setTBUFathersName] = useState("");
   const [TBUMothersName, setTBUMothersName] = useState("");
   const [TBUSpouseName, setTBUSpouseName] = useState("");
+
+
+  const [profilePic, setProfilePic] = React.useState(null);
   const userId = useSelector(
     (state) => state.UserAuthenticationReducer.oUserAuth.oUser.id
   );
@@ -504,6 +508,7 @@ export default function EditEntry(props) {
       .get(`/Greenbook/GetGBDataNewEntry/Id=1001`)
       .then((resp) => {
         if (resp.status === 200) {
+          console.log(resp.data);
           //Masters
           setlAuthRegion(resp.data.lAuthRegion);
           setlCountry(resp.data.lCountry);
@@ -511,6 +516,7 @@ export default function EditEntry(props) {
           setlOccupation(resp.data.lOccupation);
           setlProvince(resp.data.lProvince);
           setlQualification(resp.data.lQualification);
+          setlMaritalStatus(resp.data.lMaritalStatuses);
           //Get GB Details
           //axios.get(`/Greenbook/GetGreenbook/Id=` + props.match.params.GBID.toString())
           //axios.get(`/Greenbook/GetGreenbook/sGBID=`+props.match.params.GBID.toString())
@@ -531,7 +537,7 @@ export default function EditEntry(props) {
                 setsBirthCountryID(resp.data.sBirthCountryID);
                 setsOriginVillage(resp.data.sOriginVillage);
                 setsOriginProvinceID(resp.data.sOriginProvinceID);
-                setsMarried(resp.data.sMarried);
+                setsMarried(resp.data.sMarried==="Y"?"M":resp.data.sMarried);
                 setsOtherDocuments(resp.data.sOtherDocuments);
                 setsResidenceNumber(resp.data.sResidenceNumber);
                 setsQualificationID(resp.data.sQualificationID);
@@ -578,9 +584,16 @@ export default function EditEntry(props) {
                   )
                   .then((resp) => {
                     if (resp.status === 200) {
-                      //console.log(resp.data)
+                      console.log(resp.data)
                       setlGBChildren(resp.data.lGBChildren);
                       setlGBDocument(resp.data.lGBDocument);
+                      if(resp.data.lGBDocument){
+                        resp.data.lGBDocument.map((row, index) => {
+                             if(row.sDocType==="Photo Identity"){
+                               setProfilePic("data:image/"+row.sFileExtension+";base64,"+row.binFileDoc);
+                             } 
+                      })
+                      }
                       setlGBNote(resp.data.lGBNote);
                       setExpanded("panel1");
                       setBackdrop(false);
@@ -936,6 +949,23 @@ export default function EditEntry(props) {
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
+                        value={sAliasName}
+                        id="id_sAliasName"
+                        label="Alias Name"
+                        type="text"
+                        onChange={(e) => {
+                          setsAliasName(e.target.value);
+                        }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        value={sAliasName}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
                         id="id_TibetanName"
                         name="name_TibetanName"
 
@@ -1016,7 +1046,8 @@ export default function EditEntry(props) {
                       </FormControl>
                     </Grid>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} style={{display:'flex'}}>
+                    <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
@@ -1062,6 +1093,49 @@ export default function EditEntry(props) {
                         </span>
                       )}
                     </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <Autocomplete
+                        value={lDOBApprox.find(
+                          (dobapprox) => dobapprox.sDOBApproxID === sDOBApprox
+                        )}
+                        openOnFocus
+                        clearOnEscape
+                        onChange={(e, value) => {
+                          if (value !== null) {
+                            setsDOBApprox(value.sDOBApproxID);
+                          } else {
+                            setsDOBApprox("");
+                          }
+                        }}
+                        id="id_sDOBApprox"
+                        options={lDOBApprox}
+                        classes={{
+                          option: classes.option,
+                        }}
+                        className={classes.textField}
+                        autoHighlight
+                        getOptionLabel={(option) => option.sDOBApproxName}
+                        renderOption={(option) => (
+                          <React.Fragment>
+                            <span>{option.sDOBApproxName}</span>
+                          </React.Fragment>
+                        )}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="DOB Approx"
+                            variant="standard"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: "new-password",
+                            }}
+                          />
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
                   </Grid>
                   <Grid xs={12} style={{ display: "flex" }}>
                     <Grid item xs={6}>
@@ -1146,6 +1220,93 @@ export default function EditEntry(props) {
                       </FormControl>
                     </Grid>
                   </Grid>
+                  <Grid xs={12} style={{ display: "flex" }}>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <Autocomplete
+                          value={lCountry.find(
+                            (country) => country.sCountryID === sCountryID
+                          )}
+                          openOnFocus
+                          clearOnEscape
+                          onChange={(e, value) => {
+                            if (value !== null) {
+                              setsCountryID(value.sCountryID);
+                            } else {
+                              setsCountryID("");
+                            }
+                          }}
+                          id="id_sCountryID"
+                          options={lCountry}
+                          classes={{
+                            option: classes.option,
+                          }}
+                          className={classes.textField}
+                          autoHighlight
+                          getOptionLabel={(option) => option.sCountry}
+                          renderOption={(option) => (
+                            <React.Fragment>
+                              <span>{option.sCountry}</span>
+                            </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+
+                              label={<>Country <span style={{ color: 'red' }}> *</span></>}
+                              variant="standard"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: "new-password",
+                              }}
+                              name="name_sCountryID"
+                              inputRef={register({
+                                required: true,
+                              })}
+                            />
+                          )}
+                        />
+                        {_.get("name_sCountryID.type", errors) ===
+                          "required" && (
+                            <span style={{ color: "red" }}>
+                              This field is required
+                            </span>
+                          )}
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          value={sPCode}
+                          id="id_sPCode"
+                          label="Pin Code"
+                          type="text"
+                          onChange={(e) => {
+                            setsPCode(e.target.value);
+                          }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                        />
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          value={sCity}
+                          id="id_sCity"
+                          label="City"
+                          type="text"
+                          onChange={(e) => {
+                            setsCity(e.target.value);
+                          }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                        />
+                      </FormControl>
+                    </Grid>
                 </Grid>
                 <Grid xs={6}>
                   <Grid item xs={12}>
@@ -1183,6 +1344,15 @@ export default function EditEntry(props) {
                         </span>
                       )}
                     </FormControl>
+                  </Grid>
+                  <Grid xs={12} style={{textAlign:'center'}}>
+                  <div className="avatar-icon-wrapper  mx-auto">
+                        <div className="d-block p-0 avatar-icon-wrapper m-0 border-3">
+                          <div className=" border-3 border-white overflow-hidden">
+                              <img alt="..." className="img-fluid" style={{ width: '95px',height:'135px' }} src={profilePic ? profilePic:stock} />
+                          </div>
+                        </div>
+                      </div>
                   </Grid>
                   <Grid xs={12} style={{ display: "flex" }}>
                     <Grid item xs={6}>
@@ -1335,6 +1505,7 @@ export default function EditEntry(props) {
                       </FormControl>
                     </Grid>
                   </Grid>
+                  
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
@@ -1362,6 +1533,40 @@ export default function EditEntry(props) {
                         )}
                     </FormControl>
                   </Grid>
+                  <Grid xs={12} style={{ display: "flex" }}>
+                      <Grid item xs={6}>
+                        <FormControl className={classes.formControl}>
+                          <TextField
+                            value={sFathersID}
+                            id="id_sFathersID"
+                            label="Father's Old GB No"
+                            type="text"
+                            onChange={(e) => {
+                              setsFathersID(e.target.value);
+                            }}
+                            fullWidth
+                            margin="dense"
+                            className={classes.textField}
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <FormControl className={classes.formControl}>
+                          <TextField
+                            value={sMothersID}
+                            id="id_sMothersID"
+                            label="Mother's Old GB No"
+                            type="text"
+                            onChange={(e) => {
+                              setsMothersID(e.target.value);
+                            }}
+                            fullWidth
+                            margin="dense"
+                            className={classes.textField}
+                          />
+                        </FormControl>
+                      </Grid>
+                    </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
@@ -1410,24 +1615,9 @@ export default function EditEntry(props) {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid xs={12} style={{ display: "flex" }}>
-                    <Grid item xs={6}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          value={sCity}
-                          id="id_sCity"
-                          label="City"
-                          type="text"
-                          onChange={(e) => {
-                            setsCity(e.target.value);
-                          }}
-                          fullWidth
-                          margin="dense"
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={6}>
+                  
+                    
+                    <Grid item xs={12}>
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_sState"
@@ -1453,78 +1643,8 @@ export default function EditEntry(props) {
                         )}
                       </FormControl>
                     </Grid>
-                  </Grid>
-                  <Grid xs={12} style={{ display: "flex" }}>
-                    <Grid item xs={6}>
-                      <FormControl className={classes.formControl}>
-                        <Autocomplete
-                          value={lCountry.find(
-                            (country) => country.sCountryID === sCountryID
-                          )}
-                          openOnFocus
-                          clearOnEscape
-                          onChange={(e, value) => {
-                            if (value !== null) {
-                              setsCountryID(value.sCountryID);
-                            } else {
-                              setsCountryID("");
-                            }
-                          }}
-                          id="id_sCountryID"
-                          options={lCountry}
-                          classes={{
-                            option: classes.option,
-                          }}
-                          className={classes.textField}
-                          autoHighlight
-                          getOptionLabel={(option) => option.sCountry}
-                          renderOption={(option) => (
-                            <React.Fragment>
-                              <span>{option.sCountry}</span>
-                            </React.Fragment>
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-
-                              label={<>Country <span style={{ color: 'red' }}> *</span></>}
-                              variant="standard"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: "new-password",
-                              }}
-                              name="name_sCountryID"
-                              inputRef={register({
-                                required: true,
-                              })}
-                            />
-                          )}
-                        />
-                        {_.get("name_sCountryID.type", errors) ===
-                          "required" && (
-                            <span style={{ color: "red" }}>
-                              This field is required
-                            </span>
-                          )}
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          value={sPCode}
-                          id="id_sPCode"
-                          label="Pin Code"
-                          type="text"
-                          onChange={(e) => {
-                            setsPCode(e.target.value);
-                          }}
-                          fullWidth
-                          margin="dense"
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
-                  </Grid>
+              
+                 
                 </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
@@ -1550,7 +1670,7 @@ export default function EditEntry(props) {
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid item xs={6}>
-                  <Grid item xs={12}>
+                 {/* <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         value={sAliasName}
@@ -1566,7 +1686,7 @@ export default function EditEntry(props) {
                         value={sAliasName}
                       />
                     </FormControl>
-                  </Grid>
+                  </Grid>*/}
                   <Grid xs={12} style={{ display: "flex" }}>
                     <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
@@ -1740,8 +1860,12 @@ export default function EditEntry(props) {
                         margin="dense"
                         className={classes.textField}
                       >
-                        <MenuItem value={"Y"}>Married</MenuItem>
-                        <MenuItem value={"N"}>Single</MenuItem>
+                  
+                        {lMaritalStatus.map((element, index) => (
+                          <MenuItem value={element.sMaritalStatusId}>{element.sMaritalStatusText}</MenuItem>    
+
+                        ))}
+
                       </Select>
                     </FormControl>
                   </Grid>
@@ -1784,7 +1908,7 @@ export default function EditEntry(props) {
                       </MuiPickersUtilsProvider>
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
+                  {/*<Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
                         value={lDOBApprox.find(
@@ -1825,7 +1949,7 @@ export default function EditEntry(props) {
                         )}
                       />
                     </FormControl>
-                  </Grid>
+                          </Grid>*/}
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
@@ -1984,40 +2108,7 @@ export default function EditEntry(props) {
               <ExpansionPanelDetails>
                 <Grid container spacing={3}>
                   <Grid item xs={6}>
-                    <Grid xs={12} style={{ display: "flex" }}>
-                      <Grid item xs={6}>
-                        <FormControl className={classes.formControl}>
-                          <TextField
-                            value={sFathersID}
-                            id="id_sFathersID"
-                            label="Father's Old GB No"
-                            type="text"
-                            onChange={(e) => {
-                              setsFathersID(e.target.value);
-                            }}
-                            fullWidth
-                            margin="dense"
-                            className={classes.textField}
-                          />
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl className={classes.formControl}>
-                          <TextField
-                            value={sMothersID}
-                            id="id_sMothersID"
-                            label="Mother's Old GB No"
-                            type="text"
-                            onChange={(e) => {
-                              setsMothersID(e.target.value);
-                            }}
-                            fullWidth
-                            margin="dense"
-                            className={classes.textField}
-                          />
-                        </FormControl>
-                      </Grid>
-                    </Grid>
+                    
                     <Grid xs={12} style={{ display: "flex" }}>
                       <Grid item xs={6}>
                         <FormControl className={classes.formControl}>
