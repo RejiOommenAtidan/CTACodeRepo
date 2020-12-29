@@ -217,12 +217,13 @@ export default function EnhancedTable() {
     },
     {
       field: "madeb.sName",
-      width: "30%",
-      title: "NAME",
+      width: "10%",
+      title: "FULLNAME",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+        paddingLeft:"10px"
       },
       cellStyle: {
         textAlign: "left",
@@ -774,7 +775,8 @@ export default function EnhancedTable() {
             title="Norchoe Madeb"
             columns={columns}
             data={dataAPI}
-            options={oOptions}
+           // options={{...oOptions,tableLayout:"fixed"}}
+           options={oOptions}
             actions={[
               {
                 icon: oTableIcons.Add,

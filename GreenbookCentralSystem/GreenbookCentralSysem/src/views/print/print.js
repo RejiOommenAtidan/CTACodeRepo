@@ -89,14 +89,14 @@ return (
     
 
     <div  style={{     
-    marginLeft:'55px' , marginTop:'40px' , fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
+    marginLeft:'60px' , marginTop:'60px' , fontSize:'14px' , fontFamily: '"Times New Roman", Georgia, Serif', color:'#000000'}}>
 
    { printObj.map((row, index) => (
             
             <> 
             
              <PrintCard data={row} />
-            {(index+1)%2 === 0 && <br/>}
+            {(index+1)%2 === 0 && <><br/><br/><br/></>}
     
             </>
         

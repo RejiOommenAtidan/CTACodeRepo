@@ -662,7 +662,7 @@ export default function SearchPage() {
   return (
     <>
       <Grid container spacing={1}>
-        <Grid item xs={12} sm={9}>
+        <Grid item xs={12} sm={10}>
           {/*<Breadcrumbs aria-label="breadcrumb">
             <Link color="inherit" href="/Home" >
               Home
@@ -690,7 +690,7 @@ export default function SearchPage() {
               ]}
             />}
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={2}>
           <Paper style={{ padding: '10px' }}>
             {/*<Typography color="textPrimary" align="center">Search</Typography>*/}
             <FormControl component="fieldset">
