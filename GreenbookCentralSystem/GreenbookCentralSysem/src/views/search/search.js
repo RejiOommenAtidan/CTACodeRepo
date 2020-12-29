@@ -191,19 +191,21 @@ export default function SearchPage() {
   const columns = [
     {
       field: "nSerialNo",
-      title: "#",
-      hidden: false,
+      title: "S.No.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: '1%'
+        width: '0.5%',
+        padding: '0px',
+        margin: '0px'
       },
       cellStyle: {
         textAlign: "right",
         padding: '0px',
         margin: '0px',
-        width: '1%'
+        width: '0.5%',
+        borderRight: '1px solid grey'
       },
       searchable: false,
       filtering: false
@@ -271,13 +273,14 @@ export default function SearchPage() {
         verticalAlign: "middle",
         padding: '0px',
         margin: '0px',
-        width: '3%'
+        width: '2%'
       },
       cellStyle: {
         textAlign: "center",
         padding: '0px',
         margin: '0px',
-        width: '3%'
+        width: '2%',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -297,7 +300,8 @@ export default function SearchPage() {
         textAlign: "left",
         padding: '0px',
         margin: '0px',
-        width: '12%'
+        width: '12%',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -311,6 +315,7 @@ export default function SearchPage() {
       },
       cellStyle: {
         textAlign: "left",
+        borderRight: '1px solid grey'
       }
     },
     /*  {
@@ -340,7 +345,8 @@ export default function SearchPage() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '0px'
+        padding: '0px',
+        borderRight: '1px solid grey'
       }
     },
     // {
@@ -370,7 +376,8 @@ export default function SearchPage() {
       },
       cellStyle: {
         textAlign: "right",
-        padding: '0px'
+        padding: '0px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -382,12 +389,13 @@ export default function SearchPage() {
         textAlign: "center",
         textAlignLast: "center",
         verticalAlign: "middle",
-        width: '3%'
+        width: '1%'
       },
       cellStyle: {
         textAlign: "center",
         padding: '0px',
-        width: '3%'
+        width: '1%',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -401,7 +409,8 @@ export default function SearchPage() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '0px'
+        padding: '0px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -415,7 +424,8 @@ export default function SearchPage() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '0px'
+        padding: '0px',
+        borderRight: '1px solid grey'
       }
     },
     {
@@ -429,7 +439,8 @@ export default function SearchPage() {
       },
       cellStyle: {
         textAlign: "left",
-        padding: '0px'
+        padding: '0px',
+        borderRight: '1px solid grey'
       }
     }
   ];
@@ -645,6 +656,9 @@ export default function SearchPage() {
     }
   }, [firstName, lastName, familyName, spouseName, fatherName, motherName, city, state, dob, country, gender, minAge, maxAge]);
 
+  useEffect(() => {
+    dataFromAPI.length > 0 && modifyHeaders()
+  }, [dataFromAPI]);
   return (
     <>
       <Grid container spacing={1}>

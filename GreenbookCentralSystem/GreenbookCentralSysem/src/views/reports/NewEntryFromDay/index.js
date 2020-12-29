@@ -232,10 +232,10 @@ export default function Report() {
           //console.log(release); => udefined
         });
     }
-
-
-
   }
+  useEffect(() => {
+    newEntryFromDayData.length > 0 && modifyHeaders()
+  }, [newEntryFromDayData]);
 
   return (
     <>

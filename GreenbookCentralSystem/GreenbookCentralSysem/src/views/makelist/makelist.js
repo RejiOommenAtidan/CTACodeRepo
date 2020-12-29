@@ -110,7 +110,7 @@ export default () => {
   const columns = [
     {
       field: "nSerialNo",
-      title: "#",
+      title: "Sr. No.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -322,6 +322,9 @@ export default () => {
         console.log(error.message);
       })
   }, []);
+  useEffect(() => {
+    dataAPI.length > 0 && modifyHeaders()
+  }, [dataAPI]);
 
   return (
     <div>
