@@ -376,21 +376,21 @@ const close=(id)=>{
                   </div>
                   <span>Print</span>
                 </ListItem>}
-                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 14)) !== undefined
+              
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 16)) !== undefined
                      &&
                   <ListItem
                   component="a"
                   button
-                  href="/IssueBook">
+                  href="/Greenbooks">
                   <div className="mr-2">
                     <FontAwesomeIcon
                       icon={['fas', 'chevron-right']}
                       className="font-size-xs opacity-3"
                     />
                   </div>
-                  <span>Issue Book</span>
+                  <span>Edit GB</span>
                 </ListItem>}
-                
                   
                 </List>
               </Grid>
@@ -412,19 +412,19 @@ const close=(id)=>{
                   </div>
                   <span>Make List</span>
                 </ListItem>}
-                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 16)) !== undefined
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 14)) !== undefined
                      &&
                   <ListItem
                   component="a"
                   button
-                  href="/Greenbooks">
+                  href="/IssueBook">
                   <div className="mr-2">
                     <FontAwesomeIcon
                       icon={['fas', 'chevron-right']}
                       className="font-size-xs opacity-3"
                     />
                   </div>
-                  <span>Edit GB</span>
+                  <span>Issue Book</span>
                 </ListItem>}
                 {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 17)) !== undefined
                       &&
