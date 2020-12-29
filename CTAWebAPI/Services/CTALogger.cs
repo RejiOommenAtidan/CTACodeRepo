@@ -75,7 +75,7 @@ namespace CTAWebAPI.Services
             {
                 string sDifference = CTAAuditLogger.ReturnStrings(oOld, oNew);
                 //if (sDifference != null & sDifference[0] != "" && sDifference[1] != "")
-                if(!String.IsNullOrEmpty(sDifference))
+                if(sDifference != "[]")
                 {
                     AuditLog auditLogger = new AuditLog()
                     {
