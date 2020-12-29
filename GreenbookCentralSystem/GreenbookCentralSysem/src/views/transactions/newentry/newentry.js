@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import {
   Container,
   Grid,
@@ -173,6 +173,13 @@ export default function NewEntry(props) {
   const [TBUFathersName, setTBUFathersName] = useState('');
   const [TBUMothersName, setTBUMothersName] = useState('');
   const [TBUSpouseName, setTBUSpouseName] = useState('');
+  // Marital Status
+  const [maritalStatusData, setMaritalStatusData] = useState([]);
+  // Application Date
+  const [applicationDate, setApplicationDate] = useState(null);
+
+  // Dropdowns
+  const [country, setCountry] = useState(null);
 
   //#region Alert & Snackbar
 const [snackbar, setSnackbar] = React.useState(false);
@@ -198,7 +205,7 @@ const snackbarClose = () => {
     //console.log(isExpanded ? panel : false);
   };
 
-  const { register, handleSubmit, errors, setValue,formState } = useForm();
+  const { register, handleSubmit, errors, setValue,formState, clearErrors } = useForm();
 
   const onSubmit = () => {
   
@@ -281,12 +288,15 @@ const snackbarClose = () => {
         //console.log(release); => udefined
       });
   };
-
+  useEffect(() => {
+    setCountry(lCountry && lCountry.find(birthCountry => birthCountry.sCountryID === sBirthCountryID));
+  }, [lCountry])
+  
   useEffect(() => {
     axios.get(`/Greenbook/GetGBDataNewEntry/Id=` + props.match.params.FORMNO)
       .then(resp => {
         if (resp.status === 200) {
-          
+          console.log(resp.data);
           //Masters
           setlAuthRegion(resp.data.lAuthRegion);
           setlCountry(resp.data.lCountry);
@@ -294,6 +304,7 @@ const snackbarClose = () => {
           setlOccupation(resp.data.lOccupation);
           setlProvince(resp.data.lProvince);
           setlQualification(resp.data.lQualification);
+          setMaritalStatusData(resp.data.lMaritalStatuses);
           ////Binded Fields
           let apiDataMadeb = resp.data.oGivenGBIDMadebVM.oMadeb;
           let apiDataGivenGBID = resp.data.oGivenGBIDMadebVM.oGivenGBID;
@@ -313,13 +324,14 @@ const snackbarClose = () => {
           setsOtherDocuments(apiDataMadeb===null?null:apiDataMadeb.sDocumentAttached);
           setsFstGreenBkNo(apiDataMadeb===null?null:apiDataMadeb.nCurrentGBSno);
           setsAliasName(apiDataMadeb===null?null:apiDataMadeb.sAlias);
-          setdtFormDate(apiDataMadeb===null?null:apiDataMadeb.dtReceived);
+          //setdtFormDate(apiDataMadeb===null?null:apiDataMadeb.dtReceived);
           setsGBID(apiDataGivenGBID===null?null:apiDataGivenGBID.nGBId.toString());
           setExpanded('panel1');
           setBackdrop(false);
         }
       })
       .catch(error => {
+        console.log(error.message);
         handleError(error, history);
       })
       .then(release => {
@@ -382,57 +394,7 @@ const snackbarClose = () => {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12} >
-                    <FormControl className={classes.formControl}>
-                      <Autocomplete
-                        value={lAuthRegion.find(authRegion => authRegion.id === nAuthRegionID)}
-                        openOnFocus
-                        clearOnEscape
-                        onChange={
-                          (e, value) => {
-                            if (value !== null) {
-                              setnAuthRegionID(value.id);
-                            }
-                            else {
-                              setnAuthRegionID(0);
-                            }
-                          }
-                        }
-                        id="id_nAuthRegionID"
-                        options={lAuthRegion}
-                        classes={{
-                          option: classes.option,
-                        }}
-                        className={classes.textField}
-                        autoHighlight
-                        getOptionLabel={(option) => option.sAuthRegion}
-                        renderOption={(option) => (
-                          <React.Fragment>
-                            <span>{option.sAuthRegion}</span>
-                          </React.Fragment>
-                        )}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                          
-                            label={<>Authority Region<span style={{color:'red'}}> *</span></>}
-                            variant="standard"
-                            inputProps={{
-                              ...params.inputProps,
-                              autoComplete: 'off',
-                            }}
-                            name="name_nAuthRegionID"
-                            inputRef={register({
-                              required: true
-                            })}
-                          />
-                        )}
-                      />
-                      {_.get("name_nAuthRegionID.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
-                    </FormControl>
-                  </Grid>
+                  
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
@@ -508,7 +470,7 @@ const snackbarClose = () => {
                     </FormControl>
                   </Grid>
                   <Grid xs={12} style={{ display: 'flex' }}>
-                  <Grid item xs={6}>
+                  <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUPlaceOfBirth"
@@ -530,31 +492,87 @@ const snackbarClose = () => {
                       )}
                     </FormControl>
                   </Grid>
+                  
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  
                   <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
-                        id="id_TBUOriginVillage"
-                        
-                        label={<>Origin Village (Tibetan) ཕ་ཡུལ། <span style={{color:'red'}}> *</span></>}
+                        id="id_sBirthPlace"
+                  
+                        label={<>Place of Birth <span style={{color:'red'}}> *</span></>}
                         type="text"
-                        onChange={(e) => { setTBUOriginVillage(e.target.value); }}
+                        onChange={(e) => { setsBirthPlace(e.target.value); }}
                         fullWidth
                         margin="dense"
                         className={classes.textField}
-                        name="name_TBUOriginVillage"
+                        name="name_sBirthPlace"
                         inputRef={register({
                           required: true
                         })}
-                        defaultValue={TBUOriginVillage}
+                        defaultValue={sBirthPlace}
                       />
-                      {_.get("name_TBUOriginVillage.type", errors) === "required" && (
+                      {_.get("name_sBirthPlace.type", errors) === "required" && (
                         <span style={{ color: 'red' }}>This field is required</span>
                       )}
                     </FormControl>
                   </Grid>
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <Autocomplete
+                        openOnFocus
+                        value={country}
+                        clearOnEscape
+                        onChange={
+                          (e, value) => {
+                            if (value !== null) {
+                              setsBirthCountryID(value.sCountryID);
+                              setCountry(value);
+                            }
+                            else {
+                              setsBirthCountryID(null);
+                            }
+                          }
+                        }
+                        id="id_sBirthCountryID"
+                        options={lCountry}
+                        classes={{
+                          option: classes.option,
+                        }}
+                        className={classes.textField}
+                        autoHighlight
+                        getOptionLabel={(option) => option.sCountry}
+                        renderOption={(option) => (
+                          <React.Fragment>
+                            <span>{option.sCountry}</span>
+                          </React.Fragment>
+                        )}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                           
+                            label={<>Choose a Birth Country <span style={{color:'red'}}> *</span></>}
+                            variant="standard"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'off',
+                            }}
+                            name="name_sBirthCountryID"
+                            inputRef={register({
+                              required: true
+                            })}
+                          />
+                        )}
+                      />
+                      {_.get("name_sBirthCountryID.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
+                    </FormControl>
                   </Grid>
-
-                  <Grid item xs={12}>
+                </Grid>
+                <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <KeyboardDatePicker
@@ -594,82 +612,51 @@ placeholder="DD-MM-YYYY"
                         )}
                     </FormControl>
                   </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
                   <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
+                        value={lDOBApprox.find(dobapprox => dobapprox.sDOBApproxID === sDOBApprox)}
                         openOnFocus
-                        value={lCountry.find(birthCountry => birthCountry.sCountryID === sBirthCountryID)}
                         clearOnEscape
                         onChange={
                           (e, value) => {
                             if (value !== null) {
-                              setsBirthCountryID(value.sCountryID);
+                              setsDOBApprox(value.sDOBApproxID);
                             }
                             else {
-                              setsBirthCountryID("");
+                              setsDOBApprox("");
                             }
                           }
                         }
-                        id="id_sBirthCountryID"
-                        options={lCountry}
+                        id="id_sDOBApprox"
+                        options={lDOBApprox}
                         classes={{
                           option: classes.option,
                         }}
                         className={classes.textField}
                         autoHighlight
-                        getOptionLabel={(option) => option.sCountry}
+                        getOptionLabel={(option) => option.sDOBApproxName}
                         renderOption={(option) => (
                           <React.Fragment>
-                            <span>{option.sCountry}</span>
+                            <span>{option.sDOBApproxName}</span>
                           </React.Fragment>
                         )}
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                           
-                            label={<>Choose a Birth Country <span style={{color:'red'}}> *</span></>}
+                            label="DOB Approx"
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
-                              autoComplete: 'off',
+                              autoComplete: 'off'
                             }}
-                            name="name_sBirthCountryID"
-                            inputRef={register({
-                              required: true
-                            })}
                           />
                         )}
                       />
-                      {_.get("name_sBirthCountryID.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sBirthPlace"
-                  
-                        label={<>Place of Birth <span style={{color:'red'}}> *</span></>}
-                        type="text"
-                        onChange={(e) => { setsBirthPlace(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        name="name_sBirthPlace"
-                        inputRef={register({
-                          required: true
-                        })}
-                        defaultValue={sBirthPlace}
-                      />
-                      {_.get("name_sBirthPlace.type", errors) === "required" && (
-                        <span style={{ color: 'red' }}>This field is required</span>
-                      )}
-                    </FormControl>
                   </Grid>
-                </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sAliasName"
@@ -682,7 +669,7 @@ placeholder="DD-MM-YYYY"
                         defaultValue={sAliasName}
                       />
                     </FormControl>
-                  </Grid>
+                  </Grid> */}
                   <Grid xs={12} style={{ display: 'flex' }}>
                     <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
@@ -715,6 +702,45 @@ placeholder="DD-MM-YYYY"
                         />
                       </FormControl>
                     </Grid>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sOriginVillage"
+                        label="Origin Village"
+                        type="text"
+                        onChange={(e) => { setsOriginVillage(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sOriginVillage}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_TBUOriginVillage"
+                        
+                        label={<>Origin Village (Tibetan) ཕ་ཡུལ། <span style={{color:'red'}}> *</span></>}
+                        type="text"
+                        onChange={(e) => { setTBUOriginVillage(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        name="name_TBUOriginVillage"
+                        inputRef={register({
+                          required: true
+                        })}
+                        defaultValue={TBUOriginVillage}
+                      />
+                      {_.get("name_TBUOriginVillage.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
+                    </FormControl>
+                  </Grid>
+                  
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
@@ -762,6 +788,20 @@ placeholder="DD-MM-YYYY"
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
+                        id="id_sOldGreenBKNo"
+                        label="Old GB Number"
+                        type="text"
+                        onChange={(e) => { setsOldGreenBKNo(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sOldGreenBKNo}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
                         id="id_sFstGreenBkNo"
                         label="First GB Number"
                         type="text"
@@ -774,6 +814,35 @@ placeholder="DD-MM-YYYY"
                     </FormControl>
                   </Grid>
                   <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sResidenceNumber"
+                        label="RC Number"
+                        type="text"
+                        onChange={(e) => { setsResidenceNumber(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sResidenceNumber}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sDocuments"
+                        label="Other Documents"
+                        type="text"
+                        onChange={(e) => { setsOtherDocuments(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sOtherDocuments}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <Autocomplete
                         value={lQualification.find(qualification => qualification.sQualificationID === sQualificationID)}
@@ -816,129 +885,56 @@ placeholder="DD-MM-YYYY"
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sDocuments"
-                        label="Other Documents"
-                        type="text"
-                        onChange={(e) => { setsOtherDocuments(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sOtherDocuments}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel id="id_sMarried">Marital Status</InputLabel>
-                      <Select
-                      MenuProps={{
-                        disableScrollLock: false,
-                      }}
-                        id="id_sMarried"
-                        label="Marital Status"
-                        type="text"
-                        onChange={(e) => { setsMarried(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        value={sMarried}
-                      >
-                        <MenuItem value={"Y"}>Married</MenuItem>
-                        <MenuItem value={"N"}>Single</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
                   <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sFathersID"
-                        label="Father's Old GB No"
-                        type="text"
-                        onChange={(e) => { setsFathersID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
+                      <Autocomplete
+                        value={lOccupation.find(occupation => occupation.id.toString() === sOccupationID)}
+                        openOnFocus
+                        clearOnEscape
+                        onChange={
+                          (e, value) => {
+                            if (value !== null) {
+                              setsOccupationID(value.id.toString());
+                            }
+                            else {
+                              setsOccupationID("0");
+                            }
+                          }
+                        }
+                        id="id_sOccupationID"
+                        options={lOccupation}
+                        classes={{
+                          option: classes.option,
+                        }}
                         className={classes.textField}
-                        defaultValue={sFathersID}
+                        autoHighlight
+                        getOptionLabel={(option) => option.sOccupationDesc}
+                        renderOption={(option) => (
+                          <React.Fragment>
+                            <span>{option.sOccupationDesc}</span>
+                          </React.Fragment>
+                        )}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Occupation"
+                            variant="standard"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'off', // disable autocomplete and autofill
+                            }}
+                          />
+                        )}
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sMothersID"
-                        label="Mother's Old GB No"
-                        type="text"
-                        onChange={(e) => { setsMothersID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sMothersID}
-                      />
-                    </FormControl>
                   </Grid>
-                  </Grid>
-                  <Grid xs={12} style={{ display: 'flex' }}>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sSpouseName"
-                        label="Spouse Name"
-                        type="text"
-                        onChange={(e) => { setsSpouseName(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sSpouseName}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sSpouseGBID"
-                        name="name_sSpouseGBID"
-                        label="Spouse GB No"
-                        type="text"
-                        onChange={(e) => { setsSpouseGBID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sSpouseGBID}
-                        inputRef={register({
-                          //minLength: 7,
-                          maxLength: 7
-                        })}
-                      />
-                      {/*{_.get("name_sSpouseGBID.type", errors) === "minLength" && (
-                        <span style={{ color: 'red' }}>Spouse's GB ID No cannot subceed 7 characters</span>
-                      )}*/}
-                      {_.get("name_sSpouseGBID.type", errors) === "maxLength" && (
-                        <span style={{ color: 'red' }}>Spouse's GB No cannot exceed 7 characters</span>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sSpouseID"
-                        label="Spouse's Old GB No"
-                        type="text"
-                        onChange={(e) => { setsSpouseID(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sSpouseID}
-                      />
-                    </FormControl>
-                  </Grid>
+                  
+                  
+                  
                 </Grid>
                 <Grid xs={6}>
-                  <Grid item xs={12}>
+                  {/* <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
@@ -968,6 +964,25 @@ placeholder="DD-MM-YYYY"
                       {_.get("name_dtFormDate.type", errors) === "required" && (
                         <span style={{ color: 'red' }}>This field is required</span>
                       )}
+                    </FormControl>
+                  </Grid> */}
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_SarsoFormNumber"
+                        InputProps={{
+                          readOnly: true
+                        }}
+                        label="Sarso Form Number"
+                        type="text"
+                        //onChange={(e) => { setTBUFathersName(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        name="name_SarsoFormNumber"
+                        defaultValue={props.match.params.FORMNO}
+                      />
+                      
                     </FormControl>
                   </Grid>
                   <Grid xs={12} style={{ display: 'flex' }}>
@@ -1020,7 +1035,8 @@ placeholder="DD-MM-YYYY"
                     </FormControl>
                   </Grid>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUFathersName"
@@ -1042,6 +1058,21 @@ placeholder="DD-MM-YYYY"
                         <span style={{ color: 'red' }}>This field is required</span>
                       )}
                     </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sFathersID"
+                        label="Father's Old GB No"
+                        type="text"
+                        onChange={(e) => { setsFathersID(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sFathersID}
+                      />
+                    </FormControl>
+                  </Grid>
                   </Grid>
                   <Grid xs={12} style={{ display: 'flex' }}>
                   <Grid item xs={6}>
@@ -1093,7 +1124,8 @@ placeholder="DD-MM-YYYY"
                     </FormControl>
                   </Grid>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUMothersName"
@@ -1115,6 +1147,121 @@ placeholder="DD-MM-YYYY"
                       )}
                     </FormControl>
                   </Grid>
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sMothersID"
+                        label="Mother's Old GB No"
+                        type="text"
+                        onChange={(e) => { setsMothersID(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sMothersID}
+                      />
+                    </FormControl>
+                  </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id="id_sMarried">Marital Status</InputLabel>
+                      <Select
+                      MenuProps={{
+                        disableScrollLock: false,
+                      }}
+                        id="id_sMarried"
+                        label="Marital Status"
+                        type="text"
+                        onChange={(e) => { setsMarried(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        value={sMarried}
+                      >
+                        {maritalStatusData && maritalStatusData.map((element) => {
+                          return <MenuItem value={element.sMaritalStatusId}>{element.sMaritalStatusText}</MenuItem>
+                        })}
+                        
+                        {/* <MenuItem value={"N"}>Single</MenuItem> */}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  {sMarried && sMarried !== 'S' &&
+                  <><Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sSpouseName"
+                        label="Spouse Name"
+                        type="text"
+                        onChange={(e) => { setsSpouseName(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sSpouseName}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sSpouseGBID"
+                        name="name_sSpouseGBID"
+                        label="Spouse GB No"
+                        type="text"
+                        onChange={(e) => { setsSpouseGBID(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sSpouseGBID}
+                        inputRef={register({
+                          //minLength: 7,
+                          maxLength: 7
+                        })}
+                      />
+                      
+                      {_.get("name_sSpouseGBID.type", errors) === "maxLength" && (
+                        <span style={{ color: 'red' }}>Spouse's GB No cannot exceed 7 characters</span>
+                      )}
+                    </FormControl>
+                  </Grid>
+                  </Grid>
+                  <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_TBUSpouseName"
+                        label="Spouse Name (Tibetan)"
+                        type="text"
+                        onChange={(e) => { setTBUSpouseName(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={TBUSpouseName}
+                      />
+                    </FormControl>
+                  </Grid>
+                  
+                  
+                  <Grid item xs={6}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sSpouseID"
+                        label="Spouse's Old GB No"
+                        type="text"
+                        onChange={(e) => { setsSpouseID(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sSpouseID}
+                      />
+                    </FormControl>
+                  </Grid>
+                  
+                  </Grid></>}
+                  
+
+
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
@@ -1264,6 +1411,20 @@ placeholder="DD-MM-YYYY"
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sEmail"
+                        label="Email"
+                        type="email"
+                        onChange={(e) => { setsEmail(e.target.value); }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        defaultValue={sEmail}
+                      />
+                    </FormControl>
+                  </Grid>
+                  {/* <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
 placeholder="DD-MM-YYYY"
@@ -1299,136 +1460,13 @@ placeholder="DD-MM-YYYY"
                         />
                       </MuiPickersUtilsProvider>
                     </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <Autocomplete
-                        value={lDOBApprox.find(dobapprox => dobapprox.sDOBApproxID === sDOBApprox)}
-                        openOnFocus
-                        clearOnEscape
-                        onChange={
-                          (e, value) => {
-                            if (value !== null) {
-                              setsDOBApprox(value.sDOBApproxID);
-                            }
-                            else {
-                              setsDOBApprox("");
-                            }
-                          }
-                        }
-                        id="id_sDOBApprox"
-                        options={lDOBApprox}
-                        classes={{
-                          option: classes.option,
-                        }}
-                        className={classes.textField}
-                        autoHighlight
-                        getOptionLabel={(option) => option.sDOBApproxName}
-                        renderOption={(option) => (
-                          <React.Fragment>
-                            <span>{option.sDOBApproxName}</span>
-                          </React.Fragment>
-                        )}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="DOB Approx"
-                            variant="standard"
-                            inputProps={{
-                              ...params.inputProps,
-                              autoComplete: 'off'
-                            }}
-                          />
-                        )}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sOriginVillage"
-                        label="Origin Village"
-                        type="text"
-                        onChange={(e) => { setsOriginVillage(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sOriginVillage}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sOldGreenBKNo"
-                        label="Old GB Number"
-                        type="text"
-                        onChange={(e) => { setsOldGreenBKNo(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sOldGreenBKNo}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sResidenceNumber"
-                        label="RC Number"
-                        type="text"
-                        onChange={(e) => { setsResidenceNumber(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={sResidenceNumber}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <Autocomplete
-                        value={lOccupation.find(occupation => occupation.id.toString() === sOccupationID)}
-                        openOnFocus
-                        clearOnEscape
-                        onChange={
-                          (e, value) => {
-                            if (value !== null) {
-                              setsOccupationID(value.id.toString());
-                            }
-                            else {
-                              setsOccupationID("0");
-                            }
-                          }
-                        }
-                        id="id_sOccupationID"
-                        options={lOccupation}
-                        classes={{
-                          option: classes.option,
-                        }}
-                        className={classes.textField}
-                        autoHighlight
-                        getOptionLabel={(option) => option.sOccupationDesc}
-                        renderOption={(option) => (
-                          <React.Fragment>
-                            <span>{option.sOccupationDesc}</span>
-                          </React.Fragment>
-                        )}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Occupation"
-                            variant="standard"
-                            inputProps={{
-                              ...params.inputProps,
-                              autoComplete: 'off', // disable autocomplete and autofill
-                            }}
-                          />
-                        )}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
+                  </Grid> */}
+                  
+                  
+                  
+                  
+                  
+                  {/* <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
@@ -1465,22 +1503,23 @@ placeholder="DD-MM-YYYY"
                         />
                       </MuiPickersUtilsProvider>
                     </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_TBUSpouseName"
-                        label="Spouse Name (Tibetan)"
-                        type="text"
-                        onChange={(e) => { setTBUSpouseName(e.target.value); }}
-                        fullWidth
-                        margin="dense"
-                        className={classes.textField}
-                        defaultValue={TBUSpouseName}
-                      />
-                    </FormControl>
-                  </Grid>
+                  </Grid> */}
+                  
                   <Grid xs={12} style={{ display: 'flex' }}>
+                  <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          id="id_sPhone"
+                          label="Phone Number"
+                          type="text"
+                          onChange={(e) => { setsPhone(e.target.value); }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                          defaultValue={sPhone}
+                        />
+                      </FormControl>
+                    </Grid>
                     <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
                         <TextField
@@ -1495,33 +1534,88 @@ placeholder="DD-MM-YYYY"
                         />
                       </FormControl>
                     </Grid>
-                    <Grid item xs={6}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sPhone"
-                          label="Phone Number"
-                          type="text"
-                          onChange={(e) => { setsPhone(e.target.value); }}
-                          fullWidth
-                          margin="dense"
-                          className={classes.textField}
-                          defaultValue={sPhone}
-                        />
-                      </FormControl>
-                    </Grid>
+                   
                   </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
-                      <TextField
-                        id="id_sEmail"
-                        label="Email"
-                        type="email"
-                        onChange={(e) => { setsEmail(e.target.value); }}
-                        fullWidth
-                        margin="dense"
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          placeholder="DD-MM-YYYY"
+                          variant="dialog"
+                          openTo="year"
+                          views={["year", "month", "date"]}
+                          margin="dense"
+                          id="id_dtApplicationDate"
+                          name="name_dtApplicationDate"
+                         
+                          label={<>Application Date<span style={{color:'red'}}> *</span></>}
+                          format={sDateFormatMUIDatepicker}
+                          onChange={date => { setdtFormDate(date) }}
+                          value={dtFormDate}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                          inputRef={register({
+                            required: true
+                          })}
+                          fullWidth
+                          className={classes.dateField}
+                        />
+                      </MuiPickersUtilsProvider>
+                      {_.get("name_dtApplicationDate.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} >
+                    <FormControl className={classes.formControl}>
+                      <Autocomplete
+                        value={lAuthRegion.find(authRegion => authRegion.id === nAuthRegionID)}
+                        openOnFocus
+                        clearOnEscape
+                        onChange={
+                          (e, value) => {
+                            if (value !== null) {
+                              setnAuthRegionID(value.id);
+                            }
+                            else {
+                              setnAuthRegionID(0);
+                            }
+                          }
+                        }
+                        id="id_nAuthRegionID"
+                        options={lAuthRegion}
+                        classes={{
+                          option: classes.option,
+                        }}
                         className={classes.textField}
-                        defaultValue={sEmail}
+                        autoHighlight
+                        getOptionLabel={(option) => option.sAuthRegion}
+                        renderOption={(option) => (
+                          <React.Fragment>
+                            <span>{option.sAuthRegion}</span>
+                          </React.Fragment>
+                        )}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                          
+                            label={<>Authority Region<span style={{color:'red'}}> *</span></>}
+                            variant="standard"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'off',
+                            }}
+                            name="name_nAuthRegionID"
+                            inputRef={register({
+                              required: true
+                            })}
+                          />
+                        )}
                       />
+                      {_.get("name_nAuthRegionID.type", errors) === "required" && (
+                        <span style={{ color: 'red' }}>This field is required</span>
+                      )}
                     </FormControl>
                   </Grid>
                 </Grid>

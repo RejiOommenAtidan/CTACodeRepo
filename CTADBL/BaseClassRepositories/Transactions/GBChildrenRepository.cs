@@ -21,7 +21,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #region Get GBChildren
         public IEnumerable<GBChildren> GetGBChildrenByGBIDParent(string sGBIDParent)
         {
-            string sql = @"SELECT Id, sGBIDParent, sName, dtDOB, sGender, sChildID, sGBIDChild, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM ctadb.lnkgbchildren WHERE sGBIDParent = @sGBIDParent;";
+            string sql = @"SELECT Id, sGBIDParent, sName, dtDOB, sGender, sChildID, sGBIDChild, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM lnkgbchildren WHERE sGBIDParent = @sGBIDParent;";
 
 
             using (var command = new MySqlCommand(sql))
