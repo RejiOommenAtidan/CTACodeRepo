@@ -180,6 +180,7 @@ export default function NewEntry(props) {
 
   // Dropdowns
   const [country, setCountry] = useState(null);
+  const [bcountry, setBCountry] = useState(null);
 
   //#region Alert & Snackbar
 const [snackbar, setSnackbar] = React.useState(false);
@@ -205,7 +206,7 @@ const snackbarClose = () => {
     //console.log(isExpanded ? panel : false);
   };
 
-  const { register, handleSubmit, errors, setValue,formState, clearErrors } = useForm();
+  const { register, handleSubmit, errors, setValue,formState, clearErrors, control } = useForm();
 
   const onSubmit = () => {
   
@@ -289,7 +290,8 @@ const snackbarClose = () => {
       });
   };
   useEffect(() => {
-    setCountry(lCountry && lCountry.find(birthCountry => birthCountry.sCountryID === sBirthCountryID));
+    setCountry(lCountry && lCountry.find(c => c.sCountryID === sCountryID ));
+    setBCountry(lCountry && lCountry.find(c => c.sCountryID === sBirthCountryID));
   }, [lCountry])
   
   useEffect(() => {
@@ -520,9 +522,9 @@ const snackbarClose = () => {
                   </Grid>
                   <Grid item xs={6}>
                     <FormControl className={classes.formControl}>
-                      <Autocomplete
+                      {/* <Autocomplete
                         openOnFocus
-                        value={country}
+                        value={bcountry}
                         clearOnEscape
                         onChange={
                           (e, value) => {
@@ -567,7 +569,63 @@ const snackbarClose = () => {
                       />
                       {_.get("name_sBirthCountryID.type", errors) === "required" && (
                         <span style={{ color: 'red' }}>This field is required</span>
-                      )}
+                      )} */}
+                      <Controller
+                          render={props => (
+                          <Autocomplete
+                            {...props}
+                            id="id_sBirthCountryID"
+                            classes={{
+                              option: classes.option,
+                            }}
+                            className={classes.textField}
+                            openOnFocus={true}
+                            clearOnEscape
+                            autoComplete={true}
+                            autoHighlight={true}
+                            options={lCountry}
+                            getOptionLabel={(option) => option.sCountry}
+                            renderOption={(option) => (
+                              <React.Fragment>
+                                <span>{option.sCountry}</span>
+                              </React.Fragment>
+                            )}
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                label={<>Choose a Birth Country <span style={{color:'red'}}> *</span></>}
+                                variant="standard"
+                                name="name_birthCountryID"
+                                inputRef={register({
+                                  required: true
+                                })}
+                                inputProps={{
+                                  ...params.inputProps,
+                                  autoComplete: 'off', // disable autocomplete and autofill
+                                }}
+                              />
+                            )}
+                            onChange={
+                              (e, value) => {
+                                props.onChange(value);
+                                //alert ("onChangeFired")
+                                if (value !== null) {
+                                  setsBirthCountryID(value.sCountryID);
+                                }
+                                else {
+                                  setsBirthCountryID(null);
+                                }
+                              }
+                            }
+                            value={bcountry}
+                        
+                          />
+                        )}
+                        name="name_birthCountryID"
+                        control={control}
+                        rules={{ required: true }}
+                        />
+                      {errors.name_birthCountryID && <span style={{ color: 'red' }}>This field is required</span>}
                     </FormControl>
                   </Grid>
                 </Grid>
@@ -1345,7 +1403,7 @@ placeholder="DD-MM-YYYY"
                   <Grid xs={12} style={{ display: 'flex' }}>
                     <Grid item xs={6}>
                       <FormControl className={classes.formControl}>
-                        <Autocomplete
+                        {/* <Autocomplete
                           value={lCountry.find(country => country.sCountryID === sCountryID)}
                           openOnFocus
                           clearOnEscape
@@ -1391,7 +1449,62 @@ placeholder="DD-MM-YYYY"
                         />
                         {_.get("name_sCountryID.type", errors) === "required" && (
                           <span style={{ color: 'red' }}>This field is required</span>
+                        )} */}
+                        <Controller
+                          render={props => (
+                          <Autocomplete
+                            {...props}
+                            openOnFocus={true}
+                            classes={{
+                              option: classes.option,
+                            }}
+                            className={classes.textField}
+                            clearOnEscape
+                            autoComplete={true}
+                            autoHighlight={true}
+                            options={lCountry}
+                            getOptionLabel={(option) => option.sCountry}
+                            renderOption={(option) => (
+                              <React.Fragment>
+                                <span>{option.sCountry}</span>
+                              </React.Fragment>
+                            )}
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                label={<> Country<span style={{color:'red'}}> *</span></>}
+                                variant="standard"
+                                name="name_sCountryID"
+                                inputRef={register({
+                                  required: true
+                                })}
+                                inputProps={{
+                                  ...params.inputProps,
+                                  autoComplete: 'off', // disable autocomplete and autofill
+                                }}
+                              />
+                            )}
+                            onChange={
+                              (e, value) => {
+                                props.onChange(value);
+                                //alert ("onChangeFired")
+                                if (value !== null) {
+                                  setsCountryID(value.sCountryID);
+                                }
+                                else {
+                                  setsCountryID("");
+                                }
+                              }
+                            }
+                            value={country}
+                        
+                          />
                         )}
+                        name="name_sCountryID"
+                        control={control}
+                        rules={{ required: true }}
+                        />
+                      {errors.name_sCountryID && <span style={{ color: 'red' }}>This field is required</span>}
                       </FormControl>
                     </Grid>
                     <Grid item xs={6}>
