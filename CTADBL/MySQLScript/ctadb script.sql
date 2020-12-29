@@ -477,7 +477,7 @@ CREATE TABLE `lstCountry` (
   `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1;
 
 INSERT INTO `lstCountry` (`sCountryID`, `sCountry`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('AF','Afghanistan',now(),1,now(),1),
 ('AL','Albania',now(),1,now(),1),('DZ','Algeria',now(),1,now(),1),('AD','Andorra',now(),1,now(),1),('AO','Angola',now(),1,now(),1),
@@ -963,12 +963,12 @@ CREATE TABLE `tblGreenBook` (
   `dtValidityDate` date DEFAULT NULL,
   `sPaidUntil` text NOT NULL,
   
-  `TibetanName` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `TBUPlaceOfBirth` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `TBUOriginVillage` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `TBUFathersName` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `TBUMothersName` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `TBUSpouseName` text CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `TibetanName` text NOT NULL,
+  `TBUPlaceOfBirth` text NOT NULL,
+  `TBUOriginVillage` text NOT NULL,
+  `TBUFathersName` text NOT NULL,
+  `TBUMothersName` text NOT NULL,
+  `TBUSpouseName` text DEFAULT NULL,
   
   `sLoginGmail` varchar(255) DEFAULT NULL,
   `dtLastSuccessfullLogin` DateTime DEFAULT NULL,
@@ -981,7 +981,7 @@ CREATE TABLE `tblGreenBook` (
 
   PRIMARY KEY (`id`),
   KEY `nAuthRegionID` (`nAuthRegionID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 CREATE TABLE `tblGivenGBID` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1064,8 +1064,8 @@ CREATE TABLE `tblAuditLog` (
   `nRegionID` int(11) DEFAULT NULL,
   `nRecordID` int(11) NOT NULL,
   `sGBID` varchar(255) DEFAULT NULL,
-  `sFieldValuesOld` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `sFieldValuesNew` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `sFieldValuesOld` text NOT NULL,
+  `sFieldValuesNew` text NOT NULL,
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -1710,7 +1710,7 @@ BEGIN
     END IF;
     SET result = formNumberIN;
     SELECT result;
-END
+END$$
 
 DELIMITER ;
 DROP procedure IF EXISTS `spReportGreenBookIssuedOverAll`;
@@ -1817,7 +1817,7 @@ BEGIN
 			on tblauditlog.sGBID = tblgreenbook.sGBID
 		Left Join lstfeature
 			on tblauditlog.nFeatureID = lstfeature.Id
-		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') > ''',dtRecordFrom ,'''');
+		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') = ''',dtRecordFrom ,'''');
     -- select @SQLText;
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
@@ -1850,7 +1850,7 @@ BEGIN
 			on tblauditlog.sGBID = tblgreenbook.sGBID
 		Left Join lstfeature
 			on tblauditlog.nFeatureID = lstfeature.Id
-		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') > ''',dtRecordFrom ,'''');
+		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') = ''',dtRecordFrom ,'''');
     -- select @SQLText;
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
@@ -1882,7 +1882,7 @@ BEGIN
 				tblgreenbook.nEnteredBy=tblUser.id
 			) 
 	WHERE 
-		DATE_FORMAT(tblgreenbook.dtEntered, ''%Y-%m-%d'') > ''',dtRecordFrom ,'''');
+		DATE_FORMAT(tblgreenbook.dtEntered, ''%Y-%m-%d'') = ''',dtRecordFrom ,'''');
     -- select @SQLText;
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
@@ -2121,6 +2121,36 @@ where
 END$$
 DELIMITER ;
 
+DROP procedure IF EXISTS `spReportGreenBookDeleted`;
+
+DELIMITER $$
+CREATE PROCEDURE spReportGreenBookDeleted
+(
+   IN dtRecordFrom date
+    ,IN dtRecordTo date
+)
+BEGIN
+    -- declare SQLText varchar(5000);
+    SET @SQLText = CONCAT('SELECT `tblauditlog`.`Id`,
+			`tblauditlog`.`dtEntered`,
+			`tblauditlog`.`nFeatureID`,
+			`tblauditlog`.`nRegionID`,
+			`tblauditlog`.`nRecordID`,
+			`tblauditlog`.`sGBID`,
+			`tblauditlog`.`sFieldValuesOld`,
+			`tblauditlog`.`sFieldValuesNew`,
+			`tblauditlog`.`nEnteredBy`
+		FROM `ctadb`.`tblauditlog`
+		where 
+			`tblauditlog`.`dtEntered` > ''' ,  dtRecordFrom
+    ,'''  and `tblauditlog`.`dtEntered` <= ''', dtRecordTo
+    ,''' and `tblauditlog`.`nFeatureID` = 17');
+    -- select @SQLText;
+    PREPARE stmt FROM @SQLText;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
 
 DROP procedure IF EXISTS `spReportChatrelFailedRecordsRegionOrCountryWise`;
 

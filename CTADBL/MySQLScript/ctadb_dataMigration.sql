@@ -1157,7 +1157,7 @@ SELECT
 	, concat(historychangeschild.FieldName, ' = ',historychangeschild.ChangesFrom) as sFieldValuesOld
 	, concat(historychangeschild.FieldName, ' = ',historychangeschild.ChangesFrom) as sFieldValuesNew
 	,if(concat('',historychangeschild.byWhom * 1) = historychangeschild.byWhom,historychangeschild.byWhom,1) as nEnteredBy 
-FROM greenbookprime.historychangeschild;
+FROM greenbookprime.historychangeschild; 
 
 
 SET SQL_SAFE_UPDATES=0;
