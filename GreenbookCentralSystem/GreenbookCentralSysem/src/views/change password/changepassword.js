@@ -120,7 +120,7 @@ export default function ChangePassword() {
             setTimeout(() => {
               dispatch(removeAuthDetails());
               history.push('/Login', { changepassword: true })
-            }, 3000);
+            }, 1500);
           }
         })
         .catch(error => {
@@ -131,7 +131,7 @@ export default function ChangePassword() {
             snackbarOpen();
             setTimeout(() => {
               window.location.reload(true)
-            }, 2000);
+            }, 1500);
             ;
           }
           else if (error.response.data === "New Password & Confirm New Password are Different") {
@@ -141,7 +141,7 @@ export default function ChangePassword() {
             snackbarOpen();
             setTimeout(() => {
               window.location.reload(true)
-            }, 2000);
+            }, 1500);
           }
           else
             handleError(error, history);

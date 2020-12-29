@@ -169,7 +169,7 @@ export default function FeatureUserrights() {
                 setAlertType('success');
                 snackbarOpen();
                 setBackdrop(false);
-                setTimeout(() => { window.location.reload(); }, 2000);
+                setTimeout(() => { window.location.reload(); }, 1500);
               }
             })
             .catch(error => {
