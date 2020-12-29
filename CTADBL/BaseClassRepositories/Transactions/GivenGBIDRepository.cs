@@ -125,9 +125,11 @@ namespace CTADBL.BaseClassRepositories.Transactions
         public int GetRandomGBID()
         {
             Random random = new Random();
-            string sql = @"select tblgivengbid.nGBId FROM tblgivengbid WHERE nGBID=@nGBID";
+            //string sql = @"select tblgivengbid.nGBId FROM tblgivengbid WHERE nGBID=@nGBID";
+            string sql = @"SELECT t.sGBID FROM tblauditlog t WHERE t.nFeatureID=17 UNION SELECT t2.sGBID FROM tblgreenbook t2 WHERE sGBID=@sGBID;";
             int randomgbid = 0;
             bool unused = false;
+            _connection.Open();
             while (!unused)
             {
                 using (var command = new MySqlCommand(sql))
@@ -135,16 +137,18 @@ namespace CTADBL.BaseClassRepositories.Transactions
                     randomgbid = random.Next(999999, 10000000);
                     command.Connection = _connection;
                     command.CommandType = CommandType.Text;
-                    command.Parameters.AddWithValue("nGBID", randomgbid);
-                    _connection.Open();
+                    command.Parameters.AddWithValue("sGBID", randomgbid.ToString());
+                    
                     var result = command.ExecuteScalar();
+                    
                     if(result == null)
                     {
                         unused = true;
                     }
                 }
             }
-            
+            _connection.Close();
+
             return randomgbid;
         }
         #endregion
