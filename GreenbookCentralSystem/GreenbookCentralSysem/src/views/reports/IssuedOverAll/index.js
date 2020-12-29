@@ -17,6 +17,7 @@ import Search from '@material-ui/icons/Search';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
 import { useHistory } from 'react-router-dom';
+import { useStaticState } from '@material-ui/pickers';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -49,6 +50,7 @@ export default function Report() {
   const [orderBy, SetOrderBy] = React.useState('');
   const [groupBy, SetGroupBy] = React.useState('');
   const [title, setTitle] = useState();
+  const [rcheader, setRCHeader] = useState();
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -90,7 +92,7 @@ export default function Report() {
 
     {
       field: "individualPlace",
-      title: "REGION/COUNTRY",
+      title: `${rcheader}`,
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
@@ -143,6 +145,7 @@ export default function Report() {
           if (resp.status === 200) {
             setBackdrop(false);
             const grouping = orderBy === 'lstcountry.sCountry' ? 'Country Wise' : 'Region Wise';
+            setRCHeader(orderBy === 'lstcountry.sCountry' ? 'Country' : 'Region')
             const madeb = madebTypeData.find((x) => x.id === madebType).sMadebDisplayName;
             setTitle(`${madeb} ${grouping} Report from ${Moment(dtFrom).format(sDateFormat)} to ${Moment(dtTo).format(sDateFormat)}` );
             if (resp.data.length == 0) {
@@ -167,6 +170,9 @@ export default function Report() {
         })
         .catch(error => {
           setBackdrop(false);
+          setAlertMessage('Error fetching Data...');
+              setAlertType('error');
+              snackbarOpen();
           if (error.response) {
             console.error(error.response.data);
             console.error(error.response.status);
@@ -227,7 +233,7 @@ export default function Report() {
           <Select
             labelId="madebTypelbl"
             id="madebType"
-
+            autoFocus
             onChange={(e) => { SetMadebType(e.target.value); }}
           >
             {madebTypeData && madebTypeData.map((row) => (

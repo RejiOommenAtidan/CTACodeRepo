@@ -49,6 +49,7 @@ export default function Report() {
   const [dtTo, SetdtTo] = React.useState('');
   const [orderBy, SetOrderBy] = React.useState('');
   const [title, setTitle] = useState();
+  const [rcheader, setRCHeader] = useState();
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -170,7 +171,7 @@ export default function Report() {
 
     {
       field: "sPlace",
-      title: "Country/Region",
+      title: `${rcheader}`,
       filterPlaceholder: 'Search..',
       headerStyle: {
         padding: '5px',
@@ -201,6 +202,7 @@ export default function Report() {
           if (resp.status === 200) {
             setBackdrop(false);
             const grouping = orderBy === 'lstcountry.sCountry' ? 'Country Wise' : 'Region Wise';
+            setRCHeader(orderBy === 'lstcountry.sCountry' ? 'Country' : 'Region')
             const madeb = madebTypeData.find((x) => x.id === madebType).sMadebDisplayName;
             setTitle(`${madeb} ${grouping} Report from ${Moment(dtFrom).format(sDateFormat)} to ${Moment(dtTo).format(sDateFormat)}` );
             if (resp.data.length == 0) {
@@ -223,6 +225,9 @@ export default function Report() {
         })
         .catch(error => {
           setBackdrop(false);
+          setAlertMessage('Error Fetching Data...');
+            setAlertType('error');
+            snackbarOpen();
           if (error.response) {
             console.error(error.response.data);
             console.error(error.response.status);
@@ -231,9 +236,7 @@ export default function Report() {
             console.warn(error.request);
           } else {
             console.error('Error', error.message);
-            setAlertMessage('Error', error.messag);
-            setAlertType('error');
-            snackbarOpen();
+            
           }
           console.log(error.config);
           console.log(error.message);
@@ -282,7 +285,7 @@ export default function Report() {
           <Select
             labelId="madebTypelbl"
             id="madebType"
-
+            autoFocus
             onChange={(e) => { SetMadebType(e.target.value); }}
           >
             {madebTypeData && madebTypeData.map((row) => (
