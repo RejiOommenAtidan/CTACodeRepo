@@ -13,6 +13,7 @@ namespace CTADBL.ViewModels
         private List<Occupation> _lOccupation;
         private List<DOBApprox> _lDOBApprox;
         private GivenGBIDMadebVM _oGivenGBIDMadebVM;
+        private List<MaritalStatus> _lMaritalStatuses;
         #endregion
 
         #region Public Props
@@ -23,6 +24,7 @@ namespace CTADBL.ViewModels
         public List<Occupation> lOccupation { get { return _lOccupation; } set { _lOccupation = value; } }
         public List<DOBApprox> lDOBApprox { get { return _lDOBApprox; } set { _lDOBApprox = value; } }
         public GivenGBIDMadebVM oGivenGBIDMadebVM { get { return _oGivenGBIDMadebVM; } set { _oGivenGBIDMadebVM = value; } }
+        public List<MaritalStatus> lMaritalStatuses { get { return _lMaritalStatuses; } set { _lMaritalStatuses = value; } }
         #endregion
     }
 }
