@@ -336,6 +336,9 @@ export const ViewDialog = (props) => {
                         <Grid item sm={6}>
                           Edited On: {data.greenBook.dtUpdated ? Moment(data.greenBook.dtUpdated).format('DD-MM-YYYY h:m:s a') : ''}
                         </Grid>
+                        <Grid item sm={6}>
+                          Edited By: {data.sUpdatedBy}
+                        </Grid>
                       </Grid>
                       <div className="divider my-4" />
                       {data.relations.sFathersGBID != null && data.relations.sMothersGBID != null && data.relations.sSpouseGBID != null &&
