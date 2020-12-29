@@ -68,3 +68,6 @@ CALL spReportChatrelRecordsRegionOrCountryWise ('2009-12-17','2015-12-17','lnkgb
 
 
 
+======================================================================
+
+CALL spReportGreenBookDeleted ('2014-01-14','2014-12-17');
