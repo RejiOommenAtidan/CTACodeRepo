@@ -1169,3 +1169,25 @@ UPDATE lstMadebType
 			) as MaxNum
         SET lstMadebType.nMadebLastFormNumber = MaxNum.LastFormNumber
         where lstMadebType.ID = MaxNum.ID;
+		
+
+INSERT INTO `tblauditlog`
+(
+`dtEntered`,
+`nFeatureID`,
+`nRegionID`,
+`nRecordID`,
+`sGBID`,
+`sFieldValuesOld`,
+`sFieldValuesNew`,
+`nEnteredBy`)
+SELECT 
+	`deletelog`.`WhenDeleted`,
+	17,
+    null,
+    `deletelog`.`ID`,
+    `deletelog`.`IdentityID`,
+    concat('Name = ',`deletelog`.`Name`) as sFieldValuesOld,
+    concat('Delete GB = ',`deletelog`.`IdentityID`) as sFieldValuesNew,
+    1
+FROM `greenbookprime`.`deletelog`;
