@@ -279,7 +279,7 @@ const snackbarClose = () => {
           setAlertType('success');
           snackbarOpen();
           setBackdrop(false);
-          setTimeout(() => { history.push("/SarsoNewGBEntry"); }, 3000);
+          setTimeout(() => { history.push("/SarsoNewGBEntry"); }, 1500);
         }
       })
       .catch(error => {

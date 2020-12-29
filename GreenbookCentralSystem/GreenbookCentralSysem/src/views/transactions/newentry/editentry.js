@@ -746,7 +746,7 @@ export default function EditEntry(props) {
                 setAlertType('success');
                 snackbarOpen();
                 setBackdrop(false);
-                setTimeout(() => { history.push("/Greenbooks"); }, 3000);
+                setTimeout(() => { history.push("/Greenbooks"); }, 1500);
               }
             })
             .catch((error) => {
@@ -1322,7 +1322,7 @@ export default function EditEntry(props) {
                           id="id_dtFormDate"
                           name="name_dtFormDate"
 
-                          label={<>Sarso Form Date <span style={{ color: 'red' }}> *</span></>}
+                          label={<>Application Date <span style={{ color: 'red' }}> *</span></>}
                           format={sDateFormatMUIDatepicker}
                           onChange={(date) => {
                             setdtFormDate(date);
