@@ -671,6 +671,20 @@ const close=(id)=>{
                     </div>
                     <span>Changes Log Report</span>
                   </ListItem>   }
+                  {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
+                      &&
+                  <ListItem
+                    component="a"
+                    button
+                    href="/Reports/ChildChangesLog">
+                    <div className="mr-2">
+                      <FontAwesomeIcon
+                        icon={['fas', 'chevron-right']}
+                        className="font-size-xs opacity-3"
+                      />
+                    </div>
+                    <span>Child Changes Log Report</span>
+                  </ListItem>   }
                     {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
                       &&
                   <ListItem
