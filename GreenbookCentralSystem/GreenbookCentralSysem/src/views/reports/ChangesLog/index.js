@@ -67,7 +67,7 @@ export default function Report() {
   const columns = [
     {
       field: "no",
-      title: "Sr. No.",
+      title: "SR. NO.",
       
       width: '5%',
       //hidden:true,
@@ -123,7 +123,7 @@ export default function Report() {
     },
     {
       field: "field",
-      title: "Name of Field",
+      title: "NAME OF FIELD",
       
       headerStyle: {
         padding: '5px',

@@ -515,6 +515,7 @@ placeholder="DD-MM-YYYY"
                       value={valueMadebStatus}
                       id="id_nMadebStatusID"
                       options={madebStatuses}
+                      disabled={nIssuedOrNotID}
                       autoHighlight
                       getOptionLabel={(option) => option.sMadebStatus}
                       renderOption={(option) => (
@@ -526,9 +527,7 @@ placeholder="DD-MM-YYYY"
                         <TextField
                           {...params}
                           label="Madeb Status"
-                          InputProps={{
-                            readOnly: nIssuedOrNotID,
-                           }}
+                          
                           variant="standard"
                           inputProps={{
                             ...params.inputProps,

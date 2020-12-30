@@ -754,6 +754,7 @@ placeholder="DD-MM-YYYY"
                       value={valueMadebStatus}
                       id="id_nMadebStatusID"
                       options={madebStatuses}
+                      disabled={nIssuedOrNotID}
                       autoHighlight
                       getOptionLabel={(option) => option.sMadebStatus}
                       renderOption={(option) => (
@@ -766,9 +767,7 @@ placeholder="DD-MM-YYYY"
                           {...params}
                           label="Madeb Status"
                           variant="standard"
-                          InputProps={{
-                            readOnly: nIssuedOrNotID,
-                           }}
+                         
                           inputProps={{
                             ...params.inputProps,
                             autoComplete: 'off', // disable autocomplete and autofill

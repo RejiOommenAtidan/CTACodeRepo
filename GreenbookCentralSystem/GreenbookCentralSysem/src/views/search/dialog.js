@@ -770,7 +770,7 @@ export const ViewDialog = (props) => {
                                     <th > Changed To </th>
                                     <th > Changed By </th>
                                     <th > Changed At </th>
-                                    <th > Changed When </th>
+                                    
 
                                   </tr>
                                 </thead>
@@ -795,7 +795,7 @@ export const ViewDialog = (props) => {
                                         <td style={{ padding: '0px' }}>{row2.NewValue}</td>
                                         <td style={{ padding: '0px' }}>{row1.sEnteredBy}</td>
                                         <td style={{ padding: '0px' }}>{row1.sOffice}</td>
-                                        <td style={{ padding: '0px' }}>{row1.auditLog.dtEntered ? Moment(row1.auditLog.dtEntered).format('DD-MM-YYYY HH:mm:ss') : ''}</td>
+                                       {/*  <td style={{ padding: '0px' }}>{row1.auditLog.dtEntered ? Moment(row1.auditLog.dtEntered).format('DD-MM-YYYY HH:mm:ss') : ''}</td>*/}
                                       </tr>
                                        ))}
                                         

@@ -170,7 +170,7 @@ export default function Users() {
     },
     {
       field: "sUserRightsName",
-      title: "ROLES",
+      title: "ROLE",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",

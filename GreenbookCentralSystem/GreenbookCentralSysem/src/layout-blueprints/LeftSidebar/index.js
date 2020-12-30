@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-
+import { useMediaPredicate } from "react-media-hook";
 import { Sidebar, Header, Footer } from '../../layout-components';
 
 const LeftSidebar = (props) => {
   const {
     children,
-   // sidebarToggle,
-   // sidebarToggleMobile,
+    sidebarToggle,
+    sidebarToggleMobile,
    // sidebarFixed,
    // headerFixed,
     headerSearchHover,
@@ -19,21 +19,33 @@ const LeftSidebar = (props) => {
     contentBackground
   } = props;
 
+
+  const sidebarDisplay = useMediaPredicate("(max-width: 1099px)");
+
+  console.log(sidebarDisplay);
+/* useEffect(() => {
+  if(window.innerWidth < 768 ){
+    setDisplayStyle("block");
+  }
+  else{
+    setDisplayStyle("none");
+  }
+}, [window.innerWidth]);*/
   return (
     <>
       <div
         className={clsx('app-wrapper', contentBackground, {
           'header-drawer-open': headerDrawerToggle,
-       //   'app-sidebar-collapsed': sidebarToggle,
-        //  'app-sidebar-mobile-open': sidebarToggleMobile,
-        //  'app-sidebar-fixed': sidebarFixed,
-        //  'app-header-fixed': headerFixed,
+        'app-sidebar-collapsed': sidebarToggle,
+       'app-sidebar-mobile-open': sidebarToggleMobile,
+       // 'app-sidebar-fixed': sidebarFixed,
+      //  'app-header-fixed': headerFixed,
           'app-footer-fixed': footerFixed,
           'search-wrapper-open': headerSearchHover
         })}>
-        {/*<div>
+        { sidebarDisplay &&  <div >
           <Sidebar />
-        </div>*/}
+        </div>}
         <div className="app-main">
           <Header />
           <div className="app-content">
@@ -53,8 +65,8 @@ LeftSidebar.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
- // sidebarToggle: state.ThemeOptions.sidebarToggle,
- // sidebarToggleMobile: state.ThemeOptions.sidebarToggleMobile,
+  sidebarToggle: state.ThemeOptions.sidebarToggle,
+  sidebarToggleMobile: state.ThemeOptions.sidebarToggleMobile,
  // sidebarFixed: state.ThemeOptions.sidebarFixed,
  // headerFixed: state.ThemeOptions.headerFixed,
   headerSearchHover: state.ThemeOptions.headerSearchHover,
