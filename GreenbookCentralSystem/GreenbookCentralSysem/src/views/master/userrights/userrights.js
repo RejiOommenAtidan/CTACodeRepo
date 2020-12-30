@@ -137,10 +137,10 @@ export default function UserRights() {
         verticalAlign: "middle",
         width: "70%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "70%"
+	borderRight: '1px solid grey',        width: "70%"
       }
     },
     {
@@ -160,10 +160,10 @@ export default function UserRights() {
         verticalAlign: "middle",
         width: "10%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "10%"
+	borderRight: '1px solid grey',        width: "10%"
       }
     },
   ];

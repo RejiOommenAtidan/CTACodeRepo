@@ -92,10 +92,10 @@ export default function Relation() {
         verticalAlign: "middle",
         width: "80%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "80%"
+	borderRight: '1px solid grey',        width: "80%"
       }
     },
     // {

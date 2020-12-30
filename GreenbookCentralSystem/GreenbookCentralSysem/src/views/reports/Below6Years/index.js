@@ -70,7 +70,7 @@ export default function Report() {
     {
       field: "no",
       title: "Sr. No.",
-      filterPlaceholder: 'Search..',
+      
       width: '5%',
       //hidden:true,
       headerStyle: {
@@ -90,7 +90,7 @@ export default function Report() {
     {
       field: "sGBId",
       title: "GB ID",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -109,7 +109,7 @@ export default function Report() {
     {
       field: "sName",
       title: "NAME",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -128,7 +128,7 @@ export default function Report() {
       field: "dtFormattedDOB",
       title: "DATE OF BIRTH",
       // render: rowData => rowData.dtdtDOBEntered ? Moment(rowData.dtDOB).format('DD-MM-YYYY') : '',
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -146,7 +146,7 @@ export default function Report() {
     {
       field: "sPlace",
       title: "REGION/COUNTRY",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 

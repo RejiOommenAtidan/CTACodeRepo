@@ -148,10 +148,17 @@ export const AddDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <TextField
                     id="id_qualificationId"
+                    name="name_qualificationId"
                     label={<>Qualification ID<span style={{ color: 'red' }}> *</span></>}
                     type="text"
                     onChange={(e) => { setQualificationId(e.target.value) }}
+                    inputRef={register({
+                      required: true
+                    })}
                   />
+                    {_.get("name_qualificationId.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
                 </FormControl>
               </Grid>
               <Grid item xs={12} >

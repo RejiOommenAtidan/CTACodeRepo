@@ -82,10 +82,10 @@ export default function Chatrel() {
         verticalAlign: "middle",
         width: "10%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "10%"
+	borderRight: '1px solid grey',        width: "10%"
       },
       export: true
     },
@@ -98,10 +98,10 @@ export default function Chatrel() {
         verticalAlign: "middle",
         width: "30%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "30%"
+	borderRight: '1px solid grey',        width: "30%"
       }
     },
     {
@@ -153,10 +153,10 @@ export default function Chatrel() {
         verticalAlign: "middle",
         width: "10%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "10%"
+	borderRight: '1px solid grey',        width: "10%"
       }
     },
   ];

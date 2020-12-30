@@ -386,7 +386,7 @@ placeholder="DD-MM-YYYY"
                     //onBlur={(e) => {formPopulate(e.target.value)}}
                     />
                   </FormControl>
-                  {<button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button>}
+                  {<button type='button' style={btnstyles} disabled={issueAction} onClick={() => formPopulate(sGBID)}>Get Details</button>}
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>

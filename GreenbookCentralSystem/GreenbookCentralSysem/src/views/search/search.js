@@ -230,7 +230,7 @@ export default function SearchPage() {
     //   ,
     //   field: "sGBID",
     //   title: "GB ID",
-    //   filterPlaceholder: 'Search..',
+    //   
     //   headerStyle: {
     //     textAlign: "center",
     //     textAlignLast: "center",
@@ -266,7 +266,7 @@ export default function SearchPage() {
       ,
       field: "sGBIDCombo",
       title: "GB ID",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -287,7 +287,7 @@ export default function SearchPage() {
       //render: rowData  => (rowData['sFirstName'] ? rowData['sFirstName'] : '') + " " + (rowData['sLastName'] ? rowData['sLastName'] : ''),
       field: "sFullName",
       title: "NAME",
-      //filterPlaceholder: 'Search..',
+      //
       headerStyle: {
         textAlign: "center",
         //textAlignLast: "center",
@@ -307,7 +307,7 @@ export default function SearchPage() {
     {
       field: "sAliasName",
       title: "ALIAS NAME",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -321,7 +321,7 @@ export default function SearchPage() {
     /*  {
         field: "sLastName",
         title: "LAST NAME",
-        filterPlaceholder: 'Search..',
+        
         //hidden: true,
         searchable: true,
         headerStyle: {
@@ -337,7 +337,7 @@ export default function SearchPage() {
     {
       field: "sFamilyName",
       title: "FAMILY NAME",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -353,7 +353,7 @@ export default function SearchPage() {
     //   field: "dtDOB",
     //   title: "DOB",
     //   render: rowData => rowData.dtDOB ? Moment(rowData.dtDOB).format('DD-MM-YYYY') : '',
-    //   filterPlaceholder: 'Search..',
+    //   
     //   headerStyle: {
     //     textAlign: "center",
     //     textAlignLast: "center",
@@ -368,7 +368,7 @@ export default function SearchPage() {
       field: "dtDOBFormatted",
       title: "DOB",
       // render: rowData => rowData.dtDOB ? Moment(rowData.dtDOB).format('DD-MM-YYYY') : '',
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -384,7 +384,7 @@ export default function SearchPage() {
       field: "nAge",
       title: "AGE",
       render: rowData => rowData.bDeceased ? <span style={{color:"red"}}>{rowData.nAge}</span> : rowData.nAge,
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -401,7 +401,7 @@ export default function SearchPage() {
     {
       field: "sFathersName",
       title: "FATHER",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -416,7 +416,7 @@ export default function SearchPage() {
     {
       field: "sMothersName",
       title: "MOTHER",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -431,7 +431,7 @@ export default function SearchPage() {
     {
       field: "sCity",
       title: "CITY/TOWN",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",

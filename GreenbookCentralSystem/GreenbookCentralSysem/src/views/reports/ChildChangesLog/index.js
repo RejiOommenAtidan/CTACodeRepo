@@ -71,7 +71,7 @@ export default function Report() {
     {
       field: "no",
       title: "Sr. No.",
-      filterPlaceholder: 'Search..',
+      
       width: '5%',
       //hidden:true,
       headerStyle: {
@@ -92,7 +92,7 @@ export default function Report() {
     {
       field: "sGBId",
       title: "GB ID",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -111,7 +111,7 @@ export default function Report() {
     {
       field: "sName",
       title: "NAME",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -130,7 +130,7 @@ export default function Report() {
     {
       field: "sFeature",
       title: "FEATURE",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -150,7 +150,7 @@ export default function Report() {
     {
       field: "sFieldValuesOld",
       title: "OLD VALUE",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -169,7 +169,7 @@ export default function Report() {
     {
       field: "sFieldValuesNew",
       title: "NEW VALUE",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -188,7 +188,7 @@ export default function Report() {
     {
       field: "sFullName",
       title: "ENTERED BY",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -208,7 +208,7 @@ export default function Report() {
       field: "dtFormattedEntered",
       title: "DATE ENTERED",
       //   render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 

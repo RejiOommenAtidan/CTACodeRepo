@@ -370,7 +370,7 @@ placeholder="DD-MM-YYYY"
                       <span style={{ color: 'red' }}>This field is required</span>
                     )}
                   </FormControl>
-                  <button type='button' style={btnstyles} onClick={() => formPopulate(sGBID)}>Get Details</button>
+                  <button type='button' style={btnstyles} disabled={nIssuedOrNotID} onClick={() => formPopulate(sGBID)}>Get Details</button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <FormControl className={props.classes.formControl}>

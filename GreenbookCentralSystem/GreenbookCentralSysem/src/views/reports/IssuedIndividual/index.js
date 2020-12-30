@@ -72,7 +72,7 @@ export default function Report() {
     {
       field: "no",
       title: "Sr. No.",
-      filterPlaceholder: 'Search..',
+      
       width: '5%',
       //hidden:true,
       headerStyle: {
@@ -93,7 +93,7 @@ export default function Report() {
     {
       field: "nGBId",
       title: "GBID",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -113,7 +113,7 @@ export default function Report() {
     {
       field: "sName",
       title: "Name",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -133,7 +133,7 @@ export default function Report() {
       field: "dtFormattedIssuedDate",
       title: "Issued Date",
       // render: rowData => rowData.dtIssuedDate ? Moment(rowData.dtIssuedDate).format('DD-MM-YYYY') : '',
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -152,7 +152,7 @@ export default function Report() {
     {
       field: "nBookNo",
       title: "Book No.",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -172,7 +172,7 @@ export default function Report() {
     {
       field: "sPlace",
       title: `${rcheader}`,
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 

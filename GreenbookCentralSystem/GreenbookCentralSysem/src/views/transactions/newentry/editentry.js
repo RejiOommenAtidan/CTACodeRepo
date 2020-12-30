@@ -1345,7 +1345,7 @@ export default function EditEntry(props) {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid xs={12} style={{textAlign:'center'}}>
+                  <Grid xs={12} >
                   <div className="avatar-icon-wrapper  mx-auto">
                         <div className="d-block p-0 avatar-icon-wrapper m-0 border-3">
                           <div className=" border-3 border-white overflow-hidden">

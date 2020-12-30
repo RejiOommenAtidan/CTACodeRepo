@@ -77,7 +77,7 @@ export default function Report() {
     {
       field: "no",
       title: "Sr. No.",
-      filterPlaceholder: 'Search..',
+      
       width: '5%',
       //hidden:true,
       headerStyle: {
@@ -98,7 +98,7 @@ export default function Report() {
     {
       field: "sPlaceName",
       title: "REGION/COUNTRY",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -117,7 +117,7 @@ export default function Report() {
     {
       field: "madebPending",
       title: "MADEB PENDING",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -136,7 +136,7 @@ export default function Report() {
     {
       field: "madebIssued",
       title: "MADEB ISSUED",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -155,7 +155,7 @@ export default function Report() {
     {
       field: "madebRejected",
       title: "MADEB REJECTED",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -174,7 +174,7 @@ export default function Report() {
     {
       field: "madebDouble",
       title: "MADEB DOUBLE",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -193,7 +193,7 @@ export default function Report() {
     {
       field: "madebCancelled",
       title: "MADEB CANCELLED",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -213,7 +213,7 @@ export default function Report() {
     {
       field: "madebTotalReceived",
       title: "TOTAL RECEIVED",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 

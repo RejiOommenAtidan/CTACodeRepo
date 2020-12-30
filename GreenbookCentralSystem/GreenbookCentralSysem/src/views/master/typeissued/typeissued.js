@@ -93,10 +93,10 @@ export default function TypeIssued() {
         verticalAlign: "middle",
         width: "80%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "80%"
+	borderRight: '1px solid grey',        width: "80%"
       }
       // customFilterAndSearch: (term, rowData)=>{
       //   console.log(term);

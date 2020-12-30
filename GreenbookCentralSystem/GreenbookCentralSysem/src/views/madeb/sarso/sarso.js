@@ -154,7 +154,7 @@ export default function EnhancedTable() {
       field: "madeb.nFormNumber",
       title: "FORM NO.",
       width: "7%",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",

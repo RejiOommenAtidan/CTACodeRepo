@@ -160,10 +160,10 @@ export default function SarsoNewGBEntry() {
         verticalAlign: "middle",
         width: "10%"
       },
-      cellStyle: {
+    cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "10%"
+	borderRight: '1px solid grey',	borderRight: '1px solid grey',        width: "10%"
       }
     },
   ];

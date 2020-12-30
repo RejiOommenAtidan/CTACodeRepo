@@ -70,7 +70,7 @@ export const EditDialog = (props) => {
                   <FormControl className={props.classes.formControl}>
                     <TextField
                       id="id_OccupationDescTibetan"
-                      label={<>Occupation (Tibetan)<span style={{ color: 'red' }}> *</span></>}
+                      label={<>Occupation (Tibetan)</>}
                       type="text"
                       value={occupationDescTibetan}
                       onChange={(e) => { setOccupationDescTibetan(e.target.value) }}
@@ -170,7 +170,7 @@ export const AddDialog = (props) => {
                 <FormControl className={props.classes.formControl}>
                   <TextField
                     id="id_OccupationDescTibetan"
-                    label={<>Occupation (Tibetan)<span style={{ color: 'red' }}>*</span></>}
+                    label={<>Occupation (Tibetan)</>}
                     type="text"
                     onChange={(e) => { setOccupationDescTibetan(e.target.value) }}
                   />

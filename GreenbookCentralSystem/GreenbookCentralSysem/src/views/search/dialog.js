@@ -94,6 +94,7 @@ export const ViewDialog = (props) => {
   //#endregion
   const addDocumentAPICall = (documentObject) => {
     setdialogBackdrop(true);
+    console.log("add document call",documentObject);
     axios
       .post(`/Greenbook/AddDocumentForSearch`, documentObject)
       .then((resp) => {

@@ -146,10 +146,10 @@ export default function Users() {
         verticalAlign: "middle",
         width: "20%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "20%"
+	borderRight: '1px solid grey',        width: "20%"
       }
     },
     {
@@ -161,9 +161,10 @@ export default function Users() {
         verticalAlign: "middle",
         width: "30%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
+	borderRight: '1px solid grey',
         width: "30%"
       }
     },
@@ -176,9 +177,10 @@ export default function Users() {
         verticalAlign: "middle",
         width: "15%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
+	borderRight: '1px solid grey',
         width: "15%"
       }
     },
@@ -191,9 +193,10 @@ export default function Users() {
         verticalAlign: "middle",
         width: "20%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
+	borderRight: '1px solid grey',
         width: "20%"
       }
     },
@@ -207,9 +210,10 @@ export default function Users() {
         verticalAlign: "middle",
         width: "10%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
+	borderRight: '1px solid grey',
         width: "10%"
       }
     },
@@ -231,10 +235,10 @@ export default function Users() {
         verticalAlign: "middle",
         width: "10%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "10%"
+	borderRight: '1px solid grey',        width: "10%"
       }
     }
   ];

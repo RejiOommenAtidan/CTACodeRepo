@@ -156,9 +156,16 @@ export const EditDialog = (props) => {
                     id="id_CurrencyCode"
                     label={<>Currency Code<span style={{ color: 'red' }}> *</span></>}
                     type="text"
+                    inputRef={register({
+                      required: true
+                    })}
+                    name="name_CurrencyCode"
                     value={sCurrencyCode} // Set Auth Region name 
                     onChange={(e) => { setCurrencyCode(e.target.value) }}
                   />
+                  {_.get("name_CurrencyCode.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
                 </FormControl>
               </Grid>
             </Grid>
@@ -332,9 +339,16 @@ export const AddDialog = (props) => {
                     id="id_CurrencyCode"
                     label={<>Currency Code<span style={{ color: 'red' }}> *</span></>}
                     type="text"
+                    inputRef={register({
+                      required: true
+                    })}
+                    name="name_CurrencyCode"
                     value={sCurrencyCode} // Set Auth Region name 
                     onChange={(e) => { setCurrencyCode(e.target.value) }}
                   />
+                  {_.get("name_CurrencyCode.type", errors) === "required" && (
+                    <span style={{ color: 'red' }}>This field is required</span>
+                  )}
                 </FormControl>
               </Grid>
             </Grid>

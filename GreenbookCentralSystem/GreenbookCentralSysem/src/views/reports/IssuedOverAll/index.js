@@ -72,7 +72,7 @@ export default function Report() {
     {
       field: "no",
       title: "Sr. No.",
-      filterPlaceholder: 'Search..',
+      
       width: '5%',
       //hidden:true,
       headerStyle: {
@@ -93,7 +93,7 @@ export default function Report() {
     {
       field: "individualPlace",
       title: `${rcheader}`,
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -111,7 +111,7 @@ export default function Report() {
       field: "nCount",
       title: "TOTAL",
       // render: rowData => rowData.dtIssuedDate ? Moment(rowData.dtIssuedDate).format('DD-MM-YYYY') : '',
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 

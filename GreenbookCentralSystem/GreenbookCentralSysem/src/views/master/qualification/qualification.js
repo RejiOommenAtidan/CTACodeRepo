@@ -139,10 +139,10 @@ export default function Qualification() {
         verticalAlign: "middle",
         width: "15%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "15%"
+	borderRight: '1px solid grey',        width: "15%"
       }
     },
     {
@@ -154,10 +154,10 @@ export default function Qualification() {
         verticalAlign: "middle",
         width: "50%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "50%"
+	borderRight: '1px solid grey',        width: "50%"
       }
     },
     {
@@ -177,10 +177,10 @@ export default function Qualification() {
         verticalAlign: "middle",
         width: "10%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "10%"
+	borderRight: '1px solid grey',        width: "10%"
       }
     },
   ];

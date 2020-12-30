@@ -128,7 +128,7 @@ export default function GiveGBId() {
     {
     field: "nSerialNo",
       title: "SR. NO.",
-      //filterPlaceholder: "Search...",
+      // 
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -151,10 +151,10 @@ export default function GiveGBId() {
         verticalAlign: "middle",
         width: '10%'
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: '10%'
+	borderRight: '1px solid grey',        width: '10%'
       }
     },
     {
@@ -167,10 +167,10 @@ export default function GiveGBId() {
         verticalAlign: "middle",
         width: '10%'
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: '10%'
+	borderRight: '1px solid grey',        width: '10%'
       }
     },
     {
@@ -182,10 +182,10 @@ export default function GiveGBId() {
         verticalAlign: "middle",
         width: '10%'
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: '10%'
+	borderRight: '1px solid grey',        width: '10%'
       },
     },
   ];
@@ -216,10 +216,10 @@ export default function GiveGBId() {
         verticalAlign: "middle",
         width: '10%'
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: '10%'
+	borderRight: '1px solid grey',        width: '10%'
       }
     },
     {
@@ -231,10 +231,10 @@ export default function GiveGBId() {
         verticalAlign: "middle",
         width: '10%'
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: '10%'
+	borderRight: '1px solid grey',        width: '10%'
       },
     },
     
@@ -255,10 +255,10 @@ export default function GiveGBId() {
         verticalAlign: "middle",
         width: '5%'
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: '5%'
+	borderRight: '1px solid grey',        width: '5%'
       },
     }
   ];

@@ -111,7 +111,7 @@ export default () => {
     {
       field: "nFormNumber",
       title: "FORM NUMBER",
-      //filterPlaceholder: "Search...",
+      // 
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",

@@ -238,7 +238,7 @@ export default () => {
     {
       field: "greenBookSerialNumber.nFormNumber",
       title: "FORM NUMBER",
-      //filterPlaceholder: "Search...",
+      // 
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",

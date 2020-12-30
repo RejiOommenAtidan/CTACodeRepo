@@ -67,14 +67,15 @@ const close=(id)=>{
   const [anchorElGB, setAnchorElGB] = useState(null);
   const openGB = Boolean(anchorElGB);
   const idGB = openGB ? 'gb-popover' : undefined;
-  const handleGBClick = (event,id) => {
-    open(id);
+  const handleGBClick = (event) => {
+    open("id_GB");
+   // handleMadebClose();
     setAnchorElGB(event.currentTarget);
     
     
   };
-  const handleGBClose = (id) => {
-    close(id);
+  const handleGBClose = () => {
+    close("id_GB");
     setAnchorElGB(null);
   };
   const [bookSerialOpen, setBookSerialOpen] = useState(false);
@@ -87,9 +88,11 @@ const close=(id)=>{
   const openUser = Boolean(anchorElUser);
   const idUser = openUser ? 'user-popover' : undefined;
   const handleUserClick = (event) => {
+    open("id_User");
     setAnchorElUser(event.currentTarget);
   };
   const handleUserClose = () => {
+    close("id_User");
     setAnchorElUser(null);
   };
 
@@ -98,9 +101,11 @@ const close=(id)=>{
   const openMadeb = Boolean(anchorElMadeb);
   const idMadeb = openMadeb ? 'madeb-popover' : undefined;
   const handleMadebClick = (event) => {
+    open("id_Madeb");
     setAnchorElMadeb(event.currentTarget);
   };
   const handleMadebClose = () => {
+    close("id_Madeb");
     setAnchorElMadeb(null);
   };
 
@@ -108,9 +113,11 @@ const close=(id)=>{
   const openMaster = Boolean(anchorElMaster);
   const idMaster = openMaster ? 'master-popover' : undefined;
   const handleMasterClick = (event) => {
+    open("id_Master");
     setAnchorElMaster(event.currentTarget);
   };
   const handleMasterClose = () => {
+    close("id_Master");
     setAnchorElMaster(null);
   };
 
@@ -119,9 +126,11 @@ const close=(id)=>{
   const idReport = openReport ? 'report-popover' : undefined;
 
   const handleReportClick = (event) => {
+    open("id_Report");
     setAnchorElReport(event.currentTarget);
   };
   const handleReportClose = () => {
+    close("id_Report");
     setAnchorElReport(null);
   };
   /*const [madebOpen, setMadebOpen] = React.useState(false);
@@ -168,14 +177,19 @@ const close=(id)=>{
         <Button
           size="small"
           onClick={handleMadebClick}
-          
+          onMouseOver={handleMadebClick}
+          id="id_Madeb"
           className="btn-transition-none btn-neutral-primary mr-3">
           Madebs
         </Button>}
         <Button
           id="id_GB"
           size="small"
-          onClick={(e)=>{handleGBClick(e,"id_GB")}}
+          onClick={handleGBClick}
+          //onMouseOver={handleGBClick}
+          onMouseEnter={handleGBClick}
+          
+          
           className="btn-transition-none btn-neutral-primary mr-3">
           Green Book
         </Button>
@@ -209,7 +223,9 @@ const close=(id)=>{
               &&
         <Button
           size="small"
+          id="id_Report"
          onClick={handleReportClick}
+         onMouseEnter={handleReportClick}
           className="btn-transition-none btn-neutral-primary mr-3">
           Reports
         </Button>}
@@ -223,6 +239,8 @@ const close=(id)=>{
         <Button
           size="small"
           onClick={handleUserClick}
+          onMouseEnter={handleUserClick}
+          id="id_User"
           className="btn-transition-none btn-neutral-primary mr-3">
           Users
         </Button>}
@@ -251,7 +269,9 @@ const close=(id)=>{
               &&
         <Button
           size="small"
+          id="id_Master"
           onClick={handleMasterClick}
+          onMouseEnter={handleMasterClick}
           className="btn-transition-none btn-neutral-primary mr-3">
           Masters
         </Button>}
@@ -260,7 +280,9 @@ const close=(id)=>{
           id={idGB}
           open={openGB}
           anchorEl={anchorElGB}
-          onClose={()=>{handleGBClose("id_GB")}}
+          onClose={handleGBClose}
+         // onMouseLeave={handleGBClose}
+         onMouseLeave={handleGBClose}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left'
@@ -456,6 +478,7 @@ const close=(id)=>{
           open={openMadeb}
           anchorEl={anchorElMadeb}
           onClose={handleMadebClose}
+          
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left'

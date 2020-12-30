@@ -183,10 +183,10 @@ export default function Country() {
         verticalAlign: "middle",
         width: "15%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "15%"
+	borderRight: '1px solid grey',        width: "15%"
       },
       filterComponent: () =>
         <MyComp
@@ -208,10 +208,10 @@ export default function Country() {
         verticalAlign: "middle",
         width: "60%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "60%"
+	borderRight: '1px solid grey',        width: "60%"
       },
       filterComponent: () =>
         <MyComp
@@ -243,10 +243,10 @@ export default function Country() {
         verticalAlign: "middle",
         width: "10%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "10%"
+	borderRight: '1px solid grey',        width: "10%"
       }
     },
     {

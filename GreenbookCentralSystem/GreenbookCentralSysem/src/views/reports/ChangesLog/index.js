@@ -68,7 +68,7 @@ export default function Report() {
     {
       field: "no",
       title: "Sr. No.",
-      filterPlaceholder: 'Search..',
+      
       width: '5%',
       //hidden:true,
       headerStyle: {
@@ -88,7 +88,7 @@ export default function Report() {
     {
       field: "GBId",
       title: "GB ID",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -106,7 +106,7 @@ export default function Report() {
     {
       field: "name",
       title: "NAME",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -124,7 +124,7 @@ export default function Report() {
     {
       field: "field",
       title: "Name of Field",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -143,7 +143,7 @@ export default function Report() {
     {
       field: "previous",
       title: "CHANGE FROM",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -161,7 +161,7 @@ export default function Report() {
     {
       field: "new",
       title: "CHANGED TO",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -179,7 +179,7 @@ export default function Report() {
     {
       field: "changedBy",
       title: "CHANGED BY",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 
@@ -198,7 +198,7 @@ export default function Report() {
       field: "changedAt",
       title: "CHANGED AT",
       // render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '5px',
 

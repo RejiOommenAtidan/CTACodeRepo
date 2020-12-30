@@ -209,7 +209,7 @@ export default function EnhancedTable() {
       width: "5%",
       field: "madeb.nFormNumber",
       title: "FORM NO.",
-      filterPlaceholder: "Search...",
+       
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -391,7 +391,7 @@ export default function EnhancedTable() {
     {
       width: "8%",
       field: "madeb.nCurrentGBSno",
-      title: "CURRENT GB SNO.",
+      title: "CURRENT GB SR NO.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -406,7 +406,7 @@ export default function EnhancedTable() {
     {
       width: "8%",
       field: "madeb.nPreviousGBSno",
-      title: "PREVIOUS GB SNO.",
+      title: "PREVIOUS GB SR NO.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",

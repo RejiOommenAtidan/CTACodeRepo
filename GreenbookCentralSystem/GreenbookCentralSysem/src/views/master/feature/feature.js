@@ -119,7 +119,7 @@ export default function Feature() {
     {
       field: "sFeature",
       title: "FEATURE NAME",
-      filterPlaceholder: 'Search..',
+      
       headerStyle: {
         padding: '0px',
         width: '7%',

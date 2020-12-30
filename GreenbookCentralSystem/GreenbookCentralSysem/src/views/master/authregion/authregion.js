@@ -140,10 +140,10 @@ export default function EnhancedTable() {
         verticalAlign: "middle",
         width: "15%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "15%"
+	borderRight: '1px solid grey',        width: "15%"
       }
     },
     {
@@ -155,10 +155,10 @@ export default function EnhancedTable() {
         verticalAlign: "middle",
         width: "20%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "20%"
+	borderRight: '1px solid grey',        width: "20%"
       }
     },
     {
@@ -170,10 +170,10 @@ export default function EnhancedTable() {
         verticalAlign: "middle",
         width: "30%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "30%"
+	borderRight: '1px solid grey',        width: "30%"
       }
     },
     {
@@ -185,10 +185,10 @@ export default function EnhancedTable() {
         verticalAlign: "middle",
         width: "15%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "left",
         padding: '5px',
-        width: "15%"
+	borderRight: '1px solid grey',        width: "15%"
       }
     },
     {
@@ -208,10 +208,10 @@ export default function EnhancedTable() {
         verticalAlign: "middle",
         width: "10%"
       },
-      cellStyle: {
+     cellStyle: {
         textAlign: "center",
         padding: '5px',
-        width: "10%"
+	borderRight: '1px solid grey',        width: "10%"
       }
     },
 
