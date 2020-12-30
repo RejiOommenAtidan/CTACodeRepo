@@ -407,7 +407,7 @@ namespace CTADBL.ViewModelsRepositories
                     PlaceOfBirth = row.Field<string>("sBirthPlace"),
                     BirthCountry = row.Field<string>("sBirthCountry"),
                     OriginVillage = row.Field<string>("sOriginVillage"),
-                    Provice = row.Field<string>("sProvince"),
+                    Province = row.Field<string>("sProvince"),
                     MaritalStatus = row.Field<string>("sMaritalStatusText"),
                     OtherDocuments = row.Field<string>("sOtherDocuments"),
                     RCNumber = row.Field<string>("sResidenceNumber"),
@@ -427,7 +427,7 @@ namespace CTADBL.ViewModelsRepositories
                     MothersGBID = row.Field<string>("sMothersGBID"),
                     SpouseName = row.Field<string>("sSpouseName"),
                     SpouseID = row.Field<string>("sSpouseID"),
-                    SpouseGBI = row.Field<string>("sSpouseGBID"),
+                    SpouseGBID = row.Field<string>("sSpouseGBID"),
                     MaleChildren = row.Field<int>("nChildrenM"),
                     FemaleChildren = row.Field<int>("nChildrenF"),
 
@@ -445,12 +445,12 @@ namespace CTADBL.ViewModelsRepositories
                     VailidityDate = row.Field<DateTime?>("dtValidityDate"),
                     PaidUntil = row.Field<string>("sPaidUntil"),
                     TibetanName = row.Field<string>("TibetanName"),
-                    Tibeatan_PlaceOfBirth = row.Field<string>("TBUPlaceOfBirth"),
-                    Tibeatan_OriginVillage = row.Field<string>("TBUOriginVillage"),
+                    Tibetan_PlaceOfBirth = row.Field<string>("TBUPlaceOfBirth"),
+                    Tibetan_OriginVillage = row.Field<string>("TBUOriginVillage"),
 
 
-                    Tibeatan_FathersName = row.Field<string>("TBUFathersName"),
-                    Tibeatan_MothersName = row.Field<string>("TBUMothersName"),
+                    Tibetan_FathersName = row.Field<string>("TBUFathersName"),
+                    Tibetan_MothersName = row.Field<string>("TBUMothersName"),
                     Tibetan_SpouseName = row.Field<string>("TBUSpouseName")
                 });
                 BindingFlags publicAttributes = BindingFlags.Public | BindingFlags.Instance;

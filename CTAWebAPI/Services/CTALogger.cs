@@ -108,7 +108,7 @@ namespace CTAWebAPI.Services
             {
                 var oldValue = dict1[item.Key];
                 var newValue = dict2[item.Key];
-                var change = new { Field = item.Key, PreviousValue = oldValue.ToString(), NewValue = newValue.ToString() };
+                var change = new { Field = item.Key, PreviousValue = oldValue, NewValue = newValue };
                 changes.Add(change);
             }
             string changesStr = JsonConvert.SerializeObject(changes);
