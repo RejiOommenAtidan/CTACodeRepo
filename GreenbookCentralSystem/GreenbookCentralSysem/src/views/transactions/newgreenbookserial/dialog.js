@@ -508,7 +508,10 @@ placeholder="DD-MM-YYYY"
                                          variant="standard"
                                          inputProps={{
                                            ...params.inputProps,
-                                           autoComplete: 'off', // disable autocomplete and autofill
+                                           autoComplete: 'off',// disable autocomplete and autofill
+                                         }}
+                                         InputProps={{
+                                           readOnly:true
                                          }}
                                         //  inputRef={register({
                                         //   required: true
