@@ -8,7 +8,22 @@ export default function handleError(error, history) {
     //console.log(props);
     //props.history.push(replaceURL);
     const APIErrorURL = "/PageError500";
-    history.push(APIErrorURL);
+    const APINotFoundURL = '/PageError404';
+    const APIBadRequestURL = '/PageError400';
+
+
+    // if(error.response.status === 400){
+    //   history.push(APIBadRequestURL);
+    //   return;
+    // }
+    if(error.response.status === 404){
+      history.push(APINotFoundURL);
+      return;
+    }
+    if(error.response.status === 500){
+      history.push(APIErrorURL);
+      return;
+    }
     if (error.response) {
         //Out of 2** Scope
         console.error(error.response.data);

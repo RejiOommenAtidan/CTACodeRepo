@@ -119,6 +119,21 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
         #endregion
 
+        #region Get Given GBID record by Form Number
+
+        public GivenGBID GetGivenGBIDByFormNumber(int formNumber)
+        {
+            string sql = @"SELECT Id, _Id, nGBId, nFormNo, dtDate, bGivenOrNot, bActive, dtEntered, nEnteredBy, dtUpdated, nUpdatedBy FROM tblgivengbid t WHERE t.nFormNo = @formNumber;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("formNumber", formNumber);
+                var result = GetRecord(command);
+                return result;
+            }
+        }
+
+        #endregion
+
         #endregion End all Get Calls
 
         #region Get Random GBID

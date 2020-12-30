@@ -301,6 +301,40 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
         }
 
+        public IEnumerable<Object> GetReportGreenBookDeleted(DateTime dtRecordFrom, DateTime dtRecordTo)
+        {
 
+            using (var command = new MySqlCommand("spReportGreenBookDeleted"))
+            {
+                command.Parameters.AddWithValue("dtRecordFrom", dtRecordFrom);
+                command.Parameters.AddWithValue("dtRecordTo", dtRecordTo);
+
+
+                command.Connection = _connection;
+                command.CommandType = CommandType.StoredProcedure;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                if (tables != null && tables.Count > 0)
+                {
+                    var relationDetails = tables[0].AsEnumerable().Select(row => new {
+                        Id = row.Field<int>("Id"),
+                        dtEntered = row.Field<DateTime>("dtEntered"),
+                        nFeatureID = row.Field<int>("nFeatureID"),
+                        nRegionID = row.Field<int>("nRegionID"),
+                        nRecordID = row.Field<int>("nRecordID"),
+                        sGBID = row.Field<string>("sGBID"),
+                        sFieldValuesOld = row.Field<string>("sFieldValuesOld"),
+                        sFieldValuesNew = row.Field<string>("sFieldValuesNew"),
+                        nEnteredBy = row.Field<int>("nEnteredBy"),
+                        sAuthRegion = row.Field<string>("sAuthRegion"),
+
+                    }).ToList();
+                    return relationDetails;
+                }
+                return null;
+            }
+        }
     }
 }

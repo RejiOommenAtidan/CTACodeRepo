@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -521,13 +522,27 @@ namespace CTAWebAPI.Controllers.Transactions
                     if (GreenbookExists(Id))
                     {
                         Greenbook fetchedGreenbook = _greenbookRepository.GetGreenboookById(Id);
+                        var gbvmOld = _greenBookVMRepository.GetCustomViewModel(fetchedGreenbook.sGBID);
                         greenbook.nEnteredBy = fetchedGreenbook.nEnteredBy;
                         greenbook.dtEntered = fetchedGreenbook.dtEntered;
                         greenbook.dtUpdated = DateTime.Now;
                         _greenbookRepository.Update(greenbook);
+                        var gbvmNew = _greenBookVMRepository.GetCustomViewModel(greenbook.sGBID);
+                        var dict3 = gbvmOld.Where(entry => gbvmNew[entry.Key] != entry.Value).ToDictionary(entry => entry.Key, entry => entry.Value);
+                        var dict4 = gbvmNew.Where(entry => gbvmOld[entry.Key] != entry.Value).ToDictionary(entry => entry.Key, entry => entry.Value);
+                        CTALogger.LogAuditRecordComplex(dict3, dict4, greenbook.sGBID, greenbook.nAuthRegionID, 16, fetchedGreenbook.Id, greenbook.nUpdatedBy);
+                        //List<object> changes = new List<object>();
+                        //foreach (var item in dict3)
+                        //{
+                        //    var oldValue = dict3[item.Key];
+                        //    var newValue = dict4[item.Key];
+                        //    var change = new { Field = item.Key, PreviousValue = oldValue.ToString(), NewValue = newValue.ToString() };
+                        //    changes.Add(change);
+                        //}
+                        //string changesStr = JsonConvert.SerializeObject(changes);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedGreenbook, greenbook, greenbook.sGBID, greenbook.nAuthRegionID, 16, fetchedGreenbook.Id, greenbook.nUpdatedBy);
+                        //CTALogger.LogAuditRecord(fetchedGreenbook, greenbook, greenbook.sGBID, greenbook.nAuthRegionID, 16, fetchedGreenbook.Id, greenbook.nUpdatedBy);
                         #endregion
 
                         #region Alert Logging 
@@ -559,7 +574,10 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             #endregion
         }
+
         #endregion
+
+       
 
         #region Delete Call
         [AuthorizeRole(FeatureID = 17)]
@@ -697,7 +715,48 @@ namespace CTAWebAPI.Controllers.Transactions
             #region Get Data
             try
             {
-                GetGBDataByFormNumberVM getGBDataByFormNumberVM = _getGBDataByFormNumberVMRepository.GetGBDataByFormNumber(Id);
+                GivenGBID givenGBID = _givenGBIDRepository.GetGivenGBIDByFormNumber(Id);
+                if(givenGBID != null)
+                {
+                    SimpleSearchVM simpleSearch = new SimpleSearchVM();
+                    simpleSearch.sSearchField = "sGBID";
+                    simpleSearch.sSearchValue = givenGBID.nGBId.ToString();
+                    var result = _greenBookVMRepository.GetQuickResult(simpleSearch.sSearchField, simpleSearch.sSearchValue);
+                    if (result.Count() == 0) 
+                    {
+                        GetGBDataByFormNumberVM getGBDataByFormNumberVM = _getGBDataByFormNumberVMRepository.GetGBDataByFormNumber(Id);
+                        #region Information Logging 
+                        _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                        #endregion
+                        return Ok(getGBDataByFormNumberVM);
+                    }
+                }
+                #region Information Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                #endregion
+                return NotFound("We could not find Valid Data for your request");
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+        #endregion
+
+        #region Get GB Data for Edit Entry
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetGBDataEditEntry()
+        {
+            #region Get Data
+            try
+            {
+                GetGBDataByFormNumberVM getGBDataByFormNumberVM = _getGBDataByFormNumberVMRepository.GetGBDataByFormNumber(0);
 
                 #region Information Logging 
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
@@ -714,6 +773,7 @@ namespace CTAWebAPI.Controllers.Transactions
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
+
         }
         #endregion
 

@@ -505,7 +505,7 @@ export default function EditEntry(props) {
 
   useEffect(() => {
     axios
-      .get(`/Greenbook/GetGBDataNewEntry/Id=1001`)
+      .get(`/Greenbook/GetGBDataEditEntry/`)
       .then((resp) => {
         if (resp.status === 200) {
           console.log(resp.data);

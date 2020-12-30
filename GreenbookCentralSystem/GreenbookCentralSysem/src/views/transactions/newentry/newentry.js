@@ -298,6 +298,7 @@ const snackbarClose = () => {
     axios.get(`/Greenbook/GetGBDataNewEntry/Id=` + props.match.params.FORMNO)
       .then(resp => {
         if (resp.status === 200) {
+          setBackdrop(false);
           console.log(resp.data);
           //Masters
           setlAuthRegion(resp.data.lAuthRegion);
@@ -329,12 +330,21 @@ const snackbarClose = () => {
           //setdtFormDate(apiDataMadeb===null?null:apiDataMadeb.dtReceived);
           setsGBID(apiDataGivenGBID===null?null:apiDataGivenGBID.nGBId.toString());
           setExpanded('panel1');
-          setBackdrop(false);
+          
         }
       })
       .catch(error => {
-        console.log(error.message);
-        handleError(error, history);
+        setBackdrop(false);
+        setAlertMessage(error.response.data);
+        setAlertType('error');
+        snackbarOpen();
+        setTimeout(() => {
+          history.push('/SarsoNewGBEntry');
+        }, 1500);
+        //console.log(error.message);
+        //console.log(error.response);
+        
+        //handleError(error, history);
       })
       .then(release => {
         //console.log(release); => udefined

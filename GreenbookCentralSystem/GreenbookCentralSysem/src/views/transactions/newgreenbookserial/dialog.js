@@ -33,11 +33,6 @@ export const AddDialog = (props) => {
 
   let clicked = false;
 
-  const handleSubmitAndRedirect = (e) => {
-    console.log("Clicked redirect:", e);
-
-  }
-
   const handleSubmitEditRecord = (e) => {
     console.log("Plain", e);
     console.log("Clicked state", clicked);
@@ -604,12 +599,7 @@ placeholder="DD-MM-YYYY"
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={props.handleAddClickClose}
-            color={sButtonColor}
-            variant={sButtonVariant}
-            size={sButtonSize}
-          >Cancel</Button>
+          
 
           {/* <Button  type='submit' onClick={handleSubmit} color="primary">Save</Button> */}
 
@@ -635,10 +625,16 @@ placeholder="DD-MM-YYYY"
             variant={sButtonVariant}
             size={sButtonSize}
             onClick={() => {
-              this.disabled = true;
               clicked = true;
+              handleSubmitEditRecord();
             }}
             value="Redirect">Save &amp; Redirect to Edit List</Button>
+            <Button
+            onClick={props.handleAddClickClose}
+            color={sButtonColor}
+            variant={sButtonVariant}
+            size={sButtonSize}
+            > Cancel</Button>
         </DialogActions>
       </form>
     </Dialog>

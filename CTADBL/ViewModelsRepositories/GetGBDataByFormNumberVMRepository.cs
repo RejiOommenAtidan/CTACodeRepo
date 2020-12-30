@@ -141,17 +141,6 @@ namespace CTADBL.ViewModelsRepositories
                         reader.NextResult();
                         #endregion
 
-                        #region Madeb Object
-                        //Madeb Single Record Population
-                        while (reader.Read())
-                        {
-                            _oGivenGBIDMadebVM.oGivenGBID.nGBId = (int)reader["nGBId"];
-                            _oGivenGBIDMadebVM.oMadeb = _madebRepository.PopulateRecord(reader);
-                            
-                        }
-                        #endregion
-                        // Next Result Set
-                        reader.NextResult();
                         #region Marital Status
                         while (reader.Read())
                         {
@@ -163,6 +152,21 @@ namespace CTADBL.ViewModelsRepositories
                             });
                         }
                         #endregion
+
+                        // Next Result Set
+                        reader.NextResult();
+
+                        #region Madeb Object
+                        //Madeb Single Record Population
+                        while (reader.Read())
+                        {
+                            _oGivenGBIDMadebVM.oGivenGBID.nGBId = (int)reader["nGBId"];
+                            _oGivenGBIDMadebVM.oMadeb = _madebRepository.PopulateRecord(reader);
+                            
+                        }
+                        #endregion
+                        
+                       
 
                         return new GetGBDataByFormNumberVM
                         {

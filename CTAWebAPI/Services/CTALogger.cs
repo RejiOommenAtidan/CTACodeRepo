@@ -1,8 +1,9 @@
 ﻿using CTADBL.BaseClasses.Transactions;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
+using Newtonsoft.Json;
 using System;
-
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace CTAWebAPI.Services
@@ -98,6 +99,34 @@ namespace CTAWebAPI.Services
                 throw new Exception("Exception Occured while Audit Logging, Exception Message: " + ex.Message);
             }
             #endregion
+        }
+
+        public static void LogAuditRecordComplex(Dictionary<string, dynamic> dict1, Dictionary<string, dynamic> dict2, string sGBID, int? nRegionID, int nFeatureID, int nRecordID, int nEnteredBy)
+        {
+            List<object> changes = new List<object>();
+            foreach (var item in dict1)
+            {
+                var oldValue = dict1[item.Key];
+                var newValue = dict2[item.Key];
+                var change = new { Field = item.Key, PreviousValue = oldValue.ToString(), NewValue = newValue.ToString() };
+                changes.Add(change);
+            }
+            string changesStr = JsonConvert.SerializeObject(changes);
+            if (changesStr != "[]")
+            {
+                AuditLog auditLogger = new AuditLog()
+                {
+                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                    nFeatureID = nFeatureID,
+                    nRegionID = nRegionID,
+                    nRecordID = nRecordID,
+                    sGBID = sGBID,
+                    sFieldValuesOld = changesStr,
+                    sFieldValuesNew = "",
+                    nEnteredBy = nEnteredBy
+                };
+                _auditLogRepository.Add(auditLogger);
+            }
         }
         #endregion  
     }

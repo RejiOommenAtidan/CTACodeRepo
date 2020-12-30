@@ -327,6 +327,35 @@ namespace CTAWebAPI.Controllers.Transactions
         }
         #endregion
 
+        #region GetReportGreenBookDeleted
+        [AuthorizeRole(FeatureID = 39)]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetReportGreenBookDeleted(DateTime dtRecordFrom, DateTime dtRecordTo)
+        {
+
+            try
+            {
+                var result = _reportRepository.GetReportGreenBookDeleted(dtRecordFrom, dtRecordTo);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
+        }
+        #endregion
+
 
         #endregion
 

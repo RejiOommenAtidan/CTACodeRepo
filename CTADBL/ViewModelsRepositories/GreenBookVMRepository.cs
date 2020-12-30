@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 
 namespace CTADBL.ViewModelsRepositories
 {
@@ -105,7 +106,7 @@ namespace CTADBL.ViewModelsRepositories
             string operation = "=";
             //value = parameter == "sGBID" ? value : value + "%";
 
-            string sql = String.Format(@"SELECT gb.sGBID, ar.sAuthRegion, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sFathersName, gb.sMothersName, gb.sGender, gb.dtDOB, gb.sDOBApprox, gb.sBirthPlace, gb.sBirthCountryID,  bctry.sCountry AS sBirthCountry, gb.sOriginVillage, pr.sProvince, gb.sMarried, gb.sOtherDocuments, gb.sResidenceNumber, qu.sQualification, occ.sOccupationDesc , gb.sAliasName, gb.sOldGreenBKNo, gb.sFstGreenBkNo,  gb.dtFormDate, gb.nChildrenM, gb.nChildrenF, gb.sAddress1, gb.sAddress2, gb.sCity, gb.sState, gb.sPCode, gb.sCountryID, ctry.sCountry AS sCountry, gb.sEmail, gb.sPhone, gb.sfax, gb.dtDeceased, gb.sBookIssued, gb.dtValidityDate, gb.sPaidUntil, gb.TibetanName, gb.TBUPlaceOfBirth, gb.TBUOriginVillage, gb.TBUFathersName, gb.TBUMothersName, gb.TBUSpouseName, gb.sEnteredDateTime, us.sFullName AS sEnteredBy, us1.sFullName AS sUpdatedBy, doc.binFileDoc AS sPhoto, gb.dtEntered, gb.dtUpdated FROM tblgreenbook as gb LEFT JOIN lstcountry ctry ON ctry.sCountryID = gb.sCountryID LEFT JOIN lstcountry bctry ON bctry.sCountryID = gb.sBirthCountryID  LEFT JOIN tbluser AS us ON us.Id = gb.nEnteredBy LEFT JOIN tbluser AS us1 ON us1.Id = gb.nUpdatedBy LEFT JOIN lstauthregion AS ar ON ar.ID = gb.nAuthRegionID LEFT JOIN lstprovince AS pr ON pr.Id = gb.sOriginProvinceID LEFT JOIN lstqualification AS qu ON qu.sQualificationID = gb.sQualificationID LEFT JOIN lstoccupation AS occ ON occ.Id = gb.sOccupationID LEFT JOIN lnkgbdocument AS doc ON gb.sGBId = doc.sGBId AND doc.sDocType = 'Photo Identity' WHERE gb.{0} {1} @value", parameter, operation);
+            string sql = String.Format(@"SELECT gb.sGBID, ar.sAuthRegion, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sFathersName, gb.sMothersName, gb.sGender, gb.dtDOB, gb.sDOBApprox, gb.sBirthPlace, gb.sBirthCountryID,  bctry.sCountry AS sBirthCountry, gb.sOriginVillage, pr.sProvince, l4.sMaritalStatusText AS sMarried, gb.sOtherDocuments, gb.sResidenceNumber, qu.sQualification, occ.sOccupationDesc , gb.sAliasName, gb.sOldGreenBKNo, gb.sFstGreenBkNo,  gb.dtFormDate, gb.nChildrenM, gb.nChildrenF, gb.sAddress1, gb.sAddress2, gb.sCity, gb.sState, gb.sPCode, gb.sCountryID, ctry.sCountry AS sCountry, gb.sEmail, gb.sPhone, gb.sfax, gb.dtDeceased, gb.sBookIssued, gb.dtValidityDate, gb.sPaidUntil, gb.TibetanName, gb.TBUPlaceOfBirth, gb.TBUOriginVillage, gb.TBUFathersName, gb.TBUMothersName, gb.TBUSpouseName, gb.sEnteredDateTime, us.sFullName AS sEnteredBy, us1.sFullName AS sUpdatedBy, doc.binFileDoc AS sPhoto, gb.dtEntered, gb.dtUpdated FROM tblgreenbook as gb LEFT JOIN lstcountry ctry ON ctry.sCountryID = gb.sCountryID LEFT JOIN lstcountry bctry ON bctry.sCountryID = gb.sBirthCountryID  LEFT JOIN tbluser AS us ON us.Id = gb.nEnteredBy LEFT JOIN tbluser AS us1 ON us1.Id = gb.nUpdatedBy LEFT JOIN lstauthregion AS ar ON ar.ID = gb.nAuthRegionID LEFT JOIN lstprovince AS pr ON pr.Id = gb.sOriginProvinceID LEFT JOIN lstmaritalstatus l4 ON l4.sMaritalStatusId = IF(gb.sMarried='Y', 'M', gb.sMarried) LEFT JOIN lstqualification AS qu ON qu.sQualificationID = gb.sQualificationID LEFT JOIN lstoccupation AS occ ON occ.Id = gb.sOccupationID LEFT JOIN lnkgbdocument AS doc ON gb.sGBId = doc.sGBId AND doc.sDocType = 'Photo Identity' WHERE gb.{0} {1} @value", parameter, operation);
 
             try
             {
@@ -324,6 +325,7 @@ namespace CTADBL.ViewModelsRepositories
                 return result;
             }
         }
+
         #region Get Green books list for edit as per column search parameters
         public IEnumerable<object> GetGreenbooksForEdit(string parameters)
         {
@@ -375,6 +377,97 @@ namespace CTADBL.ViewModelsRepositories
 
         }
         #endregion
+
+        #region Create Custom VM for Audit Purpose
+        public Dictionary<string, dynamic> GetCustomViewModel(string sGBID)
+        {
+            string sql = @"SELECT l.sAuthRegion, t.sFirstName, sMiddleName, t.sLastName, t.sFamilyName, t.sGender, t.dtDOB, t.sDOBApprox, t.sBirthPlace, l2.sCountry AS sBirthCountry, t.sOriginVillage, l3.sProvince, l4.sMaritalStatusText, t.sOtherDocuments, t.sResidenceNumber, l5.sQualification, l6.sOccupationDesc, t.sAliasName, t.sOldGreenBKNo, t.sFstGreenBkNo, t.dtFormDate, t.sFathersName, t.sFathersID, t.sFathersGBID, t.sMothersName, t.sMothersID, t.sMothersGBID, t.sSpouseName, t.sSpouseID, t.sSpouseGBID, t.nChildrenM, t.nChildrenF, t.sAddress1, t.sAddress2, t.sCity, t.sState, t.sPCode, l7.sCountry, t.sEmail, t.sPhone, t.sFax, t.dtDeceased, t.sBookIssued, t.dtValidityDate, t.sPaidUntil, t.TibetanName, t.TBUPlaceOfBirth, t.TBUOriginVillage, t.TBUFathersName, t.TBUMothersName, TBUSpouseName  FROM tblgreenbook t LEFT JOIN lstauthregion l ON l.ID = t.nAuthRegionID LEFT JOIN lstcountry l2 ON l2.sCountryID = t.sBirthCountryID LEFT JOIN lstprovince l3 ON l3.Id = t.sOriginProvinceID LEFT JOIN lstmaritalstatus l4 ON l4.sMaritalStatusId = IF(t.sMarried='Y', 'M', t.sMarried) LEFT JOIN lstqualification l5 ON l5.sQualificationID = t.sQualificationID LEFT JOIN lstoccupation l6 ON l6.Id = t.sOccupationID LEFT JOIN lstcountry l7 ON l7.sCountryID = t.sCountryID WHERE sgbid = @sGBID";
+
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                command.CommandType = CommandType.Text;
+                command.Connection = _connection;
+                DataSet ds = new DataSet();
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+
+
+                var result = tables[0].AsEnumerable().Select(row => new
+                {
+                    AuthorityRegion = row.Field<string>("sAuthRegion"),
+                    FirstName = row.Field<string>("sFirstName"),
+                    MiddleName = row.Field<string>("sMiddleName"),
+                    LastName = row.Field<string>("sLastName"),
+                    FamilyName = row.Field<string>("sFamilyName"),
+                    Gender = row.Field<string>("sGender"),
+                    DateOfBirth = row.Field<DateTime?>("dtDOB"),
+                    DOBApprox = row.Field<string>("sDOBApprox"),
+                    PlaceOfBirth = row.Field<string>("sBirthPlace"),
+                    BirthCountry = row.Field<string>("sBirthCountry"),
+                    OriginVillage = row.Field<string>("sOriginVillage"),
+                    Provice = row.Field<string>("sProvince"),
+                    MaritalStatus = row.Field<string>("sMaritalStatusText"),
+                    OtherDocuments = row.Field<string>("sOtherDocuments"),
+                    RCNumber = row.Field<string>("sResidenceNumber"),
+                    Qualification = row.Field<string>("sQualification"),
+
+
+                    OccupationDescription = row.Field<string>("sOccupationDesc"),
+                    Alias = row.Field<string>("sAliasName"),
+                    OldGreenBook = row.Field<string>("sOldGreenBKNo"),
+                    FstGreenBook = row.Field<string>("sFstGreenBkNo"),
+                    ApplicationDate = row.Field<DateTime?>("dtFormDate"),
+                    FathersName = row.Field<string>("sFathersName"),
+                    FathersID = row.Field<string>("sFathersID"),
+                    FathersGBID = row.Field<string>("sFathersGBID"),
+                    MothersName = row.Field<string>("sMothersName"),
+                    MothersID = row.Field<string>("sMothersID"),
+                    MothersGBID = row.Field<string>("sMothersGBID"),
+                    SpouseName = row.Field<string>("sSpouseName"),
+                    SpouseID = row.Field<string>("sSpouseID"),
+                    SpouseGBI = row.Field<string>("sSpouseGBID"),
+                    MaleChildren = row.Field<int>("nChildrenM"),
+                    FemaleChildren = row.Field<int>("nChildrenF"),
+
+                    Address1 = row.Field<string>("sAddress1"),
+                    Address2 = row.Field<string>("sAddress2"),
+                    City = row.Field<string>("sCity"),
+                    State = row.Field<string>("sState"),
+                    PinCode = row.Field<string>("sPCode"),
+                    Country = row.Field<string>("sCountry"),
+                    Email = row.Field<string>("sEmail"),
+                    Phone = row.Field<string>("sPhone"),
+                    Fax = row.Field<string>("sFax"),
+                    DeceasedDate = row.Field<DateTime?>("dtDeceased"),
+                    BookIssued = row.Field<string>("sBookIssued"),
+                    VailidityDate = row.Field<DateTime?>("dtValidityDate"),
+                    PaidUntil = row.Field<string>("sPaidUntil"),
+                    TibetanName = row.Field<string>("TibetanName"),
+                    Tibeatan_PlaceOfBirth = row.Field<string>("TBUPlaceOfBirth"),
+                    Tibeatan_OriginVillage = row.Field<string>("TBUOriginVillage"),
+
+
+                    Tibeatan_FathersName = row.Field<string>("TBUFathersName"),
+                    Tibeatan_MothersName = row.Field<string>("TBUMothersName"),
+                    Tibetan_SpouseName = row.Field<string>("TBUSpouseName")
+                });
+                BindingFlags publicAttributes = BindingFlags.Public | BindingFlags.Instance;
+                Dictionary<string, dynamic> dictionary = new Dictionary<string, object>();
+                var obj = result.FirstOrDefault();
+                foreach (PropertyInfo property in obj.GetType().GetProperties(publicAttributes))
+                {
+                    if (property.CanRead)
+                        dictionary.Add(property.Name, property.GetValue(obj, null));
+                }
+
+                return dictionary;
+            }
+        }
+        #endregion
+
+
         #region Populate Records
         public override GreenBookVM PopulateRecord(MySqlDataReader reader)
         {

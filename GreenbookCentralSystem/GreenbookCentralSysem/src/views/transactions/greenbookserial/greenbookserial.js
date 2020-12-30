@@ -292,6 +292,7 @@ export default () => {
           editClick(rowData)
         }}
         style={{ padding: '0px' }}
+        disabled={!rowData['greenBookSerialNumber']['nFormNumber']}
       >
         <EditOutlinedIcon />
       </IconButton>,
