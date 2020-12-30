@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import LockTwoToneIcon from '@material-ui/icons/LockTwoTone';
 import { Alerts } from '../../../views/alerts';
-import loginBackground from '../../../assets/images/LoginBG.jpg';
+import loginBackground from '../../../assets/images/TEST1.JPG';
 
 export default function LogingPage(props) {
 

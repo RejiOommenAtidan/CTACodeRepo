@@ -1061,7 +1061,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _greenbookRepository.Update(parent);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedGBChild, gBChild, fetchedGBChild.sGBIDParent, fetchedGB.nAuthRegionID, 16, fetchedGBChild.Id, (int)gBChild.nEnteredBy);
+                        CTALogger.LogAuditRecord(fetchedGBChild, gBChild, fetchedGBChild.sGBIDParent, fetchedGB.nAuthRegionID, 100, fetchedGBChild.Id, (int)gBChild.nEnteredBy);
                         #endregion
 
                         #region Alert Logging 

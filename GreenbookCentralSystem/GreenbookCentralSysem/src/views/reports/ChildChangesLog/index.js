@@ -1,8 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-
-import Moment from 'moment';
 import { useHistory } from 'react-router-dom';
+import Moment from 'moment';
 import {
   Button,
   FormControl,
@@ -12,13 +11,11 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
-import { sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders } from '../../../config/commonConfig';
 import { Alerts } from '../../alerts';
 import _ from "lodash/fp";
 import { BackdropComponent } from '../../backdrop/index';
-
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -45,21 +42,21 @@ export default function Report() {
   let history = useHistory();
 
   const classes = useStyles();
-  const [childchangesLogData, SetChildChangesLogData] = React.useState([]);
+  const [changesLogData, SetChangesLogData] = React.useState([]);
 
   const [dtFrom, SetdtFrom] = React.useState('');
 
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
-
   const [backdrop, setBackdrop] = React.useState(false);
+  const [title, setTitle] =  React.useState();
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const alertObj = {
     alertMessage: alertMessage,
     alertType: alertType
-  }
+  };
   const [snackbar, setSnackbar] = React.useState(false);
   const snackbarOpen = () => {
     setSnackbar(true);
@@ -70,7 +67,7 @@ export default function Report() {
   const columns = [
     {
       field: "no",
-      title: "Sr. No.",
+      title: "SR. NO.",
       
       width: '5%',
       //hidden:true,
@@ -86,11 +83,10 @@ export default function Report() {
         textAlign: 'center',
         borderRight: '1px solid grey'
 
-
       },
     },
     {
-      field: "sGBId",
+      field: "GBId",
       title: "GB ID",
       
       headerStyle: {
@@ -105,11 +101,10 @@ export default function Report() {
         textAlign: 'center',
         borderRight: '1px solid grey'
 
-
       },
     },
     {
-      field: "sName",
+      field: "name",
       title: "NAME",
       
       headerStyle: {
@@ -124,12 +119,11 @@ export default function Report() {
         textAlign: 'left',
         borderRight: '1px solid grey'
 
-
       },
     },
     {
-      field: "sFeature",
-      title: "FEATURE",
+      field: "field",
+      title: "NAME OF FIELD",
       
       headerStyle: {
         padding: '5px',
@@ -143,13 +137,30 @@ export default function Report() {
         textAlign: 'left',
         borderRight: '1px solid grey'
 
-
       },
     },
 
     {
-      field: "sFieldValuesOld",
-      title: "OLD VALUE",
+      field: "previous",
+      title: "CHANGE FROM",
+      
+      headerStyle: {
+        padding: '5px',
+
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+        borderRight: '1px solid grey',
+
+        textAlign: 'left'
+
+      },
+    },
+    {
+      field: "new",
+      title: "CHANGED TO",
       
       headerStyle: {
         padding: '5px',
@@ -163,12 +174,11 @@ export default function Report() {
         textAlign: 'left',
         borderRight: '1px solid grey'
 
-
       },
     },
     {
-      field: "sFieldValuesNew",
-      title: "NEW VALUE",
+      field: "changedBy",
+      title: "CHANGED BY",
       
       headerStyle: {
         padding: '5px',
@@ -182,32 +192,12 @@ export default function Report() {
         textAlign: 'left',
         borderRight: '1px solid grey'
 
-
       },
     },
     {
-      field: "sFullName",
-      title: "ENTERED BY",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'left',
-        borderRight: '1px solid grey'
-
-
-      },
-    },
-    {
-      field: "dtFormattedEntered",
-      title: "DATE ENTERED",
-      //   render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
+      field: "changedAt",
+      title: "CHANGED AT",
+      // render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
       
       headerStyle: {
         padding: '5px',
@@ -221,7 +211,6 @@ export default function Report() {
         textAlign: 'center',
         borderRight: '1px solid grey'
 
-
       },
     },
   ]
@@ -234,24 +223,46 @@ export default function Report() {
     }
     else {
       setBackdrop(true);
-      axios.get(`/Report/GetReportCTAChangesLogForChildren/?dtRecordFrom=` + dtFrom)
+      axios.get(`/Report/GetReportCTAChangesLogForChildren/?&dtRecordFrom=` + dtFrom)
         .then(resp => {
+
           if (resp.status === 200) {
             setBackdrop(false);
             if (resp.data.length == 0) {
               setAlertMessage('No Records to display');
               setAlertType('info');
               snackbarOpen();
-              SetChildChangesLogData([]);
+              SetChangesLogData([]);
             }
             else {
               let x = 1;
-              resp.data.forEach((element) => {
-                element.no = x;
-                x = x + 1;
-                element.dtFormattedEntered = element.dtEntered ? Moment(element.dtEntered).format(sDateFormat) : null;
+              let arr=[];
+              resp.data.forEach((element1) => {
+                
+                
+               
+                JSON.parse(element1.sFieldValuesOld).forEach((element2) => {
+                  let row={};
+                  console.log(element2);
+                  row.no = x;
+                  
+
+                  row.GBId=element1.sGBId;
+                  row.name=element1.sName;
+                  row.field=element2.Field;
+                  row.previous=element2.PreviousValue;
+                  row.new=element2.NewValue;
+                  row.changedBy=element1.sFullName;
+                  row.changedAt=element1.dtEntered ? Moment(element1.dtEntered).format(sDateFormat) : null;
+                  arr.push(row);
+                  
+                  x = x + 1;
+                })
+                
+                
               })
-              SetChildChangesLogData(resp.data);
+             console.log("New",arr);
+              SetChangesLogData(arr);
               console.log(resp.data);
             }
           }
@@ -274,8 +285,8 @@ export default function Report() {
     }
   }
   useEffect(() => {
-    childchangesLogData.length > 0 && modifyHeaders()
-  }, [childchangesLogData]);
+    changesLogData.length > 0 && modifyHeaders()
+  }, [changesLogData]);
 
   return (
     <>
@@ -308,7 +319,7 @@ export default function Report() {
             value="Report" onClick={() => { changesLog(); }} >Show</Button>
         </FormControl>
         <FormControl className={classes.formControl}>
-          {childchangesLogData.length > 0 &&
+          {changesLogData.length > 0 &&
             <Button
               type="button"
               size={sButtonSize}
@@ -320,14 +331,26 @@ export default function Report() {
 
 
         {
-          childchangesLogData.length > 0 &&
+          changesLogData.length > 0 &&
 
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             //isLoading={isLoading}
             icons={oTableIcons}
-            title={`Child Changes Log For Date: ${dtFrom}`}
+            title={`Child Changes Log for Date: ${dtFrom}`}
             columns={columns}
-            data={childchangesLogData}
+            data={changesLogData}
+            /*options={{
+              filtering,
+              exportButton: true,
+              exportAllData: true,
+              headerStyle: {
+                padding: '0',
+                paddingLeft: '10px',
+                border: '1px solid lightgrey',
+              },
+              pageSize: pageSize,
+              pageSizeOptions: pageSizeArray
+            }}*/
             options={{ ...oOptions, tableLayout: "fixed" }}
             actions={[
 
@@ -340,9 +363,6 @@ export default function Report() {
             ]}
           />
         }
-
-
-
       </Paper>
       {snackbar && <Alerts
         alertObj={alertObj}
