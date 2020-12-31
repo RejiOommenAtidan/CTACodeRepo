@@ -1191,3 +1191,48 @@ SELECT
     concat('Delete GB = ',`deletelog`.`IdentityID`) as sFieldValuesNew,
     1
 FROM `greenbookprime`.`deletelog`;
+
+
+CREATE TABLE `tmpGBDocument` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sGBId` varchar(255) NOT NULL,
+  `sTitle` varchar(255) DEFAULT NULL,
+  `sDocType` varchar(255) DEFAULT NULL,
+  `imageFileName` varchar(255) DEFAULT NULL,
+  `sFileExtension` varchar(255) DEFAULT NULL,
+  `nRegisterDate` datetime DEFAULT NULL,
+  `dtEntered` datetime NOT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  `dtUpdated` datetime NOT NULL,
+  `nUpdatedBy` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `GB_TMP_DOC_GBID` (`sGBId`)
+)ENGINE=InnoDB AUTO_INCREMENT=1 ;
+
+
+INSERT INTO `ctadb`.`tmpgbdocument`
+(`id`,
+`sGBId`,
+`sTitle`,
+`sDocType`,
+`imageFileName`,
+`sFileExtension`,
+`nRegisterDate`,
+`dtEntered`,
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`)
+SELECT
+	id,
+    IdentityID,
+    title,
+    null,
+    image,
+    null,
+	FROM_UNIXTIME(registerdate) as registerdate,
+    now(),
+    82,
+    now(),
+    82    
+FROM 
+  greenbookprime.document;
