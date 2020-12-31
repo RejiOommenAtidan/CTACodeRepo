@@ -297,7 +297,11 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         return BadRequest("Id not matching with Object");
                     }
-
+                    // Check if we received gbid as '.' when damaged book
+                    if(gbsn.sGBID == ".")
+                    {
+                        gbsn.sGBID = "";
+                    }
                     GreenBookSerialNumber fetch = _greenBookSerialNumberRepository.GetGreenBookSerialNumberById(Convert.ToInt32(Id));
                     if (fetch != null)
                     {
@@ -307,7 +311,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _greenBookSerialNumberRepository.Update(gbsn);
                         if(gbsn.nFormNumber == null)
                         {
-                            if(gbsn.nMadebTypeId == 1)
+                            if(fetch.nMadebTypeId == 1)
                             {
                                 _madebRepository.UpdateSerialNumber(fetch.sGBID, (int)fetch.nFormNumber, (int)fetch.nMadebTypeId, null, 1);
                             }

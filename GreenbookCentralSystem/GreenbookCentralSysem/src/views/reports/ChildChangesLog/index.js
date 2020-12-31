@@ -105,7 +105,7 @@ export default function Report() {
     },
     {
       field: "name",
-      title: "NAME",
+      title: "NAME OF PARENT",
       
       headerStyle: {
         padding: '5px',

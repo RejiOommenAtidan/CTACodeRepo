@@ -72,7 +72,7 @@ export const EditDialog = (props) => {
   const markBookAsDamaged = () => {
     setOpenDialog(false);
     console.log("Book no. to mark damaged:", nBookNo);
-    setGbId("DAMAGED");
+    setGbId('');
     setName('');
     setCountryID(null);
     //setValueCountryName(undefined);
@@ -92,7 +92,7 @@ export const EditDialog = (props) => {
   const gbSerialObj = {
     id,
     nBookNo,
-    sGBID,
+    sGBID: sGBID === '' ? '.' : sGBID,
     remarks,
     dtDate: Moment(dtDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(dtDate).format('YYYY-MM-DD') : null,
     //dtDate,
@@ -319,13 +319,13 @@ placeholder="DD-MM-YYYY"
                       //required={true}
                       value={sGBID}
                       onChange={(e) => { setGbId(e.target.value) }}
-                      inputRef={register({
-                        required: true
-                      })}
+                      // inputRef={register({
+                      //   required: true
+                      // })}
                     />
-                    {_.get("sGBID.type", errors) === "required" && (
+                    {/* {_.get("sGBID.type", errors) === "required" && (
                       <span style={{ color: 'red' }}>This field is required</span>
-                    )}
+                    )} */}
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -339,9 +339,11 @@ placeholder="DD-MM-YYYY"
                           if (value !== null) {
                             console.log(value.id);
                             setMadebTypeId(value.id);
+                            //setMadebTypeIdDual(value.id);
                           }
                           else {
                             setMadebTypeId(0);
+                            //setMadebTypeIdDual(0);
                           }
                         }
                       }
