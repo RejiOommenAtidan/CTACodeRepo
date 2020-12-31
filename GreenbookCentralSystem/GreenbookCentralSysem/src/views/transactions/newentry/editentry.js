@@ -968,8 +968,7 @@ export default function EditEntry(props) {
                       <TextField
                         id="id_TibetanName"
                         name="name_TibetanName"
-
-                        label={<>Tibetan Name (Tibetan) མིང་། <span style={{ color: 'red' }}> *</span></>}
+                        label={<>Tibetan Name (མིང་།)<span style={{ color: 'red' }}> *</span></>}
                         type="text"
                         onChange={(e) => {
                           setTibetanName(e.target.value);
@@ -996,7 +995,7 @@ export default function EditEntry(props) {
                         <TextField
                           id="id_TBUPlaceOfBirth"
 
-                          label={<> Place Of Birth (Tibetan) སྐྱེས་ཡུལ།<span style={{ color: 'red' }}> *</span></>}
+                          label={<> Place Of Birth (སྐྱེས་ཡུལ།)<span style={{ color: 'red' }}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setTBUPlaceOfBirth(e.target.value);
@@ -1023,7 +1022,7 @@ export default function EditEntry(props) {
                         <TextField
                           id="id_TBUOriginVillage"
 
-                          label={<> Origin Village (Tibetan) ཕ་ཡུལ།<span style={{ color: 'red' }}> *</span></>}
+                          label={<> Origin Village (ཕ་ཡུལ།)<span style={{ color: 'red' }}> *</span></>}
                           type="text"
                           onChange={(e) => {
                             setTBUOriginVillage(e.target.value);
@@ -1421,7 +1420,7 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUFathersName"
-                        label={<>Father's Name (Tibetan) ཕ་མིང་། <span style={{ color: 'red' }}> *</span></>}
+                        label={<>Father's Name (ཕ་མིང་།)<span style={{ color: 'red' }}> *</span></>}
                         type="text"
                         onChange={(e) => {
                           setTBUFathersName(e.target.value);
@@ -1511,7 +1510,7 @@ export default function EditEntry(props) {
                       <TextField
                         id="id_TBUMothersName"
 
-                        label={<> Mother's Name (Tibetan) མ་མིང་།<span style={{ color: 'red' }}> *</span></>}
+                        label={<> Mother's Name (མ་མིང་།)<span style={{ color: 'red' }}> *</span></>}
                         type="text"
                         onChange={(e) => {
                           setTBUMothersName(e.target.value);
@@ -2183,7 +2182,7 @@ export default function EditEntry(props) {
                         <TextField
                           value={TBUSpouseName}
                           id="id_TBUSpouseName"
-                          label="Spouse Name (Tibetan)"
+                          label="Spouse Name (བཟའ་ཟླའི་མིང་།)"
                           type="text"
                           onChange={(e) => {
                             setTBUSpouseName(e.target.value);
