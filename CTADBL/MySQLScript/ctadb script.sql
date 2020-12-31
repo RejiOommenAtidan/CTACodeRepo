@@ -3,8 +3,8 @@ Use ctadb;
 CREATE TABLE `lstOfficeOfTibetan` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sOOT_Place` varchar(100) DEFAULT NULL,
-  `sCuurency_Name` varchar(100) DEFAULT NULL,
-  `sCuurency_Code` varchar(5) DEFAULT NULL,
+  `sCurency_Name` varchar(100) DEFAULT NULL,
+  `sCurency_Code` varchar(5) DEFAULT NULL,
   `dtEntered` datetime Not NULL,
   `nEnteredBy` int(11) Not NULL,
   `dtUpdated` datetime Not NULL,
@@ -16,8 +16,8 @@ CREATE TABLE `lstOfficeOfTibetan` (
 INSERT INTO `lstofficeoftibetan`
 (`Id`,
 `sOOT_Place`,
-`sCuurency_Name`,
-`sCuurency_Code`,
+`sCurency_Name`,
+`sCurency_Code`,
 `dtEntered`,
 `nEnteredBy`,
 `dtUpdated`,
@@ -926,7 +926,7 @@ CREATE TABLE `tblGreenBook` (
   `sOriginVillage` varchar(255) DEFAULT NULL,
   `sOriginProvinceID` varchar(255) DEFAULT NULL,
   `sMarried` varchar(255) DEFAULT NULL,
-  `sOtherDocuments` text NOT NULL,
+  `sOtherDocuments` text DEFAULT NULL,
   `sResidenceNumber` varchar(255) DEFAULT NULL,
   `sQualificationID` varchar(255) DEFAULT NULL,
   `sOccupationID` varchar(255) DEFAULT NULL,
@@ -1214,11 +1214,11 @@ CREATE TABLE `lnkGBDocument` (
 CREATE TABLE `lnkGBNote` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBId` varchar(255) NOT NULL,
-  `sNote` longtext DEFAULT NULL,
-  `dtEntered` datetime Not NULL,
-  `nEnteredBy` int(11) Not NULL,
-  `dtUpdated` datetime Not NULL,
-  `nUpdatedBy` int(11) Not NULL,
+  `sNote` longtext NOT NULL,
+  `dtEntered` datetime NOT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  `dtUpdated` datetime NOT NULL,
+  `nUpdatedBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`),
   KEY `sGBId` (`sGBId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
@@ -1531,9 +1531,13 @@ BEGIN
     select Id, sQualification, sQualificationID from lstQualification order by sQualification;
     select Id, sOccupationDesc from lstoccupation order by sOccupationDesc;
     select Id, sDOBApproxID, sDOBApproxName from lstDOBApprox;
-    select tblgivengbid.nGBId as nGBId, tblMadeb.* from tblMadeb 
-    inner join tblgivengbid on tblMadeb.nFormNumber = tblgivengbid.nFormNo
-    where tblMadeb.nMadebTypeId = 1 and tblMadeb.nFormNumber = nFormNumberIN;
+   	
+   	SELECT l.Id, l.sMaritalStatusId, l.sMaritalStatusText FROM lstmaritalstatus l;
+  	IF(nFormNumberIN > 0) THEN 
+		SELECT tblgivengbid.nGBId AS nGBId, tblMadeb.* FROM tblMadeb 
+    	INNER JOIN tblgivengbid ON tblMadeb.nFormNumber = tblgivengbid.nFormNo
+	    WHERE tblMadeb.nMadebTypeId = 1 AND tblMadeb.nFormNumber = nFormNumberIN;
+	END IF; 
 END$$
 
 DELIMITER ;
@@ -1850,7 +1854,10 @@ BEGIN
 			on tblauditlog.sGBID = tblgreenbook.sGBID
 		Left Join lstfeature
 			on tblauditlog.nFeatureID = lstfeature.Id
-		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') = ''',dtRecordFrom ,'''');
+		where
+			tblauditlog.nFeatureId = 100 
+		AND
+ DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') = ''',dtRecordFrom ,'''');
     -- select @SQLText;
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
@@ -2130,7 +2137,7 @@ CREATE PROCEDURE spReportGreenBookDeleted
     ,IN dtRecordTo date
 )
 BEGIN
-    -- declare SQLText varchar(5000);
+     -- declare SQLText varchar(5000);
     SET @SQLText = CONCAT('SELECT `tblauditlog`.`Id`,
 			`tblauditlog`.`dtEntered`,
 			`tblauditlog`.`nFeatureID`,
@@ -2139,8 +2146,10 @@ BEGIN
 			`tblauditlog`.`sGBID`,
 			`tblauditlog`.`sFieldValuesOld`,
 			`tblauditlog`.`sFieldValuesNew`,
-			`tblauditlog`.`nEnteredBy`
-		FROM `ctadb`.`tblauditlog`
+			`tblauditlog`.`nEnteredBy`,
+			`lstauthregion`.`sAuthRegion`
+		FROM `tblauditlog`
+		LEFT JOIN lstauthregion on lstauthregion.ID = tblauditlog.nRegionID
 		where 
 			`tblauditlog`.`dtEntered` > ''' ,  dtRecordFrom
     ,'''  and `tblauditlog`.`dtEntered` <= ''', dtRecordTo
@@ -2213,8 +2222,8 @@ CREATE INDEX GREENBOOK_GBID ON tblgreenbook(sGBID);
 CREATE INDEX GBID_RELATION ON lnkgbrelation(sgbidrelation, nrelationid);
 CREATE INDEX GB_DOC_GBID ON lnkgbdocument (sGBID);
 
-ALTER TABLE `tblgreenbook`
-DROP COLUMN `dtLastSuccessfullLogin`,
-DROP COLUMN `sLoginGmail`;
+-- ALTER TABLE `tblgreenbook`
+-- DROP COLUMN `dtLastSuccessfullLogin`,
+-- DROP COLUMN `sLoginGmail`;
 
 -- SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));

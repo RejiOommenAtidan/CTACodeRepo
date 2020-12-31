@@ -3,7 +3,7 @@ use chatreldb;
 CREATE TABLE `lnkgbchatrel` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `chatrelpaymentID` int(11) NOT NULL,
-  `sGBId` varchar(255) DEFAULT NULL,
+  `sGBId` varchar(255) NOT NULL,
   `nChatrelAmount` decimal(15,2) NOT NULL,
   `nChatrelMeal` decimal(15,2) DEFAULT NULL,
   `nChatrelYear` int(11) DEFAULT NULL,
@@ -24,17 +24,17 @@ CREATE TABLE `lnkgbchatrel` (
   `nConversionRate` decimal(15,4) DEFAULT NULL,
   `sPaidByGBId` varchar(255) DEFAULT NULL,
   `dtPayment` datetime DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
-CREATE TABLE `lnkgbchatreldonation` (
+CREATE TABLE `lnkgbchatrelDonation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `chatrelpaymentID` int(11) NOT NULL,
-  `sGBId` varchar(255) DEFAULT NULL,
+  `sGBId` varchar(255) NOT NULL,
   `nChatrelAdditionalDonationAmt` decimal(15,2) DEFAULT NULL,
   `nChatrelBusinessDonationAmt` decimal(15,2) DEFAULT NULL,
   `sChatrelReceiptNumber` varchar(255) DEFAULT NULL,
@@ -45,26 +45,28 @@ CREATE TABLE `lnkgbchatreldonation` (
   `nConversionRate` decimal(15,4) DEFAULT NULL,
   `sPaidByGBId` varchar(255) DEFAULT NULL,
   `dtPayment` datetime DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
-CREATE TABLE `lnkgbchildren` (
+CREATE TABLE `lnkGBChildren` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `sGBIDParent` varchar(255) DEFAULT NULL,
+  `sGBIDParent` varchar(255) NOT NULL,
   `sName` varchar(100) DEFAULT NULL,
   `dtDOB` datetime DEFAULT NULL,
   `sGender` varchar(1) DEFAULT NULL,
   `sChildID` varchar(50) DEFAULT NULL,
   `sGBIDChild` varchar(100) DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  PRIMARY KEY (`Id`),
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
+  PRIMARY KEY (`ID`),
   KEY `sGBIDParent` (`sGBIDParent`)
-) ENGINE=InnoDB AUTO_INCREMENT=109500 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 CREATE TABLE `lnkgbFileDispute` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -79,30 +81,42 @@ CREATE TABLE `lnkgbFileDispute` (
   KEY `GB_EMAIL_GBID` (`sGBId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-CREATE TABLE `lnkgbrelation` (
+CREATE TABLE `lnkGBRelation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `sGBID` varchar(255) DEFAULT NULL,
+  `sGBID` varchar(255) NOT NULL,
   `sGBIDRelation` varchar(255) DEFAULT NULL,
   `nRelationID` int(11) NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `GBID_RELATION` (`sGBIDRelation`,`nRelationID`)
-) ENGINE=InnoDB AUTO_INCREMENT=39657 DEFAULT CHARSET=latin1;
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 
-CREATE TABLE `lstchatrel` (
+CREATE TABLE `lstChatrel` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sChatrelKey` text NOT NULL,
   `nChatrelValue` int(11) NOT NULL,
   `dtChatrelFrom` date DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
+CREATE TABLE `lstAuthRegion` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `sAuthRegion` text NOT NULL,
+  `sCountryID` text NOT NULL,
+  `sCurrencyCode` text DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 CREATE TABLE `lstchatrelconfig` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -113,10 +127,45 @@ CREATE TABLE `lstchatrelconfig` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+CREATE TABLE `lstCountry` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `sCountryID` text DEFAULT NULL,
+  `sCountry` text DEFAULT NULL,
+  `nDefaultAuthRegionID` int(11) NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `lstRelation` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sRelation` text NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
+
+CREATE TABLE `tblAuditLog` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `dtEntered` datetime NOT NULL,
+  `nFeatureID` int(11) NOT NULL,
+  `nRegionID` int(11) DEFAULT NULL,
+  `nRecordID` int(11) NOT NULL,
+  `sGBID` varchar(255) DEFAULT NULL,
+  `sFieldValuesOld` text NOT NULL,
+  `sFieldValuesNew` text NOT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
+
 
 CREATE TABLE `tblchatrelpayment` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `sGBId` varchar(255) DEFAULT NULL,
+  `sGBId` varchar(255) NOT NULL,
   `nChatrelYear` int(11) DEFAULT NULL,
   `nChatrelTotalAmount` decimal(15,2) DEFAULT NULL,
   `sChatrelReceiptNumber` varchar(255) DEFAULT NULL,
@@ -130,12 +179,12 @@ CREATE TABLE `tblchatrelpayment` (
   `sPayPal_Currency_Value` varchar(255) DEFAULT NULL,
   `sPayPal_Response_Object` varchar(5000) DEFAULT NULL,
   `dtPayment` datetime DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 
 
@@ -149,6 +198,7 @@ CREATE TABLE `tblgreenbook` (
   `sMiddleName` varchar(255) DEFAULT NULL,
   `sLastName` varchar(255) DEFAULT NULL,
   `sFamilyName` varchar(255) DEFAULT NULL,
+  `sGender` varchar(255) DEFAULT NULL,
   `dtDOB` date DEFAULT NULL,
   `sMarried` varchar(255) DEFAULT NULL,
   `sFathersName` varchar(255) DEFAULT NULL,
@@ -168,83 +218,32 @@ CREATE TABLE `tblgreenbook` (
   `sPaidUntil` text NOT NULL,
   `sLoginGmail` varchar(255) DEFAULT NULL,
   `dtLastSuccessfullLogin` DateTime DEFAULT NULL,
-  `sEnteredDateTime` text DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  `dtUpdated` datetime Not NULL,
+  `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`),
   KEY `nAuthRegionID` (`nAuthRegionID`),
   KEY `GREENBOOK_GBID` (`sGBID`)
-) ENGINE=InnoDB AUTO_INCREMENT=312459 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `lstcountry` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `sCountryID` text DEFAULT NULL,
-  `sCountry` text DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1;
 
 
-CREATE TABLE `lstauthregion` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `sAuthRegion` text NOT NULL,
-  `sCountryID` text NOT NULL,
-  `sCurrencyCode` text NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=latin1;
-
-
-CREATE TABLE `lstrelation` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `sRelation` text NOT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  `dtUpdated` datetime DEFAULT NULL,
-  `nUpdatedBy` int(11) NOT NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
-
-
-CREATE TABLE `tblauditlog` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `dtEntered` datetime DEFAULT NULL,
-  `nFeatureID` int(11) NOT NULL,
-  `nRegionID` int(11) DEFAULT NULL,
-  `nRecordID` int(11) NOT NULL,
-  `sGBID` varchar(255) DEFAULT NULL,
-  `sFieldValuesOld` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `sFieldValuesNew` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-CREATE TABLE `tblactionlogger` (
+CREATE TABLE `tblActionLogger` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sActionType` varchar(255) DEFAULT NULL,
   `sModuleName` varchar(255) DEFAULT NULL,
   `sEventName` varchar(255) DEFAULT NULL,
-  `sDescription` varchar(255) DEFAULT NULL,
-  `sStackTrace` varchar(255) DEFAULT NULL,
-  `dtEntered` datetime DEFAULT NULL,
-  `nEnteredBy` int(11) NOT NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `sDescription` text DEFAULT NULL,
+  `sStackTrace` text DEFAULT NULL,
+  `dtEntered` datetime Not NULL,
+  `nEnteredBy` int(11) Not NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 
 --- -------------------------------------------------------------------------
 --- Data Migration From CTADB to ChatrelDB
 --- -------------------------------------------------------------------------
-
 INSERT INTO `chatreldb`.`tblgreenbook`
 (`Id`,
 `sGBID`,
@@ -253,6 +252,7 @@ INSERT INTO `chatreldb`.`tblgreenbook`
 `sMiddleName`,
 `sLastName`,
 `sFamilyName`,
+`sGender`,
 `dtDOB`,
 `sMarried`,
 `sFathersName`,
@@ -270,19 +270,20 @@ INSERT INTO `chatreldb`.`tblgreenbook`
 `sPhone`,
 `sFax`,
 `sPaidUntil`,
-`sEnteredDateTime`,
+`sLoginGmail`,
+`dtLastSuccessfullLogin`,
 `dtEntered`,
 `nEnteredBy`,
 `dtUpdated`,
 `nUpdatedBy`)
-SELECT 
-	`tblgreenbook`.`Id`,
+SELECT `tblgreenbook`.`Id`,
     `tblgreenbook`.`sGBID`,
     `tblgreenbook`.`nAuthRegionID`,
     `tblgreenbook`.`sFirstName`,
     `tblgreenbook`.`sMiddleName`,
     `tblgreenbook`.`sLastName`,
     `tblgreenbook`.`sFamilyName`,
+    `tblgreenbook`.`sGender`,
     `tblgreenbook`.`dtDOB`,
     `tblgreenbook`.`sMarried`,
     `tblgreenbook`.`sFathersName`,
@@ -300,7 +301,8 @@ SELECT
     `tblgreenbook`.`sPhone`,
     `tblgreenbook`.`sFax`,
     `tblgreenbook`.`sPaidUntil`,
-    `tblgreenbook`.`sEnteredDateTime`,
+    `tblgreenbook`.`sLoginGmail`,
+    `tblgreenbook`.`dtLastSuccessfullLogin`,
     `tblgreenbook`.`dtEntered`,
     `tblgreenbook`.`nEnteredBy`,
     `tblgreenbook`.`dtUpdated`,
