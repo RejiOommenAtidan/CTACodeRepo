@@ -201,8 +201,8 @@ const close=(id)=>{
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 35)) !== undefined
                 ||
-               /* (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
-                ||*/
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 36)) !== undefined
+                ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 38)) !== undefined
@@ -219,7 +219,9 @@ const close=(id)=>{
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 44)) !== undefined
                 ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 45)) !== undefined)
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 45)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 47)) !== undefined)
               &&
         <Button
           size="small"
@@ -735,6 +737,20 @@ const close=(id)=>{
                     />
                   </div>
                   <span>Deceased Report</span>
+                </ListItem>}
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 47)) !== undefined
+                     &&
+                  <ListItem
+                  component="a"
+                  button
+                  href="/Reports/DeletedGB">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Deleted Green Book Report</span>
                 </ListItem>}
                 {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 40)) !== undefined
                      &&

@@ -328,7 +328,7 @@ namespace CTAWebAPI.Controllers.Transactions
         #endregion
 
         #region GetReportGreenBookDeleted
-        [AuthorizeRole(FeatureID = 39)]
+        [AuthorizeRole(FeatureID = 47)]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetReportGreenBookDeleted(DateTime dtRecordFrom, DateTime dtRecordTo)

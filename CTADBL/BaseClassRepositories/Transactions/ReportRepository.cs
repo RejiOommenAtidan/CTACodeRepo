@@ -327,7 +327,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                         sGBID = row.Field<string>("sGBID"),
                         sFieldValuesOld = row.Field<string>("sFieldValuesOld"),
                         sFieldValuesNew = row.Field<string>("sFieldValuesNew"),
-                        nEnteredBy = row.Field<int>("nEnteredBy"),
+                        sFullName = row.Field<string>("sFullName"),
                         sAuthRegion = row.Field<string>("sAuthRegion"),
 
                     }).ToList();

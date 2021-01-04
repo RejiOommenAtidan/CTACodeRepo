@@ -705,7 +705,9 @@ const SidebarMenu = (props) => {
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 44)) !== undefined
                 ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 45)) !== undefined)
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 45)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 47)) !== undefined)
               &&
               <li>
                 <a
@@ -774,6 +776,15 @@ const SidebarMenu = (props) => {
                           onClick={toggleSidebarMobile}
                           to="/Reports/Below6Years">
                           Below 6 Year Region/Country Wise
+                    </NavLink>
+                      </li>}
+                  {  authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 47)) !== undefined
+                      && 
+                     <li>
+                        <NavLink
+                          onClick={toggleSidebarMobile}
+                          to="/Reports/DeletedGB">
+                          Deleted Green Book Report 
                     </NavLink>
                       </li>}
                     {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 39)) !== undefined

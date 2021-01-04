@@ -1,20 +1,22 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Moment from 'moment';
 import {
   Button,
   FormControl,
   TextField,
-  Paper
+  Paper,
+  Select,
+  InputLabel,
+  MenuItem
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+
 import MaterialTable from 'material-table';
 import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { Alerts } from '../../alerts';
-import _ from "lodash/fp";
 import { BackdropComponent } from '../../backdrop/index';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,18 +40,16 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Report() {
-
-  let history = useHistory();
-
   const classes = useStyles();
-  const [changesLogData, SetChangesLogData] = React.useState([]);
-
+  let history = useHistory();
+  const [deletedGBData, SetDeletedGBData] = React.useState([]);
+  const [madebTypeData, SetMadebTypeData] = React.useState();
+  const [madebType, SetMadebType] = React.useState('');
   const [dtFrom, SetdtFrom] = React.useState('');
-
-  const [filtering, setFiltering] = React.useState(false);
-  oOptions.filtering = filtering;
-  const [backdrop, setBackdrop] = React.useState(false);
-  const [title, setTitle] =  React.useState();
+  const [dtTo, SetdtTo] = React.useState('');
+  const [orderBy, SetOrderBy] = React.useState('');
+  const [title, setTitle] = useState();
+  const [rcheader, setRCHeader] = useState();
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -64,10 +64,14 @@ export default function Report() {
   const snackbarClose = () => {
     setSnackbar(false);
   };
+  const [backdrop, setBackdrop] = React.useState(false);
+  const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
+
   const columns = [
     {
       field: "no",
-      title: "SR. NO.",
+      title: "Sr. No.",
       
       width: '5%',
       //hidden:true,
@@ -83,11 +87,12 @@ export default function Report() {
         textAlign: 'center',
         borderRight: '1px solid grey'
 
+
       },
     },
     {
-      field: "GBId",
-      title: "GB ID",
+      field: "sGBID",
+      title: "GBID",
       
       headerStyle: {
         padding: '5px',
@@ -101,103 +106,13 @@ export default function Report() {
         textAlign: 'center',
         borderRight: '1px solid grey'
 
-      },
-    },
-    {
-      field: "name",
-      title: "NAME OF PARENT",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'left',
-        borderRight: '1px solid grey'
-
-      },
-    },
-    {
-      field: "field",
-      title: "NAME OF FIELD",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'left',
-        borderRight: '1px solid grey'
 
       },
     },
 
     {
-      field: "previous",
-      title: "CHANGE FROM",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-        borderRight: '1px solid grey',
-
-        textAlign: 'left'
-
-      },
-    },
-    {
-      field: "new",
-      title: "CHANGED TO",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'left',
-        borderRight: '1px solid grey'
-
-      },
-    },
-    {
-      field: "changedBy",
-      title: "CHANGED BY",
-      
-      headerStyle: {
-        padding: '5px',
-
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
-
-        textAlign: 'left',
-        borderRight: '1px solid grey'
-
-      },
-    },
-    {
-      field: "changedAt",
-      title: "CHANGED AT",
-      // render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
+      field: "sAuthRegion",
+      title: "Authority",
       
       headerStyle: {
         padding: '5px',
@@ -211,63 +126,86 @@ export default function Report() {
         textAlign: 'center',
         borderRight: '1px solid grey'
 
+
       },
     },
+    {
+      field: "sFullName",
+      title: "Deleted By",
+      
+      headerStyle: {
+        padding: '5px',
+
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+
+        textAlign: 'center',
+        borderRight: '1px solid grey'
+
+
+      },
+    },
+    {
+      field: "dtFormattedEntered",
+      title: "Delete Date",
+      // render: rowData => rowData.dtIssuedDate ? Moment(rowData.dtIssuedDate).format('DD-MM-YYYY') : '',
+      
+      headerStyle: {
+        padding: '5px',
+
+        textAlign: 'center'
+      },
+      cellStyle: {
+        // padding:'0px',
+        padding: '5px',
+
+        textAlign: 'center',
+        borderRight: '1px solid grey'
+
+
+      },
+    },
+
   ]
-  const changesLog = () => {
-    if (dtFrom === '') {
-      setAlertMessage('Date From field is required !');
+  const deletedGB = () => {
+    if (dtFrom === '' || dtTo === '') {
+      setAlertMessage('All fields are required !');
       setAlertType('error');
       snackbarOpen();
-
     }
     else {
       setBackdrop(true);
-      axios.get(`/Report/GetReportCTAChangesLogForChildren/?&dtRecordFrom=` + dtFrom)
+      axios.get(`/Report/GetReportGreenBookDeleted/?dtRecordFrom=` + dtFrom + `&dtRecordTo=` + dtTo )
         .then(resp => {
-
           if (resp.status === 200) {
             setBackdrop(false);
+            setTitle(`Delete GB Report from ${Moment(dtFrom).format(sDateFormat)} to ${Moment(dtTo).format(sDateFormat)}` );
             if (resp.data.length == 0) {
               setAlertMessage('No Records to display');
               setAlertType('info');
               snackbarOpen();
-              SetChangesLogData([]);
+              SetDeletedGBData([]);
             }
             else {
               let x = 1;
-              let arr=[];
-              resp.data.forEach((element1) => {
-                
-                
-               
-                JSON.parse(element1.sFieldValuesOld).forEach((element2) => {
-                  let row={};
-                  console.log(element2);
-                  row.no = x;
-                  
-
-                  row.GBId=element1.sGBId;
-                  row.name=element1.sName;
-                  row.field=element2.Field;
-                  row.previous=element2.PreviousValue;
-                  row.new=element2.NewValue;
-                  row.changedBy=element1.sFullName;
-                  row.changedAt=element1.dtEntered ? Moment(element1.dtEntered).format(sDateFormat) : null;
-                  arr.push(row);
-                  
-                  x = x + 1;
-                })
-                
-                
+              resp.data.forEach((element) => {
+                element.dtFormattedEntered = element.dtEntered ? Moment(element.dtEntered).format(sDateFormat) : null;
+                element.no = x;
+                x = x + 1;
               })
-             console.log("New",arr);
-              SetChangesLogData(arr);
-              console.log(resp.data);
+              SetDeletedGBData(resp.data);
+              modifyHeaders();
             }
           }
         })
         .catch(error => {
+          setBackdrop(false);
+          setAlertMessage('Error Fetching Data...');
+            setAlertType('error');
+            snackbarOpen();
           if (error.response) {
             console.error(error.response.data);
             console.error(error.response.status);
@@ -276,29 +214,30 @@ export default function Report() {
             console.warn(error.request);
           } else {
             console.error('Error', error.message);
+            
           }
           console.log(error.config);
+          console.log(error.message);
         })
         .then(release => {
           //console.log(release); => udefined
         });
     }
   }
+ 
   useEffect(() => {
-    changesLogData.length > 0 && modifyHeaders()
-  }, [changesLogData]);
-
+    deletedGBData.length > 0 && modifyHeaders()
+  }, [deletedGBData]);
   return (
     <>
       <Paper style={{ padding: '30px', textAlign: 'center' }} >
-        <h1>Child Changes Log Report</h1>
-
+        <h1>Deleted Green Book Report </h1>
+      
         <FormControl className={classes.formControl}>
 
           <TextField
             type="date"
             id='dtFrom'
-            name='dtFrom'
             onChange={(e) => { SetdtFrom(e.target.value); }}
             value={dtFrom}
             label="Date From"
@@ -306,20 +245,35 @@ export default function Report() {
             InputLabelProps={{
               shrink: true,
             }}
-
           />
-
         </FormControl>
         <FormControl className={classes.formControl}>
-          <Button
-            type="button"
+
+          <TextField
+            type="date"
+            id='dtTo'
+            onChange={(e) => { SetdtTo(e.target.value); }}
+
+            value={dtTo}
+            label="Date To"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </FormControl>
+       
+
+        <FormControl className={classes.formControl}>
+          <Button type="button"
             size={sButtonSize}
             color={sButtonColor}
             variant={sButtonVariant}
-            value="Report" onClick={() => { changesLog(); }} >Show</Button>
+            value="Report"
+            onClick={() => { deletedGB(); }} >Show</Button>
         </FormControl>
         <FormControl className={classes.formControl}>
-          {changesLogData.length > 0 &&
+          {deletedGBData.length > 0 &&
             <Button
               type="button"
               size={sButtonSize}
@@ -329,29 +283,16 @@ export default function Report() {
           }
         </FormControl>
 
-
         {
-          changesLogData.length > 0 &&
+          deletedGBData.length > 0 &&
 
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             //isLoading={isLoading}
             icons={oTableIcons}
-            title={`Child Changes Log for Date: ${dtFrom}`}
+            title={title}
             columns={columns}
-            data={changesLogData}
-            /*options={{
-              filtering,
-              exportButton: true,
-              exportAllData: true,
-              headerStyle: {
-                padding: '0',
-                paddingLeft: '10px',
-                border: '1px solid lightgrey',
-              },
-              pageSize: pageSize,
-              pageSizeOptions: pageSizeArray
-            }}*/
-            options={{ ...oOptions, tableLayout: "fixed" }}
+            data={deletedGBData}
+            options={oOptions}
             actions={[
 
               {
@@ -363,6 +304,9 @@ export default function Report() {
             ]}
           />
         }
+
+
+
       </Paper>
       {snackbar && <Alerts
         alertObj={alertObj}

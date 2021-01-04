@@ -141,7 +141,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
         {
             Random random = new Random();
             //string sql = @"select tblgivengbid.nGBId FROM tblgivengbid WHERE nGBID=@nGBID";
-            string sql = @"SELECT t.sGBID FROM tblauditlog t WHERE t.nFeatureID=17 UNION SELECT t2.sGBID FROM tblgreenbook t2 WHERE sGBID=@sGBID;";
+            string sql = @"SELECT t.sGBID FROM (SELECT t1.sGBID FROM tblauditlog t1 WHERE t1.nFeatureID=17 UNION SELECT t2.sGBID FROM tblgreenbook t2) AS t WHERE t.sGBID = @sGBID;";
             int randomgbid = 0;
             bool unused = false;
             _connection.Open();

@@ -26,7 +26,7 @@ namespace CTADBL.ViewModelsRepositories
         #region Get Call
         public IEnumerable<PrintGreenBookVM> GetPrintList(int records = 0)
         {
-            string sql = @"SELECT gb.sCountryID, gb.sGBID, CONCAT(gb.sFirstName, ' ' , IFNULL(gb.sMiddleName, ''), ' ', IFNULL(gb.sLastName, '')) AS sName, gb.dtDOB, gb.sDOBApprox, gb.TibetanName, gb.TBUOriginVillage, gbsn.nBookNo FROM (SELECT  max(nBookNo) AS nBookNo, sGBID FROM tblgreenbookserial GROUP BY sGBID ORDER BY nbookno DESC  LIMIT 10) AS gbsn INNER JOIN  tblgreenbook AS gb ON gb.sGBID = gbsn.sGBID;";
+            string sql = @"SELECT gb.sCountryID, gb.sGBID, CONCAT(gb.sFirstName, ' ' , IFNULL(gb.sMiddleName, ''), ' ', IFNULL(gb.sLastName, '')) AS sName, gb.dtDOB, gb.sDOBApprox, gb.TibetanName, gb.TBUOriginVillage, gbsn.nBookNo FROM (SELECT  max(nBookNo) AS nBookNo, sGBID FROM tblgreenbookserial WHERE sGBID IS NOT NULL AND TRIM(sGBID) != '' GROUP BY sGBID ORDER BY nbookno DESC  LIMIT 10) AS gbsn INNER JOIN  tblgreenbook AS gb ON gb.sGBID = gbsn.sGBID;";
 
             //sql += records > 0 ? (@" LIMIT " + records + ";") : sql += ";";
 

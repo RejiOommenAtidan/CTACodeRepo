@@ -44,7 +44,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _sGBIDParent = value;
             }
         }
-        [DisplayName("Name")]
+        [DisplayName("Child's Name")]
         public string sName
         {
             get
@@ -68,7 +68,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _dtDOB = value;
             }
         }
-        [DisplayName("Gender")]
+        [DisplayName("Child's Gender")]
         public string sGender
         {
             get
@@ -92,7 +92,7 @@ namespace CTADBL.BaseClasses.Transactions
                 _sChildID = value;
             }
         }
-        [DisplayName("Child Green Book ID")]
+        [DisplayName("Child's Green Book ID")]
         public string sGBIDChild
         {
             get
