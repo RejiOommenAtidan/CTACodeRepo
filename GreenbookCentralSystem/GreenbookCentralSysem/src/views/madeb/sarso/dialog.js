@@ -310,9 +310,7 @@ placeholder="DD-MM-YYYY"
                                             name="name_da"
                                             label={<p>Document Attached</p>}
                                             value={documents}
-                                            inputRef={register({
-                                                required: true
-                                            })}
+                                            
                                             onChange={(e) => { setDocument(e.target.value) }}
                                         />
                                      

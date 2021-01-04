@@ -9,8 +9,14 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
   FormControl,
-  TextField
+  TextField,
+  Table
 } from '@material-ui/core';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import {useSelector} from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Moment from 'moment';
@@ -29,10 +35,12 @@ import {
 } from '@material-ui/pickers';
 import { useHistory } from 'react-router-dom';
 import handleError from '../../../auth/_helpers/handleError';
-import { sDateFormatMUIDatepicker,sButtonColor,sButtonSize,sButtonVariant,sDDMMYYYYRegex } from '../../../config/commonConfig';
+import { sDateFormatMUIDatepicker,sButtonColor,sButtonSize,sButtonVariant,sDDMMYYYYRegex,sSnackbarAddMessage,sDateFormat } from '../../../config/commonConfig';
 import { Alerts } from '../../alerts';
-import { BackdropComponent } from '../../backdrop/pageBackDrop';;
-
+import { BackdropComponent } from '../../backdrop/index';
+import CancelIcon from '@material-ui/icons/Cancel';
+import WarningIcon from '@material-ui/icons/Warning';
+import { AddChildDialog} from "./dialogChildren";
 const useStyles = makeStyles({
   root: {
     height: '100%',
@@ -182,6 +190,13 @@ export default function NewEntry(props) {
   const [country, setCountry] = useState(null);
   const [bcountry, setBCountry] = useState(null);
 
+  // Add Child
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [openChildDialog, setOpenChildDialog] = React.useState(false);
+  const [addChildModal, setaddChildModal] = useState(false);
+  const [dialogBackdrop, setdialogBackdrop] = React.useState(false);
+  const [lGBChildren, setlGBChildren] = useState([]);
+
   //#region Alert & Snackbar
 const [snackbar, setSnackbar] = React.useState(false);
 const [alertMessage, setAlertMessage] = useState("");
@@ -201,6 +216,44 @@ const snackbarClose = () => {
 };
 //#endregion
 
+const handleClose = () => {
+  setOpenDialog(false);
+   history.push("/SarsoNewGBEntry");
+  //textBox.focus();
+};
+const handleChildClose = () => {
+  setOpenChildDialog(false);
+   history.push("/SarsoNewGBEntry");
+  //textBox.focus();
+};
+const handleAddChildClickClose = () => {
+  setaddChildModal(false);
+};
+const addChildAPICall = (childObj) => {
+  setdialogBackdrop(true);
+  setBackdrop(true);
+  axios
+    .post(`/Greenbook/AddChild`, childObj)
+    .then((resp) => {
+      if (resp.status === 200) {
+        setlGBChildren(resp.data);
+        setaddChildModal(false);
+        setAlertMessage(sSnackbarAddMessage);
+        setAlertType('success');
+        snackbarOpen();
+        childObj.sGender === "M" ? setnChildrenM(nChildrenM + 1) : setnChildrenF(nChildrenF + 1);
+        setdialogBackdrop(false);
+        setBackdrop(false);
+      }
+    })
+    .catch((error) => {
+      setdialogBackdrop(false);
+      handleError(error, history);
+    })
+    .then((release) => {
+      //console.log(release); => udefined
+    });
+};
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
     //console.log(isExpanded ? panel : false);
@@ -279,7 +332,10 @@ const snackbarClose = () => {
           setAlertType('success');
           snackbarOpen();
           setBackdrop(false);
-          setTimeout(() => { history.push("/SarsoNewGBEntry"); }, 1500);
+          if(sMarried !== 'S' && sMarried !== ''){
+            setOpenDialog(true);
+          }
+          else{setTimeout(() => { history.push("/SarsoNewGBEntry"); }, 1500);}
         }
       })
       .catch(error => {
@@ -463,7 +519,7 @@ const snackbarClose = () => {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TibetanName"
-                        label={<>Tibetan Name (མིང་།)<span style={{color:'red'}}> *</span></>}
+                        label={<>མིང་།<span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setTibetanName(e.target.value); }}
                         fullWidth
@@ -485,7 +541,7 @@ const snackbarClose = () => {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUPlaceOfBirth"
-                        label={<> Place Of Birth (སྐྱེས་ཡུལ།)<span style={{color:'red'}}> *</span></>}
+                        label={<>སྐྱེས་ཡུལ།<span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setTBUPlaceOfBirth(e.target.value); }}
                         fullWidth
@@ -789,7 +845,7 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_TBUOriginVillage"
                         
-                        label={<>Origin Village (ཕ་ཡུལ།)<span style={{color:'red'}}> *</span></>}
+                        label={<>ཕ་ཡུལ།<span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setTBUOriginVillage(e.target.value); }}
                         fullWidth
@@ -1107,7 +1163,7 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_TBUFathersName"
                   
-                        label={<> Father's Name (ཕ་མིང་།)<span style={{color:'red'}}> *</span></>}
+                        label={<>ཕ་མིང་།<span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setTBUFathersName(e.target.value); }}
                         fullWidth
@@ -1196,7 +1252,7 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_TBUMothersName"
                         
-                        label={<>Mother's Name (མ་མིང་།)<span style={{color:'red'}}> *</span></>}
+                        label={<>མ་མིང་།<span style={{color:'red'}}> *</span></>}
                         type="text"
                         onChange={(e) => { setTBUMothersName(e.target.value); }}
                         fullWidth
@@ -1297,7 +1353,7 @@ placeholder="DD-MM-YYYY"
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_TBUSpouseName"
-                        label="Spouse Name (བཟའ་ཟླའི་མིང་།)"
+                        label="བཟའ་ཟླའི་མིང་།"
                         type="text"
                         onChange={(e) => { setTBUSpouseName(e.target.value); }}
                         fullWidth
@@ -1773,9 +1829,122 @@ placeholder="DD-MM-YYYY"
         snackbarClose={snackbarClose}
       />
       }
-    {backdrop && <BackdropComponent
+    {backdrop && <BackdropComponent 
         backdrop={backdrop}
     />}
+     <Dialog
+        open={openDialog}
+     
+        onClose={handleClose}
+        
+      >
+        <DialogTitle id="alert-dialog-title">{`Add Child?`}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {`Do you want to add a child ?`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            autoFocus
+          //  startIcon={<CancelIcon />}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >
+            No
+          </Button>
+          <Button
+            onClick={()=>{setOpenDialog(false);setOpenChildDialog(true);setaddChildModal(true);}}
+         
+           // startIcon={<WarningIcon />}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openChildDialog}
+        onClose={handleChildClose}
+        
+      >
+        <DialogTitle id="alert-dialog-title">{`Add Child`}</DialogTitle>
+        <DialogContent>
+        {lGBChildren.length != 0 && (
+                      <div>
+                        <Typography align="center" variant="h6" color="primary">
+                          Children of - {sGBID}
+                        </Typography>
+                        <Table className="table table-hover table-striped table-bordered ">
+                          <thead className="thead-light" style={{ padding: 0 }}>
+                            <tr>
+                              <th scope="col">Name</th>
+                              <th scope="col">DOB</th>
+                              <th scope="col">Gender</th>
+                              <th scope="col">Old GB Number</th>
+                              <th scope="col">GB Number</th>
+                           
+                              {/*<th style={{ width: '15%' }} > Date</th>*/}
+                            </tr>
+                          </thead>
+                          <tbody style={{ padding: 0 }}>
+                            {lGBChildren.map((row, index) => (
+                              <tr>
+                                <td scope="row">{row.sName}</td>
+                                <td scope="row">
+                                  {row.dtDOB
+                                    ? Moment(row.dtDOB).format(sDateFormat)
+                                    : ""}
+                                </td>
+                                <td scope="row">{row.sGender}</td>
+                                <td scope="row">{row.sChildID}</td>
+                                <td scope="row">{row.sGBIDChild}</td>
+                              
+                              </tr>
+                            ))}
+                          </tbody>
+                        </Table>
+                        </div>)}
+                        <Button
+                      color={sButtonColor}
+                      variant={sButtonVariant}
+                      size={sButtonSize}
+                      onClick={() => {
+                        setaddChildModal(true);
+                      }}
+                    >
+                      Add a Child
+                    </Button>
+          
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleChildClose}
+            autoFocus
+          //  startIcon={<CancelIcon />}
+            variant={sButtonVariant}
+            color={sButtonColor}
+            size={sButtonSize}
+          >
+            Close
+          </Button>
+        
+        </DialogActions>
+      </Dialog>
+      {addChildModal && (
+        <AddChildDialog
+          addChildModal={addChildModal}
+          sGBID={sGBID}
+          classes={classes}
+          handleAddChildClickClose={handleAddChildClickClose}
+          addChildAPICall={addChildAPICall}
+        />
+      )}
+
     </Container>
   );
 }
