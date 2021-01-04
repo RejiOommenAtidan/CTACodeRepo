@@ -364,12 +364,13 @@ export default () => {
                 // ${sAuthRegion}, Madeb Type: ${sMadebType}
                 icons={oTableIcons}
               //  title={<h5><b> Authority Region: </b> {sAuthRegion} &nbsp; &nbsp; &nbsp;  <b>Madeb Type:</b> {sMadebType} </h5>}
-              title={"Authority Region:"+sAuthRegion  +"  "  + "   Madeb Type:"+sMadebType}
+              title={`${sAuthRegion} (${sMadebType})`}
                 columns={columns}
                 data={dataAPI}
                 components={{
                   Toolbar: props => (
-                    <div>
+                   <>
+                      
                       <MTableToolbar {...props} />
                       {makeTable && (<div>
                         <Button
@@ -383,11 +384,15 @@ export default () => {
                           }}
                         >
                           Mark Printed
-              </Button> </div>)}
-                    </div>
+              </Button>
+              
+               </div>)}
+               <div style={{display: 'flex', justifyContent:'left'}}>
+               <p style={{fontSize: '15px'}}>{`Total No. of Books: ${dataAPI.length}`}</p>     </div> 
+                    </>
                   ),
                 }}
-                options={{...oOptions, exportButton: {csv: true, pdf: true}}}
+                options={{...oOptions, exportButton: {csv: true, pdf: true}, exportFileName: `Total No. of Books: ${dataAPI.length}`}}
                 actions={
                   [
 
