@@ -134,7 +134,7 @@ namespace CTAWebAPI.Controllers.Transactions
         //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         //    }
         //}
-        [AuthorizeRole(FeatureID = 2)]
+        //[AuthorizeRole(FeatureID = 2)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult GetQuickResult(SimpleSearchVM simpleSearch)
