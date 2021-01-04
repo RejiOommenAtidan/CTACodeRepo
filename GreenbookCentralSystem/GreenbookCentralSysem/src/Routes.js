@@ -307,6 +307,7 @@ const Routes = () => {
                     <PrivateRoute path="/Reports/NewEntryFromDay" feature={37} component={ReportNewEntryFromDay} exact />
                     <PrivateRoute path="/Reports/Below6Years" feature={38} component={ReportBelow6Years} exact />
                     <PrivateRoute path="/Reports/Deceased" feature={39} component={ReportDeceased} exact />
+                    <PrivateRoute path="/Reports/DeletedGB" feature={47} component={ReportDeletedGB} exact />
                     <PrivateRoute path="/Reports/Madeb/Sarso" feature={40} component={ReportMadebSarso} exact />
                     <PrivateRoute path="/Reports/Madeb/Norchoe" feature={41} component={ReportMadebNorchoe} exact />
                     <PrivateRoute path="/Reports/Madeb/Abroad" feature={42} component={ReportMadebAbroad} exact />
@@ -314,7 +315,7 @@ const Routes = () => {
                     <PrivateRoute path="/Reports/Madeb/BookFull" feature={44} component={ReportMadebBookFull} exact />
                     <PrivateRoute path="/Reports/Madeb/Bhorlak" feature={45} component={ReportMadebBhorlak} exact />
                     <PrivateRoute path="/ChangePassword" feature={46} component={ChangePassword} />
-                    <Route path="/Reports/DeletedGB" component={ReportDeletedGB} exact />
+                    <PrivateRoute path="/Reports/DeletedGB" feature={47} component={ReportDeletedGB} exact />
                     <Route path="/Chatrel" component={Chatrel} exact />
                     <Route path="/ChatrelPay" component={ChatrelPay} exact />
                     <Route path="/ChatrelPay/MainPage" component={MainPage} exact />

@@ -705,7 +705,9 @@ const SidebarMenu = (props) => {
                 ||
                 (authUser.lFeatureUserrights.find(x => x.nFeatureID === 44)) !== undefined
                 ||
-                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 45)) !== undefined)
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 45)) !== undefined
+                ||
+                (authUser.lFeatureUserrights.find(x => x.nFeatureID === 47)) !== undefined)
               &&
               <li>
                 <a
@@ -776,8 +778,8 @@ const SidebarMenu = (props) => {
                           Below 6 Year Region/Country Wise
                     </NavLink>
                       </li>}
-                  {  /*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 38)) !== undefined
-                      &&*/ 
+                  {  authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 47)) !== undefined
+                      && 
                      <li>
                         <NavLink
                           onClick={toggleSidebarMobile}
