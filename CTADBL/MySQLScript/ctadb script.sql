@@ -754,58 +754,54 @@ CREATE TABLE `lstFeature` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
--- INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Login',now(),1,now(),1);
-
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Home',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Search',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso Madeb',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe Madeb',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak Madeb',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Give GB ID',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New Entry',now(),1,now(),1); -- *2
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Give Book Serial No',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Edit Book Serial No',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Print',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Issue Book',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Make List',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Edit GB',now(),1,now(),1); -- *2
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Delete',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Users',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Feature Rights',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Role (Master)',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Region (Master)',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Authority Region (Master)',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Country (Master)',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Occupation (Master)',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Province (Master)',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Qualification (Master)',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Relation (Master)',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Feature (Master)',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Madeb Type (Master)',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Type Issued (Master)',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chatrel Configuration (Master)',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('CTA Configuration (Master)',now(),1,now(),1);
-
--- INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Chatrel',now(),1,now(),1);
-
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Green Book Issued Over All',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Green Book Issued Individual',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Changes Log',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Child Changes Log',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('New Entry From Day',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Below 6 Year Region/Country Wise',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Deceased Region/Country Wise',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Sarso Report',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Norchoe Report',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Bhorlak Report',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Book Full Report',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Brief GB Report',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Abroad Report',now(),1,now(),1);
-INSERT INTO `lstFeature` (`sFeature`, `dtEntered`,`nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES ('Change Password',now(),1,now(),1);
-
+INSERT INTO `lstfeature` (`Id`, `sFeature`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES
+(1, 'Home', now(), 1, now(), 1),
+(2, 'Search', now(), 1, now(), 1),
+(3, 'Sarso Madeb', now(), 1, now(), 1),
+(4, 'Norchoe Madeb', now(), 1, now(), 1),
+(5, 'Bhorlak Madeb', now(), 1, now(), 1),
+(6, 'Book Full', now(), 1, now(), 1),
+(7, 'Brief GB', now(), 1, now(), 1),
+(8, 'Abroad', now(), 1, now(), 1),
+(9, 'Give GB ID', now(), 1, now(), 1),
+(10, 'New Entry', now(), 1, now(), 1),
+(11, 'Give Book Serial No', now(), 1, now(), 1),
+(12, 'Edit Book Serial No', now(), 1, now(), 1),
+(13, 'Print', now(), 1, now(), 1),
+(14, 'Issue Book', now(), 1, now(), 1),
+(15, 'Make List', now(), 1, now(), 1),
+(16, 'Edit GB', now(), 1, now(), 1),
+(17, 'Delete', now(), 1, now(), 1),
+(18, 'Users', now(), 1, now(), 1),
+(19, 'Feature Rights', now(), 1, now(), 1),
+(20, 'Role (Master)', now(), 1, now(), 1),
+(21, 'Region (Master)', now(), 1, now(), 1),
+(22, 'Authority Region (Master)', now(), 1, now(), 1),
+(23, 'Country (Master)', now(), 1, now(), 1),
+(24, 'Occupation (Master)', now(), 1, now(), 1),
+(25, 'Province (Master)', now(), 1, now(), 1),
+(26, 'Qualification (Master)', now(), 1, now(), 1),
+(27, 'Relation (Master)', now(), 1, now(), 1),
+(28, 'Feature (Master)', now(), 1, now(), 1),
+(29, 'Madeb Type (Master)', now(), 1, now(), 1),
+(30, 'Type Issued (Master)', now(), 1, now(), 1),
+(31, 'Chatrel Configuration (Master)', now(), 1, now(), 1),
+(32, 'CTA Configuration (Master)', now(), 1, now(), 1),
+(33, 'Green Book Issued Over All', now(), 1, now(), 1),
+(34, 'Green Book Issued Individual', now(), 1, now(), 1),
+(35, 'Changes Log', now(), 1, now(), 1),
+(36, 'Child Changes Log', now(), 1, now(), 1),
+(37, 'New Entry From Day', now(), 1, now(), 1),
+(38, 'Below 6 Year Region/Country Wise', now(), 1, now(), 1),
+(39, 'Deceased Region/Country Wise', now(), 1, now(), 1),
+(40, 'Sarso Report', now(), 1, now(), 1),
+(41, 'Norchoe Report', now(), 1, now(), 1),
+(42, 'Bhorlak Report', now(), 1, now(), 1),
+(43, 'Book Full Report', now(), 1, now(), 1),
+(44, 'Brief GB Report', now(), 1, now(), 1),
+(45, 'Abroad Report', now(), 1, now(), 1),
+(46, 'Change Password', now(), 1, now(), 1),
+(47, 'Deleted Green Book Report', now(), 1, now(), 1);
 
 DROP TABLE IF EXISTS `lstCTAConfig`;
  
@@ -1255,253 +1251,253 @@ CREATE TABLE `lnkFeatureUserRights` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
-INSERT INTO `lnkFeatureUserRights` (`Id`, `nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
-VALUES
-
--- ADMIN ROLE
-
-(1, 1, 5, 1, now(), 1, now(), 1),
-(2, 2, 5, 1, now(), 1, now(), 1),
-(3, 3, 5, 1, now(), 1, now(), 1),
-(4, 4, 5, 1, now(), 1, now(), 1),
-(5, 5, 5, 1, now(), 1, now(), 1),
-(6, 6, 5, 1, now(), 1, now(), 1),
-(7, 7, 5, 1, now(), 1, now(), 1),
-(8, 8, 5, 1, now(), 1, now(), 1),
-(9, 9, 5, 1, now(), 1, now(), 1),
-(10, 10, 5, 1, now(), 1, now(), 1),
-(11, 11, 5, 1, now(), 1, now(), 1),
-(12, 12, 5, 1, now(), 1, now(), 1),
-(13, 13, 5, 1, now(), 1, now(), 1),
-(14, 14, 5, 1, now(), 1, now(), 1),
-(15, 15, 5, 1, now(), 1, now(), 1),
-(16, 16, 5, 1, now(), 1, now(), 1),
-(17, 17, 5, 1, now(), 1, now(), 1),
-(18, 18, 5, 1, now(), 1, now(), 1),
-(19, 19, 5, 1, now(), 1, now(), 1),
-(20, 20, 5, 1, now(), 1, now(), 1),
-(21, 21, 5, 1, now(), 1, now(), 1),
-(22, 22, 5, 1, now(), 1, now(), 1),
-(23, 23, 5, 1, now(), 1, now(), 1),
-(24, 24, 5, 1, now(), 1, now(), 1),
-(25, 25, 5, 1, now(), 1, now(), 1),
-(26, 26, 5, 1, now(), 1, now(), 1),
-(27, 27, 5, 1, now(), 1, now(), 1),
-(28, 28, 5, 1, now(), 1, now(), 1),
-(29, 29, 5, 1, now(), 1, now(), 1),
-(30, 30, 5, 1, now(), 1, now(), 1),
-(31, 31, 5, 1, now(), 1, now(), 1),
-(32, 32, 5, 1, now(), 1, now(), 1),
-(33, 33, 5, 1, now(), 1, now(), 1),
-(34, 34, 5, 1, now(), 1, now(), 1),
-(35, 35, 5, 1, now(), 1, now(), 1),
-(36, 36, 5, 1, now(), 1, now(), 1),
-(37, 37, 5, 1, now(), 1, now(), 1),
-(38, 38, 5, 1, now(), 1, now(), 1),
-(39, 39, 5, 1, now(), 1, now(), 1),
-(40, 40, 5, 1, now(), 1, now(), 1),
-(41, 41, 5, 1, now(), 1, now(), 1),
-(42, 42, 5, 1, now(), 1, now(), 1),
-(43, 43, 5, 1, now(), 1, now(), 1),
-(44, 44, 5, 1, now(), 1, now(), 1),
-(45, 45, 5, 1, now(), 1, now(), 1),
-(46, 46, 5, 1, now(), 1, now(), 1),
-
--- EDIT ROLE
-
-(47, 1, 4, 1, now(), 1, now(), 1),
-(48, 2, 4, 1, now(), 1, now(), 1),
-(49, 3, 4, 1, now(), 1, now(), 1),
-(50, 4, 4, 1, now(), 1, now(), 1),
-(51, 5, 4, 1, now(), 1, now(), 1),
-(52, 6, 4, 1, now(), 1, now(), 1),
-(53, 7, 4, 1, now(), 1, now(), 1),
-(54, 8, 4, 1, now(), 1, now(), 1),
-(55, 9, 4, 0, now(), 1, now(), 1),
-(56, 10, 4, 1, now(), 1, now(), 1),
-(57, 11, 4, 1, now(), 1, now(), 1),
-(58, 12, 4, 1, now(), 1, now(), 1),
-(59, 13, 4, 1, now(), 1, now(), 1),
-(60, 14, 4, 1, now(), 1, now(), 1),
-(61, 15, 4, 1, now(), 1, now(), 1),
-(62, 16, 4, 1, now(), 1, now(), 1),
-(63, 17, 4, 0, now(), 1, now(), 1),
-(64, 18, 4, 0, now(), 1, now(), 1),
-(65, 19, 4, 0, now(), 1, now(), 1),
-(66, 20, 4, 0, now(), 1, now(), 1),
-(67, 21, 4, 0, now(), 1, now(), 1),
-(68, 22, 4, 0, now(), 1, now(), 1),
-(69, 23, 4, 0, now(), 1, now(), 1),
-(70, 24, 4, 0, now(), 1, now(), 1),
-(71, 25, 4, 0, now(), 1, now(), 1),
-(72, 26, 4, 0, now(), 1, now(), 1),
-(73, 27, 4, 0, now(), 1, now(), 1),
-(74, 28, 4, 0, now(), 1, now(), 1),
-(75, 29, 4, 0, now(), 1, now(), 1),
-(76, 30, 4, 0, now(), 1, now(), 1),
-(77, 31, 4, 0, now(), 1, now(), 1),
-(78, 32, 4, 0, now(), 1, now(), 1),
-(79, 33, 4, 0, now(), 1, now(), 1),
-(80, 34, 4, 0, now(), 1, now(), 1),
-(81, 35, 4, 0, now(), 1, now(), 1),
-(82, 36, 4, 0, now(), 1, now(), 1),
-(83, 37, 4, 0, now(), 1, now(), 1),
-(84, 38, 4, 0, now(), 1, now(), 1),
-(85, 39, 4, 0, now(), 1, now(), 1),
-(86, 40, 4, 0, now(), 1, now(), 1),
-(87, 41, 4, 0, now(), 1, now(), 1),
-(88, 42, 4, 0, now(), 1, now(), 1),
-(89, 43, 4, 0, now(), 1, now(), 1),
-(90, 44, 4, 0, now(), 1, now(), 1),
-(91, 45, 4, 0, now(), 1, now(), 1),
-(92, 46, 4, 1, now(), 1, now(), 1),
-
--- BOOK ISSUE ROLE
-
-(93, 1, 3, 1, now(), 1, now(), 1),
-(94, 2, 3, 1, now(), 1, now(), 1),
-(95, 3, 3, 1, now(), 1, now(), 1),
-(96, 4, 3, 1, now(), 1, now(), 1),
-(97, 5, 3, 1, now(), 1, now(), 1),
-(98, 6, 3, 1, now(), 1, now(), 1),
-(99, 7, 3, 1, now(), 1, now(), 1),
-(100, 8, 3, 1, now(), 1, now(), 1),
-(101, 9, 3, 0, now(), 1, now(), 1),
-(102, 10, 3, 1, now(), 1, now(), 1),
-(103, 11, 3, 1, now(), 1, now(), 1),
-(104, 12, 3, 1, now(), 1, now(), 1),
-(105, 13, 3, 1, now(), 1, now(), 1),
-(106, 14, 3, 1, now(), 1, now(), 1),
-(107, 15, 3, 1, now(), 1, now(), 1),
-(108, 16, 3, 0, now(), 1, now(), 1),
-(109, 17, 3, 0, now(), 1, now(), 1),
-(110, 18, 3, 0, now(), 1, now(), 1),
-(111, 19, 3, 0, now(), 1, now(), 1),
-(112, 20, 3, 0, now(), 1, now(), 1),
-(113, 21, 3, 0, now(), 1, now(), 1),
-(114, 22, 3, 0, now(), 1, now(), 1),
-(115, 23, 3, 0, now(), 1, now(), 1),
-(116, 24, 3, 0, now(), 1, now(), 1),
-(117, 25, 3, 0, now(), 1, now(), 1),
-(118, 26, 3, 0, now(), 1, now(), 1),
-(119, 27, 3, 0, now(), 1, now(), 1),
-(120, 28, 3, 0, now(), 1, now(), 1),
-(121, 29, 3, 0, now(), 1, now(), 1),
-(122, 30, 3, 0, now(), 1, now(), 1),
-(123, 31, 3, 0, now(), 1, now(), 1),
-(124, 32, 3, 0, now(), 1, now(), 1),
-(125, 33, 3, 0, now(), 1, now(), 1),
-(126, 34, 3, 0, now(), 1, now(), 1),
-(127, 35, 3, 0, now(), 1, now(), 1),
-(128, 36, 3, 0, now(), 1, now(), 1),
-(129, 37, 3, 0, now(), 1, now(), 1),
-(130, 38, 3, 0, now(), 1, now(), 1),
-(131, 39, 3, 0, now(), 1, now(), 1),
-(132, 40, 3, 0, now(), 1, now(), 1),
-(133, 41, 3, 0, now(), 1, now(), 1),
-(134, 42, 3, 0, now(), 1, now(), 1),
-(135, 43, 3, 0, now(), 1, now(), 1),
-(136, 44, 3, 0, now(), 1, now(), 1),
-(137, 45, 3, 0, now(), 1, now(), 1),
-(138, 46, 3, 1, now(), 1, now(), 1),
-
--- ENTRY ROLE
-
-(139, 1, 2, 1, now(), 1, now(), 1),
-(140, 2, 2, 1, now(), 1, now(), 1),
-(141, 3, 2, 0, now(), 1, now(), 1),
-(142, 4, 2, 0, now(), 1, now(), 1),
-(143, 5, 2, 0, now(), 1, now(), 1),
-(144, 6, 2, 0, now(), 1, now(), 1),
-(145, 7, 2, 0, now(), 1, now(), 1),
-(146, 8, 2, 0, now(), 1, now(), 1),
-(147, 9, 2, 0, now(), 1, now(), 1),
-(148, 10, 2, 1, now(), 1, now(), 1),
-(149, 11, 2, 0, now(), 1, now(), 1),
-(150, 12, 2, 0, now(), 1, now(), 1),
-(151, 13, 2, 0, now(), 1, now(), 1),
-(152, 14, 2, 0, now(), 1, now(), 1),
-(153, 15, 2, 0, now(), 1, now(), 1),
-(154, 16, 2, 1, now(), 1, now(), 1),
-(155, 17, 2, 0, now(), 1, now(), 1),
-(156, 18, 2, 0, now(), 1, now(), 1),
-(157, 19, 2, 0, now(), 1, now(), 1),
-(158, 20, 2, 0, now(), 1, now(), 1),
-(159, 21, 2, 0, now(), 1, now(), 1),
-(160, 22, 2, 0, now(), 1, now(), 1),
-(161, 23, 2, 0, now(), 1, now(), 1),
-(162, 24, 2, 0, now(), 1, now(), 1),
-(163, 25, 2, 0, now(), 1, now(), 1),
-(164, 26, 2, 0, now(), 1, now(), 1),
-(165, 27, 2, 0, now(), 1, now(), 1),
-(166, 28, 2, 0, now(), 1, now(), 1),
-(167, 29, 2, 0, now(), 1, now(), 1),
-(168, 30, 2, 0, now(), 1, now(), 1),
-(169, 31, 2, 0, now(), 1, now(), 1),
-(170, 32, 2, 0, now(), 1, now(), 1),
-(171, 33, 2, 0, now(), 1, now(), 1),
-(172, 34, 2, 0, now(), 1, now(), 1),
-(173, 35, 2, 0, now(), 1, now(), 1),
-(174, 36, 2, 0, now(), 1, now(), 1),
-(175, 37, 2, 0, now(), 1, now(), 1),
-(176, 38, 2, 0, now(), 1, now(), 1),
-(177, 39, 2, 0, now(), 1, now(), 1),
-(178, 40, 2, 0, now(), 1, now(), 1),
-(179, 41, 2, 0, now(), 1, now(), 1),
-(180, 42, 2, 0, now(), 1, now(), 1),
-(181, 43, 2, 0, now(), 1, now(), 1),
-(182, 44, 2, 0, now(), 1, now(), 1),
-(183, 45, 2, 0, now(), 1, now(), 1),
-(184, 46, 2, 1, now(), 1, now(), 1),
-
--- SEARCH ROLE
-
-(185, 1, 1, 1, now(), 1, now(), 1),
-(186, 2, 1, 1, now(), 1, now(), 1),
-(187, 3, 1, 0, now(), 1, now(), 1),
-(188, 4, 1, 0, now(), 1, now(), 1),
-(189, 5, 1, 0, now(), 1, now(), 1),
-(190, 6, 1, 0, now(), 1, now(), 1),
-(191, 7, 1, 0, now(), 1, now(), 1),
-(192, 8, 1, 0, now(), 1, now(), 1),
-(193, 9, 1, 0, now(), 1, now(), 1),
-(194, 10, 1, 0, now(), 1, now(), 1),
-(195, 11, 1, 0, now(), 1, now(), 1),
-(196, 12, 1, 0, now(), 1, now(), 1),
-(197, 13, 1, 0, now(), 1, now(), 1),
-(198, 14, 1, 0, now(), 1, now(), 1),
-(199, 15, 1, 0, now(), 1, now(), 1),
-(200, 16, 1, 0, now(), 1, now(), 1),
-(201, 17, 1, 0, now(), 1, now(), 1),
-(202, 18, 1, 0, now(), 1, now(), 1),
-(203, 19, 1, 0, now(), 1, now(), 1),
-(204, 20, 1, 0, now(), 1, now(), 1),
-(205, 21, 1, 0, now(), 1, now(), 1),
-(206, 22, 1, 0, now(), 1, now(), 1),
-(207, 23, 1, 0, now(), 1, now(), 1),
-(208, 24, 1, 0, now(), 1, now(), 1),
-(209, 25, 1, 0, now(), 1, now(), 1),
-(210, 26, 1, 0, now(), 1, now(), 1),
-(211, 27, 1, 0, now(), 1, now(), 1),
-(212, 28, 1, 0, now(), 1, now(), 1),
-(213, 29, 1, 0, now(), 1, now(), 1),
-(214, 30, 1, 0, now(), 1, now(), 1),
-(215, 31, 1, 0, now(), 1, now(), 1),
-(216, 32, 1, 0, now(), 1, now(), 1),
-(217, 33, 1, 0, now(), 1, now(), 1),
-(218, 34, 1, 0, now(), 1, now(), 1),
-(219, 35, 1, 0, now(), 1, now(), 1),
-(220, 36, 1, 0, now(), 1, now(), 1),
-(221, 37, 1, 0, now(), 1, now(), 1),
-(222, 38, 1, 0, now(), 1, now(), 1),
-(223, 39, 1, 0, now(), 1, now(), 1),
-(224, 40, 1, 0, now(), 1, now(), 1),
-(225, 41, 1, 0, now(), 1, now(), 1),
-(226, 42, 1, 0, now(), 1, now(), 1),
-(227, 43, 1, 0, now(), 1, now(), 1),
-(228, 44, 1, 0, now(), 1, now(), 1),
-(229, 45, 1, 0, now(), 1, now(), 1),
-(230, 46, 1, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(1, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(2, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(3, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(4, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(5, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(6, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(7, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(8, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(9, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(10, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(11, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(12, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(13, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(14, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(15, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(16, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(17, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(18, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(19, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(20, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(21, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(22, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(23, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(24, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(25, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(26, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(27, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(28, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(29, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(30, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(31, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(32, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(33, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(34, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(35, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(36, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(37, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(38, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(39, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(40, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(41, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(42, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(43, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(44, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(45, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(46, 5, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(47, 5, 1, now(), 1, now(), 1);
+								   
+-- EDIT ROLE                       
+								   
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(1, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(2, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(3, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(4, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(5, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(6, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(7, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(8, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(9, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(10, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(11, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(12, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(13, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(14, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(15, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(16, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(17, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(18, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(19, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(20, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(21, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(22, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(23, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(24, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(25, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(26, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(27, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(28, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(29, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(30, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(31, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(32, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(33, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(34, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(35, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(36, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(37, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(38, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(39, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(40, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(41, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(42, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(43, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(44, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(45, 4, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(46, 4, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(47, 4, 0, now(), 1, now(), 1);
+								   
+-- BOOK ISSUE ROLE                 
+								   
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(1, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(2, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(3, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(4, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(5, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(6, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(7, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(8, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(9, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(10, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(11, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(12, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(13, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(14, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(15, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(16, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(17, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(18, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(19, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(20, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(21, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(22, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(23, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(24, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(25, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(26, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(27, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(28, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(29, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(30, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(31, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(32, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(33, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(34, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(35, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(36, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(37, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(38, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(39, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(40, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(41, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(42, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(43, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(44, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(45, 3, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(46, 3, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(47, 3, 0, now(), 1, now(), 1);
+								   
+-- ENTRY ROLE                      
+								   
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(1, 2, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(2, 2, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(3, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(4, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(5, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(6, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(7, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(8, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(9, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(10, 2, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(11, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(12, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(13, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(14, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(15, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(16, 2, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(17, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(18, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(19, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(20, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(21, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(22, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(23, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(24, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(25, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(26, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(27, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(28, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(29, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(30, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(31, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(32, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(33, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(34, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(35, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(36, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(37, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(38, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(39, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(40, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(41, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(42, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(43, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(44, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(45, 2, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(46, 2, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(47, 2, 0, now(), 1, now(), 1);
+								   
+-- SEARCH ROLE                     
+								   
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(1, 1, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(2, 1, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(3, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(4, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(5, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(6, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(7, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(8, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(9, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(10, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(11, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(12, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(13, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(14, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(15, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(16, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(17, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(18, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(19, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(20, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(21, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(22, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(23, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(24, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(25, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(26, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(27, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(28, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(29, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(30, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(31, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(32, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(33, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(34, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(35, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(36, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(37, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(38, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(39, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(40, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(41, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(42, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(43, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(44, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(45, 1, 0, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(46, 1, 1, now(), 1, now(), 1);
+INSERT INTO `lnkfeatureuserrights` (`nFeatureID`, `nUserRightsID`, `bRights`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) VALUES(47, 1, 0, now(), 1, now(), 1);
 
 -- 
 -- Store Procedure GreenBook By GBID
@@ -2139,20 +2135,21 @@ CREATE PROCEDURE spReportGreenBookDeleted
 BEGIN
      -- declare SQLText varchar(5000);
     SET @SQLText = CONCAT('SELECT `tblauditlog`.`Id`,
-			`tblauditlog`.`dtEntered`,
-			`tblauditlog`.`nFeatureID`,
-			`tblauditlog`.`nRegionID`,
-			`tblauditlog`.`nRecordID`,
-			`tblauditlog`.`sGBID`,
-			`tblauditlog`.`sFieldValuesOld`,
-			`tblauditlog`.`sFieldValuesNew`,
-			`tblauditlog`.`nEnteredBy`,
-			`lstauthregion`.`sAuthRegion`
-		FROM `tblauditlog`
-		LEFT JOIN lstauthregion on lstauthregion.ID = tblauditlog.nRegionID
-		where 
-			`tblauditlog`.`dtEntered` > ''' ,  dtRecordFrom
-    ,'''  and `tblauditlog`.`dtEntered` <= ''', dtRecordTo
+            `tblauditlog`.`dtEntered`,
+            `tblauditlog`.`nFeatureID`,
+            `tblauditlog`.`nRegionID`,
+            `tblauditlog`.`nRecordID`,
+            `tblauditlog`.`sGBID`,
+            `tblauditlog`.`sFieldValuesOld`,
+            `tblauditlog`.`sFieldValuesNew`,
+            `tbluser`.`sFullName`,
+            `lstauthregion`.`sAuthRegion`
+        FROM `tblauditlog`
+        LEFT JOIN lstauthregion on lstauthregion.ID = tblauditlog.nRegionID
+        inner join tbluser on tblauditlog.nEnteredBy=tbluser.id
+        where 
+            DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') > ''' ,  dtRecordFrom
+    ,'''  and DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') <= ''', dtRecordTo
     ,''' and `tblauditlog`.`nFeatureID` = 17');
     -- select @SQLText;
     PREPARE stmt FROM @SQLText;

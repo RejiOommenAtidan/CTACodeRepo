@@ -634,3 +634,24 @@ SELECT `lnkgbdocument`.`id`,
     `lnkgbdocument`.`dtUpdated`,
     `lnkgbdocument`.`nUpdatedBy`
 FROM `ctadb`.`lnkgbdocument`;
+
+INSERT INTO `tblauditlog`
+(`Id`,
+`dtEntered`,
+`nFeatureID`,
+`nRegionID`,
+`nRecordID`,
+`sGBID`,
+`sFieldValuesOld`,
+`sFieldValuesNew`,
+`nEnteredBy`)
+SELECT `tblauditlog`.`Id`,
+    `tblauditlog`.`dtEntered`,
+    `tblauditlog`.`nFeatureID`,
+    `tblauditlog`.`nRegionID`,
+    `tblauditlog`.`nRecordID`,
+    `tblauditlog`.`sGBID`,
+    `tblauditlog`.`sFieldValuesOld`,
+    `tblauditlog`.`sFieldValuesNew`,
+    `tblauditlog`.`nEnteredBy`
+FROM `ctadb`.`tblauditlog`;
