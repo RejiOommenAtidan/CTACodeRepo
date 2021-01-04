@@ -91,6 +91,8 @@ const ReportMadebBhorlak = lazy(() => import('./views/reports/madeb/bhorlak'));
 const ReportMadebBookFull = lazy(() => import('./views/reports/madeb/bookfull'));
 const ReportMadebBriefGB = lazy(() => import('./views/reports/madeb/briefgb'));
 const ReportMadebAbroad = lazy(() => import('./views/reports/madeb/abroad'));
+const ReportDeletedGB = lazy(() => import('./views/reports/DeletedGB'));
+
 //const IssuedOverAll = lazy(() => import('./views/reports/IssuedOverAll/index.js'));
 
 const Routes = () => {
@@ -251,7 +253,8 @@ const Routes = () => {
                 '/Reports/Madeb/Bhorlak',
                 '/Reports/Madeb/Abroad',
                 '/Reports/Madeb/BriefGB',
-                '/Reports/Madeb/BookFull'
+                '/Reports/Madeb/BookFull',
+                '/Reports/DeletedGB'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -311,7 +314,7 @@ const Routes = () => {
                     <PrivateRoute path="/Reports/Madeb/BookFull" feature={44} component={ReportMadebBookFull} exact />
                     <PrivateRoute path="/Reports/Madeb/Bhorlak" feature={45} component={ReportMadebBhorlak} exact />
                     <PrivateRoute path="/ChangePassword" feature={46} component={ChangePassword} />
-
+                    <Route path="/Reports/DeletedGB" component={ReportDeletedGB} exact />
                     <Route path="/Chatrel" component={Chatrel} exact />
                     <Route path="/ChatrelPay" component={ChatrelPay} exact />
                     <Route path="/ChatrelPay/MainPage" component={MainPage} exact />

@@ -591,7 +591,7 @@ export const ViewDialog = (props) => {
 
                                     </Grid>
                                     <Grid item xs={12}>
-                                      Father's Old GB: {data.greenBook.sFathersID}
+                                      Father's Old GB: {data.relations.sFathersID}
 
                                     </Grid>
                                     <Grid item xs={12}>
@@ -618,7 +618,7 @@ export const ViewDialog = (props) => {
                                 <Grid item xs={6} >
                                   <Grid container spacing={2}>
                                     <Grid item xs={12}>
-                                      Mother's OLD GB: {data.greenBook.sMothersID}
+                                      Mother's OLD GB: {data.relations.sMothersID}
 
                                     </Grid>
                                     <Grid item xs={12}>
@@ -634,7 +634,7 @@ export const ViewDialog = (props) => {
 
                                     </Grid>
                                     <Grid item xs={12}>
-                                      Spouse Old GB: {data.greenBook.sSpouseID}
+                                      Spouse Old GB: {data.relations.sSpouseID}
 
                                     </Grid>
                                     <Grid item xs={12}>

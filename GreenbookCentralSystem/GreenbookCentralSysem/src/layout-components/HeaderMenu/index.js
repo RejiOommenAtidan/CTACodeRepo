@@ -736,6 +736,20 @@ const close=(id)=>{
                   </div>
                   <span>Deceased Report</span>
                 </ListItem>}
+                {/*authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 39)) !== undefined
+                     &&*/
+                  <ListItem
+                  component="a"
+                  button
+                  href="/Reports/DeletedGB">
+                  <div className="mr-2">
+                    <FontAwesomeIcon
+                      icon={['fas', 'chevron-right']}
+                      className="font-size-xs opacity-3"
+                    />
+                  </div>
+                  <span>Deleted Green Book Report</span>
+                </ListItem>}
                 {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 40)) !== undefined
                      &&
                   <ListItem
