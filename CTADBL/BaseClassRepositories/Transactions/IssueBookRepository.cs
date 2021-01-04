@@ -186,14 +186,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `tblmadeb`.`nUpdatedBy`,
                               `lstauthregion`.`sAuthRegion`,
                             `lsttypeissued`.`sTypeIssued`,
-                            `lstmadebtype`.`sMadebDisplayName`
-                          
+                            `lstmadebtype`.`sMadebDisplayName`                          
                         FROM `tblmadeb`
-                          LEFT JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
+                        LEFT JOIN `lstauthregion` on `tblmadeb`.`nAuthRegionID` = `lstauthregion`.`ID`
                         LEFT JOIN `lsttypeissued` on `tblmadeb`.`nIssuedOrNotID` = `lsttypeissued`.`Id`
                         LEFT JOIN `lstmadebtype` on `tblmadeb`.`nMadebTypeID` = `lstmadebtype`.`Id`
-                        
-                        WHERE `tblmadeb`.`nFormNumber` IN (SELECT nFormNumber FROM tblgreenbookserial where nFormNumber IS NOT NULL ) AND  `tblmadeb`.`nIssuedOrNotID` !=2  ORDER BY  `tblmadeb`.`dtUpdated` DESC LIMIT 10";
+                       INNER JOIN (SELECT nFormNumber, nBookNo, nMadebTypeID FROM tblgreenbookserial where nFormNumber IS NOT NULL ORDER BY tblgreenbookserial.nBookNo DESC) as t2 ON tblmadeb.nFormNumber = t2.nFormNumber AND t2.nmadebtypeid = tblmadeb.nMadebTypeID 
+                       WHERE `tblmadeb`.`nIssuedOrNotID` !=2  ORDER BY  t2.nbookno DESC, `tblmadeb`.`dtUpdated` DESC LIMIT 10; ";
             using (var command = new MySqlCommand(sql))
             {
                
