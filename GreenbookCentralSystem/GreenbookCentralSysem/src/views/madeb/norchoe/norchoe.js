@@ -778,9 +778,7 @@ export default function EnhancedTable() {
            // options={{...oOptions,tableLayout:"fixed"}}
            options={{
              ...oOptions,
-             exportButton: {
-               csv:true
-             }
+             exportFileName: 'madeb'
           }}
             actions={[
               {

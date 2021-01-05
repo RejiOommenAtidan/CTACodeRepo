@@ -92,7 +92,7 @@ export default function Report() {
     },
     {
       field: "sGBID",
-      title: "GBID",
+      title: "GB ID",
       
       headerStyle: {
         padding: '5px',

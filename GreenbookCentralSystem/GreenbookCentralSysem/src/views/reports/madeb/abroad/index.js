@@ -252,7 +252,7 @@ export default function Report() {
           if (resp.status === 200) {
             setBackdrop(false);
             const grouping = orderBy === 'lstcountry.sCountry' ? 'Country Wise' : 'Region Wise'
-            setTitle(`Madeb BookFull ${grouping} Report from ${Moment(dtFrom).format(sDateFormat)} to ${Moment(dtTo).format(sDateFormat)}` );
+            setTitle(`Madeb Abroad ${grouping} Report from ${Moment(dtFrom).format(sDateFormat)} to ${Moment(dtTo).format(sDateFormat)}` );
             if (resp.data.length == 0) {
               setAlertMessage('No Records to display');
               setAlertType('info');

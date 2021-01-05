@@ -307,7 +307,6 @@ const Routes = () => {
                     <PrivateRoute path="/Reports/NewEntryFromDay" feature={37} component={ReportNewEntryFromDay} exact />
                     <PrivateRoute path="/Reports/Below6Years" feature={38} component={ReportBelow6Years} exact />
                     <PrivateRoute path="/Reports/Deceased" feature={39} component={ReportDeceased} exact />
-                    <PrivateRoute path="/Reports/DeletedGB" feature={47} component={ReportDeletedGB} exact />
                     <PrivateRoute path="/Reports/Madeb/Sarso" feature={40} component={ReportMadebSarso} exact />
                     <PrivateRoute path="/Reports/Madeb/Norchoe" feature={41} component={ReportMadebNorchoe} exact />
                     <PrivateRoute path="/Reports/Madeb/Abroad" feature={42} component={ReportMadebAbroad} exact />

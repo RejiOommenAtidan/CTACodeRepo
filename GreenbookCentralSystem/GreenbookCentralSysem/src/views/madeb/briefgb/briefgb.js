@@ -716,9 +716,7 @@ export default () => {
             options={{
               ...oOptions,
               tableLayout: "fixed",
-              exportButton: {
-                csv:true
-              }
+              exportFileName: 'madeb'
             }}
             actions={
               [
