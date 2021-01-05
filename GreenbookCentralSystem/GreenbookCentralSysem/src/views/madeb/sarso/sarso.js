@@ -132,8 +132,8 @@ export default function EnhancedTable() {
     {
       field: "madeb.id",
       title: "#",
-     
       hidden: true,
+      export: false,
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
