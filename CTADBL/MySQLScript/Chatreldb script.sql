@@ -29,7 +29,7 @@ CREATE TABLE `lnkgbchatrel` (
   `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=10000000 ;
 
 CREATE TABLE `lnkgbchatrelDonation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -50,13 +50,13 @@ CREATE TABLE `lnkgbchatrelDonation` (
   `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=10000000 ;
 
 CREATE TABLE `lnkGBChildren` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBIDParent` varchar(255) NOT NULL,
   `sName` varchar(100) DEFAULT NULL,
-  `dtDOB` datetime DEFAULT NULL,
+  `dtDOB` date DEFAULT NULL,
   `sGender` varchar(1) DEFAULT NULL,
   `sChildID` varchar(50) DEFAULT NULL,
   `sGBIDChild` varchar(100) DEFAULT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE `lnkgbFileDispute` (
   `nEnteredBy` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `GB_EMAIL_GBID` (`sGBId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1;
 
 CREATE TABLE `lnkGBRelation` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -125,7 +125,7 @@ CREATE TABLE `lstchatrelconfig` (
   `dtUpdated` datetime DEFAULT NULL,
   `nUpdatedBy` int(11) NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 CREATE TABLE `lstCountry` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -184,7 +184,7 @@ CREATE TABLE `tblchatrelpayment` (
   `dtUpdated` datetime Not NULL,
   `nUpdatedBy` int(11) Not NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB AUTO_INCREMENT=10000000 ;
 
 
 
@@ -330,14 +330,18 @@ INSERT INTO `chatreldb`.`lstchatrel`
 `nChatrelValue`,
 `dtChatrelFrom`,
 `dtEntered`,
-`nEnteredBy`)
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`)
 SELECT 
 	`Id`,
 	`sChatrelKey`,
 	`nChatrelValue`,
 	`dtChatrelFrom`,
 	`dtEntered`,
-	`nEnteredBy` 
+	`nEnteredBy`,
+	`dtUpdated`,
+	`nUpdatedBy`  
 FROM ctadb.lstchatrel;
 
 INSERT INTO `chatreldb`.`lstauthregion`
@@ -410,20 +414,28 @@ INSERT INTO `chatreldb`.`lnkgbchildren`
 `sChildID`,
 `sGBIDChild`,
 `dtEntered`,
-`nEnteredBy`)
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy` )
 SELECT 
 	`Id`,
 	`sGBIDParent`,
 	`sName`,
-	`dtDOB`,
+	if(`dtDOB`='0000-00-00',null,`dtDOB`) as dtDOB,
 	`sGender`,
 	`sChildID`,
 	`sGBIDChild`,
 	`dtEntered`,
-	`nEnteredBy` 
+	`nEnteredBy`,
+	`dtUpdated`,
+	`nUpdatedBy` 
 FROM ctadb.lnkgbchildren;
 
+SET SQL_SAFE_UPDATES=0;
 
+update `lnkgbchildren` 
+set `dtDOB` = null
+where `dtDOB` like '%-00%';
 
 INSERT INTO `chatreldb`.`lstrelation`
 (`Id`,
@@ -443,8 +455,8 @@ SELECT
 FROM ctadb.lstrelation;
 
 
-INSERT INTO `ctadb`.`tblchatrelpayment`
-(
+INSERT INTO `chatreldb`.`tblchatrelpayment`
+( `Id`,
 `sGBId`,
 `nChatrelYear`,
 `nChatrelTotalAmount`,
@@ -463,7 +475,7 @@ INSERT INTO `ctadb`.`tblchatrelpayment`
 `nEnteredBy`,
 `dtUpdated`,
 `nUpdatedBy`)
-SELECT 
+SELECT `tblchatrelpayment`.`Id`,
     `tblchatrelpayment`.`sGBId`,
     `tblchatrelpayment`.`nChatrelYear`,
     `tblchatrelpayment`.`nChatrelTotalAmount`,
