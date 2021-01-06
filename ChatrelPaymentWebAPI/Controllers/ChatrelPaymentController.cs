@@ -49,15 +49,15 @@ namespace ChatrelPaymentWebAPI.Controllers
             {
                 try
                 {
-                    string message = _chatrelPaymentVMRepository.Add(payment);
-                    if (message == "Records inserted successfully.")
+                    Object message = _chatrelPaymentVMRepository.Add(payment);
+                    if (message != null)
                     {
                         #region Information Logging
                         _chatrelLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, payment.chatrelPayment.nEnteredBy);
                         #endregion
                         return Ok(message);
                     }
-                    return Problem(message);
+                    return Problem(message.ToString());
                 }
                 catch (Exception ex)
                 {

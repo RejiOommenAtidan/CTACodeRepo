@@ -40,7 +40,7 @@ namespace ChatrelDBL.ViewModelsRepositories
         }
         #endregion
 
-        public string Add(ChatrelPaymentVM chatrelPaymentVM)
+        public Object Add(ChatrelPaymentVM chatrelPaymentVM)
         {
 
 
@@ -120,7 +120,11 @@ namespace ChatrelDBL.ViewModelsRepositories
                     command.ExecuteNonQuery();
                     transaction.Commit();
                     //To do: Update GreenBook "sPaidUntil" column to reflect current paid upto status.
-                    return ("Records inserted successfully.");
+
+                    Object receipt = GetReceipt(chatrelPayment.sChatrelReceiptNumber);
+                    //return ("Records inserted successfully.");
+                    return receipt;
+
                 }
                 catch (Exception ex)
                 {
