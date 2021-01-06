@@ -29,6 +29,7 @@ namespace ChatrelPaymentWebAPI.Controllers
         private readonly ChatrelPaymentVMRepository _chatrelPaymentVMRepository;
         private readonly GreenbookRepository _greenbookRepository;
         private readonly ChatrelLogger _chatrelLogger;
+
         public ChatrelPaymentController(DBConnectionInfo info)
         {
             _info = info;
@@ -36,6 +37,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             _chatrelPaymentVMRepository = new ChatrelPaymentVMRepository(info.sConnectionString);
             _greenbookRepository = new GreenbookRepository(info.sConnectionString);
             _chatrelLogger = new ChatrelLogger(info);
+            
         }
 
         #region Add new Payment record
@@ -307,5 +309,40 @@ namespace ChatrelPaymentWebAPI.Controllers
             
         }
         #endregion
+        [Authorize]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetReceipt(string sReceiptNumber)
+        {
+            // User.
+            if (String.IsNullOrEmpty(sReceiptNumber.Trim()))
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var receipt = _chatrelPaymentVMRepository.GetReceipt(sReceiptNumber);
+                if(receipt != null)
+                {
+                    return Ok(receipt);
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        //[HttpGet]
+        //[Route("[action]")]
+        //public IActionResult GoogleLogin()
+        //{
+            
+        //}
+
     }
 }
