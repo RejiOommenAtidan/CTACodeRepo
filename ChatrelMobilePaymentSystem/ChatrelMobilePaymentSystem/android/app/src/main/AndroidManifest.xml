@@ -10,7 +10,9 @@
       android:icon="@mipmap/splash_icon"
       android:roundIcon="@mipmap/splash_icon"
       android:allowBackup="false"
-      android:theme="@style/AppTheme">
+      android:theme="@style/AppTheme"
+      android:usesCleartextTraffic="true"
+      >
 
       <!-- Add this SplashActivity -->
         <activity
