@@ -1,4 +1,5 @@
 ﻿using CTADBL.BaseClasses.Transactions;
+using CTADBL.Services;
 using CTADBL.QueryBuilder;
 using CTADBL.Repository;
 using MySql.Data.MySqlClient;
@@ -128,6 +129,9 @@ namespace CTADBL.BaseClassRepositories.Transactions
             user.dtUpdated = (DateTime)(reader["dtUpdated"]);
             user.nUpdatedBy = (int)reader["nUpdatedBy"];
 
+            // Decrypt the password before returning
+            user.sPassword = PasswordEncryption.DecryptString(user.sPassword);
+            
             return user;
         }
         #endregion

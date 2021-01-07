@@ -2,6 +2,7 @@
 using CTADBL.BaseClassRepositories.Masters;
 using CTADBL.BaseClassRepositories.Transactions;
 using CTADBL.Entities;
+using CTADBL.Services;
 using CTADBL.ViewModels;
 using CTADBL.ViewModelsRepositories;
 using CTAWebAPI.Helpers;
@@ -163,6 +164,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     }
                     user.dtEntered = DateTime.Now;
                     user.dtUpdated = DateTime.Now;
+                    user.sPassword = PasswordEncryption.EncryptString(user.sPassword);
                     _userRepository.Add(user);
 
                     #region Information Logging
@@ -225,6 +227,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         user.nEnteredBy = fetchedUser.nEnteredBy;
                         user.dtEntered = fetchedUser.dtEntered;
                         user.dtUpdated = DateTime.Now;
+                        user.sPassword = PasswordEncryption.EncryptString(user.sPassword);
                         _userRepository.Update(user);
 
                         #region Audit Log
@@ -416,7 +419,6 @@ namespace CTAWebAPI.Controllers.Transactions
                     if (string.IsNullOrEmpty(changePasswordVM.sConfirmNewPassword))
                         return BadRequest("Confirm New Password cannot be NULL OR Empty");
                     #endregion
-
                     User fetchedFromDB = _userRepository.GetUserById(changePasswordVM.nUserId.ToString());
                     if (fetchedFromDB == null)
                         return NotFound("User With Id: " + changePasswordVM.nUserId + " Not Found");
@@ -425,6 +427,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         if (changePasswordVM.sNewPassword.Equals(changePasswordVM.sConfirmNewPassword))
                         {
+                            changePasswordVM.sNewPassword = PasswordEncryption.EncryptString(changePasswordVM.sNewPassword);
                             fetchedFromDB.sPassword = changePasswordVM.sNewPassword;
                             fetchedFromDB.nUpdatedBy = changePasswordVM.nUserId;
                             fetchedFromDB.dtUpdated = DateTime.Now;

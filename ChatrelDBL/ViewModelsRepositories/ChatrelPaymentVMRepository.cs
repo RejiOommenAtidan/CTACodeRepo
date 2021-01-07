@@ -4,9 +4,13 @@ using ChatrelDBL.QueryBuilder;
 using ChatrelDBL.Repository;
 using ChatrelDBL.ViewModels;
 using MySql.Data.MySqlClient;
+using QRCoder;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace ChatrelDBL.ViewModelsRepositories
@@ -36,7 +40,7 @@ namespace ChatrelDBL.ViewModelsRepositories
         }
         #endregion
 
-        public string Add(ChatrelPaymentVM chatrelPaymentVM)
+        public Object Add(ChatrelPaymentVM chatrelPaymentVM)
         {
 
 
@@ -116,7 +120,11 @@ namespace ChatrelDBL.ViewModelsRepositories
                     command.ExecuteNonQuery();
                     transaction.Commit();
                     //To do: Update GreenBook "sPaidUntil" column to reflect current paid upto status.
-                    return ("Records inserted successfully.");
+
+                    Object receipt = GetReceipt(chatrelPayment.sChatrelReceiptNumber);
+                    //return ("Records inserted successfully.");
+                    return receipt;
+
                 }
                 catch (Exception ex)
                 {
@@ -155,6 +163,64 @@ namespace ChatrelDBL.ViewModelsRepositories
                 return String.Format("{0}", maxNumber);
             }
 
+        }
+
+        public Object GetReceipt(string sReceiptNumber)
+        {
+            string sql = @"SELECT l.sGBId, t2.sFirstName, CAST((date_format(l.dtPayment, '%Y%m%d') -  date_format(t2.dtdob, '%Y%m%d'))/10000 AS UNSIGNED) AS nAge , l.sChatrelReceiptNumber, l.dtPayment, l.sPaymentCurrency, l.nChatrelAmount*l.nConversionRate AS nChatrelAmount, l.nChatrelMeal*l.nConversionRate AS nChatrelMeal, l.nCurrentChatrelSalaryAmt*l.nConversionRate AS nCurrentChatrelSalaryAmt, l4.nArrears, l4.nLateFees, l4.dtArrearsFrom, l4.dtArrearsTo, l2.nChatrelBusinessDonationAmt*l2.nConversionRate AS nChatrelBusinessDonationAmt, l2.nChatrelAdditionalDonationAmt*l2.nConversionRate AS nChatrelAddtionalDonationAmt FROM lnkgbchatrel l LEFT JOIN (SELECT l3.sChatrelReceiptNumber, sum(l3.nArrearsAmount*l3.nConversionRate - l3.nChatrelLateFeesValue*l3.nConversionRate) AS nArrears, sum(l3.nChatrelLateFeesValue*l3.nConversionRate) AS nLateFees, min(l3.dtArrearsFrom) AS dtArrearsFrom, max(l3.dtArrearsTo) AS dtArrearsTo FROM lnkgbchatrel l3 WHERE l3.nArrearsAmount IS NOT NULL GROUP BY l3.sChatrelReceiptNumber ) AS l4 ON l4.sChatrelReceiptNumber = l.sChatrelReceiptNumber LEFT JOIN lnkgbchatreldonation l2 ON l.sChatrelReceiptNumber = l2.sChatrelReceiptNumber INNER JOIN tblgreenbook t2 ON t2.sGBID = l.sGBId  WHERE l.nArrearsAmount IS NULL AND l.sChatrelReceiptNumber = @sReceiptNumber";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sReceiptNumber", sReceiptNumber);
+                command.CommandType = CommandType.Text;
+                command.Connection = _connection;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var result = tables[0].AsEnumerable().Select(row => new
+                {
+                    sGBID = row.Field<string>("sGBID"),
+                    sFirstName = row.Field<string>("sFirstName"),
+                    nAge = Convert.ToInt32(row.Field<System.UInt64>("nAge")),
+                    sChatrelReceiptNumber = row.Field<string>("sChatrelReceiptNumber"),
+                    dtPayment = row.Field<DateTime>("dtPayment"),
+                    sPaymentCurrency = row.Field<string>("sPaymentCurrency"),
+                    nChatrelAmount = row.Field<decimal>("nChatrelAmount"),
+                    nChatrelMeal = row.Field<decimal>("nChatrelMeal"),
+                    nCurrentChatrelSalaryAmt = row.Field<decimal>("nCurrentChatrelSalaryAmt"),
+
+                    nArrears = row.Field<decimal>("nArrears"),
+                    nLateFees = row.Field<decimal>("nLateFees"),
+                    dtArrearsFrom = row.Field<DateTime>("dtArrearsFrom"),
+                    dtArrearsTo = row.Field<DateTime>("dtArrearsTo"),
+                    nChatrelBusinessDonationAmt = row.Field<decimal?>("nChatrelBusinessDonationAmt"),
+                    nChatrelAddtionalDonationAmt = row.Field<decimal?>("nChatrelAddtionalDonationAmt")
+                }).FirstOrDefault();
+
+                string qrcode = QRCode(result.sGBID, result.dtPayment, result.sChatrelReceiptNumber);
+                var receipt = new { receipt = result, qrcode };
+                return receipt;
+            }
+        }
+
+        public string QRCode(string sGBID, DateTime dtPayment, string sReceiptNumber)
+        {
+            string qrText = String.Format(@"GB ID: {0}, Date: {1}, Receipt Number: {2}", sGBID, dtPayment.ToString("dd-MM-yyyy"), sReceiptNumber);
+            QRCodeGenerator _qrCode = new QRCodeGenerator();
+            QRCodeData _qrCodeData = _qrCode.CreateQrCode(qrText, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(_qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(20);
+            byte[] bytes = BitmapToBytesCode(qrCodeImage);
+            return Convert.ToBase64String(bytes);
+        }
+
+        private static Byte[] BitmapToBytesCode(Bitmap image)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                image.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                return stream.ToArray();
+            }
         }
 
         //#region Populate Records

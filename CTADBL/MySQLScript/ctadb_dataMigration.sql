@@ -686,8 +686,6 @@ update `tblmadeb`
 set `dtReject` = null
 where `dtReject` like '0000%';
 
-
- 
 update `tblmadeb` 
 set `sName` = null
 where `sName` = '';
@@ -887,7 +885,7 @@ SELECT
 	`ident_children`.`ID`,
 	`ident_children`.`ParentID`,
 	`ident_children`.`Name`,
-	`ident_children`.`DOB`,
+	if(`ident_children`.`DOB`='0000-00-00',null,`ident_children`.`DOB`) as DOB,
 	`ident_children`.`Gender`,
 	`ident_children`.`ChildID`,
 	`ident_children`.`ChildIdentityID`,
@@ -896,6 +894,12 @@ SELECT
 	now(),
 	1
 FROM `greenbookprime`.`ident_children`;
+
+SET SQL_SAFE_UPDATES=0;
+
+update `lnkgbchildren` 
+set `dtDOB` = null
+where `dtDOB` like '%-00%';
 
 
 INSERT INTO `lnkgbnote`

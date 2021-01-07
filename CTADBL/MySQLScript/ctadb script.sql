@@ -1224,7 +1224,7 @@ CREATE TABLE `lnkGBChildren` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sGBIDParent` varchar(255) NOT NULL,
   `sName` varchar(100) DEFAULT NULL,
-  `dtDOB` datetime DEFAULT NULL,
+  `dtDOB` date DEFAULT NULL,
   `sGender` varchar(1) DEFAULT NULL,
   `sChildID` varchar(50) DEFAULT NULL,
   `sGBIDChild` varchar(100) DEFAULT NULL,
@@ -2148,7 +2148,7 @@ BEGIN
         LEFT JOIN lstauthregion on lstauthregion.ID = tblauditlog.nRegionID
         inner join tbluser on tblauditlog.nEnteredBy=tbluser.id
         where 
-            DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') > ''' ,  dtRecordFrom
+            DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') >= ''' ,  dtRecordFrom
     ,'''  and DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') <= ''', dtRecordTo
     ,''' and `tblauditlog`.`nFeatureID` = 17');
     -- select @SQLText;
@@ -2218,6 +2218,9 @@ CREATE INDEX MDB_GBID ON tblmadeb(sGBID);
 CREATE INDEX GREENBOOK_GBID ON tblgreenbook(sGBID);
 CREATE INDEX GBID_RELATION ON lnkgbrelation(sgbidrelation, nrelationid);
 CREATE INDEX GB_DOC_GBID ON lnkgbdocument (sGBID);
+CREATE INDEX FORM_INDEX_MADEB ON tblmadeb(nFormNumber);
+CREATE INDEX FORM_INDEX_GBSERIAL ON tblgreenbookserial(nFormNumber);
+CREATE INDEX BOOK_NUMBER ON tblgreenbookserial(nBookNo);
 
 -- ALTER TABLE `tblgreenbook`
 -- DROP COLUMN `dtLastSuccessfullLogin`,
