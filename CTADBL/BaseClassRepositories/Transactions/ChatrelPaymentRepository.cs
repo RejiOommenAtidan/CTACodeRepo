@@ -866,7 +866,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                                     `tblchatrelpayment`.`nEnteredBy`,
                                     `tblchatrelpayment`.`dtUpdated`,
                                     `tblchatrelpayment`.`nUpdatedBy`
-                                FROM `ctadb`.`tblchatrelpayment`
+                                FROM `tblchatrelpayment`
                                 LIMIT @limit;";
             using (var command = new MySqlCommand(sql))
             {
@@ -897,7 +897,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                                     `tblchatrelpayment`.`nEnteredBy`,
                                     `tblchatrelpayment`.`dtUpdated`,
                                     `tblchatrelpayment`.`nUpdatedBy`
-                                FROM `ctadb`.`tblchatrelpayment`
+                                FROM `tblchatrelpayment`
                                 WHERE Id = @Id";
             using (var command = new MySqlCommand(sql))
             {
@@ -928,7 +928,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                                     `tblchatrelpayment`.`nEnteredBy`,
                                     `tblchatrelpayment`.`dtUpdated`,
                                     `tblchatrelpayment`.`nUpdatedBy`
-                                FROM `ctadb`.`tblchatrelpayment`
+                                FROM `tblchatrelpayment`
                                 WHERE sGBID = @sGBID";
             using (var command = new MySqlCommand(sql))
             {
@@ -958,7 +958,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                                     `tblchatrelpayment`.`nEnteredBy`,
                                     `tblchatrelpayment`.`dtUpdated`,
                                     `tblchatrelpayment`.`nUpdatedBy`
-                                FROM `ctadb`.`tblchatrelpayment`
+                                FROM `tblchatrelpayment`
                                 WHERE sGBID = @sGBID
                                 AND nChatrelYear = @year";
             using (var command = new MySqlCommand(sql))
@@ -983,7 +983,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 sGBId = reader.IsDBNull("sGBId") ? null : (string)reader["sGBId"],
                 nChatrelYear = (int)reader["nChatrelYear"],
                 nChatrelTotalAmount = reader.IsDBNull("nchatrelTotalAmount") ? null : (decimal?)reader["nchatrelTotalAmount"],
-                sChatrelReceiptNumber = (string)reader["sChatrelReceiptNumber"],
+                sChatrelReceiptNumber = reader.IsDBNull("sChatrelReceiptNumber") ? null : (string)reader["sChatrelReceiptNumber"],
                 sPaidByGBId = reader.IsDBNull("sPaidByGBId") ? null : (string)reader["sPaidByGBId"],
                 sPaymentStatus = reader.IsDBNull("sPaymentStatus") ? null : (string)reader["sPaymentStatus"],
                 sPaymentMode = reader.IsDBNull("sPaymentMode") ? null : (string)reader["sPaymentMode"],

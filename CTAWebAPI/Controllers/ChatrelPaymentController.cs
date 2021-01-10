@@ -82,7 +82,7 @@ namespace CTAWebAPI.Controllers
         {
             try
             {
-                IEnumerable<ChatrelPayment> result = _chatrelPaymentRepository.GetAllChatrelPayments();
+                IEnumerable<Object> result = _chatrelPaymentVMRepository.GetAllChatrelPayments();
                 if(result != null && result.Count() > 0)
                 {
                     #region Information Logging 
@@ -302,6 +302,72 @@ namespace CTAWebAPI.Controllers
             smtpClient.Dispose();
             return Ok("Email sent successfully.");
             
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult SearchUsers(string sGBID, string sFirstName = null, string sFathersName = null, string sMothersName = null)
+        {
+            if (String.IsNullOrEmpty(sGBID.Trim()))
+            {
+                return BadRequest("Greenbook Id not provided");
+            }
+            try
+            {
+                IEnumerable<object> result = _chatrelPaymentVMRepository.SearchUsers(sGBID, sFirstName, sFathersName, sMothersName);
+                if(result.Count() > 0)
+                {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
+                    return Ok(result);
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+
+                _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetUserProfileFromGBID(string sGBID)
+        {
+            if (String.IsNullOrEmpty(sGBID.Trim()))
+            {
+                return BadRequest("Greenbook Id not provided");
+            }
+            try
+            {
+                Object result = _chatrelPaymentVMRepository.GetUserProfileFromGBID(sGBID);
+                if (result != null)
+                {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
+                    return Ok(result);
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+
+                _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

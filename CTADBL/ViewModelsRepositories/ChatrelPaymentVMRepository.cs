@@ -145,6 +145,7 @@ namespace CTADBL.ViewModelsRepositories
             }
         }
 
+
         private string GenerateReceiptNo(string sPaymentMode = "Online")
         {
             string sql = "SELECT IFNULL(MAX(CAST(SUBSTRING(sChatrelReceiptNumber, 4) AS UNSIGNED)), 1) AS value FROM tblchatrelpayment WHERE sPaymentMode = @sPaymentMode;";
@@ -159,6 +160,142 @@ namespace CTADBL.ViewModelsRepositories
             }
                 
         }
+
+
+
+        #region Search Users in Chatrel
+        public IEnumerable<Object> SearchUsers(string sGBID, string sFirstName, string sFathersName, string sMothersName)
+        {
+            string parameters = "";
+            if (sFirstName != null && !String.IsNullOrEmpty(sFirstName.Trim()))
+            {
+                parameters += String.Format(@"t2.sFirstName = '{0}' AND ", sFirstName);
+            }
+            if (sFathersName != null && !String.IsNullOrEmpty(sFathersName.Trim()))
+            {
+                parameters += String.Format(@"t2.sFathersName = '{0}' AND ", sFathersName);
+            }
+            if (sMothersName != null && !String.IsNullOrEmpty(sMothersName.Trim()))
+            {
+                parameters += String.Format(@"t2.sMothersName = '{0}' AND ", sMothersName);
+            }
+            string sql = String.Format(@"SELECT t.sGBId, t2.sFirstName, CAST((date_format(curdate(), '%Y%m%d') -  date_format(t2.dtdob, '%Y%m%d'))/10000 AS UNSIGNED) AS nAge, l.sAuthRegion, l2.sCountry, if(t2.dtDeceased IS NULL, 'Alive', 'Deceased' ) AS sStatus, max(t.dtPayment) as dtPayment FROM tblchatrelpayment t INNER JOIN tblgreenbook t2 ON t.sGBId = t2.sGBID LEFT JOIN lstauthregion l ON t2.nAuthRegionID = l.ID LEFT JOIN lstcountry l2 ON t2.sCountryID = l2.sCountryID WHERE t.sGBId LIKE @sGBID AND {0} 1 = 1 GROUP BY t.sGBId;", parameters);
+
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID + '%');
+                command.CommandType = CommandType.Text;
+                command.Connection = _connection;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var result = tables[0].AsEnumerable().Select(row => new
+                {
+                    sGBID = row.Field<string>("sGBID"),
+                    sFirstName = row.Field<string>("sFirstName"),
+                    nAge = Convert.ToInt32(row.Field<System.UInt64>("nAge")),
+                    sAuthRegion = row.Field<string>("sAuthRegion"),
+                    sCountry = row.Field<string>("sCountry"),
+                    sStatus = row.Field<string>("sStatus"),
+                    dtPayment = row.Field<DateTime?>("dtPayment"),
+                });
+
+                return result;
+            }
+        }
+        #endregion
+
+        #region User Profile from Search Users
+        public Object GetUserProfileFromGBID(string sGBID)
+        {
+            string sql = @"SELECT t.sGBID, t.sFirstName, t.sGender, t.dtDOB, t.sFamilyName, l.sCountry, t.sCountryID, t.sEmail, t.sPhone FROM  tblgreenbook t INNER JOIN lstcountry l ON l.sCountryID = t.sCountryID WHERE t.sGBID = @sGBID;
+                           SELECT t.sGBId, t.sChatrelReceiptNumber, t.dtPayment, t.nChatrelYear, t.sPaymentCurrency, t.nChatrelTotalAmount, t.sPaymentMode, t.sPaymentStatus, t.sPaidByGBId  FROM tblchatrelpayment t WHERE t.sGBId = @sGBID;";
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sGBID", sGBID);
+                command.CommandType = CommandType.Text;
+                command.Connection = _connection;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var profile = tables[0].AsEnumerable().Select(row => new
+                {
+                    sGBID = row.Field<string>("sGBID"),
+                    sFirstName = row.Field<string>("sFirstName"),
+                    sCountryID = row.Field<string>("sCountryID"),
+                    sGender = row.Field<string>("sGender"),
+                    dtDOB = row.Field<DateTime?>("dtDOB"),
+                    sFamilyName = row.Field<string>("sFamilyName"),
+                    sCountry = row.Field<string>("sCountry"),
+                    sEmail = row.Field<string>("sEmail"),
+                    sPhone = row.Field<string>("sPhone"),
+                }).FirstOrDefault();
+                var payment = tables[1].AsEnumerable().Select(row => new
+                {
+                    sGBID = row.Field<string>("sGBID"),
+                    sChatrelReceiptNumber = row.Field<string>("sChatrelReceiptNumber"),
+                    dtPayment = row.Field<DateTime?>("dtPayment"),
+                    nChatrelYear = row.Field<int>("nChatrelYear"),
+                    sPaymentCurrency = row.Field<string>("sPaymentCurrency"),
+                    nChatrelTotalAmount = row.Field<decimal>("nChatrelTotalAmount"),
+                    sPaymentMode = row.Field<string>("sPaymentMode"),
+                    sPaymentStatus = row.Field<string>("sPaymentStatus"),
+                    sPaidByGBId = row.Field<string>("sPaidByGBId"),
+                }).ToList();
+                var result = new { profile, payment };
+                return result;
+
+            }
+        }
+        #endregion
+
+
+        #region Get Chatrel List
+        public IEnumerable<Object> GetAllChatrelPayments()
+        {
+            string sql = @"SELECT l.sGBID, t3.sChatrelReceiptNumber, t3.dtPayment, t2.sFirstName,  l.sPaidByGBId, l.sPaymentCurrency, l.nChatrelAmount*l.nConversionRate AS nChatrelAmount, l.nChatrelMeal*l.nConversionRate AS nChatrelMeal, l.nCurrentChatrelSalaryAmt*l.nConversionRate AS nCurrentChatrelSalaryAmt, l.dtCurrentChatrelFrom, l.dtCurrentChatrelTo, concat(date_format(dtCurrentChatrelFrom, '%Y'), '-', date_format(dtCurrentChatrelTo, '%y')) AS sFinancialYear, l2.nArrears, l2.dtArrearsFrom, l2.dtArrearsTo, l4.nChatrelBusinessDonationAmt, l4.nChatrelAdditionalDonationAmt, t3.nChatrelTotalAmount, l5.sAuthRegion, t3.sPaymentMode FROM lnkgbchatrel l INNER JOIN (SELECT l3.chatrelpaymentID, sum(l3.nArrearsAmount*l3.nConversionRate) AS nArrears, min(l3.dtArrearsFrom) AS dtArrearsFrom, max(l3.dtArrearsTo) AS dtArrearsTo FROM lnkgbchatrel l3 WHERE l3.nArrearsAmount IS NOT NULL GROUP BY l3.sChatrelReceiptNumber ) AS l2 ON l.chatrelpaymentID = l2.chatrelpaymentID INNER JOIN tblchatrelpayment t3 ON t3.Id = l.chatrelpaymentID LEFT JOIN tblgreenbook t2 ON t2.sGBID = l.sGBId LEFT JOIN lnkgbchatreldonation l4 ON t3.Id = l4.chatrelpaymentID LEFT JOIN lstauthregion l5 ON l5.ID = l.nAuthRegionID WHERE l.nArrearsAmount IS NULL LIMIT @records;";
+            int records = Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount"));
+            
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("records", records);
+                command.CommandType = CommandType.Text;
+                command.Connection = _connection;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var result = tables[0].AsEnumerable().Select(row => new
+                {
+                    sGBID = row.Field<string>("sGBID"),
+                    sChatrelReceiptNumber = row.Field<string>("sChatrelReceiptNumber"),
+                    dtPayment = row.Field<DateTime?>("dtPayment"),
+                    sFirstName = row.Field<string>("sFirstName"),
+                    sPaidByGBId = row.Field<string>("sPaidByGBId"),
+                    sPaymentCurrency = row.Field<string>("sPaymentCurrency"),
+                    nChatrelAmount = row.Field<decimal>("nChatrelAmount"),
+                    nChatrelMeal = row.Field<decimal>("nChatrelMeal"),
+                    nCurrentChatrelSalaryAmt = row.Field<decimal?>("nCurrentChatrelSalaryAmt"),
+                    dtCurrentChatrelFrom = row.Field<DateTime?>("dtCurrentChatrelFrom"),
+                    dtCurrentChatrelTo = row.Field<DateTime?>("dtCurrentChatrelTo"),
+                    sFinancialYear = row.Field<string>("sFinancialYear"),
+                    nArrears = row.Field<decimal?>("nArrears"),
+                    dtArrearsFrom = row.Field<DateTime?>("dtArrearsFrom"),
+                    dtArrearsTo = row.Field<DateTime?>("dtArrearsTo"),
+                    nChatrelBusinessDonationAmt = row.Field<decimal?>("nChatrelBusinessDonationAmt"),
+                    nChatrelAdditionalDonationAmt = row.Field<decimal?>("nChatrelAdditionalDonationAmt"),
+                    nChatrelTotalAmount = row.Field<decimal>("nChatrelTotalAmount"),
+                    sAuthRegion = row.Field<string>("sAuthRegion"),
+                    sPaymentMode = row.Field<string>("sPaymentMode"),
+                });
+
+                return result;
+            }
+
+        }
+        #endregion
 
         //#region Populate Records
         //public override ChatrelPaymentVM PopulateRecord(MySqlDataReader reader)

@@ -75,6 +75,7 @@ const ChatrelPay = lazy(() => import('./views/chatrelpay'));
 const MainPage = lazy(() => import('./views/chatrelpay/mainpage'));
 const PaymentPage = lazy(() => import('./views/chatrelpay/paymentpage'));
 const ChatrelList = lazy(() => import('./views/chatrelpay/chatrel_list'));
+const ChatrelSearchUsers = lazy(() => import('./views/chatrelhome/searchusers'));
 
 //Report 
 
@@ -241,6 +242,7 @@ const Routes = () => {
                 '/ChatrelPay/PaymentPage',
                 '/ChatrelPay/ChatrelList',
                 '/Chatrel',
+                '/Chatrel/SearchUsers',
                 '/Reports/GreenBookIssuedOverall',
                 '/Reports/GreenBookIssuedIndividual',
                 '/Reports/ChangesLog',
@@ -320,6 +322,7 @@ const Routes = () => {
                     <Route path="/ChatrelPay/MainPage" component={MainPage} exact />
                     <Route path="/ChatrelPay/PaymentPage" component={PaymentPage} exact />
                     <Route path="/ChatrelPay/ChatrelList" component={ChatrelList} exact />
+                    <Route path="/Chatrel/SearchUsers" component={ChatrelSearchUsers} exact />
                   </motion.div>
                 </Switch>
               </LeftSidebar>

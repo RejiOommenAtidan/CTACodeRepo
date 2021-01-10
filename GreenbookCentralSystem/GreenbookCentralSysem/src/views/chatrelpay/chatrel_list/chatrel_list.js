@@ -115,17 +115,36 @@ export default function ChatrelList(){
     },
     {
       field: "dtPayment",
-      title: "Date",
+      title: "Payment Date",
       cellStyle: {
-        padding: '5px'
+        padding: '5px',
+        textAlign: "right",
+        borderRight: '1px solid grey'
       },
       render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
     },
     {
-      field: "sGBId",
+      field: "sGBID",
       title: "GreenBook Id",
       cellStyle: {
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
+      },
+    },
+    {
+      field: "sChatrelReceiptNumber",
+      title: "Receipt Number",
+      cellStyle: {
+        padding: '5px',
+        borderRight: '1px solid grey'
+      },
+    },
+    {
+      field: "sFirstName",
+      title: "First Name",
+      cellStyle: {
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
     },
     {
@@ -135,80 +154,153 @@ export default function ChatrelList(){
         padding: '5px'
       },
     },
-    {
-      field: "nChatrelYear",
-      title: "Year",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
+    
     {
       field: "sPaymentCurrency",
       title: "Currency",
       cellStyle: {
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
-      hidden: true
+      //hidden: true
+    },
+    {
+      field: "nChatrelAmount",
+      title: "Chatrel",
+      cellStyle: {
+        padding: '5px',
+        textAlign: "right",
+        borderRight: '1px solid grey'
+      },
+      render : rowData => rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAmount']}` : `$ ${rowData['nChatrelAmount']}`
+    },
+    {
+      field: "nChatrelMeal",
+      title: "Meal",
+      cellStyle: {
+        padding: '5px',
+        textAlign: "right",
+        borderRight: '1px solid grey'
+      },
+      render : rowData => rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelMeal']}` : `$ ${rowData['nChatrelMeal']}`
+    },
+    {
+      field: "nCurrentChatrelSalaryAmt",
+      title: "Employment",
+      cellStyle: {
+        padding: '5px',
+        textAlign: "right",
+        borderRight: '1px solid grey'
+      },
+      render : rowData => rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nCurrentChatrelSalaryAmt']}` : `$ ${rowData['nCurrentChatrelSalaryAmt']}`
+    },
+    {
+      field: "dtCurrentChatrelFrom",
+      title: "Chatrel From",
+      cellStyle: {
+        padding: '5px',
+        textAlign: "right",
+        borderRight: '1px solid grey'
+      },
+      render: rowData => rowData['dtCurrentChatrelFrom'] ? Moment(rowData['dtCurrentChatrelFrom']).format(sDateFormat) : undefined,
+    },
+    {
+      field: "dtCurrentChatrelTo",
+      title: "Chatrel To",
+      cellStyle: {
+        padding: '5px',
+        textAlign: "right",
+        borderRight: '1px solid grey'
+      },
+      render: rowData => rowData['dtCurrentChatrelTo'] ? Moment(rowData['dtCurrentChatrelTo']).format(sDateFormat) : undefined,
+    },
+
+    {
+      field: "sFinancialYear",
+      title: "Year",
+      cellStyle: {
+        padding: '5px',
+        textAlign: "right",
+        borderRight: '1px solid grey'
+      },
+    },
+    {
+      field: "nArrears",
+      title: "Arrears + LateFees",
+      cellStyle: {
+        padding: '5px',
+        textAlign: "right",
+        borderRight: '1px solid grey'
+      },
+    },
+
+    {
+      field: "dtArrearsFrom",
+      title: "Arrears From",
+      cellStyle: {
+        padding: '5px',
+        textAlign: "right",
+        borderRight: '1px solid grey'
+      },
+      render: rowData => rowData['dtArrearsFrom'] ? Moment(rowData['dtArrearsFrom']).format(sDateFormat) : undefined,
+    },
+    {
+      field: "dtArrearsTo",
+      title: "Arrears To",
+      cellStyle: {
+        padding: '5px',
+        textAlign: "right",
+        borderRight: '1px solid grey'
+      },
+      render: rowData => rowData['dtArrearsTo'] ? Moment(rowData['dtArrearsTo']).format(sDateFormat) : undefined,
+    },
+    {
+      field: "nChatrelBusinessDonationAmt",
+      title: "Business Donation",
+      cellStyle: {
+        padding: '5px',
+        textAlign: "right",
+        borderRight: '1px solid grey'
+      },
+      render : rowData => rowData['nChatrelBusinessDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelBusinessDonationAmt']}` : `$ ${rowData['nChatrelBusinessDonationAmt']}`: '--'
+    },
+    {
+      field: "nChatrelAdditionalDonationAmt",
+      title: "Additional Donation",
+      cellStyle: {
+        padding: '5px',
+        textAlign: "right",
+        borderRight: '1px solid grey'
+      },
+      render : rowData => rowData['nChatrelAdditionalDonationAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelAdditionalDonationAmt']}` : `$ ${rowData['nChatrelAdditionalDonationAmt']}` : '--'
     },
     {
       field: "nChatrelTotalAmount",
-      title: "Chatrel Amount",
+      title: "Total",
       cellStyle: {
-        padding: '5px'
+        padding: '5px',
+        textAlign: "right",
+        borderRight: '1px solid grey'
       },
       render : rowData => rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelTotalAmount']}` : `$ ${rowData['nChatrelTotalAmount']}`
     },
     {
-      field: "sChatrelReceiptNumber",
-      title: "Receipt Number",
+      field: "sAuthRegion",
+      title: "Authority Region",
       cellStyle: {
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
     },
     
-    {
-      field: "sPaymentStatus",
-      title: "Payment Status",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
     {
       field: "sPaymentMode",
       title: "Payment Mode",
       cellStyle: {
-        padding: '5px'
+        padding: '5px',
+        borderRight: '1px solid grey'
       },
     },
-    {
-      field: "sPayPal_ID",
-      title: "PayPal ID",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      field: "sPayPal_Status",
-      title: "PayPal Status",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      field: "sPayPal_Currency_Code",
-      title: "PayPal Currency",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    {
-      field: "sPayPal_Currency_Value",
-      title: "PayPal Amount",
-      cellStyle: {
-        padding: '5px'
-      },
-    },
-    
     
     
 
@@ -218,11 +310,11 @@ export default function ChatrelList(){
   useEffect(() => {
     axios.get(`ChatrelPayment/GetAllChatrelPayments`)
     .then(resp => {
+      setisLoading(false);
       if (resp.status === 200) {
         console.log("Chatrel List", resp.data);
         setdataAPI(resp.data);
-        
-        setisLoading(false);
+      
       }
     })
     .catch(error => {
