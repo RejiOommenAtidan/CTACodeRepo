@@ -209,7 +209,7 @@ const MainDrawerNavigator = createDrawerNavigator();
 export const MainNavigator = () => {
   return (
     <MainDrawerNavigator.Navigator
-      initialRouteName={"Login"}
+      initialRouteName={"GBDetail"}
       drawerPosition={"left"}
       drawerType={"front"}
       hideStatusBar={false}

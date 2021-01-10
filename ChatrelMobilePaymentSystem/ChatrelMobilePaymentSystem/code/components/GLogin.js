@@ -1,16 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-community/google-signin';
-import { sClientIDAndroid } from '../constants/CommonConfig';
-import { useSelector, useDispatch } from 'react-redux';
-import { storeGoogleCreds } from '../store/actions/GLoginAction';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-community/google-signin';
+import {sClientIDAndroid} from '../constants/CommonConfig';
+import {useSelector, useDispatch} from 'react-redux';
+import {storeGoogleCreds} from '../store/actions/GLoginAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 export const GLogin = (props) => {
-
   const dispatch = useDispatch();
-  const oGoogle = useSelector(state => state.GLoginReducer.oGoogle);
+  const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -32,7 +38,6 @@ export const GLogin = (props) => {
     //     props.props.navigation.navigate("GBDetail");
     //   }
     // });
-
   }, []);
 
   const getUserDataFromAsnycStorage = async () => {
@@ -40,8 +45,7 @@ export const GLogin = (props) => {
       const jsonValue = await AsyncStorage.getItem('oUserInfo');
       console.info(jsonValue);
       return jsonValue != null ? JSON.parse(jsonValue) : null;
-    }
-    catch (e) {
+    } catch (e) {
       console.info(e);
     }
   };
@@ -60,24 +64,19 @@ export const GLogin = (props) => {
       try {
         const jsonUserInfoValue = JSON.stringify(userInfo);
         await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
-      }
-      catch (e) {
+      } catch (e) {
         console.info(e);
       }
-      props.props.navigation.navigate("GBDetail");
-    }
-    catch (error) {
+      props.props.navigation.navigate('GBDetail');
+    } catch (error) {
       console.info('Message', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.info('User Cancelled the Login Flow');
-      }
-      else if (error.code === statusCodes.IN_PROGRESS) {
+      } else if (error.code === statusCodes.IN_PROGRESS) {
         console.info('Signing In');
-      }
-      else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         console.info('Play Services Not Available or Outdated');
-      }
-      else {
+      } else {
         console.info('Some Other Error Happened');
       }
     }
@@ -87,8 +86,7 @@ export const GLogin = (props) => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (!!isSignedIn) {
       getCurrentUserInfo();
-    }
-    else {
+    } else {
       console.info('Please Login');
     }
   };
@@ -101,17 +99,14 @@ export const GLogin = (props) => {
       try {
         const jsonUserInfoValue = JSON.stringify(userInfo);
         await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
-      }
-      catch (e) {
+      } catch (e) {
         console.info(e);
       }
-      props.props.navigation.navigate("GBDetail");
-    }
-    catch (error) {
+      props.props.navigation.navigate('GBDetail');
+    } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         console.info('User has not signed in yet');
-      }
-      else {
+      } else {
         console.info("Something went wrong. Unable to get user's info");
       }
     }
@@ -134,22 +129,22 @@ export const GLogin = (props) => {
     <View style={styles.gSignInContainer}>
       <GoogleSigninButton
         style={styles.gSignInComponent}
-        size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Dark}
+        size={GoogleSigninButton.Size.Standard}
+        color={GoogleSigninButton.Color.Light}
         onPress={signIn}
       />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   gSignInContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   gSignInComponent: {
-    width: Dimensions.get('window').width * 0.50, //50%
-    height: Dimensions.get('window').height * 0.065 //6.5%,
-  }
+    //width: wp(55),
+    //height: hp(5.5),
+  },
 });

@@ -9,8 +9,12 @@ import { Button } from 'react-native-elements';
 import RNFS from 'react-native-fs';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import axios from 'axios';
 import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import axios from 'axios';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const FileDisputeScreen = (props) => {
@@ -239,8 +243,8 @@ const styles = StyleSheet.create({
     marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin
   },
   headingContainer: {
-    width: Dimensions.get('window').width * 0.55,
-    height: Dimensions.get('window').height * 0.04,
+    width: wp(55),
+    height: hp(4),
     marginTop: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 16.8 : 28
   },
@@ -257,8 +261,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular'
   },
   enterSubjectContainer: {
-    width: Dimensions.get('window').width * 0.22,
-    height: Dimensions.get('window').height * 0.02,
+    width: wp(22),
+    height: hp(2),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6.6 : 11
   },
   enterSubjectComponent: {
@@ -274,8 +278,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular'
   },
   enterMessageContainer: {
-    width: Dimensions.get('window').width * 0.22,
-    height: Dimensions.get('window').height * 0.02,
+    width: wp(22),
+    height: hp(2),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 8
   },
   enterMessageComponent: {
@@ -293,8 +297,8 @@ const styles = StyleSheet.create({
   messageContainer: {},
   subjectContainer: {},
   attachImageContainer: {
-    width: Dimensions.get('window').width * 0.22,
-    height: Dimensions.get('window').height * 0.02,
+    width: wp(22),
+    height: hp(2),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6
   },
   attachImageComponent: {
@@ -310,8 +314,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular'
   },
   selectedFileContainer: {
-    width: Dimensions.get('window').width * 0.80,
-    height: Dimensions.get('window').height * 0.025,
+    width: wp(80),
+    height: hp(3.75),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6
   },
   selectedFileComponent: {
@@ -327,8 +331,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular'
   },
   infoContainer: {
-    width: Dimensions.get('window').width * 0.80,
-    height: Dimensions.get('window').height * 0.05,
+    width: wp(80),
+    height: hp(5),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10
   },
   infoComponent: {
@@ -344,8 +348,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular'
   },
   fileUploadContainer: {
-    width: Dimensions.get('window').width * 0.45,
-    height: Dimensions.get('window').height * 0.04,
+    width: wp(45),
+    height: hp(7.5),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 16.8 : 28
   },
   submitDisputeContainer: {
