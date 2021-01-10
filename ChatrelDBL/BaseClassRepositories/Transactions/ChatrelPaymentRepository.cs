@@ -862,7 +862,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     `tblchatrelpayment`.`nEnteredBy`,
                                     `tblchatrelpayment`.`dtUpdated`,
                                     `tblchatrelpayment`.`nUpdatedBy`
-                                FROM `ctadb`.`tblchatrelpayment`
+                                FROM `tblchatrelpayment`
                                 LIMIT @limit;";
             using (var command = new MySqlCommand(sql))
             {
@@ -893,7 +893,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     `tblchatrelpayment`.`nEnteredBy`,
                                     `tblchatrelpayment`.`dtUpdated`,
                                     `tblchatrelpayment`.`nUpdatedBy`
-                                FROM `ctadb`.`tblchatrelpayment`
+                                FROM `tblchatrelpayment`
                                 WHERE Id = @Id";
             using (var command = new MySqlCommand(sql))
             {
@@ -924,7 +924,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     `tblchatrelpayment`.`nEnteredBy`,
                                     `tblchatrelpayment`.`dtUpdated`,
                                     `tblchatrelpayment`.`nUpdatedBy`
-                                FROM `ctadb`.`tblchatrelpayment`
+                                FROM `tblchatrelpayment`
                                 WHERE sGBID = @sGBID";
             using (var command = new MySqlCommand(sql))
             {
@@ -954,7 +954,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                                     `tblchatrelpayment`.`nEnteredBy`,
                                     `tblchatrelpayment`.`dtUpdated`,
                                     `tblchatrelpayment`.`nUpdatedBy`
-                                FROM `ctadb`.`tblchatrelpayment`
+                                FROM `tblchatrelpayment`
                                 WHERE sGBID = @sGBID
                                 AND nChatrelYear = @year";
             using (var command = new MySqlCommand(sql))

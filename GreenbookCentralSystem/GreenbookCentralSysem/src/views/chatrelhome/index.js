@@ -9,7 +9,7 @@ export default function Dash() {
     <Grid container>
       <Grid>
         <Button variant="outlined" color="primary" href="/ChatrelPay/ChatrelList">Chatrel Payments</Button>
-        <Button variant="outlined" color="primary" href="#outlined-buttons">Search Users</Button>
+        <Button variant="outlined" color="primary" href="/Chatrel/SearchUsers">Search Users</Button>
         <Button variant="outlined" color="primary" href="#outlined-buttons">Bulk Import</Button>
         <Button variant="outlined" color="primary" href="#outlined-buttons">Reports</Button>
 

@@ -42,14 +42,14 @@ import DeleteIcon from '@material-ui/icons/Delete';
 // import PaymentIcon from '@material-ui/icons/Payment';
 // import AssessmentIcon from '@material-ui/icons/Assessment';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-
+import { useHistory } from 'react-router-dom';
 import projectLogo from '../../assets/images/ctalogo.png';
 import { useSelector } from 'react-redux';
 
 const HeaderMenu = () => {
   
 const authUser = useSelector(state => state.UserAuthenticationReducer.oUserAuth);
-  
+const history = useHistory();
 const open=(id)=>{
   var btn = document.getElementById(id);
   btn.style.backgroundColor = "#3c44b1";
@@ -108,6 +108,23 @@ const close=(id)=>{
     close("id_Madeb");
     setAnchorElMadeb(null);
   };
+
+
+
+  const [anchorElChatrel, setAnchorElChatrel] = useState(null);
+  const openChatrel = Boolean(anchorElChatrel);
+  const idChatrel = openChatrel ? 'chatrel-popover' : undefined;
+  const handleChatrelClick = (event) => {
+    //open("id_Chatrel");
+    //setAnchorElChatrel(event.currentTarget);
+    history.push('/Chatrel');
+  };
+  const handleChatrelClose = () => {
+    close("id_Chatrel");
+    setAnchorElChatrel(null);
+  };
+
+
 
   const [anchorElMaster, setAnchorElMaster] = useState(null);
   const openMaster = Boolean(anchorElMaster);
@@ -276,6 +293,15 @@ const close=(id)=>{
        //   onMouseEnter={handleMasterClick}
           className="btn-transition-none btn-neutral-primary mr-3">
           Masters
+        </Button>}
+
+        { <Button
+          size="small"
+          id="id_Chatrel"
+          onClick={handleChatrelClick}
+       //   onMouseEnter={handleMasterClick}
+          className="btn-transition-none btn-neutral-primary mr-3">
+          Chatrel
         </Button>}
        
         <Popover
@@ -1126,6 +1152,73 @@ const close=(id)=>{
             </Grid>
           </div>
         </Popover>
+      {/*  <Popover
+          id={idChatrel}
+          open={openChatrel}
+          anchorEl={anchorElChatrel}
+          onClose={handleChatrelClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left'
+          }}>
+          <div className="popover-custom p-0">
+            <Grid container spacing={0}>
+              <Grid item xs={12}>
+                <List component="div" className="nav-neutral-danger p-3">
+               
+                    <ListItem
+                      component="a"
+                      button
+                      href="/Users">
+                      <div className="mr-2">
+                        <FontAwesomeIcon
+                          icon={['fas', 'chevron-right']}
+                          className="font-size-xs opacity-3"
+                        />
+                      </div>
+                      <span>Manage Users</span>
+                    </ListItem>
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 19)) !== undefined
+                      &&
+                    <ListItem
+                      component="a"
+                      button
+                      href="/FeatureRights">
+                      <div className="mr-2">
+                        <FontAwesomeIcon
+                          icon={['fas', 'chevron-right']}
+                          className="font-size-xs opacity-3"
+                        /> 
+                        
+                      </div>
+                      <span>  Manage Feature Rights</span>
+                    </ListItem>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 20)) !== undefined
+                      &&
+                    <ListItem
+                      component="a"
+                      button
+                      href="/UserRights">
+                      <div className="mr-2">
+                        <FontAwesomeIcon
+                          icon={['fas', 'chevron-right']}
+                          className="font-size-xs opacity-3"
+                        />
+                      </div>
+                      <span>Manage Roles</span>
+                    </ListItem>}
+                 
+                 
+                 
+                </List>
+              </Grid>
+            </Grid>
+          </div>
+        </Popover>*/}
       </div>
     </>
   );
