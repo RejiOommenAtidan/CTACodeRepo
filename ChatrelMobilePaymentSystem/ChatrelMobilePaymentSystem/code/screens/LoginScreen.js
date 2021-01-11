@@ -26,7 +26,7 @@ export const LoginScreen = (props) => {
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.textComponent}>
-          Your go-to resource for supporting the{'\n'}Tibetan Government.
+          Your go-to resource for supporting the{'\n'}Tibetan Government
         </Text>
       </View>
       <GLogin props={props}></GLogin>
