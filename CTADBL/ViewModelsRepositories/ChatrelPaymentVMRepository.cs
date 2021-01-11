@@ -179,7 +179,7 @@ namespace CTADBL.ViewModelsRepositories
             {
                 parameters += String.Format(@"t2.sMothersName = '{0}' AND ", sMothersName);
             }
-            string sql = String.Format(@"SELECT t.sGBId, t2.sFirstName, CAST((date_format(curdate(), '%Y%m%d') -  date_format(t2.dtdob, '%Y%m%d'))/10000 AS UNSIGNED) AS nAge, l.sAuthRegion, l2.sCountry, if(t2.dtDeceased IS NULL, 'Alive', 'Deceased' ) AS sStatus, max(t.dtPayment) as dtPayment FROM tblchatrelpayment t INNER JOIN tblgreenbook t2 ON t.sGBId = t2.sGBID LEFT JOIN lstauthregion l ON t2.nAuthRegionID = l.ID LEFT JOIN lstcountry l2 ON t2.sCountryID = l2.sCountryID WHERE t.sGBId LIKE @sGBID AND {0} 1 = 1 GROUP BY t.sGBId;", parameters);
+            string sql = String.Format(@"set session sql_mode = '';SELECT t.sGBId, t2.sFirstName, CAST((date_format(curdate(), '%Y%m%d') -  date_format(t2.dtdob, '%Y%m%d'))/10000 AS UNSIGNED) AS nAge, l.sAuthRegion, l2.sCountry, if(t2.dtDeceased IS NULL, 'Alive', 'Deceased' ) AS sStatus, max(t.dtPayment) as dtPayment FROM tblchatrelpayment t INNER JOIN tblgreenbook t2 ON t.sGBId = t2.sGBID LEFT JOIN lstauthregion l ON t2.nAuthRegionID = l.ID LEFT JOIN lstcountry l2 ON t2.sCountryID = l2.sCountryID WHERE t.sGBId LIKE @sGBID AND {0} 1 = 1 GROUP BY t.sGBId;", parameters);
 
             using (var command = new MySqlCommand(sql))
             {

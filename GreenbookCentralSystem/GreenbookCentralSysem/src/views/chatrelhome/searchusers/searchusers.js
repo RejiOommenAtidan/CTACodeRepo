@@ -314,8 +314,8 @@ export default () => {
     console.log("Search parameters\n", searchObj);
     axios.get(`/ChatrelPayment/SearchUsers`, {params: searchObj})
     .then(resp => {
+      setLoading(false);
       if(resp.status === 200){
-        setLoading(false);
         console.log("Received Search Result", resp.data);
         setdataAPI(resp.data);
       }
