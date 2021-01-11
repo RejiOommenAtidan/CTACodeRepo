@@ -62,7 +62,7 @@ namespace ChatrelDBL.BaseClasses.Transactions
         public string sPhone { get { return _sPhone; } set { _sPhone = value; } }
         public string sFax { get { return _sFax; } set { _sFax = value; } }
         public string sPaidUntil { get { return _sPaidUntil; } set { _sPaidUntil = value; } }
-        public string sEnteredDateTime { get { return _sEnteredDateTime; } set { _sEnteredDateTime = value; } }
+       // public string sEnteredDateTime { get { return _sEnteredDateTime; } set { _sEnteredDateTime = value; } }
         #endregion
     }
 }

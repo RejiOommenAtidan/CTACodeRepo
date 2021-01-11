@@ -72,6 +72,7 @@ export default function Home() {
   })
   .catch(error => {
     console.log(error.message);
+    console.log(error.response);
   });
 
 }, []);
@@ -149,6 +150,7 @@ export default function Home() {
           </Grid>  
         </Grid>
         </Grid>
+        <Button onClick={()=>{history.push('/test')}}>Test</Button>
       </Card>
     </>
   );

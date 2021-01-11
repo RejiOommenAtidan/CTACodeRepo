@@ -22,7 +22,19 @@ import { useHistory } from 'react-router-dom';
 import { useSelector} from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Alerts } from '../alerts';
+import { PayPalButton } from "react-paypal-button-v2";
 
+import html2canvas from 'html2canvas';
+import jsPdf from 'jspdf';
+import jsPDF from 'jspdf';
+import * as htmlToImage from 'html-to-image';
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
+
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+
+import CTALogo from '../../assets/images/CTABackgroundLogo.PNG';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -32,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     minWidth: 650,
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
   },
 }));
 
@@ -70,11 +86,15 @@ export default function PaymentPage  (props) {
     setSnackbar(false);
   };
 
-  
+  const [backdrop, setBackdrop] = React.useState(false);
 
   //console.log(paidByGBID);
   //const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 
+  const [paymentDiv, setPaymentDiv] = React.useState(true);
+  const [successDiv, setSuccessDiv] = React.useState(false);
+  const [receiptData, setReceiptData] = React.useState();
+  
   
   const [dataAPI, setDataAPI] = React.useState();
   const [summaryData, setSummaryData] = React.useState();
@@ -272,9 +292,39 @@ const calcTotal =(obj ,a,b)=>{
     } 
   };
   
+  /*  const printPDF = () => {
+    const domElement = document.getElementById("mytable");
+    html2canvas(domElement,{scrollX: 0,
+      scrollY: -window.scrollY}).then(canvas => {
+      const imgData = canvas.toDataURL("image/png");
+      console.log(imgData);
+      //imgData.save();
+      const pdf = new jsPdf();
+      pdf.addImage(imgData, "PNG",10,10);
+      pdf.save(`${new Date().toISOString()}.pdf`);
+    });
 
-const submit =(e) =>{
-  e.preventDefault();
+  };*/
+  const printPDF = () => {
+    const domElement = document.getElementById("mytable");
+    html2canvas(domElement,{
+      allowTaint: true,
+      scrollX: 0,
+      scrollY: -window.scrollY
+    }).then(canvas => {
+      const imgData = canvas.toDataURL("image/png");
+      console.log(imgData);
+      //imgData.save();
+      const pdf = new jsPdf();
+      pdf.addImage(imgData, "PNG",10,10);
+      pdf.save(`${new Date().toISOString()}.pdf`);
+    });
+
+  };
+  
+
+const submit =(paypalObj) =>{
+  //e.preventDefault();
   let tempSummaryObj = summaryData;
   let payObj = [...paymentData];
   let lastindex =payObj.length-1;
@@ -316,27 +366,12 @@ const submit =(e) =>{
   tempSummaryObj.nCurrentChatrelSalaryAmt = salary;
   tempSummaryObj.nEnteredBy = userId;
   tempSummaryObj.nUpdatedBy = userId;
-  // if(payObj[lastindex].sAuthRegionCurrency === 'USD'){
-  //   tempSummaryObj.nCurrentChatrelSalaryAmt=payObj[lastindex].nCurrentChatrelSalaryAmt * dollarToRupees.toFixed(4);
-  //   tempSummaryObj.nChatrelAmount = payObj[lastindex].nChatrelAmount * dollarToRupees.toFixed(4);
-  //   tempSummaryObj.nChatrelMeal = payObj[lastindex].nChatrelMeal * dollarToRupees.toFixed(4);
-  // }
-  // else{
-  //   tempSummaryObj.nCurrentChatrelSalaryAmt=payObj[lastindex].nCurrentChatrelSalaryAmt;
-  //   tempSummaryObj.nChatrelAmount = payObj[lastindex].nChatrelAmount; 
-  //   tempSummaryObj.nChatrelMeal = payObj[lastindex].nChatrelMeal;
-  // }
+  tempSummaryObj.sPayPal_Status=paypalObj.status;
+  tempSummaryObj.sPayPal_ID=paypalObj.id;
+  tempSummaryObj.sPayPal_Currency_Code=paypalObj.purchase_units[0].amount.currency_code;
+  tempSummaryObj.sPayPal_Currency_Value=paypalObj.purchase_units[0].amount.value;
+  tempSummaryObj.sPayPal_Response_Object=JSON.stringify(paypalObj);
   
-  
-  // The following to be commented if conversion rate column available in db.
-  // payObj.forEach(gbchatrel => {
-  //   gbchatrel.nChatrelTotalAmount = gbchatrel.nChatrelAmount + gbchatrel.nChatrelMeal + gbchatrel.nCurrentChatrelSalaryAmt + gbchatrel.nChatrelLateFeesValue
-  // });
-  
-  // let finalObj={
-  //   "chatrelPayment": tempSummaryObj,
-  //   "gbChatrels": paymentData
-  // };
 
   if(gbChatrelsNull){
     payObj = null;
@@ -357,16 +392,24 @@ const submit =(e) =>{
   .then(resp => {
     if (resp.status === 200) {
       //alert(resp.data);
+      console.log(resp.data);
+      resp.data.receipt.sGBID="0".repeat(7-resp.data.receipt.sGBID.length)+resp.data.receipt.sGBID;
+
+      setBackdrop(false);
       setAlertMessage('Chatrel recorded successfully.');
       setAlertType('success');
       snackbarOpen();
-      history.goBack();
-      console.log(resp.data); 
+      setReceiptData(resp.data);
+      setPaymentDiv(false);
+      setSuccessDiv(true);
+     /* history.goBack();
+      console.log(resp.data); */
     }
   })
   .catch(error => {
     console.log(error.config);
     console.log(error.message);
+    console.log(error.response);
   });
   
 
@@ -375,7 +418,7 @@ const submit =(e) =>{
   
 
  
-  const select = (<select><option>1</option><option>2</option><option>3</option><option>4</option></select>);
+  
   useEffect(() => {
     axios.get(`/AuthRegion/GetAuthRegions`)
       .then(resp => {
@@ -447,7 +490,7 @@ const submit =(e) =>{
       
      }, []);
   
-     
+   
   const [dollarToRupees, setDollarToRupees] = React.useState(0.00);
 
   useEffect(() => {
@@ -470,11 +513,173 @@ const submit =(e) =>{
     <><p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>{pageFrom}</p>
     <Card  style={{  padding: 50 }} >
           <Grid container spacing={3}>
-          <Grid item >
-              <Button variant='contained' color='primary' onClick={() => history.goBack()} >Go Back</Button>
-            </Grid>
+          
             <Grid item xs={12} sm={12}> 
-            <div className={classes.root}>
+           {successDiv && <div id="successDiv">
+             <h2>Thank You for your contribution!!</h2>
+             <br/>
+             <div id="receiptDiv" >
+             <table /*ref={ref}*/  id="mytable" className="mytable" cellspacing="0" style={{ border: "3px solid #000000",background:`linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.7)),url(${CTALogo})`,backgroundRepeat:'no-repeat',backgroundPosition:'center' }}>
+      <tr>
+          <td width="20"></td>
+          <td width="200"></td>
+          <td width="175"></td>
+          <td width="175"></td>
+          
+          <td width="20"></td>
+        </tr>
+        <tr>
+          <td width="20"></td>
+          <td colSpan="2" height="35" align="left" valign="middle" ><b><font face="Microsoft Himalaya" size={5} color="#000000">༄༅། །བཙན་བྱོལ་བོད་མིའི་དཔྱ་དངུལ་བྱུང་འཛིན་ཨང་།</font></b></td>
+          
+          <td align="right"><img width="75px" height="75px"  src={"data:image/png;base64,"+receiptData.qrcode}/></td>
+          <td width="20"></td>
+        </tr>
+        <tr>
+          <td width="20"></td>
+          <td colspan="2" height="28" align="left" valign="middle" ><b><font face="Microsoft Himalaya" size={4} color="#000000">མིང་།</font><font  size={4} color="#000000"> {receiptData.receipt.sFirstName}</font></b></td>
+          <td align="right" valign="middle" ><b><font face="Microsoft Himalaya" size={4} color="#000000">རང་ལོ། {receiptData.receipt.nAge}</font></b></td>
+          <td width="20"></td>
+        </tr>
+        <tr>
+          
+          <td colspan="5"/* style={{borderRight:"3px solid #000000"}}*/   height="27" align="left" valign="top" > 
+            
+            <table >
+              <tr>
+                <td style={{width:"200px",paddingLeft:"20px",borderTop:"3px solid #000000"}}><b><font face="Microsoft Himalaya" size={4} color="#000000">	དཔྱ་དེབ་ཨང་།</font></b></td>
+                <td align="center" style={{border:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">X</font></b></td>
+                <td  align="center" style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">X</font></b></td>
+                <td  align="center"  style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sGBID.charAt(0)}</font></b></td>
+                <td  align="center"  style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sGBID.charAt(1)}</font></b></td>
+                <td  align="center" style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sGBID.charAt(2)}</font></b></td>
+                <td align="center"  style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sGBID.charAt(3)}</font></b></td>
+                <td align="center"  style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sGBID.charAt(4)}</font></b></td>
+                <td align="center"  style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sGBID.charAt(5)}</font></b></td>
+                <td  align="center" style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sGBID.charAt(6)}</font></b></td>
+                
+
+                
+              </tr>
+            </table>
+          
+            
+          </td>
+        
+        
+        </tr>
+     
+        <tr>
+          <td width="20"></td>
+          <td colSpan="3" height="7" align="left" valign="top" ><font face="Microsoft Himalaya" size={4} color="#000000"></font></td>
+          <td width="20"></td>
+        </tr>
+        <tr>
+          <td width="20" height="26"  style={{borderBottom: "1px solid #000000"}} ></td>
+          <td colspan="2" style={{borderBottom: "1px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">༡།   དཔྱ་དངུལ།</font></b></td>
+          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། {receiptData.receipt.nChatrelAmount.toFixed(2)}</font></b></td>
+          <td width="20" style={{borderBottom: "2px solid #000000"}}></td>
+        </tr>
+        <tr>
+          <td width="20" style={{borderBottom: "1px solid #000000"}} height="26"></td>
+          <td colspan="2" style={{borderBottom: "1px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">༢།   ཟས་བཅད་དོད།</font></b></td>
+          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། {receiptData.receipt.nChatrelMeal.toFixed(2)}</font></b></td>
+          <td width="20"  style={{borderBottom: "2px solid #000000"}}></td>
+        </tr>
+        <tr>
+          <td width="20" style={{borderBottom: "1px solid #000000"}} height="26"></td>
+          <td colspan="2" style={{borderBottom: "1px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">༣།   ཕོགས་འབབ།</font></b></td>
+          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། {receiptData.receipt.nCurrentChatrelSalaryAmt.toFixed(2)}</font></b></td>
+          <td width="20"  style={{borderBottom: "2px solid #000000"}}></td>
+        </tr>
+        <tr>
+          <td width="20" style={{borderBottom: "1px solid #000000"}} height="26"></td>
+          <td colspan="2" style={{borderBottom: "1px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">༤།   ཚོང་ཁེའི་བློས་བཅད་ཞལ་འདེབས།</font></b></td>
+          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། {receiptData.receipt.nChatrelBusinessDonationAmt ? receiptData.receipt.nChatrelBusinessDonationAmt.toFixed(2) : 0}</font></b></td>
+          <td width="20"  style={{borderBottom: "2px solid #000000"}}></td>
+        </tr>
+        <tr>
+          <td width="20" style={{borderBottom: "1px solid #000000"}} height="26"></td>
+          <td colspan="2" style={{borderBottom: "1px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">༥།   དཔྱ་དངུལ་འབུལ་ཆད་འབབ།</font></b></td>
+          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། {(receiptData.receipt.nArrears + receiptData.receipt.nLateFees).toFixed(2)}  ({receiptData.receipt.dtArrearsFrom.split('-')[0]}-{receiptData.receipt.dtArrearsTo.split('-')[0]})</font></b></td>
+          <td width="20"  style={{borderBottom: "2px solid #000000"}}></td>
+        </tr>
+        <tr>
+          <td width="20" style={{borderBottom: "1px solid #000000"}} height="26"></td>
+          <td colspan="2" style={{borderBottom: "1px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">༦།   འཕར་འབུལ་ཞལ་འདེབས།</font></b></td>
+          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། {receiptData.receipt.nChatrelAddtionalDonationAmt ? receiptData.receipt.nChatrelAddtionalDonationAmt.toFixed(2) : 0}</font></b></td>
+          <td width="20"  style={{borderBottom: "2px solid #000000"}}></td>
+        </tr>
+        <tr>
+          <td width="20"></td>
+          <td colSpan="3" height="10" align="left" valign="top" ><font face="Microsoft Himalaya" size={4} color="#000000"></font></td>
+          <td width="20"></td>
+        </tr>
+        <tr>
+          <td width="20" height="34"></td>
+          <td colspan="2" align="left" valign="bottom" ><font face="Microsoft Himalaya" size={4}color="#000000"><b>བཅས་བསྡོམས་</b> US$/CA$/AU$/NT$/CHF/EURO/GBP/YEN/RR/</font></td>
+          <td   align="left" style={{paddingLeft:"30px"}} valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར </font><font  size={4 }color="#000000">{(receiptData.receipt.nChatrelAmount + receiptData.receipt.nChatrelMeal + receiptData.receipt.nCurrentChatrelSalaryAmt +receiptData.receipt.nArrears + receiptData.receipt.nLateFees+receiptData.receipt.nChatrelAddtionalDonationAmt+ receiptData.receipt.nChatrelBusinessDonationAmt  ).toFixed(2)}</font> </b></td>
+          <td width="20" ></td>
+        </tr>
+        <tr>
+          <td width="20" height="31"></td>
+          <td colspan="3" align="left" valign="middle" ><font face="Microsoft Himalaya" size={4}color="#000000"><b>ཕྱི་ལོ་༌་་་་་་་་་་་་་་༌༌༌༌༌་་་་་་་་་་་་༌༌༌༌༌༌༌༌༌༌༌ལོའི་དཔྱ་དངུལ་འབུལ་འབབ་རྩིས་འབུལ་བྱུང་བའི་འཛིན་དུ། </b></font></td>
+          <td width="20" ></td>
+        </tr>
+        <tr>
+          <td width="20"></td>
+          <td colSpan="3" height="32" align="left" valign="top" ><font face="Microsoft Himalaya" size={4} color="#000000"></font></td>
+          <td width="20"></td>
+        </tr>
+        <tr>
+          <td width="20" height="33"></td>
+          <td colspan="3" align="left" valign="middle" ><font face="Microsoft Himalaya" size={4}color="#000000"><b>བོད་རིགས་སྤྱི་མཐུན་ཚོགས་པའམ་བོད་རིགས་ཚོགས་པའི་ལས་དམ་དང་མཚན་རྟགས། &nbsp;&nbsp;&nbsp; ཕྱི་ལོ༌ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ཟླ་ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ཚེས་ &nbsp;&nbsp;&nbsp; ལ།</b></font></td>
+          <td width="20" ></td>
+        </tr>
+        <tr>
+          <td width="20"></td>
+          <td colSpan="3" height="16" align="left" valign="top" >
+            <font size={2} color="#000000">
+            This is computer generated Chatrel receipt, no signature required.
+            </font>
+          </td>
+          <td width="20"></td>
+        </tr>
+        <tr>
+          <td width="20"></td>
+          <td colSpan="3" height="16" align="left" valign="top" >
+            <font size={2} color="#000000">
+            You are advised to update chatrel contribution on your Greenbook from Office of Tibet or
+            </font>
+          </td>
+          <td width="20"></td>
+        </tr>
+        <tr>
+          <td width="20"></td>
+          <td colSpan="3" height="16" align="left" valign="top" >
+            <font size={2} color="#000000">
+            concerned Tibetan Association/Tibetan Community.
+            </font>
+          </td>
+          <td width="20"></td>
+        </tr>
+        <tr>
+          <td width="20"></td>
+          <td colSpan="3" height="16" align="left" valign="top" ><font face="Microsoft Himalaya" size={4} color="#000000"></font></td>
+          <td width="20"></td>
+        </tr>
+      
+       
+        </table>
+        </div>
+       <br/>
+        <Button variant='contained' color='primary' onClick={()=>{printPDF();}} >Print Receipt</Button>
+        
+
+
+            </div>}
+
+            {paymentDiv && <div  className={classes.root}>
       
        
      
@@ -621,23 +826,48 @@ const submit =(e) =>{
                 inputProps={{min: 0, style: { textAlign: 'right' }}}/>
               </FormControl>  
     </Grid>
-    <br />
+     <Grid>
            <p style={{backgroundColor: "lightblue", textAlign: "right", fontWeight: "bold"}}>Total To Pay <span style={{textAlign: "right", fontWeight: "bold"}}>$ {total.toFixed(2)}</span></p>          
-           <Grid item>
-              <TextField
-                label= 'Enter Receipt Number'
-                onChange = {(e) => setReceiptNumber(e.target.value)}
-              />
-            </Grid>
-           <div style={{paddingTop:'10px'}}><Button variant="contained" color="primary" type = 'submit' >Save</Button></div>
+          
+          {/* <div style={{paddingTop:'10px'}}><Button variant="contained" color="primary" type = 'button' onClick={()=>{submit(null);}} >Save</Button></div>*/}
+           <h2>Total ${total.toFixed(2)}</h2>
+           <br/>
+           <div  >
+           <PayPalButton 
+              amount={total.toFixed(2)}
+            
+              options={{clientId: "AeIfCd7BHacsWwdqkIYfxmPQrN8UZU2Sap_dor00t7Z8Y9pLLJiwK_v2-lNy8vIhaSU9AFAiC5l8l7Gx", currency: "USD"}}
+               shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+              
+               createOrder={(data,actions)=>{
+                 setBackdrop(true);
+                 actions.order.create();
+                return data.id
+                 
+              }}
+              
+               onSuccess={(details, data) => {
+              //  alert("Transaction completed by " + details.payer.name.given_name);
+                console.log("Details:",details);
+                console.log("Data",data);
+                submit(details);
+      
+              }}
+              onError={(err)=>{
+                  console.log(err);
+                  setAlertMessage('Chatrel donation failed.');
+                  setAlertType('error');
+                  snackbarOpen();
+              }}
+              onError={(details, data)=>{console.log(details);}}
+          /></div>
+          </Grid>           
            </form>
       
-        </div>
+        </div>}
             </Grid>
             
-            <Grid item>
-              <Button variant='contained' color='primary' onClick={() => history.goBack()} >Go Back</Button>
-            </Grid>
+           
           </Grid>
       
       
@@ -647,7 +877,9 @@ const submit =(e) =>{
             snackbarClose={snackbarClose}
           />
           }
-        
+         <Backdrop className={classes.backdrop} open={backdrop} >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       </Card>
       </>
 }
