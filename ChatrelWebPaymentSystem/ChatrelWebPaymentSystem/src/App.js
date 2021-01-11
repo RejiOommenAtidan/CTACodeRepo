@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import configureStore from './config/configureStore';
+import { store, persistor } from './config/configureStore';
+import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from 'react-redux';
 import Routes from './Routes';
 import ScrollToTop from './utils/ScrollToTop';
@@ -255,16 +257,18 @@ library.add(
   faSignOutAlt,
   faLink
 );
-const store = configureStore();
+//const store = configureStore();
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <BrowserRouter /*basename="/bamburgh-react-admin-dashboard-pro/"*/>
+        <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter /*basename="/"*/>
           <ScrollToTop>
             <Routes />
           </ScrollToTop>
         </BrowserRouter>
+        </PersistGate>
       </Provider>
     );
   }

@@ -14,6 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace ChatrelPaymentWebAPI.Controllers
 {
@@ -260,6 +262,54 @@ namespace ChatrelPaymentWebAPI.Controllers
 
             }
         }
+
+        #region Submit Dispute
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult SubmitDispute(Dictionary<string, dynamic> dict)
+        {
+
+            //To do: Add attachment to the email.
+
+            var mailText = dict["description"].ToString();
+            string attachment = dict["file"].ToString();
+            var sName = dict["sName"].ToString();
+            var sGBID = dict["sGBID"].ToString();
+            var emailFrom = "rajen.parekh@outlook.com";
+            var emailTo = "rajen.parekh@gmail.com";
+
+            attachment = attachment.Substring(attachment.IndexOf("base64,") + 7);
+
+            byte[] attach = Convert.FromBase64String(attachment);
+
+            MimeMessage message = new MimeMessage();
+            MailboxAddress from = new MailboxAddress(sName, emailFrom);
+            MailboxAddress to = new MailboxAddress("CTA Team", emailTo);
+
+            BodyBuilder messageBody = new BodyBuilder();
+            messageBody.TextBody = mailText;
+            messageBody.Attachments.Add("Attachment File", attach);
+
+
+            message.From.Add(from);
+            message.To.Add(to);
+            message.Subject = String.Format("Email from {0}, GreenBook Id: {1}", sName, sGBID);
+
+            message.Date = DateTime.Now;
+            message.Body = messageBody.ToMessageBody();
+            // Message ready. Now to use smtp client to despatch message
+            SmtpClient smtpClient = new SmtpClient();
+            smtpClient.Connect("smtp-mail.outlook.com", 25, false);
+            smtpClient.Authenticate("rajen.parekh@outlook.com", "");
+            smtpClient.Send(message);
+            smtpClient.Disconnect(true);
+            smtpClient.Dispose();
+            return Ok("Email sent successfully.");
+
+        }
+        #endregion
+
+
         #region Authenticate User
         [HttpPost]
         [Route("[action]")]
@@ -309,7 +359,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             
         }
         #endregion
-        [Authorize]
+       // [Authorize]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetReceipt(string sReceiptNumber)
