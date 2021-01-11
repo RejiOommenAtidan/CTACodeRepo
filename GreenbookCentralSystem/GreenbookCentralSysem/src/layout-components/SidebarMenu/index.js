@@ -21,7 +21,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import PeopleIcon from '@material-ui/icons/People';
 // import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-// import PaymentIcon from '@material-ui/icons/Payment';
+ import PaymentIcon from '@material-ui/icons/Payment';
 // import AssessmentIcon from '@material-ui/icons/Assessment';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 
@@ -667,7 +667,7 @@ const SidebarMenu = (props) => {
               </NavLink>
             </li>*/}
             { /* authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 37)) !== undefined
-              &&
+              &&*/
               <li>
                 <NavLink
                   activeClassName="active"
@@ -675,11 +675,11 @@ const SidebarMenu = (props) => {
                   className="nav-link-simple"
                   to="/Chatrel">
                   <span className="sidebar-icon">
-                    <HomeIcon />
+                    <PaymentIcon />
                   </span>
                 Chatrel
               </NavLink>
-            </li>*/}
+            </li>}
             {authUser &&
               ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 33)) !== undefined
                 ||

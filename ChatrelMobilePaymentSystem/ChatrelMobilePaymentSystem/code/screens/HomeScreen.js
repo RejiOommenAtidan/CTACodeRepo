@@ -9,9 +9,13 @@ import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
 import { Icon } from "react-native-elements";
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 // import { withNavigationFocus } from 'react-navigation';
 //import CustomHeaderButton from '../components/HeaderButton';
-import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 
 
 const HomeScreen = (props) => {
@@ -104,7 +108,7 @@ const HomeScreen = (props) => {
                     <Card.Title
                       style={{
                         color: card.sTextColor,
-                        fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
+                        fontSize: wp(5),
                         fontStyle: "normal",
                         fontWeight: "normal",
                         //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,

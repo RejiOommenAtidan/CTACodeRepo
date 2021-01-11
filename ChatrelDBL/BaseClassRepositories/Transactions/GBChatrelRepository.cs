@@ -205,7 +205,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
             string sql = @"SELECT 
                                 nAuthRegionID 
                            FROM 
-                                chatreldb.lnkgbchatrel 
+                                lnkgbchatrel 
                            WHERE 
                                 sGBID = @sGBID
                            ORDER BY 
@@ -220,7 +220,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
 
                 var result = command.ExecuteScalar();
                 int authRegionID = 0;
-                if (result != null)
+                if (result.GetType() != typeof(DBNull) && result != null)
                 {
                     authRegionID = Convert.ToInt32(result);
                 }

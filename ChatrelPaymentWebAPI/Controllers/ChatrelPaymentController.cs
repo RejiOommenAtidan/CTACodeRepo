@@ -359,7 +359,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             
         }
         #endregion
-        [Authorize]
+       // [Authorize]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetReceipt(string sReceiptNumber)

@@ -186,7 +186,6 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                             `sPhone`,
                             `sFax`,
                             `sPaidUntil`,
-                            `sEnteredDateTime`,
                             `dtEntered`,
                             `nEnteredBy`,
                             `dtUpdated`,
@@ -231,7 +230,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
             greenbook.sPhone = reader.IsDBNull("sPhone") ? null : (string)reader["sPhone"];
             greenbook.sFax = reader.IsDBNull("sFax") ? null : (string)reader["sFax"];
             greenbook.sPaidUntil = (string)reader["sPaidUntil"];
-            greenbook.sEnteredDateTime = reader.IsDBNull("sEnteredDateTime") ? null : (string)reader["sEnteredDateTime"];
+         ///   greenbook.sEnteredDateTime = reader.IsDBNull("sEnteredDateTime") ? null : (string)reader["sEnteredDateTime"];
             //Common Props
             greenbook.dtEntered = reader.IsDBNull("dtEntered") ? null : (DateTime?)(reader["dtEntered"]);
             greenbook.nEnteredBy = (int)reader["nEnteredBy"];
