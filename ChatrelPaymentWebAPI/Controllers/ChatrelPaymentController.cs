@@ -331,7 +331,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                 try
                 {
                     Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
-                    if (greenbook.dtDOB == dtDOB && greenbook.sEmail == sEmail && greenbook.sFirstName == sFirstName && greenbook.sLastName == sLastName)
+                    if (greenbook.dtDOB == dtDOB && greenbook.sEmail == sEmail /*&& greenbook.sFirstName == sFirstName && greenbook.sLastName == sLastName*/)
                     {
                         #region Information Logging 
                         _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");

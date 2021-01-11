@@ -31,6 +31,20 @@ export default function LogingPage(props) {
 
   }
 
+    //Alert
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertType, setAlertType] = useState("");
+    const alertObj = {
+      alertMessage: alertMessage,
+      alertType: alertType
+    }
+    const [snackbar, setSnackbar] = React.useState(false);
+    const snackbarOpen = () => {
+      setSnackbar(true);
+    }
+    const snackbarClose = () => {
+      setSnackbar(false);
+    };
   
 
 
@@ -55,34 +69,41 @@ let oGBDetails={
       sEmail:userObj.email  
     }
     console.log(Obj);
-    dispatch(storeGBDetails(oGBDetails));
-    dispatch(storeCurrentGBDetails(oGBDetails));
-    history.push('/Home');
-    // axios.post(`ChatrelPayment/AuthenticateGBID/`,Obj)
-    // .then(resp => {
-    //   if (resp.status === 200) {
-    //     //setPaymentHistory(resp.data);
-    //     if(resp.data=="Verified"){
-    //       dispatch(storeGBDetails(oGBDetails));
-    //       history.push('/Home');
-    //     }
-    //   }
-    // })
-    // .catch(error => {
-    //   if (error.response) {
-    //     console.error(error.response.data);
-    //     console.error(error.response.status);
-    //     console.error(error.response.headers);
-    //   } else if (error.request) {
-    //     console.warn(error.request);
-    //   } else {
-    //     console.error('Error', error.message);
-    //   }
-    //   console.log(error.config);
-    // })
-    // .then(release => {
-    //   //console.log(release); => udefined
-    // });
+    //dispatch(storeGBDetails(oGBDetails));
+    //dispatch(storeCurrentGBDetails(oGBDetails));
+    //history.push('/Home');
+    axios.post(`ChatrelPayment/AuthenticateGBID/`,Obj)
+    .then(resp => {
+      if (resp.status === 200) {
+        //setPaymentHistory(resp.data);
+        if(resp.data=="Verified"){
+          dispatch(storeGBDetails(oGBDetails));
+          dispatch(storeCurrentGBDetails(oGBDetails));
+          history.push('/Home');
+        }
+        else{
+          console.log(resp.data);
+          setAlertMessage('Enter valid credentials.');
+          setAlertType('info');
+          snackbarOpen();
+        }
+      }
+    })
+    .catch(error => {
+      if (error.response) {
+        console.error(error.response.data);
+        console.error(error.response.status);
+        console.error(error.response.headers);
+      } else if (error.request) {
+        console.warn(error.request);
+      } else {
+        console.error('Error', error.message);
+      }
+      console.log(error.config);
+    })
+    .then(release => {
+      //console.log(release); => udefined
+    });
 
   }
  
@@ -172,11 +193,12 @@ let oGBDetails={
           </div>
         </div>
       </div>
-      { /*snackbar && <Alerts
-        alertObj={alertObj}
-        snackbar={snackbar}
-        snackbarClose={snackbarClose}
-      />*/}
+      {snackbar && <Alerts
+            alertObj={alertObj}
+            snackbar={snackbar}
+            snackbarClose={snackbarClose}
+          />
+          }
     </>
   );
 }
