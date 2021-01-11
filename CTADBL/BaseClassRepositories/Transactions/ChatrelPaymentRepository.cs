@@ -241,7 +241,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             };
 
 
-            var result = new { greenbook.nAuthRegionID, nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrelPayment, gbChatrels, gbChatrelDonation };
+            var result = new { nAuthRegionID = authRegion.ID, nPaidUntil = new DateTime(paidUntil + 1, _FYEndMonth, _FYEndDate), sName = String.Format("{0} {1}", greenbook.sFirstName, greenbook.sLastName), chatrelPayment = chatrelPayment, gbChatrels, gbChatrelDonation };
             return result;
         }
         #endregion
@@ -412,7 +412,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
                 if (i == (pendingYears - 1) && inGracePeriod)
                 {
-                    var gracepending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = Math.Round(nChatrelChildAmt, 2), nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nArrearsAmount = (nChatrelChildAmt + meal), nChatrelTotalAmount = Math.Round((nChatrelChildAmt + meal), 2), dtArrearsFrom = start, dtArrearsTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = Math.Round(nChatrelChildUSD, 2), nChatrelINR = Math.Round(nChatrelChildINR, 2), nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild  };
+                    var gracepending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = Math.Round(nChatrelChildAmt, 2), nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nArrearsAmount = (nChatrelChildAmt + meal), nChatrelTotalAmount = Math.Round((nChatrelChildAmt + meal), 2), dtArrearsFrom = start, dtArrearsTo = end, nAuthRegionID = authRegion.ID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 1.00m, nChatrelUSD = Math.Round(nChatrelChildUSD, 2), nChatrelINR = Math.Round(nChatrelChildINR, 2), nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild  };
                     
                     list.Add(gracepending);
                     
@@ -422,13 +422,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 }   
                 if (i == pendingYears) // Current Year
                 {
-                    var current = new { nChatrelYear = _currentYear, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = Math.Round(nChatrelChildAmt, 2), nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nChatrelTotalAmount = Math.Round(nChatrelChildAmt + meal, 2), dtDateFrom = start, dtDateTo = end, greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = Math.Round(nChatrelChildUSD, 2), nChatrelINR = Math.Round(nChatrelChildINR, 2), nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild  };
+                    var current = new { nChatrelYear = _currentYear, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = Math.Round(nChatrelChildAmt, 2), nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = 0, nChatrelTotalAmount = Math.Round(nChatrelChildAmt + meal, 2), dtDateFrom = start, dtDateTo = end, nAuthRegionID = authRegion.ID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 1.00m, nChatrelUSD = Math.Round(nChatrelChildUSD, 2), nChatrelINR = Math.Round(nChatrelChildINR, 2), nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild  };
                     
                     list.Add(current);
                     
                     continue;
                 }
-                var pending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = Math.Round(nChatrelChildAmt, 2), nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = lateFees, nArrearsAmount = (nChatrelChildAmt + + meal + lateFees),  nChatrelTotalAmount = Math.Round((nChatrelChildAmt + meal + lateFees), 2), dtArrearsFrom = start, dtArrearsTo = end,  greenbook.nAuthRegionID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 0.00m, nChatrelUSD = Math.Round(nChatrelChildUSD, 2), nChatrelINR = Math.Round(nChatrelChildINR, 2), nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild  };
+                var pending = new { nChatrelYear = paidUntil + i, dtCurrentChatrelFrom = start, dtCurrentChatrelTo = end, nChatrelAmount = Math.Round(nChatrelChildAmt, 2), nChatrelMeal = meal, nCurrentChatrelSalaryAmt = 0, nChatrelLateFeesPercentage = _nChatrelLateFeesPercentage, nChatrelLateFeesValue = lateFees, nArrearsAmount = (nChatrelChildAmt + + meal + lateFees),  nChatrelTotalAmount = Math.Round((nChatrelChildAmt + meal + lateFees), 2), dtArrearsFrom = start, dtArrearsTo = end, nAuthRegionID = authRegion.ID, greenbook.sGBID, authRegion.sCountryID, sAuthRegionCurrency = authRegion.sCurrencyCode, sPaymentCurrency = ChatrelPayment.INR, nConversionRate = 1.00m, nChatrelUSD = Math.Round(nChatrelChildUSD, 2), nChatrelINR = Math.Round(nChatrelChildINR, 2), nChatrelMealUSD = mealUSD, nChatrelMealINR = mealINR, nSalaryUSD = chatrelSalaryUSD, nSalaryINR = chatrelSalaryINR, isChild  };
                
                 list.Add(pending);
                 _nPending += nChatrelChildAmt + meal + lateFees;
