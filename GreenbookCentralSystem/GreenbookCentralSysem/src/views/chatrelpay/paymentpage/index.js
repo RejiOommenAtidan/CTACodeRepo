@@ -240,23 +240,28 @@ const calcTotal =(obj ,a,b)=>{
       if(!outstanding){
         if(paymentData[0].nCurrentChatrelSalaryAmt > 0){
           console.log("we have no outstanding");
+           const salaryBox = document.getElementsByName('indemployed')[0];
            const checkBox = document.getElementById('employed');
            const rateField = document.getElementById('rate');
            const totalField = document.getElementById('total');
            if(checkBox){
-              rateField.innerText = '';
               checkBox.checked = true;
               checkBox.disabled = true;
-              setPaymentData(paymentData.map((element) => {
-                element.nChatrelTotalAmount = 0;
-                element.nCurrentChatrelSalaryAmt = 0;
-                return element;
-              }));
-              
-              //totalField.innerText = '';
-              setTotal(0.00);
-              setGBChatrelsNull(true);
-           }
+            }
+            if(salaryBox){
+              salaryBox.disabled = true;
+            }
+            rateField.innerText = '';
+            setPaymentData(paymentData.map((element) => {
+              element.nChatrelTotalAmount = 0;
+              element.nCurrentChatrelSalaryAmt = 0;
+              return element;
+            }));
+            
+            //totalField.innerText = '';
+            setTotal(0.00);
+            setGBChatrelsNull(true);
+           
           
         }
       }
@@ -266,6 +271,7 @@ const calcTotal =(obj ,a,b)=>{
         for (var i = 0; i < len; i++){
           calculate(i);
         }
+        console.log("payment obj", paymentData);
       }
       setShouldRun(false);
     } 
@@ -352,7 +358,7 @@ const submit =(e) =>{
   };
 
   console.log("Final Obj:" , finalObj);
-  axios.post(`http://localhost:52013/api/ChatrelPayment/AddNewChatrelPayment`,finalObj)
+  axios.post(`/ChatrelPayment/AddNewChatrelPayment`,finalObj)
   .then(resp => {
     if (resp.status === 200) {
       //alert(resp.data);
@@ -571,7 +577,7 @@ const submit =(e) =>{
               {(row.sAuthRegionCurrency === 'USD') &&
               <TableCell align="center">{ <input id='employed' value= {index} onChange={(e)=>{modify(e.target)}} type="checkbox" disabled = {row.isChild}/>}</TableCell>}
               {(row.sAuthRegionCurrency === 'INR') &&
-                <TableCell align="center">< input id={index} type = 'text' style={{maxWidth:'50px', border: 'none', borderBottom: '1px solid'}} onChange={(e)=>{modify(e.target)}} /></TableCell>
+                <TableCell align="center">< input name='indemployed' id={index} type = 'text' style={{maxWidth:'50px', border: 'none', borderBottom: '1px solid'}} onChange={(e)=>{modify(e.target)}} /></TableCell>
               }
               <TableCell id='rate' align="center">{(dollarToRupees && row.sAuthRegionCurrency === 'USD') ? dollarToRupees.toFixed(4) : '-'}</TableCell>
               <TableCell id='total' align="right">{row.nChatrelTotalAmount.toFixed(2) }</TableCell>

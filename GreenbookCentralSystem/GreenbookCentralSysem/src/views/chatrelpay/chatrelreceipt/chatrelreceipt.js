@@ -6,7 +6,7 @@ import {
   Link,
   Button
 } from '@material-ui/core';
-import { useHistory, NavLink, useLocation } from 'react-router-dom';
+import {useHistory, NavLink, useLocation} from 'react-router-dom';
 
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
@@ -22,7 +22,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import { Alerts } from '../../alerts';
 //import { AddDialog, EditDialog } from './dialog';
 //import { ViewDialog } from '../../search/dialog';
-import { oOptions, oTableIcons, sDateFormat, sButtonSize, modifyHeaders } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, modifyHeaders } from '../../../config/commonConfig';
 //import MyComp from '../../common/filtercomponent';
 
 const tableIcons = oTableIcons;
@@ -75,19 +75,25 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function ChatrelList(){
-
+export default function ChatrelReceipt(props){
+  const location = useLocation();
+  console.log("Props contains:", props);
+  console.log("location contains:", location.state);
+  const sReceiptNumber = location.state.sReceiptNumber;
+  console.log("Receipt Number", sReceiptNumber);
   const classes = useStyles();
   const history = useHistory();
   
 
-
-  const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
-  const [selectData, setSelectData] = useState([]);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
   const [isLoading, setisLoading] = React.useState(true);
+
+  const [dtPymtDate, setPymntDate] = useState();
+  const [sGBID, setGBID ] = useState();
+  const [sGBIDPaidBy, setGBIDPaidBy] = useState();
+  const [nReceiptTotal, setReceiptTotal] = useState();
 
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
@@ -103,22 +109,6 @@ export default function ChatrelList(){
   const snackbarClose = () => {
     setSnackbar(false);
   };
-  
-  const handleEditClickClose = () => {
-    setEditModal(false);
-  };
-
-  const viewReceipt = (sReceiptNumber) => {
-    console.log("Passing receipt number:", sReceiptNumber);
-    //history.push('/ChatrelPay/ChatrelReceipt', {sReceiptNumber: sReceiptNumber});
-    history.push({
-      pathname: '/ChatrelPay/ChatrelReceipt',
-      state: {
-        sReceiptNumber
-      },
-    });
-  };
-
 
   const columns = [
     {
@@ -126,49 +116,48 @@ export default function ChatrelList(){
       title: "Sr No.",
       hidden: true,
     },
+    // {
+    //   field: "dtPayment",
+    //   title: "Payment Date",
+    //   cellStyle: {
+    //     padding: '5px',
+    //     textAlign: "right",
+    //     borderRight: '1px solid grey'
+    //   },
+    //   render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
+    // },
+    // {
+    //   field: "sGBID",
+    //   title: "GreenBook Id",
+    //   cellStyle: {
+    //     padding: '5px',
+    //     borderRight: '1px solid grey'
+    //   },
+    // },
+    // {
+    //   field: "sChatrelReceiptNumber",
+    //   title: "Receipt Number",
+    //   cellStyle: {
+    //     padding: '5px',
+    //     borderRight: '1px solid grey'
+    //   },
+    // },
     {
-      field: "dtPayment",
-      title: "Payment Date",
-      cellStyle: {
-        padding: '5px',
-        textAlign: "right",
-        borderRight: '1px solid grey'
-      },
-      render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
-    },
-    {
-      field: "sGBID",
-      title: "GreenBook Id",
-      cellStyle: {
-        padding: '5px',
-        borderRight: '1px solid grey'
-      },
-    },
-    {
-      field: "sChatrelReceiptNumber",
-      title: "Receipt Number",
-      cellStyle: {
-        padding: '5px',
-        borderRight: '1px solid grey'
-      },
-      render: rowData => <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewReceipt(rowData['sChatrelReceiptNumber']) }}><span><u>{rowData['sChatrelReceiptNumber']}</u></span></Button>
-    },
-    {
-      field: "sFirstName",
-      title: "First Name",
-      cellStyle: {
-        padding: '5px',
-        borderRight: '1px solid grey'
-      },
-    },
-    {
-      field: "sPaidByGBId",
-      title: "Paid By",
+      field: "sFinancialYear",
+      title: "Year",
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
       },
     },
+    // {
+    //   field: "sPaidByGBId",
+    //   title: "Paid By",
+    //   cellStyle: {
+    //     padding: '5px',
+    //     borderRight: '1px solid grey'
+    //   },
+    // },
     
     {
       field: "sPaymentCurrency",
@@ -210,35 +199,36 @@ export default function ChatrelList(){
       render : rowData => rowData['nCurrentChatrelSalaryAmt'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nCurrentChatrelSalaryAmt']}` : `$ ${rowData['nCurrentChatrelSalaryAmt']}` : ''
     },
     {
-      field: "dtCurrentChatrelFrom",
-      title: "Chatrel From",
+      field: "nChatrelLateFeesValue",
+      title: "Late Fees",
       cellStyle: {
         padding: '5px',
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['dtCurrentChatrelFrom'] ? Moment(rowData['dtCurrentChatrelFrom']).format(sDateFormat) : undefined,
+      render : rowData => rowData['nChatrelLateFeesValue'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nChatrelLateFeesValue']}` : `$ ${rowData['nChatrelLateFeesValue']}` : ''
     },
-    {
-      field: "dtCurrentChatrelTo",
-      title: "Chatrel To",
-      cellStyle: {
-        padding: '5px',
-        textAlign: "right",
-        borderRight: '1px solid grey'
-      },
-      render: rowData => rowData['dtCurrentChatrelTo'] ? Moment(rowData['dtCurrentChatrelTo']).format(sDateFormat) : undefined,
-    },
+    // {
+    //   field: "dtCurrentChatrelFrom",
+    //   title: "Chatrel From",
+    //   cellStyle: {
+    //     padding: '5px',
+    //     textAlign: "right",
+    //     borderRight: '1px solid grey'
+    //   },
+    //   render: rowData => rowData['dtCurrentChatrelFrom'] ? Moment(rowData['dtCurrentChatrelFrom']).format(sDateFormat) : undefined,
+    // },
+    // {
+    //   field: "dtCurrentChatrelTo",
+    //   title: "Chatrel To",
+    //   cellStyle: {
+    //     padding: '5px',
+    //     textAlign: "right",
+    //     borderRight: '1px solid grey'
+    //   },
+    //   render: rowData => rowData['dtCurrentChatrelTo'] ? Moment(rowData['dtCurrentChatrelTo']).format(sDateFormat) : undefined,
+    // },
 
-    {
-      field: "sFinancialYear",
-      title: "Year",
-      cellStyle: {
-        padding: '5px',
-        textAlign: "right",
-        borderRight: '1px solid grey'
-      },
-    },
     {
       field: "nArrears",
       title: "Arrears + LateFees",
@@ -320,19 +310,18 @@ export default function ChatrelList(){
     
 
   ];
-
-
-  
-
   useEffect(() => {
-    axios.get(`ChatrelPayment/GetAllChatrelPayments`)
+    axios.get(`ChatrelPayment/GetPaymentBreakup/?sChatrelReceiptNumber=${sReceiptNumber}`)
     .then(resp => {
       setisLoading(false);
       if (resp.status === 200) {
-        console.log("Chatrel List", resp.data);
+        console.log("Payment Breakup", resp.data);
         setdataAPI(resp.data);
+        setPymntDate(resp.data[0].dtPayment);
+        setGBID(resp.data[0].sGBID);
+        setGBIDPaidBy(resp.data[0].sPaidByGBId);
+        setReceiptTotal(resp.data[0].nReceiptTotal);
         modifyHeaders();
-      
       }
     })
     .catch(error => {
@@ -341,27 +330,34 @@ export default function ChatrelList(){
     });
     
   },[]);
-
+  
   return (
-  <>
-      <Grid container spacing={1}>
-        <Grid item xs={12}>
-         
+    <>
+    <Grid container spacing={1}>
+        
+         {dataAPI && 
+            <>
+              <Grid item xs={4}>Receipt Number: {sReceiptNumber}</Grid> 
+              
+              <Grid item xs={4}>Greenbook ID: {sGBID}</Grid>
+              <Grid item xs={4}>Total: {nReceiptTotal}</Grid>
+            
+              <Grid item xs={4}>Payment Date: {Moment(dtPymtDate).format(sDateFormat)}</Grid>
+              <Grid item xs={4}>Paid By: {sGBIDPaidBy}</Grid>
+              
+            </>
+         }
+         <Grid item xs={12}>
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
             icons={tableIcons}
-            title="Chatrel Payment List"
+            title="View Receipt"
 
             columns={columns}
             data={dataAPI}
             options={oOptions}
             actions={[
-              // {
-              //   icon: AddBox,
-              //   tooltip: 'Add a Payment',
-              //   isFreeAction: true,
-              //   onClick: () => history.push('/ChatrelPay')
-              // },
+              
               {
                 icon: Search,
                 tooltip: 'Toggle Filter',
@@ -370,14 +366,6 @@ export default function ChatrelList(){
               }
             ]}
           />
-          {/* {editModal && <EditDialog
-            editModal={editModal}
-            selectData={selectData}
-            classes={classes}
-            handleEditClickClose={handleEditClickClose}
-            editAPICall={editAPICall}
-            chatrelObj={chatrelObj}
-          />} */}
           {snackbar && <Alerts
             alertObj={alertObj}
             snackbar={snackbar}
@@ -386,5 +374,5 @@ export default function ChatrelList(){
         </Grid>
       </Grid>
     </>
-    );
+  );
 }

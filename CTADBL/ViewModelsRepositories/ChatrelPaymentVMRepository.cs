@@ -255,7 +255,11 @@ namespace CTADBL.ViewModelsRepositories
         #region Get Chatrel List
         public IEnumerable<Object> GetAllChatrelPayments()
         {
-            string sql = @"SELECT l.sGBID, t3.sChatrelReceiptNumber, t3.dtPayment, t2.sFirstName,  l.sPaidByGBId, l.sPaymentCurrency, l.nChatrelAmount*l.nConversionRate AS nChatrelAmount, l.nChatrelMeal*l.nConversionRate AS nChatrelMeal, l.nCurrentChatrelSalaryAmt*l.nConversionRate AS nCurrentChatrelSalaryAmt, l.dtCurrentChatrelFrom, l.dtCurrentChatrelTo, concat(date_format(dtCurrentChatrelFrom, '%Y'), '-', date_format(dtCurrentChatrelTo, '%y')) AS sFinancialYear, l2.nArrears, l2.dtArrearsFrom, l2.dtArrearsTo, l4.nChatrelBusinessDonationAmt, l4.nChatrelAdditionalDonationAmt, t3.nChatrelTotalAmount, l5.sAuthRegion, t3.sPaymentMode FROM lnkgbchatrel l INNER JOIN (SELECT l3.chatrelpaymentID, sum(l3.nArrearsAmount*l3.nConversionRate) AS nArrears, min(l3.dtArrearsFrom) AS dtArrearsFrom, max(l3.dtArrearsTo) AS dtArrearsTo FROM lnkgbchatrel l3 WHERE l3.nArrearsAmount IS NOT NULL GROUP BY l3.sChatrelReceiptNumber ) AS l2 ON l.chatrelpaymentID = l2.chatrelpaymentID INNER JOIN tblchatrelpayment t3 ON t3.Id = l.chatrelpaymentID LEFT JOIN tblgreenbook t2 ON t2.sGBID = l.sGBId LEFT JOIN lnkgbchatreldonation l4 ON t3.Id = l4.chatrelpaymentID LEFT JOIN lstauthregion l5 ON l5.ID = l.nAuthRegionID WHERE l.nArrearsAmount IS NULL LIMIT @records;";
+            //string sql = @"SELECT l.sGBID, t3.sChatrelReceiptNumber, t3.dtPayment, t2.sFirstName,  l.sPaidByGBId, l.sPaymentCurrency, l.nChatrelAmount*l.nConversionRate AS nChatrelAmount, l.nChatrelMeal*l.nConversionRate AS nChatrelMeal, l.nCurrentChatrelSalaryAmt*l.nConversionRate AS nCurrentChatrelSalaryAmt, l.dtCurrentChatrelFrom, l.dtCurrentChatrelTo, concat(date_format(dtCurrentChatrelFrom, '%Y'), '-', date_format(dtCurrentChatrelTo, '%y')) AS sFinancialYear, l2.nArrears, l2.dtArrearsFrom, l2.dtArrearsTo, l4.nChatrelBusinessDonationAmt, l4.nChatrelAdditionalDonationAmt, t3.nChatrelTotalAmount, l5.sAuthRegion, t3.sPaymentMode FROM lnkgbchatrel l INNER JOIN (SELECT l3.chatrelpaymentID, sum(l3.nArrearsAmount*l3.nConversionRate) AS nArrears, min(l3.dtArrearsFrom) AS dtArrearsFrom, max(l3.dtArrearsTo) AS dtArrearsTo FROM lnkgbchatrel l3 WHERE l3.nArrearsAmount IS NOT NULL GROUP BY l3.sChatrelReceiptNumber ) AS l2 ON l.chatrelpaymentID = l2.chatrelpaymentID INNER JOIN tblchatrelpayment t3 ON t3.Id = l.chatrelpaymentID LEFT JOIN tblgreenbook t2 ON t2.sGBID = l.sGBId LEFT JOIN lnkgbchatreldonation l4 ON t3.Id = l4.chatrelpaymentID LEFT JOIN lstauthregion l5 ON l5.ID = l.nAuthRegionID WHERE l.nArrearsAmount IS NULL LIMIT @records;";
+
+            string sql = @"SELECT t.sGBID, t.sChatrelReceiptNumber, t.dtPayment, t2.sFirstName,  t.sPaidByGBId, t.sPaymentCurrency, l.nChatrelAmount*l.nConversionRate AS nChatrelAmount, l.nChatrelMeal*l.nConversionRate AS nChatrelMeal, l.nCurrentChatrelSalaryAmt*l.nConversionRate AS nCurrentChatrelSalaryAmt, l.dtCurrentChatrelFrom, l.dtCurrentChatrelTo, concat(date_format(dtCurrentChatrelFrom, '%Y'), '-', date_format(dtCurrentChatrelTo, '%y')) AS sFinancialYear, l2.nArrears, l2.dtArrearsFrom, l2.dtArrearsTo, l4.nChatrelBusinessDonationAmt, l4.nChatrelAdditionalDonationAmt, t.nChatrelTotalAmount, l5.sAuthRegion, t.sPaymentMode FROM tblchatrelpayment t LEFT JOIN lnkgbchatrel l ON t.id = l.chatrelpaymentID LEFT JOIN (SELECT l3.chatrelpaymentID, sum(l3.nArrearsAmount*l3.nConversionRate) AS nArrears, min(l3.dtArrearsFrom) AS dtArrearsFrom, max(l3.dtArrearsTo) AS dtArrearsTo FROM lnkgbchatrel l3 WHERE l3.nArrearsAmount IS NOT NULL GROUP BY l3.sChatrelReceiptNumber ) AS l2 ON l2.chatrelpaymentID = t.Id LEFT JOIN lnkgbchatreldonation l4 ON t.Id = l4.chatrelpaymentID LEFT JOIN tblgreenbook t2 ON t2.sGBID = t.sGBId  LEFT JOIN lstauthregion l5 ON l5.ID = l.nAuthRegionID OR l5.ID = l4.nAuthRegionID WHERE l.nArrearsAmount IS NULL AND t.sChatrelReceiptNumber IS NOT NULL LIMIT @records;";
+
+
             int records = Convert.ToInt32(CTAConfigRepository.GetValueByKey("SelectTotalRecordCount"));
             
             using (var command = new MySqlCommand(sql))
@@ -275,8 +279,8 @@ namespace CTADBL.ViewModelsRepositories
                     sFirstName = row.Field<string>("sFirstName"),
                     sPaidByGBId = row.Field<string>("sPaidByGBId"),
                     sPaymentCurrency = row.Field<string>("sPaymentCurrency"),
-                    nChatrelAmount = row.Field<decimal>("nChatrelAmount"),
-                    nChatrelMeal = row.Field<decimal>("nChatrelMeal"),
+                    nChatrelAmount = row.Field<decimal?>("nChatrelAmount"),
+                    nChatrelMeal = row.Field<decimal?>("nChatrelMeal"),
                     nCurrentChatrelSalaryAmt = row.Field<decimal?>("nCurrentChatrelSalaryAmt"),
                     dtCurrentChatrelFrom = row.Field<DateTime?>("dtCurrentChatrelFrom"),
                     dtCurrentChatrelTo = row.Field<DateTime?>("dtCurrentChatrelTo"),
@@ -294,6 +298,50 @@ namespace CTADBL.ViewModelsRepositories
                 return result;
             }
 
+        }
+        #endregion
+
+        #region Get Payment received breakup
+
+        public IEnumerable<Object> GetPaymentBreakup(string sChatrelReceiptNumber)
+        {
+            string sql = @"SELECT t.dtPayment, t.sGBId, t.nChatrelYear, t.nChatrelTotalAmount AS nReceiptTotal, t.sChatrelReceiptNumber, t.sPaymentMode, t.sPaymentCurrency, t.sPaidByGBId, concat(date_format(l.dtCurrentChatrelFrom, '%Y'), '-', date_format(l.dtCurrentChatrelTo, '%y')) AS sFinancialYear, l.nChatrelAmount*l.nConversionRate AS nChatrelAmount, l.nChatrelMeal*l.nConversionRate AS nChatrelMeal, l.nCurrentChatrelSalaryAmt*l.nConversionRate AS nCurrentChatrelSalaryAmt, l.nChatrelLateFeesValue*l.nConversionRate AS nChatrelLateFeesValue, l.nArrearsAmount*l.nConversionRate AS TotalArrears, l.nChatrelTotalAmount, l.dtArrearsFrom, l.dtArrearsTo, l3.sAuthRegion, NULL AS nChatrelBusinessDonationAmt, NULL AS nChatrelAdditionalDonationAmt FROM tblchatrelpayment t INNER JOIN lnkgbchatrel l ON t.Id = l.chatrelpaymentID LEFT JOIN lstauthregion l3 ON l3.ID = l.nAuthRegionID WHERE t.sChatrelReceiptNumber = @sChatrelReceiptNumber UNION SELECT t2.dtPayment, t2.sGBId, t2.nChatrelYear, t2.nChatrelTotalAmount, t2.sChatrelReceiptNumber, t2.sPaymentMode, t2.sPaymentCurrency, t2.sPaidByGBId, concat((t2.nChatrelYear), '-', (substr(t2.nChatrelYear, 3)+1)) AS sFinancialYear, NULL, NULL, NULL, NULL, NULL,(l2.nChatrelBusinessDonationAmt + l2.nChatrelAdditionalDonationAmt), NULL, NULL, l4.sAuthRegion, l2.nChatrelBusinessDonationAmt, l2.nChatrelAdditionalDonationAmt FROM tblchatrelpayment t2 INNER JOIN lnkgbchatreldonation l2 ON t2.Id = l2.chatrelpaymentID LEFT JOIN lstauthregion l4 ON l4.ID = l2.nAuthRegionID WHERE t2.sChatrelReceiptNumber = @sChatrelReceiptNumber;";
+
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("sChatrelReceiptNumber", sChatrelReceiptNumber);
+                command.CommandType = CommandType.Text;
+                command.Connection = _connection;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var result = tables[0].AsEnumerable().Select(row => new
+                {
+                    dtPayment = row.Field<DateTime?>("dtPayment"),
+                    sGBID = row.Field<string>("sGBID"),
+                    nChatrelYear = row.Field<int?>("nChatrelYear"),
+                    nReceiptTotal = row.Field<decimal>("nReceiptTotal"),
+                    sChatrelReceiptNumber = row.Field<string>("sChatrelReceiptNumber"),
+                    sPaymentMode = row.Field<string>("sPaymentMode"),
+                    sPaymentCurrency = row.Field<string>("sPaymentCurrency"),
+                    sPaidByGBId = row.Field<string>("sPaidByGBId"),
+                    sFinancialYear = row.Field<string>("sFinancialYear"),
+                    nChatrelAmount = row.Field<decimal?>("nChatrelAmount"),
+                    nChatrelMeal = row.Field<decimal?>("nChatrelMeal"),
+                    nCurrentChatrelSalaryAmt = row.Field<decimal?>("nCurrentChatrelSalaryAmt"),
+                    nChatrelLateFeesValue = row.Field<decimal?>("nChatrelLateFeesValue"),
+                    nArrears = row.Field<decimal?>("TotalArrears"),
+                    nChatrelTotalAmount = row.Field<decimal?>("nChatrelTotalAmount"),
+                    dtArrearsFrom = row.Field<DateTime?>("dtArrearsFrom"),
+                    dtArrearsTo = row.Field<DateTime?>("dtArrearsTo"),
+                    sAuthRegion = row.Field<string>("sAuthRegion"),
+                    nChatrelBusinessDonationAmt = row.Field<decimal?>("nChatrelBusinessDonationAmt"),
+                    nChatrelAdditionalDonationAmt = row.Field<decimal?>("nChatrelAdditionalDonationAmt"),
+                });
+
+                return result;
+            }
         }
         #endregion
 

@@ -369,5 +369,39 @@ namespace CTAWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetPaymentBreakup(string sChatrelReceiptNumber)
+        {
+            if (String.IsNullOrEmpty(sChatrelReceiptNumber.Trim()))
+            {
+                return BadRequest("Receipt Number not provided");
+            }
+            try
+            {
+                IEnumerable<Object> result = _chatrelPaymentVMRepository.GetPaymentBreakup(sChatrelReceiptNumber);
+                if (result != null && result.Count() > 0)
+                {
+                    #region Information Logging 
+                    _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+                    #endregion
+                    return Ok(result);
+                }
+                else
+                {
+                    return NoContent();
+                }
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging 
+
+                _ctaLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
     }
 }

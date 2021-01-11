@@ -67,7 +67,16 @@ export const ViewDialog = (props) => {
 
   const [progress, setProgress] = useState(0);
   
-
+  const viewReceipt = (sReceiptNumber) => {
+    console.log("Passing receipt number:", sReceiptNumber);
+    //history.push('/ChatrelPay/ChatrelReceipt', {sReceiptNumber: sReceiptNumber});
+    history.push({
+      pathname: '/ChatrelPay/ChatrelReceipt',
+      state: {
+        sReceiptNumber
+      },
+    });
+  };
 
   useEffect(() => {
     let count=1;
@@ -217,7 +226,7 @@ export const ViewDialog = (props) => {
                         {data.payment.map((row) => (
                           <TableRow key={row.sGBID}>
                             <TableCell component="th" scope="row">
-                              {<Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { }}><span><u>{row.sChatrelReceiptNumber}</u></span></Button>}
+                              {<Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => {viewReceipt(row.sChatrelReceiptNumber) }}><span><u>{row.sChatrelReceiptNumber}</u></span></Button>}
                             </TableCell>
                             <TableCell align="right">{Moment(row.dtPayment).format(sDateFormat)}</TableCell>
                             <TableCell align="right">{row.nChatrelYear}</TableCell>
