@@ -839,12 +839,12 @@ const submit =(paypalObj) =>{
               options={{clientId: "AeIfCd7BHacsWwdqkIYfxmPQrN8UZU2Sap_dor00t7Z8Y9pLLJiwK_v2-lNy8vIhaSU9AFAiC5l8l7Gx", currency: "USD"}}
                shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
               
-               createOrder={(data,actions)=>{
+               /*createOrder={(data,actions)=>{
                  setBackdrop(true);
                  actions.order.create();
                 return data.id
                  
-              }}
+              }}*/
               
                onSuccess={(details, data) => {
               //  alert("Transaction completed by " + details.payer.name.given_name);
