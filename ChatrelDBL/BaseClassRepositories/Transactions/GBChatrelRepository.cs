@@ -220,7 +220,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
 
                 var result = command.ExecuteScalar();
                 int authRegionID = 0;
-                if (result.GetType() != typeof(DBNull) && result != null)
+                if ( result != null  &&  result.GetType() != typeof(DBNull) )
                 {
                     authRegionID = Convert.ToInt32(result);
                 }

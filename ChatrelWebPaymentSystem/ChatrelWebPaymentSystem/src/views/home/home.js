@@ -150,7 +150,7 @@ export default function Home() {
           </Grid>  
         </Grid>
         </Grid>
-        <Button onClick={()=>{history.push('/test')}}>Test</Button>
+        {/*<Button onClick={()=>{history.push('/test')}}>Test</Button>*/}
       </Card>
     </>
   );
