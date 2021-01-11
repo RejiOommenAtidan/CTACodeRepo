@@ -15,7 +15,16 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
+//Local
 export const sAPIBASEURL = "http://localhost:49700/api";
+
+//QA
+// export const sAPIBASEURL = "";
+
+//UAT
+// export const sAPIBASEURL = "";
+
+
 export const sAdminEmail = "admin@CTA.com";
 export const sSnackbarAddMessage = "Record added successfully";
 export const sSnackbarUpdateMessage = "Record updated successfully";
