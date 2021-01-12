@@ -8,6 +8,10 @@ import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
 import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import Moment from 'moment';
 import { sDateFormat } from '../constants/CommonConfig';
 
@@ -140,7 +144,7 @@ export const ChatrelHistoryScreen = (props) => {
     </View>
   );
 };
-
+console.log(Dimensions.get('window').height)
 export const ChatrelHistoryScreenOptions = navData => {
   return {
     headerTitle: 'Chatrel History',
@@ -171,8 +175,8 @@ const styles = StyleSheet.create({
     //alignItems: "flex-start"
   },
   headingContainer: {
-    width: Dimensions.get('window').width * 0.55,
-    height: Dimensions.get('window').height * 0.04,
+    width: wp(55),
+    height: hp(4),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10
   },
   headingComponent: {
@@ -188,8 +192,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular'
   },
   cardComponent: {
-    width: Dimensions.get('window').width * 0.70,
-    height: Dimensions.get('window').height * 0.45,
+    width: wp(70),
+    height: hp(42.5),
     borderRadius: 15,
     borderColor: Colors.white,
     backgroundColor: Colors.white

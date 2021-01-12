@@ -9,6 +9,10 @@ import Colors from '../constants/Colors';
 import RNPaypal from 'react-native-paypal-lib';
 // import { requestOneTimePayment, requestBillingAgreement } from 'react-native-paypal';
 import { sPayPalClientID } from '../constants/CommonConfig';
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+  } from 'react-native-responsive-screen';
 
 export const Chatrel = props => {
     const [sName, setsName] = useState("");

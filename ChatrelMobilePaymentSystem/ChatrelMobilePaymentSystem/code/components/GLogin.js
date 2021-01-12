@@ -129,8 +129,8 @@ export const GLogin = (props) => {
     <View style={styles.gSignInContainer}>
       <GoogleSigninButton
         style={styles.gSignInComponent}
-        size={GoogleSigninButton.Size.Standard}
-        color={GoogleSigninButton.Color.Light}
+        size={GoogleSigninButton.Size.Icon}
+        color={GoogleSigninButton.Color.Dark}
         onPress={signIn}
       />
     </View>

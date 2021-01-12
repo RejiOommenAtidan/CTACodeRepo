@@ -1,22 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, BackHandler, Alert, Dimensions } from 'react-native';
-import { Card, Button } from 'react-native-elements'
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  BackHandler,
+  Alert,
+  Dimensions,
+} from 'react-native';
+import {Card, Button} from 'react-native-elements';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { Platform } from 'react-native';
-import { useSelector } from 'react-redux';
+import {Platform} from 'react-native';
+import {useSelector} from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import { Icon } from "react-native-elements";
-import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import {Icon} from 'react-native-elements';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 // import { withNavigationFocus } from 'react-navigation';
 //import CustomHeaderButton from '../components/HeaderButton';
-
 
 const HomeScreen = (props) => {
   // const backAction = () => {
@@ -42,38 +50,44 @@ const HomeScreen = (props) => {
 
   const aCard = [
     {
-      sLabel: "Self Chatrel",
+      sLabel: 'Self Chatrel',
       sImagePath: require('../assets/CTALogo.png'),
-      sRouteName: "SelfChatrel",
+      sRouteName: 'SelfChatrel',
       sBGColor: Colors.buttonYellow,
-      sTextColor: Colors.greenBG
+      sTextColor: Colors.greenBG,
     },
     {
-      sLabel: "Friend Chatrel",
+      sLabel: 'Friend Chatrel',
       sImagePath: require('../assets/CTALogo.png'),
-      sRouteName: "FriendChatrelIntermediate",
+      sRouteName: 'FriendChatrelIntermediate',
       sBGColor: Colors.blueCardColor,
-      sTextColor: Colors.primary
+      sTextColor: Colors.primary,
     },
     {
-      sLabel: "Family Chatrel",
+      sLabel: 'Family Chatrel',
       sImagePath: require('../assets/CTALogo.png'),
-      sRouteName: "FamilyChatrelIntermediate",
+      sRouteName: 'FamilyChatrelIntermediate',
       sBGColor: Colors.greenBG,
-      sTextColor: Colors.buttonYellow
-    }
+      sTextColor: Colors.buttonYellow,
+    },
   ];
 
-  const oCurrentGBDetails = useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails);
+  const oCurrentGBDetails = useSelector(
+    (state) => state.CurrentGBDetailsReducer.oCurrentGBDetails,
+  );
 
   const getChatrelDetails = () => {
-    axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=` + oCurrentGBDetails.sGBID)
-      .then(resp => {
+    axios
+      .get(
+        `/ChatrelPayment/DisplayChatrelPayment/?sGBID=` +
+          oCurrentGBDetails.sGBID,
+      )
+      .then((resp) => {
         if (resp.status === 200) {
           setnChatrelTotalAmount(resp.data.chatrelPayment.nChatrelTotalAmount);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error.message);
         console.log(error.config);
       });
@@ -82,7 +96,9 @@ const HomeScreen = (props) => {
   useEffect(() => {
     getChatrelDetails();
     BackHandler.addEventListener('hardwareBackPress', () => true);
-    return () => { BackHandler.removeEventListener('hardwareBackPress', () => true); };
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', () => true);
+    };
   }, []);
   return (
     <ScrollView>
@@ -94,52 +110,64 @@ const HomeScreen = (props) => {
           {aCard.map((card, index) => {
             return (
               <View key={index} style={styles.singleCardContainer}>
-                <TouchableOpacity onPress={() => {
-                  props.navigation.navigate(card.sRouteName);
-                  console.log(card);
-                }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    props.navigation.navigate(card.sRouteName);
+                    console.log(card);
+                  }}>
                   <Card
                     containerStyle={{
                       ...styles.singleCardComponent,
                       backgroundColor: card.sBGColor,
-                      borderRadius: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 15,
-                    }}
-                  >
+                      borderRadius:
+                        Dimensions.get('window').width <
+                        Resolution.nWidthBreakpoint
+                          ? 9
+                          : 15,
+                    }}>
                     <Card.Title
                       style={{
                         color: card.sTextColor,
-                        fontSize: wp(5),
-                        fontStyle: "normal",
-                        fontWeight: "normal",
+                        fontSize: wp(3.2),
+                        fontStyle: 'normal',
+                        fontWeight: 'bold',
                         //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
                         letterSpacing: Resolution.nLetterSpacing / 2,
-                        fontFamily: 'Kanit-Regular'
-                      }}
-                    >{card.sLabel}</Card.Title>
+                        fontFamily: 'Kanit-Regular',
+                      }}>
+                      {card.sLabel}
+                    </Card.Title>
                     {/*<Card.Divider />*/}
                     {/*<Card.Image source={card.sImagePath} />*/}
                     {/*<Text>{card.sLabel}</Text>*/}
                   </Card>
                 </TouchableOpacity>
               </View>
-            )
+            );
           })}
         </View>
         {/**/}
         <View style={styles.pendingAmountContainer}>
           <Card containerStyle={styles.pendingAmountComponent}>
-            <Card.Image style={styles.pendingAmountImageComponent} source={require('../assets/Pay.png')} />
+            <Card.Image
+              style={styles.pendingAmountImageComponent}
+              source={require('../assets/Pay.png')}
+            />
             <Card.Divider />
             <Text style={styles.pendingAmountTextComponent}>
               Pending Amount ${nChatrelTotalAmount}
             </Text>
             <Button
-              titleStyle={{ color: Colors.white, fontFamily: 'Kanit-Regular' }}
+              titleStyle={{color: Colors.white, fontFamily: 'Kanit-Regular'}}
               buttonStyle={{
+                width: wp(75),
                 backgroundColor: Colors.greenBG,
-                borderRadius: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.2 : 17,
+                borderRadius:
+                  Dimensions.get('window').width < Resolution.nWidthBreakpoint
+                    ? 10.2
+                    : 17,
               }}
-              title='PAY NOW'
+              title="PAY NOW"
               onPress={() => {
                 props.navigation.navigate('SelfChatrel');
               }}
@@ -179,9 +207,9 @@ const HomeScreen = (props) => {
   );
 };
 
-export const HomeScreenOptions = navData => {
+export const HomeScreenOptions = (navData) => {
   return {
-    headerTitle: "Home",
+    headerTitle: 'Home',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -189,104 +217,118 @@ export const HomeScreenOptions = navData => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
-          iconName={Platform.OS === 'android' ? "menu" : "ios-menu-outline"}
+          iconName={Platform.OS === 'android' ? 'menu' : 'ios-menu-outline'}
           onPress={() => {
             navData.navigation.toggleDrawer();
           }}
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton
+    headerRight: CustomHeaderRightButton,
   };
 };
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    marginHorizontal: Dimensions.get('window').width * Resolution.nWidthScreenMargin,
-    marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    marginVertical:
+      Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
   headerContainer: {
-    width: Dimensions.get('window').width * 0.60,
-    height: Dimensions.get('window').height * 0.04,
-    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15
+    width: wp(60),
+    height: hp(4),
+    marginBottom:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
   },
   headerComponent: {
     width: '100%',
     height: '100%',
-    textAlign: "left",
-    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 14.4 : 24,
-    fontStyle: "normal",
-    fontWeight: "normal",
+    textAlign: 'left',
+    fontSize:
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 14.4 : 24,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
     color: Colors.blue,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular'
+    fontFamily: 'Kanit-Regular',
   },
   cardContainer: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 20 : 25,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginBottom:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 20 : 25,
   },
   singleCardContainer: {
-    width: Dimensions.get('window').width / 3
+    width: wp(100)/3,
   },
   singleCardComponent: {
-    height: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 48 : 80
+    height:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 42 : 70,
   },
-  pendingAmountContainer: {
-  },
+  pendingAmountContainer: {},
   pendingAmountComponent: {
-    borderRadius: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 15
+    borderRadius:
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 15,
   },
   pendingAmountImageComponent: {
-    width: Dimensions.get('window').width * 0.70,
-    height: Dimensions.get('window').height * 0.33
+    width: wp(75),
+    height: hp(33),
   },
   pendingAmountTextComponent: {
-    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 18,
+    fontSize:
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 18,
     fontFamily: 'Kanit-Regular',
-    fontStyle: "normal",
-    fontWeight: "normal",
-    textAlign: "left",
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    textAlign: 'left',
     color: Colors.black,
-    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
+    marginBottom:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    letterSpacing: Resolution.nLetterSpacing
+    letterSpacing: Resolution.nLetterSpacing,
   },
   newJobContribComponent: {
-    backgroundColor: Colors.primary
+    backgroundColor: Colors.primary,
   },
   newJobContribTextContainer: {
-    width: Dimensions.get('window').width * 0.70,
-    //height: Dimensions.get('window').height * 0.33
+    width: wp(70),
+    //height: hp(33),
   },
   newJobContribTextComponent: {
-    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 15.6 : 26,
+    fontSize:
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 15.6 : 26,
     fontFamily: 'Kanit-ExtraLight',
-    fontStyle: "normal",
-    fontWeight: "200",
-    textAlign: "left",
+    fontStyle: 'normal',
+    fontWeight: '200',
+    textAlign: 'left',
     color: Colors.white,
-    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1 : 6,
+    marginBottom:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1 : 6,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing
   },
   jobContribStatusTextContainer: {
-    width: Dimensions.get('window').width * 0.70,
-    //height: Dimensions.get('window').height * 0.33
+    width: wp(70),
+    //height: hp(33),
   },
   jobContribStatusTextComponent: {
-    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+    fontSize:
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
     fontFamily: 'NunitoSans-Light',
-    fontStyle: "normal",
-    fontWeight: "300",
-    textAlign: "left",
+    fontStyle: 'normal',
+    fontWeight: '300',
+    textAlign: 'left',
     color: Colors.white,
-    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 22.8 : 38,
+    marginBottom:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint
+        ? 22.8
+        : 38,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing
-  }
+  },
 });
 
 //export default withNavigationFocus(HomeScreen);

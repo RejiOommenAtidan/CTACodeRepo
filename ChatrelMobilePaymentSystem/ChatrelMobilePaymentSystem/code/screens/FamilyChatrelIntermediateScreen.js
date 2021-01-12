@@ -9,6 +9,10 @@ import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
 import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import { sDateFormat } from '../constants/CommonConfig';
 import Moment from 'moment';
 
@@ -135,8 +139,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-start"
   },
   headingContainer: {
-    width: Dimensions.get('window').width * 0.33,
-    height: Dimensions.get('window').height * 0.03,
+    width: wp(33),
+    height: hp(3),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3 : 5
   },
   headingComponent: {
@@ -155,8 +159,8 @@ const styles = StyleSheet.create({
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10
   },
   cardComponent: {
-    width: Dimensions.get('window').width * 0.70,
-    height: Dimensions.get('window').height * 0.45,
+    width: wp(70),
+    height: hp(42.5),
     borderRadius: 15,
     borderColor: Colors.white,
     backgroundColor: Colors.white

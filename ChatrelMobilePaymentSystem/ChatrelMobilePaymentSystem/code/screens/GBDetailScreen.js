@@ -122,18 +122,16 @@ export const GBDetailScreen = (props) => {
       >
         <View style={styles.mainContainer}>
           <View style={styles.headerContainer}>
-            <Text style={styles.headerComponent}>Verify your details</Text>
+            <Text style={styles.headerComponent}>Verify your Details</Text>
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.textComponent}>
-              Disclaimer: All fields are mandatory
-            </Text>
+            <Text style={styles.textComponent}>All fields are Mandatory</Text>
           </View>
           {/*<form onSubmit={handleSubmit(onSubmit)}>*/}
           <View style={styles.gbidContainer}>
             <Input
               //label="Enter GBID"
-              placeholder="Enter 7 Digit Greenbook Number"
+              placeholder="Enter 7 Digit Green Book Number"
               //autoFocus={true}
               autoCompleteType={'off'}
               autoCorrect={false}
@@ -229,8 +227,8 @@ export const GBDetailScreenOptions = (navData) => {
   };
 };
 
-console.log(Dimensions.get('window').width)
-console.log(Dimensions.get('window').height)
+console.log(Dimensions.get('window').width);
+console.log(Dimensions.get('window').height);
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -247,8 +245,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     width: wp(70),
     height: hp(6.5),
-    marginTop:
-    hp(27.5),
+    marginTop: hp(27.5),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
   },
@@ -283,7 +280,7 @@ const styles = StyleSheet.create({
     //letterSpacing: Resolution.nLetterSpacing,
   },
   gbidContainer: {
-    width: wp(70),
+    width: wp(77.5),
     height: hp(3.5),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint

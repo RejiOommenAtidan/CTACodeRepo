@@ -6,6 +6,10 @@ import { Chatrel } from '../components/Chatrel';
 import Colors from '../constants/Colors';
 import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 import Resolution from '../constants/ResolutionBreakpoint';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 export const FriendChatrelScreen = (props) => {
   return (
@@ -47,8 +51,8 @@ const styles = StyleSheet.create({
     marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin
   },
   headerContainer: {
-    width: Dimensions.get('window').width * 0.50,
-    height: Dimensions.get('window').height * 0.04,
+    width: wp(50),
+    height: hp(4),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10
   },
   headerComponent: {

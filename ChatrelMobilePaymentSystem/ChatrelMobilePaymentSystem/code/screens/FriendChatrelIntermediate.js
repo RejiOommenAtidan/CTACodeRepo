@@ -12,6 +12,10 @@ import Colors from '../constants/Colors';
 import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 import { useForm, Controller } from "react-hook-form";
 import {errorComponent,errorContainer} from '../constants/CommonConfig';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import axios from 'axios';
 
 export const FriendChatrelIntermediateScreen = (props) => {
@@ -48,7 +52,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
               <Input
                 inputContainerStyle={{ borderBottomWidth: 0 }}
                 inputStyle={{
-                  height: Dimensions.get('window').height * 0.02,
+                  height: hp(2),
                   //marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
                   borderRadius: 10,
                   backgroundColor: Colors.white,
@@ -92,7 +96,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
               <Input
                 inputContainerStyle={{ borderBottomWidth: 0 }}
                 inputStyle={{
-                  height: Dimensions.get('window').height * 0.02,
+                  height: hp(2),
                   //marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
                   borderRadius: 10,
                   backgroundColor: Colors.white,
@@ -128,7 +132,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
         </View>
         {/*GBID*/}
         <View style={styles.gbidLabelContainer}>
-          <Text style={styles.gbidLabelComponent}>GREENBOOK ID</Text>
+          <Text style={styles.gbidLabelComponent}>GREEN BOOK ID</Text>
         </View>
         <View style={styles.gbidValueContainer}>
           <Controller
@@ -137,7 +141,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
               <Input
                 inputContainerStyle={{ borderBottomWidth: 0 }}
                 inputStyle={{
-                  height: Dimensions.get('window').height * 0.02,
+                  height: hp(2),
                   //marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
                   borderRadius: 10,
                   backgroundColor: Colors.white,
@@ -294,8 +298,8 @@ const styles = StyleSheet.create({
     marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin
   },
   headingContainer: {
-    width: Dimensions.get('window').width * 0.55,
-    height: Dimensions.get('window').height * 0.04,
+    width: wp(55),
+    height: hp(4),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 22.2 : 37
   },
   headingComponent: {
@@ -312,8 +316,8 @@ const styles = StyleSheet.create({
   },
 
   gbidLabelContainer: {
-    width: Dimensions.get('window').width * 0.22,
-    height: Dimensions.get('window').height * 0.02,
+    width: wp(22),
+    height: hp(2),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6
   },
   gbidLabelComponent: {
@@ -331,8 +335,8 @@ const styles = StyleSheet.create({
   gbidValueContainer: {},
 
   firstNameLabelContainer: {
-    width: Dimensions.get('window').width * 0.22,
-    height: Dimensions.get('window').height * 0.02,
+    width: wp(22),
+    height: hp(2),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6
   },
   firstNameLabelComponent: {
@@ -350,8 +354,8 @@ const styles = StyleSheet.create({
   firstNameValueContainer: {},
 
   lastNameLabelContainer: {
-    width: Dimensions.get('window').width * 0.22,
-    height: Dimensions.get('window').height * 0.02,
+    width: wp(22),
+    height: hp(2),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6
   },
   lastNameLabelComponent: {
@@ -369,8 +373,8 @@ const styles = StyleSheet.create({
   lastNameValueContainer: {},
 
   dobLabelContainer: {
-    width: Dimensions.get('window').width * 0.22,
-    height: Dimensions.get('window').height * 0.02,
+    width: wp(22),
+    height: hp(2),
     marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6
   },
   dobLabelComponent: {
