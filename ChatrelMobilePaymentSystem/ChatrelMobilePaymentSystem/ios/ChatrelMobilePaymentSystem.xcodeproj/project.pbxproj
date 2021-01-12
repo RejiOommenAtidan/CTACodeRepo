@@ -18,6 +18,7 @@
 		458ADC0B29D1EBCCAB56D172 /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA565F1F14A1EC2418984D1F /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		CB01AD5E417C91897E1C3EB7 /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FC117D85A94A59A8F609AE1 /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a */; };
+		D9420E2925ADD99C00B379B4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D9420E2825ADD99C00B379B4 /* GoogleService-Info.plist */; };
 		D99CBFF425A43C9800D92A65 /* Kanit-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC7E5F4676924E4C8F87C39C /* Kanit-Regular.ttf */; };
 		D99CBFFB25A43C9800D92A65 /* Kanit-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 00DA4383E0A44D9883C7BBFE /* Kanit-ExtraLight.ttf */; };
 		D99CBFFE25A43C9800D92A65 /* Kanit-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 756AB6085F6848239D7D8BA1 /* Kanit-Light.ttf */; };
@@ -97,6 +98,7 @@
 		D334837244184698A3DB2809 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		D68954EA9D044EE58D3CFEDD /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		D701B750E5D34B1D872CFE9F /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		D9420E2825ADD99C00B379B4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DE02E00EA54B4A55A05C6EF1 /* Kanit-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-ExtraBoldItalic.ttf"; path = "../code/assets/fonts/Kanit-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		DED8F91AE1B3491AAA07FD30 /* Kanit-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-SemiBoldItalic.ttf"; path = "../code/assets/fonts/Kanit-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		E1277051FBB7517D3784D2C3 /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.debug.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 		13B07FAE1A68108700A75B9A /* ChatrelMobilePaymentSystem */ = {
 			isa = PBXGroup;
 			children = (
+				D9420E2825ADD99C00B379B4 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -425,6 +428,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D99CBFF425A43C9800D92A65 /* Kanit-Regular.ttf in Resources */,
+				D9420E2925ADD99C00B379B4 /* GoogleService-Info.plist in Resources */,
 				D99CBFFB25A43C9800D92A65 /* Kanit-ExtraLight.ttf in Resources */,
 				D99CBFFE25A43C9800D92A65 /* Kanit-Light.ttf in Resources */,
 				D99CC00625A43C9800D92A65 /* NunitoSans-Regular.ttf in Resources */,
