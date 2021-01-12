@@ -1161,3 +1161,33 @@ VALUES (1,'4489430',48.00,10.00,2011,10,5.80,63.80,'2011-04-01','2012-03-31',0.0
 
 
 INSERT INTO lnkgbchatreldonation (chatrelpaymentID,sGBId,nChatrelAdditionalDonationAmt,nChatrelBusinessDonationAmt,sChatrelReceiptNumber,nAuthRegionID,sCountryID,sPaymentCurrency,sAuthRegionCurrency,nConversionRate,sPaidByGBId,dtPayment,dtEntered,nEnteredBy,dtUpdated,nUpdatedBy) VALUES (1,'4489430',60.00,18.00,'1',135,'NP','USD','INR',1.00,'9675','2020-12-01 16:54:44.0','2020-12-01 16:54:44.0',1,'2020-12-01 16:54:44.0',1);
+
+
+UPDATE `tbluser` SET `sPassword` = 'rNRslRcw3VtGAlI9/P2DXl89kQRENm787gpHDCOhj7I=' WHERE (`Id` = '97');
+UPDATE `tbluser` SET `sPassword` = 'w00KWE96zgdxYUbvWWhuODwFXh3MkNzcxJnSgxp5ZEs=' WHERE (`Id` = '96');
+UPDATE `tbluser` SET `sPassword` = 'u+nkQSwxxhOIvGpsT3E9Cg40qBwv0LcaKadCXWLznwE=' WHERE (`Id` = '95');
+UPDATE `tbluser` SET `sPassword` = 'vnxE3Co+esIjB4ywUzH3oQ==' WHERE (`Id` = '94');
+UPDATE `tbluser` SET `sPassword` = 'Rtf2QAxGBZlOg3ZfYNc6VzQMf9+6FThup2s0kfGQ8k0=' WHERE (`Id` = '93');
+UPDATE `tbluser` SET `sPassword` = '+Fsi0J/gQ5MoqmKfxlJ0/tjdQAeQ8qQT/T3Znndwz/c=' WHERE (`Id` = '92');
+UPDATE `tbluser` SET `sPassword` = 'BbuONBeo0lvc9q5FWucOnLfZDKG5n89WjmXnxX0i7vs=' WHERE (`Id` = '87');
+UPDATE `tbluser` SET `sPassword` = 'CL43n1r5NW1t9paeMm8X0Q==' WHERE (`Id` = '88');
+UPDATE `tbluser` SET `sPassword` = 'y7ZbHv2DOrG4LEblFZ95ociFEuhhDtHcwfE+4Y3BMf8=' WHERE (`Id` = '89');
+UPDATE `tbluser` SET `sPassword` = 'PT3kBpoVuX0pCt8+1rzfifjwsVTPMRNd4wI5C/7tErg=' WHERE (`Id` = '90');
+UPDATE `tbluser` SET `sPassword` = 'NEx9ClImMEaX+AokbdePF+TWIxLEOgkeKdE1Kf24us4=' WHERE (`Id` = '91');
+
+
+UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy101@gmail.com', `sLoginGmail` = 'ctadummy101@gmail.com' WHERE (`Id` = '161');
+UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy101@gmail.com', `sLoginGmail` = 'ctadummy101@gmail.com' WHERE (`Id` = '989');
+UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy101@gmail.com', `sLoginGmail` = 'ctadummy101@gmail.com' WHERE (`Id` = '1001');
+UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy101@gmail.com', `sLoginGmail` = 'ctadummy101@gmail.com' WHERE (`Id` = '126');
+UPDATE `tblgreenbook` SET `sEmail` = 'ctadummy101@gmail.com', `sLoginGmail` = 'ctadummy101@gmail.com' WHERE (`Id` = '141573');
+UPDATE `tblgreenbook` SET `sPaidUntil` = '2012' WHERE (`Id` = '141573');
+
+
+UPDATE `ctadb`.`lstctaconfig` SET `sValue` = 'malay.doshi@atidan.com' WHERE (`Id` = '4');
+UPDATE `ctadb`.`lstctaconfig` SET `sValue` = 'M@lay@123' WHERE (`Id` = '5');
+UPDATE `ctadb`.`lstctaconfig` SET `sValue` = 'smtp-mail.outlook.com' WHERE (`Id` = '6');
+UPDATE `ctadb`.`lstctaconfig` SET `sValue` = '25' WHERE (`Id` = '7');
+UPDATE `ctadb`.`lstctaconfig` SET `sValue` = 'false' WHERE (`Id` = '8');
+UPDATE `ctadb`.`lstctaconfig` SET `sValue` = 'reji.oommen@atidan.com' WHERE (`Id` = '9');
+

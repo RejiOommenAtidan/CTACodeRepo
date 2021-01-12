@@ -1091,33 +1091,40 @@ CREATE TABLE `tblchatrelpayment` (
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
-CREATE TABLE `tblchatrelBulkData` (
-	`Id` int(11) NOT NULL AUTO_INCREMENT,
-	`SNo` varchar(255) DEFAULT NULL,
-	`IDNo` varchar(255) DEFAULT NULL,
-	`Name` varchar(255) DEFAULT NULL,
-	`Chatrel` varchar(255) DEFAULT NULL,
-	`Meal` varchar(255) DEFAULT NULL, 
-	`Year` varchar(255) DEFAULT NULL,
-	`ArrearsPlusLateFees` varchar(255) DEFAULT NULL,
-	`ArrearsFrom` varchar(255) DEFAULT NULL,
-	`ArrearsTo` varchar(255) DEFAULT NULL,
-	`Salary` varchar(255) DEFAULT NULL,
-	`PendingFrom` varchar(255) DEFAULT NULL,
-	`PendingTo` varchar(255) DEFAULT NULL,
-	`BusinessDonation` varchar(255) DEFAULT NULL,
-	`AdditionalDonation` varchar(255) DEFAULT NULL,
-	`TotalAmount` varchar(255) DEFAULT NULL,
-	`RecieptNo` varchar(255) DEFAULT NULL,
-	`PaymentDate` varchar(255) DEFAULT NULL,
-	`Region` varchar(255) DEFAULT NULL,
-	`Country` varchar(255) DEFAULT NULL,
-	`Currency` varchar(255) DEFAULT NULL,
-	`dtEntered` datetime Not NULL,
-	`nEnteredBy` int(11) Not NULL,
-	`dtUpdated` datetime Not NULL,
-	`nUpdatedBy` int(11) Not NULL,
- PRIMARY KEY (`Id`)
+
+-- DROP TABLE IF EXISTS `tblchatrelbulkdata`;
+CREATE TABLE `tblchatrelbulkdata` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `sBatchNumber` varchar(255) NOT NULL,
+  `bValidate` tinyint NOT NULL,
+  `SNo` varchar(255) DEFAULT NULL,
+  `GBID` varchar(255) DEFAULT NULL,
+  `Name` varchar(255) DEFAULT NULL,
+  `sPaidByGBId` varchar(255) DEFAULT NULL,  
+  `Currency` varchar(255) DEFAULT NULL,
+  `Chatrel` varchar(255) DEFAULT NULL,
+  `Meal` varchar(255) DEFAULT NULL,
+  `Salary` varchar(255) DEFAULT NULL,
+  `ChatrelFrom` varchar(255) DEFAULT NULL,
+  `ChatrelTo` varchar(255) DEFAULT NULL,
+  `FinancialYear` varchar(255) DEFAULT NULL,
+  `ArrearsPlusLateFees` varchar(255) DEFAULT NULL,
+  `ArrearsFrom` varchar(255) DEFAULT NULL,
+  `ArrearsTo` varchar(255) DEFAULT NULL,
+  `BusinessDonation` varchar(255) DEFAULT NULL,
+  `AdditionalDonation` varchar(255) DEFAULT NULL,
+  `TotalAmount` varchar(255) DEFAULT NULL,
+  `RecieptNo` varchar(255) DEFAULT NULL,
+  `PaymentDate` varchar(255) DEFAULT NULL,
+  `Region` varchar(255) DEFAULT NULL,
+  `Country` varchar(255) DEFAULT NULL,
+  `PaymentMode` varchar(255) DEFAULT NULL,
+  `sStatus` varchar(255) DEFAULT NULL,
+  `dtEntered` datetime NOT NULL,
+  `nEnteredBy` int(11) NOT NULL,
+  `dtUpdated` datetime NOT NULL,
+  `nUpdatedBy` int(11) NOT NULL,
+  PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 -- -------------------------
