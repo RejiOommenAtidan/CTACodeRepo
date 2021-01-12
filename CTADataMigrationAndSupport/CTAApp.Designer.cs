@@ -52,6 +52,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPageDummyData = new System.Windows.Forms.TabPage();
+            this.checkBoxMadebsAlias = new System.Windows.Forms.CheckBox();
             this.buttonMadebDummyData = new System.Windows.Forms.Button();
             this.checkBoxMadebFathersName = new System.Windows.Forms.CheckBox();
             this.checkBoxMadebName = new System.Windows.Forms.CheckBox();
@@ -86,6 +87,14 @@
             this.btnUploadfile = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tabPageSyncData = new System.Windows.Forms.TabPage();
+            this.labelSyncReport = new System.Windows.Forms.Label();
+            this.buttonSyncDB = new System.Windows.Forms.Button();
+            this.checkBoxlstChatrelConfig = new System.Windows.Forms.CheckBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textBoxDB2 = new System.Windows.Forms.TextBox();
+            this.labelDB1 = new System.Windows.Forms.Label();
+            this.textBoxDB1 = new System.Windows.Forms.TextBox();
             this.txtLogFolderPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.progressBarProcess = new System.Windows.Forms.ProgressBar();
@@ -96,6 +105,7 @@
             this.tabPageDummyData.SuspendLayout();
             this.tabPageDummyProfilePicture.SuspendLayout();
             this.tabPageBulkInsert.SuspendLayout();
+            this.tabPageSyncData.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtConnectionString
@@ -104,8 +114,8 @@
             this.txtConnectionString.Name = "txtConnectionString";
             this.txtConnectionString.Size = new System.Drawing.Size(639, 23);
             this.txtConnectionString.TabIndex = 9;
-            this.txtConnectionString.Text = "Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=ctadb; Uid=ctam" +
-    "ysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;";
+            this.txtConnectionString.Text = "Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=ctauatdb; Uid=c" +
+    "tamysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;";
             // 
             // label1
             // 
@@ -125,6 +135,7 @@
             this.tabControlCTA.Controls.Add(this.tabPageDummyData);
             this.tabControlCTA.Controls.Add(this.tabPageDummyProfilePicture);
             this.tabControlCTA.Controls.Add(this.tabPageBulkInsert);
+            this.tabControlCTA.Controls.Add(this.tabPageSyncData);
             this.tabControlCTA.Location = new System.Drawing.Point(10, 88);
             this.tabControlCTA.Name = "tabControlCTA";
             this.tabControlCTA.SelectedIndex = 0;
@@ -338,6 +349,7 @@
             // 
             // tabPageDummyData
             // 
+            this.tabPageDummyData.Controls.Add(this.checkBoxMadebsAlias);
             this.tabPageDummyData.Controls.Add(this.buttonMadebDummyData);
             this.tabPageDummyData.Controls.Add(this.checkBoxMadebFathersName);
             this.tabPageDummyData.Controls.Add(this.checkBoxMadebName);
@@ -370,9 +382,21 @@
             this.tabPageDummyData.Text = "CTA Dummy Data";
             this.tabPageDummyData.UseVisualStyleBackColor = true;
             // 
+            // checkBoxMadebsAlias
+            // 
+            this.checkBoxMadebsAlias.AutoSize = true;
+            this.checkBoxMadebsAlias.Checked = true;
+            this.checkBoxMadebsAlias.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxMadebsAlias.Location = new System.Drawing.Point(544, 128);
+            this.checkBoxMadebsAlias.Name = "checkBoxMadebsAlias";
+            this.checkBoxMadebsAlias.Size = new System.Drawing.Size(56, 19);
+            this.checkBoxMadebsAlias.TabIndex = 29;
+            this.checkBoxMadebsAlias.Text = "sAlias";
+            this.checkBoxMadebsAlias.UseVisualStyleBackColor = true;
+            // 
             // buttonMadebDummyData
             // 
-            this.buttonMadebDummyData.Location = new System.Drawing.Point(544, 128);
+            this.buttonMadebDummyData.Location = new System.Drawing.Point(544, 153);
             this.buttonMadebDummyData.Name = "buttonMadebDummyData";
             this.buttonMadebDummyData.Size = new System.Drawing.Size(183, 23);
             this.buttonMadebDummyData.TabIndex = 28;
@@ -748,6 +772,90 @@
             this.textBox2.Size = new System.Drawing.Size(394, 23);
             this.textBox2.TabIndex = 0;
             // 
+            // tabPageSyncData
+            // 
+            this.tabPageSyncData.Controls.Add(this.labelSyncReport);
+            this.tabPageSyncData.Controls.Add(this.buttonSyncDB);
+            this.tabPageSyncData.Controls.Add(this.checkBoxlstChatrelConfig);
+            this.tabPageSyncData.Controls.Add(this.label11);
+            this.tabPageSyncData.Controls.Add(this.textBoxDB2);
+            this.tabPageSyncData.Controls.Add(this.labelDB1);
+            this.tabPageSyncData.Controls.Add(this.textBoxDB1);
+            this.tabPageSyncData.Location = new System.Drawing.Point(4, 24);
+            this.tabPageSyncData.Name = "tabPageSyncData";
+            this.tabPageSyncData.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSyncData.Size = new System.Drawing.Size(759, 435);
+            this.tabPageSyncData.TabIndex = 7;
+            this.tabPageSyncData.Text = "Chatrel Sync Tables";
+            this.tabPageSyncData.UseVisualStyleBackColor = true;
+            // 
+            // labelSyncReport
+            // 
+            this.labelSyncReport.AutoSize = true;
+            this.labelSyncReport.Location = new System.Drawing.Point(137, 350);
+            this.labelSyncReport.Name = "labelSyncReport";
+            this.labelSyncReport.Size = new System.Drawing.Size(236, 15);
+            this.labelSyncReport.TabIndex = 30;
+            this.labelSyncReport.Text = "Sync the CTA Admin and Chatrel Databases";
+            // 
+            // buttonSyncDB
+            // 
+            this.buttonSyncDB.Location = new System.Drawing.Point(137, 292);
+            this.buttonSyncDB.Name = "buttonSyncDB";
+            this.buttonSyncDB.Size = new System.Drawing.Size(82, 23);
+            this.buttonSyncDB.TabIndex = 29;
+            this.buttonSyncDB.Text = "Sync DB";
+            this.buttonSyncDB.UseVisualStyleBackColor = true;
+            this.buttonSyncDB.Click += new System.EventHandler(this.buttonSyncDB_Click);
+            // 
+            // checkBoxlstChatrelConfig
+            // 
+            this.checkBoxlstChatrelConfig.AutoSize = true;
+            this.checkBoxlstChatrelConfig.Checked = true;
+            this.checkBoxlstChatrelConfig.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxlstChatrelConfig.Location = new System.Drawing.Point(137, 121);
+            this.checkBoxlstChatrelConfig.Name = "checkBoxlstChatrelConfig";
+            this.checkBoxlstChatrelConfig.Size = new System.Drawing.Size(108, 19);
+            this.checkBoxlstChatrelConfig.TabIndex = 27;
+            this.checkBoxlstChatrelConfig.Text = "lstchatrelconfig";
+            this.checkBoxlstChatrelConfig.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(3, 66);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(114, 15);
+            this.label11.TabIndex = 12;
+            this.label11.Text = "DB Chatrel Database";
+            // 
+            // textBoxDB2
+            // 
+            this.textBoxDB2.Location = new System.Drawing.Point(137, 63);
+            this.textBoxDB2.Name = "textBoxDB2";
+            this.textBoxDB2.Size = new System.Drawing.Size(596, 23);
+            this.textBoxDB2.TabIndex = 13;
+            this.textBoxDB2.Text = "Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=chatreldb; Uid=" +
+    "ctamysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;";
+            // 
+            // labelDB1
+            // 
+            this.labelDB1.AutoSize = true;
+            this.labelDB1.Location = new System.Drawing.Point(3, 21);
+            this.labelDB1.Name = "labelDB1";
+            this.labelDB1.Size = new System.Drawing.Size(128, 15);
+            this.labelDB1.TabIndex = 10;
+            this.labelDB1.Text = "DB CTA Main Database";
+            // 
+            // textBoxDB1
+            // 
+            this.textBoxDB1.Location = new System.Drawing.Point(137, 18);
+            this.textBoxDB1.Name = "textBoxDB1";
+            this.textBoxDB1.Size = new System.Drawing.Size(596, 23);
+            this.textBoxDB1.TabIndex = 11;
+            this.textBoxDB1.Text = "Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=ctadb; Uid=ctam" +
+    "ysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;";
+            // 
             // txtLogFolderPath
             // 
             this.txtLogFolderPath.Location = new System.Drawing.Point(137, 42);
@@ -799,6 +907,8 @@
             this.tabPageDummyProfilePicture.PerformLayout();
             this.tabPageBulkInsert.ResumeLayout(false);
             this.tabPageBulkInsert.PerformLayout();
+            this.tabPageSyncData.ResumeLayout(false);
+            this.tabPageSyncData.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -866,6 +976,15 @@
         private System.Windows.Forms.CheckBox checkBoxMadebName;
         private System.Windows.Forms.CheckBox checkBoxDummyProfile;
         private System.Windows.Forms.TextBox textBoxDummyProfilePath;
+        private System.Windows.Forms.CheckBox checkBoxMadebsAlias;
+        private System.Windows.Forms.TabPage tabPageSyncData;
+        private System.Windows.Forms.Button buttonSyncDB;
+        private System.Windows.Forms.CheckBox checkBoxlstChatrelConfig;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox textBoxDB2;
+        private System.Windows.Forms.Label labelDB1;
+        private System.Windows.Forms.TextBox textBoxDB1;
+        private System.Windows.Forms.Label labelSyncReport;
     }
 }
 
