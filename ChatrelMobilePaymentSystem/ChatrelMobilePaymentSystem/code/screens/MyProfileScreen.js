@@ -95,7 +95,8 @@ export const MyProfileScreenOptions = (navData) => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Menu"
-          iconName={Platform.OS === 'android' ? 'menu' : 'ios-menu-outline'}
+          //iconName={Platform.OS === 'android' ? 'menu' : 'md-menu'}
+          iconName={'menu'}
           onPress={() => {
             navData.navigation.toggleDrawer();
           }}

@@ -24,7 +24,7 @@ import { GLogout } from '../components/GLogout';
 
 const defaultStackNavOptions = {
   headerStyle: {
-    backgroundColor: Platform.OS === 'android' ? Colors.primary : ''
+    backgroundColor: Platform.OS === 'android' ? Colors.primary : Colors.primary
   },
   headerTitleStyle: {
     fontFamily: 'Kanit-Regular'
@@ -32,7 +32,7 @@ const defaultStackNavOptions = {
   headerBackTitleStyle: {
     fontFamily: 'open-sans'
   },
-  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
+  headerTintColor: Platform.OS === 'android' ? 'white' : 'white',
   headerPressColorAndroid: Colors.white,
   animationTypeForReplace: "pop",
   animationEnabled: true,
