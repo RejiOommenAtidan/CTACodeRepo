@@ -18,7 +18,7 @@ export const LoginScreen = (props) => {
           initWidth="335"
           initHeight="325"
           source={require('../assets/CTALogo.png')}
-          PlaceholderContent={<ActivityIndicator />}
+          PlaceholderContent={<ActivityIndicator size={36}/>}
         />
       </View>
       <View style={styles.headerContainer}>

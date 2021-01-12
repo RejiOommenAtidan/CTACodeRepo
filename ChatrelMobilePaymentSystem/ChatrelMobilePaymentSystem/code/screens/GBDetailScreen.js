@@ -12,7 +12,7 @@ import {Input, Button} from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import {sDateFormat} from '../constants/CommonConfig';
 import Moment from 'moment';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {storeGBDetails} from '../store/actions/GBDetailsAction';
 import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
 import Colors from '../constants/Colors';
@@ -45,36 +45,84 @@ export const GBDetailScreen = (props) => {
     };
   }, []);
 
-  const getGBDataFromAsnycStorage = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('oGBInfo');
-      console.info(jsonValue);
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-      console.info(e);
-    }
-  };
+  // const getGBDataFromAsnycStorage = async () => {
+  //   try {
+  //     const jsonValue = await AsyncStorage.getItem('oGBInfo');
+  //     console.info(jsonValue);
+  //     return jsonValue != null ? JSON.parse(jsonValue) : null;
+  //   } catch (e) {
+  //     console.info(e);
+  //   }
+  // };
 
-  const getUserDataFromAsnycStorage = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('oUserInfo');
-      console.info(jsonValue);
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-      console.info(e);
-    }
-  };
+  // const getUserDataFromAsnycStorage = async () => {
+  //   try {
+  //     const jsonValue = await AsyncStorage.getItem('oUserInfo');
+  //     console.info(jsonValue);
+  //     return jsonValue != null ? JSON.parse(jsonValue) : null;
+  //   } catch (e) {
+  //     console.info(e);
+  //   }
+  // };
 
-  const verifyAllDetails = (oUserCompleteDetails) => {
+  // const verifyAllDetails = (oUserCompleteDetails) => {
+  //   axios
+  //     .post('/ChatrelPayment/VerifyUser', oUserCompleteDetails)
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         //TODO: Make Set State calls
+  //         props.navigation.navigate('Home');
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       if (error.response) {
+  //         // Not 2xx
+  //         console.log(error.response.data);
+  //         console.log(error.response.status);
+  //         console.log(error.response.headers);
+  //       } else if (error.request) {
+  //         console.log(error.request);
+  //       } else {
+  //         console.log('Error', error.message);
+  //       }
+  //     });
+  // };
+
+  const dispatch = useDispatch();
+  const [sGBID, setsGBID] = useState('');
+  const [bShowGBID, setbShowGBID] = useState(true);
+  const [dtDOB, setdtDOB] = useState(null);
+  const dtToday = Moment().format(sDateFormat);
+  const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle.user);
+  const handleVerifyDetailsPress = async () => {
+    let oGBDetails = {
+      sGBID: sGBID,
+      dtDob: dtDOB,
+    };
+    let oAPI = {
+      sGBID: sGBID,
+      dtDob: dtDOB,
+      sFirstName: oGoogle.givenName,
+      sLastName: oGoogle.familyName,
+      sEmail: oGoogle.email,
+    };
     axios
-      .post('/ChatrelPayment/VerifyUser', oUserCompleteDetails)
+      .post('ChatrelPayment/AuthenticateGBID', oAPI)
       .then((response) => {
-        if (response.status === 200) {
-          //TODO: Make Set State calls
+        if(resp.data=="Verified"){
+          dispatch(storeGBDetails(oGBDetails));
+          dispatch(storeCurrentGBDetails(oGBDetails));
+          try {
+            const jsonGBInfoValue = JSON.stringify(oGBDetails);
+            AsyncStorage.setItem('oGBInfo', jsonGBInfoValue);
+          } catch (e) {
+            console.info(e);
+          }
           props.navigation.navigate('Home');
         }
       })
       .catch((error) => {
+        debugger;
         if (error.response) {
           // Not 2xx
           console.log(error.response.data);
@@ -86,28 +134,6 @@ export const GBDetailScreen = (props) => {
           console.log('Error', error.message);
         }
       });
-  };
-
-  const dispatch = useDispatch();
-  const [sGBID, setsGBID] = useState('');
-  const [bShowGBID, setbShowGBID] = useState(true);
-  const [dtDOB, setdtDOB] = useState(null);
-  const dtToday = Moment().format(sDateFormat);
-
-  const handleVerifyDetailsPress = async () => {
-    let oGBDetails = {
-      sGBID: sGBID,
-      dtDob: dtDOB,
-    };
-    dispatch(storeGBDetails(oGBDetails));
-    dispatch(storeCurrentGBDetails(oGBDetails));
-    try {
-      const jsonGBInfoValue = JSON.stringify(oGBDetails);
-      await AsyncStorage.setItem('oGBInfo', jsonGBInfoValue);
-    } catch (e) {
-      console.info(e);
-    }
-    props.navigation.navigate('Home');
   };
 
   return (

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -40,15 +40,15 @@ export const GLogin = (props) => {
     // });
   }, []);
 
-  const getUserDataFromAsnycStorage = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('oUserInfo');
-      console.info(jsonValue);
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-      console.info(e);
-    }
-  };
+  // const getUserDataFromAsnycStorage = async () => {
+  //   try {
+  //     const jsonValue = await AsyncStorage.getItem('oUserInfo');
+  //     console.info(jsonValue);
+  //     return jsonValue != null ? JSON.parse(jsonValue) : null;
+  //   } catch (e) {
+  //     console.info(e);
+  //   }
+  // };
 
   const signIn = async () => {
     try {
@@ -93,7 +93,8 @@ export const GLogin = (props) => {
 
   const getCurrentUserInfo = async () => {
     try {
-      const userInfo = await GoogleSignin.signInSilently();
+      const userInfo = await GoogleSignin.getCurrentUser();
+      //console.log(userInfo);
       setUser(userInfo);
       dispatch(storeGoogleCreds(userInfo));
       try {
