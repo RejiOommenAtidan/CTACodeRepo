@@ -146,6 +146,6 @@ const styles = StyleSheet.create({
   },
   gSignInComponent: {
     width: wp(45),
-    height: hp(5.25),
+    height: hp(5.35)
   },
 });
