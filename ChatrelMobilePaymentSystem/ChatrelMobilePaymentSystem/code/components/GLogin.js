@@ -59,10 +59,10 @@ export const GLogin = (props) => {
       // console.info(userInfo.user.familyName);
       // console.info(userInfo.user.name);//full name by google api
       // console.info(userInfo.user.photo);
-      setUser(userInfo);
-      dispatch(storeGoogleCreds(userInfo));
+      setUser(userInfo.user);
+      dispatch(storeGoogleCreds(userInfo.user));
       try {
-        const jsonUserInfoValue = JSON.stringify(userInfo);
+        const jsonUserInfoValue = JSON.stringify(userInfo.user);
         await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
       } catch (e) {
         console.info(e);
@@ -95,10 +95,10 @@ export const GLogin = (props) => {
     try {
       const userInfo = await GoogleSignin.getCurrentUser();
       //console.log(userInfo);
-      setUser(userInfo);
-      dispatch(storeGoogleCreds(userInfo));
+      setUser(userInfo.user);
+      dispatch(storeGoogleCreds(userInfo.user));
       try {
-        const jsonUserInfoValue = JSON.stringify(userInfo);
+        const jsonUserInfoValue = JSON.stringify(userInfo.user);
         await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
       } catch (e) {
         console.info(e);

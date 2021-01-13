@@ -23,6 +23,12 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { GoogleSignin } from '@react-native-community/google-signin';
+import { removeGoogleCreds } from '../store/actions/GLoginAction';
+import { removeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
+import { removeGBDetails } from '../store/actions/GBDetailsAction';
 import axios from 'axios';
 
 export const GBDetailScreen = (props) => {
@@ -89,11 +95,28 @@ export const GBDetailScreen = (props) => {
   // };
 
   const dispatch = useDispatch();
+  let keysToRemove = ['oUserInfo', 'oGBInfo'];
+  const navigation = useNavigation();
   const [sGBID, setsGBID] = useState('');
   const [bShowGBID, setbShowGBID] = useState(true);
   const [dtDOB, setdtDOB] = useState(null);
   const dtToday = Moment().format(sDateFormat);
-  const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle.user);
+  const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
+  const removeCompleteDetailsAndNavigateToLogin = async () => {
+    try {
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+        await AsyncStorage.multiRemove(keysToRemove, (err) => {
+            dispatch(removeGoogleCreds);
+            dispatch(removeGBDetails);
+            dispatch(removeCurrentGBDetails);
+            navigation.navigate("Login");
+        });
+    }
+    catch (error) {
+        console.error(error);
+    }
+};
   const handleVerifyDetailsPress = async () => {
     let oGBDetails = {
       sGBID: sGBID,
@@ -101,7 +124,7 @@ export const GBDetailScreen = (props) => {
     };
     let oAPI = {
       sGBID: sGBID,
-      dtDob: dtDOB,
+      dtDOB: dtDOB,
       sFirstName: oGoogle.givenName,
       sLastName: oGoogle.familyName,
       sEmail: oGoogle.email,
@@ -109,7 +132,7 @@ export const GBDetailScreen = (props) => {
     axios
       .post('ChatrelPayment/AuthenticateGBID', oAPI)
       .then((response) => {
-        if(resp.data=="Verified"){
+        if(response.data=="Verified"){
           dispatch(storeGBDetails(oGBDetails));
           dispatch(storeCurrentGBDetails(oGBDetails));
           try {
@@ -120,19 +143,43 @@ export const GBDetailScreen = (props) => {
           }
           props.navigation.navigate('Home');
         }
+        if(response.data=="Failed"){
+          Alert.alert("Invalid Credentials", "Please Contact CTA",
+            [
+                {
+                    text: 'Okay',
+                    onPress: () => true,
+                    style: 'cancel'
+                },
+                { text: 'Logout', onPress: () => removeCompleteDetailsAndNavigateToLogin() }
+            ],
+            { cancelable: false }
+        );
+        }
       })
       .catch((error) => {
-        debugger;
-        if (error.response) {
-          // Not 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          console.log(error.request);
-        } else {
-          console.log('Error', error.message);
-        }
+        //debugger;
+        // if (error.response) {
+        //   // Not 2xx
+        //   console.log(error.response.data);
+        //   console.log(error.response.status);
+        //   console.log(error.response.headers);
+        // } else if (error.request) {
+        //   console.log(error.request);
+        // } else {
+        //   console.log('Error', error.message);
+        // }
+        Alert.alert("Invalid Credentials", "Please Contact CTA",
+            [
+                {
+                    text: 'Okay',
+                    onPress: () => true,
+                    style: 'cancel'
+                },
+                { text: 'Logout', onPress: () => removeCompleteDetailsAndNavigateToLogin() }
+            ],
+            { cancelable: false }
+        );
       });
   };
 

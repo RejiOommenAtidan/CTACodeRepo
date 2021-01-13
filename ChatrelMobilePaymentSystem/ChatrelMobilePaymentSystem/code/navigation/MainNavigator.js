@@ -236,7 +236,7 @@ export const MainNavigator = () => {
       lazy={true}
       openByDefault={false}
       drawerContentOptions={{
-        activeTintColor: Colors.primary,
+        //activeTintColor: Colors.primary,
         labelStyle: {
           fontFamily: 'Kanit-Regular',
         },

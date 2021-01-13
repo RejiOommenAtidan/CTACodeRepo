@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from './HeaderButton';
 import { GoogleSignin } from '@react-native-community/google-signin';
@@ -30,7 +30,7 @@ export const CustomHeaderRightButton = (props) => {
         }
     };
     const handleLogoutButtonPress = () => {
-        Alert.alert("Logout", "Are you Sure you want to Logout ?",
+        Alert.alert("Logout", "Are you Sure you want to Logout?",
             [
                 {
                     text: 'No',
@@ -45,8 +45,9 @@ export const CustomHeaderRightButton = (props) => {
     return (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
             <Item
-                title="Menu"
-                iconName={Platform.OS === 'android' ? "logout" : "logout"}
+                title="Logout"
+                //iconName={Platform.OS === 'android' ? "logout" : "logout"}
+                iconName={"logout"}
                 onPress={handleLogoutButtonPress}
             />
         </HeaderButtons>
