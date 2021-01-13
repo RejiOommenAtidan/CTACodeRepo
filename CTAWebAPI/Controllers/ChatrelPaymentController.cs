@@ -35,7 +35,7 @@ namespace CTAWebAPI.Controllers
             _chatrelPaymentRepository = new ChatrelPaymentRepository(info.sConnectionString);
             _chatrelPaymentVMRepository = new ChatrelPaymentVMRepository(info.sConnectionString);
             _ctaLogger = new CTALogger(info);
-    }
+        }
 
         #region Add new Payment record
         [HttpPost]
@@ -372,15 +372,15 @@ namespace CTAWebAPI.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetPaymentBreakup(string sChatrelReceiptNumber)
+        public IActionResult GetPaymentBreakup(string receiptNumber)
         {
-            if (String.IsNullOrEmpty(sChatrelReceiptNumber.Trim()))
+            if (String.IsNullOrEmpty(receiptNumber.Trim()))
             {
                 return BadRequest("Receipt Number not provided");
             }
             try
             {
-                IEnumerable<Object> result = _chatrelPaymentVMRepository.GetPaymentBreakup(sChatrelReceiptNumber);
+                IEnumerable<Object> result = _chatrelPaymentVMRepository.GetPaymentBreakup(receiptNumber);
                 if (result != null && result.Count() > 0)
                 {
                     #region Information Logging 
@@ -402,6 +402,9 @@ namespace CTAWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+        
+
 
     }
 }

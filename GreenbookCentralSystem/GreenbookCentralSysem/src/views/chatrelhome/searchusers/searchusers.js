@@ -10,7 +10,7 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import MaterialTable, { MTableToolbar } from 'material-table';
 import {
   oOptions, oTableIcons,
-  sButtonColor, sButtonSize, sButtonVariant, modifyHeaders
+  sButtonColor, sButtonSize, sButtonVariant, modifyHeaders, sDateFormat
 } from "../../../config/commonConfig";
 import { Alerts } from '../../alerts';
 import Moment from 'moment';
@@ -163,7 +163,7 @@ export default () => {
     },
     {
       field: "nAge",
-      title: "Age",
+      title: "AGE",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -179,7 +179,7 @@ export default () => {
     },
     {
       field: "sAuthRegion",
-      title: "Authority Region",
+      title: "AUTHORITY REGION",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -195,7 +195,7 @@ export default () => {
     },
     {
       field: "sCountry",
-      title: "Country",
+      title: "COUNTRY",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -211,7 +211,7 @@ export default () => {
     },
     {
       field: "sStatus",
-      title: "Status",
+      title: "STATUS",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -227,7 +227,7 @@ export default () => {
     },
     {
       field: "dtPayment",
-      title: "Last Chatrel Date",
+      title: "LAST CHATREL DATE",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -316,7 +316,13 @@ export default () => {
     .then(resp => {
       setLoading(false);
       if(resp.status === 200){
+        var i = 1;
         console.log("Received Search Result", resp.data);
+        resp.data.forEach((element) => {
+          element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sDateFormat) : null;
+          element.nSerialNo = i++;
+          element.sFirstName = element.sLastName ? `${element.sFirstName}  ${element.sLastName}` : `${element.sFirstName}`;
+        });
         setdataAPI(resp.data);
       }
     })

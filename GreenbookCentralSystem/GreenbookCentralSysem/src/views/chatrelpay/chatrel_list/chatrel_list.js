@@ -3,10 +3,9 @@ import {
   Grid,
   Typography,
   Breadcrumbs,
-  Link,
   Button
 } from '@material-ui/core';
-import { useHistory, NavLink, useLocation } from 'react-router-dom';
+import { useHistory, NavLink, useLocation, Link } from 'react-router-dom';
 
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
@@ -119,10 +118,11 @@ export default function ChatrelList(){
     });
   };
 
+  
 
   const columns = [
     {
-      field: "id",
+      field: "nSerialNo",
       title: "Sr No.",
       hidden: true,
     },
@@ -134,7 +134,7 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
+      //render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
     },
     {
       field: "sGBID",
@@ -151,7 +151,20 @@ export default function ChatrelList(){
         padding: '5px',
         borderRight: '1px solid grey'
       },
-      render: rowData => <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewReceipt(rowData['sChatrelReceiptNumber']) }}><span><u>{rowData['sChatrelReceiptNumber']}</u></span></Button>
+      // render: rowData => <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewReceipt(rowData['sChatrelReceiptNumber']) }}><span><u>{rowData['sChatrelReceiptNumber']}</u></span></Button>
+      render: rowData => 
+      <>
+        <Link to={{
+          pathname: '/ChatrelPay/ChatrelReceipt',
+          search: `?receiptNumber=${rowData['sChatrelReceiptNumber']}`,
+          state: {sReceiptNumber: rowData['sChatrelReceiptNumber']},
+          }}
+          target='_blank'
+        >
+          <span style={{color: 'blue'}}><u>{rowData['sChatrelReceiptNumber']}</u></span>
+        </Link>
+      </>
+
     },
     {
       field: "sFirstName",
@@ -330,6 +343,11 @@ export default function ChatrelList(){
       setisLoading(false);
       if (resp.status === 200) {
         console.log("Chatrel List", resp.data);
+        var i = 1;
+        resp.data.forEach((element) => {
+          element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sDateFormat) : null;
+          element.nSerialNo = i++;
+        });
         setdataAPI(resp.data);
         modifyHeaders();
       

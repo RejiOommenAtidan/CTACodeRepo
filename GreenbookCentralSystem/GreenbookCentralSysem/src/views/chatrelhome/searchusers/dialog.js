@@ -2,7 +2,7 @@
 import stock from '../../../assets/images/No_person.jpg';
 import Moment from 'moment';
 import axios from 'axios';
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -16,6 +16,7 @@ import {
   Button,
   Card,
   CircularProgress,
+  Divider,
 } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -137,63 +138,70 @@ export const ViewDialog = (props) => {
             <DialogContentText>
 
               <Card className="card-box mb-spacing-6-x2">
-                <Grid container spacing={0}>
-                  <Grid item xl={9}>
-                    <div className="p-4 text-center">
-                      {/* <div className="avatar-icon-wrapper  mx-auto">
-                        <div className="d-block p-0 avatar-icon-wrapper m-0 border-3">
-                          <div className=" border-3 border-white overflow-hidden">
-                            {data.sPhoto != null &&
-                              <img alt="..." className="img-fluid" style={{ width: '150px', height: '200px' }} src={`data:image/` + data.sFileExtension + `;base64,${data.sPhoto}`} />}
-                            {data.sPhoto == null &&
-                              <img alt="..." className="img-fluid" style={{ width: '150px',height:'200px' }} src={stock} />}
-                          </div>
-                        </div>
-                      </div> */}
-                      <h4 className="font-size-lg font-weight-bold my-2">
-                        {data.profile.sFirstName + ' ' + (data.profile.sLastName ? data.profile.sLastName : "")}
+                <Grid container spacing={0} style={{ textAlign: 'left' }}>
+                  {/* <Grid item sm={6}> */}
+                    {/* <div className="p-4 text-center"> */}
+                      
+                      
+                      {/* <h4 className="font-size-lg font-weight-bold my-2">
+                         {data.sAliasName && '(Alias: ' + data.sAliasName+')'} 
+                      </h4> */}
+                      
+                      {/* <Grid container spacing={1} style={{ textAlign: 'left' }}></Grid> */}
+                        <Grid item sm={4}>
+                        <h4 className="font-size-lg font-weight-bold my-2">
+                        Name: {data.profile.sFirstName + ' ' + (data.profile.sLastName ? data.profile.sLastName : "") + ' ' + (data.profile.sFamilyName ? data.profile.sFamilyName : "")}
                       </h4>
-                      <h4 className="font-size-lg font-weight-bold my-2">
-                        {/* {data.sAliasName && '(Alias: ' + data.sAliasName+')'} */}
-                      </h4>
-                      <h4 className="font-size-lg font-weight-bold my-2">
-                        {data.profile.sCountryID + data.profile.sGBID}
-                      </h4>
-
-
-
-                      <div className="divider my-4" />
-                      <Grid container spacing={1} style={{ textAlign: 'left' }}>
-                        <Grid item sm={6}>
                           Gender: {data.profile.sGender == 'M' ? 'Male' : 'Female'}
                         </Grid>
                         
-                        <Grid item sm={6}>
+                        <Grid item sm={4}>
+                        <h4 className="font-size-lg font-weight-bold my-2">
+                        Greenbook ID: {data.profile.sCountryID + data.profile.sGBID}
+                      </h4>
                           DOB: {data.profile.dtDOB ? Moment(data.profile.dtDOB).format(sDateFormat) : ''}
                         </Grid>
+                        <Grid item sm={4}>
+                        <h4 className="font-size-lg font-weight-bold my-2">
+                          Country:  {data.profile.sCountry}
+                          </h4>
+                        </Grid>
+                       
                         {/* <Grid item sm={6}>
                           Age: {data.profile.nAge}
                         </Grid> */}
-                        <Grid item sm={6}>
+                        {/* <Grid item sm={6}>
                           Family Name: {data.profile.sFamilyName}
-                        </Grid>
-                      </Grid>
-                      <div className="divider my-4" />
+                        </Grid> */}
+                      
+                      
                       <Grid container spacing={1} style={{ textAlign: 'left' }}>
-                        <Grid item sm={6}>
-                          Country:  {data.profile.sCountry}
-                        </Grid>
-                        <Grid item sm={6}>
+                      <Grid item sm={4}>
+                                Phone Number: {data.profile.sPhone}
+                              </Grid>
+                        
+                        <Grid item sm={4}>
                                 Email: {data.profile.sEmail}
 
                               </Grid>
-                              <Grid item sm={6}>
-                                Phone Number: {data.profile.sPhone}
-                              </Grid>
+                              
                       </Grid>
-                    </div>
+                      <Grid container spacing={1} >
+                        <Grid item sm={12}>
+                          <div>
+                            <br />
+                            <br />
+                            <br />
+                        <Divider variant="full-width"  />
+                        </div>
+                        </Grid>
+                        </Grid>
+                    {/* </div> */}
 
+                    
+                        <p style={{fontSize: '1.2em', fontWeight: 'bold'}}>List of Chatrels</p>
                     <Table size="small">
+                    <caption>List of Chatrels</caption>
                         <TableHead>
                           <TableRow>
                             <TableCell>
@@ -225,24 +233,33 @@ export const ViewDialog = (props) => {
                         <TableBody>
                         {data.payment.map((row) => (
                           <TableRow key={row.sGBID}>
-                            <TableCell component="th" scope="row">
-                              {<Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => {viewReceipt(row.sChatrelReceiptNumber) }}><span><u>{row.sChatrelReceiptNumber}</u></span></Button>}
+                            <TableCell align='right' component="th" scope="row">
+                              {/* {<Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => {viewReceipt(row.sChatrelReceiptNumber) }}><span><u>{row.sChatrelReceiptNumber}</u></span></Button>} */}
+                              <Link to={{
+                                pathname: '/ChatrelPay/ChatrelReceipt',
+                                search: `?receiptNumber=${row.sChatrelReceiptNumber}`,
+                                state: {sReceiptNumber: row.sChatrelReceiptNumber},
+                                }}
+                                target='_blank'
+                              >
+                                <span style={{color: 'blue'}}><u>{row.sChatrelReceiptNumber}</u></span>
+                              </Link>
                             </TableCell>
                             <TableCell align="right">{Moment(row.dtPayment).format(sDateFormat)}</TableCell>
                             <TableCell align="right">{row.nChatrelYear}</TableCell>
                             <TableCell align="left">{row.sPaymentCurrency}</TableCell>
                             <TableCell align="right">{row.nChatrelTotalAmount}</TableCell>
-                            <TableCell align="right">{row.sPaymentMode}</TableCell>
-                            <TableCell align="right">{row.sPaymentStatus}</TableCell>
+                            <TableCell align="left">{row.sPaymentMode}</TableCell>
+                            <TableCell align="left">{row.sPaymentStatus}</TableCell>
                             <TableCell align="right">{row.sPaidByGBId}</TableCell>
                           </TableRow>
                         ))}
                         </TableBody>  
                       </Table>
+                     
 
 
-
-                  </Grid>
+                  {/* </Grid> */}
                   {/* <Grid item xl={9}>
                     <Grid container className={props.classes.box}>
                       
