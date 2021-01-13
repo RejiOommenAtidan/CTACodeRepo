@@ -42,6 +42,9 @@ import {
 } from '../screens/FamilyChatrelIntermediateScreen';
 import {LoginScreen, LoginScreenOptions} from '../screens/LoginScreen';
 import Colors from '../constants/Colors';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {GLogout} from '../components/GLogout';
@@ -227,6 +230,10 @@ const MainDrawerNavigator = createDrawerNavigator();
 export const MainNavigator = () => {
   return (
     <MainDrawerNavigator.Navigator
+    drawerStyle={{
+      backgroundColor: Colors.lightBlueChatrelWebsite,
+      width: 240,
+    }}
       initialRouteName={'Login'}
       drawerPosition={'left'}
       drawerType={'front'}
@@ -235,12 +242,6 @@ export const MainNavigator = () => {
       keyboardDismissMode={'on-drag'}
       lazy={true}
       openByDefault={false}
-      drawerContentOptions={{
-        //activeTintColor: Colors.primary,
-        labelStyle: {
-          fontFamily: 'Kanit-Regular',
-        },
-      }}
       drawerContent={(props) => {
         const filteredProps = {
           ...props,
@@ -267,7 +268,14 @@ export const MainNavigator = () => {
             <DrawerItemList {...filteredProps} />
           </DrawerContentScrollView>
         );
-      }}>
+      }}
+      drawerContentOptions={{
+        activeTintColor: Colors.black,
+        labelStyle: {
+          fontFamily: 'Kanit-Regular',
+        },
+      }}
+      >
       {/*Login*/}
       <MainDrawerNavigator.Screen
         name={'Login'}
@@ -275,7 +283,7 @@ export const MainNavigator = () => {
         options={{
           //Make it false after dev ends
           gestureEnabled: true,
-          swipeEnabled: true,
+          swipeEnabled: true
         }}></MainDrawerNavigator.Screen>
       {/*GBDetails*/}
       <MainDrawerNavigator.Screen
@@ -290,6 +298,13 @@ export const MainNavigator = () => {
         name={'Home'}
         component={HomeNavigator}
         options={{
+          drawerIcon:({focused, size}) => (
+            <Ionicons
+              name="md-home"
+              size={size}
+              color={focused ? Colors.black : Colors.black}
+            />
+          ),
           drawerLabel: 'Home',
           gestureEnabled: true,
           swipeEnabled: true,
@@ -299,6 +314,13 @@ export const MainNavigator = () => {
         name={'SelfChatrel'}
         component={SelfChatrelNavigator}
         options={{
+          drawerIcon:({focused, size}) => (
+            <FontAwesome5
+              name="donate"
+              size={size}
+              color={focused ? Colors.black : Colors.black}
+            />
+          ),
           drawerLabel: 'Self Chatrel',
           gestureEnabled: true,
           swipeEnabled: true,
@@ -308,6 +330,13 @@ export const MainNavigator = () => {
         name={'FamilyChatrelIntermediate'}
         component={FamilyChatrelIntermediateNavigator}
         options={{
+          drawerIcon:({focused, size}) => (
+            <Ionicons
+              name="md-heart"
+              size={size}
+              color={focused ? Colors.black : Colors.black}
+            />
+          ),
           drawerLabel: 'Family Chatrel',
           gestureEnabled: true,
           swipeEnabled: true,
@@ -321,6 +350,13 @@ export const MainNavigator = () => {
         name={'FriendChatrelIntermediate'}
         component={FriendChatrelIntermediateNavigator}
         options={{
+          drawerIcon:({focused, size}) => (
+            <Ionicons
+              name="md-people"
+              size={size}
+              color={focused ? Colors.black : Colors.black}
+            />
+          ),
           drawerLabel: 'Friend Chatrel',
           gestureEnabled: true,
           swipeEnabled: true,
@@ -334,25 +370,47 @@ export const MainNavigator = () => {
         name={'ChatrelHistory'}
         component={ChatrelHistoryNavigator}
         options={{
+          drawerIcon:({focused, size}) => (
+            <FontAwesome
+              name="history"
+              size={size}
+              color={focused ? Colors.black : Colors.black}
+            />
+          ),
           drawerLabel: 'Chatrel History',
-          gestureEnabled: true,
-          swipeEnabled: true,
-        }}></MainDrawerNavigator.Screen>
-      {/*MyProfile*/}
-      <MainDrawerNavigator.Screen
-        name={'MyProfile'}
-        component={MyProfileNavigator}
-        options={{
-          drawerLabel: 'My Profile',
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
       {/*FileDispute*/}
       <MainDrawerNavigator.Screen
+      draw
         name={'FileDispute'}
         component={FileDisputeNavigator}
         options={{
+          drawerIcon:({focused, size}) => (
+            <Ionicons
+              name="md-document"
+              size={size}
+              color={focused ? Colors.black : Colors.black}
+            />
+          ),
           drawerLabel: 'File Dispute',
+          gestureEnabled: true,
+          swipeEnabled: true,
+        }}></MainDrawerNavigator.Screen>
+        {/*MyProfile*/}
+      <MainDrawerNavigator.Screen
+        name={'MyProfile'}
+        component={MyProfileNavigator}
+        options={{
+          drawerIcon:({focused, size}) => (
+            <FontAwesome
+              name="user"
+              size={size}
+              color={focused ? Colors.black : Colors.black}
+            />
+          ),
+          drawerLabel: 'My Profile',
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>

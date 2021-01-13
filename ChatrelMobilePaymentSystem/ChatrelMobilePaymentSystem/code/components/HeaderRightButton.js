@@ -30,7 +30,7 @@ export const CustomHeaderRightButton = (props) => {
         }
     };
     const handleLogoutButtonPress = () => {
-        Alert.alert("Logout", "Are you Sure you want to Logout?",
+        Alert.alert("Logout", "Are you sure you want to logout?",
             [
                 {
                     text: 'No',

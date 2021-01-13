@@ -12,7 +12,6 @@ import {
 import {Card, Button} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import {Platform} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
@@ -29,6 +28,7 @@ import {removeGoogleCreds} from '../store/actions/GLoginAction';
 import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
 import {removeGBDetails} from '../store/actions/GBDetailsAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 // import { withNavigationFocus } from 'react-navigation';
 //import CustomHeaderButton from '../components/HeaderButton';
 
@@ -108,7 +108,6 @@ const HomeScreen = (props) => {
           oCurrentGBDetails.sGBID,
       )
       .then((resp) => {
-        //debugger;
         if (resp.status === 200) {
           setnChatrelTotalAmount(resp.data.chatrelPayment.nChatrelTotalAmount);
         }
@@ -342,6 +341,8 @@ const styles = StyleSheet.create({
   },
   newJobContribComponent: {
     backgroundColor: Colors.primary,
+    borderRadius:
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 15,
   },
   newJobContribTextContainer: {
     width: wp(70),

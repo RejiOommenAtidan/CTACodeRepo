@@ -23,12 +23,12 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { GoogleSignin } from '@react-native-community/google-signin';
-import { removeGoogleCreds } from '../store/actions/GLoginAction';
-import { removeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
-import { removeGBDetails } from '../store/actions/GBDetailsAction';
+import {Alert} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {GoogleSignin} from '@react-native-community/google-signin';
+import {removeGoogleCreds} from '../store/actions/GLoginAction';
+import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
+import {removeGBDetails} from '../store/actions/GBDetailsAction';
 import axios from 'axios';
 
 export const GBDetailScreen = (props) => {
@@ -104,19 +104,18 @@ export const GBDetailScreen = (props) => {
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   const removeCompleteDetailsAndNavigateToLogin = async () => {
     try {
-        await GoogleSignin.revokeAccess();
-        await GoogleSignin.signOut();
-        await AsyncStorage.multiRemove(keysToRemove, (err) => {
-            dispatch(removeGoogleCreds);
-            dispatch(removeGBDetails);
-            dispatch(removeCurrentGBDetails);
-            navigation.navigate("Login");
-        });
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      await AsyncStorage.multiRemove(keysToRemove, (err) => {
+        dispatch(removeGoogleCreds);
+        dispatch(removeGBDetails);
+        dispatch(removeCurrentGBDetails);
+        navigation.navigate('Login');
+      });
+    } catch (error) {
+      console.error(error);
     }
-    catch (error) {
-        console.error(error);
-    }
-};
+  };
   const handleVerifyDetailsPress = async () => {
     let oGBDetails = {
       sGBID: sGBID,
@@ -132,7 +131,7 @@ export const GBDetailScreen = (props) => {
     axios
       .post('ChatrelPayment/AuthenticateGBID', oAPI)
       .then((response) => {
-        if(response.data=="Verified"){
+        if (response.data == 'Verified') {
           dispatch(storeGBDetails(oGBDetails));
           dispatch(storeCurrentGBDetails(oGBDetails));
           try {
@@ -143,18 +142,23 @@ export const GBDetailScreen = (props) => {
           }
           props.navigation.navigate('Home');
         }
-        if(response.data=="Failed"){
-          Alert.alert("Invalid Credentials", "Please Contact CTA",
+        if (response.data == 'Failed') {
+          Alert.alert(
+            'Verification failed!',
+            "The entered details didn't match our database. Please try again.",
             [
-                {
-                    text: 'Okay',
-                    onPress: () => true,
-                    style: 'cancel'
-                },
-                { text: 'Logout', onPress: () => removeCompleteDetailsAndNavigateToLogin() }
+              {
+                text: 'Ok',
+                onPress: () => true,
+                style: 'cancel',
+              },
+              {
+                text: 'Logout',
+                onPress: () => removeCompleteDetailsAndNavigateToLogin(),
+              },
             ],
-            { cancelable: false }
-        );
+            {cancelable: false},
+          );
         }
       })
       .catch((error) => {
@@ -169,16 +173,21 @@ export const GBDetailScreen = (props) => {
         // } else {
         //   console.log('Error', error.message);
         // }
-        Alert.alert("Invalid Credentials", "Please Contact CTA",
-            [
-                {
-                    text: 'Okay',
-                    onPress: () => true,
-                    style: 'cancel'
-                },
-                { text: 'Logout', onPress: () => removeCompleteDetailsAndNavigateToLogin() }
-            ],
-            { cancelable: false }
+        Alert.alert(
+          'Verification failed!',
+          "The entered details didn't match our database. Please try again.",
+          [
+            {
+              text: 'Ok',
+              onPress: () => true,
+              style: 'cancel',
+            },
+            {
+              text: 'Logout',
+              onPress: () => removeCompleteDetailsAndNavigateToLogin(),
+            },
+          ],
+          {cancelable: false},
         );
       });
   };
@@ -186,7 +195,7 @@ export const GBDetailScreen = (props) => {
   return (
     <ImageBackground
       source={require('../assets/Background.png')}
-      style={styles.imagebacgroundComponent}
+      style={styles.imagebackgroundComponent}
       resizeMode="cover">
       <LinearGradient
         style={styles.linearGradient}
@@ -195,16 +204,20 @@ export const GBDetailScreen = (props) => {
       >
         <View style={styles.mainContainer}>
           <View style={styles.headerContainer}>
-            <Text style={styles.headerComponent}>Verify your Details</Text>
+            <Text style={styles.headerComponent}>
+              Super! Thanks for logging in through Google.{'\n'}Just one more
+              step now.
+            </Text>
           </View>
-          <View style={styles.textContainer}>
+          {/*<View style={styles.textContainer}>
             <Text style={styles.textComponent}>All fields are Mandatory</Text>
-          </View>
+  </View>*/}
           {/*<form onSubmit={handleSubmit(onSubmit)}>*/}
           <View style={styles.gbidContainer}>
             <Input
               //label="Enter GBID"
               placeholder="Green Book Number"
+              placeholderTextColor={Colors.white}
               //autoFocus={true}
               autoCompleteType={'off'}
               autoCorrect={false}
@@ -212,7 +225,7 @@ export const GBDetailScreen = (props) => {
               //secureTextEntry={!bShowGBID}
               keyboardType={'number-pad'}
               keyboardAppearance={'default'}
-              disableFullscreenUI={true}
+              disableFullscreenUI={false}
               maxLength={7}
               onChangeText={(value) => {
                 setsGBID(value);
@@ -231,18 +244,25 @@ export const GBDetailScreen = (props) => {
           </View>
           <View style={styles.dobContainer}>
             <DatePicker
-              androidMode={'spinner'}
-              //style={styles.dobComponent}
+              showIcon={false}
+              androidMode={'calendar'}
+              style={styles.dobComponent}
               date={dtDOB}
               mode="date"
               placeholder="Date of Birth"
+              placeholderTextColor={Colors.white}
               format={sDateFormatDatePicker}
               maxDate={dtToday}
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
               customStyles={{
-                dateText: {
-                  textAlign: 'left',
+                dateIcon: {
+                  borderWidth: 0,
+                  borderStyle: null,
+                  height: 0,
+                  width: 0,
+                },
+                placeholderText: {
                   color: Colors.white,
                   fontSize:
                     Dimensions.get('window').width < Resolution.nWidthBreakpoint
@@ -250,36 +270,52 @@ export const GBDetailScreen = (props) => {
                       : 20,
                   fontStyle: 'normal',
                   fontWeight: 'normal',
-                  fontFamily: 'Kanit-Light',
+                  fontFamily: 'Kanit-Regular',
                 },
-                dateIcon: {
-                  position: 'absolute',
-                  left: 0,
-                  top:
-                    Dimensions.get('window').height <
-                    Resolution.nHeightBreakpoint
-                      ? 2.4
-                      : 4,
-                  marginLeft: 0,
-                },
-                dateInput: {
-                  marginLeft:
+                dateText: {
+                  //textAlign: 'left',
+                  color: Colors.white,
+                  fontSize:
                     Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                      ? 21.6
-                      : 36,
+                      ? 12
+                      : 20,
+                  fontStyle: 'normal',
+                  fontWeight: 'normal',
+                  fontFamily: 'Kanit-Regular',
+                },
+                // dateIcon: {
+                //   width:0,
+                //   height:0,
+                //position: 'relative',
+                //left: 0,
+                //top:
+                //Dimensions.get('window').height <
+                //Resolution.nHeightBreakpoint
+                //? 2.4
+                //: 4,
+                // marginLeft: 0,
+                //},
+                dateInput: {
+                  flexGrow: 1,
+                  alignItems: 'flex-start',
+                  borderLeftWidth: 0,
+                  borderRightWidth: 0,
+                  borderTopWidth: 0,
                 },
               }}
               onDateChange={(date) => {
-                console.log(date);
                 setdtDOB(date);
               }}
             />
           </View>
           <View style={styles.buttonContainer}>
             <Button
-              titleStyle={{color: Colors.black}}
+              titleStyle={{
+                color: Colors.black,
+                fontWeight: '700',
+              }}
               buttonStyle={styles.buttonComponent}
-              title="Verify Details"
+              title="VERIFY"
               onPress={() => {
                 handleVerifyDetailsPress();
               }}
@@ -301,32 +337,28 @@ export const GBDetailScreenOptions = (navData) => {
   };
 };
 
-// console.log(Dimensions.get('window').width);
-// console.log(Dimensions.get('window').height);
-
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
     marginHorizontal:
       Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     marginVertical:
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
     flexDirection: 'column',
   },
-  imagebacgroundComponent: {
+  imagebackgroundComponent: {
     flex: 1,
   },
   headerContainer: {
-    width: wp(70),
-    height: hp(6.5),
-    marginTop: hp(27.5),
+    width: wp(85),
+    height: hp(15),
+    marginTop: hp(26),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
   },
   headerComponent: {
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 18 : 30,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 16.2 : 27,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.white,
@@ -336,7 +368,7 @@ const styles = StyleSheet.create({
     //letterSpacing: Resolution.nLetterSpacing,
   },
   textContainer: {
-    width: wp(70),
+    width: wp(85),
     height: hp(3.5),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
@@ -354,7 +386,7 @@ const styles = StyleSheet.create({
     //letterSpacing: Resolution.nLetterSpacing,
   },
   gbidContainer: {
-    width: wp(77.5),
+    width: wp(85),
     height: hp(3.5),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint
@@ -375,10 +407,11 @@ const styles = StyleSheet.create({
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
     fontStyle: 'normal',
     fontWeight: '300',
-    fontFamily: 'Kanit-Light',
+    fontFamily: 'Kanit-Regular',
   },
   dobContainer: {
-    width: wp(80),
+    flexDirection: 'row',
+    width: wp(85),
     height: hp(3.5),
     marginTop:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint
@@ -396,9 +429,10 @@ const styles = StyleSheet.create({
     // fontStyle: "normal",
     // fontWeight: "normal",
     // fontFamily: 'Kanit-Light'
+    flexGrow: 1,
   },
   buttonContainer: {
-    width: wp(80),
+    width: wp(85),
     height: hp(3.5),
     marginTop:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint
@@ -410,6 +444,9 @@ const styles = StyleSheet.create({
         : 34,
   },
   buttonComponent: {
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: Colors.buttonYellow,
     backgroundColor: Colors.buttonYellow,
     height: hp(4.25),
     //color: Colors.black
@@ -424,6 +461,6 @@ const styles = StyleSheet.create({
     //borderRadius: 5,
     height: hp(100),
     width: wp(100),
-    opacity: 0.675,
+    opacity: 0.8,
   },
 });

@@ -13,5 +13,6 @@ export default {
     ChatrelScreensBGColor: '#f6f6f6',
     blueCardColor: '#aef4ff',
     darkYellowFamilyPage: '#eb920d',
-    red:'#ff0000'
+    red:'#ff0000',
+    lightBlueChatrelWebsite:'#ced9fd'
 };
