@@ -13,7 +13,7 @@ import {Card, Button} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Platform} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
@@ -23,6 +23,12 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {useNavigation} from '@react-navigation/native';
+import {GoogleSignin} from '@react-native-community/google-signin';
+import {removeGoogleCreds} from '../store/actions/GLoginAction';
+import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
+import {removeGBDetails} from '../store/actions/GBDetailsAction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { withNavigationFocus } from 'react-navigation';
 //import CustomHeaderButton from '../components/HeaderButton';
 
@@ -76,6 +82,25 @@ const HomeScreen = (props) => {
     (state) => state.CurrentGBDetailsReducer.oCurrentGBDetails,
   );
 
+  const dispatch = useDispatch();
+  let keysToRemove = ['oUserInfo', 'oGBInfo'];
+  const navigation = useNavigation();
+
+  const removeCompleteDetailsAndNavigateToLogin = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      await AsyncStorage.multiRemove(keysToRemove, (err) => {
+        dispatch(removeGoogleCreds);
+        dispatch(removeGBDetails);
+        dispatch(removeCurrentGBDetails);
+        navigation.navigate('Login');
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const getChatrelDetails = () => {
     axios
       .get(
@@ -83,13 +108,30 @@ const HomeScreen = (props) => {
           oCurrentGBDetails.sGBID,
       )
       .then((resp) => {
+        //debugger;
         if (resp.status === 200) {
           setnChatrelTotalAmount(resp.data.chatrelPayment.nChatrelTotalAmount);
         }
       })
       .catch((error) => {
-        console.log(error.message);
-        console.log(error.config);
+        // console.log(error.message);
+        // console.log(error.config);
+        Alert.alert(
+          'Invalid Details for Chatrel',
+          'Please Contact CTA',
+          [
+            // {
+            //     text: 'Okay',
+            //     onPress: () => true,
+            //     style: 'cancel'
+            // },
+            {
+              text: 'Logout',
+              onPress: () => removeCompleteDetailsAndNavigateToLogin(),
+            },
+          ],
+          {cancelable: false},
+        );
       });
   };
 
@@ -147,61 +189,68 @@ const HomeScreen = (props) => {
           })}
         </View>
         {/**/}
-        <View style={styles.pendingAmountContainer}>
-          <Card containerStyle={styles.pendingAmountComponent}>
-            <Card.Image
-              style={styles.pendingAmountImageComponent}
-              source={require('../assets/Pay.png')}
-            />
-            <Card.Divider />
-            <Text style={styles.pendingAmountTextComponent}>
-              Pending Amount ${nChatrelTotalAmount}
-            </Text>
-            <Button
-              titleStyle={{color: Colors.white, fontFamily: 'Kanit-Regular'}}
-              buttonStyle={{
-                width: wp(75),
-                backgroundColor: Colors.greenBG,
-                borderRadius:
-                  Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                    ? 10.2
-                    : 17,
-              }}
-              title="PAY NOW"
-              onPress={() => {
-                props.navigation.navigate('SelfChatrel');
-              }}
-            />
-          </Card>
-        </View>
+        {nChatrelTotalAmount !== 0 && (
+          <View style={styles.pendingAmountContainer}>
+            <Card containerStyle={styles.pendingAmountComponent}>
+              <Card.Image
+                style={styles.pendingAmountImageComponent}
+                source={require('../assets/Pay.png')}
+              />
+              <Card.Divider />
+              <Text style={styles.pendingAmountTextComponent}>
+                Pending Amount ${nChatrelTotalAmount}
+              </Text>
+              <Button
+                titleStyle={{color: Colors.white, fontFamily: 'Kanit-Regular'}}
+                buttonStyle={{
+                  width: wp(75),
+                  backgroundColor: Colors.greenBG,
+                  borderRadius:
+                    Dimensions.get('window').width < Resolution.nWidthBreakpoint
+                      ? 10.2
+                      : 17,
+                }}
+                title="PAY NOW"
+                onPress={() => {
+                  props.navigation.navigate('SelfChatrel');
+                }}
+              />
+            </Card>
+          </View>
+        )}
         {/*New Job Contribution*/}
-        {/*<View style={styles.newJobContribContainer}>
-          <Card
-            containerStyle={styles.newJobContribComponent}
-          >
-            <View style={styles.newJobContribTextContainer}>
-              <Text style={styles.newJobContribTextComponent}>
-                Have you gotten a new{"\n"} job since your last{"\n"} contribution?
-          </Text>
-            </View>
-            <View style={styles.jobContribStatusTextContainer}>
-              <Text style={styles.jobContribStatusTextComponent}>
-                Change your status and contribute more towards{"\n"} the Tibetan Government.
-          </Text>
-            </View>
-            <Button
-              titleStyle={{ color: Colors.white, fontFamily: 'Kanit-Regular' }}
-              buttonStyle={{
-                backgroundColor: Colors.buttonYellow,
-                borderRadius: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.2 : 17,
-              }}
-              title='UPDATE EMPLOYEMENT STATUS'
-              onPress={() => {
-                props.navigation.navigate('SelfChatrel');
-              }}
-            />
-          </Card>
-            </View>*/}
+        {nChatrelTotalAmount === 0 && (
+          <View style={styles.newJobContribContainer}>
+            <Card containerStyle={styles.newJobContribComponent}>
+              <View style={styles.newJobContribTextContainer}>
+                <Text style={styles.newJobContribTextComponent}>
+                  Have you gotten a new{'\n'} job since your last{'\n'}{' '}
+                  contribution?
+                </Text>
+              </View>
+              <View style={styles.jobContribStatusTextContainer}>
+                <Text style={styles.jobContribStatusTextComponent}>
+                  Change your status and contribute more towards{'\n'} the
+                  Tibetan Government.
+                </Text>
+              </View>
+              <Button
+                titleStyle={{color: Colors.white, fontFamily: 'Kanit-Regular'}}
+                buttonStyle={{
+                  backgroundColor: Colors.buttonYellow,
+                  borderRadius:
+                    Dimensions.get('window').width < Resolution.nWidthBreakpoint
+                      ? 10.2
+                      : 17,
+                }}
+                title="UPDATE EMPLOYEMENT STATUS"
+                onPress={() => {
+                  props.navigation.navigate('SelfChatrel');
+                }}
+              />
+            </Card>
+          </View>
+        )}
       </View>
     </ScrollView>
   );
@@ -263,7 +312,7 @@ const styles = StyleSheet.create({
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 20 : 25,
   },
   singleCardContainer: {
-    width: wp(100)/3,
+    width: wp(100) / 3,
   },
   singleCardComponent: {
     height:
@@ -317,7 +366,7 @@ const styles = StyleSheet.create({
   },
   jobContribStatusTextComponent: {
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
     fontFamily: 'NunitoSans-Light',
     fontStyle: 'normal',
     fontWeight: '300',

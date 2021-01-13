@@ -7,6 +7,7 @@ export const sAdminEmail = "admin@CTA.com";
 export const sSnackbarAddMessage = "Record Added successfully";
 export const sSnackbarUpdateMessage = "Record Updated successfully";
 export const sDateFormat = "DD-MM-YYYY";
+export const sDateFormatDatePicker = "MM-DD-YYYY";
 export const sClientIDAndroid = "1071046831303-1naot2q7pull58cpifp3rosfn65bdrsc.apps.googleusercontent.com";
 export const sPayPalClientID = "Aa97-jCSZKlyGrIauDxygYtVHda-STWEetJRp7g1C5rxqCeeJqydrxG5mF0AF0DbIQPTMG1i8RLV1veq";
 export const errorContainer = {

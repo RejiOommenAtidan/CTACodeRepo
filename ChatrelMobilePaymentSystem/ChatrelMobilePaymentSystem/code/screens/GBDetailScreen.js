@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
-import {sDateFormat} from '../constants/CommonConfig';
+import {sDateFormatDatePicker} from '../constants/CommonConfig';
 import Moment from 'moment';
 import {useSelector, useDispatch} from 'react-redux';
 import {storeGBDetails} from '../store/actions/GBDetailsAction';
@@ -100,7 +100,7 @@ export const GBDetailScreen = (props) => {
   const [sGBID, setsGBID] = useState('');
   const [bShowGBID, setbShowGBID] = useState(true);
   const [dtDOB, setdtDOB] = useState(null);
-  const dtToday = Moment().format(sDateFormat);
+  const dtToday = Moment().format(sDateFormatDatePicker);
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   const removeCompleteDetailsAndNavigateToLogin = async () => {
     try {
@@ -204,7 +204,7 @@ export const GBDetailScreen = (props) => {
           <View style={styles.gbidContainer}>
             <Input
               //label="Enter GBID"
-              placeholder="Enter 7 Digit Green Book Number"
+              placeholder="Green Book Number"
               //autoFocus={true}
               autoCompleteType={'off'}
               autoCorrect={false}
@@ -235,8 +235,8 @@ export const GBDetailScreen = (props) => {
               //style={styles.dobComponent}
               date={dtDOB}
               mode="date"
-              placeholder="Select DOB"
-              format={sDateFormat}
+              placeholder="Date of Birth"
+              format={sDateFormatDatePicker}
               maxDate={dtToday}
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
@@ -270,6 +270,7 @@ export const GBDetailScreen = (props) => {
                 },
               }}
               onDateChange={(date) => {
+                console.log(date);
                 setdtDOB(date);
               }}
             />
@@ -300,8 +301,8 @@ export const GBDetailScreenOptions = (navData) => {
   };
 };
 
-console.log(Dimensions.get('window').width);
-console.log(Dimensions.get('window').height);
+// console.log(Dimensions.get('window').width);
+// console.log(Dimensions.get('window').height);
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -421,8 +422,8 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     // justifyContent: 'center',
     //borderRadius: 5,
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
-    opacity: 0.775,
+    height: hp(100),
+    width: wp(100),
+    opacity: 0.675,
   },
 });
