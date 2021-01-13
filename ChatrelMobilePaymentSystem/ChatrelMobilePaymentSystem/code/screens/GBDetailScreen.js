@@ -120,7 +120,7 @@ export const GBDetailScreen = (props) => {
   const handleVerifyDetailsPress = async () => {
     let oGBDetails = {
       sGBID: sGBID,
-      dtDob: dtDOB,
+      dtDOB: dtDOB,
     };
     let oAPI = {
       sGBID: sGBID,

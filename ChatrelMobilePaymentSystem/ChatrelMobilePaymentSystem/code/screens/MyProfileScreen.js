@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import {Platform, Dimensions} from 'react-native';
+import {Dimensions} from 'react-native';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../../code/constants/Colors';
 import {CustomHeaderRightButton} from '../components/HeaderRightButton';
@@ -10,16 +10,19 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {useSelector} from 'react-redux';
 
 export const MyProfileScreen = (props) => {
-  const oUserHardcodedMyProfile = {
-    sGBID: '7654321',
-    sName: 'ABCD DEFG',
-    nAge: 22,
-    dtDOB: '01-01-2001',
-    sEmailAddress: 'a.b@gmail.com',
-    sAuthorityRegion: 'Thimpu',
-  };
+  const oGBDetails = useSelector((state) => state.GBDetailsReducer.oGBDetails);
+  const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
+  // const oUserHardcodedMyProfile = {
+  //   sGBID: '7654321',
+  //   sName: 'ABCD DEFG',
+  //   nAge: 22,
+  //   dtDOB: '01-01-2001',
+  //   sEmailAddress: 'a.b@gmail.com',
+  //   sAuthorityRegion: 'Thimpu',
+  // };
   return (
     <View style={styles.mainContainer}>
       {/*<View style={styles.headerContainer}>
@@ -33,53 +36,47 @@ export const MyProfileScreen = (props) => {
       </View>
       <View style={styles.nameValueContainer}>
         <Text style={styles.nameValueComponent}>
-          {oUserHardcodedMyProfile.sName}
+          {oGoogle.givenName + ' ' + oGoogle.familyName}
         </Text>
       </View>
       {/*GBID*/}
       <View style={styles.gbidLabelContainer}>
-        <Text style={styles.gbidLabelComponent}>GREENBOOK ID</Text>
+        <Text style={styles.gbidLabelComponent}>GREEN BOOK ID</Text>
       </View>
       <View style={styles.gbidValueContainer}>
-        <Text style={styles.gbidValueComponent}>
-          {oUserHardcodedMyProfile.sGBID}
-        </Text>
+        <Text style={styles.gbidValueComponent}>{oGBDetails.sGBID}</Text>
       </View>
       {/*DOB*/}
       <View style={styles.dtDOBLabelContainer}>
         <Text style={styles.dtDOBLabelComponent}>DATE OF BIRTH</Text>
       </View>
       <View style={styles.dtDOBValueContainer}>
-        <Text style={styles.dtDOBValueComponent}>
-          {oUserHardcodedMyProfile.dtDOB}
-        </Text>
+        <Text style={styles.dtDOBValueComponent}>{oGBDetails.dtDOB}</Text>
       </View>
       {/*AGE*/}
-      <View style={styles.ageLabelContainer}>
+      {/*<View style={styles.ageLabelContainer}>
         <Text style={styles.ageLabelComponent}>AGE</Text>
       </View>
       <View style={styles.ageValueContainer}>
         <Text style={styles.ageValueComponent}>
           {oUserHardcodedMyProfile.nAge}
         </Text>
-      </View>
+  </View>*/}
       {/*AUTHREGION*/}
-      <View style={styles.sAuthRegionLabelContainer}>
+      {/*<View style={styles.sAuthRegionLabelContainer}>
         <Text style={styles.sAuthRegionLabelComponent}>AUTHORITY REGION</Text>
       </View>
       <View style={styles.sAuthRegionValueContainer}>
         <Text style={styles.sAuthRegionValueComponent}>
           {oUserHardcodedMyProfile.sAuthorityRegion}
         </Text>
-      </View>
+</View>*/}
       {/*EMAIL ADDRESS*/}
       <View style={styles.emailIDLabelContainer}>
         <Text style={styles.emailIDLabelComponent}>EMAIL ADDRESS</Text>
       </View>
       <View style={styles.emailIDValueContainer}>
-        <Text style={styles.emailIDValueComponent}>
-          {oUserHardcodedMyProfile.sEmailAddress}
-        </Text>
+        <Text style={styles.emailIDValueComponent}>{oGoogle.email}</Text>
       </View>
     </View>
   );
@@ -149,7 +146,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 :12,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -170,7 +167,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 :18,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -190,7 +187,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 :12,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -211,7 +208,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 :18,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -231,7 +228,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 :12,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -252,7 +249,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 :18,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -272,7 +269,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 :12,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -293,7 +290,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 :18,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -313,7 +310,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 :12,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -334,7 +331,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 :18,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -354,7 +351,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 :12,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -375,7 +372,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 :18,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
