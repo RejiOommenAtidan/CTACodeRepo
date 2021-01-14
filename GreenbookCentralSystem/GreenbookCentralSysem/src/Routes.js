@@ -321,14 +321,14 @@ const Routes = () => {
                     <PrivateRoute path="/Reports/Madeb/Bhorlak" feature={45} component={ReportMadebBhorlak} exact />
                     <PrivateRoute path="/ChangePassword" feature={46} component={ChangePassword} />
                     <PrivateRoute path="/Reports/DeletedGB" feature={47} component={ReportDeletedGB} exact />
+                    <PrivateRoute path="/Chatrel/ChatrelList" feature={48} component={ChatrelList} exact />
+                    <PrivateRoute path="/Chatrel/ChatrelReceipt" feature={49} component={ChatrelReceipt} exact />
+                    <PrivateRoute path="/Chatrel/SearchUsers" feature={50}  component={ChatrelSearchUsers} exact />
+                    <PrivateRoute path="/Chatrel/BulkImport" feature={51} component={ChatrelBulkUpload} exact />
                     <Route path="/Chatrel" component={Chatrel} exact />
                     <Route path="/ChatrelPay" component={ChatrelPay} exact />
                     <Route path="/ChatrelPay/MainPage" component={MainPage} exact />
                     <Route path="/ChatrelPay/PaymentPage" component={PaymentPage} exact />
-                    <Route path="/Chatrel/ChatrelList" component={ChatrelList} exact />
-                    <Route path="/Chatrel/ChatrelReceipt" component={ChatrelReceipt} exact />
-                    <Route path="/Chatrel/SearchUsers" component={ChatrelSearchUsers} exact />
-                    <Route path="/Chatrel/BulkImport" component={ChatrelBulkUpload} exact />
                   </motion.div>
                 </Switch>
               </LeftSidebar>
