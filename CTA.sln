@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatrelDBL", "ChatrelDBL\Ch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatrelWebPaymentSystem", "ChatrelWebPaymentSystem\ChatrelWebPaymentSystem.csproj", "{4E7B228F-C6A5-4EA1-B139-705793B70DEE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTADataSyncMySQL", "CTADataSyncMySQL\CTADataSyncMySQL.csproj", "{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -174,6 +176,26 @@ Global
 		{4E7B228F-C6A5-4EA1-B139-705793B70DEE}.Release|x64.Build.0 = Release|Any CPU
 		{4E7B228F-C6A5-4EA1-B139-705793B70DEE}.Release|x86.ActiveCfg = Release|Any CPU
 		{4E7B228F-C6A5-4EA1-B139-705793B70DEE}.Release|x86.Build.0 = Release|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Debug|ARM.Build.0 = Debug|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Debug|x64.Build.0 = Debug|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Debug|x86.Build.0 = Debug|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Release|ARM.ActiveCfg = Release|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Release|ARM.Build.0 = Release|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Release|ARM64.Build.0 = Release|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Release|x64.ActiveCfg = Release|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Release|x64.Build.0 = Release|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Release|x86.ActiveCfg = Release|Any CPU
+		{BF4144E0-9DB1-4076-AB8F-DD78BE774FEA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

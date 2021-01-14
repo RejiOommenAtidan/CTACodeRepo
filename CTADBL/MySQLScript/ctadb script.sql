@@ -842,16 +842,16 @@ CREATE TABLE `lstChatrel` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
 INSERT INTO `lstChatrel` (`Id`, `sChatrelKey`, `nChatrelValue`, `dtChatrelFrom`, `dtEntered`, `nEnteredBy`,`dtUpdated`,`nUpdatedBy`) VALUES
-(1, 'USDYearChatrelAmount', '36', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
-(2, 'USDYearChatrelMeal', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
-(3, 'USDYearChatrelSalaryAmt', '50', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
-(4, 'USDChatrelLateFeesPercentage', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
-(5, 'USDChildMonthChatrelAmount', '1', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
-(6, 'INRYearChatrelAmount', '48', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
-(7, 'INRYearChatrelMeal', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
-(8, 'INRYearChatrelSalaryAmt', '0', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
-(9, 'INRChatrelLateFeesPercentage', '10', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
-(10, 'INRChildMonthChatrelAmount', '1', DATE_FORMAT("2011-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(1, 'USDYearChatrelAmount', '36', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(2, 'USDYearChatrelMeal', '10', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(3, 'USDYearChatrelSalaryAmt', '50', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(4, 'USDChatrelLateFeesPercentage', '10', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(5, 'USDChildMonthChatrelAmount', '1', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(6, 'INRYearChatrelAmount', '48', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(7, 'INRYearChatrelMeal', '10', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(8, 'INRYearChatrelSalaryAmt', '0', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(9, 'INRChatrelLateFeesPercentage', '10', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
+(10, 'INRChildMonthChatrelAmount', '1', DATE_FORMAT("2000-04-01", "%Y-%m-%d"), now(), 1, now(), 1),
 (11, 'ChatrelStartYear', '2011', NULL, now(), 1, now(), 1);
 
 -- -------------------------
@@ -1096,11 +1096,11 @@ CREATE TABLE `tblchatrelpayment` (
 CREATE TABLE `tblchatrelbulkdata` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `sBatchNumber` varchar(255) NOT NULL,
-  `bValidate` tinyint NOT NULL,
+  `bValidate` bool NOT NULL,
   `SNo` varchar(255) DEFAULT NULL,
   `GBID` varchar(255) DEFAULT NULL,
   `Name` varchar(255) DEFAULT NULL,
-  `sPaidByGBId` varchar(255) DEFAULT NULL,  
+  `PaidByGBId` varchar(255) DEFAULT NULL,  
   `Currency` varchar(255) DEFAULT NULL,
   `Chatrel` varchar(255) DEFAULT NULL,
   `Meal` varchar(255) DEFAULT NULL,
@@ -1114,12 +1114,13 @@ CREATE TABLE `tblchatrelbulkdata` (
   `BusinessDonation` varchar(255) DEFAULT NULL,
   `AdditionalDonation` varchar(255) DEFAULT NULL,
   `TotalAmount` varchar(255) DEFAULT NULL,
-  `RecieptNo` varchar(255) DEFAULT NULL,
+  `ReceiptNo` varchar(255) DEFAULT NULL,
   `PaymentDate` varchar(255) DEFAULT NULL,
   `Region` varchar(255) DEFAULT NULL,
   `Country` varchar(255) DEFAULT NULL,
   `PaymentMode` varchar(255) DEFAULT NULL,
   `sStatus` varchar(255) DEFAULT NULL,
+  `sRemarkText` text DEFAULT NULL,
   `dtEntered` datetime NOT NULL,
   `nEnteredBy` int(11) NOT NULL,
   `dtUpdated` datetime NOT NULL,
@@ -2220,6 +2221,453 @@ where
     DEALLOCATE PREPARE stmt;
 END$$
 DELIMITER ;
+
+
+DROP procedure IF EXISTS  spValidateBulkUploadedDataByBatchNumber;
+DELIMITER $$
+
+CREATE PROCEDURE spValidateBulkUploadedDataByBatchNumber (IN strBatchNumber varchar(255))
+BEGIN
+
+declare ID int(11);
+declare GBID varchar(255);
+declare `Name` varchar(255);
+declare PaidByGBId varchar(255);
+declare Currency varchar(255);
+declare Chatrel varchar(255);
+declare Meal varchar(255);
+declare Salary varchar(255);
+declare ChatrelFrom varchar(255);
+declare ChatrelTo varchar(255);
+declare FinancialYear varchar(255);
+declare ArrearsPlusLateFees varchar(255);
+declare ArrearsFrom varchar(255);
+declare ArrearsTo varchar(255);
+declare BusinessDonation varchar(255);
+declare AdditionalDonation varchar(255);
+declare TotalAmount varchar(255);
+declare ReceiptNo varchar(255);
+declare PaymentDate varchar(255);
+declare Region varchar(255);
+declare Country varchar(255);
+declare PaymentMode varchar(255);
+declare sStatus varchar(255);
+declare DateFormatInExcel varchar(255) default '%d/%m/%Y';
+
+
+declare done int(11);
+
+
+
+
+declare cur1 cursor for SELECT 	
+								`tblchatrelbulkdata`.`ID`,
+								`tblchatrelbulkdata`.`GBID`,
+								`tblchatrelbulkdata`.`Name`,
+								`tblchatrelbulkdata`.`PaidByGBId`,
+								`tblchatrelbulkdata`.`Currency`,
+								`tblchatrelbulkdata`.`Chatrel`,
+								`tblchatrelbulkdata`.`Meal`,
+								`tblchatrelbulkdata`.`Salary`,
+								`tblchatrelbulkdata`.`ChatrelFrom`,
+								`tblchatrelbulkdata`.`ChatrelTo`,
+								`tblchatrelbulkdata`.`FinancialYear`,
+								`tblchatrelbulkdata`.`ArrearsPlusLateFees`,
+								`tblchatrelbulkdata`.`ArrearsFrom`,
+								`tblchatrelbulkdata`.`ArrearsTo`,
+								`tblchatrelbulkdata`.`BusinessDonation`,
+								`tblchatrelbulkdata`.`AdditionalDonation`,
+								`tblchatrelbulkdata`.`TotalAmount`,
+								`tblchatrelbulkdata`.`ReceiptNo`,
+								`tblchatrelbulkdata`.`PaymentDate`,
+								`tblchatrelbulkdata`.`Region`,
+								`tblchatrelbulkdata`.`Country`,
+								`tblchatrelbulkdata`.`PaymentMode`,
+								`tblchatrelbulkdata`.`sStatus`
+							FROM `tblchatrelbulkdata` where sBatchNumber = strBatchNumber;
+declare continue handler for not found set done=1;
+
+SET SQL_SAFE_UPDATES=0;
+    set done = 0;
+    open cur1;
+    igmLoop: loop
+        fetch cur1 into ID,GBID,Name,PaidByGBId,Currency,Chatrel,Meal,Salary,ChatrelFrom,ChatrelTo,FinancialYear,ArrearsPlusLateFees,ArrearsFrom,
+								ArrearsTo,BusinessDonation,AdditionalDonation,TotalAmount,ReceiptNo,PaymentDate,Region,Country,PaymentMode,
+								sStatus;
+        if done = 1 then leave igmLoop; end if;
+
+		-- select ID,GBID,Name,PaidByGBId,Currency,Chatrel,Meal,Salary,ChatrelFrom,ChatrelTo,FinancialYear,ArrearsPlusLateFees,ArrearsFrom,
+		--  						ArrearsTo,BusinessDonation,AdditionalDonation,TotalAmount,ReceiptNo,PaymentDate,Region,Country,PaymentMode,
+		--  						sStatus;
+
+        
+        
+        IF ( (SELECT COUNT(*) FROM tblgreenbook WHERE sGBID=cast(SUBSTRING(GBID FROM 3)  as unsigned)) <= 0) THEN
+		-- Checking GBID present in DB
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'GBID is not present in DB' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+                -- select 'GBID is not present in DB';
+		ELSEIF (Currency is null or TRIM(Currency) = '') THEN
+        -- Checking Currency Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Currency cannot be blank' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+        ELSEIF (Chatrel is null or TRIM(Chatrel) = '') THEN
+        -- Checking Chatrel Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Chatrel Amount cannot be 0 or NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF ((TRIM(Chatrel) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
+        -- Checking Chatrel Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Chatrel Amount is not decimal' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (Meal is null or TRIM(Meal) = '') THEN
+        -- Checking Meal Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Meal Amount cannot be NULL (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF ((TRIM(Meal) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
+        -- Checking Meal Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Meal Amount is not decimal' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (Salary is null or TRIM(Salary) = '') THEN
+        -- Checking Salary Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Salary Amount cannot be NULL (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF ((TRIM(Salary) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
+        -- Checking Salary Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Salary Amount is not decimal' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (ArrearsPlusLateFees is null or TRIM(ArrearsPlusLateFees) = '') THEN
+        -- Checking ArrearsPlusLateFees Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'ArrearsPlusLateFees Amount cannot be NULL (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF ((TRIM(ArrearsPlusLateFees) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
+        -- Checking ArrearsPlusLateFees Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'ArrearsPlusLateFees Amount is not decimal' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (AdditionalDonation is null or TRIM(AdditionalDonation) = '') THEN
+        -- Checking AdditionalDonation Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'AdditionalDonation Amount cannot be NULL (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF ((TRIM(AdditionalDonation) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
+        -- Checking AdditionalDonation Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'AdditionalDonation Amount is not decimal' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (BusinessDonation is null or TRIM(BusinessDonation) = '') THEN
+        -- Checking BusinessDonation Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'BusinessDonation Amount cannot be NULL (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF ((TRIM(BusinessDonation) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
+        -- Checking BusinessDonation Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'BusinessDonation Amount is not decimal' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (TotalAmount is null or TRIM(TotalAmount) = '') THEN
+        -- Checking TotalAmount Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'TotalAmount cannot be NULL (Mention 0)' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF ((TRIM(TotalAmount) regexp '^[0-9]*[.]{0,1}[0-9]*$') = 0) THEN
+        -- Checking TotalAmount Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'TotalAmount is not decimal' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;	
+		ELSEIF (FinancialYear REGEXP '^-?[0-9]+$' = 0) THEN
+        -- Checking FinancialYear Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'FinancialYear cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (ReceiptNo is null or TRIM(ReceiptNo)  = '') THEN
+        -- Checking ReceiptNo Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'ReceiptNo cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (ArrearsFrom is not null AND STR_TO_DATE(ArrearsFrom,DateFormatInExcel) is NULL) THEN
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'ArrearsFrom format is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (ArrearsTo is not null AND STR_TO_DATE(ArrearsTo,DateFormatInExcel) is NULL) THEN
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'ArrearsTo format is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (ChatrelFrom is not null AND STR_TO_DATE(ChatrelFrom,DateFormatInExcel) is NULL) THEN
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'ChatrelFrom format is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;		
+		ELSEIF (ChatrelTo is not null AND STR_TO_DATE(ChatrelTo,DateFormatInExcel) is NULL) THEN
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'ChatrelTo format is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;		
+		ELSEIF (PaymentDate is null  or TRIM(PaymentDate) = '') THEN
+        -- Checking PaymentDate Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'PaymentDate cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (STR_TO_DATE(PaymentDate,DateFormatInExcel) is NULL) THEN
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'PaymentDate format is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (Region is null   or TRIM(Region) = '') THEN
+        -- Checking Region Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Region cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (Country is null   or TRIM(Country) = '') THEN
+        -- Checking Country Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Country cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSE
+		-- ELSE this tblchatrelbulkdata record is good for save
+				UPDATE `tblchatrelbulkdata` 
+					SET `bValidate` = 1 , `sStatus` = 'Validate Sucess'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+                -- select ID;
+        END IF;
+
+      end loop igmLoop;
+      close cur1;
+END$$
+DELIMITER ;
+
+
+DROP procedure IF EXISTS  spInsertBulkUploadedDataByBatchNumber;
+DELIMITER $$
+
+CREATE PROCEDURE spInsertBulkUploadedDataByBatchNumber (IN strBatchNumber varchar(255))
+BEGIN
+
+declare ID int(11);
+declare GBID varchar(255);
+declare `Name` varchar(255);
+declare PaidByGBId varchar(255);
+declare Currency varchar(255);
+declare Chatrel varchar(255);
+declare Meal varchar(255);
+declare Salary varchar(255);
+declare ChatrelFrom varchar(255);
+declare ChatrelTo varchar(255);
+declare FinancialYear varchar(255);
+declare ArrearsPlusLateFees varchar(255);
+declare ArrearsFrom varchar(255);
+declare ArrearsTo varchar(255);
+declare BusinessDonation varchar(255);
+declare AdditionalDonation varchar(255);
+declare TotalAmount varchar(255);
+declare ReceiptNo varchar(255);
+declare PaymentDate varchar(255);
+declare Region varchar(255);
+declare Country varchar(255);
+declare PaymentMode varchar(255);
+declare sStatus varchar(255);
+
+
+declare done int(11);
+
+
+
+declare cur1 cursor for SELECT 	
+								`tblchatrelbulkdata`.`ID`,
+								`tblchatrelbulkdata`.`GBID`,
+								`tblchatrelbulkdata`.`Name`,
+								`tblchatrelbulkdata`.`PaidByGBId`,
+								`tblchatrelbulkdata`.`Currency`,
+								`tblchatrelbulkdata`.`Chatrel`,
+								`tblchatrelbulkdata`.`Meal`,
+								`tblchatrelbulkdata`.`Salary`,
+								`tblchatrelbulkdata`.`ChatrelFrom`,
+								`tblchatrelbulkdata`.`ChatrelTo`,
+								`tblchatrelbulkdata`.`FinancialYear`,
+								`tblchatrelbulkdata`.`ArrearsPlusLateFees`,
+								`tblchatrelbulkdata`.`ArrearsFrom`,
+								`tblchatrelbulkdata`.`ArrearsTo`,
+								`tblchatrelbulkdata`.`BusinessDonation`,
+								`tblchatrelbulkdata`.`AdditionalDonation`,
+								`tblchatrelbulkdata`.`TotalAmount`,
+								`tblchatrelbulkdata`.`ReceiptNo`,
+								`tblchatrelbulkdata`.`PaymentDate`,
+								`tblchatrelbulkdata`.`Region`,
+								`tblchatrelbulkdata`.`Country`,
+								`tblchatrelbulkdata`.`PaymentMode`,
+								`tblchatrelbulkdata`.`sStatus`
+							FROM `tblchatrelbulkdata` where sBatchNumber = strBatchNumber and bValidate = 1;
+declare continue handler for not found set done=1;
+
+INSERT INTO `tblchatrelpayment`
+(
+`sGBId`,
+`nChatrelYear`,
+`nChatrelTotalAmount`,
+`sChatrelReceiptNumber`,
+`sPaymentStatus`,
+`sPaymentMode`,
+`sPaymentCurrency`,
+`sPaidByGBId`,
+`sPayPal_Status`,
+`sPayPal_ID`,
+`sPayPal_Currency_Code`,
+`sPayPal_Currency_Value`,
+`sPayPal_Response_Object`,
+`dtPayment`,
+`dtEntered`,
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`)
+SELECT 
+    cast(SUBSTRING(`tblchatrelbulkdata`.`GBID` FROM 3)  as unsigned),
+    `tblchatrelbulkdata`.`FinancialYear`,
+    `tblchatrelbulkdata`.`TotalAmount`,
+    `tblchatrelbulkdata`.`ReceiptNo`,
+	'Success',
+    'Offline',
+    `tblchatrelbulkdata`.`Currency`,
+    `tblchatrelbulkdata`.`PaidByGBId`,
+    null,
+    null,
+    null,
+    null,
+    null,
+    STR_TO_DATE(`tblchatrelbulkdata`.`PaymentDate`,'%d/%m/%Y') as PaymentDate,
+    now(),
+    1,
+	now(),
+	1
+FROM `tblchatrelbulkdata` where  `tblchatrelbulkdata`.`sBatchNumber` = strBatchNumber and `tblchatrelbulkdata`.`bValidate` = 1;
+
+
+SET SQL_SAFE_UPDATES=0;
+    set done = 0;
+    open cur1;
+    igmLoop: loop
+        fetch cur1 into ID,GBID,Name,PaidByGBId,Currency,Chatrel,Meal,Salary,ChatrelFrom,ChatrelTo,FinancialYear,ArrearsPlusLateFees,ArrearsFrom,
+								ArrearsTo,BusinessDonation,AdditionalDonation,TotalAmount,ReceiptNo,PaymentDate,Region,Country,PaymentMode,
+								sStatus;
+        if done = 1 then leave igmLoop; end if;
+
+		-- select ID,GBID,Name,PaidByGBId,Currency,Chatrel,Meal,Salary,ChatrelFrom,ChatrelTo,FinancialYear,ArrearsPlusLateFees,ArrearsFrom,
+		--  						ArrearsTo,BusinessDonation,AdditionalDonation,TotalAmount,ReceiptNo,PaymentDate,Region,Country,PaymentMode,
+		--  						sStatus;
+        
+        -- Insert lnk Tables with ID
+					
+			SELECT Id into @ChatrelPaymentID_var FROM tblChatrelPayment WHERE sChatrelReceiptNumber = ReceiptNo limit 1;
+
+
+			INSERT INTO `lnkgbchatrel`
+			(
+				`chatrelpaymentID`,
+				`sGBId`,
+				`nChatrelAmount`,
+				`nChatrelMeal`,
+				`nChatrelYear`,
+				`nChatrelLateFeesPercentage`,
+				`nChatrelLateFeesValue`,
+				`nArrearsAmount`,
+				`dtArrearsFrom`,
+				`dtArrearsTo`,
+				`nCurrentChatrelSalaryAmt`,
+				`dtCurrentChatrelFrom`,
+				`dtCurrentChatrelTo`,
+				`nChatrelTotalAmount`,
+				`sChatrelReceiptNumber`,
+				`nAuthRegionID`,
+				`sCountryID`,
+				`sPaymentCurrency`,
+				`sAuthRegionCurrency`,
+				`nConversionRate`,
+				`sPaidByGBId`,
+				`dtPayment`,
+				`dtEntered`,
+				`nEnteredBy`,
+				`dtUpdated`,
+				`nUpdatedBy`
+            )
+			VALUES
+			(
+				@ChatrelPaymentID_var,
+				cast(SUBSTRING(GBID FROM 3)  as unsigned),
+				Chatrel,
+				Meal,
+				FinancialYear,
+				NULL,
+				NULL,
+				ArrearsPlusLateFees,
+				ArrearsFrom,
+				ArrearsTo,
+				Salary,
+				ChatrelFrom,
+				ChatrelTo,
+				TotalAmount,
+				ReceiptNo,
+				Region,
+				Country,
+				Currency,
+				Currency,
+				1,
+				PaidByGBId,
+				PaymentDate,
+				now(),
+				1,
+				now(),
+				1
+			);
+
+			IF	(AdditionalDonation != 0 or BusinessDonation != 0) THEN
+				INSERT INTO `lnkgbchatreldonation`
+				(
+					`chatrelpaymentID`,
+					`sGBId`,
+					`nChatrelAdditionalDonationAmt`,
+					`nChatrelBusinessDonationAmt`,
+					`sChatrelReceiptNumber`,
+					`nAuthRegionID`,
+					`sCountryID`,
+					`sPaymentCurrency`,
+					`sAuthRegionCurrency`,
+					`nConversionRate`,
+					`sPaidByGBId`,
+					`dtPayment`,
+					`dtEntered`,
+					`nEnteredBy`,
+					`dtUpdated`,
+					`nUpdatedBy`
+				)
+				VALUES
+				(
+					@ChatrelPaymentID_var,
+					GBID,
+					AdditionalDonation,
+					BusinessDonation,
+					ReceiptNo,
+					Region,
+					Country,
+					Currency,
+					1,
+					PaidByGBId,
+					PaymentDate,
+					now(),
+					1,
+					now(),
+					1
+				);
+			END IF;
+
+      END LOOP igmLoop;
+      CLOSE cur1;
+END$$
+DELIMITER ;
+
 
 CREATE INDEX MDB_GBID ON tblmadeb(sGBID);
 CREATE INDEX GREENBOOK_GBID ON tblgreenbook(sGBID);

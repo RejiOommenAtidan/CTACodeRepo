@@ -245,7 +245,7 @@ CREATE TABLE `tblActionLogger` (
 --- -------------------------------------------------------------------------
 --- Data Migration From CTADB to ChatrelDB
 --- -------------------------------------------------------------------------
-INSERT INTO `chatreldb`.`tblgreenbook`
+INSERT INTO `tblgreenbook`
 (`Id`,
 `sGBID`,
 `nAuthRegionID`,
@@ -313,7 +313,7 @@ SELECT `tblgreenbook`.`Id`,
 FROM `ctadb`.`tblgreenbook`;
 
 
-INSERT INTO `chatreldb`.`lstchatrelconfig`
+INSERT INTO `lstchatrelconfig`
 (`Id`,
 `sKey`,
 `sValue`,
@@ -327,7 +327,7 @@ SELECT
 	`nUpdatedBy` 
 FROM ctadb.lstctaconfig;
 
-INSERT INTO `chatreldb`.`lstchatrel`
+INSERT INTO `lstchatrel`
 (`Id`,
 `sChatrelKey`,
 `nChatrelValue`,
@@ -347,7 +347,7 @@ SELECT
 	`nUpdatedBy`  
 FROM ctadb.lstchatrel;
 
-INSERT INTO `chatreldb`.`lstauthregion`
+INSERT INTO `lstauthregion`
 (`ID`,
 `sAuthRegion`,
 `sCountryID`,
@@ -367,7 +367,7 @@ SELECT
 	`nUpdatedBy` 
 FROM ctadb.lstauthregion;
 
-INSERT INTO `chatreldb`.`lstcountry`
+INSERT INTO `lstcountry`
 (`ID`,
 `sCountryID`,
 `sCountry`,
@@ -389,7 +389,7 @@ FROM `ctadb`.`lstcountry`;
 
 
 
-INSERT INTO `chatreldb`.`lnkgbrelation`
+INSERT INTO `lnkgbrelation`
 (`Id`,
 `sGBID`,
 `sGBIDRelation`,
@@ -410,7 +410,7 @@ SELECT
 FROM ctadb.lnkgbrelation;
 
 
-INSERT INTO `chatreldb`.`lnkgbchildren`
+INSERT INTO `lnkgbchildren`
 (`Id`,
 `sGBIDParent`,
 `sName`,
@@ -442,7 +442,7 @@ update `lnkgbchildren`
 set `dtDOB` = null
 where `dtDOB` like '%-00%';
 
-INSERT INTO `chatreldb`.`lstrelation`
+INSERT INTO `lstrelation`
 (`Id`,
 `sRelation`,
 `dtEntered`,
@@ -459,5 +459,114 @@ SELECT
 	`nUpdatedBy`
 FROM ctadb.lstrelation;
 
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '1');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '2');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '3');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '4');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '5');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '6');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '7');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '8');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '9');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '10');
+ 
 
+INSERT INTO `tblchatrelpayment`
+(`Id`,
+`sGBId`,
+`nChatrelYear`,
+`nChatrelTotalAmount`,
+`sChatrelReceiptNumber`,
+`sPaymentStatus`,
+`sPaymentMode`,
+`sPaymentCurrency`,
+`sPaidByGBId`,
+`sPayPal_Status`,
+`sPayPal_ID`,
+`sPayPal_Currency_Code`,
+`sPayPal_Currency_Value`,
+`sPayPal_Response_Object`,
+`dtPayment`,
+`dtEntered`,
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`)
+SELECT `tblchatrelpayment`.`Id`,
+    `tblchatrelpayment`.`sGBId`,
+    `tblchatrelpayment`.`nChatrelYear`,
+    `tblchatrelpayment`.`nChatrelTotalAmount`,
+    `tblchatrelpayment`.`sChatrelReceiptNumber`,
+    `tblchatrelpayment`.`sPaymentStatus`,
+    `tblchatrelpayment`.`sPaymentMode`,
+    `tblchatrelpayment`.`sPaymentCurrency`,
+    `tblchatrelpayment`.`sPaidByGBId`,
+    `tblchatrelpayment`.`sPayPal_Status`,
+    `tblchatrelpayment`.`sPayPal_ID`,
+    `tblchatrelpayment`.`sPayPal_Currency_Code`,
+    `tblchatrelpayment`.`sPayPal_Currency_Value`,
+    `tblchatrelpayment`.`sPayPal_Response_Object`,
+    `tblchatrelpayment`.`dtPayment`,
+    `tblchatrelpayment`.`dtEntered`,
+    `tblchatrelpayment`.`nEnteredBy`,
+    `tblchatrelpayment`.`dtUpdated`,
+    `tblchatrelpayment`.`nUpdatedBy`
+FROM `ctadb`.`tblchatrelpayment`;
+
+
+INSERT INTO `lnkgbchatrel`
+(`Id`,
+`chatrelpaymentID`,
+`sGBId`,
+`nChatrelAmount`,
+`nChatrelMeal`,
+`nChatrelYear`,
+`nChatrelLateFeesPercentage`,
+`nChatrelLateFeesValue`,
+`nArrearsAmount`,
+`dtArrearsFrom`,
+`dtArrearsTo`,
+`nCurrentChatrelSalaryAmt`,
+`dtCurrentChatrelFrom`,
+`dtCurrentChatrelTo`,
+`nChatrelTotalAmount`,
+`sChatrelReceiptNumber`,
+`nAuthRegionID`,
+`sCountryID`,
+`sPaymentCurrency`,
+`sAuthRegionCurrency`,
+`nConversionRate`,
+`sPaidByGBId`,
+`dtPayment`,
+`dtEntered`,
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`)
+SELECT `lnkgbchatrel`.`Id`,
+    `lnkgbchatrel`.`chatrelpaymentID`,
+    `lnkgbchatrel`.`sGBId`,
+    `lnkgbchatrel`.`nChatrelAmount`,
+    `lnkgbchatrel`.`nChatrelMeal`,
+    `lnkgbchatrel`.`nChatrelYear`,
+    `lnkgbchatrel`.`nChatrelLateFeesPercentage`,
+    `lnkgbchatrel`.`nChatrelLateFeesValue`,
+    `lnkgbchatrel`.`nArrearsAmount`,
+    `lnkgbchatrel`.`dtArrearsFrom`,
+    `lnkgbchatrel`.`dtArrearsTo`,
+    `lnkgbchatrel`.`nCurrentChatrelSalaryAmt`,
+    `lnkgbchatrel`.`dtCurrentChatrelFrom`,
+    `lnkgbchatrel`.`dtCurrentChatrelTo`,
+    `lnkgbchatrel`.`nChatrelTotalAmount`,
+    `lnkgbchatrel`.`sChatrelReceiptNumber`,
+    `lnkgbchatrel`.`nAuthRegionID`,
+    `lnkgbchatrel`.`sCountryID`,
+    `lnkgbchatrel`.`sPaymentCurrency`,
+    `lnkgbchatrel`.`sAuthRegionCurrency`,
+    `lnkgbchatrel`.`nConversionRate`,
+    `lnkgbchatrel`.`sPaidByGBId`,
+    `lnkgbchatrel`.`dtPayment`,
+    `lnkgbchatrel`.`dtEntered`,
+    `lnkgbchatrel`.`nEnteredBy`,
+    `lnkgbchatrel`.`dtUpdated`,
+    `lnkgbchatrel`.`nUpdatedBy`
+FROM `ctadb`.`lnkgbchatrel`;
 
