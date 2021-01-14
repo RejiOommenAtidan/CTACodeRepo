@@ -150,7 +150,9 @@ const HomeScreen = (props) => {
     };
   }, []);
   return (
-    <ScrollView>
+    <ScrollView
+    showsVerticalScrollIndicator={false}
+    >
       <View style={styles.mainContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerComponent}>Quick Actions</Text>

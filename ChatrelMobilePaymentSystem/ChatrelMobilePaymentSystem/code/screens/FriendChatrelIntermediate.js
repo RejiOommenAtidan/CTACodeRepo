@@ -44,7 +44,9 @@ export const FriendChatrelIntermediateScreen = (props) => {
   const [dtFriendDOB, setdtFriendDOB] = useState(null);
   const dtToday = Moment().format(sDateFormat);
   return (
-    <ScrollView>
+    <ScrollView
+    showsVerticalScrollIndicator={false}
+    >
       <View style={styles.mainContainer}>
         {/*<View style={styles.headingContainer}>
           <Text style={styles.headingComponent}>Chatrel For Friends</Text>

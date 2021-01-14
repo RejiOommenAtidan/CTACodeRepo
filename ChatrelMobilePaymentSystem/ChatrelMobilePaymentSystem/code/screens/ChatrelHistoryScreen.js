@@ -86,7 +86,9 @@ export const ChatrelHistoryScreen = (props) => {
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>CHATREL HISTORY</Text>
   </View>*/}
-      <ScrollView>
+      <ScrollView
+      showsVerticalScrollIndicator={false}
+      >
         {paymentHistory.length === 0 && (
           <View style={styles.zeroRecordContainer}>
             <Text style={styles.zeroRecordComponent}>No Records Available</Text>
@@ -107,7 +109,13 @@ export const ChatrelHistoryScreen = (props) => {
                       marginBottom: hp(1),
                     }}>
                     <Text style={styles.cardHeaderComponent}>
-                      {singleHistory.sFirstName + ' ' + singleHistory.sLastName}
+                      {(singleHistory.sFirstName
+                        ? singleHistory.sFirstName
+                        : '') +
+                        ' ' +
+                        (singleHistory.sLastName
+                          ? singleHistory.sLastName
+                          : '')}
                     </Text>
                     <View
                       style={{
@@ -177,12 +185,12 @@ export const ChatrelHistoryScreen = (props) => {
                   {/* <View style={styles.totalChatrelValueContainer}>
                   </View> */}
 
-                  <View style={styles.chatrelStatusLabelContainer}>
-                    <Text style={styles.chatrelStatusLabelComponent}>
-                      PAYMENT STATUS
+                  <View style={styles.chatrelModeLabelContainer}>
+                    <Text style={styles.chatrelModeLabelComponent}>
+                    PAYMENT MODE
                     </Text>
-                    <Text style={styles.chatrelStatusValueComponent}>
-                      {singleHistory.sPaymentStatus}
+                    <Text style={styles.chatrelModeValueComponent}>
+                      {singleHistory.sPaymentMode}
                     </Text>
                   </View>
 
@@ -298,7 +306,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular',
   },
   cardComponent: {
-    width: wp(82.5),
+    width: wp(80),
     height: hp(28.25),
     borderRadius: 15,
     borderColor: Colors.white,
@@ -433,7 +441,7 @@ const styles = StyleSheet.create({
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
   },
   chatrelModeValueComponent: {
-    textAlign: 'left',
+    textAlign: 'right',
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
     fontStyle: 'normal',
