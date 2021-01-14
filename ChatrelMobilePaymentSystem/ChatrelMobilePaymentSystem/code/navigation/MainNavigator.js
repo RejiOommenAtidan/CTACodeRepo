@@ -60,6 +60,7 @@ const defaultStackNavOptions = {
   headerBackTitleStyle: {
     fontFamily: 'open-sans',
   },
+  headerTitleAlign: 'center',
   headerTintColor: Platform.OS === 'android' ? 'white' : 'white',
   headerPressColorAndroid: Colors.white,
   animationTypeForReplace: 'pop',

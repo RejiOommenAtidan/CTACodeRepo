@@ -28,6 +28,8 @@ import {removeGoogleCreds} from '../store/actions/GLoginAction';
 import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
 import {removeGBDetails} from '../store/actions/GBDetailsAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 // import { withNavigationFocus } from 'react-navigation';
 //import CustomHeaderButton from '../components/HeaderButton';
@@ -56,25 +58,31 @@ const HomeScreen = (props) => {
 
   const aCard = [
     {
-      sLabel: 'Self Chatrel',
+      sLabel: `Self\nChatrel`,
       sImagePath: require('../assets/CTALogo.png'),
       sRouteName: 'SelfChatrel',
       sBGColor: Colors.buttonYellow,
       sTextColor: Colors.greenBG,
+      sIconName: 'donate',
+      sIconColor:Colors.greenBG
     },
     {
-      sLabel: 'Friend Chatrel',
+      sLabel: `Friend\nChatrel`,
       sImagePath: require('../assets/CTALogo.png'),
       sRouteName: 'FriendChatrelIntermediate',
       sBGColor: Colors.blueCardColor,
       sTextColor: Colors.primary,
+      sIconName: 'users',
+      sIconColor:Colors.blue
     },
     {
-      sLabel: 'Family Chatrel',
+      sLabel: `Family\nChatrel`,
       sImagePath: require('../assets/CTALogo.png'),
       sRouteName: 'FamilyChatrelIntermediate',
       sBGColor: Colors.greenBG,
       sTextColor: Colors.buttonYellow,
+      sIconName: 'heart',
+      sIconColor:Colors.buttonYellow
     },
   ];
 
@@ -154,7 +162,7 @@ const HomeScreen = (props) => {
                 <TouchableOpacity
                   onPress={() => {
                     props.navigation.navigate(card.sRouteName);
-                    console.log(card);
+                    //console.log(card);
                   }}>
                   <Card
                     containerStyle={{
@@ -165,8 +173,34 @@ const HomeScreen = (props) => {
                         Resolution.nWidthBreakpoint
                           ? 9
                           : 15,
-                    }}>
-                    <Card.Title
+                    }}
+                    title={
+                      <View style={{display: 'flex', flexDirection: 'row'}}>
+                        <Text
+                          style={{
+                            color: card.sTextColor,
+                            fontSize: wp(4.5),
+                            fontStyle: 'normal',
+                            fontWeight: 'bold',
+                            //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+                            letterSpacing: Resolution.nLetterSpacing / 2,
+                            fontFamily: 'Kanit-Regular',
+                          }}>
+                          {card.sLabel}
+                        </Text>
+                        <View style={{flexGrow: 1}} />
+                        <FontAwesome5
+                          color={card.sIconColor}
+                          name={card.sIconName}
+                          //adjustsFontSizeToFit={true}
+                          size={20}
+                          //size={size}
+                          //color={focused ? Colors.black : Colors.black}
+                        />
+                      </View>
+                    }
+                    titleStyle={{}}>
+                    {/*<Card.Title
                       style={{
                         color: card.sTextColor,
                         fontSize: wp(3.2),
@@ -177,7 +211,7 @@ const HomeScreen = (props) => {
                         fontFamily: 'Kanit-Regular',
                       }}>
                       {card.sLabel}
-                    </Card.Title>
+                    </Card.Title>*/}
                     {/*<Card.Divider />*/}
                     {/*<Card.Image source={card.sImagePath} />*/}
                     {/*<Text>{card.sLabel}</Text>*/}
@@ -296,7 +330,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 14.4 : 24,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blue,
@@ -311,11 +345,11 @@ const styles = StyleSheet.create({
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 20 : 25,
   },
   singleCardContainer: {
-    width: wp(100) / 3,
+    width: wp(111) / 3,
   },
   singleCardComponent: {
     height:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 42 : 70,
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 54 : 90,
   },
   pendingAmountContainer: {},
   pendingAmountComponent: {

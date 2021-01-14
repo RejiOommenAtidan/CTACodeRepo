@@ -2,7 +2,12 @@ import { Dimensions } from 'react-native';
 import Colors from './Colors';
 import Resolution from './ResolutionBreakpoint';
 
-export const sAPIBASEURL = "https://chatrel-webapi.azurewebsites.net/api";
+////Local
+export const sAPIBASEURL = "https://10.0.2.2/api";
+
+////QA
+// export const sAPIBASEURL = "https://chatrel-webapi.azurewebsites.net/api";
+
 export const sAdminEmail = "admin@CTA.com";
 export const sSnackbarAddMessage = "Record Added successfully";
 export const sSnackbarUpdateMessage = "Record Updated successfully";
