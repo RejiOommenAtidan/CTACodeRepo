@@ -301,6 +301,7 @@ export const GBDetailScreen = (props) => {
                   borderLeftWidth: 0,
                   borderRightWidth: 0,
                   borderTopWidth: 0,
+                  marginLeft: wp(2.75),
                 },
               }}
               onDateChange={(date) => {
