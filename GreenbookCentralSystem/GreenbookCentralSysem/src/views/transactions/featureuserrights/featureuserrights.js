@@ -214,6 +214,7 @@ export default function FeatureUserrights() {
               }
             }
           );
+          debugger;
           roles.map((role) => {
             generatedColumns.push(
               {
@@ -239,9 +240,9 @@ export default function FeatureUserrights() {
                   //1-Home
                   //2-Search
                   //46-Change Password
-                  disabled={role.id === 5 || rowData.nFeatureID === 1 || rowData.nFeatureID === 2 || rowData.nFeatureID === 46}
-                  checked={rowData["aUserRights"][role.id - 1]}
-                  onChange={() => { handleClickOpen(rowData, role.sUserRightsName, role.id) }}
+                  disabled={role.Id === 5 || rowData.nFeatureID === 1 || rowData.nFeatureID === 2 || rowData.nFeatureID === 46}
+                  checked={rowData["aUserRights"][role.Id - 1]}
+                  onChange={() => { handleClickOpen(rowData, role.sUserRightsName, role.Id) }}
                 />
               }
             );
