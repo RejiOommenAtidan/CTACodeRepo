@@ -1,12 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Platform,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import {Text, View, StyleSheet, ScrollView, Dimensions} from 'react-native';
 import {Card, Button} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
@@ -23,38 +16,38 @@ import Moment from 'moment';
 import {sDateFormat} from '../constants/CommonConfig';
 
 export const ChatrelHistoryScreen = (props) => {
-  const DATA = [
-    {
-      sChatrelRecieptNumber: 'W1',
-      dtEntered: '01-03-2020',
-      dtPeriodFrom: '2015',
-      dtPeriodTo: '2020',
-      sGBID: '1234567',
-      sFirstName: 'Malay',
-      sLastName: 'Doshi',
-      sRelation: 'Self',
-    },
-    {
-      sChatrelRecieptNumber: 'W2',
-      dtEntered: '01-03-2020',
-      dtPeriodFrom: '2015',
-      dtPeriodTo: '2020',
-      sGBID: '1234568',
-      sFirstName: 'Siddhesh',
-      sLastName: 'Lad',
-      sRelation: 'Friend',
-    },
-    {
-      sChatrelRecieptNumber: 'w3',
-      dtEntered: '01-03-2020',
-      dtPeriodFrom: '2015',
-      dtPeriodTo: '2020',
-      sGBID: '12345679',
-      sFirstName: 'Paresh',
-      sLastName: 'Doshi',
-      sRelation: 'Father',
-    },
-  ];
+  // const DATA = [
+  //   {
+  //     sChatrelRecieptNumber: 'W1',
+  //     dtEntered: '01-03-2020',
+  //     dtPeriodFrom: '2015',
+  //     dtPeriodTo: '2020',
+  //     sGBID: '1234567',
+  //     sFirstName: 'Malay',
+  //     sLastName: 'Doshi',
+  //     sRelation: 'Self',
+  //   },
+  //   {
+  //     sChatrelRecieptNumber: 'W2',
+  //     dtEntered: '01-03-2020',
+  //     dtPeriodFrom: '2015',
+  //     dtPeriodTo: '2020',
+  //     sGBID: '1234568',
+  //     sFirstName: 'Siddhesh',
+  //     sLastName: 'Lad',
+  //     sRelation: 'Friend',
+  //   },
+  //   {
+  //     sChatrelRecieptNumber: 'w3',
+  //     dtEntered: '01-03-2020',
+  //     dtPeriodFrom: '2015',
+  //     dtPeriodTo: '2020',
+  //     sGBID: '12345679',
+  //     sFirstName: 'Paresh',
+  //     sLastName: 'Doshi',
+  //     sRelation: 'Father',
+  //   },
+  // ];
 
   const oCurrentGBDetails = useSelector(
     (state) => state.CurrentGBDetailsReducer.oCurrentGBDetails,
@@ -85,6 +78,7 @@ export const ChatrelHistoryScreen = (props) => {
 
   const handleDownloadReceiptOnPress = (singleHistory) => {
     console.log(singleHistory);
+    //TODO: OR CODE GEN & RECEIPT GEN & SAVE TO PHONE
   };
 
   return (
@@ -101,46 +95,102 @@ export const ChatrelHistoryScreen = (props) => {
         {paymentHistory.length !== 0 &&
           paymentHistory.map((singleHistory, index) => {
             return (
-              <Card key={index} containerStyle={styles.cardComponent}>
-                <Card.Title style={styles.cardHeaderComponent}>
+              <Card
+                key={index}
+                containerStyle={styles.cardComponent}
+                title={
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginBottom: hp(1),
+                    }}>
+                    <Text style={styles.cardHeaderComponent}>
+                      {singleHistory.sFirstName + ' ' + singleHistory.sLastName}
+                    </Text>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        //marginBottom: hp(2),
+                      }}>
+                      <Text style={styles.relationComponent}>
+                        {singleHistory.sRelation}
+                      </Text>
+                    </View>
+                  </View>
+                }
+                titleStyle={{}}>
+                {/*<Card.Title style={styles.cardHeaderComponent}>
                   {singleHistory.sFirstName + ' ' + singleHistory.sLastName}
-                </Card.Title>
+            </Card.Title>*/}
                 {/*<Card.Image source={require('../assets/CTALogo.png')} />*/}
-                <View style={styles.relationContainer}>
-                  <Text style={styles.relationComponent}>
-                    {singleHistory.sRelation}
-                  </Text>
-                </View>
                 <Card.Divider style={styles.cardDividerComponent} />
-                <View style={styles.receiptNumberLabelContainer}>
-                  <Text style={styles.receiptNumberLabelComponent}>
-                    RECEIPT NUMBER
-                  </Text>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginBottom: hp(1.25),
+                  }}>
+                  <View style={styles.receiptNumberLabelContainer}>
+                    <Text style={styles.receiptNumberLabelComponent}>
+                      RECEIPT NUMBER
+                    </Text>
+                    <Text style={styles.receiptNumberValueComponent}>
+                      {singleHistory.sChatrelReceiptNumber}
+                    </Text>
+                  </View>
+
+                  {/* <View style={styles.receiptNumberValueContainer}>
+                </View> */}
+
+                  <View style={styles.dateLabelContainer}>
+                    <Text style={styles.dateLabelComponent}>CHATREL DATE</Text>
+                    <Text style={styles.dateValueComponent}>
+                      {Moment(singleHistory.dtPayment).format(sDateFormat)}
+                    </Text>
+                  </View>
+
+                  {/* <View style={styles.dateValueContainer}>
+                </View> */}
                 </View>
-                <View style={styles.receiptNumberValueContainer}>
-                  <Text style={styles.receiptNumberValueComponent}>
-                    {singleHistory.sChatrelReceiptNumber}
-                  </Text>
+
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginBottom: hp(1.25),
+                  }}>
+                  <View style={styles.totalChatrelLabelContainer}>
+                    <Text style={styles.totalChatrelLabelComponent}>
+                      TOTAL CHATREL
+                    </Text>
+                    <Text style={styles.totalChatrelValueComponent}>
+                      {singleHistory.nChatrelTotalAmount}
+                    </Text>
+                  </View>
+
+                  {/* <View style={styles.totalChatrelValueContainer}>
+                  </View> */}
+
+                  <View style={styles.chatrelStatusLabelContainer}>
+                    <Text style={styles.chatrelStatusLabelComponent}>
+                      PAYMENT STATUS
+                    </Text>
+                    <Text style={styles.chatrelStatusValueComponent}>
+                      {singleHistory.sPaymentStatus}
+                    </Text>
+                  </View>
+
+                  {/* <View style={styles.chatrelStatusValueContainer}>
+                </View> */}
                 </View>
-                <View style={styles.dateLabelContainer}>
-                  <Text style={styles.dateLabelComponent}>CHATREL DATE</Text>
-                </View>
-                <View style={styles.dateValueContainer}>
-                  <Text style={styles.dateValueComponent}>
-                    {Moment(singleHistory.dtPayment).format(sDateFormat)}
-                  </Text>
-                </View>
-                <View style={styles.totalChatrelLabelContainer}>
-                  <Text style={styles.totalChatrelLabelComponent}>
-                    TOTAL CHATREL
-                  </Text>
-                </View>
-                <View style={styles.totalChatrelValueContainer}>
-                  <Text style={styles.totalChatrelValueComponent}>
-                    ${singleHistory.nChatrelTotalAmount}
-                  </Text>
-                </View>
-                <View style={styles.chatrelModeLabelContainer}>
+
+                {/* <View style={styles.chatrelModeLabelContainer}>
                   <Text style={styles.chatrelModeLabelComponent}>
                     PAYMENT MODE
                   </Text>
@@ -149,20 +199,10 @@ export const ChatrelHistoryScreen = (props) => {
                   <Text style={styles.chatrelModeValueComponent}>
                     {singleHistory.sPaymentMode}
                   </Text>
-                </View>
-                <View style={styles.chatrelStatusLabelContainer}>
-                  <Text style={styles.chatrelStatusLabelComponent}>
-                    PAYMENT STATUS
-                  </Text>
-                </View>
-                <View style={styles.chatrelStatusValueContainer}>
-                  <Text style={styles.chatrelStatusValueComponent}>
-                    {singleHistory.sPaymentStatus}
-                  </Text>
-                </View>
+                </View> */}
                 <View style={styles.downloadReceiptContainer}>
                   <Button
-                    title={'Download Receipt'}
+                    title={'DOWNLOAD RECEIPT'}
                     onPress={() => {
                       handleDownloadReceiptOnPress(singleHistory);
                     }}
@@ -175,18 +215,26 @@ export const ChatrelHistoryScreen = (props) => {
                     type="outline"
                     titleStyle={{
                       color: Colors.white,
+                      fontStyle: 'normal',
+                      fontWeight: '900',
                       fontFamily: 'Kanit-Regular',
+                      fontSize:
+                        Dimensions.get('window').width <
+                        Resolution.nWidthBreakpoint
+                          ? 9
+                          : 15,
                     }}
                     buttonStyle={{
+                      height: hp(5),
                       backgroundColor: Colors.buttonYellow,
                       borderRadius: 20,
                       borderWidth: 1,
                       borderColor: Colors.buttonYellow,
-                      marginBottom:
-                        Dimensions.get('window').height <
-                        Resolution.nHeightBreakpoint
-                          ? 3
-                          : 5,
+                      // marginBottom:
+                      //   Dimensions.get('window').height <
+                      //   Resolution.nHeightBreakpoint
+                      //     ? 3
+                      //     : 5,
                     }}
                   />
                 </View>
@@ -250,8 +298,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular',
   },
   cardComponent: {
-    width: wp(70),
-    height: hp(55),
+    width: wp(82.5),
+    height: hp(28.25),
     borderRadius: 15,
     borderColor: Colors.white,
     backgroundColor: Colors.white,
@@ -274,8 +322,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.greenBG,
   },
   receiptNumberLabelContainer: {
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+    // marginBottom:
+    //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
   },
   receiptNumberLabelComponent: {
     textAlign: 'left',
@@ -305,11 +353,11 @@ const styles = StyleSheet.create({
   },
 
   dateLabelContainer: {
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+    // marginBottom:
+    //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
   },
   dateLabelComponent: {
-    textAlign: 'left',
+    textAlign: 'right',
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
     fontStyle: 'normal',
@@ -335,8 +383,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular',
   },
   totalChatrelLabelContainer: {
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+    // marginBottom:
+    //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
   },
   totalChatrelLabelComponent: {
     textAlign: 'left',
@@ -397,8 +445,8 @@ const styles = StyleSheet.create({
   },
 
   chatrelStatusLabelContainer: {
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+    // marginBottom:
+    //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
   },
   chatrelStatusLabelComponent: {
     textAlign: 'left',
@@ -416,7 +464,7 @@ const styles = StyleSheet.create({
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
   },
   chatrelStatusValueComponent: {
-    textAlign: 'left',
+    textAlign: 'right',
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
     fontStyle: 'normal',
@@ -427,11 +475,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular',
   },
   relationContainer: {
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
+    //flexGrow: 1,
+    //marginBottom:
+    //Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
   relationComponent: {
-    textAlign: 'left',
+    //textAlign: 'left',
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 8.4 : 14,
     fontStyle: 'normal',
@@ -442,7 +491,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Regular',
   },
   downloadReceiptContainer: {
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 12 : 20,
+    marginTop: hp(0.25),
   },
 });
