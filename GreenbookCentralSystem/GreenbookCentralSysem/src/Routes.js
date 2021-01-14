@@ -242,8 +242,8 @@ const Routes = () => {
                 '/ChatrelPay',
                 '/ChatrelPay/MainPage',
                 '/ChatrelPay/PaymentPage',
-                '/ChatrelPay/ChatrelList',
-                '/ChatrelPay/ChatrelReceipt',
+                '/Chatrel/ChatrelList',
+                '/Chatrel/ChatrelReceipt',
                 '/Chatrel',
                 '/Chatrel/SearchUsers',
                 '/Chatrel/BulkImport',
@@ -325,8 +325,8 @@ const Routes = () => {
                     <Route path="/ChatrelPay" component={ChatrelPay} exact />
                     <Route path="/ChatrelPay/MainPage" component={MainPage} exact />
                     <Route path="/ChatrelPay/PaymentPage" component={PaymentPage} exact />
-                    <Route path="/ChatrelPay/ChatrelList" component={ChatrelList} exact />
-                    <Route path="/ChatrelPay/ChatrelReceipt" component={ChatrelReceipt} exact />
+                    <Route path="/Chatrel/ChatrelList" component={ChatrelList} exact />
+                    <Route path="/Chatrel/ChatrelReceipt" component={ChatrelReceipt} exact />
                     <Route path="/Chatrel/SearchUsers" component={ChatrelSearchUsers} exact />
                     <Route path="/Chatrel/BulkImport" component={ChatrelBulkUpload} exact />
                   </motion.div>

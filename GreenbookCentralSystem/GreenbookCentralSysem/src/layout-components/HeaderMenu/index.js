@@ -115,9 +115,9 @@ const close=(id)=>{
   const openChatrel = Boolean(anchorElChatrel);
   const idChatrel = openChatrel ? 'chatrel-popover' : undefined;
   const handleChatrelClick = (event) => {
-    //open("id_Chatrel");
-    //setAnchorElChatrel(event.currentTarget);
-    history.push('/Chatrel');
+    open("id_Chatrel");
+    setAnchorElChatrel(event.currentTarget);
+    //history.push('/Chatrel');
   };
   const handleChatrelClose = () => {
     close("id_Chatrel");
@@ -1152,7 +1152,7 @@ const close=(id)=>{
             </Grid>
           </div>
         </Popover>
-      {/*  <Popover
+        <Popover
           id={idChatrel}
           open={openChatrel}
           anchorEl={anchorElChatrel}
@@ -1173,21 +1173,21 @@ const close=(id)=>{
                     <ListItem
                       component="a"
                       button
-                      href="/Users">
+                      href="/Chatrel/ChatrelList">
                       <div className="mr-2">
                         <FontAwesomeIcon
                           icon={['fas', 'chevron-right']}
                           className="font-size-xs opacity-3"
                         />
                       </div>
-                      <span>Manage Users</span>
+                      <span>Chatrel List</span>
                     </ListItem>
                     {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 19)) !== undefined
                       &&
                     <ListItem
                       component="a"
                       button
-                      href="/FeatureRights">
+                      href="/Chatrel/SearchUsers">
                       <div className="mr-2">
                         <FontAwesomeIcon
                           icon={['fas', 'chevron-right']}
@@ -1195,21 +1195,21 @@ const close=(id)=>{
                         /> 
                         
                       </div>
-                      <span>  Manage Feature Rights</span>
+                      <span>Search Users</span>
                     </ListItem>}
                     {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 20)) !== undefined
                       &&
                     <ListItem
                       component="a"
                       button
-                      href="/UserRights">
+                      href="/Chatrel/BulkImport">
                       <div className="mr-2">
                         <FontAwesomeIcon
                           icon={['fas', 'chevron-right']}
                           className="font-size-xs opacity-3"
                         />
                       </div>
-                      <span>Manage Roles</span>
+                      <span>Bulk Import</span>
                     </ListItem>}
                  
                  
@@ -1218,7 +1218,7 @@ const close=(id)=>{
               </Grid>
             </Grid>
           </div>
-        </Popover>*/}
+        </Popover>
       </div>
     </>
   );
