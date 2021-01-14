@@ -325,6 +325,7 @@ const Routes = () => {
                     <PrivateRoute path="/Chatrel/ChatrelReceipt" feature={49} component={ChatrelReceipt} exact />
                     <PrivateRoute path="/Chatrel/SearchUsers" feature={50}  component={ChatrelSearchUsers} exact />
                     <PrivateRoute path="/Chatrel/BulkImport" feature={51} component={ChatrelBulkUpload} exact />
+                    {/*<PrivateRoute path="/Chatrel/Report" feature={52} component={ChatrelReport} exact />*/}
                     <Route path="/Chatrel" component={Chatrel} exact />
                     <Route path="/ChatrelPay" component={ChatrelPay} exact />
                     <Route path="/ChatrelPay/MainPage" component={MainPage} exact />
