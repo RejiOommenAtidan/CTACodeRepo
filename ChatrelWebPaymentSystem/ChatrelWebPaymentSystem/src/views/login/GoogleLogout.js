@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import {  Button} from '@material-ui/core';
 import  {removeGoogleCreds} from '../../actions/transactions/GLoginAction';
  
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {useHistory} from 'react-router-dom';
 
 const GoogleLogoutButton = () => {
@@ -26,7 +27,15 @@ const GoogleLogoutButton = () => {
     //onLogoutSuccess={logout}
     render={renderProps => (
            
-        <Button variant="contained" className='btn-userbox' onClick={renderProps.onClick} disabled={renderProps.disabled} >Sign Out</Button>
+
+        <Button className="btn-google m-2" style={{   backgroundColor: 'red'}}   onClick={renderProps.onClick} /*disabled={renderProps.disabled}*/ >
+        <span className="btn-wrapper--icon">
+            <FontAwesomeIcon icon={['fab', 'google']} className="font-size-lg" />
+        </span>
+        <span className="btn-wrapper--label">
+        Sign Out
+    </span>
+    </Button>
       )}
     >
        

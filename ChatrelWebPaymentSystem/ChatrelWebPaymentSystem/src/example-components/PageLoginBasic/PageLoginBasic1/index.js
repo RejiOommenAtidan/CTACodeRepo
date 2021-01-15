@@ -15,11 +15,49 @@ import { GoogleLogin } from 'react-google-login';
 import GoogleLoginPage from 'views/login/GoogleLogin';
 import axios from 'axios';
 import projectLogo from '../../../assets/images/CTALogo.png';
+import wallpaper from '../../../assets/images/wallpaper.jpg';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { storeCurrentGBDetails } from 'actions/transactions/CurrentGBDetailsAction';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200,
+  },
+
+  cssLabel: {
+    color : 'white'
+  },
+
+  cssOutlinedInput: {
+    '&$cssFocused $notchedOutline': {
+      borderColor: `white !important`,
+    }
+  },
+
+  cssFocused: {},
+
+  notchedOutline: {
+    borderWidth: '3px',
+    borderColor: 'white !important'
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
+
 
 export default function LogingPage(props) {
 
-
+  const classes = useStyles();
 
   let history = useHistory();
   const dispatch = useDispatch();
@@ -45,11 +83,12 @@ export default function LogingPage(props) {
     const snackbarClose = () => {
       setSnackbar(false);
     };
-  
+    const [backdrop, setBackdrop] = React.useState(false);
 
-
+    
+  const [submitBtn,setSubmitBtn]=React.useState(true);
    const [login,setLogin]=React.useState(false);
-   const [nGBID,setGbID]=React.useState(0);
+   const [nGBID,setGbID]=React.useState("");
    const [dtDob,setDob]=React.useState("");
 
   //On Success of verifying info
@@ -61,6 +100,23 @@ let oGBDetails={
     //obj.user=JSON.parse(localStorage.getItem('currentUser')).name;
     //alert(JSON.stringify(obj));
     e.preventDefault();
+    setBackdrop(true);
+    setSubmitBtn(false);
+    if(nGBID==""){
+      setBackdrop(false);
+      setAlertMessage('Enter Green Book Number');
+      setAlertType('info');
+      snackbarOpen();
+      setSubmitBtn(true);
+    }
+    else if(dtDob==""){
+      setBackdrop(false);
+      setAlertMessage('Enter Date Of Birth');
+      setAlertType('info');
+      snackbarOpen();
+      setSubmitBtn(true);
+    }
+    else{
     let Obj={
       sGBID:""+nGBID,
       dtDOB:dtDob,
@@ -79,18 +135,30 @@ let oGBDetails={
         if(resp.data=="Verified"){
           dispatch(storeGBDetails(oGBDetails));
           dispatch(storeCurrentGBDetails(oGBDetails));
-          history.push('/Home');
+          setBackdrop(false);
+          setAlertMessage('Verification Successful');
+          setAlertType('success');
+          snackbarOpen();
+        //  history.push('/Home');
+          setTimeout(() => history.push('/Home'), 3000);
         }
         else{
           console.log(resp.data);
+          setBackdrop(false);
           setAlertMessage('Enter valid credentials.');
           setAlertType('info');
           snackbarOpen();
+          setSubmitBtn(true);
         }
       }
     })
     .catch(error => {
       if (error.response) {
+           setBackdrop(false);
+          setAlertMessage('Verification Failed');
+          setAlertType('error');
+          snackbarOpen();
+          setSubmitBtn(true);
         console.error(error.response.data);
         console.error(error.response.status);
         console.error(error.response.headers);
@@ -104,6 +172,7 @@ let oGBDetails={
     .then(release => {
       //console.log(release); => udefined
     });
+  }
 
   }
  
@@ -119,8 +188,9 @@ let oGBDetails={
    fetch('https://json.geoiplookup.io/')
    .then(response => response.json())
   .then(data => {
+    console.log(data);
       if(data.country_code!="IN"){
-          history.push('/AccessDenied')
+        //  history.push('/AccessDenied')
         }
         console.log(data);
   });
@@ -129,63 +199,96 @@ let oGBDetails={
 
   return (
     <>
-      <div className="app-wrapper  min-vh-100" style={{   backgroundColor: '#168b44', color:'white'}}>
+      <div className="app-wrapper  min-vh-100" style={{  background:`rgba(255, 255, 255, 0.5) url(${wallpaper})`, backgroundRepeat: 'no-repeat', backgroundSize: "cover" , color:'white'}}>
         <div className="app-main min-vh-100">
           <div className="app-content p-0">
             <div className="app-content--inner d-flex align-items-center">
               <div className="flex-grow-1 w-100 d-flex align-items-center">
                 <div className="bg-composed-wrapper--content py-5">
                   <form onSubmit={(e) =>submit(e)} >
-                    <Grid item md={10} lg={8} xl={4} className="mx-auto">
-                      <div className="text-center" style={{textAlign:'center'}}>
-                        <img alt="CTA" src={projectLogo} width="300px" height="300px"/>
-                        <h1 className="display-2 mb-1 font-weight-bold">Welcome to Chatrel</h1>
-                        <h3 className="display-5 mb-1 ">Your go-to resource for supporting the Tibetan Government</h3>
+                    <Grid item md={10} lg={8} xl={5} className="mx-auto">
+                      <div className="text-center" style={{textAlign:'center',background: "rgba(0,0,0,0.7)",borderRadius: "25px",padding:'25px' }}>
+                        <img alt="CTA" src={projectLogo} width="250px" height="250px"/>
+                        
                         <br />
-                        { !login &&                     
+                        { !login &&             
+                        <>
+                        <h1  className="display-2 mb-1 font-weight-bold">eChatrel</h1>
+                        <h4 className="display-5 mb-1 ">Your go-to resource for supporting the Tibetan Government</h4>        
                         <GoogleLoginPage/>
+                        </>
                         }
                       
                         {
                           login &&
                         <>
-
+                          <h5 className="display-5 mb-1 " > Super! Thanks for logging in through Google. Just one more step now. </h5>  
+                          <br/>
                             <TextField   
                               id="standard-basic" 
                               autoFocus
-                              type='number' 
+                              variant="outlined"
+                              style={{width:'40%'}}
+                            
+                              //type='number' 
                               onChange={(e)=>{setGbID(e.target.value)}} 
-                              label="GBID"
+                              label={<div style={{color:"white"}}>Green Book Number</div>}
+                              /*inputProps={{ style: { color: 'white',borderColor:'white'}}}
+                              InputLabelProps={{ style: { color: 'white'}}}*/
+                              InputLabelProps={{
+                                classes: {
+                                  root: classes.cssLabel,
+                                  focused: classes.cssFocused,
+                                },
+                              }}
+                              InputProps={{
+                                classes: {
+                                  root: classes.cssOutlinedInput,
+                                  focused: classes.cssFocused,
+                                  notchedOutline: classes.notchedOutline,
+                                },
+                                inputMode: "numeric"
+                              }}
                               inputProps={{ style: { color: 'white'}}}
-                              InputLabelProps={{ style: { color: 'white'}}}
                               />
                               <br/>  
-                            <TextField
+                              <br/>
+                              <TextField
                             id="date"
-                            label="DOB"
+                            label={<div style={{color:"white"}}>Date of Birth</div>}
                             type="date"
                             onChange={(e)=>{setDob(e.target.value)}}
-                            inputProps={{ style: { color: 'white'}}}
-                          
+                             variant="outlined"   
+                                 style={{width:'40%'}}
                             InputLabelProps={{
                               shrink: true,
-                              style: { color: 'white'}
+                              classes: {
+                                root: classes.cssLabel,
+                                focused: classes.cssFocused,
+                              },
                             }}
+                            InputProps={{
+                              classes: {
+                                root: classes.cssOutlinedInput,
+                                focused: classes.cssFocused,
+                                notchedOutline: classes.notchedOutline,
+                              },
+                           
+                            }}
+                            inputProps={{ style: { color: 'white'}}}
                           />
+                         
                           <br/>
                           <br/>
-                            <Button variant="contained" type = 'submit' style={{   backgroundColor: 'yellow', color:'black'}}>Submit</Button>
-                       {/* onClick={()=>{submit()}} */}
+                            <Button variant="contained" type = 'submit' disabled={!submitBtn} style={{   backgroundColor: 'rgb(42, 92, 255)', color:'white'}}>VERIFY DETAILS</Button>
+                      
                        </>
                         }
                         
                       </div>
-                      <div>
-
                      
-                  
-                      </div>
                     </Grid>
+                    
                   </form>
                 </div>
               </div>
@@ -199,6 +302,9 @@ let oGBDetails={
             snackbarClose={snackbarClose}
           />
           }
+           <Backdrop className={classes.backdrop} open={backdrop} >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 }

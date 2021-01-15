@@ -9,7 +9,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { TableBodyRow } from 'mui-datatables';
-import Table from '@material-ui/core/Table';
+//import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -20,7 +20,7 @@ import Moment from 'moment';
 import { useSelector} from 'react-redux';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import html2canvas from 'html2canvas';
 import jsPdf from 'jspdf';
 import CTALogo from '../../assets/images/CTABackgroundLogo.PNG';
@@ -32,7 +32,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 
-
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
+import Flag from 'react-flagkit';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -57,7 +59,7 @@ export default function Family () {
   const theme = useTheme();
   const [receiptData,setReceiptData]=React.useState();
   const [open, setOpen] = React.useState(false);
-
+  const fontName='Poppins';
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -151,7 +153,79 @@ export default function Family () {
   return (
     <>
     {paymentHistory &&
-    <><p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>Chatrel History</p>
+    <>
+       <Typography className="myfont" variant="h4" style={{textAlign:'center',color:'#000',fontFamily:fontName,fontWeight:"bold"}} gutterBottom>CHATREL HISTORY</Typography>
+      <div style={{width:'85%',margin:'auto',backgroundColor:'#ced9fd',padding:'25px',border:'2px solid grey',borderRadius:'25px',boxShadow:" 10px 10px 5px grey"}} className='text-black' >
+      <Typography className="myfont"variant="h5" style={{color:'#000',fontFamily:fontName,fontWeight:"bold"}} gutterBottom>CHATREL PAID BY {sGBID}</Typography>
+
+      <Card  style={{  padding: 20,marginBottom:20,boxShadow:" 3px 3px 1px grey" }}   >
+      
+      <Table style={{color:'#000'}}>
+      <Thead>
+        <Tr>
+          <Th style={{textAlign:'center'}}>DATE</Th>
+          <Th style={{textAlign:'center'}}>RECEIPT NO.</Th>
+          <Th style={{textAlign:'center'}}>PAID BY</Th>
+          <Th style={{textAlign:'center'}}>GBID</Th>
+          <Th style={{textAlign:'center'}}>NAME</Th>
+          <Th style={{textAlign:'center'}}>RELATION</Th>
+          <Th style={{textAlign:'center'}}>CURRENCY</Th>
+          <Th style={{textAlign:'center'}}>AMOUNT</Th>
+          <Th style={{textAlign:'center'}}>MODE</Th>
+          <Th style={{textAlign:'center'}}>STATUS</Th>
+          <Th style={{textAlign:'center'}}></Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        <Tr>
+          <Td align="center">14-01-2021</Td>
+          <Td align="center">1</Td>
+          <Td align="center">9675</Td>
+          <Td align="center">9675</Td>
+          <Td align="center">Tamdin Richoe</Td>
+          <Td align="center">Self</Td>
+          <Td align="center">USD <Flag country={"US"} size={20} /></Td>
+          <Td align="center" > <b style={{color:'#29cf00'}}>$4.29</b></Td>
+          <Td align="center"><div className="m-1 text-second badge badge-neutral-second">Online</div></Td>
+          <Td align="center"><div className="badge badge-success"> Success</div></Td>
+          <Td align="center"> <Button style={{padding:'5px'}} className="btn-primary m-1">
+                                <span className="btn-wrapper--icon">
+                                    <FontAwesomeIcon icon={['far', 'save']} />
+                                </span>
+                            <span className="btn-wrapper--label">Receipt</span>
+                        </Button></Td>
+          
+        </Tr>
+        <Tr>
+          <Td align="center">14-01-2021</Td>
+          <Td align="center">1</Td>
+          <Td align="center">9675</Td>
+          <Td align="center">9675</Td>
+          <Td align="center">Tamdin Richoe</Td>
+          <Td align="center">Self</Td>
+          <Td align="center">USD <Flag country={"US"} size={20} /></Td>
+          <Td align="center" > <b style={{color:'#29cf00'}}>$4.29</b></Td>
+          <Td align="center"><div className="m-1 text-second badge badge-neutral-second">Online</div></Td>
+          <Td align="center"><div className="badge badge-success"> Success</div></Td>
+          <Td align="center"> <Button style={{padding:'5px'}} className="btn-primary m-1">
+                                <span className="btn-wrapper--icon">
+                                    <FontAwesomeIcon icon={['far', 'save']} />
+                                </span>
+                            <span className="btn-wrapper--label">Receipt</span>
+                        </Button></Td>
+          
+        </Tr>
+        
+       
+      </Tbody>
+    </Table>
+      </Card>
+
+
+      </div>
+    
+    
+    <p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>Chatrel History</p>
       <Card  style={{  padding: 50 }} >
 
       <br />
@@ -372,6 +446,9 @@ export default function Family () {
           </Button>
         </DialogActions>
       </Dialog>
+     
+
     </>
+    
   );
 }

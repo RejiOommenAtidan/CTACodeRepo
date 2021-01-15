@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Typography,
@@ -13,9 +13,12 @@ import {
 } from '@material-ui/core';
 
 import avatar7 from '../../assets/images/avatars/avatar7.jpg';
-
+import GoogleLogoutButton from '../../views/login/GoogleLogout';
 import { withStyles } from '@material-ui/core/styles';
-
+import { useHistory } from 'react-router-dom';
+import { useSelector,useDispatch} from 'react-redux';
+import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
+import axios from 'axios';
 const StyledBadge = withStyles({
   badge: {
     backgroundColor: 'var(--success)',
@@ -55,6 +58,64 @@ const HeaderUserbox = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  let history = useHistory();
+
+  let dispatch = useDispatch();
+const userObj = useSelector(state => state.GLoginReducer.oGoogle);
+const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
+console.log(userObj);
+if(userObj===null){
+ history.push("/login");
+} 
+const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
+const paidByName= useSelector(state => state.GBDetailsReducer.oGBDetails.sName);
+const [chatrelPending, setChatrelPending] = React.useState(null);
+
+const [currencySymbol, setCurrencySymbol] = React.useState();
+const [paymentData, setPaymentData] = React.useState();
+const [outstanding, setOutstanding] = useState(true);
+ 
+const makePayment = (obj, data, outstanding)=> {
+  console.log("Inside Make payment method for " , obj, data)
+  dispatch(storeCurrentGBDetails(obj));
+  history.push('/PaymentPage', {pymtData: data, outstanding});
+}
+const selfPayment=() => {
+  axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+paidByGBID)
+  .then(resp => {
+    if (resp.status === 200) {
+      //console.log("Self Chatrel Payment data:", resp.data);
+      if(resp.data.chatrelPayment.nChatrelTotalAmount === 0){
+        setChatrelPending('0');
+        setOutstanding(false);
+        // setCurrencySymbol(resp.data.currency === 'INR' ? '₹' : '$' );
+        // element.disabled = false;
+        // return;
+      }
+      else{
+        setChatrelPending(resp.data.chatrelPayment.nChatrelTotalAmount);
+      }
+      setPaymentData(resp.data);
+      console.log(resp.data);
+      
+      
+      if(resp.data.gbChatrels[0].sAuthRegionCurrency === 'USD'){
+        setCurrencySymbol('$');
+      }
+      else{
+        setCurrencySymbol('₹');
+      }
+      
+      console.log("Data fetched...", resp.data);
+      makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' }, paymentData, outstanding);
+    }
+  })
+  .catch(error => {
+    console.log(error.message);
+    console.log(error.response);
+  });
+
+}
 
   return (
     <>
@@ -63,7 +124,7 @@ const HeaderUserbox = () => {
         onClick={handleClick}
         className="ml-2 btn-transition-none text-left ml-2 p-0 bg-transparent d-flex align-items-center"
         disableRipple>
-        <div className="d-block p-0 avatar-icon-wrapper">
+        <div className="d-block p-0 avatar-icon-wrapper avatar-icon-lg">
           <StyledBadge
             overlap="circle"
             anchorOrigin={{
@@ -73,15 +134,18 @@ const HeaderUserbox = () => {
             badgeContent=" "
             classes={{ badge: 'bg-success badge-circle border-0' }}
             variant="dot">
-            <div className="avatar-icon rounded">
-              <img src={avatar7} alt="..." />
+            <div className="avatar-icon ">
+            {userObj &&
+              <img alt="..." src={userObj.imageUrl}/>
+                }
             </div>
           </StyledBadge>
         </div>
 
-        <div className="d-none d-xl-block pl-2">
-          <div className="font-weight-bold pt-2 line-height-1">Emma Taylor</div>
-          <span className="text-black-50">Senior Accountant</span>
+        <div className="d-none d-xl-block pl-2" style={{fontSize:"20px" }}>
+          <div className="font-weight-bold pt-2 line-height-1" >{userObj.name}</div>
+          <span className="text-black-50">{userGBObj.sGBID}</span>
+          
         </div>
         <span className="pl-1 pl-xl-3">
           <FontAwesomeIcon icon={['fas', 'angle-down']} className="opacity-5" />
@@ -92,7 +156,7 @@ const HeaderUserbox = () => {
         keepMounted
         getContentAnchorEl={null}
         anchorOrigin={{
-          vertical: 'top',
+          vertical: 'bottom',
           horizontal: 'center'
         }}
         transformOrigin={{
@@ -102,33 +166,40 @@ const HeaderUserbox = () => {
         open={Boolean(anchorEl)}
         classes={{ list: 'p-0' }}
         onClose={handleClose}>
-        <div className="dropdown-menu-lg overflow-hidden p-0">
+        <div className="dropdown-menu-lg overflow-hidden p-0" style={{fontFamily:'Poppins'}}>
           <div className="d-flex px-3 pt-3 align-items-center justify-content-between">
-            <Typography className="text-capitalize pl-1 font-weight-bold text-primary">
-              <span>Profile Options</span>
+            <Typography className=" pl-1 font-weight-bold text-primary">
+              <span style={{fontFamily:'Poppins'}}>Welcome to eChatrel</span>
             </Typography>
-            <div className="font-size-xs pr-1">
-              <Tooltip title="Change settings" arrow>
-                <a href="#/" onClick={(e) => e.preventDefault()}>
-                  <FontAwesomeIcon icon={['fas', 'plus-circle']} />
-                </a>
-              </Tooltip>
-            </div>
+          
           </div>
           <List
             component="div"
             className="nav-neutral-primary text-left d-block px-3 pb-3">
-            <ListItem button className="d-block text-left">
-              My Account
+            <ListItem button onClick={()=>{handleClose();history.push('/Home');}} className="d-block text-left">
+              Home
             </ListItem>
-            <ListItem button className="d-block text-left">
-              Profile settings
+           {  <ListItem button onClick={()=>{handleClose();selfPayment();}} className="d-block text-left">
+              Self Chatrel
+             </ListItem>}
+            <ListItem button onClick={()=>{handleClose();history.push('/Family');}} className="d-block text-left">
+              Chatrel for Family
             </ListItem>
-            <ListItem button className="d-block text-left">
-              Active tasks
+            <ListItem button  onClick={()=>{handleClose();history.push('/Friends');}} className="d-block text-left">
+            Chatrel for Friends
             </ListItem>
+            <ListItem button onClick={()=>{handleClose();history.push('/PaymentHistory');}} className="d-block text-left">
+              Chatrel History
+            </ListItem>
+            <ListItem button onClick={()=>{handleClose();history.push('/FileDispute');}}  className="d-block text-left">
+              File Dispute
+            </ListItem>
+            <ListItem button onClick={()=>{handleClose();history.push('/Profile');}}  className="d-block text-left">
+              Profile
+            </ListItem>
+            
           </List>
-          <Divider className="w-100" />
+         {/* <Divider className="w-100" />
           <div className="d-flex py-3 justify-content-center">
             <div className="d-flex align-items-center">
               <div>
@@ -138,40 +209,15 @@ const HeaderUserbox = () => {
                 />
               </div>
               <div className="pl-3 line-height-sm">
+              <span className="text-black-50 d-block">Chatrel Contribution</span>
                 <b className="font-size-lg">$9,693</b>
-                <span className="text-black-50 d-block">revenue</span>
+               
               </div>
             </div>
-          </div>
+          </div>*/}
           <Divider className="w-100" />
-          <div className="d-block rounded-bottom py-3 text-center">
-            <Tooltip arrow title="Facebook">
-              <Button
-                size="large"
-                className="btn-facebook p-0 d-40 font-size-lg text-white">
-                <span className="btn-wrapper--icon">
-                  <FontAwesomeIcon icon={['fab', 'facebook']} />
-                </span>
-              </Button>
-            </Tooltip>
-            <Tooltip arrow title="Dribbble">
-              <Button
-                size="large"
-                className="btn-dribbble p-0 d-40 font-size-lg text-white mx-2">
-                <span className="btn-wrapper--icon">
-                  <FontAwesomeIcon icon={['fab', 'dribbble']} />
-                </span>
-              </Button>
-            </Tooltip>
-            <Tooltip arrow title="Twitter">
-              <Button
-                size="large"
-                className="btn-twitter p-0 d-40 font-size-lg text-white">
-                <span className="btn-wrapper--icon">
-                  <FontAwesomeIcon icon={['fab', 'twitter']} />
-                </span>
-              </Button>
-            </Tooltip>
+          <div className="d-block rounded-bottom py-3 text-center" style={{paddingBottom:'0px'}}>
+          <GoogleLogoutButton/>
           </div>
         </div>
       </Menu>

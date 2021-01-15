@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {storeGoogleCreds} from '../../actions/transactions/GLoginAction';
 import { useHistory } from 'react-router-dom';
 
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const GoogleLoginPage = (props) => {
   let history = useHistory();
     const save =(response) => {
@@ -22,10 +22,18 @@ const GoogleLoginPage = (props) => {
         onSuccess={(response) => {save(response) }}
         onFailure={(response) => { console.log("Login Failure: ",response); }}
         cookiePolicy={'single_host_origin'}
-        isSignedIn={true}
+        //isSignedIn={true}
         render={renderProps => (
            
-            <Button variant="contained" onClick={renderProps.onClick} disabled={renderProps.disabled} style={{   backgroundColor: 'yellow', color:'black'}}>Sign in with Google</Button>
+           
+            <Button className="btn-google m-2" style={{   backgroundColor: 'rgb(42, 92, 255)'}}  onClick={renderProps.onClick} disabled={renderProps.disabled} >
+            <span className="btn-wrapper--icon">
+                <FontAwesomeIcon icon={['fab', 'google']} className="font-size-lg" />
+            </span>
+            <span className="btn-wrapper--label">
+            Sign In with Google
+        </span>
+        </Button>
           )}
     />);
     
