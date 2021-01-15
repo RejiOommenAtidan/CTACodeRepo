@@ -238,7 +238,7 @@ export const MainNavigator = () => {
       initialRouteName={'Login'}
       drawerPosition={'left'}
       drawerType={'front'}
-      hideStatusBar={false}
+      hideStatusBar={Platform.OS==="ios"?true:false}
       statusBarAnimation={'slide'}
       keyboardDismissMode={'on-drag'}
       lazy={true}

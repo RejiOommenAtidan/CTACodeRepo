@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
   touchableOpacity: {},
   cardComponent: {
     width: wp(80),
-    height: hp(28.25),
+    height: Platform.OS==="ios"?hp(28.25):hp(30),
     borderRadius: 15,
     borderColor: Colors.white,
     backgroundColor: Colors.white,
