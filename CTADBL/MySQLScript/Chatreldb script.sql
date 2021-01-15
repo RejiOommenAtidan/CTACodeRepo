@@ -241,7 +241,8 @@ CREATE TABLE `tblActionLogger` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 ;
 
-
+CREATE INDEX CHATREL_GREENBOOK_GBID ON tblgreenbook(sGBID);
+CREATE INDEX CHATREL_GBID_RELATION ON lnkgbrelation(sgbidrelation, nrelationid);
 --- -------------------------------------------------------------------------
 --- Data Migration From CTADB to ChatrelDB
 --- -------------------------------------------------------------------------
@@ -570,3 +571,39 @@ SELECT `lnkgbchatrel`.`Id`,
     `lnkgbchatrel`.`nUpdatedBy`
 FROM `ctadb`.`lnkgbchatrel`;
 
+INSERT INTO `lnkgbchatreldonation`
+(`Id`,
+`chatrelpaymentID`,
+`sGBId`,
+`nChatrelAdditionalDonationAmt`,
+`nChatrelBusinessDonationAmt`,
+`sChatrelReceiptNumber`,
+`nAuthRegionID`,
+`sCountryID`,
+`sPaymentCurrency`,
+`sAuthRegionCurrency`,
+`nConversionRate`,
+`sPaidByGBId`,
+`dtPayment`,
+`dtEntered`,
+`nEnteredBy`,
+`dtUpdated`,
+`nUpdatedBy`)
+SELECT `lnkgbchatreldonation`.`Id`,
+    `lnkgbchatreldonation`.`chatrelpaymentID`,
+    `lnkgbchatreldonation`.`sGBId`,
+    `lnkgbchatreldonation`.`nChatrelAdditionalDonationAmt`,
+    `lnkgbchatreldonation`.`nChatrelBusinessDonationAmt`,
+    `lnkgbchatreldonation`.`sChatrelReceiptNumber`,
+    `lnkgbchatreldonation`.`nAuthRegionID`,
+    `lnkgbchatreldonation`.`sCountryID`,
+    `lnkgbchatreldonation`.`sPaymentCurrency`,
+    `lnkgbchatreldonation`.`sAuthRegionCurrency`,
+    `lnkgbchatreldonation`.`nConversionRate`,
+    `lnkgbchatreldonation`.`sPaidByGBId`,
+    `lnkgbchatreldonation`.`dtPayment`,
+    `lnkgbchatreldonation`.`dtEntered`,
+    `lnkgbchatreldonation`.`nEnteredBy`,
+    `lnkgbchatreldonation`.`dtUpdated`,
+    `lnkgbchatreldonation`.`nUpdatedBy`
+FROM `ctadb`.`lnkgbchatreldonation`;
