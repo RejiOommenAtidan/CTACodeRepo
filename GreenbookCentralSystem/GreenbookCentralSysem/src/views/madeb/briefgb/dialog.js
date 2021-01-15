@@ -27,7 +27,7 @@ import Moment from "moment";
 export const EditDialog = (props) => {
 
   Moment.locale("en");
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
 
   const [alertMessage, setAlertMessage] = useState("");
@@ -824,7 +824,7 @@ placeholder="DD-MM-YYYY"
 
 export const AddDialog = (props) => {
   Moment.locale("en");
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
 
 

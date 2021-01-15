@@ -45,7 +45,7 @@ function Alert(props) {
 }
 
 export const EditDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, setError, formState } = useForm();
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -783,7 +783,7 @@ placeholder="DD-MM-YYYY"
 }
 
 export const AddDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
 
   // SnackBar Alerts 

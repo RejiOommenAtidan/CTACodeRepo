@@ -123,7 +123,7 @@ export const ViewDialog = (props) => {
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  const userid = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userid = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
 
   const [progress, setProgress] = useState(0);
   const gbDocumentDelete = (row) => {

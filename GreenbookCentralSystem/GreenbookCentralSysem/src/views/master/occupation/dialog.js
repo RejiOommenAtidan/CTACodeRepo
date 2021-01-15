@@ -23,7 +23,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export const EditDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(
@@ -128,7 +128,7 @@ export const DeleteDialog = (props) => {
 }
 
 export const AddDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitAddRecord = () => {
     props.addAPICall(

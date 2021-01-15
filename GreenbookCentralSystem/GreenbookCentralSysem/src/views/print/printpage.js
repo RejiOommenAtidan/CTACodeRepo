@@ -281,7 +281,7 @@ export default function EnhancedTable() {
         //console.log(release); => udefined
       });
   }
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const showPrint = () => {
     //var controls = new Array();
     //controls.push("controls1");

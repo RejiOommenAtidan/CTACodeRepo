@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GiveGBId() {
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
 
   // Common properties
   const classes = useStyles();

@@ -496,7 +496,7 @@ export default function EditEntry(props) {
 
   const [profilePic, setProfilePic] = React.useState(null);
   const userId = useSelector(
-    (state) => state.UserAuthenticationReducer.oUserAuth.oUser.id
+    (state) => state.UserAuthenticationReducer.oUserAuth.oUser.Id
   );
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {

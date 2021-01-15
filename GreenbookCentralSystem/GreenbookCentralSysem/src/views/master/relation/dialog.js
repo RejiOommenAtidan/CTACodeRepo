@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux';
 import { sButtonColor, sButtonSize, sButtonVariant } from "../../../config/commonConfig";
 
 export const AddDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitAddRecord = () => {
     props.addAPICall(
@@ -79,7 +79,7 @@ export const AddDialog = (props) => {
 }
 
 export const EditDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(

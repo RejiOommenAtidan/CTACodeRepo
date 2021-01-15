@@ -24,7 +24,7 @@ import Moment from "moment";
 
 
 export const AddDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   Moment.locale("en");
   console.log("Hello from Add dialog");
 

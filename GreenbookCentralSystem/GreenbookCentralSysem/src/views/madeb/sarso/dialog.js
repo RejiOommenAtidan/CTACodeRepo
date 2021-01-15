@@ -38,7 +38,7 @@ function Alert(props) {
 
 export const EditDialog = (props) => {
     console.log("props", props)
-    const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+    const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
     const snackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -512,7 +512,7 @@ placeholder="DD-MM-YYYY"
 }
 
 export const AddDialog = (props) => {
-    const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+    const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
     const [authRegions, setAuthRegions] = React.useState(props.selectData['authRegions']);
     const [formNumber, setFormNumber] = React.useState(props.selectData['nFormNumber']);
     const [id, setId] = React.useState(0);

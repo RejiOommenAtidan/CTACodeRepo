@@ -19,7 +19,7 @@ import {
 } from "../../../config/commonConfig";
 
 export const EditDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const { register, handleSubmit, errors, formState } = useForm();
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [nDefaultAuthRegionID, setDefaultAuthRegionID] = React.useState(props.countryObj.nDefaultAuthRegionID);
@@ -164,7 +164,7 @@ export const EditDialog = (props) => {
 }
 
 export const AddDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const [countryId, setCountryId] = useState('');
   const [countryName, setCountryName] = useState('');
   const { register, handleSubmit, errors, formState } = useForm();

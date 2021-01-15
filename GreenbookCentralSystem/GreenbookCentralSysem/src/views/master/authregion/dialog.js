@@ -28,7 +28,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export const EditDialog = (props) => {
 
   // console.log("Props object", props);
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const { register, handleSubmit, errors, formState } = useForm();
   const [authRegion, setAuthRegion] = useState(props.authRegionObj.authRegion);
   const [countryID, setCountryID] = useState(props.authRegionObj.countryID);
@@ -219,7 +219,7 @@ export const DeleteDialog = (props) => {
 }
 
 export const AddDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const { register, handleSubmit, errors, formState } = useForm();
   const ids = props.dataAPI.map((data) => data.sCountryID);
   const [countryID, setCountryID] = useState(ids[0]);

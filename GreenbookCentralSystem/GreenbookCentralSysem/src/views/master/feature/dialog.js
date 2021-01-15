@@ -31,7 +31,7 @@ import _ from "lodash/fp";
 import { useSelector } from 'react-redux';
 
 export const EditDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const { register, handleSubmit, errors } = useForm();
   const handleSubmitEditRecord = () => {
     props.editAPICall(
@@ -86,7 +86,7 @@ export const EditDialog = (props) => {
 }
 
 export const AddDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const { register, handleSubmit, errors } = useForm();
   const handleSubmitAddRecord = () => {
     props.addAPICall(
