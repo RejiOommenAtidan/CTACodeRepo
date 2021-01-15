@@ -235,7 +235,7 @@ export const MainNavigator = () => {
       backgroundColor: Colors.lightBlueChatrelWebsite,
       width: 240,
     }}
-      initialRouteName={'Login'}
+      initialRouteName={'Home'}
       drawerPosition={'left'}
       drawerType={'front'}
       hideStatusBar={Platform.OS==="ios"?true:false}

@@ -223,7 +223,7 @@ export const GBDetailScreen = (props) => {
               render={({onChange, onBlur, value}) => (
                 <Input
                   //label="Enter GBID"
-                  placeholder="Green Book Number"
+                  placeholder={"Green Book Number"}
                   placeholderTextColor={Colors.white}
                   //autoFocus={true}
                   autoCompleteType={'off'}
@@ -271,6 +271,7 @@ export const GBDetailScreen = (props) => {
               render={({onChange, onBlur, value}) => (
                 <DatePicker
                   showIcon={false}
+                  useNativeDriver={true}
                   androidMode={'calendar'}
                   style={styles.dobComponent}
                   date={dtDOB}

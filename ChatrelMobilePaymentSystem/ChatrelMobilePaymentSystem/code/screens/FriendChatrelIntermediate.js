@@ -243,6 +243,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
             control={control}
             render={({onChange, onBlur, value}) => (
               <DatePicker
+              useNativeDriver={true}
                 androidMode={'calendar'}
                 style={{
                   width: Dimensions.get('window').width * 0.875,
