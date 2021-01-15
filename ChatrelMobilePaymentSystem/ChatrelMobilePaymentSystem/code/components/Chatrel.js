@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Text, View, ScrollView, Picker, StyleSheet } from 'react-native';
+import { Switch, Text, View, ScrollView, StyleSheet, Platform } from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+
 import { useSelector } from 'react-redux';
-import { Input, Button } from 'react-native-elements';
+import { Input, Button, Card } from 'react-native-elements';
 import axios from 'axios';
 import Moment from 'moment';
 import Colors from '../constants/Colors';
@@ -210,12 +212,14 @@ export const Chatrel = props => {
     return (
         <>
             {aGBChatrels &&
-                <ScrollView style={styles.mainContainer}>
+                <ScrollView 
+                showsVerticalScrollIndicator={false}
+                style={styles.mainContainer}>
                     <View>
                         <Text style={styles.headerComponent}>PERSONAL INFORMATION</Text>
                     </View>
                     <View>
-                        <Text style={styles.textComponent}>GREENBOOK ID</Text>
+                        <Text style={styles.textComponent}>GREEN BOOK ID</Text>
                     </View>
                     <View>
                         <Text style={styles.textComponentAPI}>{sGBID}</Text>
@@ -249,7 +253,8 @@ export const Chatrel = props => {
                     </View>
                     {aGBChatrels.map((year, index) => {
                         return (
-                            <View style={styles.yearContainer} key={year.nChatrelYear}>
+                            <Card key={year.nChatrelYear}>
+                                <View style={styles.yearContainer}>
                                 <View>
                                     <Text style={styles.chatrelYearComponent}>{year.nChatrelYear}</Text>
                                 </View>
@@ -267,7 +272,8 @@ export const Chatrel = props => {
                                 </View>
                                 <View style={styles.authorityRegionContainer}>
                                     <Text style={styles.textComponent}>AUTHORITY REGION</Text>
-                                    <Picker
+                                        <Picker
+                                        itemStyle={{height:50}}
                                         selectedValue={nSelectedAuthRegion}
                                         style={styles.pickerComponent}
                                         onValueChange={(itemValue, itemIndex) =>
@@ -299,6 +305,7 @@ export const Chatrel = props => {
                                     <Text style={styles.textComponent}>Conversion Rate &#8377;/$ : {(dollarToRupees && year.sCurrencyCode === 'INR') ? dollarToRupees.toFixed(4) : 'NA'}</Text>
                                 </View>
                             </View>
+                            </Card>
                         )
                     })}
                     <View style={styles.additionalDonationContainer}>

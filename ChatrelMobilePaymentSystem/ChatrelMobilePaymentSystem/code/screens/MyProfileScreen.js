@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
         ? 16.2
         : 27,
   },
-  gbidvalueComponent: {
+  gbidValueComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'left',
