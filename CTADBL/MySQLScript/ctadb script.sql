@@ -2557,10 +2557,20 @@ SET SQL_SAFE_UPDATES=0;
 				UPDATE `tblchatrelbulkdata` 
 					SET `sRemarkText` = 'ArrearsTo format is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (ChatrelFrom is null or TRIM(ChatrelFrom)  = '') THEN
+        -- Checking ChatrelFrom Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'ChatrelFrom cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF (ChatrelFrom is not null AND STR_TO_DATE(ChatrelFrom,DateFormatInExcel) is NULL) THEN
 				UPDATE `tblchatrelbulkdata` 
 					SET `sRemarkText` = 'ChatrelFrom format is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;		
+		ELSEIF (ChatrelTo is null or TRIM(ChatrelTo)  = '') THEN
+        -- Checking ChatrelTo Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'ChatrelTo cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF (ChatrelTo is not null AND STR_TO_DATE(ChatrelTo,DateFormatInExcel) is NULL) THEN
 				UPDATE `tblchatrelbulkdata` 
 					SET `sRemarkText` = 'ChatrelTo format is not correct' , `bValidate` = 0, `sStatus` = 'Validation Failed'
@@ -2587,7 +2597,7 @@ SET SQL_SAFE_UPDATES=0;
 		ELSE
 		-- ELSE this tblchatrelbulkdata record is good for save
 				UPDATE `tblchatrelbulkdata` 
-					SET `bValidate` = 1 , `sStatus` = 'Validate Sucess'
+					SET `bValidate` = 1 , `sStatus` = 'Validate Sucess', `sRemarkText` = null
                 WHERE `tblchatrelbulkdata`.`id` = ID;
                 -- select ID;
         END IF;
@@ -2627,7 +2637,7 @@ declare Region varchar(255);
 declare Country varchar(255);
 declare PaymentMode varchar(255);
 declare sStatus varchar(255);
-
+DECLARE startLoop INT ;
 
 declare done int(11);
 
@@ -2702,6 +2712,10 @@ SELECT
 FROM `tblchatrelbulkdata` where  `tblchatrelbulkdata`.`sBatchNumber` = strBatchNumber and `tblchatrelbulkdata`.`bValidate` = 1;
 
 
+            SELECT sCountryID into @ChatrelCountry from lstcountry where sCountry = Country;
+            SELECT Id into @ChatrelRegion from lstauthregion where sAuthRegion = Region;
+-- select ReceiptNo, Country, Region;
+
 SET SQL_SAFE_UPDATES=0;
     set done = 0;
     open cur1;
@@ -2709,6 +2723,7 @@ SET SQL_SAFE_UPDATES=0;
         fetch cur1 into ID,GBID,Name,PaidByGBId,Currency,Chatrel,Meal,Salary,ChatrelFrom,ChatrelTo,FinancialYear,ArrearsPlusLateFees,ArrearsFrom,
 								ArrearsTo,BusinessDonation,AdditionalDonation,TotalAmount,ReceiptNo,PaymentDate,Region,Country,PaymentMode,
 								sStatus;
+                                
         if done = 1 then leave igmLoop; end if;
 
 		-- select ID,GBID,Name,PaidByGBId,Currency,Chatrel,Meal,Salary,ChatrelFrom,ChatrelTo,FinancialYear,ArrearsPlusLateFees,ArrearsFrom,
@@ -2716,10 +2731,93 @@ SET SQL_SAFE_UPDATES=0;
 		--  						sStatus;
         
         -- Insert lnk Tables with ID
+			SELECT Id into @ChatrelPaymentID_var FROM tblChatrelPayment WHERE sChatrelReceiptNumber = ReceiptNo limit 1;		
+			
+			IF(ArrearsFrom is not null or ArrearsTo is not null) THEN
+				SET @ArrearsFromYear = Year(STR_TO_DATE(ArrearsFrom, "%d/%m/%Y"));
+                SET @ArrearsToYear = Year(STR_TO_DATE(ArrearsTo, "%d/%m/%Y"));
+                SET @ArrearsTotalYear = @ArrearsToYear - @ArrearsFromYear;
+                SET @ArrearsFeesPerYear = CAST(CAST(ArrearsPlusLateFees AS decimal(11,2))/@ArrearsTotalYear as decimal(11,2));
+                
+				SET startLoop = 1 ;
+				loop_label: LOOP
+				IF startLoop > @ArrearsTotalYear THEN
+					LEAVE loop_label;
+				END IF;
 					
-			SELECT Id into @ChatrelPaymentID_var FROM tblChatrelPayment WHERE sChatrelReceiptNumber = ReceiptNo limit 1;
-
-
+                    SET @ArrearsFromDate = concat('01/04/',@ArrearsFromYear);
+                    SET @ArrearsToDate = concat('31/03/',@ArrearsFromYear + 1);
+                    SET @ArrearsChatrelFees = CAST(Chatrel AS decimal(11,2));
+                    SET @ArrearsMealFees = CAST(Meal AS decimal(11,2));
+                    SET @ArrearsChatrelSalaryAmt = @ArrearsFeesPerYear - (@ArrearsChatrelFees + @ArrearsMealFees);
+					
+					-- SELECT @ArrearsFromDate, @ArrearsToDate, @ArrearsFeesPerYear;
+						INSERT INTO `lnkgbchatrel`
+						(
+							`chatrelpaymentID`,
+							`sGBId`,
+							`nChatrelAmount`,
+							`nChatrelMeal`,
+							`nChatrelYear`,
+							`nChatrelLateFeesPercentage`,
+							`nChatrelLateFeesValue`,
+							`nArrearsAmount`,
+							`dtArrearsFrom`,
+							`dtArrearsTo`,
+							`nCurrentChatrelSalaryAmt`,
+							`dtCurrentChatrelFrom`,
+							`dtCurrentChatrelTo`,
+							`nChatrelTotalAmount`,
+							`sChatrelReceiptNumber`,
+							`nAuthRegionID`,
+							`sCountryID`,
+							`sPaymentCurrency`,
+							`sAuthRegionCurrency`,
+							`nConversionRate`,
+							`sPaidByGBId`,
+							`dtPayment`,
+							`dtEntered`,
+							`nEnteredBy`,
+							`dtUpdated`,
+							`nUpdatedBy`
+						)
+						VALUES
+						(
+							@ChatrelPaymentID_var,
+							cast(SUBSTRING(GBID FROM 3)  as unsigned),
+							@ArrearsChatrelFees,
+							@ArrearsMealFees,
+							@ArrearsFromYear,
+							NULL,
+							NULL,
+							@ArrearsFeesPerYear,
+							STR_TO_DATE(@ArrearsFromDate,'%d/%m/%Y'),
+							STR_TO_DATE(@ArrearsToDate,'%d/%m/%Y'),
+							@ArrearsChatrelSalaryAmt,
+							null,
+							null,
+							@ArrearsFeesPerYear,
+							ReceiptNo,
+							@ChatrelRegion,
+							@ChatrelCountry,
+							Currency,
+							Currency,
+							1,
+							cast(SUBSTRING(PaidByGBId FROM 3)  as unsigned),
+							STR_TO_DATE(PaymentDate,'%d/%m/%Y'),
+							now(),
+							1,
+							now(),
+							1
+						);
+                    
+                    SET @ArrearsFromYear = @ArrearsFromYear + 1;
+				SET startLoop = startLoop + 1;
+				ITERATE loop_label;   
+				END LOOP;
+                
+                
+            END IF;
 			INSERT INTO `lnkgbchatrel`
 			(
 				`chatrelpaymentID`,
@@ -2758,16 +2856,19 @@ SET SQL_SAFE_UPDATES=0;
 				FinancialYear,
 				NULL,
 				NULL,
-				ArrearsPlusLateFees,
-				ArrearsFrom,
-				ArrearsTo,
+				-- ArrearsPlusLateFees,
+				-- ArrearsFrom,
+				-- ArrearsTo,
+				NULL,
+				NULL,
+				NULL,
 				Salary,
-				ChatrelFrom,
-				ChatrelTo,
-				TotalAmount,
+				STR_TO_DATE(ChatrelFrom,'%d/%m/%Y'),
+				STR_TO_DATE(ChatrelTo,'%d/%m/%Y'),
+				cast(Chatrel as decimal(11,2)) + cast(Meal as decimal(11,2)) + cast(Salary as decimal(11,2)),
 				ReceiptNo,
-				Region,
-				Country,
+				@ChatrelRegion,
+				@ChatrelCountry,
 				Currency,
 				Currency,
 				1,
@@ -2779,7 +2880,7 @@ SET SQL_SAFE_UPDATES=0;
 				1
 			);
 
-			IF	(AdditionalDonation != 0 or BusinessDonation != 0) THEN
+			IF	(cast(AdditionalDonation as decimal(11,2)) != 0 or cast(BusinessDonation as decimal(11,2)) != 0) THEN
 				INSERT INTO `lnkgbchatreldonation`
 				(
 					`chatrelpaymentID`,
@@ -2806,8 +2907,8 @@ SET SQL_SAFE_UPDATES=0;
 					AdditionalDonation,
 					BusinessDonation,
 					ReceiptNo,
-					Region,
-					Country,
+					@ChatrelRegion,
+					@ChatrelCountry,
 					Currency,
 					Currency,
 					1,
@@ -2819,6 +2920,7 @@ SET SQL_SAFE_UPDATES=0;
 					1
 				);
 			END IF;
+            
 
       END LOOP igmLoop;
       CLOSE cur1;
