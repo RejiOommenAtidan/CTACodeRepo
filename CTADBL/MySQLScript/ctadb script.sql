@@ -2607,12 +2607,11 @@ SET SQL_SAFE_UPDATES=0;
 END$$
 DELIMITER ;
 
-
 DROP procedure IF EXISTS  spInsertBulkUploadedDataByBatchNumber;
 DELIMITER $$
 
 CREATE PROCEDURE spInsertBulkUploadedDataByBatchNumber (IN strBatchNumber varchar(255))
-BEGIN
+proc_label: BEGIN
 
 declare ID int(11);
 declare GBID varchar(255);
@@ -2640,9 +2639,8 @@ declare sStatus varchar(255);
 DECLARE startLoop INT ;
 
 declare done int(11);
-
-
-
+declare ChatrelCountry_str varchar(255);
+declare ChatrelRegion_Id varchar(255);
 declare cur1 cursor for SELECT 	
 								`tblchatrelbulkdata`.`ID`,
 								`tblchatrelbulkdata`.`GBID`,
@@ -2669,6 +2667,21 @@ declare cur1 cursor for SELECT
 								`tblchatrelbulkdata`.`sStatus`
 							FROM `tblchatrelbulkdata` where sBatchNumber = strBatchNumber and bValidate = 1;
 declare continue handler for not found set done=1;
+
+				-- if finds Data duplicate then exit the Proc
+				IF ( (
+					SELECT COUNT(*) FROM tblChatrelPayment 
+								inner join tblchatrelbulkdata
+									on tblchatrelbulkdata.ReceiptNo = tblChatrelPayment.schatrelReceiptnumber
+								WHERE tblchatrelbulkdata.sBatchNumber = strBatchNumber 
+				) > 0) THEN
+						-- Checking ReceiptNo is present in DB
+								UPDATE `tblchatrelbulkdata` 
+									SET `sRemarkText` ='BatchNumber already exist in DB; Please Validate' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+								WHERE `tblchatrelbulkdata`.`sBatchNumber` = strBatchNumber;
+								
+								LEAVE proc_label;
+				END IF;
 
 INSERT INTO `tblchatrelpayment`
 (
@@ -2712,10 +2725,6 @@ SELECT
 FROM `tblchatrelbulkdata` where  `tblchatrelbulkdata`.`sBatchNumber` = strBatchNumber and `tblchatrelbulkdata`.`bValidate` = 1;
 
 
-            SELECT sCountryID into @ChatrelCountry from lstcountry where sCountry = Country;
-            SELECT Id into @ChatrelRegion from lstauthregion where sAuthRegion = Region;
--- select ReceiptNo, Country, Region;
-
 SET SQL_SAFE_UPDATES=0;
     set done = 0;
     open cur1;
@@ -2731,8 +2740,10 @@ SET SQL_SAFE_UPDATES=0;
 		--  						sStatus;
         
         -- Insert lnk Tables with ID
-			SELECT Id into @ChatrelPaymentID_var FROM tblChatrelPayment WHERE sChatrelReceiptNumber = ReceiptNo limit 1;		
-			
+			SELECT tblChatrelPayment.Id into @ChatrelPaymentID_var FROM tblChatrelPayment WHERE sChatrelReceiptNumber = ReceiptNo limit 1;		
+			SELECT lstcountry.sCountryID into ChatrelCountry_str from lstcountry where lstcountry.sCountry = Country;
+			SELECT lstauthregion.Id into ChatrelRegion_Id from lstauthregion where lstauthregion.sAuthRegion = Region;
+
 			IF(ArrearsFrom is not null or ArrearsTo is not null) THEN
 				SET @ArrearsFromYear = Year(STR_TO_DATE(ArrearsFrom, "%d/%m/%Y"));
                 SET @ArrearsToYear = Year(STR_TO_DATE(ArrearsTo, "%d/%m/%Y"));
@@ -2798,8 +2809,8 @@ SET SQL_SAFE_UPDATES=0;
 							null,
 							@ArrearsFeesPerYear,
 							ReceiptNo,
-							@ChatrelRegion,
-							@ChatrelCountry,
+							ChatrelRegion_Id,
+							ChatrelCountry_str,
 							Currency,
 							Currency,
 							1,
@@ -2867,8 +2878,8 @@ SET SQL_SAFE_UPDATES=0;
 				STR_TO_DATE(ChatrelTo,'%d/%m/%Y'),
 				cast(Chatrel as decimal(11,2)) + cast(Meal as decimal(11,2)) + cast(Salary as decimal(11,2)),
 				ReceiptNo,
-				@ChatrelRegion,
-				@ChatrelCountry,
+				ChatrelRegion_Id,
+				ChatrelCountry_str,
 				Currency,
 				Currency,
 				1,
@@ -2907,8 +2918,8 @@ SET SQL_SAFE_UPDATES=0;
 					AdditionalDonation,
 					BusinessDonation,
 					ReceiptNo,
-					@ChatrelRegion,
-					@ChatrelCountry,
+					ChatrelRegion_Id,
+					ChatrelCountry_str,
 					Currency,
 					Currency,
 					1,
@@ -2926,6 +2937,8 @@ SET SQL_SAFE_UPDATES=0;
       CLOSE cur1;
 END$$
 DELIMITER ;
+
+
 
 
 
