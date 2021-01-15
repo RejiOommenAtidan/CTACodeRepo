@@ -1,52 +1,66 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import React, {useState} from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { Platform } from 'react-native';
-import { Input } from 'react-native-elements';
+import {Platform} from 'react-native';
+import {Input} from 'react-native-elements';
 import DocumentPicker from 'react-native-document-picker';
-import { Button } from 'react-native-elements';
+import {Button} from 'react-native-elements';
 import RNFS from 'react-native-fs';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {useForm, Controller} from 'react-hook-form';
+import {errorComponent, errorContainer} from '../constants/CommonConfig';
 import axios from 'axios';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const FileDisputeScreen = (props) => {
-  const [sDisputeSingleFile, setsDisputeSingleFile] = useState("");
+  const {control, handleSubmit, errors} = useForm();
+  const [sDisputeSingleFile, setsDisputeSingleFile] = useState('');
   const [sFileName, setsFileName] = useState(null);
-  const [sFileType, setsFileType] = useState("");
-  const [sDisputeSubject, setsDisputeSubject] = useState("");
-  const [sDisputeMessage, setsDisputeMessage] = useState("");
+  const [sFileType, setsFileType] = useState('');
+  const [sDisputeSubject, setsDisputeSubject] = useState('');
+  const [sDisputeMessage, setsDisputeMessage] = useState('');
 
   const handleDispute = () => {
+    if(sDisputeSingleFile===''){
+      alert('Please select a File for Uploading');
+      return;
+    }
     console.log({
       sDisputeSingleFile,
       sDisputeSubject,
       sDisputeMessage,
       sFileName,
-      sFileType
-    }
-    );
+      sFileType,
+    });
   };
 
   const selectOneFile = async () => {
     try {
       const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.doc,
-        DocumentPicker.types.docx,
-        DocumentPicker.types.pdf,
-        DocumentPicker.types.images]
+        type: [
+          DocumentPicker.types.doc,
+          DocumentPicker.types.docx,
+          DocumentPicker.types.pdf,
+          DocumentPicker.types.images,
+        ],
       });
 
       //TODO:
-      //if file size less than 2mb then accept 
-      //else 
+      //if file size less than 2mb then accept
+      //else
       //show feedback and set all to start state
 
       const uri = Platform.select({
@@ -54,24 +68,21 @@ export const FileDisputeScreen = (props) => {
         ios: decodeURIComponent(res.uri)?.replace?.('file://', ''),
       });
 
-      RNFS.readFile(uri, "base64").then(result => {
+      RNFS.readFile(uri, 'base64').then((result) => {
         setsDisputeSingleFile(result);
-      })
+      });
       //setsFileType(res.type);
       setsFileType(res.name.split('.').pop());
       setsFileName(res.name);
-
-    }
-    catch (err) {
+    } catch (err) {
       //Handling any exception (If any)
       if (DocumentPicker.isCancel(err)) {
         //If user canceled the document selection & set all to start state
-        alert('File Not Selected for Uploading');
-        setsDisputeSingleFile("");
+        //alert('File Not Selected for Uploading');
+        setsDisputeSingleFile('');
         setsFileName(null);
-        setsFileType("");
-      }
-      else {
+        setsFileType('');
+      } else {
         alert('Unknown Error: ' + JSON.stringify(err));
       }
     }
@@ -116,45 +127,79 @@ export const FileDisputeScreen = (props) => {
         <Text style={styles.enterSubjectComponent}>ENTER SUBJECT</Text>
       </View>
       <View style={styles.subjectContainer}>
-        <Input
-          value={sDisputeSubject}
-          placeholder="Subject"
-          leftIcon={{ type: 'font-awesome', name: 'envelope' }}
-          onChangeText={value => setsDisputeSubject(value)}
-          //label="Subject"
-          placeholder="Subject"
-          autoFocus={false}
-          autoCapitalize={"sentences"}
-          autoCompleteType={"off"}
-          autoCorrect={false}
-          clearButtonMode={"while-editing"}
-          keyboardType={"default"}
-          keyboardAppearance={"default"}
-          disableFullscreenUI={true}
+        <Controller
+          control={control}
+          render={({onChange, onBlur, value}) => (
+            <Input
+              value={sDisputeSubject}
+              placeholder="Subject"
+              leftIcon={{type: 'font-awesome', name: 'envelope'}}
+              onBlur={onBlur}
+              onChangeText={(value) => {
+                onChange(value);
+                setsDisputeSubject(value);
+              }}
+              //label="Subject"
+              placeholder="Subject"
+              autoFocus={false}
+              autoCapitalize={'sentences'}
+              autoCompleteType={'off'}
+              autoCorrect={false}
+              clearButtonMode={'while-editing'}
+              keyboardType={'default'}
+              keyboardAppearance={'default'}
+              disableFullscreenUI={true}
+            />
+          )}
+          name="name_sDisputeSubject"
+          rules={{required: true}}
+          defaultValue=""
         />
+        {errors.name_sDisputeSubject && (
+          <View style={errorContainer}>
+            <Text style={errorComponent}>This is field required.</Text>
+          </View>
+        )}
       </View>
       <View style={styles.enterMessageContainer}>
         <Text style={styles.enterMessageComponent}>ENTER MESSAGE</Text>
       </View>
       <View style={styles.messageContainer}>
-        <Input
-          value={sDisputeMessage}
-          placeholder="Comment"
-          leftIcon={{ type: 'font-awesome', name: 'comment' }}
-          onChangeText={value => setsDisputeMessage(value)}
-          //label="Description"
-          placeholder="Message"
-          autoFocus={false}
-          autoCapitalize={"sentences"}
-          autoCompleteType={"off"}
-          autoCorrect={false}
-          clearButtonMode={"while-editing"}
-          keyboardType={"default"}
-          keyboardAppearance={"default"}
-          disableFullscreenUI={true}
-          multiline={true}
-          numberOfLines={4}
+        <Controller
+          control={control}
+          render={({onChange, onBlur, value}) => (
+            <Input
+              value={sDisputeMessage}
+              placeholder="Comment"
+              leftIcon={{type: 'font-awesome', name: 'comment'}}
+              onBlur={onBlur}
+              onChangeText={(value) => {
+                onChange(value);
+                setsDisputeMessage(value);
+              }}
+              //label="Description"
+              placeholder="Message"
+              autoFocus={false}
+              autoCapitalize={'sentences'}
+              autoCompleteType={'off'}
+              autoCorrect={false}
+              clearButtonMode={'while-editing'}
+              keyboardType={'default'}
+              keyboardAppearance={'default'}
+              disableFullscreenUI={true}
+              multiline={true}
+              numberOfLines={4}
+            />
+          )}
+          name="name_sDisputeMessage"
+          rules={{required: true}}
+          defaultValue=""
         />
+        {errors.name_sDisputeMessage && (
+          <View style={errorContainer}>
+            <Text style={errorComponent}>This is field required.</Text>
+          </View>
+        )}
       </View>
       <View style={styles.attachImageContainer}>
         <Text style={styles.attachImageComponent}>ATTACH IMAGE</Text>
@@ -171,23 +216,31 @@ export const FileDisputeScreen = (props) => {
           type="outline"
           titleStyle={{
             color: Colors.blue,
-            fontFamily: 'Kanit-Regular'
+            fontFamily: 'Kanit-Regular',
           }}
           buttonStyle={{
             borderRadius: 10,
             borderWidth: 1,
-            marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3 : 5
+            marginBottom:
+              Dimensions.get('window').height < Resolution.nHeightBreakpoint
+                ? 3
+                : 5,
           }}
           onPress={selectOneFile}
-        //style={styles.buttonStyle}
+          //style={styles.buttonStyle}
         />
       </View>
-      {sFileName !== null && <View style={styles.selectedFileContainer}>
-        <Text style={styles.selectedFileComponent}>Selected File: {sFileName}</Text>
-      </View>}
+      {sFileName !== null && (
+        <View style={styles.selectedFileContainer}>
+          <Text style={styles.selectedFileComponent}>
+            Selected File: {sFileName}
+          </Text>
+        </View>
+      )}
       <View style={styles.infoContainer}>
         <Text style={styles.infoComponent}>
-          The response to the dispute will be addressed through an email sent{"\n"} to your registered email address.
+          The response to the dispute will be addressed through an email sent
+          {'\n'} to your registered email address.
         </Text>
       </View>
       <View style={styles.submitDisputeContainer}>
@@ -200,10 +253,10 @@ export const FileDisputeScreen = (props) => {
           }}
           title="SUBMIT DISPUTE"
           type="outline"
-          onPress={handleDispute}
+          onPress={handleSubmit(handleDispute)}
           titleStyle={{
             color: Colors.white,
-            fontFamily: 'Kanit-Regular'
+            fontFamily: 'Kanit-Regular',
           }}
           buttonStyle={{
             backgroundColor: Colors.buttonYellow,
@@ -217,9 +270,9 @@ export const FileDisputeScreen = (props) => {
   );
 };
 
-export const FileDisputeScreenOptions = navData => {
+export const FileDisputeScreenOptions = (navData) => {
   return {
-    headerTitle: "Submit a Dispute",
+    headerTitle: 'Submit a Dispute',
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
@@ -232,130 +285,150 @@ export const FileDisputeScreenOptions = navData => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton
-  }
+    headerRight: CustomHeaderRightButton,
+  };
 };
-
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    marginHorizontal: Dimensions.get('window').width * Resolution.nWidthScreenMargin,
-    marginVertical: Dimensions.get('window').height * Resolution.nHeightScreenMargin
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    marginVertical:
+      Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
   headingContainer: {
     width: wp(55),
     height: hp(4),
-    marginTop: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
-    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 16.8 : 28
+    marginTop:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
+    marginBottom:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint
+        ? 16.8
+        : 28,
   },
   headingComponent: {
     width: '100%',
     height: '100%',
-    textAlign: "left",
-    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 14.4 : 24,
-    fontStyle: "normal",
-    fontWeight: "normal",
+    textAlign: 'left',
+    fontSize:
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 14.4 : 24,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
     color: Colors.blue,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular'
+    fontFamily: 'Kanit-Regular',
   },
   enterSubjectContainer: {
     width: wp(22),
     height: hp(2),
-    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6.6 : 11
+    marginBottom:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6.6 : 11,
   },
   enterSubjectComponent: {
     width: '100%',
     height: '100%',
-    textAlign: "left",
-    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-    fontStyle: "normal",
-    fontWeight: "normal",
+    textAlign: 'left',
+    fontSize:
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular'
+    fontFamily: 'Kanit-Regular',
   },
   enterMessageContainer: {
     width: wp(22),
     height: hp(2),
-    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 8
+    marginBottom:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 8,
   },
   enterMessageComponent: {
     width: '100%',
     height: '100%',
-    textAlign: "left",
-    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-    fontStyle: "normal",
-    fontWeight: "normal",
+    textAlign: 'left',
+    fontSize:
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular'
+    fontFamily: 'Kanit-Regular',
   },
   messageContainer: {},
   subjectContainer: {},
   attachImageContainer: {
     width: wp(22),
     height: hp(2),
-    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6
+    marginBottom:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
   },
   attachImageComponent: {
     width: '100%',
     height: '100%',
-    textAlign: "left",
-    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-    fontStyle: "normal",
-    fontWeight: "normal",
+    textAlign: 'left',
+    fontSize:
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular'
+    fontFamily: 'Kanit-Regular',
   },
   selectedFileContainer: {
     width: wp(80),
     height: hp(3.75),
-    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6
+    marginBottom:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
   },
   selectedFileComponent: {
     width: '100%',
     height: '100%',
-    textAlign: "left",
-    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-    fontStyle: "normal",
-    fontWeight: "normal",
+    textAlign: 'left',
+    fontSize:
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular'
+    fontFamily: 'Kanit-Regular',
   },
   infoContainer: {
     width: wp(80),
     height: hp(5),
-    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10
+    marginBottom:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
   infoComponent: {
     width: '100%',
     height: '100%',
-    textAlign: "left",
-    fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-    fontStyle: "normal",
-    fontWeight: "normal",
+    textAlign: 'left',
+    fontSize:
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular'
+    fontFamily: 'Kanit-Regular',
   },
   fileUploadContainer: {
     width: wp(45),
     height: hp(7.5),
-    marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 16.8 : 28
+    marginBottom:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint
+        ? 16.8
+        : 28,
   },
   submitDisputeContainer: {
-    marginTop: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 18 : 30,
-  }
+    marginTop:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 18 : 30,
+  },
   // buttonStyle: {
   //   flexDirection: 'row',
   //   backgroundColor: '#DDDDDD',

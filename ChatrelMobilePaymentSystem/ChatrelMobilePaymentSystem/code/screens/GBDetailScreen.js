@@ -29,6 +29,8 @@ import {GoogleSignin} from '@react-native-community/google-signin';
 import {removeGoogleCreds} from '../store/actions/GLoginAction';
 import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
 import {removeGBDetails} from '../store/actions/GBDetailsAction';
+import {useForm, Controller} from 'react-hook-form';
+import {errorComponent, errorContainer} from '../constants/CommonConfig';
 import axios from 'axios';
 
 export const GBDetailScreen = (props) => {
@@ -93,6 +95,8 @@ export const GBDetailScreen = (props) => {
   //       }
   //     });
   // };
+
+  const {control, handleSubmit, errors} = useForm();
 
   const dispatch = useDispatch();
   let keysToRemove = ['oUserInfo', 'oGBInfo'];
@@ -214,25 +218,44 @@ export const GBDetailScreen = (props) => {
   </View>*/}
           {/*<form onSubmit={handleSubmit(onSubmit)}>*/}
           <View style={styles.gbidContainer}>
-            <Input
-              //label="Enter GBID"
-              placeholder="Green Book Number"
-              placeholderTextColor={Colors.white}
-              //autoFocus={true}
-              autoCompleteType={'off'}
-              autoCorrect={false}
-              clearButtonMode={'while-editing'}
-              //secureTextEntry={!bShowGBID}
-              keyboardType={'number-pad'}
-              keyboardAppearance={'default'}
-              disableFullscreenUI={false}
-              maxLength={7}
-              onChangeText={(value) => {
-                setsGBID(value);
-              }}
-              value={sGBID}
-              style={styles.gbidComponent}
+            <Controller
+              control={control}
+              render={({onChange, onBlur, value}) => (
+                <Input
+                  //label="Enter GBID"
+                  placeholder="Green Book Number"
+                  placeholderTextColor={Colors.white}
+                  //autoFocus={true}
+                  autoCompleteType={'off'}
+                  autoCorrect={false}
+                  clearButtonMode={'while-editing'}
+                  //secureTextEntry={!bShowGBID}
+                  keyboardType={'number-pad'}
+                  keyboardAppearance={'default'}
+                  disableFullscreenUI={false}
+                  maxLength={7}
+                  onBlur={onBlur}
+                  onChangeText={(value) => {
+                    onChange(value);
+                    setsGBID(value);
+                  }}
+                  value={sGBID}
+                  style={styles.gbidComponent}
+                />
+              )}
+              name="name_nGBID"
+              rules={{required: true}}
+              defaultValue=""
             />
+            {errors.name_nGBID && (
+              <View
+                style={{
+                  ...errorContainer,
+                  marginLeft: wp(2),
+                }}>
+                <Text style={errorComponent}>This is field required.</Text>
+              </View>
+            )}
             {/*<View style={styles.showGBIDContainer}>
         <Switch
           style={styles.showGBIDComponent}
@@ -243,72 +266,93 @@ export const GBDetailScreen = (props) => {
       </View>*/}
           </View>
           <View style={styles.dobContainer}>
-            <DatePicker
-              showIcon={false}
-              androidMode={'calendar'}
-              style={styles.dobComponent}
-              date={dtDOB}
-              mode="date"
-              placeholder="Date of Birth"
-              placeholderTextColor={Colors.white}
-              format={sDateFormatDatePicker}
-              maxDate={dtToday}
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  borderWidth: 0,
-                  borderStyle: null,
-                  height: 0,
-                  width: 0,
-                },
-                placeholderText: {
-                  color: Colors.white,
-                  fontSize:
-                    Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                      ? 12
-                      : 20,
-                  fontStyle: 'normal',
-                  fontWeight: 'normal',
-                  fontFamily: 'Kanit-Regular',
-                },
-                dateText: {
-                  //textAlign: 'left',
-                  color: Colors.white,
-                  fontSize:
-                    Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                      ? 12
-                      : 20,
-                  fontStyle: 'normal',
-                  fontWeight: 'normal',
-                  fontFamily: 'Kanit-Regular',
-                },
-                // dateIcon: {
-                //   width:0,
-                //   height:0,
-                //position: 'relative',
-                //left: 0,
-                //top:
-                //Dimensions.get('window').height <
-                //Resolution.nHeightBreakpoint
-                //? 2.4
-                //: 4,
-                // marginLeft: 0,
-                //},
-                dateInput: {
-                  flexGrow: 1,
-                  alignItems: 'flex-start',
-                  borderLeftWidth: 0,
-                  borderRightWidth: 0,
-                  borderTopWidth: 0,
-                  marginLeft: wp(2.75),
-                },
-              }}
-              onDateChange={(date) => {
-                setdtDOB(date);
-              }}
+            <Controller
+              control={control}
+              render={({onChange, onBlur, value}) => (
+                <DatePicker
+                  showIcon={false}
+                  androidMode={'calendar'}
+                  style={styles.dobComponent}
+                  date={dtDOB}
+                  mode="date"
+                  placeholder="Date of Birth"
+                  placeholderTextColor={Colors.white}
+                  format={sDateFormatDatePicker}
+                  maxDate={dtToday}
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  customStyles={{
+                    dateIcon: {
+                      borderWidth: 0,
+                      borderStyle: null,
+                      height: 0,
+                      width: 0,
+                    },
+                    placeholderText: {
+                      color: Colors.white,
+                      fontSize:
+                        Dimensions.get('window').width <
+                        Resolution.nWidthBreakpoint
+                          ? 12
+                          : 20,
+                      fontStyle: 'normal',
+                      fontWeight: 'normal',
+                      fontFamily: 'Kanit-Regular',
+                    },
+                    dateText: {
+                      //textAlign: 'left',
+                      color: Colors.white,
+                      fontSize:
+                        Dimensions.get('window').width <
+                        Resolution.nWidthBreakpoint
+                          ? 12
+                          : 20,
+                      fontStyle: 'normal',
+                      fontWeight: 'normal',
+                      fontFamily: 'Kanit-Regular',
+                    },
+                    // dateIcon: {
+                    //   width:0,
+                    //   height:0,
+                    //position: 'relative',
+                    //left: 0,
+                    //top:
+                    //Dimensions.get('window').height <
+                    //Resolution.nHeightBreakpoint
+                    //? 2.4
+                    //: 4,
+                    // marginLeft: 0,
+                    //},
+                    dateInput: {
+                      flexGrow: 1,
+                      alignItems: 'flex-start',
+                      borderLeftWidth: 0,
+                      borderRightWidth: 0,
+                      borderTopWidth: 0,
+                      marginLeft: wp(2.75),
+                    },
+                  }}
+                  onBlur={onBlur}
+                  onDateChange={(date) => {
+                    onChange(date);
+                    setdtDOB(date);
+                  }}
+                />
+              )}
+              name="name_dtDOB"
+              rules={{required: true}}
+              defaultValue=""
             />
           </View>
+          {errors.name_dtDOB && (
+            <View
+              style={{
+                ...errorContainer,
+                marginLeft: wp(2),
+              }}>
+              <Text style={errorComponent}>This is field required.</Text>
+            </View>
+          )}
           <View style={styles.buttonContainer}>
             <Button
               titleStyle={{
@@ -317,9 +361,7 @@ export const GBDetailScreen = (props) => {
               }}
               buttonStyle={styles.buttonComponent}
               title="VERIFY"
-              onPress={() => {
-                handleVerifyDetailsPress();
-              }}
+              onPress={handleSubmit(handleVerifyDetailsPress)}
             />
           </View>
           {/*</form>*/}
