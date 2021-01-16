@@ -11,8 +11,53 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useSelector} from 'react-redux';
+// import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+// import PDFLib, { PDFDocument, PDFPage } from 'react-native-pdf-lib';
 
 export const MyProfileScreen = (props) => {
+  // const handleCreatePDF = async () => {
+  //   const page1 = PDFPage
+  //   .create()
+  //   .setMediaBox(200, 200)
+  //   .drawText('You can add text and rectangles to the PDF!', {
+  //     x: 5,
+  //     y: 235,
+  //     color: '#007386',
+  //     fontName: "Kanit Regular"
+  //   })
+  //   .drawRectangle({
+  //     x: 25,
+  //     y: 25,
+  //     width: 150,
+  //     height: 150,
+  //     color: '#FF99CC',
+  //   })
+  //   .drawRectangle({
+  //     x: 75,
+  //     y: 75,
+  //     width: 50,
+  //     height: 50,
+  //     color: '#99FFCC',
+  //   });
+  
+  //   const docsDir = await PDFLib.getDocumentsDirectory();
+  // const pdfPath = `${docsDir}/sample.pdf`;
+  // PDFDocument
+  //   .create(pdfPath)
+  //   .addPages(page1)
+  //   .write() // Returns a promise that resolves with the PDF's path
+  //   .then(path => {
+  //     alert('PDF created at: ' + path);
+  //     // Do stuff with your shiny new PDF!
+  //   });
+  // };
+
+  
+
+
+
+
   const oGBDetails = useSelector((state) => state.GBDetailsReducer.oGBDetails);
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   // const oUserHardcodedMyProfile = {
@@ -75,9 +120,9 @@ export const MyProfileScreen = (props) => {
       <View style={styles.emailIDLabelContainer}>
         <Text style={styles.emailIDLabelComponent}>EMAIL ADDRESS</Text>
       </View>
-      <View style={styles.emailIDValueContainer}>
+      <TouchableOpacity style={styles.emailIDValueContainer} >
         <Text style={styles.emailIDValueComponent}>{oGoogle.email}</Text>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -146,7 +191,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 :12,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -167,7 +212,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 :18,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 : 18,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -187,7 +232,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 :12,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -208,7 +253,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 :18,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 : 18,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -228,7 +273,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 :12,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -249,7 +294,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 :18,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 : 18,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -269,7 +314,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 :12,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -290,7 +335,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 :18,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 : 18,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -310,7 +355,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 :12,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -331,7 +376,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 :18,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 : 18,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -351,7 +396,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 :12,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -372,7 +417,7 @@ const styles = StyleSheet.create({
     height: '100%',
     textAlign: 'left',
     fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 :18,
+      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 : 18,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,

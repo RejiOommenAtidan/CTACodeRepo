@@ -41,7 +41,6 @@ export const Chatrel = (props) => {
   const [lAuthRegions, setlAuthRegions] = React.useState([]);
   const [dataAPI, setDataAPI] = React.useState();
   const [summaryData, setSummaryData] = React.useState();
-  const [paymentData, setPaymentData] = React.useState();
   const [donationData, setDonationData] = React.useState();
   const [receiptNumber, setReceiptNumber] = React.useState('');
   const [shouldRun, setShouldRun] = React.useState(true);
@@ -63,7 +62,7 @@ export const Chatrel = (props) => {
 
   const modify = (value, index) => {
     console.log(value);
-    console.log(id);
+    //console.log(id);
     debugger;
     let oPayment = [...aGBChatrels];
     //let index;
@@ -97,12 +96,39 @@ export const Chatrel = (props) => {
   const runOnce = () => {
     //Co-ordinate with aayush
     if (aGBChatrels && dollarToRupees && shouldRun) {
-      const len = aGBChatrels.length;
-      for (var i = 0; i < len; i++) {
-        calculateMethod(i);
+      if (!outstanding) {
+        if (aGBChatrels[0].nCurrentChatrelSalaryAmt > 0) {
+          
+          // const checkBox = document.getElementById('employed');
+          // const rateField = document.getElementById('rate');
+          // const totalField = document.getElementById('total');
+          //if (checkBox) {
+            // rateField.innerText = '';
+            // checkBox.checked = true;
+            // checkBox.disabled = true;
+            setaGBChatrels(
+              aGBChatrels.map((element) => {
+                element.nChatrelTotalAmount = 0;
+                element.nCurrentChatrelSalaryAmt = 0;
+                return element;
+              })
+            );
+
+            //totalField.innerText = '';
+            setnGrandTotal(0.0);
+            setGBChatrelsNull(true);
+          //}
+        }
+      } else {
+        console.log('we have outstanding');
+        const len = aGBChatrels.length;
+        for (var i = 0; i < len; i++) {
+          calculateMethod(i);
+        }
       }
       setShouldRun(false);
     }
+    
   };
 
   const updateAuthRegionIOS = (e, value) => {
@@ -190,13 +216,14 @@ export const Chatrel = (props) => {
       oPayment[index].nChatrelLateFeesValue = 0;
     }
     oPayment[index].nChatrelTotalAmount =
-      oPayment[index].nChatrelAmount +
+      (oPayment[index].nChatrelAmount +
       oPayment[index].nChatrelMeal +
       oPayment[index].nChatrelLateFeesValue +
-      oPayment[index].nCurrentChatrelSalaryAmt *
-        (dollarToRupees && oPayment[index].sCurrencyCode === 'INR'
+      oPayment[index].nCurrentChatrelSalaryAmt) *
+        (dollarToRupees && oPayment[index].sAuthRegionCurrency === 'INR'
           ? dollarToRupees.toFixed(4)
           : 1);
+          console.log(oPayment[index].nChatrelTotalAmount);
     oPayment[index].nConversionRate =
       oPayment[index].sAuthRegionCurrency === 'USD'
         ? 1.0
@@ -208,12 +235,12 @@ export const Chatrel = (props) => {
   const calcTotal = (obj, aD, bD) => {
     let temptotal = aD + bD;
     obj.forEach((row) => {
-      temptotal += row.nChatrelTotalAmount;
+      temptotal += parseFloat(row.nChatrelTotalAmount.toFixed(2));
     });
     setnGrandTotal(temptotal);
   };
 
-  const handlSubmit = async (paypalObj) => {
+  const handlSubmitAfterPayPal = async (paypalObj) => {
     let tempSummaryObj = summaryData;
     let oPayment = [...aGBChatrels];
     let lastindex = oPayment.length - 1;
@@ -233,7 +260,7 @@ export const Chatrel = (props) => {
 
     tempSummaryObj.nArrearsAmount =
       nGrandTotal -
-      (payObj[lastindex].nChatrelTotalAmount +
+      (oPayment[lastindex].nChatrelTotalAmount +
         nBusinessDonation +
         nAdditionalDonation);
     tempSummaryObj.nChatrelTotalAmount = nGrandTotal;
@@ -268,16 +295,14 @@ export const Chatrel = (props) => {
     tempSummaryObj.nCurrentChatrelSalaryAmt = salary;
     tempSummaryObj.nEnteredBy = nUserId;
     tempSummaryObj.nUpdatedBy = nUserId;
-    tempSummaryObj.sPayPal_Status = paypalObj.status;
-    tempSummaryObj.sPayPal_ID = paypalObj.id;
-    tempSummaryObj.sPayPal_Currency_Code =
-      paypalObj.purchase_units[0].amount.currency_code;
-    tempSummaryObj.sPayPal_Currency_Value =
-      paypalObj.purchase_units[0].amount.value;
+    tempSummaryObj.sPayPal_Status = paypalObj.response.state;
+    tempSummaryObj.sPayPal_ID = paypalObj.response.id;
+    tempSummaryObj.sPayPal_Currency_Code = 'USD';
+    tempSummaryObj.sPayPal_Currency_Value = nGrandTotal;
     tempSummaryObj.sPayPal_Response_Object = JSON.stringify(paypalObj);
 
     if (gbChatrelsNull) {
-      payObj = null;
+      oPayment = null;
     }
 
     if (donationNull) {
@@ -285,33 +310,37 @@ export const Chatrel = (props) => {
 
     let finalObj = {
       chatrelPayment: tempSummaryObj,
-      gbChatrels: payObj,
+      gbChatrels: oPayment,
       gbChatrelDonation: donationObj,
     };
 
     console.log('Final Obj:', finalObj);
 
-    // RNPaypal.paymentRequest({
-    //   clientId: sPayPalClientID,
-    //   environment: RNPaypal.ENVIRONMENT.NO_NETWORK,
-    //   intent: RNPaypal.INTENT.SALE,
-    //   price: 106.23,
-    //   currency: 'ILS',
-    //   description: `Android Testing`,
-    //   acceptCreditCards: true,
-    // })
-    //   .then((response) => {
-    //     alert(response);
-    //     console.log(response);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     if (err == RNPaypal.USER_CANCELLED) {
-    //       // User didn't complete the payment
-    //       alert('User cancelled');
-    //     } else if (err == RNPaypal.INVALID_CONFIG) {
-    //       alert('Invalid Details Sent to PayPal');
+    // axios
+    //   .post(`/ChatrelPayment/AddNewChatrelPayment`, finalObj)
+    //   .then((resp) => {
+    //     if (resp.status === 200) {
+    //       //alert(resp.data);
+    //       console.log(resp.data);
+    //       resp.data.receipt.sGBID =
+    //         '0'.repeat(7 - resp.data.receipt.sGBID.length) +
+    //         resp.data.receipt.sGBID;
+
+    //       // setBackdrop(false);
+    //       // setAlertMessage('Chatrel recorded successfully.');
+    //       // setAlertType('success');
+    //       // snackbarOpen();
+    //       // setReceiptData(resp.data);
+    //       // setPaymentDiv(false);
+    //       // setSuccessDiv(true);
+    //       /* history.goBack();
+    //   console.log(resp.data); */
     //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error.config);
+    //     console.log(error.message);
+    //     console.log(error.response);
     //   });
 
     // const {
@@ -337,9 +366,9 @@ export const Chatrel = (props) => {
     // );
   };
 
-  useEffect(() => {
-    calcTotal(aGBChatrels, nAdditionalDonation, nBusinessDonation);
-  });
+  // useEffect(() => {
+  //   calcTotal(aGBChatrels, nAdditionalDonation, nBusinessDonation);
+  // });
 
   useEffect(() => {
     getChatrelDetails();
@@ -362,6 +391,9 @@ export const Chatrel = (props) => {
             .then((resp) => {
               if (resp.status === 200) {
                 console.log(resp.data);
+                if (resp.data.chatrelPayment.nChatrelTotalAmount === 0) {
+                  setOutstanding(false);
+                }
                 setnChatrelLateFeesPercentage(
                   resp.data.chatrelPayment.nChatrelLateFeesPercentage,
                 );
@@ -374,11 +406,14 @@ export const Chatrel = (props) => {
                 setnSelectedAuthregion(
                   lAuthRegions.find((x) => x.id === resp.data.nAuthRegionID),
                 );
+                calcTotal(resp.data.gbChatrels, nAdditionalDonation, nBusinessDonation);
                 setbRender(true);
                 fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
                   .then((response) => response.json())
                   .then((data) => {
-                    //console.log("currency", data.rates.USD);
+                  
+                  
+                    console.log("currency", data.rates.USD);
                     setDollarToRupees(data.rates.USD);
                   });
               }
@@ -480,25 +515,33 @@ export const Chatrel = (props) => {
                           ? 'Not Employed'
                           : 'Employed'}
                       </Text>
-                      <Switch
-                        key={year.nChatrelYear}
-                        trackColor={{false: '#767577', true: '#81b0ff'}}
-                        thumbColor={
-                          year.nCurrentChatrelSalaryAmt === 0
-                            ? '#f4f3f4'
-                            : '#f5dd4b'
-                        }
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={(value) => {
-                          modify(value, index);
-                        }}
-                        value={year.nCurrentChatrelSalaryAmt !== 0}
-                        disabled={year.isChild}
-                      />
+                      <View
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'flex-start',
+                          //marginBottom: hp(2),
+                        }}>
+                        <Switch
+                          key={year.nChatrelYear}
+                          trackColor={{false: '#767577', true: '#81b0ff'}}
+                          thumbColor={
+                            year.nCurrentChatrelSalaryAmt === 0
+                              ? '#f4f3f4'
+                              : '#f5dd4b'
+                          }
+                          ios_backgroundColor="#3e3e3e"
+                          onValueChange={(value) => {
+                            modify(value, index);
+                          }}
+                          value={year.nCurrentChatrelSalaryAmt !== 0}
+                          disabled={year.isChild}
+                        />
+                      </View>
                     </View>
                   )}
                   {year.sAuthRegionCurrency === 'INR' && (
-                    <View style={styles.employementStatusContainer}>
+                    <View style={styles.employementStatusContainerForInput}>
                       <Text style={styles.textComponentAPI}>
                         Employment Status:{' '}
                         {year.nCurrentChatrelSalaryAmt === 0
@@ -521,6 +564,9 @@ export const Chatrel = (props) => {
                       <Input
                         // label="Business Donation"
                         //placeholder="Business Donation"
+                        // containerStyle={{
+                        //   width:wp(5)
+                        // }}
                         autoCorrect={false}
                         clearButtonMode={'while-editing'}
                         keyboardType={'number-pad'}
@@ -544,6 +590,7 @@ export const Chatrel = (props) => {
 
                     {Platform.OS === 'android' && (
                       <Picker
+                        enabled={outstanding}
                         collapsable={true}
                         mode={'dropdown'}
                         prompt={'Authority Region'}
@@ -633,16 +680,18 @@ export const Chatrel = (props) => {
                     <Text style={styles.textComponent}>
                       Total:{' '}
                       <Text style={styles.textComponentAPI}>
-                        {year.nChatrelTotalAmount}
+                        {year.nChatrelTotalAmount.toFixed(2)}
                       </Text>
                     </Text>
                   </View>
                   <View>
                     <Text style={styles.textComponent}>
                       Conversion Rate &#8377;/$ :{' '}
-                      {dollarToRupees && year.sAuthRegionCurrency === 'INR'
-                        ? dollarToRupees.toFixed(4)
-                        : 'NA'}
+                      <Text style={styles.textComponentAPI}>
+                        {dollarToRupees && year.sAuthRegionCurrency === 'INR'
+                          ? dollarToRupees.toFixed(4)
+                          : 'NA'}
+                      </Text>
                     </Text>
                   </View>
                 </View>
@@ -691,16 +740,42 @@ export const Chatrel = (props) => {
               value={nBusinessDonation}
             />
           </View>
-          <View style={styles.grandTotalCotainer}>
-            <Text>{nGrandTotal.toFixed(2)}</Text>
+          <View style={styles.grandTotalContainer}>
+            <Text style={styles.grandTotalComponent}>
+              {nGrandTotal.toFixed(2)}
+            </Text>
           </View>
           <View style={styles.paypalButtonContainer}>
             <Button
               title="MAKE PAYMENT"
               type={'solid'}
               onPress={() => {
-                handlSubmit();
+                RNPaypal.paymentRequest({
+                  clientId: sPayPalClientID,
+                  environment: RNPaypal.ENVIRONMENT.NO_NETWORK,
+                  intent: RNPaypal.INTENT.SALE,
+                  price: nGrandTotal,
+                  currency: 'USD',
+                  description: `CTA Chatrel`,
+                  acceptCreditCards: true,
+                })
+                  .then((response) => {
+                    //alert(response);
+                    //console.log(response);
+                    //TODO: OUR CALLS
+                    handlSubmitAfterPayPal(response);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                    if (err == RNPaypal.USER_CANCELLED) {
+                      // User didn't complete the payment
+                      alert('User cancelled');
+                    } else if (err == RNPaypal.INVALID_CONFIG) {
+                      alert('Invalid Details Sent to PayPal');
+                    }
+                  });
               }}
+              buttonStyle={styles.paypalButtonComponent}
             />
           </View>
         </ScrollView>
@@ -749,7 +824,7 @@ const styles = StyleSheet.create({
   chatrelYearComponent: {
     marginBottom: 15,
     fontSize: 28,
-    fontWeight: '500',
+    fontWeight: 'bold',
     fontStyle: 'normal',
     textAlign: 'left',
     color: Colors.ChatrelYearGreen,
@@ -759,6 +834,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
+  },
+  employementStatusContainerForInput: {
+    flex: 1,
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // marginBottom: 10,
   },
   employementStatusComponent: {},
   authorityRegionContainer: {
@@ -776,7 +857,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   additionalDonationContainer: {
-    marginTop: 5,
+    marginTop: 10,
     marginBottom: 5,
   },
   additionalDonationComponent: {},
@@ -784,12 +865,26 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   businessDonationComponent: {},
-  grandTotalComponent: {},
-  grandTotalCotainer: {
-    marginBottom: 10,
+  grandTotalComponent: {
+    textAlign: 'right',
+    //fontSize: 28,
+    // fontWeight: 'bold',
+    // fontStyle: 'normal',
+
+    //color: Colors.ChatrelYearGreen,
+  },
+  grandTotalContainer: {
+    //marginBottom: 10,
+    //width:"",
+    height: hp(7.5),
   },
   paypalButtonContainer: {
     marginVertical: 10,
   },
-  paypalButtonComponent: {},
+  paypalButtonComponent: {
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: Colors.blue,
+    color: Colors.blue,
+  },
 });
