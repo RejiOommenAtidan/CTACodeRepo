@@ -3,7 +3,7 @@ import React from 'react';
 import { Card } from '@material-ui/core';
 import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
 import PropTypes from 'prop-types';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -55,8 +55,8 @@ export default function Friends () {
  
   
   //const [sAccept, setsAccept] = useState("audio/*,video/*,image/*,*.doc, *.docx, *.pdf, *.xls, *.xlsx");
-  const [sAccept, setsAccept] = useState("*.png,*.jpg,*.jpeg,*.doc, *.docx, *.pdf, *.xls, *.xlsx");
-  const [sTitle, setsTitle] = useState("");
+  const [sAccept, setsAccept] = useState("*.png,*.jpg,*.jpeg,*.doc, *.docx, *.pdf");
+  const [sTitle, setsTitle] = useState(""); 
   const [sDocType, setsDocType] = useState("");
   const [binFileDoc, setbinFileDoc] = useState("");
   const [sFileExtension, setsFileExtension] = useState("");
@@ -119,7 +119,7 @@ const handleUploadChange = (event) => {
 
 
 const handleDisputeFileSubmit = (e) => {
-   e.preventDefault();
+ //  e.preventDefault();
   setBackdrop(true);
   
   
@@ -150,7 +150,7 @@ else if (binFileDoc !== "" && disputeDescription !== "")
     if (resp.status === 200) {
 
       setBackdrop(false);
-      setAlertMessage('Submitted successfully.');
+      setAlertMessage('File Dispute Submitted successfully.');
       setAlertType('success');
       snackbarOpen();
       
@@ -169,28 +169,27 @@ else if (binFileDoc !== "" && disputeDescription !== "")
  };
   return (
     <>
-    <p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>File Dispute</p>
-      <Card  style={{  padding: 50 }} >
+     <Grid container spacing={1}>
+      <Grid item xs={12} sm={4} ></Grid>
+      <Grid item xs={12} sm={4}>
+      <Card className="card-box card-box-alt  mx-auto mt-4">
+      <div className="card-content-overlay text-left">
+      <div className="px-4">
+                                        <div className="d-50 rounded-lg border-0 mb-1 card-icon-wrapper bg-first text-white btn-icon text-center shadow-first">
+                                            <FontAwesomeIcon icon={['fas', 'file-invoice-dollar']} className="display-3" />
+                                        </div>
+                                        <div className="font-weight-bold text-black display-4 mt-4 mb-3">
+                                            File Dispute
+                                        </div>
+            <Grid container spacing={3}>
+         
+              <Grid item xs={12}>
+              <TextField rows={5} variant="outlined" fullWidth onChange={(e)=>{setDisputeDescription(e.target.value)}} multiline label="Enter Description"/>
 
-      <br />
-        <p style={{backgroundColor: "lightblue"}}>File Dispute</p>
-          <Grid container direction="column" spacing={2} alignContent="center" >
-          <form method = 'post' encType = '' onSubmit={(e) => handleDisputeFileSubmit(e)}>
-
-             <Grid item xs={12} >
-            
-                <TextField rowsMin={5} onChange={(e)=>{setDisputeDescription(e.target.value)}} multiline label="Enter Description"/>
-                 
-                
-            </Grid>
-           {/* <Grid item xs={12} sm={5}>
-               
-                 <input id="files" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" id="upload" type="file"
-                 />
-  </Grid>*/}
-   <Grid item xs={12}>
-              <FormControl >
-                  <label htmlFor="id_binDocFile">
+              </Grid>
+              <Grid item xs={12} >
+                <div className="mx-auto">
+                <label htmlFor="id_binDocFile" className="w-100">
                       <input
                           id="id_binDocFile"
                           accept={sAccept}
@@ -199,28 +198,39 @@ else if (binFileDoc !== "" && disputeDescription !== "")
                           type="file"
                           onChange={(event) => { handleUploadChange(event) }}
                       />
-                      <Button color="primary" variant="contained" style={{paddingTop:'5px',paddingBottom:'5px', marginTop:'10px'}} component="span">
-                          Upload Document
-                      </Button>
-                  </label>
-              </FormControl>
-          </Grid>
-          {sTitle !== "" && <Grid item xs={12}>
-              <FormControl >
-                  <Typography
+                    
+              <Button className="btn-outline-first border-1 m-1 w-100" variant="outlined"  component="span" >
+                                          <FontAwesomeIcon icon={['fas', 'upload']} className="display-5 ml-2" style={{marginRight:'5px'}} /> Upload Document
+                                          </Button>
+                                          </label>
+                                          </div>
+          {sTitle !== "" &&        <Typography
                       variant="p"
                       color="primary"
-                  >File Uploaded, File Name: {sTitle}</Typography>
-              </FormControl>
-          </Grid>}
-            <Grid item xs={12} sm={5} alignContent="center">
-               <Button type="submit" style={{paddingTop:'5px',paddingBottom:'5px', marginTop:'10px'}} variant="contained" color="primary">
-                Send
-              </Button>
-            </Grid>     
-          </form>
-          </Grid>
-    </Card>
+                      className="text-dark"
+                  >File Name: {sTitle}</Typography>}
+
+
+              </Grid>
+            
+            </Grid>
+
+      </div>
+          <div className="divider mt-4" />
+          <a type="submit"  onClick={()=>{handleDisputeFileSubmit();}} className="px-4 py-3 btn-transition-none text-white bg-first btn btn-white shadow-none d-flex justify-content-between align-items-center">
+              
+              <div>Submit File Dispute</div>
+              <FontAwesomeIcon icon={['fas', 'chevron-right']}/>
+          </a>
+      </div>
+    {/*    <Button variant="outlined" color="primary" type="submit" >Verify &amp; Pay</Button>*/}
+                            </Card>
+
+     
+     </Grid>
+     <Grid item xs={12} sm={4} ></Grid>
+     </Grid>
+  
     {snackbar && <Alerts
             alertObj={alertObj}
             snackbar={snackbar}

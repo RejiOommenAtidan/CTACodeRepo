@@ -20,7 +20,12 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { storeCurrentGBDetails } from 'actions/transactions/CurrentGBDetailsAction';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import 'date-fns'; import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker} from '@material-ui/pickers';
+import { dateTimePickerDefaultProps } from '@material-ui/pickers/constants/prop-types';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { white } from '@material-ui/core/colors';
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
@@ -53,7 +58,13 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
   },
 }));
-
+const MyTheme = createMuiTheme({
+  palette: {
+    secondary: {
+      main: '#000',
+    },
+  },
+});
 
 export default function LogingPage(props) {
 
@@ -89,7 +100,7 @@ export default function LogingPage(props) {
   const [submitBtn,setSubmitBtn]=React.useState(true);
    const [login,setLogin]=React.useState(false);
    const [nGBID,setGbID]=React.useState("");
-   const [dtDob,setDob]=React.useState("");
+   const [dtDob,setDob]=React.useState();
 
   //On Success of verifying info
 let oGBDetails={
@@ -224,11 +235,13 @@ let oGBDetails={
                         <>
                           <h5 className="display-5 mb-1 " > Super! Thanks for logging in through Google. Just one more step now. </h5>  
                           <br/>
+                          <Grid container spacing={2}>
+                            <Grid item xs={12}>
                             <TextField   
                               id="standard-basic" 
                               autoFocus
                               variant="outlined"
-                              style={{width:'40%'}}
+                              className="w-50"
                             
                               //type='number' 
                               onChange={(e)=>{setGbID(e.target.value)}} 
@@ -242,6 +255,7 @@ let oGBDetails={
                                 },
                               }}
                               InputProps={{
+                                startAdornment: <InputAdornment style={{color:'#fff'}} position="start"><FontAwesomeIcon icon={['fas', 'id-card']} className="display-4 mx-2" /></InputAdornment>,
                                 classes: {
                                   root: classes.cssOutlinedInput,
                                   focused: classes.cssFocused,
@@ -249,38 +263,62 @@ let oGBDetails={
                                 },
                                 inputMode: "numeric"
                               }}
+                            
                               inputProps={{ style: { color: 'white'}}}
                               />
-                              <br/>  
-                              <br/>
-                              <TextField
-                            id="date"
-                            label={<div style={{color:"white"}}>Date of Birth</div>}
-                            type="date"
-                            onChange={(e)=>{setDob(e.target.value)}}
-                             variant="outlined"   
-                                 style={{width:'40%'}}
-                            InputLabelProps={{
-                              shrink: true,
-                              classes: {
-                                root: classes.cssLabel,
-                                focused: classes.cssFocused,
-                              },
-                            }}
-                            InputProps={{
-                              classes: {
-                                root: classes.cssOutlinedInput,
-                                focused: classes.cssFocused,
-                                notchedOutline: classes.notchedOutline,
-                              },
-                           
-                            }}
-                            inputProps={{ style: { color: 'white'}}}
-                          />
-                         
-                          <br/>
-                          <br/>
-                            <Button variant="contained" type = 'submit' disabled={!submitBtn} style={{   backgroundColor: 'rgb(42, 92, 255)', color:'white'}}>VERIFY DETAILS</Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                          
+                            <MuiPickersUtilsProvider  utils={DateFnsUtils}>
+                                    <div className="m-0">
+                                        <KeyboardDatePicker
+                                       // fullWidth
+                                       
+                                       className="w-50"
+                                        inputVariant="outlined"
+                                            margin="normal"
+                                            id="date-picker-dialog"
+                                            label="Enter Date of Birth"
+                                            format="dd-MM-yyyy"
+                                            value={dtDob}
+                                           // error={(check && !dtDOB)}
+                                            //helperText={(check && !dtDOB) ?"This Field is required":""}
+                                            //onChange={handleDateChange}
+                                            onChange={(date) => {setDob(date);console.log(date)}}
+                                            KeyboardButtonProps={{
+                                                'aria-label': 'change date',
+                                            }}
+                                            keyboardIcon={<FontAwesomeIcon icon={['fas', 'calendar-day']} className="display-4  text-white" />}
+                                            InputLabelProps={{
+                                              
+                                              shrink: true,
+                                              classes: {
+                                                root: classes.cssLabel,
+                                                focused: classes.cssFocused,
+                                              },
+                                            }}
+                                            InputProps={{
+                                            //  startAdornment: <InputAdornment style={{color:'#fff'}} position="start"><FontAwesomeIcon icon={['fas', 'id-card']} className="display-4" /></InputAdornment>,
+                                              classes: {
+                                                root: classes.cssOutlinedInput,
+                                                focused: classes.cssFocused,
+                                                notchedOutline: classes.notchedOutline,
+                                              },
+                                           
+                                            }}
+                                            InputAdornmentProps={{ position: 'start' }}
+                                            inputProps={{ style: { color: 'white'}}}
+                                        />
+                                          </div>
+                            </MuiPickersUtilsProvider>
+                        
+                            </Grid>
+                            <Grid item xs={12}>
+                            <Button variant="contained" className="w-50 " type = 'submit' disabled={!submitBtn} style={{   backgroundColor: 'rgb(42, 92, 255)', color:'white'}}>VERIFY DETAILS</Button>
+                            </Grid>
+                          </Grid>
+                            
+                            
                       
                        </>
                         }

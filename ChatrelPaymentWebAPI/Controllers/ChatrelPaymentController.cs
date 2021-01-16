@@ -275,8 +275,10 @@ namespace ChatrelPaymentWebAPI.Controllers
             string attachment = dict["file"].ToString();
             var sName = dict["sName"].ToString();
             var sGBID = dict["sGBID"].ToString();
-            var emailFrom = "rajen.parekh@outlook.com";
-            var emailTo = "rajen.parekh@gmail.com";
+            var sFileName = dict["sTitle"].ToString();
+            var sFileExtension= dict["sFileExtension"].ToString();
+            var emailFrom = "aayush.pandya@atidan.com";
+            var emailTo = "aayushpandya.dev@gmail.com";
 
             attachment = attachment.Substring(attachment.IndexOf("base64,") + 7);
 
@@ -288,7 +290,7 @@ namespace ChatrelPaymentWebAPI.Controllers
 
             BodyBuilder messageBody = new BodyBuilder();
             messageBody.TextBody = mailText;
-            messageBody.Attachments.Add("Attachment File", attach);
+            messageBody.Attachments.Add(sFileName+"."+sFileExtension, attach);
 
 
             message.From.Add(from);
@@ -300,7 +302,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             // Message ready. Now to use smtp client to despatch message
             SmtpClient smtpClient = new SmtpClient();
             smtpClient.Connect("smtp-mail.outlook.com", 25, false);
-            smtpClient.Authenticate("rajen.parekh@outlook.com", "");
+            smtpClient.Authenticate("aayush.pandya@atidan.com", "A@yush@123");
             smtpClient.Send(message);
             smtpClient.Disconnect(true);
             smtpClient.Dispose();

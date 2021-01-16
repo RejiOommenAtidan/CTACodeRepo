@@ -147,7 +147,7 @@ const isFriendsSelected =()=>{
       <div className="app-sidebar-logo">
           <NavLink
             to="/Home"
-            title="eChatrel"
+          //  title="eChatrel"
             className="app-sidebar-logo">
             <div >
               <img
