@@ -64,7 +64,7 @@ export const ViewDialog = (props) => {
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  const userid = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userid = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
 
   const [progress, setProgress] = useState(0);
   
@@ -72,7 +72,7 @@ export const ViewDialog = (props) => {
     console.log("Passing receipt number:", sReceiptNumber);
     //history.push('/ChatrelPay/ChatrelReceipt', {sReceiptNumber: sReceiptNumber});
     history.push({
-      pathname: '/ChatrelPay/ChatrelReceipt',
+      pathname: '/Chatrel/ChatrelReceipt',
       state: {
         sReceiptNumber
       },
@@ -236,7 +236,7 @@ export const ViewDialog = (props) => {
                             <TableCell align='right' component="th" scope="row">
                               {/* {<Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => {viewReceipt(row.sChatrelReceiptNumber) }}><span><u>{row.sChatrelReceiptNumber}</u></span></Button>} */}
                               <Link to={{
-                                pathname: '/ChatrelPay/ChatrelReceipt',
+                                pathname: '/Chatrel/ChatrelReceipt',
                                 search: `?receiptNumber=${row.sChatrelReceiptNumber}`,
                                 state: {sReceiptNumber: row.sChatrelReceiptNumber},
                                 }}

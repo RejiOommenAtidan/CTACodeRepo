@@ -111,7 +111,7 @@ export default function ChatrelList(){
     console.log("Passing receipt number:", sReceiptNumber);
     //history.push('/ChatrelPay/ChatrelReceipt', {sReceiptNumber: sReceiptNumber});
     history.push({
-      pathname: '/ChatrelPay/ChatrelReceipt',
+      pathname: '/Chatrel/ChatrelReceipt',
       state: {
         sReceiptNumber
       },
@@ -155,7 +155,7 @@ export default function ChatrelList(){
       render: rowData => 
       <>
         <Link to={{
-          pathname: '/ChatrelPay/ChatrelReceipt',
+          pathname: '/Chatrel/ChatrelReceipt',
           search: `?receiptNumber=${rowData['sChatrelReceiptNumber']}`,
           state: {sReceiptNumber: rowData['sChatrelReceiptNumber']},
           }}

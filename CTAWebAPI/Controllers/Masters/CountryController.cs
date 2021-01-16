@@ -31,8 +31,9 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Get Calls
-        [HttpGet]
-        [Route("[action]")]
+        //[HttpGet]
+        //[Route("[action]")]
+        [NonAction]
         public IActionResult GetCountriesCommon()
         {
             #region Get All Countries
@@ -89,7 +90,13 @@ namespace CTAWebAPI.Controllers.Masters
             return GetCountriesCommon();
         }
 
-        
+        [AuthorizeRole(FeatureID = 52)]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetCountriesForChatrelReport()
+        {
+            return GetCountriesCommon();
+        }
 
         [AuthorizeRole(FeatureID = 23)]
         [HttpGet]

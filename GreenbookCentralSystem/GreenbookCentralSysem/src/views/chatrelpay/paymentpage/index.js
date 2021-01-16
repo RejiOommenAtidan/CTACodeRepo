@@ -38,10 +38,10 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function PaymentPage  (props) {
-
-  let history = useHistory();
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   console.log("Props contains:", props);
+  let history = useHistory();
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  
   // Who is paying
   const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
   
@@ -96,8 +96,9 @@ export default function PaymentPage  (props) {
   const [gbChatrelsNull, setGBChatrelsNull] = React.useState(false);
   
   console.log("AuthRegions set in 'authRegions'", authRegions);
-  console.log("Current Region set in 'authRegion'", authRegion);
+  console.log("Region set in 'authRegion'", authRegion);
   console.log("Current paymentData is ", paymentData);
+  console.log("dataAPI is ", dataAPI);
   
 
   const autoComplete = (<Autocomplete
@@ -382,7 +383,7 @@ const submit =(e) =>{
  
   const select = (<select><option>1</option><option>2</option><option>3</option><option>4</option></select>);
   useEffect(() => {
-    axios.get(`/AuthRegion/GetAuthRegions`)
+    axios.get(`/AuthRegion/GetAuthRegionsForChatrelReport`)
       .then(resp => {
         if(resp.status === 200){
           console.log("AuthRegions fetched:", resp.data);
@@ -462,8 +463,14 @@ const submit =(e) =>{
 
 
   useEffect(() => {
-    (authRegions && dataAPI &&
-    setAuthRegion(authRegions.find((x) => x.id === dataAPI.nAuthRegionID)));
+    console.log("Want to set authregion");
+    if(authRegions && dataAPI){
+      const region =authRegions.find((x) => x.ID === dataAPI.nAuthRegionID); 
+      setAuthRegion(region);
+      console.log("authregion and dataAPI are set", region);
+      
+    }
+    
 
   }, [authRegions, dataAPI]);
 

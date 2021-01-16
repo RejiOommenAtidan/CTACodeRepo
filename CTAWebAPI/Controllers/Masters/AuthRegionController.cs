@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace CTAWebAPI.Controllers.Masters
 {
-    [AuthorizeRole(FeatureID = 22)]
+    
     [EnableCors("AllowOrigin")]
     [Route("api/[controller]")]
     //[APIKeyAuth]
@@ -31,9 +31,10 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Get Calls
-        [HttpGet]
-        [Route("[action]")]
-        public IActionResult GetAuthRegions()
+        //[HttpGet]
+        //[Route("[action]")]
+        [NonAction]
+        public IActionResult GetAuthRegionsCommon()
         {
             #region Get All AuthRegions
             try
@@ -62,6 +63,22 @@ namespace CTAWebAPI.Controllers.Masters
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
             #endregion
+        }
+
+        [AuthorizeRole(FeatureID = 52)]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetAuthRegionsForChatrelReport()
+        {
+            return GetAuthRegionsCommon();
+        }
+
+        [AuthorizeRole(FeatureID = 22)]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetAuthRegions()
+        {
+            return GetAuthRegionsCommon();
         }
 
         [HttpGet]
@@ -94,10 +111,11 @@ namespace CTAWebAPI.Controllers.Masters
             }
         }
 
-        
+
         #endregion
-        
+
         #region Add Call
+        [AuthorizeRole(FeatureID = 22)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddAuthRegion(AuthRegion authRegion)
@@ -164,6 +182,7 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Edit Call
+        [AuthorizeRole(FeatureID = 22)]
         [HttpPost("EditAuthRegion/RegionID={RegionID}")]
         [Route("[action]")]
         public IActionResult EditAuthRegion(string RegionID, [FromBody] AuthRegion regionToUpdate)
@@ -226,6 +245,7 @@ namespace CTAWebAPI.Controllers.Masters
         #endregion
 
         #region Delete Call
+        [AuthorizeRole(FeatureID = 22)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult DeleteAuthRegion(AuthRegion regionToDelete)

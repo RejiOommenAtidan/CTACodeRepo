@@ -34,7 +34,7 @@ namespace CTAWebAPI.Controllers.Transactions
             _chatrelBulkDataRepository = new ChatrelBulkDataRepository(info.sConnectionString);
             _ctaLogger = new CTALogger(info);
         }
-
+        [AuthorizeRole(FeatureID = 51)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult VerifyBulkImport(IEnumerable<ChatrelBulkData> chatrelBulkData)
@@ -71,6 +71,7 @@ namespace CTAWebAPI.Controllers.Transactions
             }
         }
 
+        [AuthorizeRole(FeatureID = 51)]
         [HttpPost]
         [Route("[action]")]
         public IActionResult SubmitBulkData(string sBatchNumber)

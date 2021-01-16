@@ -16,7 +16,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import { BackdropComponent } from '../../backdrop/index';
 import Moment from 'moment';
-
+import MaterialTable from 'material-table';
 import { Alerts } from '../../alerts';
 import { oOptions, oTableIcons, sDateFormat, modifyHeaders } from '../../../config/commonConfig';
 import csvTojson from 'csvtojson';
@@ -79,6 +79,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function BulkUpload (props) {
 
+  const [filtering, setFiltering] = React.useState(false);
+  oOptions.filtering = filtering;
+
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -95,6 +98,7 @@ export default function BulkUpload (props) {
   };
 
 
+ 
   const defaultHeader = [
     "GBID",
     "Name",
@@ -118,10 +122,405 @@ export default function BulkUpload (props) {
     "Country",
     "PaymentMode"
   ];
+
+  const columns = [
+    {
+      field: "sStatus",
+      width: '5%',
+      title: 'STATUS',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "sRemarkText",
+      width: '5%',
+      title: 'REMARKS',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "GBID",
+      width: '5%',
+      title: 'GREENBOOK ID',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "Name",
+      width: '5%',
+      title: 'NAME',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "PaidByGBId",
+      width: '5%',
+      title: 'PAID BY',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "Currency",
+      width: '5%',
+      title: 'CURRENCY',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "Chatrel",
+      width: '5%',
+      title: 'CHATREL',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "Meal",
+      width: '5%',
+      title: 'MEAL',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "Salary",
+      width: '5%',
+      title: 'SALARY',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "ChatrelFrom",
+      width: '5%',
+      title: 'CHATREL FROM',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "ChatrelTo",
+      width: '5%',
+      title: 'CHATREL TO',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "FinancialYear",
+      width: '5%',
+      title: 'FINANCIAL YEAR',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "ArrearsPlusLateFees",
+      width: '5%',
+      title: 'ARREARS + LATE FEES',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "ArrearsFrom",
+      width: '5%',
+      title: 'ARREARS FROM',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "ArrearsTo",
+      width: '5%',
+      title: 'ARREARS TO',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "BusinessDonation",
+      width: '5%',
+      title: 'BUSINESS DONATION',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "AdditionalDonation",
+      width: '5%',
+      title: 'ADDITIONAL DONATION',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "TotalAmount",
+      width: '5%',
+      title: 'TOTAL AMOUNT',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "ReceiptNo",
+      width: '5%',
+      title: 'RECEIPT NO',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "PaymentDate",
+      width: '5%',
+      title: 'PAYMENT DATE',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "Region",
+      width: '5%',
+      title: 'REGION',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "Country",
+      width: '5%',
+      title: 'COUNTRY',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+    {
+      field: "PaymentMode",
+      width: '5%',
+      title: 'PAYMENT MODE',
+      sorting: true,
+      export: true,
+      filtering: true,
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle"
+      },
+      cellStyle: {
+        textAlign: "center",
+        padding: '5px'
+      }
+    },
+
+  ];
+
   const responseHeader = [
-    "sBatchNumber",
-    "bValidate",
     "sStatus",
+    "sRemarkText",
     "GBID",
     "Name",
     "PaidByGBId",
@@ -148,7 +547,7 @@ export default function BulkUpload (props) {
   const [backdrop, setBackdrop] = React.useState(false);
   const classes = useStyles();
   const [dataAPI, setDataAPI] = useState();
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
   const [sAccept, setsAccept] = useState(".csv");
   const [csvFile, setCSVFile] = useState();
   const [sTitle, setTitle] = useState("");
@@ -160,7 +559,7 @@ export default function BulkUpload (props) {
   
   //Table 
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -200,8 +599,8 @@ export default function BulkUpload (props) {
       console.log("character is '\\r\\n'");
     }
     let header = data.split(char, 1);
-    header = header[0].slice(0, -1);
-    header = header.split(',');
+    //header = header[0].slice(0, -1);
+    header = header[0].split(',');
     console.log('Headers', header);
     if(JSON.stringify(header) === JSON.stringify(defaultHeader)){
       console.log("Headers match");
@@ -234,7 +633,7 @@ export default function BulkUpload (props) {
       setAlertType('error');
       snackbarOpen();
       setDisplayUpload(false);
-      //setTitle('');
+      setTitle('');
     }
     
   }, false);
@@ -284,26 +683,26 @@ export default function BulkUpload (props) {
 
   const handleSubmit = () => {
     console.log("Batch Number ", sBatchNumber);
-    // setBackdrop(true);
-    // axios.post(`ChatrelBulkData/SubmitBulkData`, sBatchNumber)
-    // .then(resp => {
-    //   setBackdrop(false);
-    //   if(resp.status === 200){
-    //     // console.log(resp.data);
-    //     // setDataAPI(resp.data);
-    //     // setShowTable(true);
-    //     // setDisplayUpload(false);
-    //     alert("Submitted Successfully.");
-    //   }
-    // })
-    // .catch(error =>{
-    //   setBackdrop(false);
-    //   setAlertMessage("Error while submitting Bulk Data\n"+ error.response.data);
-    //   setAlertType('error');
-    //   snackbarOpen();
-    //   console.log(error.response);
+    setBackdrop(true);
+    axios.post(`ChatrelBulkData/SubmitBulkData/?sBatchNumber=${sBatchNumber}`)
+    .then(resp => {
+      setBackdrop(false);
+      if(resp.status === 200){
+        // console.log(resp.data);
+        // setDataAPI(resp.data);
+        // setShowTable(true);
+        // setDisplayUpload(false);
+        alert("Submitted Successfully.");
+      }
+    })
+    .catch(error =>{
+      setBackdrop(false);
+      setAlertMessage("Error while submitting Bulk Data\n"+ error.response.data);
+      setAlertType('error');
+      snackbarOpen();
+      console.log(error.response);
 
-    // })
+    })
   };
 
     return (
@@ -345,9 +744,13 @@ export default function BulkUpload (props) {
             
             
           </Grid>
+          
+          </Grid>
+          <Grid item xs={12} sm={6} lg={2}>
+            {sTitle && <Typography paragraph variant='body1' style={{color: 'green'}}>File: {sTitle} <span style={{fontSize: '1.5rem', fontWeight: 'bold'}}>&#10003;</span></Typography>}
           </Grid>
           <Grid item xs={12}>
-            { showTable &&
+            {/* { showTable &&
           <Paper className={classes.root}>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
@@ -381,7 +784,7 @@ export default function BulkUpload (props) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[5, 10, 20, 30]}
         component="div"
         count={dataAPI.length}
         rowsPerPage={rowsPerPage}
@@ -389,10 +792,32 @@ export default function BulkUpload (props) {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <Button style={{justifySelf: 'right'}} onClick={() => handleSubmit()} color="primary" variant="contained" component="span">
-                  Submit
-                </Button>
-    </Paper>}
+      
+    </Paper>} */}
+    {showTable &&
+    <>
+    <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+    icons={oTableIcons}
+    title="BULK DATA IMPORT"
+    columns={columns}
+    data={dataAPI}
+    options={{
+      ...oOptions,
+      
+    }}
+    actions={[
+      {
+        icon: oTableIcons.Search,
+        tooltip: 'Toggle Filter',
+        isFreeAction: true,
+        onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+      }
+    ]}
+  />
+  <Button style={{justifySelf: 'right'}} onClick={() => handleSubmit()} color="primary" variant="contained" component="span">
+  Submit
+</Button> </>
+    }
           </Grid>
         </Grid>
         {snackbar && <Alerts

@@ -1169,7 +1169,8 @@ const close=(id)=>{
             <Grid container spacing={0}>
               <Grid item xs={12}>
                 <List component="div" className="nav-neutral-danger p-3">
-               
+                {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 48)) !== undefined
+                      &&
                     <ListItem
                       component="a"
                       button
@@ -1181,8 +1182,8 @@ const close=(id)=>{
                         />
                       </div>
                       <span>Chatrel List</span>
-                    </ListItem>
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 19)) !== undefined
+                    </ListItem>}
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 50)) !== undefined
                       &&
                     <ListItem
                       component="a"
@@ -1197,7 +1198,7 @@ const close=(id)=>{
                       </div>
                       <span>Search Users</span>
                     </ListItem>}
-                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 20)) !== undefined
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 51)) !== undefined
                       &&
                     <ListItem
                       component="a"
@@ -1211,7 +1212,20 @@ const close=(id)=>{
                       </div>
                       <span>Bulk Import</span>
                     </ListItem>}
-                 
+                    {authUser && (authUser.lFeatureUserrights.find(x => x.nFeatureID === 52)) !== undefined
+                      &&
+                    <ListItem
+                      component="a"
+                      button
+                      href="/Chatrel/Report">
+                      <div className="mr-2">
+                        <FontAwesomeIcon
+                          icon={['fas', 'chevron-right']}
+                          className="font-size-xs opacity-3"
+                        />
+                      </div>
+                      <span>Chatrel Report</span>
+                    </ListItem>}
                  
                  
                 </List>

@@ -78,6 +78,7 @@ const ChatrelList = lazy(() => import('./views/chatrelpay/chatrel_list'));
 const ChatrelSearchUsers = lazy(() => import('./views/chatrelhome/searchusers'));
 const ChatrelReceipt = lazy(() => import('./views/chatrelpay/chatrelreceipt'));
 const ChatrelBulkUpload = lazy(() => import('./views/chatrelhome/bulkupload'));
+const ChatrelReport = lazy(() => import('./views/chatrelhome/reports'));
 
 //Report 
 
@@ -247,6 +248,7 @@ const Routes = () => {
                 '/Chatrel',
                 '/Chatrel/SearchUsers',
                 '/Chatrel/BulkImport',
+                '/Chatrel/Report',
                 '/Reports/GreenBookIssuedOverall',
                 '/Reports/GreenBookIssuedIndividual',
                 '/Reports/ChangesLog',
@@ -325,11 +327,11 @@ const Routes = () => {
                     <PrivateRoute path="/Chatrel/ChatrelReceipt" feature={49} component={ChatrelReceipt} exact />
                     <PrivateRoute path="/Chatrel/SearchUsers" feature={50}  component={ChatrelSearchUsers} exact />
                     <PrivateRoute path="/Chatrel/BulkImport" feature={51} component={ChatrelBulkUpload} exact />
-                    {/*<PrivateRoute path="/Chatrel/Report" feature={52} component={ChatrelReport} exact />*/}
+                    <PrivateRoute path="/Chatrel/Report" feature={52} component={ChatrelReport} exact />
                     <Route path="/Chatrel" component={Chatrel} exact />
                     <Route path="/ChatrelPay" component={ChatrelPay} exact />
                     <Route path="/ChatrelPay/MainPage" component={MainPage} exact />
-                    <Route path="/ChatrelPay/PaymentPage" component={PaymentPage} exact />
+                    <Route path="/ChatrelPay/PaymentPage"  component={PaymentPage} exact />
                   </motion.div>
                 </Switch>
               </LeftSidebar>
