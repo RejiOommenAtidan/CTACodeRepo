@@ -2,9 +2,7 @@ import { STORE_CURRENTGBDETAILS } from '../actions/CurrentGBDetailsAction';
 import { REMOVE_CURRENTGBDETAILS } from '../actions/CurrentGBDetailsAction';
 
 const initialCurrentGBDetailsState = {
-    oCurrentGBDetails: {
-        sGBID:"3487"
-    }
+    oCurrentGBDetails: null
 };
 
 export const CurrentGBDetailsReducer = (state = initialCurrentGBDetailsState, action) => {

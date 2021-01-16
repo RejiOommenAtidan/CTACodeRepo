@@ -361,7 +361,7 @@ export const Chatrel = (props) => {
             )
             .then((resp) => {
               if (resp.status === 200) {
-                //console.log(resp.data);
+                console.log(resp.data);
                 setnChatrelLateFeesPercentage(
                   resp.data.chatrelPayment.nChatrelLateFeesPercentage,
                 );

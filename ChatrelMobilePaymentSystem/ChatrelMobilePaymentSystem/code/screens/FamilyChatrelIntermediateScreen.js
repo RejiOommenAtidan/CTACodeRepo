@@ -11,7 +11,6 @@ import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Platform} from 'react-native';
 import {Card, Button} from 'react-native-elements';
-import {useSelector} from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
@@ -22,37 +21,40 @@ import {
 } from 'react-native-responsive-screen';
 import {sDateFormat} from '../constants/CommonConfig';
 import Moment from 'moment';
+import {useSelector, useDispatch} from 'react-redux';
+import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
 
 export const FamilyChatrelIntermediateScreen = (props) => {
-  const aFamilyMembersHardCoded = [
-    {
-      sName: 'Jane Doe',
-      sRelation: 'Mother',
-      dtDOB: '26-10-1972',
-      nAge: 48,
-      sGBIDRelation: '3571596',
-      nChatrelDue: 250,
-    },
-    {
-      sName: 'John Doe',
-      sRelation: 'Father',
-      dtDOB: '26-10-1968',
-      nAge: 52,
-      sGBIDRelation: '7531593',
-      nChatrelDue: 200,
-    },
-    {
-      sName: 'Martha Doe',
-      sRelation: 'Spouse',
-      dtDOB: '1997-03-02',
-      nAge: 23,
-      sGBIDRelation: '4862579',
-      nChatrelDue: 225,
-    },
-  ];
-  const [aFamilyMembers, setaFamilyMembers] = useState(aFamilyMembersHardCoded);
+  // const aFamilyMembersHardCoded = [
+  //   {
+  //     sName: 'Jane Doe',
+  //     sRelation: 'Mother',
+  //     dtDOB: '26-10-1972',
+  //     nAge: 48,
+  //     sGBIDRelation: '3571596',
+  //     nChatrelDue: 250,
+  //   },
+  //   {
+  //     sName: 'John Doe',
+  //     sRelation: 'Father',
+  //     dtDOB: '26-10-1968',
+  //     nAge: 52,
+  //     sGBIDRelation: '7531593',
+  //     nChatrelDue: 200,
+  //   },
+  //   {
+  //     sName: 'Martha Doe',
+  //     sRelation: 'Spouse',
+  //     dtDOB: '1997-03-02',
+  //     nAge: 23,
+  //     sGBIDRelation: '4862579',
+  //     nChatrelDue: 225,
+  //   },
+  // ];
+  const dispatch = useDispatch();
+  const [aFamilyMembers, setaFamilyMembers] = useState([]);
   const oCurrentGBDetails = useSelector(
-    (state) => state.CurrentGBDetailsReducer.oCurrentGBDetails,
+    (state) => state.GBDetailsReducer.oGBDetails,
   );
   const getFamilyDetails = () => {
     axios
@@ -60,6 +62,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
       .then((resp) => {
         if (resp.status === 200) {
           setaFamilyMembers(resp.data);
+          //console.log(resp.data);
         }
       })
       .catch((error) => {
@@ -69,11 +72,17 @@ export const FamilyChatrelIntermediateScreen = (props) => {
   };
 
   useEffect(() => {
-    //getFamilyDetails();
-  });
+    getFamilyDetails();
+  }, []);
 
   const handleFamilyMemberPress = (member) => {
     console.log(member);
+    let oCurrentGBDetails = {
+      sGBID: member.sGBIDRelation,
+      dtDOB: Moment(member.dtDOB).format(sDateFormat),
+    };
+    dispatch(storeCurrentGBDetails(oCurrentGBDetails));
+    props.navigation.navigate('FriendChatrel');
   };
   return (
     <View style={styles.mainContainer}>
@@ -99,7 +108,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                       marginBottom: hp(1),
                     }}>
                     <Text style={styles.cardHeaderComponent}>
-                      {member.sName}
+                      {member.dPending?.sName || member.sName}
                     </Text>
                     <View
                       style={{
@@ -109,7 +118,9 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                         //marginBottom: hp(2),
                       }}>
                       <Text style={styles.chatrelLabelComponent}>
-                        USD {member.nChatrelDue}
+                        {member.dPending?.chatrelPayment?.nChatrelTotalAmount
+                          ? `$${member.dPending?.chatrelPayment?.nChatrelTotalAmount}`
+                          : 'NA'}
                       </Text>
                     </View>
                   </View>
@@ -141,9 +152,11 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                     marginBottom: hp(1.25),
                   }}>
                   <View style={styles.gbidLabelContainer}>
-                    <Text style={styles.gbidLabelComponent}>GREENBOOK ID</Text>
+                    <Text style={styles.gbidLabelComponent}>GREEN BOOK ID</Text>
                     <Text style={styles.gbidValueComponent}>
-                      {member.sGBIDRelation}
+                      {member.sGBIDRelation !== null
+                        ? member.sGBIDRelation
+                        : 'GB Id not present'}
                     </Text>
                   </View>
                   {/* <View style={styles.gbidValueContainer}>
@@ -169,7 +182,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                       DATE OF BIRTH
                     </Text>
                     <Text style={styles.dtDOBValueComponent}>
-                      {member.dtDOB}
+                      {Moment(member.dtDOB).format(sDateFormat)}
                     </Text>
                   </View>
                   {/* <View style={styles.dtDOBValueContainer}>
@@ -186,8 +199,11 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                 </View>
                 <View style={styles.payNowContainer}>
                   <Button
+                    disabled={member.sGBIDRelation === null}
                     title={'PAY NOW'}
-                    onPress={() => { handleFamilyMemberPress(member) }}
+                    onPress={() => {
+                      handleFamilyMemberPress(member);
+                    }}
                     iconRight
                     icon={{
                       type: 'font-awesome-5',
@@ -284,7 +300,7 @@ const styles = StyleSheet.create({
   touchableOpacity: {},
   cardComponent: {
     width: wp(80),
-    height: Platform.OS==="ios"?hp(28.25):hp(30),
+    height: Platform.OS === 'ios' ? hp(28.25) : hp(30),
     borderRadius: 15,
     borderColor: Colors.white,
     backgroundColor: Colors.white,

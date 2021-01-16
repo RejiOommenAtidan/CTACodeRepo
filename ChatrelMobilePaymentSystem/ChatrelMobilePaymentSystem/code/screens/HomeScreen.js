@@ -87,7 +87,7 @@ const HomeScreen = (props) => {
   ];
 
   const oCurrentGBDetails = useSelector(
-    (state) => state.CurrentGBDetailsReducer.oCurrentGBDetails,
+    (state) => state.GBDetailsReducer.oGBDetails,
   );
 
   const dispatch = useDispatch();

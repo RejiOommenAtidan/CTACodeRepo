@@ -6,19 +6,29 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
+  Alert,
+  ToastAndroid
 } from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Platform} from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
-import {sDateFormat} from '../constants/CommonConfig';
 import Moment from 'moment';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
 import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import {useForm, Controller} from 'react-hook-form';
-import {errorComponent, errorContainer} from '../constants/CommonConfig';
+import {
+  errorComponent,
+  errorContainer,
+  sDateFormat,
+  sDateFormatDatePicker,
+  sISODateFormat,
+} from '../constants/CommonConfig';
+import {useSelector, useDispatch} from 'react-redux';
+import {storeGBDetails} from '../store/actions/GBDetailsAction';
+import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -26,27 +36,65 @@ import {
 import axios from 'axios';
 
 export const FriendChatrelIntermediateScreen = (props) => {
+  const dispatch = useDispatch();
   const {control, handleSubmit, errors} = useForm();
   const onSubmit = () => {
+    console.log(dtFriendDOB);
     let oFriendGBDetails = {
-      nFriendGBID: parseInt(nFriendGBID),
-      sFriendFirstname: sFriendFirstname,
-      sFriendLastname: sFriendLastname,
-      dtFriendDOB: dtFriendDOB,
+      sFriendGBID: nFriendGBID,
+      sFirstName: sFriendFirstname,
+      sLastName: sFriendLastname,
+      dtDOB: Moment(dtFriendDOB, sDateFormatDatePicker).format(sISODateFormat),
     };
     console.log(oFriendGBDetails);
-    //props.navigation.navigate("FriendChatrel");
+
+    axios
+      .get(
+        `/ChatrelPayment/VerifyFriendDetails/?sGBID=${oFriendGBDetails.sFriendGBID}&sFirstName=${oFriendGBDetails.sFirstName}&sLastName=${oFriendGBDetails.sLastName}&dtDOB=${oFriendGBDetails.dtDOB}`,
+      )
+      .then((resp) => {
+        if (resp.status === 200 && resp.data === true) {
+          //console.log(resp.data);
+          // if(resp.data === true){
+          // axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sFriendGBID)
+          // .then(resp => {
+          //   if (resp.status === 200) {
+          //     makePayment({sGBID: sFriendGBID, sName: `${sFirstName} ${sLastName}`, sRelation: `Friend`, from:'Chatrel for Friend' }, resp.data, resp.data.chatrelPayment.nChatrelTotalAmount)
+          //   }
+          // })
+          // .catch(error => {
+          //   console.log(error.message);
+          // });
+          let oGBDetails = {
+            sGBID: nFriendGBID,
+            dtDOB: dtFriendDOB,
+          };
+          ToastAndroid.showWithGravity("Verification Successful",ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM);
+          dispatch(storeCurrentGBDetails(oGBDetails));
+          props.navigation.navigate("FriendChatrel");
+        } else {
+          alert("Values don't match with database. Enter correct values.");
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          alert('Missing Parameters...');
+        }
+        console.log(error.message);
+        console.log(error);
+        alert("Values don't match with database. Enter correct values.");
+      });
+
   };
   const [nFriendGBID, setnFriendGBID] = useState('');
   const [sFriendFirstname, setsFriendFirstname] = useState('');
   const [sFriendLastname, setsFriendLastname] = useState('');
   const [bShowFriendGBID, setbShowFriendGBID] = useState(true);
   const [dtFriendDOB, setdtFriendDOB] = useState(null);
-  const dtToday = Moment().format(sDateFormat);
+  const dtToday = Moment().format(sDateFormatDatePicker);
   return (
-    <ScrollView
-    showsVerticalScrollIndicator={false}
-    >
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.mainContainer}>
         {/*<View style={styles.headingContainer}>
           <Text style={styles.headingComponent}>Chatrel For Friends</Text>
@@ -129,8 +177,8 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   textAlign: 'left',
                   fontSize:
                     Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                    ? 10.5
-                    : 17.5,
+                      ? 10.5
+                      : 17.5,
                   fontStyle: 'normal',
                   fontWeight: '300',
                   fontFamily: 'Kanit-Regular',
@@ -189,8 +237,8 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   textAlign: 'left',
                   fontSize:
                     Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                    ? 10.5
-                    : 17.5,
+                      ? 10.5
+                      : 17.5,
                   fontStyle: 'normal',
                   fontWeight: '300',
                   fontFamily: 'Kanit-Regular',
@@ -243,7 +291,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
             control={control}
             render={({onChange, onBlur, value}) => (
               <DatePicker
-              useNativeDriver={true}
+                useNativeDriver={true}
                 androidMode={'calendar'}
                 style={{
                   width: Dimensions.get('window').width * 0.875,
@@ -253,7 +301,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                 date={dtFriendDOB}
                 mode="date"
                 placeholder=" Friend's Date Of Birth"
-                format={sDateFormat}
+                format={sDateFormatDatePicker}
                 //minDate={dtToday}
                 maxDate={dtToday}
                 confirmBtnText="Confirm"
@@ -268,24 +316,26 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   // },
                   dateText: {
                     textAlign: 'left',
-                  fontSize:
-                    Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                    ? 10.5
-                    : 17.5,
-                  fontStyle: 'normal',
-                  fontWeight: '300',
-                  fontFamily: 'Kanit-Regular'
+                    fontSize:
+                      Dimensions.get('window').width <
+                      Resolution.nWidthBreakpoint
+                        ? 10.5
+                        : 17.5,
+                    fontStyle: 'normal',
+                    fontWeight: '300',
+                    fontFamily: 'Kanit-Regular',
                   },
                   placeholderText: {
                     color: Colors.blackText,
                     textAlign: 'left',
-                  fontSize:
-                    Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                    ? 10.5
-                    : 17.5,
-                  fontStyle: 'normal',
-                  fontWeight: '300',
-                  fontFamily: 'Kanit-Regular'
+                    fontSize:
+                      Dimensions.get('window').width <
+                      Resolution.nWidthBreakpoint
+                        ? 10.5
+                        : 17.5,
+                    fontStyle: 'normal',
+                    fontWeight: '300',
+                    fontFamily: 'Kanit-Regular',
                   },
                   // dateIcon: {
                   //   width:0,

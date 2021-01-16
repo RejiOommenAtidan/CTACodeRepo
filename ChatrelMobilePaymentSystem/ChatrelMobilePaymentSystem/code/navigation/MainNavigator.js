@@ -231,14 +231,14 @@ const MainDrawerNavigator = createDrawerNavigator();
 export const MainNavigator = () => {
   return (
     <MainDrawerNavigator.Navigator
-    drawerStyle={{
-      backgroundColor: Colors.lightBlueChatrelWebsite,
-      width: 240,
-    }}
-      initialRouteName={'Home'}
+      drawerStyle={{
+        backgroundColor: Colors.lightBlueChatrelWebsite,
+        width: 240,
+      }}
+      initialRouteName={'Login'}
       drawerPosition={'left'}
       drawerType={'front'}
-      hideStatusBar={Platform.OS==="ios"?true:false}
+      hideStatusBar={Platform.OS === 'ios' ? true : false}
       statusBarAnimation={'slide'}
       keyboardDismissMode={'on-drag'}
       lazy={true}
@@ -275,8 +275,7 @@ export const MainNavigator = () => {
         labelStyle: {
           fontFamily: 'Kanit-Regular',
         },
-      }}
-      >
+      }}>
       {/*Login*/}
       <MainDrawerNavigator.Screen
         name={'Login'}
@@ -284,7 +283,7 @@ export const MainNavigator = () => {
         options={{
           //Make it false after dev ends
           gestureEnabled: true,
-          swipeEnabled: true
+          swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
       {/*GBDetails*/}
       <MainDrawerNavigator.Screen
@@ -299,7 +298,7 @@ export const MainNavigator = () => {
         name={'Home'}
         component={HomeNavigator}
         options={{
-          drawerIcon:({focused, size}) => (
+          drawerIcon: ({focused, size}) => (
             <Ionicons
               name="md-home"
               size={size}
@@ -315,7 +314,7 @@ export const MainNavigator = () => {
         name={'SelfChatrel'}
         component={SelfChatrelNavigator}
         options={{
-          drawerIcon:({focused, size}) => (
+          drawerIcon: ({focused, size}) => (
             <FontAwesome5
               name="donate"
               size={size}
@@ -331,7 +330,7 @@ export const MainNavigator = () => {
         name={'FamilyChatrelIntermediate'}
         component={FamilyChatrelIntermediateNavigator}
         options={{
-          drawerIcon:({focused, size}) => (
+          drawerIcon: ({focused, size}) => (
             <Ionicons
               name="md-heart"
               size={size}
@@ -351,7 +350,7 @@ export const MainNavigator = () => {
         name={'FriendChatrelIntermediate'}
         component={FriendChatrelIntermediateNavigator}
         options={{
-          drawerIcon:({focused, size}) => (
+          drawerIcon: ({focused, size}) => (
             <Ionicons
               name="md-people"
               size={size}
@@ -371,7 +370,7 @@ export const MainNavigator = () => {
         name={'ChatrelHistory'}
         component={ChatrelHistoryNavigator}
         options={{
-          drawerIcon:({focused, size}) => (
+          drawerIcon: ({focused, size}) => (
             <FontAwesome
               name="history"
               size={size}
@@ -384,11 +383,11 @@ export const MainNavigator = () => {
         }}></MainDrawerNavigator.Screen>
       {/*FileDispute*/}
       <MainDrawerNavigator.Screen
-      draw
+        draw
         name={'FileDispute'}
         component={FileDisputeNavigator}
         options={{
-          drawerIcon:({focused, size}) => (
+          drawerIcon: ({focused, size}) => (
             <Ionicons
               name="md-document"
               size={size}
@@ -399,12 +398,12 @@ export const MainNavigator = () => {
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
-        {/*MyProfile*/}
+      {/*MyProfile*/}
       <MainDrawerNavigator.Screen
         name={'MyProfile'}
         component={MyProfileNavigator}
         options={{
-          drawerIcon:({focused, size}) => (
+          drawerIcon: ({focused, size}) => (
             <FontAwesome
               name="user"
               size={size}
