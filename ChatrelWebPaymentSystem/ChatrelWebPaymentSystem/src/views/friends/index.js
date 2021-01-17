@@ -127,7 +127,7 @@ export default function Friends () {
       <Card className="card-box card-box-alt  mx-auto mt-4">
       <div className="card-content-overlay text-left">
       <div className="px-4">
-                                        <div className="d-50 rounded-lg border-0 mb-1 card-icon-wrapper bg-warning text-white btn-icon text-center shadow-warning">
+                                        <div className="d-50 rounded-lg border-0 mb-1 card-icon-wrapper bg-first text-white btn-icon text-center shadow-first">
                                             <FontAwesomeIcon icon={['fas', 'leaf']} className="display-4" />
                                         </div>
                                         <div className="font-weight-bold text-black display-4 mt-4 mb-3">
@@ -167,7 +167,7 @@ export default function Friends () {
                 <TextField
 
                 
-                  label="Enter Green BookNumber"
+                  label="Enter Green Book Number"
                   fullWidth
 //style={{minWidth: "250px"}}
                 
@@ -205,7 +205,7 @@ export default function Friends () {
       </Grid>
       </div>
           <div className="divider mt-4" />
-          <a type="submit" onClick={()=>{verify();}}  className="px-4 py-3 btn-transition-none text-white bg-warning btn btn-white shadow-none d-flex justify-content-between align-items-center">
+          <a type="submit" onClick={()=>{verify();}}  className="px-4 py-3 btn-transition-none text-white bg-first btn btn-white shadow-first d-flex justify-content-between align-items-center">
               
               <div>Continue to Payment Page</div>
               <FontAwesomeIcon icon={['fas', 'chevron-right']}/>

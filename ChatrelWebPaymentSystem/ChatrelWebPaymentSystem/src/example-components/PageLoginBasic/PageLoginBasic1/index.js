@@ -101,7 +101,7 @@ export default function LogingPage(props) {
   const [submitBtn,setSubmitBtn]=React.useState(true);
    const [login,setLogin]=React.useState(false);
    const [nGBID,setGbID]=React.useState("");
-   const [dtDob,setDob]=React.useState();
+   const [dtDob,setDob]=React.useState(null);
 
   //On Success of verifying info
 let oGBDetails={
@@ -121,7 +121,7 @@ let oGBDetails={
       snackbarOpen();
       setSubmitBtn(true);
     }
-    else if(dtDob==""){
+    else if(dtDob==null){
       setBackdrop(false);
       setAlertMessage('Enter Date Of Birth');
       setAlertType('info');
@@ -274,18 +274,16 @@ let oGBDetails={
                             <MuiPickersUtilsProvider  utils={DateFnsUtils}>
                                     <div className="m-0">
                                         <KeyboardDatePicker
-                                       // fullWidth
                                        
-                                       className="w-50"
+                                        
+                                        className="w-50"
                                         inputVariant="outlined"
                                             margin="normal"
                                             id="date-picker-dialog"
                                             label="Enter Date of Birth"
                                             format="dd-MM-yyyy"
                                             value={dtDob}
-                                           // error={(check && !dtDOB)}
-                                            //helperText={(check && !dtDOB) ?"This Field is required":""}
-                                            //onChange={handleDateChange}
+                                          
                                             onChange={(date) => {setDob(date);console.log(date)}}
                                             KeyboardButtonProps={{
                                                 'aria-label': 'change date',
@@ -300,7 +298,7 @@ let oGBDetails={
                                               },
                                             }}
                                             InputProps={{
-                                            //  startAdornment: <InputAdornment style={{color:'#fff'}} position="start"><FontAwesomeIcon icon={['fas', 'id-card']} className="display-4" /></InputAdornment>,
+                                           
                                               classes: {
                                                 root: classes.cssOutlinedInput,
                                                 focused: classes.cssFocused,

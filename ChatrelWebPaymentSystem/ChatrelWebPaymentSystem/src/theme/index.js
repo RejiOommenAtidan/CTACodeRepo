@@ -23,7 +23,8 @@ const MuiTheme = createMuiTheme({
       main: '#11c5db'
     },
     warning: {
-      main: '#f4772e'
+      //main: '#f4772e'
+      main: '#e9d500'
     },
     helpers: {
       primary: '#3c44b1',

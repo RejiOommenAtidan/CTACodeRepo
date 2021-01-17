@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useMediaQuery } from 'react-responsive'
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
@@ -20,6 +20,10 @@ import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetai
 import axios from 'axios';
 
 const Header = (props) => {
+
+  const responsive = useMediaQuery({query: '(max-width: 1100px)'})
+  console.log(responsive);
+
   const {
     headerShadow,
     headerBgTransparent,
@@ -132,7 +136,7 @@ const isFriendsSelected =()=>{
         'app-header--opacity-bg': headerBgTransparent
       })}>
       <div className="app-header--pane">
-        <button
+     {/*     <button
           className={clsx(
             'navbar-toggler hamburger hamburger--elastic toggle-mobile-sidebar-btn',
             { 'is-active': sidebarToggleMobile }
@@ -142,7 +146,7 @@ const isFriendsSelected =()=>{
             <span className="hamburger-inner" />
           </span>
         </button>
-       {/*   <HeaderSearch />
+        <HeaderSearch />
       <HeaderMenu /> */}
       <div className="app-sidebar-logo">
           <NavLink
@@ -165,7 +169,7 @@ const isFriendsSelected =()=>{
             </div>
           
           </NavLink>
-      <div style={{paddingLeft:'30px'}}> 
+    {!responsive &&  <div style={{paddingLeft:'30px'}}> 
        <List component="div" className="nav-tabs nav-tabs-primary d-flex align-items-center">
                             <ListItem button onClick={()=>{selfPayment();}} selected={isSelfSelected()} >
                                 <span>Self Chatrel</span>
@@ -186,7 +190,7 @@ const isFriendsSelected =()=>{
                                 <span>My Profile </span>
                             </ListItem>
                         </List>
-     </div>
+     </div>}
 
         </div>
       </div>

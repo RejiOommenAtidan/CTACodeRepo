@@ -1,6 +1,7 @@
 import React , { useEffect, useState } from 'react';
 import { Card ,CardContent,Typography ,Grid,Link,Button,ListItem,List} from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useMediaQuery } from 'react-responsive'
 
 import PersonIcon from '@material-ui/icons/Person';
 import GroupIcon from '@material-ui/icons/Group';
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Home() {
-
+  const responsive = useMediaQuery({query: '(max-width: 1100px)'})
   const sGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sGBID);
   //const pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
   //const payingFor=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sName);
@@ -105,17 +106,18 @@ export default function Home() {
       
       <Grid container spacing={8}>
         <Grid item xs={12} sm={12} lg={6} >
-        <iframe className="w-100"  height="350" src="https://www.youtube.com/embed/FlUaitZfFAo?autoplay=1" frameborder="0" start  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe className="w-100 card-box card-box-alt  shadow-xxl rounded"  height="350" src="https://www.youtube.com/embed/FlUaitZfFAo?autoplay=1" frameborder="0" start  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      
                                      
       
         </Grid>
         <Grid item xs={12} sm={12} lg={6} >
      
-        <Card className="bg-secondary m-5 m-lg-0 object-skew hover-scale-lg shadow-xxl w-100 card-box">
+        {!responsive &&      <Card className="bg-secondary m-5 m-lg-0 object-skew hover-scale-lg shadow-xxl w-100 card-box">
                                                 <List component="div" className="list-group-flush">
                                                     <ListItem component="a" button  onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' }, paymentData, outstanding)}} className="d-flex rounded-top align-items-center py-3">
                                                         <div className="d-flex align-items-center">
-                                                        <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-primary text-white btn-icon mx-auto text-center shadow-primary">
+                                                        <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-warning text-white btn-icon mx-auto text-center shadow-warning " >
                                                            <FontAwesomeIcon icon={['fas', 'wallet']} className="display-4" />
                                                          </div>
                                                             <div style={{marginLeft:'10px'}}>
@@ -149,7 +151,7 @@ export default function Home() {
                                                     </ListItem>
                                                     <ListItem component="a" button href="/Friends" onClick={()=>{history.push('/Friends')}} className="d-flex align-items-center py-3">
                                                         <div className="d-flex align-items-center">
-                                                        <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-warning text-white btn-icon mx-auto text-center shadow-warning">
+                                                        <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-first text-white btn-icon mx-auto text-center shadow-first">
                                                            <FontAwesomeIcon icon={['fas', 'leaf']} className="display-4" />
                                                          </div>
                                                             <div style={{marginLeft:'10px'}}>
@@ -164,20 +166,74 @@ export default function Home() {
                                                     </ListItem>
                                                   
                                                 </List>
-                                            </Card>
+                                            </Card>}
+                        {responsive &&  <Card className="bg-secondary m-2   shadow-xxl w-100 card-box">
+                                                <List component="div" className="list-group-flush">
+                                                    <ListItem component="a" button  onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' }, paymentData, outstanding)}} className="d-flex rounded-top align-items-center py-3">
+                                                        <div className="d-flex align-items-center">
+                                                        <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-warning text-white btn-icon mx-auto text-center shadow-warning " >
+                                                           <FontAwesomeIcon icon={['fas', 'wallet']} className="display-4" />
+                                                         </div>
+                                                            <div style={{marginLeft:'10px'}}>
+                                                                <div className="font-weight-bold text-black">
+                                                                    Self Chatrel
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                       {/*  <div className="ml-auto">
+
+                                                            <div className="badge badge-neutral-success text-success font-size-xs font-weight-normal py-1 h-auto px-3 badge-pill">
+                                                             {chatrelPending>0  ? currencySymbol + chatrelPending : "PAID"}
+                                                            </div>
+                                                        </div>*/} 
+                                                    </ListItem>
+                                                    <ListItem component="a" button href="/Family" onClick={()=>{history.push('/Family')}} className="d-flex align-items-center py-3">
+                                                        <div className="d-flex align-items-center">
+                                                        <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-success text-white btn-icon mx-auto text-center shadow-success">
+                                                           <FontAwesomeIcon icon={['fas', 'heart']} className="display-4" />
+                                                         </div>
+                                                            <div style={{marginLeft:'10px'}}>
+                                                                <div className="font-weight-bold text-black">
+                                                                    Family Chatrel
+                                                                </div>
+                                                               
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </ListItem>
+                                                    <ListItem component="a" button href="/Friends" onClick={()=>{history.push('/Friends')}} className="d-flex align-items-center py-3">
+                                                        <div className="d-flex align-items-center">
+                                                        <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-first text-white btn-icon mx-auto text-center shadow-first">
+                                                           <FontAwesomeIcon icon={['fas', 'leaf']} className="display-4" />
+                                                         </div>
+                                                            <div style={{marginLeft:'10px'}}>
+                                                                <div className="font-weight-bold text-black">
+                                                                   Friend's Chatrel
+                                                                </div>
+                                                              
+                                                                
+                                                            </div>
+                                                        </div>
+                                                       
+                                                    </ListItem>
+                                                  
+                                                </List>
+                                            </Card>}
       
         </Grid>
         <Grid item xs={12} lg={6}>
           <Grid container spacing={4}>
 
-          <Grid item xs={12} lg={6}>
+          <Grid item xs={12} sm={6} lg={6}>
           <Card className="card-box card-box-alt  shadow-xxl  p-2 ">
                                 <div className="card-content-overlay text-center pb-4">
                                     <div className="d-50 mb-1 card-icon-wrapper   btn-icon mx-auto text-center">
                                     <img src={people1} className="card-img-top rounded-circle" style={{ width: 100 }} alt="..." />
                                     </div>
                                     <FontAwesomeIcon icon={['fas', 'quote-right']} className="text-primary font-size-xxl" />
-                                    <div className="font-size-xl text-dark opacity-8 my-4">
+                                    <div className="font-size-lg text-dark opacity-8 my-4">
                                     This is a huge step for all the Tibetan people that the Chatrel collection services are now Online. Power at your fingertips.
                                       </div>
                                       <div className="font-size-lg font-weight-bold">
@@ -190,7 +246,7 @@ export default function Home() {
 
 
 </Grid>
-          <Grid item xs={12} lg={6}>
+          <Grid item xs={12} sm={6} lg={6}>
            { outstanding && 
           <Card className="card-box card-box-alt  shadow-xxl  p-2 ">
                                 <div className="card-content-overlay text-center pb-4">

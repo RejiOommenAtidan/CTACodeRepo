@@ -11,6 +11,7 @@ import {
   Tooltip,
   Divider
 } from '@material-ui/core';
+import { useMediaQuery } from 'react-responsive'
 
 import avatar7 from '../../assets/images/avatars/avatar7.jpg';
 import GoogleLogoutButton from '../../views/login/GoogleLogout';
@@ -49,6 +50,8 @@ const StyledBadge = withStyles({
 })(Badge);
 
 const HeaderUserbox = () => {
+
+  const responsive = useMediaQuery({query: '(max-width: 1100px)'})
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -142,7 +145,7 @@ const selfPayment=() => {
           </StyledBadge>
         </div>
 
-        <div className="d-none d-xl-block pl-2" style={{fontSize:"20px" }}>
+        <div className="d-none d-xl-block pl-2" style={{fontSize:"16px" }}>
           <div className="font-weight-bold pt-2 line-height-1" >{userObj.name}</div>
           <span className="text-black-50">{userGBObj.sGBID}</span>
           
@@ -168,7 +171,7 @@ const selfPayment=() => {
         onClose={handleClose}>
         <div className="dropdown-menu-lg overflow-hidden p-0" style={{fontFamily:'Poppins'}}>
           
-          <List
+      {responsive && <>  <List
             component="div"
             className="nav-neutral-primary text-left d-block px-3 pb-3">
             <ListItem button onClick={()=>{handleClose();history.push('/Home');}} className="d-block text-left">
@@ -194,23 +197,8 @@ const selfPayment=() => {
             </ListItem>
             
           </List>
-         {/* <Divider className="w-100" />
-          <div className="d-flex py-3 justify-content-center">
-            <div className="d-flex align-items-center">
-              <div>
-                <FontAwesomeIcon
-                  icon={['far', 'chart-bar']}
-                  className="font-size-xxl text-info"
-                />
-              </div>
-              <div className="pl-3 line-height-sm">
-              <span className="text-black-50 d-block">Chatrel Contribution</span>
-                <b className="font-size-lg">$9,693</b>
-               
-              </div>
-            </div>
-          </div>*/}
-          <Divider className="w-100" />
+         
+          <Divider className="w-100" /></>}
           <div className="d-block rounded-bottom py-3 text-center" style={{paddingBottom:'0px'}}>
           <GoogleLogoutButton/>
           </div>

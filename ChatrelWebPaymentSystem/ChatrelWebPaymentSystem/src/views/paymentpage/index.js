@@ -24,7 +24,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { TableBodyRow } from 'mui-datatables';
-import Table from '@material-ui/core/Table';
+//import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -59,7 +59,8 @@ import CTALogo from '../../assets/images/CTABackgroundLogo.PNG';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TramOutlined } from '@material-ui/icons';
 
-
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 
 import projectLogo from '../../assets/images/CTALogo.png';
 
@@ -595,22 +596,19 @@ export default function PaymentPage(props) {
       
       {dataAPI && (
         <>
-         {paymentDiv && <div >
+         {paymentDiv && < >
             {/*<Typography className="myfont" variant="h4" style={{textAlign:'center',color:'#000',fontFamily:fontName,fontWeight:"bold"}} gutterBottom>{pageFrom.toUpperCase()}</Typography>*/}
-            <div
-              style={{
-                width: '85%',
-                margin: 'auto',
-                backgroundColor: '#ced9fd',
-                padding: '25px',
-                border: '2px solid grey',
-                borderRadius: '25px',
-                boxShadow: ' 10px 10px 5px grey'
-              }}
-              className="text-black">
-              {paymentDiv && (
-                <>
-                  <Typography
+            <Grid container spacing={1}>
+     <Grid item xs={12} sm={1} ></Grid>
+     <Grid item xs={12} sm={10}>
+     <Card className="card-box card-box-alt  mx-auto my-4 shadow-lg " style={{borderBottom: "10px solid #4191ff"}} >
+     <div className="card-content-overlay text-left">
+     <div className="px-4">
+                                       <div className="d-50 rounded-lg border-0 mb-1 card-icon-wrapper bg-first text-white btn-icon text-center shadow-first">
+                                           <FontAwesomeIcon icon={['fas', 'wallet']} className="display-4" />
+                                       </div>
+                                    
+                                       <Typography
                     className="myfont"
                     variant="h5"
                     style={{
@@ -623,14 +621,10 @@ export default function PaymentPage(props) {
                   </Typography>
 
                   <Card
-                    style={{
-                      padding: 20,
-                      marginBottom: 20,
-                      boxShadow: ' 3px 3px 1px grey'
-                    }}>
+                    style={{  padding: 20,marginBottom:20,border:'1px solid grey',backgroundColor:'#ced9fd'}} className="shadow-first shadow-xl">
                     <Grid container spacing={3} className="text-black">
                       <Grid item xs={12} sm={3}>
-                        <Card className="card-box">
+                        <Card className="card-box border-first">
                           <div className="card-indicator bg-success" />
                           <CardContent className="px-4 py-3">
                             <div className="d-flex align-items-center justify-content-start">
@@ -652,7 +646,7 @@ export default function PaymentPage(props) {
                         </Card>
                       </Grid>
                       <Grid item xs={12} sm={3}>
-                        <Card className="card-box">
+                        <Card className="card-box border-first">
                           <div className="card-indicator bg-success" />
                           <CardContent className="px-4 py-3">
                             <div className="d-flex align-items-center justify-content-start">
@@ -674,7 +668,7 @@ export default function PaymentPage(props) {
                         </Card>
                       </Grid>
                       <Grid item xs={12} sm={3}>
-                        <Card className="card-box">
+                        <Card className="card-box border-first">
                           <div className="card-indicator bg-success" />
                           <CardContent className="px-4 py-3">
                             <div className="d-flex align-items-center justify-content-start">
@@ -696,14 +690,14 @@ export default function PaymentPage(props) {
                         </Card>
                       </Grid>
                       <Grid item xs={12} sm={3}>
-                        <Card className="card-box">
+                        <Card className="card-box border-first">
                           <div className="card-indicator bg-success" />
                           <CardContent className="px-4 py-3">
                             <div className="d-flex align-items-center justify-content-start">
                               <div
                                 className="badge badge-first px-3"
                                 style={{ fontSize: '14px' }}>
-                                Your Relation
+                                PAYING FOR
                               </div>
                             </div>
                             <div
@@ -712,7 +706,7 @@ export default function PaymentPage(props) {
                                 color: '#000'
                               }} /*className="pb-3 d-flex justify-content-between"*/
                             >
-                              <b>Self</b>
+                              <b>{paymentFor}</b>
                             </div>
                           </CardContent>
                         </Card>
@@ -734,47 +728,189 @@ export default function PaymentPage(props) {
                   </Typography>
 
                   <Card
-                    style={{
-                      padding: 20,
-                      marginBottom: 20,
-                      boxShadow: ' 3px 3px 1px grey'
-                    }}>
-                    <b>
-                      <Grid
-                        container
-                        spacing={1}
-                        className="text-black"
-                        style={{ marginBottom: 10 }}>
-                        <Grid item xs={1}>
-                          YEAR
-                        </Grid>
-                        <Grid item xs={2}>
-                          AUTHORITY REGION
-                        </Grid>
-                        <Grid item xs={1}>
-                          CURRENCY
-                        </Grid>
-                        <Grid item xs={1}>
-                          CHATREL
-                        </Grid>
-                        <Grid item xs={1}>
-                          MEAL
-                        </Grid>
-                        <Grid item xs={2}>
-                          LATE FEES
-                        </Grid>
-                        <Grid item xs={2}>
-                          EMPLOYED
-                        </Grid>
-                        <Grid item xs={1}>
-                          RATE ₹/$
-                        </Grid>
-                        <Grid item xs={1}>
-                          TOTAL
-                        </Grid>
-                      </Grid>
-                    </b>
-                    {paymentData &&
+                    style={{  padding: 20,marginBottom:20,border:'1px solid grey',backgroundColor:'#ced9fd'}} className="shadow-first shadow-xl">
+                 
+                       
+      <Table style={{color:'#000'}}>
+      <Thead>
+        <Tr >
+          <Th style={{textAlign:'center'}}>YEAR</Th>
+          <Th style={{textAlign:'center'}}>REGION</Th>
+          <Th style={{textAlign:'center'}}>CURRENCY</Th>
+          <Th style={{textAlign:'center'}}>CHATREL</Th>
+          <Th style={{textAlign:'center'}}>MEAL</Th>
+          <Th style={{textAlign:'center'}}>STATUS</Th>                
+          <Th style={{textAlign:'center'}}>LATE FEES</Th>
+          <Th style={{textAlign:'center'}}>EMPLOYED</Th>
+          <Th style={{textAlign:'center'}}>RATE ₹/$</Th>
+          <Th style={{textAlign:'center'}}>TOTAL</Th>
+         
+        </Tr>
+      </Thead>
+      <Tbody  >
+      {paymentData &&
+                      paymentData.map((row, index) => (
+        <Tr style={{borderTop:'1px solid grey',borderRadius:'5px',marginBottom:'5px'}}>
+         <Td align="center">{row.nChatrelYear}</Td>
+<Td align="center" >
+    <Autocomplete
+      disabled={!outstanding}
+      id={`${index}`}
+      openOnFocus
+      clearOnEscape
+      disableClearable
+      autoComplete={true}
+      autoHighlight={true}
+      options={authRegions}
+      //value={authRegion}
+      defaultValue={authRegion}
+      getOptionLabel={(option) => option.sAuthRegion}
+      renderOption={(option) => (
+        <React.Fragment>
+          <span id={`${index}`}>
+            {option.sAuthRegion}
+          </span>
+        </React.Fragment>
+      )}
+      onChange={(e, value) => {
+        if (value !== null) {
+          updateAuthRegion(e, value);
+        } else {
+          //setMadebStatusID(0);
+        }
+      }}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          //label="Authority Region"
+          variant="standard"
+          inputProps={{
+            ...params.inputProps,
+            autoComplete: 'new-password' // disable autocomplete and autofill
+          }}
+        />
+      )}
+/>
+</Td>
+<Td align="center">{row.sAuthRegionCurrency}{' '}<Flag country={row.sAuthRegionCurrency === 'INR' ? 'IN' : 'US'} size={20}/></Td>
+{outstanding && (
+ 
+ 
+      <Td align="center">
+        <b style={{ fontSize: '18px' }}>
+          ₹{row.nChatrelAmount}
+        </b>
+ 
+      </Td>)}
+
+      {outstanding && (
+ 
+      <Td align="center">
+        <b style={{ fontSize: '18px' }}>
+          ₹{row.nChatrelMeal}
+        </b>
+      </Td>)}
+      {outstanding && (
+    <>
+      {row.nChatrelLateFeesValue > 0 && (
+          <>
+        <Td align="center"> <div
+              style={{ display: 'inline' }}
+              className="badge badge-danger">
+              {' '}
+              Overdue
+            </div></Td>
+            <Td align="center"  style={{ color: 'red' }}>
+            <b style={{ fontSize: '18px' }}>
+              ₹{row.nChatrelLateFeesValue.toFixed(2)}
+            </b>
+       </Td>  
+          </>)}
+       
+        {row.nChatrelLateFeesValue == 0 && (
+          <>
+          <Td align="center">
+            <div
+              style={{ display: 'inline' }}
+              className="badge badge-warning">
+              Pending
+            </div>
+            </Td>
+            <Td></Td>
+              
+          </>
+        )}
+        </> )}
+     
+    {!outstanding && (
+        <>
+          
+          <Td >
+            
+          </Td>
+          <Td >
+            
+          </Td>
+         
+          <Td align="center"><div className="badge badge-success"> Paid</div></Td>
+          <Td >
+            
+          </Td>
+        </>
+        )}
+
+        {row.sAuthRegionCurrency === 'USD' && (
+            <Td  align="center">
+              {
+                <input
+                  id="employed"
+                  value={index}
+            
+                  onChange={(e) => {
+                    modify(e.target);
+                  }}
+                  type="checkbox"
+                  disabled={row.isChild}
+                />
+              }
+            </Td>
+            )}
+            {row.sAuthRegionCurrency === 'INR' && (
+            <Td align="center">
+              <input
+                id={index}
+                type="text"
+                style={{
+                  maxWidth: '100px',
+                  border: 'none',
+                  borderBottom: '1px solid',
+                  backgroundColor:'#ced9fd'
+                }}
+                onChange={(e) => {
+                  modify(e.target);
+                }}
+              />
+            </Td>
+            )}
+            <Td align="center" style={{ color: 'grey' }}>
+            {dollarToRupees && row.sAuthRegionCurrency === 'INR'
+              ? dollarToRupees.toFixed(4)
+              : '-'}
+            </Td>
+            <Td
+          align="center"
+            style={{ color: '#29cf00', fontSize: '20px' }}>
+            <b>${row.nChatrelTotalAmount.toFixed(2)}</b>
+            </Td>        
+
+
+          
+        </Tr>))}
+    
+       
+      </Tbody>
+    </Table>
+                    {/*paymentData &&
                       paymentData.map((row, index) => (
                         <Grid
                           container
@@ -897,6 +1033,7 @@ export default function PaymentPage(props) {
                                 <input
                                   id="employed"
                                   value={index}
+
                                   onChange={(e) => {
                                     modify(e.target);
                                   }}
@@ -912,9 +1049,10 @@ export default function PaymentPage(props) {
                                 id={index}
                                 type="text"
                                 style={{
-                                  maxWidth: '50px',
+                                  maxWidth: '100px',
                                   border: 'none',
-                                  borderBottom: '1px solid'
+                                  borderBottom: '1px solid',
+                                  backgroundColor:'#ced9fd'
                                 }}
                                 onChange={(e) => {
                                   modify(e.target);
@@ -935,30 +1073,8 @@ export default function PaymentPage(props) {
                             <b>${row.nChatrelTotalAmount.toFixed(2)}</b>
                           </Grid>
                         </Grid>
-                      ))}
-                    {/*   <Grid container id="test" spacing={3} style={{border:'1px solid lightgrey',borderRadius:'10px',marginBottom:"30px"}} className='text-black'>
-          <Grid item xs={1} style={{verticalAlign:'middle'}}>2020</Grid>
-          <Grid item xs={2} ><TextField value="Mundgod"></TextField></Grid>
-          <Grid item xs={1} >INR <Flag country="IN" size={20} /></Grid>
-          <Grid item xs={1} ><b style={{fontSize:"18px"}}>₹36</b></Grid>
-          <Grid item xs={1} ><b style={{fontSize:"18px"}}>₹10</b></Grid>
-          <Grid item xs={2} style={{color:'red'}} ><div style={{display:'inline'}} className="badge badge-danger"> Overdue</div> &nbsp; <b style={{fontSize:"18px"}}>₹4.6</b> </Grid>
-          <Grid item xs={2} ><TextField ></TextField></Grid>
-          <Grid item xs={1} style={{color:'grey'}}>0.0137</Grid>
-          <Grid item xs={1} style={{color:'#29cf00',fontSize:"20px"}} ><b>$0.87</b></Grid>
-        </Grid>
-
-        <Grid container spacing={3} style={{border:'1px solid lightgrey',borderRadius:'10px',marginBottom:15}} className='text-black'>
-          <Grid item xs={1} style={{verticalAlign:'middle'}}>2021</Grid>
-          <Grid item xs={2} ><TextField value="Chicago"></TextField></Grid>
-          <Grid item xs={1} >USD <Flag country="US" size={20} /></Grid>
-          <Grid item xs={1} ><b style={{fontSize:"18px"}}> $36</b></Grid>
-          <Grid item xs={1} ><b style={{fontSize:"18px"}}> $10</b></Grid>
-          <Grid item xs={2} style={{color:'red'}} ><div style={{display:'inline'}} className="badge badge-warning"> Pending</div></Grid>
-          <Grid item xs={2}  ><input type="checkbox" /></Grid>
-          <Grid item xs={1} >-</Grid>
-          <Grid item xs={1} style={{color:'#29cf00',fontSize:"20px"}} ><b>$46</b></Grid>
-        </Grid>*/}
+                              ))*/}
+                
                   </Card>
 
                   <Typography
@@ -970,16 +1086,12 @@ export default function PaymentPage(props) {
                       fontWeight: 'bold'
                     }}
                     gutterBottom>
-                    {' '}
+                      
                     ADDITIONAL CHATREL
                   </Typography>
 
                   <Card
-                    style={{
-                      padding: 20,
-                      marginBottom: 20,
-                      boxShadow: ' 3px 3px 1px grey'
-                    }}>
+                   style={{  padding: 20,marginBottom:20,border:'1px solid grey',backgroundColor:'#ced9fd'}} className="shadow-first shadow-xl">
                     <Grid
                       container
                       spacing={3}
@@ -1026,8 +1138,9 @@ export default function PaymentPage(props) {
                                 style={{ fontSize: '14px',marginBottom:'15px' }}>
                                 Additional Donation
                               </div>
+                              <div>
                         <TextField
-                          variant="outlined"
+                         
                           value={adonation}
                           onChange={(e) => {
                             if (e.target.value === '') {
@@ -1051,6 +1164,7 @@ export default function PaymentPage(props) {
                             )
                           }}
                         />
+                        </div>
                       </Grid>
                     </Grid>
                   </Card>
@@ -1058,7 +1172,8 @@ export default function PaymentPage(props) {
                    
                   
              
-                  <Card className="card-box card-box-alt w-50 mx-auto" style={{marginTop:'75px',  boxShadow: ' 3px 3px 1px grey'}}>
+                  <Card  style={{marginTop:'75px',  padding: 20,marginBottom:20,border:'1px solid grey',backgroundColor:'#ced9fd'}}
+                          className="card-box card-box-alt w-50 mx-auto shadow-first shadow-xl" >
                     <div className="card-content-overlay text-center pb-4">
                       <div className="d-50 rounded border-0 mb-1 card-icon-wrapper  btn-icon mx-auto text-center ">
                         <img alt="eChatrel" src={projectLogo} width="100px" />
@@ -1126,21 +1241,26 @@ export default function PaymentPage(props) {
                   )}
                       
                     </div>
-                  </Card>
-                 
-                </>
-              )}
-              
-            </div>
-          </div>}
+                  </Card>                     
+                
+
+        </div>
+        </div>
+        </Card>
+        </Grid>
+        
+        <Grid item xs={12} sm={1} ></Grid>
+        </Grid>
+        </>
+        }
+           
+             
           { successDiv && (
                 <div id="successDiv">
                 
                   <Card className="bg-neutral-first d-block card-border-top border-first text-center p-4 p-xl-5 w-50 mx-auto">
                                     <h4 className="px-3 px-xl-5 display-4 line-height-2 font-weight-bold mb-0">Thank You for your contribution!!</h4>
-                                    <p className="px-3 px-xl-5 opacity-6 font-size-lg my-4">
-                                    The existence of Chatrel symbolizes the Tibetan people’s recognition of CTA as their legitimate representative. Chatrel payment exhibits Tibetan people’s support for CTA’s financial needs until Tibet regains freedom. Chatrel funds is an important source of revenue for CTA and it goes towards supporting various projects and activities benefiting the exiled Tibetan community.
-                                    </p>
+                                    
                                     <Button  onClick={() => {
                         handleClickOpen();
                       }} className="btn-first px-4 text-uppercase font-size-sm hover-scale-lg font-weight-bold">

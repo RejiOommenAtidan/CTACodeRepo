@@ -169,16 +169,24 @@ export default function Family () {
         </Alert>
       }
       { paymentHistory.length > 0 &&
-      <div style={{width:'85%',margin:'auto',backgroundColor:'#ced9fd',padding:'25px',border:'2px solid grey',borderRadius:'25px',boxShadow:" 10px 10px 5px grey"}} className='text-black' >
-      <Typography className="myfont"variant="h5" style={{color:'#000',fontFamily:fontName,fontWeight:"bold"}} gutterBottom>CHATREL PAID BY {sGBID}</Typography>
-
-      <Card  style={{  padding: 20,marginBottom:20,boxShadow:" 3px 3px 1px grey" }}   >
-     
+     <Grid container spacing={1}>
+     <Grid item xs={12} sm={1} ></Grid>
+     <Grid item xs={12} sm={10}>
+     <Card className="card-box card-box-alt  mx-auto my-4 shadow-lg " style={{borderBottom: "10px solid #4191ff"}} >
+     <div className="card-content-overlay text-left">
+     <div className="px-4">
+                                       <div className="d-50 rounded-lg border-0 mb-1 card-icon-wrapper bg-first text-white btn-icon text-center shadow-first">
+                                           <FontAwesomeIcon icon={['fas', 'history']} className="display-4" />
+                                       </div>
+                                       <div className="font-weight-bold text-black display-4 mt-4 mb-3">
+                                         CHATREL HISTORY
+                                       </div>
+<Card  style={{  padding: 20,marginBottom:20,border:'1px solid grey',backgroundColor:'#ced9fd'}} className="shadow-first shadow-xl"   >
 
       
       <Table style={{color:'#000'}}>
       <Thead>
-        <Tr>
+        <Tr >
           <Th style={{textAlign:'center'}}>DATE</Th>
           <Th style={{textAlign:'center'}}>RECEIPT NO.</Th>
           <Th style={{textAlign:'center'}}>GB ID</Th>
@@ -194,7 +202,7 @@ export default function Family () {
       </Thead>
       <Tbody  >
       {paymentHistory.map((row) => (
-        <Tr /*style={{paddingTop:'30px'}}*/>
+        <Tr style={{borderTop:'1px solid grey',borderRadius:'5px',marginBottom:'5px'}}>
           <Td align="center">{Moment(row.dtPayment).format("DD-MM-yyyy")}</Td>
           <Td align="center">{row.sChatrelReceiptNumber}</Td>
           <Td align="center">{row.sGBIDPaidFor}</Td>
@@ -220,11 +228,15 @@ export default function Family () {
        
       </Tbody>
     </Table>
+     
+    </Card>
+      </div>
+      </div>
       </Card>
+      </Grid>
+      <Grid item xs={12} sm={1} ></Grid>
+      </Grid>}</>}
 
-
-      </div>}
-  </>}
     <Backdrop className={classes.backdrop} open={backdrop} >
         <CircularProgress color="inherit" />
       </Backdrop>

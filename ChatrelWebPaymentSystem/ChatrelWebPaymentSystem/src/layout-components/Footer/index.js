@@ -1,13 +1,16 @@
 import React from 'react';
 
 import clsx from 'clsx';
-
+import { useHistory } from 'react-router-dom';
 import { List, ListItem ,Container,Button,Grid} from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import projectLogo from '../../assets/images/CTALogo.png';
 const Footer = (props) => {
+
+
+  let history = useHistory();
   const { footerShadow, footerBgTransparent } = props;
   return (
     <>
@@ -21,7 +24,7 @@ const Footer = (props) => {
           2020 
          
       </div>*/}
-        <div className="bg-white rounded py-0 w-100" /*style={{paddingBottom:'0px',paddingTop:'0px'}}*/>
+        <div className="bg-white  py-0 mt-2 w-100" /*style={{paddingBottom:'0px',paddingTop:'0px'}}*/>
           <Container className="py-0 text-center text-xl-left py-xl-5">
             <Grid container spacing={6}>
               <Grid item xl={5} className="d-flex align-items-center">
@@ -116,24 +119,24 @@ const Footer = (props) => {
                         <ListItem
                           component="a"
                           button
-                          href="#/"
-                          onClick={(e) => e.preventDefault()}
+                          href="/Family"
+                          //onClick={()=>{history.push('/Family');}}
                           className="px-0 d-block d-xl-flex py-1">
                           Family Chatrel
                         </ListItem>
                         <ListItem
                           component="a"
                           button
-                          href="#/"
-                          onClick={(e) => e.preventDefault()}
+                          href="/Friends"
+                          //onClick={()=>{history.push('/Friends');}}
                           className="px-0 d-block d-xl-flex py-1">
                           Friend's Chatrel
                         </ListItem>
                         <ListItem
                           component="a"
                           button
-                          href="#/"
-                          onClick={(e) => e.preventDefault()}
+                          href="/PaymentHistory"
+                       //   onClick={()=>{history.push('/PaymentHistory');}}
                           className="px-0 d-block d-xl-flex py-1">
                           Chatrel History
                         </ListItem>
@@ -153,32 +156,32 @@ const Footer = (props) => {
                         <ListItem
                           component="a"
                           button
-                          href="#/"
-                          onClick={(e) => e.preventDefault()}
+                          href="/FileDispute"
+                         // onClick={()=>{history.push('/FileDispute');}}
                           className="px-0 d-block d-xl-flex py-1">
                           File Dispute
                         </ListItem>
                         <ListItem
                           component="a"
                           button
-                          href="#/"
-                          onClick={(e) => e.preventDefault()}
+                          href="/Profile"
+                        //  onClick={()=>{history.push('/Profile');}}
                           className="px-0 d-block d-xl-flex py-1">
                           My Profile
                         </ListItem>
                         <ListItem
                           component="a"
                           button
-                          href="#/"
-                          onClick={(e) => e.preventDefault()}
+                          href="/ContactUs"
+                         // onClick={(e) => e.preventDefault()}
                           className="px-0 d-block d-xl-flex py-1">
                           Contact Us
                         </ListItem>
                         <ListItem
                           component="a"
                           button
-                          href="#/"
-                          onClick={(e) => e.preventDefault()}
+                          href="/PrivacyPolicy"
+                         // onClick={(e) => e.preventDefault()}
                           className="px-0 d-block d-xl-flex py-1">
                           Privacy Policy
                         </ListItem>
@@ -229,7 +232,7 @@ const Footer = (props) => {
             </Grid>
             <div className="divider border-1 d-none d-md-block rounded-circle border-dark bg-dark opacity-2 mx-auto my-4 my-lg-5 w-25" />
             <small className="text-center d-block text-black-50">
-              Copyright &copy; 2021 - eChatrel
+              Copyright &copy; 2021 - eChatrel   {/*-    <a href="/PrivacyPolicy">Privacy Policy </a>  */}
             </small>
 
             
