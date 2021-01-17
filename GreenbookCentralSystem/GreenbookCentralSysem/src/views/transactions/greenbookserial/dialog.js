@@ -22,7 +22,7 @@ import Moment from "moment";
 
 export const EditDialog = (props) => {
   Moment.locale("en");
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   console.log("Hello from Edit Dialog");
   const { register, handleSubmit, watch, errors, setValue, formState } = useForm();
 
@@ -518,7 +518,7 @@ placeholder="DD-MM-YYYY"
 };
 
 // export const AddDialog = (props) => {
-//   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+//   const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
 //   console.log("Hello from Add dialog");
 //   const { register, handleSubmit, watch, errors, formState } = useForm();
 //   console.log("Serial Object\n", props.gbSerialObj);

@@ -138,7 +138,7 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
@@ -155,12 +155,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
-      field: "GBID",
+      field: "gbid",
       width: '5%',
       title: 'GREENBOOK ID',
       sorting: true,
@@ -172,12 +172,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "Name",
+      field: "name",
       width: '5%',
       title: 'NAME',
       sorting: true,
@@ -189,12 +189,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
-      field: "PaidByGBId",
+      field: "paidByGBId",
       width: '5%',
       title: 'PAID BY',
       sorting: true,
@@ -206,12 +206,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "Currency",
+      field: "currency",
       width: '5%',
       title: 'CURRENCY',
       sorting: true,
@@ -223,12 +223,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "Chatrel",
+      field: "chatrel",
       width: '5%',
       title: 'CHATREL',
       sorting: true,
@@ -240,12 +240,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "Meal",
+      field: "meal",
       width: '5%',
       title: 'MEAL',
       sorting: true,
@@ -257,12 +257,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "Salary",
+      field: "salary",
       width: '5%',
       title: 'SALARY',
       sorting: true,
@@ -274,12 +274,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "ChatrelFrom",
+      field: "chatrelFrom",
       width: '5%',
       title: 'CHATREL FROM',
       sorting: true,
@@ -291,12 +291,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "ChatrelTo",
+      field: "chatrelTo",
       width: '5%',
       title: 'CHATREL TO',
       sorting: true,
@@ -308,12 +308,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "FinancialYear",
+      field: "financialYear",
       width: '5%',
       title: 'FINANCIAL YEAR',
       sorting: true,
@@ -330,7 +330,7 @@ export default function BulkUpload (props) {
       }
     },
     {
-      field: "ArrearsPlusLateFees",
+      field: "arrearsPlusLateFees",
       width: '5%',
       title: 'ARREARS + LATE FEES',
       sorting: true,
@@ -342,12 +342,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "ArrearsFrom",
+      field: "arrearsFrom",
       width: '5%',
       title: 'ARREARS FROM',
       sorting: true,
@@ -359,12 +359,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "ArrearsTo",
+      field: "arrearsTo",
       width: '5%',
       title: 'ARREARS TO',
       sorting: true,
@@ -376,12 +376,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "BusinessDonation",
+      field: "businessDonation",
       width: '5%',
       title: 'BUSINESS DONATION',
       sorting: true,
@@ -393,12 +393,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "AdditionalDonation",
+      field: "additionalDonation",
       width: '5%',
       title: 'ADDITIONAL DONATION',
       sorting: true,
@@ -410,12 +410,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "TotalAmount",
+      field: "totalAmount",
       width: '5%',
       title: 'TOTAL AMOUNT',
       sorting: true,
@@ -427,12 +427,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "ReceiptNo",
+      field: "receiptNo",
       width: '5%',
       title: 'RECEIPT NO',
       sorting: true,
@@ -444,12 +444,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
-      field: "PaymentDate",
+      field: "paymentDate",
       width: '5%',
       title: 'PAYMENT DATE',
       sorting: true,
@@ -461,12 +461,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "right",
         padding: '5px'
       }
     },
     {
-      field: "Region",
+      field: "region",
       width: '5%',
       title: 'REGION',
       sorting: true,
@@ -478,12 +478,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
-      field: "Country",
+      field: "country",
       width: '5%',
       title: 'COUNTRY',
       sorting: true,
@@ -495,12 +495,12 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
     {
-      field: "PaymentMode",
+      field: "paymentMode",
       width: '5%',
       title: 'PAYMENT MODE',
       sorting: true,
@@ -512,7 +512,7 @@ export default function BulkUpload (props) {
         verticalAlign: "middle"
       },
       cellStyle: {
-        textAlign: "center",
+        textAlign: "left",
         padding: '5px'
       }
     },
@@ -548,7 +548,7 @@ export default function BulkUpload (props) {
   const [backdrop, setBackdrop] = React.useState(false);
   const classes = useStyles();
   const [dataAPI, setDataAPI] = useState();
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [sAccept, setsAccept] = useState(".csv");
   const [csvFile, setCSVFile] = useState();
   const [sTitle, setTitle] = useState("");
@@ -589,7 +589,7 @@ export default function BulkUpload (props) {
     }
     setCSVFile(reader.result);
     
-    console.log(data);
+    //console.log(data);
     let char ='';
     if(data.indexOf('\r') > -1){
       char = '\r';
@@ -660,7 +660,13 @@ export default function BulkUpload (props) {
     .catch(error =>{
       setBackdrop(false);
       setDataAPI([]);
-      setShowTable(false);
+      setShowTable(false)
+      if(error.response.status === 400){
+        setAlertMessage("Invalid or Empty File");
+        setAlertType('error');
+        snackbarOpen();
+      }
+      ;
       setAlertMessage("Error while verifying CSV file with server.\n"+ error.response.data);
       setAlertType('error');
       snackbarOpen();
@@ -689,11 +695,19 @@ export default function BulkUpload (props) {
     .then(resp => {
       setBackdrop(false);
       if(resp.status === 200){
-        // console.log(resp.data);
-        // setDataAPI(resp.data);
-        // setShowTable(true);
-        // setDisplayUpload(false);
-        alert("Submitted Successfully.");
+        if(resp.data > 0){
+          setAlertMessage('Successfully inserted: '+resp.data+' records');
+          setAlertType('success');
+          snackbarOpen();
+        }
+        if(resp.data === 0){
+          setAlertMessage("NO Records were inserted");
+          setAlertType('warning');
+          snackbarOpen();
+        }
+        
+          setDataAPI([]);
+        
       }
     })
     .catch(error =>{
@@ -709,9 +723,10 @@ export default function BulkUpload (props) {
     return (
       <>
         <Grid container justify='center' alignItems='center' direction='column'>
-          <Typography paragraph variant='h4' gutterBottom >Chatrel Bulk Import</Typography>
-          <Typography paragraph variant='subtitle1'>Instructions: <p className={classes.paragraph}>1. Choose a CSV File by clicking on 'Choose File' button.</p><p className={classes.paragraph}>2. After selecting the file, the file will be verified for correct headers</p><p className={classes.paragraph}>3. If the headers are as per system requirement, the file can be uploaded for verfication</p>
-          <p>4. <a style={{color: 'blue'}} download href={SampleForBulkUpload}><u>Click Here </u></a> to download a sample CSV file</p> 
+          <Typography paragraph variant='h5' >Chatrel Bulk Import</Typography>
+          <Typography paragraph variant='subtitle1'>Instructions: <p className={classes.paragraph}>1. Choose a CSV File by clicking on 'Choose File' button.</p><p className={classes.paragraph}>2. After selecting the file, the file will be verified for correct headers.</p><p className={classes.paragraph}>3. If the headers are as per system requirement, the file can be uploaded for verification.</p>
+          <p className={classes.paragraph}>4. During verification, file will be checked for valid data.</p><p className={classes.paragraph}> 5. A table will be populated below displaying Success or Failed status of each row.</p>
+          <p className={classes.paragraph}>6. <a style={{color: 'blue'}} download href={SampleForBulkUpload}><u>Click Here </u></a> to download a sample CSV file</p> 
            </Typography>
           <Grid container direction='row' justify='center' alignItems='center' spacing={2}>
             {/* <Grid item xs={12} lg={12}>
@@ -797,8 +812,13 @@ export default function BulkUpload (props) {
       />
       
     </Paper>} */}
-    {showTable &&
-    <>
+    
+          </Grid>
+        </Grid>
+        
+        {showTable && 
+    <Grid container justify='center' alignItems='center' direction='column'>
+
     <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
     icons={oTableIcons}
     title="BULK DATA IMPORT"
@@ -817,12 +837,14 @@ export default function BulkUpload (props) {
       }
     ]}
   />
-  <Button style={{justifySelf: 'right'}} onClick={() => handleSubmit()} color="primary" variant="contained" component="span">
+  <br />
+  <Button style={{marginTop: '10px'}}  onClick={() => handleSubmit()} color="primary" variant="contained" component="span">
   Submit
-</Button> </>
-    }
-          </Grid>
-        </Grid>
+</Button>
+   
+    
+        
+</Grid>}
         {snackbar && <Alerts
             alertObj={alertObj}
             snackbar={snackbar}

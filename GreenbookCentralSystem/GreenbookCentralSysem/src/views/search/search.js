@@ -542,7 +542,7 @@ export default function SearchPage() {
     nFromAge: minAge,
     nToAge: maxAge
   }
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const getRecentGB = () => {
     console.log('recent');
     axios.get(`RecentlySearchedGB/GetRecentlySearchedGBs?records=20&nUserId=` + userId)

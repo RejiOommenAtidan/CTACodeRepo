@@ -70,7 +70,7 @@ export default function ChangePassword() {
   // let nUserId = oUserAuthUser.oUserAuth.oUser.id;
   const nUserId = useSelector(state => {
     if (state.UserAuthenticationReducer.oUserAuth) {
-      return state.UserAuthenticationReducer.oUserAuth.oUser.Id;
+      return state.UserAuthenticationReducer.oUserAuth.oUser.id;
     }
   });
   const [backdrop, setBackdrop] = React.useState(false);

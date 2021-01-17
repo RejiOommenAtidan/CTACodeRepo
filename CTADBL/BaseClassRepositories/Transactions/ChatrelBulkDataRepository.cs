@@ -87,17 +87,19 @@ namespace CTADBL.BaseClassRepositories.Transactions
         #endregion
 
         #region Bulk Data Submit after verification
-        public bool SubmitBulkData(string sBatchNumber)
+        public int SubmitBulkData(string sBatchNumber)
         {
             using(var command = new MySqlCommand("spInsertBulkUploadedDataByBatchNumber"))
             {
                 command.Parameters.AddWithValue("strBatchNumber", sBatchNumber);
+                command.Parameters.Add("@rowsinserted", MySqlDbType.UInt32);
+                command.Parameters["@rowsinserted"].Direction = ParameterDirection.Output;
                 command.CommandType = CommandType.StoredProcedure;
                 command.Connection = _connection;
                 _connection.Open();
-                int returnValue = command.ExecuteNonQuery();
+                int x = (int)command.ExecuteScalar();
                 _connection.Close();
-                return true;
+                return x;
             }
         }
         #endregion

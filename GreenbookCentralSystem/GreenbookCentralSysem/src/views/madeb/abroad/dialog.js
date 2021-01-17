@@ -21,7 +21,7 @@ import Moment from "moment";
 
 export const EditDialog = (props) => {
   Moment.locale("en");
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
   console.log(props.abroadObj);
   const [alertMessage, setAlertMessage] = useState("");
@@ -813,7 +813,7 @@ placeholder="DD-MM-YYYY"
 export const AddDialog = (props) => {
   Moment.locale("en");
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
 
   // SnackBar Alerts 
 

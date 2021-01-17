@@ -96,7 +96,13 @@ export default function Report() {
     },
     {
       field: "dtPayment",
-      title: "Payment Date",
+      title: "PAYMENT DATE",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -106,7 +112,13 @@ export default function Report() {
     },
     {
       field: "sGBID",
-      title: "GreenBook Id",
+      title: "GREENBOOK ID",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -114,7 +126,13 @@ export default function Report() {
     },
     {
       field: "sChatrelReceiptNumber",
-      title: "Receipt Number",
+      title: "RECEIPT NUMBER",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -136,7 +154,13 @@ export default function Report() {
     },
     {
       field: "sFirstName",
-      title: "First Name",
+      title: "FIRST NAME",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -144,7 +168,13 @@ export default function Report() {
     },
     {
       field: "sPaidByGBId",
-      title: "Paid By",
+      title: "PAID BY",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -153,7 +183,13 @@ export default function Report() {
 
     {
       field: "sPaymentCurrency",
-      title: "Currency",
+      title: "CURRENCY",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -162,7 +198,13 @@ export default function Report() {
     },
     {
       field: "nChatrelAmount",
-      title: "Chatrel",
+      title: "CHATREL",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -172,7 +214,13 @@ export default function Report() {
     },
     {
       field: "nChatrelMeal",
-      title: "Meal",
+      title: "MEAL",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -182,7 +230,13 @@ export default function Report() {
     },
     {
       field: "nCurrentChatrelSalaryAmt",
-      title: "Employment",
+      title: "EMPLOYMENT",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -192,7 +246,13 @@ export default function Report() {
     },
     {
       field: "dtCurrentChatrelFrom",
-      title: "Chatrel From",
+      title: "CHATREL FROM",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -202,7 +262,13 @@ export default function Report() {
     },
     {
       field: "dtCurrentChatrelTo",
-      title: "Chatrel To",
+      title: "CHATREL TO",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -213,7 +279,13 @@ export default function Report() {
 
     {
       field: "sFinancialYear",
-      title: "Year",
+      title: "YEAR",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -222,7 +294,13 @@ export default function Report() {
     },
     {
       field: "nArrears",
-      title: "Arrears + LateFees",
+      title: "ARREARS + LATE FEES",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -232,7 +310,13 @@ export default function Report() {
 
     {
       field: "dtArrearsFrom",
-      title: "Arrears From",
+      title: "ARREARS FROM",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -242,7 +326,13 @@ export default function Report() {
     },
     {
       field: "dtArrearsTo",
-      title: "Arrears To",
+      title: "ARREARS TO",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -252,7 +342,13 @@ export default function Report() {
     },
     {
       field: "nChatrelBusinessDonationAmt",
-      title: "Business Donation",
+      title: "BUSINESS DONATION",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -262,7 +358,13 @@ export default function Report() {
     },
     {
       field: "nChatrelAdditionalDonationAmt",
-      title: "Additional Donation",
+      title: "ADDITIONAL DONATION",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -272,7 +374,13 @@ export default function Report() {
     },
     {
       field: "nChatrelTotalAmount",
-      title: "Total",
+      title: "TOTAL",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -282,7 +390,13 @@ export default function Report() {
     },
     {
       field: "sAuthRegion",
-      title: "Authority Region",
+      title: "AUTHORITY REGION",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
+
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -291,7 +405,12 @@ export default function Report() {
 
     {
       field: "sPaymentMode",
-      title: "Payment Mode",
+      title: "PAYMENT MODE",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+      },
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -372,7 +491,7 @@ export default function Report() {
       
       
       <Paper style={{ padding: '30px', textAlign: 'center' }} >
-        <h1>Chatrel Report</h1>
+        <h3>Chatrel Report</h3>
         <form onSubmit={handleSubmit(getReport)}>
         <Grid container direction='row' justify='center' spacing={1}>
  <Grid item xs={12} sm={12} md={3} lg={3}>

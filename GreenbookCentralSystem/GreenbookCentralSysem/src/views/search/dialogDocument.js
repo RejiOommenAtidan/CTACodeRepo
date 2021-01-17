@@ -20,7 +20,7 @@ import { sButtonColor, sButtonSize, sButtonVariant } from '../../config/commonCo
 import { useSelector } from 'react-redux';
 
 export const AddDocumentDialog = (props) => {
-    const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+    const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
     const { register, handleSubmit, errors, formState } = useForm();
     const handleSubmitAddDocumentRecord = () => {
         let resultNameTemp = lGBDocument.find(document => document.sTitle === sTitle);

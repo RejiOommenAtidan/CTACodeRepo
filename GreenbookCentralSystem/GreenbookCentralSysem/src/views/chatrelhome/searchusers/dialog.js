@@ -64,7 +64,7 @@ export const ViewDialog = (props) => {
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  const userid = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userid = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
 
   const [progress, setProgress] = useState(0);
   
@@ -137,7 +137,7 @@ export const ViewDialog = (props) => {
           <DialogContent>
             <DialogContentText>
 
-              <Card className="card-box mb-spacing-6-x2">
+              {/* <Card className="card-box mb-spacing-6-x2"> */}
                 <Grid container spacing={0} style={{ textAlign: 'left' }}>
                   {/* <Grid item sm={6}> */}
                     {/* <div className="p-4 text-center"> */}
@@ -190,43 +190,43 @@ export const ViewDialog = (props) => {
                         <Grid item sm={12}>
                           <div>
                             <br />
-                            <br />
-                            <br />
-                        <Divider variant="full-width"  />
+                        {/* <Divider variant="full-width"  /> */}
                         </div>
                         </Grid>
                         </Grid>
                     {/* </div> */}
-
-                    
-                        <p style={{fontSize: '1.2em', fontWeight: 'bold'}}>List of Chatrels</p>
+                        <div style={{display: 'flex', alignContent: 'center'}}>
+                          <span style={{ fontWeight: 'bold', textAlign:'center'}}>LIST OF CHATRELS</span>      
+                        </div>
+                    {/* <p style={{fontSize: '1.2em', fontWeight: 'bold', textAlign:'center'}}>List of Chatrels</p> */}
+                        
                     <Table size="small">
-                    <caption>List of Chatrels</caption>
+                    {/* <caption>List of Chatrels</caption> */}
                         <TableHead>
                           <TableRow>
                             <TableCell>
-                              Receipt Number
+                              RECEIPT NUMBER
                             </TableCell>
                             <TableCell>
-                              Payment Date
+                              PAYMENT DATE
                             </TableCell>
                             <TableCell>
-                              Chatrel Year
+                              CHATREL YEAR
                             </TableCell>
                             <TableCell>
-                              Currency
+                              CURRENCY
                             </TableCell>
                             <TableCell>
-                              Total Chatrel
+                              TOTAL CHATREL
                             </TableCell>
                             <TableCell>
-                              Payment Mode
+                              PAYMENT MODE
                             </TableCell>
                             <TableCell>
-                              Status
+                              STATUS
                             </TableCell>
                             <TableCell>
-                              Paid By
+                              PAID BY
                             </TableCell>
                           </TableRow>
                         </TableHead>
@@ -273,7 +273,7 @@ export const ViewDialog = (props) => {
                     </Grid>
                   </Grid> */}
                 </Grid>
-              </Card>
+              {/* </Card> */}
             </DialogContentText>
           </DialogContent>
           <DialogActions>

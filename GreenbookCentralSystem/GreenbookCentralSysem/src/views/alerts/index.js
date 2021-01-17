@@ -26,7 +26,7 @@ export const Alerts = (props) => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Snackbar open={props.snackbar} autoHideDuration={3000} onClose={props.snackbarClose} >
+        <Snackbar open={props.snackbar} autoHideDuration={5000} onClose={props.snackbarClose} >
           {/*<Alert onClose={props.snackbarClose} severity={alertType}>
             {alertMessage}
           </Alert>*/}

@@ -18,7 +18,7 @@ import { sDateFormatMUIDatepicker, sDDMMYYYYRegex } from "../../../config/common
 import Moment from 'moment';
 
 export const EditDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
 
   const [alertMessage, setAlertMessage] = useState("");
@@ -741,7 +741,7 @@ placeholder="DD-MM-YYYY"
 
 export const AddDialog = (props) => {
   const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
 
   // SnackBar Alerts 
 

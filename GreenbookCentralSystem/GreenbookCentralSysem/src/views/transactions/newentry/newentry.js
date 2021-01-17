@@ -118,7 +118,7 @@ const useStyles = makeStyles({
 });
 
 export default function NewEntry(props) {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const [backdrop, setBackdrop] = React.useState(true);
   const classes = useStyles();
   let history = useHistory();
