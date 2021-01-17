@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import _ from "lodash/fp";
 import { useForm, Controller } from "react-hook-form";
 import Moment from 'moment';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -82,7 +83,6 @@ export default function Report() {
   const [sCountryID, setCountryID] = React.useState([]);
   //const [sCountry, setCountry] = useState();
   const [sPaymentMode, setPaymentMode] = useState('Online');
-
 
   
 
@@ -308,9 +308,10 @@ export default function Report() {
     sPaymentMode
   };
 
-  console.log("Parameters", reportParams);
+  //console.log("Parameters", reportParams);
 
   const getReport = () => {
+    //e.preventDefault();
     const dtFrom = Moment(startDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(startDate).format('YYYY-MM-DD') : null;
     const dtTo = Moment(endDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(endDate).format('YYYY-MM-DD') : null;
     setBackdrop(true);
@@ -336,16 +337,20 @@ export default function Report() {
   }
 
   useEffect(() => {
+    const startyear = Moment().month() < 3 ? Moment().year() - 1 : Moment().year();
+    const endyear = startyear + 1;
+    setStartDate(Moment(`01-04-${startyear}`, 'DD-MM-YYYY'));
+    setEndDate(Moment(`31-03-${endyear}`, 'DD-MM-YYYY'));
 
     axios.get(`/AuthRegion/GetAuthRegionsForChatrelReport`)
       .then(resp => {
         if (resp.status === 200) {
-          console.log("AuthRegions fetched:", resp.data);
+          //console.log("AuthRegions fetched:", resp.data);
           setAuthRegions(resp.data);
           axios.get(`/Country/GetCountriesForChatrelReport`)
             .then(resp => {
               if (resp.status === 200) {
-                console.log("Countries: ", resp.data);
+                //console.log("Countries: ", resp.data);
                 setCountries(resp.data);
               }
             })
@@ -361,74 +366,16 @@ export default function Report() {
 
   }, []);
 
-  const top100Films = [
-    { title: 'The Shawshank Redemption', year: 1994 },
-    { title: 'The Godfather', year: 1972 },
-    { title: 'The Godfather: Part II', year: 1974 },
-    { title: 'The Dark Knight', year: 2008 },
-    { title: '12 Angry Men', year: 1957 },
-    { title: "Schindler's List", year: 1993 },
-    { title: 'Pulp Fiction', year: 1994 },
-    { title: 'The Lord of the Rings: The Return of the King', year: 2003 },
-    { title: 'The Good, the Bad and the Ugly', year: 1966 },
-    { title: 'Fight Club', year: 1999 },
-    { title: 'The Lord of the Rings: The Fellowship of the Ring', year: 2001 },
-    { title: 'Star Wars: Episode V - The Empire Strikes Back', year: 1980 },
-    { title: 'Forrest Gump', year: 1994 },
-    { title: 'Inception', year: 2010 },
-    { title: 'The Lord of the Rings: The Two Towers', year: 2002 },
-    { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
-    { title: 'Goodfellas', year: 1990 },
-    { title: 'The Matrix', year: 1999 },
-    { title: 'Seven Samurai', year: 1954 },
-    { title: 'Star Wars: Episode IV - A New Hope', year: 1977 },
-    { title: 'City of God', year: 2002 },
-    { title: 'Se7en', year: 1995 },
-    { title: 'The Silence of the Lambs', year: 1991 },
-    { title: "It's a Wonderful Life", year: 1946 },
-    { title: 'Life Is Beautiful', year: 1997 },
-    { title: 'The Usual Suspects', year: 1995 },
-    { title: 'Léon: The Professional', year: 1994 },
-    { title: 'Spirited Away', year: 2001 },
-    { title: 'Saving Private Ryan', year: 1998 },
-    { title: 'Once Upon a Time in the West', year: 1968 },
-    { title: 'American History X', year: 1998 },
-    { title: 'Interstellar', year: 2014 },
-  ];
-  const mycountries = [
-    {
-      ID: 1,
-      sCountryID: "AF",
-      sCountry: "Afghanistan"
-
-    },
-    {
-      ID: 2,
-      sCountryID: "AL",
-      sCountry: "Albania"
-
-    },
-    {
-      ID: 3,
-      sCountryID: "DZ",
-      sCountry: "Algeria"
-
-    },
-    {
-      ID: 4,
-      sCountryID: "AD",
-      sCountry: "Andorra"
-
-    },
-  ];
+  
   return (
     <>{countries &&
       
-
+      
       <Paper style={{ padding: '30px', textAlign: 'center' }} >
         <h1>Chatrel Report</h1>
+        <form onSubmit={handleSubmit(getReport)}>
         <Grid container direction='row' justify='center' spacing={1}>
- <Grid item xs={12} sm={12} md={4} lg={2}>
+ <Grid item xs={12} sm={12} md={3} lg={3}>
  
  <FormControl className={classes.formControl} style={{marginTop: '13px'}}>
           <InputLabel id="madebTypelbl">Payment Mode</InputLabel>
@@ -437,7 +384,6 @@ export default function Report() {
             labelId="madebTypelbl"
             id="madebType"
             value={sPaymentMode}
-            autoFocus
             onChange={(e) => { setPaymentMode(e.target.value); }}
           >
             {modes.map((mode) => (
@@ -449,7 +395,7 @@ export default function Report() {
         </FormControl>
  
  </Grid>
- <Grid item xs={12} sm={12} md={4} lg={2}>
+ <Grid item xs={12} sm={12} md={3} lg={3}>
  <FormControl className={classes.formControl}>
 
 <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -461,6 +407,7 @@ export default function Report() {
     id="startDate"
     name="startDate"
     autoFocus
+    autoOk
     label={<> Date From<span style={{ color: 'red' }}> *</span></>}
     format={sDateFormatMUIDatepicker}
     returnMoment={true}
@@ -486,9 +433,14 @@ export default function Report() {
     })}
   />
 </MuiPickersUtilsProvider>
+{_.get("startDate.type", errors) === "required" && (
+                      <span style={{ color: "red" }}>
+                        Date From is required
+                      </span>
+                    )}
 </FormControl>
  </Grid>
- <Grid item xs={12} sm={12} md={4} lg={2}>
+ <Grid item xs={12} sm={12} md={3} lg={3}>
  <FormControl className={classes.formControl}>
 
 <MuiPickersUtilsProvider utils={DateFnsUtils} >
@@ -499,7 +451,7 @@ export default function Report() {
     margin="dense"
     id="endDate"
     name="endDate"
-
+    autoOk
     label={<> Date To<span style={{ color: 'red' }}> *</span></>}
     format={sDateFormatMUIDatepicker}
     returnMoment={true}
@@ -525,6 +477,11 @@ export default function Report() {
     })}
   />
 </MuiPickersUtilsProvider>
+{_.get("endDate.type", errors) === "required" && (
+                      <span style={{ color: "red" }}>
+                        Date To is required
+                      </span>
+                    )}
 </FormControl>
  </Grid>
  </Grid>
@@ -617,20 +574,13 @@ export default function Report() {
             size={sButtonSize}
             color={sButtonColor}
             variant={sButtonVariant}
+            type='submit'
             value="Report"
-            onClick={() => { getReport() }} >Get</Button>
+            //onClick={(e) => { getReport(e) }} 
+            >Get</Button>
         </FormControl>
-        {/* <FormControl className={classes.formControl}>
-          {dataAPI.length > 0 &&
-            <Button
-              type="button"
-              size={sButtonSize}
-              color={sButtonColor}
-              variant={sButtonVariant}
-              onClick={() => { history.go(0); }} >Reset</Button>
-          }
-        </FormControl> */}
-
+        
+</form></Paper>}
 
         {
           dataAPI.length > 0 &&
@@ -656,7 +606,7 @@ export default function Report() {
 
 
 
-      </Paper>}
+      
       {snackbar && <Alerts
         alertObj={alertObj}
         snackbar={snackbar}

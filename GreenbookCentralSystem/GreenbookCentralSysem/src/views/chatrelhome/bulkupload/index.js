@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import {useHistory, NavLink, useLocation} from 'react-router-dom';
 import { isText, isBinary, getEncoding } from 'istextorbinary'
 import { red } from '@material-ui/core/colors';
+import SampleForBulkUpload from '../../../assets/files/SampleForBulkUpload.csv';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -709,7 +710,9 @@ export default function BulkUpload (props) {
       <>
         <Grid container justify='center' alignItems='center' direction='column'>
           <Typography paragraph variant='h4' gutterBottom >Chatrel Bulk Import</Typography>
-          <Typography paragraph variant='subtitle1'>Instructions: <p className={classes.paragraph}>1. Choose a CSV File by clicking on 'Choose File' button.</p><p className={classes.paragraph}>2. After selecting the file, the file will be verified for correct headers</p><p className={classes.paragraph}>3. If the headers are as per system requirement, the file can be uploaded for verfication</p> </Typography>
+          <Typography paragraph variant='subtitle1'>Instructions: <p className={classes.paragraph}>1. Choose a CSV File by clicking on 'Choose File' button.</p><p className={classes.paragraph}>2. After selecting the file, the file will be verified for correct headers</p><p className={classes.paragraph}>3. If the headers are as per system requirement, the file can be uploaded for verfication</p>
+          <p>4. <a style={{color: 'blue'}} download href={SampleForBulkUpload}><u>Click Here </u></a> to download a sample CSV file</p> 
+           </Typography>
           <Grid container direction='row' justify='center' alignItems='center' spacing={2}>
             {/* <Grid item xs={12} lg={12}>
             {message && <span>File Selected ---&gt; {sTitle}  &nbsp; &nbsp; &nbsp;{message}</span>}
