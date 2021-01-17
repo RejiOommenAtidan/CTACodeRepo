@@ -167,12 +167,7 @@ const selfPayment=() => {
         classes={{ list: 'p-0' }}
         onClose={handleClose}>
         <div className="dropdown-menu-lg overflow-hidden p-0" style={{fontFamily:'Poppins'}}>
-          <div className="d-flex px-3 pt-3 align-items-center justify-content-between">
-            <Typography className=" pl-1 font-weight-bold text-primary">
-              <span style={{fontFamily:'Poppins'}}>Welcome to eChatrel</span>
-            </Typography>
           
-          </div>
           <List
             component="div"
             className="nav-neutral-primary text-left d-block px-3 pb-3">

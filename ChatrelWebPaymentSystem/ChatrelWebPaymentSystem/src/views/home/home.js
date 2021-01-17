@@ -197,7 +197,7 @@ export default function Home() {
                                     <div className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-success text-white btn-icon mx-auto text-center shadow-success">
                                         <FontAwesomeIcon icon={['fas', 'hand-holding-usd']} className="display-3" />
                                     </div>
-                                    <div className="font-weight-bold text-black display-3 mt-4 mb-1">
+                                    <div className="font-weight-bold text-black display-3 mt-5 mb-1">
                                     
                                     <CountUp
                                     start={0}
@@ -211,7 +211,7 @@ export default function Home() {
                                     suffix=""
                                 />
                                     </div>
-                                    <div className="font-size-lg text-dark opacity-8">Chatrel Pending</div>
+                                    <div className="font-size-lg text-dark opacity-8 mb-5">Chatrel Pending</div>
                                     <div className="divider mx-4 my-4" />
                                     <div className="text-center">
                                         <Button className="p-0 text-uppercase btn-link-success font-weight-bold font-size-sm btn-link" variant="text"
@@ -255,7 +255,7 @@ export default function Home() {
                                     <div className="bg-composed-img-4 bg-composed-wrapper--image rounded"/>
                                     <div className="bg-composed-wrapper--content text-black">
                                         <h4 className="display-4 font-weight-bold mb-0 ">Goals and Needs of Chatrel</h4>
-                                        <p className="opacity-6 font-size-lg my-4">
+                                        <p className="opacity-6 font-size-lg my-3">
                                          Chatrel symbolizes the Tibetan people’s recognition of CTA as their legitimate representative. Chatrel payment exhibits Tibetan people’s support for CTA’s financial needs until Tibet regains freedom. 
                                         </p>
                                         <Button className="btn-warning text-nowrap px-4  font-size-sm font-weight-bold">

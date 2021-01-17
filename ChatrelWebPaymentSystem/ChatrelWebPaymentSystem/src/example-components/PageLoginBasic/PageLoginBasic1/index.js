@@ -242,7 +242,7 @@ let oGBDetails={
                               autoFocus
                               variant="outlined"
                               className="w-50"
-                            
+                        
                               //type='number' 
                               onChange={(e)=>{setGbID(e.target.value)}} 
                               label={<div style={{color:"white"}}>Green Book Number</div>}
