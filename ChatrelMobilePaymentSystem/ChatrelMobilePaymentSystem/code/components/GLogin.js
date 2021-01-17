@@ -66,15 +66,15 @@ export const GLogin = (props) => {
       await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
       props.props.navigation.navigate('GBDetail');
     } catch (error) {
-      alert('Error Message: '+ error.message);
+      //alert('Error Message: '+ error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        alert('User Cancelled the Login Flow');
+        //alert('User Cancelled the Login Flow');
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        alert('Signing In');
+        //alert('Signing In');
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        alert('Play Services Not Available or Outdated');
+        //alert('Play Services Not Available or Outdated');
       } else {
-        alert('Some Other Error Happened');
+        //alert('Some Other Error Happened');
       }
     }
   };
@@ -98,9 +98,9 @@ export const GLogin = (props) => {
       props.props.navigation.navigate('GBDetail');
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-        alert('User has not signed in yet');
+        //alert('User has not signed in yet');
       } else {
-        alert("Something went wrong. Unable to get user's info");
+        //alert("Something went wrong. Unable to get user's info");
       }
     }
   };

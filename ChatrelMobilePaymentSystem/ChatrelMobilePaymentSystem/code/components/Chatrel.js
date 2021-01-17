@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {Picker, PickerIOS} from '@react-native-picker/picker';
 import IOSPicker from 'react-native-ios-picker';
+import {sPoppinsFontName} from '../constants/CommonConfig';
 // import DropDownPicker from 'react-native-dropdown-picker';
 // import Icon from 'react-native-vector-icons/Feather';
 // import ModalDropdown from 'react-native-modal-dropdown';
@@ -567,6 +568,8 @@ export const Chatrel = (props) => {
                         // containerStyle={{
                         //   width:wp(5)
                         // }}
+                        placeholder={'Employment Contribution'}
+                  placeholderTextColor={Colors.grey}
                         autoCorrect={false}
                         clearButtonMode={'while-editing'}
                         keyboardType={'number-pad'}
@@ -595,7 +598,12 @@ export const Chatrel = (props) => {
                         mode={'dropdown'}
                         prompt={'Authority Region'}
                         key={index}
-                        itemStyle={{height: 50, width: 50}}
+                        itemStyle={{
+                          height: 50, 
+                          width: 50,
+                          
+                        }
+                        }
                         selectedValue={lAuthRegions.find(
                           (x) => x.id === aGBChatrels[index].nAuthRegionID,
                         )}
@@ -607,6 +615,7 @@ export const Chatrel = (props) => {
                                             <Picker.Item label="JavaScript" value="js" />*/}
                         {lAuthRegions.map((singleAuthregion, key) => (
                           <Picker.Item
+                          ite
                             label={singleAuthregion.sAuthRegion}
                             value={singleAuthregion}
                             key={singleAuthregion.id}
@@ -620,7 +629,11 @@ export const Chatrel = (props) => {
                         //data={lAuthRegions}
                         mode={'modal'} //collapse
                         //key={index}
-                        itemStyle={{height: 50, width: 50}}
+                        itemStyle={{
+                          height: 50, 
+                          width: 50,
+                          fontFamily:sPoppinsFontName
+                        }}
                         selectedValue={
                           lAuthRegions.find(
                             (x) => x.id === aGBChatrels[index].nAuthRegionID,
@@ -702,6 +715,8 @@ export const Chatrel = (props) => {
             <Input
               // label="Additional Donation"
               placeholder="Additional Donation"
+              //placeholder={'Green Book Number'}
+                  placeholderTextColor={Colors.grey}
               autoCorrect={false}
               clearButtonMode={'while-editing'}
               keyboardType={'number-pad'}
@@ -723,6 +738,8 @@ export const Chatrel = (props) => {
             <Input
               // label="Business Donation"
               placeholder="Business Donation"
+              //placeholder={'Green Book Number'}
+                  placeholderTextColor={Colors.grey}
               autoCorrect={false}
               clearButtonMode={'while-editing'}
               keyboardType={'number-pad'}
@@ -748,6 +765,9 @@ export const Chatrel = (props) => {
           <View style={styles.paypalButtonContainer}>
             <Button
               title="MAKE PAYMENT"
+              titleStyle={{
+                fontFamily:sPoppinsFontName
+              }}
               type={'solid'}
               onPress={() => {
                 RNPaypal.paymentRequest({
@@ -795,6 +815,7 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     marginBottom: 10,
     color: Colors.blackText,
+    fontFamily: sPoppinsFontName
   },
   textComponent: {
     fontSize: 10.5,
@@ -803,7 +824,9 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
+    fontFamily: sPoppinsFontName
   },
+
   textComponentAPI: {
     fontSize: 16,
     textAlign: 'left',
@@ -811,6 +834,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
+    fontFamily: sPoppinsFontName
   },
   chatrelTextComponent: {
     marginTop: 25,
@@ -820,6 +844,7 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     color: Colors.ChatrelInfoBlue,
     marginBottom: 10,
+    fontFamily: sPoppinsFontName
   },
   chatrelYearComponent: {
     marginBottom: 15,
@@ -828,6 +853,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     textAlign: 'left',
     color: Colors.ChatrelYearGreen,
+    fontFamily: sPoppinsFontName
   },
   employementStatusContainer: {
     flex: 1,
@@ -847,8 +873,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     marginBottom: 10,
+    
   },
-  authorityRegionComponent: {},
+  authorityRegionComponent: {
+    fontFamily: sPoppinsFontName
+  },
   pickerComponent: {
     height: 50,
     width: 200,

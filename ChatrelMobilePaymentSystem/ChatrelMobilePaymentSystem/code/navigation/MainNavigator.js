@@ -45,6 +45,7 @@ import Colors from '../constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {sPoppinsFontName} from '../constants/CommonConfig';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {GLogout} from '../components/GLogout';
@@ -55,10 +56,10 @@ const defaultStackNavOptions = {
       Platform.OS === 'android' ? Colors.primary : Colors.primary,
   },
   headerTitleStyle: {
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   headerBackTitleStyle: {
-    fontFamily: 'open-sans',
+    fontFamily: sPoppinsFontName,
   },
   headerTitleAlign: 'center',
   headerTintColor: Platform.OS === 'android' ? 'white' : 'white',
@@ -232,8 +233,8 @@ export const MainNavigator = () => {
   return (
     <MainDrawerNavigator.Navigator
       drawerStyle={{
-        backgroundColor: Colors.lightBlueChatrelWebsite,
-        width: 240,
+        backgroundColor: Colors.white,
+        width: 230,
       }}
       initialRouteName={'Login'}
       drawerPosition={'left'}
@@ -273,7 +274,7 @@ export const MainNavigator = () => {
       drawerContentOptions={{
         activeTintColor: Colors.black,
         labelStyle: {
-          fontFamily: 'Kanit-Regular',
+          fontFamily: sPoppinsFontName,
         },
       }}>
       {/*Login*/}

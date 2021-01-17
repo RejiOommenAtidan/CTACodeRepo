@@ -19,7 +19,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {sDateFormat} from '../constants/CommonConfig';
+import {sDateFormat,sPoppinsFontName} from '../constants/CommonConfig';
 import Moment from 'moment';
 import {useSelector, useDispatch} from 'react-redux';
 import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
@@ -215,7 +215,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                       color: Colors.white,
                       fontStyle: 'normal',
                       fontWeight: '900',
-                      fontFamily: 'Kanit-Regular',
+                      fontFamily: sPoppinsFontName,
                       fontSize:
                         Dimensions.get('window').width <
                         Resolution.nWidthBreakpoint
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   touchableOpacity: {},
   cardComponent: {
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Light',
+    fontFamily: sPoppinsFontName,
     // marginBottom:
     //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
     color: Colors.darkYellowFamilyPage,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
 
   cardDividerComponent: {
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   gbidValueContainer: {
     marginBottom:
@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
 
   ageLabelContainer: {
@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   ageValueContainer: {
     marginBottom:
@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
 
   dtDOBLabelContainer: {
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   dtDOBValueContainer: {
     marginBottom:
@@ -434,7 +434,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
 
   relationLabelContainer: {
@@ -450,7 +450,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   relationValueContainer: {
     marginBottom:
@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   payNowContainer: {
     marginTop: hp(0.25),

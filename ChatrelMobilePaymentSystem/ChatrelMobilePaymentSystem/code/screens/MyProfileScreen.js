@@ -12,8 +12,9 @@ import {
 } from 'react-native-responsive-screen';
 import {useSelector} from 'react-redux';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+// import {TouchableOpacity} from 'react-native-gesture-handler';
 import CTALogo from '../../code/assets/CTALogo.png';
+import {sPoppinsFontName} from '../constants/CommonConfig';
 
 export const MyProfileScreen = (props) => {
   const isPermitted = async () => {
@@ -771,7 +772,7 @@ const styles = StyleSheet.create({
     color: Colors.blue,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
 
   nameLabelContainer: {
@@ -791,7 +792,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   nameValueContainer: {
     width: wp(75),
@@ -812,7 +813,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
 
   gbidLabelContainer: {
@@ -832,7 +833,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   gbidValueContainer: {
     width: wp(75),
@@ -853,7 +854,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
 
   ageLabelContainer: {
@@ -873,7 +874,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   ageValueContainer: {
     width: wp(75),
@@ -894,7 +895,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
 
   dtDOBLabelContainer: {
@@ -914,7 +915,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   dtDOBValueContainer: {
     width: wp(75),
@@ -935,7 +936,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
 
   emailIDLabelContainer: {
@@ -955,7 +956,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   emailIDValueContainer: {
     width: wp(75),
@@ -976,7 +977,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
 
   sAuthRegionLabelContainer: {
@@ -996,7 +997,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   sAuthRegionValueContainer: {
     width: wp(75),
@@ -1017,6 +1018,6 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
 });

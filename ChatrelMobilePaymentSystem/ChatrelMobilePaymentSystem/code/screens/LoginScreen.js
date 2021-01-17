@@ -9,6 +9,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import ResponsiveImage from 'react-native-responsive-image';
+import {sPoppinsFontName} from '../constants/CommonConfig';
 
 export const LoginScreen = (props) => {
   return (
@@ -18,7 +19,7 @@ export const LoginScreen = (props) => {
           initWidth="335"
           initHeight="325"
           source={require('../assets/CTALogo.png')}
-          PlaceholderContent={<ActivityIndicator size={36}/>}
+          PlaceholderContent={<ActivityIndicator size={36} />}
         />
       </View>
       <View style={styles.headerContainer}>
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 12 : 20,
   },
   headerContainer: {
-    width: wp(70),
+    width: wp(75),
     height: hp(6.5),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
@@ -79,10 +80,10 @@ const styles = StyleSheet.create({
     lineHeight:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sPoppinsFontName,
   },
   textContainer: {
-    width: wp(70),
+    width: wp(75),
     height: hp(6.5),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontStyle: 'normal',
     fontWeight: '300',
-    fontFamily: 'NunitoSans-Light',
+    fontFamily: sPoppinsFontName,
     lineHeight:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint
         ? 10.5
