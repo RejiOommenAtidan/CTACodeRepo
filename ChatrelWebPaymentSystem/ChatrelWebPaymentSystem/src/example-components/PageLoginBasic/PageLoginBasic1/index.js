@@ -26,6 +26,7 @@ import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker} from '
 import { dateTimePickerDefaultProps } from '@material-ui/pickers/constants/prop-types';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { white } from '@material-ui/core/colors';
+import Moment from 'moment';
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
@@ -130,7 +131,8 @@ let oGBDetails={
     else{
     let Obj={
       sGBID:""+nGBID,
-      dtDOB:dtDob,
+      dtDOB:Moment(dtDob).format("YYYY-MM-DD"),
+      //dtDOB:dtDob,
       sFirstName:userObj.givenName,
       sLastName:userObj.familyName,
       sEmail:userObj.email  
