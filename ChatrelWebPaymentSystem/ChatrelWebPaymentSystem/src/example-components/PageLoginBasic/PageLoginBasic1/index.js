@@ -280,7 +280,7 @@ let oGBDetails={
                                         inputVariant="outlined"
                                             margin="normal"
                                             id="date-picker-dialog"
-                                            label="Enter Date of Birth"
+                                            label="Date of Birth"
                                             format="dd-MM-yyyy"
                                             value={dtDob}
                                           

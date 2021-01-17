@@ -1259,7 +1259,7 @@ export default function PaymentPage(props) {
                 <div id="successDiv">
                 
                   <Card className="bg-neutral-first d-block card-border-top border-first text-center p-4 p-xl-5 w-50 mx-auto">
-                                    <h4 className="px-3 px-xl-5 display-4 line-height-2 font-weight-bold mb-0">Thank You for your contribution!!</h4>
+                                    <h4 className="px-3 px-xl-5 display-4 line-height-2 font-weight-bold mb-2">Thank You for your contribution!!</h4>
                                     
                                     <Button  onClick={() => {
                         handleClickOpen();
@@ -1378,7 +1378,7 @@ export default function PaymentPage(props) {
                               width="32">
                               <b>
                                 <font size={4} color="#000000">
-                                  X
+                                  {receiptData.receipt.sCountryID.charAt(0)}
                                 </font>
                               </b>
                             </td>
@@ -1392,7 +1392,7 @@ export default function PaymentPage(props) {
                               width="32">
                               <b>
                                 <font size={4} color="#000000">
-                                  X
+                                  {{receiptData.receipt.sCountryID.charAt(1)}}
                                 </font>
                               </b>
                             </td>

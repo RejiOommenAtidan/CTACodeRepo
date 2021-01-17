@@ -282,7 +282,7 @@ export default function Family () {
             <table >
               <tr>
                 <td style={{width:"200px",paddingLeft:"20px",borderTop:"3px solid #000000"}}><b><font face="Microsoft Himalaya" size={4} color="#000000">	དཔྱ་དེབ་ཨང་།</font></b></td>
-                <td align="center" style={{border:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sCountryID.charAt(1)}</font></b></td>
+                <td align="center" style={{border:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sCountryID.charAt(0)}</font></b></td>
                 <td  align="center" style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sCountryID.charAt(1)}</font></b></td>
                 <td  align="center"  style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sGBID.charAt(0)}</font></b></td>
                 <td  align="center"  style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sGBID.charAt(1)}</font></b></td>
