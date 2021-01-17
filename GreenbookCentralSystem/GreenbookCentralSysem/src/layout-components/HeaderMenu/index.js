@@ -295,7 +295,21 @@ const close=(id)=>{
           Masters
         </Button>}
 
-        { <Button
+        { 
+          authUser &&
+            ((authUser.lFeatureUserrights.find(x => x.nFeatureID === 48)) !== undefined
+              ||
+              (authUser.lFeatureUserrights.find(x => x.nFeatureID === 49)) !== undefined
+              ||
+              (authUser.lFeatureUserrights.find(x => x.nFeatureID === 50)) !== undefined
+              ||
+              (authUser.lFeatureUserrights.find(x => x.nFeatureID === 51)) !== undefined
+              ||
+              (authUser.lFeatureUserrights.find(x => x.nFeatureID === 52)) !== undefined)
+              
+            &&
+
+          <Button
           size="small"
           id="id_Chatrel"
           onClick={handleChatrelClick}

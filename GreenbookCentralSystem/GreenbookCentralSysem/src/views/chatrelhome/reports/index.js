@@ -571,6 +571,7 @@ export default function Report() {
 
         <FormControl className={classes.formControl}>
           <Button type="button"
+          className={"mt-4"}
             size={sButtonSize}
             color={sButtonColor}
             variant={sButtonVariant}
