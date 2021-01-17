@@ -26,6 +26,7 @@
 		D99CC00725A43C9800D92A65 /* NunitoSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB476F1B6EDC4C368972A37D /* NunitoSans-Light.ttf */; };
 		D9F2F449E1E7AE1E6C3984DA /* libPods-ChatrelMobilePaymentSystem-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7A86FC89F58152E57BBAFB /* libPods-ChatrelMobilePaymentSystem-tvOS.a */; };
 		F1C018ADB84E9914BEC96710 /* libPods-ChatrelMobilePaymentSystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81D7505F24EED4915D3556B2 /* libPods-ChatrelMobilePaymentSystem.a */; };
+		04AC1483007A4AD3924280B3 /* Microsoft Himalaya.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 35BC319AEEE04076BCB6AFA7 /* Microsoft Himalaya.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +111,7 @@
 		F4F4E96EE0C24CAF82AF05D2 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		FA565F1F14A1EC2418984D1F /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB7711554CD2AA1F571CDF58 /* Pods-ChatrelMobilePaymentSystem-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-tvOSTests/Pods-ChatrelMobilePaymentSystem-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		35BC319AEEE04076BCB6AFA7 /* Microsoft Himalaya.ttf */ = {isa = PBXFileReference; name = "Microsoft Himalaya.ttf"; path = "../code/assets/fonts/Microsoft Himalaya.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +283,7 @@
 				8EBF4792830E4AC1849511CB /* Kanit-ThinItalic.ttf */,
 				1EC63715E42D4430B68EED64 /* NunitoSans-Regular.ttf */,
 				EB476F1B6EDC4C368972A37D /* NunitoSans-Light.ttf */,
+				35BC319AEEE04076BCB6AFA7 /* Microsoft Himalaya.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 				D99CC00725A43C9800D92A65 /* NunitoSans-Light.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				04AC1483007A4AD3924280B3 /* Microsoft Himalaya.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

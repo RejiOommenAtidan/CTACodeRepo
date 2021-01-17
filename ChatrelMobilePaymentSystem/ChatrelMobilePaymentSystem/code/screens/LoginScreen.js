@@ -22,7 +22,7 @@ export const LoginScreen = (props) => {
         />
       </View>
       <View style={styles.headerContainer}>
-        <Text style={styles.headerComponent}>Welcome to Chatrel</Text>
+        <Text style={styles.headerComponent}>Welcome to eChatrel</Text>
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.textComponent}>
