@@ -1,9 +1,9 @@
 
 import React from 'react';
 import { Card } from '@material-ui/core';
-import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
+import {Link, Box, Container, Grid, Button,CardContent,Tooltip, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
 import PropTypes from 'prop-types';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -20,6 +20,10 @@ import { subMinutes } from 'date-fns';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
+import Moment from 'moment';
+import avatar1 from '../../assets/images/avatars/avatar1.jpg';
+
+import stock3 from '../../assets/images/stock-photos/stock-3.jpg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,44 +57,66 @@ const userGBObj = useSelector(state => state.GBDetailsReducer.oGBDetails);
 
   return (
     <>
-      <Card  style={{  padding: 50 }} >
-
-      <br />
-        <p style={{backgroundColor: "lightblue"}}>My Profile</p>
-          <Grid container direction="column" alignContent="center" >
-            
-
-          <Grid item xs={12} sm={6}>
-            
-                    <div className="avatar-icon-wrapper  m-2">
-                        <div className="d-block p-0 avatar-icon-wrapper  m-0 border-3 ">
-                            <div className=" border-3 border-white overflow-hidden">
-                                <img alt="..." className="img-fluid" src={userObj.imageUrl} />
-                            </div>
-                        </div>
-                    </div>
-            
-             </Grid>
-             <Grid item xs={12} sm={6}>
-                    <div>First Name    : {userObj.givenName}</div>
-                    </Grid>
-             <Grid item xs={12} sm={6}>
-                    <div>Last Name     : {userObj.familyName}</div>
-                    </Grid>
-             <Grid item xs={12} sm={6}>
-                    <div>Email Id      : {userObj.email}</div>
-                    </Grid>
-             <Grid item xs={12} sm={6}>
-                    <div>Green Book Id : {userGBObj.sGBID}</div>
-                    </Grid>
-             <Grid item xs={12} sm={6}>
-                    <div>Date of Birth : {userGBObj.dtDob}</div>
-                    </Grid>
-            
-                 
-          
-          </Grid>
-    </Card>
+     <Card className="w-50 mx-auto shadow-lg " style={{paddingTop:'100px'}}>
+                               
+                                <CardContent className="text-center card-body-avatar">
+                                    <a href="#/" onClick={e => e.preventDefault()} className="avatar-icon-wrapper shadow-lg rounded-circle card-box-hover-rise hover-scale-lg d-130">
+                                        <div className="avatar-icon rounded-circle">
+                                            <img alt="..." className="img-fluid" src={userObj.imageUrl} />
+                                        </div>
+                                    </a>
+                                    <h3 className="font-weight-bold mt-4 mb-3 text-black">{userObj.name} </h3>
+                                    
+                                    <Grid container spacing={0}>
+                                            <Grid item md={6}>
+                                                <div className="bg-secondary m-3 py-3 px-0 text-center rounded">
+                                                    <div>
+                                                        <FontAwesomeIcon icon={['fas', 'envelope']} className="font-size-xxl text-warning" />
+                                                    </div>
+                                                    <div className="mt-2 line-height-sm">
+                                                        <b className="font-size-lg text-black">{userObj.email}</b>
+                                                        <span className="text-black-50 d-block">Email Address</span>
+                                                    </div>
+                                                </div>
+                                            </Grid>
+                                            <Grid item md={6}>
+                                                <div className="bg-secondary m-3 py-3 px-0 text-center rounded">
+                                                    <div>
+                                                        <FontAwesomeIcon icon={['fas', 'id-card']} className="font-size-xxl text-info" />
+                                                    </div>
+                                                    <div className="mt-2 line-height-sm">
+                                                        <b className="font-size-lg text-black">{userGBObj.sGBID}</b>
+                                                        <span className="text-black-50 d-block">Green Book Number</span>
+                                                    </div>
+                                                </div>
+                                            </Grid>
+                                            <Grid item md={6}>
+                                                <div className="bg-secondary m-3 py-3 px-0 text-center rounded">
+                                                    <div>
+                                                        <FontAwesomeIcon icon={['fas', 'calendar-day']} className="font-size-xxl text-success" />
+                                                    </div>
+                                                    <div className="mt-2 line-height-sm">
+                                                        <b className="font-size-lg text-black">{Moment(userGBObj.dtDob ).format("DD-MM-YYYY")}</b>
+                                                        <span className="text-black-50 d-block">Date of Birth</span>
+                                                    </div>
+                                                </div>
+                                            </Grid>
+                                            
+                                            <Grid item md={6}>
+                                                <div className="bg-secondary m-3 py-3 px-0 text-center rounded">
+                                                    <div>
+                                                        <FontAwesomeIcon icon={['fas', 'id-card-alt']} className="font-size-xxl text-danger" />
+                                                    </div>
+                                                    <div className="mt-2 line-height-sm">
+                                                        <b className="font-size-lg text-black">{Moment().diff(userGBObj.dtDob ,'years')}</b>
+                                                        <span className="text-black-50 d-block">Age</span>
+                                                    </div>
+                                                </div>
+                                            </Grid>
+                                        </Grid>
+                                </CardContent>
+                            </Card>
+    
     </>
   );
 }

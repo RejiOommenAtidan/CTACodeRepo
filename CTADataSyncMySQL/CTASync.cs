@@ -21,7 +21,7 @@ namespace CTADataSyncMySQL
         
         const string insertString = "INSERT INTO `queryLabelTableName` ( queryLabelColumnNames ) SELECT queryLabelColumnNames FROM `queryLabelDBName`.`queryLabelTableName` WHERE `Id` in ( queryLabelIdValue ); ";
         //const string updateString = "UPDATE `queryLabelTableName` SET queryLabelColumnNames WHERE `Id` = queryLabelIdValue";
-        const string updateString = "UPDATE `queryLabelTableName` as `dest`, ( SELECT queryLabelColumnNames FROM `ctadb`. `queryLabelTableName` WHERE `id` = queryLabelIdValue ) AS `src` SET queryLabelUpdateColumnNames WHERE `dest`.`id` = queryLabelIdValue ; ";
+        const string updateString = "UPDATE `queryLabelTableName` as `dest`, ( SELECT queryLabelColumnNames FROM `queryLabelDBName`. `queryLabelTableName` WHERE `id` = queryLabelIdValue ) AS `src` SET queryLabelUpdateColumnNames WHERE `dest`.`id` = queryLabelIdValue ; ";
         const string deleteString = "DELETE FROM `queryLabelTableName` WHERE `id` = queryLabelIdValue; ";
 
         private void buttonSyncDB_Click(object sender, EventArgs e)
@@ -350,8 +350,8 @@ namespace CTADataSyncMySQL
             string updateQuery = string.Empty;
             string deleteQuery = string.Empty;
             string strQuerys = string.Empty;
-            string DB1Name = textBoxAdminDBName.Text;
-            string DB2Name = textBoxChatrelDBName.Text;
+            //string DB1Name = textBoxAdminDBName.Text;
+            //string DB2Name = textBoxChatrelDBName.Text;
 
             string queryDB1 = "SELECT " + queryLabelColumnNames + " FROM `" + queryLabelTableName + "` ";
             if (optionalWhereClause != "No WhereClause") { queryDB1 += optionalWhereClause; }
@@ -395,12 +395,12 @@ namespace CTADataSyncMySQL
                 //Execute Database Script
                 if (insertIdsCommaSeperated != string.Empty)
                 {
-                    strQuerys += executeInsertQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, DB1Name, insertIdsCommaSeperated);
+                    strQuerys += executeInsertQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, db1Name, insertIdsCommaSeperated);
 
                 }
                 if (updateIdsCommaSeperated != string.Empty)
                 {
-                    strQuerys += executeUpdateQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, DB1Name, updateIdsCommaSeperated);
+                    strQuerys += executeUpdateQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, db1Name, updateIdsCommaSeperated);
                 }
                 if (deleteIdsCommaSeperated != string.Empty)
                 {

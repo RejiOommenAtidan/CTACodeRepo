@@ -3,6 +3,7 @@ import React,{useState,useEffect} from 'react';
 import { Card } from '@material-ui/core';
 import {Link, Box, Container, Grid, Button, Typography, FormControl, FormLabel, TextField, InputLabel, MenuItem, TextareaAutosize} from '@material-ui/core';
 import PropTypes from 'prop-types';
+import Alert from '@material-ui/lab/Alert';
 import axios from 'axios';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -130,6 +131,7 @@ export default function Family () {
       .then(resp => {
         if (resp.status === 200) {
          setPaymentHistory(resp.data);
+         console.log(resp.data.length);
          setBackdrop(false);
          
         }
@@ -152,21 +154,35 @@ export default function Family () {
      }, []);
   return (
     <>
+
+
     {paymentHistory &&
     <>
-       <Typography className="myfont" variant="h4" style={{textAlign:'center',color:'#000',fontFamily:fontName,fontWeight:"bold"}} gutterBottom>CHATREL HISTORY</Typography>
+     { paymentHistory.length === 0 &&
+
+        <Alert className="alerts-alternate mb-4 w-50 mx-auto" severity="info">
+        <div className="d-flex align-items-center align-content-start">
+            <span>
+                <strong className="d-block">CHATREL PAID BY {sGBID}</strong> Please pay your outstanding Chatrel Amount
+        </span>
+        </div>
+        </Alert>
+      }
+      { paymentHistory.length > 0 &&
       <div style={{width:'85%',margin:'auto',backgroundColor:'#ced9fd',padding:'25px',border:'2px solid grey',borderRadius:'25px',boxShadow:" 10px 10px 5px grey"}} className='text-black' >
       <Typography className="myfont"variant="h5" style={{color:'#000',fontFamily:fontName,fontWeight:"bold"}} gutterBottom>CHATREL PAID BY {sGBID}</Typography>
 
       <Card  style={{  padding: 20,marginBottom:20,boxShadow:" 3px 3px 1px grey" }}   >
+     
+
       
       <Table style={{color:'#000'}}>
       <Thead>
         <Tr>
           <Th style={{textAlign:'center'}}>DATE</Th>
           <Th style={{textAlign:'center'}}>RECEIPT NO.</Th>
+          <Th style={{textAlign:'center'}}>GB ID</Th>
           <Th style={{textAlign:'center'}}>PAID BY</Th>
-          <Th style={{textAlign:'center'}}>GBID</Th>
           <Th style={{textAlign:'center'}}>NAME</Th>
           <Th style={{textAlign:'center'}}>RELATION</Th>
           <Th style={{textAlign:'center'}}>CURRENCY</Th>
@@ -176,98 +192,39 @@ export default function Family () {
           <Th style={{textAlign:'center'}}></Th>
         </Tr>
       </Thead>
-      <Tbody>
-        <Tr>
-          <Td align="center">14-01-2021</Td>
-          <Td align="center">1</Td>
-          <Td align="center">9675</Td>
-          <Td align="center">9675</Td>
-          <Td align="center">Tamdin Richoe</Td>
-          <Td align="center">Self</Td>
-          <Td align="center">USD <Flag country={"US"} size={20} /></Td>
-          <Td align="center" > <b style={{color:'#29cf00'}}>$4.29</b></Td>
-          <Td align="center"><div className="m-1 text-second badge badge-neutral-second">Online</div></Td>
-          <Td align="center"><div className="badge badge-success"> Success</div></Td>
-          <Td align="center"> <Button style={{padding:'5px'}} className="btn-primary m-1">
+      <Tbody  >
+      {paymentHistory.map((row) => (
+        <Tr /*style={{paddingTop:'30px'}}*/>
+          <Td align="center">{Moment(row.dtPayment).format("DD-MM-yyyy")}</Td>
+          <Td align="center">{row.sChatrelReceiptNumber}</Td>
+          <Td align="center">{row.sGBIDPaidFor}</Td>
+          <Td align="center">{row.sPaidByGBId}</Td>
+          <Td align="center">{row.sFirstName + ' ' + row.sLastName}</Td>
+          <Td align="center">{row.sRelation}</Td>
+          <Td align="center">{row.sPaymentCurrency} <Flag country={row.sPaymentCurrency==="USD"?"US":"IN"} size={20} /></Td>
+          <Td align="center" > <b style={{color:'#29cf00'}}>{row.sPaymentCurrency==="USD"?"$":"₹" }{row.nChatrelTotalAmount}</b></Td>
+          <Td align="center"><div className="m-1 text-second badge badge-neutral-second">{row.sPaymentMode}</div></Td>
+          <Td align="center">
+          {row.sPaymentStatus==="Success" &&
+            <div className="badge badge-success"> Success</div>}
+          </Td>
+          <Td align="center"> <Button style={{padding:'5px'}} onClick={()=>{getReceipt(row.sChatrelReceiptNumber )}} className="btn-primary m-1">
                                 <span className="btn-wrapper--icon">
                                     <FontAwesomeIcon icon={['far', 'save']} />
                                 </span>
                             <span className="btn-wrapper--label">Receipt</span>
                         </Button></Td>
           
-        </Tr>
-        <Tr>
-          <Td align="center">14-01-2021</Td>
-          <Td align="center">1</Td>
-          <Td align="center">9675</Td>
-          <Td align="center">9675</Td>
-          <Td align="center">Tamdin Richoe</Td>
-          <Td align="center">Self</Td>
-          <Td align="center">USD <Flag country={"US"} size={20} /></Td>
-          <Td align="center" > <b style={{color:'#29cf00'}}>$4.29</b></Td>
-          <Td align="center"><div className="m-1 text-second badge badge-neutral-second">Online</div></Td>
-          <Td align="center"><div className="badge badge-success"> Success</div></Td>
-          <Td align="center"> <Button style={{padding:'5px'}} className="btn-primary m-1">
-                                <span className="btn-wrapper--icon">
-                                    <FontAwesomeIcon icon={['far', 'save']} />
-                                </span>
-                            <span className="btn-wrapper--label">Receipt</span>
-                        </Button></Td>
-          
-        </Tr>
-        
+        </Tr>))}
+    
        
       </Tbody>
     </Table>
       </Card>
 
 
-      </div>
-    
-    
-    <p style={{fontSize:"18px", fontWeight: "bold", textAlign:"center"}}>Chatrel History</p>
-      <Card  style={{  padding: 50 }} >
-
-      <br />
-        <p style={{backgroundColor: "lightblue"}}>Payment History</p>
-        <TableContainer component={Paper}>
-      <Table className={classes.table}  aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            
-            <TableCell align="left" style={{width: "10%",padding:'5px'}}>Date</TableCell>
-            <TableCell align="center" style={{width: "12%",padding:'5px'}}>Reciept No.</TableCell>
-            <TableCell align="center" style={{width: "8%",padding:'5px'}}>Paid By GBID</TableCell>
-            <TableCell align="center" style={{width: "8%",padding:'5px'}}>GBID</TableCell>
-            <TableCell align="center" style={{width: "16%",padding:'5px'}}>Name</TableCell>
-            <TableCell align="center" style={{width: "8%",padding:'5px'}}>Relation</TableCell>
-            <TableCell align="center" style={{width: "3%",padding:'5px'}}>Currency</TableCell>
-            <TableCell align="center" style={{width: "8%",padding:'5px'}}>Amount</TableCell>
-            <TableCell align="center" style={{width: "10%",padding:'5px'}}>Mode</TableCell>
-            <TableCell align="center" style={{width: "10%",padding:'5px'}}>Status</TableCell>
-          </TableRow>
-        </TableHead>
-        {paymentHistory && <TableBody>
-          {paymentHistory.map((row) => (
-            <TableRow key={row.receiptNo}>
-              <TableCell style={{padding:'5px'}} align="left">{Moment(row.dtPayment).format("DD-MM-yyyy")}</TableCell>
-              <TableCell style={{padding:'5px'}} align="center">{row.sChatrelReceiptNumber}</TableCell>
-              <TableCell style={{padding:'5px'}} align="center">{row.sPaidByGBId}</TableCell>
-              <TableCell style={{padding:'5px'}} align="center">{row.sGBIDPaidFor}</TableCell>
-              <TableCell style={{padding:'5px'}} align="center">{row.sFirstName + ' ' + row.sLastName}</TableCell>
-              <TableCell style={{padding:'5px'}} align="center">{row.sRelation}</TableCell>
-              <TableCell style={{padding:'5px'}} align="center">{row.sPaymentCurrency}</TableCell>
-              <TableCell  style={{padding:'5px'}} align="center">{row.nChatrelTotalAmount}</TableCell>
-              <TableCell style={{padding:'5px'}}  align="center">{row.sPaymentMode}</TableCell>
-              <TableCell style={{padding:'5px'}}  align="center">{row.sPaymentStatus}</TableCell>
-              <TableCell style={{padding:'5px'}}  align="center"><Button variant="contained" style={{paddingTop:'5px', paddingBottom:'5px'}} color="primary" type = 'button' onClick={()=>{getReceipt(row.sChatrelReceiptNumber )}}>Receipt</Button></TableCell>
-              
-            </TableRow>
-          ))}
-        </TableBody>}
-      </Table>
-    </TableContainer>
-    </Card></>}
+      </div>}
+  </>}
     <Backdrop className={classes.backdrop} open={backdrop} >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -276,6 +233,7 @@ export default function Family () {
         TransitionComponent={Transition}
         keepMounted
         onClose={handleClose}
+        style={{paddingRight:'20px'}}
        // aria-labelledby="alert-dialog-slide-title"
         //aria-describedby="alert-dialog-slide-description"
       >
@@ -283,7 +241,7 @@ export default function Family () {
         <DialogContent>
           <DialogContentText >
           { receiptData &&
-          <table /*ref={ref}*/  id="mytable" className="mytable" cellspacing="0" style={{ border: "3px solid #000000",background:`linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.7)),url(${CTALogo})`,backgroundRepeat:'no-repeat',backgroundPosition:'center' }}>
+          <table /*ref={ref}*/  id="mytable" className="mytable" cellspacing="0" style={{ border: "3px solid #000000",background:`linear-gradient(rgba(255,255,255,.9), rgba(255,255,255,.9)),url(${CTALogo}) no-repeat center ` }}>
       <tr>
           <td width="20"></td>
           <td width="200"></td>
@@ -301,7 +259,7 @@ export default function Family () {
         </tr>
         <tr>
           <td width="20"></td>
-          <td colspan="2" height="28" align="left" valign="middle" ><b><font face="Microsoft Himalaya" size={4} color="#000000">མིང་།</font><font  size={4} color="#000000"> {receiptData.receipt.sFirstName}</font></b></td>
+          <td colspan="2" height="28" align="left" valign="middle" ><b><font face="Microsoft Himalaya" size={4} color="#000000">མིང་།</font><font  size={4} color="#000000"> {receiptData.receipt.sFirstName +" "+ receiptData.receipt.sLastName?receiptData.receipt.sLastName:"" }</font></b></td>
           <td align="right" valign="middle" ><b><font face="Microsoft Himalaya" size={4} color="#000000">རང་ལོ། {receiptData.receipt.nAge}</font></b></td>
           <td width="20"></td>
         </tr>
@@ -312,8 +270,8 @@ export default function Family () {
             <table >
               <tr>
                 <td style={{width:"200px",paddingLeft:"20px",borderTop:"3px solid #000000"}}><b><font face="Microsoft Himalaya" size={4} color="#000000">	དཔྱ་དེབ་ཨང་།</font></b></td>
-                <td align="center" style={{border:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">X</font></b></td>
-                <td  align="center" style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">X</font></b></td>
+                <td align="center" style={{border:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sCountryID.charAt(1)}</font></b></td>
+                <td  align="center" style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sCountryID.charAt(1)}</font></b></td>
                 <td  align="center"  style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sGBID.charAt(0)}</font></b></td>
                 <td  align="center"  style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sGBID.charAt(1)}</font></b></td>
                 <td  align="center" style={{borderTop:"3px solid #000000",borderBottom:"3px solid #000000",borderRight:"3px solid #000000"}} width="32"><b><font  size={4} color="#000000">{receiptData.receipt.sGBID.charAt(2)}</font></b></td>
@@ -413,20 +371,12 @@ export default function Family () {
           <td width="20"></td>
           <td colSpan="3" height="16" align="left" valign="top" >
             <font size={2} color="#000000">
-            You are advised to update chatrel contribution on your Greenbook from Office of Tibet or
+            You are advised to update chatrel contribution on your Greenbook from Office of Tibet or concerned Tibetan Association/Tibetan Community.
             </font>
           </td>
           <td width="20"></td>
         </tr>
-        <tr>
-          <td width="20"></td>
-          <td colSpan="3" height="16" align="left" valign="top" >
-            <font size={2} color="#000000">
-            concerned Tibetan Association/Tibetan Community.
-            </font>
-          </td>
-          <td width="20"></td>
-        </tr>
+       
         <tr>
           <td width="20"></td>
           <td colSpan="3" height="16" align="left" valign="top" ><font face="Microsoft Himalaya" size={4} color="#000000"></font></td>

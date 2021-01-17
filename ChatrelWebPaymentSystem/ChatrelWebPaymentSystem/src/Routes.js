@@ -24,6 +24,8 @@ const Login = lazy(() => import('./views/login'));
 const AccessDenied = lazy(() => import('./views/error/locationerror.js'));
 const Profile = lazy(() => import("./views/profile/index.js"));
 const FileDispute = lazy(() => import("./views/filedispute/index.js"));
+const ContactUs = lazy(() => import("./views/Contact/index.js"));
+const PrivacyPolicy = lazy(() => import("./views/privacy-policy/index.js"));
 
 const Family = lazy(() => import("./views/family"));
 const Friends = lazy(() => import("./views/friends"));
@@ -141,7 +143,9 @@ const Routes = () => {
                 '/PaymentPage',
                 '/SelfPayment',
                 '/Profile',
-                '/FileDispute'
+                '/FileDispute',
+                '/PrivacyPolicy',
+                '/ContactUs'
               ]}>
               <LeftSidebar>
                 <Switch location={location} key={location.pathname}>
@@ -188,7 +192,17 @@ const Routes = () => {
                     <Route
                       path='/SelfPayment'
                       component={SelfPayment}
-                    />                    
+                    />           
+
+                      <Route
+                      path='/PrivacyPolicy'
+                      component={PrivacyPolicy}
+                    />
+
+                    <Route
+                      path='/ContactUs'
+                      component={ContactUs}
+                    />                      
                   </motion.div>
                 </Switch>
               </LeftSidebar>

@@ -37,7 +37,7 @@ import { useSelector } from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Alerts } from '../alerts';
 import { PayPalButton } from 'react-paypal-button-v2';
-
+import Moment from 'moment';
 import html2canvas from 'html2canvas';
 import jsPdf from 'jspdf';
 import jsPDF from 'jspdf';
@@ -126,7 +126,7 @@ export default function PaymentPage(props) {
     setSnackbar(false);
   };
 
-  const [backdrop, setBackdrop] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(true);
 
   //console.log(paidByGBID);
   //const userObj = useSelector(state => state.GLoginReducer.oGoogle);
@@ -255,7 +255,7 @@ export default function PaymentPage(props) {
 
     let len = paymentData.length;
 
-    if (index != len - 1) {
+    if (index < len - 2) {
       payObj[index].nChatrelLateFeesValue =
         (payObj[index].nChatrelAmount +
           payObj[index].nChatrelMeal +
@@ -267,7 +267,23 @@ export default function PaymentPage(props) {
         payObj[index].nChatrelMeal +
         payObj[index].nChatrelLateFeesValue +
         payObj[index].nCurrentChatrelSalaryAmt;
-    } else {
+    } 
+    else if (index === len - 2) {
+      if(payObj[index].nChatrelLateFeesValue!=0){
+        payObj[index].nChatrelLateFeesValue =
+        (payObj[index].nChatrelAmount +
+          payObj[index].nChatrelMeal +
+          payObj[index].nCurrentChatrelSalaryAmt) *
+        (payObj[index].nChatrelLateFeesPercentage / 100);
+
+      payObj[index].nArrearsAmount =
+        payObj[index].nChatrelAmount +
+        payObj[index].nChatrelMeal +
+        payObj[index].nChatrelLateFeesValue +
+        payObj[index].nCurrentChatrelSalaryAmt;
+      }
+    } 
+    else {
       payObj[index].nChatrelLateFeesValue = 0;
     }
 
@@ -293,7 +309,8 @@ export default function PaymentPage(props) {
     let temptotal = a + b;
     obj.forEach((row) => {
       //temptotal+= row.nChatrelTotalAmount;
-      temptotal += row.nChatrelTotalAmount;
+      temptotal += parseFloat(row.nChatrelTotalAmount.toFixed(2));
+      console.log(row.nChatrelTotalAmount);
     });
     setTotal(temptotal);
   };
@@ -466,13 +483,14 @@ export default function PaymentPage(props) {
   };
 
   useEffect(() => {
+    console.log("Props Console:",props.location.state);
     axios
       .get(`/AuthRegion/GetAuthRegions`)
       .then((resp) => {
         if (resp.status === 200) {
           console.log('AuthRegions fetched:', resp.data);
           setAuthRegions(resp.data);
-          if (props.location.state.pymtData) {
+      /*    if (props.location.state.pymtData) {
             console.log('Status is ', props.location.state.outstanding);
             if (!props.location.state.outstanding) {
               setOutstanding(false);
@@ -504,24 +522,36 @@ export default function PaymentPage(props) {
             console.log('Got data from props');
 
             return;
-          }
-          axios
-            .get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=` + sGBID)
+          }*/
+          axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=` + sGBID)
             .then((resp) => {
               if (resp.status === 200) {
-                console.log('resp.data is:', resp.data);
-                //resp.data.chatrelPayment.sPaymentMode = 'Offline';
-                setDataAPI(resp.data);
-                setSummaryData(resp.data.chatrelPayment);
-                calcTotal(resp.data.gbChatrels, adonation, bdonation);
-                setPaymentData(resp.data.gbChatrels);
-
-                fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
-                  .then((response) => response.json())
-                  .then((data) => {
-                    console.log('currency', data.rates.USD);
-                    setDollarToRupees(data.rates.USD);
-                  });
+                console.log("test",resp.data);
+                  
+                  if (resp.data.chatrelPayment.nChatrelTotalAmount === 0) {
+                    setOutstanding(false);
+                 
+                  }
+                  setDataAPI(resp.data);
+                  setSummaryData(resp.data.chatrelPayment);
+                  setPaymentData(resp.data.gbChatrels);
+                  setDonationData(resp.data.gbChatrelDonation);
+                  calcTotal(
+                    resp.data.gbChatrels,
+                    adonation,
+                    bdonation
+                  );
+      
+                  fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
+                    .then((response) => response.json())
+                    .then((data) => {
+                      console.log('currency', data.rates.USD);
+                      setDollarToRupees(data.rates.USD);
+                      setBackdrop(false);
+                    });
+                  console.log('Got data from props');
+      
+                
               }
             })
             .catch((error) => {
@@ -562,10 +592,10 @@ export default function PaymentPage(props) {
 
   return (
     <>
-      {' '}
+      
       {dataAPI && (
         <>
-          <div /*style={{backgroundColor:"#fff"}}*/>
+         {paymentDiv && <div >
             {/*<Typography className="myfont" variant="h4" style={{textAlign:'center',color:'#000',fontFamily:fontName,fontWeight:"bold"}} gutterBottom>{pageFrom.toUpperCase()}</Typography>*/}
             <div
               style={{
@@ -660,7 +690,7 @@ export default function PaymentPage(props) {
                                 color: '#000'
                               }} /*className="pb-3 d-flex justify-content-between"*/
                             >
-                              <b>{dataAPI.nPaidUntil.split('T')[0]}</b>
+                              <b>{ Moment(dataAPI.nPaidUntil).format('DD-MM-YYYY')}</b>
                             </div>
                           </CardContent>
                         </Card>
@@ -682,7 +712,7 @@ export default function PaymentPage(props) {
                                 color: '#000'
                               }} /*className="pb-3 d-flex justify-content-between"*/
                             >
-                              <b>{dataAPI.nPaidUntil.split('T')[0]}</b>
+                              <b>Self</b>
                             </div>
                           </CardContent>
                         </Card>
@@ -959,14 +989,14 @@ export default function PaymentPage(props) {
                         
                         <div
                                 className="badge badge-first px-3"
-                                style={{ fontSize: '14px' }}>
+                                style={{ fontSize: '14px',marginBottom:'15px' }}>
                                 Business Donation
                               </div>
                         <div>
                         <TextField
                           className="h-50"
                           value={bdonation}
-                          variant="outlined"
+                         // variant="outlined"
                           onChange={(e) => {
                             if (e.target.value === '') {
                               calcTotal(paymentData, adonation, 0);
@@ -991,10 +1021,11 @@ export default function PaymentPage(props) {
                         /></div>
                       </Grid>
                       <Grid item xs={12} sm={6} align="center">
-                        <div>
-                          <b> Additional Donation </b>
-                        </div>
-
+                        <div
+                                className="badge badge-first px-3"
+                                style={{ fontSize: '14px',marginBottom:'15px' }}>
+                                Additional Donation
+                              </div>
                         <TextField
                           variant="outlined"
                           value={adonation}
@@ -1036,7 +1067,7 @@ export default function PaymentPage(props) {
                       
                       <CountUp
                                     start={0}
-                                    end={total.toFixed(2)}
+                                    end={total}
                                     duration={1}
                                     //deplay={2}
                                     separator=""
@@ -1045,6 +1076,7 @@ export default function PaymentPage(props) {
                                     prefix="$ "
                                     suffix=""
                                 />
+                                
                       </div>
                       <div className="font-size-xl text-dark opacity-8">
                         Grand Total
@@ -1057,6 +1089,8 @@ export default function PaymentPage(props) {
                       className="w-75 mx-auto">
                       <br />
                       <PayPalButton
+
+                    
                         amount={total.toFixed(2)}
                         style={{ label: 'pay' }}
                         options={{
@@ -1066,7 +1100,8 @@ export default function PaymentPage(props) {
                         }}
                         shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
                         onSuccess={(details, data) => {
-                          //  alert("Transaction completed by " + details.payer.name.given_name);
+                          //setBackdrop(true);
+                          //alert("Transaction completed by " + details.payer.name.given_name);
                           console.log('Details:', details);
                           console.log('Data', data);
                           submit(details);
@@ -1076,6 +1111,14 @@ export default function PaymentPage(props) {
                           setAlertMessage('Chatrel donation failed.');
                           setAlertType('error');
                           snackbarOpen();
+                        }}
+                        onCancel={(data)=>{
+                          setBackdrop(false);
+                        }}
+                        createOrder={(data, actions)=> { 
+                          setBackdrop(true);
+                          return actions.order.create({ purchase_units: [ { amount: { value: total.toFixed(2), }, }, ], }); 
+                        
                         }}
                         // onError={(details, data)=>{console.log(details);}}
                       />
@@ -1089,14 +1132,14 @@ export default function PaymentPage(props) {
               )}
               
             </div>
-          </div>
-          {successDiv  && (
+          </div>}
+          { successDiv && (
                 <div id="successDiv">
                 
                   <Card className="bg-neutral-first d-block card-border-top border-first text-center p-4 p-xl-5 w-50 mx-auto">
                                     <h4 className="px-3 px-xl-5 display-4 line-height-2 font-weight-bold mb-0">Thank You for your contribution!!</h4>
                                     <p className="px-3 px-xl-5 opacity-6 font-size-lg my-4">
-                                      Sample textSample textSample textSample textSample textSample textSample textSample textSample text 
+                                    The existence of Chatrel symbolizes the Tibetan people’s recognition of CTA as their legitimate representative. Chatrel payment exhibits Tibetan people’s support for CTA’s financial needs until Tibet regains freedom. Chatrel funds is an important source of revenue for CTA and it goes towards supporting various projects and activities benefiting the exiled Tibetan community.
                                     </p>
                                     <Button  onClick={() => {
                         handleClickOpen();
@@ -1124,9 +1167,8 @@ export default function PaymentPage(props) {
                     cellspacing="0"
                     style={{
                       border: '3px solid #000000',
-                      background: `linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.7)),url(${CTALogo})`,
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'center'
+                      background: `linear-gradient(rgba(255,255,255,.9), rgba(255,255,255,.9)),url(${CTALogo}) no-repeat center `,
+                     
                     }}>
                     <tr>
                       <td width="20"></td>
@@ -1687,20 +1729,12 @@ export default function PaymentPage(props) {
                       <td colSpan="3" height="16" align="left" valign="top">
                         <font size={2} color="#000000">
                           You are advised to update chatrel contribution on your
-                          Greenbook from Office of Tibet or
+                          Greenbook from Office of Tibet or concerned Tibetan Association/Tibetan Community.
                         </font>
                       </td>
                       <td width="20"></td>
                     </tr>
-                    <tr>
-                      <td width="20"></td>
-                      <td colSpan="3" height="16" align="left" valign="top">
-                        <font size={2} color="#000000">
-                          concerned Tibetan Association/Tibetan Community.
-                        </font>
-                      </td>
-                      <td width="20"></td>
-                    </tr>
+                   
                     <tr>
                       <td width="20"></td>
                       <td colSpan="3" height="16" align="left" valign="top">
