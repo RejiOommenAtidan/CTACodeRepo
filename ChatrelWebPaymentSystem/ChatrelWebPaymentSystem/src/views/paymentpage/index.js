@@ -1392,7 +1392,7 @@ export default function PaymentPage(props) {
                               width="32">
                               <b>
                                 <font size={4} color="#000000">
-                                  {{receiptData.receipt.sCountryID.charAt(1)}}
+                                  {receiptData.receipt.sCountryID.charAt(1)}
                                 </font>
                               </b>
                             </td>
