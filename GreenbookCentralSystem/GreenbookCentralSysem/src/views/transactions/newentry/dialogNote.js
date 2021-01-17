@@ -76,7 +76,7 @@ export const AddNoteDialog = (props) => {
 }
 
 export const EditNoteDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const { register, handleSubmit, errors, formState } = useForm();
   const handleSubmitEditNoteRecord = () => {
     props.editNoteAPICall(

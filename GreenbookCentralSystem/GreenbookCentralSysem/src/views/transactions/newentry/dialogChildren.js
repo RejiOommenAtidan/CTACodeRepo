@@ -25,7 +25,7 @@ import { sDateFormatMUIDatepicker, sButtonColor, sButtonSize, sButtonVariant, sD
 import { useSelector } from 'react-redux';
 
 export const AddChildDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   Moment.locale('en');
   const { register, handleSubmit, errors, setValue, formState } = useForm();
   const handleSubmitAddChildRecord = () => {
@@ -187,7 +187,7 @@ placeholder="DD-MM-YYYY"
 }
 
 export const EditChildDialog = (props) => {
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   Moment.locale('en');
   const { register, handleSubmit, errors, setValue, formState } = useForm();
   const handleSubmitEditChildRecord = () => {

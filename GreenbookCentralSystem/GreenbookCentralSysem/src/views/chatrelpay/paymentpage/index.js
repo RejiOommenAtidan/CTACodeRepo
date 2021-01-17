@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PaymentPage  (props) {
   console.log("Props contains:", props);
   let history = useHistory();
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   
   // Who is paying
   const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
@@ -465,7 +465,7 @@ const submit =(e) =>{
   useEffect(() => {
     console.log("Want to set authregion");
     if(authRegions && dataAPI){
-      const region =authRegions.find((x) => x.ID === dataAPI.nAuthRegionID); 
+      const region =authRegions.find((x) => x.id === dataAPI.nAuthRegionID); 
       setAuthRegion(region);
       console.log("authregion and dataAPI are set", region);
       

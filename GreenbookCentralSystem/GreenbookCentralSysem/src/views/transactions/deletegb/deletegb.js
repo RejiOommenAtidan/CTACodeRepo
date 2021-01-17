@@ -44,7 +44,7 @@ const useStyles = makeStyles({
 
 export default function GiveGBId() {
   //const { register, handleSubmit, errors } = useForm();
-  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.Id);
+  const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const classes = useStyles();
   const [gbidToDelete, setGBIDToDelete] = useState(0);
   const [backdrop, setBackdrop] = React.useState(false);

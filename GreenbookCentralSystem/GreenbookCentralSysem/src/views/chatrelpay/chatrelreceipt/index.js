@@ -96,7 +96,7 @@ export default function ChatrelReceipt(props){
   const [sGBID, setGBID ] = useState();
   const [sGBIDPaidBy, setGBIDPaidBy] = useState();
   const [nReceiptTotal, setReceiptTotal] = useState();
-
+  const [sPaymentCurrency, setPaymentCurrency] = useState();
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -323,6 +323,7 @@ export default function ChatrelReceipt(props){
         setGBID(resp.data[0].sGBID);
         setGBIDPaidBy(resp.data[0].sPaidByGBId);
         setReceiptTotal(resp.data[0].nReceiptTotal);
+        setPaymentCurrency(resp.data[0].sPaymentCurrency === 'INR' ? '₹' : '$');
         modifyHeaders();
       }
     })
@@ -358,7 +359,7 @@ export default function ChatrelReceipt(props){
               <Grid item xs={4}>Receipt Number: {sReceiptNumber}</Grid> 
               
               <Grid item xs={4}>Greenbook ID: {sGBID}</Grid>
-              <Grid item xs={4}>Total: {nReceiptTotal}</Grid>
+              <Grid item xs={4}>Total: {`${sPaymentCurrency}${nReceiptTotal}`}</Grid>
             
               <Grid item xs={4}>Payment Date: {Moment(dtPymtDate).format(sDateFormat)}</Grid>
               <Grid item xs={4}>Paid By: {sGBIDPaidBy}</Grid>

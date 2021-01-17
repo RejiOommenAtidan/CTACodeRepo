@@ -21,7 +21,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import { Alerts } from '../../alerts';
 //import { AddDialog, EditDialog } from './dialog';
 //import { ViewDialog } from '../../search/dialog';
-import { oOptions, oTableIcons, sDateFormat, sButtonSize, modifyHeaders } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, sButtonSize, modifyHeaders, sISODateFormat } from '../../../config/commonConfig';
 //import MyComp from '../../common/filtercomponent';
 
 const tableIcons = oTableIcons;
@@ -128,7 +128,16 @@ export default function ChatrelList(){
     },
     {
       field: "dtPayment",
-      title: "Payment Date",
+      title: "PAYMENT DATE",
+      type: 'date', 
+      render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
+      //dateSetting: 'en-IN',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -138,7 +147,13 @@ export default function ChatrelList(){
     },
     {
       field: "sGBID",
-      title: "GreenBook Id",
+      title: "GREENBOOK ID",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -146,7 +161,7 @@ export default function ChatrelList(){
     },
     {
       field: "sChatrelReceiptNumber",
-      title: "Receipt Number",
+      title: "RECEIPT NUMBER",
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -167,16 +182,31 @@ export default function ChatrelList(){
 
     },
     {
-      field: "sFirstName",
-      title: "First Name",
+      width: "10%",
+      field: "sName",
+      title: "NAME",
+      headerStyle: {
+        width: "10%",
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
+        width: '10%',
         padding: '5px',
         borderRight: '1px solid grey'
       },
     },
     {
       field: "sPaidByGBId",
-      title: "Paid By",
+      title: "PAID BY",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -185,7 +215,13 @@ export default function ChatrelList(){
     
     {
       field: "sPaymentCurrency",
-      title: "Currency",
+      title: "CURRENCY",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -194,7 +230,13 @@ export default function ChatrelList(){
     },
     {
       field: "nChatrelAmount",
-      title: "Chatrel",
+      title: "CHATREL",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -204,7 +246,13 @@ export default function ChatrelList(){
     },
     {
       field: "nChatrelMeal",
-      title: "Meal",
+      title: "MEAL",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -214,7 +262,7 @@ export default function ChatrelList(){
     },
     {
       field: "nCurrentChatrelSalaryAmt",
-      title: "Employment",
+      title: "EMPLOYMENT",
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -224,7 +272,14 @@ export default function ChatrelList(){
     },
     {
       field: "dtCurrentChatrelFrom",
-      title: "Chatrel From",
+      title: "CHATREL FROM",
+      type: 'date',
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -234,7 +289,13 @@ export default function ChatrelList(){
     },
     {
       field: "dtCurrentChatrelTo",
-      title: "Chatrel To",
+      title: "CHATREL TO",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -245,7 +306,7 @@ export default function ChatrelList(){
 
     {
       field: "sFinancialYear",
-      title: "Year",
+      title: "YEAR",
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -254,7 +315,13 @@ export default function ChatrelList(){
     },
     {
       field: "nArrears",
-      title: "Arrears + LateFees",
+      title: "ARREARS + LATE FEES",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -264,7 +331,13 @@ export default function ChatrelList(){
 
     {
       field: "dtArrearsFrom",
-      title: "Arrears From",
+      title: "ARREARS FROM",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -274,7 +347,13 @@ export default function ChatrelList(){
     },
     {
       field: "dtArrearsTo",
-      title: "Arrears To",
+      title: "ARREARS TO",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -284,7 +363,13 @@ export default function ChatrelList(){
     },
     {
       field: "nChatrelBusinessDonationAmt",
-      title: "Business Donation",
+      title: "BUSINESS DONATION",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -294,7 +379,13 @@ export default function ChatrelList(){
     },
     {
       field: "nChatrelAdditionalDonationAmt",
-      title: "Additional Donation",
+      title: "ADDITIONAL DONATION",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -304,7 +395,13 @@ export default function ChatrelList(){
     },
     {
       field: "nChatrelTotalAmount",
-      title: "Total",
+      title: "TOTAL",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -314,7 +411,13 @@ export default function ChatrelList(){
     },
     {
       field: "sAuthRegion",
-      title: "Authority Region",
+      title: "AUTHORITY REGION",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -323,7 +426,13 @@ export default function ChatrelList(){
     
     {
       field: "sPaymentMode",
-      title: "Payment Mode",
+      title: "PAYMENT MODE",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -345,7 +454,11 @@ export default function ChatrelList(){
         console.log("Chatrel List", resp.data);
         var i = 1;
         resp.data.forEach((element) => {
-          element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sDateFormat) : null;
+          element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sISODateFormat) : null;
+          element.dtCurrentChatrelFrom = element.dtCurrentChatrelFrom ? Moment(element.dtCurrentChatrelFrom).format(sISODateFormat) : null;
+          element.dtCurrentChatrelTo = element.dtCurrentChatrelTo ? Moment(element.dtCurrentChatrelTo).format(sISODateFormat) : null;
+          element.dtArrearsFrom = element.dtArrearsFrom ? Moment(element.dtArrearsFrom).format(sISODateFormat) : null;
+          element.dtArrearsTo = element.dtArrearsTo ? Moment(element.dtArrearsTo).format(sISODateFormat) : null;
           element.nSerialNo = i++;
         });
         setdataAPI(resp.data);

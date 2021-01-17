@@ -82,10 +82,10 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             try
             {
-                bool result = _chatrelBulkDataRepository.SubmitBulkData(sBatchNumber);
-                if (result)
+                int result = _chatrelBulkDataRepository.SubmitBulkData(sBatchNumber);
+                if (result >= 0)
                 {
-                    return Ok();
+                    return Ok(result);
                 }
                 else
                 {
