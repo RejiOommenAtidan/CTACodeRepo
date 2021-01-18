@@ -284,7 +284,7 @@ let oGBDetails={
                                             format="dd-MM-yyyy"
                                             value={dtDob}
                                           
-                                            onChange={(date) => {setDob(date);console.log(date)}}
+                                            onChange={(date) => {setDob(date);}}
                                             KeyboardButtonProps={{
                                                 'aria-label': 'change date',
                                             }}
