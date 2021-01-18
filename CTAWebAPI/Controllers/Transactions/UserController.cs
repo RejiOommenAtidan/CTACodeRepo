@@ -142,6 +142,34 @@ namespace CTAWebAPI.Controllers.Transactions
             }
             #endregion
         }
+
+        [AuthorizeRole(FeatureID = 16)]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetUserForEditGB(string Id)
+        {
+            #region Get User
+            try
+            {
+                User user = _userRepository.GetUserById(Id);
+
+                #region Information Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
+                #endregion
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                #region Exception Logging
+                _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 3), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+                #endregion
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            #endregion
+        }
+
         #endregion
 
         #region Add Call

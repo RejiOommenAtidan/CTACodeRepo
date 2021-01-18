@@ -365,10 +365,17 @@ export default function ChatrelReceipt(props){
               <Grid item xs={4}>Paid By: {sGBIDPaidBy}</Grid>
               </Grid>
             </>)}
-
+            // title={'Receipt Number: '+ sReceiptNumber +' \t\t\t\t Greenbook ID: '+sGBID+' \t\t\t\tTotal: ' +sPaymentCurrency+nReceiptTotal+'\nPayment Date: ' + `${Moment(dtPymtDate).format(sDateFormat)}` + '\t\t\t\tPaid By: '+ sGBIDPaidBy}
             columns={columns}
             data={dataAPI}
-            options={oOptions}
+            options={{
+              ...oOptions,
+              exportButton: {
+                csv: true,
+                
+              },
+              exportFileName: `Receipt Number: ${sReceiptNumber} \t\t\t\tGreenbook ID: ${sGBID} \t\t\t\tTotal: ${sPaymentCurrency}${nReceiptTotal}\nPayment Date: ${Moment(dtPymtDate).format(sDateFormat)}\t\t\t\tPaid By: ${sGBIDPaidBy}`
+            }}
             actions={[
               
               {

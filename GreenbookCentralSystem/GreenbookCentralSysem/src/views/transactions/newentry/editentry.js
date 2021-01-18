@@ -492,7 +492,10 @@ export default function EditEntry(props) {
   const [TBUFathersName, setTBUFathersName] = useState("");
   const [TBUMothersName, setTBUMothersName] = useState("");
   const [TBUSpouseName, setTBUSpouseName] = useState("");
+  const [enterUserId, setEnterUserId] = useState();
+  const [enterUserName, setEnterUserName] = useState();
 
+  const [enteredOn, setEnteredOn] = useState();
 
   const [profilePic, setProfilePic] = React.useState(null);
   const userId = useSelector(
@@ -523,7 +526,7 @@ export default function EditEntry(props) {
           axios.get(`/Greenbook/GetGreenbook/Id=` + props.location.state.Id.toString())
             .then((resp) => {
               if (resp.status === 200) {
-                console.log(resp.data);
+                console.log("Resp.data object ", resp.data);
                 setnId(resp.data.id);
                 setsGBID(resp.data.sGBID);
                 setnAuthRegionID(resp.data.nAuthRegionID);
@@ -537,7 +540,7 @@ export default function EditEntry(props) {
                 setsBirthCountryID(resp.data.sBirthCountryID);
                 setsOriginVillage(resp.data.sOriginVillage);
                 setsOriginProvinceID(resp.data.sOriginProvinceID);
-                setsMarried(resp.data.sMarried==="Y"?"M":resp.data.sMarried);
+                setsMarried(resp.data.sMarried === "Y" ? "M" : resp.data.sMarried);
                 setsOtherDocuments(resp.data.sOtherDocuments);
                 setsResidenceNumber(resp.data.sResidenceNumber);
                 setsQualificationID(resp.data.sQualificationID);
@@ -577,6 +580,8 @@ export default function EditEntry(props) {
                 setTBUFathersName(resp.data.tbuFathersName);
                 setTBUMothersName(resp.data.tbuMothersName);
                 setTBUSpouseName(resp.data.tbuSpouseName);
+                setEnterUserId(resp.data.nEnteredBy);
+                setEnteredOn(resp.data.dtEntered);
                 //debugger;
                 axios
                   .get(
@@ -587,16 +592,18 @@ export default function EditEntry(props) {
                       console.log(resp.data)
                       setlGBChildren(resp.data.lGBChildren);
                       setlGBDocument(resp.data.lGBDocument);
-                      if(resp.data.lGBDocument){
+                      if (resp.data.lGBDocument) {
                         resp.data.lGBDocument.map((row, index) => {
-                             if(row.sDocType==="Photo Identity"){
-                               setProfilePic("data:image/"+row.sFileExtension+";base64,"+row.binFileDoc);
-                             } 
-                      })
+                          if (row.sDocType === "Photo Identity") {
+                            setProfilePic("data:image/" + row.sFileExtension + ";base64," + row.binFileDoc);
+                          }
+                        })
                       }
                       setlGBNote(resp.data.lGBNote);
                       setExpanded("panel1");
+
                       setBackdrop(false);
+                     
                     }
                   })
                   .catch((error) => {
@@ -623,6 +630,23 @@ export default function EditEntry(props) {
         //console.log(release); => udefined
       });
   }, []);
+
+  useEffect(() => {
+    if (enterUserId) {
+      axios.get(`/User/GetUserForEditGB/?Id=${enterUserId}`)
+      .then(resp => {
+        if (resp.status === 200) {
+          console.log("User fetched:", resp.data);
+          setEnterUserName(resp.data.sFullname);
+        }
+      })
+      .catch(error => {
+        console.log(error.message);
+      })
+    }
+
+
+  }, [enterUserId]);
 
   const { register, handleSubmit, errors, setValue, formState } = useForm();
 
@@ -768,8 +792,8 @@ export default function EditEntry(props) {
   return (
     <Container maxWidth="lg" disableGutters={true}>
       <br />
-      <Typography variant="h4" gutterBottom>
-        Edit Green Book - {sGBID}
+      <Typography variant="h5" gutterBottom>
+        Edit Green Book - {sGBID} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Entered By: {enterUserName} &nbsp;&nbsp;&nbsp;On: {Moment(enteredOn).format('DD-MM-YYYY')})
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)} className={classes.box}>
         <Grid container className={classes.box}>
@@ -1045,96 +1069,96 @@ export default function EditEntry(props) {
                       </FormControl>
                     </Grid>
                   </Grid>
-                  <Grid item xs={12} style={{display:'flex'}}>
+                  <Grid item xs={12} style={{ display: 'flex' }}>
                     <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                          placeholder="DD-MM-YYYY"
-                          variant="dialog"
-                          openTo="year"
-                          views={["year", "month", "date"]}
-                          margin="dense"
-                          id="id_dtDOB"
-                          name="name_dtDOB"
-                          inputRef={register({
-                            required: true,
-                            pattern:
-                            {
-                              value: new RegExp(sDDMMYYYYRegex),
-                              message: "Invalid Date"
-                            }
-                          })}
-                          label={<> Date of Birth<span style={{ color: 'red' }}> *</span></>}
-                          format={sDateFormatMUIDatepicker}
-                          returnMoment={true}
-                          onChange={date => {
-                            //console.log(date.toISOString().split("T")[0]);
-                            //console.log(date.toDateString());
-                            // console.log(date.toLocaleDateString());
-                            //console.log(date);
-                            if (date) {
-                              setdtDOB(date);
-                              setValue('name_dtDOB', date, { shouldValidate: true });
-                            }
-                          }}
-                          value={dtDOB}
-                          KeyboardButtonProps={{
-                            "aria-label": "change date",
-                          }}
-                          fullWidth
-                          className={classes.dateField}
-                        />
-                      </MuiPickersUtilsProvider>
-                      {_.get("name_dtDOB.type", errors) === "required" && (
-                        <span style={{ color: "red" }}>
-                          This field is required
-                        </span>
-                      )}
-                    </FormControl>
+                      <FormControl className={classes.formControl}>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                          <KeyboardDatePicker
+                            placeholder="DD-MM-YYYY"
+                            variant="dialog"
+                            openTo="year"
+                            views={["year", "month", "date"]}
+                            margin="dense"
+                            id="id_dtDOB"
+                            name="name_dtDOB"
+                            inputRef={register({
+                              required: true,
+                              pattern:
+                              {
+                                value: new RegExp(sDDMMYYYYRegex),
+                                message: "Invalid Date"
+                              }
+                            })}
+                            label={<> Date of Birth<span style={{ color: 'red' }}> *</span></>}
+                            format={sDateFormatMUIDatepicker}
+                            returnMoment={true}
+                            onChange={date => {
+                              //console.log(date.toISOString().split("T")[0]);
+                              //console.log(date.toDateString());
+                              // console.log(date.toLocaleDateString());
+                              //console.log(date);
+                              if (date) {
+                                setdtDOB(date);
+                                setValue('name_dtDOB', date, { shouldValidate: true });
+                              }
+                            }}
+                            value={dtDOB}
+                            KeyboardButtonProps={{
+                              "aria-label": "change date",
+                            }}
+                            fullWidth
+                            className={classes.dateField}
+                          />
+                        </MuiPickersUtilsProvider>
+                        {_.get("name_dtDOB.type", errors) === "required" && (
+                          <span style={{ color: "red" }}>
+                            This field is required
+                          </span>
+                        )}
+                      </FormControl>
                     </Grid>
                     <Grid item xs={6}>
-                    <FormControl className={classes.formControl}>
-                      <Autocomplete
-                        value={lDOBApprox.find(
-                          (dobapprox) => dobapprox.sDOBApproxID === sDOBApprox
-                        )}
-                        openOnFocus
-                        clearOnEscape
-                        onChange={(e, value) => {
-                          if (value !== null) {
-                            setsDOBApprox(value.sDOBApproxID);
-                          } else {
-                            setsDOBApprox("");
-                          }
-                        }}
-                        id="id_sDOBApprox"
-                        options={lDOBApprox}
-                        classes={{
-                          option: classes.option,
-                        }}
-                        className={classes.textField}
-                        autoHighlight
-                        getOptionLabel={(option) => option.sDOBApproxName}
-                        renderOption={(option) => (
-                          <React.Fragment>
-                            <span>{option.sDOBApproxName}</span>
-                          </React.Fragment>
-                        )}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="DOB Approx"
-                            variant="standard"
-                            inputProps={{
-                              ...params.inputProps,
-                              autoComplete: "new-password",
-                            }}
-                          />
-                        )}
-                      />
-                    </FormControl>
-                  </Grid>
+                      <FormControl className={classes.formControl}>
+                        <Autocomplete
+                          value={lDOBApprox.find(
+                            (dobapprox) => dobapprox.sDOBApproxID === sDOBApprox
+                          )}
+                          openOnFocus
+                          clearOnEscape
+                          onChange={(e, value) => {
+                            if (value !== null) {
+                              setsDOBApprox(value.sDOBApproxID);
+                            } else {
+                              setsDOBApprox("");
+                            }
+                          }}
+                          id="id_sDOBApprox"
+                          options={lDOBApprox}
+                          classes={{
+                            option: classes.option,
+                          }}
+                          className={classes.textField}
+                          autoHighlight
+                          getOptionLabel={(option) => option.sDOBApproxName}
+                          renderOption={(option) => (
+                            <React.Fragment>
+                              <span>{option.sDOBApproxName}</span>
+                            </React.Fragment>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="DOB Approx"
+                              variant="standard"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: "new-password",
+                              }}
+                            />
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
                   </Grid>
                   <Grid xs={12} style={{ display: "flex" }}>
                     <Grid item xs={6}>
@@ -1291,21 +1315,21 @@ export default function EditEntry(props) {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          value={sCity}
-                          id="id_sCity"
-                          label="City"
-                          type="text"
-                          onChange={(e) => {
-                            setsCity(e.target.value);
-                          }}
-                          fullWidth
-                          margin="dense"
-                          className={classes.textField}
-                        />
-                      </FormControl>
-                    </Grid>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        value={sCity}
+                        id="id_sCity"
+                        label="City"
+                        type="text"
+                        onChange={(e) => {
+                          setsCity(e.target.value);
+                        }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                      />
+                    </FormControl>
+                  </Grid>
                 </Grid>
                 <Grid xs={6}>
                   <Grid item xs={12}>
@@ -1345,13 +1369,13 @@ export default function EditEntry(props) {
                     </FormControl>
                   </Grid>
                   <Grid xs={12} >
-                  <div className="avatar-icon-wrapper  mx-auto">
-                        <div className="d-block p-0 avatar-icon-wrapper m-0 border-3">
-                          <div className=" border-3 border-white overflow-hidden">
-                              <img alt="..." className="img-fluid" style={{ width: '95px',height:'135px' }} src={profilePic ? profilePic:stock} />
-                          </div>
+                    <div className="avatar-icon-wrapper  mx-auto">
+                      <div className="d-block p-0 avatar-icon-wrapper m-0 border-3">
+                        <div className=" border-3 border-white overflow-hidden">
+                          <img alt="..." className="img-fluid" style={{ width: '95px', height: '135px' }} src={profilePic ? profilePic : stock} />
                         </div>
                       </div>
+                    </div>
                   </Grid>
                   <Grid xs={12} style={{ display: "flex" }}>
                     <Grid item xs={6}>
@@ -1504,7 +1528,7 @@ export default function EditEntry(props) {
                       </FormControl>
                     </Grid>
                   </Grid>
-                  
+
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
@@ -1533,39 +1557,39 @@ export default function EditEntry(props) {
                     </FormControl>
                   </Grid>
                   <Grid xs={12} style={{ display: "flex" }}>
-                      <Grid item xs={6}>
-                        <FormControl className={classes.formControl}>
-                          <TextField
-                            value={sFathersID}
-                            id="id_sFathersID"
-                            label="Father's Old GB No"
-                            type="text"
-                            onChange={(e) => {
-                              setsFathersID(e.target.value);
-                            }}
-                            fullWidth
-                            margin="dense"
-                            className={classes.textField}
-                          />
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <FormControl className={classes.formControl}>
-                          <TextField
-                            value={sMothersID}
-                            id="id_sMothersID"
-                            label="Mother's Old GB No"
-                            type="text"
-                            onChange={(e) => {
-                              setsMothersID(e.target.value);
-                            }}
-                            fullWidth
-                            margin="dense"
-                            className={classes.textField}
-                          />
-                        </FormControl>
-                      </Grid>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          value={sFathersID}
+                          id="id_sFathersID"
+                          label="Father's Old GB No"
+                          type="text"
+                          onChange={(e) => {
+                            setsFathersID(e.target.value);
+                          }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                        />
+                      </FormControl>
                     </Grid>
+                    <Grid item xs={6}>
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          value={sMothersID}
+                          id="id_sMothersID"
+                          label="Mother's Old GB No"
+                          type="text"
+                          onChange={(e) => {
+                            setsMothersID(e.target.value);
+                          }}
+                          fullWidth
+                          margin="dense"
+                          className={classes.textField}
+                        />
+                      </FormControl>
+                    </Grid>
+                  </Grid>
                   <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
@@ -1614,36 +1638,36 @@ export default function EditEntry(props) {
                       />
                     </FormControl>
                   </Grid>
-                  
-                    
-                    <Grid item xs={12}>
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          id="id_sState"
 
-                          label={<>State <span style={{ color: 'red' }}> *</span></>}
-                          type="text"
-                          onChange={(e) => {
-                            setsState(e.target.value);
-                          }}
-                          fullWidth
-                          margin="dense"
-                          className={classes.textField}
-                          name="name_sState"
-                          inputRef={register({
-                            required: true,
-                          })}
-                          value={sState}
-                        />
-                        {_.get("name_sState.type", errors) === "required" && (
-                          <span style={{ color: "red" }}>
-                            This field is required
-                          </span>
-                        )}
-                      </FormControl>
-                    </Grid>
-              
-                 
+
+                  <Grid item xs={12}>
+                    <FormControl className={classes.formControl}>
+                      <TextField
+                        id="id_sState"
+
+                        label={<>State <span style={{ color: 'red' }}> *</span></>}
+                        type="text"
+                        onChange={(e) => {
+                          setsState(e.target.value);
+                        }}
+                        fullWidth
+                        margin="dense"
+                        className={classes.textField}
+                        name="name_sState"
+                        inputRef={register({
+                          required: true,
+                        })}
+                        value={sState}
+                      />
+                      {_.get("name_sState.type", errors) === "required" && (
+                        <span style={{ color: "red" }}>
+                          This field is required
+                        </span>
+                      )}
+                    </FormControl>
+                  </Grid>
+
+
                 </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
@@ -1669,7 +1693,7 @@ export default function EditEntry(props) {
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid item xs={6}>
-                 {/* <Grid item xs={12}>
+                  {/* <Grid item xs={12}>
                     <FormControl className={classes.formControl}>
                       <TextField
                         value={sAliasName}
@@ -1859,9 +1883,9 @@ export default function EditEntry(props) {
                         margin="dense"
                         className={classes.textField}
                       >
-                  
+
                         {lMaritalStatus.map((element, index) => (
-                          <MenuItem value={element.sMaritalStatusId}>{element.sMaritalStatusText}</MenuItem>    
+                          <MenuItem value={element.sMaritalStatusId}>{element.sMaritalStatusText}</MenuItem>
 
                         ))}
 
@@ -2107,7 +2131,7 @@ export default function EditEntry(props) {
               <ExpansionPanelDetails>
                 <Grid container spacing={3}>
                   <Grid item xs={6}>
-                    
+
                     <Grid xs={12} style={{ display: "flex" }}>
                       <Grid item xs={6}>
                         <FormControl className={classes.formControl}>
@@ -2537,7 +2561,7 @@ export default function EditEntry(props) {
                 color={sButtonColor}
                 disabled={formState.isSubmitting && formState.isValid}
                 type="submit"
-                onClick={() => {setExpanded('panel1') }}
+                onClick={() => { setExpanded('panel1') }}
               >
                 Save
               </Button>
@@ -2572,7 +2596,7 @@ export default function EditEntry(props) {
             color={sButtonColor}
             variant={sButtonVariant}
             size={sButtonSize}
-            
+
             autoFocus
           >
             Yes
