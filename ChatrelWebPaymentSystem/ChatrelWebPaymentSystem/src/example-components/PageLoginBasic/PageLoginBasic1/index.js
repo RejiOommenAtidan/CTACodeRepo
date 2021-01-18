@@ -158,7 +158,7 @@ let oGBDetails={
         else{
           console.log(resp.data);
           setBackdrop(false);
-          setAlertMessage('Enter valid credentials.');
+          setAlertMessage('Your details could not be verified, please try again.');
           setAlertType('info');
           snackbarOpen();
           setSubmitBtn(true);
@@ -284,7 +284,7 @@ let oGBDetails={
                                             format="dd-MM-yyyy"
                                             value={dtDob}
                                           
-                                            onChange={(date) => {setDob(date);console.log(date)}}
+                                            onChange={(date) => {setDob(date);}}
                                             KeyboardButtonProps={{
                                                 'aria-label': 'change date',
                                             }}

@@ -20,6 +20,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Moment from 'moment';
+import { useMediaQuery } from 'react-responsive'
 import Alert from '@material-ui/lab/Alert';
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function MainPage () {
+  const responsive = useMediaQuery({query: '(max-width: 1100px)'})
   const sGBID=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sGBID);
   //const pageFrom=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.from);
   //const payingFor=useSelector(state => state.CurrentGBDetailsReducer.oCurrentGBDetails.sName);
@@ -112,8 +114,60 @@ export default function MainPage () {
                                         <div className="font-weight-bold text-black display-4 mt-4 mb-3">
                                           FAMILY MEMBERS OF {paidByName.toUpperCase()}
                                         </div>
- <Card  style={{  padding: 20,marginBottom:20,border:'1px solid grey',backgroundColor:'#ced9fd'}} className="shadow-first shadow-xl"   >
-      <Table style={{color:'#000'}}>
+ <Card  style={{  padding: 20,marginBottom:20,border:'1px solid grey'}} className="shadow-first shadow-xl"   >
+    
+    
+    { !responsive &&(  <Table style={{color:'#000'}}>
+      <Thead>
+        <Tr  >
+          <Th style={{textAlign:'left'}}>NAME</Th>
+          <Th style={{textAlign:'center'}}>RELATION</Th>
+          <Th style={{textAlign:'center'}}>GB ID</Th>
+          <Th style={{textAlign:'center'}}>AGE</Th>
+          <Th style={{textAlign:'center'}}>STATUS</Th>
+          <Th style={{textAlign:'center'}}>AMOUNT</Th>
+          <Th style={{textAlign:'center'}}>PAY</Th>
+          
+        </Tr>
+      </Thead>
+      <Tbody  >
+      
+          {familyData.map((row) => (
+            <Tr style={{borderTop:'1px solid grey',borderRadius:'5px',marginBottom:'5px',height:'60px'}} className="px-1 m-2" >
+                  <Td component="th" scope="row">
+                    {row.sName}
+                  </Td>
+                  <Td align="center">{row.sRelation}</Td>
+                  <Td align="center">{row.sGBIDRelation}</Td>
+                  <Td align="center">{row.nAge}</Td>
+                  <Td align="center">
+                    {(row.dPending && row.dPending.chatrelPayment.nChatrelTotalAmount===0) && 
+                     <div className="badge badge-success">PAID</div>}
+                     {(row.dPending && row.dPending.chatrelPayment.nChatrelTotalAmount > 0) && 
+                     <><div className="badge badge-warning">PENDING</div></>}
+                    { !row.dPending && 
+                     <div className="badge badge-dark">N/A</div>}
+                    </Td>
+                  <Td align="center">
+                    
+                     {(row.dPending && row.dPending.chatrelPayment.nChatrelTotalAmount > 0) && 
+                     <>{row.dPending.gbChatrels[0].sAuthRegionCurrency==="USD"?'$':'₹'}{row.dPending.chatrelPayment.nChatrelTotalAmount}</>}
+                
+                    </Td>
+                  {row.sGBIDRelation == null && 
+                  <Td align="center">
+                  <Button disabled className="btn-dark border-1 m-2 pt-1 pb-1" variant="outlined">Pay</Button></Td>
+                  }
+                  {row.sGBIDRelation != null && 
+                  <Td align="center">
+                  <Button className="btn-success border-1 m-2 pt-1 pb-1" disabled={row.dPending.chatrelPayment.nChatrelTotalAmount===0}  onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' }, row.dPending, row.dPending.chatrelPayment.nChatrelTotalAmount)}} variant="outlined">Pay</Button>
+                    </Td>}
+                  
+            </Tr>
+          ))}
+        </Tbody>
+      </Table> )}
+      { responsive &&(  <Table style={{color:'#000'}}>
       <Thead>
         <Tr  >
           <Th style={{textAlign:'left'}}>NAME</Th>
@@ -162,7 +216,7 @@ export default function MainPage () {
             </Tr>
           ))}
         </Tbody>
-      </Table>
+      </Table> )}
 
       </Card>
       </div>

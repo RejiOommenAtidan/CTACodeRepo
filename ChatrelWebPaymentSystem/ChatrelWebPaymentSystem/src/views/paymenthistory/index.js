@@ -25,7 +25,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import html2canvas from 'html2canvas';
 import jsPdf from 'jspdf';
 import CTALogo from '../../assets/images/CTABackgroundLogo.PNG';
-
+import { useMediaQuery } from 'react-responsive'
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -53,6 +53,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function Family () {
+  const responsive = useMediaQuery({query: '(max-width: 1100px)'})
   const sGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
   const [paymentHistory,setPaymentHistory]=React.useState();
   const [backdrop,setBackdrop]=React.useState(true);
@@ -76,6 +77,8 @@ export default function Family () {
     axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=`+sChatrelReceiptNumber)
     .then(resp => {
       if (resp.status === 200) {
+        resp.data.receipt.sGBID ='0'.repeat(7 - resp.data.receipt.sGBID.length) +
+            resp.data.receipt.sGBID;
        setReceiptData(resp.data);
        console.log(resp.data);
        setBackdrop(false);
@@ -120,7 +123,7 @@ export default function Family () {
       //imgData.save();
       const pdf = new jsPdf();
       pdf.addImage(imgData, "PNG",10,10);
-      pdf.save(`${new Date().toISOString()}.pdf`);
+      pdf.save('eChatrel-Receipt.pdf');
     });
 
   };
@@ -181,9 +184,54 @@ export default function Family () {
                                        <div className="font-weight-bold text-black display-4 mt-4 mb-3">
                                          CHATREL HISTORY
                                        </div>
-<Card  style={{  padding: 20,marginBottom:20,border:'1px solid grey',backgroundColor:'#ced9fd'}} className="shadow-first shadow-xl"   >
+<Card  style={{  padding: 20,marginBottom:20,border:'1px solid grey'}} className="shadow-first shadow-xl"   >
 
-      
+    {!responsive && (  
+      <Table style={{color:'#000'}}>
+      <Thead>
+        <Tr >
+          <Th style={{textAlign:'center'}}>DATE</Th>
+          <Th style={{textAlign:'center'}}>RECEIPT NO.</Th>
+          <Th style={{textAlign:'center'}}>GB ID</Th>
+          <Th style={{textAlign:'center'}}>PAID BY</Th>
+          <Th style={{textAlign:'center'}}>NAME</Th>
+          <Th style={{textAlign:'center'}}>RELATION</Th>
+          <Th style={{textAlign:'center'}}>CURRENCY</Th>
+          <Th style={{textAlign:'center'}}>AMOUNT</Th>
+          <Th style={{textAlign:'center'}}>MODE</Th>
+          <Th style={{textAlign:'center'}}>STATUS</Th>
+          <Th style={{textAlign:'center'}}></Th>
+        </Tr>
+      </Thead>
+      <Tbody  >
+      {paymentHistory.map((row) => (
+        <Tr style={{borderTop:'1px solid grey',borderRadius:'5px',marginBottom:'5px',height:'60px'}}>
+          <Td align="center">{Moment(row.dtPayment).format("DD-MM-yyyy")}</Td>
+          <Td align="center">{row.sChatrelReceiptNumber}</Td>
+          <Td align="center">{row.sGBIDPaidFor}</Td>
+          <Td align="center">{row.sPaidByGBId}</Td>
+          <Td align="center">{row.sFirstName + ' ' + row.sLastName}</Td>
+          <Td align="center">{row.sRelation}</Td>
+          <Td align="center">{row.sPaymentCurrency} <Flag country={row.sPaymentCurrency==="USD"?"US":"IN"} size={20} /></Td>
+          <Td align="center" > <b style={{color:'#29cf00'}}>{row.sPaymentCurrency==="USD"?"$":"₹" }{row.nChatrelTotalAmount}</b></Td>
+          <Td align="center"><div className="m-1 text-second badge badge-neutral-second">{row.sPaymentMode}</div></Td>
+          <Td align="center">
+          {row.sPaymentStatus==="Success" &&
+            <div className="badge badge-success"> Success</div>}
+          </Td>
+          <Td align="center"> <Button style={{padding:'5px'}} onClick={()=>{getReceipt(row.sChatrelReceiptNumber )}} className="btn-primary m-1">
+                                <span className="btn-wrapper--icon">
+                                    <FontAwesomeIcon icon={['far', 'save']} />
+                                </span>
+                            <span className="btn-wrapper--label">Receipt</span>
+                        </Button></Td>
+          
+        </Tr>))}
+    
+       
+      </Tbody>
+    </Table>)}
+    {responsive && (  
       <Table style={{color:'#000'}}>
       <Thead>
         <Tr >
@@ -227,7 +275,7 @@ export default function Family () {
     
        
       </Tbody>
-    </Table>
+    </Table>)}
      
     </Card>
       </div>
@@ -271,7 +319,7 @@ export default function Family () {
         </tr>
         <tr>
           <td width="20"></td>
-          <td colspan="2" height="28" align="left" valign="middle" ><b><font face="Microsoft Himalaya" size={4} color="#000000">མིང་།</font><font  size={4} color="#000000"> {receiptData.receipt.sFirstName +" "+ receiptData.receipt.sLastName?receiptData.receipt.sLastName:"" }</font></b></td>
+          <td colspan="2" height="28" align="left" valign="middle" ><b><font face="Microsoft Himalaya" size={4} color="#000000">མིང་།</font><font  size={4} color="#000000"> {receiptData.receipt.sFirstName +" "+ (receiptData.receipt.sLastName?receiptData.receipt.sLastName:"") }</font></b></td>
           <td align="right" valign="middle" ><b><font face="Microsoft Himalaya" size={4} color="#000000">རང་ལོ། {receiptData.receipt.nAge}</font></b></td>
           <td width="20"></td>
         </tr>

@@ -19,10 +19,10 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 export const sAPIBASEURL = "http://localhost:49700/api";
 
 //QA
-//export const sAPIBASEURL = "https://chatrel-webapi.azurewebsites.net/api";
+// export const sAPIBASEURL = "https://chatrel-webapi.azurewebsites.net/api";
 
 //UAT
-// export const sAPIBASEURL = "";
+// export const sAPIBASEURL = "https://chatrel-webapp-uat.azurewebsites.net/api";
 
 export const sAdminEmail = "admin@CTA.com";
 export const sSnackbarAddMessage = "Record added successfully";
