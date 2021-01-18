@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "splash_icon-2.png",
+      "filename" : "CTALogo_Resized.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "splash_icon-1.png",
+      "filename" : "CTALogo_Resized@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "splash_icon.png",
+      "filename" : "CTALogo_Resized@3x.png",
       "scale" : "3x"
     }
   ],

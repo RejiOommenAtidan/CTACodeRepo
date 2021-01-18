@@ -7,16 +7,16 @@ import {
   TouchableOpacity,
   BackHandler,
   Alert,
-  Dimensions,
+  Dimensions
 } from 'react-native';
-import {Card, Button} from 'react-native-elements';
+import {Card, Button,Tile} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {useSelector, useDispatch} from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import {sPoppinsFontName} from '../constants/CommonConfig';
+import {sFontName} from '../constants/CommonConfig';
 import {Icon} from 'react-native-elements';
 import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import {
@@ -187,7 +187,7 @@ const HomeScreen = (props) => {
                             fontWeight: 'bold',
                             //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
                             letterSpacing: Resolution.nLetterSpacing / 2,
-                            fontFamily: sPoppinsFontName,
+                            fontFamily: sFontName,
                           }}>
                           {card.sLabel}
                         </Text>
@@ -211,7 +211,7 @@ const HomeScreen = (props) => {
                         fontWeight: 'bold',
                         //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
                         letterSpacing: Resolution.nLetterSpacing / 2,
-                        fontFamily: sPoppinsFontName,
+                        fontFamily: sFontName,
                       }}>
                       {card.sLabel}
                     </Card.Title>*/}
@@ -237,7 +237,7 @@ const HomeScreen = (props) => {
                 Pending Amount ${nChatrelTotalAmount}
               </Text>
               <Button
-                titleStyle={{color: Colors.white, fontFamily: sPoppinsFontName}}
+                titleStyle={{color: Colors.white, fontFamily: sFontName}}
                 buttonStyle={{
                   width: wp(75),
                   backgroundColor: Colors.greenBG,
@@ -251,7 +251,14 @@ const HomeScreen = (props) => {
                   props.navigation.navigate('SelfChatrel');
                 }}
               />
-            </Card>
+              </Card>
+              {/* <Tile
+  imageSrc={require('../assets/CTALogoDonation.png')}
+  title={"Pending Amount"}
+titleStyle={styles.pendingAmountTextComponent}
+  featured
+  caption="Some Caption Text"
+              /> */}
           </View>
         )}
         {/*New Job Contribution*/}
@@ -271,7 +278,7 @@ const HomeScreen = (props) => {
                 </Text>
               </View>
               <Button
-                titleStyle={{color: Colors.white, fontFamily: sPoppinsFontName}}
+                titleStyle={{color: Colors.white, fontFamily: sFontName}}
                 buttonStyle={{
                   backgroundColor: Colors.buttonYellow,
                   borderRadius:
@@ -339,7 +346,7 @@ const styles = StyleSheet.create({
     color: Colors.blue,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   cardContainer: {
     flexDirection: 'row',
@@ -366,7 +373,7 @@ const styles = StyleSheet.create({
   pendingAmountTextComponent: {
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 18,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: 'normal',
     textAlign: 'left',
@@ -388,7 +395,7 @@ const styles = StyleSheet.create({
   newJobContribTextComponent: {
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 15.6 : 26,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: '200',
     textAlign: 'left',
@@ -405,7 +412,7 @@ const styles = StyleSheet.create({
   jobContribStatusTextComponent: {
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: '300',
     textAlign: 'left',

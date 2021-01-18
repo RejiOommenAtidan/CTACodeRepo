@@ -33,7 +33,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {sPoppinsFontName} from '../constants/CommonConfig';
+import {sFontName} from '../constants/CommonConfig';
 import axios from 'axios';
 
 export const FriendChatrelIntermediateScreen = (props) => {
@@ -126,7 +126,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                       : 17.5,
                   fontStyle: 'normal',
                   fontWeight: '300',
-                  fontFamily: sPoppinsFontName,
+                  fontFamily: sFontName,
                 }}
                 //label="Friend's Firstname"
                 placeholder=" Friend's First Name"
@@ -184,7 +184,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                       : 17.5,
                   fontStyle: 'normal',
                   fontWeight: '300',
-                  fontFamily: sPoppinsFontName,
+                  fontFamily: sFontName,
                 }}
                 //label="Friend's Lastname"
                 placeholder=" Friend's Last Name"
@@ -244,7 +244,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                       : 17.5,
                   fontStyle: 'normal',
                   fontWeight: '300',
-                  fontFamily: sPoppinsFontName,
+                  fontFamily: sFontName,
                 }}
                 //label="Friend's GBID"
                 placeholder=" Friend's Green Book ID"
@@ -326,7 +326,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                         : 17.5,
                     fontStyle: 'normal',
                     fontWeight: '300',
-                    fontFamily: sPoppinsFontName,
+                    fontFamily: sFontName,
                   },
                   placeholderText: {
                     color: Colors.grey,
@@ -338,7 +338,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                         : 17.5,
                     fontStyle: 'normal',
                     fontWeight: '300',
-                    fontFamily: sPoppinsFontName,
+                    fontFamily: sFontName,
                   },
                   // dateIcon: {
                   //   width:0,
@@ -381,7 +381,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
             onPress={handleSubmit(onSubmit)}
             titleStyle={{
               color: Colors.white,
-              fontFamily: sPoppinsFontName,
+              fontFamily: sFontName,
             }}
             buttonStyle={{
               backgroundColor: Colors.primary,
@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
     color: Colors.blue,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
 
   gbidLabelContainer: {
@@ -466,7 +466,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   gbidValueContainer: {},
 
@@ -487,7 +487,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   firstNameValueContainer: {},
 
@@ -508,7 +508,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   lastNameValueContainer: {},
 
@@ -529,7 +529,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   dobValueContainer: {
     //flexGrow:1,

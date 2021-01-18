@@ -29,7 +29,7 @@ export const errorComponent = {
   fontStyle: 'normal',
   fontWeight: 'normal',
   color: Colors.red,
-  fontFamily: sPoppinsFontName,
+  fontFamily: sFontName,
 };
 
-export const sPoppinsFontName = 'Kanit-Regular';
+export const sFontName = 'Kanit-Regular';

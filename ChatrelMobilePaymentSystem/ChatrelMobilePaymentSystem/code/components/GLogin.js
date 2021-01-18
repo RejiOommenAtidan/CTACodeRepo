@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -123,7 +123,7 @@ export const GLogin = (props) => {
       <GoogleSigninButton
         style={styles.gSignInComponent}
         size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Dark}
+        color={GoogleSigninButton.Color.Light}
         onPress={signIn}
       />
     </View>
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
   },
   gSignInComponent: {
-    width: wp(60),
-    height: hp(6),
+    width: Platform.OS === 'android' ? wp(50) : wp(47.5),
+    height: hp(5.75),
   },
 });

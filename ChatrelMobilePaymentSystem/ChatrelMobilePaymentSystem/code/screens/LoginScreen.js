@@ -9,7 +9,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import ResponsiveImage from 'react-native-responsive-image';
-import {sPoppinsFontName} from '../constants/CommonConfig';
+import {sFontName} from '../constants/CommonConfig';
 
 export const LoginScreen = (props) => {
   return (
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     lineHeight:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   textContainer: {
     width: wp(75),
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontStyle: 'normal',
     fontWeight: '300',
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
     lineHeight:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint
         ? 10.5

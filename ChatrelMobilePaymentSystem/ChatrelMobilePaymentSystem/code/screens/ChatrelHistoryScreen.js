@@ -13,7 +13,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Moment from 'moment';
-import {sDateFormat,sPoppinsFontName} from '../constants/CommonConfig';
+import {sDateFormat,sFontName} from '../constants/CommonConfig';
 
 export const ChatrelHistoryScreen = (props) => {
   // const DATA = [
@@ -223,7 +223,7 @@ export const ChatrelHistoryScreen = (props) => {
                       color: Colors.white,
                       fontStyle: 'normal',
                       fontWeight: '900',
-                      fontFamily: sPoppinsFontName,
+                      fontFamily: sFontName,
                       fontSize:
                         Dimensions.get('window').width <
                         Resolution.nWidthBreakpoint
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   cardComponent: {
     width: wp(80),
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   cardDividerComponent: {
     height: 0.75,
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   receiptNumberValueContainer: {
     marginBottom:
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
 
   dateLabelContainer: {
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   dateValueContainer: {
     marginBottom:
@@ -386,7 +386,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   totalChatrelLabelContainer: {
     // marginBottom:
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   totalChatrelValueContainer: {
     marginBottom:
@@ -416,7 +416,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
 
   chatrelModeLabelContainer: {
@@ -432,7 +432,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   chatrelModeValueContainer: {
     marginBottom:
@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
 
   chatrelStatusLabelContainer: {
@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   chatrelStatusValueContainer: {
     marginBottom:
@@ -478,7 +478,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   relationContainer: {
     //flexGrow: 1,
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
     color: Colors.darkYellowFamilyPage,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   downloadReceiptContainer: {
     marginTop: hp(0.25),

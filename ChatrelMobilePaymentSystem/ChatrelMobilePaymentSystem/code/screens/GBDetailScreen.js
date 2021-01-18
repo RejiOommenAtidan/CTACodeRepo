@@ -33,7 +33,7 @@ import {useForm, Controller} from 'react-hook-form';
 import {
   errorComponent,
   errorContainer,
-  sPoppinsFontName,
+  sFontName,
 } from '../constants/CommonConfig';
 import axios from 'axios';
 
@@ -302,7 +302,7 @@ export const GBDetailScreen = (props) => {
                           : 20,
                       fontStyle: 'normal',
                       fontWeight: 'normal',
-                      fontFamily: sPoppinsFontName,
+                      fontFamily: sFontName,
                     },
                     dateText: {
                       //textAlign: 'left',
@@ -314,7 +314,7 @@ export const GBDetailScreen = (props) => {
                           : 20,
                       fontStyle: 'normal',
                       fontWeight: 'normal',
-                      fontFamily: sPoppinsFontName,
+                      fontFamily: sFontName,
                     },
                     // dateIcon: {
                     //   width:0,
@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.white,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
     lineHeight:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
   textComponent: {
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
     textAlign: 'left',
@@ -455,7 +455,7 @@ const styles = StyleSheet.create({
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
     fontStyle: 'normal',
     fontWeight: '300',
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   dobContainer: {
     flexDirection: 'row',
@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
     // fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
     // fontStyle: "normal",
     // fontWeight: "normal",
-    // fontFamily: sPoppinsFontName
+    // fontFamily: sFontName
     flexGrow: 1,
   },
   buttonContainer: {

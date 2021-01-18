@@ -10,7 +10,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {sPoppinsFontName} from '../constants/CommonConfig';
+import {sFontName} from '../constants/CommonConfig';
 
 export const SelfChatrelScreen = (props) => {
   return (
@@ -67,6 +67,6 @@ const styles = StyleSheet.create({
     color: Colors.blue,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName
+    fontFamily: sFontName
   }
 });

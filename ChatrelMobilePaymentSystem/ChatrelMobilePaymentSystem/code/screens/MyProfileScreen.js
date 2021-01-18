@@ -12,9 +12,9 @@ import {
 } from 'react-native-responsive-screen';
 import {useSelector} from 'react-redux';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-// import {TouchableOpacity} from 'react-native-gesture-handler';
 import CTALogo from '../../code/assets/CTALogo.png';
-import {sPoppinsFontName} from '../constants/CommonConfig';
+import {sFontName} from '../constants/CommonConfig';
+import {Avatar} from 'react-native-elements';
 
 export const MyProfileScreen = (props) => {
   const isPermitted = async () => {
@@ -650,8 +650,11 @@ export const MyProfileScreen = (props) => {
     //let file;
     // console.log(file.filePath);
   };
+
   const oGBDetails = useSelector((state) => state.GBDetailsReducer.oGBDetails);
+
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
+
   // const oUserHardcodedMyProfile = {
   //   sGBID: '7654321',
   //   sName: 'ABCD DEFG',
@@ -660,6 +663,7 @@ export const MyProfileScreen = (props) => {
   //   sEmailAddress: 'a.b@gmail.com',
   //   sAuthorityRegion: 'Thimpu',
   // };
+
   return (
     <View style={styles.mainContainer}>
       {/*<View style={styles.headerContainer}>
@@ -667,6 +671,19 @@ export const MyProfileScreen = (props) => {
                     My Profile
                 </Text>
     </View>*/}
+      {/*Avatar*/}
+      <Avatar
+        rounded
+        size="xlarge"
+        containerStyle={{
+          alignSelf: 'center',
+          marginTop: hp(2.5),
+          marginBottom: hp(5),
+        }}
+        source={{
+          uri: oGoogle.photo,
+        }}
+      />
       {/*FULL NAME*/}
       <View style={styles.nameLabelContainer}>
         <Text style={styles.nameLabelComponent}>FULL NAME</Text>
@@ -715,7 +732,7 @@ export const MyProfileScreen = (props) => {
       <View
         style={styles.emailIDValueContainer}
         //onPress={createPDF}
-        >
+      >
         <Text style={styles.emailIDValueComponent}>{oGoogle.email}</Text>
       </View>
     </View>
@@ -747,8 +764,6 @@ export const MyProfileScreenOptions = (navData) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
     marginHorizontal:
       Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     marginVertical:
@@ -757,7 +772,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     width: wp(32),
     height: hp(4),
-    //marginTop: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 18 : 30,
   },
@@ -772,252 +786,214 @@ const styles = StyleSheet.create({
     color: Colors.blue,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
-
   nameLabelContainer: {
     width: wp(75),
     height: hp(2),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+    marginBottom: hp(1.5),
   },
   nameLabelComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
+    fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   nameValueContainer: {
     width: wp(75),
     height: hp(3),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 16.2
-        : 27,
+    marginBottom: wp(6),
   },
   nameValueComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 : 18,
+    fontSize: wp(4.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
-
   gbidLabelContainer: {
     width: wp(75),
     height: hp(2),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+    marginBottom: hp(1.5),
   },
   gbidLabelComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
+    fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   gbidValueContainer: {
     width: wp(75),
     height: hp(3),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 16.2
-        : 27,
+    marginBottom: wp(6),
   },
   gbidValueComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 : 18,
+    fontSize: wp(4.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
 
   ageLabelContainer: {
     width: wp(75),
     height: hp(2),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+    marginBottom: hp(1.5),
   },
   ageLabelComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
+    fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   ageValueContainer: {
     width: wp(75),
     height: hp(3),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 16.2
-        : 27,
+    marginBottom: wp(6),
   },
   ageValueComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 : 18,
+    fontSize: wp(4.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
 
   dtDOBLabelContainer: {
     width: wp(75),
     height: hp(2),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+    marginBottom: hp(1.5),
   },
   dtDOBLabelComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
+    fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   dtDOBValueContainer: {
     width: wp(75),
     height: hp(3),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 16.2
-        : 27,
+    marginBottom: wp(6),
   },
   dtDOBValueComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 : 18,
+    fontSize: wp(4.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
 
   emailIDLabelContainer: {
     width: wp(75),
     height: hp(2),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+    marginBottom: hp(1.5),
   },
   emailIDLabelComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
+    fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   emailIDValueContainer: {
     width: wp(75),
     height: hp(3),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 16.2
-        : 27,
+    marginBottom: wp(6),
   },
   emailIDValueComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 : 18,
+    fontSize: wp(4.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
 
   sAuthRegionLabelContainer: {
     width: wp(75),
     height: hp(2),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+    marginBottom: hp(1.5),
   },
   sAuthRegionLabelComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
+    fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   sAuthRegionValueContainer: {
     width: wp(75),
     height: hp(3),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 16.2
-        : 27,
+    marginBottom: wp(6),
   },
   sAuthRegionValueComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.8 : 18,
+    fontSize: wp(4.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
 });

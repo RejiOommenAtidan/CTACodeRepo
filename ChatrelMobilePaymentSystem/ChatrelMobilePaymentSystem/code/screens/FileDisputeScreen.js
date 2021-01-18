@@ -21,7 +21,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useForm, Controller} from 'react-hook-form';
-import {errorComponent, errorContainer,sPoppinsFontName} from '../constants/CommonConfig';
+import {errorComponent, errorContainer,sFontName} from '../constants/CommonConfig';
 import axios from 'axios';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -216,7 +216,7 @@ export const FileDisputeScreen = (props) => {
           type="outline"
           titleStyle={{
             color: Colors.blue,
-            fontFamily: sPoppinsFontName,
+            fontFamily: sFontName,
           }}
           buttonStyle={{
             borderRadius: 10,
@@ -256,7 +256,7 @@ export const FileDisputeScreen = (props) => {
           onPress={handleSubmit(handleDispute)}
           titleStyle={{
             color: Colors.white,
-            fontFamily: sPoppinsFontName,
+            fontFamily: sFontName,
           }}
           buttonStyle={{
             backgroundColor: Colors.buttonYellow,
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     color: Colors.blue,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   enterSubjectContainer: {
     width: wp(22),
@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   enterMessageContainer: {
     width: wp(22),
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   messageContainer: {},
   subjectContainer: {},
@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   selectedFileContainer: {
     width: wp(80),
@@ -396,7 +396,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   infoContainer: {
     width: wp(80),
@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sPoppinsFontName,
+    fontFamily: sFontName,
   },
   fileUploadContainer: {
     width: wp(45),

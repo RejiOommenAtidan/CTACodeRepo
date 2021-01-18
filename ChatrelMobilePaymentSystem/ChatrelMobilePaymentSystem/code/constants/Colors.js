@@ -6,7 +6,7 @@ export default {
     black: '#000000',
     blue: '#3d65b0',
     blackText: '#000000',
-    blackTextAPI: '#2e2e2e',
+    blackTextAPI: '#000000',
     buttonYellow: '#ebca17',
     ChatrelInfoBlue: '#3d65b0',
     ChatrelYearGreen: '#168b44',
