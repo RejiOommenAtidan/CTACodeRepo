@@ -22,7 +22,7 @@ export const sAPIBASEURL = "http://localhost:49700/api";
 //export const sAPIBASEURL = "https://chatrel-webapi.azurewebsites.net/api";
 
 //UAT
-// export const sAPIBASEURL = "";
+// export const sAPIBASEURL = "https://chatrel-webapp-uat.azurewebsites.net/";
 
 export const sAdminEmail = "admin@CTA.com";
 export const sSnackbarAddMessage = "Record added successfully";
