@@ -20,7 +20,7 @@ const GoogleLoginPage = (props) => {
         clientId={"11153496233-ft9h6spf18pfshdlri865cm6d6eteqef.apps.googleusercontent.com"}
        
         onSuccess={(response) => {save(response) }}
-        onFailure={(response) => { console.log("Login Failure: ",response); }}
+        onFailure={(response) => {  }}
         cookiePolicy={'single_host_origin'}
         //isSignedIn={true}
         render={renderProps => (
