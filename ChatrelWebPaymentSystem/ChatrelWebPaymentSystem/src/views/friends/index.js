@@ -194,7 +194,7 @@ export default function Friends () {
                                             error={(check && !dtDOB)}
                                             helperText={(check && !dtDOB) ?"This Field is required":""}
                                             //onChange={handleDateChange}
-                                            onChange={(date) => {setDOB(date);console.log(date)}}
+                                            onChange={(date) => {setDOB(date);}}
                                             KeyboardButtonProps={{
                                                 'aria-label': 'change date',
                                             }}
