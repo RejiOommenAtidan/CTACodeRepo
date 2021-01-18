@@ -104,8 +104,8 @@ namespace CTAWebAPI.Controllers.Masters
                         return Problem(message, null, 403);
                     }
 
-                    qualification.dtEntered = DateTime.Now;
-                    qualification.dtUpdated = DateTime.Now;
+                    qualification.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    qualification.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
 
                     _qualificationRepository.Add(qualification);
                     #region Information Logging
@@ -156,7 +156,7 @@ namespace CTAWebAPI.Controllers.Masters
                         Qualification fetchedqualification = _qualificationRepository.GetQualificationById(ID);
                         qualification.nEnteredBy = fetchedqualification.nEnteredBy;
                         qualification.dtEntered = fetchedqualification.dtEntered;
-                        qualification.dtUpdated = DateTime.Now;
+                        qualification.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         _qualificationRepository.Update(qualification);
 
                         #region Audit Log

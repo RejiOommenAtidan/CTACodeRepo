@@ -102,8 +102,8 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         return Problem(message, null, 403);
                     }
-                    typeissued.dtEntered = DateTime.Now;
-                    typeissued.dtUpdated = DateTime.Now;
+                    typeissued.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    typeissued.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
 
                     _typedIssuedRepository.Add(typeissued);
 
@@ -155,7 +155,7 @@ namespace CTAWebAPI.Controllers.Masters
                         TypeIssued fetchedtypeissued = _typedIssuedRepository.GetTypeIssuedById(ID);
                         typeissued.nEnteredBy = fetchedtypeissued.nEnteredBy;
                         typeissued.dtEntered = fetchedtypeissued.dtEntered;
-                        typeissued.dtUpdated = DateTime.Now;
+                        typeissued.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         _typedIssuedRepository.Update(typeissued);
 
                         #region Audit Log

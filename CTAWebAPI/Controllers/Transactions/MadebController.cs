@@ -362,8 +362,8 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
-                    madeb.dtEntered = DateTime.Now;
-                    madeb.dtUpdated = DateTime.Now;
+                    madeb.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                     string result = _madebRepository.Add(madeb);
                     if (result == "GBID does not exist.")
                     {
@@ -435,7 +435,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         Madeb fetchedMadeb = _madebRepository.GetMadebById(Id);
                         madeb.dtEntered = fetchedMadeb.dtEntered;
-                        madeb.dtUpdated = DateTime.Now;
+                        madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         string result = _madebRepository.Update(madeb);
                         if (result == "GBID does not exist.")
                         {
@@ -595,7 +595,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         message.Cc.Add(toCC);
                         message.Subject = email.sSubject;
                         message.Body = messageBody.ToMessageBody();
-                        message.Date = DateTime.Now;
+                        message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
 
                         // Message ready. Now to use smtp client to despatch message
 
@@ -609,7 +609,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         smtpClient.Disconnect(true);
                         smtpClient.Dispose();
                         Madeb madeb = _madebRepository.GetMadebByFormNumber(email.nFormNumber, email.nMadebTypeId);
-                        madeb.dtReject = DateTime.Now;
+                        madeb.dtReject = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         _madebRepository.Update(madeb);
                         return Ok("Email sent successfully.");
                     }

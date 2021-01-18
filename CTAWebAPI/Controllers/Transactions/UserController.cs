@@ -190,8 +190,8 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         return Problem(message, null, 403);
                     }
-                    user.dtEntered = DateTime.Now;
-                    user.dtUpdated = DateTime.Now;
+                    user.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    user.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                     user.sPassword = PasswordEncryption.EncryptString(user.sPassword);
                     _userRepository.Add(user);
 
@@ -254,7 +254,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         User fetchedUser = _userRepository.GetUserById(Id);
                         user.nEnteredBy = fetchedUser.nEnteredBy;
                         user.dtEntered = fetchedUser.dtEntered;
-                        user.dtUpdated = DateTime.Now;
+                        user.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         user.sPassword = PasswordEncryption.EncryptString(user.sPassword);
                         _userRepository.Update(user);
 
@@ -458,7 +458,7 @@ namespace CTAWebAPI.Controllers.Transactions
                             changePasswordVM.sNewPassword = PasswordEncryption.EncryptString(changePasswordVM.sNewPassword);
                             fetchedFromDB.sPassword = changePasswordVM.sNewPassword;
                             fetchedFromDB.nUpdatedBy = changePasswordVM.nUserId;
-                            fetchedFromDB.dtUpdated = DateTime.Now;
+                            fetchedFromDB.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                             _userRepository.Update(fetchedFromDB);
 
                             #region Alert Logging 

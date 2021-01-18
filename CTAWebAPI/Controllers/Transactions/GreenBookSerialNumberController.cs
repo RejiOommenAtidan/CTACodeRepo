@@ -242,8 +242,8 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
-                    gbsn.dtEntered = DateTime.Now;
-                    gbsn.dtUpdated = DateTime.Now;
+                    gbsn.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    gbsn.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                     _greenBookSerialNumberRepository.Add(gbsn);
                     if(gbsn.nFormNumber != null)
                     {
@@ -307,7 +307,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         gbsn.nEnteredBy = fetch.nEnteredBy;
                         gbsn.dtEntered = fetch.dtEntered;
-                        gbsn.dtUpdated = DateTime.Now;
+                        gbsn.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         _greenBookSerialNumberRepository.Update(gbsn);
                         if(gbsn.nFormNumber == null)
                         {
