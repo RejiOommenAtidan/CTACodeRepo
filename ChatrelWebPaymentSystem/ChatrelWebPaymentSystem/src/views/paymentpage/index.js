@@ -63,7 +63,7 @@ import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 
 import projectLogo from '../../assets/images/CTALogo.png';
-
+import { useMediaQuery } from 'react-responsive'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -88,7 +88,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function PaymentPage(props) {
   let history = useHistory();
   //const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
-
+  const responsive = useMediaQuery({query: '(max-width: 1100px)'})
   const fontName = 'Poppins';
 
   console.log('Props contains:', props);
@@ -377,7 +377,7 @@ export default function PaymentPage(props) {
       //imgData.save();
       const pdf = new jsPdf();
       pdf.addImage(imgData, 'PNG', 10, 10);
-      pdf.save(`${new Date().toISOString()}.pdf`);
+      pdf.save('eChatrel-Receipt.pdf');
     });
   };
 
@@ -621,7 +621,7 @@ export default function PaymentPage(props) {
                   </Typography>
 
                   <Card
-                    style={{  padding: 20,marginBottom:20,border:'1px solid grey',backgroundColor:'#ced9fd'}} className="shadow-first shadow-xl">
+                    style={{  padding: 20,marginBottom:20,border:'1px solid grey'}} className="shadow-first shadow-xl">
                     <Grid container spacing={3} className="text-black">
                       <Grid item xs={12} sm={3}>
                         <Card className="card-box border-first">
@@ -728,9 +728,259 @@ export default function PaymentPage(props) {
                   </Typography>
 
                   <Card
-                    style={{  padding: 20,marginBottom:20,border:'1px solid grey',backgroundColor:'#ced9fd'}} className="shadow-first shadow-xl">
+                    style={{  padding: 20,marginBottom:20,border:'1px solid grey'}} className="shadow-first shadow-xl">
                  
-                       
+  {!responsive && (                     
+      <Table style={{color:'#000'}}>
+      <Thead>
+        <Tr >
+          <Th style={{textAlign:'center'}}>YEAR</Th>
+          <Th style={{textAlign:'center'}}>AUTHORITY REGION</Th>
+          <Th style={{textAlign:'center'}}>CURRENCY</Th>
+          <Th style={{textAlign:'center'}}>CHATREL</Th>
+          <Th style={{textAlign:'center'}}>MEAL</Th>
+          <Th style={{textAlign:'center'}}>STATUS</Th>                
+          
+          <Th style={{textAlign:'center'}}>EMPLOYED</Th>
+          <Th style={{textAlign:'center'}}>LATE FEES</Th>
+          <Th style={{textAlign:'center'}}>RATE ₹/$</Th>
+          <Th style={{textAlign:'center'}}>TOTAL</Th>
+         
+        </Tr>
+      </Thead>
+      <Tbody  >
+      {paymentData &&
+                      paymentData.map((row, index) => (
+        <Tr style={{borderTop:'1px solid grey',borderRadius:'5px',marginBottom:'5px',paddingBottom:'5px',height:'70px'}}>
+         <Td align="center" style={{marginBottom:'15px'}}>{row.nChatrelYear}</Td>
+<Td align="center">
+    <Autocomplete
+      disabled={!outstanding}
+      id={`${index}`}
+      openOnFocus
+      clearOnEscape
+      disableClearable
+      autoComplete={true}
+      autoHighlight={true}
+      options={authRegions}
+      //value={authRegion}
+      defaultValue={authRegion}
+      getOptionLabel={(option) => option.sAuthRegion}
+      renderOption={(option) => (
+        <React.Fragment>
+          <span id={`${index}`}>
+            {option.sAuthRegion}
+          </span>
+        </React.Fragment>
+      )}
+      onChange={(e, value) => {
+        if (value !== null) {
+          updateAuthRegion(e, value);
+        } else {
+          //setMadebStatusID(0);
+        }
+      }}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          //label="Authority Region"
+          variant="standard"
+          inputProps={{
+            ...params.inputProps,
+            autoComplete: 'new-password' // disable autocomplete and autofill
+          }}
+        />
+      )}
+/>
+</Td>
+<Td align="center">{row.sAuthRegionCurrency}{' '}<Flag country={row.sAuthRegionCurrency === 'INR' ? 'IN' : 'US'} size={20}/></Td>
+{outstanding && (
+ 
+ 
+      <Td align="center">
+        <b style={{ fontSize: '18px' }}>
+        {row.sAuthRegionCurrency  === 'INR' ? '₹': '$' }{row.nChatrelAmount}
+        </b>
+ 
+      </Td>)}
+
+      {outstanding && (
+ 
+      <Td align="center">
+        <b style={{ fontSize: '18px' }}>
+        {row.sAuthRegionCurrency  === 'INR' ? '₹': '$' }{row.nChatrelMeal}
+        </b>
+      </Td>)}
+      {outstanding && (
+    <>
+      {row.nChatrelLateFeesValue > 0 && (
+          <>
+        <Td align="center"> <div
+              style={{ display: 'inline' }}
+              className="badge badge-danger">
+              {' '}
+              Overdue
+            </div></Td>
+            {row.sAuthRegionCurrency === 'USD' && (
+            <Td  align="center">
+              {
+                <input
+                  id="employed"
+                  value={index}
+            
+                  onChange={(e) => {
+                    modify(e.target);
+                  }}
+                  type="checkbox"
+                  disabled={row.isChild}
+                />
+              }
+            </Td>
+            )}
+            {row.sAuthRegionCurrency === 'INR' && (
+            <Td align="center">
+              <input
+                id={index}
+                type="text"
+                style={{
+                  maxWidth: '100px',
+                  border: 'none',
+                  borderBottom: '1px solid',
+                  
+                }}
+                onChange={(e) => {
+                  modify(e.target);
+                }}
+              />
+            </Td>
+            )}
+            <Td align="center"  style={{ color: 'red' }}>
+            <b style={{ fontSize: '18px' }}>
+            {row.sAuthRegionCurrency  === 'INR' ? '₹': '$' }{row.nChatrelLateFeesValue.toFixed(2)}
+            </b>
+       </Td>  
+          </>)}
+       
+        {row.nChatrelLateFeesValue == 0 && (
+          <>
+          <Td align="center">
+            <div
+              style={{ display: 'inline' }}
+              className="badge badge-warning">
+              Pending
+            </div>
+            </Td>
+            {row.sAuthRegionCurrency === 'USD' && (
+            <Td  align="center">
+              {
+                <input
+                  id="employed"
+                  value={index}
+            
+                  onChange={(e) => {
+                    modify(e.target);
+                  }}
+                  type="checkbox"
+                  disabled={row.isChild}
+                />
+              }
+            </Td>
+            )}
+            {row.sAuthRegionCurrency === 'INR' && (
+            <Td align="center">
+              <input
+                id={index}
+                type="text"
+                style={{
+                  maxWidth: '100px',
+                  border: 'none',
+                  borderBottom: '1px solid',
+                  
+                }}
+                onChange={(e) => {
+                  modify(e.target);
+                }}
+              />
+            </Td>
+            )}
+            <Td></Td>
+              
+          </>
+        )}
+        </> )}
+     
+    {!outstanding && (
+        <>
+          
+          <Td >
+            
+          </Td>
+          <Td >
+            
+          </Td>
+         
+          <Td align="center"><div className="badge badge-success"> Paid</div></Td>
+          {row.sAuthRegionCurrency === 'USD' && (
+            <Td  align="center">
+              {
+                <input
+                  id="employed"
+                  value={index}
+            
+                  onChange={(e) => {
+                    modify(e.target);
+                  }}
+                  type="checkbox"
+                  disabled={row.isChild}
+                />
+              }
+            </Td>
+            )}
+            {row.sAuthRegionCurrency === 'INR' && (
+            <Td align="center">
+              <input
+                id={index}
+                type="text"
+                style={{
+                  maxWidth: '100px',
+                  border: 'none',
+                  borderBottom: '1px solid',
+                  
+                }}
+                onChange={(e) => {
+                  modify(e.target);
+                }}
+              />
+            </Td>
+            )}
+          <Td >
+            
+          </Td>
+        </>
+        )}
+
+        
+            <Td align="center" style={{ color: 'grey' }}>
+            {dollarToRupees && row.sAuthRegionCurrency === 'INR'
+              ? dollarToRupees.toFixed(4)
+              : '-'}
+            </Td>
+            <Td
+          align="center"
+            style={{ color: '#29cf00', fontSize: '20px' }}>
+            <b>${row.nChatrelTotalAmount.toFixed(2)}</b>
+            </Td>        
+
+
+          
+        </Tr>))}
+    
+       
+      </Tbody>
+    </Table>)}
+
+
+    {responsive && (                     
       <Table style={{color:'#000'}}>
       <Thead>
         <Tr >
@@ -740,8 +990,9 @@ export default function PaymentPage(props) {
           <Th style={{textAlign:'center'}}>CHATREL</Th>
           <Th style={{textAlign:'center'}}>MEAL</Th>
           <Th style={{textAlign:'center'}}>STATUS</Th>                
-          <Th style={{textAlign:'center'}}>LATE FEES</Th>
+          
           <Th style={{textAlign:'center'}}>EMPLOYED</Th>
+          <Th style={{textAlign:'center'}}>LATE FEES</Th>
           <Th style={{textAlign:'center'}}>RATE ₹/$</Th>
           <Th style={{textAlign:'center'}}>TOTAL</Th>
          
@@ -750,8 +1001,8 @@ export default function PaymentPage(props) {
       <Tbody  >
       {paymentData &&
                       paymentData.map((row, index) => (
-        <Tr style={{borderTop:'1px solid grey',borderRadius:'5px',marginBottom:'5px'}}>
-         <Td align="center">{row.nChatrelYear}</Td>
+        <Tr style={{borderTop:'1px solid grey',borderRadius:'5px',marginBottom:'5px',paddingBottom:'5px'}}>
+         <Td align="center" style={{marginBottom:'15px'}}>{row.nChatrelYear}</Td>
 <Td align="center" >
     <Autocomplete
       disabled={!outstanding}
@@ -798,7 +1049,7 @@ export default function PaymentPage(props) {
  
       <Td align="center">
         <b style={{ fontSize: '18px' }}>
-          ₹{row.nChatrelAmount}
+        {row.sAuthRegionCurrency  === 'INR' ? '₹': '$' }{row.nChatrelAmount}
         </b>
  
       </Td>)}
@@ -807,7 +1058,7 @@ export default function PaymentPage(props) {
  
       <Td align="center">
         <b style={{ fontSize: '18px' }}>
-          ₹{row.nChatrelMeal}
+        {row.sAuthRegionCurrency  === 'INR' ? '₹': '$' }{row.nChatrelMeal}
         </b>
       </Td>)}
       {outstanding && (
@@ -820,46 +1071,7 @@ export default function PaymentPage(props) {
               {' '}
               Overdue
             </div></Td>
-            <Td align="center"  style={{ color: 'red' }}>
-            <b style={{ fontSize: '18px' }}>
-              ₹{row.nChatrelLateFeesValue.toFixed(2)}
-            </b>
-       </Td>  
-          </>)}
-       
-        {row.nChatrelLateFeesValue == 0 && (
-          <>
-          <Td align="center">
-            <div
-              style={{ display: 'inline' }}
-              className="badge badge-warning">
-              Pending
-            </div>
-            </Td>
-            <Td></Td>
-              
-          </>
-        )}
-        </> )}
-     
-    {!outstanding && (
-        <>
-          
-          <Td >
-            
-          </Td>
-          <Td >
-            
-          </Td>
-         
-          <Td align="center"><div className="badge badge-success"> Paid</div></Td>
-          <Td >
-            
-          </Td>
-        </>
-        )}
-
-        {row.sAuthRegionCurrency === 'USD' && (
+            {row.sAuthRegionCurrency === 'USD' && (
             <Td  align="center">
               {
                 <input
@@ -884,7 +1096,7 @@ export default function PaymentPage(props) {
                   maxWidth: '100px',
                   border: 'none',
                   borderBottom: '1px solid',
-                  backgroundColor:'#ced9fd'
+                  
                 }}
                 onChange={(e) => {
                   modify(e.target);
@@ -892,6 +1104,112 @@ export default function PaymentPage(props) {
               />
             </Td>
             )}
+            <Td align="center"  style={{ color: 'red' }}>
+            <b style={{ fontSize: '18px' }}>
+            {row.sAuthRegionCurrency  === 'INR' ? '₹': '$' }{row.nChatrelLateFeesValue.toFixed(2)}
+            </b>
+       </Td>  
+          </>)}
+       
+        {row.nChatrelLateFeesValue == 0 && (
+          <>
+          <Td align="center">
+            <div
+              style={{ display: 'inline' }}
+              className="badge badge-warning">
+              Pending
+            </div>
+            </Td>
+            {row.sAuthRegionCurrency === 'USD' && (
+            <Td  align="center">
+              {
+                <input
+                  id="employed"
+                  value={index}
+            
+                  onChange={(e) => {
+                    modify(e.target);
+                  }}
+                  type="checkbox"
+                  disabled={row.isChild}
+                />
+              }
+            </Td>
+            )}
+            {row.sAuthRegionCurrency === 'INR' && (
+            <Td align="center">
+              <input
+                id={index}
+                type="text"
+                style={{
+                  maxWidth: '100px',
+                  border: 'none',
+                  borderBottom: '1px solid',
+                  
+                }}
+                onChange={(e) => {
+                  modify(e.target);
+                }}
+              />
+            </Td>
+            )}
+            <Td></Td>
+              
+          </>
+        )}
+        </> )}
+     
+    {!outstanding && (
+        <>
+          
+          <Td >
+            
+          </Td>
+          <Td >
+            
+          </Td>
+         
+          <Td align="center"><div className="badge badge-success"> Paid</div></Td>
+          {row.sAuthRegionCurrency === 'USD' && (
+            <Td  align="center">
+              {
+                <input
+                  id="employed"
+                  value={index}
+            
+                  onChange={(e) => {
+                    modify(e.target);
+                  }}
+                  type="checkbox"
+                  disabled={row.isChild}
+                />
+              }
+            </Td>
+            )}
+            {row.sAuthRegionCurrency === 'INR' && (
+            <Td align="center">
+              <input
+                id={index}
+                type="text"
+                style={{
+                  maxWidth: '100px',
+                  border: 'none',
+                  borderBottom: '1px solid',
+                  
+                }}
+                onChange={(e) => {
+                  modify(e.target);
+                }}
+              />
+            </Td>
+            )}
+          <Td >
+            
+          </Td>
+        </>
+        )}
+
+        
             <Td align="center" style={{ color: 'grey' }}>
             {dollarToRupees && row.sAuthRegionCurrency === 'INR'
               ? dollarToRupees.toFixed(4)
@@ -909,7 +1227,8 @@ export default function PaymentPage(props) {
     
        
       </Tbody>
-    </Table>
+    </Table>)}
+    
                     {/*paymentData &&
                       paymentData.map((row, index) => (
                         <Grid
@@ -1091,7 +1410,7 @@ export default function PaymentPage(props) {
                   </Typography>
 
                   <Card
-                   style={{  padding: 20,marginBottom:20,border:'1px solid grey',backgroundColor:'#ced9fd'}} className="shadow-first shadow-xl">
+                   style={{  padding: 20,marginBottom:20,border:'1px solid grey'}} className="shadow-first shadow-xl">
                     <Grid
                       container
                       spacing={3}
@@ -1172,7 +1491,7 @@ export default function PaymentPage(props) {
                    
                   
              
-                  <Card  style={{marginTop:'75px',  padding: 20,marginBottom:20,border:'1px solid grey',backgroundColor:'#ced9fd'}}
+                  <Card  style={{marginTop:'75px',  padding: 20,marginBottom:20,border:'1px solid grey'}}
                           className="card-box card-box-alt w-50 mx-auto shadow-first shadow-xl" >
                     <div className="card-content-overlay text-center pb-4">
                       <div className="d-50 rounded border-0 mb-1 card-icon-wrapper  btn-icon mx-auto text-center ">
@@ -1255,15 +1574,19 @@ export default function PaymentPage(props) {
         }
            
              
-          { successDiv && (
+          { successDiv&& (
                 <div id="successDiv">
                 
                   <Card className="bg-neutral-first d-block card-border-top border-first text-center p-4 p-xl-5 w-50 mx-auto">
                                     <h4 className="px-3 px-xl-5 display-4 line-height-2 font-weight-bold mb-2">Thank You for your contribution!!</h4>
-                                    
+                                    <h5 className="px-3 px-xl-5 display-4 line-height-2  mb-2">དྭང་བླངས་དཔྱ་དངུལ་དྲ་རྒྱའི་བརྒྱུད་གནང་བར་ཐུགས་རྗེ་ཆེ་ཞུ།</h5>
+                                    <h5 className="px-3 px-xl-5 display-4 line-height-2  mb-2">བོད་མིའི་སྒྲིག་འཛུགས་དཔལ་འབྱོར་ལས་ཁུངས་ནས།</h5>
+ 
+
+
                                     <Button  onClick={() => {
                         handleClickOpen();
-                      }} className="btn-first px-4 text-uppercase font-size-sm hover-scale-lg font-weight-bold">
+                      }} className="btn-first px-4 text-uppercase font-size-sm hover-scale-lg font-weight-bold mt-2">
                                         View Receipt
                                     </Button>
                                 </Card>

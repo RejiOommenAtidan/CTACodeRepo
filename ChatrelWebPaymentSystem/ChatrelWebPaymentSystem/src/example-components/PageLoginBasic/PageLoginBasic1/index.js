@@ -158,7 +158,7 @@ let oGBDetails={
         else{
           console.log(resp.data);
           setBackdrop(false);
-          setAlertMessage('Enter valid credentials.');
+          setAlertMessage('Your details could not be verified, please try again.');
           setAlertType('info');
           snackbarOpen();
           setSubmitBtn(true);
