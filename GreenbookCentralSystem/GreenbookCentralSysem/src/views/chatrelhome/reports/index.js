@@ -430,10 +430,11 @@ export default function Report() {
   //console.log("Parameters", reportParams);
 
   const getReport = () => {
+    setBackdrop(true);
     //e.preventDefault();
     const dtFrom = Moment(startDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(startDate).format('YYYY-MM-DD') : null;
     const dtTo = Moment(endDate).format('YYYY-MM-DD') != 'Invalid date' ? Moment(endDate).format('YYYY-MM-DD') : null;
-    setBackdrop(true);
+    
     axios.post(`ChatrelPayment/GetChatrelPaymentReport/`, reportParams)
       .then(resp => {
         setBackdrop(false);
@@ -451,6 +452,9 @@ export default function Report() {
       })
       .catch(error => {
         console.log(error.message);
+        setAlertMessage("Server Error fetching report data.\n");
+        setAlertType('error');
+        snackbarOpen();
         setBackdrop(false);
       });
   }
@@ -474,11 +478,19 @@ export default function Report() {
               }
             })
             .catch(error => {
-
+              setAlertMessage("Server Error fetching report data.\n");
+              setAlertType('error');
+              snackbarOpen();
+              setBackdrop(false);
+              console.log(error.message);
             });
         }
       })
       .catch(error => {
+        setAlertMessage("Server Error fetching report data.\n");
+        setAlertType('error');
+        snackbarOpen();
+        setBackdrop(false);
         console.log(error.message);
       });
 
