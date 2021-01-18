@@ -496,6 +496,7 @@ export default function EditEntry(props) {
   const [enterUserName, setEnterUserName] = useState();
 
   const [enteredOn, setEnteredOn] = useState();
+  const [allDone, setAllDone] = useState(false);
 
   const [profilePic, setProfilePic] = React.useState(null);
   const userId = useSelector(
@@ -601,7 +602,7 @@ export default function EditEntry(props) {
                       }
                       setlGBNote(resp.data.lGBNote);
                       setExpanded("panel1");
-
+                      setAllDone(true);
                       setBackdrop(false);
                      
                     }
@@ -632,7 +633,7 @@ export default function EditEntry(props) {
   }, []);
 
   useEffect(() => {
-    if (enterUserId) {
+    if (allDone && enterUserId) {
       axios.get(`/User/GetUserForEditGB/?Id=${enterUserId}`)
       .then(resp => {
         if (resp.status === 200) {
@@ -646,7 +647,7 @@ export default function EditEntry(props) {
     }
 
 
-  }, [enterUserId]);
+  }, [allDone, enterUserId]);
 
   const { register, handleSubmit, errors, setValue, formState } = useForm();
 
