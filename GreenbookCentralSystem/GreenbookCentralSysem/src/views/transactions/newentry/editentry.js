@@ -638,7 +638,7 @@ export default function EditEntry(props) {
       .then(resp => {
         if (resp.status === 200) {
           console.log("User fetched:", resp.data);
-          setEnterUserName(resp.data.sFullname);
+          setEnterUserName(resp.data);
         }
       })
       .catch(error => {
