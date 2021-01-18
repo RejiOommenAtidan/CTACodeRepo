@@ -11,9 +11,12 @@ namespace CTADBL.BaseClassRepositories.Transactions
 {
     public class UserRepository : ADORepository<User>
     {
+        private static MySqlConnection _connection;
+             
         #region Constructor
         public UserRepository(string connectionString) : base(connectionString)
         {
+            _connection = new MySqlConnection(connectionString);
         }
         #endregion
 
@@ -83,6 +86,22 @@ namespace CTADBL.BaseClassRepositories.Transactions
             {
                 command.Parameters.AddWithValue("Id", Id);
                 return GetRecord(command);
+            }
+        }
+
+        public string GetUserNameById(int Id)
+        {
+            string sql = @"SELECT sFullName FROM tbluser WHERE Id = @Id";
+
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("Id", Id);
+                command.CommandType = CommandType.Text;
+                command.Connection = _connection;
+                _connection.Open();
+                string name = command.ExecuteScalar().ToString();
+                _connection.Close();
+                return name;
             }
         }
 

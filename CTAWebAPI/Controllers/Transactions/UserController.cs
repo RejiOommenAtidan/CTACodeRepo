@@ -146,18 +146,18 @@ namespace CTAWebAPI.Controllers.Transactions
         [AuthorizeRole(FeatureID = 16)]
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetUserForEditGB(string Id)
+        public IActionResult GetUserForEditGB(int Id)
         {
             #region Get User
             try
             {
-                User user = _userRepository.GetUserById(Id);
+                string name = _userRepository.GetUserNameById(Id);
 
                 #region Information Logging
                 _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 2), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called");
                 #endregion
 
-                return Ok(user);
+                return Ok(name);
             }
             catch (Exception ex)
             {
