@@ -216,7 +216,7 @@ export default function Report() {
   ]
   const changesLog = () => {
     if (dtFrom === '') {
-      setAlertMessage('Date From field is required !');
+      setAlertMessage('Date  field is required !');
       setAlertType('error');
       snackbarOpen();
 
@@ -301,7 +301,7 @@ export default function Report() {
             name='dtFrom'
             onChange={(e) => { SetdtFrom(e.target.value); }}
             value={dtFrom}
-            label="Date From"
+            label="On Date"
             className={classes.textField}
             InputLabelProps={{
               shrink: true,

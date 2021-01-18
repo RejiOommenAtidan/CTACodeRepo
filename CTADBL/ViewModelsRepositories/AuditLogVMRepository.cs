@@ -26,7 +26,7 @@ namespace CTADBL.ViewModelsRepositories
         #region Get Calls
         public IEnumerable<AuditLogVM> GetAuditLogsByGBID(string sGBID)
         {
-            string sql = @"SELECT aud.Id, aud.sGBID, aud.dtEntered, aud.nFeatureID, aud.nRegionID, aud.nRecordID, aud.sFieldValuesOld, aud.sFieldValuesNew, aud.nEnteredBy, us.sFullName AS sEnteredBy, us.sOffice, ft.sFeature FROM tblauditlog AS aud LEFT JOIN tbluser us ON aud.nEnteredBy = us.Id LEFT JOIN lstfeature AS ft ON ft.Id = aud.nFeatureID WHERE aud.sGBID = @sGBID ORDER BY dtEntered ;";
+            string sql = @"SELECT aud.Id, aud.sGBID, aud.dtEntered, aud.nFeatureID, aud.nRegionID, aud.nRecordID, aud.sFieldValuesOld, aud.sFieldValuesNew, aud.nEnteredBy, us.sFullName AS sEnteredBy, us.sOffice, ft.sFeature FROM tblauditlog AS aud LEFT JOIN tbluser us ON aud.nEnteredBy = us.Id LEFT JOIN lstfeature AS ft ON ft.Id = aud.nFeatureID WHERE aud.sGBID = @sGBID AND aud.nFeatureID <= 100 ORDER BY dtEntered ;";
 
             using (var command = new MySqlCommand(sql))
             {

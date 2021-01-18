@@ -816,7 +816,7 @@ export default function BulkUpload (props) {
           </Grid>
         </Grid>
         
-        {showTable && 
+        { 
     <Grid container justify='center' alignItems='center' direction='column'>
 
     <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
@@ -841,6 +841,7 @@ export default function BulkUpload (props) {
   <Button style={{marginTop: '10px'}}  onClick={() => handleSubmit()} color="primary" variant="contained" component="span">
   Submit
 </Button>
+<span style={{color: 'red'}}>*Note: Only records with status 'Validate Success' will be submitted.</span>
    
     
         

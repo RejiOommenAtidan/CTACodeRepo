@@ -908,7 +908,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         _gbNoteRepository.Update(gBNote);
 
                         #region Audit Log
-                        CTALogger.LogAuditRecord(fetchedGBNote, gBNote, fetchedGBNote.sGBID, fetchedGB.nAuthRegionID, 16, fetchedGBNote.Id, (int)gBNote.nEnteredBy);
+                        CTALogger.LogAuditRecord(fetchedGBNote, gBNote, fetchedGBNote.sGBID, fetchedGB.nAuthRegionID, 101, fetchedGBNote.Id, (int)gBNote.nEnteredBy);
                         #endregion
 
                         #region Alert Logging 

@@ -744,7 +744,7 @@ export default function EnhancedTable() {
             data={dataAPI}
             options={{ 
               ...oOptions, 
-              tableLayout: "fixed",
+              //tableLayout: "fixed",
               exportFileName: 'madeb'
              }}
             actions={[

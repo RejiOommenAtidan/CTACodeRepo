@@ -716,7 +716,7 @@ export default () => {
             data={dataAPI}
             options={{
               ...oOptions,
-              tableLayout: "fixed",
+              //tableLayout: "fixed",
               exportFileName: 'madeb'
             }}
             actions={
