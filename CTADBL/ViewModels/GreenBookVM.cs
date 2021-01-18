@@ -273,7 +273,7 @@ namespace CTADBL.ViewModels
         {
             get
             {
-                return greenBook.dtDOB.HasValue ? DateTime.Now.Year - greenBook.dtDOB.Value.Year : (int?)null ;
+                return greenBook.dtDOB.HasValue ? TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Year - greenBook.dtDOB.Value.Year : (int?)null ;
             }
         }
     }

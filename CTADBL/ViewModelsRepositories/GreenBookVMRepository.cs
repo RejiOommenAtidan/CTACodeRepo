@@ -146,13 +146,13 @@ namespace CTADBL.ViewModelsRepositories
                 GreenBookVM greenBookVM = GetDetails(GetGreenbookVMRecord("sGBID", sGBID));
                 //RecentlySearchedGB recentlySearched = new RecentlySearchedGB
                 //{
-                //    dtEntered = DateTime.Now,
+                //    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
                 //    nEnteredBy = nUserId,
                 //    nGBID = Convert.ToInt32(sGBID),
                 //    nUserID = nUserId
                 //};
                 RecentlySearchedGB recentlySearched = new RecentlySearchedGB();
-                recentlySearched.dtEntered = DateTime.Now;
+                recentlySearched.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                 recentlySearched.nEnteredBy = nUserId;
                 recentlySearched.nGBID = Convert.ToInt32(sGBID);
                 recentlySearched.nUserID = nUserId;
@@ -260,7 +260,7 @@ namespace CTADBL.ViewModelsRepositories
 
                         if (item.Value > 0)
                         {
-                            int year = DateTime.Now.Year - Convert.ToInt32(item.Value);
+                            int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Year - Convert.ToInt32(item.Value);
                             addToSql += String.Format(@"year(gb.dtDOB) <= {0} and ", year);
                         }
 
@@ -269,7 +269,7 @@ namespace CTADBL.ViewModelsRepositories
                     {
                         if (item.Value > 0)
                         {
-                            int year = DateTime.Now.Year - Convert.ToInt32(item.Value);
+                            int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Year - Convert.ToInt32(item.Value);
                             addToSql += String.Format(@"year(gb.dtDOB) >= {0} and ", year);
                         }
 

@@ -61,11 +61,11 @@ namespace CTADBL.ViewModelsRepositories
                 }
 
 
-                chatrelPayment.dtEntered = DateTime.Now;
-                chatrelPayment.dtPayment = DateTime.Now;
-                chatrelPayment.dtUpdated = DateTime.Now;
+                chatrelPayment.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                chatrelPayment.dtPayment = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                chatrelPayment.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                 chatrelPayment.sPaymentStatus = ChatrelPayment.Success;
-                greenbook.dtUpdated = DateTime.Now;
+                greenbook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                 greenbook.sPaidUntil = chatrelPayment.nChatrelYear.ToString();
 
                 if(chatrels != null)
@@ -77,8 +77,8 @@ namespace CTADBL.ViewModelsRepositories
                         chatrel.sPaidByGBId = chatrelPayment.sPaidByGBId;
                         //chatrel.nChatrelLateFeesPercentage = chatrelPayment.nChatrelLateFeesPercentage;
                         chatrel.dtPayment = chatrelPayment.dtPayment;
-                        chatrel.dtEntered = DateTime.Now;
-                        chatrel.dtUpdated = DateTime.Now;
+                        chatrel.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        chatrel.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                     }
                 }
                 
