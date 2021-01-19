@@ -15,7 +15,8 @@ import {
   MenuItem,
   TextareaAutosize,
   OutlinedInput,
-  InputAdornment
+  InputAdornment,
+  Switch
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import CountUp from 'react-countup';
@@ -365,6 +366,12 @@ export default function PaymentPage(props) {
     });
 
   };*/
+  const [checked, setChecked] = useState(true);
+
+  const toggle = () => {
+      setChecked(!checked)
+  };
+
   const printPDF = () => {
     const domElement = document.getElementById('mytable');
     html2canvas(domElement, {
@@ -823,8 +830,8 @@ export default function PaymentPage(props) {
             </div></Td>
             {row.sAuthRegionCurrency === 'USD' && (
             <Td  align="center">
-              {
-                <input
+              
+               {/* <input
                   id="employed"
                   value={index}
             
@@ -833,8 +840,10 @@ export default function PaymentPage(props) {
                   }}
                   type="checkbox"
                   disabled={row.isChild}
-                />
-              }
+                />*/}
+              <div className="m-2">
+                            <Switch id="employed" onChange={(e) => {modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                        </div>
             </Td>
             )}
             {row.sAuthRegionCurrency === 'INR' && (
@@ -884,6 +893,7 @@ export default function PaymentPage(props) {
                   disabled={row.isChild}
                 />
               }
+              
             </Td>
             )}
             {row.sAuthRegionCurrency === 'INR' && (
@@ -933,7 +943,8 @@ export default function PaymentPage(props) {
                   type="checkbox"
                   disabled={row.isChild}
                 />
-              }
+                
+          }
             </Td>
             )}
             {row.sAuthRegionCurrency === 'INR' && (

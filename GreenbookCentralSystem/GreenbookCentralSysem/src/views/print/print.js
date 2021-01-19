@@ -96,7 +96,7 @@ return (
             <> 
             
              <PrintCard data={row} />
-            {(index+1)%2 === 0 && <><div style={{height:'65px'}} > </div></>}
+            {(index+1)%2 === 0 && <><div style={{height:'35px'}} > </div></>}
     
             </>
         

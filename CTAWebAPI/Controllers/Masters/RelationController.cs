@@ -102,8 +102,8 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         return Problem(message, null, 403);
                     }
-                    relation.dtEntered = DateTime.Now;
-                    relation.dtUpdated = DateTime.Now;
+                    relation.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    relation.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
 
                     _relationRepository.Add(relation);
 
@@ -155,7 +155,7 @@ namespace CTAWebAPI.Controllers.Masters
                         Relation fetchedrelation = _relationRepository.GetRelationById(ID);
                         relation.nEnteredBy = fetchedrelation.nEnteredBy;
                         relation.dtEntered = fetchedrelation.dtEntered;
-                        relation.dtUpdated = DateTime.Now;
+                        relation.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         _relationRepository.Update(relation);
 
                         #region Audit Log

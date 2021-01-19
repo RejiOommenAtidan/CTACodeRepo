@@ -157,11 +157,11 @@ namespace CTAWebAPI.Controllers.Transactions
                     if (_madebRepository.AddGBIDByFormNo(givenGBID.nFormNo, dtReceived, givenGBID.nGBId.ToString()))
                     {
                         /* Changed by Rajen*/
-                        givenGBID.dtDate = DateTime.Now;
+                        givenGBID.dtDate = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         /* Changed by Rajen*/
 
-                        givenGBID.dtEntered = DateTime.Now;
-                        givenGBID.dtUpdated = DateTime.Now;
+                        givenGBID.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        givenGBID.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         _givenGBIDRepository.Add(givenGBID);
                         #region Information Logging 
                         _ctaLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, givenGBID.nEnteredBy);

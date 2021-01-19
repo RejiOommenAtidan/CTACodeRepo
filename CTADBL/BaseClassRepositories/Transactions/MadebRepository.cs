@@ -94,7 +94,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             //}
             madeb.sGBID = sGBID;
             madeb.nIssuedOrNotID = 1;
-            madeb.dtUpdated = DateTime.Now;
+            madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
             madeb.dtIssueAction = dtReceived;
             this.Update(madeb);
             return true;
@@ -108,13 +108,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
             if (madeb.nMadebTypeID == 1)
             {
                 madeb.nIssuedOrNotID = nIssuedOrNotID;
-                madeb.dtUpdated = DateTime.Now;
+                madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                 
                 this.Update(madeb);
             }
             else {
                 madeb.nIssuedOrNotID = nIssuedOrNotID;
-                madeb.dtUpdated = DateTime.Now;
+                madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                 madeb.dtIssueAction = dtIssuedDate;
                 this.Update(madeb);
             }

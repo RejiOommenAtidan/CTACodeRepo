@@ -74,13 +74,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
 
                     if (Exists(relation, out r))
                     {
-                        r.dtUpdated = DateTime.Now;
+                        r.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         Update(r);
                     }
                     else
                     {
-                        relation.dtUpdated = DateTime.Now;
-                        relation.dtEntered = DateTime.Now;
+                        relation.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        relation.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         relation.nEnteredBy = relation.nUpdatedBy;
                         Add(relation);
                     }

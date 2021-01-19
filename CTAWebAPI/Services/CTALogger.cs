@@ -44,7 +44,7 @@ namespace CTAWebAPI.Services
                     sEventName = sEventName,
                     sDescription = sDescription,
                     sStackTrace = sStackTrace,
-                    dtEntered = DateTime.Now,
+                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
                     nEnteredBy = nEnteredBy
                 };
                 _actionLoggerRepository.Add(actionLogger);

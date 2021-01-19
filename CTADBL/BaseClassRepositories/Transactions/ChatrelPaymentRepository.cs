@@ -35,8 +35,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
         private int _FYStartDate = 1;
         private int _FYEndMonth = 3;
         private int _FYEndDate = 31;
-        private int _currentYear = DateTime.Now.Month <= 3 ? DateTime.Now.Year - 1 : DateTime.Now.Year;
-        private bool inGracePeriod = DateTime.Now.Month > 3 && DateTime.Now.Month < 5;
+        private int _currentYear = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Month <= 3 ? TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Year - 1 : TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Year;
+        private bool inGracePeriod = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Month > 3 && TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Month < 5;
         private decimal _nPending;
         private Dictionary<int, dynamic> _chatrelAmountUSD;
         private Dictionary<int, dynamic> _chatrelMealUSD;

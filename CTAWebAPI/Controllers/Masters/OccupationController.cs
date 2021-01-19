@@ -111,8 +111,8 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         return Problem(message, null, 403);
                     }
-                    occupation.dtEntered = DateTime.Now;
-                    occupation.dtUpdated = DateTime.Now;
+                    occupation.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    occupation.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                     
                     /* TO DO: Catch User ID and update the following properties
                      * nEnteredBy
@@ -174,7 +174,7 @@ namespace CTAWebAPI.Controllers.Masters
                         }
                         occupationToUpdate.nEnteredBy = occupation.nEnteredBy;
                         occupationToUpdate.dtEntered = occupation.dtEntered;
-                        occupationToUpdate.dtUpdated = DateTime.Now;
+                        occupationToUpdate.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                             
 
                         /*To Do:

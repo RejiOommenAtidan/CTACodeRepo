@@ -107,8 +107,8 @@ namespace CTAWebAPI.Controllers.Masters
                 if (ModelState.IsValid)
                 {
                     madebType.nMadebFeatureId = 0;
-                    madebType.dtEntered = DateTime.Now;
-                    madebType.dtUpdated = DateTime.Now;
+                    madebType.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    madebType.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
 
                     /* TO DO: Catch User ID and update the following properties
                      * nEnteredBy
@@ -164,7 +164,7 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         madebTypeToUpdate.nEnteredBy = madebType.nEnteredBy;
                         madebTypeToUpdate.dtEntered = madebType.dtEntered;
-                        madebTypeToUpdate.dtUpdated = DateTime.Now;
+                        madebTypeToUpdate.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         
                         /*To Do:
                         ===> countryToUpdate.nUpdatedBy =  //catch current user id here

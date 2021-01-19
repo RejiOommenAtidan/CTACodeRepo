@@ -113,8 +113,8 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
-                    issueBook.dtEntered = DateTime.Now;
-                    issueBook.dtUpdated = DateTime.Now;
+                    issueBook.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    issueBook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                     issueBook.sFormNumber = issueBook.nFormNumber.ToString();
                     _issueBookRepository.Add(issueBook);
                     _madebRepository.UpdateTypeIssued(MadebId, nIssuedOrNotID , dtIssuedDate);
@@ -181,7 +181,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         IssueBook fetchedIssueBook = _issueBookRepository.GetIssueBookById(Id);
                         issueBook.nEnteredBy = fetchedIssueBook.nEnteredBy;
                         issueBook.dtEntered = fetchedIssueBook.dtEntered;
-                        issueBook.dtUpdated = DateTime.Now;
+                        issueBook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         _issueBookRepository.Update(issueBook);
 
                         #region Audit Log

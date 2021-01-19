@@ -96,8 +96,8 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 if (ModelState.IsValid)
                 {
-                    feature.dtEntered = DateTime.Now;
-                    feature.dtUpdated = DateTime.Now;
+                    feature.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    feature.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
 
                     _featureRepository.Add(feature);
 
@@ -152,7 +152,7 @@ namespace CTAWebAPI.Controllers.Masters
                         Feature fetchedFeature = _featureRepository.GetFeatureById(Id);
                         feature.nEnteredBy = fetchedFeature.nEnteredBy;
                         feature.dtEntered = fetchedFeature.dtEntered;
-                        feature.dtUpdated = DateTime.Now;
+                        feature.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         _featureRepository.Update(feature);
 
                         #region Audit Log
