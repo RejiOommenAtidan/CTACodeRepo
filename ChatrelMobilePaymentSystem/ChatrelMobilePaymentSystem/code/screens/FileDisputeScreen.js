@@ -74,7 +74,8 @@ export const FileDisputeScreen = (props) => {
       })
       .catch((error) => {
         alert('Something went wrong, please try again later');
-        alert(error.message)
+        //alert(error.message)
+        console.log(error);
       });
   };
 
