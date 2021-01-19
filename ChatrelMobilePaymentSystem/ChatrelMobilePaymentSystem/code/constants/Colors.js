@@ -15,5 +15,6 @@ export default {
     darkYellowFamilyPage: '#eb920d',
     red:'#ff0000',
     lightBlueChatrelWebsite:'#ced9fd',
-    grey:'#808080'
+    grey:'#808080',
+    shadowColor:'#470000'
 };

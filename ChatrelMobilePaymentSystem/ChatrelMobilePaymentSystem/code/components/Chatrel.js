@@ -435,6 +435,7 @@ export const Chatrel = (props) => {
       {bRender && aGBChatrels && (
         <ScrollView
           showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
           style={styles.mainContainer}>
           <View>
             <Text style={styles.headerComponent}>PERSONAL INFORMATION</Text>
@@ -484,8 +485,16 @@ export const Chatrel = (props) => {
                   containerStyle={{
                     //width: wp(90),
                     borderRadius: 15,
-                    borderColor: Colors.white,
+                    borderColor: Colors.blue,
                     backgroundColor: Colors.white,
+                    //shadowColor: Colors.shadowColor,
+                    borderStyle: 'solid',
+                    borderWidth: 1,
+                    shadowOffset: {width: 0, height: 1},
+                    shadowOpacity: 0.2,
+                    elevation: 1,
+                    shadowRadius: 60,
+                    marginBottom: 10,
                   }}>
                   <View style={styles.yearContainer}>
                     <View>
@@ -493,91 +502,18 @@ export const Chatrel = (props) => {
                         {year.nChatrelYear}
                       </Text>
                     </View>
-                    {year.sAuthRegionCurrency === 'USD' && (
-                      <View style={styles.employementStatusContainer}>
-                        <Text style={styles.textComponentAPI}>
-                          {/*Employment Status:{' '}*/}
-                          {year.nCurrentChatrelSalaryAmt === 0
-                            ? 'Not Employed'
-                            : 'Employed'}
-                        </Text>
-                        <View
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'flex-start',
-                            //marginBottom: hp(2),
-                          }}>
-                          <Switch
-                            key={year.nChatrelYear}
-                            trackColor={{false: '#767577', true: '#81b0ff'}}
-                            thumbColor={
-                              year.nCurrentChatrelSalaryAmt === 0
-                                ? '#f4f3f4'
-                                : '#f5dd4b'
-                            }
-                            ios_backgroundColor="#3e3e3e"
-                            onValueChange={(value) => {
-                              modify(value, index);
-                            }}
-                            value={year.nCurrentChatrelSalaryAmt !== 0}
-                            disabled={year.isChild}
-                          />
-                        </View>
-                      </View>
-                    )}
-                    {year.sAuthRegionCurrency === 'INR' && (
-                      <View style={styles.employementStatusContainerForInput}>
-                        <Text style={styles.textComponentAPI}>
-                          {/*Employment Status:{' '}*/}
-                          {year.nCurrentChatrelSalaryAmt === 0
-                            ? 'Not Employed'
-                            : 'Employed'}
-                        </Text>
-                        {/* <Switch
-                        key={year.nChatrelYear}
-                        trackColor={{false: '#767577', true: '#81b0ff'}}
-                        thumbColor={
-                          year.nCurrentChatrelSalaryAmt === 0 ? '#f4f3f4' : '#f5dd4b'
-                        }
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={() => {
-                          toggleSwitch(index, year);
-                        }}
-                        value={year.nCurrentChatrelSalaryAmt !== 0}
-                        disabled={year.isChild}
-                      /> */}
-                        <Input
-                          // label="Business Donation"
-                          //placeholder="Business Donation"
-                          // containerStyle={{
-                          //   width:wp(5)
-                          // }}
-                          placeholder={'Employment Contribution'}
-                          placeholderTextColor={Colors.grey}
-                          autoCorrect={false}
-                          clearButtonMode={'while-editing'}
-                          keyboardType={'number-pad'}
-                          keyboardAppearance={'default'}
-                          disableFullscreenUI={false}
-                          onChangeText={(value) => {
-                            if (value !== '') {
-                              modify(value, index);
-                            }
-                            if (value === '') {
-                              modify('0', index);
-                            }
-                          }}
-                          //value={nBusinessDonation}
-                        />
-                      </View>
-                    )}
+                    <Card.Divider
+                      style={{
+                        height: 1,
+                        backgroundColor: Colors.buttonYellow,
+                      }}
+                    />
                     <View
                       style={{
                         display: 'flex',
                         flexDirection: 'row',
                         justifyContent: 'space-between',
-                        marginBottom: hp(1.25),
+                        //marginBottom: hp(1.25),
                       }}>
                       <View style={styles.authorityRegionContainer}>
                         <Text style={styles.textComponent}>
@@ -596,7 +532,7 @@ export const Chatrel = (props) => {
                             // }}
                             //
                             //doesn't work for android
-                            //style={{ height: 75, width: 300 }}
+                            //style={{ height: 75, width: 500 }}
                             selectedValue={lAuthRegions.find(
                               (x) => x.id === aGBChatrels[index].nAuthRegionID,
                             )}
@@ -653,7 +589,7 @@ export const Chatrel = (props) => {
                             ...styles.textComponent,
                             textAlign: 'right',
                           }}>
-                          Currency Code:
+                          Currency
                         </Text>
                         <Text
                           style={{
@@ -664,6 +600,7 @@ export const Chatrel = (props) => {
                         </Text>
                       </View>
                     </View>
+
                     {/*<Card.Divider style={{
                       height: 0.75,
                       backgroundColor: Colors.greenBG,
@@ -676,22 +613,12 @@ export const Chatrel = (props) => {
                         marginBottom: hp(1.25),
                       }}>
                       <View>
-                        <Text style={styles.textComponent}>
-                          Conversion Rate &#8377;/$ :
-                        </Text>
-                        <Text style={styles.textComponentAPI}>
-                          {dollarToRupees && year.sAuthRegionCurrency === 'INR'
-                            ? dollarToRupees.toFixed(4)
-                            : 'NA'}
-                        </Text>
-                      </View>
-                      <View>
                         <Text
                           style={{
                             ...styles.textComponent,
-                            textAlign: 'right',
+                            textAlign: 'center',
                           }}>
-                          Basic:
+                          Basic
                         </Text>
                         <Text
                           style={{
@@ -701,30 +628,42 @@ export const Chatrel = (props) => {
                           {year.sAuthRegionCurrency === 'INR'
                             ? '\u20B9'
                             : '\u0024'}
-                          {year.nChatrelAmount}
+                          {year.nChatrelAmount.toFixed(2)}
                         </Text>
                       </View>
-                    </View>
-
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginBottom: hp(1.25),
-                      }}>
+                      <View>
+                        <Text
+                          style={{
+                            ...styles.textComponent,
+                            textAlign: 'center',
+                          }}>
+                          Meal
+                        </Text>
+                        <Text
+                          style={{
+                            ...styles.textComponentAPI,
+                            textAlign: 'center',
+                          }}>
+                          {year.sAuthRegionCurrency === 'INR'
+                            ? '\u20B9'
+                            : '\u0024'}
+                          {year.nChatrelMeal.toFixed(2)}
+                        </Text>
+                      </View>
                       <View>
                         {year.lateFees !== 0 && (
                           <>
                             <Text
                               style={{
                                 ...styles.textComponent,
+                                textAlign: 'right',
                               }}>
-                              Late Fees:
+                              Late Fees
                             </Text>
                             <Text
                               style={{
                                 ...styles.textComponentAPI,
+                                textAlign: 'right',
                               }}>
                               {year.sAuthRegionCurrency === 'INR'
                                 ? '\u20B9'
@@ -734,49 +673,176 @@ export const Chatrel = (props) => {
                           </>
                         )}
                       </View>
-                      <View>
-                        <Text
-                          style={{
-                            ...styles.textComponent,
-                            textAlign: 'right',
-                          }}>
-                          Meal:
+                    </View>
+
+                    {year.sAuthRegionCurrency === 'USD' && (
+                      <View style={styles.employementStatusContainer}>
+                        <Text style={styles.textComponentAPI}>
+                          {/*Employment Status:{' '}*/}
+                          {/* {year.nCurrentChatrelSalaryAmt === 0
+                            ? 'Not Employed'
+                            : 'Employed'} */}
+                          {'Employed'}
                         </Text>
-                        <Text
+                        <View
                           style={{
-                            ...styles.textComponentAPI,
-                            textAlign: 'right',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'flex-start',
+                            //marginBottom: hp(2),
                           }}>
-                          {year.sAuthRegionCurrency === 'INR'
-                            ? '\u20B9'
-                            : '\u0024'}
-                          {year.nChatrelMeal}
-                        </Text>
+                          <Switch
+                            key={year.nChatrelYear}
+                            trackColor={{false: '#767577', true: '#81b0ff'}}
+                            thumbColor={
+                              year.nCurrentChatrelSalaryAmt === 0
+                                ? '#f4f3f4'
+                                : '#f5dd4b'
+                            }
+                            ios_backgroundColor="#3e3e3e"
+                            onValueChange={(value) => {
+                              modify(value, index);
+                            }}
+                            value={year.nCurrentChatrelSalaryAmt !== 0}
+                            disabled={year.isChild}
+                          />
+                        </View>
                       </View>
+                    )}
+                    {year.sAuthRegionCurrency === 'INR' && (
+                      <View
+                        style={{
+                          marginBottom: hp(1),
+                        }}>
+                        <Input
+                          // label="Business Donation"
+                          //placeholder="Business Donation"
+                          inputContainerStyle={{
+                            //borderBottomWidth:0,
+                            //borderTopWidth:0,
+                            //width:wp(60),
+                            //align
+                            //padding:0
+                            paddingRight: 0,
+                            marginRight: 0,
+                            borderRightWidth: 0,
+                          }}
+                          containerStyle={{
+                            // height:hp(5),
+                            paddingRight: 0,
+                            marginRight: 0,
+                            borderRightWidth: 0,
+                            // //height:hp(10)
+                            //paddingHorizontal:0,
+                            //borderTopWidth:0,
+                            //borderBottomWidth:0
+                          }}
+                          style={{
+                            textAlign: 'right',
+                            // fontSize:
+                            //   Dimensions.get('window').width < Resolution.nWidthBreakpoint
+                            //     ? 10.5
+                            //     : 17.5,
+                            fontStyle: 'normal',
+                            fontWeight: 'normal',
+                            fontFamily: sFontName,
+                            //width:wp(1)
+                          }}
+                          placeholder={'Employment Contribution'}
+                          placeholderTextColor={Colors.grey}
+                          autoCorrect={false}
+                          clearButtonMode={'while-editing'}
+                          keyboardType={'number-pad'}
+                          keyboardAppearance={'default'}
+                          disableFullscreenUI={false}
+                          onChangeText={(value) => {
+                            if (value !== '') {
+                              modify(value, index);
+                            }
+                            if (value === '') {
+                              modify('0', index);
+                            }
+                          }}
+                          //value={nBusinessDonation}
+                        />
+                      </View>
+                    )}
+                    <Card.Divider
+                      style={{
+                        height: 1,
+                        backgroundColor: Colors.buttonYellow,
+                      }}
+                    />
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+
+                        marginBottom: hp(1.25),
+                      }}>
+                      <Text
+                        style={{
+                          ...styles.textComponent,
+                          textAlign: 'left',
+                          fontSize: 20,
+                          //fontStyle: 'normal',
+                          //fontWeight: 'bold',
+                          color: Colors.ChatrelYearGreen,
+                          fontFamily: sFontName,
+                        }}>
+                        TOTAL
+                      </Text>
+                      <Text
+                        style={{
+                          ...styles.textComponentAPI,
+                          textAlign: 'right',
+                          //textAlign: 'center',
+                          fontSize: 24,
+                          //fontStyle: 'normal',
+                          fontWeight: 'bold',
+                          color: Colors.ChatrelYearGreen,
+                          fontFamily: sFontName,
+                        }}>
+                        ${year.nChatrelTotalAmount.toFixed(2)}
+                      </Text>
                     </View>
                     <View
                       style={{
                         display: 'flex',
                         flexDirection: 'row',
-                        justifyContent: 'center',
-                        marginBottom: hp(1.25),
+                        justifyContent: 'flex-start',
+                        //marginBottom: hp(1.25),
                       }}>
-                      <View>
-                        <Text
-                          style={{
-                            ...styles.textComponent,
-                            textAlign: 'center',
-                          }}>
-                          Total:
-                        </Text>
-                        <Text
+                      {year.sAuthRegionCurrency !== 'USD' && (
+                        <View>
+                          <Text
+                            style={{
+                              ...styles.textComponentAPI,
+                              textAlign: 'right',
+                              color: Colors.grey,
+                              fontStyle: 'italic',
+                              fontSize: 12,
+                            }}>
+                            Conv. Rate &#8377;/$:{' '}
+                            {dollarToRupees &&
+                            year.sAuthRegionCurrency === 'INR'
+                              ? dollarToRupees.toFixed(4)
+                              : 'NA'}
+                          </Text>
+                          {/* <Text
                           style={{
                             ...styles.textComponentAPI,
-                            textAlign: 'center',
+                            textAlign: 'right',
+                            color: Colors.grey,
+                            fontStyle: 'italic',
+                            fontSize:10
                           }}>
-                          ${year.nChatrelTotalAmount.toFixed(2)}
-                        </Text>
-                      </View>
+                          
+                        </Text> */}
+                        </View>
+                      )}
                     </View>
                   </View>
                 </Card>
@@ -855,7 +921,12 @@ export const Chatrel = (props) => {
               titleStyle={{
                 fontFamily: sFontName,
               }}
-              price={parseFloat(nGrandTotal.toFixed(2))}
+              containerStyle={{
+                borderRadius: 15,
+                borderColor: Colors.white,
+                backgroundColor: Colors.white,
+              }}
+              price={'$ ' + parseFloat(nGrandTotal.toFixed(2))}
               button={{
                 title: 'MAKE PAYMENT',
                 titleStyle: {
@@ -935,7 +1006,7 @@ export const Chatrel = (props) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    //flex: 1,
+    flex: 1,
     //margin: 15
   },
   headerComponent: {
@@ -947,9 +1018,9 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   textComponent: {
-    fontSize: 10.5,
+    fontSize: 16,
     textAlign: 'left',
-    marginBottom: 15,
+    marginBottom: 5,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -957,9 +1028,9 @@ const styles = StyleSheet.create({
   },
 
   textComponentAPI: {
-    fontSize: 16,
+    fontSize: 20,
     textAlign: 'left',
-    marginBottom: 10,
+    marginBottom: 7.5,
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -991,7 +1062,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   employementStatusContainerForInput: {
-    flex: 1,
+    //flex: 1,
     // flexDirection: 'row',
     // justifyContent: 'space-between',
     // marginBottom: 10,

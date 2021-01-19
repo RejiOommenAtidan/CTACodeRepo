@@ -213,7 +213,7 @@ export const GBDetailScreen = (props) => {
         <View style={styles.mainContainer}>
           <View style={styles.headerContainer}>
             <Text style={styles.headerComponent}>
-              Super! Thanks for logging in through Google.{'\n'}Just one more
+              Great! Thanks for logging in through Google.{'\n'}Just one more
               step now.
             </Text>
           </View>
