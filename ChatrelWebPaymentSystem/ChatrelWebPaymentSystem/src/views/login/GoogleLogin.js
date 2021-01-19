@@ -23,6 +23,7 @@ const GoogleLoginPage = (props) => {
         onFailure={(response) => {  }}
         cookiePolicy={'single_host_origin'}
         //isSignedIn={true}
+        
         render={renderProps => (
            
            
