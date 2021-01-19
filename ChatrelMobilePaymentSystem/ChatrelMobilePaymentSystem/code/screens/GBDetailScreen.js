@@ -30,7 +30,11 @@ import {removeGoogleCreds} from '../store/actions/GLoginAction';
 import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
 import {removeGBDetails} from '../store/actions/GBDetailsAction';
 import {useForm, Controller} from 'react-hook-form';
-import {errorComponent, errorContainer} from '../constants/CommonConfig';
+import {
+  errorComponent,
+  errorContainer,
+  sFontName,
+} from '../constants/CommonConfig';
 import axios from 'axios';
 
 export const GBDetailScreen = (props) => {
@@ -209,7 +213,7 @@ export const GBDetailScreen = (props) => {
         <View style={styles.mainContainer}>
           <View style={styles.headerContainer}>
             <Text style={styles.headerComponent}>
-              Super! Thanks for logging in through Google.{'\n'}Just one more
+              Great! Thanks for logging in through Google.{'\n'}Just one more
               step now.
             </Text>
           </View>
@@ -223,8 +227,8 @@ export const GBDetailScreen = (props) => {
               render={({onChange, onBlur, value}) => (
                 <Input
                   //label="Enter GBID"
-                  placeholder={"Green Book Number"}
-                  placeholderTextColor={Colors.white}
+                  placeholder={'Green Book Number'}
+                  placeholderTextColor={Colors.grey}
                   //autoFocus={true}
                   autoCompleteType={'off'}
                   autoCorrect={false}
@@ -277,7 +281,7 @@ export const GBDetailScreen = (props) => {
                   date={dtDOB}
                   mode="date"
                   placeholder="Date of Birth"
-                  placeholderTextColor={Colors.white}
+                  //placeholderTextColor={Colors.grey}
                   format={sDateFormatDatePicker}
                   maxDate={dtToday}
                   confirmBtnText="Confirm"
@@ -290,7 +294,7 @@ export const GBDetailScreen = (props) => {
                       width: 0,
                     },
                     placeholderText: {
-                      color: Colors.white,
+                      color: Colors.grey,
                       fontSize:
                         Dimensions.get('window').width <
                         Resolution.nWidthBreakpoint
@@ -298,7 +302,7 @@ export const GBDetailScreen = (props) => {
                           : 20,
                       fontStyle: 'normal',
                       fontWeight: 'normal',
-                      fontFamily: 'Kanit-Regular',
+                      fontFamily: sFontName,
                     },
                     dateText: {
                       //textAlign: 'left',
@@ -310,7 +314,7 @@ export const GBDetailScreen = (props) => {
                           : 20,
                       fontStyle: 'normal',
                       fontWeight: 'normal',
-                      fontFamily: 'Kanit-Regular',
+                      fontFamily: sFontName,
                     },
                     // dateIcon: {
                     //   width:0,
@@ -358,7 +362,7 @@ export const GBDetailScreen = (props) => {
             <Button
               titleStyle={{
                 color: Colors.black,
-                fontWeight: '700',
+                fontWeight: 'bold',
               }}
               buttonStyle={styles.buttonComponent}
               title="VERIFY"
@@ -395,9 +399,9 @@ const styles = StyleSheet.create({
   headerContainer: {
     width: wp(85),
     height: hp(15),
-    marginTop: hp(26),
+    marginTop: hp(22),
     marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
+      hp(5),
   },
   headerComponent: {
     textAlign: 'left',
@@ -406,7 +410,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.white,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
     lineHeight:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
@@ -418,7 +422,7 @@ const styles = StyleSheet.create({
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
   textComponent: {
-    fontFamily: 'NunitoSans-Light',
+    fontFamily: sFontName,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
     textAlign: 'left',
@@ -451,7 +455,7 @@ const styles = StyleSheet.create({
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
     fontStyle: 'normal',
     fontWeight: '300',
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   dobContainer: {
     flexDirection: 'row',
@@ -472,7 +476,7 @@ const styles = StyleSheet.create({
     // fontSize: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
     // fontStyle: "normal",
     // fontWeight: "normal",
-    // fontFamily: 'Kanit-Light'
+    // fontFamily: sFontName
     flexGrow: 1,
   },
   buttonContainer: {

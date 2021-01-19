@@ -5,8 +5,8 @@ export default {
     white: '#ffffff',
     black: '#000000',
     blue: '#3d65b0',
-    blackText: '#6e6e6e',
-    blackTextAPI: '#2e2e2e',
+    blackText: '#000000',
+    blackTextAPI: '#000000',
     buttonYellow: '#ebca17',
     ChatrelInfoBlue: '#3d65b0',
     ChatrelYearGreen: '#168b44',
@@ -14,5 +14,7 @@ export default {
     blueCardColor: '#aef4ff',
     darkYellowFamilyPage: '#eb920d',
     red:'#ff0000',
-    lightBlueChatrelWebsite:'#ced9fd'
+    lightBlueChatrelWebsite:'#ced9fd',
+    grey:'#808080',
+    shadowColor:'#470000'
 };

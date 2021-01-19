@@ -242,7 +242,7 @@ export default function FeatureUserrights() {
                   //46-Change Password
                   disabled={role.id === 5 || rowData.nFeatureID === 1 || rowData.nFeatureID === 2 || rowData.nFeatureID === 46}
                   checked={rowData["aUserRights"][role.id - 1]}
-                  onChange={() => { handleClickOpen(rowData, role.sUserRightsName, role.id) }}
+                  onChange={() => { handleClickOpen(rowData, role.sUserRightsName, role.Id) }}
                 />
               }
             );

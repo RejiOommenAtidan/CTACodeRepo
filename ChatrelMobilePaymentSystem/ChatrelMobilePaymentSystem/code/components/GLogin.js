@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -59,25 +59,22 @@ export const GLogin = (props) => {
       // console.info(userInfo.user.familyName);
       // console.info(userInfo.user.name);//full name by google api
       // console.info(userInfo.user.photo);
+
       setUser(userInfo.user);
       dispatch(storeGoogleCreds(userInfo.user));
-      try {
-        const jsonUserInfoValue = JSON.stringify(userInfo.user);
-        await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
-      } catch (e) {
-        console.info(e);
-      }
+      const jsonUserInfoValue = JSON.stringify(userInfo.user);
+      await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
       props.props.navigation.navigate('GBDetail');
     } catch (error) {
-      console.info('Message', error.message);
+      //alert('Error Message: '+ error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.info('User Cancelled the Login Flow');
+        //alert('User Cancelled the Login Flow');
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.info('Signing In');
+        //alert('Signing In');
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.info('Play Services Not Available or Outdated');
+        //alert('Play Services Not Available or Outdated');
       } else {
-        console.info('Some Other Error Happened');
+        //alert('Some Other Error Happened');
       }
     }
   };
@@ -94,21 +91,16 @@ export const GLogin = (props) => {
   const getCurrentUserInfo = async () => {
     try {
       const userInfo = await GoogleSignin.getCurrentUser();
-      //console.log(userInfo);
       setUser(userInfo.user);
       dispatch(storeGoogleCreds(userInfo.user));
-      try {
-        const jsonUserInfoValue = JSON.stringify(userInfo.user);
-        await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
-      } catch (e) {
-        console.info(e);
-      }
+      const jsonUserInfoValue = JSON.stringify(userInfo.user);
+      await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
       props.props.navigation.navigate('GBDetail');
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-        console.info('User has not signed in yet');
+        //alert('User has not signed in yet');
       } else {
-        console.info("Something went wrong. Unable to get user's info");
+        //alert("Something went wrong. Unable to get user's info");
       }
     }
   };
@@ -131,7 +123,7 @@ export const GLogin = (props) => {
       <GoogleSigninButton
         style={styles.gSignInComponent}
         size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Dark}
+        color={GoogleSigninButton.Color.Light}
         onPress={signIn}
       />
     </View>
@@ -145,7 +137,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
   },
   gSignInComponent: {
-    width: wp(45),
-    height: hp(5.35)
+    width: Platform.OS === 'android' ? wp(50) : wp(47.5),
+    height: hp(5.75),
   },
 });

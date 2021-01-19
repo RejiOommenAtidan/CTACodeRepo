@@ -13,7 +13,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Moment from 'moment';
-import {sDateFormat} from '../constants/CommonConfig';
+import {sDateFormat,sFontName} from '../constants/CommonConfig';
 
 export const ChatrelHistoryScreen = (props) => {
   // const DATA = [
@@ -86,9 +86,7 @@ export const ChatrelHistoryScreen = (props) => {
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>CHATREL HISTORY</Text>
   </View>*/}
-      <ScrollView
-      showsVerticalScrollIndicator={false}
-      >
+      <ScrollView showsVerticalScrollIndicator={false}>
         {paymentHistory.length === 0 && (
           <View style={styles.zeroRecordContainer}>
             <Text style={styles.zeroRecordComponent}>No Records Available</Text>
@@ -187,7 +185,7 @@ export const ChatrelHistoryScreen = (props) => {
 
                   <View style={styles.chatrelModeLabelContainer}>
                     <Text style={styles.chatrelModeLabelComponent}>
-                    PAYMENT MODE
+                      PAYMENT MODE
                     </Text>
                     <Text style={styles.chatrelModeValueComponent}>
                       {singleHistory.sPaymentMode}
@@ -225,7 +223,7 @@ export const ChatrelHistoryScreen = (props) => {
                       color: Colors.white,
                       fontStyle: 'normal',
                       fontWeight: '900',
-                      fontFamily: 'Kanit-Regular',
+                      fontFamily: sFontName,
                       fontSize:
                         Dimensions.get('window').width <
                         Resolution.nWidthBreakpoint
@@ -303,11 +301,11 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   cardComponent: {
     width: wp(80),
-    height: Platform.OS==="ios"?hp(28.25):hp(30),
+    height: Platform.OS === 'ios' ? hp(28.25) : hp(30),
     borderRadius: 15,
     borderColor: Colors.white,
     backgroundColor: Colors.white,
@@ -323,7 +321,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Light',
+    fontFamily: sFontName,
   },
   cardDividerComponent: {
     height: 0.75,
@@ -342,7 +340,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   receiptNumberValueContainer: {
     marginBottom:
@@ -357,7 +355,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
 
   dateLabelContainer: {
@@ -373,7 +371,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   dateValueContainer: {
     marginBottom:
@@ -388,7 +386,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   totalChatrelLabelContainer: {
     // marginBottom:
@@ -403,7 +401,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   totalChatrelValueContainer: {
     marginBottom:
@@ -418,7 +416,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
 
   chatrelModeLabelContainer: {
@@ -434,7 +432,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   chatrelModeValueContainer: {
     marginBottom:
@@ -449,7 +447,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
 
   chatrelStatusLabelContainer: {
@@ -465,7 +463,7 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   chatrelStatusValueContainer: {
     marginBottom:
@@ -480,7 +478,7 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   relationContainer: {
     //flexGrow: 1,
@@ -496,7 +494,7 @@ const styles = StyleSheet.create({
     color: Colors.darkYellowFamilyPage,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   downloadReceiptContainer: {
     marginTop: hp(0.25),
