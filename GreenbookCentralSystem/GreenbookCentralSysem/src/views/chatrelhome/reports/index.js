@@ -98,7 +98,13 @@ export default function Report() {
       field: "dtPayment",
       title: "PAYMENT DATE",
       type: 'date',
-      render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
+      //locale: 'en-IN',
+      customSort: (a, b) => {
+        //console.log(a, b);
+        a = a.dtPayment.split('-').reverse().join('');
+        b = b.dtPayment.split('-').reverse().join('');
+        return a.localeCompare(b);
+      },
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -448,7 +454,7 @@ export default function Report() {
           console.log("Chatrel List", resp.data);
           var i = 1;
           resp.data.forEach((element) => {
-            element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sISODateFormat) : null;
+            element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sDateFormat) : null;
             element.dtCurrentChatrelFrom = element.dtCurrentChatrelFrom ? Moment(element.dtCurrentChatrelFrom).format(sISODateFormat) : null;
           element.dtCurrentChatrelTo = element.dtCurrentChatrelTo ? Moment(element.dtCurrentChatrelTo).format(sISODateFormat) : null;
           element.dtArrearsFrom = element.dtArrearsFrom ? Moment(element.dtArrearsFrom).format(sISODateFormat) : null;

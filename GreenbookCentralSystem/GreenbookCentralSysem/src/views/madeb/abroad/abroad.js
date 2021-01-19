@@ -197,7 +197,19 @@ export default function EnhancedTable() {
         padding: '5px',
         borderRight: '1px solid grey'
       },
-      //render: rowData => rowData['madeb']['dtReceived'] ? Moment(rowData['madeb']['dtReceived']).format(sDateFormat) : undefined
+      customSort: (a, b) => {
+        //console.log(a, b);
+        if(!a.madeb.dtFormattedReceived){
+          return -1;
+        }
+        if(!b.madeb.dtFormattedReceived){
+          return 1;
+        }
+        a = a.madeb.dtFormattedReceived.split('-').reverse().join('');
+        b = b.madeb.dtFormattedReceived.split('-').reverse().join('');
+        return a.localeCompare(b);
+      },
+      
     },
     {
       width: "9%",
@@ -410,8 +422,7 @@ export default function EnhancedTable() {
       width: "8%",
       field: "madeb.dtFormattedIssueAction",
       title: "ISSUE ACTION DATE",
-      // type: 'date',
-      // dateSetting: {locale: 'en-GB'},
+      
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -422,7 +433,18 @@ export default function EnhancedTable() {
         padding: '5px',
         borderRight: '1px solid grey'
       },
-   //   render: rowData => rowData['madeb']['dtIssueAction'] ? Moment(rowData['madeb']['dtIssueAction']).format(sDateFormat) : undefined
+      customSort: (a, b) => {
+        if(!a.madeb.dtFormattedIssueAction){
+          return -1;
+        }
+        if(!b.madeb.dtFormattedIssueAction){
+          return 1;
+        }
+        a = a.madeb.dtFormattedIssueAction.split('-').reverse().join('');
+        b = b.madeb.dtFormattedIssueAction.split('-').reverse().join('');
+        return a.localeCompare(b);
+      },
+   
     },
     {
       width: "8%",
@@ -440,7 +462,17 @@ export default function EnhancedTable() {
         padding: '5px',
         borderRight: '1px solid grey'
       },
-     // render: rowData => rowData['madeb']['dtReject'] ? Moment(rowData['madeb']['dtReject']).format(sDateFormat) : undefined
+      customSort: (a, b) => {
+        if(!a.madeb.dtFormattedReject){
+          return -1;
+        }
+        if(!b.madeb.dtFormattedReject){
+          return 1;
+        }
+        a = a.madeb.dtFormattedReject.split('-').reverse().join('');
+        b = b.madeb.dtFormattedReject.split('-').reverse().join('');
+        return a.localeCompare(b);
+      },
     },
     {
       width: "6%",
@@ -473,6 +505,17 @@ export default function EnhancedTable() {
         textAlign: "right",
         padding: '5px',
         borderRight: '1px solid grey'
+      },
+      customSort: (a, b) => {
+        if(!a.madeb.dtFormattedReturnEmail){
+          return -1;
+        }
+        if(!b.madeb.dtFormattedReturnEmail){
+          return 1;
+        }
+        a = a.madeb.dtFormattedReturnEmail.split('-').reverse().join('');
+        b = b.madeb.dtFormattedReturnEmail.split('-').reverse().join('');
+        return a.localeCompare(b);
       },
       //render: rowData => rowData['madeb']['dtReturnEmail'] ? Moment(rowData['madeb']['dtReturnEmail']).format(sDateFormat) : ''
     },
@@ -781,7 +824,7 @@ export default function EnhancedTable() {
     <>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px', fontSize:'0.9rem'  }}
             isLoading={isLoading}
             icons={oTableIcons}
             title="Abroad"
