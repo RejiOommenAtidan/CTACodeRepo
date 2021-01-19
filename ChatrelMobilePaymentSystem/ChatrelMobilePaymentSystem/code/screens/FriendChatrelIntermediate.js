@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Dimensions,
   Alert,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
@@ -33,6 +33,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {sFontName} from '../constants/CommonConfig';
 import axios from 'axios';
 
 export const FriendChatrelIntermediateScreen = (props) => {
@@ -69,10 +70,13 @@ export const FriendChatrelIntermediateScreen = (props) => {
             sGBID: nFriendGBID,
             dtDOB: dtFriendDOB,
           };
-          ToastAndroid.showWithGravity("Verification Successful",ToastAndroid.SHORT,
-          ToastAndroid.BOTTOM);
+          ToastAndroid.showWithGravity(
+            'Verification Successful',
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+          );
           dispatch(storeCurrentGBDetails(oGBDetails));
-          props.navigation.navigate("FriendChatrel");
+          props.navigation.navigate('FriendChatrel');
         } else {
           alert("Values don't match with database. Enter correct values.");
         }
@@ -85,7 +89,6 @@ export const FriendChatrelIntermediateScreen = (props) => {
         console.log(error);
         alert("Values don't match with database. Enter correct values.");
       });
-
   };
   const [nFriendGBID, setnFriendGBID] = useState('');
   const [sFriendFirstname, setsFriendFirstname] = useState('');
@@ -123,11 +126,11 @@ export const FriendChatrelIntermediateScreen = (props) => {
                       : 17.5,
                   fontStyle: 'normal',
                   fontWeight: '300',
-                  fontFamily: 'Kanit-Regular',
+                  fontFamily: sFontName,
                 }}
                 //label="Friend's Firstname"
                 placeholder=" Friend's First Name"
-                placeholderTextColor={Colors.blackText}
+                placeholderTextColor={Colors.grey}
                 //autoFocus={true}
                 //autoCapitalize={"characters"}
                 autoCompleteType={'off'}
@@ -181,11 +184,11 @@ export const FriendChatrelIntermediateScreen = (props) => {
                       : 17.5,
                   fontStyle: 'normal',
                   fontWeight: '300',
-                  fontFamily: 'Kanit-Regular',
+                  fontFamily: sFontName,
                 }}
                 //label="Friend's Lastname"
                 placeholder=" Friend's Last Name"
-                placeholderTextColor={Colors.blackText}
+                placeholderTextColor={Colors.grey}
                 //autoFocus={true}
                 //autoCapitalize={"characters"}
                 autoCompleteType={'off'}
@@ -241,11 +244,11 @@ export const FriendChatrelIntermediateScreen = (props) => {
                       : 17.5,
                   fontStyle: 'normal',
                   fontWeight: '300',
-                  fontFamily: 'Kanit-Regular',
+                  fontFamily: sFontName,
                 }}
                 //label="Friend's GBID"
                 placeholder=" Friend's Green Book ID"
-                placeholderTextColor={Colors.blackText}
+                placeholderTextColor={Colors.grey}
                 //autoFocus={true}
                 //autoCapitalize={"characters"}
                 autoCompleteType={'off'}
@@ -323,10 +326,10 @@ export const FriendChatrelIntermediateScreen = (props) => {
                         : 17.5,
                     fontStyle: 'normal',
                     fontWeight: '300',
-                    fontFamily: 'Kanit-Regular',
+                    fontFamily: sFontName,
                   },
                   placeholderText: {
-                    color: Colors.blackText,
+                    color: Colors.grey,
                     textAlign: 'left',
                     fontSize:
                       Dimensions.get('window').width <
@@ -335,7 +338,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                         : 17.5,
                     fontStyle: 'normal',
                     fontWeight: '300',
-                    fontFamily: 'Kanit-Regular',
+                    fontFamily: sFontName,
                   },
                   // dateIcon: {
                   //   width:0,
@@ -378,7 +381,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
             onPress={handleSubmit(onSubmit)}
             titleStyle={{
               color: Colors.white,
-              fontFamily: 'Kanit-Regular',
+              fontFamily: sFontName,
             }}
             buttonStyle={{
               backgroundColor: Colors.primary,
@@ -443,7 +446,7 @@ const styles = StyleSheet.create({
     color: Colors.blue,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
 
   gbidLabelContainer: {
@@ -463,7 +466,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   gbidValueContainer: {},
 
@@ -484,7 +487,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   firstNameValueContainer: {},
 
@@ -505,7 +508,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   lastNameValueContainer: {},
 
@@ -526,7 +529,7 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: sFontName,
   },
   dobValueContainer: {
     //flexGrow:1,
