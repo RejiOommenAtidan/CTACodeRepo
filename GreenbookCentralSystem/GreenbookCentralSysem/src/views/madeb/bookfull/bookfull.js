@@ -954,7 +954,7 @@ export default function EnhancedTable() {
     <>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px', fontSize:'0.9rem' }}
             isLoading={isLoading}
             icons={oTableIcons}
             title="Book Full Madeb"

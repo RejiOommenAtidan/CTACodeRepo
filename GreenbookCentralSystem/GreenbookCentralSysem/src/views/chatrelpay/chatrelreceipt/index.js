@@ -15,7 +15,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import AddBox from '@material-ui/icons/AddBox';
 import Search from '@material-ui/icons/Search';
 import Moment from 'moment';
-import MaterialTable from 'material-table';
+import MaterialTable, { MTableToolbar } from 'material-table';
 import IconButton from '@material-ui/core/IconButton';
 import EmailIcon from '@material-ui/icons/Email';
 
@@ -249,7 +249,7 @@ export default function ChatrelReceipt(props){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['dtArrearsFrom'] ? Moment(rowData['dtArrearsFrom']).format(sDateFormat) : undefined,
+      //render: rowData => rowData['dtArrearsFrom'] ? Moment(rowData['dtArrearsFrom']).format(sDateFormat) : undefined,
     },
     {
       field: "dtArrearsTo",
@@ -259,7 +259,7 @@ export default function ChatrelReceipt(props){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['dtArrearsTo'] ? Moment(rowData['dtArrearsTo']).format(sDateFormat) : undefined,
+      //render: rowData => rowData['dtArrearsTo'] ? Moment(rowData['dtArrearsTo']).format(sDateFormat) : undefined,
     },
     {
       field: "nChatrelBusinessDonationAmt",
@@ -318,6 +318,10 @@ export default function ChatrelReceipt(props){
       setisLoading(false);
       if (resp.status === 200) {
         console.log("Payment Breakup", resp.data);
+        resp.data.forEach((element) => {
+        element.dtArrearsFrom = element.dtArrearsFrom ? Moment(element.dtArrearsFrom).format(sDateFormat) : null;
+          element.dtArrearsTo = element.dtArrearsTo ? Moment(element.dtArrearsTo).format(sDateFormat) : null;
+        });
         setdataAPI(resp.data);
         setPymntDate(resp.data[0].dtPayment);
         setGBID(resp.data[0].sGBID);
@@ -354,17 +358,35 @@ export default function ChatrelReceipt(props){
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
             isLoading={isLoading}
             icons={tableIcons}
-            title= {(<>
-            <Grid container spacing={1}>
-              <Grid item xs={4}>Receipt Number: {sReceiptNumber}</Grid> 
+            // title= {(<>
+            // <Grid container spacing={1}>
+            //   <Grid item xs={4}>Receipt Number: {sReceiptNumber}</Grid> 
               
-              <Grid item xs={4}>Greenbook ID: {sGBID}</Grid>
-              <Grid item xs={4}>Total: {`${sPaymentCurrency}${nReceiptTotal}`}</Grid>
+            //   <Grid item xs={4}>Greenbook ID: {sGBID}</Grid>
+            //   <Grid item xs={4}>Total: {`${sPaymentCurrency}${nReceiptTotal}`}</Grid>
             
-              <Grid item xs={4}>Payment Date: {Moment(dtPymtDate).format(sDateFormat)}</Grid>
-              <Grid item xs={4}>Paid By: {sGBIDPaidBy}</Grid>
-              </Grid>
-            </>)}
+            //   <Grid item xs={4}>Payment Date: {Moment(dtPymtDate).format(sDateFormat)}</Grid>
+            //   <Grid item xs={4}>Paid By: {sGBIDPaidBy}</Grid>
+            // </Grid>
+            // </>)}
+            title='Chatrel Receipt'
+            components={{
+              Toolbar: props => (
+                <div>
+                  <MTableToolbar {...props} />
+                  <div style={{padding: '0px 10px'}}></div>
+                  <Grid container style={{maxWidth: '700px'}} spacing={1}>
+                    <Grid item xs={4} lg={4}><b>Receipt Number: {sReceiptNumber}</b></Grid> 
+              
+                    <Grid item xs={4} lg={4}><b>Greenbook ID: {sGBID}</b></Grid>
+                    <Grid item xs={4} lg={4}><b>Total: {`${sPaymentCurrency}${nReceiptTotal}`}</b></Grid>
+                  
+                    <Grid item xs={4} lg={4}><b>Payment Date: {Moment(dtPymtDate).format(sDateFormat)}</b></Grid>
+                    <Grid item xs={4} lg={4}><b>Paid By: {sGBIDPaidBy}</b></Grid>
+                  </Grid>
+                </div>
+              ),
+            }}
             // title={'Receipt Number: '+ sReceiptNumber +' \t\t\t\t Greenbook ID: '+sGBID+' \t\t\t\tTotal: ' +sPaymentCurrency+nReceiptTotal+'\nPayment Date: ' + `${Moment(dtPymtDate).format(sDateFormat)}` + '\t\t\t\tPaid By: '+ sGBIDPaidBy}
             columns={columns}
             data={dataAPI}
@@ -372,7 +394,7 @@ export default function ChatrelReceipt(props){
               ...oOptions,
               exportButton: {
                 csv: true,
-                
+                pdf: true
               },
               exportFileName: `Receipt Number: ${sReceiptNumber} \t\t\t\tGreenbook ID: ${sGBID} \t\t\t\tTotal: ${sPaymentCurrency}${nReceiptTotal}\nPayment Date: ${Moment(dtPymtDate).format(sDateFormat)}\t\t\t\tPaid By: ${sGBIDPaidBy}`
             }}

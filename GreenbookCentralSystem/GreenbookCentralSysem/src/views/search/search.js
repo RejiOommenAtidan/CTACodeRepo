@@ -280,7 +280,7 @@ export default function SearchPage() {
         padding: '0px',
         margin: '0px',
         width: '2%',
-        borderRight: '1px solid grey'
+       borderRight: '1px solid grey'
       }
     },
     {
@@ -377,7 +377,7 @@ export default function SearchPage() {
       cellStyle: {
         textAlign: "right",
         padding: '0px',
-        borderRight: '1px solid grey'
+       borderRight: '1px solid grey'
       }
     },
     {
@@ -673,13 +673,14 @@ export default function SearchPage() {
             <Paper>  <Typography color="textPrimary" align="center">No records to display </Typography> </Paper>
           }
           {dataFromAPI.length != 0 &&
-            <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+            <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px', color: 'black' }}
               isLoading={isLoading}
               icons={oTableIcons}
               title="Search"
               columns={columns}
               data={dataFromAPI}
               options={oOptions}
+              
               actions={[
                 {
                   icon: oTableIcons.Search,
