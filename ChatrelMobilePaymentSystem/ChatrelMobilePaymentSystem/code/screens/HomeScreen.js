@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   BackHandler,
   Alert,
-  Dimensions
+  Dimensions,
 } from 'react-native';
-import {Card, Button,Tile} from 'react-native-elements';
+import {Card, Button, Tile} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {useSelector, useDispatch} from 'react-redux';
@@ -65,7 +65,7 @@ const HomeScreen = (props) => {
       sBGColor: Colors.buttonYellow,
       sTextColor: Colors.greenBG,
       sIconName: 'donate',
-      sIconColor:Colors.greenBG
+      sIconColor: Colors.greenBG,
     },
     {
       sLabel: `Friend\nChatrel`,
@@ -74,7 +74,7 @@ const HomeScreen = (props) => {
       sBGColor: Colors.blueCardColor,
       sTextColor: Colors.primary,
       sIconName: 'users',
-      sIconColor:Colors.blue
+      sIconColor: Colors.blue,
     },
     {
       sLabel: `Family\nChatrel`,
@@ -83,7 +83,7 @@ const HomeScreen = (props) => {
       sBGColor: Colors.greenBG,
       sTextColor: Colors.buttonYellow,
       sIconName: 'heart',
-      sIconColor:Colors.buttonYellow
+      sIconColor: Colors.buttonYellow,
     },
   ];
 
@@ -151,9 +151,7 @@ const HomeScreen = (props) => {
     };
   }, []);
   return (
-    <ScrollView
-    showsVerticalScrollIndicator={false}
-    >
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.mainContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerComponent}>Quick Actions</Text>
@@ -251,8 +249,8 @@ const HomeScreen = (props) => {
                   props.navigation.navigate('SelfChatrel');
                 }}
               />
-              </Card>
-              {/* <Tile
+            </Card>
+            {/* <Tile
   imageSrc={require('../assets/CTALogoDonation.png')}
   title={"Pending Amount"}
 titleStyle={styles.pendingAmountTextComponent}

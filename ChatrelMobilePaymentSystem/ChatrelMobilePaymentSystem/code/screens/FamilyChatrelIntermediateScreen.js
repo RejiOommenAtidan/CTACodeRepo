@@ -19,7 +19,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {sDateFormat,sFontName} from '../constants/CommonConfig';
+import {sDateFormat, sFontName} from '../constants/CommonConfig';
 import Moment from 'moment';
 import {useSelector, useDispatch} from 'react-redux';
 import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
