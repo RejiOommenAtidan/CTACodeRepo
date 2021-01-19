@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive'
 import clsx from 'clsx';
 
@@ -11,15 +11,20 @@ import HeaderDrawer from '../../layout-components/HeaderDrawer';
 import HeaderUserbox from '../../layout-components/HeaderUserbox';
 import HeaderSearch from '../../layout-components/HeaderSearch';
 import HeaderMenu from '../../layout-components/HeaderMenu';
-import {Button,List,ListItem} from '@material-ui/core';
+import {Button,List,ListItem,Dialog} from '@material-ui/core';
 import projectLogo from '../../assets/images/CTALogo.png';
 import { useHistory } from 'react-router-dom';
 import { useSelector,useDispatch} from 'react-redux';
 //import { useSelector,useDispatch} from 'react-redux';
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
+import  {removeGoogleCreds} from '../../actions/transactions/GLoginAction';
+import  {removeGBDetails} from '../../actions/transactions/GBDetailsAction';
+import  {removeCurrentGBDetails} from '../../actions/transactions/CurrentGBDetailsAction';
 import axios from 'axios';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Header = (props) => {
+
+  
 
   const responsive = useMediaQuery({query: '(max-width: 1100px)'})
   console.log(responsive);
@@ -126,6 +131,25 @@ const isFriendsSelected =()=>{
     return false
   }
 }
+const [signoutModal, setSignoutModal] = useState(false);
+const toggleSignoutModal = () => setSignoutModal(!signoutModal);
+const logout =() =>{
+  //alert('logout');
+  toggleSignoutModal();
+   
+  dispatch(removeGoogleCreds());
+  dispatch(removeCurrentGBDetails());
+  dispatch(removeGBDetails());
+  history.push('/Login');
+    
+}
+
+useEffect(() => {
+    // 1000*60*10= 10 mins 
+  setTimeout(()=>{toggleSignoutModal();},1000*10*60);
+
+
+}, []);
 
 
   return (
@@ -203,6 +227,25 @@ const isFriendsSelected =()=>{
        <HeaderUserbox />
       </div>
     </div>
+    <Dialog open={signoutModal} onClose={logout} classes={{ paper: 'shadow-xl-first rounded' }}>
+                            <div className="text-center p-5">
+                                <div className="avatar-icon-wrapper rounded-circle m-0">
+                                    <div className="d-inline-flex justify-content-center p-0 rounded-circle btn-icon avatar-icon-wrapper bg-neutral-first text-first m-0 d-130">
+                                        <FontAwesomeIcon icon={['fas', 'hourglass-end']} className="d-flex align-self-center display-3"/>
+                                    </div>
+                                </div>
+                                <h4 className="font-weight-bold mt-4">Session Timeout</h4>
+                                <p className="mb-0 text-black-50">Your session has timed out. Please signin again.</p>
+                                <div className="pt-4">
+                                    <Button onClick={logout} className="btn-outline-first border-1 m-2" variant="outlined">
+                                        <span className="btn-wrapper--label">
+                                            Close
+                    </span>
+                                    </Button>
+                                   
+                                </div>
+                            </div>
+                        </Dialog>
     </>
   );
 };

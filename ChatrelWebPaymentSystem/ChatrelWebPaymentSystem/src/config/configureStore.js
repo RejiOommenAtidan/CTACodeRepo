@@ -3,6 +3,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import reducers from '../reducers';
 import { persistStore, persistReducer } from 'redux-persist';
+
 import sessionstorage from 'redux-persist/lib/storage/session';
 //import thunk from 'redux-thunk';
 
@@ -11,6 +12,7 @@ import sessionstorage from 'redux-persist/lib/storage/session';
 const persistConfig = {
   key: 'CTASS',
   storage: sessionstorage,
+  
   whitelist: ['GLoginReducer','GBDetailsReducer','CurrentGBDetailsReducer']
 };
 

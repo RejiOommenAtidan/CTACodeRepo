@@ -27,6 +27,11 @@ import { dateTimePickerDefaultProps } from '@material-ui/pickers/constants/prop-
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { white } from '@material-ui/core/colors';
 import Moment from 'moment';
+
+import { GoogleLogout } from 'react-google-login';
+//import { useDispatch } from 'react-redux';
+//import {  Button} from '@material-ui/core';
+import  {removeGoogleCreds} from '../../../actions/transactions/GLoginAction';
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
@@ -75,7 +80,15 @@ export default function LogingPage(props) {
   const dispatch = useDispatch();
   
   
+    const logout =() =>{
+      //  history.go(0);
+        dispatch(removeGoogleCreds()); //oGoogle null
+       // localStorage.removeItem("currentUser");
+        // window.location.replace('/login');
+        
+    }
   const userObj = useSelector(state => state.GLoginReducer.oGoogle);
+
   const responseGoogle = (response) => {
     console.log(response);
 
@@ -203,7 +216,7 @@ let oGBDetails={
   .then(data => {
     console.log(data);
       if(data.country_code!="IN"){
-        //  history.push('/AccessDenied')
+         // history.push('/AccessDenied')
         }
         console.log(data);
   });
@@ -235,7 +248,7 @@ let oGBDetails={
                         {
                           login &&
                         <>
-                          <h5 className="display-5 mb-1 " > Super! Thanks for logging in through Google. Just one more step now. </h5>  
+                          <h5 className="display-5 mb-1 " > Great! Thanks for logging in through Google. Just one more step now. </h5>  
                           <br/>
                           <Grid container spacing={2}>
                             <Grid item xs={12}>
@@ -315,6 +328,27 @@ let oGBDetails={
                             </Grid>
                             <Grid item xs={12}>
                             <Button variant="contained" className="w-50 " type = 'submit' disabled={!submitBtn} style={{   backgroundColor: 'rgb(42, 92, 255)', color:'white'}}>VERIFY DETAILS</Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                            { userObj &&<> Signed in with {userObj.email}</> }
+                            </Grid>  
+                            <Grid item xs={12}>
+                              
+                            <GoogleLogout
+                            
+    clientId={"11153496233-ft9h6spf18pfshdlri865cm6d6eteqef.apps.googleusercontent.com"}
+   // buttonText="Logout"
+    onLogoutSuccess={() => {logout()}}
+    //onLogoutSuccess={logout}
+    render={renderProps => (
+           
+<Button  onClick={renderProps.onClick} className="p-0 btn-transparent btn-link btn-link-first"><span>Change Google Account?</span></Button>      
+     
+      )}
+    >
+       
+</GoogleLogout>
+                                  
                             </Grid>
                           </Grid>
                             

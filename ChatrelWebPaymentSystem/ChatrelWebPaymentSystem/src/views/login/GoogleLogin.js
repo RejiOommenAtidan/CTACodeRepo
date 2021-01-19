@@ -23,7 +23,9 @@ const GoogleLoginPage = (props) => {
         onFailure={(response) => {  }}
         cookiePolicy={'single_host_origin'}
         //isSignedIn={true}
-        
+        prompt={'select_account'}
+        //uxMode='redirect'
+        //redirectUri='http://localhost:3000/Login/'
         render={renderProps => (
            
            
