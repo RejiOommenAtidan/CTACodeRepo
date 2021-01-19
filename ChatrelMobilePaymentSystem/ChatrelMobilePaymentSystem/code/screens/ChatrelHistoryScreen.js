@@ -13,7 +13,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Moment from 'moment';
-import {sDateFormat,sFontName} from '../constants/CommonConfig';
+import {sDateFormat, sFontName} from '../constants/CommonConfig';
 
 export const ChatrelHistoryScreen = (props) => {
   // const DATA = [

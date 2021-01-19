@@ -213,7 +213,7 @@ export const GBDetailScreen = (props) => {
         <View style={styles.mainContainer}>
           <View style={styles.headerContainer}>
             <Text style={styles.headerComponent}>
-              Super! Thanks for logging in through Google.{'\n'}Just one more
+              Great! Thanks for logging in through Google.{'\n'}Just one more
               step now.
             </Text>
           </View>
@@ -400,8 +400,7 @@ const styles = StyleSheet.create({
     width: wp(85),
     height: hp(15),
     marginTop: hp(22),
-    marginBottom:
-      hp(5),
+    marginBottom: hp(5),
   },
   headerComponent: {
     textAlign: 'left',

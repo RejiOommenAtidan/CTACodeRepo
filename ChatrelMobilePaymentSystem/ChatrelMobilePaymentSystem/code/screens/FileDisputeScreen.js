@@ -21,7 +21,11 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useForm, Controller} from 'react-hook-form';
-import {errorComponent, errorContainer,sFontName} from '../constants/CommonConfig';
+import {
+  errorComponent,
+  errorContainer,
+  sFontName,
+} from '../constants/CommonConfig';
 import axios from 'axios';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -34,7 +38,7 @@ export const FileDisputeScreen = (props) => {
   const [sDisputeMessage, setsDisputeMessage] = useState('');
 
   const handleDispute = () => {
-    if(sDisputeSingleFile===''){
+    if (sDisputeSingleFile === '') {
       alert('Please select a File for Uploading');
       return;
     }
