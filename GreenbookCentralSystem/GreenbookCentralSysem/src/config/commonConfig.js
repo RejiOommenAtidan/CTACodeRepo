@@ -31,6 +31,7 @@ export const sSnackbarUpdateMessage = "Record updated successfully";
 export const sDateFormat = "DD-MM-YYYY";
 export const sISODateFormat = "YYYY-MM-DD";
 export const sDateFormatMUIDatepicker = "dd-MM-yyyy";
+export const asterisk=<span style={{ color: 'red' }}> *</span>;
 export const aPageSizeArray = [5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 100];
 export const nPageSize = 10;
 export const oOptions = {

@@ -25,7 +25,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders, sDDMMYYYYRegex, sDateFormatMUIDatepicker } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders, sDDMMYYYYRegex, sDateFormatMUIDatepicker, sISODateFormat } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
 import { Alerts } from '../../alerts';
 import { BackdropComponent } from '../../backdrop/index';
@@ -97,6 +97,14 @@ export default function Report() {
     {
       field: "dtPayment",
       title: "PAYMENT DATE",
+      type: 'date',
+      //locale: 'en-IN',
+      customSort: (a, b) => {
+        //console.log(a, b);
+        a = a.dtPayment.split('-').reverse().join('');
+        b = b.dtPayment.split('-').reverse().join('');
+        return a.localeCompare(b);
+      },
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -247,6 +255,7 @@ export default function Report() {
     {
       field: "dtCurrentChatrelFrom",
       title: "CHATREL FROM",
+      type: 'date',
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -263,6 +272,7 @@ export default function Report() {
     {
       field: "dtCurrentChatrelTo",
       title: "CHATREL TO",
+      type: 'date',
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -311,6 +321,7 @@ export default function Report() {
     {
       field: "dtArrearsFrom",
       title: "ARREARS FROM",
+      type: 'date',
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -327,6 +338,7 @@ export default function Report() {
     {
       field: "dtArrearsTo",
       title: "ARREARS TO",
+      type: 'date',
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -443,6 +455,10 @@ export default function Report() {
           var i = 1;
           resp.data.forEach((element) => {
             element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sDateFormat) : null;
+            element.dtCurrentChatrelFrom = element.dtCurrentChatrelFrom ? Moment(element.dtCurrentChatrelFrom).format(sISODateFormat) : null;
+          element.dtCurrentChatrelTo = element.dtCurrentChatrelTo ? Moment(element.dtCurrentChatrelTo).format(sISODateFormat) : null;
+          element.dtArrearsFrom = element.dtArrearsFrom ? Moment(element.dtArrearsFrom).format(sISODateFormat) : null;
+          element.dtArrearsTo = element.dtArrearsTo ? Moment(element.dtArrearsTo).format(sISODateFormat) : null;
             element.nSerialNo = i++;
           });
           setdataAPI(resp.data);

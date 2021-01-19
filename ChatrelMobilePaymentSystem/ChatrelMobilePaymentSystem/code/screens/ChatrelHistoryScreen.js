@@ -13,7 +13,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Moment from 'moment';
-import {sDateFormat,sFontName} from '../constants/CommonConfig';
+import {sDateFormat, sFontName} from '../constants/CommonConfig';
 
 export const ChatrelHistoryScreen = (props) => {
   // const DATA = [
@@ -307,8 +307,18 @@ const styles = StyleSheet.create({
     width: wp(80),
     height: Platform.OS === 'ios' ? hp(28.25) : hp(30),
     borderRadius: 15,
-    borderColor: Colors.white,
+    borderColor: Colors.blue,
     backgroundColor: Colors.white,
+    //shadowColor: Colors.shadowColor,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.2,
+    elevation: 1,
+    shadowRadius: 60,
+    //marginBottom: 10,
+    marginBottom:
+      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
   cardHeaderComponent: {
     textAlign: 'left',

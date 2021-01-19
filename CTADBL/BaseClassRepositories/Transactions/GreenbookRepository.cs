@@ -160,17 +160,19 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sBookIssued`,
                             `dtValidityDate`,
                             `sPaidUntil`,
-                            `sEnteredDateTime`,
-                            `nEnteredBy`,
-                            `nUpdatedBy`,
-                            `dtEntered`,
-                            `dtUpdated`,
                             `TibetanName`,
                             `TBUPlaceOfBirth`,
                             `TBUOriginVillage`,
                             `TBUFathersName`,
                             `TBUMothersName`,
-                            `TBUSpouseName`
+                            `TBUSpouseName`,
+                            `sLoginGmail`,
+                            `dtLastSuccessfullLogin`,
+                            `sEnteredDateTime`,
+                            `dtEntered`,                            
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
                         FROM `tblgreenbook`
                         ORDER BY Id DESC,
                         dtUpdated DESC 
@@ -232,17 +234,19 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `sBookIssued`,
                             `dtValidityDate`,
                             `sPaidUntil`,
-                            `sEnteredDateTime`,
-                            `nEnteredBy`,
-                            `nUpdatedBy`,
-                            `dtEntered`,
-                            `dtUpdated`,
                             `TibetanName`,
                             `TBUPlaceOfBirth`,
                             `TBUOriginVillage`,
                             `TBUFathersName`,
                             `TBUMothersName`,
-                            `TBUSpouseName`
+                            `TBUSpouseName`,
+                            `sLoginGmail`,
+                            `dtLastSuccessfullLogin`,
+                            `sEnteredDateTime`,
+                            `dtEntered`,
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
                         FROM `tblgreenbook`
                         WHERE Id=@Id;";
             using (var command = new MySqlCommand(sql))
@@ -304,18 +308,20 @@ namespace CTADBL.BaseClassRepositories.Transactions
                             `dtDeceased`,
                             `sBookIssued`,
                             `dtValidityDate`,
-                            `sPaidUntil`,
-                            `sEnteredDateTime`,
-                            `nEnteredBy`,
-                            `nUpdatedBy`,
-                            `dtEntered`,
-                            `dtUpdated`,
                             `TibetanName`,
                             `TBUPlaceOfBirth`,
                             `TBUOriginVillage`,
                             `TBUFathersName`,
                             `TBUMothersName`,
-                            `TBUSpouseName`
+                            `TBUSpouseName`,
+                            `sLoginGmail`,
+                            `dtLastSuccessfullLogin`,
+                            `sPaidUntil`,
+                            `sEnteredDateTime`,
+                            `dtEntered`,
+                            `nEnteredBy`,
+                            `dtUpdated`,
+                            `nUpdatedBy`
                         FROM `tblgreenbook`
                         WHERE sGBID=@sGBID;";
             using (var command = new MySqlCommand(sql))
@@ -386,6 +392,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
             greenbook.TBUFathersName = (string)reader["TBUFathersName"];
             greenbook.TBUMothersName = (string)reader["TBUMothersName"];
             greenbook.TBUSpouseName = (string)reader["TBUSpouseName"];
+            greenbook.sLoginGmail = reader.IsDBNull("sLoginGmail") ? null : (string)reader["sLoginGmail"];
+            greenbook.dtLastSuccessfullLogin = reader.IsDBNull("dtLastSuccessfullLogin") ? null : (DateTime?)reader["dtLastSuccessfullLogin"];
             greenbook.sEnteredDateTime = reader.IsDBNull("sEnteredDateTime") ? null : (string)reader["sEnteredDateTime"];
             //Common Props
             greenbook.dtEntered = (DateTime)(reader["dtEntered"]);

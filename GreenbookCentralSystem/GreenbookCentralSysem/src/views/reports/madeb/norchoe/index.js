@@ -382,7 +382,7 @@ export default function Report() {
         {
           norchoeData.length > 0 &&
 
-          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px', color: 'black', fontSize:'1.05rem'  }}
             //isLoading={isLoading}
             icons={tableIcons}
             title={title} 

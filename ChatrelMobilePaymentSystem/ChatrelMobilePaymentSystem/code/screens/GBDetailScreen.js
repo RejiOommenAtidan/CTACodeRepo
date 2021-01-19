@@ -400,8 +400,7 @@ const styles = StyleSheet.create({
     width: wp(85),
     height: hp(15),
     marginTop: hp(22),
-    marginBottom:
-      hp(5),
+    marginBottom: hp(5),
   },
   headerComponent: {
     textAlign: 'left',

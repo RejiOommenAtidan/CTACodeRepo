@@ -21,8 +21,13 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useForm, Controller} from 'react-hook-form';
-import {errorComponent, errorContainer,sFontName} from '../constants/CommonConfig';
+import {
+  errorComponent,
+  errorContainer,
+  sFontName,
+} from '../constants/CommonConfig';
 import axios from 'axios';
+import {useSelector} from 'react-redux';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const FileDisputeScreen = (props) => {
@@ -30,21 +35,48 @@ export const FileDisputeScreen = (props) => {
   const [sDisputeSingleFile, setsDisputeSingleFile] = useState('');
   const [sFileName, setsFileName] = useState(null);
   const [sFileType, setsFileType] = useState('');
-  const [sDisputeSubject, setsDisputeSubject] = useState('');
+  // const [sDisputeSubject, setsDisputeSubject] = useState('');
   const [sDisputeMessage, setsDisputeMessage] = useState('');
+  //For GB ID
+  const oGBDetails = useSelector((state) => state.GBDetailsReducer.oGBDetails);
+  const [sGBID, setGBID] = React.useState(oGBDetails.sGBID);
+
+  //For Name
+  const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
+  const [sName, setName] = React.useState(oGoogle.name);
 
   const handleDispute = () => {
-    if(sDisputeSingleFile===''){
-      alert('Please select a File for Uploading');
+    if (sDisputeSingleFile === '') {
+      alert('Please select a file for uploading');
       return;
     }
-    console.log({
-      sDisputeSingleFile,
-      sDisputeSubject,
-      sDisputeMessage,
-      sFileName,
-      sFileType,
-    });
+
+    const submit = {
+      sGBID: sGBID,
+      sName: sName,
+      description: sDisputeMessage,
+      sTitle: sFileName,
+      file: sDisputeSingleFile,
+      sFileExtension: sFileType,
+    };
+
+    console.log(submit);
+
+    axios
+      .post(`/ChatrelPayment/SubmitDispute`, submit)
+      .then((resp) => {
+        if (resp.status === 200) {
+          alert('Dispute filed successfully');
+        }
+        else{
+          alert('Failure filing dispute');
+        }
+      })
+      .catch((error) => {
+        alert('Something went wrong, please try again later');
+        //alert(error.message)
+        console.log(error);
+      });
   };
 
   const selectOneFile = async () => {
@@ -123,7 +155,7 @@ export const FileDisputeScreen = (props) => {
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>Submit a Dispute</Text>
   </View>*/}
-      <View style={styles.enterSubjectContainer}>
+      {/* <View style={styles.enterSubjectContainer}>
         <Text style={styles.enterSubjectComponent}>ENTER SUBJECT</Text>
       </View>
       <View style={styles.subjectContainer}>
@@ -139,7 +171,6 @@ export const FileDisputeScreen = (props) => {
                 onChange(value);
                 setsDisputeSubject(value);
               }}
-              //label="Subject"
               placeholder="Subject"
               autoFocus={false}
               autoCapitalize={'sentences'}
@@ -160,7 +191,7 @@ export const FileDisputeScreen = (props) => {
             <Text style={errorComponent}>This is field required.</Text>
           </View>
         )}
-      </View>
+      </View> */}
       <View style={styles.enterMessageContainer}>
         <Text style={styles.enterMessageComponent}>ENTER MESSAGE</Text>
       </View>

@@ -19,7 +19,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {sDateFormat,sFontName} from '../constants/CommonConfig';
+import {sDateFormat, sFontName} from '../constants/CommonConfig';
 import Moment from 'moment';
 import {useSelector, useDispatch} from 'react-redux';
 import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
@@ -302,10 +302,22 @@ const styles = StyleSheet.create({
     width: wp(80),
     height: Platform.OS === 'ios' ? hp(28.25) : hp(30),
     borderRadius: 15,
-    borderColor: Colors.white,
+    //borderColor: Colors.white,
     backgroundColor: Colors.white,
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
+        //width: wp(90),
+        //borderRadius: 15,
+        borderColor: Colors.blue,
+        backgroundColor: Colors.white,
+        //shadowColor: Colors.shadowColor,
+        borderStyle: 'solid',
+        borderWidth: 1,
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.2,
+        elevation: 1,
+        shadowRadius: 60,
+        //marginBottom: 10,
   },
   cardHeaderComponent: {
     textAlign: 'left',

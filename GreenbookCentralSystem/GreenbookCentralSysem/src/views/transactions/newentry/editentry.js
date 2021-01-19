@@ -50,7 +50,8 @@ import {
   sButtonVariant,
   sSnackbarAddMessage,
   sSnackbarUpdateMessage,
-  sDDMMYYYYRegex
+  sDDMMYYYYRegex,
+  asterisk
 } from "../../../config/commonConfig";
 import { IssueBookTable } from "../issuebooktable";
 import { Alerts } from '../../alerts';
@@ -81,6 +82,9 @@ const useStyles = makeStyles({
   textField: {
     marginTop: 0.15,
     marginBottom: 0.15,
+  },
+  textFieldLabel:{
+    fontSize: '1.05rem'
   },
   dateField: {
     marginTop: 0.25,
@@ -825,6 +829,11 @@ export default function EditEntry(props) {
                         name="name_sGBID"
 
                         label={<>Green Book ID <span style={{ color: 'red' }}> *</span></>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem',
+                          }
+                        }}
                         type="text"
                         value={sGBID}
                         onChange={(e) => {
@@ -847,11 +856,6 @@ export default function EditEntry(props) {
                           This field is required
                         </span>
                       )}
-                      {/*{_.get("name_sGBID.type", errors) === "minLength" && (
-                        <span style={{ color: "red" }}>
-                          GBID cannot subceed 7 characters
-                        </span>
-                      )}*/}
                       {_.get("name_sGBID.type", errors) === "maxLength" && (
                         <span style={{ color: "red" }}>
                           GBID cannot exceed 7 characters
@@ -890,8 +894,12 @@ export default function EditEntry(props) {
                         renderInput={(params) => (
                           <TextField
                             {...params}
-
                             label={<>Authority Region <span style={{ color: 'red' }}> *</span></>}
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem',
+                              }
+                            }}
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
@@ -917,7 +925,12 @@ export default function EditEntry(props) {
                       <TextField
                         id="id_sFirstName"
 
-                        label={<>First Name <span style={{ color: 'red' }}> *</span></>}
+                        label={<>First Name {asterisk}</>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem',
+                          }
+                        }}
                         type="text"
                         onChange={(e) => {
                           setsFirstName(e.target.value);
@@ -943,7 +956,7 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sLastName"
-                        label="Last Name"
+                        label={<span style={{fontSize: '1.05rem'}}>Last Name</span>}
                         type="text"
                         onChange={(e) => {
                           setsLastName(e.target.value);
@@ -952,6 +965,9 @@ export default function EditEntry(props) {
                         margin="dense"
                         value={sLastName}
                         className={classes.textField}
+                        inputProps={{
+
+                        }}
                       />
                     </FormControl>
                   </Grid>
@@ -960,6 +976,11 @@ export default function EditEntry(props) {
                       <TextField
                         id="id_sFamilyName"
                         label="Family Name"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => {
                           setsFamilyName(e.target.value);
@@ -976,7 +997,7 @@ export default function EditEntry(props) {
                       <TextField
                         value={sAliasName}
                         id="id_sAliasName"
-                        label="Alias Name"
+                        label={<span style={{fontSize: '1.05rem'}}>Alias Name</span>}
                         type="text"
                         onChange={(e) => {
                           setsAliasName(e.target.value);
@@ -995,6 +1016,16 @@ export default function EditEntry(props) {
                         name="name_TibetanName"
                         label={<>མིང་།<span style={{ color: 'red' }}> *</span></>}
                         type="text"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.8rem',
+                          }
+                        }}
+                        inputProps={{
+                          style:{
+                            fontSize: '1.5rem'
+                          }
+                        }}
                         onChange={(e) => {
                           setTibetanName(e.target.value);
                         }}
@@ -1021,6 +1052,16 @@ export default function EditEntry(props) {
                           id="id_TBUPlaceOfBirth"
 
                           label={<>སྐྱེས་ཡུལ།<span style={{ color: 'red' }}> *</span></>}
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.8rem'
+                            }
+                          }}
+                          inputProps={{
+                            style:{
+                              fontSize: '1.5rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => {
                             setTBUPlaceOfBirth(e.target.value);
@@ -1048,6 +1089,15 @@ export default function EditEntry(props) {
                           id="id_TBUOriginVillage"
 
                           label={<> ཕ་ཡུལ།<span style={{ color: 'red' }}> *</span></>}
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.8rem'
+                            }
+                          }}inputProps={{
+                            style:{
+                              fontSize: '1.5rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => {
                             setTBUOriginVillage(e.target.value);
@@ -1091,6 +1141,11 @@ export default function EditEntry(props) {
                               }
                             })}
                             label={<> Date of Birth<span style={{ color: 'red' }}> *</span></>}
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem'
+                              }
+                            }}
                             format={sDateFormatMUIDatepicker}
                             returnMoment={true}
                             onChange={date => {
@@ -1155,6 +1210,11 @@ export default function EditEntry(props) {
                                 ...params.inputProps,
                                 autoComplete: "new-password",
                               }}
+                              InputLabelProps={{
+                                style:{
+                                  fontSize: '1.05rem'
+                                }
+                              }}
                             />
                           )}
                         />
@@ -1196,6 +1256,11 @@ export default function EditEntry(props) {
                               {...params}
                               label="Choose a Birth Country"
                               label={<>Choose a Birth Country <span style={{ color: 'red' }}> *</span></>}
+                              InputLabelProps={{
+                                style:{
+                                  fontSize: '1.05rem'
+                                }
+                              }}
                               variant="standard"
                               inputProps={{
                                 ...params.inputProps,
@@ -1221,7 +1286,11 @@ export default function EditEntry(props) {
                         <TextField
                           value={sBirthPlace}
                           id="id_sBirthPlace"
-
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           label={<>Place of Birth <span style={{ color: 'red' }}> *</span></>}
                           type="text"
                           onChange={(e) => {
@@ -1276,7 +1345,11 @@ export default function EditEntry(props) {
                           renderInput={(params) => (
                             <TextField
                               {...params}
-
+                              InputLabelProps={{
+                                style:{
+                                  fontSize: '1.05rem'
+                                }
+                              }}
                               label={<>Country <span style={{ color: 'red' }}> *</span></>}
                               variant="standard"
                               inputProps={{
@@ -1308,6 +1381,11 @@ export default function EditEntry(props) {
                           onChange={(e) => {
                             setsPCode(e.target.value);
                           }}
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           fullWidth
                           margin="dense"
                           className={classes.textField}
@@ -1324,6 +1402,11 @@ export default function EditEntry(props) {
                         type="text"
                         onChange={(e) => {
                           setsCity(e.target.value);
+                        }}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
                         }}
                         fullWidth
                         margin="dense"
@@ -1347,6 +1430,11 @@ export default function EditEntry(props) {
                           name="name_dtFormDate"
 
                           label={<>Application Date <span style={{ color: 'red' }}> *</span></>}
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           format={sDateFormatMUIDatepicker}
                           onChange={(date) => {
                             setdtFormDate(date);
@@ -1384,7 +1472,11 @@ export default function EditEntry(props) {
                         <TextField
                           value={sFathersName}
                           id="id_sFathersName"
-
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           label={<>Father's Name <span style={{ color: 'red' }}> *</span></>}
                           type="text"
                           onChange={(e) => {
@@ -1414,6 +1506,11 @@ export default function EditEntry(props) {
                           id="id_sFathersGBID"
                           name="name_sFathersGBID"
                           label="Father's GB No"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => {
                             setsFathersGBID(e.target.value);
@@ -1447,8 +1544,18 @@ export default function EditEntry(props) {
                         id="id_TBUFathersName"
                         label={<>ཕ་མིང་།<span style={{ color: 'red' }}> *</span></>}
                         type="text"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.8rem'
+                          }
+                        }}
                         onChange={(e) => {
                           setTBUFathersName(e.target.value);
+                        }}
+                        inputProps={{
+                          style:{
+                            fontSize: '1.5rem'
+                          }
                         }}
                         fullWidth
                         margin="dense"
@@ -1472,7 +1579,11 @@ export default function EditEntry(props) {
                       <FormControl className={classes.formControl}>
                         <TextField
                           id="id_sMothersName"
-
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           label={<>Mother's Name <span style={{ color: 'red' }}> *</span></>}
                           type="text"
                           onChange={(e) => {
@@ -1502,6 +1613,11 @@ export default function EditEntry(props) {
                           id="id_sMothersGBID"
                           name="name_sMothersGBID"
                           label="Mother's GB No"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => {
                             setsMothersGBID(e.target.value);
@@ -1536,9 +1652,19 @@ export default function EditEntry(props) {
                         id="id_TBUMothersName"
 
                         label={<>མ་མིང་།<span style={{ color: 'red' }}> *</span></>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.8rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => {
                           setTBUMothersName(e.target.value);
+                        }}
+                        inputProps={{
+                          style:{
+                            fontSize: '1.5rem'
+                          }
                         }}
                         fullWidth
                         margin="dense"
@@ -1564,6 +1690,11 @@ export default function EditEntry(props) {
                           value={sFathersID}
                           id="id_sFathersID"
                           label="Father's Old GB No"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => {
                             setsFathersID(e.target.value);
@@ -1580,6 +1711,11 @@ export default function EditEntry(props) {
                           value={sMothersID}
                           id="id_sMothersID"
                           label="Mother's Old GB No"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => {
                             setsMothersID(e.target.value);
@@ -1595,7 +1731,11 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sAddress1"
-
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
                         label={<>Address 1 <span style={{ color: 'red' }}> *</span></>}
                         type="text"
                         onChange={(e) => {
@@ -1626,6 +1766,11 @@ export default function EditEntry(props) {
                         value={sAddress2}
                         id="id_sAddress2"
                         label="Address 2"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => {
                           setsAddress2(e.target.value);
@@ -1645,7 +1790,11 @@ export default function EditEntry(props) {
                     <FormControl className={classes.formControl}>
                       <TextField
                         id="id_sState"
-
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
                         label={<>State <span style={{ color: 'red' }}> *</span></>}
                         type="text"
                         onChange={(e) => {
@@ -1719,6 +1868,11 @@ export default function EditEntry(props) {
                           value={sGender}
                           id="id_sGender"
                           label="Gender"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           type="text"
                           fullWidth
                           margin="dense"
@@ -1738,6 +1892,11 @@ export default function EditEntry(props) {
                           value={sPaidUntil}
                           id="id_sPaidUntil"
                           label="Paid Until"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => {
                             setsPaidUntil(e.target.value);
@@ -1782,6 +1941,11 @@ export default function EditEntry(props) {
                           <TextField
                             {...params}
                             label="Province Name"
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem'
+                              }
+                            }}
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
@@ -1798,6 +1962,11 @@ export default function EditEntry(props) {
                         value={sFstGreenBkNo}
                         id="id_sFstGreenBkNo"
                         label="First GB Number"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => {
                           setsFstGreenBkNo(e.target.value);
@@ -1842,6 +2011,11 @@ export default function EditEntry(props) {
                           <TextField
                             {...params}
                             label="Qualification"
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem'
+                              }
+                            }}
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
@@ -1858,6 +2032,11 @@ export default function EditEntry(props) {
                         value={sOtherDocuments}
                         id="id_sDocuments"
                         label="Other Documents"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => {
                           setsOtherDocuments(e.target.value);
@@ -1876,6 +2055,11 @@ export default function EditEntry(props) {
                         value={sMarried}
                         id="id_sMarried"
                         label="Marital Status"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => {
                           setsMarried(e.target.value);
@@ -1907,6 +2091,11 @@ export default function EditEntry(props) {
                           id="id_dtValidityDate"
                           name="name_dtValidityDate"
                           label="Validity Date"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           format={sDateFormatMUIDatepicker}
                           onChange={date => {
                             if (date) {
@@ -1980,6 +2169,11 @@ export default function EditEntry(props) {
                         value={sOriginVillage}
                         id="id_sOriginVillage"
                         label="Origin Village"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => {
                           setsOriginVillage(e.target.value);
@@ -1996,6 +2190,11 @@ export default function EditEntry(props) {
                         value={sOldGreenBKNo}
                         id="id_sOldGreenBKNo"
                         label="Old GB Number"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => {
                           setsOldGreenBKNo(e.target.value);
@@ -2012,6 +2211,11 @@ export default function EditEntry(props) {
                         value={sResidenceNumber}
                         id="id_sResidenceNumber"
                         label="RC Number"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => {
                           setsResidenceNumber(e.target.value);
@@ -2055,6 +2259,11 @@ export default function EditEntry(props) {
                           <TextField
                             {...params}
                             label="Occupation"
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem'
+                              }
+                            }}
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
@@ -2077,6 +2286,11 @@ export default function EditEntry(props) {
                           id="id_dtDeceased"
                           name="name_dtDeceased"
                           label="Deceased Date"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           format={sDateFormatMUIDatepicker}
                           onChange={date => {
                             debugger;
@@ -2140,6 +2354,11 @@ export default function EditEntry(props) {
                             value={sSpouseName}
                             id="id_sSpouseName"
                             label="Spouse Name"
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem'
+                              }
+                            }}
                             type="text"
                             onChange={(e) => {
                               setsSpouseName(e.target.value);
@@ -2157,6 +2376,11 @@ export default function EditEntry(props) {
                             id="id_sSpouseGBID"
                             name="name_sSpouseGBID"
                             label="Spouse GB No"
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem'
+                              }
+                            }}
                             type="text"
                             onChange={(e) => {
                               setsSpouseGBID(e.target.value);
@@ -2190,6 +2414,11 @@ export default function EditEntry(props) {
                           value={sSpouseID}
                           id="id_sSpouseID"
                           label="Spouse's Old GB No"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => {
                             setsSpouseID(e.target.value);
@@ -2208,6 +2437,16 @@ export default function EditEntry(props) {
                           value={TBUSpouseName}
                           id="id_TBUSpouseName"
                           label="བཟའ་ཟླའི་མིང་།"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.8rem'
+                            }
+                          }}
+                          inputProps={{
+                            style:{
+                              fontSize: '1.5rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => {
                             setTBUSpouseName(e.target.value);
@@ -2225,6 +2464,11 @@ export default function EditEntry(props) {
                             value={sFax}
                             id="id_sFax"
                             label="Fax Number"
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem'
+                              }
+                            }}
                             type="text"
                             onChange={(e) => {
                               setsFax(e.target.value);
@@ -2241,6 +2485,11 @@ export default function EditEntry(props) {
                             value={sPhone}
                             id="id_sPhone"
                             label="Phone Number"
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem'
+                              }
+                            }}
                             type="text"
                             onChange={(e) => {
                               setsPhone(e.target.value);
@@ -2258,6 +2507,11 @@ export default function EditEntry(props) {
                           value={sEmail}
                           id="id_sEmail"
                           label="Email"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           type="email"
                           onChange={(e) => {
                             setsEmail(e.target.value);
@@ -2459,7 +2713,7 @@ export default function EditEntry(props) {
                 className={classes.expansionPanel}
               >
                 <Typography className={classes.expansionHeading}>
-                  Photo & Documents
+                  Photo &amp; Documents
                 </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
