@@ -215,6 +215,7 @@ CREATE TABLE `tblgreenbook` (
   `sEmail` varchar(255) DEFAULT NULL,
   `sPhone` varchar(255) DEFAULT NULL,
   `sFax` varchar(255) DEFAULT NULL,
+  `dtDeceased` date DEFAULT NULL,
   `sCountryID` varchar(255) DEFAULT NULL,
   `sPaidUntil` text NOT NULL,
   `sLoginGmail` varchar(255) DEFAULT NULL,
@@ -271,6 +272,7 @@ INSERT INTO `tblgreenbook`
 `sEmail`,
 `sPhone`,
 `sFax`,
+`dtDeceased`,
 `sCountryID`,
 `sPaidUntil`,
 `sLoginGmail`,
@@ -303,6 +305,7 @@ SELECT `tblgreenbook`.`Id`,
     `tblgreenbook`.`sEmail`,
     `tblgreenbook`.`sPhone`,
     `tblgreenbook`.`sFax`,
+	`tblgreenbook`.`dtDeceased`,
 	`tblgreenbook`.`sCountryID`,
     `tblgreenbook`.`sPaidUntil`,
     `tblgreenbook`.`sLoginGmail`,
@@ -607,3 +610,14 @@ SELECT `lnkgbchatreldonation`.`Id`,
     `lnkgbchatreldonation`.`dtUpdated`,
     `lnkgbchatreldonation`.`nUpdatedBy`
 FROM `ctadb`.`lnkgbchatreldonation`;
+
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '1');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '2');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '3');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '4');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '5');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '6');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '7');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '8');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '9');
+UPDATE `lstchatrel` SET `dtChatrelFrom` = '2000-04-01' WHERE (`Id` = '10');
