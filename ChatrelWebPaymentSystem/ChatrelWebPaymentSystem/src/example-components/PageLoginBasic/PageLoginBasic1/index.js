@@ -212,13 +212,21 @@ let oGBDetails={
     }
   
    fetch('https://json.geoiplookup.io/')
+   //fetch('http://api.ipstack.com/check?access_key=aba3f72c6ce02b9645fb946f5b8c06fa')
    .then(response => response.json())
   .then(data => {
+
     console.log(data);
+    //alert(data.country_code);
       if(data.country_code!="IN"){
          // history.push('/AccessDenied')
+
         }
         console.log(data);
+  })
+  .catch(error => {
+console.log(error);
+
   });
 
   }, [userObj]);

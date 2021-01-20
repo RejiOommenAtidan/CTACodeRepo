@@ -143,10 +143,10 @@ const logout =() =>{
   history.push('/Login');
     
 }
-
+const time=1000*60*10;
 useEffect(() => {
     // 1000*60*10= 10 mins 
-  setTimeout(()=>{toggleSignoutModal();},1000*10*60);
+  setTimeout(()=>{toggleSignoutModal();},time);
 
 
 }, []);
