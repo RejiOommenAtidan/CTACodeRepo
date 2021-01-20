@@ -28,7 +28,7 @@ import {
 import Moment from 'moment';
 import {useSelector, useDispatch} from 'react-redux';
 import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
-import { useIsFocused } from "@react-navigation/native";
+import {useIsFocused} from '@react-navigation/native';
 
 export const FamilyChatrelIntermediateScreen = (props) => {
   const isFocused = useIsFocused();
@@ -81,12 +81,11 @@ export const FamilyChatrelIntermediateScreen = (props) => {
   };
 
   useEffect(() => {
-    if(isFocused){
+    if (isFocused) {
       setbLoader(true);
-      console.log("Fam Chatrel Called");
+      console.log('Fam Chatrel Called');
       getFamilyDetails();
     }
-    
   }, [isFocused]);
 
   const handleFamilyMemberPress = (member) => {
@@ -119,15 +118,18 @@ export const FamilyChatrelIntermediateScreen = (props) => {
         <Text style={styles.headingComponent}>FAMILY MEMBERS</Text>
   </View>*/}
       <ScrollView showsVerticalScrollIndicator={false}>
-      {aFamilyMembers.length === 0 && !bLoader && (
+        {aFamilyMembers.length === 0 && !bLoader && (
           <View style={styles.zeroRecordContainer}>
-            <Text style={styles.zeroRecordComponent}>No records present for family members</Text>
+            <Text style={styles.zeroRecordComponent}>
+              No records present for family members
+            </Text>
           </View>
         )}
         {aFamilyMembers.map((member, index) => {
           return (
             <View key={index}>
               {/* <TouchableOpacity
+              activeOpacity={1}
                 style={styles.touchableOpacity}
                 onPress={() => { handleFamilyMemberPress(member) }}
               > */}
@@ -516,18 +518,15 @@ const styles = StyleSheet.create({
   payNowContainer: {
     marginTop: hp(0.25),
   },
-  zeroRecordContainer:{
-
-  },
-  zeroRecordComponent:{
+  zeroRecordContainer: {},
+  zeroRecordComponent: {
     textAlign: 'center',
-    fontSize:
-      wp(5),
+    fontSize: wp(5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
-  }
+  },
 });

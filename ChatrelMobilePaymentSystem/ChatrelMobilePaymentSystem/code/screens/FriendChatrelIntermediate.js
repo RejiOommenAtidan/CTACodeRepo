@@ -105,24 +105,25 @@ export const FriendChatrelIntermediateScreen = (props) => {
   const [bShowFriendGBID, setbShowFriendGBID] = useState(true);
   const [dtFriendDOB, setdtFriendDOB] = useState(null);
   const dtToday = Moment().format(sDateFormatDatePicker);
-  
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}>
       {bLoader && (
-          <ActivityIndicator
-            size={Platform.OS === 'ios' ? 0 : 'large'}
-            color={Colors.grey}
-            animating={true}
-            //hidesWhenStopped={true}
-            style={oActivityIndicatorStyle}
-          />
-        )}
+        <ActivityIndicator
+          size={Platform.OS === 'ios' ? 0 : 'large'}
+          color={Colors.grey}
+          animating={true}
+          //hidesWhenStopped={true}
+          style={oActivityIndicatorStyle}
+        />
+      )}
       <View style={styles.mainContainer}>
         {/*<View style={styles.headingContainer}>
           <Text style={styles.headingComponent}>Chatrel For Friends</Text>
   </View>*/}
-        
+
         <View style={styles.firstNameLabelContainer}>
           <Text style={styles.firstNameLabelComponent}>FIRST NAME</Text>
         </View>

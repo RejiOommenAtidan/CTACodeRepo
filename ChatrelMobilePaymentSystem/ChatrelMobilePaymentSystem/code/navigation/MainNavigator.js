@@ -1,5 +1,9 @@
 import React from 'react';
 import {Platform} from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import {createStackNavigator} from '@react-navigation/stack';
 import {
   createDrawerNavigator,
@@ -46,6 +50,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {sFontName} from '../constants/CommonConfig';
+import {CustomSidebarMenu} from '../components/CustomSidebar';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {GLogout} from '../components/GLogout';
@@ -234,7 +239,7 @@ export const MainNavigator = () => {
     <MainDrawerNavigator.Navigator
       drawerStyle={{
         backgroundColor: Colors.white,
-        width: 230,
+        width: 227.5,
       }}
       initialRouteName={'Login'}
       drawerPosition={'left'}
@@ -245,6 +250,7 @@ export const MainNavigator = () => {
       lazy={true}
       openByDefault={false}
       drawerContent={(props) => {
+        console.log(props)
         const filteredProps = {
           ...props,
           state: {
@@ -266,17 +272,33 @@ export const MainNavigator = () => {
           },
         };
         return (
-          <DrawerContentScrollView {...filteredProps}>
-            <DrawerItemList {...filteredProps} />
-          </DrawerContentScrollView>
+          <CustomSidebarMenu {...filteredProps} />
         );
       }}
-      drawerContentOptions={{
+      drawerContentOptions=
+      {{
+        itemStyle:{
+          //borderBottomWidth:0.75,
+          //borderBottomColor:Colors.black,
+          justifyContent:"flex-start",
+          marginBottom:hp(1)
+          //alignContent:"center",
+          //alignSelf:"center"
+        },
+        // activeBackgroundColor:Colors.blue,
+        // inactiveTintColor:Colors.blue,
+        // contentContainerStyle:{
+        //   
+        // },
         activeTintColor: Colors.black,
         labelStyle: {
           fontFamily: sFontName,
+          fontStyle:"normal",
+          fontWeight:"normal",
+          alignSelf:"flex-start"
         },
-      }}>
+      }}
+      >
       {/*Login*/}
       <MainDrawerNavigator.Screen
         name={'Login'}
@@ -303,7 +325,11 @@ export const MainNavigator = () => {
             <Ionicons
               name="md-home"
               size={size}
-              color={focused ? Colors.black : Colors.black}
+              color={Colors.black}
+              style={{
+                justifyContent:"flex-start",
+                
+              }}
             />
           ),
           drawerLabel: 'Home',
@@ -319,7 +345,11 @@ export const MainNavigator = () => {
             <FontAwesome5
               name="donate"
               size={size}
-              color={focused ? Colors.black : Colors.black}
+              color={Colors.black}
+              style={{
+                justifyContent:"flex-start",
+                
+              }}
             />
           ),
           drawerLabel: 'Self Chatrel',
@@ -335,7 +365,11 @@ export const MainNavigator = () => {
             <Ionicons
               name="md-heart"
               size={size}
-              color={focused ? Colors.black : Colors.black}
+              color={Colors.black}
+              style={{
+                justifyContent:"flex-start",
+                
+              }}
             />
           ),
           drawerLabel: 'Family Chatrel',
@@ -355,7 +389,11 @@ export const MainNavigator = () => {
             <Ionicons
               name="md-people"
               size={size}
-              color={focused ? Colors.black : Colors.black}
+              color={Colors.black}
+              style={{
+                justifyContent:"flex-start",
+                
+              }}
             />
           ),
           drawerLabel: 'Friend Chatrel',
@@ -372,10 +410,14 @@ export const MainNavigator = () => {
         component={ChatrelHistoryNavigator}
         options={{
           drawerIcon: ({focused, size}) => (
-            <FontAwesome
+            <FontAwesome5
               name="history"
               size={size}
-              color={focused ? Colors.black : Colors.black}
+              color={Colors.black}
+              style={{
+                justifyContent:"flex-start",
+                
+              }}
             />
           ),
           drawerLabel: 'Chatrel History',
@@ -392,7 +434,11 @@ export const MainNavigator = () => {
             <Ionicons
               name="md-document"
               size={size}
-              color={focused ? Colors.black : Colors.black}
+              color={Colors.black}
+              style={{
+                justifyContent:"flex-start",
+                
+              }}
             />
           ),
           drawerLabel: 'File Dispute',
@@ -405,10 +451,14 @@ export const MainNavigator = () => {
         component={MyProfileNavigator}
         options={{
           drawerIcon: ({focused, size}) => (
-            <FontAwesome
-              name="user"
+            <FontAwesome5
+              name="user-alt"
               size={size}
-              color={focused ? Colors.black : Colors.black}
+              color={Colors.black}
+              style={{
+                justifyContent:"flex-start",
+                
+              }}
             />
           ),
           drawerLabel: 'My Profile',
