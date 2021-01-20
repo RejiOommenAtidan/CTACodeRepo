@@ -4,13 +4,23 @@ import {  Button} from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import {storeGoogleCreds} from '../../actions/transactions/GLoginAction';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Axios from 'axios';
 const GoogleLoginPage = (props) => {
   let history = useHistory();
     const save =(response) => {
-        console.log("Login Successful: ",response); 
-        dispatch(storeGoogleCreds(response.profileObj));
+        console.log("Login Successful: ",response);
+        debugger
+        const token = response.tokenId;
+        axios.get(`/Account/ValidateGoogleToken/?code=${token}`)
+        .then(resp => {
+          if(resp.status === 200){
+            console.log(resp.data);
+          }
+        })
+        //dispatch(storeGoogleCreds(response.profileObj));
        // history.push('/paymentpage');
         
     }
