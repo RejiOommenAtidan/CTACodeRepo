@@ -165,7 +165,9 @@ const HomeScreen = (props) => {
   }, []);
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}>
       <View style={styles.mainContainer}>
         {bLoader && (
           <ActivityIndicator
