@@ -5,6 +5,7 @@
     <UserSecretsId>c51a83ce-a8cf-4a68-8656-c4d2a2c78237</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth" Version="1.49.0" />
     <PackageReference Include="MailKit" Version="2.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

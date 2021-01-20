@@ -18,6 +18,7 @@ import projectLogo from '../../../assets/images/CTALogo.png';
 import wallpaper from '../../../assets/images/wallpaper.jpg';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { storeCurrentGBDetails } from 'actions/transactions/CurrentGBDetailsAction';
+import {storeGoogleCreds} from 'actions/transactions/GLoginAction';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,7 +28,7 @@ import { dateTimePickerDefaultProps } from '@material-ui/pickers/constants/prop-
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { white } from '@material-ui/core/colors';
 import Moment from 'moment';
-
+//import cookieCheck from 'third-party-cookie-check';
 import { GoogleLogout } from 'react-google-login';
 //import { useDispatch } from 'react-redux';
 //import {  Button} from '@material-ui/core';
@@ -73,7 +74,7 @@ const MyTheme = createMuiTheme({
 });
 
 export default function LogingPage(props) {
-
+ 
   const classes = useStyles();
 
   let history = useHistory();
@@ -87,7 +88,7 @@ export default function LogingPage(props) {
         // window.location.replace('/login');
         
     }
-  const userObj = useSelector(state => state.GLoginReducer.oGoogle);
+  //const userObj = useSelector(state => state.GLoginReducer.oGoogle);
 
   const responseGoogle = (response) => {
     console.log(response);
@@ -115,12 +116,23 @@ export default function LogingPage(props) {
    const [login,setLogin]=React.useState(false);
    const [nGBID,setGbID]=React.useState("");
    const [dtDob,setDob]=React.useState(null);
+   const [sGoogleCode,setGoogleCode]=React.useState("");
+   const [sEmail,setEmail]=React.useState("");
 
   //On Success of verifying info
 let oGBDetails={
   sGBID:nGBID,
   dtDob:dtDob
 };
+const test =(e)=>{
+
+  setLogin(true);
+  dispatch(storeGoogleCreds(e.profileObj));
+  setGoogleCode(e.tokenId);
+  setEmail(e.profileObj.email);
+
+
+}
   const submit = (e) => {
     //obj.user=JSON.parse(localStorage.getItem('currentUser')).name;
     //alert(JSON.stringify(obj));
@@ -146,15 +158,15 @@ let oGBDetails={
       sGBID:""+nGBID,
       dtDOB:Moment(dtDob).format("YYYY-MM-DD"),
       //dtDOB:dtDob,
-      sFirstName:userObj.givenName,
-      sLastName:userObj.familyName,
-      sEmail:userObj.email  
+      code:sGoogleCode,
+      sEmail:sEmail
+     
     }
     console.log(Obj);
     //dispatch(storeGBDetails(oGBDetails));
     //dispatch(storeCurrentGBDetails(oGBDetails));
     //history.push('/Home');
-    axios.post(`ChatrelPayment/AuthenticateGBID/`,Obj)
+    axios.post(`User/AuthenticateGBID/`,Obj)
     .then(resp => {
       if (resp.status === 200) {
         //setPaymentHistory(resp.data);
@@ -201,8 +213,19 @@ let oGBDetails={
   }
 
   }
- 
-   useEffect(() => {
+  const cookie= async () =>{
+    //const { supported, timedOut } = await cookieCheck();
+
+   // console.log("3rd party cookie's:",supported,timedOut);
+  }
+ useEffect(()=>{
+  /*document.cookie = "username=test";
+  var testCookie=document.cookie;
+  console.log("Test Cookie",testCookie);*/
+//  cookie();
+
+ },[]);
+ /*  useEffect(() => {
     
     if( userObj == null){
       setLogin(false);
@@ -229,7 +252,7 @@ console.log(error);
 
   });
 
-  }, [userObj]);
+  }, [userObj]);*/
 
   return (
     <>
@@ -248,8 +271,12 @@ console.log(error);
                         { !login &&             
                         <>
                         <h1  className="display-2 mb-1 font-weight-bold">eChatrel</h1>
-                        <h4 className="display-5 mb-1 ">Your go-to resource for supporting the Tibetan Government</h4>        
-                        <GoogleLoginPage/>
+                        <h4 className="display-5 mb-1 ">Your go-to resource for supporting the Tibetan Government</h4>     
+
+
+                        <GoogleLoginPage
+                        test={test}
+                        />
                         </>
                         }
                       
@@ -338,7 +365,7 @@ console.log(error);
                             <Button variant="contained" className="w-50 " type = 'submit' disabled={!submitBtn} style={{   backgroundColor: 'rgb(42, 92, 255)', color:'white'}}>VERIFY DETAILS</Button>
                             </Grid>
                             <Grid item xs={12}>
-                            { userObj &&<> Signed in with {userObj.email}</> }
+                            { login &&<> Signed in with {sEmail}</> }
                             </Grid>  
                             <Grid item xs={12}>
                               
