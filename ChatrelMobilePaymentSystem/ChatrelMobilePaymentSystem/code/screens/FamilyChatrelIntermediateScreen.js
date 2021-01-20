@@ -81,8 +81,12 @@ export const FamilyChatrelIntermediateScreen = (props) => {
   };
 
   useEffect(() => {
-    if(isFocused)
-    getFamilyDetails();
+    if(isFocused){
+      setbLoader(true);
+      console.log("Fam Chatrel Called");
+      getFamilyDetails();
+    }
+    
   }, [isFocused]);
 
   const handleFamilyMemberPress = (member) => {
@@ -115,6 +119,11 @@ export const FamilyChatrelIntermediateScreen = (props) => {
         <Text style={styles.headingComponent}>FAMILY MEMBERS</Text>
   </View>*/}
       <ScrollView showsVerticalScrollIndicator={false}>
+      {aFamilyMembers.length === 0 && !bLoader && (
+          <View style={styles.zeroRecordContainer}>
+            <Text style={styles.zeroRecordComponent}>No records present for family members</Text>
+          </View>
+        )}
         {aFamilyMembers.map((member, index) => {
           return (
             <View key={index}>
@@ -507,4 +516,18 @@ const styles = StyleSheet.create({
   payNowContainer: {
     marginTop: hp(0.25),
   },
+  zeroRecordContainer:{
+
+  },
+  zeroRecordComponent:{
+    textAlign: 'center',
+    fontSize:
+      wp(5),
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: Colors.blackText,
+    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    //letterSpacing: Resolution.nLetterSpacing,
+    fontFamily: sFontName,
+  }
 });

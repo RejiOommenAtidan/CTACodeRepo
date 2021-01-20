@@ -32,6 +32,7 @@ import {removeGBDetails} from '../store/actions/GBDetailsAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useIsFocused } from "@react-navigation/native";
 
 // import { withNavigationFocus } from 'react-navigation';
 //import CustomHeaderButton from '../components/HeaderButton';
@@ -57,8 +58,8 @@ const HomeScreen = (props) => {
   // };
 
   const [nChatrelTotalAmount, setnChatrelTotalAmount] = useState(0);
-  const [bLoader, setbLoader] = useState(false);
-
+  const [bLoader, setbLoader] = useState(true);
+  const isFocused = useIsFocused();
   const aCard = [
     {
       sLabel: `Self\nChatrel`,
@@ -122,10 +123,12 @@ const HomeScreen = (props) => {
         if (resp.status === 200) {
           setnChatrelTotalAmount(resp.data.chatrelPayment.nChatrelTotalAmount);
         }
+        setbLoader(false);
       })
       .catch((error) => {
         // console.log(error.message);
         // console.log(error.config);
+        setbLoader(false);
         Alert.alert(
           'Invalid Details for Chatrel',
           'Please Contact CTA',
@@ -146,12 +149,21 @@ const HomeScreen = (props) => {
   };
 
   useEffect(() => {
-    getChatrelDetails();
+    if(isFocused){
+      setbLoader(true);
+      console.log("Home Called");
+      getChatrelDetails();
+    }
+  }, [isFocused]);
+
+  useEffect(() => {
+    //getChatrelDetails();
     BackHandler.addEventListener('hardwareBackPress', () => true);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', () => true);
     };
   }, []);
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.mainContainer}>
@@ -236,7 +248,7 @@ const HomeScreen = (props) => {
           })}
         </View>
         {/**/}
-        {nChatrelTotalAmount !== 0 && (
+        {nChatrelTotalAmount !== 0 && !bLoader && (
           <View style={styles.pendingAmountContainer}>
             <Card containerStyle={styles.pendingAmountComponent}>
               <Card.Image
@@ -274,7 +286,7 @@ titleStyle={styles.pendingAmountTextComponent}
           </View>
         )}
         {/*New Job Contribution*/}
-        {nChatrelTotalAmount === 0 && (
+        {nChatrelTotalAmount === 0 && !bLoader && (
           <View style={styles.newJobContribContainer}>
             <Card containerStyle={styles.newJobContribComponent}>
               <View style={styles.newJobContribTextContainer}>
