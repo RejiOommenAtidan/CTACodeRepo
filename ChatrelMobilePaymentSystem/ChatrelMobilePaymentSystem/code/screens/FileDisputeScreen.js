@@ -320,7 +320,7 @@ export const FileDisputeScreen = (props) => {
 
 export const FileDisputeScreenOptions = (navData) => {
   return {
-    headerTitle: 'Submit a Dispute',
+    headerTitle: 'File Dispute',
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item

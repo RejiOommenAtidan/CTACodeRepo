@@ -75,8 +75,11 @@ export const ChatrelHistoryScreen = (props) => {
   };
 
   useEffect(() => {
-    if(isFocused)
-    getChatrelHistoryDetails();
+    if(isFocused){
+      setbLoader(true);
+      console.log("Chatrel History Called");
+      getChatrelHistoryDetails();
+    }
   }, [isFocused]);
 
   const [paymentHistory, setPaymentHistory] = useState([]);
@@ -101,7 +104,9 @@ export const ChatrelHistoryScreen = (props) => {
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>CHATREL HISTORY</Text>
   </View>*/}
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+      >
         {paymentHistory.length === 0 && !bLoader && (
           <View style={styles.zeroRecordContainer}>
             <Text style={styles.zeroRecordComponent}>No Records Available</Text>
@@ -524,4 +529,18 @@ const styles = StyleSheet.create({
   downloadReceiptContainer: {
     marginTop: hp(0.25),
   },
+  zeroRecordContainer:{
+
+  },
+  zeroRecordComponent:{
+    textAlign: 'center',
+    fontSize:
+      wp(5),
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: Colors.blackText,
+    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    //letterSpacing: Resolution.nLetterSpacing,
+    fontFamily: sFontName,
+  }
 });

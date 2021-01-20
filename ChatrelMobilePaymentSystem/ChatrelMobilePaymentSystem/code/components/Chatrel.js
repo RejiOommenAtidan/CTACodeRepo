@@ -368,9 +368,13 @@ export const Chatrel = (props) => {
   };
 
   useEffect(() => {
-    //if(isFocused)
-    getChatrelDetails();
-  }, []);
+    if(isFocused){
+      console.log("Chatrel Component Called");
+      setbRender(false);
+      setbLoader(true);
+      getChatrelDetails();
+    }
+  }, [isFocused]);
 
   const getChatrelDetails = () => {
     axios
