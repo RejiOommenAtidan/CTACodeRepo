@@ -16,5 +16,6 @@ export default {
     red:'#ff0000',
     lightBlueChatrelWebsite:'#ced9fd',
     grey:'#808080',
-    shadowColor:'#470000'
+    shadowColor:'#470000',
+    backgroundColorForLoader:"#00000000"
 };

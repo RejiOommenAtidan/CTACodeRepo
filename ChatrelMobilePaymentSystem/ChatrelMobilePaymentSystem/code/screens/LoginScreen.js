@@ -57,16 +57,13 @@ const styles = StyleSheet.create({
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
   imgContainer: {
-    marginTop:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 15 : 25,
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 12 : 20,
+    marginTop: hp(2.5),
+    marginBottom: hp(2.5),
   },
   headerContainer: {
     width: wp(75),
     height: hp(6.5),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
+    marginBottom: hp(2.5),
   },
   headerComponent: {
     width: '100%',
@@ -85,10 +82,7 @@ const styles = StyleSheet.create({
   textContainer: {
     width: wp(75),
     height: hp(6.5),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 92.4
-        : 154,
+    marginBottom: hp(12.5),
   },
   textComponent: {
     fontSize:

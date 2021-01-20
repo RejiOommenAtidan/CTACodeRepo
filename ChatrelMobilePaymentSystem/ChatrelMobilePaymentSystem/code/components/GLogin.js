@@ -38,6 +38,7 @@ export const GLogin = (props) => {
     //     props.props.navigation.navigate("GBDetail");
     //   }
     // });
+    
   }, []);
 
   // const getUserDataFromAsnycStorage = async () => {

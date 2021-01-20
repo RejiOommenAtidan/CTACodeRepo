@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator
 } from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
@@ -25,12 +26,14 @@ import {
   errorComponent,
   errorContainer,
   sFontName,
+  oActivityIndicatorStyle
 } from '../constants/CommonConfig';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const FileDisputeScreen = (props) => {
+  const [bLoader, setbLoader] = useState(false);
   const {control, handleSubmit, errors} = useForm();
   const [sDisputeSingleFile, setsDisputeSingleFile] = useState('');
   const [sFileName, setsFileName] = useState(null);
@@ -51,6 +54,8 @@ export const FileDisputeScreen = (props) => {
       return;
     }
 
+    setbLoader(true);
+
     const submit = {
       sGBID: sGBID,
       sName: sName,
@@ -60,19 +65,22 @@ export const FileDisputeScreen = (props) => {
       sFileExtension: sFileType,
     };
 
-    console.log(submit);
+    // console.log(submit);
 
     axios
       .post(`/ChatrelPayment/SubmitDispute`, submit)
       .then((resp) => {
         if (resp.status === 200) {
+          setbLoader(false);
           alert('Dispute filed successfully');
         }
         else{
+          setbLoader(false);    
           alert('Failure filing dispute');
         }
       })
       .catch((error) => {
+        setbLoader(false);
         alert('Something went wrong, please try again later');
         //alert(error.message)
         console.log(error);
@@ -152,6 +160,15 @@ export const FileDisputeScreen = (props) => {
 
   return (
     <View style={styles.mainContainer}>
+      {bLoader && (
+          <ActivityIndicator
+            size={Platform.OS === 'ios' ? 0 : 'large'}
+            color={Colors.grey}
+            animating={true}
+            //hidesWhenStopped={true}
+            style={oActivityIndicatorStyle}
+          />
+        )}
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>Submit a Dispute</Text>
   </View>*/}

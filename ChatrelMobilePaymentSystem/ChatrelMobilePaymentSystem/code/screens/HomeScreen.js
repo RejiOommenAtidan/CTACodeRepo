@@ -8,6 +8,7 @@ import {
   BackHandler,
   Alert,
   Dimensions,
+  ActivityIndicator
 } from 'react-native';
 import {Card, Button, Tile} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -16,7 +17,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import {sFontName} from '../constants/CommonConfig';
+import {sFontName, oActivityIndicatorStyle} from '../constants/CommonConfig';
 import {Icon} from 'react-native-elements';
 import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import {
@@ -56,6 +57,7 @@ const HomeScreen = (props) => {
   // };
 
   const [nChatrelTotalAmount, setnChatrelTotalAmount] = useState(0);
+  const [bLoader, setbLoader] = useState(false);
 
   const aCard = [
     {
@@ -153,6 +155,15 @@ const HomeScreen = (props) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.mainContainer}>
+      {bLoader && (
+          <ActivityIndicator
+            size={Platform.OS === 'ios' ? 0 : 'large'}
+            color={Colors.grey}
+            animating={true}
+            //hidesWhenStopped={true}
+            style={oActivityIndicatorStyle}
+          />
+        )}
         <View style={styles.headerContainer}>
           <Text style={styles.headerComponent}>Quick Actions</Text>
         </View>
@@ -161,10 +172,12 @@ const HomeScreen = (props) => {
             return (
               <View key={index} style={styles.singleCardContainer}>
                 <TouchableOpacity
-                  onPress={() => {
-                    props.navigation.navigate(card.sRouteName);
-                    //console.log(card);
-                  }}>
+                onPress={() => {
+                  setbLoader(true);
+                  props.navigation.navigate(card.sRouteName);
+                  //console.log(card);
+                }}
+                  >
                   <Card
                     containerStyle={{
                       ...styles.singleCardComponent,
@@ -246,6 +259,7 @@ const HomeScreen = (props) => {
                 }}
                 title="PAY NOW"
                 onPress={() => {
+                  setbLoader(true);
                   props.navigation.navigate('SelfChatrel');
                 }}
               />
@@ -286,6 +300,7 @@ titleStyle={styles.pendingAmountTextComponent}
                 }}
                 title="UPDATE EMPLOYEMENT STATUS"
                 onPress={() => {
+                  setbLoader(true);
                   props.navigation.navigate('SelfChatrel');
                 }}
               />

@@ -6,10 +6,13 @@ import {
   ScrollView,
   StyleSheet,
   Platform,
+  ActivityIndicator,
+  
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import IOSPicker from 'react-native-ios-picker';
 import {sFontName} from '../constants/CommonConfig';
+import { useIsFocused } from "@react-navigation/native";
 // import DropDownPicker from 'react-native-dropdown-picker';
 // import Icon from 'react-native-vector-icons/Feather';
 // import ModalDropdown from 'react-native-modal-dropdown';
@@ -20,13 +23,19 @@ import axios from 'axios';
 import Moment from 'moment';
 import Colors from '../constants/Colors';
 import RNPaypal from 'react-native-paypal-lib';
-import {sPayPalClientID} from '../constants/CommonConfig';
+import {
+  sPayPalClientID,
+  oActivityIndicatorStyle,
+} from '../constants/CommonConfig';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
+
 export const Chatrel = (props) => {
+  const isFocused = useIsFocused();
+  const [bLoader, setbLoader] = useState(true);
   const [bRender, setbRender] = useState(false);
   const [sName, setsName] = useState('');
   const [nPaidUntil, setnPaidUntil] = useState(0);
@@ -309,6 +318,7 @@ export const Chatrel = (props) => {
     //   .post(`/ChatrelPayment/AddNewChatrelPayment`, finalObj)
     //   .then((resp) => {
     //     if (resp.status === 200) {
+    //       setbLoader(false)
     //       //alert(resp.data);
     //       console.log(resp.data);
     //       resp.data.receipt.sGBID =
@@ -330,6 +340,8 @@ export const Chatrel = (props) => {
     //     console.log(error.config);
     //     console.log(error.message);
     //     console.log(error.response);
+    //     setbLoader(false);
+    //     alert("Something went wrong, please try again later");
     //   });
 
     // const {
@@ -356,6 +368,7 @@ export const Chatrel = (props) => {
   };
 
   useEffect(() => {
+    //if(isFocused)
     getChatrelDetails();
   }, []);
 
@@ -396,6 +409,7 @@ export const Chatrel = (props) => {
                   nAdditionalDonation,
                   nBusinessDonation,
                 );
+                setbLoader(false);
                 setbRender(true);
                 fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
                   .then((response) => response.json())
@@ -428,6 +442,22 @@ export const Chatrel = (props) => {
         lAuthRegions.find((x) => x.id === dataAPI.nAuthRegionID),
       );
   }, [lAuthRegions, dataAPI]);
+
+  if (!bRender) {
+    return (
+      <>
+        {bLoader && (
+          <ActivityIndicator
+            size={Platform.OS === 'ios' ? 0 : 'large'}
+            color={Colors.grey}
+            animating={true}
+            //hidesWhenStopped={true}
+            style={oActivityIndicatorStyle}
+          />
+        )}
+      </>
+    );
+  }
 
   //console.log(props);
   return (
@@ -479,9 +509,11 @@ export const Chatrel = (props) => {
           </View>
           {aGBChatrels.map((year, index) => {
             return (
-              <View>
+              <View
+              key={year.nChatrelYear}
+              >
                 <Card
-                  key={year.nChatrelYear}
+                  //key={year.nChatrelYear}
                   containerStyle={{
                     //width: wp(90),
                     borderRadius: 15,
@@ -944,6 +976,7 @@ export const Chatrel = (props) => {
                     acceptCreditCards: true,
                   })
                     .then((response) => {
+                      setbLoader(true);
                       //alert(response);
                       //console.log(response);
                       //TODO: OUR CALLS
