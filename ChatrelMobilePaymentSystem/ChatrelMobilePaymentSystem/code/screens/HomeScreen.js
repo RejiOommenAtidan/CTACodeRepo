@@ -8,7 +8,7 @@ import {
   BackHandler,
   Alert,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import {Card, Button, Tile} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -32,7 +32,7 @@ import {removeGBDetails} from '../store/actions/GBDetailsAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { useIsFocused } from "@react-navigation/native";
+import {useIsFocused} from '@react-navigation/native';
 
 // import { withNavigationFocus } from 'react-navigation';
 //import CustomHeaderButton from '../components/HeaderButton';
@@ -149,9 +149,9 @@ const HomeScreen = (props) => {
   };
 
   useEffect(() => {
-    if(isFocused){
+    if (isFocused) {
       setbLoader(true);
-      console.log("Home Called");
+      console.log('Home Called');
       getChatrelDetails();
     }
   }, [isFocused]);
@@ -167,7 +167,7 @@ const HomeScreen = (props) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.mainContainer}>
-      {bLoader && (
+        {bLoader && (
           <ActivityIndicator
             size={Platform.OS === 'ios' ? 0 : 'large'}
             color={Colors.grey}
@@ -184,12 +184,12 @@ const HomeScreen = (props) => {
             return (
               <View key={index} style={styles.singleCardContainer}>
                 <TouchableOpacity
-                onPress={() => {
-                  setbLoader(true);
-                  props.navigation.navigate(card.sRouteName);
-                  //console.log(card);
-                }}
-                  >
+                  activeOpacity={1}
+                  onPress={() => {
+                    setbLoader(true);
+                    props.navigation.navigate(card.sRouteName);
+                    //console.log(card);
+                  }}>
                   <Card
                     containerStyle={{
                       ...styles.singleCardComponent,
