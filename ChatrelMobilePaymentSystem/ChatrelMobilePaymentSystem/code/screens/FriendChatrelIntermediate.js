@@ -8,6 +8,7 @@ import {
   Dimensions,
   Alert,
   ToastAndroid,
+  ActivityIndicator,
 } from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
@@ -25,6 +26,7 @@ import {
   sDateFormat,
   sDateFormatDatePicker,
   sISODateFormat,
+  oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import {useSelector, useDispatch} from 'react-redux';
 import {storeGBDetails} from '../store/actions/GBDetailsAction';
@@ -39,8 +41,12 @@ import axios from 'axios';
 export const FriendChatrelIntermediateScreen = (props) => {
   const dispatch = useDispatch();
   const {control, handleSubmit, errors} = useForm();
+  const [bLoader, setbLoader] = useState(false);
   const onSubmit = () => {
+    setbLoader(true);
+
     console.log(dtFriendDOB);
+
     let oFriendGBDetails = {
       sFriendGBID: nFriendGBID,
       sFirstName: sFriendFirstname,
@@ -66,6 +72,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
           // .catch(error => {
           //   console.log(error.message);
           // });
+          setbLoader(false);
           let oGBDetails = {
             sGBID: nFriendGBID,
             dtDOB: dtFriendDOB,
@@ -78,16 +85,18 @@ export const FriendChatrelIntermediateScreen = (props) => {
           dispatch(storeCurrentGBDetails(oGBDetails));
           props.navigation.navigate('FriendChatrel');
         } else {
+          setbLoader(false);
           alert("Values don't match with database. Enter correct values.");
         }
       })
       .catch((error) => {
-        if (error.response.status === 400) {
-          alert('Missing Parameters...');
-        }
+        // if (error.response.status === 400) {
+        //   console.info('Missing Parameters...');
+        // }
+        setbLoader(false);
+        alert("Values don't match with database. Enter correct values.");
         console.log(error.message);
         console.log(error);
-        alert("Values don't match with database. Enter correct values.");
       });
   };
   const [nFriendGBID, setnFriendGBID] = useState('');
@@ -96,12 +105,24 @@ export const FriendChatrelIntermediateScreen = (props) => {
   const [bShowFriendGBID, setbShowFriendGBID] = useState(true);
   const [dtFriendDOB, setdtFriendDOB] = useState(null);
   const dtToday = Moment().format(sDateFormatDatePicker);
+  
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
+      {bLoader && (
+          <ActivityIndicator
+            size={Platform.OS === 'ios' ? 0 : 'large'}
+            color={Colors.grey}
+            animating={true}
+            //hidesWhenStopped={true}
+            style={oActivityIndicatorStyle}
+          />
+        )}
       <View style={styles.mainContainer}>
         {/*<View style={styles.headingContainer}>
           <Text style={styles.headingComponent}>Chatrel For Friends</Text>
   </View>*/}
+        
         <View style={styles.firstNameLabelContainer}>
           <Text style={styles.firstNameLabelComponent}>FIRST NAME</Text>
         </View>

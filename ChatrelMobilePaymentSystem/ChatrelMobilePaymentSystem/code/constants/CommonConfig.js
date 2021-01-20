@@ -33,3 +33,16 @@ export const errorComponent = {
 };
 
 export const sFontName = 'Kanit-Regular';
+
+export const oActivityIndicatorStyle = {
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: Colors.backgroundColorForLoader,
+  zIndex: 3,
+  elevation: 3,
+};

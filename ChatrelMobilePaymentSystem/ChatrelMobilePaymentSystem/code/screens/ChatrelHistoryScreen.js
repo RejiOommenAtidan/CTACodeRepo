@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, ScrollView, Dimensions} from 'react-native';
+import {Text, View, StyleSheet, ScrollView, Dimensions,ActivityIndicator} from 'react-native';
 import {Card, Button} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
@@ -13,9 +13,12 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Moment from 'moment';
-import {sDateFormat, sFontName} from '../constants/CommonConfig';
+import {sDateFormat, sFontName,oActivityIndicatorStyle} from '../constants/CommonConfig';
+import { useIsFocused } from "@react-navigation/native";
 
 export const ChatrelHistoryScreen = (props) => {
+  const [bLoader, setbLoader] = useState(true);
+  const isFocused = useIsFocused();
   // const DATA = [
   //   {
   //     sChatrelRecieptNumber: 'W1',
@@ -61,6 +64,7 @@ export const ChatrelHistoryScreen = (props) => {
       .then((resp) => {
         if (resp.status === 200) {
           setPaymentHistory(resp.data);
+          setbLoader(false);
           console.log(resp.data);
         }
       })
@@ -71,23 +75,34 @@ export const ChatrelHistoryScreen = (props) => {
   };
 
   useEffect(() => {
+    if(isFocused)
     getChatrelHistoryDetails();
-  }, []);
+  }, [isFocused]);
 
   const [paymentHistory, setPaymentHistory] = useState([]);
 
   const handleDownloadReceiptOnPress = (singleHistory) => {
     console.log(singleHistory);
+    //setbLoader(true);
     //TODO: OR CODE GEN & RECEIPT GEN & SAVE TO PHONE
   };
 
   return (
     <View style={styles.mainContainer}>
+      {bLoader && (
+          <ActivityIndicator
+            size={Platform.OS === 'ios' ? 0 : 'large'}
+            color={Colors.grey}
+            animating={true}
+            //hidesWhenStopped={true}
+            style={oActivityIndicatorStyle}
+          />
+        )}
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>CHATREL HISTORY</Text>
   </View>*/}
       <ScrollView showsVerticalScrollIndicator={false}>
-        {paymentHistory.length === 0 && (
+        {paymentHistory.length === 0 && !bLoader && (
           <View style={styles.zeroRecordContainer}>
             <Text style={styles.zeroRecordComponent}>No Records Available</Text>
           </View>

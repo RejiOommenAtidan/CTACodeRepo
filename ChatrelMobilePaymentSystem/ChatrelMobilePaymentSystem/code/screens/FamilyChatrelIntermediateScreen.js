@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
@@ -19,12 +20,18 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {sDateFormat, sFontName} from '../constants/CommonConfig';
+import {
+  sDateFormat,
+  sFontName,
+  oActivityIndicatorStyle,
+} from '../constants/CommonConfig';
 import Moment from 'moment';
 import {useSelector, useDispatch} from 'react-redux';
 import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
+import { useIsFocused } from "@react-navigation/native";
 
 export const FamilyChatrelIntermediateScreen = (props) => {
+  const isFocused = useIsFocused();
   // const aFamilyMembersHardCoded = [
   //   {
   //     sName: 'Jane Doe',
@@ -53,6 +60,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
   // ];
   const dispatch = useDispatch();
   const [aFamilyMembers, setaFamilyMembers] = useState([]);
+  const [bLoader, setbLoader] = useState(true);
   const oCurrentGBDetails = useSelector(
     (state) => state.GBDetailsReducer.oGBDetails,
   );
@@ -62,6 +70,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
       .then((resp) => {
         if (resp.status === 200) {
           setaFamilyMembers(resp.data);
+          setbLoader(false);
           //console.log(resp.data);
         }
       })
@@ -72,20 +81,36 @@ export const FamilyChatrelIntermediateScreen = (props) => {
   };
 
   useEffect(() => {
+    if(isFocused)
     getFamilyDetails();
-  }, []);
+  }, [isFocused]);
 
   const handleFamilyMemberPress = (member) => {
-    console.log(member);
-    let oCurrentGBDetails = {
-      sGBID: member.sGBIDRelation,
-      dtDOB: Moment(member.dtDOB).format(sDateFormat),
-    };
-    dispatch(storeCurrentGBDetails(oCurrentGBDetails));
-    props.navigation.navigate('FriendChatrel');
+    try {
+      setbLoader(true);
+      console.log(member);
+      let oCurrentGBDetails = {
+        sGBID: member.sGBIDRelation,
+        dtDOB: Moment(member.dtDOB).format(sDateFormat),
+      };
+      dispatch(storeCurrentGBDetails(oCurrentGBDetails));
+      props.navigation.navigate('FamilyChatrel');
+    } catch (e) {
+      setbLoader(false);
+      alert('Something went wrong, please try again later.');
+    }
   };
   return (
     <View style={styles.mainContainer}>
+      {bLoader && (
+        <ActivityIndicator
+          size={Platform.OS === 'ios' ? 0 : 'large'}
+          color={Colors.grey}
+          animating={true}
+          //hidesWhenStopped={true}
+          style={oActivityIndicatorStyle}
+        />
+      )}
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>FAMILY MEMBERS</Text>
   </View>*/}
@@ -306,18 +331,18 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
-        //width: wp(90),
-        //borderRadius: 15,
-        borderColor: Colors.blue,
-        backgroundColor: Colors.white,
-        //shadowColor: Colors.shadowColor,
-        borderStyle: 'solid',
-        borderWidth: 1,
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.2,
-        elevation: 1,
-        shadowRadius: 60,
-        //marginBottom: 10,
+    //width: wp(90),
+    //borderRadius: 15,
+    borderColor: Colors.blue,
+    backgroundColor: Colors.white,
+    //shadowColor: Colors.shadowColor,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.2,
+    elevation: 1,
+    shadowRadius: 60,
+    //marginBottom: 10,
   },
   cardHeaderComponent: {
     textAlign: 'left',

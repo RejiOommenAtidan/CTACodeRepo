@@ -7,6 +7,7 @@ import {
   BackHandler,
   ImageBackground,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
@@ -34,6 +35,7 @@ import {
   errorComponent,
   errorContainer,
   sFontName,
+  oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import axios from 'axios';
 
@@ -110,6 +112,7 @@ export const GBDetailScreen = (props) => {
   const [dtDOB, setdtDOB] = useState(null);
   const dtToday = Moment().format(sDateFormatDatePicker);
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
+  const [bLoader, setbLoader] = useState(false);
   const removeCompleteDetailsAndNavigateToLogin = async () => {
     try {
       await GoogleSignin.revokeAccess();
@@ -125,10 +128,13 @@ export const GBDetailScreen = (props) => {
     }
   };
   const handleVerifyDetailsPress = async () => {
+    setbLoader(true);
+
     let oGBDetails = {
       sGBID: sGBID,
       dtDOB: dtDOB,
     };
+
     let oAPI = {
       sGBID: sGBID,
       dtDOB: dtDOB,
@@ -136,6 +142,10 @@ export const GBDetailScreen = (props) => {
       sLastName: oGoogle.familyName,
       sEmail: oGoogle.email,
     };
+
+    console.log(oGBDetails);
+    console.log(oAPI);
+
     axios
       .post('ChatrelPayment/AuthenticateGBID', oAPI)
       .then((response) => {
@@ -148,9 +158,11 @@ export const GBDetailScreen = (props) => {
           } catch (e) {
             console.info(e);
           }
+          setbLoader(false);
           props.navigation.navigate('Home');
         }
         if (response.data == 'Failed') {
+          setbLoader(false);
           Alert.alert(
             'Verification failed!',
             "The entered details didn't match our database. Please try again.",
@@ -181,6 +193,8 @@ export const GBDetailScreen = (props) => {
         // } else {
         //   console.log('Error', error.message);
         // }
+
+        setbLoader(false);
         Alert.alert(
           'Verification failed!',
           "The entered details didn't match our database. Please try again.",
@@ -210,6 +224,16 @@ export const GBDetailScreen = (props) => {
         colors={['#000000', '#000000']}
         //start={{ x: 0.5, y: 0.5 }}
       >
+        {bLoader && (
+          <ActivityIndicator
+            size={Platform.OS === 'ios' ? 0 : 'large'}
+            color={Colors.grey}
+            animating={true}
+            //hidesWhenStopped={true}
+            style={oActivityIndicatorStyle}
+          />
+        )}
+
         <View style={styles.mainContainer}>
           <View style={styles.headerContainer}>
             <Text style={styles.headerComponent}>
@@ -407,7 +431,7 @@ const styles = StyleSheet.create({
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 16.2 : 27,
     fontStyle: 'normal',
-    fontWeight: 'normal',
+    fontWeight: 'bold',
     color: Colors.white,
     fontFamily: sFontName,
     lineHeight:
@@ -417,8 +441,7 @@ const styles = StyleSheet.create({
   textContainer: {
     width: wp(85),
     height: hp(3.5),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
+    marginBottom: hp(2),
   },
   textComponent: {
     fontFamily: sFontName,
@@ -435,10 +458,7 @@ const styles = StyleSheet.create({
   gbidContainer: {
     width: wp(85),
     height: hp(3.5),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 20.4
-        : 34,
+    marginBottom: hp(3),
     lineHeight:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
     //letterSpacing: Resolution.nLetterSpacing,
@@ -460,14 +480,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: wp(85),
     height: hp(3.5),
-    marginTop:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 20.4
-        : 34,
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 20.4
-        : 34,
+    marginTop: hp(4),
+    marginBottom: hp(4),
   },
   dobComponent: {
     // textAlign: "left",
@@ -481,14 +495,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: wp(85),
     height: hp(3.5),
-    marginTop:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 20.4
-        : 34,
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 20.4
-        : 34,
+    marginTop: hp(4),
+    marginBottom: hp(4),
   },
   buttonComponent: {
     borderRadius: 20,
