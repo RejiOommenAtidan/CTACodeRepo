@@ -86,7 +86,9 @@ const LoginNavigator = () => {
       <LoginStackNavigator.Screen
         name="Login"
         component={LoginScreen}
-        options={LoginScreenOptions}></LoginStackNavigator.Screen>
+        options={LoginScreenOptions}>
+          
+        </LoginStackNavigator.Screen>
     </LoginStackNavigator.Navigator>
   );
 };
@@ -339,6 +341,7 @@ export const MainNavigator = () => {
             />
           ),
           drawerLabel: 'HOME',
+          //labelStyle:{fontfamily:sFontName},
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
