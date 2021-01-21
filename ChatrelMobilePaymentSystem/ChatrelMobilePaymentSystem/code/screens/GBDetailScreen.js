@@ -289,7 +289,7 @@ export const GBDetailScreen = (props) => {
                 ...errorContainer,
                 marginLeft: wp(2),
               }}>
-              <Text style={errorComponent}>This is field required.</Text>
+              <Text style={errorComponent}>Please enter Green Book Number.</Text>
             </View>
           )}
           {/*<View style={styles.showGBIDContainer}>
@@ -387,7 +387,7 @@ export const GBDetailScreen = (props) => {
               ...errorContainer,
               marginLeft: wp(2),
             }}>
-            <Text style={errorComponent}>This is field required.</Text>
+            <Text style={errorComponent}>Please enter Date of Birth.</Text>
           </View>
         )}
         <View style={styles.buttonContainer}>
