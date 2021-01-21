@@ -69,7 +69,7 @@ namespace CTADataSyncMySQL
             this.textBoxDB1.Size = new System.Drawing.Size(430, 20);
             this.textBoxDB1.TabIndex = 2;
             this.textBoxDB1.Text = "Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=ctadb; Uid=ctam" +
-    "ysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;";
+    "ysqldba@ctamysqldb01; Pwd=some_pass; SslMode=Preferred;";
             // 
             // textBoxDB2
             // 
@@ -78,7 +78,7 @@ namespace CTADataSyncMySQL
             this.textBoxDB2.Size = new System.Drawing.Size(430, 20);
             this.textBoxDB2.TabIndex = 3;
             this.textBoxDB2.Text = "Server=ctamysqldb01.mysql.database.azure.com; Port=3306; Database=chatreldb; Uid=" +
-    "ctamysqldba@ctamysqldb01; Pwd=ekXP9qVo$12na; SslMode=Preferred;";
+    "ctamysqldba@ctamysqldb01;Pwd=some_pass; SslMode=Preferred;";
             // 
             // buttonSyncDB
             // 

@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+//using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,10 +38,10 @@ namespace CTADataSyncMySQL
             string DB2Name = textBoxChatrelDBName.Text;
             MySqlConnection cnnDB1;
             MySqlConnection cnnDB2;
-            connetionStringDB1 = "Server=127.0.0.1;Port=3306;Database=ctadb;Uid=root;allow zero datetime=no";
-            connetionStringDB2 = "Server=127.0.0.1;Port=3306;Database=chatreldb;Uid=root;allow zero datetime=no";
-            //connetionStringDB1 = textBoxDB1.Text;
-            //connetionStringDB2 = textBoxDB2.Text;
+            //connetionStringDB1 = "Server=127.0.0.1;Port=3306;Database=ctadb;Uid=root;allow zero datetime=no";
+            //connetionStringDB2 = "Server=127.0.0.1;Port=3306;Database=chatreldb;Uid=root;allow zero datetime=no";
+            connetionStringDB1 = textBoxDB1.Text;
+            connetionStringDB2 = textBoxDB2.Text;
             // Set cursor as hourglass
             Cursor.Current = Cursors.WaitCursor;
 
@@ -58,9 +59,12 @@ namespace CTADataSyncMySQL
             try
             {
                 cnnDB1 = new MySqlConnection(connetionStringDB1);
-                cnnDB2 = new MySqlConnection(connetionStringDB2);
+                //cnnDB2 = new MySqlConnection(connetionStringDB2);
 
                 cnnDB1.Open();
+
+
+                cnnDB2 = new MySqlConnection(connetionStringDB2);
                 cnnDB2.Open();
 
                 labelSyncReport.Text = "lstChatrel - Syncing Process....";
@@ -95,26 +99,30 @@ namespace CTADataSyncMySQL
                 this.Refresh();
                 Application.DoEvents();
 
-                labelSyncReport.Text = "tblGreenbook - Syncing Process....";
+                // labelSyncReport.Text = "tblGreenbook - Syncing Process....";
                 //5. Sync Datatable - tblGreenbook
-                strQuery = Sync_tblGreenbook_Table(cnnDB1, cnnDB2, DB1Name, DB2Name);
-                ProgressBarOneStep();
-                if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
-                strQuery = string.Empty;
+                // strQuery = Sync_tblGreenbook_Table(cnnDB1, cnnDB2, DB1Name, DB2Name);
+                // ProgressBarOneStep();
+                // if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
+                // strQuery = string.Empty;
 
-                labelSyncReport.Text = "lnkGBChildren - Syncing Process....";
-                //6. Sync Datatable - lnkGBChildren
-                strQuery = Sync_lnkGBChildren_Table(cnnDB1, cnnDB2, DB1Name, DB2Name);
-                ProgressBarOneStep();
-                if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
-                strQuery = string.Empty;
+                //labelSyncReport.Text = "lnkGBChildren - Syncing Process....";
+                ////6. Sync Datatable - lnkGBChildren
+                //strQuery = Sync_lnkGBChildren_Table(cnnDB1, cnnDB2, DB1Name, DB2Name);
+                //ProgressBarOneStep();
+                //if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
+                //strQuery = string.Empty;
 
-                labelSyncReport.Text = "lnkGBRelation - Syncing Process....";
-                //7. Sync Datatable - lnkGBRelation
-                strQuery = Sync_lnkGBRelation_Table(cnnDB1, cnnDB2, DB1Name, DB2Name);
+                //labelSyncReport.Text = "lnkGBRelation - Syncing Process....";
+                ////7. Sync Datatable - lnkGBRelation
+                //strQuery = Sync_lnkGBRelation_Table(cnnDB1, cnnDB2, DB1Name, DB2Name);
+                //ProgressBarOneStep();
+                //if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
+                //strQuery = string.Empty;
+
                 ProgressBarOneStep();
-                if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
-                strQuery = string.Empty;
+                ProgressBarOneStep();
+                ProgressBarOneStep();
 
                 labelSyncReport.Text = "lnkGBChatrel - Syncing Process....";
                 //8. Sync Datatable - lnkGBChatrel
@@ -165,6 +173,7 @@ namespace CTADataSyncMySQL
             {
                 labelSyncReport.Text += Environment.NewLine + ex.ToString();
                 stringBuilderQuery.AppendLine(strQuery);
+                stringBuilderQuery.AppendLine(ex.Message);
                 File.AppendAllText(sLogFolderPath + "log-" + Guid.NewGuid().ToString() + ".txt", stringBuilderQuery.ToString());
                 stringBuilderQuery.Clear();
 
