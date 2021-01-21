@@ -29,7 +29,10 @@ export const LoginScreen = (props) => {
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.textComponent}>
-          Your go-to resource for supporting the{'\n'}Tibetan Government.
+          Your go-to resource for supporting
+        </Text>
+        <Text style={styles.textComponentNext}>
+          the Tibetan Government.
         </Text>
       </View>
       <GLogin props={props}></GLogin>
@@ -49,8 +52,8 @@ export const LoginScreenOptions = (navData) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
-    flexGrow: 1,
+    //flex: 1,
+    // flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
   imgContainer: {
-    //marginTop: hp(2.5),
+    marginTop: hp(10),
     marginBottom: hp(2.5),
   },
   headerContainer: {
@@ -83,19 +86,31 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     width: wp(75),
-    height: hp(5),
-    marginBottom: hp(15),
+    height: hp(10),
+    marginBottom: hp(6),
   },
   textComponent: {
-    width: '100%',
-    height: '100%',
-    fontSize: wp(3.375),
+    // width: '100%',
+    // height: '100%',
+    fontSize: wp(4.5),
     textAlign: 'center',
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontFamily: sFontName,
     color: Colors.white,
     lineHeight: hp(2.5),
+    // letterSpacing: Resolution.nLetterSpacing / 2,
+  },
+  textComponentNext: {
+    // width: '100%',
+    // height: '100%',
+    fontSize: wp(4.5),
+    textAlign: 'center',
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    fontFamily: sFontName,
+    color: Colors.white,
+    // lineHeight: hp(2.5),
     // letterSpacing: Resolution.nLetterSpacing / 2,
   },
 });

@@ -9,7 +9,7 @@ import {
   Alert,
   Dimensions,
   ActivityIndicator,
-  Animated
+  Animated,
 } from 'react-native';
 import {Card, Button, Tile} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -34,8 +34,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {useIsFocused} from '@react-navigation/native';
-import { useCollapsibleHeader } from 'react-navigation-collapsible';
-
+import {useCollapsibleHeader} from 'react-navigation-collapsible';
 
 // import { withNavigationFocus } from 'react-navigation';
 //import CustomHeaderButton from '../components/HeaderButton';
@@ -167,10 +166,26 @@ const HomeScreen = (props) => {
     };
   }, []);
 
+  // const {
+  //   onScroll /* Event handler */,
+  //   onScrollWithListener /* Event handler creator */,
+  //   containerPaddingTop /* number */,
+  //   scrollIndicatorInsetTop /* number */,
+  //   /* Animated.AnimatedInterpolation by scrolling */
+  //   translateY /* 0.0 ~ -headerHeight */,
+  //   progress /* 0.0 ~ 1.0 */,
+  //   opacity /* 1.0 ~ 0.0 */,
+  // } = useCollapsibleHeader(HomeScreenOptions);
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}>
+      {/* <Animated.FlatList
+     onScroll={onScroll}
+       contentContainerStyle={{ paddingTop: containerPaddingTop }}
+       scrollIndicatorInsets={{ top: scrollIndicatorInsetTop }}
+     /> */}
       <View style={styles.mainContainer}>
         {bLoader && (
           <ActivityIndicator

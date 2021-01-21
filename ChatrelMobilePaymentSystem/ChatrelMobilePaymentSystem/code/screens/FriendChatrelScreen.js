@@ -25,7 +25,7 @@ export const FriendChatrelScreen = (props) => {
 
 export const FriendChatrelScreenOptions = (navData) => {
   return {
-    headerTitle: 'FRIEND\'s CHATREL',
+    headerTitle: 'FRIEND\'S CHATREL',
     headerStyle: {
       backgroundColor: Colors.primary,
     },

@@ -392,16 +392,17 @@ export const GBDetailScreen = (props) => {
         )}
         <View style={styles.buttonContainer}>
           <Button
+            buttonStyle={styles.buttonComponent}
+            title="VERIFY"
             titleStyle={{
               color: Colors.black,
               //fontWeight: 'bold',
               fontFamily: sFontName,
-              fontStyle: 'normal',
-              fontWeight: 'bold',
+              fontWeight: 'normal',
+              //fontStyle: 'normal',
+              //fontWeight: 'normal',
               textAlign: 'center',
             }}
-            buttonStyle={styles.buttonComponent}
-            title="VERIFY"
             onPress={handleSubmit(handleVerifyDetailsPress)}
           />
         </View>

@@ -285,7 +285,7 @@ export const ChatrelHistoryScreen = (props) => {
 console.log(Dimensions.get('window').height);
 export const ChatrelHistoryScreenOptions = (navData) => {
   return {
-    headerTitle: 'Chatrel History',
+    headerTitle: 'CHATREL HISTORY',
     headerStyle: {
       backgroundColor: Colors.primary,
     },

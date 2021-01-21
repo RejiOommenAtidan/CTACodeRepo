@@ -741,7 +741,7 @@ export const MyProfileScreen = (props) => {
 
 export const MyProfileScreenOptions = (navData) => {
   return {
-    headerTitle: 'My Profile',
+    headerTitle: 'MY PROFLE',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
