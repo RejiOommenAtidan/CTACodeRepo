@@ -25,7 +25,7 @@ export const FamilyChatrelScreen = (props) => {
 
 export const FamilyChatrelScreenOptions = (navData) => {
   return {
-    headerTitle: 'Family Chatrel',
+    headerTitle: 'FAMILY CHATREL',
     headerStyle: {
       backgroundColor: Colors.primary,
     },

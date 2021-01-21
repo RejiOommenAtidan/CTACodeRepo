@@ -12,7 +12,7 @@ export const sAdminEmail = 'admin@CTA.com';
 export const sSnackbarAddMessage = 'Record Added successfully';
 export const sSnackbarUpdateMessage = 'Record Updated successfully';
 export const sDateFormat = 'DD-MM-YYYY';
-export const sDateFormatDatePicker = 'MM-DD-YYYY';
+export const sDateFormatDatePicker = 'MM/DD/YYYY';
 export const sISODateFormat = 'YYYY-MM-DD';
 export const sClientIDAndroid =
   '1071046831303-1naot2q7pull58cpifp3rosfn65bdrsc.apps.googleusercontent.com';

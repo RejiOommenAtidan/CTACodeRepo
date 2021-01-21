@@ -331,7 +331,7 @@ titleStyle={styles.pendingAmountTextComponent}
 
 export const HomeScreenOptions = (navData) => {
   return {
-    headerTitle: 'Home',
+    headerTitle: 'HOME',
     headerStyle: {
       backgroundColor: Colors.primary,
     },

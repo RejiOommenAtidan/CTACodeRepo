@@ -6,6 +6,7 @@ import {
   Image,
   Text,
   Linking,
+  Platform,
 } from 'react-native';
 
 import {
@@ -34,11 +35,11 @@ export const CustomSidebarMenu = (props) => {
       /> */}
       <View
         style={{
-          marginLeft: hp(1.5),
+          marginLeft: hp(1),
           marginTop: hp(2.5),
           marginBottom: hp(1.5),
           flexDirection: 'row',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-start',
         }}>
         <Avatar
           rounded
@@ -57,8 +58,8 @@ export const CustomSidebarMenu = (props) => {
         />
         <View
           style={{
-            minWidth: 100,
-            maxWidth: 150,
+            minWidth: wp(25),
+            maxWidth: wp(45),
             marginHorizontal: hp(1.5),
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -71,7 +72,7 @@ export const CustomSidebarMenu = (props) => {
           <Text
             style={{
               textAlign: 'left',
-              fontSize: wp(4.25),
+              fontSize: wp(4),
               fontStyle: 'normal',
               fontWeight: 'normal',
               color: Colors.blackTextAPI,
@@ -79,9 +80,20 @@ export const CustomSidebarMenu = (props) => {
             }}>
             {oGoogle?.givenName + ' ' + oGoogle?.familyName}
           </Text>
+          <Text
+            style={{
+              textAlign: 'left',
+              fontSize: wp(3),
+              fontStyle: 'normal',
+              fontWeight: 'normal',
+              color: Colors.blackTextAPI,
+              fontFamily: sFontName,
+            }}>
+            {oGoogle?.email}
+          </Text>
         </View>
       </View>
-      <View
+      {/* <View
         style={{
           //marginLeft: hp(1.5),
           //marginTop: hp(2.5),
@@ -94,24 +106,15 @@ export const CustomSidebarMenu = (props) => {
           //flexDirection: 'row',
           //justifyContent: 'space-between',
         }}>
-        <Text
-          style={{
-            textAlign: 'left',
-            fontSize: wp(3.5),
-            fontStyle: 'normal',
-            fontWeight: 'normal',
-            color: Colors.blackTextAPI,
-            fontFamily: sFontName,
-          }}>
-          {oGoogle?.email}
-        </Text>
-      </View>
+        
+      </View> */}
       <View
         style={{
           width: '100%',
           height: 1,
           backgroundColor: Colors.separatorColor,
-          marginBottom: hp(1.25),
+          marginTop: hp(1.25),
+          marginBottom: 0,
         }}
       />
       <DrawerContentScrollView {...props}>
@@ -137,7 +140,7 @@ export const CustomSidebarMenu = (props) => {
             width: '100%',
             height: 1,
             backgroundColor: Colors.separatorColor,
-            marginTop: hp(1.25),
+            marginTop: Platform.OS === 'android' ? hp(1) : hp(1),
           }}
         />
       </DrawerContentScrollView>

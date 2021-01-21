@@ -394,7 +394,11 @@ export const GBDetailScreen = (props) => {
           <Button
             titleStyle={{
               color: Colors.black,
+              //fontWeight: 'bold',
+              fontFamily: sFontName,
+              fontStyle: 'normal',
               fontWeight: 'bold',
+              textAlign: 'center',
             }}
             buttonStyle={styles.buttonComponent}
             title="VERIFY"
@@ -419,14 +423,21 @@ export const GBDetailScreenOptions = (navData) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    marginHorizontal:
-      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
-    marginVertical:
-      Dimensions.get('window').height * Resolution.nHeightScreenMargin,
+    flex: 1,
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    // marginVertical:
+    //   Dimensions.get('window').height * Resolution.nHeightScreenMargin,
     flexDirection: 'column',
+    alignSelf: 'center',
+    width: wp(100),
+    height: hp(100),
+    backgroundColor: 'rgba(0,0,0,0.80)',
   },
   imagebackgroundComponent: {
-    flex: 1,
+    width: wp(100),
+    height: hp(100),
+    //flex: 1,
     // opacity
     // height:hp(100),
     // width:wp(100)
@@ -437,6 +448,8 @@ const styles = StyleSheet.create({
     //opacity:1
   },
   headerContainer: {
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     width: wp(85),
     height: hp(15),
     marginTop: hp(22),
@@ -455,6 +468,8 @@ const styles = StyleSheet.create({
     //letterSpacing: Resolution.nLetterSpacing,
   },
   textContainer: {
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     width: wp(85),
     height: hp(3.5),
     marginBottom: hp(2),
@@ -472,6 +487,8 @@ const styles = StyleSheet.create({
     //letterSpacing: Resolution.nLetterSpacing,
   },
   gbidContainer: {
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     width: wp(85),
     height: hp(3.5),
     marginBottom: hp(3),
@@ -493,8 +510,10 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   dobContainer: {
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     flexDirection: 'row',
-    width: wp(85),
+    width: wp(85 - 1.5),
     height: hp(3.5),
     marginTop: hp(4),
     marginBottom: hp(4),
@@ -507,9 +526,13 @@ const styles = StyleSheet.create({
     // fontWeight: "normal",
     // fontFamily: sFontName
     flexGrow: 1,
+    //width:wp(10)
+    // width:wp(50)
   },
   buttonContainer: {
     width: wp(85),
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     height: hp(3.5),
     marginTop: hp(4),
     marginBottom: hp(4),
@@ -520,6 +543,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.buttonYellow,
     backgroundColor: Colors.buttonYellow,
     height: hp(4.25),
+    // width:"100%"
     //color: Colors.black
     // marginTop:20
     // marginLeft:20,

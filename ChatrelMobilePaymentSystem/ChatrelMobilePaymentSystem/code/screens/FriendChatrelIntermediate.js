@@ -420,7 +420,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
 
 export const FriendChatrelIntermediateScreenOptions = (navData) => {
   return {
-    headerTitle: 'Chatrel for a Friend',
+    headerTitle: 'FRIEND\'s CHATREL',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
