@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, StyleSheet, Dimensions} from 'react-native';
+import {Text, View, StyleSheet, Dimensions, Platform} from 'react-native';
 import {GLogin} from '../components/GLogin';
 import {ActivityIndicator} from 'react-native';
 import Colors from '../constants/Colors';
@@ -16,10 +16,12 @@ export const LoginScreen = (props) => {
     <View style={styles.mainContainer}>
       <View style={styles.imgContainer}>
         <ResponsiveImage
-          initWidth="335"
-          initHeight="325"
+          initWidth="330"
+          initHeight="320"
           source={require('../assets/CTALogo.png')}
-          PlaceholderContent={<ActivityIndicator size={36} />}
+          PlaceholderContent={
+            <ActivityIndicator size={Platform.OS === 'ios' ? 0 : 'large'} />
+          }
         />
       </View>
       <View style={styles.headerContainer}>
@@ -51,51 +53,49 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
     marginHorizontal:
       Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     marginVertical:
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
   imgContainer: {
-    marginTop: hp(2.5),
+    //marginTop: hp(2.5),
     marginBottom: hp(2.5),
   },
   headerContainer: {
     width: wp(75),
-    height: hp(6.5),
+    height: hp(5),
     marginBottom: hp(2.5),
   },
   headerComponent: {
     width: '100%',
     height: '100%',
     textAlign: 'center',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 18 : 30,
+    fontSize: wp(7.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.white,
-    lineHeight:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
+    // lineHeight:
+    //   Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    // letterSpacing: Resolution.nLetterSpacing,
   },
   textContainer: {
     width: wp(75),
-    height: hp(6.5),
-    marginBottom: hp(12.5),
+    height: hp(5),
+    marginBottom: hp(15),
   },
   textComponent: {
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 14.75,
+    width: '100%',
+    height: '100%',
+    fontSize: wp(3.375),
     textAlign: 'center',
     fontStyle: 'normal',
-    fontWeight: '300',
+    fontWeight: 'normal',
     fontFamily: sFontName,
-    lineHeight:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint
-        ? 10.5
-        : 17.5,
-    letterSpacing: Resolution.nLetterSpacing / 2,
     color: Colors.white,
+    lineHeight: hp(2.5),
+    // letterSpacing: Resolution.nLetterSpacing / 2,
   },
 });
