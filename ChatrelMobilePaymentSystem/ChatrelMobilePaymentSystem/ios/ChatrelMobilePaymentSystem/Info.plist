@@ -51,7 +51,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -92,6 +92,10 @@
 		<string>NunitoSans-Light.ttf</string>
 		<string>Microsoft Himalaya.ttf</string>
 		<string>Poppins-Regular.ttf</string>
+		<string>Cairo-Regular.ttf</string>
+		<string>Oxygen-Regular.ttf</string>
+		<string>josefinsans_regular.ttf</string>
+		<string>SF Pro.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

@@ -77,7 +77,7 @@ export const CustomSidebarMenu = (props) => {
               color: Colors.blackTextAPI,
               fontFamily: sFontName,
             }}>
-            Welcome, {oGoogle?.givenName + ' ' + oGoogle?.familyName}
+            {oGoogle?.givenName + ' ' + oGoogle?.familyName}
           </Text>
         </View>
       </View>
@@ -97,7 +97,7 @@ export const CustomSidebarMenu = (props) => {
         <Text
           style={{
             textAlign: 'left',
-            fontSize: wp(4.25),
+            fontSize: wp(3.5),
             fontStyle: 'normal',
             fontWeight: 'normal',
             color: Colors.blackTextAPI,

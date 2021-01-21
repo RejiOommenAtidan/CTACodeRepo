@@ -1,4 +1,4 @@
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 import Colors from './Colors';
 import Resolution from './ResolutionBreakpoint';
 
@@ -32,7 +32,8 @@ export const errorComponent = {
   fontFamily: sFontName,
 };
 
-export const sFontName = 'Kanit-Regular';
+export const sFontName =
+  Platform.OS === 'android' ? 'josefinsans_regular' : 'SF Pro';
 
 export const oActivityIndicatorStyle = {
   position: 'absolute',

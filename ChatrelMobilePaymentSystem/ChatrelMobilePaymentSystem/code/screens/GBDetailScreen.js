@@ -431,11 +431,11 @@ const styles = StyleSheet.create({
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 16.2 : 27,
     fontStyle: 'normal',
-    fontWeight: 'bold',
+    fontWeight: 'normal',
     color: Colors.white,
     fontFamily: sFontName,
-    lineHeight:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    // lineHeight:
+    //   Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
   },
   textContainer: {
@@ -449,10 +449,10 @@ const styles = StyleSheet.create({
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
     textAlign: 'left',
     fontStyle: 'normal',
-    fontWeight: '300',
+    fontWeight: 'normal',
     color: Colors.white,
-    lineHeight:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.6 : 18,
+    // lineHeight:
+    //   Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.6 : 18,
     //letterSpacing: Resolution.nLetterSpacing,
   },
   gbidContainer: {
@@ -473,7 +473,7 @@ const styles = StyleSheet.create({
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
     fontStyle: 'normal',
-    fontWeight: '300',
+    fontWeight: 'normal',
     fontFamily: sFontName,
   },
   dobContainer: {
