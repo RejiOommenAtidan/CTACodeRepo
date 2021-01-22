@@ -132,7 +132,7 @@ const HomeScreen = (props) => {
         // console.log(error.config);
         setbLoader(false);
         Alert.alert(
-          'Invalid Details for Chatrel',
+          'Invalid details for Chatrel',
           'Please Contact CTA',
           [
             // {
@@ -227,9 +227,9 @@ const HomeScreen = (props) => {
                             color: card.sTextColor,
                             fontSize: wp(4.5),
                             fontStyle: 'normal',
-                            fontWeight: 'bold',
-                            //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-                            letterSpacing: Resolution.nLetterSpacing / 2,
+                            fontWeight: 'normal',
+                            lineHeight: hp(2.5),
+                            // letterSpacing: Resolution.nLetterSpacing / 2,
                             fontFamily: sFontName,
                           }}>
                           {card.sLabel}
@@ -311,14 +311,13 @@ titleStyle={styles.pendingAmountTextComponent}
             <Card containerStyle={styles.newJobContribComponent}>
               <View style={styles.newJobContribTextContainer}>
                 <Text style={styles.newJobContribTextComponent}>
-                  Have you gotten a new{'\n'} job since your last{'\n'}{' '}
-                  contribution?
+                  Have you gotten a new job since your last contribution?
                 </Text>
               </View>
               <View style={styles.jobContribStatusTextContainer}>
                 <Text style={styles.jobContribStatusTextComponent}>
-                  Change your status and contribute more towards{'\n'} the
-                  Tibetan Government.
+                  Change your status and contribute more towards the Tibetan
+                  Government.
                 </Text>
               </View>
               <Button
@@ -363,6 +362,7 @@ export const HomeScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     headerRight: CustomHeaderRightButton,
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 
@@ -374,24 +374,21 @@ const styles = StyleSheet.create({
     marginVertical:
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
-  headerContainer: {
-    width: wp(60),
-    height: hp(4),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
-  },
+  headerContainer: {},
   headerComponent: {
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
+    width: wp(60),
+    // height: hp(4),
+    marginBottom: hp(4),
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
+    fontSize: wp(5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blue,
+    fontFamily: sFontName,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
   cardContainer: {
     flexDirection: 'row',
@@ -403,8 +400,8 @@ const styles = StyleSheet.create({
     width: wp(111) / 3,
   },
   singleCardComponent: {
-    height:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 54 : 90,
+    // height:
+    //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 54 : 90,
   },
   pendingAmountContainer: {},
   pendingAmountComponent: {
@@ -426,7 +423,7 @@ const styles = StyleSheet.create({
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    letterSpacing: Resolution.nLetterSpacing,
+    // letterSpacing: Resolution.nLetterSpacing,
   },
   newJobContribComponent: {
     backgroundColor: Colors.primary,
@@ -434,7 +431,7 @@ const styles = StyleSheet.create({
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 15,
   },
   newJobContribTextContainer: {
-    width: wp(70),
+    // width: wp(70),
     //height: hp(33),
   },
   newJobContribTextComponent: {
@@ -442,7 +439,7 @@ const styles = StyleSheet.create({
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 15.6 : 26,
     fontFamily: sFontName,
     fontStyle: 'normal',
-    fontWeight: '200',
+    fontWeight: 'normal',
     textAlign: 'left',
     color: Colors.white,
     marginBottom:
@@ -451,7 +448,7 @@ const styles = StyleSheet.create({
     //letterSpacing: Resolution.nLetterSpacing
   },
   jobContribStatusTextContainer: {
-    width: wp(70),
+    // width: wp(70),
     //height: hp(33),
   },
   jobContribStatusTextComponent: {
@@ -459,14 +456,14 @@ const styles = StyleSheet.create({
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
     fontFamily: sFontName,
     fontStyle: 'normal',
-    fontWeight: '300',
+    fontWeight: 'normal',
     textAlign: 'left',
     color: Colors.white,
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint
         ? 22.8
         : 38,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    lineHeight: hp(3),
     //letterSpacing: Resolution.nLetterSpacing
   },
 });

@@ -289,7 +289,9 @@ export const GBDetailScreen = (props) => {
                 ...errorContainer,
                 marginLeft: wp(2),
               }}>
-              <Text style={errorComponent}>Please enter Green Book Number.</Text>
+              <Text style={errorComponent}>
+                Please enter Green Book Number.
+              </Text>
             </View>
           )}
           {/*<View style={styles.showGBIDContainer}>
@@ -424,7 +426,8 @@ export const GBDetailScreenOptions = (navData) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1,
+    //flex: 1,
+    // flexGrow:1,
     // marginHorizontal:
     //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     // marginVertical:
@@ -449,33 +452,42 @@ const styles = StyleSheet.create({
     //opacity:1
   },
   headerContainer: {
-    marginHorizontal:
-      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
-    width: wp(85),
-    height: hp(15),
-    marginTop: hp(22),
-    marginBottom: hp(5),
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    // // width: wp(85),
+    // // height: hp(15),
+    // marginTop: hp(22),
+    // marginBottom: hp(5),
   },
   headerComponent: {
+    width: wp(85),
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 16.2 : 27,
+    fontSize: hp(3.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.white,
     fontFamily: sFontName,
-    // lineHeight:
-    //   Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    marginTop: hp(22),
+    marginBottom: hp(6),
+    lineHeight: hp(4.75),
+
     //letterSpacing: Resolution.nLetterSpacing,
   },
   textContainer: {
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    // width: wp(85),
+    // height: hp(3.5),
+    // marginBottom: hp(2),
+  },
+  textComponent: {
     marginHorizontal:
       Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     width: wp(85),
-    height: hp(3.5),
+    //height: hp(3.5),
     marginBottom: hp(2),
-  },
-  textComponent: {
     fontFamily: sFontName,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
