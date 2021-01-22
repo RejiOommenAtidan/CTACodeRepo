@@ -16,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using MailKit.Net.Smtp;
 using MimeKit;
+using System.Security.Claims;
 
 namespace ChatrelPaymentWebAPI.Controllers
 {
@@ -43,6 +44,7 @@ namespace ChatrelPaymentWebAPI.Controllers
         }
 
         #region Add new Payment record
+        [Authorize]
         [HttpPost]
         [Route("[action]")]
         public IActionResult AddNewChatrelPayment(ChatrelPaymentVM payment)
@@ -81,34 +83,37 @@ namespace ChatrelPaymentWebAPI.Controllers
         #endregion
 
         #region Get Payment Records
-        [HttpGet]
-        [Route("[action]")]
-        public IActionResult GetAllChatrelPayments()
-        {
-            try
-            {
-                IEnumerable<ChatrelPayment> result = _chatrelPaymentRepository.GetAllChatrelPayments();
-                if (result != null && result.Count() > 0)
-                {
-                    #region Information Logging 
-                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
-                    #endregion
-                    return Ok(result);
-                }
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                #region Exception Logging 
+        //[Authorize]
+        //[HttpGet]
+        //[Route("[action]")]
+        //public IActionResult GetAllChatrelPayments()
+        //{
+        //    try
+        //    {
+        //        IEnumerable<ChatrelPayment> result = _chatrelPaymentRepository.GetAllChatrelPayments();
+        //        if (result != null && result.Count() > 0)
+        //        {
+        //            #region Information Logging 
+        //            _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called");
+        //            #endregion
+        //            return Ok(result);
+        //        }
+        //        return NoContent();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        #region Exception Logging 
 
-                _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
-                #endregion
+        //        _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+        //        #endregion
 
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
 
         #endregion
+
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         public IActionResult DisplayChatrelPayment(string sGBID)
@@ -119,6 +124,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             }
             try
             {
+                //string sGBIDf = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
                 Object chatrel = _chatrelPaymentRepository.DisplayChatrelPayment(sGBID);
                 if (chatrel != null)
                 {
@@ -134,7 +140,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                         #region Information Logging 
                         _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBID));
                         #endregion
-                        return NotFound("Paid Until data not available. Contact CTA.");
+                        return Ok("Paid Until Missing");
                     }
                     #region Information Logging 
                     _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBID));
@@ -157,21 +163,23 @@ namespace ChatrelPaymentWebAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetFamilyDetails(string sGBID)
+        public IActionResult GetFamilyDetails(/*string sGBID*/)
         {
-            if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID))
-            {
-                return BadRequest("Required parameters are missing.");
-            }
+            //if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID))
+            //{
+            //    return BadRequest("Required parameters are missing.");
+            //}
             try
             {
-                Object chatrel = _chatrelPaymentRepository.GetFamilyDetails(sGBID);
+                string sGBIDAuthorized = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
+                Object chatrel = _chatrelPaymentRepository.GetFamilyDetails(sGBIDAuthorized);
                 if (chatrel != null)
                 {
                     #region Information Logging 
-                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called","", Convert.ToInt32(sGBID));
+                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called","", Convert.ToInt32(sGBIDAuthorized));
                     #endregion
                     return Ok(chatrel);
                 }
@@ -182,30 +190,33 @@ namespace ChatrelPaymentWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                string sGBIDAuthorized = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
                 #region Exception Logging 
 
-                _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, Convert.ToInt32(sGBID));
+                _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, Convert.ToInt32(sGBIDAuthorized));
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError);
 
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetPaymentHistory(string sGBID)
+        public IActionResult GetPaymentHistory(/*string sGBID*/)
         {
-            if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID))
-            {
-                return BadRequest("Required parameters are missing.");
-            }
+            //if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID))
+            //{
+            //    return BadRequest("Required parameters are missing.");
+            //}
             try
             {
-                Object paymentHistory = _chatrelPaymentRepository.GetPaymentHistory(sGBID);
+                string sGBIDAuthorized = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
+                Object paymentHistory = _chatrelPaymentRepository.GetPaymentHistory(sGBIDAuthorized);
                 if (paymentHistory != null)
                 {
                     #region Information Logging 
-                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBID));
+                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBIDAuthorized));
                     #endregion
                     return Ok(paymentHistory);
                 }
@@ -216,15 +227,17 @@ namespace ChatrelPaymentWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                string sGBIDAuthorized = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
                 #region Exception Logging 
 
-                _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, Convert.ToInt32(sGBID));
+                _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace, Convert.ToInt32(sGBIDAuthorized));
                 #endregion
                 return StatusCode(StatusCodes.Status500InternalServerError);
 
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         public IActionResult VerifyFriendDetails(string sFirstName, string sLastName, string sGBID, DateTime dtDOB)
@@ -264,6 +277,7 @@ namespace ChatrelPaymentWebAPI.Controllers
         }
 
         #region Submit Dispute
+        [Authorize]
         [HttpPost]
         [Route("[action]")]
         public IActionResult SubmitDispute(Dictionary<string, dynamic> dict)
@@ -312,71 +326,80 @@ namespace ChatrelPaymentWebAPI.Controllers
         #endregion
 
 
-        #region Authenticate User
-        [HttpPost]
-        [Route("[action]")]
-        //public IActionResult AuthenticateGBID(string sGBID, DateTime dtDOB, string sEmail, string sFirstName, string sLastName)
-        public IActionResult AuthenticateGBID(Dictionary<string, string> dict)
-        {
-            string sGBID = dict.ContainsKey("sGBID") ? dict["sGBID"] : "";
-            string sEmail = dict.ContainsKey("sEmail") ? dict["sEmail"] : "";
-            string sFirstName = dict.ContainsKey("sFirstName") ? dict["sFirstName"] : "";
-            string sLastName = dict.ContainsKey("sLastName") ? dict["sLastName"] : "";
-            DateTime? dtDOB = dict.ContainsKey("dtDOB") ? (DateTime?)DateTime.Parse(dict["dtDOB"]) : null;
+        //#region Authenticate User
+        //[AllowAnonymous]
+        //[HttpPost]
+        //[Route("[action]")]
+        ////public IActionResult AuthenticateGBID(string sGBID, DateTime dtDOB, string sEmail, string sFirstName, string sLastName)
+        //public IActionResult AuthenticateGBID(Dictionary<string, string> dict)
+        //{
+        //    string sGBID = dict.ContainsKey("sGBID") ? dict["sGBID"] : "";
+        //    string sEmail = dict.ContainsKey("sEmail") ? dict["sEmail"] : "";
+        //    string sFirstName = dict.ContainsKey("sFirstName") ? dict["sFirstName"] : "";
+        //    string sLastName = dict.ContainsKey("sLastName") ? dict["sLastName"] : "";
+        //    DateTime? dtDOB = dict.ContainsKey("dtDOB") ? (DateTime?)DateTime.Parse(dict["dtDOB"]) : null;
 
-            if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID) || String.IsNullOrWhiteSpace(sEmail) || String.IsNullOrEmpty(sEmail) || String.IsNullOrEmpty(sFirstName) || String.IsNullOrWhiteSpace(sFirstName) || String.IsNullOrEmpty(sLastName) || String.IsNullOrWhiteSpace(sLastName) || dtDOB == null )
-            {
-                return BadRequest("Parameters invalid.");
-            }
-            else
-            {
-                try
-                {
-                    Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
-                    if (greenbook.dtDOB == dtDOB && greenbook.sEmail == sEmail /*&& greenbook.sFirstName == sFirstName && greenbook.sLastName == sLastName*/)
-                    {
-                        #region Information Logging 
-                        _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called",null,Convert.ToInt32(greenbook.sGBID));
-                        #endregion
+        //    if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID) || String.IsNullOrWhiteSpace(sEmail) || String.IsNullOrEmpty(sEmail) || String.IsNullOrEmpty(sFirstName) || String.IsNullOrWhiteSpace(sFirstName) || String.IsNullOrEmpty(sLastName) || String.IsNullOrWhiteSpace(sLastName) || dtDOB == null )
+        //    {
+        //        return BadRequest("Parameters invalid.");
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            Greenbook greenbook = _greenbookRepository.GetGreenbookByGBID(sGBID);
+        //            if (greenbook.dtDOB == dtDOB && greenbook.sEmail == sEmail /*&& greenbook.sFirstName == sFirstName && greenbook.sLastName == sLastName*/)
+        //            {
+        //                #region Information Logging 
+        //                _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called",null,Convert.ToInt32(greenbook.sGBID));
+        //                #endregion
 
 
-                        // should we set a cookie or a token?
-                        return Ok("Verified");
-                    }
-                    else
-                    {
-                        return Ok("Failed");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    #region Exception Logging 
+        //                // should we set a cookie or a token?
+        //                return Ok("Verified");
+        //            }
+        //            else
+        //            {
+        //                return Ok("Failed");
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            #region Exception Logging 
 
-                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
-                    #endregion
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-                }
-            }
+        //            _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)3).ToString(), "Exception in " + MethodBase.GetCurrentMethod().Name + ", Message: " + ex.Message, ex.StackTrace);
+        //            #endregion
+        //            return StatusCode(StatusCodes.Status500InternalServerError);
+        //        }
+        //    }
             
             
-        }
-        #endregion
-       // [Authorize]
+        //}
+        //#endregion
+
+
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetReceipt(string sReceiptNumber)
         {
-            // User.
             if (String.IsNullOrEmpty(sReceiptNumber.Trim()))
             {
                 return BadRequest();
             }
             try
             {
-                var receipt = _chatrelPaymentVMRepository.GetReceipt(sReceiptNumber);
-                if(receipt != null)
+                string sGBID = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
+                var result = _chatrelPaymentVMRepository.GetReceipt(sReceiptNumber);
+                if(result != null)
                 {
-                    return Ok(receipt);
+                    var receipt = result.GetType().GetProperty("receipt").GetValue(result);
+                    string sPaidByGBId = receipt.GetType().GetProperty("sPaidByGBId").GetValue(receipt).ToString();
+                    if(sGBID != sPaidByGBId)
+                    {
+                        return Unauthorized("The receipt number " + sReceiptNumber + " does not belong to your Greenbook ID " + sGBID);
+                    }
+                    return Ok(result);
                 }
                 else
                 {

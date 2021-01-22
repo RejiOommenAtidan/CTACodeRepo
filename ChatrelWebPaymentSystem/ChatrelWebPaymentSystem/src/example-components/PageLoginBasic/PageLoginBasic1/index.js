@@ -169,14 +169,17 @@ const test =(e)=>{
     axios.post(`User/AuthenticateGBID/`,Obj)
     .then(resp => {
       if (resp.status === 200) {
+        console.log("Authentication resp", resp.data);
         //setPaymentHistory(resp.data);
-        if(resp.data=="Verified"){
+        if(resp.data.result ==="Verified"){
+          const token = resp.data.sJwtToken
           dispatch(storeGBDetails(oGBDetails));
           dispatch(storeCurrentGBDetails(oGBDetails));
           setBackdrop(false);
           setAlertMessage('Verification Successful');
           setAlertType('success');
           snackbarOpen();
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         //  history.push('/Home');
           setTimeout(() => history.push('/Home'), 3000);
         }

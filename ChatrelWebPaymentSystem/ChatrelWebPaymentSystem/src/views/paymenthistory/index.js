@@ -76,17 +76,20 @@ export default function Family () {
     console.log("Receipt Number", sChatrelReceiptNumber);
     axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=`+sChatrelReceiptNumber)
     .then(resp => {
+      console.log("Response", resp);
       if (resp.status === 200) {
+        console.log(resp.data);
         resp.data.receipt.sGBID ='0'.repeat(7 - resp.data.receipt.sGBID.length) +
             resp.data.receipt.sGBID;
        setReceiptData(resp.data);
-       console.log(resp.data);
+       
        setBackdrop(false);
        handleClickOpen();
        //printPDF();
       }
     })
     .catch(error => {
+      console.log("Error ", error.response);
       if (error.response) {
         console.error(error.response);
         console.error(error.response.data);
@@ -359,19 +362,19 @@ export default function Family () {
         <tr>
           <td width="20" height="26"  style={{borderBottom: "1px solid #000000"}} ></td>
           <td colspan="2" style={{borderBottom: "1px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">༡།   དཔྱ་དངུལ།</font></b></td>
-          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། {receiptData.receipt.nChatrelAmount.toFixed(2)}</font></b></td>
+          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། {receiptData.receipt.nChatrelAmount?.toFixed(2)}</font></b></td>
           <td width="20" style={{borderBottom: "2px solid #000000"}}></td>
         </tr>
         <tr>
           <td width="20" style={{borderBottom: "1px solid #000000"}} height="26"></td>
           <td colspan="2" style={{borderBottom: "1px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">༢།   ཟས་བཅད་དོད།</font></b></td>
-          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། {receiptData.receipt.nChatrelMeal.toFixed(2)}</font></b></td>
+          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། {receiptData.receipt.nChatrelMeal?.toFixed(2)}</font></b></td>
           <td width="20"  style={{borderBottom: "2px solid #000000"}}></td>
         </tr>
         <tr>
           <td width="20" style={{borderBottom: "1px solid #000000"}} height="26"></td>
           <td colspan="2" style={{borderBottom: "1px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">༣།   ཕོགས་འབབ།</font></b></td>
-          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། {receiptData.receipt.nCurrentChatrelSalaryAmt.toFixed(2)}</font></b></td>
+          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། {receiptData.receipt.nCurrentChatrelSalaryAmt?.toFixed(2)}</font></b></td>
           <td width="20"  style={{borderBottom: "2px solid #000000"}}></td>
         </tr>
         <tr>
@@ -383,7 +386,7 @@ export default function Family () {
         <tr>
           <td width="20" style={{borderBottom: "1px solid #000000"}} height="26"></td>
           <td colspan="2" style={{borderBottom: "1px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">༥།   དཔྱ་དངུལ་འབུལ་ཆད་འབབ།</font></b></td>
-          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། {(receiptData.receipt.nArrears + receiptData.receipt.nLateFees).toFixed(2)}  ({receiptData.receipt.dtArrearsFrom.split('-')[0]}-{receiptData.receipt.dtArrearsTo.split('-')[0]})</font></b></td>
+          <td  style={{borderBottom: "2px solid #000000"}}  align="left" valign="bottom" ><b><font face="Microsoft Himalaya" size={4 }color="#000000">སྒོར། { receiptData.receipt.nArrears && receiptData.receipt.nLateFees && (receiptData.receipt.nArrears + receiptData.receipt.nLateFees).toFixed(2)}  ({receiptData.receipt.nArrears && receiptData.receipt.nLateFees && (receiptData.receipt.dtArrearsFrom.split('-')[0] - receiptData.receipt.dtArrearsTo.split('-')[0])})</font></b></td>
           <td width="20"  style={{borderBottom: "2px solid #000000"}}></td>
         </tr>
         <tr>

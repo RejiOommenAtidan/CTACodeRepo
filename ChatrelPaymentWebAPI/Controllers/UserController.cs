@@ -50,20 +50,20 @@ namespace ChatrelPaymentWebAPI.Controllers
         [Route("[action]")]
         public async Task<IActionResult> ValidateGoogleToken(string code, string email)
         {
-            var payload = await ValidateGoogle(code);
-            string payloadEmail = payload.Email;
-            bool emailVerified = payload.EmailVerified;
+            //var payload = await ValidateGoogle(code);
+            //string payloadEmail = payload.Email;
+            //bool emailVerified = payload.EmailVerified;
 
-            if (emailVerified && payloadEmail == email)
-            {
-                return Ok(true);
-            }
-            return Ok(false);          
+            //if (emailVerified && payloadEmail == email)
+            //{
+            //    return Ok(true);
+            //}
+            return NotFound();
         }
         
 
 
-            [HttpGet]
+        [HttpGet]
         [Route("[action]")]
         public async Task<GoogleJsonWebSignature.Payload> ValidateGoogle(string code)
         {
@@ -93,7 +93,10 @@ namespace ChatrelPaymentWebAPI.Controllers
             //var payload = await GoogleJsonWebSignature.ValidateAsync(response.IdToken, settings);
             //return payload;
         }
-        #region AuthenticateGBID 
+
+
+        #region AuthenticateGBID
+        [AllowAnonymous]
         [HttpPost]
         [Route("[action]")]
         //public IActionResult AuthenticateGBID(string sGBID, DateTime dtDOB, string sEmail, string sFirstName, string sLastName)
@@ -104,7 +107,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             string sGToken = dict.ContainsKey("code") ? dict["code"] : "";
             DateTime? dtDOB = dict.ContainsKey("dtDOB") ? (DateTime?)DateTime.Parse(dict["dtDOB"]) : null;
 
-            if (String.IsNullOrEmpty(sGBID) || String.IsNullOrWhiteSpace(sGBID) || String.IsNullOrWhiteSpace(sEmail) || String.IsNullOrEmpty(sEmail) || dtDOB == null)
+            if (String.IsNullOrEmpty(sGBID.Trim()) || String.IsNullOrEmpty(sEmail.Trim()) || dtDOB == null || String.IsNullOrEmpty(sGToken.Trim()))
             {
                 return BadRequest("Parameters invalid.");
             }
@@ -150,7 +153,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                             #endregion
 
                             // should we set a cookie or a token?
-                            return Ok("Verified");
+                            return Ok(new { result = "Verified", user.sJwtToken } );
                         }
                         else
                         {

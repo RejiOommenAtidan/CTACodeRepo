@@ -167,7 +167,7 @@ namespace ChatrelDBL.ViewModelsRepositories
 
         public Object GetReceipt(string sReceiptNumber)
         {
-            string sql = @"SELECT l.sGBId, t2.sFirstName,t2.sLastName,t2.sCountryID, CAST((date_format(curdate(), '%Y%m%d') -  date_format(t2.dtdob, '%Y%m%d'))/10000 AS UNSIGNED) AS nAge , l.sChatrelReceiptNumber, l.dtPayment, l.sPaymentCurrency, l.nChatrelAmount*l.nConversionRate AS nChatrelAmount, l.nChatrelMeal*l.nConversionRate AS nChatrelMeal, l.nCurrentChatrelSalaryAmt*l.nConversionRate AS nCurrentChatrelSalaryAmt, l4.nArrears, l4.nLateFees, l4.dtArrearsFrom, l4.dtArrearsTo, l2.nChatrelBusinessDonationAmt*l2.nConversionRate AS nChatrelBusinessDonationAmt, l2.nChatrelAdditionalDonationAmt*l2.nConversionRate AS nChatrelAddtionalDonationAmt FROM lnkgbchatrel l LEFT JOIN (SELECT l3.sChatrelReceiptNumber, sum(l3.nArrearsAmount*l3.nConversionRate - l3.nChatrelLateFeesValue*l3.nConversionRate) AS nArrears, sum(l3.nChatrelLateFeesValue*l3.nConversionRate) AS nLateFees, min(l3.dtArrearsFrom) AS dtArrearsFrom, max(l3.dtArrearsTo) AS dtArrearsTo FROM lnkgbchatrel l3 WHERE l3.nArrearsAmount IS NOT NULL GROUP BY l3.sChatrelReceiptNumber ) AS l4 ON l4.sChatrelReceiptNumber = l.sChatrelReceiptNumber LEFT JOIN lnkgbchatreldonation l2 ON l.sChatrelReceiptNumber = l2.sChatrelReceiptNumber INNER JOIN tblgreenbook t2 ON t2.sGBID = l.sGBId  WHERE l.nArrearsAmount IS NULL AND l.sChatrelReceiptNumber = @sReceiptNumber";
+            string sql = @"SET session sql_mode = ''; SELECT t.sGBID, CAST((date_format(curdate(), '%Y%m%d') -  date_format(t2.dtdob, '%Y%m%d'))/10000 AS UNSIGNED) AS nAge, t.sChatrelReceiptNumber, t.dtPayment, t2.sCountryID, t2.sFirstName, t2.sLastName, t.sPaidByGBId, t.sPaymentCurrency, ROUND(l.nChatrelAmount*l.nConversionRate, 2) AS nChatrelAmount, ROUND(l.nChatrelMeal*l.nConversionRate, 2) AS nChatrelMeal, ROUND(l.nCurrentChatrelSalaryAmt*l.nConversionRate, 2) AS nCurrentChatrelSalaryAmt, l2.nArrears, l2.nLateFees, l2.dtArrearsFrom, l2.dtArrearsTo, l4.nChatrelBusinessDonationAmt, l4.nChatrelAdditionalDonationAmt, t.nChatrelTotalAmount FROM tblchatrelpayment t LEFT JOIN lnkgbchatrel l ON t.id = l.chatrelpaymentID LEFT JOIN (SELECT l3.chatrelpaymentID, ROUND(sum(l3.nArrearsAmount*l3.nConversionRate - l3.nChatrelLateFeesValue*l3.nConversionRate), 2) AS nArrears, sum(l3.nChatrelLateFeesValue*l3.nConversionRate) AS nLateFees, min(l3.dtArrearsFrom) AS dtArrearsFrom, max(l3.dtArrearsTo) AS dtArrearsTo FROM lnkgbchatrel l3 WHERE l3.nArrearsAmount IS NOT NULL GROUP BY l3.sChatrelReceiptNumber ) AS l2 ON l2.chatrelpaymentID = t.Id LEFT JOIN lnkgbchatreldonation l4 ON t.Id = l4.chatrelpaymentID LEFT JOIN tblgreenbook t2 ON t2.sGBID = t.sGBId  LEFT JOIN lstauthregion l5 ON l5.ID = l.nAuthRegionID OR l5.ID = l4.nAuthRegionID WHERE l.nArrearsAmount IS NULL AND t.sChatrelReceiptNumber = @sReceiptNumber";
             using (var command = new MySqlCommand(sql))
             {
                 command.Parameters.AddWithValue("sReceiptNumber", sReceiptNumber);
@@ -185,23 +185,29 @@ namespace ChatrelDBL.ViewModelsRepositories
                     sCountryID = row.Field<string>("sCountryID"),
                     nAge = Convert.ToInt32(row.Field<System.UInt64>("nAge")),
                     sChatrelReceiptNumber = row.Field<string>("sChatrelReceiptNumber"),
+                    sPaidByGBId = row.Field<string>("sPaidByGBId"),
                     dtPayment = row.Field<DateTime>("dtPayment"),
                     sPaymentCurrency = row.Field<string>("sPaymentCurrency"),
-                    nChatrelAmount = row.Field<decimal>("nChatrelAmount"),
-                    nChatrelMeal = row.Field<decimal>("nChatrelMeal"),
-                    nCurrentChatrelSalaryAmt = row.Field<decimal>("nCurrentChatrelSalaryAmt"),
+                    nChatrelAmount = row.Field<decimal?>("nChatrelAmount"),
+                    nChatrelMeal = row.Field<decimal?>("nChatrelMeal"),
+                    nCurrentChatrelSalaryAmt = row.Field<decimal?>("nCurrentChatrelSalaryAmt"),
 
-                    nArrears = row.Field<decimal>("nArrears"),
-                    nLateFees = row.Field<decimal>("nLateFees"),
-                    dtArrearsFrom = row.Field<DateTime>("dtArrearsFrom"),
-                    dtArrearsTo = row.Field<DateTime>("dtArrearsTo"),
+                    nArrears = row.Field<decimal?>("nArrears"),
+                    nLateFees = row.Field<decimal?>("nLateFees"),
+                    dtArrearsFrom = row.Field<DateTime?>("dtArrearsFrom"),
+                    dtArrearsTo = row.Field<DateTime?>("dtArrearsTo"),
                     nChatrelBusinessDonationAmt = row.Field<decimal?>("nChatrelBusinessDonationAmt"),
-                    nChatrelAddtionalDonationAmt = row.Field<decimal?>("nChatrelAddtionalDonationAmt")
+                    nChatrelAdditionalDonationAmt = row.Field<decimal?>("nChatrelAdditionalDonationAmt"),
+                    nChatrelTotalAmount = row.Field<decimal>("nChatrelTotalAmount")
                 }).FirstOrDefault();
 
-                string qrcode = QRCode(result.sGBID, result.dtPayment, result.sChatrelReceiptNumber);
-                var receipt = new { receipt = result, qrcode };
-                return receipt;
+                if(result != null)
+                {
+                    string qrcode = QRCode(result.sGBID, result.dtPayment, result.sChatrelReceiptNumber);
+                    var receipt = new { receipt = result, qrcode };
+                    return receipt;
+                }
+                return null;
             }
         }
 
