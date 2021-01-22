@@ -104,7 +104,7 @@ export const GBDetailScreen = (props) => {
   // };
 
   const {control, handleSubmit, errors} = useForm();
-
+  const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   const dispatch = useDispatch();
   let keysToRemove = ['oUserInfo', 'oGBInfo'];
   const navigation = useNavigation();
@@ -112,7 +112,6 @@ export const GBDetailScreen = (props) => {
   const [bShowGBID, setbShowGBID] = useState(true);
   const [dtDOB, setdtDOB] = useState(null);
   const dtToday = Moment().format(sDateFormatDatePicker);
-  const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   const [bLoader, setbLoader] = useState(false);
   const removeCompleteDetailsAndNavigateToLogin = async () => {
     try {
@@ -409,6 +408,16 @@ export const GBDetailScreen = (props) => {
           />
         </View>
         {/*</form>*/}
+        <View>
+          <Text style={styles.infoComponent}>
+            Signed in with {oGoogle.email}
+          </Text>
+          <Text
+            style={styles.backToLoginComponent}
+            onPress={() => removeCompleteDetailsAndNavigateToLogin()}>
+            Change Google Account?
+          </Text>
+        </View>
       </View>
       {/* </LinearGradient> */}
     </ImageBackground>
@@ -548,7 +557,7 @@ const styles = StyleSheet.create({
       Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     height: hp(3.5),
     marginTop: hp(4),
-    marginBottom: hp(4),
+    marginBottom: hp(5),
   },
   buttonComponent: {
     borderRadius: 20,
@@ -570,5 +579,31 @@ const styles = StyleSheet.create({
     height: hp(100),
     width: wp(100),
     opacity: 0,
+  },
+  infoComponent: {
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    width: wp(85),
+    //height: hp(3.5),
+    marginBottom: hp(2),
+    fontFamily: sFontName,
+    fontSize: wp(4.25),
+    textAlign: 'center',
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: Colors.white,
+  },
+  backToLoginComponent: {
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    width: wp(85),
+    //height: hp(3.5),
+    marginBottom: hp(2),
+    fontFamily: sFontName,
+    fontSize: wp(3.75),
+    textAlign: 'center',
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: Colors.blue,
   },
 });

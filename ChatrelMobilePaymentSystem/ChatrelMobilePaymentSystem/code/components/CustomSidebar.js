@@ -245,8 +245,7 @@ export const CustomSidebarMenu = (props) => {
             marginTop: Platform.OS === 'android' ? hp(1) : hp(1),
           }}
         />
-      </DrawerContentScrollView>
-      <DrawerItem
+        <DrawerItem
         labelStyle={{
           ...styles.logoutLabelStyles,
           //backgroundColor: Colors.white,
@@ -263,11 +262,12 @@ export const CustomSidebarMenu = (props) => {
             color={Colors.black}
             style={{
               justifyContent: 'flex-start',
-              marginLeft: wp(2),
+              marginLeft: wp(2.5),
             }}
           />
         )}
       />
+      </DrawerContentScrollView>
       {/* <Text
         style={{
           fontSize: 16,

@@ -60,6 +60,7 @@ import HeaderButton from '../components/HeaderButton';
 import {GLogout} from '../components/GLogout';
 
 const defaultStackNavOptions = {
+  headerMode: "screen",
   headerStyle: {
     backgroundColor:
       Platform.OS === 'android' ? Colors.primary : Colors.primary,
@@ -303,6 +304,10 @@ export const MainNavigator = () => {
           fontWeight: 'normal',
           alignSelf: 'flex-start',
           fontSize: wp(3.75),
+          paddingLeft:0,
+          marginLeft:0
+          // marginLeft:0,
+          // paddingLeft:0
         },
       }}>
       {/*Home*/}
@@ -317,7 +322,9 @@ export const MainNavigator = () => {
               color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(2),
+                marginLeft: wp(2.5),
+                // marginRight:0,
+                // paddingRight:0
               }}
             />
           ),
@@ -338,7 +345,7 @@ export const MainNavigator = () => {
               color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(2),
+                marginLeft: wp(2.5),
               }}
             />
           ),
@@ -358,7 +365,7 @@ export const MainNavigator = () => {
               color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(2),
+                marginLeft: wp(2.5),
               }}
             />
           ),
@@ -366,7 +373,7 @@ export const MainNavigator = () => {
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
-      
+
       {/*FriendChatrelIntermediate*/}
       <MainDrawerNavigator.Screen
         name={'FriendChatrelIntermediate'}
@@ -379,7 +386,7 @@ export const MainNavigator = () => {
               color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(2),
+                marginLeft: wp(2.5),
               }}
             />
           ),
@@ -387,7 +394,7 @@ export const MainNavigator = () => {
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
-      
+
       {/*ChatrelHistory*/}
       <MainDrawerNavigator.Screen
         name={'ChatrelHistory'}
@@ -400,7 +407,7 @@ export const MainNavigator = () => {
               color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(2),
+                marginLeft: wp(2.5),
               }}
             />
           ),
@@ -421,7 +428,7 @@ export const MainNavigator = () => {
               color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(2),
+                marginLeft: wp(2.5),
               }}
             />
           ),
@@ -441,7 +448,7 @@ export const MainNavigator = () => {
               color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(2),
+                marginLeft: wp(2.5),
               }}
             />
           ),
@@ -476,7 +483,7 @@ export const MainNavigator = () => {
         name={'FriendChatrel'}
         component={FriendChatrelNavigator}></MainDrawerNavigator.Screen>
     </MainDrawerNavigator.Navigator>
-    
+
   );
 };
 

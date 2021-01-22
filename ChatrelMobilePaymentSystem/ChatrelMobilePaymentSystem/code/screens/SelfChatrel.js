@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, StyleSheet, Dimensions, Platform} from 'react-native';
+import {Text, View, StyleSheet, Dimensions, Platform,Animated} from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Chatrel} from '../components/Chatrel';
@@ -11,6 +11,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {sFontName} from '../constants/CommonConfig';
+import { useCollapsibleHeader } from 'react-navigation-collapsible';
 
 export const SelfChatrelScreen = (props) => {
   return (
