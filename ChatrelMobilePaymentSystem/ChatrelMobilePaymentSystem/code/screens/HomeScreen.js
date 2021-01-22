@@ -58,7 +58,7 @@ const HomeScreen = (props) => {
   //   }
   //   return true;
   // };
-
+  const [dollarToRupees, setDollarToRupees] = React.useState(0.0);
   const [nChatrelTotalAmount, setnChatrelTotalAmount] = useState(0);
   const [bLoader, setbLoader] = useState(true);
   const isFocused = useIsFocused();
@@ -123,7 +123,16 @@ const HomeScreen = (props) => {
       )
       .then((resp) => {
         if (resp.status === 200) {
-          setnChatrelTotalAmount(resp.data.chatrelPayment.nChatrelTotalAmount);
+          fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
+            .then((response) => response.json())
+            .then((data) => {
+              console.log('currency', data.rates.USD);
+              setDollarToRupees(data.rates.USD);
+            });
+          setnChatrelTotalAmount(
+            parseFloat(resp.data.chatrelPayment.nChatrelTotalAmount) *
+              dollarToRupees.toFixed(4),
+          );
         }
         setbLoader(false);
       })
@@ -221,14 +230,19 @@ const HomeScreen = (props) => {
                           : 15,
                     }}
                     title={
-                      <View style={{display: 'flex', flexDirection: 'row'}}>
+                      <View
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'space-evenly',
+                        }}>
                         <Text
                           style={{
                             color: card.sTextColor,
-                            fontSize: wp(4.5),
+                            fontSize: wp(4.25),
                             fontStyle: 'normal',
                             fontWeight: 'normal',
-                            lineHeight: hp(2.5),
+                            lineHeight: hp(3.5),
                             // letterSpacing: Resolution.nLetterSpacing / 2,
                             fontFamily: sFontName,
                           }}>
@@ -277,10 +291,15 @@ const HomeScreen = (props) => {
               />
               <Card.Divider />
               <Text style={styles.pendingAmountTextComponent}>
-                Pending Amount ${nChatrelTotalAmount}
+                Pending Amount ${nChatrelTotalAmount.toFixed(2)}
               </Text>
               <Button
-                titleStyle={{color: Colors.white, fontFamily: sFontName}}
+                titleStyle={{
+                  color: Colors.white,
+                  fontFamily: sFontName,
+                  fontStyle: 'normal',
+                  fontWeight: 'normal',
+                }}
                 buttonStyle={{
                   width: wp(75),
                   backgroundColor: Colors.greenBG,
@@ -321,7 +340,13 @@ titleStyle={styles.pendingAmountTextComponent}
                 </Text>
               </View>
               <Button
-                titleStyle={{color: Colors.white, fontFamily: sFontName}}
+                title="UPDATE EMPLOYEMENT STATUS"
+                titleStyle={{
+                  color: Colors.black,
+                  fontFamily: sFontName,
+                  fontStyle: 'normal',
+                  fontWeight: 'normal',
+                }}
                 buttonStyle={{
                   backgroundColor: Colors.buttonYellow,
                   borderRadius:
@@ -329,7 +354,6 @@ titleStyle={styles.pendingAmountTextComponent}
                       ? 10.2
                       : 17,
                 }}
-                title="UPDATE EMPLOYEMENT STATUS"
                 onPress={() => {
                   setbLoader(true);
                   props.navigation.navigate('SelfChatrel');
@@ -380,7 +404,7 @@ const styles = StyleSheet.create({
     // height: '100%',
     width: wp(60),
     // height: hp(4),
-    marginBottom: hp(4),
+    marginBottom: hp(2),
     textAlign: 'left',
     fontSize: wp(5),
     fontStyle: 'normal',
@@ -397,31 +421,32 @@ const styles = StyleSheet.create({
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 20 : 25,
   },
   singleCardContainer: {
-    width: wp(111) / 3,
+    width: wp(105) / 3,
   },
   singleCardComponent: {
     // height:
     //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 54 : 90,
+    // lineHeight:hp(5)
   },
   pendingAmountContainer: {},
   pendingAmountComponent: {
     borderRadius:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 15,
+    // elevation: 0,
+    // borderColor: Colors.white
   },
   pendingAmountImageComponent: {
     width: wp(75),
     height: hp(33),
   },
   pendingAmountTextComponent: {
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 18,
+    fontSize: wp(4),
     fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: 'normal',
     textAlign: 'left',
     color: Colors.black,
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
+    marginBottom: hp(2),
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     // letterSpacing: Resolution.nLetterSpacing,
   },
@@ -431,38 +456,32 @@ const styles = StyleSheet.create({
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 15,
   },
   newJobContribTextContainer: {
-    // width: wp(70),
+    //width: wp(70),
     //height: hp(33),
   },
   newJobContribTextComponent: {
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 15.6 : 26,
+    fontSize: wp(6),
     fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: 'normal',
     textAlign: 'left',
     color: Colors.white,
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1 : 6,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    marginBottom: hp(2),
+    lineHeight: hp(4.5),
     //letterSpacing: Resolution.nLetterSpacing
   },
   jobContribStatusTextContainer: {
-    // width: wp(70),
+    //width: wp(70),
     //height: hp(33),
   },
   jobContribStatusTextComponent: {
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
+    fontSize: wp(3),
     fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: 'normal',
     textAlign: 'left',
     color: Colors.white,
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 22.8
-        : 38,
+    marginBottom: hp(2),
     lineHeight: hp(3),
     //letterSpacing: Resolution.nLetterSpacing
   },
