@@ -334,6 +334,7 @@ export const FileDisputeScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     headerRight: CustomHeaderRightButton,
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 

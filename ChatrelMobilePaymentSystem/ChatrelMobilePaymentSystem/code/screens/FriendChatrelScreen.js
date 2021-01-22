@@ -42,7 +42,7 @@ export const FriendChatrelScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     headerRight: CustomHeaderRightButton,
-    cardStyle: {backgroundColor: Colors.ChatrelScreensBGColor},
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 

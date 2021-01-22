@@ -42,7 +42,7 @@ export const SelfChatrelScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     headerRight: CustomHeaderRightButton,
-    cardStyle: {backgroundColor: Colors.ChatrelScreensBGColor},
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 
