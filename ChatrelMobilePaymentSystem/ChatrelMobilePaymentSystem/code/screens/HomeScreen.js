@@ -385,7 +385,7 @@ export const HomeScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
+    // headerRight: CustomHeaderRightButton,
     cardStyle: {backgroundColor: Colors.white},
   };
 };

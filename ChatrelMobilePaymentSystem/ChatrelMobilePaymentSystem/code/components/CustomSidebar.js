@@ -7,6 +7,7 @@ import {
   Text,
   Linking,
   Platform,
+  Alert,
 } from 'react-native';
 
 import {
@@ -22,10 +23,51 @@ import {
 } from 'react-native-responsive-screen';
 import Colors from '../../code/constants/Colors';
 import {sFontName} from '../constants/CommonConfig';
+import {GoogleSignin} from '@react-native-community/google-signin';
+import {useDispatch} from 'react-redux';
+import {removeGoogleCreds} from '../store/actions/GLoginAction';
+import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
+import {removeGBDetails} from '../store/actions/GBDetailsAction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import {useNavigation} from '@react-navigation/native';
 
 export const CustomSidebarMenu = (props) => {
+  console.log();
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
-  let {activeTintColor, activeBackgroundColor} = props;
+  // let {activeTintColor, activeBackgroundColor} = props;
+  let keysToRemove = ['oUserInfo', 'oGBInfo'];
+  const dispatch = useDispatch();
+  // const navigation = useNavigation();
+  const handleLogoutButtonPress = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'No',
+          onPress: () => true,
+          style: 'cancel',
+        },
+        {text: 'Yes', onPress: () => removeCompleteDetails()},
+      ],
+      {cancelable: false},
+    );
+    const removeCompleteDetails = async () => {
+      try {
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+        await AsyncStorage.multiRemove(keysToRemove, (err) => {
+          dispatch(removeGoogleCreds);
+          dispatch(removeGBDetails);
+          dispatch(removeCurrentGBDetails);
+          props.navigation.closeDrawer();
+          props.navigation.navigate('Login');
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  };
   return (
     <SafeAreaView style={{flex: 1}}>
       {/*Top Large Image */}
@@ -119,10 +161,7 @@ export const CustomSidebarMenu = (props) => {
       />
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        {/* <DrawerItem
-          label="Visit Us"
-          onPress={() => Linking.openURL('https://aboutreact.com/')}
-        /> */}
+
         {/* <View style={styles.customItem}>
           <Text
             onPress={() => {
@@ -144,6 +183,7 @@ export const CustomSidebarMenu = (props) => {
           }}
         />
       </DrawerContentScrollView>
+      <DrawerItem label="LOGOUT" onPress={handleLogoutButtonPress} />
       {/* <Text
         style={{
           fontSize: 16,

@@ -41,7 +41,7 @@ export const FriendChatrelScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
+    // headerRight: CustomHeaderRightButton,
     cardStyle: {backgroundColor: Colors.white},
   };
 };

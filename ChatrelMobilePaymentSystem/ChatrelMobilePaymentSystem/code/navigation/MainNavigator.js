@@ -336,7 +336,7 @@ export const MainNavigator = () => {
               color={Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(1),
+                marginLeft: wp(2),
               }}
             />
           ),
@@ -357,7 +357,7 @@ export const MainNavigator = () => {
               color={Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(1),
+                marginLeft: wp(2),
               }}
             />
           ),
@@ -377,7 +377,7 @@ export const MainNavigator = () => {
               color={Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(1),
+                marginLeft: wp(2),
               }}
             />
           ),
@@ -401,7 +401,7 @@ export const MainNavigator = () => {
               color={Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(1),
+                marginLeft: wp(2),
               }}
             />
           ),
@@ -425,7 +425,7 @@ export const MainNavigator = () => {
               color={Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(1),
+                marginLeft: wp(2),
               }}
             />
           ),
@@ -446,7 +446,7 @@ export const MainNavigator = () => {
               color={Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(1),
+                marginLeft: wp(2),
               }}
             />
           ),
@@ -466,7 +466,7 @@ export const MainNavigator = () => {
               color={Colors.black}
               style={{
                 justifyContent: 'flex-start',
-                marginLeft: wp(1),
+                marginLeft: wp(2),
               }}
             />
           ),

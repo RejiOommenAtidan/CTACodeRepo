@@ -301,7 +301,7 @@ export const ChatrelHistoryScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
+    // headerRight: CustomHeaderRightButton,
     cardStyle: {backgroundColor: Colors.white},
   };
 };
