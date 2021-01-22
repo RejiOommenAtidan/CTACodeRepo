@@ -86,9 +86,7 @@ const LoginNavigator = () => {
       <LoginStackNavigator.Screen
         name="Login"
         component={LoginScreen}
-        options={LoginScreenOptions}>
-          
-        </LoginStackNavigator.Screen>
+        options={LoginScreenOptions}></LoginStackNavigator.Screen>
     </LoginStackNavigator.Navigator>
   );
 };
@@ -245,7 +243,7 @@ export const MainNavigator = () => {
     <MainDrawerNavigator.Navigator
       drawerStyle={{
         backgroundColor: Colors.white,
-        width: wp(62.5),
+        width: wp(65),
       }}
       initialRouteName={'Login'}
       drawerPosition={'left'}
@@ -297,7 +295,7 @@ export const MainNavigator = () => {
         // contentContainerStyle:{
         //
         // },
-        activeTintColor: Colors.black,
+        activeTintColor: Colors.primary,
         inactiveTintColor: Colors.black,
         labelStyle: {
           fontFamily: sFontName,
@@ -307,23 +305,6 @@ export const MainNavigator = () => {
           fontSize: wp(3.75),
         },
       }}>
-      {/*Login*/}
-      <MainDrawerNavigator.Screen
-        name={'Login'}
-        component={LoginNavigator}
-        options={{
-          //Make it false after dev ends
-          gestureEnabled: false,
-          swipeEnabled: false,
-        }}></MainDrawerNavigator.Screen>
-      {/*GBDetails*/}
-      <MainDrawerNavigator.Screen
-        name={'GBDetail'}
-        component={GBDetailNavigator}
-        options={{
-          gestureEnabled: false,
-          swipeEnabled: false,
-        }}></MainDrawerNavigator.Screen>
       {/*Home*/}
       <MainDrawerNavigator.Screen
         name={'Home'}
@@ -333,7 +314,7 @@ export const MainNavigator = () => {
             <AntDesign
               name="home"
               size={size}
-              color={Colors.black}
+              color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
                 marginLeft: wp(2),
@@ -354,7 +335,7 @@ export const MainNavigator = () => {
             <Ionicons
               name="wallet-outline"
               size={size}
-              color={Colors.black}
+              color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
                 marginLeft: wp(2),
@@ -374,7 +355,7 @@ export const MainNavigator = () => {
             <AntDesign
               name="hearto"
               size={size}
-              color={Colors.black}
+              color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
                 marginLeft: wp(2),
@@ -385,10 +366,7 @@ export const MainNavigator = () => {
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
-      {/*FamilyChatrel*/}
-      <MainDrawerNavigator.Screen
-        name={'FamilyChatrel'}
-        component={FamilyChatrelNavigator}></MainDrawerNavigator.Screen>
+      
       {/*FriendChatrelIntermediate*/}
       <MainDrawerNavigator.Screen
         name={'FriendChatrelIntermediate'}
@@ -398,7 +376,7 @@ export const MainNavigator = () => {
             <Ionicons
               name="leaf-outline"
               size={size}
-              color={Colors.black}
+              color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
                 marginLeft: wp(2),
@@ -409,10 +387,7 @@ export const MainNavigator = () => {
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
-      {/*FriendChatrel*/}
-      <MainDrawerNavigator.Screen
-        name={'FriendChatrel'}
-        component={FriendChatrelNavigator}></MainDrawerNavigator.Screen>
+      
       {/*ChatrelHistory*/}
       <MainDrawerNavigator.Screen
         name={'ChatrelHistory'}
@@ -422,7 +397,7 @@ export const MainNavigator = () => {
             <Entypo
               name="list"
               size={size}
-              color={Colors.black}
+              color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
                 marginLeft: wp(2),
@@ -443,7 +418,7 @@ export const MainNavigator = () => {
             <MaterialCommunityIcons
               name="email-alert-outline"
               size={size}
-              color={Colors.black}
+              color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
                 marginLeft: wp(2),
@@ -463,7 +438,7 @@ export const MainNavigator = () => {
             <Ionicons
               name="person-outline"
               size={size}
-              color={Colors.black}
+              color={focused ? Colors.primary : Colors.black}
               style={{
                 justifyContent: 'flex-start',
                 marginLeft: wp(2),
@@ -474,7 +449,34 @@ export const MainNavigator = () => {
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
+        {/*non screen*/}
+        {/*Login*/}
+      <MainDrawerNavigator.Screen
+        name={'Login'}
+        component={LoginNavigator}
+        options={{
+          //Make it false after dev ends
+          gestureEnabled: true,
+          swipeEnabled: true,
+        }}></MainDrawerNavigator.Screen>
+      {/*GBDetails*/}
+      <MainDrawerNavigator.Screen
+        name={'GBDetail'}
+        component={GBDetailNavigator}
+        options={{
+          gestureEnabled: false,
+          swipeEnabled: false,
+        }}></MainDrawerNavigator.Screen>
+        {/*FamilyChatrel*/}
+      <MainDrawerNavigator.Screen
+        name={'FamilyChatrel'}
+        component={FamilyChatrelNavigator}></MainDrawerNavigator.Screen>
+        {/*FriendChatrel*/}
+      <MainDrawerNavigator.Screen
+        name={'FriendChatrel'}
+        component={FriendChatrelNavigator}></MainDrawerNavigator.Screen>
     </MainDrawerNavigator.Navigator>
+    
   );
 };
 

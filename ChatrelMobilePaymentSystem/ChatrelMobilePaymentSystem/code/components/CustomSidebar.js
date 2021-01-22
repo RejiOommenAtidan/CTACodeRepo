@@ -10,6 +10,8 @@ import {
   Alert,
 } from 'react-native';
 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -32,13 +34,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {useNavigation} from '@react-navigation/native';
 
 export const CustomSidebarMenu = (props) => {
-  console.log();
+  console.log(props);
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
-  // let {activeTintColor, activeBackgroundColor} = props;
+  const {
+    state,
+    descriptors,
+    navigation,
+    activeTintColor,
+    inactiveTintColor,
+    itemStyle,
+    labelStyle,
+  } = props;
+  let lastGroupName = '';
+  let newGroup = true;
   let keysToRemove = ['oUserInfo', 'oGBInfo'];
   const dispatch = useDispatch();
   // const navigation = useNavigation();
   const handleLogoutButtonPress = () => {
+    navigation.closeDrawer();
     Alert.alert(
       'Logout',
       'Are you sure you want to logout?',
@@ -60,8 +73,8 @@ export const CustomSidebarMenu = (props) => {
           dispatch(removeGoogleCreds);
           dispatch(removeGBDetails);
           dispatch(removeCurrentGBDetails);
-          props.navigation.closeDrawer();
-          props.navigation.navigate('Login');
+
+          navigation.navigate('Login');
         });
       } catch (error) {
         console.error(error);
@@ -70,11 +83,7 @@ export const CustomSidebarMenu = (props) => {
   };
   return (
     <SafeAreaView style={{flex: 1}}>
-      {/*Top Large Image */}
-      {/* <Image
-        source={{uri: BASE_PATH + proileImage}}
-        style={styles.sideMenuProfileIcon}
-      /> */}
+      {/*Avatar*/}
       <View
         style={{
           marginLeft: hp(1),
@@ -148,7 +157,6 @@ export const CustomSidebarMenu = (props) => {
           //flexDirection: 'row',
           //justifyContent: 'space-between',
         }}>
-        
       </View> */}
       <View
         style={{
@@ -160,8 +168,7 @@ export const CustomSidebarMenu = (props) => {
         }}
       />
       <DrawerContentScrollView {...props}>
-        <DrawerItemList {...props} />
-
+        {/* <DrawerItemList {...props} /> */}
         {/* <View style={styles.customItem}>
           <Text
             onPress={() => {
@@ -174,6 +181,62 @@ export const CustomSidebarMenu = (props) => {
             style={styles.iconStyle}
           />
         </View> */}
+        {state.routes.map((route) => {
+          const {
+            drawerLabel,
+            activeTintColor,
+            groupName,
+            drawerIcon,
+          } = descriptors[route.key].options;
+          // console.log(route);
+          // console.log(activeTintColor);
+          if (lastGroupName !== groupName) {
+            newGroup = true;
+            lastGroupName = groupName;
+          } else newGroup = false;
+          return (
+            <>
+              {newGroup ? (
+                <View style={styles.sectionContainer}>
+                  <Text key={groupName} style={{marginLeft: 16}}>
+                    {groupName}
+                  </Text>
+                  {/* <View style={styles.sectionLine} /> */}
+                </View>
+              ) : null}
+              <DrawerItem
+                labelStyle={labelStyle}
+                inactiveTintColor={inactiveTintColor}
+                icon={drawerIcon}
+                key={route.key}
+                label={({color}) => (
+                  <Text style={labelStyle}>{drawerLabel}</Text>
+                )}
+                focused={
+                  // state.routes.findIndex((e) => e.key === route.key)
+                  // === state.index
+                  //0 LS (NA)
+                  //1 GDS (NA)
+                  //2 HS (0)
+                  //3 Self (1)
+                  //4 Fam IS (2)
+                  //5 Fam (NA)
+                  //6 Friend IS (3)
+                  //7 Friend (NA)
+                  //8 CHS (4)
+                  //9 FDS (5)
+                  //10 MPS (6)
+                  // state.routes.findIndex((e) => e.key === route.key).id
+                  // === state.id
+                  state.routeNames[state.index] === route.name
+                }
+                activeTintColor={activeTintColor}
+                onPress={() => navigation.navigate(route.name)}
+                style={styles.drawerItemStyles}
+              />
+            </>
+          );
+        })}
         <View
           style={{
             width: '100%',
@@ -183,7 +246,28 @@ export const CustomSidebarMenu = (props) => {
           }}
         />
       </DrawerContentScrollView>
-      <DrawerItem label="LOGOUT" onPress={handleLogoutButtonPress} />
+      <DrawerItem
+        labelStyle={{
+          ...styles.logoutLabelStyles,
+          //backgroundColor: Colors.white,
+        }}
+        label="LOGOUT"
+        style={{
+          ...styles.drawerItemStyles,
+        }}
+        onPress={handleLogoutButtonPress}
+        icon={() => (
+          <MaterialIcons
+            name="logout"
+            size={23}
+            color={Colors.black}
+            style={{
+              justifyContent: 'flex-start',
+              marginLeft: wp(2),
+            }}
+          />
+        )}
+      />
       {/* <Text
         style={{
           fontSize: 16,
@@ -215,3 +299,35 @@ export const CustomSidebarMenu = (props) => {
 //     alignItems: 'center',
 //   },
 // });
+
+const styles = StyleSheet.create({
+  sectionContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // marginTop: 10,
+  },
+  sectionLine: {
+    backgroundColor: 'gray',
+    flex: 1,
+    height: 1,
+    marginLeft: 10,
+    marginRight: 20,
+  },
+  logoutLabelStyles: {
+    fontFamily: sFontName,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    alignSelf: 'flex-start',
+    fontSize: wp(3.75),
+    color: Colors.black,
+  },
+  drawerItemStyles: {
+    justifyContent: 'flex-start',
+    marginBottom: hp(1),
+    //backgroundColor: Colors.white,
+    // borderBottomColor:Colors.black,
+    // borderBottomWidth:1,
+    marginHorizontal: 0,
+  },
+});
