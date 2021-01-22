@@ -121,8 +121,7 @@ export const GLogin = (props) => {
   return (
     <View style={styles.gSignInContainer}>
       <GoogleSigninButton
-        style={{width: 192, height: 48}}
-        //style={styles.gSignInComponent}
+        style={styles.gSignInComponent}
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Dark}
         onPress={signIn}
@@ -140,7 +139,10 @@ const styles = StyleSheet.create({
   gSignInComponent: {
     // width: Platform.OS === 'android' ? wp(50) : wp(47.5),
     // height: Platform.OS === 'android' ? hp(5.75) : hp(4.75),
-    // width: Platform.OS === 'android' ? 192 : 192,
-    // height: Platform.OS === 'android' ? 48 : 48,
+
+    //Values Coded
+
+    width: 192,
+    height: 48,
   },
 });

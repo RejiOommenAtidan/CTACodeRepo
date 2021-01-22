@@ -387,7 +387,7 @@ export const GBDetailScreen = (props) => {
           <View
             style={{
               ...errorContainer,
-              marginLeft: wp(2),
+              marginLeft: wp(8),
             }}>
             <Text style={errorComponent}>Please enter Date of Birth.</Text>
           </View>
@@ -528,8 +528,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: wp(85 - 1.5),
     height: hp(3.5),
-    marginTop: hp(4),
-    marginBottom: hp(4),
+    marginTop: hp(5),
+    marginBottom: hp(5),
   },
   dobComponent: {
     // textAlign: "left",

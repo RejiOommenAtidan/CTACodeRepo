@@ -15,6 +15,7 @@ export const LoginScreen = (props) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.imgContainer}>
+        {/*Values Coded*/}
         <ResponsiveImage
           initWidth="330"
           initHeight="320"
@@ -96,8 +97,8 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontFamily: sFontName,
     color: Colors.white,
-    marginBottom: hp(6),
-    lineHeight: hp(3.5),
+    marginBottom: hp(7.5),
+    lineHeight: hp(3),
     // height:hp(10)
     // letterSpacing: Resolution.nLetterSpacing / 2,
   },
