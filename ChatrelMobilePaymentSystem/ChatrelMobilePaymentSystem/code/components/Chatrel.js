@@ -7,12 +7,11 @@ import {
   StyleSheet,
   Platform,
   ActivityIndicator,
-  
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import IOSPicker from 'react-native-ios-picker';
 import {sFontName} from '../constants/CommonConfig';
-import { useIsFocused } from "@react-navigation/native";
+import {useIsFocused} from '@react-navigation/native';
 // import DropDownPicker from 'react-native-dropdown-picker';
 // import Icon from 'react-native-vector-icons/Feather';
 // import ModalDropdown from 'react-native-modal-dropdown';
@@ -31,7 +30,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
 
 export const Chatrel = (props) => {
   const isFocused = useIsFocused();
@@ -368,8 +366,8 @@ export const Chatrel = (props) => {
   };
 
   useEffect(() => {
-    if(isFocused){
-      console.log("Chatrel Component Called");
+    if (isFocused) {
+      console.log('Chatrel Component Called');
       setbRender(false);
       setbLoader(true);
       getChatrelDetails();
@@ -513,9 +511,7 @@ export const Chatrel = (props) => {
           </View>
           {aGBChatrels.map((year, index) => {
             return (
-              <View
-              key={year.nChatrelYear}
-              >
+              <View key={year.nChatrelYear}>
                 <Card
                   //key={year.nChatrelYear}
                   containerStyle={{
@@ -556,7 +552,8 @@ export const Chatrel = (props) => {
                           Authority Region
                         </Text>
                         {Platform.OS === 'android' && (
-                          <Picker
+                         
+<Picker
                             enabled={outstanding}
                             collapsable={true}
                             mode={'dialog'}
@@ -585,6 +582,7 @@ export const Chatrel = (props) => {
                               />
                             ))}
                           </Picker>
+                          
                         )}
 
                         {Platform.OS === 'ios' && (
@@ -652,14 +650,14 @@ export const Chatrel = (props) => {
                         <Text
                           style={{
                             ...styles.textComponent,
-                            textAlign: 'center',
+                            textAlign: 'left',
                           }}>
                           Basic
                         </Text>
                         <Text
                           style={{
                             ...styles.textComponentAPI,
-                            textAlign: 'right',
+                            textAlign: 'left',
                           }}>
                           {year.sAuthRegionCurrency === 'INR'
                             ? '\u20B9'
@@ -713,12 +711,12 @@ export const Chatrel = (props) => {
 
                     {year.sAuthRegionCurrency === 'USD' && (
                       <View style={styles.employementStatusContainer}>
-                        <Text style={styles.textComponentAPI}>
+                        <Text style={styles.textComponent}>
                           {/*Employment Status:{' '}*/}
                           {/* {year.nCurrentChatrelSalaryAmt === 0
                             ? 'Not Employed'
                             : 'Employed'} */}
-                          {'Employed'}
+                          {'Employed:'}
                         </Text>
                         <View
                           style={{
@@ -746,61 +744,81 @@ export const Chatrel = (props) => {
                       </View>
                     )}
                     {year.sAuthRegionCurrency === 'INR' && (
-                      <View
-                        style={{
-                          marginBottom: hp(1),
-                        }}>
-                        <Input
-                          // label="Business Donation"
-                          //placeholder="Business Donation"
-                          inputContainerStyle={{
-                            //borderBottomWidth:0,
-                            //borderTopWidth:0,
-                            //width:wp(60),
-                            //align
-                            //padding:0
-                            paddingRight: 0,
-                            marginRight: 0,
-                            borderRightWidth: 0,
-                          }}
-                          containerStyle={{
-                            // height:hp(5),
-                            paddingRight: 0,
-                            marginRight: 0,
-                            borderRightWidth: 0,
-                            // //height:hp(10)
-                            //paddingHorizontal:0,
-                            //borderTopWidth:0,
-                            //borderBottomWidth:0
-                          }}
+                      <View style={styles.employementStatusContainerForInput}>
+                        <Text
                           style={{
-                            textAlign: 'right',
-                            // fontSize:
-                            //   Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                            //     ? 10.5
-                            //     : 17.5,
-                            fontStyle: 'normal',
-                            fontWeight: 'normal',
-                            fontFamily: sFontName,
-                            //width:wp(1)
-                          }}
-                          placeholder={'Employment Contribution'}
-                          placeholderTextColor={Colors.grey}
-                          autoCorrect={false}
-                          clearButtonMode={'while-editing'}
-                          keyboardType={'number-pad'}
-                          keyboardAppearance={'default'}
-                          disableFullscreenUI={false}
-                          onChangeText={(value) => {
-                            if (value !== '') {
-                              modify(value, index);
-                            }
-                            if (value === '') {
-                              modify('0', index);
-                            }
-                          }}
-                          //value={nBusinessDonation}
-                        />
+                            ...styles.textComponent,
+                            marginBottom: 0,
+                            height: hp(5),
+                            alignSelf: 'center',
+                          }}>
+                          {/*Employment Status:{' '}*/}
+                          {/* {year.nCurrentChatrelSalaryAmt === 0
+                            ? 'Not Employed'
+                            : 'Employed'} */}
+                          {'Employed:'}
+                        </Text>
+                        <View
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'flex-start',
+                            //marginBottom: hp(2),
+                          }}>
+                          <Input
+                            // label="Business Donation"
+                            //placeholder="Business Donation"
+                            inputContainerStyle={{
+                              //borderBottomWidth:0,
+                              //borderTopWidth:0,
+                              //width:wp(60),
+                              //align
+                              //padding:0
+                              height: hp(5),
+                              width: wp(15),
+                              margin: 0,
+                              padding: 0,
+                              borderRightWidth: 0,
+                            }}
+                            containerStyle={{
+                              // height:hp(5),
+                              margin: 0,
+                              padding: 0,
+                              borderRightWidth: 0,
+                              // //height:hp(10)
+                              //paddingHorizontal:0,
+                              //borderTopWidth:0,
+                              //borderBottomWidth:0
+                            }}
+                            style={{
+                              textAlign: 'right',
+                              // fontSize:
+                              //   Dimensions.get('window').width < Resolution.nWidthBreakpoint
+                              //     ? 10.5
+                              //     : 17.5,
+                              fontStyle: 'normal',
+                              fontWeight: 'normal',
+                              fontFamily: sFontName,
+                              //width:wp(1)
+                            }}
+                            //placeholder={''}
+                            //placeholderTextColor={Colors.grey}
+                            autoCorrect={false}
+                            clearButtonMode={'while-editing'}
+                            keyboardType={'number-pad'}
+                            keyboardAppearance={'default'}
+                            disableFullscreenUI={false}
+                            onChangeText={(value) => {
+                              if (value !== '') {
+                                modify(value, index);
+                              }
+                              if (value === '') {
+                                modify('0', index);
+                              }
+                            }}
+                            //value={nBusinessDonation}
+                          />
+                        </View>
                       </View>
                     )}
                     <Card.Divider
@@ -1099,10 +1117,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   employementStatusContainerForInput: {
-    //flex: 1,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // marginBottom: 10,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
   },
   employementStatusComponent: {},
   authorityRegionContainer: {

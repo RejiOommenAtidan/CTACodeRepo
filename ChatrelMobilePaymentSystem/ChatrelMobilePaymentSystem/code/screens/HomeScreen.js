@@ -9,6 +9,7 @@ import {
   Alert,
   Dimensions,
   ActivityIndicator,
+  Animated,
 } from 'react-native';
 import {Card, Button, Tile} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -33,6 +34,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {useIsFocused} from '@react-navigation/native';
+import {useCollapsibleHeader} from 'react-navigation-collapsible';
 
 // import { withNavigationFocus } from 'react-navigation';
 //import CustomHeaderButton from '../components/HeaderButton';
@@ -56,7 +58,7 @@ const HomeScreen = (props) => {
   //   }
   //   return true;
   // };
-
+  const [dollarToRupees, setDollarToRupees] = React.useState(0.0);
   const [nChatrelTotalAmount, setnChatrelTotalAmount] = useState(0);
   const [bLoader, setbLoader] = useState(true);
   const isFocused = useIsFocused();
@@ -121,7 +123,16 @@ const HomeScreen = (props) => {
       )
       .then((resp) => {
         if (resp.status === 200) {
-          setnChatrelTotalAmount(resp.data.chatrelPayment.nChatrelTotalAmount);
+          fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
+            .then((response) => response.json())
+            .then((data) => {
+              console.log('currency', data.rates.USD);
+              setDollarToRupees(data.rates.USD);
+            });
+          setnChatrelTotalAmount(
+            parseFloat(resp.data.chatrelPayment.nChatrelTotalAmount) *
+              dollarToRupees.toFixed(4),
+          );
         }
         setbLoader(false);
       })
@@ -130,7 +141,7 @@ const HomeScreen = (props) => {
         // console.log(error.config);
         setbLoader(false);
         Alert.alert(
-          'Invalid Details for Chatrel',
+          'Invalid details for Chatrel',
           'Please Contact CTA',
           [
             // {
@@ -164,10 +175,26 @@ const HomeScreen = (props) => {
     };
   }, []);
 
+  // const {
+  //   onScroll /* Event handler */,
+  //   onScrollWithListener /* Event handler creator */,
+  //   containerPaddingTop /* number */,
+  //   scrollIndicatorInsetTop /* number */,
+  //   /* Animated.AnimatedInterpolation by scrolling */
+  //   translateY /* 0.0 ~ -headerHeight */,
+  //   progress /* 0.0 ~ 1.0 */,
+  //   opacity /* 1.0 ~ 0.0 */,
+  // } = useCollapsibleHeader(HomeScreenOptions);
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}>
+      {/* <Animated.FlatList
+     onScroll={onScroll}
+       contentContainerStyle={{ paddingTop: containerPaddingTop }}
+       scrollIndicatorInsets={{ top: scrollIndicatorInsetTop }}
+     /> */}
       <View style={styles.mainContainer}>
         {bLoader && (
           <ActivityIndicator
@@ -203,15 +230,20 @@ const HomeScreen = (props) => {
                           : 15,
                     }}
                     title={
-                      <View style={{display: 'flex', flexDirection: 'row'}}>
+                      <View
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'space-evenly',
+                        }}>
                         <Text
                           style={{
                             color: card.sTextColor,
-                            fontSize: wp(4.5),
+                            fontSize: wp(4.25),
                             fontStyle: 'normal',
-                            fontWeight: 'bold',
-                            //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-                            letterSpacing: Resolution.nLetterSpacing / 2,
+                            fontWeight: 'normal',
+                            lineHeight: hp(3.5),
+                            // letterSpacing: Resolution.nLetterSpacing / 2,
                             fontFamily: sFontName,
                           }}>
                           {card.sLabel}
@@ -259,10 +291,15 @@ const HomeScreen = (props) => {
               />
               <Card.Divider />
               <Text style={styles.pendingAmountTextComponent}>
-                Pending Amount ${nChatrelTotalAmount}
+                Pending Amount ${nChatrelTotalAmount.toFixed(2)}
               </Text>
               <Button
-                titleStyle={{color: Colors.white, fontFamily: sFontName}}
+                titleStyle={{
+                  color: Colors.white,
+                  fontFamily: sFontName,
+                  fontStyle: 'normal',
+                  fontWeight: 'normal',
+                }}
                 buttonStyle={{
                   width: wp(75),
                   backgroundColor: Colors.greenBG,
@@ -293,18 +330,23 @@ titleStyle={styles.pendingAmountTextComponent}
             <Card containerStyle={styles.newJobContribComponent}>
               <View style={styles.newJobContribTextContainer}>
                 <Text style={styles.newJobContribTextComponent}>
-                  Have you gotten a new{'\n'} job since your last{'\n'}{' '}
-                  contribution?
+                  Have you gotten a new job since your last contribution?
                 </Text>
               </View>
               <View style={styles.jobContribStatusTextContainer}>
                 <Text style={styles.jobContribStatusTextComponent}>
-                  Change your status and contribute more towards{'\n'} the
-                  Tibetan Government.
+                  Change your status and contribute more towards the Tibetan
+                  Government.
                 </Text>
               </View>
               <Button
-                titleStyle={{color: Colors.white, fontFamily: sFontName}}
+                title="UPDATE EMPLOYEMENT STATUS"
+                titleStyle={{
+                  color: Colors.black,
+                  fontFamily: sFontName,
+                  fontStyle: 'normal',
+                  fontWeight: 'normal',
+                }}
                 buttonStyle={{
                   backgroundColor: Colors.buttonYellow,
                   borderRadius:
@@ -312,7 +354,6 @@ titleStyle={styles.pendingAmountTextComponent}
                       ? 10.2
                       : 17,
                 }}
-                title="UPDATE EMPLOYEMENT STATUS"
                 onPress={() => {
                   setbLoader(true);
                   props.navigation.navigate('SelfChatrel');
@@ -328,7 +369,7 @@ titleStyle={styles.pendingAmountTextComponent}
 
 export const HomeScreenOptions = (navData) => {
   return {
-    headerTitle: 'Home',
+    headerTitle: 'HOME',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -344,7 +385,8 @@ export const HomeScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
+    // headerRight: CustomHeaderRightButton,
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 
@@ -356,24 +398,21 @@ const styles = StyleSheet.create({
     marginVertical:
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
-  headerContainer: {
-    width: wp(60),
-    height: hp(4),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
-  },
+  headerContainer: {},
   headerComponent: {
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
+    width: wp(60),
+    // height: hp(4),
+    marginBottom: hp(2),
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
+    fontSize: wp(5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blue,
+    fontFamily: sFontName,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
   cardContainer: {
     flexDirection: 'row',
@@ -382,33 +421,34 @@ const styles = StyleSheet.create({
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 20 : 25,
   },
   singleCardContainer: {
-    width: wp(111) / 3,
+    width: wp(105) / 3,
   },
   singleCardComponent: {
-    height:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 54 : 90,
+    // height:
+    //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 54 : 90,
+    // lineHeight:hp(5)
   },
   pendingAmountContainer: {},
   pendingAmountComponent: {
     borderRadius:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 15,
+    // elevation: 0,
+    // borderColor: Colors.white
   },
   pendingAmountImageComponent: {
     width: wp(75),
     height: hp(33),
   },
   pendingAmountTextComponent: {
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 18,
+    fontSize: wp(4),
     fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: 'normal',
     textAlign: 'left',
     color: Colors.black,
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
+    marginBottom: hp(2),
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    letterSpacing: Resolution.nLetterSpacing,
+    // letterSpacing: Resolution.nLetterSpacing,
   },
   newJobContribComponent: {
     backgroundColor: Colors.primary,
@@ -416,39 +456,33 @@ const styles = StyleSheet.create({
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9 : 15,
   },
   newJobContribTextContainer: {
-    width: wp(70),
+    //width: wp(70),
     //height: hp(33),
   },
   newJobContribTextComponent: {
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 15.6 : 26,
+    fontSize: wp(6),
     fontFamily: sFontName,
     fontStyle: 'normal',
-    fontWeight: '200',
+    fontWeight: 'normal',
     textAlign: 'left',
     color: Colors.white,
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1 : 6,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    marginBottom: hp(2),
+    lineHeight: hp(4.5),
     //letterSpacing: Resolution.nLetterSpacing
   },
   jobContribStatusTextContainer: {
-    width: wp(70),
+    //width: wp(70),
     //height: hp(33),
   },
   jobContribStatusTextComponent: {
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 7.2 : 12,
+    fontSize: wp(3),
     fontFamily: sFontName,
     fontStyle: 'normal',
-    fontWeight: '300',
+    fontWeight: 'normal',
     textAlign: 'left',
     color: Colors.white,
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint
-        ? 22.8
-        : 38,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    marginBottom: hp(2),
+    lineHeight: hp(3),
     //letterSpacing: Resolution.nLetterSpacing
   },
 });

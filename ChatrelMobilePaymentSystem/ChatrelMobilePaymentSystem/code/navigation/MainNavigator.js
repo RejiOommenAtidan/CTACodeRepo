@@ -49,6 +49,10 @@ import Colors from '../constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {sFontName} from '../constants/CommonConfig';
 import {CustomSidebarMenu} from '../components/CustomSidebar';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -82,7 +86,9 @@ const LoginNavigator = () => {
       <LoginStackNavigator.Screen
         name="Login"
         component={LoginScreen}
-        options={LoginScreenOptions}></LoginStackNavigator.Screen>
+        options={LoginScreenOptions}>
+          
+        </LoginStackNavigator.Screen>
     </LoginStackNavigator.Navigator>
   );
 };
@@ -239,7 +245,7 @@ export const MainNavigator = () => {
     <MainDrawerNavigator.Navigator
       drawerStyle={{
         backgroundColor: Colors.white,
-        width: 227.5,
+        width: wp(62.5),
       }}
       initialRouteName={'Login'}
       drawerPosition={'left'}
@@ -250,7 +256,6 @@ export const MainNavigator = () => {
       lazy={true}
       openByDefault={false}
       drawerContent={(props) => {
-        console.log(props)
         const filteredProps = {
           ...props,
           state: {
@@ -271,34 +276,37 @@ export const MainNavigator = () => {
             ),
           },
         };
-        return (
-          <CustomSidebarMenu {...filteredProps} />
-        );
+        return <CustomSidebarMenu {...filteredProps} />;
       }}
-      drawerContentOptions=
-      {{
-        itemStyle:{
+      drawerContentOptions={{
+        itemStyle: {
           //borderBottomWidth:0.75,
           //borderBottomColor:Colors.black,
-          justifyContent:"flex-start",
-          marginBottom:hp(1)
+          justifyContent: 'flex-start',
+          marginBottom: hp(1),
+          backgroundColor: Colors.white,
+          // borderBottomColor:Colors.black,
+          // borderBottomWidth:1,
+          marginHorizontal: 0,
+          // marginLeft:wp(2)
           //alignContent:"center",
           //alignSelf:"center"
         },
         // activeBackgroundColor:Colors.blue,
         // inactiveTintColor:Colors.blue,
         // contentContainerStyle:{
-        //   
+        //
         // },
         activeTintColor: Colors.black,
+        inactiveTintColor: Colors.black,
         labelStyle: {
           fontFamily: sFontName,
-          fontStyle:"normal",
-          fontWeight:"normal",
-          alignSelf:"flex-start"
+          fontStyle: 'normal',
+          fontWeight: 'normal',
+          alignSelf: 'flex-start',
+          fontSize: wp(3.75),
         },
-      }}
-      >
+      }}>
       {/*Login*/}
       <MainDrawerNavigator.Screen
         name={'Login'}
@@ -322,17 +330,18 @@ export const MainNavigator = () => {
         component={HomeNavigator}
         options={{
           drawerIcon: ({focused, size}) => (
-            <Ionicons
-              name="md-home"
+            <AntDesign
+              name="home"
               size={size}
               color={Colors.black}
               style={{
-                justifyContent:"flex-start",
-                
+                justifyContent: 'flex-start',
+                marginLeft: wp(2),
               }}
             />
           ),
-          drawerLabel: 'Home',
+          drawerLabel: 'HOME',
+          //labelStyle:{fontfamily:sFontName},
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
@@ -342,17 +351,17 @@ export const MainNavigator = () => {
         component={SelfChatrelNavigator}
         options={{
           drawerIcon: ({focused, size}) => (
-            <FontAwesome5
-              name="donate"
+            <Ionicons
+              name="wallet-outline"
               size={size}
               color={Colors.black}
               style={{
-                justifyContent:"flex-start",
-                
+                justifyContent: 'flex-start',
+                marginLeft: wp(2),
               }}
             />
           ),
-          drawerLabel: 'Self Chatrel',
+          drawerLabel: 'SELF CHATREL',
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
@@ -362,17 +371,17 @@ export const MainNavigator = () => {
         component={FamilyChatrelIntermediateNavigator}
         options={{
           drawerIcon: ({focused, size}) => (
-            <Ionicons
-              name="md-heart"
+            <AntDesign
+              name="hearto"
               size={size}
               color={Colors.black}
               style={{
-                justifyContent:"flex-start",
-                
+                justifyContent: 'flex-start',
+                marginLeft: wp(2),
               }}
             />
           ),
-          drawerLabel: 'Family Chatrel',
+          drawerLabel: 'FAMILY CHATREL',
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
@@ -387,16 +396,16 @@ export const MainNavigator = () => {
         options={{
           drawerIcon: ({focused, size}) => (
             <Ionicons
-              name="md-people"
+              name="leaf-outline"
               size={size}
               color={Colors.black}
               style={{
-                justifyContent:"flex-start",
-                
+                justifyContent: 'flex-start',
+                marginLeft: wp(2),
               }}
             />
           ),
-          drawerLabel: 'Friend Chatrel',
+          drawerLabel: 'FRIEND CHATREL',
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
@@ -410,17 +419,17 @@ export const MainNavigator = () => {
         component={ChatrelHistoryNavigator}
         options={{
           drawerIcon: ({focused, size}) => (
-            <FontAwesome5
-              name="history"
+            <Entypo
+              name="list"
               size={size}
               color={Colors.black}
               style={{
-                justifyContent:"flex-start",
-                
+                justifyContent: 'flex-start',
+                marginLeft: wp(2),
               }}
             />
           ),
-          drawerLabel: 'Chatrel History',
+          drawerLabel: 'CHATREL HISTORY',
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
@@ -431,17 +440,17 @@ export const MainNavigator = () => {
         component={FileDisputeNavigator}
         options={{
           drawerIcon: ({focused, size}) => (
-            <Ionicons
-              name="md-document"
+            <MaterialCommunityIcons
+              name="email-alert-outline"
               size={size}
               color={Colors.black}
               style={{
-                justifyContent:"flex-start",
-                
+                justifyContent: 'flex-start',
+                marginLeft: wp(2),
               }}
             />
           ),
-          drawerLabel: 'File Dispute',
+          drawerLabel: 'FILE DISPUTE',
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
@@ -451,17 +460,17 @@ export const MainNavigator = () => {
         component={MyProfileNavigator}
         options={{
           drawerIcon: ({focused, size}) => (
-            <FontAwesome5
-              name="user-alt"
+            <Ionicons
+              name="person-outline"
               size={size}
               color={Colors.black}
               style={{
-                justifyContent:"flex-start",
-                
+                justifyContent: 'flex-start',
+                marginLeft: wp(2),
               }}
             />
           ),
-          drawerLabel: 'My Profile',
+          drawerLabel: 'MY PROFILE',
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>

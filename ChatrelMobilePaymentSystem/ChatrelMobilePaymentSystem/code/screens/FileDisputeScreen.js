@@ -320,7 +320,7 @@ export const FileDisputeScreen = (props) => {
 
 export const FileDisputeScreenOptions = (navData) => {
   return {
-    headerTitle: 'File Dispute',
+    headerTitle: 'FILE DISPUTE',
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
@@ -333,7 +333,8 @@ export const FileDisputeScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
+    // headerRight: CustomHeaderRightButton,
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 

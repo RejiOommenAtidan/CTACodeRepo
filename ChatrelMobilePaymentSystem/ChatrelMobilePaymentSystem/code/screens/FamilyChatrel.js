@@ -25,7 +25,7 @@ export const FamilyChatrelScreen = (props) => {
 
 export const FamilyChatrelScreenOptions = (navData) => {
   return {
-    headerTitle: 'Family Chatrel',
+    headerTitle: 'FAMILY CHATREL',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -41,8 +41,8 @@ export const FamilyChatrelScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
-    cardStyle: {backgroundColor: Colors.ChatrelScreensBGColor},
+    // headerRight: CustomHeaderRightButton,
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 

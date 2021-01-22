@@ -284,7 +284,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
 
 export const FamilyChatrelIntermediateScreenOptions = (navData) => {
   return {
-    headerTitle: 'Family Chatrel',
+    headerTitle: 'FAMILY CHATREL',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -300,7 +300,8 @@ export const FamilyChatrelIntermediateScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
+    // headerRight: CustomHeaderRightButton,
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 
@@ -336,7 +337,7 @@ const styles = StyleSheet.create({
   touchableOpacity: {},
   cardComponent: {
     width: wp(80),
-    height: Platform.OS === 'ios' ? hp(28.25) : hp(30),
+    // height: Platform.OS === 'ios' ? hp(28.25) : hp(30),
     borderRadius: 15,
     //borderColor: Colors.white,
     backgroundColor: Colors.white,

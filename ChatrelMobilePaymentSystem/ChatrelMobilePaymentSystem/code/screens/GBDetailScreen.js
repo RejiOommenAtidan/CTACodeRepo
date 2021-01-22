@@ -8,6 +8,7 @@ import {
   ImageBackground,
   Dimensions,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
@@ -218,73 +219,82 @@ export const GBDetailScreen = (props) => {
     <ImageBackground
       source={require('../assets/Background.png')}
       style={styles.imagebackgroundComponent}
-      resizeMode="cover">
-      <LinearGradient
-        style={styles.linearGradient}
-        colors={['#000000', '#000000']}
+      imageStyle={
+        {
+          //backgroundColor: 'rgba(0,0,0,0.4)'
+          // backfaceVisibility:"hidden",
+          // backgroundColor:Colors.white,
+          // opacity:0.5
+        }
+      }>
+      {/* <LinearGradient
+        //style={styles.linearGradient}
+        colors={[Colors.white, Colors.white]}
         //start={{ x: 0.5, y: 0.5 }}
-      >
-        {bLoader && (
-          <ActivityIndicator
-            size={Platform.OS === 'ios' ? 0 : 'large'}
-            color={Colors.grey}
-            animating={true}
-            //hidesWhenStopped={true}
-            style={oActivityIndicatorStyle}
-          />
-        )}
+      > */}
+      {bLoader && (
+        <ActivityIndicator
+          size={Platform.OS === 'ios' ? 0 : 'large'}
+          color={Colors.grey}
+          animating={true}
+          //hidesWhenStopped={true}
+          style={oActivityIndicatorStyle}
+        />
+      )}
 
-        <View style={styles.mainContainer}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.headerComponent}>
-              Great! Thanks for logging in through Google.{'\n'}Just one more
-              step now.
-            </Text>
-          </View>
-          {/*<View style={styles.textContainer}>
+      <View style={styles.mainContainer}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerComponent}>
+            Great! Thanks for logging in through Google.{'\n'}Just one more step
+            now.
+          </Text>
+        </View>
+        {/*<View style={styles.textContainer}>
             <Text style={styles.textComponent}>All fields are Mandatory</Text>
   </View>*/}
-          {/*<form onSubmit={handleSubmit(onSubmit)}>*/}
-          <View style={styles.gbidContainer}>
-            <Controller
-              control={control}
-              render={({onChange, onBlur, value}) => (
-                <Input
-                  //label="Enter GBID"
-                  placeholder={'Green Book Number'}
-                  placeholderTextColor={Colors.grey}
-                  //autoFocus={true}
-                  autoCompleteType={'off'}
-                  autoCorrect={false}
-                  clearButtonMode={'while-editing'}
-                  //secureTextEntry={!bShowGBID}
-                  keyboardType={'number-pad'}
-                  keyboardAppearance={'default'}
-                  disableFullscreenUI={false}
-                  maxLength={7}
-                  onBlur={onBlur}
-                  onChangeText={(value) => {
-                    onChange(value);
-                    setsGBID(value);
-                  }}
-                  value={sGBID}
-                  style={styles.gbidComponent}
-                />
-              )}
-              name="name_nGBID"
-              rules={{required: true}}
-              defaultValue=""
-            />
-            {errors.name_nGBID && (
-              <View
-                style={{
-                  ...errorContainer,
-                  marginLeft: wp(2),
-                }}>
-                <Text style={errorComponent}>This is field required.</Text>
-              </View>
+        {/*<form onSubmit={handleSubmit(onSubmit)}>*/}
+        <View style={styles.gbidContainer}>
+          <Controller
+            control={control}
+            render={({onChange, onBlur, value}) => (
+              <Input
+                //label="Enter GBID"
+                placeholder={'Green Book Number'}
+                placeholderTextColor={Colors.grey}
+                //autoFocus={true}
+                autoCompleteType={'off'}
+                autoCorrect={false}
+                clearButtonMode={'while-editing'}
+                //secureTextEntry={!bShowGBID}
+                keyboardType={'number-pad'}
+                keyboardAppearance={'default'}
+                disableFullscreenUI={false}
+                maxLength={7}
+                onBlur={onBlur}
+                onChangeText={(value) => {
+                  onChange(value);
+                  setsGBID(value);
+                }}
+                value={sGBID}
+                style={styles.gbidComponent}
+              />
             )}
-            {/*<View style={styles.showGBIDContainer}>
+            name="name_nGBID"
+            rules={{required: true}}
+            defaultValue=""
+          />
+          {errors.name_nGBID && (
+            <View
+              style={{
+                ...errorContainer,
+                marginLeft: wp(2),
+              }}>
+              <Text style={errorComponent}>
+                Please enter Green Book Number.
+              </Text>
+            </View>
+          )}
+          {/*<View style={styles.showGBIDContainer}>
         <Switch
           style={styles.showGBIDComponent}
           onValueChange={() => { setbShowGBID(!bShowGBID) }}
@@ -292,110 +302,115 @@ export const GBDetailScreen = (props) => {
         />
         <Text>Show/Hide GBID</Text>
       </View>*/}
-          </View>
-          <View style={styles.dobContainer}>
-            <Controller
-              control={control}
-              render={({onChange, onBlur, value}) => (
-                <DatePicker
-                  showIcon={false}
-                  useNativeDriver={true}
-                  androidMode={'calendar'}
-                  style={styles.dobComponent}
-                  date={dtDOB}
-                  mode="date"
-                  placeholder="Date of Birth"
-                  //placeholderTextColor={Colors.grey}
-                  format={sDateFormatDatePicker}
-                  maxDate={dtToday}
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  customStyles={{
-                    dateIcon: {
-                      borderWidth: 0,
-                      borderStyle: null,
-                      height: 0,
-                      width: 0,
-                    },
-                    placeholderText: {
-                      color: Colors.grey,
-                      fontSize:
-                        Dimensions.get('window').width <
-                        Resolution.nWidthBreakpoint
-                          ? 12
-                          : 20,
-                      fontStyle: 'normal',
-                      fontWeight: 'normal',
-                      fontFamily: sFontName,
-                    },
-                    dateText: {
-                      //textAlign: 'left',
-                      color: Colors.white,
-                      fontSize:
-                        Dimensions.get('window').width <
-                        Resolution.nWidthBreakpoint
-                          ? 12
-                          : 20,
-                      fontStyle: 'normal',
-                      fontWeight: 'normal',
-                      fontFamily: sFontName,
-                    },
-                    // dateIcon: {
-                    //   width:0,
-                    //   height:0,
-                    //position: 'relative',
-                    //left: 0,
-                    //top:
-                    //Dimensions.get('window').height <
-                    //Resolution.nHeightBreakpoint
-                    //? 2.4
-                    //: 4,
-                    // marginLeft: 0,
-                    //},
-                    dateInput: {
-                      flexGrow: 1,
-                      alignItems: 'flex-start',
-                      borderLeftWidth: 0,
-                      borderRightWidth: 0,
-                      borderTopWidth: 0,
-                      marginLeft: wp(2.75),
-                    },
-                  }}
-                  onBlur={onBlur}
-                  onDateChange={(date) => {
-                    onChange(date);
-                    setdtDOB(date);
-                  }}
-                />
-              )}
-              name="name_dtDOB"
-              rules={{required: true}}
-              defaultValue=""
-            />
-          </View>
-          {errors.name_dtDOB && (
-            <View
-              style={{
-                ...errorContainer,
-                marginLeft: wp(2),
-              }}>
-              <Text style={errorComponent}>This is field required.</Text>
-            </View>
-          )}
-          <View style={styles.buttonContainer}>
-            <Button
-              titleStyle={{
-                color: Colors.black,
-                fontWeight: 'bold',
-              }}
-              buttonStyle={styles.buttonComponent}
-              title="VERIFY"
-              onPress={handleSubmit(handleVerifyDetailsPress)}
-            />
-          </View>
-          {/*</form>*/}
         </View>
-      </LinearGradient>
+        <View style={styles.dobContainer}>
+          <Controller
+            control={control}
+            render={({onChange, onBlur, value}) => (
+              <DatePicker
+                showIcon={false}
+                useNativeDriver={true}
+                androidMode={'calendar'}
+                style={styles.dobComponent}
+                date={dtDOB}
+                mode="date"
+                placeholder="Date of Birth"
+                //placeholderTextColor={Colors.grey}
+                format={sDateFormatDatePicker}
+                maxDate={dtToday}
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    borderWidth: 0,
+                    borderStyle: null,
+                    height: 0,
+                    width: 0,
+                  },
+                  placeholderText: {
+                    color: Colors.grey,
+                    fontSize:
+                      Dimensions.get('window').width <
+                      Resolution.nWidthBreakpoint
+                        ? 12
+                        : 20,
+                    fontStyle: 'normal',
+                    fontWeight: 'normal',
+                    fontFamily: sFontName,
+                  },
+                  dateText: {
+                    //textAlign: 'left',
+                    color: Colors.white,
+                    fontSize:
+                      Dimensions.get('window').width <
+                      Resolution.nWidthBreakpoint
+                        ? 12
+                        : 20,
+                    fontStyle: 'normal',
+                    fontWeight: 'normal',
+                    fontFamily: sFontName,
+                  },
+                  // dateIcon: {
+                  //   width:0,
+                  //   height:0,
+                  //position: 'relative',
+                  //left: 0,
+                  //top:
+                  //Dimensions.get('window').height <
+                  //Resolution.nHeightBreakpoint
+                  //? 2.4
+                  //: 4,
+                  // marginLeft: 0,
+                  //},
+                  dateInput: {
+                    flexGrow: 1,
+                    alignItems: 'flex-start',
+                    borderLeftWidth: 0,
+                    borderRightWidth: 0,
+                    borderTopWidth: 0,
+                    marginLeft: wp(2.75),
+                  },
+                }}
+                onBlur={onBlur}
+                onDateChange={(date) => {
+                  onChange(date);
+                  setdtDOB(date);
+                }}
+              />
+            )}
+            name="name_dtDOB"
+            rules={{required: true}}
+            defaultValue=""
+          />
+        </View>
+        {errors.name_dtDOB && (
+          <View
+            style={{
+              ...errorContainer,
+              marginLeft: wp(8),
+            }}>
+            <Text style={errorComponent}>Please enter Date of Birth.</Text>
+          </View>
+        )}
+        <View style={styles.buttonContainer}>
+          <Button
+            buttonStyle={styles.buttonComponent}
+            title="VERIFY"
+            titleStyle={{
+              color: Colors.black,
+              //fontWeight: 'bold',
+              fontFamily: sFontName,
+              fontWeight: 'normal',
+              //fontStyle: 'normal',
+              //fontWeight: 'normal',
+              textAlign: 'center',
+            }}
+            onPress={handleSubmit(handleVerifyDetailsPress)}
+          />
+        </View>
+        {/*</form>*/}
+      </View>
+      {/* </LinearGradient> */}
     </ImageBackground>
   );
 };
@@ -411,51 +426,82 @@ export const GBDetailScreenOptions = (navData) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    marginHorizontal:
-      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
-    marginVertical:
-      Dimensions.get('window').height * Resolution.nHeightScreenMargin,
+    //flex: 1,
+    // flexGrow:1,
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    // marginVertical:
+    //   Dimensions.get('window').height * Resolution.nHeightScreenMargin,
     flexDirection: 'column',
+    alignSelf: 'center',
+    width: wp(100),
+    height: hp(100),
+    backgroundColor: 'rgba(0,0,0,0.80)',
   },
   imagebackgroundComponent: {
-    flex: 1,
+    width: wp(100),
+    height: hp(100),
+    //flex: 1,
+    // opacity
+    // height:hp(100),
+    // width:wp(100)
+    //opacity:0
+    // opacity:0.5
+    //flex: 1,
+    //backgroundColor: 'rgb(0,0,0)',
+    //opacity:1
   },
   headerContainer: {
-    width: wp(85),
-    height: hp(15),
-    marginTop: hp(22),
-    marginBottom: hp(5),
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    // // width: wp(85),
+    // // height: hp(15),
+    // marginTop: hp(22),
+    // marginBottom: hp(5),
   },
   headerComponent: {
+    width: wp(85),
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 16.2 : 27,
+    fontSize: hp(3.5),
     fontStyle: 'normal',
-    fontWeight: 'bold',
+    fontWeight: 'normal',
     color: Colors.white,
     fontFamily: sFontName,
-    lineHeight:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    marginTop: hp(22),
+    marginBottom: hp(6),
+    lineHeight: hp(4.75),
+
     //letterSpacing: Resolution.nLetterSpacing,
   },
   textContainer: {
-    width: wp(85),
-    height: hp(3.5),
-    marginBottom: hp(2),
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    // width: wp(85),
+    // height: hp(3.5),
+    // marginBottom: hp(2),
   },
   textComponent: {
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    width: wp(85),
+    //height: hp(3.5),
+    marginBottom: hp(2),
     fontFamily: sFontName,
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
     textAlign: 'left',
     fontStyle: 'normal',
-    fontWeight: '300',
+    fontWeight: 'normal',
     color: Colors.white,
-    lineHeight:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.6 : 18,
+    // lineHeight:
+    //   Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 10.6 : 18,
     //letterSpacing: Resolution.nLetterSpacing,
   },
   gbidContainer: {
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     width: wp(85),
     height: hp(3.5),
     marginBottom: hp(3),
@@ -473,15 +519,17 @@ const styles = StyleSheet.create({
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 12 : 20,
     fontStyle: 'normal',
-    fontWeight: '300',
+    fontWeight: 'normal',
     fontFamily: sFontName,
   },
   dobContainer: {
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     flexDirection: 'row',
-    width: wp(85),
+    width: wp(85 - 1.5),
     height: hp(3.5),
-    marginTop: hp(4),
-    marginBottom: hp(4),
+    marginTop: hp(5),
+    marginBottom: hp(5),
   },
   dobComponent: {
     // textAlign: "left",
@@ -491,9 +539,13 @@ const styles = StyleSheet.create({
     // fontWeight: "normal",
     // fontFamily: sFontName
     flexGrow: 1,
+    //width:wp(10)
+    // width:wp(50)
   },
   buttonContainer: {
     width: wp(85),
+    marginHorizontal:
+      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     height: hp(3.5),
     marginTop: hp(4),
     marginBottom: hp(4),
@@ -504,6 +556,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.buttonYellow,
     backgroundColor: Colors.buttonYellow,
     height: hp(4.25),
+    // width:"100%"
     //color: Colors.black
     // marginTop:20
     // marginLeft:20,
@@ -516,6 +569,6 @@ const styles = StyleSheet.create({
     //borderRadius: 5,
     height: hp(100),
     width: wp(100),
-    opacity: 0.8,
+    opacity: 0,
   },
 });

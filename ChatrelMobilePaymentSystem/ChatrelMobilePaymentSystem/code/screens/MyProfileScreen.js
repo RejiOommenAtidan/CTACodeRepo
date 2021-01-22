@@ -685,27 +685,27 @@ export const MyProfileScreen = (props) => {
         }}
       />
       {/*FULL NAME*/}
-      <View style={styles.nameLabelContainer}>
-        <Text style={styles.nameLabelComponent}>FULL NAME</Text>
+      <View style={styles.labelContainer}>
+        <Text style={styles.labelComponent}>FULL NAME</Text>
       </View>
-      <View style={styles.nameValueContainer}>
-        <Text style={styles.nameValueComponent}>
+      <View style={styles.valueContainer}>
+        <Text style={styles.valueComponent}>
           {oGoogle.givenName + ' ' + oGoogle.familyName}
         </Text>
       </View>
       {/*GBID*/}
-      <View style={styles.gbidLabelContainer}>
-        <Text style={styles.gbidLabelComponent}>GREEN BOOK ID</Text>
+      <View style={styles.labelContainer}>
+        <Text style={styles.labelComponent}>GREEN BOOK ID</Text>
       </View>
-      <View style={styles.gbidValueContainer}>
-        <Text style={styles.gbidValueComponent}>{oGBDetails.sGBID}</Text>
+      <View style={styles.valueContainer}>
+        <Text style={styles.valueComponent}>{oGBDetails.sGBID}</Text>
       </View>
       {/*DOB*/}
-      <View style={styles.dtDOBLabelContainer}>
-        <Text style={styles.dtDOBLabelComponent}>DATE OF BIRTH</Text>
+      <View style={styles.labelContainer}>
+        <Text style={styles.labelComponent}>DATE OF BIRTH</Text>
       </View>
-      <View style={styles.dtDOBValueContainer}>
-        <Text style={styles.dtDOBValueComponent}>{oGBDetails.dtDOB}</Text>
+      <View style={styles.valueContainer}>
+        <Text style={styles.valueComponent}>{oGBDetails.dtDOB}</Text>
       </View>
       {/*AGE*/}
       {/*<View style={styles.ageLabelContainer}>
@@ -726,14 +726,14 @@ export const MyProfileScreen = (props) => {
         </Text>
 </View>*/}
       {/*EMAIL ADDRESS*/}
-      <View style={styles.emailIDLabelContainer}>
-        <Text style={styles.emailIDLabelComponent}>EMAIL ADDRESS</Text>
+      <View style={styles.labelContainer}>
+        <Text style={styles.labelComponent}>EMAIL ADDRESS</Text>
       </View>
       <View
-        style={styles.emailIDValueContainer}
+        style={styles.valueContainer}
         //onPress={createPDF}
       >
-        <Text style={styles.emailIDValueComponent}>{oGoogle.email}</Text>
+        <Text style={styles.valueComponent}>{oGoogle.email}</Text>
       </View>
     </View>
   );
@@ -741,7 +741,7 @@ export const MyProfileScreen = (props) => {
 
 export const MyProfileScreenOptions = (navData) => {
   return {
-    headerTitle: 'My Profile',
+    headerTitle: 'MY PROFLE',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -757,7 +757,8 @@ export const MyProfileScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
+    // headerRight: CustomHeaderRightButton,
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 
@@ -788,212 +789,217 @@ const styles = StyleSheet.create({
     //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
   },
-  nameLabelContainer: {
-    width: wp(75),
-    height: hp(2),
-    marginBottom: hp(1.5),
+  labelContainer: {
+    // width: wp(75),
+    // height: hp(2),
   },
-  nameLabelComponent: {
-    width: '100%',
-    height: '100%',
+  labelComponent: {
+    // width: '100%',
+    // height: '100%',
     textAlign: 'left',
     fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
+    fontFamily: sFontName,
+    marginBottom: hp(0.5),
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
-  nameValueContainer: {
-    width: wp(75),
-    height: hp(3),
-    marginBottom: wp(6),
+  valueContainer: {
+    // width: wp(75),
+    // height: hp(3),
   },
-  nameValueComponent: {
-    width: '100%',
-    height: '100%',
+  valueComponent: {
+    // width: '100%',
+    // height: '100%',
     textAlign: 'left',
     fontSize: wp(4.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
+    fontFamily: sFontName,
+    marginBottom: wp(7.5),
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  gbidLabelContainer: {
-    width: wp(75),
-    height: hp(2),
-    marginBottom: hp(1.5),
-  },
-  gbidLabelComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(3),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  gbidValueContainer: {
-    width: wp(75),
-    height: hp(3),
-    marginBottom: wp(6),
-  },
-  gbidValueComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(4.5),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
 
-  ageLabelContainer: {
-    width: wp(75),
-    height: hp(2),
-    marginBottom: hp(1.5),
-  },
-  ageLabelComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(3),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  ageValueContainer: {
-    width: wp(75),
-    height: hp(3),
-    marginBottom: wp(6),
-  },
-  ageValueComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(4.5),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
+  // nameLabelContainer: {},
+  // nameLabelComponent: {},
+  // nameValueContainer: {},
+  // nameValueComponent: {},
+  // gbidLabelContainer: {
+  //   width: wp(75),
+  //   height: hp(2),
+  //   marginBottom: hp(1.5),
+  // },
+  // gbidLabelComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(3),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackText,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+  // gbidValueContainer: {
+  //   width: wp(75),
+  //   height: hp(3),
+  //   marginBottom: wp(6),
+  // },
+  // gbidValueComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(4.5),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackTextAPI,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
 
-  dtDOBLabelContainer: {
-    width: wp(75),
-    height: hp(2),
-    marginBottom: hp(1.5),
-  },
-  dtDOBLabelComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(3),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  dtDOBValueContainer: {
-    width: wp(75),
-    height: hp(3),
-    marginBottom: wp(6),
-  },
-  dtDOBValueComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(4.5),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
+  // ageLabelContainer: {
+  //   width: wp(75),
+  //   height: hp(2),
+  //   marginBottom: hp(1.5),
+  // },
+  // ageLabelComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(3),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackText,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+  // ageValueContainer: {
+  //   width: wp(75),
+  //   height: hp(3),
+  //   marginBottom: wp(6),
+  // },
+  // ageValueComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(4.5),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackTextAPI,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
 
-  emailIDLabelContainer: {
-    width: wp(75),
-    height: hp(2),
-    marginBottom: hp(1.5),
-  },
-  emailIDLabelComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(3),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  emailIDValueContainer: {
-    width: wp(75),
-    height: hp(3),
-    marginBottom: wp(6),
-  },
-  emailIDValueComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(4.5),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
+  // dtDOBLabelContainer: {
+  //   width: wp(75),
+  //   height: hp(2),
+  //   marginBottom: hp(1.5),
+  // },
+  // dtDOBLabelComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(3),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackText,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+  // dtDOBValueContainer: {
+  //   width: wp(75),
+  //   height: hp(3),
+  //   marginBottom: wp(6),
+  // },
+  // dtDOBValueComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(4.5),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackTextAPI,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
 
-  sAuthRegionLabelContainer: {
-    width: wp(75),
-    height: hp(2),
-    marginBottom: hp(1.5),
-  },
-  sAuthRegionLabelComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(3),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  sAuthRegionValueContainer: {
-    width: wp(75),
-    height: hp(3),
-    marginBottom: wp(6),
-  },
-  sAuthRegionValueComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(4.5),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
+  // emailIDLabelContainer: {
+  //   width: wp(75),
+  //   height: hp(2),
+  //   marginBottom: hp(1.5),
+  // },
+  // emailIDLabelComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(3),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackText,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+  // emailIDValueContainer: {
+  //   width: wp(75),
+  //   height: hp(3),
+  //   marginBottom: wp(6),
+  // },
+  // emailIDValueComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(4.5),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackTextAPI,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+
+  // sAuthRegionLabelContainer: {
+  //   width: wp(75),
+  //   height: hp(2),
+  //   marginBottom: hp(1.5),
+  // },
+  // sAuthRegionLabelComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(3),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackText,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+  // sAuthRegionValueContainer: {
+  //   width: wp(75),
+  //   height: hp(3),
+  //   marginBottom: wp(6),
+  // },
+  // sAuthRegionValueComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(4.5),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackTextAPI,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
 });

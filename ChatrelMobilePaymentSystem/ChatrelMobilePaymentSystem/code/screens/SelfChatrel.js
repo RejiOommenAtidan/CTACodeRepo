@@ -25,7 +25,7 @@ export const SelfChatrelScreen = (props) => {
 
 export const SelfChatrelScreenOptions = (navData) => {
   return {
-    headerTitle: 'Self Chatrel',
+    headerTitle: 'SELF CHATREL',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -41,8 +41,8 @@ export const SelfChatrelScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
-    cardStyle: {backgroundColor: Colors.ChatrelScreensBGColor},
+    // headerRight: CustomHeaderRightButton,
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 

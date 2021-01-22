@@ -285,7 +285,7 @@ export const ChatrelHistoryScreen = (props) => {
 console.log(Dimensions.get('window').height);
 export const ChatrelHistoryScreenOptions = (navData) => {
   return {
-    headerTitle: 'Chatrel History',
+    headerTitle: 'CHATREL HISTORY',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -301,7 +301,8 @@ export const ChatrelHistoryScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
+    // headerRight: CustomHeaderRightButton,
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 
@@ -336,7 +337,7 @@ const styles = StyleSheet.create({
   },
   cardComponent: {
     width: wp(80),
-    height: Platform.OS === 'ios' ? hp(28.25) : hp(30),
+    //height: Platform.OS === 'ios' ? hp(28.25) : hp(30),
     borderRadius: 15,
     borderColor: Colors.blue,
     backgroundColor: Colors.white,
@@ -547,8 +548,8 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
+    fontFamily: sFontName,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
   },
 });

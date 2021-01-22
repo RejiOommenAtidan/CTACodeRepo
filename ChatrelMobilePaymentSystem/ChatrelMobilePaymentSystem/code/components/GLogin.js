@@ -38,7 +38,6 @@ export const GLogin = (props) => {
     //     props.props.navigation.navigate("GBDetail");
     //   }
     // });
-    
   }, []);
 
   // const getUserDataFromAsnycStorage = async () => {
@@ -124,7 +123,7 @@ export const GLogin = (props) => {
       <GoogleSigninButton
         style={styles.gSignInComponent}
         size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Light}
+        color={GoogleSigninButton.Color.Dark}
         onPress={signIn}
       />
     </View>
@@ -138,7 +137,12 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
   },
   gSignInComponent: {
-    width: Platform.OS === 'android' ? wp(50) : wp(47.5),
-    height: hp(5.75),
+    // width: Platform.OS === 'android' ? wp(50) : wp(47.5),
+    // height: Platform.OS === 'android' ? hp(5.75) : hp(4.75),
+
+    //Values Coded
+
+    width: 192,
+    height: 48,
   },
 });
