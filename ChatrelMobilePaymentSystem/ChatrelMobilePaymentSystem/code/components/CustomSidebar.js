@@ -34,7 +34,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {useNavigation} from '@react-navigation/native';
 
 export const CustomSidebarMenu = (props) => {
-  console.log(props);
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   const {
     state,
@@ -168,6 +167,7 @@ export const CustomSidebarMenu = (props) => {
         }}
       />
       <DrawerContentScrollView {...props}>
+        {/* {console.log(props)} */}
         {/* <DrawerItemList {...props} /> */}
         {/* <View style={styles.customItem}>
           <Text
@@ -195,53 +195,52 @@ export const CustomSidebarMenu = (props) => {
             lastGroupName = groupName;
           } else newGroup = false;
           return (
-            <>
-              {newGroup ? (
-                <View style={styles.sectionContainer}>
-                  <Text key={groupName} style={{marginLeft: 16}}>
-                    {groupName}
-                  </Text>
-                  {/* <View style={styles.sectionLine} /> */}
-                </View>
-              ) : null}
-              <DrawerItem
-                //labelStyle={labelStyle}
-                inactiveTintColor={inactiveTintColor}
-                icon={drawerIcon}
-                key={route.key}
-                label={({color, focused}) => (
-                  <Text
-                    style={{
-                      ...labelStyle,
-                      fontWeight: focused ? 'bold' : 'normal',
-                      color: focused ? Colors.blue : Colors.black,
-                    }}>
-                    {drawerLabel}
-                  </Text>
-                )}
-                focused={
-                  // state.routes.findIndex((e) => e.key === route.key)
-                  // === state.index
-                  //0 LS (NA)
-                  //1 GDS (NA)
-                  //2 HS (0)
-                  //3 Self (1)
-                  //4 Fam IS (2)
-                  //5 Fam (NA)
-                  //6 Friend IS (3)
-                  //7 Friend (NA)
-                  //8 CHS (4)
-                  //9 FDS (5)
-                  //10 MPS (6)
-                  // state.routes.findIndex((e) => e.key === route.key).id
-                  // === state.id
-                  state.routeNames[state.index] === route.name
-                }
-                activeTintColor={activeTintColor}
-                onPress={() => navigation.navigate(route.name)}
-                style={styles.drawerItemStyles}
-              />
-            </>
+            <DrawerItem
+              //labelStyle={labelStyle}
+              inactiveTintColor={inactiveTintColor}
+              icon={drawerIcon}
+              key={route.key}
+              label={({color, focused}) => (
+                <Text
+                  style={{
+                    ...labelStyle,
+                    fontWeight: focused
+                      ? Platform.OS === 'android'
+                        ? 'normal'
+                        : 'bold'
+                      : 'normal',
+                    fontFamily: focused
+                      ? Platform.OS === 'android'
+                        ? sFontNameBold
+                        : sFontName
+                      : sFontName,
+                    color: focused ? Colors.blue : Colors.black,
+                  }}>
+                  {drawerLabel}
+                </Text>
+              )}
+              focused={
+                // state.routes.findIndex((e) => e.key === route.key)
+                // === state.index
+                //0 LS (NA)
+                //1 GDS (NA)
+                //2 HS (0)
+                //3 Self (1)
+                //4 Fam IS (2)
+                //5 Fam (NA)
+                //6 Friend IS (3)
+                //7 Friend (NA)
+                //8 CHS (4)
+                //9 FDS (5)
+                //10 MPS (6)
+                // state.routes.findIndex((e) => e.key === route.key).id
+                // === state.id
+                state.routeNames[state.index] === route.name
+              }
+              activeTintColor={activeTintColor}
+              onPress={() => navigation.navigate(route.name)}
+              style={styles.drawerItemStyles}
+            />
           );
         })}
         <View
@@ -249,20 +248,23 @@ export const CustomSidebarMenu = (props) => {
             width: '100%',
             height: 1,
             backgroundColor: Colors.separatorColor,
-            marginTop: Platform.OS === 'android' ? hp(1) : hp(1),
+            marginTop: hp(1),
           }}
         />
         <DrawerItem
           labelStyle={{
             ...styles.logoutLabelStyles,
             //backgroundColor: Colors.white,
+            // marginLeft:0,
+            // paddingLeft:0
           }}
           label="LOGOUT"
           style={{
             ...styles.drawerItemStyles,
+            // margin:0
           }}
           onPress={handleLogoutButtonPress}
-          icon={() => (
+          icon={(focused, size, color) => (
             <MaterialIcons
               name="logout"
               size={23}
@@ -315,7 +317,7 @@ const styles = StyleSheet.create({
     // marginTop: 10,
   },
   sectionLine: {
-    backgroundColor: 'gray',
+    backgroundColor: Colors.grey,
     flex: 1,
     height: 1,
     marginLeft: 10,

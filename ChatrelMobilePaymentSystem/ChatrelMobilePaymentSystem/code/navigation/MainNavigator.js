@@ -279,7 +279,7 @@ export const MainNavigator = () => {
       }}
       drawerContentOptions={{
         itemStyle: {
-          //borderBottomWidth:0.75,
+          // borderBottomWidth:0.75,
           //borderBottomColor:Colors.black,
           justifyContent: 'flex-start',
           marginBottom: hp(1),
@@ -304,8 +304,8 @@ export const MainNavigator = () => {
           fontWeight: 'normal',
           alignSelf: 'flex-start',
           fontSize: wp(3.75),
-          paddingLeft: 0,
-          marginLeft: 0,
+          // paddingLeft: 0,
+          // marginLeft: 0,
           // marginLeft:0,
           // paddingLeft:0
         },
@@ -390,7 +390,7 @@ export const MainNavigator = () => {
               }}
             />
           ),
-          drawerLabel: 'FRIEND CHATREL',
+          drawerLabel: 'FRIENDS CHATREL',
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>

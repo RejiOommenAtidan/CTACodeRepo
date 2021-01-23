@@ -151,7 +151,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   fontFamily: sFontName,
                 }}
                 //label="Friend's Firstname"
-                placeholder=" Friend's First Name"
+                placeholder=" Enter First Name of Friend"
                 placeholderTextColor={Colors.grey}
                 //autoFocus={true}
                 //autoCapitalize={"characters"}
@@ -178,7 +178,9 @@ export const FriendChatrelIntermediateScreen = (props) => {
           />
           {errors.name_sFriendFirstName && (
             <View style={errorContainer}>
-              <Text style={errorComponent}>Please enter first name.</Text>
+              <Text style={errorComponent}>
+                Please enter first name of friend.
+              </Text>
             </View>
           )}
         </View>
@@ -209,7 +211,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   fontFamily: sFontName,
                 }}
                 //label="Friend's Lastname"
-                placeholder=" Friend's Last Name"
+                placeholder=" Enter Last Name of Friend"
                 placeholderTextColor={Colors.grey}
                 //autoFocus={true}
                 //autoCapitalize={"characters"}
@@ -236,7 +238,9 @@ export const FriendChatrelIntermediateScreen = (props) => {
           />
           {errors.name_sFriendLastName && (
             <View style={errorContainer}>
-              <Text style={errorComponent}>Please enter last name.</Text>
+              <Text style={errorComponent}>
+                Please enter last name of friend.
+              </Text>
             </View>
           )}
         </View>
@@ -269,7 +273,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   fontFamily: sFontName,
                 }}
                 //label="Friend's GBID"
-                placeholder=" Friend's Green Book Number"
+                placeholder=" Enter Green Book Number"
                 placeholderTextColor={Colors.grey}
                 //autoFocus={true}
                 //autoCapitalize={"characters"}
@@ -332,7 +336,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                 }}
                 date={dtFriendDOB}
                 mode="date"
-                placeholder=" Friend's Date Of Birth"
+                placeholder=" Enter Date of Birth"
                 format={sDateFormatDatePicker}
                 //minDate={dtToday}
                 maxDate={dtToday}
@@ -427,7 +431,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
 
 export const FriendChatrelIntermediateScreenOptions = (navData) => {
   return {
-    headerTitle: "FRIEND'S CHATREL",
+    headerTitle: 'FRIENDS CHATREL',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
