@@ -741,7 +741,7 @@ export const MyProfileScreen = (props) => {
 
 export const MyProfileScreenOptions = (navData) => {
   return {
-    headerTitle: 'MY PROFLE',
+    headerTitle: 'MY PROFILE',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -797,7 +797,7 @@ const styles = StyleSheet.create({
     // width: '100%',
     // height: '100%',
     textAlign: 'left',
-    fontSize: wp(3),
+    fontSize: wp(4),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -814,7 +814,7 @@ const styles = StyleSheet.create({
     // width: '100%',
     // height: '100%',
     textAlign: 'left',
-    fontSize: wp(4.5),
+    fontSize: wp(5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,

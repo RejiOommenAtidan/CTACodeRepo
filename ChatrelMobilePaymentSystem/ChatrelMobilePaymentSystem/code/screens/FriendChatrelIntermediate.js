@@ -178,7 +178,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
           />
           {errors.name_sFriendFirstName && (
             <View style={errorContainer}>
-              <Text style={errorComponent}>This is field required.</Text>
+              <Text style={errorComponent}>Please enter first name.</Text>
             </View>
           )}
         </View>
@@ -236,7 +236,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
           />
           {errors.name_sFriendLastName && (
             <View style={errorContainer}>
-              <Text style={errorComponent}>This is field required.</Text>
+              <Text style={errorComponent}>Please enter last name.</Text>
             </View>
           )}
         </View>
@@ -269,7 +269,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   fontFamily: sFontName,
                 }}
                 //label="Friend's GBID"
-                placeholder=" Friend's Green Book ID"
+                placeholder=" Friend's Green Book Number"
                 placeholderTextColor={Colors.grey}
                 //autoFocus={true}
                 //autoCapitalize={"characters"}
@@ -296,7 +296,9 @@ export const FriendChatrelIntermediateScreen = (props) => {
           />
           {errors.name_nFriendGBID && (
             <View style={errorContainer}>
-              <Text style={errorComponent}>This is field required.</Text>
+              <Text style={errorComponent}>
+                Please enter Green Book Number.
+              </Text>
             </View>
           )}
         </View>
@@ -322,6 +324,11 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   width: Dimensions.get('window').width * 0.875,
                   //backgroundColor: Colors.white,
                   //borderColor: Colors.white
+                  marginBottom:
+                    Dimensions.get('window').height <
+                    Resolution.nHeightBreakpoint
+                      ? 3.6
+                      : 6,
                 }}
                 date={dtFriendDOB}
                 mode="date"
@@ -393,7 +400,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
           />
           {errors.name_dtFriendDOB && (
             <View style={errorContainer}>
-              <Text style={errorComponent}>This is field required.</Text>
+              <Text style={errorComponent}>Please enter Date of Birth.</Text>
             </View>
           )}
         </View>
@@ -420,7 +427,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
 
 export const FriendChatrelIntermediateScreenOptions = (navData) => {
   return {
-    headerTitle: 'FRIEND\'S CHATREL',
+    headerTitle: "FRIEND'S CHATREL",
     headerStyle: {
       backgroundColor: Colors.primary,
     },

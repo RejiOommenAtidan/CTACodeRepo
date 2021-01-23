@@ -253,7 +253,7 @@ export const ChatrelHistoryScreen = (props) => {
                     titleStyle={{
                       color: Colors.white,
                       fontStyle: 'normal',
-                      fontWeight: '900',
+                      fontWeight: 'normal',
                       fontFamily: sFontName,
                       fontSize:
                         Dimensions.get('window').width <

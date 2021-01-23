@@ -36,6 +36,7 @@ import {
   errorComponent,
   errorContainer,
   sFontName,
+  sFontNameBold,
   oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import axios from 'axios';
@@ -409,13 +410,18 @@ export const GBDetailScreen = (props) => {
         </View>
         {/*</form>*/}
         <View>
-          <Text style={styles.infoComponent}>
-            Signed in with {oGoogle.email}
-          </Text>
           <Text
-            style={styles.backToLoginComponent}
-            onPress={() => removeCompleteDetailsAndNavigateToLogin()}>
-            Change Google Account?
+            style={{
+              textAlign: 'center',
+            }}>
+            <Text style={styles.infoComponent}>
+              Signed in as {oGoogle.email}.{' '}
+            </Text>
+            <Text
+              style={styles.backToLoginComponent}
+              onPress={() => removeCompleteDetailsAndNavigateToLogin()}>
+              Sign Out?
+            </Text>
           </Text>
         </View>
       </View>
@@ -587,8 +593,8 @@ const styles = StyleSheet.create({
     //height: hp(3.5),
     marginBottom: hp(2),
     fontFamily: sFontName,
-    fontSize: wp(4.25),
-    textAlign: 'center',
+    fontSize: wp(3.75),
+    // textAlign: 'center',
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.white,
@@ -599,11 +605,13 @@ const styles = StyleSheet.create({
     width: wp(85),
     //height: hp(3.5),
     marginBottom: hp(2),
-    fontFamily: sFontName,
     fontSize: wp(3.75),
-    textAlign: 'center',
+    // textAlign: 'center',
     fontStyle: 'normal',
-    fontWeight: 'normal',
+    textDecorationLine: 'underline',
     color: Colors.blue,
+    textDecorationColor: Colors.blue,
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
 });

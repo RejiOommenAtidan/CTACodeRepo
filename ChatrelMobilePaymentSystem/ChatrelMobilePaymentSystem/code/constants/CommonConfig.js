@@ -32,8 +32,8 @@ export const errorComponent = {
   fontFamily: sFontName,
 };
 
-export const sFontName =
-  Platform.OS === 'android' ? 'josefinsans_regular' : 'SF Pro';
+export const sFontName = 'JosefinSans-Regular';
+export const sFontNameBold = "JosefinSans-Bold";
 
 export const oActivityIndicatorStyle = {
   position: 'absolute',

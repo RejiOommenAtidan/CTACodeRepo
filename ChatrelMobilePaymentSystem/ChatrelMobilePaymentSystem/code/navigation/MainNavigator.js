@@ -463,8 +463,8 @@ export const MainNavigator = () => {
         component={LoginNavigator}
         options={{
           //Make it false after dev ends
-          gestureEnabled: true,
-          swipeEnabled: true,
+          gestureEnabled: false,
+          swipeEnabled: false,
         }}></MainDrawerNavigator.Screen>
       {/*GBDetails*/}
       <MainDrawerNavigator.Screen

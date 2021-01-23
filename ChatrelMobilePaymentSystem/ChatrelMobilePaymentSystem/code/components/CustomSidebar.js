@@ -205,12 +205,19 @@ export const CustomSidebarMenu = (props) => {
                 </View>
               ) : null}
               <DrawerItem
-                labelStyle={labelStyle}
+                //labelStyle={labelStyle}
                 inactiveTintColor={inactiveTintColor}
                 icon={drawerIcon}
                 key={route.key}
-                label={({color}) => (
-                  <Text style={labelStyle}>{drawerLabel}</Text>
+                label={({color, focused}) => (
+                  <Text
+                    style={{
+                      ...labelStyle,
+                      fontWeight: focused ? 'bold' : 'normal',
+                      color: focused ? Colors.blue : Colors.black,
+                    }}>
+                    {drawerLabel}
+                  </Text>
                 )}
                 focused={
                   // state.routes.findIndex((e) => e.key === route.key)
@@ -246,27 +253,27 @@ export const CustomSidebarMenu = (props) => {
           }}
         />
         <DrawerItem
-        labelStyle={{
-          ...styles.logoutLabelStyles,
-          //backgroundColor: Colors.white,
-        }}
-        label="LOGOUT"
-        style={{
-          ...styles.drawerItemStyles,
-        }}
-        onPress={handleLogoutButtonPress}
-        icon={() => (
-          <MaterialIcons
-            name="logout"
-            size={23}
-            color={Colors.black}
-            style={{
-              justifyContent: 'flex-start',
-              marginLeft: wp(2.5),
-            }}
-          />
-        )}
-      />
+          labelStyle={{
+            ...styles.logoutLabelStyles,
+            //backgroundColor: Colors.white,
+          }}
+          label="LOGOUT"
+          style={{
+            ...styles.drawerItemStyles,
+          }}
+          onPress={handleLogoutButtonPress}
+          icon={() => (
+            <MaterialIcons
+              name="logout"
+              size={23}
+              color={Colors.black}
+              style={{
+                justifyContent: 'flex-start',
+                marginLeft: wp(2.5),
+              }}
+            />
+          )}
+        />
       </DrawerContentScrollView>
       {/* <Text
         style={{

@@ -5,7 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
@@ -26,7 +27,7 @@ import {
   errorComponent,
   errorContainer,
   sFontName,
-  oActivityIndicatorStyle
+  oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
@@ -50,7 +51,18 @@ export const FileDisputeScreen = (props) => {
 
   const handleDispute = () => {
     if (sDisputeSingleFile === '') {
-      alert('Please select a file for uploading');
+      Alert.alert(
+        'Info',
+        'Please select a file',
+        [
+          {
+            text: 'Ok',
+            onPress: () => true,
+            style: 'default',
+          },
+        ],
+        {cancelable: true},
+      );
       return;
     }
 
@@ -73,9 +85,8 @@ export const FileDisputeScreen = (props) => {
         if (resp.status === 200) {
           setbLoader(false);
           alert('Dispute filed successfully');
-        }
-        else{
-          setbLoader(false);    
+        } else {
+          setbLoader(false);
           alert('Failure filing dispute');
         }
       })
@@ -161,14 +172,14 @@ export const FileDisputeScreen = (props) => {
   return (
     <View style={styles.mainContainer}>
       {bLoader && (
-          <ActivityIndicator
-            size={Platform.OS === 'ios' ? 0 : 'large'}
-            color={Colors.grey}
-            animating={true}
-            //hidesWhenStopped={true}
-            style={oActivityIndicatorStyle}
-          />
-        )}
+        <ActivityIndicator
+          size={Platform.OS === 'ios' ? 0 : 'large'}
+          color={Colors.grey}
+          animating={true}
+          //hidesWhenStopped={true}
+          style={oActivityIndicatorStyle}
+        />
+      )}
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>Submit a Dispute</Text>
   </View>*/}
@@ -245,7 +256,7 @@ export const FileDisputeScreen = (props) => {
         />
         {errors.name_sDisputeMessage && (
           <View style={errorContainer}>
-            <Text style={errorComponent}>This is field required.</Text>
+            <Text style={errorComponent}>Please enter message.</Text>
           </View>
         )}
       </View>
@@ -269,10 +280,7 @@ export const FileDisputeScreen = (props) => {
           buttonStyle={{
             borderRadius: 10,
             borderWidth: 1,
-            marginBottom:
-              Dimensions.get('window').height < Resolution.nHeightBreakpoint
-                ? 3
-                : 5,
+            marginVertical: hp(2),
           }}
           onPress={selectOneFile}
           //style={styles.buttonStyle}
@@ -287,22 +295,24 @@ export const FileDisputeScreen = (props) => {
       )}
       <View style={styles.infoContainer}>
         <Text style={styles.infoComponent}>
-          The response to the dispute will be addressed through an email sent
-          {'\n'} to your registered email address.
+          The response to the dispute will be addressed through an email sent to
+          your registered email address.
         </Text>
       </View>
       <View style={styles.submitDisputeContainer}>
         <Button
           iconRight
-          icon={{
-            type: 'font-awesome',
-            name: 'arrow-right',
-            color: Colors.white,
-          }}
+          // icon={{
+          //   type: 'font-awesome',
+          //   name: 'arrow-right',
+          //   color: Colors.white,
+          // }}
           title="SUBMIT DISPUTE"
           type="outline"
           onPress={handleSubmit(handleDispute)}
           titleStyle={{
+            fontStyle: 'normal',
+            fontWeight: 'normal',
             color: Colors.white,
             fontFamily: sFontName,
           }}
@@ -389,17 +399,16 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   enterMessageContainer: {
-    width: wp(22),
-    height: hp(2),
+    // width: wp(22),
+    // height: hp(2),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 8,
   },
   enterMessageComponent: {
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+    fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -410,17 +419,16 @@ const styles = StyleSheet.create({
   messageContainer: {},
   subjectContainer: {},
   attachImageContainer: {
-    width: wp(22),
-    height: hp(2),
+    // width: wp(22),
+    // height: hp(2),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
   },
   attachImageComponent: {
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+    fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -429,17 +437,16 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   selectedFileContainer: {
-    width: wp(80),
-    height: hp(3.75),
+    // width: wp(80),
+    // height: hp(3.75),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
   },
   selectedFileComponent: {
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+    fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -448,17 +455,16 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   infoContainer: {
-    width: wp(80),
-    height: hp(5),
+    // width: wp(80),
+    // height: hp(5),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
   infoComponent: {
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+    fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -467,8 +473,8 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   fileUploadContainer: {
-    width: wp(45),
-    height: hp(7.5),
+    // width: wp(45),
+    // height: hp(7.5),
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint
         ? 16.8

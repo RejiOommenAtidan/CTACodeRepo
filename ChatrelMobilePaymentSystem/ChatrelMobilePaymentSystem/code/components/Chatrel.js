@@ -982,9 +982,13 @@ export const Chatrel = (props) => {
               }}
               price={'$ ' + parseFloat(nGrandTotal.toFixed(2))}
               button={{
-                title: 'MAKE PAYMENT',
+                title: 'PAY NOW',
                 titleStyle: {
                   fontFamily: sFontName,
+                  fontStyle:"normal",
+                  fontWeight:"bold",
+                color:Colors.white,
+                fontSize:24
                 },
                 buttonStyle: styles.paypalButtonComponent,
                 onPress: () => {

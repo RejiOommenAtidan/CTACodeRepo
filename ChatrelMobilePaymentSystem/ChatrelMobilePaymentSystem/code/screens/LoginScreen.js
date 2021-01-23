@@ -9,7 +9,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import ResponsiveImage from 'react-native-responsive-image';
-import {sFontName} from '../constants/CommonConfig';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
 
 export const LoginScreen = (props) => {
   return (
@@ -30,7 +30,7 @@ export const LoginScreen = (props) => {
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.textComponent}>
-          Your go-to resource for supporting{'\n'}the Tibetan Government.
+          Your go-to resource for supporting the Tibetan Government.
         </Text>
       </View>
       <GLogin props={props}></GLogin>
@@ -98,8 +98,13 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
     color: Colors.white,
     marginBottom: hp(7.5),
-    lineHeight: hp(3),
+    lineHeight: hp(3.25),
+    paddingHorizontal: wp(12),
     // height:hp(10)
     // letterSpacing: Resolution.nLetterSpacing / 2,
+
+    ////FONT BOLD EG
+    // // fontWeight: Platform.OS==="android"?"normal":"bold",
+    // // fontFamily: Platform.OS==="android"?sFontNameBold:sFontName,
   },
 });
