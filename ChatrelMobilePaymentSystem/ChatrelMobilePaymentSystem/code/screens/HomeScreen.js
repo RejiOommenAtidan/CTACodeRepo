@@ -18,7 +18,11 @@ import {useSelector, useDispatch} from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import {sFontName, oActivityIndicatorStyle} from '../constants/CommonConfig';
+import {
+  sFontName,
+  sFontNameBold,
+  oActivityIndicatorStyle,
+} from '../constants/CommonConfig';
 import {Icon} from 'react-native-elements';
 import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import {
@@ -199,7 +203,7 @@ const HomeScreen = (props) => {
         {bLoader && (
           <ActivityIndicator
             size={Platform.OS === 'ios' ? 0 : 'large'}
-            color={Colors.grey}
+            color={Colors.spinnerColor}
             animating={true}
             //hidesWhenStopped={true}
             style={oActivityIndicatorStyle}

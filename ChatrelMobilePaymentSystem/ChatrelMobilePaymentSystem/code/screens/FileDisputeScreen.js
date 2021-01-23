@@ -27,6 +27,7 @@ import {
   errorComponent,
   errorContainer,
   sFontName,
+  sFontNameBold,
   oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import axios from 'axios';
@@ -174,7 +175,7 @@ export const FileDisputeScreen = (props) => {
       {bLoader && (
         <ActivityIndicator
           size={Platform.OS === 'ios' ? 0 : 'large'}
-          color={Colors.grey}
+          color={Colors.spinnerColor}
           animating={true}
           //hidesWhenStopped={true}
           style={oActivityIndicatorStyle}

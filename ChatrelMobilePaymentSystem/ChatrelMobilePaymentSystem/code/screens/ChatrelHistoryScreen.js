@@ -23,6 +23,7 @@ import Moment from 'moment';
 import {
   sDateFormat,
   sFontName,
+  sFontNameBold,
   oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
@@ -106,7 +107,7 @@ export const ChatrelHistoryScreen = (props) => {
       {bLoader && (
         <ActivityIndicator
           size={Platform.OS === 'ios' ? 0 : 'large'}
-          color={Colors.grey}
+          color={Colors.spinnerColor}
           animating={true}
           //hidesWhenStopped={true}
           style={oActivityIndicatorStyle}

@@ -35,7 +35,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {sFontName} from '../constants/CommonConfig';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
 import axios from 'axios';
 
 export const FriendChatrelIntermediateScreen = (props) => {
@@ -113,7 +113,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
       {bLoader && (
         <ActivityIndicator
           size={Platform.OS === 'ios' ? 0 : 'large'}
-          color={Colors.grey}
+          color={Colors.spinnerColor}
           animating={true}
           //hidesWhenStopped={true}
           style={oActivityIndicatorStyle}

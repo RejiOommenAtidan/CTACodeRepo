@@ -23,6 +23,7 @@ import {
 import {
   sDateFormat,
   sFontName,
+  sFontNameBold,
   oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import Moment from 'moment';
@@ -108,7 +109,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
       {bLoader && (
         <ActivityIndicator
           size={Platform.OS === 'ios' ? 0 : 'large'}
-          color={Colors.grey}
+          color={Colors.spinnerColor}
           animating={true}
           //hidesWhenStopped={true}
           style={oActivityIndicatorStyle}

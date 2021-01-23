@@ -53,14 +53,14 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {sFontName} from '../constants/CommonConfig';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
 import {CustomSidebarMenu} from '../components/CustomSidebar';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {GLogout} from '../components/GLogout';
 
 const defaultStackNavOptions = {
-  headerMode: "screen",
+  headerMode: 'screen',
   headerStyle: {
     backgroundColor:
       Platform.OS === 'android' ? Colors.primary : Colors.primary,
@@ -304,8 +304,8 @@ export const MainNavigator = () => {
           fontWeight: 'normal',
           alignSelf: 'flex-start',
           fontSize: wp(3.75),
-          paddingLeft:0,
-          marginLeft:0
+          paddingLeft: 0,
+          marginLeft: 0,
           // marginLeft:0,
           // paddingLeft:0
         },
@@ -456,8 +456,8 @@ export const MainNavigator = () => {
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
-        {/*non screen*/}
-        {/*Login*/}
+      {/*non screen*/}
+      {/*Login*/}
       <MainDrawerNavigator.Screen
         name={'Login'}
         component={LoginNavigator}
@@ -474,16 +474,15 @@ export const MainNavigator = () => {
           gestureEnabled: false,
           swipeEnabled: false,
         }}></MainDrawerNavigator.Screen>
-        {/*FamilyChatrel*/}
+      {/*FamilyChatrel*/}
       <MainDrawerNavigator.Screen
         name={'FamilyChatrel'}
         component={FamilyChatrelNavigator}></MainDrawerNavigator.Screen>
-        {/*FriendChatrel*/}
+      {/*FriendChatrel*/}
       <MainDrawerNavigator.Screen
         name={'FriendChatrel'}
         component={FriendChatrelNavigator}></MainDrawerNavigator.Screen>
     </MainDrawerNavigator.Navigator>
-
   );
 };
 

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import IOSPicker from 'react-native-ios-picker';
-import {sFontName} from '../constants/CommonConfig';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
 // import DropDownPicker from 'react-native-dropdown-picker';
 // import Icon from 'react-native-vector-icons/Feather';
@@ -451,7 +451,7 @@ export const Chatrel = (props) => {
         {bLoader && (
           <ActivityIndicator
             size={Platform.OS === 'ios' ? 0 : 'large'}
-            color={Colors.grey}
+            color={Colors.spinnerColor}
             animating={true}
             //hidesWhenStopped={true}
             style={oActivityIndicatorStyle}
@@ -552,8 +552,7 @@ export const Chatrel = (props) => {
                           Authority Region
                         </Text>
                         {Platform.OS === 'android' && (
-                         
-<Picker
+                          <Picker
                             enabled={outstanding}
                             collapsable={true}
                             mode={'dialog'}
@@ -582,7 +581,6 @@ export const Chatrel = (props) => {
                               />
                             ))}
                           </Picker>
-                          
                         )}
 
                         {Platform.OS === 'ios' && (
@@ -985,10 +983,10 @@ export const Chatrel = (props) => {
                 title: 'PAY NOW',
                 titleStyle: {
                   fontFamily: sFontName,
-                  fontStyle:"normal",
-                  fontWeight:"bold",
-                color:Colors.white,
-                fontSize:24
+                  fontStyle: 'normal',
+                  fontWeight: 'bold',
+                  color: Colors.white,
+                  fontSize: 24,
                 },
                 buttonStyle: styles.paypalButtonComponent,
                 onPress: () => {

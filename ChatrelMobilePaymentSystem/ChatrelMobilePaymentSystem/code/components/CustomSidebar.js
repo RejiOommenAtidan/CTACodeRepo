@@ -24,7 +24,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Colors from '../../code/constants/Colors';
-import {sFontName} from '../constants/CommonConfig';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
 import {GoogleSignin} from '@react-native-community/google-signin';
 import {useDispatch} from 'react-redux';
 import {removeGoogleCreds} from '../store/actions/GLoginAction';

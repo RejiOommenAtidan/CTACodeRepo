@@ -33,7 +33,7 @@ export const errorComponent = {
 };
 
 export const sFontName = 'JosefinSans-Regular';
-export const sFontNameBold = "JosefinSans-Bold";
+export const sFontNameBold = 'JosefinSans-Bold';
 
 export const oActivityIndicatorStyle = {
   position: 'absolute',
@@ -43,7 +43,8 @@ export const oActivityIndicatorStyle = {
   bottom: 0,
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: Colors.backgroundColorForLoader,
+  backgroundColor: Colors.black,
   zIndex: 3,
   elevation: 3,
+  opacity: 0.5,
 };

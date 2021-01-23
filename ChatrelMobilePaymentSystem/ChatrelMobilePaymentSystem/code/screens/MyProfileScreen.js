@@ -13,7 +13,7 @@ import {
 import {useSelector} from 'react-redux';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import CTALogo from '../../code/assets/CTALogo.png';
-import {sFontName} from '../constants/CommonConfig';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
 import {Avatar} from 'react-native-elements';
 
 export const MyProfileScreen = (props) => {

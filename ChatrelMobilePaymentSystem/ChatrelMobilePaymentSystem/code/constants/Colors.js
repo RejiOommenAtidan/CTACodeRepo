@@ -19,6 +19,7 @@ export default {
   shadowColor: '#470000',
   backgroundColorForLoader: '#00000000',
   separatorColor: '#DCDCDC',
+  spinnerColor: '#ebcb45',
 };
 
 //old green -#298851

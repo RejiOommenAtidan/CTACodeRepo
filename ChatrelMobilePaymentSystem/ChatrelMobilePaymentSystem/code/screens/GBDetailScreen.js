@@ -235,7 +235,7 @@ export const GBDetailScreen = (props) => {
       {bLoader && (
         <ActivityIndicator
           size={Platform.OS === 'ios' ? 0 : 'large'}
-          color={Colors.grey}
+          color={Colors.spinnerColor}
           animating={true}
           //hidesWhenStopped={true}
           style={oActivityIndicatorStyle}
