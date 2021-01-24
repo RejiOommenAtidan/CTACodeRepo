@@ -24,6 +24,15 @@ import {Avatar, Badge, Icon, withBadge, Card} from 'react-native-elements';
 import {BoxShadow, BorderShadow} from 'react-native-shadow';
 
 export const MyProfileScreen = (props) => {
+  const oUserHardcodedMyProfile = {
+    sGBID: '7654321',
+    sName: '1234567890123456789012345',
+    nAge: 22,
+    dtDOB: '01-01-2001',
+    sEmailAddress: 'a.b@gmail.com',
+    sAuthorityRegion: 'Thimpu',
+  };
+
   const isPermitted = async () => {
     if (Platform.OS === 'android') {
       try {
@@ -659,7 +668,7 @@ export const MyProfileScreen = (props) => {
 
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
 
-  const nBadgeSize = 20;
+  const nBadgeSize = 25;
 
   // const shadowOpt = {
   //   width:wp(90),
@@ -756,6 +765,7 @@ export const MyProfileScreen = (props) => {
         containerStyle={{
           width: wp(92.5),
           backgroundColor: Colors.white,
+
           //Border Stuff
           borderRadius: 15,
           // borderColor: Colors.black,
@@ -819,49 +829,69 @@ export const MyProfileScreen = (props) => {
           backgroundColor: Colors.buttonYellow,
         }}
       /> */}
-        <View style={styles.labelContainer}>
-          <Badge
-            containerStyle={styles.badgeContainerStyle}
-            badgeStyle={styles.badgeStyle}
-            value={<Text style={styles.labelComponent}>FULL NAME</Text>}
-          />
-        </View>
-        <View style={styles.valueContainer}>
-          <Text style={styles.valueComponent}>
-            {oGoogle.givenName + ' ' + oGoogle.familyName}
-          </Text>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginBottom: hp(1),
+          }}>
+          <View style={styles.labelContainer}>
+            <Badge
+              containerStyle={styles.badgeContainerStyle}
+              badgeStyle={styles.badgeStyle}
+              value={<Text style={styles.labelComponent}>FULL NAME</Text>}
+            />
+            <View style={styles.valueContainer}>
+              <Text style={styles.valueComponent}>
+                {oGoogle.givenName + ' ' + oGoogle.familyName}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.labelContainer}>
+            <Badge
+              containerStyle={styles.badgeContainerStyle}
+              badgeStyle={styles.badgeStyle}
+              value={<Text style={styles.labelComponent}>GREEN BOOK ID</Text>}
+            />
+            <View style={styles.valueContainer}>
+              <Text style={{...styles.valueComponent, textAlign: 'right'}}>
+                {oGBDetails.sGBID}
+              </Text>
+            </View>
+          </View>
         </View>
 
-        <View style={styles.labelContainer}>
-          <Badge
-            containerStyle={styles.badgeContainerStyle}
-            badgeStyle={styles.badgeStyle}
-            value={<Text style={styles.labelComponent}>GREEN BOOK ID</Text>}
-          />
-        </View>
-        <View style={styles.valueContainer}>
-          <Text style={styles.valueComponent}>{oGBDetails.sGBID}</Text>
-        </View>
-
-        <View style={styles.labelContainer}>
-          <Badge
-            containerStyle={styles.badgeContainerStyle}
-            badgeStyle={styles.badgeStyle}
-            value={<Text style={styles.labelComponent}>DATE OF BIRTH</Text>}
-          />
-        </View>
-        <View style={styles.valueContainer}>
-          <Text style={styles.valueComponent}>{oGBDetails.dtDOB}</Text>
-        </View>
-        <View style={styles.labelContainer}>
-          <Badge
-            containerStyle={styles.badgeContainerStyle}
-            badgeStyle={styles.badgeStyle}
-            value={<Text style={styles.labelComponent}>EMAIL ADDRESS</Text>}
-          />
-        </View>
-        <View style={styles.valueContainer}>
-          <Text style={styles.valueComponent}>{oGoogle.email}</Text>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginBottom: hp(1),
+          }}>
+          <View style={styles.labelContainer}>
+            <Badge
+              containerStyle={styles.badgeContainerStyle}
+              badgeStyle={styles.badgeStyle}
+              value={<Text style={styles.labelComponent}>DATE OF BIRTH</Text>}
+            />
+            <View style={styles.valueContainer}>
+              <Text style={styles.valueComponent}>{oGBDetails.dtDOB}</Text>
+            </View>
+          </View>
+          <View style={styles.labelContainer}>
+            <Badge
+              containerStyle={styles.badgeContainerStyle}
+              badgeStyle={{...styles.badgeStyle, alignSelf: 'flex-end'}}
+              value={<Text style={styles.labelComponent}>EMAIL ADDRESS</Text>}
+            />
+            <View style={styles.valueContainer}>
+              <Text style={{...styles.valueComponent, textAlign: 'right'}}>
+                {oGoogle.email}
+                {/* {oUserHardcodedMyProfile.sName} */}
+              </Text>
+            </View>
+          </View>
         </View>
         {/*<View style={styles.ageLabelContainer}>
       <Text style={styles.ageLabelComponent}>AGE</Text>
@@ -936,42 +966,51 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   badgeContainerStyle: {
-    marginBottom: hp(1),
+    marginBottom: hp(1.25),
   },
   badgeStyle: {
     alignSelf: 'flex-start',
+    textAlignVertical: 'center',
     width: wp(27.5),
-    height: hp(3.25),
+    height: hp(3.5),
   },
   labelContainer: {
     // width: wp(75),
     // height: hp(2),
   },
   labelComponent: {
-    alignSelf: 'auto',
+    alignSelf: 'center',
     textAlign: 'center',
-    fontSize: wp(2.75),
+    fontSize: wp(3),
     fontStyle: 'normal',
     color: Colors.white,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
   },
   valueContainer: {
     // width: wp(75),
     // height: hp(3),
+    // flexDirection: 'row',
+    // flexDirection:'row',
+    // flex:1
+    // flexDirection:'row'
   },
   valueComponent: {
     // width: '100%',
     // height: '100%',
     textAlign: 'left',
-    fontSize: wp(4.5),
+    fontSize: wp(4.25),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
     fontFamily: sFontName,
-    marginBottom: wp(7.5),
+    marginBottom: wp(5),
+    // flex:1
+    // flexWrap: 'wrap',
+    // flexShrink: 1,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
   },
