@@ -399,8 +399,10 @@ export const GBDetailScreen = (props) => {
             titleStyle={{
               color: Colors.black,
               //fontWeight: 'bold',
-              fontFamily: sFontName,
-              fontWeight: 'normal',
+              // fontFamily: sFontName,
+              // fontWeight: 'normal',
+              fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+              fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
               //fontStyle: 'normal',
               //fontWeight: 'normal',
               textAlign: 'center',
@@ -477,7 +479,7 @@ const styles = StyleSheet.create({
   headerComponent: {
     width: wp(85),
     textAlign: 'left',
-    fontSize: hp(3.5),
+    fontSize: hp(3.25),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.white,
