@@ -971,8 +971,9 @@ const styles = StyleSheet.create({
   badgeStyle: {
     alignSelf: 'flex-start',
     textAlignVertical: 'center',
-    width: wp(27.5),
+    width: wp(29),
     height: hp(3.5),
+    backgroundColor: Colors.blue,
   },
   labelContainer: {
     // width: wp(75),
