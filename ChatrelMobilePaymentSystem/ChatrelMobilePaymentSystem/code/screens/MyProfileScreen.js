@@ -1,5 +1,11 @@
 import React from 'react';
-import {Text, View, StyleSheet, PermissionsAndroid} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Dimensions} from 'react-native';
@@ -14,7 +20,8 @@ import {useSelector} from 'react-redux';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import CTALogo from '../../code/assets/CTALogo.png';
 import {sFontName, sFontNameBold} from '../constants/CommonConfig';
-import {Avatar} from 'react-native-elements';
+import {Avatar, Badge, Icon, withBadge, Card} from 'react-native-elements';
+import {BoxShadow, BorderShadow} from 'react-native-shadow';
 
 export const MyProfileScreen = (props) => {
   const isPermitted = async () => {
@@ -646,22 +653,23 @@ export const MyProfileScreen = (props) => {
         console.error(err);
       }
     }
-
-    //let file;
-    // console.log(file.filePath);
   };
 
   const oGBDetails = useSelector((state) => state.GBDetailsReducer.oGBDetails);
 
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
 
-  // const oUserHardcodedMyProfile = {
-  //   sGBID: '7654321',
-  //   sName: 'ABCD DEFG',
-  //   nAge: 22,
-  //   dtDOB: '01-01-2001',
-  //   sEmailAddress: 'a.b@gmail.com',
-  //   sAuthorityRegion: 'Thimpu',
+  const nBadgeSize = 20;
+
+  // const shadowOpt = {
+  //   width:wp(90),
+  //   height:hp(92),
+  //   color: Colors.lightBlueChatrelWebsite,
+  //   border: 1,
+  //   radius: 15,
+  //   opacity: 1,
+  //   x: 5,
+  //   y: 5,
   // };
 
   return (
@@ -672,69 +680,207 @@ export const MyProfileScreen = (props) => {
                 </Text>
     </View>*/}
       {/*Avatar*/}
-      <Avatar
-        rounded
-        size="xlarge"
+      {/*{Platform.OS === 'android' && (
+        <BoxShadow setting={shadowOpt}>
+          <Card
+            containerStyle={{
+              backgroundColor: Colors.white,
+              // width:wp(90),
+              // height:hp(80),
+              //Border Stuff
+              borderRadius: 15,
+              // borderColor: Colors.black,
+              // borderStyle: 'solid',
+              // borderWidth: 1,
+            }}>
+            <View>
+              <Avatar
+                rounded
+                size="xlarge"
+                containerStyle={{
+                  alignSelf: 'center',
+                  marginTop: hp(1),
+                  marginBottom: hp(5),
+                }}
+                source={{
+                  uri: oGoogle.photo,
+                }}
+              />
+              <Badge
+                badgeStyle={{
+                  width: nBadgeSize,
+                  height: nBadgeSize,
+                  borderRadius: nBadgeSize / 2,
+                }}
+                status="success"
+                containerStyle={{
+                  position: 'absolute',
+                  top: 130,
+                  right: 97.5,
+                }}
+              />
+            </View>
+            <View style={styles.labelContainer}>
+              <Text style={styles.labelComponent}>FULL NAME</Text>
+            </View>
+            <View style={styles.valueContainer}>
+              <Text style={styles.valueComponent}>
+                {oGoogle.givenName + ' ' + oGoogle.familyName}
+              </Text>
+            </View>
+            <View style={styles.labelContainer}>
+              <Text style={styles.labelComponent}>GREEN BOOK ID</Text>
+            </View>
+            <View style={styles.valueContainer}>
+              <Text style={styles.valueComponent}>{oGBDetails.sGBID}</Text>
+            </View>
+            <View style={styles.labelContainer}>
+              <Text style={styles.labelComponent}>DATE OF BIRTH</Text>
+            </View>
+            <View style={styles.valueContainer}>
+              <Text style={styles.valueComponent}>{oGBDetails.dtDOB}</Text>
+            </View>
+            <View style={styles.labelContainer}>
+              <Text style={styles.labelComponent}>EMAIL ADDRESS</Text>
+            </View>
+            <View
+              style={styles.valueContainer}
+            >
+              <Text style={styles.valueComponent}>{oGoogle.email}</Text>
+            </View>
+          </Card>
+        </BoxShadow>
+              )}*/}
+
+      <Card
         containerStyle={{
-          alignSelf: 'center',
-          marginTop: hp(2.5),
-          marginBottom: hp(5),
+          width: wp(92.5),
+          backgroundColor: Colors.white,
+          //Border Stuff
+          borderRadius: 15,
+          // borderColor: Colors.black,
+          // borderStyle: 'solid',
+          // borderWidth: 0.25,
+
+          //For iOS
+          shadowRadius: 15,
+          shadowColor: Colors.lightBlueChatrelWebsite,
+          shadowOffset: {width: 5, height: 5},
+          shadowOpacity: 1,
+
+          //For Android
+          elevation: 15,
+          overflow: 'visible',
+        }}>
+        <View>
+          <Avatar
+            // overlayContainerStyle={{
+            //   padding:0,
+            //   margin:0,
+            // }}
+
+            //   icon={()=>{
+            //     return(           <Badge
+            //     status="success"
+            //     containerStyle={{position: 'absolute', top: 0, right: 0}}
+            //   />)
+            //   }}
+
+            //icon={{name: 'user', type: 'font-awesome'}}
+
+            rounded
+            size="xlarge"
+            containerStyle={{
+              alignSelf: 'center',
+              marginTop: hp(1),
+              marginBottom: hp(5),
+            }}
+            source={{
+              uri: oGoogle.photo,
+            }}
+          />
+          <Badge
+            badgeStyle={{
+              width: nBadgeSize,
+              height: nBadgeSize,
+              borderRadius: nBadgeSize / 2,
+            }}
+            status="success"
+            containerStyle={{
+              position: 'absolute',
+              top: 130,
+              right: 120,
+            }}
+          />
+        </View>
+        {/* <Card.Divider
+        style={{
+          height: 1,
+          backgroundColor: Colors.buttonYellow,
         }}
-        source={{
-          uri: oGoogle.photo,
-        }}
-      />
-      {/*FULL NAME*/}
-      <View style={styles.labelContainer}>
-        <Text style={styles.labelComponent}>FULL NAME</Text>
-      </View>
-      <View style={styles.valueContainer}>
-        <Text style={styles.valueComponent}>
-          {oGoogle.givenName + ' ' + oGoogle.familyName}
-        </Text>
-      </View>
-      {/*GBID*/}
-      <View style={styles.labelContainer}>
-        <Text style={styles.labelComponent}>GREEN BOOK ID</Text>
-      </View>
-      <View style={styles.valueContainer}>
-        <Text style={styles.valueComponent}>{oGBDetails.sGBID}</Text>
-      </View>
-      {/*DOB*/}
-      <View style={styles.labelContainer}>
-        <Text style={styles.labelComponent}>DATE OF BIRTH</Text>
-      </View>
-      <View style={styles.valueContainer}>
-        <Text style={styles.valueComponent}>{oGBDetails.dtDOB}</Text>
-      </View>
-      {/*AGE*/}
-      {/*<View style={styles.ageLabelContainer}>
-        <Text style={styles.ageLabelComponent}>AGE</Text>
-      </View>
-      <View style={styles.ageValueContainer}>
-        <Text style={styles.ageValueComponent}>
-          {oUserHardcodedMyProfile.nAge}
-        </Text>
-  </View>*/}
-      {/*AUTHREGION*/}
-      {/*<View style={styles.sAuthRegionLabelContainer}>
-        <Text style={styles.sAuthRegionLabelComponent}>AUTHORITY REGION</Text>
-      </View>
-      <View style={styles.sAuthRegionValueContainer}>
-        <Text style={styles.sAuthRegionValueComponent}>
-          {oUserHardcodedMyProfile.sAuthorityRegion}
-        </Text>
+      /> */}
+        <View style={styles.labelContainer}>
+          <Badge
+            containerStyle={styles.badgeContainerStyle}
+            badgeStyle={styles.badgeStyle}
+            value={<Text style={styles.labelComponent}>FULL NAME</Text>}
+          />
+        </View>
+        <View style={styles.valueContainer}>
+          <Text style={styles.valueComponent}>
+            {oGoogle.givenName + ' ' + oGoogle.familyName}
+          </Text>
+        </View>
+
+        <View style={styles.labelContainer}>
+          <Badge
+            containerStyle={styles.badgeContainerStyle}
+            badgeStyle={styles.badgeStyle}
+            value={<Text style={styles.labelComponent}>GREEN BOOK ID</Text>}
+          />
+        </View>
+        <View style={styles.valueContainer}>
+          <Text style={styles.valueComponent}>{oGBDetails.sGBID}</Text>
+        </View>
+
+        <View style={styles.labelContainer}>
+          <Badge
+            containerStyle={styles.badgeContainerStyle}
+            badgeStyle={styles.badgeStyle}
+            value={<Text style={styles.labelComponent}>DATE OF BIRTH</Text>}
+          />
+        </View>
+        <View style={styles.valueContainer}>
+          <Text style={styles.valueComponent}>{oGBDetails.dtDOB}</Text>
+        </View>
+        <View style={styles.labelContainer}>
+          <Badge
+            containerStyle={styles.badgeContainerStyle}
+            badgeStyle={styles.badgeStyle}
+            value={<Text style={styles.labelComponent}>EMAIL ADDRESS</Text>}
+          />
+        </View>
+        <View style={styles.valueContainer}>
+          <Text style={styles.valueComponent}>{oGoogle.email}</Text>
+        </View>
+        {/*<View style={styles.ageLabelContainer}>
+      <Text style={styles.ageLabelComponent}>AGE</Text>
+    </View>
+    <View style={styles.ageValueContainer}>
+      <Text style={styles.ageValueComponent}>
+        {oUserHardcodedMyProfile.nAge}
+      </Text>
 </View>*/}
-      {/*EMAIL ADDRESS*/}
-      <View style={styles.labelContainer}>
-        <Text style={styles.labelComponent}>EMAIL ADDRESS</Text>
-      </View>
-      <View
-        style={styles.valueContainer}
-        //onPress={createPDF}
-      >
-        <Text style={styles.valueComponent}>{oGoogle.email}</Text>
-      </View>
+
+        {/*<View style={styles.sAuthRegionLabelContainer}>
+      <Text style={styles.sAuthRegionLabelComponent}>AUTHORITY REGION</Text>
+    </View>
+    <View style={styles.sAuthRegionValueContainer}>
+      <Text style={styles.sAuthRegionValueComponent}>
+        {oUserHardcodedMyProfile.sAuthorityRegion}
+      </Text>
+</View>*/}
+      </Card>
     </View>
   );
 };
@@ -765,8 +911,8 @@ export const MyProfileScreenOptions = (navData) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    marginHorizontal:
-      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     marginVertical:
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
@@ -789,20 +935,26 @@ const styles = StyleSheet.create({
     //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
   },
+  badgeContainerStyle: {
+    marginBottom: hp(1),
+  },
+  badgeStyle: {
+    alignSelf: 'flex-start',
+    width: wp(27.5),
+    height: hp(3.25),
+  },
   labelContainer: {
     // width: wp(75),
     // height: hp(2),
   },
   labelComponent: {
-    // width: '100%',
-    // height: '100%',
-    textAlign: 'left',
-    fontSize: wp(4),
+    alignSelf: 'auto',
+    textAlign: 'center',
+    fontSize: wp(2.75),
     fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    fontFamily: sFontName,
-    marginBottom: hp(0.5),
+    color: Colors.white,
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     //letterSpacing: Resolution.nLetterSpacing,
   },
@@ -814,7 +966,7 @@ const styles = StyleSheet.create({
     // width: '100%',
     // height: '100%',
     textAlign: 'left',
-    fontSize: wp(5),
+    fontSize: wp(4.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
