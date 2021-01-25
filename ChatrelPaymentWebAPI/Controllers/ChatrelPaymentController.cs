@@ -16,7 +16,12 @@ using System.Linq;
 using System.Reflection;
 using MailKit.Net.Smtp;
 using MimeKit;
+using Newtonsoft.Json;
 using System.Security.Claims;
+using System.Threading.Tasks;
+
+using PayPalCheckoutSdk.Core;
+using PayPalCheckoutSdk.Orders;
 
 namespace ChatrelPaymentWebAPI.Controllers
 {
@@ -53,6 +58,14 @@ namespace ChatrelPaymentWebAPI.Controllers
             {
                 try
                 {
+                    var status = VerifyPayPalPayment(payment.sOrderId, payment.chatrelPayment.nChatrelTotalAmount);
+                    bool success = status.Result.Item1;
+                    dynamic obj = JsonConvert.DeserializeObject<dynamic>(status.Result.Item2);
+                    if (!success)
+                    {
+                        return obj;
+                    }
+                    
                     Object message = _chatrelPaymentVMRepository.Add(payment);
                     if (message != null)
                     {
@@ -412,11 +425,60 @@ namespace ChatrelPaymentWebAPI.Controllers
             }
         }
 
+        //[Authorize]
+        //[HttpGet]
+        //[Route("[action]")]
+        private async Task<Tuple<bool, string>> VerifyPayPalPayment(string orderId, decimal totalChatrel)
+        {
+            //if (String.IsNullOrEmpty(orderId.Trim()))
+            //{
+            //    var reply = new HttpResponse();
+            //    return new HttpResponse();
+            //}
+            try
+            {
+                OrdersGetRequest request = new OrdersGetRequest(orderId);
+                var response = await PayPalClient.client().Execute(request);
+                var result = response.Result<Order>();
+                Console.WriteLine("Retrieved Order Status");
+                Console.WriteLine("Status: {0}", result.Status);
+                Console.WriteLine("Order Id: {0}", result.Id);
+                Console.WriteLine("Intent: {0}", result.CheckoutPaymentIntent);
+                Console.WriteLine("Links:");
+                foreach (LinkDescription link in result.Links)
+                {
+                    Console.WriteLine("\t{0}: {1}\tCall Type: {2}", link.Rel, link.Href, link.Method);
+                }
+                AmountWithBreakdown amount = result.PurchaseUnits[0].AmountWithBreakdown;
+                Console.WriteLine("Total Amount: {0} {1}", amount.CurrencyCode, amount.Value);
+
+                if(result.Status == "COMPLETED")
+                {
+                    if(totalChatrel.ToString() == amount.Value)
+                    {
+                        return new Tuple<bool, string>(true, "OK");
+                    }
+                    else
+                    {
+                        return new Tuple<bool, string>(false, "{\"details\":[{\"issue\":\"Amount mismatch'\",\"description\":\"Amount received for transaction id '" + orderId + "' is '" + amount.CurrencyCode +  amount.Value + "' \" }]}");
+                    }
+                }
+                else
+                {
+                    return new Tuple<bool, string>(false, "{\"details\":[{\"issue\":\"Status Not 'COMPLETED'\",\"description\":\"Transaction status is '" + result.Status + "' \" }]}");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Tuple<bool, string>(false, ex.Message);
+            }
+        }
+
         //[HttpGet]
         //[Route("[action]")]
         //public IActionResult GoogleLogin()
         //{
-            
+
         //}
 
     }
