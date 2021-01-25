@@ -978,7 +978,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                 Id = (int)reader["Id"],
                 sGBId = reader.IsDBNull("sGBId") ? null : (string)reader["sGBId"],
                 nChatrelYear = (int)reader["nChatrelYear"],
-                nChatrelTotalAmount = reader.IsDBNull("nchatrelTotalAmount") ? null : (decimal?)reader["nchatrelTotalAmount"],
+                nChatrelTotalAmount = (decimal)reader["nchatrelTotalAmount"],
                 sChatrelReceiptNumber = (string)reader["sChatrelReceiptNumber"],
                 sPaidByGBId = reader.IsDBNull("sPaidByGBId") ? null : (string)reader["sPaidByGBId"],
                 sPaymentStatus = reader.IsDBNull("sPaymentStatus") ? null : (string)reader["sPaymentStatus"],
