@@ -973,7 +973,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     width: wp(29.5),
     height: hp(4),
-    backgroundColor: Colors.blue,
+    backgroundColor: Colors.websiteLightBlueColor,
   },
   labelContainer: {
     // width: wp(75),
@@ -982,7 +982,7 @@ const styles = StyleSheet.create({
   labelComponent: {
     alignSelf: 'center',
     textAlign: 'center',
-    fontSize: wp(3),
+    fontSize: wp(3.25),
     fontStyle: 'normal',
     color: Colors.white,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',

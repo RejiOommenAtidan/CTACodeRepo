@@ -412,18 +412,14 @@ export const GBDetailScreen = (props) => {
         </View>
         {/*</form>*/}
         <View>
-          <Text
-            style={{
-              textAlign: 'center',
-            }}>
+          
             <Text style={styles.infoComponent}>
-              Signed in as {oGoogle.email}.{' '}
+              Signed in as {oGoogle.email}
             </Text>
             <Text
               style={styles.backToLoginComponent}
               onPress={() => removeCompleteDetailsAndNavigateToLogin()}>
               Sign Out?
-            </Text>
           </Text>
         </View>
       </View>
@@ -589,25 +585,27 @@ const styles = StyleSheet.create({
     opacity: 0,
   },
   infoComponent: {
+    textAlign:"center",
     marginHorizontal:
       Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     width: wp(85),
     //height: hp(3.5),
     marginBottom: hp(2),
     fontFamily: sFontName,
-    fontSize: wp(3.75),
+    fontSize: wp(4),
     // textAlign: 'center',
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.white,
   },
   backToLoginComponent: {
+    textAlign:"center",
     marginHorizontal:
       Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     width: wp(85),
     //height: hp(3.5),
     marginBottom: hp(2),
-    fontSize: wp(3.75),
+    fontSize: wp(4.5),
     // textAlign: 'center',
     fontStyle: 'normal',
     textDecorationLine: 'underline',

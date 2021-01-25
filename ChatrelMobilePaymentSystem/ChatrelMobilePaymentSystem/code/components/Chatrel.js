@@ -638,9 +638,30 @@ export const Chatrel = (props) => {
                         }}>
                         <Badge
                           //containerStyle={styles.badgeContainerStyle}
-                          badgeStyle={styles.badgeStyleChip}
+                          badgeStyle={{
+                            ...styles.badgeStyleChip,
+                            backgroundColor:
+                              year.nChatrelLateFeesValue > 0
+                                ? Colors.red
+                                : year.nChatrelLateFeesValue === 0
+                                ? Colors.ChatrelYearGreen
+                                : Colors.buttonYellow,
+                          }}
                           value={
-                            <Text style={styles.labelComponentChip}>PAID</Text>
+                            year.nChatrelLateFeesValue > 0 ? (
+                              <Text style={styles.labelComponentChip}>
+                                OVERDUE
+                              </Text>
+                            ) : year.nChatrelTotalAmount ===0 &&
+                              year.nChatrelLateFeesValue === 0 ? (
+                              <Text style={styles.labelComponentChip}>
+                                PAID
+                              </Text>
+                            ) : (
+                              <Text style={styles.labelComponentChip}>
+                                PENDING
+                              </Text>
+                            )
                           }
                         />
                       </View>
@@ -675,7 +696,7 @@ export const Chatrel = (props) => {
                             enabled={outstanding}
                             collapsable={true}
                             mode={'dialog'}
-                            prompt={'REGION'}
+                            prompt={'AUTHORITY REGION'}
                             key={index}
                             // itemStyle={{
                             //   //height: 50,
@@ -763,8 +784,8 @@ export const Chatrel = (props) => {
                                 ...styles.textComponent,
                                 marginBottom: 0,
                                 // height: hp(5),
-                                alignSelf: 'center',
-                                marginRight: 2.5,
+                                // alignSelf: 'center',
+                                //marginRight: 2.5,
                               }}>
                               {/*Employment Status:{' '}*/}
                               {/* {year.nCurrentChatrelSalaryAmt === 0
@@ -788,7 +809,7 @@ export const Chatrel = (props) => {
                                   //width:wp(60),
                                   //align
                                   //padding:0
-                                  height: hp(5),
+                                  height: hp(2),
                                   width: wp(10),
                                   margin: 0,
                                   padding: 0,
@@ -838,7 +859,8 @@ export const Chatrel = (props) => {
                             <Text
                               style={{
                                 ...styles.textComponent,
-                                marginRight: 2.5,
+                                marginBottom: 0,
+                                //marginRight: 2.5,
                               }}>
                               {/*Employment Status:{' '}*/}
                               {/* {year.nCurrentChatrelSalaryAmt === 0
@@ -851,9 +873,12 @@ export const Chatrel = (props) => {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 justifyContent: 'flex-start',
-                                marginBottom: hp(1),
+                                alignSelf: 'flex-start',
+                                alignItems: 'flex-start',
+                                // marginBottom: hp(1),
                               }}>
                               <Switch
+                                //style={{marginBottom:hp(10)}}
                                 key={year.nChatrelYear}
                                 trackColor={{
                                   false: '#767577',
@@ -986,7 +1011,13 @@ export const Chatrel = (props) => {
                         marginBottom: hp(1.25),
                       }}>
                       {year.sAuthRegionCurrency !== 'USD' && (
-                        <View>
+                        <View
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            //marginBottom: hp(1.25),
+                          }}>
                           <Text
                             style={{
                               ...styles.textComponentAPI,
@@ -1001,16 +1032,6 @@ export const Chatrel = (props) => {
                               ? dollarToRupees.toFixed(4)
                               : 'NA'}
                           </Text>
-                          {/* <Text
-                          style={{
-                            ...styles.textComponentAPI,
-                            textAlign: 'right',
-                            color: Colors.grey,
-                            fontStyle: 'italic',
-                            fontSize:10
-                          }}>
-                          
-                        </Text> */}
                         </View>
                       )}
                       <Text
@@ -1027,7 +1048,7 @@ export const Chatrel = (props) => {
                             Platform.OS === 'android'
                               ? sFontNameBold
                               : sFontName,
-                          marginLeft: wp(12.5),
+                          // marginLeft: wp(12.5),
                         }}>
                         TOTAL
                       </Text>
@@ -1049,15 +1070,6 @@ export const Chatrel = (props) => {
                         ${year.nChatrelTotalAmount.toFixed(2)}
                       </Text>
                     </View>
-                    {/* <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        //marginBottom: hp(1.25),
-                      }}>
-                      
-                    </View> */}
                   </View>
                 </Card>
               </View>
@@ -1091,14 +1103,20 @@ export const Chatrel = (props) => {
               overflow: 'visible',
             }}>
             <View style={styles.businessDonationContainer}>
-            <Badge
-                  containerStyle={styles.badgeContainerStyle}
-                  badgeStyle={{...styles.badgeStyle,
-                    alignSelf:"flex-end",
-                    // height:hp(),
-                    width:wp(45)}}
-                  value={<Text style={styles.labelComponent}>BUSINESS DONATION ($)</Text>}
-                />
+              <Badge
+                containerStyle={styles.badgeContainerStyle}
+                badgeStyle={{
+                  ...styles.badgeStyle,
+                  alignSelf: 'flex-end',
+                  // height:hp(),
+                  width: wp(45),
+                }}
+                value={
+                  <Text style={styles.labelComponent}>
+                    BUSINESS DONATION ($)
+                  </Text>
+                }
+              />
               <Input
                 style={{
                   textAlign: 'right',
@@ -1134,16 +1152,20 @@ export const Chatrel = (props) => {
               />
             </View>
             <View style={styles.additionalDonationContainer}>
-            <Badge
-                  containerStyle={styles.badgeContainerStyle}
-                  badgeStyle={{
-                    ...styles.badgeStyle,
-                    alignSelf:"flex-end",
-                    // height:hp(),
-                    width:wp(45)
-                  }}
-                  value={<Text style={styles.labelComponent}>ADDITIONAL DONATION ($)</Text>}
-                />
+              <Badge
+                containerStyle={styles.badgeContainerStyle}
+                badgeStyle={{
+                  ...styles.badgeStyle,
+                  alignSelf: 'flex-end',
+                  // height:hp(),
+                  width: wp(45),
+                }}
+                value={
+                  <Text style={styles.labelComponent}>
+                    ADDITIONAL DONATION ($)
+                  </Text>
+                }
+              />
               <Input
                 style={{
                   textAlign: 'right',
@@ -1308,9 +1330,9 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
   },
   textComponent: {
-    fontSize: wp(3),
+    fontSize: wp(3.25),
     textAlign: 'left',
-    marginBottom: 5,
+    marginBottom: hp(1),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.labelColorLight,
@@ -1318,9 +1340,9 @@ const styles = StyleSheet.create({
   },
 
   textComponentAPI: {
-    fontSize: wp(4),
+    fontSize: wp(4.25),
     textAlign: 'left',
-    marginBottom: 7.5,
+    marginBottom: hp(1),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -1347,13 +1369,11 @@ const styles = StyleSheet.create({
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
   employementStatusContainer: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   employementStatusContainerForInput: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     // marginBottom: 10,
@@ -1369,11 +1389,11 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   pickerComponent: {
-    height: 25,
-    width: wp(35),
+    height: hp(4),
+    width: wp(40),
   },
   pickerComponentIOS: {
-    height: 25,
+    height: 30,
     width: wp(35),
   },
   yearContainer: {
@@ -1417,7 +1437,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     width: wp(29),
     height: hp(3.5),
-    backgroundColor: Colors.blue,
+    backgroundColor: Colors.websiteLightBlueColor,
   },
   labelContainer: {
     // width: wp(75),

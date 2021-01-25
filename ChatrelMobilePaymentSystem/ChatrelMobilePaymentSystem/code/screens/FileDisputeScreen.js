@@ -332,12 +332,12 @@ export const FileDisputeScreen = (props) => {
               </Text>
             </View>
           )}
-          <View style={styles.infoContainer}>
+          {/* <View style={styles.infoContainer}>
             <Text style={styles.infoComponent}>
               The response to the dispute will be addressed through an email
               sent to your registered email address.
             </Text>
-          </View>
+          </View> */}
           <View style={styles.submitDisputeContainer}>
             <Button
               // iconRight
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
   infoComponent: {
     // width: '100%',
     // height: '100%',
-    textAlign: 'justify',
+    textAlign: 'center',
     fontSize: wp(3.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
