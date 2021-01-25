@@ -58,12 +58,17 @@ namespace ChatrelPaymentWebAPI.Controllers
             {
                 try
                 {
-                    var status = VerifyPayPalPayment(payment.sOrderId, payment.chatrelPayment.nChatrelTotalAmount);
+                    var definition = new { details = new[] { new { issue = "", description = "" } } };
+
+
+                    var status = VerifyPayPalPayment(payment.chatrelPayment.sPayPal_ID, System.Math.Round(payment.chatrelPayment.nChatrelTotalAmount, 2, MidpointRounding.AwayFromZero));
                     bool success = status.Result.Item1;
-                    dynamic obj = JsonConvert.DeserializeObject<dynamic>(status.Result.Item2);
+                    
+                    var obj = JsonConvert.DeserializeAnonymousType(status.Result.Item2, definition);
+                    
                     if (!success)
                     {
-                        return obj;
+                        return Problem(obj.details[0].description);
                     }
                     
                     Object message = _chatrelPaymentVMRepository.Add(payment);
@@ -126,6 +131,8 @@ namespace ChatrelPaymentWebAPI.Controllers
 
         #endregion
 
+
+        #region DisplayChatrelPayment
         [Authorize]
         [HttpGet]
         [Route("[action]")]
@@ -176,6 +183,10 @@ namespace ChatrelPaymentWebAPI.Controllers
             }
         }
 
+        #endregion
+
+        #region Get Family Details
+
         [Authorize]
         [HttpGet]
         [Route("[action]")]
@@ -212,6 +223,9 @@ namespace ChatrelPaymentWebAPI.Controllers
 
             }
         }
+        #endregion
+
+        #region Get Payment History
 
         [Authorize]
         [HttpGet]
@@ -249,6 +263,9 @@ namespace ChatrelPaymentWebAPI.Controllers
 
             }
         }
+        #endregion
+
+        #region Verify Friend Payment
 
         [Authorize]
         [HttpGet]
@@ -288,6 +305,7 @@ namespace ChatrelPaymentWebAPI.Controllers
 
             }
         }
+        #endregion
 
         #region Submit Dispute
         [Authorize]
@@ -385,12 +403,12 @@ namespace ChatrelPaymentWebAPI.Controllers
         //            return StatusCode(StatusCodes.Status500InternalServerError);
         //        }
         //    }
-            
-            
+
+
         //}
         //#endregion
 
-
+        #region Get Receipt
         [Authorize]
         [HttpGet]
         [Route("[action]")]
@@ -424,7 +442,9 @@ namespace ChatrelPaymentWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+        #endregion
 
+        #region PayPal Payment Verification
         //[Authorize]
         //[HttpGet]
         //[Route("[action]")]
@@ -452,15 +472,15 @@ namespace ChatrelPaymentWebAPI.Controllers
                 AmountWithBreakdown amount = result.PurchaseUnits[0].AmountWithBreakdown;
                 Console.WriteLine("Total Amount: {0} {1}", amount.CurrencyCode, amount.Value);
 
-                if(result.Status == "COMPLETED")
+                if(result.Status == "COMPLETED" && result.CheckoutPaymentIntent == "CAPTURE")
                 {
                     if(totalChatrel.ToString() == amount.Value)
                     {
-                        return new Tuple<bool, string>(true, "OK");
+                        return new Tuple<bool, string>(true, "{\"details\":[{\"issue\":\"OK\",\"description\":\"Amount received for transaction id '" + orderId + "' is '" + amount.CurrencyCode + amount.Value + "' \" }]}");
                     }
                     else
                     {
-                        return new Tuple<bool, string>(false, "{\"details\":[{\"issue\":\"Amount mismatch'\",\"description\":\"Amount received for transaction id '" + orderId + "' is '" + amount.CurrencyCode +  amount.Value + "' \" }]}");
+                        return new Tuple<bool, string>(false, "{\"details\":[{\"issue\":\"Amount mismatch\",\"description\":\"Amount received for transaction id '" + orderId + "' is '" + amount.CurrencyCode +  amount.Value + "' \" }]}");
                     }
                 }
                 else
@@ -473,6 +493,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                 return new Tuple<bool, string>(false, ex.Message);
             }
         }
+        #endregion
 
         //[HttpGet]
         //[Route("[action]")]
