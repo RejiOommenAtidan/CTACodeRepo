@@ -64,10 +64,10 @@ export const oOptions = {
   pageSizeOptions: aPageSizeArray,
   rowStyle: x => {
     if (x.tableData.id % 2) {
-      return { backgroundColor: "#f2f2f2", padding: '0' }
+      return { color: "#000000" ,  backgroundColor: "#f2f2f2", padding: '0' }
     }
     else {
-      return { padding: '0' }
+      return { color: "#000000" ,  padding: '0' }
     }
   }
 };

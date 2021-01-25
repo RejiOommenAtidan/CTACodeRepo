@@ -129,16 +129,16 @@ namespace CTAWebAPI.Controllers.Transactions
         }
         #endregion
 
-        #region GetReportCTANewEntryFromDay
+        #region GetReportCTANewEntry For Date Range
         [AuthorizeRole(FeatureID = 37)]
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetReportCTANewEntryFromDay(DateTime dtRecordFrom)
+        public IActionResult GetReportCTANewEntryFromDay(DateTime dtRecordFrom, DateTime dtRecordTo)
         {
 
             try
             {
-                var result = _reportRepository.GetReportCTANewEntryFromDay(dtRecordFrom);
+                var result = _reportRepository.GetReportCTANewEntryFromDay(dtRecordFrom, dtRecordTo);
                 if (result != null)
                 {
                     return Ok(result);
@@ -162,12 +162,12 @@ namespace CTAWebAPI.Controllers.Transactions
         [AuthorizeRole(FeatureID = 36)]
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetReportCTAChangesLogForChildren(DateTime dtRecordFrom)
+        public IActionResult GetReportCTAChangesLogForChildren(DateTime dtRecordFrom, DateTime dtRecordTo)
         {
 
             try
             {
-                var result = _reportRepository.GetReportCTAChangesLogForChildren(dtRecordFrom);
+                var result = _reportRepository.GetReportCTAChangesLogForChildren(dtRecordFrom, dtRecordTo);
                 if (result != null)
                 {
                     return Ok(result);
@@ -191,12 +191,12 @@ namespace CTAWebAPI.Controllers.Transactions
         [AuthorizeRole(FeatureID = 35)]
         [HttpGet]
         [Route("[action]")]
-        public IActionResult GetReportCTAChangesLog(DateTime dtRecordFrom)
+        public IActionResult GetReportCTAChangesLog(DateTime dtRecordFrom, DateTime dtRecordTo)
         {
 
             try
             {
-                var result = _reportRepository.GetReportCTAChangesLog(dtRecordFrom);
+                var result = _reportRepository.GetReportCTAChangesLog(dtRecordFrom, dtRecordTo);
                 if (result != null)
                 {
                     return Ok(result);

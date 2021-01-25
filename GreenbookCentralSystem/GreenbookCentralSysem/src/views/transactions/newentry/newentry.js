@@ -757,8 +757,9 @@ placeholder="DD-MM-YYYY"
                               id="id_dtDOB"
                               name="name_dtDOB"
                               variant="dialog"
-                              openTo="year"
-                              views={["year", "month", "date"]}
+                              //openTo="year"
+                              //views={["year", "month", "date"]}
+                              autoOk
                               margin="dense"
                               inputRef={register({
                                 required: true,
@@ -1998,8 +1999,9 @@ placeholder="DD-MM-YYYY"
                         <KeyboardDatePicker
                           placeholder="DD-MM-YYYY"
                           variant="dialog"
-                          openTo="year"
-                          views={["year", "month", "date"]}
+                          //openTo="year"
+                          //views={["year", "month", "date"]}
+                          autoOk
                           margin="dense"
                           id="id_dtApplicationDate"
                           name="name_dtApplicationDate"

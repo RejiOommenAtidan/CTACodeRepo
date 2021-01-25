@@ -526,14 +526,14 @@ namespace CTAWebAPI.Controllers.Transactions
                         greenbook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                         _greenbookRepository.Update(greenbook);
                         var gbvmNew = _greenBookVMRepository.GetCustomViewModel(greenbook.sGBID);
-                        var dict3 = gbvmOld.Where(entry => gbvmNew[entry.Key] != entry.Value).ToDictionary(entry => entry.Key, entry => entry.Value);
-                        var dict4 = gbvmNew.Where(entry => gbvmOld[entry.Key] != entry.Value).ToDictionary(entry => entry.Key, entry => entry.Value);
-                        CTALogger.LogAuditRecordComplex(dict3, dict4, greenbook.sGBID, greenbook.nAuthRegionID, 16, fetchedGreenbook.Id, greenbook.nUpdatedBy);
+                        var dict0 = gbvmOld.Where(entry => gbvmNew[entry.Key] != entry.Value).ToDictionary(entry => entry.Key, entry => entry.Value);
+                        var dict1 = gbvmNew.Where(entry => gbvmOld[entry.Key] != entry.Value).ToDictionary(entry => entry.Key, entry => entry.Value);
+                        CTALogger.LogAuditRecordComplex(dict0, dict1, greenbook.sGBID, greenbook.nAuthRegionID, 16, fetchedGreenbook.Id, greenbook.nUpdatedBy);
                         //List<object> changes = new List<object>();
                         //foreach (var item in dict3)
                         //{
-                        //    var oldValue = dict3[item.Key];
-                        //    var newValue = dict4[item.Key];
+                        //    var oldValue = dict0[item.Key];
+                        //    var newValue = dict1[item.Key];
                         //    var change = new { Field = item.Key, PreviousValue = oldValue.ToString(), NewValue = newValue.ToString() };
                         //    changes.Add(change);
                         //}
