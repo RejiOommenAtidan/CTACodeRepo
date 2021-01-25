@@ -390,7 +390,7 @@ export const MainNavigator = () => {
               }}
             />
           ),
-          drawerLabel: 'FRIENDS CHATREL',
+          drawerLabel: 'FRIEND\'S CHATREL',
           gestureEnabled: true,
           swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>

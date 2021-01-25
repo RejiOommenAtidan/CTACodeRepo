@@ -26,7 +26,7 @@ import {BoxShadow, BorderShadow} from 'react-native-shadow';
 export const MyProfileScreen = (props) => {
   const oUserHardcodedMyProfile = {
     sGBID: '7654321',
-    sName: '1234567890123456789012345',
+    sName: '12345678901234567890123456789',
     nAge: 22,
     dtDOB: '01-01-2001',
     sEmailAddress: 'a.b@gmail.com',
@@ -773,13 +773,13 @@ export const MyProfileScreen = (props) => {
           // borderWidth: 0.25,
 
           //For iOS
-          shadowRadius: 15,
+          shadowRadius: 25,
           shadowColor: Colors.lightBlueChatrelWebsite,
           shadowOffset: {width: 5, height: 5},
           shadowOpacity: 1,
 
           //For Android
-          elevation: 15,
+          elevation: 25,
           overflow: 'visible',
         }}>
         <View>
@@ -971,8 +971,8 @@ const styles = StyleSheet.create({
   badgeStyle: {
     alignSelf: 'flex-start',
     textAlignVertical: 'center',
-    width: wp(29),
-    height: hp(3.5),
+    width: wp(29.5),
+    height: hp(4),
     backgroundColor: Colors.blue,
   },
   labelContainer: {

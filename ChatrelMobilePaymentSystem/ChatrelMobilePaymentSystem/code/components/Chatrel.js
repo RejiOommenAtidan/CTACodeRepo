@@ -1313,7 +1313,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
+    color: Colors.labelColorLight,
     fontFamily: sFontName,
   },
 

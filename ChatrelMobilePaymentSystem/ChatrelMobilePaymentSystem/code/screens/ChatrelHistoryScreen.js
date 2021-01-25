@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
     fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
+    color: Colors.labelColorLight,
     fontFamily: sFontName,
     marginBottom: hp(1),
   },
