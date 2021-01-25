@@ -163,7 +163,7 @@ export const CustomSidebarMenu = (props) => {
           height: 1,
           backgroundColor: Colors.separatorColor,
           marginTop: hp(1.25),
-          marginBottom: 0,
+          marginBottom: hp(1.25),
         }}
       />
       <DrawerContentScrollView {...props}>

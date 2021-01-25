@@ -251,7 +251,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                   type="outline"
                   title={'PAY NOW'}
                   titleStyle={{
-                    color: Colors.blackText,
+                    color: Colors.white,
                     fontStyle: 'normal',
                     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
                     fontFamily:
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
     fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
+    color: Colors.labelColorLight,
     fontFamily: sFontName,
     marginBottom: hp(1),
   },

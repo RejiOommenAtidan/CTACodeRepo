@@ -20,6 +20,7 @@ export default {
   backgroundColorForLoader: '#00000000',
   separatorColor: '#DCDCDC',
   spinnerColor: '#ebcb45',
+  labelColorLight: "#6e6e6e"
 };
 
 //old green -#298851

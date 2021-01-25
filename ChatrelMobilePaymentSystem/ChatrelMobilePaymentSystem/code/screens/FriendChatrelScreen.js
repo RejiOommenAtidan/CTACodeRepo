@@ -18,14 +18,14 @@ export const FriendChatrelScreen = (props) => {
       {/*<View style={styles.headerContainer}>
       <Text style={styles.headerComponent}>Friend Chatrel</Text>
       </View>*/}
-      <Chatrel></Chatrel>
+      <Chatrel props={"Friend"}></Chatrel>
     </View>
   );
 };
 
 export const FriendChatrelScreenOptions = (navData) => {
   return {
-    headerTitle: "FRIENDS CHATREL",
+    headerTitle: "FRIEND'S CHATREL",
     headerStyle: {
       backgroundColor: Colors.primary,
     },

@@ -26,7 +26,7 @@ export const SelfChatrelScreen = (props) => {
       {/*<View style={styles.headerContainer}>
         <Text style={styles.headerComponent}>Self Chatrel</Text>
   </View>*/}
-      <Chatrel></Chatrel>
+      <Chatrel props={"Self"}></Chatrel>
     </View>
   );
 };
