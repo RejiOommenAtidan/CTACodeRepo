@@ -300,9 +300,11 @@ const HomeScreen = (props) => {
               <Button
                 titleStyle={{
                   color: Colors.white,
-                  fontFamily: sFontName,
                   fontStyle: 'normal',
-                  fontWeight: 'normal',
+                  fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                  fontFamily:
+                    Platform.OS === 'android' ? sFontNameBold : sFontName,
+                  fontSize: wp(4),
                 }}
                 buttonStyle={{
                   width: wp(75),

@@ -256,7 +256,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
                     fontFamily:
                       Platform.OS === 'android' ? sFontNameBold : sFontName,
-                    fontSize: hp(2),
+                      fontSize: wp(4),
                   }}
                   buttonStyle={styles.buttonStyle}
                 />
@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
   },
   cardHeaderComponent: {
     textAlign: 'left',
-    fontSize: hp(3),
+    fontSize: wp(6),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.primary,
@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
 
   chatrelLabelComponent: {
     textAlign: 'right',
-    fontSize: hp(2.5),
+    fontSize: wp(5.5),
     fontStyle: 'normal',
     color: Colors.darkYellowFamilyPage,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
@@ -386,7 +386,7 @@ const styles = StyleSheet.create({
 
   labelComponent: {
     textAlign: 'left',
-    fontSize: hp(1.25),
+    fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
 
   valueComponent: {
     textAlign: 'left',
-    fontSize: hp(2.25),
+    fontSize: wp(5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
