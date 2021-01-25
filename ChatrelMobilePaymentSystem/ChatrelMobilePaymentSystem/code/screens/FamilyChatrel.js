@@ -18,7 +18,7 @@ export const FamilyChatrelScreen = (props) => {
       {/*<View style={styles.headerContainer}>
         <Text style={styles.headerComponent}>Family Chatrel</Text>
   </View>*/}
-      <Chatrel></Chatrel>
+      <Chatrel props={"Family"}></Chatrel>
     </View>
   );
 };

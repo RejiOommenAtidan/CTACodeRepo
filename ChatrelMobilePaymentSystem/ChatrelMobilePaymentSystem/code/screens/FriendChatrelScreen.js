@@ -18,7 +18,7 @@ export const FriendChatrelScreen = (props) => {
       {/*<View style={styles.headerContainer}>
       <Text style={styles.headerComponent}>Friend Chatrel</Text>
       </View>*/}
-      <Chatrel></Chatrel>
+      <Chatrel props={"Friend"}></Chatrel>
     </View>
   );
 };

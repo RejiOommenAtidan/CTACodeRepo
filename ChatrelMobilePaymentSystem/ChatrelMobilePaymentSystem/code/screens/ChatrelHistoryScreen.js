@@ -289,11 +289,11 @@ export const ChatrelHistoryScreen = (props) => {
                     icon={{
                       type: 'font-awesome',
                       name: 'download',
-                      color: Colors.blackText,
+                      color: Colors.white,
                     }}
                     type="outline"
                     titleStyle={{
-                      color: Colors.blackText,
+                      color: Colors.white,
                       fontStyle: 'normal',
                       fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
                       fontFamily:
