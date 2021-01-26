@@ -426,7 +426,8 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   Platform.OS === 'android' ? sFontNameBold : sFontName,
               }}
               containerStyle={{
-                marginTop: hp(1.5),
+                marginTop: hp(3),
+                marginBottom:hp(1)
               }}
               buttonStyle={{
                 backgroundColor: Colors.primary,
@@ -498,10 +499,10 @@ const styles = StyleSheet.create({
   },
   labelComponent: {
     textAlign: 'left',
-    fontSize: wp(3),
+    fontSize: wp(3.75),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.primary,
+    color: Colors.blackText,
     fontFamily: sFontName,
   },
   valueContainer: {},

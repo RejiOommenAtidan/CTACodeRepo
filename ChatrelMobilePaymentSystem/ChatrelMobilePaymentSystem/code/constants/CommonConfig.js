@@ -51,6 +51,9 @@ export const oActivityIndicatorStyle = {
 };
 
 export const oRequiredStyles = {
-  color: Colors.red,
-  fontSize: hp(2),
+  color: 'red',
+  textAlignVertical: 'top',
+  fontSize: hp(2.5),
+  textAlign: 'center',
+  // lineHeight:hp(5)
 };
