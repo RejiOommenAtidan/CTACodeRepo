@@ -299,7 +299,7 @@ export const FileDisputeScreen = (props) => {
               defaultValue=""
             />
             {errors.name_sDisputeMessage && (
-              <View style={errorContainer}>
+              <View style={{...errorContainer}}>
                 <Text style={errorComponent}>Please enter a description</Text>
               </View>
             )}
