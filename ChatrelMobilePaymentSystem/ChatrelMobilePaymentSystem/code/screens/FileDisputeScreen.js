@@ -562,9 +562,10 @@ const styles = StyleSheet.create({
   },
   iconContainerStyles: {
     // backgroundColor:Colors.white,
-    alignSelf: 'center',
+    alignSelf: 'flex-start',
     position: 'absolute',
     top: -55,
+    // left:20,
     //Border Stuff
     borderRadius: 10,
     // borderColor: Colors.black,

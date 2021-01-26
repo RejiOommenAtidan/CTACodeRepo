@@ -19,6 +19,7 @@ export const sDateFormatDatePicker = 'MM/DD/YYYY';
 export const sISODateFormat = 'YYYY-MM-DD';
 export const sClientIDAndroid =
   '1071046831303-1naot2q7pull58cpifp3rosfn65bdrsc.apps.googleusercontent.com';
+export const sClientIDIOS = '1071046831303-84cupk037kmsgsdu94v1c79c069kv9ki.apps.googleusercontent.com';
 export const sPayPalClientID =
   'Aa97-jCSZKlyGrIauDxygYtVHda-STWEetJRp7g1C5rxqCeeJqydrxG5mF0AF0DbIQPTMG1i8RLV1veq';
 export const sFontName = 'JosefinSans-Regular';

@@ -126,6 +126,7 @@ export const GBDetailScreen = (props) => {
       });
     } catch (error) {
       console.error(error);
+      navigation.navigate('Login');
     }
   };
   const handleVerifyDetailsPress = async () => {
