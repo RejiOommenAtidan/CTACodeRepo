@@ -668,7 +668,11 @@ export const MyProfileScreen = (props) => {
 
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
 
+  ////for large
   const nBadgeSize = 12.5;
+
+  // //for xlarge
+  // const nBadgeSize = 25;
 
   // const shadowOpt = {
   //   width:wp(90),
@@ -915,8 +919,13 @@ const styles = StyleSheet.create({
   },
   badgeContainerStyle: {
     position: 'absolute',
+    //for large
     top: 67.5,
     right: 145,
+
+    ////for xlarge
+    // top: 130,
+    // right: 120,
   },
   badgeStyle: {
     alignSelf: 'flex-start',
@@ -986,6 +995,24 @@ const styles = StyleSheet.create({
   avatarContainerStyle: {
     alignSelf: 'center',
     marginTop: hp(1),
+
+    // backgroundColor: Colors.white,
+
+    //Border Stuff
+    // borderRadius: 15,
+    // borderColor: Colors.black,
+    // borderStyle: 'solid',
+    // borderWidth: 0.25,
+
+    // //For iOS
+    // shadowRadius: 25,
+    // shadowColor: Colors.lightBlueChatrelWebsite,
+    // shadowOffset: {width: 5, height: 5},
+    // shadowOpacity: 1,
+
+    // //For Android
+    // elevation: 25,
+    // overflow: 'visible',
   },
 
   cardDividerStyle: {
