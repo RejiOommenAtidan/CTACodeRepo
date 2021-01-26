@@ -259,7 +259,7 @@ export const GBDetailScreen = (props) => {
             render={({onChange, onBlur, value}) => (
               <Input
                 //label="Enter GBID"
-                placeholder={'Green Book Number'}
+                placeholder={'Green Book Number*'}
                 placeholderTextColor={Colors.grey}
                 //autoFocus={true}
                 autoCompleteType={'off'}
@@ -314,7 +314,7 @@ export const GBDetailScreen = (props) => {
                 style={styles.dobComponent}
                 date={dtDOB}
                 mode="date"
-                placeholder="Date of Birth"
+                placeholder="Date of Birth*"
                 //placeholderTextColor={Colors.grey}
                 format={sDateFormatDatePicker}
                 maxDate={dtToday}
@@ -412,14 +412,11 @@ export const GBDetailScreen = (props) => {
         </View>
         {/*</form>*/}
         <View>
-          
-            <Text style={styles.infoComponent}>
-              Signed in as {oGoogle.email}
-            </Text>
-            <Text
-              style={styles.backToLoginComponent}
-              onPress={() => removeCompleteDetailsAndNavigateToLogin()}>
-              Sign Out?
+          <Text style={styles.infoComponent}>Signed in as {oGoogle.email}</Text>
+          <Text
+            style={styles.backToLoginComponent}
+            onPress={() => removeCompleteDetailsAndNavigateToLogin()}>
+            Sign Out?
           </Text>
         </View>
       </View>
@@ -585,7 +582,7 @@ const styles = StyleSheet.create({
     opacity: 0,
   },
   infoComponent: {
-    textAlign:"center",
+    textAlign: 'center',
     marginHorizontal:
       Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     width: wp(85),
@@ -599,7 +596,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
   backToLoginComponent: {
-    textAlign:"center",
+    textAlign: 'center',
     marginHorizontal:
       Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     width: wp(85),

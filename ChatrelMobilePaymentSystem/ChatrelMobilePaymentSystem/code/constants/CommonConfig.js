@@ -1,7 +1,10 @@
 import {Dimensions, Platform} from 'react-native';
 import Colors from './Colors';
 import Resolution from './ResolutionBreakpoint';
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 ////Local
 // export const sAPIBASEURL = "http://10.0.2.2:5000/api";
 
@@ -18,9 +21,10 @@ export const sClientIDAndroid =
   '1071046831303-1naot2q7pull58cpifp3rosfn65bdrsc.apps.googleusercontent.com';
 export const sPayPalClientID =
   'Aa97-jCSZKlyGrIauDxygYtVHda-STWEetJRp7g1C5rxqCeeJqydrxG5mF0AF0DbIQPTMG1i8RLV1veq';
+export const sFontName = 'JosefinSans-Regular';
+export const sFontNameBold = 'JosefinSans-Bold';
 export const errorContainer = {
-  marginBottom:
-    Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
+  marginBottom: hp(1),
 };
 export const errorComponent = {
   textAlign: 'left',
@@ -31,9 +35,6 @@ export const errorComponent = {
   color: Colors.red,
   fontFamily: sFontName,
 };
-
-export const sFontName = 'JosefinSans-Regular';
-export const sFontNameBold = 'JosefinSans-Bold';
 
 export const oActivityIndicatorStyle = {
   position: 'absolute',
@@ -47,4 +48,9 @@ export const oActivityIndicatorStyle = {
   zIndex: 3,
   elevation: 3,
   opacity: 0.5,
+};
+
+export const oRequiredStyles = {
+  color: Colors.red,
+  fontSize: hp(2),
 };

@@ -72,11 +72,11 @@ export const CustomSidebarMenu = (props) => {
           dispatch(removeGoogleCreds);
           dispatch(removeGBDetails);
           dispatch(removeCurrentGBDetails);
-
           navigation.navigate('Login');
         });
       } catch (error) {
         console.error(error);
+        navigation.navigate('Login');
       }
     };
   };

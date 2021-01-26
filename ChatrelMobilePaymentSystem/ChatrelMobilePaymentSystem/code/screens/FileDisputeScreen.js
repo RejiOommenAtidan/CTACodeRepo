@@ -11,13 +11,12 @@ import {
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Platform} from 'react-native';
-import {Input, Card} from 'react-native-elements';
+import {Input, Card, Icon} from 'react-native-elements';
 import DocumentPicker from 'react-native-document-picker';
 import {Button} from 'react-native-elements';
 import RNFS from 'react-native-fs';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -29,9 +28,11 @@ import {
   sFontName,
   sFontNameBold,
   oActivityIndicatorStyle,
+  oRequiredStyles,
 } from '../constants/CommonConfig';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const FileDisputeScreen = (props) => {
@@ -50,12 +51,12 @@ export const FileDisputeScreen = (props) => {
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   const [sName, setName] = React.useState(oGoogle.name);
 
-  const nNumberOfLines = 10;
+  const nNumberOfLines = 9;
 
   const handleDispute = () => {
     if (sDisputeSingleFile === '') {
       Alert.alert(
-        'Info',
+        'Attention required',
         'Please select a file',
         [
           {
@@ -132,12 +133,12 @@ export const FileDisputeScreen = (props) => {
       //Handling any exception (If any)
       if (DocumentPicker.isCancel(err)) {
         //If user canceled the document selection & set all to start state
-        //alert('File Not Selected for Uploading');
+        console.info('File Not Selected for Uploading');
         setsDisputeSingleFile('');
         setsFileName(null);
         setsFileType('');
       } else {
-        alert('Unknown Error: ' + JSON.stringify(err));
+        console.info('Unknown Error: ' + JSON.stringify(err));
       }
     }
   };
@@ -227,28 +228,30 @@ export const FileDisputeScreen = (props) => {
         )}
       </View> */}
         <Card
-          containerStyle={{
-            width: wp(92.5),
-            backgroundColor: Colors.white,
-
-            //Border Stuff
-            borderRadius: 15,
-            // borderColor: Colors.black,
-            // borderStyle: 'solid',
-            // borderWidth: 0.25,
-
-            //For iOS
-            shadowRadius: 15,
-            shadowColor: Colors.lightBlueChatrelWebsite,
-            shadowOffset: {width: 5, height: 5},
-            shadowOpacity: 1,
-
-            //For Android
-            elevation: 15,
-            overflow: 'visible',
-          }}>
-          <View style={styles.enterMessageContainer}>
-            <Text style={styles.enterMessageComponent}>ENTER DESCRIPTION</Text>
+          title={
+            <View style={styles.titleStyleView}>
+              <Icon
+                color={Colors.white}
+                iconStyle={styles.iconStyles}
+                iconProps={{}}
+                //underlayColor={Colors.websiteLightBlueColor}
+                backgroundColor={Colors.websiteLightBlueColor}
+                size={40}
+                type="font-awesome-5"
+                name="file-invoice-dollar"
+                containerStyle={styles.iconContainerStyles}
+              />
+            </View>
+          }
+          titleStyle={{}}
+          containerStyle={styles.cardContainerStyle}>
+          <View style={styles.enterMessageLabelContainer}>
+            <Text>
+              <Text style={styles.enterMessagelabelComponent}>
+                ENTER DESCRIPTION
+              </Text>
+              <Text style={oRequiredStyles}>*</Text>
+            </Text>
           </View>
           <View style={styles.messageContainer}>
             <Controller
@@ -256,18 +259,15 @@ export const FileDisputeScreen = (props) => {
               render={({onChange, onBlur, value}) => (
                 <Input
                   value={sDisputeMessage}
-                  // placeholder="Comment"
-                  //leftIcon={{type: 'font-awesome', name: 'comment'}}
                   onBlur={onBlur}
                   onChangeText={(value) => {
                     onChange(value);
                     setsDisputeMessage(value);
                   }}
-                  //label="Description"
                   placeholder="Description"
                   placeholderTextColor={Colors.grey}
                   autoFocus={false}
-                  autoCapitalize={'sentences'}
+                  autoCapitalize={'none'}
                   autoCompleteType={'off'}
                   autoCorrect={false}
                   clearButtonMode={'while-editing'}
@@ -281,12 +281,16 @@ export const FileDisputeScreen = (props) => {
                       ? 20 * nNumberOfLines
                       : null
                   }
-                  style={{
-                    textAlignVertical: 'top',
-                  }}
+                  style={styles.enterMessageInputComponent}
+                  inputContainerStyle={{}}
                   containerStyle={{
-                    margin: 0,
-                    padding: 0,
+                    paddingHorizontal: 0,
+                    // marginBottom:0
+                    // marginBotto:0,
+                    // paddingBottom:0
+                    // marginRight:0,
+                    // margin: 0,
+                    // padding: 0,
                   }}
                 />
               )}
@@ -296,12 +300,17 @@ export const FileDisputeScreen = (props) => {
             />
             {errors.name_sDisputeMessage && (
               <View style={errorContainer}>
-                <Text style={errorComponent}>Please enter message.</Text>
+                <Text style={errorComponent}>Please enter a description</Text>
               </View>
             )}
           </View>
           <View style={styles.attachImageContainer}>
-            <Text style={styles.attachImageComponent}>ATTACH IMAGE</Text>
+            <Text>
+              <Text style={styles.attachImageLabelComponent}>
+                ATTACH DOCUMENT
+              </Text>
+              <Text style={oRequiredStyles}>*</Text>
+            </Text>
           </View>
           <View style={styles.fileUploadContainer}>
             <Button
@@ -311,16 +320,18 @@ export const FileDisputeScreen = (props) => {
                 name: 'paperclip',
                 color: Colors.blue,
               }}
-              title="UPLOAD IMAGE"
+              title="UPLOAD DOCUMENT"
               type="outline"
               titleStyle={{
                 color: Colors.blue,
                 fontFamily: sFontName,
+                fontStyle: 'normal',
+                fontWeight: 'normal',
               }}
               buttonStyle={{
                 borderRadius: 10,
                 borderWidth: 1,
-                marginVertical: hp(2),
+                marginVertical: hp(1),
               }}
               onPress={selectOneFile}
             />
@@ -346,7 +357,7 @@ export const FileDisputeScreen = (props) => {
               //   name: 'arrow-right',
               //   color: Colors.white,
               // }}
-              title="SUBMIT DISPUTE"
+              title="SUBMIT FILE DISPUTE"
               type="outline"
               onPress={handleSubmit(handleDispute)}
               titleStyle={{
@@ -358,9 +369,10 @@ export const FileDisputeScreen = (props) => {
               }}
               buttonStyle={{
                 backgroundColor: Colors.buttonYellow,
-                borderRadius: 20,
+                borderRadius: 15,
                 borderWidth: 1,
                 borderColor: Colors.buttonYellow,
+                marginBottom: hp(0.5),
               }}
             />
           </View>
@@ -434,37 +446,39 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     fontFamily: sFontName,
   },
-  enterMessageContainer: {
+  enterMessageLabelContainer: {
     // width: wp(22),
     // height: hp(2),
     marginBottom: hp(2),
   },
-  enterMessageComponent: {
+  enterMessagelabelComponent: {
     // width: '100%',
     // minHeight: hp(5),
     // height: 'auto',
     // textAlignVertical: 'top',
     // height: '100%',
     textAlign: 'auto',
-    fontSize: wp(3),
+    fontSize: wp(3.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
     fontFamily: sFontName,
   },
-  messageContainer: {},
+  messageContainer: {
+    // marginBottom:0
+  },
   subjectContainer: {},
   attachImageContainer: {
     // width: wp(22),
     // height: hp(2),
     marginTop: hp(1),
-    marginBottom: hp(2),
+    marginBottom: hp(1),
   },
-  attachImageComponent: {
+  attachImageLabelComponent: {
     // width: '100%',
     // height: '100%',
     textAlign: 'left',
-    fontSize: wp(3),
+    fontSize: wp(3.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackText,
@@ -473,15 +487,14 @@ const styles = StyleSheet.create({
   selectedFileContainer: {
     // width: wp(80),
     // height: hp(3.75),
-    marginBottom: hp(2),
+    marginBottom: hp(1),
   },
   selectedFileComponent: {
     // width: '100%',
     // height: '100%',
     textAlign: 'left',
-    fontSize: wp(3),
+    fontSize: wp(3.25),
     fontStyle: 'normal',
-
     color: Colors.blackText,
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
@@ -502,11 +515,66 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   fileUploadContainer: {
-    // width: wp(45),
-    // height: hp(7.5),
     marginBottom: hp(2),
   },
   submitDisputeContainer: {
     marginTop: hp(2),
+  },
+
+  cardContainerStyle: {
+    width: wp(92.5),
+    backgroundColor: Colors.white,
+    marginTop: hp(5),
+    //Border Stuff
+    borderRadius: 15,
+    // borderColor: Colors.black,
+    // borderStyle: 'solid',
+    // borderWidth: 0.25,
+
+    //For iOS
+    shadowRadius: 15,
+    shadowColor: Colors.lightBlueChatrelWebsite,
+    shadowOffset: {width: 5, height: 5},
+    shadowOpacity: 1,
+
+    //For Android
+    elevation: 15,
+    overflow: 'visible',
+  },
+  enterMessageInputComponent: {
+    textAlignVertical: 'top',
+    fontSize: wp(5),
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: Colors.blackText,
+    fontFamily: sFontName,
+  },
+  titleStyleView: {
+    marginBottom: hp(5.5),
+    shadowRadius: 15,
+    shadowColor: Colors.lightBlueChatrelWebsite,
+    shadowOffset: {width: 5, height: 5},
+    shadowOpacity: 1,
+  },
+  iconStyles: {
+    backgroundColor: Colors.websiteLightBlueColor,
+    margin: hp(2),
+  },
+  iconContainerStyles: {
+    // backgroundColor:Colors.white,
+    alignSelf: 'center',
+    position: 'absolute',
+    top: -55,
+    //Border Stuff
+    borderRadius: 10,
+    // borderColor: Colors.black,
+    // borderStyle: 'solid',
+    // borderWidth: 0.25,
+
+    //For iOS
+
+    //For Android
+    elevation: 15,
+    // overflow: 'visible',
   },
 });
