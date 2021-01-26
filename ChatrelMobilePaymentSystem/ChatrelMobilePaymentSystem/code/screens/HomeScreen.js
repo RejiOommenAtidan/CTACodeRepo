@@ -209,10 +209,10 @@ const HomeScreen = (props) => {
             style={oActivityIndicatorStyle}
           />
         )}
-        <View style={styles.headerContainer}>
+        {/*<View style={styles.headerContainer}>
           <Text style={styles.headerComponent}>Quick Actions</Text>
-        </View>
-        <View style={styles.cardContainer}>
+        </View>*/}
+        {/*<View style={styles.cardContainer}>
           {aCard.map((card, index) => {
             return (
               <View key={index} style={styles.singleCardContainer}>
@@ -275,18 +275,17 @@ const HomeScreen = (props) => {
                         fontFamily: sFontName,
                       }}>
                       {card.sLabel}
-                    </Card.Title>*/}
-                    {/*<Card.Divider />*/}
-                    {/*<Card.Image source={card.sImagePath} />*/}
-                    {/*<Text>{card.sLabel}</Text>*/}
+                    </Card.Title>
+                    <Card.Divider />
+                    <Card.Image source={card.sImagePath} />
+                    <Text>{card.sLabel}</Text>
                   </Card>
                 </TouchableOpacity>
               </View>
             );
           })}
-        </View>
-        {/**/}
-        {nChatrelTotalAmount !== 0 && !bLoader && (
+        </View>*/}
+        {/*{nChatrelTotalAmount !== 0 && !bLoader && (
           <View style={styles.pendingAmountContainer}>
             <Card containerStyle={styles.pendingAmountComponent}>
               <Card.Image
@@ -320,16 +319,16 @@ const HomeScreen = (props) => {
                   props.navigation.navigate('SelfChatrel');
                 }}
               />
-            </Card>
-            {/* <Tile
+              </Card>
+            <Tile
   imageSrc={require('../assets/CTALogoDonation.png')}
   title={"Pending Amount"}
 titleStyle={styles.pendingAmountTextComponent}
   featured
   caption="Some Caption Text"
-              /> */}
+              /> 
           </View>
-        )}
+        )}*/}
         {/*New Job Contribution*/}
         {nChatrelTotalAmount === 0 && !bLoader && (
           <View style={styles.newJobContribContainer}>
@@ -346,12 +345,14 @@ titleStyle={styles.pendingAmountTextComponent}
                 </Text>
               </View>
               <Button
-                title="UPDATE EMPLOYEMENT STATUS"
+                title="UPDATE EMPLOYMENT STATUS"
                 titleStyle={{
                   color: Colors.black,
                   fontFamily: sFontName,
                   fontStyle: 'normal',
-                  fontWeight: 'normal',
+                  fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                  fontFamily:
+                    Platform.OS === 'android' ? sFontNameBold : sFontName,
                 }}
                 buttonStyle={{
                   backgroundColor: Colors.buttonYellow,
@@ -481,7 +482,7 @@ const styles = StyleSheet.create({
     //height: hp(33),
   },
   jobContribStatusTextComponent: {
-    fontSize: wp(3),
+    fontSize: wp(4),
     fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: 'normal',

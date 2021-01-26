@@ -126,7 +126,7 @@ export const ChatrelHistoryScreen = (props) => {
         {paymentHistory.length === 0 && !bLoader && (
           <View style={styles.zeroRecordContainer}>
             <Text style={styles.zeroRecordComponent}>
-              NO CHATREL PAYMENTS DONE SO FAR, Please pay your outstanding
+              No Chatrel Payments Done So Far, Please pay your outstanding
               Chatrel Amount
             </Text>
           </View>

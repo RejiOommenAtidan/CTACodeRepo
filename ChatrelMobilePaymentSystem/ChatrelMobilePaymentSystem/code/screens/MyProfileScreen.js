@@ -11,7 +11,6 @@ import HeaderButton from '../components/HeaderButton';
 import {Dimensions} from 'react-native';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../../code/constants/Colors';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -21,17 +20,18 @@ import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import CTALogo from '../../code/assets/CTALogo.png';
 import {sFontName, sFontNameBold} from '../constants/CommonConfig';
 import {Avatar, Badge, Icon, withBadge, Card} from 'react-native-elements';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import {BoxShadow, BorderShadow} from 'react-native-shadow';
 
 export const MyProfileScreen = (props) => {
-  const oUserHardcodedMyProfile = {
-    sGBID: '7654321',
-    sName: '12345678901234567890123456789',
-    nAge: 22,
-    dtDOB: '01-01-2001',
-    sEmailAddress: 'a.b@gmail.com',
-    sAuthorityRegion: 'Thimpu',
-  };
+  // const oUserHardcodedMyProfile = {
+  //   sGBID: '7654321',
+  //   sName: '12345678901234567890123456789',
+  //   nAge: 22,
+  //   dtDOB: '01-01-2001',
+  //   sEmailAddress: 'a.b@gmail.com',
+  //   sAuthorityRegion: 'Thimpu',
+  // };
 
   const isPermitted = async () => {
     if (Platform.OS === 'android') {
@@ -668,7 +668,7 @@ export const MyProfileScreen = (props) => {
 
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
 
-  const nBadgeSize = 25;
+  const nBadgeSize = 12.5;
 
   // const shadowOpt = {
   //   width:wp(90),
@@ -762,135 +762,85 @@ export const MyProfileScreen = (props) => {
               )}*/}
 
       <Card
-        containerStyle={{
-          width: wp(92.5),
-          backgroundColor: Colors.white,
+        containerStyle={styles.cardContainerStyle}
+        title={
+          <View style={styles.titleViewStyle}>
+            <Avatar
+              // overlayContainerStyle={{
+              //   padding:0,
+              //   margin:0,
+              // }}
 
-          //Border Stuff
-          borderRadius: 15,
-          // borderColor: Colors.black,
-          // borderStyle: 'solid',
-          // borderWidth: 0.25,
+              //   icon={()=>{
+              //     return(           <Badge
+              //     status="success"
+              //     containerStyle={{position: 'absolute', top: 0, right: 0}}
+              //   />)
+              //   }}
 
-          //For iOS
-          shadowRadius: 25,
-          shadowColor: Colors.lightBlueChatrelWebsite,
-          shadowOffset: {width: 5, height: 5},
-          shadowOpacity: 1,
+              //icon={{name: 'user', type: 'font-awesome'}}
 
-          //For Android
-          elevation: 25,
-          overflow: 'visible',
-        }}>
-        <View>
-          <Avatar
-            // overlayContainerStyle={{
-            //   padding:0,
-            //   margin:0,
-            // }}
-
-            //   icon={()=>{
-            //     return(           <Badge
-            //     status="success"
-            //     containerStyle={{position: 'absolute', top: 0, right: 0}}
-            //   />)
-            //   }}
-
-            //icon={{name: 'user', type: 'font-awesome'}}
-
-            rounded
-            size="xlarge"
-            containerStyle={{
-              alignSelf: 'center',
-              marginTop: hp(1),
-              marginBottom: hp(5),
-            }}
-            source={{
-              uri: oGoogle.photo,
-            }}
-          />
-          <Badge
-            badgeStyle={{
-              width: nBadgeSize,
-              height: nBadgeSize,
-              borderRadius: nBadgeSize / 2,
-            }}
-            status="success"
-            containerStyle={{
-              position: 'absolute',
-              top: 130,
-              right: 120,
-            }}
-          />
-        </View>
-        {/* <Card.Divider
-        style={{
-          height: 1,
-          backgroundColor: Colors.buttonYellow,
-        }}
-      /> */}
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginBottom: hp(1),
-          }}>
-          <View style={styles.labelContainer}>
-            <Badge
-              containerStyle={styles.badgeContainerStyle}
-              badgeStyle={styles.badgeStyle}
-              value={<Text style={styles.labelComponent}>FULL NAME</Text>}
+              rounded
+              size="large"
+              containerStyle={styles.avatarContainerStyle}
+              source={{
+                uri: oGoogle.photo,
+              }}
             />
-            <View style={styles.valueContainer}>
-              <Text style={styles.valueComponent}>
-                {oGoogle.givenName + ' ' + oGoogle.familyName}
-              </Text>
-            </View>
+            <Badge
+              badgeStyle={{
+                width: nBadgeSize,
+                height: nBadgeSize,
+                borderRadius: nBadgeSize / 2,
+              }}
+              status="success"
+              containerStyle={styles.badgeContainerStyle}
+            />
+          </View>
+        }
+        titleStyle={{}}>
+        <Card.Divider style={styles.cardDividerStyle} />
+        <View style={styles.coverViewStyles}>
+          <View style={styles.labelContainer}>
+            <Text style={styles.labelComponent}>FULL NAME</Text>
+            <Text style={styles.valueComponent}>
+              {oGoogle.givenName + ' ' + oGoogle.familyName}
+            </Text>
           </View>
           <View style={styles.labelContainer}>
-            <Badge
-              containerStyle={styles.badgeContainerStyle}
-              badgeStyle={styles.badgeStyle}
-              value={<Text style={styles.labelComponent}>GREEN BOOK ID</Text>}
-            />
-            <View style={styles.valueContainer}>
-              <Text style={{...styles.valueComponent, textAlign: 'right'}}>
-                {oGBDetails.sGBID}
-              </Text>
-            </View>
+            <Text style={{...styles.labelComponent, textAlign: 'right'}}>
+              GREEN BOOK ID
+            </Text>
+            <Text style={{...styles.valueComponent, textAlign: 'right'}}>
+              {oGBDetails.sGBID}
+            </Text>
           </View>
         </View>
 
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginBottom: hp(1),
-          }}>
+        <View style={styles.coverViewStyles}>
           <View style={styles.labelContainer}>
-            <Badge
-              containerStyle={styles.badgeContainerStyle}
-              badgeStyle={styles.badgeStyle}
-              value={<Text style={styles.labelComponent}>DATE OF BIRTH</Text>}
-            />
-            <View style={styles.valueContainer}>
-              <Text style={styles.valueComponent}>{oGBDetails.dtDOB}</Text>
-            </View>
+            <Text style={styles.labelComponent}>DATE OF BIRTH</Text>
+            <Text style={{...styles.valueComponent, marginBottom: 0}}>
+              {oGBDetails.dtDOB}
+            </Text>
           </View>
           <View style={styles.labelContainer}>
-            <Badge
-              containerStyle={styles.badgeContainerStyle}
-              badgeStyle={{...styles.badgeStyle, alignSelf: 'flex-end'}}
-              value={<Text style={styles.labelComponent}>EMAIL ADDRESS</Text>}
-            />
-            <View style={styles.valueContainer}>
-              <Text style={{...styles.valueComponent, textAlign: 'right'}}>
-                {oGoogle.email}
-                {/* {oUserHardcodedMyProfile.sName} */}
-              </Text>
-            </View>
+            <Text
+              style={{
+                ...styles.labelComponent,
+                textAlign: 'right',
+              }}>
+              EMAIL ADDRESS
+            </Text>
+            <Text
+              style={{
+                ...styles.valueComponent,
+                textAlign: 'right',
+                marginBottom: 0,
+              }}>
+              {oGoogle.email}
+              {/* {oUserHardcodedMyProfile.sName} */}
+            </Text>
           </View>
         </View>
         {/*<View style={styles.ageLabelContainer}>
@@ -961,12 +911,12 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blue,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
   },
   badgeContainerStyle: {
-    marginBottom: hp(1.25),
+    position: 'absolute',
+    top: 67.5,
+    right: 145,
   },
   badgeStyle: {
     alignSelf: 'flex-start',
@@ -976,20 +926,16 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.websiteLightBlueColor,
   },
   labelContainer: {
-    // width: wp(75),
-    // height: hp(2),
+    marginBottom: hp(1.25),
   },
   labelComponent: {
-    alignSelf: 'center',
-    textAlign: 'center',
     fontSize: wp(3.25),
+    textAlign: 'left',
     fontStyle: 'normal',
-    color: Colors.white,
-    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
-
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
+    fontWeight: 'normal',
+    color: Colors.labelColorLight,
+    fontFamily: sFontName,
+    marginBottom: hp(1),
   },
   valueContainer: {
     // width: wp(75),
@@ -1000,10 +946,8 @@ const styles = StyleSheet.create({
     // flexDirection:'row'
   },
   valueComponent: {
-    // width: '100%',
-    // height: '100%',
     textAlign: 'left',
-    fontSize: wp(4.25),
+    fontSize: wp(4.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -1012,8 +956,49 @@ const styles = StyleSheet.create({
     // flex:1
     // flexWrap: 'wrap',
     // flexShrink: 1,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
+  },
+
+  cardContainerStyle: {
+    width: wp(92.5),
+    backgroundColor: Colors.white,
+
+    //Border Stuff
+    borderRadius: 15,
+    // borderColor: Colors.black,
+    // borderStyle: 'solid',
+    // borderWidth: 0.25,
+
+    //For iOS
+    shadowRadius: 25,
+    shadowColor: Colors.lightBlueChatrelWebsite,
+    shadowOffset: {width: 5, height: 5},
+    shadowOpacity: 1,
+
+    //For Android
+    elevation: 25,
+    overflow: 'visible',
+  },
+
+  titleViewStyle: {
+    marginBottom: hp(2),
+  },
+
+  avatarContainerStyle: {
+    alignSelf: 'center',
+    marginTop: hp(1),
+  },
+
+  cardDividerStyle: {
+    height: 1,
+    backgroundColor: Colors.buttonYellow,
+    marginBottom: hp(3),
+  },
+
+  coverViewStyles: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: hp(1),
   },
 
   // nameLabelContainer: {},
