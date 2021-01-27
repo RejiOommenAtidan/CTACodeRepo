@@ -1184,6 +1184,12 @@ UPDATE `lstctaconfig` SET `sValue` = '25' WHERE (`Id` = '7');
 UPDATE `lstctaconfig` SET `sValue` = 'false' WHERE (`Id` = '8');
 UPDATE `lstctaconfig` SET `sValue` = 'reji.oommen@atidan.com' WHERE (`Id` = '9');
 
+UPDATE `tblgreenbook` SET `sPaidUntil` = '2015' WHERE sGBId='9675';
+Delete from `lnkgbchatrel` where sGBId='9675';
+Delete from `tblchatrelpayment` where sGBId='9675';
+
+
+
 INSERT INTO `tblchatrelbulkdata` (`Id`, `sBatchNumber`, `bValidate`, `SNo`, `GBID`, `Name`, `PaidByGBId`, `Currency`, `Chatrel`, `Meal`, `Salary`, `ChatrelFrom`, `ChatrelTo`, `FinancialYear`, `ArrearsPlusLateFees`, `ArrearsFrom`, `ArrearsTo`, `BusinessDonation`, `AdditionalDonation`, `TotalAmount`, `ReceiptNo`, `PaymentDate`, `Region`, `Country`, `PaymentMode`, `sStatus`, `dtEntered`, `nEnteredBy`, `dtUpdated`, `nUpdatedBy`) 
 Values
 ('1', 	'1234567', '0', '1', 	'US3850114', 'Kalsang Tsewang', 'IN3718041', 'USD', '36.00', '10.00', '50.00', '01/04/14', '31/03/15', '2014', '101.20', '01/04/12', '31/03/14', '0.00', '0.00', '197.20', '8278', '24/10/2014', 'Boston', 'United States of America', 'Offline', 'New', '12/01/21', '1', '12/01/21', '1'),

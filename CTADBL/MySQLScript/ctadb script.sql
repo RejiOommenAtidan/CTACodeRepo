@@ -1983,7 +1983,8 @@ BEGIN
 			on tblauditlog.sGBID = tblgreenbook.sGBID
 		Left Join lstfeature
 			on tblauditlog.nFeatureID = lstfeature.Id
-		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') = ''',dtRecordFrom ,'''');
+		where DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') >= ''',dtRecordFrom ,'''
+		AND DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') <= ''',dtRecordTo ,'''');
     -- select @SQLText;
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
@@ -2019,7 +2020,8 @@ BEGIN
 		where
 			tblauditlog.nFeatureId = 100 
 		AND
- DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') = ''',dtRecordFrom ,'''');
+ DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') >= ''',dtRecordFrom ,'''
+AND DATE_FORMAT(tblauditlog.dtEntered, ''%Y-%m-%d'') <= ''',dtRecordTo ,'''');
     -- select @SQLText;
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
@@ -2051,7 +2053,8 @@ BEGIN
 				tblgreenbook.nEnteredBy=tblUser.id
 			) 
 	WHERE 
-		DATE_FORMAT(tblgreenbook.dtEntered, ''%Y-%m-%d'') = ''',dtRecordFrom ,'''');
+		DATE_FORMAT(tblgreenbook.dtEntered, ''%Y-%m-%d'') >= ''',dtRecordFrom ,'''
+AND DATE_FORMAT(tblgreenbook.dtEntered, ''%Y-%m-%d'') <= ''',dtRecordTo ,'''');
     -- select @SQLText;
     PREPARE stmt FROM @SQLText;
     EXECUTE stmt;
@@ -2460,15 +2463,20 @@ SET SQL_SAFE_UPDATES=0;
 
         
         
-        IF ( (SELECT COUNT(*) FROM tblgreenbook WHERE sGBID=cast(SUBSTRING(GBID FROM 3)  as unsigned)) <= 0) THEN
+        IF ( (SELECT COUNT(*) FROM tblgreenbook WHERE CHAR_LENGTH(GBID) = 9 AND sGBID=cast(SUBSTRING(GBID FROM 3)  as unsigned)) <= 0) THEN
 		-- Checking GBID present in DB
 				UPDATE `tblchatrelbulkdata` 
-					SET `sRemarkText` = 'GBID is not present in DB' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+					SET `sRemarkText` = 'GBID is not present in DB or Invalid GBID ' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF ( (SELECT COUNT(*) FROM tblChatrelPayment WHERE schatrelReceiptnumber = ReceiptNo) > 0) THEN
 		-- Checking ReceiptNo is present in DB
 				UPDATE `tblchatrelbulkdata` 
 					SET `sRemarkText` = concat(ReceiptNo,', Receipt Number is present in DB') , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+		ELSEIF (`Name` is null or TRIM(`Name`) = '') THEN
+        -- Checking Name Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'Name cannot be blank' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;
 		ELSEIF (Currency is null or TRIM(Currency) = '') THEN
         -- Checking Currency Value as required
@@ -2545,7 +2553,12 @@ SET SQL_SAFE_UPDATES=0;
 				UPDATE `tblchatrelbulkdata` 
 					SET `sRemarkText` = 'Total Amount is not decimal' , `bValidate` = 0, `sStatus` = 'Validation Failed'
                 WHERE `tblchatrelbulkdata`.`id` = ID;	
-		ELSEIF (FinancialYear REGEXP '^-?[0-9]+$' = 0) THEN
+		ELSEIF (`FinancialYear` is null or TRIM(`FinancialYear`) = '') THEN
+        -- Checking FinancialYear Value as required
+				UPDATE `tblchatrelbulkdata` 
+					SET `sRemarkText` = 'FinancialYear cannot be blank' , `bValidate` = 0, `sStatus` = 'Validation Failed'
+                WHERE `tblchatrelbulkdata`.`id` = ID;
+        ELSEIF (FinancialYear REGEXP '^-?[0-9]+$' = 0) THEN
         -- Checking FinancialYear Value as required
 				UPDATE `tblchatrelbulkdata` 
 					SET `sRemarkText` = 'Financial Year cannot be NULL' , `bValidate` = 0, `sStatus` = 'Validation Failed'
@@ -2612,6 +2625,7 @@ SET SQL_SAFE_UPDATES=0;
       close cur1;
 END$$
 DELIMITER ;
+
 
 DROP procedure IF EXISTS  spInsertBulkUploadedDataByBatchNumber;
 DELIMITER $$
@@ -2899,6 +2913,11 @@ SET SQL_SAFE_UPDATES=0;
 				now(),
 				1
 			);
+            
+            -- updating sPaidUntil By sGBId in tblgreenbook
+            Update tblgreenbook 
+			set sPaidUntil = FinancialYear
+            where sGBId = cast(SUBSTRING(GBID FROM 3)  as unsigned);
 
 			IF	(cast(AdditionalDonation as decimal(11,2)) != 0 or cast(BusinessDonation as decimal(11,2)) != 0) THEN
 				INSERT INTO `lnkgbchatreldonation`
@@ -2947,7 +2966,6 @@ SET SQL_SAFE_UPDATES=0;
      SELECT rowsinserted;
 END$$
 DELIMITER ;
-
 
 
 
