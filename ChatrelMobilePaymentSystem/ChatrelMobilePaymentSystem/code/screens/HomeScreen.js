@@ -4,14 +4,12 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   BackHandler,
   Alert,
   Dimensions,
   ActivityIndicator,
-  Animated,
 } from 'react-native';
-import {Card, Button, Tile, Avatar} from 'react-native-elements';
+import {Card, Button, Avatar} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {useSelector, useDispatch} from 'react-redux';
@@ -117,6 +115,7 @@ const HomeScreen = (props) => {
       });
     } catch (error) {
       console.error(error);
+      navigation.navigate('Login');
     }
   };
 
@@ -131,7 +130,6 @@ const HomeScreen = (props) => {
           fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
             .then((response) => response.json())
             .then((data) => {
-              //onsole.log('currency', data.rates.USD);
               setDollarToRupees(data.rates.USD);
             });
           setnChatrelTotalAmount(
@@ -195,16 +193,16 @@ const HomeScreen = (props) => {
     <ScrollView
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}>
-      {bLoader && (
-        <ActivityIndicator
-          size={Platform.OS === 'ios' ? 0 : 'large'}
-          color={Colors.spinnerColor}
-          animating={true}
-          //hidesWhenStopped={true}
-          style={oActivityIndicatorStyle}
-        />
-      )}
       <View style={styles.mainContainer}>
+        {bLoader && (
+          <ActivityIndicator
+            size={Platform.OS === 'ios' ? 0 : 'large'}
+            color={Colors.spinnerColor}
+            animating={true}
+            //hidesWhenStopped={true}
+            style={oActivityIndicatorStyle}
+          />
+        )}
         {/* <Animated.FlatList
      onScroll={onScroll}
        contentContainerStyle={{ paddingTop: containerPaddingTop }}
@@ -333,147 +331,127 @@ titleStyle={styles.pendingAmountTextComponent}
         {/*Accordions*/}
         {/*New Job Contribution*/}
         {nChatrelTotalAmount === 0 && !bLoader && (
-          <View style={styles.newJobContribContainer}>
-            <Card containerStyle={styles.newJobContribComponent}>
-              <View style={styles.newJobContribTextContainer}>
-                <Text style={styles.newJobContribTextComponent}>
-                  Have you gotten a new job since your last contribution?
-                </Text>
+          <Card
+            title={
+              <View style={styles.titleStyleView}>
+                <Icon
+                  color={Colors.white}
+                  iconStyle={styles.iconStyles}
+                  iconProps={{}}
+                  //underlayColor={Colors.websiteLightBlueColor}
+                  backgroundColor={Colors.websiteLightBlueColor}
+                  size={40}
+                  type="font-awesome-5"
+                  name="briefcase"
+                  containerStyle={styles.iconContainerStyles}
+                />
               </View>
-              <View style={styles.jobContribStatusTextContainer}>
-                <Text style={styles.jobContribStatusTextComponent}>
-                  Change your status and contribute more towards the Tibetan
-                  Government.
-                </Text>
-              </View>
-              <Button
-                title="UPDATE EMPLOYMENT STATUS"
-                titleStyle={{
-                  color: Colors.white,
-                  fontFamily: sFontName,
-                  fontStyle: 'normal',
-                  fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                  fontFamily:
-                    Platform.OS === 'android' ? sFontNameBold : sFontName,
-                }}
-                buttonStyle={{
-                  backgroundColor: Colors.buttonYellow,
-                  borderRadius: 15,
-                }}
-                onPress={() => {
-                  setbLoader(true);
-                  props.navigation.navigate('SelfChatrel');
-                }}
-              />
-            </Card>
-          </View>
+            }
+            titleStyle={{}}
+            containerStyle={styles.newJobContribCardContainer}>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.boldTextComponent}>
+                Have you got a job now?
+              </Text>
+            </View>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.greyTextComponent}>
+                Change your status and contribute more towards the Tibetan
+                Government.
+              </Text>
+            </View>
+            <Button
+              title="UPDATE EMPLOYMENT STATUS"
+              titleStyle={{
+                color: Colors.white,
+                textAlign: 'center',
+                fontStyle: 'normal',
+                fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                fontFamily:
+                  Platform.OS === 'android' ? sFontNameBold : sFontName,
+              }}
+              buttonStyle={{
+                backgroundColor: Colors.websiteLightBlueColor,
+                borderRadius: 15,
+              }}
+              onPress={() => {
+                setbLoader(true);
+                props.navigation.navigate('SelfChatrel');
+              }}
+            />
+          </Card>
         )}
         {/*Chatrel President*/}
-        <View>
-          <Card
-            containerStyle={styles.presidentCardContainerStyle}
-            title={
-              <Avatar
-                // overlayContainerStyle={{
-                //   padding:0,
-                //   margin:0,
-                // }}
+        <Card
+          containerStyle={{
+            ...styles.presidentCardContainerStyle,
+            marginBottom: hp(1),
+          }}
+          title={
+            <Avatar
+              // overlayContainerStyle={{
+              //   padding:0,
+              //   margin:0,
+              // }}
 
-                //   icon={()=>{
-                //     return(           <Badge
-                //     status="success"
-                //     containerStyle={{position: 'absolute', top: 0, right: 0}}
-                //   />)
-                //   }}
+              //   icon={()=>{
+              //     return(           <Badge
+              //     status="success"
+              //     containerStyle={{position: 'absolute', top: 0, right: 0}}
+              //   />)
+              //   }}
 
-                //icon={{name: 'user', type: 'font-awesome'}}
+              //icon={{name: 'user', type: 'font-awesome'}}
 
-                rounded
-                size="large"
-                containerStyle={styles.avatarContainerStyle}
-                source={require('../assets/TPresident.jpeg')}
-              />
-            }
-            titleStyle={{}}>
-            {/* <Card.Divider style={styles.presidentCardDividerStyle} /> */}
-            <View
-              style={{
-                marginTop: hp(3.75),
-              }}>
-              <Text
-                style={{
-                  fontFamily: sFontName,
-                  fontSize: wp(5),
-                  fontStyle: 'normal',
-                  fontWeight: 'normal',
-                  color: Colors.grey,
-                  textAlign: 'center',
-                }}>
+              rounded
+              size="large"
+              containerStyle={styles.avatarContainerStyle}
+              source={require('../assets/TPresident.jpeg')}
+            />
+          }
+          titleStyle={{}}>
+          {/* <Card.Divider style={styles.presidentCardDividerStyle} /> */}
+          <View style={{marginTop: hp(5)}}>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.greyTextComponent}>
                 This is a huge step for all the Tibetan people that the Chatrel
                 collection services are now Online. Power at your fingertips.
               </Text>
-              <Text
-                style={{
-                  fontSize: wp(5),
-                  fontStyle: 'normal',
-                  color: Colors.blackText,
-                  fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                  fontFamily:
-                    Platform.OS === 'android' ? sFontNameBold : sFontName,
-                  textAlign: 'center',
-                }}>
-                FirstName LastName
-              </Text>
-              <Text
-                style={{
-                  fontFamily: sFontName,
-                  fontSize: wp(5),
-                  fontStyle: 'normal',
-                  fontWeight: 'normal',
-                  color: Colors.grey,
-                  textAlign: 'center',
-                }}>
-                President
-              </Text>
             </View>
-          </Card>
-        </View>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.boldTextComponent}>FirstName LastName</Text>
+            </View>
+            <View style={{...styles.viewMarginComponent, marginBottom: 0}}>
+              <Text style={styles.greyTextComponent}>President</Text>
+            </View>
+          </View>
+        </Card>
         {/*Goals of Chatrel*/}
-        <View>
-          <Card containerStyle={styles.presidentCardContainerStyle}>
-            {/* <Card.Divider style={styles.cardDividerStyle} /> */}
-            <View>
-              <Text
-                style={{
-                  fontSize: wp(5),
-                  fontStyle: 'normal',
-                  color: Colors.blackText,
-                  textAlign: 'center',
-
-                  fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                  fontFamily:
-                    Platform.OS === 'android' ? sFontNameBold : sFontName,
-                }}>
+        <Card
+          containerStyle={{
+            ...styles.presidentCardContainerStyle,
+            marginBottom: hp(1),
+          }}>
+          {/* <Card.Divider style={styles.cardDividerStyle} /> */}
+          <View>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.boldTextComponent}>
                 Goals and Needs of Chatrel
               </Text>
-              <Text
-                style={{
-                  fontSize: wp(5),
-                  fontStyle: 'normal',
-                  color: Colors.blackText,
-                  fontWeight: 'normal',
-                  fontFamily: sFontName,
-
-                  textAlign: 'center',
-                }}>
+            </View>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.greyTextComponent}>
                 Chatrel symbolizes the Tibetan people’s recognition of CTA as
                 their legitimate representative. Chatrel payment exhibits
                 Tibetan people’s support for CTA’s financial needs until Tibet
                 regains freedom.
               </Text>
+            </View>
+            <View style={{...styles.viewMarginComponent, marginBottom: 0}}>
               <Button
                 title="READ FAQs"
                 titleStyle={{
+                  textAlign: 'center',
                   color: Colors.white,
                   fontFamily: sFontName,
                   fontStyle: 'normal',
@@ -491,8 +469,8 @@ titleStyle={styles.pendingAmountTextComponent}
                 READ FAQs
               </Button>
             </View>
-          </Card>
-        </View>
+          </View>
+        </Card>
       </View>
     </ScrollView>
   );
@@ -581,10 +559,11 @@ const styles = StyleSheet.create({
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
     // letterSpacing: Resolution.nLetterSpacing,
   },
-  newJobContribComponent: {
+  newJobContribCardContainer: {
     width: wp(92.5),
     backgroundColor: Colors.white,
-
+    marginTop: hp(5),
+    marginBottom: hp(5),
     //Border Stuff
     borderRadius: 15,
     // borderColor: Colors.black,
@@ -592,45 +571,38 @@ const styles = StyleSheet.create({
     // borderWidth: 0.25,
 
     //For iOS
-    shadowRadius: 25,
+    shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
     shadowOffset: {width: 5, height: 5},
     shadowOpacity: 1,
 
     //For Android
-    elevation: 25,
+    elevation: 15,
     overflow: 'visible',
-    marginBottom: hp(5),
   },
   newJobContribTextContainer: {
-    //width: wp(70),
-    //height: hp(33),
+    marginBottom: hp(2),
   },
   newJobContribTextComponent: {
     fontSize: wp(6),
-    fontFamily: sFontName,
     fontStyle: 'normal',
-    fontWeight: 'normal',
-    textAlign: 'left',
+    textAlign: 'center',
     color: Colors.blackText,
-    marginBottom: hp(2),
-    lineHeight: hp(4.5),
-    //letterSpacing: Resolution.nLetterSpacing
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
-  jobContribStatusTextContainer: {
+  viewMarginComponent: {
     //width: wp(70),
     //height: hp(33),
+    marginBottom: hp(2),
   },
   jobContribStatusTextComponent: {
-    fontSize: wp(4),
+    fontSize: wp(5),
     fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: 'normal',
-    textAlign: 'left',
-    color: Colors.blackText,
-    marginBottom: hp(2),
-    lineHeight: hp(3),
-    //letterSpacing: Resolution.nLetterSpacing
+    textAlign: 'center',
+    color: Colors.grey,
   },
   presidentCardContainerStyle: {
     width: wp(92.5),
@@ -691,6 +663,52 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.buttonYellow,
     marginBottom: hp(3),
     marginTop: hp(5),
+  },
+  titleStyleView: {
+    marginBottom: hp(5.5),
+    shadowRadius: 15,
+    shadowColor: Colors.lightBlueChatrelWebsite,
+    shadowOffset: {width: 5, height: 5},
+    shadowOpacity: 1,
+  },
+  iconStyles: {
+    backgroundColor: Colors.websiteLightBlueColor,
+    margin: hp(2),
+  },
+  iconContainerStyles: {
+    // backgroundColor:Colors.white,
+    alignSelf: 'center',
+    position: 'absolute',
+    top: -55,
+    // left:20,
+    //Border Stuff
+    borderRadius: 10,
+    // borderColor: Colors.black,
+    // borderStyle: 'solid',
+    // borderWidth: 0.25,
+
+    //For iOS
+
+    //For Android
+    elevation: 15,
+    // overflow: 'visible',
+  },
+
+  boldTextComponent: {
+    fontSize: wp(6),
+    fontStyle: 'normal',
+    textAlign: 'center',
+    color: Colors.blackText,
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+  },
+  greyTextComponent: {
+    fontSize: wp(5),
+    fontFamily: sFontName,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    textAlign: 'center',
+    color: Colors.grey,
   },
 });
 
