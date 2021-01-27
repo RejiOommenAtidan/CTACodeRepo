@@ -15,7 +15,7 @@ import DatePicker from 'react-native-datepicker';
 import {sDateFormatDatePicker} from '../constants/CommonConfig';
 import Moment from 'moment';
 import {useSelector, useDispatch} from 'react-redux';
-import {storeGBDetails} from '../store/actions/GBDetailsAction';
+import {storeGBDetails, storeJWTToken} from '../store/actions/GBDetailsAction';
 import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
 import Colors from '../constants/Colors';
 import Resolution from '../constants/ResolutionBreakpoint';
@@ -140,47 +140,53 @@ export const GBDetailScreen = (props) => {
     let oAPI = {
       sGBID: sGBID,
       dtDOB: dtDOB,
-      sFirstName: oGoogle.givenName,
-      sLastName: oGoogle.familyName,
-      sEmail: oGoogle.email,
+      // sFirstName: oGoogle.user?.givenName,
+      // sLastName: oGoogle.user?.familyName,
+      sEmail: oGoogle.user?.email,
+      code: oGoogle.idToken,
     };
 
     console.log(oGBDetails);
     console.log(oAPI);
 
     axios
-      .post('ChatrelPayment/AuthenticateGBID', oAPI)
+      .post('User/AuthenticateGBID', oAPI)
       .then((response) => {
-        if (response.data == 'Verified') {
-          dispatch(storeGBDetails(oGBDetails));
-          dispatch(storeCurrentGBDetails(oGBDetails));
-          try {
-            const jsonGBInfoValue = JSON.stringify(oGBDetails);
-            AsyncStorage.setItem('oGBInfo', jsonGBInfoValue);
-          } catch (e) {
-            console.info(e);
+        if (response.status === 200) {
+          if (response.data.result == 'Verified') {
+            axios.defaults.headers.common[
+              'Authorization'
+            ] = `Bearer ${response.data.sJwtToken}`;
+            dispatch(storeJWTToken(response.data.sJwtToken));
+            dispatch(storeGBDetails(oGBDetails));
+            dispatch(storeCurrentGBDetails(oGBDetails));
+            try {
+              const jsonGBInfoValue = JSON.stringify(oGBDetails);
+              AsyncStorage.setItem('oGBInfo', jsonGBInfoValue);
+            } catch (e) {
+              console.info(e);
+            }
+            setbLoader(false);
+            props.navigation.navigate('Home');
+          } else {
+            setbLoader(false);
+            Alert.alert(
+              'Verification failed!',
+              "The entered details didn't match our database. Please try again.",
+              [
+                {
+                  text: 'Ok',
+                  onPress: () => true,
+                  style: 'cancel',
+                },
+                {
+                  text: 'Logout',
+                  onPress: () => removeCompleteDetailsAndNavigateToLogin(),
+                },
+              ],
+              {cancelable: false},
+            );
           }
-          setbLoader(false);
-          props.navigation.navigate('Home');
-        }
-        if (response.data == 'Failed') {
-          setbLoader(false);
-          Alert.alert(
-            'Verification failed!',
-            "The entered details didn't match our database. Please try again.",
-            [
-              {
-                text: 'Ok',
-                onPress: () => true,
-                style: 'cancel',
-              },
-              {
-                text: 'Logout',
-                onPress: () => removeCompleteDetailsAndNavigateToLogin(),
-              },
-            ],
-            {cancelable: false},
-          );
         }
       })
       .catch((error) => {
@@ -213,6 +219,7 @@ export const GBDetailScreen = (props) => {
           ],
           {cancelable: false},
         );
+        console.info(error.message);
       });
   };
 
@@ -413,7 +420,9 @@ export const GBDetailScreen = (props) => {
         </View>
         {/*</form>*/}
         <View>
-          <Text style={styles.infoComponent}>Signed in as {oGoogle.email}</Text>
+          <Text style={styles.infoComponent}>
+            Signed in as {oGoogle?.user.email}
+          </Text>
           <Text
             style={styles.backToLoginComponent}
             onPress={() => removeCompleteDetailsAndNavigateToLogin()}>
