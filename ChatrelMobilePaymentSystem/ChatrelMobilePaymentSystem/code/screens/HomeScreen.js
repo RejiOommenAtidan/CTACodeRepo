@@ -379,7 +379,7 @@ titleStyle={styles.pendingAmountTextComponent}
           </View>
         )}*/}
         {/*Accordions*/}
-        <View style={{...styles.viewMarginComponent,marginTop:hp(2)}}>
+        <View style={{...styles.viewMarginComponent, marginTop: hp(2)}}>
           <Accordion
             align={'center'}
             containerStyle={{width: '100%'}}
@@ -844,6 +844,7 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     textAlign: 'center',
     color: Colors.labelColorLight,
+    lineHeight: hp(2),
   },
   title: {
     textAlign: 'center',
