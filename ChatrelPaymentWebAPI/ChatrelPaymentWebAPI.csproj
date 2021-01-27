@@ -5,6 +5,14 @@
     <UserSecretsId>c51a83ce-a8cf-4a68-8656-c4d2a2c78237</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="libwkhtmltox.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="libwkhtmltox.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="DinkToPdf" Version="1.0.8" />
     <PackageReference Include="Google.Apis.Auth" Version="1.49.0" />
     <PackageReference Include="MailKit" Version="2.9.0" />
