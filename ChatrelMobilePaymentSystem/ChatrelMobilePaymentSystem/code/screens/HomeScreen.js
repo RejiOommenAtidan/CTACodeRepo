@@ -8,6 +8,8 @@ import {
   Alert,
   Dimensions,
   ActivityIndicator,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
 import {Card, Button, Avatar} from 'react-native-elements';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -34,6 +36,7 @@ import {removeGBDetails} from '../store/actions/GBDetailsAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
 import {Icon} from 'react-native-elements';
+import Accordion from 'react-native-collapsible/Accordion';
 import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -64,9 +67,13 @@ const HomeScreen = (props) => {
   const [dollarToRupees, setDollarToRupees] = React.useState(0.0);
   const [nChatrelTotalAmount, setnChatrelTotalAmount] = useState(0);
   const [bLoader, setbLoader] = useState(true);
+  const [activeSections, setactiveSections] = useState([]);
   const isFocused = useIsFocused();
   const aCard = [
     {
+      id: 1,
+      sHeader: 'Self Chatrel',
+      sContent: 'Make Chatrel Payments for yourself online',
       sLabel: `Self\nChatrel`,
       sImagePath: require('../assets/CTALogo.png'),
       sRouteName: 'SelfChatrel',
@@ -76,15 +83,9 @@ const HomeScreen = (props) => {
       sIconColor: Colors.greenBG,
     },
     {
-      sLabel: `Friend\nChatrel`,
-      sImagePath: require('../assets/CTALogo.png'),
-      sRouteName: 'FriendChatrelIntermediate',
-      sBGColor: Colors.blueCardColor,
-      sTextColor: Colors.primary,
-      sIconName: 'users',
-      sIconColor: Colors.blue,
-    },
-    {
+      id: 2,
+      sHeader: 'Family Chatrel',
+      sContent: 'Pay Instantly for all of your family members',
       sLabel: `Family\nChatrel`,
       sImagePath: require('../assets/CTALogo.png'),
       sRouteName: 'FamilyChatrelIntermediate',
@@ -92,6 +93,18 @@ const HomeScreen = (props) => {
       sTextColor: Colors.buttonYellow,
       sIconName: 'heart',
       sIconColor: Colors.buttonYellow,
+    },
+    {
+      id: 3,
+      sHeader: 'Friend Chatrel',
+      sContent: 'Get payments of your friends done too',
+      sLabel: `Friend\nChatrel`,
+      sImagePath: require('../assets/CTALogo.png'),
+      sRouteName: 'FriendChatrelIntermediate',
+      sBGColor: Colors.blueCardColor,
+      sTextColor: Colors.primary,
+      sIconName: 'users',
+      sIconColor: Colors.blue,
     },
   ];
 
@@ -160,6 +173,43 @@ const HomeScreen = (props) => {
           {cancelable: false},
         );
       });
+  };
+
+  // const renderSectionTitle = (section) => {
+  //   return (
+  //     <View style={styles.content}>
+  //       <Text>{section.content}</Text>
+  //     </View>
+  //   );
+  // };
+
+  const renderHeader = (section, index, expanded) => {
+    return (
+      <View style={styles.accordionListHeader}>
+        <Text style={styles.accodrionHeaderText}>{section.sHeader}</Text>
+        {expanded ? (
+          <Icon
+            style={{fontSize: 18}}
+            name="remove-circle"
+            color={Colors.white}
+          />
+        ) : (
+          <Icon style={{fontSize: 18}} name="add-circle" color={Colors.white} />
+        )}
+      </View>
+    );
+  };
+
+  const renderContent = (section) => {
+    return (
+      <View style={styles.accordionListContent}>
+        <Text style={styles.accodrionContextText}>{section.sContent}</Text>
+      </View>
+    );
+  };
+
+  const updateSections = (activeSections) => {
+    setactiveSections(activeSections);
   };
 
   useEffect(() => {
@@ -329,6 +379,91 @@ titleStyle={styles.pendingAmountTextComponent}
           </View>
         )}*/}
         {/*Accordions*/}
+        <View style={{...styles.viewMarginComponent,marginTop:hp(2)}}>
+          <Accordion
+            align={'center'}
+            containerStyle={{width: '100%'}}
+            expandMultiple={false}
+            // touchableComponent={TouchableOpacity}
+            underlayColor={Colors.white}
+            // sectionContainerStyle={{backgroundColor:Colors.white}}
+
+            sections={aCard}
+            activeSections={activeSections}
+            // renderSectionTitle={renderSectionTitle}
+            duration={500}
+            renderHeader={renderHeader}
+            renderContent={renderContent}
+            onChange={updateSections}
+          />
+
+          {/* <Collapse style={{borderBottomWidth: 1, borderTopWidth: 1}}>
+            <CollapseHeader
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                padding: 10,
+                backgroundColor: '#E6E6E6',
+              }}>
+              <View style={{width: '25%', alignItems: 'center'}}>
+                <Image
+                  source={{
+                    uri:
+                      'https://www.biography.com/.image/t_share/MTQ3NjYxMzk4NjkwNzY4NDkz/muhammad_ali_photo_by_stanley_weston_archive_photos_getty_482857506.jpg',
+                  }}
+                />
+              </View>
+              <View style={{width: '60%'}}>
+                <Text>Name : Mohammed Ali Kley</Text>
+                <Text>Profession: Boxer</Text>
+              </View>
+            </CollapseHeader>
+            <CollapseBody
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                backgroundColor: '#EDEDED',
+              }}>
+              <Collapse style={{flexDirection: 'row'}}>
+                <CollapseHeader>
+                  <Image
+                    source={{
+                      uri:
+                        'https://cdn3.iconfinder.com/data/icons/trico-circles-solid/24/Circle-Solid-Phone-512.png',
+                    }}
+                  />
+                </CollapseHeader>
+                <CollapseBody
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 10,
+                  }}>
+                  <Text>+1 310 346 0018</Text>
+                </CollapseBody>
+              </Collapse>
+              <Collapse style={{flexDirection: 'row'}}>
+                <CollapseHeader>
+                  <Image
+                    source={{
+                      uri:
+                        'https://d30y9cdsu7xlg0.cloudfront.net/png/1674-200.png',
+                    }}
+                  />
+                </CollapseHeader>
+                <CollapseBody
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 10,
+                  }}>
+                  <Text>sample@sample.ma</Text>
+                </CollapseBody>
+              </Collapse>
+            </CollapseBody>
+          </Collapse> */}
+        </View>
         {/*New Job Contribution*/}
         {nChatrelTotalAmount === 0 && !bLoader && (
           <Card
@@ -594,7 +729,7 @@ const styles = StyleSheet.create({
   viewMarginComponent: {
     //width: wp(70),
     //height: hp(33),
-    marginBottom: hp(2),
+    marginBottom: hp(2.5),
   },
   jobContribStatusTextComponent: {
     fontSize: wp(5),
@@ -708,7 +843,55 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'normal',
     textAlign: 'center',
-    color: Colors.grey,
+    color: Colors.labelColorLight,
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: 22,
+    fontWeight: '300',
+    marginBottom: 20,
+  },
+  accordionListHeader: {
+    // marginHorizontal:wp(100)*nSc,
+    marginLeft: wp(3.5),
+    width: wp(92.5),
+    backgroundColor: Colors.websiteLightBlueColor,
+    borderWidth: 1,
+    // borderColor: Colors.white,paddingVertical:hp(1),
+    // paddingHorizontal:5,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginRight: wp(5),
+  },
+  accodrionHeaderText: {
+    color: Colors.white,
+    fontSize: wp(5),
+    fontFamily: sFontName,
+    fontStyle: 'normal',
+    textAlign: 'left',
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+  },
+  accordionListContent: {
+    marginLeft: wp(3.5),
+    width: wp(92.5),
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    borderColor: Colors.black,
+    marginVertical: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+  },
+  accodrionContextText: {
+    fontSize: wp(4),
+    fontFamily: sFontName,
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    textAlign: 'left',
+    color: Colors.black,
   },
 });
 

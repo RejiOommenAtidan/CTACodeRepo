@@ -417,7 +417,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
           )}
           <View style={styles.buttonContainer}>
             <Button
-              title="VERIFY & CONTINUE"
+              title="VERIFY AND PAY"
               onPress={handleSubmit(onSubmit)}
               titleStyle={{
                 color: Colors.white,
