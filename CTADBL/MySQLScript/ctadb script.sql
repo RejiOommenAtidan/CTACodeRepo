@@ -1962,7 +1962,7 @@ DROP procedure IF EXISTS `spReportCTAChangesLog`;
 DELIMITER $$
 CREATE PROCEDURE spReportCTAChangesLog
 (
-   IN dtRecordFrom date
+   IN dtRecordFrom date, IN dtRecordTo date
    
 )
 BEGIN
@@ -1996,7 +1996,7 @@ DROP procedure IF EXISTS `spReportCTAChangesLogForChildren`;
 DELIMITER $$
 CREATE PROCEDURE spReportCTAChangesLogForChildren
 (
-   IN dtRecordFrom date
+   IN dtRecordFrom date, IN dtRecordTo date
    
 )
 BEGIN
@@ -2034,7 +2034,7 @@ DROP procedure IF EXISTS `spReportCTANewEntryFromDay`;
 DELIMITER $$
 CREATE PROCEDURE spReportCTANewEntryFromDay
 (
-   IN dtRecordFrom date
+   IN dtRecordFrom date, IN dtRecordTo date
    
 )
 BEGIN
