@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ClimbingBoxLoader,MoonLoader } from 'react-spinners';
 
 import { ThemeProvider } from '@material-ui/styles';
-
+import axios from 'axios';
 import MuiTheme from './theme';
 
 // Layout Blueprints
@@ -16,6 +16,8 @@ import {
   PresentationLayout
 } from './layout-blueprints';
 
+
+import { useSelector,useDispatch} from 'react-redux';
 
 
 const Home = lazy(() => import('./views/home/home.js'));
@@ -36,6 +38,12 @@ const SelfPayment = lazy(() => import('./views/paymentpage/selfpayment.js'));
 const Routes = () => {
   const location = useLocation();
 
+  const oSession = useSelector(
+    (state) => state.SessionReducer.oSession
+  );
+  if (oSession !== null)
+    axios.defaults.headers.common['Authorization'] =
+      'Bearer ' + oSession.sJwtToken;
   const pageVariants = {
     initial: {
       opacity: 0
@@ -62,6 +70,49 @@ const Routes = () => {
         clearTimeout(timeout);
       };
     }, []);
+
+    // const bSession = useSelector(state => state.SessionReducer.bSession);
+   // console.log("session",bSession);
+    /*if(bSession){
+      
+      console.log(new Date());
+      //alert('timeout');
+    }*/
+   // const a = new Date();
+//    const b = new Date(a.getTime() + 1000*30);
+    // const checkSession=()=>{
+    //   let x = new Date();
+    //   console.log('old',bSession);
+    //   console.log('new',x);
+    //   if(bSession.getTime()<= x.getTime()){
+    //     alert('hi');
+    //   }
+    // }
+   /* while (bSession){
+      setTimeout(() => console.log('hi'), 1000*60);
+    }*/
+   
+    console.log("Location:",window.location.pathname);
+    const[timer,setTimer]=useState(false);
+   /* setTimer(window.location.pathname !=="/Login");*/
+    useEffect(() => {
+     /* var d = new Date();
+      var time= d.getTime() + 1000*60*10;*/
+      //document.cookie = "timeout=hi;" + expires;  
+     // document.cookie = "session=Active;";
+      //document.cookie = "session2=Active;"+time+";";
+    }, []);
+    /*var username = getCookie("username");
+    alert(username);*/
+    var timeout=document.cookie;
+    if(timeout.includes("session=Active")){
+      //alert('yes');
+    }
+    else{
+     // alert('no');
+    }
+    console.log(timeout);
+    
 
     return (
       <>
@@ -93,7 +144,8 @@ const Routes = () => {
             <Redirect exact from="/" to="/Login" />
             <Route path={[
               '/Login',
-              '/AccessDenied'
+              '/AccessDenied',
+              '/Test'
                
           
           
@@ -108,6 +160,7 @@ const Routes = () => {
                     transition={pageTransition}>
                     <Route path="/Login" component={Login} />
                     <Route path="/AccessDenied" component={AccessDenied} />
+                    <Route path="/Test" component={Test} ></Route>
                   </motion.div>
                 </Switch>
               </PresentationLayout>
@@ -138,7 +191,7 @@ const Routes = () => {
                 '/Family',
                 '/Friends',
                 '/PaymentHistory',
-                '/Test',
+               // '/Test',
                 '/Home',
                 '/PaymentPage',
                 '/SelfPayment',
@@ -167,10 +220,10 @@ const Routes = () => {
                       path="/FileDispute"
                       component={FileDispute}
                     />
-                    <Route
+                 {/*   <Route
                       path="/Test"
                       component={Test}
-                    />
+                 />*/}
                      <Route
                       path="/Family"
                       component={Family}

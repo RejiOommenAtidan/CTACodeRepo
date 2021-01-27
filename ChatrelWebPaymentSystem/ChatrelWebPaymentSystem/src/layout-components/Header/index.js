@@ -146,7 +146,7 @@ const logout =() =>{
 const time=1000*60*10;
 useEffect(() => {
     // 1000*60*10= 10 mins 
-  setTimeout(()=>{toggleSignoutModal();},time);
+ // setTimeout(()=>{toggleSignoutModal();},time);
 
 
 }, []);
@@ -202,7 +202,7 @@ useEffect(() => {
                                 <span>Family Chatrel </span>
                             </ListItem>
                             <ListItem button onClick={()=>{history.push('/Friends');}}  selected={isFriendsSelected()} >
-                                <span> Friends Chatrel</span>
+                                <span> Friend's Chatrel</span>
                             </ListItem>
                             <ListItem button onClick={()=>{history.push('/PaymentHistory');}}  selected={window.location.pathname == '/PaymentHistory'?true:false } >
                                 <span> Chatrel History </span>

@@ -213,14 +213,14 @@ const Footer = (props) => {
                           className="px-0 d-block d-xl-flex py-1">
                           Green Book (Chatrel)
                         </ListItem>
-                        <ListItem
+                        {/* <ListItem
                           component="a"
                           button
                          // href="#/"
                           onClick={(e) => {window.open('http://www.tibetcorps.org/')}}
                           className="px-0 d-block d-xl-flex py-1">
                           Tibet Corps
-                        </ListItem>
+                        </ListItem> */}
                        
                        
                       </List>

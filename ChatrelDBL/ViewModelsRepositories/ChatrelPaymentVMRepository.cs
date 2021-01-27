@@ -3,7 +3,11 @@ using ChatrelDBL.BaseClassRepositories.Transactions;
 using ChatrelDBL.QueryBuilder;
 using ChatrelDBL.Repository;
 using ChatrelDBL.ViewModels;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using QRCoder;
 using System;
 using System.Collections.Generic;
@@ -29,11 +33,17 @@ namespace ChatrelDBL.ViewModelsRepositories
         private const string Online = "Online";
         private const string Offline_WebAdmin = "Offline_WebAdmin";
         private const string Offline_Bulk = "Offline_Bulk";
+
+        private IConverter _converter;
         //private enum PaymentMode { Online = 1, Offline_WebAdmin, Offline_Bulk };
         //private enum PaymentStatus { Success =1, Failed}
+
+
+    
         #region Constructor
-        public ChatrelPaymentVMRepository(string connectionString) : base(connectionString)
+        public ChatrelPaymentVMRepository(string connectionString, IConverter converter) : base(connectionString)
         {
+            _converter = converter;
             _connection = new MySqlConnection(connectionString);
             _greenBookRepository = new GreenbookRepository(connectionString);
 
@@ -56,7 +66,15 @@ namespace ChatrelDBL.ViewModelsRepositories
                 Greenbook greenbook = _greenBookRepository.GetGreenbookByGBID(chatrelPayment.sGBId);
                 if (chatrelPayment.sPaymentMode == ChatrelPayment.Online)
                 {
-                    chatrelPayment.sChatrelReceiptNumber = GenerateReceiptNo();
+                    //chatrelPayment.sChatrelReceiptNumber = GenerateReceiptNo();
+                    var x = GenerateReceiptNo();
+                  
+                    var date = DateTime.Now.ToString("ddMMyy");
+                    var count = string.Concat(Enumerable.Repeat("0", 4-(x.Length)));
+
+                    var receiptNo = "E" + date + count + x;
+                    chatrelPayment.sChatrelReceiptNumber = receiptNo;
+
                 }
 
 
@@ -121,9 +139,9 @@ namespace ChatrelDBL.ViewModelsRepositories
                     transaction.Commit();
                     //To do: Update GreenBook "sPaidUntil" column to reflect current paid upto status.
 
-                    Object receipt = GetReceipt(chatrelPayment.sChatrelReceiptNumber);
+                   // Object receipt = GetReceipt(chatrelPayment.sChatrelReceiptNumber);
                     //return ("Records inserted successfully.");
-                    return receipt;
+                    return chatrelPayment.sChatrelReceiptNumber;
 
                 }
                 catch (Exception ex)
@@ -150,7 +168,7 @@ namespace ChatrelDBL.ViewModelsRepositories
 
         private string GenerateReceiptNo(string sPaymentMode = "Online")
         {
-            string sql = "SELECT IFNULL(MAX(CAST(sChatrelReceiptNumber AS UNSIGNED)) + 1, 1) AS value FROM tblchatrelpayment WHERE sPaymentMode = @sPaymentMode;";
+            string sql = "SELECT IFNULL(MAX(CAST(SUBSTRING(sChatrelReceiptNumber, 8, 4) AS UNSIGNED)) + 1, 1) AS value FROM tblchatrelpayment WHERE sPaymentMode = @sPaymentMode;";
             using (var command = new MySqlCommand(sql))
             {
                 _connection.Open();
@@ -177,6 +195,12 @@ namespace ChatrelDBL.ViewModelsRepositories
                 DataSet ds = new DataSet();
                 mySqlDataAdapter.Fill(ds);
                 DataTableCollection tables = ds.Tables;
+               //DataTable dt = tables[0];
+               // foreach(var row in dt.Rows)
+               // {
+               //     string sGBID = row["sGBID"],
+               // }
+                //
                 var result = tables[0].AsEnumerable().Select(row => new
                 {
                     sGBID = row.Field<string>("sGBID"),
@@ -203,12 +227,250 @@ namespace ChatrelDBL.ViewModelsRepositories
 
                 if(result != null)
                 {
-                    string qrcode = QRCode(result.sGBID, result.dtPayment, result.sChatrelReceiptNumber);
+                     
+
+                    string qrcode = QRCode(result.sGBID, result.dtPayment, result.sChatrelReceiptNumber/*,result.nChatrelTotalAmount,result.sPaidByGBId*/);
+
+
+                    var json = JsonConvert.SerializeObject(result);
+                    var dictionary = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json);
+
+                    var file = GeneratePDF(json, qrcode);
                     var receipt = new { receipt = result, qrcode };
-                    return receipt;
+                    return file;
+                    //return null;
                 }
                 return null;
             }
+        }
+        private byte[] GeneratePDF(string result, string qrcode)
+        {
+            var structure = new
+            {
+                sGBID = "",
+                sFirstName = "",
+                sLastName = "",
+                sCountryID = "",
+                nAge = 0,
+                sChatrelReceiptNumber = "",
+                sPaidByGBId = "",
+                dtPayment = DateTime.Now,
+                sPaymentCurrency = "",
+                nChatrelAmount = 0.00m,
+                nChatrelMeal = 0.00m,
+                nCurrentChatrelSalaryAmt = 0.00m,
+
+
+
+                nArrears = 0.00m,
+                nLateFees = 0.00m,
+                dtArrearsFrom = DateTime.Now,
+                dtArrearsTo = DateTime.Now,
+                nChatrelBusinessDonationAmt = 0.00m,
+                nChatrelAdditionalDonationAmt = 0.00m,
+                nChatrelTotalAmount = 0.00m
+            };
+           dynamic receipt = JObject.Parse(result);
+            var x = receipt.nAge;
+            
+
+            var globalSettings = new GlobalSettings
+            {
+                ColorMode = ColorMode.Color,
+                Orientation = Orientation.Portrait,
+                PaperSize = PaperKind.A4,
+                Margins = new MarginSettings { Top = 10 },
+                DocumentTitle = "PDF Report",
+              //  Out = @"E:\Employee_Report.pdf"
+            };
+            string sb = $@"
+                        <html>
+                            <head>
+                            </head>
+                            <body>
+                                <table id='mytable' class='mytable' cellspacing='0' style='border:2px solid #000000' data-reactroot=''>
+  <tr>
+    <td width='20'></td>
+    <td width='300'></td>
+    <td width='225'></td>
+    <td width='225'></td>
+    <td width='20'></td>
+  </tr>
+  <tr>
+    <td width='20'></td>
+    <td colSpan='2' height='35' align='left' valign='middle'><b><font face='Microsoft Himalaya' size='5' color='#000000'>༄༅། །བཙན་བྱོལ་བོད་མིའི་དཔྱ་དངུལ་བྱུང་འཛིན་ཨང་།</font></b></td>
+    <td align='right'>QR</td>
+    <td width='20'></td>
+  </tr>
+  <tr>
+    <td width='20'></td>
+    <td colspan='2' height='28' align='left' valign='middle'><b><font face='Microsoft Himalaya' size='4' color='#000000'>མིང་། {receipt.sFirstName.Value + receipt.sLastName.Value }</font><font size='4' color='#000000'></font></b></td>
+    <td align='right' valign='middle'><b><font face='Microsoft Himalaya' size='4' color='#000000'>རང་ལོ། {receipt.nAge.Value}  </font></b></td>
+    <td width='20'></td>
+  </tr>
+  <tr>
+    <td colspan='5' height='27' align='left' valign='top'>
+      <table>
+        <tr>
+          <td style='width:200px;padding-left:20px;border-top:2px solid #000000'><b><font face='Microsoft Himalaya' size='4' color='#000000'>དཔྱ་དེབ་ཨང་།</font></b></td>
+          <td align='center' style='border:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sCountryID.Value.ToString().Substring(0, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sCountryID.Value.ToString().Substring(1, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(0, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(1, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(2, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(3, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(4, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(5, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(6, 1) }</font></b></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td width='20'></td>
+    <td colSpan='3' height='7' align='left' valign='top'><font face='Microsoft Himalaya' size='4' color='#000000'></font></td>
+    <td width='20'></td>
+  </tr>
+  <tr>
+    <td width='20' height='26' style='border-bottom:1px solid #000000'></td>
+    <td colspan='2' style='border-bottom:1px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>༡། དཔྱ་དངུལ།</font></b></td>
+    <td style='border-bottom:2px solid #000000' align='left' valign='bottom'>
+      <b>
+        <font face='Microsoft Himalaya' size='4' color='#000000'>
+          སྒོར།<!-- --> <!-- -->{receipt.nChatrelAmount.Value}
+        </font>
+      </b>
+    </td>
+    <td width='20' style='border-bottom:2px solid #000000'></td>
+  </tr>
+  <tr>
+    <td width='20' style='border-bottom:1px solid #000000' height='26'></td>
+    <td colspan='2' style='border-bottom:1px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>༢། ཟས་བཅད་དོད།</font></b></td>
+    <td style='border-bottom:2px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>སྒོར། {receipt.nChatrelMeal.Value} </font></b></td>
+    <td width='20' style='border-bottom:2px solid #000000'></td>
+  </tr>
+  <tr>
+    <td width='20' style='border-bottom:1px solid #000000' height='26'></td>
+    <td colspan='2' style='border-bottom:1px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>༣། ཕོགས་འབབ།</font></b></td>
+    <td style='border-bottom:2px solid #000000' align='left' valign='bottom'>
+      <b>
+        <font face='Microsoft Himalaya' size='4' color='#000000'>
+          སྒོར།<!-- --> <!-- -->{receipt.nCurrentChatrelSalaryAmt.Value} 
+        </font>
+      </b>
+    </td>
+    <td width='20' style='border-bottom:2px solid #000000'></td>
+  </tr>
+  <tr>
+    <td width='20' style='border-bottom:1px solid #000000' height='26'></td>
+    <td colspan='2' style='border-bottom:1px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>༤། ཚོང་ཁེའི་བློས་བཅད་ཞལ་འདེབས།</font></b></td>
+    <td style='border-bottom:2px solid #000000' align='left' valign='bottom'>
+      <b>
+        <font face='Microsoft Himalaya' size='4' color='#000000'>
+          སྒོར།<!-- --> <!-- -->BDON {receipt.nChatrelBusinessDonationAmt.Value}
+        </font>
+      </b>
+    </td>
+    <td width='20' style='border-bottom:2px solid #000000'></td>
+  </tr>
+  <tr>
+    <td width='20' style='border-bottom:1px solid #000000' height='26'></td>
+    <td colspan='2' style='border-bottom:1px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>༥། དཔྱ་དངུལ་འབུལ་ཆད་འབབ།</font></b></td>
+    <td style='border-bottom:2px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>སྒོར །</font></b></td>
+    <td width='20' style='border-bottom:2px solid #000000'></td>
+  </tr>
+  <tr>
+    <td width='20' style='border-bottom:1px solid #000000' height='26'></td>
+    <td colspan='2' style='border-bottom:1px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>༦། འཕར་འབུལ་ཞལ་འདེབས།</font></b></td>
+    <td style='border-bottom:2px solid #000000' align='left' valign='bottom'>
+      <b>
+        <font face='Microsoft Himalaya' size='4' color='#000000'>
+          སྒོར།<!-- --> <!-- -->ADO
+        </font>
+      </b>
+    </td>
+    <td width='20' style='border-bottom:2px solid #000000'></td>
+  </tr>
+  <tr>
+    <td width='20'></td>
+    <td colSpan='3' height='10' align='left' valign='top'><font face='Microsoft Himalaya' size='4' color='#000000'></font></td>
+    <td width='20'></td>
+  </tr>
+  <tr>
+    <td width='20' height='34'></td>
+    <td colspan='2' align='left' valign='bottom'>
+      <font face='Microsoft Himalaya' size='4' color='#000000'>
+        <b>བཅས་བསྡོམས་</b> <!-- -->US$/CA$/AU$/NT$/CHF/EURO/GBP/YEN/RR/
+      </font>
+    </td>
+    <td align='left' style='padding-left:30px' valign='bottom'>
+      <b>
+        <font face='Microsoft Himalaya' size='4' color='#000000'>
+          སྒོར<!-- --> 
+        </font>
+        <font size='4' color='#000000'>TOTAL</font>
+      </b>
+    </td>
+    <td width='20'></td>
+  </tr>
+  <tr>
+    <td width='20' height='31'></td>
+    <td colspan='3' align='left' valign='middle'>
+      <font face='Microsoft Himalaya' size='4' color='#000000'>
+        <b>
+          ཕྱི་ལོ་༌་་་་་་་་་་་་་་༌༌༌༌༌་་་་་་་་་་་་༌༌༌༌༌༌༌༌༌༌༌ལོའི་དཔྱ་དངུལ་འབུལ་འབབ་རྩིས་འབུལ་བྱུང་བའི་འཛིན་དུ།<!-- --> 
+        </b>
+      </font>
+    </td>
+    <td width='20'></td>
+  </tr>
+  <tr>
+    <td width='20'></td>
+    <td colSpan='3' height='32' align='left' valign='top'><font face='Microsoft Himalaya' size='4' color='#000000'></font></td>
+    <td width='20'></td>
+  </tr>
+  <tr>
+    <td width='20' height='33'></td>
+    <td colspan='3' align='left' valign='middle'><font face='Microsoft Himalaya' size='4' color='#000000'><b>བོད་རིགས་སྤྱི་མཐུན་ཚོགས་པའམ་བོད་རིགས་ཚོགས་པའི་ལས་དམ་དང་མཚན་རྟགས།     ཕྱི་ལོ༌       ཟླ་       ཚེས་     ལ།</b></font></td>
+    <td width='20'></td>
+  </tr>
+  <tr>
+    <td width='20'></td>
+    <td colSpan='3' height='16' align='left' valign='top'><font size='2' color='#000000'>This is computer generated Chatrel receipt, no signature required.</font></td>
+    <td width='20'></td>
+  </tr>
+  <tr>
+    <td width='20'></td>
+    <td colSpan='3' height='16' align='left' valign='top'><font size='2' color='#000000'>You are advised to update chatrel contribution on your <br/>Greenbook from Office of Tibet or concerned Tibetan Association/Tibetan Community.</font></td>
+    <td width='20'></td>
+  </tr>
+  <tr>
+    <td width='20'></td>
+    <td colSpan='3' height='16' align='left' valign='top'><font face='Microsoft Himalaya' size='4' color='#000000'></font></td>
+    <td width='20'></td>
+  </tr>
+</table>
+                            </body>
+                        </html>";
+            var objectSettings = new ObjectSettings
+            {
+                PagesCount = true,
+                HtmlContent = sb,
+                WebSettings = { DefaultEncoding = "utf-8" },
+                //   HeaderSettings = { FontName = "Arial", FontSize = 9, Right = "Page [page] of [toPage]", Line = true },
+                // FooterSettings = { FontName = "Arial", FontSize = 9, Line = true, Center = "Report Footer" }
+            };
+            var pdf = new HtmlToPdfDocument()
+            {
+                GlobalSettings = globalSettings,
+                Objects = { objectSettings }
+            };
+           // _converter.Convert(pdf);
+            var file = _converter.Convert(pdf);
+           // return File(file, "application/pdf");
+            return file;
+            
+
         }
 
         public string QRCode(string sGBID, DateTime dtPayment, string sReceiptNumber)

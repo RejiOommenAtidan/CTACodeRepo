@@ -219,7 +219,7 @@ else if (binFileDoc !== "" && disputeDescription !== "")
           <div className="divider mt-4" />
           <a type="submit"  onClick={()=>{handleDisputeFileSubmit();}} className="px-4 py-3 btn-transition-none text-white bg-first btn btn-white shadow-none d-flex justify-content-between align-items-center">
               
-              <div>Submit File Dispute</div>
+              <div>File a Dispute</div>
               <FontAwesomeIcon icon={['fas', 'chevron-right']}/>
           </a>
       </div>

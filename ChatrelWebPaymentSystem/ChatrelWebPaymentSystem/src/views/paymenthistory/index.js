@@ -74,17 +74,25 @@ export default function Family () {
   const getReceipt = (sChatrelReceiptNumber) => {
     setBackdrop(true);
     console.log("Receipt Number", sChatrelReceiptNumber);
-    axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=`+sChatrelReceiptNumber)
+    axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=`+sChatrelReceiptNumber,  { responseType: 'blob' })
     .then(resp => {
       console.log("Response", resp);
+      
       if (resp.status === 200) {
-        console.log(resp.data);
-        resp.data.receipt.sGBID ='0'.repeat(7 - resp.data.receipt.sGBID.length) +
-            resp.data.receipt.sGBID;
-       setReceiptData(resp.data);
+        setBackdrop(false);
+        const url = window.URL.createObjectURL(new Blob([resp.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "ChatrelReceipt.pdf");
+        document.body.appendChild(link);
+        link.click();
+      //  console.log(resp.data);
+      //   resp.data.receipt.sGBID ='0'.repeat(7 - resp.data.receipt.sGBID.length) +
+      //       resp.data.receipt.sGBID;
+      //  setReceiptData(resp.data);
        
-       setBackdrop(false);
-       handleClickOpen();
+      //  setBackdrop(false);
+      //  handleClickOpen();
        //printPDF();
       }
     })
@@ -169,7 +177,7 @@ export default function Family () {
         <Alert className="alerts-alternate mb-4 w-50 mx-auto" severity="info">
         <div className="d-flex align-items-center align-content-start">
             <span>
-                <strong className="d-block">CHATREL PAID BY {sGBID}</strong> Please pay your outstanding Chatrel Amount
+                <strong className="d-block">NO CHATREL PAYMENTS DONE SO FAR</strong> Please pay your outstanding Chatrel Amount
         </span>
         </div>
         </Alert>

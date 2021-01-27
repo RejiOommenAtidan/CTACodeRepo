@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {storeGBDetails} from '../../../actions/transactions/GBDetailsAction';
+import {storeSession} from '../../../actions/transactions/SessionAction';
 import {
   Grid,
   InputAdornment,
@@ -173,6 +174,13 @@ const test =(e)=>{
         //setPaymentHistory(resp.data);
         if(resp.data.result ==="Verified"){
           const token = resp.data.sJwtToken
+          const dt=new Date();
+          const oSession={
+            sJwtToken:token,
+            bSession: new Date(dt.getTime() + 1000*60*2).getTime(),
+
+          }
+          dispatch(storeSession(oSession));
           dispatch(storeGBDetails(oGBDetails));
           dispatch(storeCurrentGBDetails(oGBDetails));
           setBackdrop(false);

@@ -22,6 +22,10 @@ using System.Threading.Tasks;
 
 using PayPalCheckoutSdk.Core;
 using PayPalCheckoutSdk.Orders;
+using System.Text;
+using DinkToPdf.Contracts;
+using DinkToPdf;
+using System.IO;
 
 namespace ChatrelPaymentWebAPI.Controllers
 {
@@ -30,6 +34,8 @@ namespace ChatrelPaymentWebAPI.Controllers
     //[APIKeyAuth]
     [Route("api/[controller]")]
     [ApiController]
+
+
     public class ChatrelPaymentController : ControllerBase
     {
         private readonly DBConnectionInfo _info;
@@ -37,15 +43,17 @@ namespace ChatrelPaymentWebAPI.Controllers
         private readonly ChatrelPaymentVMRepository _chatrelPaymentVMRepository;
         private readonly GreenbookRepository _greenbookRepository;
         private readonly ChatrelLogger _chatrelLogger;
+        private IConverter _converter;
 
-        public ChatrelPaymentController(DBConnectionInfo info)
+        public ChatrelPaymentController(DBConnectionInfo info, IConverter converter)
         {
             _info = info;
             _chatrelPaymentRepository = new ChatrelPaymentRepository(info.sConnectionString);
-            _chatrelPaymentVMRepository = new ChatrelPaymentVMRepository(info.sConnectionString);
+            _chatrelPaymentVMRepository = new ChatrelPaymentVMRepository(info.sConnectionString, converter);
             _greenbookRepository = new GreenbookRepository(info.sConnectionString);
             _chatrelLogger = new ChatrelLogger(info);
-            
+            _converter = converter;
+
         }
 
         #region Add new Payment record
@@ -63,14 +71,14 @@ namespace ChatrelPaymentWebAPI.Controllers
 
                     var status = VerifyPayPalPayment(payment.chatrelPayment.sPayPal_ID, System.Math.Round(payment.chatrelPayment.nChatrelTotalAmount, 2, MidpointRounding.AwayFromZero));
                     bool success = status.Result.Item1;
-                    
+
                     var obj = JsonConvert.DeserializeAnonymousType(status.Result.Item2, definition);
-                    
+
                     if (!success)
                     {
                         return Problem(obj.details[0].description);
                     }
-                    
+
                     Object message = _chatrelPaymentVMRepository.Add(payment);
                     if (message != null)
                     {
@@ -78,6 +86,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                         _chatrelLogger.LogRecord(Enum.GetName(typeof(Operations), 1), (GetType().Name).Replace("Controller", ""), Enum.GetName(typeof(LogLevels), 1), MethodBase.GetCurrentMethod().Name + " Method Called", null, payment.chatrelPayment.nEnteredBy);
                         #endregion
                         return Ok(message);
+                        //return Ok(new { receipt = (byte[])message });
                     }
                     return Problem(message.ToString());
                 }
@@ -203,7 +212,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                 if (chatrel != null)
                 {
                     #region Information Logging 
-                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called","", Convert.ToInt32(sGBIDAuthorized));
+                    _chatrelLogger.LogRecord(((Operations)2).ToString(), (GetType().Name).Replace("Controller", ""), ((LogLevels)1).ToString(), MethodBase.GetCurrentMethod().Name + " Method Called", "", Convert.ToInt32(sGBIDAuthorized));
                     #endregion
                     return Ok(chatrel);
                 }
@@ -321,7 +330,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             var sName = dict["sName"].ToString();
             var sGBID = dict["sGBID"].ToString();
             var sFileName = dict["sTitle"].ToString();
-            var sFileExtension= dict["sFileExtension"].ToString();
+            var sFileExtension = dict["sFileExtension"].ToString();
             var emailFrom = "aayush.pandya@atidan.com";
             var emailTo = "aayushpandya.dev@gmail.com";
 
@@ -335,7 +344,7 @@ namespace ChatrelPaymentWebAPI.Controllers
 
             BodyBuilder messageBody = new BodyBuilder();
             messageBody.TextBody = mailText;
-            messageBody.Attachments.Add(sFileName+"."+sFileExtension, attach);
+            messageBody.Attachments.Add(sFileName + "." + sFileExtension, attach);
 
 
             message.From.Add(from);
@@ -422,15 +431,17 @@ namespace ChatrelPaymentWebAPI.Controllers
             {
                 string sGBID = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).Select(claim => claim.Value).FirstOrDefault().ToString();
                 var result = _chatrelPaymentVMRepository.GetReceipt(sReceiptNumber);
-                if(result != null)
+                if (result != null)
                 {
-                    var receipt = result.GetType().GetProperty("receipt").GetValue(result);
-                    string sPaidByGBId = receipt.GetType().GetProperty("sPaidByGBId").GetValue(receipt).ToString();
-                    if(sGBID != sPaidByGBId)
-                    {
-                        return Unauthorized("The receipt number " + sReceiptNumber + " does not belong to your Greenbook ID " + sGBID);
-                    }
-                    return Ok(result);
+                    //var receipt = result.GetType().GetProperty("receipt").GetValue(result);
+                    //string sPaidByGBId = receipt.GetType().GetProperty("sPaidByGBId").GetValue(receipt).ToString();
+                    //if(sGBID != sPaidByGBId)
+                    //{
+                    //    return Unauthorized("The receipt number " + sReceiptNumber + " does not belong to your Greenbook ID " + sGBID);
+                    //}
+
+                    //  return Ok(result);
+                    return File((byte[])result, "application/pdf", "ChatrelReceipt.pdf");
                 }
                 else
                 {
@@ -472,15 +483,15 @@ namespace ChatrelPaymentWebAPI.Controllers
                 AmountWithBreakdown amount = result.PurchaseUnits[0].AmountWithBreakdown;
                 Console.WriteLine("Total Amount: {0} {1}", amount.CurrencyCode, amount.Value);
 
-                if(result.Status == "COMPLETED" && result.CheckoutPaymentIntent == "CAPTURE")
+                if (result.Status == "COMPLETED" && result.CheckoutPaymentIntent == "CAPTURE")
                 {
-                    if(totalChatrel.ToString() == amount.Value)
+                    if (totalChatrel.ToString() == amount.Value)
                     {
                         return new Tuple<bool, string>(true, "{\"details\":[{\"issue\":\"OK\",\"description\":\"Amount received for transaction id '" + orderId + "' is '" + amount.CurrencyCode + amount.Value + "' \" }]}");
                     }
                     else
                     {
-                        return new Tuple<bool, string>(false, "{\"details\":[{\"issue\":\"Amount mismatch\",\"description\":\"Amount received for transaction id '" + orderId + "' is '" + amount.CurrencyCode +  amount.Value + "' \" }]}");
+                        return new Tuple<bool, string>(false, "{\"details\":[{\"issue\":\"Amount mismatch\",\"description\":\"Amount received for transaction id '" + orderId + "' is '" + amount.CurrencyCode + amount.Value + "' \" }]}");
                     }
                 }
                 else
@@ -497,10 +508,34 @@ namespace ChatrelPaymentWebAPI.Controllers
 
         //[HttpGet]
         //[Route("[action]")]
-        //public IActionResult GoogleLogin()
+        //public IActionResult TestReceipt()
         //{
+        //    var sb = new StringBuilder();
+        //    sb.Append(@"
+        //                <html>
+        //                    <head>
+        //                    </head>
+        //                    <body>
+        //                        <div class='header'><h1>This is the generated PDF report!!!</h1></div>
+        //                        <table align='center'>
+        //                            <tr>
+        //                                <th>Name</th>
+        //                                <th>LastName</th>
+        //                                <th>Age</th>
+        //                                <th>Gender</th>
+        //                            </tr>
+        //                             <tr>
+        //                            <td>{0}</td>
+        //                            <td>{1}</td>
+        //                            <td>{2}</td>
+        //                            <td>{3}</td>
+        //                          </tr>
 
+        //                        </table>
+        //                    </body>
+        //                </html>");
+        //    return sb.ToString();
         //}
-
     }
+   
 }

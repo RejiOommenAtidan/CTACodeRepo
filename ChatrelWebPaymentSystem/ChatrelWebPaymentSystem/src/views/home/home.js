@@ -285,7 +285,7 @@ export default function Home() {
                                         <FontAwesomeIcon icon={['fas', 'briefcase']} className="display-3" />
                                     </div>
                                     <div className="font-weight-bold text-black display-4 mt-4 mb-1">
-                                    Have you gotten a new job?
+                                    Have you got a job now?
                                     </div>
                                     <div className="font-size-lg text-dark opacity-8">Change your status and contribute more towards the Tibetan Government.</div>
                                     <div className="divider mx-4 my-4" />
@@ -293,7 +293,7 @@ export default function Home() {
                                         <Button className="p-0 text-uppercase btn-link-primary font-weight-bold font-size-sm btn-link" variant="text"
                                         onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' }, paymentData, outstanding)}}
                                         >
-                                            <span>UPDATE EMPLOYEMENT STATUS</span>
+                                            <span>UPDATE EMPLOYMENT STATUS</span>
                                         </Button>
                                     </div>
                                 </div>

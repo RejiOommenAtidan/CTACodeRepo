@@ -13,7 +13,7 @@ const persistConfig = {
   key: 'CTASS',
   storage: sessionstorage,
   
-  whitelist: ['GLoginReducer','GBDetailsReducer','CurrentGBDetailsReducer']
+  whitelist: ['GLoginReducer','GBDetailsReducer','CurrentGBDetailsReducer','SessionReducer']
 };
 
 const persistedReducer = persistReducer(persistConfig, combineReducers({ ...reducers }));

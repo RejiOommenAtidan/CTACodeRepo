@@ -17,7 +17,9 @@ import {
   OutlinedInput,
   InputAdornment,
   Switch
+ 
 } from '@material-ui/core';
+//import Switch from "react-switch";
 import PropTypes from 'prop-types';
 import CountUp from 'react-countup';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -129,6 +131,8 @@ export default function PaymentPage(props) {
   };
 
   const [backdrop, setBackdrop] = React.useState(true);
+
+  const [displayFileDispute, setDisplayFileDispute] = React.useState(false);
 
   //console.log(paidByGBID);
   //const userObj = useSelector(state => state.GLoginReducer.oGoogle);
@@ -459,6 +463,7 @@ export default function PaymentPage(props) {
       chatrelPayment: tempSummaryObj,
       gbChatrels: payObj,
       gbChatrelDonation: donationObj
+     // sOrderId:paypalObj.id
     };
 
     console.log('Final Obj:', finalObj);
@@ -535,6 +540,12 @@ export default function PaymentPage(props) {
             .then((resp) => {
               if (resp.status === 200) {
                 console.log("test",resp.data);
+                if(resp.data==="Paid Until Missing"){
+                  console.log("Inside File Dispute Condition");
+                  setDisplayFileDispute(true);
+                }
+                else{
+             
                   
                   if (resp.data.chatrelPayment.nChatrelTotalAmount === 0) {
                     setOutstanding(false);
@@ -559,7 +570,7 @@ export default function PaymentPage(props) {
                     });
                   console.log('Got data from props');
       
-                
+                  }
               }
             })
             .catch((error) => {
@@ -600,7 +611,24 @@ export default function PaymentPage(props) {
 
   return (
     <>
-      
+       { displayFileDispute && (
+                <div id="fileDisputeDiv">
+                
+                  <Card className="bg-neutral-first d-block card-border-top border-first text-center p-4 p-xl-5 w-50 mx-auto">
+                                    <h4 className="px-3 px-xl-5 display-4 line-height-2 font-weight-bold mb-2">Last Paid Chatrel Date not available in system. Please Contact CTA or file a dispute.</h4>
+                                    {/* <h5 className="px-3 px-xl-5 display-4 line-height-2  mb-2">Please contact CTA or file a dispute</h5> */}
+                                    
+ 
+
+
+                                    <Button  onClick={() => {
+                        history.push("/FileDispute");
+                      }} className="btn-first px-4 text-uppercase font-size-sm hover-scale-lg font-weight-bold mt-2">
+                                        File a Dispute
+                                    </Button>
+                                </Card>
+                </div>
+              )}
       {dataAPI && (
         <>
          {paymentDiv && < >
@@ -842,7 +870,7 @@ export default function PaymentPage(props) {
                   disabled={row.isChild}
                 />*/}
               <div className="m-2">
-                            <Switch id="employed" onChange={(e) => {modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
+                            <Switch id="employed" onChange={(e) => {console.log('test',e);modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
                         </div>
             </Td>
             )}
@@ -882,16 +910,17 @@ export default function PaymentPage(props) {
             {row.sAuthRegionCurrency === 'USD' && (
             <Td  align="center">
               {
-                <input
-                  id="employed"
-                  value={index}
+                // <input
+                //   id="employed"
+                //   value={index}
             
-                  onChange={(e) => {
-                    modify(e.target);
-                  }}
-                  type="checkbox"
-                  disabled={row.isChild}
-                />
+                //   onChange={(e) => {
+                //     modify(e.target);
+                //   }}
+                //   type="checkbox"
+                //   disabled={row.isChild}
+                // />  
+                 <Switch id="employed" onChange={(e) => {console.log('test',e);modify(e.target);}} disabled={row.isChild} value={index} className="switch-small toggle-switch-first"/>
               }
               
             </Td>
@@ -1583,9 +1612,10 @@ export default function PaymentPage(props) {
         </Grid>
         </>
         }
-           
+        
+          
              
-          { successDiv&& (
+          { successDiv && (
                 <div id="successDiv">
                 
                   <Card className="bg-neutral-first d-block card-border-top border-first text-center p-4 p-xl-5 w-50 mx-auto">
