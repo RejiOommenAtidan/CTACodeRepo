@@ -47,7 +47,8 @@ export default function Home() {
 
   const [currencySymbol, setCurrencySymbol] = React.useState();
   const [paymentData, setPaymentData] = React.useState();
-  const [outstanding, setOutstanding] = useState(true);
+  const [outstanding, setOutstanding] = useState(false);
+  const [empty, setEmpty] = useState(false);
   let history = useHistory();
   let dispatch = useDispatch();
   const classes = useStyles();
@@ -57,6 +58,8 @@ export default function Home() {
   .then(resp => {
     if (resp.status === 200) {
       //console.log("Self Chatrel Payment data:", resp.data);
+      if(resp.data.chatrelPayment)
+      {
       if(resp.data.chatrelPayment.nChatrelTotalAmount === 0){
         setChatrelPending('0');
         setOutstanding(false);
@@ -66,6 +69,7 @@ export default function Home() {
       }
       else{
         setChatrelPending(resp.data.chatrelPayment.nChatrelTotalAmount);
+        setOutstanding(true);
       }
       setPaymentData(resp.data);
       console.log(resp.data);
@@ -77,10 +81,14 @@ export default function Home() {
       else{
         setCurrencySymbol('₹');
       }
-      
+    }
+    else{
+      setEmpty(true);
+    }
+  }
       console.log("Data fetched...", resp.data);
       
-    }
+   
   })
   .catch(error => {
     console.log(error.message);
@@ -127,12 +135,12 @@ export default function Home() {
                                                                 <div className="text-black-50">Make Chatrel Payments for yourself online</div>
                                                             </div>
                                                         </div>
-                                                        <div className="ml-auto">
+                                                       { !empty && <div className="ml-auto">
 
                                                             <div className="badge badge-neutral-success text-success font-size-xs font-weight-normal py-1 h-auto px-3 badge-pill">
                                                              {chatrelPending>0  ? currencySymbol + chatrelPending : "PAID"}
                                                             </div>
-                                                        </div>
+                                                        </div>}
                                                     </ListItem>
                                                     <ListItem component="a" button href="/Family" onClick={()=>{history.push('/Family')}} className="d-flex align-items-center py-3">
                                                         <div className="d-flex align-items-center">
@@ -278,7 +286,7 @@ export default function Home() {
                                     </div>
                                 </div>
                             </Card>}
-                           { !outstanding &&
+                           { (!outstanding && !empty )&&
                             <Card className="card-box card-box-alt  shadow-xxl  p-2 ">
                                 <div className="card-content-overlay text-center pb-4">
                                     <div className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-primary text-white btn-icon mx-auto text-center shadow-primary">
@@ -294,6 +302,26 @@ export default function Home() {
                                         onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' }, paymentData, outstanding)}}
                                         >
                                             <span>UPDATE EMPLOYMENT STATUS</span>
+                                        </Button>
+                                    </div>
+                                </div>
+                            </Card>}
+                            { empty &&
+                            <Card className="card-box card-box-alt  shadow-xxl  p-2 ">
+                                <div className="card-content-overlay text-center pb-4">
+                                    <div className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-primary text-white btn-icon mx-auto text-center shadow-primary">
+                                        <FontAwesomeIcon icon={['fas', 'briefcase']} className="display-3" />
+                                    </div>
+                                    <div className="font-weight-bold text-black display-4 mt-4 mb-1">
+                                    Last Paid Chatrel Date not available in system. Please Contact CTA or file a dispute.
+                                    </div>
+                                    
+                                    <div className="divider mx-4 my-4" />
+                                    <div className="text-center">
+                                        <Button className="p-0 text-uppercase btn-link-primary font-weight-bold font-size-sm btn-link" variant="text"
+                                        onClick={()=>{history.push('/FileDispute');}}
+                                        >
+                                            <span>File a Dispute</span>
                                         </Button>
                                     </div>
                                 </div>

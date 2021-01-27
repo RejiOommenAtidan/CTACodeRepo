@@ -69,26 +69,26 @@ const selfPayment=() => {
   .then(resp => {
     if (resp.status === 200) {
       //console.log("Self Chatrel Payment data:", resp.data);
-      if(resp.data.chatrelPayment.nChatrelTotalAmount === 0){
-        setChatrelPending('0');
-        setOutstanding(false);
-        // setCurrencySymbol(resp.data.currency === 'INR' ? '₹' : '$' );
-        // element.disabled = false;
-        // return;
-      }
-      else{
-        setChatrelPending(resp.data.chatrelPayment.nChatrelTotalAmount);
-      }
-      setPaymentData(resp.data);
-      console.log(resp.data);
+      // if(resp.data.chatrelPayment.nChatrelTotalAmount === 0){
+      //   setChatrelPending('0');
+      //   setOutstanding(false);
+      //   // setCurrencySymbol(resp.data.currency === 'INR' ? '₹' : '$' );
+      //   // element.disabled = false;
+      //   // return;
+      // }
+      // else{
+      //   setChatrelPending(resp.data.chatrelPayment.nChatrelTotalAmount);
+      // }
+      // setPaymentData(resp.data);
+      // console.log(resp.data);
       
       
-      if(resp.data.gbChatrels[0].sAuthRegionCurrency === 'USD'){
-        setCurrencySymbol('$');
-      }
-      else{
-        setCurrencySymbol('₹');
-      }
+      // if(resp.data.gbChatrels[0].sAuthRegionCurrency === 'USD'){
+      //   setCurrencySymbol('$');
+      // }
+      // else{
+      //   setCurrencySymbol('₹');
+      // }
       
       console.log("Data fetched...", resp.data);
       makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' }, paymentData, outstanding);
