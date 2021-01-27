@@ -227,7 +227,7 @@ useEffect(() => {
        <HeaderUserbox />
       </div>
     </div>
-    <Dialog open={signoutModal} onClose={logout} classes={{ paper: 'shadow-xl-first rounded' }}>
+    <Dialog open={/*signoutModal*/false} onClose={logout} classes={{ paper: 'shadow-xl-first rounded' }}>
                             <div className="text-center p-5">
                                 <div className="avatar-icon-wrapper rounded-circle m-0">
                                     <div className="d-inline-flex justify-content-center p-0 rounded-circle btn-icon avatar-icon-wrapper bg-neutral-first text-first m-0 d-130">

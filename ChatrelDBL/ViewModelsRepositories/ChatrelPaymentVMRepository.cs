@@ -68,12 +68,12 @@ namespace ChatrelDBL.ViewModelsRepositories
                 if (chatrelPayment.sPaymentMode == ChatrelPayment.Online)
                 {
                     //chatrelPayment.sChatrelReceiptNumber = GenerateReceiptNo();
-                    var x = GenerateReceiptNo();
+                    var digits = GenerateReceiptNo();
                   
-                    var date = DateTime.Now.ToString("ddMMyy");
-                    var count = string.Concat(Enumerable.Repeat("0", 4-(x.Length)));
+                    var date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time")).ToString("ddMMyy");
+                    var count = string.Concat(Enumerable.Repeat("0", 4-(digits.Length)));
 
-                    var receiptNo = "E" + date + count + x;
+                    var receiptNo = "E" + date + count + digits;
                     chatrelPayment.sChatrelReceiptNumber = receiptNo;
 
                 }
@@ -230,7 +230,7 @@ namespace ChatrelDBL.ViewModelsRepositories
                 {
                      
 
-                    string qrcode = QRCode(result.sGBID, result.dtPayment, result.sChatrelReceiptNumber/*,result.nChatrelTotalAmount,result.sPaidByGBId*/);
+                    string qrcode = QRCode(result.sGBID, result.dtPayment, result.sChatrelReceiptNumber,result.nChatrelTotalAmount,result.sPaidByGBId);
 
 
                     var json = JsonConvert.SerializeObject(result);
@@ -273,7 +273,8 @@ namespace ChatrelDBL.ViewModelsRepositories
             };
            dynamic receipt = JObject.Parse(result);
             var x = receipt.nAge;
-            
+            var zeros = string.Concat(Enumerable.Repeat("0", 7 - (receipt.sGBID.Value.Length)));
+            var gbid = zeros + receipt.sGBID.Value;
 
             var globalSettings = new GlobalSettings
             {
@@ -300,7 +301,7 @@ namespace ChatrelDBL.ViewModelsRepositories
   <tr>
     <td width='20'></td>
     <td colSpan='2' height='35' align='left' valign='middle'><b><font face='Microsoft Himalaya' size='5' color='#000000'>༄༅། །བཙན་བྱོལ་བོད་མིའི་དཔྱ་དངུལ་བྱུང་འཛིན་ཨང་།</font></b></td>
-    <td align='right'>QR</td>
+    <td align='right'><b>{receipt.sChatrelReceiptNumber.Value}</b></td>
     <td width='20'></td>
   </tr>
   <tr>
@@ -316,13 +317,13 @@ namespace ChatrelDBL.ViewModelsRepositories
           <td style='width:200px;padding-left:20px;border-top:2px solid #000000'><b><font face='Microsoft Himalaya' size='4' color='#000000'>དཔྱ་དེབ་ཨང་།</font></b></td>
           <td align='center' style='border:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sCountryID.Value.ToString().Substring(0, 1) }</font></b></td>
           <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sCountryID.Value.ToString().Substring(1, 1) }</font></b></td>
-          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(0, 1) }</font></b></td>
-          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(1, 1) }</font></b></td>
-          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(2, 1) }</font></b></td>
-          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(3, 1) }</font></b></td>
-          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(4, 1) }</font></b></td>
-          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(5, 1) }</font></b></td>
-          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{receipt.sGBID.Value.ToString().Substring(6, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{gbid.Substring(0, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{gbid.Substring(1, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{gbid.Substring(2, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{gbid.Substring(3, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{gbid.Substring(4, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{gbid.Substring(5, 1) }</font></b></td>
+          <td align='center' style='border-top:2px solid #000000;border-bottom:2px solid #000000;border-right:2px solid #000000' width='32'><b><font size='4' color='#000000'>{gbid.Substring(6, 1) }</font></b></td>
         </tr>
       </table>
     </td>
@@ -368,7 +369,7 @@ namespace ChatrelDBL.ViewModelsRepositories
     <td style='border-bottom:2px solid #000000' align='left' valign='bottom'>
       <b>
         <font face='Microsoft Himalaya' size='4' color='#000000'>
-          སྒོར།<!-- --> <!-- -->BDON {receipt.nChatrelBusinessDonationAmt.Value}
+          སྒོར།<!-- --> <!-- -->{(receipt.nChatrelBusinessDonationAmt.Value != null ? receipt.nChatrelBusinessDonationAmt.Value : 0)}  
         </font>
       </b>
     </td>
@@ -377,7 +378,8 @@ namespace ChatrelDBL.ViewModelsRepositories
   <tr>
     <td width='20' style='border-bottom:1px solid #000000' height='26'></td>
     <td colspan='2' style='border-bottom:1px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>༥། དཔྱ་དངུལ་འབུལ་ཆད་འབབ།</font></b></td>
-    <td style='border-bottom:2px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>སྒོར །</font></b></td>
+    <td style='border-bottom:2px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>སྒོར །<!-- --> <!-- -->
+  {receipt.nArrears.Value}<!-- --> <!-- -->  ({receipt.dtArrearsFrom.Value.Year }-{receipt.dtArrearsTo.Value.Year } )</font></b></td>
     <td width='20' style='border-bottom:2px solid #000000'></td>
   </tr>
   <tr>
@@ -386,7 +388,7 @@ namespace ChatrelDBL.ViewModelsRepositories
     <td style='border-bottom:2px solid #000000' align='left' valign='bottom'>
       <b>
         <font face='Microsoft Himalaya' size='4' color='#000000'>
-          སྒོར།<!-- --> <!-- -->ADO
+          སྒོར།<!-- --> <!-- -->{(receipt.nChatrelAdditionalDonationAmt.Value != null ? receipt.nChatrelAdditionalDonationAmt.Value : 0 )}  
         </font>
       </b>
     </td>
@@ -409,20 +411,21 @@ namespace ChatrelDBL.ViewModelsRepositories
         <font face='Microsoft Himalaya' size='4' color='#000000'>
           སྒོར<!-- --> 
         </font>
-        <font size='4' color='#000000'>TOTAL</font>
+        <font size='4' color='#000000'>{(receipt.sPaymentCurrency.Value == "USD"? '$': '₹')}{receipt.nChatrelTotalAmount.Value}</font>
       </b>
     </td>
     <td width='20'></td>
   </tr>
   <tr>
     <td width='20' height='31'></td>
-    <td colspan='3' align='left' valign='middle'>
+    <td colspan='2' align='left' valign='middle'>
       <font face='Microsoft Himalaya' size='4' color='#000000'>
         <b>
           ཕྱི་ལོ་༌་་་་་་་་་་་་་་༌༌༌༌༌་་་་་་་་་་་་༌༌༌༌༌༌༌༌༌༌༌ལོའི་དཔྱ་དངུལ་འབུལ་འབབ་རྩིས་འབུལ་བྱུང་བའི་འཛིན་དུ།<!-- --> 
         </b>
       </font>
     </td>
+        <td align='left'> <img src='data:image/png;base64,{qrcode}' width='100' height='100'></td>
     <td width='20'></td>
   </tr>
   <tr>
@@ -442,7 +445,7 @@ namespace ChatrelDBL.ViewModelsRepositories
   </tr>
   <tr>
     <td width='20'></td>
-    <td colSpan='3' height='16' align='left' valign='top'><font size='2' color='#000000'>You are advised to update chatrel contribution on your <br/>Greenbook from Office of Tibet or concerned Tibetan Association/Tibetan Community.</font></td>
+    <td colSpan='3' height='16' align='left' valign='top'><font size='2' color='#000000'>You are advised to update chatrel contribution on your Greenbook from Office of Tibet or concerned Tibetan Association/Tibetan Community.</font></td>
     <td width='20'></td>
   </tr>
   <tr>
@@ -474,9 +477,9 @@ namespace ChatrelDBL.ViewModelsRepositories
 
         }
 
-        public string QRCode(string sGBID, DateTime dtPayment, string sReceiptNumber)
+        public string QRCode(string sGBID, DateTime dtPayment, string sReceiptNumber, decimal nChatrelTotalAmount , string sPaidByGBID)
         {
-            string qrText = String.Format(@"GB ID: {0}, Date: {1}, Receipt Number: {2}", sGBID, dtPayment.ToString("dd-MM-yyyy"), sReceiptNumber);
+            string qrText = String.Format(@"GB ID: {0}, Date: {1}, Receipt Number: {2}, Chatrel Amount: {3}, Paid by GBID: {4}", sGBID, dtPayment.ToString("dd-MM-yyyy"), sReceiptNumber , nChatrelTotalAmount.ToString(), sPaidByGBID);
             QRCodeGenerator _qrCode = new QRCodeGenerator();
             QRCodeData _qrCodeData = _qrCode.CreateQrCode(qrText, QRCodeGenerator.ECCLevel.Q);
             QRCode qrCode = new QRCode(_qrCodeData);
