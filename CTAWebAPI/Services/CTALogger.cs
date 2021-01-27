@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using TimeZoneConverter;
 
 namespace CTAWebAPI.Services
 {
@@ -44,7 +45,7 @@ namespace CTAWebAPI.Services
                     sEventName = sEventName,
                     sDescription = sDescription,
                     sStackTrace = sStackTrace,
-                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
                     nEnteredBy = nEnteredBy
                 };
                 _actionLoggerRepository.Add(actionLogger);
@@ -80,7 +81,7 @@ namespace CTAWebAPI.Services
                 {
                     AuditLog auditLogger = new AuditLog()
                     {
-                        dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                        dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
                         nFeatureID = nFeatureID,
                         nRegionID = nRegionID,
                         nRecordID = nRecordID,
@@ -116,7 +117,7 @@ namespace CTAWebAPI.Services
             {
                 AuditLog auditLogger = new AuditLog()
                 {
-                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
                     nFeatureID = nFeatureID,
                     nRegionID = nRegionID,
                     nRecordID = nRecordID,

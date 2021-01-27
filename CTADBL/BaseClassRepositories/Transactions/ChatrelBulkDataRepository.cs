@@ -6,6 +6,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using TimeZoneConverter;
 
 namespace CTADBL.BaseClassRepositories.Transactions
 {
@@ -64,8 +65,8 @@ namespace CTADBL.BaseClassRepositories.Transactions
             foreach(ChatrelBulkData data in chatrelBulkData)
             {
                 data.sBatchNumber = guid;
-                data.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                data.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                data.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                data.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                 int inserted = Add(data);
                 if(inserted <= 0)
                 {

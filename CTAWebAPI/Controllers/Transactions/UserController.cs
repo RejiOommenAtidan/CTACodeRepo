@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using TimeZoneConverter;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
@@ -190,8 +191,8 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         return Problem(message, null, 403);
                     }
-                    user.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                    user.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    user.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    user.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     user.sPassword = PasswordEncryption.EncryptString(user.sPassword);
                     _userRepository.Add(user);
 
@@ -254,7 +255,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         User fetchedUser = _userRepository.GetUserById(Id);
                         user.nEnteredBy = fetchedUser.nEnteredBy;
                         user.dtEntered = fetchedUser.dtEntered;
-                        user.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        user.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                         user.sPassword = PasswordEncryption.EncryptString(user.sPassword);
                         _userRepository.Update(user);
 
@@ -458,7 +459,7 @@ namespace CTAWebAPI.Controllers.Transactions
                             changePasswordVM.sNewPassword = PasswordEncryption.EncryptString(changePasswordVM.sNewPassword);
                             fetchedFromDB.sPassword = changePasswordVM.sNewPassword;
                             fetchedFromDB.nUpdatedBy = changePasswordVM.nUserId;
-                            fetchedFromDB.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                            fetchedFromDB.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                             _userRepository.Update(fetchedFromDB);
 
                             #region Alert Logging 

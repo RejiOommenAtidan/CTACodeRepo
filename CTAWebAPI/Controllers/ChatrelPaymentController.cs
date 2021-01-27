@@ -16,6 +16,7 @@ using System.Reflection;
 using MailKit.Net.Smtp;
 using MimeKit;
 using System.Threading.Tasks;
+using TimeZoneConverter;
 
 namespace CTAWebAPI.Controllers
 {
@@ -293,7 +294,7 @@ namespace CTAWebAPI.Controllers
             message.To.Add(to);
             message.Subject = String.Format("Email from {0}, GreenBook Id: {1}", sName, sGBID);
             
-            message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+            message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
             message.Body = messageBody.ToMessageBody();
             // Message ready. Now to use smtp client to despatch message
             SmtpClient smtpClient = new SmtpClient();

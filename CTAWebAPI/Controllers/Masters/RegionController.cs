@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TimeZoneConverter;
+
 namespace CTAWebAPI.Controllers.Masters
 {
     
@@ -105,8 +107,8 @@ namespace CTAWebAPI.Controllers.Masters
                         return Problem(message, null, 403);
                     }
 
-                    region.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                    region.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    region.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    region.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
 
                     _regionRepository.Add(region);
 
@@ -159,7 +161,7 @@ namespace CTAWebAPI.Controllers.Masters
                         Region fetchedregion = _regionRepository.GetRegionById(ID);
                         region.dtEntered = fetchedregion.dtEntered;
                         region.nEnteredBy = fetchedregion.nEnteredBy;
-                        region.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        region.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                         _regionRepository.Update(region);
 
                         #region Audit Log

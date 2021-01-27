@@ -4,6 +4,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using CTADBL.BaseClasses;
 using CTADBL.BaseClasses.Transactions;
+using TimeZoneConverter;
 
 namespace CTADBL.ViewModels
 {
@@ -273,7 +274,7 @@ namespace CTADBL.ViewModels
         {
             get
             {
-                return greenBook.dtDOB.HasValue ? TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Year - greenBook.dtDOB.Value.Year : (int?)null ;
+                return greenBook.dtDOB.HasValue ? TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")).Year - greenBook.dtDOB.Value.Year : (int?)null ;
             }
         }
     }

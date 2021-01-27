@@ -26,6 +26,7 @@ using System.Text;
 using DinkToPdf.Contracts;
 using DinkToPdf;
 using System.IO;
+using TimeZoneConverter;
 
 namespace ChatrelPaymentWebAPI.Controllers
 {
@@ -351,7 +352,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             message.To.Add(to);
             message.Subject = String.Format("Email from {0}, GreenBook Id: {1}", sName, sGBID);
 
-            message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+            message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time"));
             message.Body = messageBody.ToMessageBody();
             // Message ready. Now to use smtp client to despatch message
             SmtpClient smtpClient = new SmtpClient();

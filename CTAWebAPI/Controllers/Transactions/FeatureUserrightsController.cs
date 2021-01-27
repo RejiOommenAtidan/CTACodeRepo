@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TimeZoneConverter;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
@@ -130,8 +131,8 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
-                    featureUserrights.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")); 
-                    featureUserrights.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    featureUserrights.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")); 
+                    featureUserrights.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     _featureUserrightsRepository.Add(featureUserrights);
 
                     #region Information Logging
@@ -189,7 +190,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         featureUserright.bRights = !fetchedFeatureUserright.bRights;
                         featureUserright.dtEntered = fetchedFeatureUserright.dtEntered;
                         featureUserright.nEnteredBy = fetchedFeatureUserright.nEnteredBy;
-                        fetchedFeatureUserright.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        fetchedFeatureUserright.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     //featureUserright.nEnteredBy;: TODO
                     _featureUserrightsRepository.Update(featureUserright);
 

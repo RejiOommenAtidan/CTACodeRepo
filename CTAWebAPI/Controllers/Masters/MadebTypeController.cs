@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TimeZoneConverter;
 
 namespace CTAWebAPI.Controllers.Masters
 {
@@ -107,8 +108,8 @@ namespace CTAWebAPI.Controllers.Masters
                 if (ModelState.IsValid)
                 {
                     madebType.nMadebFeatureId = 0;
-                    madebType.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                    madebType.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    madebType.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    madebType.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
 
                     /* TO DO: Catch User ID and update the following properties
                      * nEnteredBy
@@ -164,7 +165,7 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         madebTypeToUpdate.nEnteredBy = madebType.nEnteredBy;
                         madebTypeToUpdate.dtEntered = madebType.dtEntered;
-                        madebTypeToUpdate.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        madebTypeToUpdate.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                         
                         /*To Do:
                         ===> countryToUpdate.nUpdatedBy =  //catch current user id here

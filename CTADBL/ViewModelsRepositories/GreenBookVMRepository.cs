@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using TimeZoneConverter;
 
 namespace CTADBL.ViewModelsRepositories
 {
@@ -146,13 +147,13 @@ namespace CTADBL.ViewModelsRepositories
                 GreenBookVM greenBookVM = GetDetails(GetGreenbookVMRecord("sGBID", sGBID));
                 //RecentlySearchedGB recentlySearched = new RecentlySearchedGB
                 //{
-                //    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                //    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
                 //    nEnteredBy = nUserId,
                 //    nGBID = Convert.ToInt32(sGBID),
                 //    nUserID = nUserId
                 //};
                 RecentlySearchedGB recentlySearched = new RecentlySearchedGB();
-                recentlySearched.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                recentlySearched.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                 recentlySearched.nEnteredBy = nUserId;
                 recentlySearched.nGBID = Convert.ToInt32(sGBID);
                 recentlySearched.nUserID = nUserId;
@@ -260,7 +261,7 @@ namespace CTADBL.ViewModelsRepositories
 
                         if (item.Value > 0)
                         {
-                            int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Year - Convert.ToInt32(item.Value);
+                            int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")).Year - Convert.ToInt32(item.Value);
                             addToSql += String.Format(@"year(gb.dtDOB) <= {0} and ", year);
                         }
 
@@ -269,7 +270,7 @@ namespace CTADBL.ViewModelsRepositories
                     {
                         if (item.Value > 0)
                         {
-                            int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Year - Convert.ToInt32(item.Value);
+                            int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")).Year - Convert.ToInt32(item.Value);
                             addToSql += String.Format(@"year(gb.dtDOB) >= {0} and ", year);
                         }
 

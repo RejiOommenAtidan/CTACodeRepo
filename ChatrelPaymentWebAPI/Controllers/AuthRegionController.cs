@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TimeZoneConverter;
 
 namespace ChatrelPaymentWebAPI.Controllers
 {
@@ -115,8 +116,8 @@ namespace ChatrelPaymentWebAPI.Controllers
                     //{
                     //    return BadRequest("User object cannot be NULL");
                     //}
-                    authRegion.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                    authRegion.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    authRegion.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time"));
+                    authRegion.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time"));
 
                     /* TO DO: Catch User ID and update the following properties
                      * nEnteredBy
@@ -178,7 +179,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                         regionToUpdate.dtEntered = region.dtEntered;
                         //to uncomment later
                         //regionToUpdate.nEnteredBy = // catch current user id here
-                        regionToUpdate.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        regionToUpdate.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time"));
                         int updated = _authRegionRepository.Update(regionToUpdate);
                         if (updated > 0)
                         {
