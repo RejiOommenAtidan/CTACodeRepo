@@ -33,7 +33,7 @@ const Dashboard = ()  => {
     e.preventDefault();
     console.log("form submitted", sGBID);
     
-    axios.get(`http://localhost:52013/api/GreenBook/GetPersonalDetailsFromGBID/?sGBID=`+sGBID)
+    axios.get(`GreenBook/GetPersonalDetailsFromGBID/?sGBID=`+sGBID)
     .then(resp => {
       if (resp.status === 200) {
         

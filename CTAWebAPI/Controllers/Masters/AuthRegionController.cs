@@ -73,6 +73,14 @@ namespace CTAWebAPI.Controllers.Masters
             return GetAuthRegionsCommon();
         }
 
+        [AuthorizeRole(FeatureID = 48)]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetAuthRegionsForAddNewChatrel()
+        {
+            return GetAuthRegionsCommon();
+        }
+
         [AuthorizeRole(FeatureID = 22)]
         [HttpGet]
         [Route("[action]")]

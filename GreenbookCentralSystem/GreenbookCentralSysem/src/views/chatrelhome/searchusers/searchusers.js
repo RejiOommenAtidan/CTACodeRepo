@@ -77,15 +77,16 @@ export default () => {
   //validations
   const { register, handleSubmit, watch, errors } = useForm();
 
-  // for dropdowns
+  
   const [selectData, setSelectData] = useState({});
   const [dataAPI, setdataAPI] = useState([]);
   const [loading, setLoading] = useState(false);
+  
   const [profileGBID, setProfileGBID] = useState();
   const [viewModal, setViewModal] = useState(false);
   const [noRecords, setNoRecords] = useState(false);
   const [filtering, setFiltering] = React.useState(false);
-  
+  const [error, setError] = useState(false);
 
   // TextFields
   const [sGBID, setGBID] = useState();
@@ -254,57 +255,28 @@ export default () => {
   };
   
 
-  // const makeList = (makeListParams, sAuthRegion, sMadebType) => {
-  //   setLoading(true);
-  //   setNoRecords(false);
-  //   setdataAPI([]);
-  //   console.log("Make List Params recd. \n", makeListParams);
-  //   console.log("Authregion & madebtype", sAuthRegion, sMadebType);
-  //   setAuthRegion(sAuthRegion);
-  //   setMadebType(sMadebType);
-  //   setAddToTitle(`Authority Region: ${sAuthRegion}, Madeb Type: ${sMadebType}`);
-  //   axios.post(`MakeList/MakeList`, makeListParams)
-  //     .then(resp => {
-  //       if (resp.status === 200) {
-  //         if (resp.data === 'No Records') {
-  //           setNoRecords(true);
-  //           setdataAPI([]);
-  //           setLoading(false);
+  useEffect(() => {
+    handleFormSubmit();
+  }, [sGBID, sFirstName, sFathersName, sMothersName]);
 
-  //           return;
-  //         }
-  //         //console.log(resp.data);
-  //         setNoRecords(false);
-  //         let i = 1;
-  //         resp.data.forEach((element) => {
-  //           element.nSerialNo = i;
-  //           element.sFirstName=element.sFirstName+(element.sLastName? ' '+ element.sLastName : '');
-  //           i++;
-  //         })
-  //         setdataAPI(resp.data);
-  //         if (!makeListParams.bPrinted) {
-  //           setMakeTable(true);
-  //         }
-  //         else {
-  //           setMakeTable(false);
-  //         }
-  //         setLoading(false);
-  //         console.log("After adding serial number", dataAPI);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.log(error.config);
-  //       console.log(error.message);
-  //       setLoading(false);
-  //     });
-  // };
-  function handleFormSubmit(e) {
-    e.preventDefault();
+
+  function handleFormSubmit() {
+    //e.preventDefault();
     setLoading(true);
     setNoRecords(false);
     setdataAPI([]);
     console.log("Form submission called.");
     
+    if(!sGBID || sGBID.length < 3){
+      setError(true);
+      setLoading(false);
+      return;
+    }
+
+    else{
+      setError(false);
+    }
+
     const searchObj = {
       sGBID,
       sFirstName,
@@ -348,7 +320,7 @@ export default () => {
           <Paper style={{ padding: '15px', paddingTop: '20px',textAlign:'center' }}>
             <h2>Search Users</h2>
             <div>
-              <form onSubmit={handleFormSubmit}>
+              {/* <form onSubmit={handleFormSubmit}> */}
                 <FormControl className={classes.formControl}>
                   <TextField
                     id='sGBID'
@@ -357,15 +329,22 @@ export default () => {
                     autoFocus
                     required={true}
                     className = {classes.textField}
-                    onChange={(e) => setGBID(e.target.value)}
+                    onChange={(e) => {
+                      setGBID(e.target.value);
+                      //handleFormSubmit();
+                    }}
                   />
+                  {error && <span style={{color: 'red'}}>Enter Greenbook ID</span>}
                 </FormControl>
                 <FormControl className={classes.formControl}>
                   <TextField
                     id='sFirstName'
                     name='sFirstName'
                     label='First Name'
-                    onChange={(e) => setFirstName(e.target.value)}
+                    onChange={(e) => {
+                      setFirstName(e.target.value);
+                      //handleFormSubmit();
+                    }}
                   />
                 </FormControl>
                 <FormControl className={classes.formControl}>
@@ -373,7 +352,10 @@ export default () => {
                     id='sFathersName'
                     name='sFathersName'
                     label="Father's Name"
-                    onChange={(e) => setFathersName(e.target.value)}
+                    onChange={(e) => {
+                      setFathersName(e.target.value);
+                      //handleFormSubmit();
+                    }}
                   />
                 </FormControl>
                 <FormControl className={classes.formControl}>
@@ -381,10 +363,13 @@ export default () => {
                     id='sMothersName'
                     name='sMothersName'
                     label="Mother's Name"
-                    onChange={(e) => setMothersName(e.target.value)}
+                    onChange={(e) => {
+                      setMothersName(e.target.value);
+                      //handleFormSubmit();
+                    }}
                   />
                 </FormControl>
-                <FormControl className={classes.formControl} >
+                {/* <FormControl className={classes.formControl} >
                   <Button
                     variant={sButtonVariant}
                     color={sButtonColor}
@@ -392,8 +377,8 @@ export default () => {
                     type="submit"
                     style={{ fontSize: '1em', marginTop: '16px', marginLeft: '10px' }}>Search Users
                   </Button>
-                </FormControl>
-              </form>
+                </FormControl> */}
+              {/* </form> */}
             </div>
             <br />
             {loading &&

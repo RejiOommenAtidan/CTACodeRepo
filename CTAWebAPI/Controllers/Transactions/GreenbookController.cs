@@ -5,6 +5,7 @@ using CTADBL.Entities;
 using CTADBL.ViewModels;
 using CTADBL.ViewModelsRepositories;
 using CTAWebAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -238,6 +239,7 @@ namespace CTAWebAPI.Controllers.Transactions
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetBasicDetailsFromGBID(string sGBID)
@@ -271,6 +273,7 @@ namespace CTAWebAPI.Controllers.Transactions
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         public IActionResult GetPersonalDetailsFromGBID(string sGBID)

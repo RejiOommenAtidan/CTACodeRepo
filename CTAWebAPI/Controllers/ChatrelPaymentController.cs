@@ -15,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using MailKit.Net.Smtp;
 using MimeKit;
+using System.Threading.Tasks;
 
 namespace CTAWebAPI.Controllers
 {
@@ -307,7 +308,7 @@ namespace CTAWebAPI.Controllers
         [AuthorizeRole(FeatureID = 50)]
         [HttpGet]
         [Route("[action]")]
-        public IActionResult SearchUsers(string sGBID, string sFirstName = null, string sFathersName = null, string sMothersName = null)
+        public async Task<IActionResult> SearchUsers(string sGBID, string sFirstName = null, string sFathersName = null, string sMothersName = null)
         {
             if (String.IsNullOrEmpty(sGBID.Trim()))
             {
@@ -315,7 +316,7 @@ namespace CTAWebAPI.Controllers
             }
             try
             {
-                IEnumerable<object> result = _chatrelPaymentVMRepository.SearchUsers(sGBID, sFirstName, sFathersName, sMothersName);
+                IEnumerable<object> result = await _chatrelPaymentVMRepository.SearchUsers(sGBID, sFirstName, sFathersName, sMothersName);
                 if(result.Count() > 0)
                 {
                     #region Information Logging 

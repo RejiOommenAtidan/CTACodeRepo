@@ -20,9 +20,14 @@ import EmailIcon from '@material-ui/icons/Email';
 
 import { Alerts } from '../../alerts';
 //import { AddDialog, EditDialog } from './dialog';
-//import { ViewDialog } from '../../search/dialog';
+import { ViewDialog } from './dialog';
+
 import { oOptions, oTableIcons, sDateFormat, sButtonSize, modifyHeaders, sISODateFormat } from '../../../config/commonConfig';
+
+import AddSingleChatrel from 'views/chatrelhome/addchatrel';
+
 //import MyComp from '../../common/filtercomponent';
+
 
 const tableIcons = oTableIcons;
 
@@ -37,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(3)
     }
   },
+  
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
@@ -79,14 +85,18 @@ export default function ChatrelList(){
   const classes = useStyles();
   const history = useHistory();
   
+  
+  
 
-
+  const [profileGBID, setProfileGBID] = useState();
+  const [viewModal, setViewModal] = useState(false);
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   const [selectData, setSelectData] = useState([]);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
   const [isLoading, setisLoading] = React.useState(true);
+  const [addModal, setAddModal] = useState(false);
 
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
@@ -103,8 +113,8 @@ export default function ChatrelList(){
     setSnackbar(false);
   };
   
-  const handleEditClickClose = () => {
-    setEditModal(false);
+  const handleAddClickClose = () => {
+    setAddModal(false);
   };
 
   const viewReceipt = (sReceiptNumber) => {
@@ -117,7 +127,14 @@ export default function ChatrelList(){
       },
     });
   };
-
+  const viewGb = (GBID) => {
+    console.log(GBID)
+    setProfileGBID(GBID);
+    setViewModal(true);
+  }
+  const handleViewClickClose = () => {
+    setViewModal(false);
+  };
   
 
   const columns = [
@@ -158,6 +175,7 @@ export default function ChatrelList(){
         padding: '5px',
         borderRight: '1px solid grey'
       },
+      render: rowData =>  <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewGb(rowData['sGBID']) }}><span><u>{rowData['sGBID']}</u></span></Button>
     },
     {
       field: "sChatrelReceiptNumber",
@@ -472,10 +490,12 @@ export default function ChatrelList(){
     });
     
   },[]);
-
+  
+  
   return (
   <>
       <Grid container spacing={1}>
+      
         <Grid item xs={12}>
          
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
@@ -491,7 +511,7 @@ export default function ChatrelList(){
               //   icon: AddBox,
               //   tooltip: 'Add a Payment',
               //   isFreeAction: true,
-              //   onClick: () => history.push('/ChatrelPay')
+              //   onClick: () => setAddModal(true)
               // },
               {
                 icon: Search,
@@ -509,11 +529,22 @@ export default function ChatrelList(){
             editAPICall={editAPICall}
             chatrelObj={chatrelObj}
           />} */}
+
+          {addModal && <AddSingleChatrel
+                      addModal={addModal}
+                      handleAddClickClose = {handleAddClickClose}
+                      ></AddSingleChatrel>}
           {snackbar && <Alerts
             alertObj={alertObj}
             snackbar={snackbar}
             snackbarClose={snackbarClose}
           />}
+          {viewModal && <ViewDialog
+              viewModal={viewModal}
+              classes={classes}
+              handleViewClickClose={handleViewClickClose}
+              sGBID={profileGBID}
+              />}
         </Grid>
       </Grid>
     </>

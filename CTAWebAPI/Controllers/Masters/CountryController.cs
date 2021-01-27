@@ -98,6 +98,14 @@ namespace CTAWebAPI.Controllers.Masters
             return GetCountriesCommon();
         }
 
+        [AuthorizeRole(FeatureID = 48)]
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult GetCountriesForAddNewChatrel()
+        {
+            return GetCountriesCommon();
+        }
+
         [AuthorizeRole(FeatureID = 23)]
         [HttpGet]
         [Route("[action]")]
