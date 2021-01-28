@@ -154,6 +154,7 @@ export const GBDetailScreen = (props) => {
       .then((response) => {
         if (response.status === 200) {
           if (response.data.result == 'Verified') {
+            console.log(response.data.sJwtToken)
             axios.defaults.headers.common[
               'Authorization'
             ] = `Bearer ${response.data.sJwtToken}`;

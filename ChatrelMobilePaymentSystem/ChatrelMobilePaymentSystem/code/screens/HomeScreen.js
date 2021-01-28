@@ -140,6 +140,7 @@ const HomeScreen = (props) => {
       )
       .then((resp) => {
         if (resp.status === 200) {
+          debugger;
           fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
             .then((response) => response.json())
             .then((data) => {
@@ -153,8 +154,9 @@ const HomeScreen = (props) => {
         setbLoader(false);
       })
       .catch((error) => {
-        // console.log(error.message);
-        // console.log(error.config);
+        debugger;
+        console.log("Error Message: "+error.message);
+        console.log(error.config);
         setbLoader(false);
         Alert.alert(
           'Invalid details for Chatrel',
