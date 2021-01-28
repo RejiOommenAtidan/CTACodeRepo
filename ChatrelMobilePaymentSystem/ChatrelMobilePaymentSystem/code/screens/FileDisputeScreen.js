@@ -49,7 +49,7 @@ export const FileDisputeScreen = (props) => {
 
   //For Name
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
-  const [sName, setName] = React.useState(oGoogle.name);
+  const [sName, setName] = React.useState(oGoogle.user.name);
 
   const nNumberOfLines = 9;
 

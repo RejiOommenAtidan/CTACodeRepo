@@ -5,8 +5,11 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-////Local
-export const sAPIBASEURL = "http://10.0.2.2:5000/api";
+////Local Windows
+export const sAPIBASEURL = "http://10.0.2.2:49700/api";
+
+////Local mac
+// export const sAPIBASEURL = "http://10.0.2.2:5000/api";
 
 ////QA
 // export const sAPIBASEURL = 'https://chatrel-webapi.azurewebsites.net/api';

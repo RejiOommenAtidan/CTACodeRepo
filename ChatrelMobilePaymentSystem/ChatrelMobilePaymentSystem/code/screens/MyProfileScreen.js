@@ -788,10 +788,10 @@ export const MyProfileScreen = (props) => {
               size="large"
               containerStyle={styles.avatarContainerStyle}
               source={{
-                uri: oGoogle.photo,
+                uri: oGoogle.user.photo,
               }}
             />
-            <Badge
+            {/*<Badge
               badgeStyle={{
                 width: nBadgeSize,
                 height: nBadgeSize,
@@ -799,7 +799,7 @@ export const MyProfileScreen = (props) => {
               }}
               status="success"
               containerStyle={styles.badgeContainerStyle}
-            />
+            />*/}
           </View>
         }
         titleStyle={{}}>
@@ -808,7 +808,7 @@ export const MyProfileScreen = (props) => {
           <View style={styles.labelContainer}>
             <Text style={styles.labelComponent}>FULL NAME</Text>
             <Text style={styles.valueComponent}>
-              {oGoogle.givenName + ' ' + oGoogle.familyName}
+              {oGoogle.user.givenName + ' ' + oGoogle.user.familyName}
             </Text>
           </View>
           <View style={styles.labelContainer}>
@@ -842,7 +842,7 @@ export const MyProfileScreen = (props) => {
                 textAlign: 'right',
                 marginBottom: 0,
               }}>
-              {oGoogle.email}
+              {oGoogle.user.email}
               {/* {oUserHardcodedMyProfile.sName} */}
             </Text>
           </View>
