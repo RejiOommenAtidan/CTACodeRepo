@@ -15,6 +15,7 @@ import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
 import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+import {Loader} from '../components/Loader';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,

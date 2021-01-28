@@ -37,6 +37,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import { Icon } from 'react-native-elements';
 import Accordion from 'react-native-collapsible/Accordion';
+import {Loader} from '../components/Loader';
 import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';

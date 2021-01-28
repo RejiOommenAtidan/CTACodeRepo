@@ -36,6 +36,7 @@ import {
 import {sFontName, sFontNameBold} from '../constants/CommonConfig';
 import axios from 'axios';
 import {useSelector, useDispatch} from 'react-redux';
+import {Loader} from '../components/Loader';
 import {storeGBDetails} from '../store/actions/GBDetailsAction';
 import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 

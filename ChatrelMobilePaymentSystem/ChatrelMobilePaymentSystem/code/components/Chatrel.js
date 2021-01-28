@@ -13,6 +13,7 @@ import {Picker, PickerIOS} from '@react-native-picker/picker';
 import IOSPicker from 'react-native-ios-picker';
 import {sFontName, sFontNameBold} from '../constants/CommonConfig';
 import {useIsFocused} from '@react-navigation/native';
+import {Loader} from '../components/Loader';
 // import DropDownPicker from 'react-native-dropdown-picker';
 // import Icon from 'react-native-vector-icons/Feather';
 // import ModalDropdown from 'react-native-modal-dropdown';

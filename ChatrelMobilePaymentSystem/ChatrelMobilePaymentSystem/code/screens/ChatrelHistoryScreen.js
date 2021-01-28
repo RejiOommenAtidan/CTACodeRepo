@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
+import {Loader} from '../components/Loader';
 import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 import {
   widthPercentageToDP as wp,
