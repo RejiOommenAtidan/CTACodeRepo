@@ -16,7 +16,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useSelector} from 'react-redux';
-import RNHTMLtoPDF from 'react-native-html-to-pdf';
+// import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import CTALogo from '../../code/assets/CTALogo.png';
 import {sFontName, sFontNameBold} from '../constants/CommonConfig';
 import {Avatar, Badge, Icon, withBadge, Card} from 'react-native-elements';
@@ -650,17 +650,17 @@ export const MyProfileScreen = (props) => {
                       <td width="20"></td>
                     </tr>
                   </table>`;
-      try {
-        let file = await RNHTMLtoPDF.convert({
-          html: sMyHTML,
-          fileName: 'Test',
-          directory: 'Download',
-          fonts: ['../../code/assets/fonts/Microsoft Himalaya.ttf'],
-        });
-        alert(file.filePath);
-      } catch (err) {
-        console.error(err);
-      }
+      //try {
+        //let file = await RNHTMLtoPDF.convert({
+          //html: sMyHTML,
+         // fileName: 'Test',
+         // directory: 'Download',
+          //fonts: ['../../code/assets/fonts/Microsoft Himalaya.ttf'],
+        //});
+        //alert(file.filePath);
+      //} catch (err) {
+        //console.error(err);
+      //}
     }
   };
 

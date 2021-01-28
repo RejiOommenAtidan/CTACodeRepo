@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Platform,
   ActivityIndicator,
+  Linking
 } from 'react-native';
 import {Picker, PickerIOS} from '@react-native-picker/picker';
 import IOSPicker from 'react-native-ios-picker';
@@ -302,7 +303,7 @@ export const Chatrel = (props) => {
     tempSummaryObj.sPayPal_Status = paypalObj.response.state;
     tempSummaryObj.sPayPal_ID = paypalObj.response.id;
     tempSummaryObj.sPayPal_Currency_Code = 'USD';
-    tempSummaryObj.sPayPal_Currency_Value = nGrandTotal;
+    tempSummaryObj.sPayPal_Currency_Value = nGrandTotal.toString();
     tempSummaryObj.sPayPal_Response_Object = JSON.stringify(paypalObj);
 
     if (gbChatrelsNull) {
@@ -320,35 +321,34 @@ export const Chatrel = (props) => {
 
     console.log('Final Obj:', finalObj);
 
-    // axios
-    //   .post(`/ChatrelPayment/AddNewChatrelPayment`, finalObj)
-    //   .then((resp) => {
-    //     if (resp.status === 200) {
-    //       setbLoader(false)
-    //       //alert(resp.data);
-    //       console.log(resp.data);
-    //       resp.data.receipt.sGBID =
-    //         '0'.repeat(7 - resp.data.receipt.sGBID.length) +
-    //         resp.data.receipt.sGBID;
+    axios
+      .post(`/ChatrelPayment/AddNewChatrelPayment`, finalObj)
+      .then((resp) => {
+        if (resp.status === 200) {
+          setbLoader(false);
+          //alert(resp.data);
+          console.log(resp.data);
+         
 
-    //       // setBackdrop(false);
-    //       // setAlertMessage('Chatrel recorded successfully.');
-    //       // setAlertType('success');
-    //       // snackbarOpen();
-    //       // setReceiptData(resp.data);
-    //       // setPaymentDiv(false);
-    //       // setSuccessDiv(true);
-    //       /* history.goBack();
-    //   console.log(resp.data); */
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.config);
-    //     console.log(error.message);
-    //     console.log(error.response);
-    //     setbLoader(false);
-    //     alert("Something went wrong, please try again later");
-    //   });
+          // setBackdrop(false);
+          // setAlertMessage('Chatrel recorded successfully.');
+          // setAlertType('success');
+          // snackbarOpen();
+          // setReceiptData(resp.data);
+          
+          // setPaymentDiv(false);
+          // setSuccessDiv(true);
+          /* history.goBack();
+      console.log(resp.data); */
+        }
+      })
+      .catch((error) => {
+        console.log(error.config);
+        console.log(error.message);
+        console.log(error.response);
+        setbLoader(false);
+        alert("Something went wrong, please try again later");
+      });
 
     // const {
     //     nonce,
@@ -411,6 +411,7 @@ export const Chatrel = (props) => {
                 setsGBID(resp.data.chatrelPayment.sGBId);
                 setDataAPI(resp.data);
                 setSummaryData(resp.data.chatrelPayment);
+                setDonationData(resp.data.gbChatrelDonation);
                 setnSelectedAuthregion(
                   lAuthRegions.find((x) => x.id === resp.data.nAuthRegionID),
                 );
@@ -693,7 +694,7 @@ export const Chatrel = (props) => {
                         </Text>
                         {Platform.OS === 'android' && (
                           <Picker
-                            enabled={outstanding}
+                            //enabled={outstanding}
                             collapsable={true}
                             mode={'dialog'}
                             prompt={'AUTHORITY REGION'}
@@ -1245,10 +1246,11 @@ export const Chatrel = (props) => {
                 },
                 buttonStyle: styles.paypalButtonComponent,
                 onPress: () => {
+                  // Linking.openURL('https://5f99d5ac2fc8.ngrok.io/PaypalTest');
                   RNPaypal.paymentRequest({
                     clientId: sPayPalClientID,
                     environment: RNPaypal.ENVIRONMENT.NO_NETWORK,
-                    intent: RNPaypal.INTENT.SALE,
+                    intent: RNPaypal.INTENT.ORDER,
                     price: nGrandTotal,
                     currency: 'USD',
                     description: `GRAND TOTAL`,
@@ -1257,7 +1259,7 @@ export const Chatrel = (props) => {
                     .then((response) => {
                       setbLoader(true);
                       //alert(response);
-                      //console.log(response);
+                      console.log(response);
                       //TODO: OUR CALLS
                       handlSubmitAfterPayPal(response);
                     })

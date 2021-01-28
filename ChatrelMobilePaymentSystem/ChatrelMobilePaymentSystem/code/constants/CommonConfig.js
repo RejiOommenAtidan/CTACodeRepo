@@ -24,7 +24,7 @@ export const sClientIDAndroid =
   '1071046831303-1naot2q7pull58cpifp3rosfn65bdrsc.apps.googleusercontent.com';
 export const sClientIDIOS = '1071046831303-84cupk037kmsgsdu94v1c79c069kv9ki.apps.googleusercontent.com';
 export const sPayPalClientID =
-  'Aa97-jCSZKlyGrIauDxygYtVHda-STWEetJRp7g1C5rxqCeeJqydrxG5mF0AF0DbIQPTMG1i8RLV1veq';
+  'AeIfCd7BHacsWwdqkIYfxmPQrN8UZU2Sap_dor00t7Z8Y9pLLJiwK_v2-lNy8vIhaSU9AFAiC5l8l7Gx';
 export const sFontName = 'JosefinSans-Regular';
 export const sFontNameBold = 'JosefinSans-Bold';
 export const errorContainer = {

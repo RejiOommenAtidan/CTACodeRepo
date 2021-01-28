@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   View,
@@ -6,15 +6,16 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
+  PermissionsAndroid
 } from 'react-native';
-import {Card, Button} from 'react-native-elements';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import { Card, Button } from 'react-native-elements';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -25,8 +26,11 @@ import {
   sFontName,
   sFontNameBold,
   oActivityIndicatorStyle,
+  sAPIBASEURL,
 } from '../constants/CommonConfig';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
+// import { DownloadDirectoryPath } from 'react-native-fs';
+import RNFetchBlob from 'react-native-fetch-blob'
 
 export const ChatrelHistoryScreen = (props) => {
   const [bLoader, setbLoader] = useState(true);
@@ -69,6 +73,95 @@ export const ChatrelHistoryScreen = (props) => {
   );
 
   const oGBDetails = useSelector((state) => state.GBDetailsReducer.oGBDetails);
+  const sJwtToken = useSelector((state) => state.GBDetailsReducer.sJwtToken);
+
+  const downloadFile = async (singleHistory) => {
+    try {
+      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        handleDownloadReceiptOnPress(singleHistory);
+      } else {
+        Alert.alert('Permission Denied!', 'You need to give storage permission to download the file');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+
+  const handleDownloadReceiptOnPress = (singleHistory) => {
+    console.log(singleHistory.sChatrelReceiptNumber);
+    // console.log("Receipt Number", sChatrelReceiptNumber);
+    // axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=` + singleHistory.sChatrelReceiptNumber, { responseType: 'blob' })
+    //   .then(resp => {
+    //     if (resp.status === 200) {
+    //       console.log("Response", resp);
+
+    const { dirs } = RNFetchBlob.fs;
+
+    RNFetchBlob.config({
+      fileCache: true,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        mediaScannable: true,
+        title: `Receipt.pdf`,
+        path: `${dirs.DownloadDir}/Receipt.pdf`,
+      },
+    })
+      .fetch('GET', sAPIBASEURL + '/ChatrelPayment/GetReceipt/?sReceiptNumber=' + singleHistory.sChatrelReceiptNumber, {
+        Authorization: 'Bearer ' + sJwtToken,
+      })
+      .then(
+        resp => {
+          if (resp.status === 200) {
+            alert("Response: Download Successful");
+          }
+        }
+      ).catch(error => {
+        console.log("Error ", error.response);
+        if (error.response) {
+          console.error(error.response);
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+
+
+    // const url = URL.createObjectURL(new Blob([resp.data]));
+    // const link = document.createElement("a");
+    // link.href = url;
+    // link.setAttribute("download", "ChatrelReceipt.pdf");
+    // document.body.appendChild(link);
+    // link.click();
+    //   }
+    // })
+    // .catch(error => {
+    //   console.log("Error ", error.response);
+    //   if (error.response) {
+    //     console.error(error.response);
+    //     console.error(error.response.data);
+    //     console.error(error.response.status);
+    //     console.error(error.response.headers);
+    //   } else if (error.request) {
+    //     console.warn(error.request);
+    //   } else {
+    //     console.error('Error', error.message);
+    //   }
+    //   console.log(error.config);
+    // })
+    // .then(release => {
+    //   //console.log(release); => udefined
+    // });
+  };
 
   const getChatrelHistoryDetails = () => {
     axios
@@ -99,12 +192,6 @@ export const ChatrelHistoryScreen = (props) => {
   }, [isFocused]);
 
   const [paymentHistory, setPaymentHistory] = useState([]);
-
-  const handleDownloadReceiptOnPress = (singleHistory) => {
-    console.log(singleHistory);
-    //setbLoader(true);
-    //TODO: OR CODE GEN & RECEIPT GEN & SAVE TO PHONE
-  };
 
   return (
     <View style={styles.mainContainer}>
@@ -192,11 +279,11 @@ export const ChatrelHistoryScreen = (props) => {
 
                   <View style={styles.labelContainer}>
                     <Text
-                      style={{...styles.labelComponent, textAlign: 'right'}}>
+                      style={{ ...styles.labelComponent, textAlign: 'right' }}>
                       CHATREL DATE
                     </Text>
                     <Text
-                      style={{...styles.valueComponent, textAlign: 'right'}}>
+                      style={{ ...styles.valueComponent, textAlign: 'right' }}>
                       {Moment(singleHistory.dtPayment).format(sDateFormat)}
                     </Text>
                   </View>
@@ -224,11 +311,11 @@ export const ChatrelHistoryScreen = (props) => {
 
                   <View style={styles.labelContainer}>
                     <Text
-                      style={{...styles.labelComponent, textAlign: 'right'}}>
+                      style={{ ...styles.labelComponent, textAlign: 'right' }}>
                       PAYMENT MODE
                     </Text>
                     <Text
-                      style={{...styles.valueComponent, textAlign: 'right'}}>
+                      style={{ ...styles.valueComponent, textAlign: 'right' }}>
                       {singleHistory.sPaymentMode}
                     </Text>
                   </View>
@@ -256,11 +343,11 @@ export const ChatrelHistoryScreen = (props) => {
 
                   <View style={styles.labelContainer}>
                     <Text
-                      style={{...styles.labelComponent, textAlign: 'right'}}>
+                      style={{ ...styles.labelComponent, textAlign: 'right' }}>
                       PAID BY GREEN BOOK ID
                     </Text>
                     <Text
-                      style={{...styles.valueComponent, textAlign: 'right'}}>
+                      style={{ ...styles.valueComponent, textAlign: 'right' }}>
                       {oGBDetails.sGBID}
                     </Text>
                   </View>
@@ -283,7 +370,8 @@ export const ChatrelHistoryScreen = (props) => {
                   <Button
                     title={'DOWNLOAD RECEIPT'}
                     onPress={() => {
-                      handleDownloadReceiptOnPress(singleHistory);
+                      downloadFile(singleHistory);
+                      //handleDownloadReceiptOnPress(singleHistory);
                     }}
                     iconRight
                     icon={{
@@ -341,7 +429,7 @@ export const ChatrelHistoryScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: {backgroundColor: Colors.white},
+    cardStyle: { backgroundColor: Colors.white },
   };
 };
 
@@ -396,7 +484,7 @@ const styles = StyleSheet.create({
     //For iOS
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: {width: 5, height: 5},
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 1,
 
     //For Android

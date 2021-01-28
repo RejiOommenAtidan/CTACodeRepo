@@ -17,19 +17,19 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import {useSelector} from 'react-redux';
-import {Avatar} from 'react-native-elements';
+import { useSelector } from 'react-redux';
+import { Avatar } from 'react-native-elements';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Colors from '../../code/constants/Colors';
-import {sFontName, sFontNameBold} from '../constants/CommonConfig';
-import {GoogleSignin} from '@react-native-community/google-signin';
-import {useDispatch} from 'react-redux';
-import {removeGoogleCreds} from '../store/actions/GLoginAction';
-import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
-import {removeGBDetails} from '../store/actions/GBDetailsAction';
+import { sFontName, sFontNameBold } from '../constants/CommonConfig';
+import { GoogleSignin } from '@react-native-community/google-signin';
+import { useDispatch } from 'react-redux';
+import { removeGoogleCreds } from '../store/actions/GLoginAction';
+import { removeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
+import { removeGBDetails } from '../store/actions/GBDetailsAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {useNavigation} from '@react-navigation/native';
 
@@ -60,9 +60,9 @@ export const CustomSidebarMenu = (props) => {
           onPress: () => true,
           style: 'cancel',
         },
-        {text: 'Yes', onPress: () => removeCompleteDetails()},
+        { text: 'Yes', onPress: () => removeCompleteDetails() },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
     const removeCompleteDetails = async () => {
       try {
@@ -81,7 +81,7 @@ export const CustomSidebarMenu = (props) => {
     };
   };
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       {/*Avatar*/}
       <View
         style={{
@@ -103,7 +103,7 @@ export const CustomSidebarMenu = (props) => {
             }
           }
           source={{
-            uri: oGoogle?.photo,
+            uri: oGoogle?.user.photo,
           }}
         />
         <View
@@ -128,7 +128,7 @@ export const CustomSidebarMenu = (props) => {
               color: Colors.blackTextAPI,
               fontFamily: sFontName,
             }}>
-            {oGoogle?.givenName + ' ' + oGoogle?.familyName}
+            {oGoogle?.user.givenName + ' ' + oGoogle?.user.familyName}
           </Text>
           <Text
             style={{
@@ -139,7 +139,7 @@ export const CustomSidebarMenu = (props) => {
               color: Colors.blackTextAPI,
               fontFamily: sFontName,
             }}>
-            {oGoogle?.email}
+            {oGoogle?.user.email}
           </Text>
         </View>
       </View>
@@ -169,10 +169,10 @@ export const CustomSidebarMenu = (props) => {
       <DrawerContentScrollView {...props}>
         {/* {console.log(props)} */}
         {/* <DrawerItemList {...props} /> */}
-        {/* <View style={styles.customItem}>
+        {/*<View style={styles.customItem}>
           <Text
             onPress={() => {
-              Linking.openURL('https://aboutreact.com/');
+              Linking.openURL('https://cta-portal-webapi.azurewebsites.net/weatherforecast');
             }}>
             Rate Us
           </Text>
@@ -180,7 +180,7 @@ export const CustomSidebarMenu = (props) => {
             source={{uri: BASE_PATH + 'star_filled.png'}}
             style={styles.iconStyle}
           />
-        </View> */}
+        </View>*/}
         {state.routes.map((route) => {
           const {
             drawerLabel,
@@ -200,7 +200,7 @@ export const CustomSidebarMenu = (props) => {
               inactiveTintColor={inactiveTintColor}
               icon={drawerIcon}
               key={route.key}
-              label={({color, focused}) => (
+              label={({ color, focused }) => (
                 <Text
                   style={{
                     ...labelStyle,
