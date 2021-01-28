@@ -1,4 +1,4 @@
-import {Dimensions, Platform} from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import Colors from './Colors';
 import Resolution from './ResolutionBreakpoint';
 import {
@@ -48,10 +48,11 @@ export const oActivityIndicatorStyle = {
   bottom: 0,
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: Colors.black,
+  color: Colors.black,
+  // backsgroundColor: Colors.black,
   zIndex: 3,
-  elevation: 3,
-  opacity: 0.5,
+  // elevation: 3,
+   opacity: 0.5,
 };
 
 export const oRequiredStyles = {

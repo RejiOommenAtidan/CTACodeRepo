@@ -67,7 +67,7 @@ const HomeScreen = (props) => {
   const [dollarToRupees, setDollarToRupees] = React.useState(0.0);
   const [nChatrelTotalAmount, setnChatrelTotalAmount] = useState(0);
   const [bLoader, setbLoader] = useState(true);
-  const [activeSections, setactiveSections] = useState([]);
+  const [activeSections, setactiveSections] = useState([0]);
   const isFocused = useIsFocused();
   const aCard = [
     {
@@ -217,6 +217,7 @@ const HomeScreen = (props) => {
   useEffect(() => {
     if (isFocused) {
       setbLoader(true);
+      setactiveSections([0]);
       console.log('Home Called');
       getChatrelDetails();
     }
@@ -241,377 +242,381 @@ const HomeScreen = (props) => {
   //   opacity /* 1.0 ~ 0.0 */,
   // } = useCollapsibleHeader(HomeScreenOptions);
 
-  return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}>
-      <View style={styles.mainContainer}>
-        {bLoader && (
-          <ActivityIndicator
-            size={Platform.OS === 'ios' ? 0 : 'large'}
-            color={Colors.spinnerColor}
-            animating={true}
-            //hidesWhenStopped={true}
-            style={oActivityIndicatorStyle}
-          />
-        )}
-        {/* <Animated.FlatList
-     onScroll={onScroll}
-       contentContainerStyle={{ paddingTop: containerPaddingTop }}
-       scrollIndicatorInsets={{ top: scrollIndicatorInsetTop }}
-     /> */}
-        {/*<View style={styles.headerContainer}>
-          <Text style={styles.headerComponent}>Quick Actions</Text>
-        </View>*/}
-        {/*<View style={styles.cardContainer}>
-          {aCard.map((card, index) => {
-            return (
-              <View key={index} style={styles.singleCardContainer}>
-                <TouchableOpacity
-                  activeOpacity={1}
+  if (!bLoader) {
+    return (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}>
+        <View style={styles.mainContainer}>
+          {/* <Animated.FlatList
+       onScroll={onScroll}
+         contentContainerStyle={{ paddingTop: containerPaddingTop }}
+         scrollIndicatorInsets={{ top: scrollIndicatorInsetTop }}
+       /> */}
+          {/*<View style={styles.headerContainer}>
+            <Text style={styles.headerComponent}>Quick Actions</Text>
+          </View>*/}
+          {/*<View style={styles.cardContainer}>
+            {aCard.map((card, index) => {
+              return (
+                <View key={index} style={styles.singleCardContainer}>
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => {
+                      setbLoader(true);
+                      props.navigation.navigate(card.sRouteName);
+                      //console.log(card);
+                    }}>
+                    <Card
+                      containerStyle={{
+                        ...styles.singleCardComponent,
+                        backgroundColor: card.sBGColor,
+                        borderRadius:
+                          Dimensions.get('window').width <
+                          Resolution.nWidthBreakpoint
+                            ? 9
+                            : 15,
+                      }}
+                      title={
+                        <View
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                          }}>
+                          <Text
+                            style={{
+                              color: card.sTextColor,
+                              fontSize: wp(4.25),
+                              fontStyle: 'normal',
+                              fontWeight: 'normal',
+                              lineHeight: hp(3.5),
+                              // letterSpacing: Resolution.nLetterSpacing / 2,
+                              fontFamily: sFontName,
+                            }}>
+                            {card.sLabel}
+                          </Text>
+                          <View style={{flexGrow: 1}} />
+                          <FontAwesome5
+                            color={card.sIconColor}
+                            name={card.sIconName}
+                            //adjustsFontSizeToFit={true}
+                            size={20}
+                            //size={size}
+                            //color={focused ? Colors.black : Colors.black}
+                          />
+                        </View>
+                      }
+                      titleStyle={{}}>
+                      {/*<Card.Title
+                        style={{
+                          color: card.sTextColor,
+                          fontSize: wp(3.2),
+                          fontStyle: 'normal',
+                          fontWeight: 'bold',
+                          //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+                          letterSpacing: Resolution.nLetterSpacing / 2,
+                          fontFamily: sFontName,
+                        }}>
+                        {card.sLabel}
+                      </Card.Title>
+                      <Card.Divider />
+                      <Card.Image source={card.sImagePath} />
+                      <Text>{card.sLabel}</Text>
+                    </Card>
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+          </View>*/}
+          {/*{nChatrelTotalAmount !== 0 && !bLoader && (
+            <View style={styles.pendingAmountContainer}>
+              <Card containerStyle={styles.pendingAmountComponent}>
+                <Card.Image
+                  style={styles.pendingAmountImageComponent}
+                  source={require('../assets/Pay.png')}
+                />
+                <Card.Divider />
+                <Text style={styles.pendingAmountTextComponent}>
+                  Pending Amount ${nChatrelTotalAmount.toFixed(2)}
+                </Text>
+                <Button
+                  titleStyle={{
+                    color: Colors.white,
+                    fontStyle: 'normal',
+                    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                    fontFamily:
+                      Platform.OS === 'android' ? sFontNameBold : sFontName,
+                    fontSize: wp(4),
+                  }}
+                  buttonStyle={{
+                    width: wp(75),
+                    backgroundColor: Colors.greenBG,
+                    borderRadius:
+                      Dimensions.get('window').width < Resolution.nWidthBreakpoint
+                        ? 10.2
+                        : 17,
+                  }}
+                  title="PAY NOW"
                   onPress={() => {
                     setbLoader(true);
-                    props.navigation.navigate(card.sRouteName);
-                    //console.log(card);
-                  }}>
-                  <Card
-                    containerStyle={{
-                      ...styles.singleCardComponent,
-                      backgroundColor: card.sBGColor,
-                      borderRadius:
-                        Dimensions.get('window').width <
-                        Resolution.nWidthBreakpoint
-                          ? 9
-                          : 15,
+                    props.navigation.navigate('SelfChatrel');
+                  }}
+                />
+                </Card>
+              <Tile
+    imageSrc={require('../assets/CTALogoDonation.png')}
+    title={"Pending Amount"}
+  titleStyle={styles.pendingAmountTextComponent}
+    featured
+    caption="Some Caption Text"
+                /> 
+            </View>
+          )}*/}
+          {/*Accordions*/}
+          <View style={{ ...styles.viewMarginComponent, marginTop: hp(2), marginBottom: hp(5) }}>
+            <Accordion
+              align={'center'}
+              containerStyle={{ width: '100%' }}
+              expandMultiple={false}
+              // touchableComponent={TouchableOpacity}
+              underlayColor={Colors.white}
+              // sectionContainerStyle={{backgroundColor:Colors.white}}
+              sections={aCard}
+              activeSections={activeSections}
+              // renderSectionTitle={renderSectionTitle}
+              duration={500}
+              renderHeader={renderHeader}
+              renderContent={renderContent}
+              onChange={updateSections}
+            />
+
+            {/* <Collapse style={{borderBottomWidth: 1, borderTopWidth: 1}}>
+              <CollapseHeader
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  padding: 10,
+                  backgroundColor: '#E6E6E6',
+                }}>
+                <View style={{width: '25%', alignItems: 'center'}}>
+                  <Image
+                    source={{
+                      uri:
+                        'https://www.biography.com/.image/t_share/MTQ3NjYxMzk4NjkwNzY4NDkz/muhammad_ali_photo_by_stanley_weston_archive_photos_getty_482857506.jpg',
                     }}
-                    title={
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'space-evenly',
-                        }}>
-                        <Text
-                          style={{
-                            color: card.sTextColor,
-                            fontSize: wp(4.25),
-                            fontStyle: 'normal',
-                            fontWeight: 'normal',
-                            lineHeight: hp(3.5),
-                            // letterSpacing: Resolution.nLetterSpacing / 2,
-                            fontFamily: sFontName,
-                          }}>
-                          {card.sLabel}
-                        </Text>
-                        <View style={{flexGrow: 1}} />
-                        <FontAwesome5
-                          color={card.sIconColor}
-                          name={card.sIconName}
-                          //adjustsFontSizeToFit={true}
-                          size={20}
-                          //size={size}
-                          //color={focused ? Colors.black : Colors.black}
-                        />
-                      </View>
-                    }
-                    titleStyle={{}}>
-                    {/*<Card.Title
-                      style={{
-                        color: card.sTextColor,
-                        fontSize: wp(3.2),
-                        fontStyle: 'normal',
-                        fontWeight: 'bold',
-                        //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-                        letterSpacing: Resolution.nLetterSpacing / 2,
-                        fontFamily: sFontName,
-                      }}>
-                      {card.sLabel}
-                    </Card.Title>
-                    <Card.Divider />
-                    <Card.Image source={card.sImagePath} />
-                    <Text>{card.sLabel}</Text>
-                  </Card>
-                </TouchableOpacity>
+                  />
+                </View>
+                <View style={{width: '60%'}}>
+                  <Text>Name : Mohammed Ali Kley</Text>
+                  <Text>Profession: Boxer</Text>
+                </View>
+              </CollapseHeader>
+              <CollapseBody
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  backgroundColor: '#EDEDED',
+                }}>
+                <Collapse style={{flexDirection: 'row'}}>
+                  <CollapseHeader>
+                    <Image
+                      source={{
+                        uri:
+                          'https://cdn3.iconfinder.com/data/icons/trico-circles-solid/24/Circle-Solid-Phone-512.png',
+                      }}
+                    />
+                  </CollapseHeader>
+                  <CollapseBody
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: 10,
+                    }}>
+                    <Text>+1 310 346 0018</Text>
+                  </CollapseBody>
+                </Collapse>
+                <Collapse style={{flexDirection: 'row'}}>
+                  <CollapseHeader>
+                    <Image
+                      source={{
+                        uri:
+                          'https://d30y9cdsu7xlg0.cloudfront.net/png/1674-200.png',
+                      }}
+                    />
+                  </CollapseHeader>
+                  <CollapseBody
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: 10,
+                    }}>
+                    <Text>sample@sample.ma</Text>
+                  </CollapseBody>
+                </Collapse>
+              </CollapseBody>
+            </Collapse> */}
+          </View>
+          {/*New Job Contribution*/}
+          {nChatrelTotalAmount === 0 && !bLoader && (
+            <Card
+              title={
+                <View style={styles.titleStyleView}>
+                  <Icon
+                    color={Colors.white}
+                    iconStyle={styles.iconStyles}
+                    iconProps={{}}
+                    //underlayColor={Colors.websiteLightBlueColor}
+                    backgroundColor={Colors.websiteLightBlueColor}
+                    size={40}
+                    type="font-awesome-5"
+                    name="briefcase"
+                    containerStyle={styles.iconContainerStyles}
+                  />
+                </View>
+              }
+              titleStyle={{}}
+              containerStyle={styles.newJobContribCardContainer}>
+              <View style={styles.viewMarginComponent}>
+                <Text style={styles.boldTextComponent}>
+                  Have you got a job now?
+                </Text>
               </View>
-            );
-          })}
-        </View>*/}
-        {/*{nChatrelTotalAmount !== 0 && !bLoader && (
-          <View style={styles.pendingAmountContainer}>
-            <Card containerStyle={styles.pendingAmountComponent}>
-              <Card.Image
-                style={styles.pendingAmountImageComponent}
-                source={require('../assets/Pay.png')}
-              />
-              <Card.Divider />
-              <Text style={styles.pendingAmountTextComponent}>
-                Pending Amount ${nChatrelTotalAmount.toFixed(2)}
-              </Text>
+              <View style={styles.viewMarginComponent}>
+                <Text style={styles.greyTextComponent}>
+                  Change your status and contribute more towards the Tibetan
+                  Government.
+                </Text>
+              </View>
               <Button
+                title="UPDATE EMPLOYMENT STATUS"
                 titleStyle={{
                   color: Colors.white,
+                  textAlign: 'center',
                   fontStyle: 'normal',
                   fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
                   fontFamily:
                     Platform.OS === 'android' ? sFontNameBold : sFontName,
-                  fontSize: wp(4),
                 }}
                 buttonStyle={{
-                  width: wp(75),
-                  backgroundColor: Colors.greenBG,
-                  borderRadius:
-                    Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                      ? 10.2
-                      : 17,
+                  backgroundColor: Colors.websiteLightBlueColor,
+                  borderRadius: 15,
                 }}
-                title="PAY NOW"
                 onPress={() => {
                   setbLoader(true);
                   props.navigation.navigate('SelfChatrel');
                 }}
               />
-              </Card>
-            <Tile
-  imageSrc={require('../assets/CTALogoDonation.png')}
-  title={"Pending Amount"}
-titleStyle={styles.pendingAmountTextComponent}
-  featured
-  caption="Some Caption Text"
-              /> 
-          </View>
-        )}*/}
-        {/*Accordions*/}
-        <View style={{ ...styles.viewMarginComponent, marginTop: hp(2) }}>
-          <Accordion
-            initiallyActiveSection={0}
-            align={'center'}
-            containerStyle={{ width: '100%' }}
-            expandMultiple={false}
-            // touchableComponent={TouchableOpacity}
-            underlayColor={Colors.white}
-            // sectionContainerStyle={{backgroundColor:Colors.white}}
-
-            sections={aCard}
-            activeSections={activeSections}
-            // renderSectionTitle={renderSectionTitle}
-            duration={500}
-            renderHeader={renderHeader}
-            renderContent={renderContent}
-            onChange={updateSections}
-          />
-
-          {/* <Collapse style={{borderBottomWidth: 1, borderTopWidth: 1}}>
-            <CollapseHeader
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                padding: 10,
-                backgroundColor: '#E6E6E6',
-              }}>
-              <View style={{width: '25%', alignItems: 'center'}}>
-                <Image
-                  source={{
-                    uri:
-                      'https://www.biography.com/.image/t_share/MTQ3NjYxMzk4NjkwNzY4NDkz/muhammad_ali_photo_by_stanley_weston_archive_photos_getty_482857506.jpg',
-                  }}
-                />
-              </View>
-              <View style={{width: '60%'}}>
-                <Text>Name : Mohammed Ali Kley</Text>
-                <Text>Profession: Boxer</Text>
-              </View>
-            </CollapseHeader>
-            <CollapseBody
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                backgroundColor: '#EDEDED',
-              }}>
-              <Collapse style={{flexDirection: 'row'}}>
-                <CollapseHeader>
-                  <Image
-                    source={{
-                      uri:
-                        'https://cdn3.iconfinder.com/data/icons/trico-circles-solid/24/Circle-Solid-Phone-512.png',
-                    }}
-                  />
-                </CollapseHeader>
-                <CollapseBody
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: 10,
-                  }}>
-                  <Text>+1 310 346 0018</Text>
-                </CollapseBody>
-              </Collapse>
-              <Collapse style={{flexDirection: 'row'}}>
-                <CollapseHeader>
-                  <Image
-                    source={{
-                      uri:
-                        'https://d30y9cdsu7xlg0.cloudfront.net/png/1674-200.png',
-                    }}
-                  />
-                </CollapseHeader>
-                <CollapseBody
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: 10,
-                  }}>
-                  <Text>sample@sample.ma</Text>
-                </CollapseBody>
-              </Collapse>
-            </CollapseBody>
-          </Collapse> */}
-        </View>
-        {/*New Job Contribution*/}
-        {nChatrelTotalAmount === 0 && !bLoader && (
+            </Card>
+          )}
+          {/*Chatrel President*/}
           <Card
+            containerStyle={{
+              ...styles.presidentCardContainerStyle,
+              marginBottom: hp(1),
+            }}
             title={
-              <View style={styles.titleStyleView}>
-                <Icon
-                  color={Colors.white}
-                  iconStyle={styles.iconStyles}
-                  iconProps={{}}
-                  //underlayColor={Colors.websiteLightBlueColor}
-                  backgroundColor={Colors.websiteLightBlueColor}
-                  size={40}
-                  type="font-awesome-5"
-                  name="briefcase"
-                  containerStyle={styles.iconContainerStyles}
-                />
-              </View>
+              <Avatar
+                // overlayContainerStyle={{
+                //   padding:0,
+                //   margin:0,
+                // }}
+
+                //   icon={()=>{
+                //     return(           <Badge
+                //     status="success"
+                //     containerStyle={{position: 'absolute', top: 0, right: 0}}
+                //   />)
+                //   }}
+
+                //icon={{name: 'user', type: 'font-awesome'}}
+
+                rounded
+                size="large"
+                containerStyle={styles.avatarContainerStyle}
+                source={require('../assets/TPresident.jpeg')}
+              />
             }
-            titleStyle={{}}
-            containerStyle={styles.newJobContribCardContainer}>
-            <View style={styles.viewMarginComponent}>
-              <Text style={styles.boldTextComponent}>
-                Have you got a job now?
-              </Text>
+            titleStyle={{}}>
+            {/* <Card.Divider style={styles.presidentCardDividerStyle} /> */}
+            <View style={{ marginTop: hp(5) }}>
+              <View style={styles.viewMarginComponent}>
+                <Text style={styles.greyTextComponent}>
+                  This is a huge step for all the Tibetan people that the Chatrel
+                  collection services are now Online. Power at your fingertips.
+                </Text>
+              </View>
+              <View style={styles.viewMarginComponent}>
+                <Text style={styles.boldTextComponent}>FirstName LastName</Text>
+              </View>
+              <View style={{ ...styles.viewMarginComponent, marginBottom: 0 }}>
+                <Text style={styles.greyTextComponent}>President</Text>
+              </View>
             </View>
-            <View style={styles.viewMarginComponent}>
-              <Text style={styles.greyTextComponent}>
-                Change your status and contribute more towards the Tibetan
-                Government.
-              </Text>
-            </View>
-            <Button
-              title="UPDATE EMPLOYMENT STATUS"
-              titleStyle={{
-                color: Colors.white,
-                textAlign: 'center',
-                fontStyle: 'normal',
-                fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                fontFamily:
-                  Platform.OS === 'android' ? sFontNameBold : sFontName,
-              }}
-              buttonStyle={{
-                backgroundColor: Colors.websiteLightBlueColor,
-                borderRadius: 15,
-              }}
-              onPress={() => {
-                setbLoader(true);
-                props.navigation.navigate('SelfChatrel');
-              }}
-            />
           </Card>
-        )}
-        {/*Chatrel President*/}
-        <Card
-          containerStyle={{
-            ...styles.presidentCardContainerStyle,
-            marginBottom: hp(1),
-          }}
-          title={
-            <Avatar
-              // overlayContainerStyle={{
-              //   padding:0,
-              //   margin:0,
-              // }}
-
-              //   icon={()=>{
-              //     return(           <Badge
-              //     status="success"
-              //     containerStyle={{position: 'absolute', top: 0, right: 0}}
-              //   />)
-              //   }}
-
-              //icon={{name: 'user', type: 'font-awesome'}}
-
-              rounded
-              size="large"
-              containerStyle={styles.avatarContainerStyle}
-              source={require('../assets/TPresident.jpeg')}
-            />
-          }
-          titleStyle={{}}>
-          {/* <Card.Divider style={styles.presidentCardDividerStyle} /> */}
-          <View style={{ marginTop: hp(5) }}>
-            <View style={styles.viewMarginComponent}>
-              <Text style={styles.greyTextComponent}>
-                This is a huge step for all the Tibetan people that the Chatrel
-                collection services are now Online. Power at your fingertips.
-              </Text>
+          {/*Goals of Chatrel*/}
+          <Card
+            containerStyle={{
+              ...styles.presidentCardContainerStyle,
+              marginBottom: hp(1),
+            }}>
+            {/* <Card.Divider style={styles.cardDividerStyle} /> */}
+            <View>
+              <View style={styles.viewMarginComponent}>
+                <Text style={styles.boldTextComponent}>
+                  Goals and Needs of Chatrel
+                </Text>
+              </View>
+              <View style={styles.viewMarginComponent}>
+                <Text style={styles.greyTextComponent}>
+                  Chatrel symbolizes the Tibetan people’s recognition of CTA as
+                  their legitimate representative. Chatrel payment exhibits
+                  Tibetan people’s support for CTA’s financial needs until Tibet
+                  regains freedom.
+                </Text>
+              </View>
+              <View style={{ ...styles.viewMarginComponent, marginBottom: 0 }}>
+                <Button
+                  title="READ FAQs"
+                  titleStyle={{
+                    textAlign: 'center',
+                    color: Colors.white,
+                    fontFamily: sFontName,
+                    fontStyle: 'normal',
+                    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                    fontFamily:
+                      Platform.OS === 'android' ? sFontNameBold : sFontName,
+                  }}
+                  buttonStyle={{
+                    backgroundColor: Colors.faqButtonColor,
+                    borderRadius: 15,
+                  }}
+                  onPress={() => {
+                    console.log('FAQs To be Added');
+                  }}>
+                  READ FAQs
+                </Button>
+              </View>
             </View>
-            <View style={styles.viewMarginComponent}>
-              <Text style={styles.boldTextComponent}>FirstName LastName</Text>
-            </View>
-            <View style={{ ...styles.viewMarginComponent, marginBottom: 0 }}>
-              <Text style={styles.greyTextComponent}>President</Text>
-            </View>
-          </View>
-        </Card>
-        {/*Goals of Chatrel*/}
-        <Card
-          containerStyle={{
-            ...styles.presidentCardContainerStyle,
-            marginBottom: hp(1),
-          }}>
-          {/* <Card.Divider style={styles.cardDividerStyle} /> */}
-          <View>
-            <View style={styles.viewMarginComponent}>
-              <Text style={styles.boldTextComponent}>
-                Goals and Needs of Chatrel
-              </Text>
-            </View>
-            <View style={styles.viewMarginComponent}>
-              <Text style={styles.greyTextComponent}>
-                Chatrel symbolizes the Tibetan people’s recognition of CTA as
-                their legitimate representative. Chatrel payment exhibits
-                Tibetan people’s support for CTA’s financial needs until Tibet
-                regains freedom.
-              </Text>
-            </View>
-            <View style={{ ...styles.viewMarginComponent, marginBottom: 0 }}>
-              <Button
-                title="READ FAQs"
-                titleStyle={{
-                  textAlign: 'center',
-                  color: Colors.white,
-                  fontFamily: sFontName,
-                  fontStyle: 'normal',
-                  fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                  fontFamily:
-                    Platform.OS === 'android' ? sFontNameBold : sFontName,
-                }}
-                buttonStyle={{
-                  backgroundColor: Colors.faqButtonColor,
-                  borderRadius: 15,
-                }}
-                onPress={() => {
-                  console.log('FAQs To be Added');
-                }}>
-                READ FAQs
-              </Button>
-            </View>
-          </View>
-        </Card>
-      </View>
-    </ScrollView>
-  );
+          </Card>
+        </View>
+      </ScrollView>
+    );
+  };
+  if (bLoader) {
+    return (
+      bLoader && (
+        <ActivityIndicator
+          size={Platform.OS === 'ios' ? 0 : 'large'}
+          color={Colors.spinnerColor}
+          animating={true}
+          //hidesWhenStopped={true}
+          style={oActivityIndicatorStyle}
+        />
+      )
+    )
+  };
 };
 
 export const HomeScreenOptions = (navData) => {
@@ -769,27 +774,7 @@ const styles = StyleSheet.create({
   avatarContainerStyle: {
     position: 'absolute',
     alignSelf: 'center',
-    //marginTop: hp(1),
     top: -55,
-    // left:20,
-    //Border Stuff
-    // backgroundColor: Colors.white,
-
-    //Border Stuff
-    // borderRadius: 15,
-    // borderColor: Colors.black,
-    // borderStyle: 'solid',
-    // borderWidth: 0.25,
-
-    // //For iOS
-    // shadowRadius: 25,
-    // shadowColor: Colors.lightBlueChatrelWebsite,
-    // shadowOffset: {width: 5, height: 5},
-    // shadowOpacity: 1,
-
-    // //For Android
-    // elevation: 25,
-    // overflow: 'visible',
   },
   cardDividerStyle: {
     height: 1,

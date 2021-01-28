@@ -469,8 +469,7 @@ export const Chatrel = (props) => {
       </>
     );
   }
-
-  //console.log(props);
+  
   return (
     <>
       {bRender && aGBChatrels && (

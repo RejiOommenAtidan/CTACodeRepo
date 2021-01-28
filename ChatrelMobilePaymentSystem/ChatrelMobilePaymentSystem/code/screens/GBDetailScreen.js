@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -10,13 +10,13 @@ import {
   ActivityIndicator,
   Image,
 } from 'react-native';
-import {Input, Button} from 'react-native-elements';
+import { Input, Button } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
-import {sDateFormatDatePicker} from '../constants/CommonConfig';
+import { sDateFormatDatePicker } from '../constants/CommonConfig';
 import Moment from 'moment';
-import {useSelector, useDispatch} from 'react-redux';
-import {storeGBDetails, storeJWTToken} from '../store/actions/GBDetailsAction';
-import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
+import { useSelector, useDispatch } from 'react-redux';
+import { storeGBDetails, storeJWTToken } from '../store/actions/GBDetailsAction';
+import { storeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
 import Colors from '../constants/Colors';
 import Resolution from '../constants/ResolutionBreakpoint';
 import LinearGradient from 'react-native-linear-gradient';
@@ -25,13 +25,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {Alert} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {GoogleSignin} from '@react-native-community/google-signin';
-import {removeGoogleCreds} from '../store/actions/GLoginAction';
-import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
-import {removeGBDetails} from '../store/actions/GBDetailsAction';
-import {useForm, Controller} from 'react-hook-form';
+import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { GoogleSignin } from '@react-native-community/google-signin';
+import { removeGoogleCreds } from '../store/actions/GLoginAction';
+import { removeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
+import { removeGBDetails } from '../store/actions/GBDetailsAction';
+import { useForm, Controller } from 'react-hook-form';
 import {
   errorComponent,
   errorContainer,
@@ -104,7 +104,7 @@ export const GBDetailScreen = (props) => {
   //     });
   // };
 
-  const {control, handleSubmit, errors} = useForm();
+  const { control, handleSubmit, errors } = useForm();
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   const dispatch = useDispatch();
   let keysToRemove = ['oUserInfo', 'oGBInfo'];
@@ -185,7 +185,7 @@ export const GBDetailScreen = (props) => {
                   onPress: () => removeCompleteDetailsAndNavigateToLogin(),
                 },
               ],
-              {cancelable: false},
+              { cancelable: false },
             );
           }
         }
@@ -218,7 +218,7 @@ export const GBDetailScreen = (props) => {
               onPress: () => removeCompleteDetailsAndNavigateToLogin(),
             },
           ],
-          {cancelable: false},
+          { cancelable: false },
         );
         console.info(error.message);
       });
@@ -247,7 +247,11 @@ export const GBDetailScreen = (props) => {
           color={Colors.spinnerColor}
           animating={true}
           //hidesWhenStopped={true}
-          style={oActivityIndicatorStyle}
+          style={{
+            ...oActivityIndicatorStyle,
+            backgroundColor: Colors.black,
+            opacity: 0.5,
+          }}
         />
       )}
 
@@ -265,7 +269,7 @@ export const GBDetailScreen = (props) => {
         <View style={styles.gbidContainer}>
           <Controller
             control={control}
-            render={({onChange, onBlur, value}) => (
+            render={({ onChange, onBlur, value }) => (
               <Input
                 //label="Enter GBID"
                 placeholder={'Green Book Number*'}
@@ -289,7 +293,7 @@ export const GBDetailScreen = (props) => {
               />
             )}
             name="name_nGBID"
-            rules={{required: true}}
+            rules={{ required: true }}
             defaultValue=""
           />
           {errors.name_nGBID && (
@@ -315,7 +319,7 @@ export const GBDetailScreen = (props) => {
         <View style={styles.dobContainer}>
           <Controller
             control={control}
-            render={({onChange, onBlur, value}) => (
+            render={({ onChange, onBlur, value }) => (
               <DatePicker
                 showIcon={false}
                 useNativeDriver={true}
@@ -340,7 +344,7 @@ export const GBDetailScreen = (props) => {
                     color: Colors.grey,
                     fontSize:
                       Dimensions.get('window').width <
-                      Resolution.nWidthBreakpoint
+                        Resolution.nWidthBreakpoint
                         ? 12
                         : 20,
                     fontStyle: 'normal',
@@ -352,7 +356,7 @@ export const GBDetailScreen = (props) => {
                     color: Colors.white,
                     fontSize:
                       Dimensions.get('window').width <
-                      Resolution.nWidthBreakpoint
+                        Resolution.nWidthBreakpoint
                         ? 12
                         : 20,
                     fontStyle: 'normal',
@@ -388,7 +392,7 @@ export const GBDetailScreen = (props) => {
               />
             )}
             name="name_dtDOB"
-            rules={{required: true}}
+            rules={{ required: true }}
             defaultValue=""
           />
         </View>
@@ -441,7 +445,7 @@ export const GBDetailScreenOptions = (navData) => {
     headerShown: false,
     headerLeft: null,
     headerRight: null,
-    cardStyle: {backgroundColor: 'transparent', shadowColor: 'transparent'},
+    cardStyle: { backgroundColor: 'transparent', shadowColor: 'transparent' },
   };
 };
 
