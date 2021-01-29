@@ -45,7 +45,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             _chatrelLogger = new ChatrelLogger(info);
             _appSettings = appSettings.Value;
         }
-        
+
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> ValidateGoogleToken(string code, string email)
@@ -60,7 +60,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             //}
             return NotFound();
         }
-        
+
 
 
         [HttpGet]
@@ -80,9 +80,9 @@ namespace ChatrelPaymentWebAPI.Controllers
             //var response = await flow.ExchangeCodeForTokenAsync(string.Empty, code, redirectUrl, CancellationToken.None);
 
             GoogleJsonWebSignature.ValidationSettings settings = new GoogleJsonWebSignature.ValidationSettings();
-            settings.Audience = new List<string>() { "11153496233-ft9h6spf18pfshdlri865cm6d6eteqef.apps.googleusercontent.com" };
+            settings.Audience = new List<string>() { "11153496233-ft9h6spf18pfshdlri865cm6d6eteqef.apps.googleusercontent.com", "1071046831303-1naot2q7pull58cpifp3rosfn65bdrsc.apps.googleusercontent.com" };
             GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(code, settings);
-          
+
             return payload;
 
 
@@ -153,7 +153,7 @@ namespace ChatrelPaymentWebAPI.Controllers
                             #endregion
 
                             // should we set a cookie or a token?
-                            return Ok(new { result = "Verified", user.sJwtToken } );
+                            return Ok(new { result = "Verified", user.sJwtToken });
                         }
                         else
                         {

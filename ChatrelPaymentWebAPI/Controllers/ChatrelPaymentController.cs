@@ -333,9 +333,9 @@ namespace ChatrelPaymentWebAPI.Controllers
             var sFileName = dict["sTitle"].ToString();
             var sFileExtension = dict["sFileExtension"].ToString();
             var emailFrom = "aayush.pandya@atidan.com";
-            var emailTo = "aayushpandya.dev@gmail.com";
+            var emailTo = "malay.doshi@atidan.com";
 
-            attachment = attachment.Substring(attachment.IndexOf("base64,") + 7);
+            //attachment = attachment.Substring(attachment.IndexOf("base64,") + 7);
 
             byte[] attach = Convert.FromBase64String(attachment);
 

@@ -32,7 +32,7 @@ import {
 } from '../constants/CommonConfig';
 import { useIsFocused } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import {Loader} from '../components/Loader';
+import { Loader } from '../components/Loader';
 import axios from 'axios';
 import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -85,24 +85,25 @@ export const FileDisputeScreen = (props) => {
     };
 
     // console.log(submit);
+    // setbLoader(false);
 
-    // axios
-    //   .post(`/ChatrelPayment/SubmitDispute`, submit)
-    //   .then((resp) => {
-    //     if (resp.status === 200) {
-    //       setbLoader(false);
-    //       alert('Dispute filed successfully');
-    //     } else {
-    //       setbLoader(false);
-    //       alert('Failure filing dispute');
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     setbLoader(false);
-    //     alert('Something went wrong, please try again later');
-    //     //alert(error.message)
-    //     console.log(error);
-    //   });
+    axios
+      .post(`/ChatrelPayment/SubmitDispute`, submit)
+      .then((resp) => {
+        if (resp.status === 200) {
+          setbLoader(false);
+          alert('Dispute filed successfully');
+        } else {
+          setbLoader(false);
+          alert('Failure filing dispute');
+        }
+      })
+      .catch((error) => {
+        setbLoader(false);
+        alert('Something went wrong, please try again later');
+        //alert(error.message)
+        console.log(error);
+      });
   };
 
   const selectOneFile = async () => {
@@ -126,7 +127,10 @@ export const FileDisputeScreen = (props) => {
         ios: decodeURIComponent(res.uri)?.replace?.('file://', ''),
       });
 
+      console.log("uri: "+uri);
+
       RNFS.readFile(uri, 'base64').then((result) => {
+        //console.log(result)
         setsDisputeSingleFile(result);
       });
       //setsFileType(res.type);
@@ -197,17 +201,17 @@ export const FileDisputeScreen = (props) => {
   //   )
   // }
   //if (!bLoader) {
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}>
-        <View style={styles.mainContainer}>
+  return (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}>
+      <View style={styles.mainContainer}>
         <Loader
           loading={bLoader} />
-          {/*<View style={styles.headingContainer}>
+        {/*<View style={styles.headingContainer}>
           <Text style={styles.headingComponent}>Submit a Dispute</Text>
     </View>*/}
-          {/* <View style={styles.enterSubjectContainer}>
+        {/* <View style={styles.enterSubjectContainer}>
           <Text style={styles.enterSubjectComponent}>ENTER SUBJECT</Text>
         </View>
         <View style={styles.subjectContainer}>
@@ -244,160 +248,160 @@ export const FileDisputeScreen = (props) => {
             </View>
           )}
         </View> */}
-          <Card
-            title={
-              <View style={styles.titleStyleView}>
-                <Icon
-                  color={Colors.white}
-                  iconStyle={styles.iconStyles}
-                  iconProps={{}}
-                  //underlayColor={Colors.websiteLightBlueColor}
-                  backgroundColor={Colors.websiteLightBlueColor}
-                  size={40}
-                  type="font-awesome-5"
-                  name="file-invoice-dollar"
-                  containerStyle={styles.iconContainerStyles}
+        <Card
+          title={
+            <View style={styles.titleStyleView}>
+              <Icon
+                color={Colors.white}
+                iconStyle={styles.iconStyles}
+                iconProps={{}}
+                //underlayColor={Colors.websiteLightBlueColor}
+                backgroundColor={Colors.websiteLightBlueColor}
+                size={40}
+                type="font-awesome-5"
+                name="file-invoice-dollar"
+                containerStyle={styles.iconContainerStyles}
+              />
+            </View>
+          }
+          titleStyle={{}}
+          containerStyle={styles.cardContainerStyle}>
+          <View style={styles.enterMessageLabelContainer}>
+            <Text>
+              <Text style={styles.enterMessagelabelComponent}>
+                ENTER DESCRIPTION
+                </Text>
+              <Text style={oRequiredStyles}>*</Text>
+            </Text>
+          </View>
+          <View style={styles.messageContainer}>
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  value={sDisputeMessage}
+                  onBlur={onBlur}
+                  onChangeText={(value) => {
+                    onChange(value);
+                    setsDisputeMessage(value);
+                  }}
+                  placeholder="Description"
+                  placeholderTextColor={Colors.grey}
+                  autoFocus={false}
+                  autoCapitalize={'none'}
+                  autoCompleteType={'off'}
+                  autoCorrect={false}
+                  clearButtonMode={'while-editing'}
+                  keyboardType={'default'}
+                  keyboardAppearance={'default'}
+                  disableFullscreenUI={true}
+                  multiline={true}
+                  numberOfLines={Platform.OS === 'ios' ? null : nNumberOfLines}
+                  minHeight={
+                    Platform.OS === 'ios' && nNumberOfLines
+                      ? 20 * nNumberOfLines
+                      : null
+                  }
+                  style={styles.enterMessageInputComponent}
+                  inputContainerStyle={{}}
+                  containerStyle={{
+                    paddingHorizontal: 0,
+                    // marginBottom:0
+                    // marginBotto:0,
+                    // paddingBottom:0
+                    // marginRight:0,
+                    // margin: 0,
+                    // padding: 0,
+                  }}
                 />
-              </View>
-            }
-            titleStyle={{}}
-            containerStyle={styles.cardContainerStyle}>
-            <View style={styles.enterMessageLabelContainer}>
-              <Text>
-                <Text style={styles.enterMessagelabelComponent}>
-                  ENTER DESCRIPTION
-                </Text>
-                <Text style={oRequiredStyles}>*</Text>
-              </Text>
-            </View>
-            <View style={styles.messageContainer}>
-              <Controller
-                control={control}
-                render={({ onChange, onBlur, value }) => (
-                  <Input
-                    value={sDisputeMessage}
-                    onBlur={onBlur}
-                    onChangeText={(value) => {
-                      onChange(value);
-                      setsDisputeMessage(value);
-                    }}
-                    placeholder="Description"
-                    placeholderTextColor={Colors.grey}
-                    autoFocus={false}
-                    autoCapitalize={'none'}
-                    autoCompleteType={'off'}
-                    autoCorrect={false}
-                    clearButtonMode={'while-editing'}
-                    keyboardType={'default'}
-                    keyboardAppearance={'default'}
-                    disableFullscreenUI={true}
-                    multiline={true}
-                    numberOfLines={Platform.OS === 'ios' ? null : nNumberOfLines}
-                    minHeight={
-                      Platform.OS === 'ios' && nNumberOfLines
-                        ? 20 * nNumberOfLines
-                        : null
-                    }
-                    style={styles.enterMessageInputComponent}
-                    inputContainerStyle={{}}
-                    containerStyle={{
-                      paddingHorizontal: 0,
-                      // marginBottom:0
-                      // marginBotto:0,
-                      // paddingBottom:0
-                      // marginRight:0,
-                      // margin: 0,
-                      // padding: 0,
-                    }}
-                  />
-                )}
-                name="name_sDisputeMessage"
-                rules={{ required: true }}
-                defaultValue=""
-              />
-              {errors.name_sDisputeMessage && (
-                <View style={{ ...errorContainer }}>
-                  <Text style={errorComponent}>Please enter a description</Text>
-                </View>
               )}
-            </View>
-            <View style={styles.attachImageContainer}>
-              <Text>
-                <Text style={styles.attachImageLabelComponent}>
-                  ATTACH DOCUMENT
-                </Text>
-                <Text style={oRequiredStyles}>*</Text>
-              </Text>
-            </View>
-            <View style={styles.fileUploadContainer}>
-              <Button
-                iconRight
-                icon={{
-                  type: 'font-awesome',
-                  name: 'paperclip',
-                  color: Colors.blue,
-                }}
-                title="UPLOAD DOCUMENT"
-                type="outline"
-                titleStyle={{
-                  color: Colors.blue,
-                  fontFamily: sFontName,
-                  fontStyle: 'normal',
-                  fontWeight: 'normal',
-                }}
-                buttonStyle={{
-                  borderRadius: 10,
-                  borderWidth: 1,
-                  marginVertical: hp(1),
-                }}
-                onPress={selectOneFile}
-              />
-            </View>
-            {sFileName !== null && (
-              <View style={styles.selectedFileContainer}>
-                <Text style={styles.selectedFileComponent}>
-                  Selected File: {sFileName}
-                </Text>
+              name="name_sDisputeMessage"
+              rules={{ required: true }}
+              defaultValue=""
+            />
+            {errors.name_sDisputeMessage && (
+              <View style={{ ...errorContainer }}>
+                <Text style={errorComponent}>Please enter a description</Text>
               </View>
             )}
-            {/* <View style={styles.infoContainer}>
+          </View>
+          <View style={styles.attachImageContainer}>
+            <Text>
+              <Text style={styles.attachImageLabelComponent}>
+                ATTACH DOCUMENT
+                </Text>
+              <Text style={oRequiredStyles}>*</Text>
+            </Text>
+          </View>
+          <View style={styles.fileUploadContainer}>
+            <Button
+              iconRight
+              icon={{
+                type: 'font-awesome',
+                name: 'paperclip',
+                color: Colors.blue,
+              }}
+              title="UPLOAD DOCUMENT"
+              type="outline"
+              titleStyle={{
+                color: Colors.blue,
+                fontFamily: sFontName,
+                fontStyle: 'normal',
+                fontWeight: 'normal',
+              }}
+              buttonStyle={{
+                borderRadius: 10,
+                borderWidth: 1,
+                marginVertical: hp(1),
+              }}
+              onPress={selectOneFile}
+            />
+          </View>
+          {sFileName !== null && (
+            <View style={styles.selectedFileContainer}>
+              <Text style={styles.selectedFileComponent}>
+                Selected File: {sFileName}
+              </Text>
+            </View>
+          )}
+          {/* <View style={styles.infoContainer}>
               <Text style={styles.infoComponent}>
                 The response to the dispute will be addressed through an email
                 sent to your registered email address.
               </Text>
             </View> */}
-            <View style={styles.submitDisputeContainer}>
-              <Button
-                // iconRight
-                // icon={{
-                //   type: 'font-awesome',
-                //   name: 'arrow-right',
-                //   color: Colors.white,
-                // }}
-                title="SUBMIT FILE DISPUTE"
-                type="outline"
-                onPress={handleSubmit(handleDispute)}
-                titleStyle={{
-                  fontStyle: 'normal',
-                  color: Colors.white,
-                  fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                  fontFamily:
-                    Platform.OS === 'android' ? sFontNameBold : sFontName,
-                }}
-                buttonStyle={{
-                  backgroundColor: Colors.buttonYellow,
-                  borderRadius: 15,
-                  borderWidth: 1,
-                  borderColor: Colors.buttonYellow,
-                  marginBottom: hp(0.5),
-                }}
-              />
-            </View>
-          </Card>
-        </View>
-      </ScrollView>
-    );
-  }
+          <View style={styles.submitDisputeContainer}>
+            <Button
+              // iconRight
+              // icon={{
+              //   type: 'font-awesome',
+              //   name: 'arrow-right',
+              //   color: Colors.white,
+              // }}
+              title="SUBMIT FILE DISPUTE"
+              type="outline"
+              onPress={handleSubmit(handleDispute)}
+              titleStyle={{
+                fontStyle: 'normal',
+                color: Colors.white,
+                fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                fontFamily:
+                  Platform.OS === 'android' ? sFontNameBold : sFontName,
+              }}
+              buttonStyle={{
+                backgroundColor: Colors.buttonYellow,
+                borderRadius: 15,
+                borderWidth: 1,
+                borderColor: Colors.buttonYellow,
+                marginBottom: hp(0.5),
+              }}
+            />
+          </View>
+        </Card>
+      </View>
+    </ScrollView>
+  );
+}
 //};
 
 export const FileDisputeScreenOptions = (navData) => {
