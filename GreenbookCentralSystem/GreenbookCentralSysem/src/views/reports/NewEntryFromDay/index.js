@@ -148,6 +148,18 @@ export default function Report() {
         borderRight: '1px solid grey'
 
       },
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtFormattedEntered){
+          return -1;
+        }
+        if(!b.dtFormattedEntered){
+          return 1;
+        }
+        a = a ? a.dtFormattedEntered.split('-').reverse().join('') : '';
+        b = b ? b.dtFormattedEntered.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
     {
       field: "sFullName",
