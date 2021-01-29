@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -7,15 +7,15 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import {Platform} from 'react-native';
-import {Card, Button} from 'react-native-elements';
+import { Platform } from 'react-native';
+import { Card, Button } from 'react-native-elements';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
-import {Loader} from '../components/Loader';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import { Loader } from '../components/Loader';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -27,9 +27,9 @@ import {
   oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import Moment from 'moment';
-import {useSelector, useDispatch} from 'react-redux';
-import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
-import {useIsFocused} from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { storeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
+import { useIsFocused } from '@react-navigation/native';
 
 export const FamilyChatrelIntermediateScreen = (props) => {
   const isFocused = useIsFocused();
@@ -109,15 +109,8 @@ export const FamilyChatrelIntermediateScreen = (props) => {
   };
   return (
     <View style={styles.mainContainer}>
-      {bLoader && (
-        <ActivityIndicator
-          size={Platform.OS === 'ios' ? 0 : 'large'}
-          color={Colors.spinnerColor}
-          animating={true}
-          //hidesWhenStopped={true}
-          style={oActivityIndicatorStyle}
-        />
-      )}
+      <Loader
+        loading={bLoader} />
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>FAMILY MEMBERS</Text>
   </View>*/}
@@ -199,10 +192,10 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                 </View> */}
                 {/*Age*/}
                 <View style={styles.labelContainer}>
-                  <Text style={{...styles.labelComponent, textAlign: 'right'}}>
+                  <Text style={{ ...styles.labelComponent, textAlign: 'right' }}>
                     AGE
                   </Text>
-                  <Text style={{...styles.valueComponent, textAlign: 'right'}}>
+                  <Text style={{ ...styles.valueComponent, textAlign: 'right' }}>
                     {member.nAge}
                   </Text>
                 </View>
@@ -227,10 +220,10 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                 </View> */}
                 {/*Relation*/}
                 <View style={styles.labelContainer}>
-                  <Text style={{...styles.labelComponent, textAlign: 'right'}}>
+                  <Text style={{ ...styles.labelComponent, textAlign: 'right' }}>
                     RELATION
                   </Text>
-                  <Text style={{...styles.valueComponent, textAlign: 'right'}}>
+                  <Text style={{ ...styles.valueComponent, textAlign: 'right' }}>
                     {member.sRelation}
                   </Text>
                 </View>
@@ -257,7 +250,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
                     fontFamily:
                       Platform.OS === 'android' ? sFontNameBold : sFontName,
-                      fontSize: wp(4),
+                    fontSize: wp(4),
                   }}
                   buttonStyle={styles.buttonStyle}
                 />
@@ -289,7 +282,7 @@ export const FamilyChatrelIntermediateScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: {backgroundColor: Colors.white},
+    cardStyle: { backgroundColor: Colors.white },
   };
 };
 
@@ -344,7 +337,7 @@ const styles = StyleSheet.create({
     //For iOS
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: {width: 5, height: 5},
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 1,
 
     //For Android

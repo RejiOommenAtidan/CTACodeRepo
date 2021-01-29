@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Switch,
   Text,
@@ -10,15 +10,15 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import {Platform} from 'react-native';
-import {Input, Button, Card, Icon} from 'react-native-elements';
+import { Platform } from 'react-native';
+import { Input, Button, Card, Icon } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Moment from 'moment';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import {useForm, Controller} from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import {
   errorComponent,
   errorContainer,
@@ -28,21 +28,21 @@ import {
   oActivityIndicatorStyle,
   oRequiredStyles,
 } from '../constants/CommonConfig';
-import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
+import { storeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import { sFontName, sFontNameBold } from '../constants/CommonConfig';
 import axios from 'axios';
-import {useSelector, useDispatch} from 'react-redux';
-import {Loader} from '../components/Loader';
-import {storeGBDetails} from '../store/actions/GBDetailsAction';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+import { useSelector, useDispatch } from 'react-redux';
+import { Loader } from '../components/Loader';
+import { storeGBDetails } from '../store/actions/GBDetailsAction';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 
 export const FriendChatrelIntermediateScreen = (props) => {
   const dispatch = useDispatch();
-  const {control, handleSubmit, errors} = useForm();
+  const { control, handleSubmit, errors } = useForm();
   const [bLoader, setbLoader] = useState(false);
   const onSubmit = () => {
     setbLoader(true);
@@ -113,15 +113,8 @@ export const FriendChatrelIntermediateScreen = (props) => {
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}>
       <View style={styles.mainContainer}>
-        {bLoader && (
-          <ActivityIndicator
-            size={Platform.OS === 'ios' ? 0 : 'large'}
-            color={Colors.spinnerColor}
-            animating={true}
-            //hidesWhenStopped={true}
-            style={oActivityIndicatorStyle}
-          />
-        )}
+        <Loader
+          loading={bLoader} />
         {/*<View style={styles.headingContainer}>
           <Text style={styles.headingComponent}>Chatrel For Friends</Text>
   </View>*/}
@@ -151,7 +144,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
           <View style={styles.valueContainer}>
             <Controller
               control={control}
-              render={({onChange, onBlur, value}) => (
+              render={({ onChange, onBlur, value }) => (
                 <Input
                   // inputContainerStyle={{borderBottomWidth: 0}}
                   containerStyle={styles.valueContainerStyle}
@@ -186,7 +179,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                 />
               )}
               name="name_sFriendFirstName"
-              rules={{required: true}}
+              rules={{ required: true }}
               defaultValue=""
             />
             {errors.name_sFriendFirstName && (
@@ -206,7 +199,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
           <View style={styles.valueContainer}>
             <Controller
               control={control}
-              render={({onChange, onBlur, value}) => (
+              render={({ onChange, onBlur, value }) => (
                 <Input
                   //inputContainerStyle={{borderBottomWidth: 0}}
                   inputStyle={
@@ -243,7 +236,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                 />
               )}
               name="name_sFriendLastName"
-              rules={{required: true}}
+              rules={{ required: true }}
               defaultValue=""
             />
             {errors.name_sFriendLastName && (
@@ -264,7 +257,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
           <View style={styles.valueComponent}>
             <Controller
               control={control}
-              render={({onChange, onBlur, value}) => (
+              render={({ onChange, onBlur, value }) => (
                 <Input
                   //inputContainerStyle={{borderBottomWidth: 0}}
                   //inputStyle={{
@@ -299,7 +292,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
                 />
               )}
               name="name_nFriendGBID"
-              rules={{required: true}}
+              rules={{ required: true }}
               defaultValue=""
             />
             {errors.name_nFriendGBID && (
@@ -327,7 +320,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
           <View style={styles.dobValueContainer}>
             <Controller
               control={control}
-              render={({onChange, onBlur, value}) => (
+              render={({ onChange, onBlur, value }) => (
                 <DatePicker
                   useNativeDriver={true}
                   androidMode={'calendar'}
@@ -405,13 +398,13 @@ export const FriendChatrelIntermediateScreen = (props) => {
                 />
               )}
               name="name_dtFriendDOB"
-              rules={{required: true}}
+              rules={{ required: true }}
               defaultValue=""
             />
           </View>
           {errors.name_dtFriendDOB && (
             <View style={errorContainer}>
-              <Text style={{...errorComponent, marginTop: hp(1)}}>
+              <Text style={{ ...errorComponent, marginTop: hp(1) }}>
                 Please enter Date of Birth
               </Text>
             </View>
@@ -428,7 +421,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
               }}
               containerStyle={{
                 marginTop: hp(3),
-                marginBottom:hp(1)
+                marginBottom: hp(1)
               }}
               buttonStyle={{
                 backgroundColor: Colors.primary,
@@ -463,7 +456,7 @@ export const FriendChatrelIntermediateScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: {backgroundColor: Colors.white},
+    cardStyle: { backgroundColor: Colors.white },
   };
 };
 
@@ -601,7 +594,7 @@ const styles = StyleSheet.create({
     //For iOS
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: {width: 5, height: 5},
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 1,
 
     //For Android
@@ -612,7 +605,7 @@ const styles = StyleSheet.create({
     marginBottom: hp(5.5),
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: {width: 5, height: 5},
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 1,
   },
   iconStyles: {

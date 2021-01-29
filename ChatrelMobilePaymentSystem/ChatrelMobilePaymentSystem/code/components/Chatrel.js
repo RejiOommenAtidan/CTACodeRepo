@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Switch,
   Text,
@@ -9,16 +9,16 @@ import {
   ActivityIndicator,
   Linking
 } from 'react-native';
-import {Picker, PickerIOS} from '@react-native-picker/picker';
+import { Picker, PickerIOS } from '@react-native-picker/picker';
 import IOSPicker from 'react-native-ios-picker';
-import {sFontName, sFontNameBold} from '../constants/CommonConfig';
-import {useIsFocused} from '@react-navigation/native';
-import {Loader} from '../components/Loader';
+import { sFontName, sFontNameBold } from '../constants/CommonConfig';
+import { useIsFocused } from '@react-navigation/native';
+import { Loader } from '../components/Loader';
 // import DropDownPicker from 'react-native-dropdown-picker';
 // import Icon from 'react-native-vector-icons/Feather';
 // import ModalDropdown from 'react-native-modal-dropdown';
 
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Input,
   Button,
@@ -329,14 +329,14 @@ export const Chatrel = (props) => {
           setbLoader(false);
           //alert(resp.data);
           console.log(resp.data);
-         
+
 
           // setBackdrop(false);
           // setAlertMessage('Chatrel recorded successfully.');
           // setAlertType('success');
           // snackbarOpen();
           // setReceiptData(resp.data);
-          
+
           // setPaymentDiv(false);
           // setSuccessDiv(true);
           /* history.goBack();
@@ -395,7 +395,7 @@ export const Chatrel = (props) => {
           axios
             .get(
               `/ChatrelPayment/DisplayChatrelPayment/?sGBID=` +
-                oCurrentGBDetails.sGBID,
+              oCurrentGBDetails.sGBID,
             )
             .then((resp) => {
               if (resp.status === 200) {
@@ -458,19 +458,12 @@ export const Chatrel = (props) => {
   if (!bRender) {
     return (
       <>
-        {bLoader && (
-          <ActivityIndicator
-            size={Platform.OS === 'ios' ? 0 : 'large'}
-            color={Colors.spinnerColor}
-            animating={true}
-            //hidesWhenStopped={true}
-            style={oActivityIndicatorStyle}
-          />
-        )}
+        <Loader
+          loading={bLoader} />
       </>
     );
   }
-  
+
   return (
     <>
       {bRender && aGBChatrels && (
@@ -498,7 +491,7 @@ export const Chatrel = (props) => {
               //For iOS
               shadowRadius: 15,
               shadowColor: Colors.lightBlueChatrelWebsite,
-              shadowOffset: {width: 5, height: 5},
+              shadowOffset: { width: 5, height: 5 },
               shadowOpacity: 1,
 
               //For Android
@@ -531,7 +524,7 @@ export const Chatrel = (props) => {
                   }
                 />
                 <View style={styles.valueContainer}>
-                  <Text style={{...styles.valueComponent, textAlign: 'right'}}>
+                  <Text style={{ ...styles.valueComponent, textAlign: 'right' }}>
                     {sGBID}
                   </Text>
                 </View>
@@ -551,7 +544,7 @@ export const Chatrel = (props) => {
                   value={<Text style={styles.labelComponent}>PAID UNTIL</Text>}
                 />
                 <View style={styles.valueContainer}>
-                  <Text style={{...styles.valueComponent, marginBottom: 0}}>
+                  <Text style={{ ...styles.valueComponent, marginBottom: 0 }}>
                     {Moment(nPaidUntil).year()}
                   </Text>
                 </View>
@@ -612,7 +605,7 @@ export const Chatrel = (props) => {
                     //For iOS
                     shadowRadius: 15,
                     shadowColor: Colors.lightBlueChatrelWebsite,
-                    shadowOffset: {width: 5, height: 5},
+                    shadowOffset: { width: 5, height: 5 },
                     shadowOpacity: 1,
 
                     //For Android
@@ -645,24 +638,24 @@ export const Chatrel = (props) => {
                               year.nChatrelLateFeesValue > 0
                                 ? Colors.red
                                 : year.nChatrelLateFeesValue === 0
-                                ? Colors.ChatrelYearGreen
-                                : Colors.buttonYellow,
+                                  ? Colors.ChatrelYearGreen
+                                  : Colors.buttonYellow,
                           }}
                           value={
                             year.nChatrelLateFeesValue > 0 ? (
                               <Text style={styles.labelComponentChip}>
                                 OVERDUE
                               </Text>
-                            ) : year.nChatrelTotalAmount ===0 &&
+                            ) : year.nChatrelTotalAmount === 0 &&
                               year.nChatrelLateFeesValue === 0 ? (
-                              <Text style={styles.labelComponentChip}>
-                                PAID
-                              </Text>
-                            ) : (
-                              <Text style={styles.labelComponentChip}>
-                                PENDING
-                              </Text>
-                            )
+                                  <Text style={styles.labelComponentChip}>
+                                    PAID
+                                  </Text>
+                                ) : (
+                                  <Text style={styles.labelComponentChip}>
+                                    PENDING
+                                  </Text>
+                                )
                           }
                         />
                       </View>
@@ -850,7 +843,7 @@ export const Chatrel = (props) => {
                                     modify('0', index);
                                   }
                                 }}
-                                //value={nBusinessDonation}
+                              //value={nBusinessDonation}
                               />
                             </View>
                           </View>
@@ -1029,7 +1022,7 @@ export const Chatrel = (props) => {
                             }}>
                             Rate &#8377;/$:{' '}
                             {dollarToRupees &&
-                            year.sAuthRegionCurrency === 'INR'
+                              year.sAuthRegionCurrency === 'INR'
                               ? dollarToRupees.toFixed(4)
                               : 'NA'}
                           </Text>
@@ -1096,7 +1089,7 @@ export const Chatrel = (props) => {
               //For iOS
               shadowRadius: 15,
               shadowColor: Colors.lightBlueChatrelWebsite,
-              shadowOffset: {width: 5, height: 5},
+              shadowOffset: { width: 5, height: 5 },
               shadowOpacity: 1,
 
               //For Android
@@ -1226,7 +1219,7 @@ export const Chatrel = (props) => {
                 //For iOS
                 shadowRadius: 15,
                 shadowColor: Colors.lightBlueChatrelWebsite,
-                shadowOffset: {width: 5, height: 5},
+                shadowOffset: { width: 5, height: 5 },
                 shadowOpacity: 1,
 
                 //For Android

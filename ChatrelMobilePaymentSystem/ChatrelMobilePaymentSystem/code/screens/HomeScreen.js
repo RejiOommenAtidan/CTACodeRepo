@@ -243,12 +243,13 @@ const HomeScreen = (props) => {
   //   opacity /* 1.0 ~ 0.0 */,
   // } = useCollapsibleHeader(HomeScreenOptions);
 
-  if (!bLoader) {
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
         <View style={styles.mainContainer}>
+        <Loader
+          loading={bLoader} />
           {/* <Animated.FlatList
        onScroll={onScroll}
          contentContainerStyle={{ paddingTop: containerPaddingTop }}
@@ -604,20 +605,19 @@ const HomeScreen = (props) => {
         </View>
       </ScrollView>
     );
-  };
-  if (bLoader) {
-    return (
-      bLoader && (
-        <ActivityIndicator
-          size={Platform.OS === 'ios' ? 0 : 'large'}
-          color={Colors.spinnerColor}
-          animating={true}
-          //hidesWhenStopped={true}
-          style={oActivityIndicatorStyle}
-        />
-      )
-    )
-  };
+  // if (bLoader) {
+  //   return (
+  //     bLoader && (
+  //       <ActivityIndicator
+  //         size={Platform.OS === 'ios' ? 0 : 'large'}
+  //         color={Colors.spinnerColor}
+  //         animating={true}
+  //         //hidesWhenStopped={true}
+  //         style={oActivityIndicatorStyle}
+  //       />
+  //     )
+  //   )
+  // };
 };
 
 export const HomeScreenOptions = (navData) => {

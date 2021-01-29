@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import {Loader} from '../components/Loader';
+import { Loader } from '../components/Loader';
 import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 import {
   widthPercentageToDP as wp,
@@ -196,15 +196,8 @@ export const ChatrelHistoryScreen = (props) => {
 
   return (
     <View style={styles.mainContainer}>
-      {bLoader && (
-        <ActivityIndicator
-          size={Platform.OS === 'ios' ? 0 : 'large'}
-          color={Colors.spinnerColor}
-          animating={true}
-          //hidesWhenStopped={true}
-          style={oActivityIndicatorStyle}
-        />
-      )}
+      <Loader
+        loading={bLoader} />
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>CHATREL HISTORY</Text>
   </View>*/}
