@@ -240,7 +240,19 @@ export default () => {
         padding: '5px',
         width: "10%",
         borderRight: '1px solid grey'
-      }
+      },
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtPayment){
+          return -1;
+        }
+        if(!b.dtPayment){
+          return 1;
+        }
+        a = a ? a.dtPayment.split('-').reverse().join('') : '';
+        b = b ? b.dtPayment.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
     
   ];

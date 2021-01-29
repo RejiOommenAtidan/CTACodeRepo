@@ -142,6 +142,18 @@ export default function Report() {
         borderRight: '1px solid grey'
 
       },
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtFormattedDOB){
+          return -1;
+        }
+        if(!b.dtFormattedDOB){
+          return 1;
+        }
+        a = a ? a.dtFormattedDOB.split('-').reverse().join('') : '';
+        b = b ? b.dtFormattedDOB.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
     {
       field: "sPlace",

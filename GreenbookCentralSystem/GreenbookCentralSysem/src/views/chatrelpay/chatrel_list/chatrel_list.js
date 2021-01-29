@@ -147,7 +147,7 @@ export default function ChatrelList(){
       field: "dtPayment",
       title: "PAYMENT DATE",
       type: 'date', 
-      render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
+      //render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
       //dateSetting: 'en-IN',
       headerStyle: {
         textAlign: "center",
@@ -160,7 +160,18 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      //render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtPayment){
+          return -1;
+        }
+        if(!b.dtPayment){
+          return 1;
+        }
+        a = a ? a.dtPayment.split('-').reverse().join('') : '';
+        b = b ? b.dtPayment.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
     {
       field: "sGBID",
@@ -303,7 +314,19 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['dtCurrentChatrelFrom'] ? Moment(rowData['dtCurrentChatrelFrom']).format(sDateFormat) : undefined,
+      //render: rowData => rowData['dtCurrentChatrelFrom'] ? Moment(rowData['dtCurrentChatrelFrom']).format(sDateFormat) : undefined,
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtCurrentChatrelFrom){
+          return -1;
+        }
+        if(!b.dtCurrentChatrelFrom){
+          return 1;
+        }
+        a = a ? a.dtCurrentChatrelFrom.split('-').reverse().join('') : '';
+        b = b ? b.dtCurrentChatrelFrom.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
     {
       field: "dtCurrentChatrelTo",
@@ -319,7 +342,19 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['dtCurrentChatrelTo'] ? Moment(rowData['dtCurrentChatrelTo']).format(sDateFormat) : undefined,
+      //render: rowData => rowData['dtCurrentChatrelTo'] ? Moment(rowData['dtCurrentChatrelTo']).format(sDateFormat) : undefined,
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtCurrentChatrelTo){
+          return -1;
+        }
+        if(!b.dtCurrentChatrelTo){
+          return 1;
+        }
+        a = a ? a.dtCurrentChatrelTo.split('-').reverse().join('') : '';
+        b = b ? b.dtCurrentChatrelTo.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
 
     {
@@ -361,7 +396,19 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['dtArrearsFrom'] ? Moment(rowData['dtArrearsFrom']).format(sDateFormat) : undefined,
+      //render: rowData => rowData['dtArrearsFrom'] ? Moment(rowData['dtArrearsFrom']).format(sDateFormat) : undefined,
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtArrearsFrom){
+          return -1;
+        }
+        if(!b.dtArrearsFrom){
+          return 1;
+        }
+        a = a ? a.dtArrearsFrom.split('-').reverse().join('') : '';
+        b = b ? b.dtArrearsFrom.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
     {
       field: "dtArrearsTo",
@@ -377,7 +424,19 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['dtArrearsTo'] ? Moment(rowData['dtArrearsTo']).format(sDateFormat) : undefined,
+      //render: rowData => rowData['dtArrearsTo'] ? Moment(rowData['dtArrearsTo']).format(sDateFormat) : undefined,
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtArrearsTo){
+          return -1;
+        }
+        if(!b.dtArrearsTo){
+          return 1;
+        }
+        a = a ? a.dtArrearsTo.split('-').reverse().join('') : '';
+        b = b ? b.dtArrearsTo.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
     {
       field: "nChatrelBusinessDonationAmt",
@@ -472,11 +531,11 @@ export default function ChatrelList(){
         console.log("Chatrel List", resp.data);
         var i = 1;
         resp.data.forEach((element) => {
-          element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sISODateFormat) : null;
-          element.dtCurrentChatrelFrom = element.dtCurrentChatrelFrom ? Moment(element.dtCurrentChatrelFrom).format(sISODateFormat) : null;
-          element.dtCurrentChatrelTo = element.dtCurrentChatrelTo ? Moment(element.dtCurrentChatrelTo).format(sISODateFormat) : null;
-          element.dtArrearsFrom = element.dtArrearsFrom ? Moment(element.dtArrearsFrom).format(sISODateFormat) : null;
-          element.dtArrearsTo = element.dtArrearsTo ? Moment(element.dtArrearsTo).format(sISODateFormat) : null;
+          element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sDateFormat) : null;
+          element.dtCurrentChatrelFrom = element.dtCurrentChatrelFrom ? Moment(element.dtCurrentChatrelFrom).format(sDateFormat) : null;
+          element.dtCurrentChatrelTo = element.dtCurrentChatrelTo ? Moment(element.dtCurrentChatrelTo).format(sDateFormat) : null;
+          element.dtArrearsFrom = element.dtArrearsFrom ? Moment(element.dtArrearsFrom).format(sDateFormat) : null;
+          element.dtArrearsTo = element.dtArrearsTo ? Moment(element.dtArrearsTo).format(sDateFormat) : null;
           element.nSerialNo = i++;
         });
         setdataAPI(resp.data);

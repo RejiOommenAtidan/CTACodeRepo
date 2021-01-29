@@ -145,6 +145,18 @@ export default function Report() {
 
 
       },
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtFormattedDOB){
+          return -1;
+        }
+        if(!b.dtFormattedDOB){
+          return 1;
+        }
+        a = a ? a.dtFormattedDOB.split('-').reverse().join('') : '';
+        b = b ? b.dtFormattedDOB.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
     {
       field: "dtFormattedDeceased",
@@ -164,6 +176,18 @@ export default function Report() {
         borderRight: '1px solid grey'
 
 
+      },
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtFormattedDeceased){
+          return -1;
+        }
+        if(!b.dtFormattedDeceased){
+          return 1;
+        }
+        a = a ? a.dtFormattedDeceased.split('-').reverse().join('') : '';
+        b = b ? b.dtFormattedDeceased.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
       },
     },
     {
