@@ -356,8 +356,9 @@ namespace ChatrelPaymentWebAPI.Controllers
             message.Body = messageBody.ToMessageBody();
             // Message ready. Now to use smtp client to despatch message
             SmtpClient smtpClient = new SmtpClient();
+            smtpClient.AuthenticationMechanisms.Remove("XOAUTH2");
             smtpClient.Connect("smtp.gmail.com", 465, true);
-            smtpClient.Authenticate("chatrelcta@gmail.com", "Ch@trel#67");
+            smtpClient.Authenticate("chatrelcta@gmail.com", "hjmzfrcillpuvsxv");
             smtpClient.Send(message);
             smtpClient.Disconnect(true);
             smtpClient.Dispose();
