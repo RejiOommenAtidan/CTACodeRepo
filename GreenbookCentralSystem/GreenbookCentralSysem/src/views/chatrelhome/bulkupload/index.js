@@ -552,7 +552,8 @@ export default function BulkUpload(props) {
   const [sAccept, setsAccept] = useState(".csv");
   const [csvFile, setCSVFile] = useState();
   const [sTitle, setTitle] = useState("");
-  const [message, setMessage] = useState();
+  const [headerOK, setHeaderOK] = useState(false);
+
   const [displayUpload, setDisplayUpload] = useState(false);
   const [jsonObj, setJsonObj] = useState();
   const [showTable, setShowTable] = useState(false);
@@ -618,6 +619,7 @@ export default function BulkUpload(props) {
           setJsonObj(obj);
           setAlertMessage("File Header structure OK. Click 'Upload' Button to verify contents.");
           setAlertType('success');
+          setHeaderOK(true);
           snackbarOpen();
           setDisplayUpload(true);
         }
@@ -632,6 +634,7 @@ export default function BulkUpload(props) {
       console.log("Headers don't match");
       setAlertMessage("Headers don't match");
       setAlertType('error');
+      setHeaderOK(false);
       snackbarOpen();
       setDisplayUpload(false);
       setTitle('');
@@ -658,6 +661,7 @@ export default function BulkUpload(props) {
         }
       })
       .catch(error => {
+        setHeaderOK(false);
         setBackdrop(false);
         setDataAPI([]);
         setShowTable(false)
@@ -677,6 +681,7 @@ export default function BulkUpload(props) {
 
 
   const handleUploadChange = (event) => {
+    setHeaderOK(false);
     setDataAPI([]);
     setShowTable(false);
     let file = document.getElementById("csv").files;
@@ -765,7 +770,7 @@ export default function BulkUpload(props) {
 
         </Grid>
         <Grid item xs={12} sm={6} lg={2}>
-          {sTitle && <Typography paragraph variant='body1' style={{ color: 'green' }}>File: {sTitle} <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>&#10003;</span></Typography>}
+          {headerOK && <Typography paragraph variant='body1' style={{ color: 'green' }}>File: {sTitle}<span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>&#10003;</span></Typography>} 
         </Grid>
         <Grid item xs={12}>
           {/* { showTable &&

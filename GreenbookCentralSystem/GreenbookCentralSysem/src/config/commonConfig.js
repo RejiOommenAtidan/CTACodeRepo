@@ -32,6 +32,7 @@ export const sDateFormat = "DD-MM-YYYY";
 export const sISODateFormat = "YYYY-MM-DD";
 export const sDateFormatMUIDatepicker = "dd-MM-yyyy";
 export const sDateFormatChatrel = "dd/MM/yyyy";
+export const sDateFormatChatrelMoment = "DD/MM/YYYY";
 export const errorText=<span style={{ color: "red" }}>
 This field is required
 </span>

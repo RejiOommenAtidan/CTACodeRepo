@@ -507,12 +507,12 @@ export default function ChatrelList(){
             data={dataAPI}
             options={oOptions}
             actions={[
-              // {
-              //   icon: AddBox,
-              //   tooltip: 'Add a Payment',
-              //   isFreeAction: true,
-              //   onClick: () => setAddModal(true)
-              // },
+              {
+                icon: AddBox,
+                tooltip: 'Add a Payment',
+                isFreeAction: true,
+                onClick: () => setAddModal(true)
+              },
               {
                 icon: Search,
                 tooltip: 'Toggle Filter',
