@@ -332,8 +332,8 @@ namespace ChatrelPaymentWebAPI.Controllers
             var sGBID = dict["sGBID"].ToString();
             var sFileName = dict["sTitle"].ToString();
             var sFileExtension = dict["sFileExtension"].ToString();
-            var emailFrom = "aayush.pandya@atidan.com";
-            var emailTo = "malay.doshi@atidan.com";
+            var emailFrom = "chatrelcta@gmail.com";
+            var emailTo = "chatrelcta@gmail.com";
 
             //attachment = attachment.Substring(attachment.IndexOf("base64,") + 7);
 
@@ -350,14 +350,14 @@ namespace ChatrelPaymentWebAPI.Controllers
 
             message.From.Add(from);
             message.To.Add(to);
-            message.Subject = String.Format("Email from {0}, GreenBook Id: {1}", sName, sGBID);
+            message.Subject = String.Format("Email from {0}, Green Book Id: {1}", sName, sGBID);
 
             message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time"));
             message.Body = messageBody.ToMessageBody();
             // Message ready. Now to use smtp client to despatch message
             SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Connect("smtp-mail.outlook.com", 25, false);
-            smtpClient.Authenticate("aayush.pandya@atidan.com", "A@yush@123");
+            smtpClient.Connect("smtp.gmail.com", 465, true);
+            smtpClient.Authenticate("chatrelcta@gmail.com", "Ch@trel#67");
             smtpClient.Send(message);
             smtpClient.Disconnect(true);
             smtpClient.Dispose();
