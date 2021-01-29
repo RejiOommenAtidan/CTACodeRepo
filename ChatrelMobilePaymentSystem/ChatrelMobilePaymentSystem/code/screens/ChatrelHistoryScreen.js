@@ -6,7 +6,8 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
-  PermissionsAndroid
+  PermissionsAndroid,
+  ToastAndroid
 } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
@@ -114,9 +115,13 @@ export const ChatrelHistoryScreen = (props) => {
       })
       .then(
         resp => {
-          if (resp.status === 200) {
-            alert("Response: Download Successful");
-          }
+          //if (resp.status === 200) {
+          ToastAndroid.show(
+            'Receipt Downloaded Successfully',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+          //}
         }
       ).catch(error => {
         console.log("Error ", error.response);

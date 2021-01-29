@@ -1240,31 +1240,31 @@ export const Chatrel = (props) => {
                 buttonStyle: styles.paypalButtonComponent,
                 onPress: () => {
                   // Linking.openURL('https://5f99d5ac2fc8.ngrok.io/PaypalTest');
-                  RNPaypal.paymentRequest({
-                    clientId: sPayPalClientID,
-                    environment: RNPaypal.ENVIRONMENT.NO_NETWORK,
-                    intent: RNPaypal.INTENT.ORDER,
-                    price: nGrandTotal,
-                    currency: 'USD',
-                    description: `GRAND TOTAL`,
-                    acceptCreditCards: true,
-                  })
-                    .then((response) => {
-                      setbLoader(true);
-                      //alert(response);
-                      console.log(response);
-                      //TODO: OUR CALLS
-                      handlSubmitAfterPayPal(response);
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                      if (err == RNPaypal.USER_CANCELLED) {
-                        // User didn't complete the payment
-                        console.info('User cancelled');
-                      } else if (err == RNPaypal.INVALID_CONFIG) {
-                        console.info('Invalid Details Sent to PayPal');
-                      }
-                    });
+                  // RNPaypal.paymentRequest({
+                  //   clientId: sPayPalClientID,
+                  //   environment: RNPaypal.ENVIRONMENT.NO_NETWORK,
+                  //   intent: RNPaypal.INTENT.ORDER,
+                  //   price: nGrandTotal,
+                  //   currency: 'USD',
+                  //   description: `GRAND TOTAL`,
+                  //   acceptCreditCards: true,
+                  // })
+                  //   .then((response) => {
+                  //     setbLoader(true);
+                  //     //alert(response);
+                  //     console.log(response);
+                  //     //TODO: OUR CALLS
+                  //     handlSubmitAfterPayPal(response);
+                  //   })
+                  //   .catch((err) => {
+                  //     console.log(err);
+                  //     if (err == RNPaypal.USER_CANCELLED) {
+                  //       // User didn't complete the payment
+                  //       console.info('User cancelled');
+                  //     } else if (err == RNPaypal.INVALID_CONFIG) {
+                  //       console.info('Invalid Details Sent to PayPal');
+                  //     }
+                  //   });
                 },
               }}
             />
