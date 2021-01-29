@@ -79,7 +79,7 @@ export const FileDisputeScreen = (props) => {
       sGBID: sGBID,
       sName: sName,
       description: sDisputeMessage,
-      sTitle: sFileName,
+      sTitle: sFileName.split(".").shift(),
       file: sDisputeSingleFile,
       sFileExtension: sFileType,
     };
@@ -91,11 +91,25 @@ export const FileDisputeScreen = (props) => {
       .post(`/ChatrelPayment/SubmitDispute`, submit)
       .then((resp) => {
         if (resp.status === 200) {
+          setsDisputeMessage("");
+          setsFileName(null);
+          setsDisputeSingleFile("");
           setbLoader(false);
-          alert('Dispute filed successfully');
+          Alert.alert(
+            'Success',
+            'Thanks for uploading. Your details are sent to the CTA Team & they shall get in touch with you soon.',
+            [
+              {
+                text: 'Ok',
+                onPress: () => true,
+                style: 'default',
+              }
+            ],
+            { cancelable: true },
+          );
         } else {
           setbLoader(false);
-          alert('Failure filing dispute');
+          alert('Something went wrong, please try again late');
         }
       })
       .catch((error) => {
@@ -127,15 +141,17 @@ export const FileDisputeScreen = (props) => {
         ios: decodeURIComponent(res.uri)?.replace?.('file://', ''),
       });
 
-      console.log("uri: "+uri);
+      console.log("uri: " + uri);
 
       RNFS.readFile(uri, 'base64').then((result) => {
         //console.log(result)
         setsDisputeSingleFile(result);
       });
       //setsFileType(res.type);
+      
       setsFileType(res.name.split('.').pop());
       setsFileName(res.name);
+      
     } catch (err) {
       //Handling any exception (If any)
       if (DocumentPicker.isCancel(err)) {

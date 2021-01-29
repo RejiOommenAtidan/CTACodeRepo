@@ -40,26 +40,51 @@ import {
   oActivityIndicatorStyle,
 } from '../constants/CommonConfig';
 import axios from 'axios';
+import { useIsFocused } from '@react-navigation/native';
 
 export const GBDetailScreen = (props) => {
+
+
   useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => true);
+    if (isFocused) {
+      BackHandler.addEventListener('hardwareBackPress', () => true);
 
-    // getUserDataFromAsnycStorage().then(oUserInfo => {
-    //   if (oUserInfo) {
-    //     getGBDataFromAsnycStorage().then(oGBInfo => {
-    //       if (oGBInfo) {
-    //         let oUserCompleteDetails = {...oUserInfo,...oGBInfo}
-    //         verifyAllDetails(oUserCompleteDetails);
-    //       }
-    //     });
-    //   }
-    // });
+      // getUserDataFromAsnycStorage().then(oUserInfo => {
+      //   if (oUserInfo) {
+      //     getGBDataFromAsnycStorage().then(oGBInfo => {
+      //       if (oGBInfo) {
+      //         let oUserCompleteDetails = {...oUserInfo,...oGBInfo}
+      //         verifyAllDetails(oUserCompleteDetails);
+      //       }
+      //     });
+      //   }
+      // });
 
+
+    }
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', () => true);
     };
-  }, []);
+  }, [isFocused]);
+
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', () => true);
+
+  //   // getUserDataFromAsnycStorage().then(oUserInfo => {
+  //   //   if (oUserInfo) {
+  //   //     getGBDataFromAsnycStorage().then(oGBInfo => {
+  //   //       if (oGBInfo) {
+  //   //         let oUserCompleteDetails = {...oUserInfo,...oGBInfo}
+  //   //         verifyAllDetails(oUserCompleteDetails);
+  //   //       }
+  //   //     });
+  //   //   }
+  //   // });
+
+  //   return () => {
+  //     BackHandler.removeEventListener('hardwareBackPress', () => true);
+  //   };
+  // }, []);
 
   // const getGBDataFromAsnycStorage = async () => {
   //   try {
@@ -103,7 +128,7 @@ export const GBDetailScreen = (props) => {
   //       }
   //     });
   // };
-
+  const isFocused = useIsFocused();
   const { control, handleSubmit, errors } = useForm();
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
   const dispatch = useDispatch();
@@ -223,6 +248,13 @@ export const GBDetailScreen = (props) => {
         console.info(error.message);
       });
   };
+
+  useEffect(() => {
+    if (isFocused) {
+      setsGBID("");
+      setdtDOB(null);
+    }
+  }, [isFocused]);
 
   return (
     <ImageBackground
@@ -487,7 +519,7 @@ const styles = StyleSheet.create({
   headerComponent: {
     width: wp(85),
     textAlign: 'left',
-    fontSize: hp(3.25),
+    fontSize: hp(3.5),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.white,
@@ -604,7 +636,7 @@ const styles = StyleSheet.create({
     //height: hp(3.5),
     marginBottom: hp(2),
     fontFamily: sFontName,
-    fontSize: wp(4),
+    fontSize: wp(4.25),
     // textAlign: 'center',
     fontStyle: 'normal',
     fontWeight: 'normal',
@@ -617,7 +649,7 @@ const styles = StyleSheet.create({
     width: wp(85),
     //height: hp(3.5),
     marginBottom: hp(2),
-    fontSize: wp(4.5),
+    fontSize: wp(4.75),
     // textAlign: 'center',
     fontStyle: 'normal',
     textDecorationLine: 'underline',

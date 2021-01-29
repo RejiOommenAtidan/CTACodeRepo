@@ -15,7 +15,7 @@ export const Loader = props => {
     return (
         <Modal
             transparent={true}
-            animationType={'slide'}
+            animationType={'fade'}
             visible={loading}>
             <View style={styles.modalBackground}>
                 <View style={styles.activityIndicatorWrapper}>

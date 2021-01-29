@@ -938,7 +938,7 @@ const styles = StyleSheet.create({
     marginBottom: hp(1.25),
   },
   labelComponent: {
-    fontSize: wp(3.25),
+    fontSize: wp(3.5),
     textAlign: 'left',
     fontStyle: 'normal',
     fontWeight: 'normal',
@@ -956,7 +956,7 @@ const styles = StyleSheet.create({
   },
   valueComponent: {
     textAlign: 'left',
-    fontSize: wp(4.5),
+    fontSize: wp(4.75),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,

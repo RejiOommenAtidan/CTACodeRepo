@@ -122,7 +122,7 @@ export const CustomSidebarMenu = (props) => {
           <Text
             style={{
               textAlign: 'left',
-              fontSize: wp(4),
+              fontSize: wp(5),
               fontStyle: 'normal',
               fontWeight: 'normal',
               color: Colors.blackTextAPI,
@@ -133,7 +133,7 @@ export const CustomSidebarMenu = (props) => {
           <Text
             style={{
               textAlign: 'left',
-              fontSize: wp(3),
+              fontSize: wp(3.75),
               fontStyle: 'normal',
               fontWeight: 'normal',
               color: Colors.blackTextAPI,

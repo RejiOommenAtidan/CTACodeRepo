@@ -244,7 +244,7 @@ export const MainNavigator = () => {
     <MainDrawerNavigator.Navigator
       drawerStyle={{
         backgroundColor: Colors.white,
-        width: wp(67.5),
+        width: wp(70),
       }}
       initialRouteName={'Login'}
       drawerPosition={'left'}

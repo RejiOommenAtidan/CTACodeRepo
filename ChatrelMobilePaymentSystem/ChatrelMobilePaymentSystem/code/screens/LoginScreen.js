@@ -92,14 +92,14 @@ const styles = StyleSheet.create({
     // width: '100%',
     // height: '100%',
     textAlign: 'center',
-    fontSize: wp(4),
+    fontSize: wp(4.25),
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontFamily: sFontName,
     color: Colors.white,
     marginBottom: hp(7.5),
     lineHeight: hp(3.25),
-    paddingHorizontal: wp(12),
+    paddingHorizontal: wp(8),
     // height:hp(10)
     // letterSpacing: Resolution.nLetterSpacing / 2,
 

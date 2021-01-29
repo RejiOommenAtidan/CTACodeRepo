@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,11 +10,12 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Image,
+  TouchableWithoutFeedback
 } from 'react-native';
-import {Card, Button, Avatar} from 'react-native-elements';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import { Card, Button, Avatar } from 'react-native-elements';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
@@ -28,20 +29,20 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useNavigation} from '@react-navigation/native';
-import {GoogleSignin} from '@react-native-community/google-signin';
-import {removeGoogleCreds} from '../store/actions/GLoginAction';
-import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
-import {removeGBDetails} from '../store/actions/GBDetailsAction';
+import { useNavigation } from '@react-navigation/native';
+import { GoogleSignin } from '@react-native-community/google-signin';
+import { removeGoogleCreds } from '../store/actions/GLoginAction';
+import { removeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
+import { removeGBDetails } from '../store/actions/GBDetailsAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useIsFocused} from '@react-navigation/native';
-import {Icon} from 'react-native-elements';
+import { useIsFocused } from '@react-navigation/native';
+import { Icon } from 'react-native-elements';
 import Accordion from 'react-native-collapsible/Accordion';
-import {Loader} from '../components/Loader';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+import { Loader } from '../components/Loader';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {useCollapsibleHeader} from 'react-navigation-collapsible';
+import { useCollapsibleHeader } from 'react-navigation-collapsible';
 
 // import { withNavigationFocus } from 'react-navigation';
 //import CustomHeaderButton from '../components/HeaderButton';
@@ -137,7 +138,7 @@ const HomeScreen = (props) => {
     axios
       .get(
         `/ChatrelPayment/DisplayChatrelPayment/?sGBID=` +
-          oCurrentGBDetails.sGBID,
+        oCurrentGBDetails.sGBID,
       )
       .then((resp) => {
         if (resp.status === 200) {
@@ -149,7 +150,7 @@ const HomeScreen = (props) => {
             });
           setnChatrelTotalAmount(
             parseFloat(resp.data.chatrelPayment.nChatrelTotalAmount) *
-              dollarToRupees.toFixed(4),
+            dollarToRupees.toFixed(4),
           );
         }
         setbLoader(false);
@@ -173,7 +174,7 @@ const HomeScreen = (props) => {
               onPress: () => removeCompleteDetailsAndNavigateToLogin(),
             },
           ],
-          {cancelable: false},
+          { cancelable: false },
         );
       });
   };
@@ -192,21 +193,50 @@ const HomeScreen = (props) => {
         <Text style={styles.accodrionHeaderText}>{section.sHeader}</Text>
         {expanded ? (
           <Icon
-            style={{fontSize: 18}}
+            style={{ fontSize: 20 }}
             name="remove-circle"
             color={Colors.white}
           />
         ) : (
-          <Icon style={{fontSize: 18}} name="add-circle" color={Colors.white} />
-        )}
+            <Icon style={{ fontSize: 20 }} name="add-circle" color={Colors.white} />
+          )}
       </View>
     );
   };
 
   const renderContent = (section) => {
+
     return (
-      <View style={styles.accordionListContent}>
-        <Text style={styles.accodrionContextText}>{section.sContent}</Text>
+      <View
+        style={styles.accordionListContent}>
+
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              //console.log(section.sRouteName)
+              props.navigation.navigate(section.sRouteName);
+            }}
+
+          >
+            <Text
+              style={styles.accodrionContextText}
+            >{section.sContent}</Text>
+          </TouchableWithoutFeedback>
+
+          {/*<FontAwesome5
+            onPress={() => {
+              //console.log(section.sRouteName)
+              props.navigation.navigate(section.sRouteName);
+            }}
+            color={section.sIconColor}
+            name={section.sIconName}
+            adjustsFontSizeToFit={true}
+            size={18}
+          //size={size}
+          //color={focused ? Colors.black : Colors.black}
+          />*/}
+        </View>
+
       </View>
     );
   };
@@ -226,10 +256,10 @@ const HomeScreen = (props) => {
 
   useEffect(() => {
     //getChatrelDetails();
-    BackHandler.addEventListener('hardwareBackPress', () => true);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', () => true);
-    };
+    // BackHandler.addEventListener('hardwareBackPress', () => true);
+    // return () => {
+    //   BackHandler.removeEventListener('hardwareBackPress', () => true);
+    // };
   }, []);
 
   // const {
@@ -383,7 +413,7 @@ const HomeScreen = (props) => {
           }}>
           <Accordion
             align={'center'}
-            containerStyle={{width: '100%'}}
+            containerStyle={{ width: '100%' }}
             expandMultiple={false}
             // touchableComponent={TouchableOpacity}
             underlayColor={Colors.white}
@@ -546,7 +576,7 @@ const HomeScreen = (props) => {
           }
           titleStyle={{}}>
           {/* <Card.Divider style={styles.presidentCardDividerStyle} /> */}
-          <View style={{marginTop: hp(5)}}>
+          <View style={{ marginTop: hp(5) }}>
             <View style={styles.viewMarginComponent}>
               <Text style={styles.greyTextComponent}>
                 This is a huge step for all the Tibetan people that the Chatrel
@@ -556,7 +586,7 @@ const HomeScreen = (props) => {
             <View style={styles.viewMarginComponent}>
               <Text style={styles.boldTextComponent}>FirstName LastName</Text>
             </View>
-            <View style={{...styles.viewMarginComponent, marginBottom: 0}}>
+            <View style={{ ...styles.viewMarginComponent, marginBottom: 0 }}>
               <Text style={styles.greyTextComponent}>President</Text>
             </View>
           </View>
@@ -582,7 +612,7 @@ const HomeScreen = (props) => {
                 regains freedom.
               </Text>
             </View>
-            <View style={{...styles.viewMarginComponent, marginBottom: 0}}>
+            <View style={{ ...styles.viewMarginComponent, marginBottom: 0 }}>
               <Button
                 title="READ FAQs"
                 titleStyle={{
@@ -643,7 +673,7 @@ export const HomeScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: {backgroundColor: Colors.white},
+    cardStyle: { backgroundColor: Colors.white },
   };
 };
 
@@ -721,7 +751,7 @@ const styles = StyleSheet.create({
     //For iOS
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: {width: 5, height: 5},
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 1,
 
     //For Android
@@ -765,7 +795,7 @@ const styles = StyleSheet.create({
     //For iOS
     shadowRadius: 25,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: {width: 5, height: 5},
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 1,
 
     //For Android
@@ -796,7 +826,7 @@ const styles = StyleSheet.create({
     marginBottom: hp(5.5),
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: {width: 5, height: 5},
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 1,
   },
   iconStyles: {
@@ -831,13 +861,13 @@ const styles = StyleSheet.create({
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
   greyTextComponent: {
-    fontSize: wp(5),
+    fontSize: wp(5.25),
     fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: 'normal',
     textAlign: 'center',
     color: Colors.labelColorLight,
-    //lessed from 5 to 3.5
+    //lessen from 5 to 3.5
     lineHeight: hp(3.5),
   },
   title: {
@@ -863,7 +893,7 @@ const styles = StyleSheet.create({
   },
   accodrionHeaderText: {
     color: Colors.white,
-    fontSize: wp(5),
+    fontSize: wp(5.5),
     fontFamily: sFontName,
     fontStyle: 'normal',
     textAlign: 'left',
@@ -879,9 +909,12 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     paddingHorizontal: 10,
     paddingVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   accodrionContextText: {
-    fontSize: wp(4),
+    fontSize: wp(4.25),
     fontFamily: sFontName,
     fontStyle: 'normal',
     fontWeight: 'normal',

@@ -73,7 +73,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
         if (resp.status === 200) {
           setaFamilyMembers(resp.data);
           setbLoader(false);
-          //console.log(resp.data);
+          console.log(resp.data);
         }
       })
       .catch((error) => {
@@ -149,7 +149,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                     <Text style={styles.chatrelLabelComponent}>
                       {member.dPending?.chatrelPayment?.nChatrelTotalAmount
                         ? `$${member.dPending?.chatrelPayment?.nChatrelTotalAmount}`
-                        : 'NA'}
+                        : member.sGBIDRelation === null ? "NA" : "Paid"}
                     </Text>
                   </View>
                 </View>
@@ -185,7 +185,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
                   <Text style={styles.valueComponent}>
                     {member.sGBIDRelation !== null
                       ? member.sGBIDRelation
-                      : 'GB ID not present'}
+                      : 'Please Contact CTA'}
                   </Text>
                 </View>
                 {/* <View style={styles.gbidValueContainer}>
@@ -232,7 +232,11 @@ export const FamilyChatrelIntermediateScreen = (props) => {
               </View>
               <View style={styles.payNowContainer}>
                 <Button
-                  disabled={member.sGBIDRelation === null}
+                  disabled={
+
+
+                    member.sGBIDRelation === null
+                  }
                   onPress={() => {
                     handleFamilyMemberPress(member);
                   }}
@@ -380,7 +384,7 @@ const styles = StyleSheet.create({
 
   labelComponent: {
     textAlign: 'left',
-    fontSize: wp(3),
+    fontSize: wp(3.25),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.labelColorLight,
@@ -395,7 +399,7 @@ const styles = StyleSheet.create({
 
   valueComponent: {
     textAlign: 'left',
-    fontSize: wp(5),
+    fontSize: wp(5.25),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,

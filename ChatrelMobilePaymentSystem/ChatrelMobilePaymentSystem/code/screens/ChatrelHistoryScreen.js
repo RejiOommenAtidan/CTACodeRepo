@@ -510,7 +510,7 @@ const styles = StyleSheet.create({
   },
   labelComponent: {
     textAlign: 'left',
-    fontSize: wp(3),
+    fontSize: wp(3.25),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.labelColorLight,
@@ -519,7 +519,7 @@ const styles = StyleSheet.create({
   },
   valueComponent: {
     textAlign: 'left',
-    fontSize: wp(5),
+    fontSize: wp(5.25),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
