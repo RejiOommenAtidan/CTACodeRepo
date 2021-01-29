@@ -326,7 +326,7 @@ namespace ChatrelPaymentWebAPI.Controllers
 
             //To do: Add attachment to the email.
 
-            var mailText = dict["description"].ToString();
+            var mailTextRaw = dict["description"].ToString();
             string attachment = dict["file"].ToString();
             var sName = dict["sName"].ToString();
             var sGBID = dict["sGBID"].ToString();
@@ -334,6 +334,8 @@ namespace ChatrelPaymentWebAPI.Controllers
             var sFileExtension = dict["sFileExtension"].ToString();
             var emailFrom = "chatrelcta@gmail.com";
             var emailTo = "chatrelcta@gmail.com";
+
+            var mailText = String.Format("Name: {0}, GB ID: {1}, Description: {2}", sName, sGBID, mailTextRaw);
 
             //attachment = attachment.Substring(attachment.IndexOf("base64,") + 7);
 
@@ -350,7 +352,11 @@ namespace ChatrelPaymentWebAPI.Controllers
 
             message.From.Add(from);
             message.To.Add(to);
-            message.Subject = String.Format("Email from {0}, Green Book Id: {1}", sName, sGBID);
+            //message.Subject = String.Format("Email from {0}, Green Book Id: {1}", sName, sGBID);
+
+            message.Subject = String.Format("Dispute Raised: GB ID - {0}", sGBID);
+
+            
 
             message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time"));
             message.Body = messageBody.ToMessageBody();
