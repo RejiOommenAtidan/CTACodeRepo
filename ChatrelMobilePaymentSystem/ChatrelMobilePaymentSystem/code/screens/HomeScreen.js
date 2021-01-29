@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,10 +11,10 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { Card, Button, Avatar } from 'react-native-elements';
-import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import {Card, Button, Avatar} from 'react-native-elements';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { useSelector, useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
@@ -28,20 +28,20 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native';
-import { GoogleSignin } from '@react-native-community/google-signin';
-import { removeGoogleCreds } from '../store/actions/GLoginAction';
-import { removeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
-import { removeGBDetails } from '../store/actions/GBDetailsAction';
+import {useNavigation} from '@react-navigation/native';
+import {GoogleSignin} from '@react-native-community/google-signin';
+import {removeGoogleCreds} from '../store/actions/GLoginAction';
+import {removeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
+import {removeGBDetails} from '../store/actions/GBDetailsAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
-import { Icon } from 'react-native-elements';
+import {useIsFocused} from '@react-navigation/native';
+import {Icon} from 'react-native-elements';
 import Accordion from 'react-native-collapsible/Accordion';
 import {Loader} from '../components/Loader';
-import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { useCollapsibleHeader } from 'react-navigation-collapsible';
+import {useCollapsibleHeader} from 'react-navigation-collapsible';
 
 // import { withNavigationFocus } from 'react-navigation';
 //import CustomHeaderButton from '../components/HeaderButton';
@@ -137,7 +137,7 @@ const HomeScreen = (props) => {
     axios
       .get(
         `/ChatrelPayment/DisplayChatrelPayment/?sGBID=` +
-        oCurrentGBDetails.sGBID,
+          oCurrentGBDetails.sGBID,
       )
       .then((resp) => {
         if (resp.status === 200) {
@@ -149,14 +149,14 @@ const HomeScreen = (props) => {
             });
           setnChatrelTotalAmount(
             parseFloat(resp.data.chatrelPayment.nChatrelTotalAmount) *
-            dollarToRupees.toFixed(4),
+              dollarToRupees.toFixed(4),
           );
         }
         setbLoader(false);
       })
       .catch((error) => {
         debugger;
-        console.log("Error Message: " + error.message);
+        console.log('Error Message: ' + error.message);
         console.log(error.config);
         setbLoader(false);
         Alert.alert(
@@ -173,7 +173,7 @@ const HomeScreen = (props) => {
               onPress: () => removeCompleteDetailsAndNavigateToLogin(),
             },
           ],
-          { cancelable: false },
+          {cancelable: false},
         );
       });
   };
@@ -192,13 +192,13 @@ const HomeScreen = (props) => {
         <Text style={styles.accodrionHeaderText}>{section.sHeader}</Text>
         {expanded ? (
           <Icon
-            style={{ fontSize: 18 }}
+            style={{fontSize: 18}}
             name="remove-circle"
             color={Colors.white}
           />
         ) : (
-            <Icon style={{ fontSize: 18 }} name="add-circle" color={Colors.white} />
-          )}
+          <Icon style={{fontSize: 18}} name="add-circle" color={Colors.white} />
+        )}
       </View>
     );
   };
@@ -243,22 +243,21 @@ const HomeScreen = (props) => {
   //   opacity /* 1.0 ~ 0.0 */,
   // } = useCollapsibleHeader(HomeScreenOptions);
 
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}>
-        <View style={styles.mainContainer}>
-        <Loader
-          loading={bLoader} />
-          {/* <Animated.FlatList
+  return (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}>
+      <View style={styles.mainContainer}>
+        <Loader loading={bLoader} />
+        {/* <Animated.FlatList
        onScroll={onScroll}
          contentContainerStyle={{ paddingTop: containerPaddingTop }}
          scrollIndicatorInsets={{ top: scrollIndicatorInsetTop }}
        /> */}
-          {/*<View style={styles.headerContainer}>
+        {/*<View style={styles.headerContainer}>
             <Text style={styles.headerComponent}>Quick Actions</Text>
           </View>*/}
-          {/*<View style={styles.cardContainer}>
+        {/*<View style={styles.cardContainer}>
             {aCard.map((card, index) => {
               return (
                 <View key={index} style={styles.singleCardContainer}>
@@ -331,7 +330,7 @@ const HomeScreen = (props) => {
               );
             })}
           </View>*/}
-          {/*{nChatrelTotalAmount !== 0 && !bLoader && (
+        {/*{nChatrelTotalAmount !== 0 && !bLoader && (
             <View style={styles.pendingAmountContainer}>
               <Card containerStyle={styles.pendingAmountComponent}>
                 <Card.Image
@@ -375,25 +374,30 @@ const HomeScreen = (props) => {
                 /> 
             </View>
           )}*/}
-          {/*Accordions*/}
-          <View style={{ ...styles.viewMarginComponent, marginTop: hp(2), marginBottom: hp(5) }}>
-            <Accordion
-              align={'center'}
-              containerStyle={{ width: '100%' }}
-              expandMultiple={false}
-              // touchableComponent={TouchableOpacity}
-              underlayColor={Colors.white}
-              // sectionContainerStyle={{backgroundColor:Colors.white}}
-              sections={aCard}
-              activeSections={activeSections}
-              // renderSectionTitle={renderSectionTitle}
-              duration={500}
-              renderHeader={renderHeader}
-              renderContent={renderContent}
-              onChange={updateSections}
-            />
+        {/*Accordions*/}
+        <View
+          style={{
+            ...styles.viewMarginComponent,
+            marginTop: hp(2),
+            marginBottom: hp(5),
+          }}>
+          <Accordion
+            align={'center'}
+            containerStyle={{width: '100%'}}
+            expandMultiple={false}
+            // touchableComponent={TouchableOpacity}
+            underlayColor={Colors.white}
+            // sectionContainerStyle={{backgroundColor:Colors.white}}
+            sections={aCard}
+            activeSections={activeSections}
+            // renderSectionTitle={renderSectionTitle}
+            duration={500}
+            renderHeader={renderHeader}
+            renderContent={renderContent}
+            onChange={updateSections}
+          />
 
-            {/* <Collapse style={{borderBottomWidth: 1, borderTopWidth: 1}}>
+          {/* <Collapse style={{borderBottomWidth: 1, borderTopWidth: 1}}>
               <CollapseHeader
                 style={{
                   flexDirection: 'row',
@@ -459,152 +463,152 @@ const HomeScreen = (props) => {
                 </Collapse>
               </CollapseBody>
             </Collapse> */}
+        </View>
+        {/*New Job Contribution*/}
+        {nChatrelTotalAmount === 0 && !bLoader && (
+          <Card
+            title={
+              <View style={styles.titleStyleView}>
+                <Icon
+                  color={Colors.white}
+                  iconStyle={styles.iconStyles}
+                  iconProps={{}}
+                  //underlayColor={Colors.websiteLightBlueColor}
+                  backgroundColor={Colors.websiteLightBlueColor}
+                  size={40}
+                  type="font-awesome-5"
+                  name="briefcase"
+                  containerStyle={styles.iconContainerStyles}
+                />
+              </View>
+            }
+            titleStyle={{}}
+            containerStyle={styles.newJobContribCardContainer}>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.boldTextComponent}>
+                Have you got a job now?
+              </Text>
+            </View>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.greyTextComponent}>
+                Change your status and contribute more towards the Tibetan
+                Government.
+              </Text>
+            </View>
+            <Button
+              title="UPDATE EMPLOYMENT STATUS"
+              titleStyle={{
+                color: Colors.white,
+                textAlign: 'center',
+                fontStyle: 'normal',
+                fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                fontFamily:
+                  Platform.OS === 'android' ? sFontNameBold : sFontName,
+              }}
+              buttonStyle={{
+                backgroundColor: Colors.websiteLightBlueColor,
+                borderRadius: 15,
+              }}
+              onPress={() => {
+                setbLoader(true);
+                props.navigation.navigate('SelfChatrel');
+              }}
+            />
+          </Card>
+        )}
+        {/*Chatrel President*/}
+        <Card
+          containerStyle={{
+            ...styles.presidentCardContainerStyle,
+            marginBottom: hp(1),
+          }}
+          title={
+            <Avatar
+              // overlayContainerStyle={{
+              //   padding:0,
+              //   margin:0,
+              // }}
+
+              //   icon={()=>{
+              //     return(           <Badge
+              //     status="success"
+              //     containerStyle={{position: 'absolute', top: 0, right: 0}}
+              //   />)
+              //   }}
+
+              //icon={{name: 'user', type: 'font-awesome'}}
+
+              rounded
+              size="large"
+              containerStyle={styles.avatarContainerStyle}
+              source={require('../assets/TPresident.jpeg')}
+            />
+          }
+          titleStyle={{}}>
+          {/* <Card.Divider style={styles.presidentCardDividerStyle} /> */}
+          <View style={{marginTop: hp(5)}}>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.greyTextComponent}>
+                This is a huge step for all the Tibetan people that the Chatrel
+                collection services are now Online. Power at your fingertips.
+              </Text>
+            </View>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.boldTextComponent}>FirstName LastName</Text>
+            </View>
+            <View style={{...styles.viewMarginComponent, marginBottom: 0}}>
+              <Text style={styles.greyTextComponent}>President</Text>
+            </View>
           </View>
-          {/*New Job Contribution*/}
-          {nChatrelTotalAmount === 0 && !bLoader && (
-            <Card
-              title={
-                <View style={styles.titleStyleView}>
-                  <Icon
-                    color={Colors.white}
-                    iconStyle={styles.iconStyles}
-                    iconProps={{}}
-                    //underlayColor={Colors.websiteLightBlueColor}
-                    backgroundColor={Colors.websiteLightBlueColor}
-                    size={40}
-                    type="font-awesome-5"
-                    name="briefcase"
-                    containerStyle={styles.iconContainerStyles}
-                  />
-                </View>
-              }
-              titleStyle={{}}
-              containerStyle={styles.newJobContribCardContainer}>
-              <View style={styles.viewMarginComponent}>
-                <Text style={styles.boldTextComponent}>
-                  Have you got a job now?
-                </Text>
-              </View>
-              <View style={styles.viewMarginComponent}>
-                <Text style={styles.greyTextComponent}>
-                  Change your status and contribute more towards the Tibetan
-                  Government.
-                </Text>
-              </View>
+        </Card>
+        {/*Goals of Chatrel*/}
+        <Card
+          containerStyle={{
+            ...styles.presidentCardContainerStyle,
+            marginBottom: hp(1),
+          }}>
+          {/* <Card.Divider style={styles.cardDividerStyle} /> */}
+          <View>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.boldTextComponent}>
+                Goals and Needs of Chatrel
+              </Text>
+            </View>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.greyTextComponent}>
+                Chatrel symbolizes the Tibetan people’s recognition of CTA as
+                their legitimate representative. Chatrel payment exhibits
+                Tibetan people’s support for CTA’s financial needs until Tibet
+                regains freedom.
+              </Text>
+            </View>
+            <View style={{...styles.viewMarginComponent, marginBottom: 0}}>
               <Button
-                title="UPDATE EMPLOYMENT STATUS"
+                title="READ FAQs"
                 titleStyle={{
-                  color: Colors.white,
                   textAlign: 'center',
+                  color: Colors.white,
+                  fontFamily: sFontName,
                   fontStyle: 'normal',
                   fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
                   fontFamily:
                     Platform.OS === 'android' ? sFontNameBold : sFontName,
                 }}
                 buttonStyle={{
-                  backgroundColor: Colors.websiteLightBlueColor,
+                  backgroundColor: Colors.faqButtonColor,
                   borderRadius: 15,
                 }}
                 onPress={() => {
-                  setbLoader(true);
-                  props.navigation.navigate('SelfChatrel');
-                }}
-              />
-            </Card>
-          )}
-          {/*Chatrel President*/}
-          <Card
-            containerStyle={{
-              ...styles.presidentCardContainerStyle,
-              marginBottom: hp(1),
-            }}
-            title={
-              <Avatar
-                // overlayContainerStyle={{
-                //   padding:0,
-                //   margin:0,
-                // }}
-
-                //   icon={()=>{
-                //     return(           <Badge
-                //     status="success"
-                //     containerStyle={{position: 'absolute', top: 0, right: 0}}
-                //   />)
-                //   }}
-
-                //icon={{name: 'user', type: 'font-awesome'}}
-
-                rounded
-                size="large"
-                containerStyle={styles.avatarContainerStyle}
-                source={require('../assets/TPresident.jpeg')}
-              />
-            }
-            titleStyle={{}}>
-            {/* <Card.Divider style={styles.presidentCardDividerStyle} /> */}
-            <View style={{ marginTop: hp(5) }}>
-              <View style={styles.viewMarginComponent}>
-                <Text style={styles.greyTextComponent}>
-                  This is a huge step for all the Tibetan people that the Chatrel
-                  collection services are now Online. Power at your fingertips.
-                </Text>
-              </View>
-              <View style={styles.viewMarginComponent}>
-                <Text style={styles.boldTextComponent}>FirstName LastName</Text>
-              </View>
-              <View style={{ ...styles.viewMarginComponent, marginBottom: 0 }}>
-                <Text style={styles.greyTextComponent}>President</Text>
-              </View>
+                  console.log('FAQs To be Added');
+                }}>
+                READ FAQs
+              </Button>
             </View>
-          </Card>
-          {/*Goals of Chatrel*/}
-          <Card
-            containerStyle={{
-              ...styles.presidentCardContainerStyle,
-              marginBottom: hp(1),
-            }}>
-            {/* <Card.Divider style={styles.cardDividerStyle} /> */}
-            <View>
-              <View style={styles.viewMarginComponent}>
-                <Text style={styles.boldTextComponent}>
-                  Goals and Needs of Chatrel
-                </Text>
-              </View>
-              <View style={styles.viewMarginComponent}>
-                <Text style={styles.greyTextComponent}>
-                  Chatrel symbolizes the Tibetan people’s recognition of CTA as
-                  their legitimate representative. Chatrel payment exhibits
-                  Tibetan people’s support for CTA’s financial needs until Tibet
-                  regains freedom.
-                </Text>
-              </View>
-              <View style={{ ...styles.viewMarginComponent, marginBottom: 0 }}>
-                <Button
-                  title="READ FAQs"
-                  titleStyle={{
-                    textAlign: 'center',
-                    color: Colors.white,
-                    fontFamily: sFontName,
-                    fontStyle: 'normal',
-                    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
-                    fontFamily:
-                      Platform.OS === 'android' ? sFontNameBold : sFontName,
-                  }}
-                  buttonStyle={{
-                    backgroundColor: Colors.faqButtonColor,
-                    borderRadius: 15,
-                  }}
-                  onPress={() => {
-                    console.log('FAQs To be Added');
-                  }}>
-                  READ FAQs
-                </Button>
-              </View>
-            </View>
-          </Card>
-        </View>
-      </ScrollView>
-    );
+          </View>
+        </Card>
+      </View>
+    </ScrollView>
+  );
   // if (bLoader) {
   //   return (
   //     bLoader && (
@@ -639,7 +643,7 @@ export const HomeScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: { backgroundColor: Colors.white },
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 
@@ -717,7 +721,7 @@ const styles = StyleSheet.create({
     //For iOS
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: { width: 5, height: 5 },
+    shadowOffset: {width: 5, height: 5},
     shadowOpacity: 1,
 
     //For Android
@@ -761,7 +765,7 @@ const styles = StyleSheet.create({
     //For iOS
     shadowRadius: 25,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: { width: 5, height: 5 },
+    shadowOffset: {width: 5, height: 5},
     shadowOpacity: 1,
 
     //For Android
@@ -792,7 +796,7 @@ const styles = StyleSheet.create({
     marginBottom: hp(5.5),
     shadowRadius: 15,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: { width: 5, height: 5 },
+    shadowOffset: {width: 5, height: 5},
     shadowOpacity: 1,
   },
   iconStyles: {
@@ -833,7 +837,8 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     textAlign: 'center',
     color: Colors.labelColorLight,
-    lineHeight: hp(2),
+    //lessed from 5 to 3.5
+    lineHeight: hp(3.5),
   },
   title: {
     textAlign: 'center',

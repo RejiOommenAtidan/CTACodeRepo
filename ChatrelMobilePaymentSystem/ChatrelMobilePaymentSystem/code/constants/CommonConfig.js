@@ -6,7 +6,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 ////Local Windows
-export const sAPIBASEURL = "http://10.0.2.2:49700/api";
+// export const sAPIBASEURL = "http://10.0.2.2:49700/api";
 
 ////Local mac
 // export const sAPIBASEURL = "http://10.0.2.2:5000/api";
@@ -15,7 +15,7 @@ export const sAPIBASEURL = "http://10.0.2.2:49700/api";
 // export const sAPIBASEURL = 'https://chatrel-webapi.azurewebsites.net/api';
 
 ////Dev Azure (For Mobile App)
-// export const sAPIBASEURL = 'https://chatrel-webapi-dev.azurewebsites.net/api';
+export const sAPIBASEURL = 'https://chatrel-webapi-dev.azurewebsites.net/api';
 
 
 export const sAdminEmail = 'admin@CTA.com';
