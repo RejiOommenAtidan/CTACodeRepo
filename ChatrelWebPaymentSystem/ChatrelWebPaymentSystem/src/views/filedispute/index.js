@@ -92,7 +92,8 @@ const handleUploadClick =(e) =>{
 const reader = new FileReader();
 
     reader.addEventListener("load", function () {
-        setbinFileDoc(reader.result);
+      console.log(reader.result.split('base64,')[1]);
+        setbinFileDoc(reader.result.split('base64,')[1]);
        // console.log(reader.result);
     }, false);
   
