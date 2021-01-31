@@ -110,7 +110,7 @@ export default () => {
   const columns = [
     {
       field: "nSerialNo",
-      title: "Sr. No.",
+      title: "SR. NO.",
       headerStyle: {
         textAlign: "center",
         textAlignLast: "center",
@@ -359,7 +359,7 @@ export default () => {
             {dataAPI.length != 0 &&
 
               <MaterialTable
-                style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+                style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px', color: 'black', fontSize:'1.05rem' }}
                 //isLoading = {loading}
                 // ${sAuthRegion}, Madeb Type: ${sMadebType}
                 icons={oTableIcons}
@@ -388,7 +388,7 @@ export default () => {
               
                </div>)}
                <div style={{display: 'flex', justifyContent:'left'}}>
-               <p style={{fontSize: '15px'}}>{`Total No. of Books: ${dataAPI.length}`}</p>     </div> 
+               <p style={{fontSize: '1.05rem'}}>{`Total No. of Books: ${dataAPI.length}`}</p>     </div> 
                     </>
                   ),
                 }}

@@ -78,8 +78,8 @@
 //                        return BadRequest("Action Logger object cannot be NULL");
 //                    }
 //                    //FORMAT
-//                    //actionLogger.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).ToString("yyyy-MM-dd HH:mm:ss");
-//                    //user.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).ToString("yyyy-MM-dd HH:mm:ss");
+//                    //actionLogger.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")).ToString("yyyy-MM-dd HH:mm:ss");
+//                    //user.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")).ToString("yyyy-MM-dd HH:mm:ss");
 
 //                    _actionLoggerRepository.Add(actionLogger);
 //                    return Ok(actionLogger);

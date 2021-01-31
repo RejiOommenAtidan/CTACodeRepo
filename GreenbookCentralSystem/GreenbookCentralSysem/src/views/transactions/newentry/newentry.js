@@ -436,6 +436,12 @@ const addChildAPICall = (childObj) => {
                         id="id_sGBID"
                         name="name_sGBID"
                         label={<>Green Book ID<span style={{color:'red'}}> *</span></>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsGBID(e.target.value); }}
                         fullWidth
@@ -469,6 +475,12 @@ const addChildAPICall = (childObj) => {
                         id="id_sFirstName"
                        
                         label={<>First Name<span style={{color:'red'}}> *</span></>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsFirstName(e.target.value); }}
                         autoFocus
@@ -491,6 +503,11 @@ const addChildAPICall = (childObj) => {
                       <TextField
                         id="id_sLastName"
                         label="Last Name"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
                         
                         type="text"
                         onChange={(e) => { setsLastName(e.target.value); }}
@@ -506,6 +523,12 @@ const addChildAPICall = (childObj) => {
                       <TextField
                         id="id_sFamilyName"
                         label="Family Name"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                       
                         type="text"
                         onChange={(e) => { setsFamilyName(e.target.value); }}
                         fullWidth
@@ -520,6 +543,16 @@ const addChildAPICall = (childObj) => {
                       <TextField
                         id="id_TibetanName"
                         label={<>མིང་།<span style={{color:'red'}}> *</span></>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.8rem'
+                          }
+                        }}
+                        inputProps={{
+                          style:{
+                            fontSize: '1.5rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => { setTibetanName(e.target.value); }}
                         fullWidth
@@ -542,6 +575,16 @@ const addChildAPICall = (childObj) => {
                       <TextField
                         id="id_TBUPlaceOfBirth"
                         label={<>སྐྱེས་ཡུལ།<span style={{color:'red'}}> *</span></>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.8rem'
+                          }
+                        }}
+                        inputProps={{
+                          style:{
+                            fontSize: '1.5rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => { setTBUPlaceOfBirth(e.target.value); }}
                         fullWidth
@@ -568,6 +611,12 @@ const addChildAPICall = (childObj) => {
                         id="id_sBirthPlace"
                   
                         label={<>Place of Birth <span style={{color:'red'}}> *</span></>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsBirthPlace(e.target.value); }}
                         fullWidth
@@ -658,6 +707,12 @@ const addChildAPICall = (childObj) => {
                               <TextField
                                 {...params}
                                 label={<>Choose a Birth Country <span style={{color:'red'}}> *</span></>}
+                                InputLabelProps={{
+                                  style:{
+                                    fontSize: '1.05rem'
+                                  }
+                                }}
+                                
                                 variant="standard"
                                 name="name_birthCountryID"
                                 inputRef={register({
@@ -702,8 +757,9 @@ placeholder="DD-MM-YYYY"
                               id="id_dtDOB"
                               name="name_dtDOB"
                               variant="dialog"
-                              openTo="year"
-                              views={["year", "month", "date"]}
+                              //openTo="year"
+                              //views={["year", "month", "date"]}
+                              autoOk
                               margin="dense"
                               inputRef={register({
                                 required: true,
@@ -714,6 +770,12 @@ placeholder="DD-MM-YYYY"
                                 }
                               })}
                               label={<> DOB<span style={{ color: 'red' }}> *</span></>}
+                              InputLabelProps={{
+                                style:{
+                                  fontSize: '1.05rem'
+                                }
+                              }}
+                              
                               format={sDateFormatMUIDatepicker}
                               onChange={date => { 
                                 if(date){
@@ -767,6 +829,12 @@ placeholder="DD-MM-YYYY"
                           <TextField
                             {...params}
                             label="DOB Approx"
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem'
+                              }
+                            }}
+                            
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
@@ -799,6 +867,12 @@ placeholder="DD-MM-YYYY"
                         <Select
                           id="id_sGender"
                           label="Gender"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
+                          
                           type="text"
                           fullWidth
                           margin="dense"
@@ -816,6 +890,12 @@ placeholder="DD-MM-YYYY"
                         <TextField
                           id="id_sPaidUntil"
                           label="Paid Until"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
+                          
                           onChange={(e) => { setsPaidUntil(e.target.value); }}
                           fullWidth
                           margin="dense"
@@ -831,6 +911,12 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_sOriginVillage"
                         label="Origin Village"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                       
                         type="text"
                         onChange={(e) => { setsOriginVillage(e.target.value); }}
                         fullWidth
@@ -846,6 +932,16 @@ placeholder="DD-MM-YYYY"
                         id="id_TBUOriginVillage"
                         
                         label={<>ཕ་ཡུལ།<span style={{color:'red'}}> *</span></>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.8rem'
+                          }
+                        }}
+                        inputProps={{
+                          style:{
+                            fontSize: '1.5rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => { setTBUOriginVillage(e.target.value); }}
                         fullWidth
@@ -897,6 +993,12 @@ placeholder="DD-MM-YYYY"
                           <TextField
                             {...params}
                             label="Province Name"
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem'
+                              }
+                            }}
+                           
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
@@ -912,6 +1014,12 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_sOldGreenBKNo"
                         label="Old GB Number"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsOldGreenBKNo(e.target.value); }}
                         fullWidth
@@ -926,6 +1034,12 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_sFstGreenBkNo"
                         label="First GB Number"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                       
                         type="text"
                         onChange={(e) => { setsFstGreenBkNo(e.target.value); }}
                         fullWidth
@@ -940,6 +1054,12 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_sResidenceNumber"
                         label="RC Number"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                       
                         type="text"
                         onChange={(e) => { setsResidenceNumber(e.target.value); }}
                         fullWidth
@@ -954,6 +1074,12 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_sDocuments"
                         label="Other Documents"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                       
                         type="text"
                         onChange={(e) => { setsOtherDocuments(e.target.value); }}
                         fullWidth
@@ -997,6 +1123,12 @@ placeholder="DD-MM-YYYY"
                           <TextField
                             {...params}
                             label="Qualification"
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem'
+                              }
+                            }}
+                            
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
@@ -1040,6 +1172,12 @@ placeholder="DD-MM-YYYY"
                           <TextField
                             {...params}
                             label="Occupation"
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem'
+                              }
+                            }}
+                            
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,
@@ -1096,6 +1234,12 @@ placeholder="DD-MM-YYYY"
                           readOnly: true
                         }}
                         label="Sarso Form Number"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         //onChange={(e) => { setTBUFathersName(e.target.value); }}
                         fullWidth
@@ -1114,6 +1258,12 @@ placeholder="DD-MM-YYYY"
                         id="id_sFathersName"
                         
                         label={<>Father's Name <span style={{color:'red'}}> *</span></>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsFathersName(e.target.value); }}
                         fullWidth
@@ -1137,6 +1287,12 @@ placeholder="DD-MM-YYYY"
                         name="name_sFathersGBID"
                         
                         label={<>Father's GB No </>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsFathersGBID(e.target.value); }}
                         fullWidth
@@ -1164,6 +1320,16 @@ placeholder="DD-MM-YYYY"
                         id="id_TBUFathersName"
                   
                         label={<>ཕ་མིང་།<span style={{color:'red'}}> *</span></>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.8rem'
+                          }
+                        }}
+                        inputProps={{
+                          style:{
+                            fontSize: '1.5rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => { setTBUFathersName(e.target.value); }}
                         fullWidth
@@ -1186,6 +1352,12 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_sFathersID"
                         label="Father's Old GB No"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsFathersID(e.target.value); }}
                         fullWidth
@@ -1203,6 +1375,12 @@ placeholder="DD-MM-YYYY"
                         id="id_sMothersName"
                  
                         label={<> Mother's Name<span style={{color:'red'}}> *</span></>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsMothersName(e.target.value); }}
                         fullWidth
@@ -1225,7 +1403,12 @@ placeholder="DD-MM-YYYY"
                         id="id_sMothersGBID"
                         name="name_sMothersGBID"
                         label={<>Mother's GB No</>}
-                     
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsMothersGBID(e.target.value); }}
                         fullWidth
@@ -1254,6 +1437,16 @@ placeholder="DD-MM-YYYY"
                         
                         label={<>མ་མིང་།<span style={{color:'red'}}> *</span></>}
                         type="text"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.8rem'
+                          }
+                        }}
+                        inputProps={{
+                          style:{
+                            fontSize: '1.5rem'
+                          }
+                        }}
                         onChange={(e) => { setTBUMothersName(e.target.value); }}
                         fullWidth
                         margin="dense"
@@ -1274,6 +1467,12 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_sMothersID"
                         label="Mother's Old GB No"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsMothersID(e.target.value); }}
                         fullWidth
@@ -1293,6 +1492,12 @@ placeholder="DD-MM-YYYY"
                       }}
                         id="id_sMarried"
                         label="Marital Status"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsMarried(e.target.value); }}
                         fullWidth
@@ -1315,6 +1520,12 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_sSpouseName"
                         label="Spouse Name"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsSpouseName(e.target.value); }}
                         fullWidth
@@ -1330,6 +1541,12 @@ placeholder="DD-MM-YYYY"
                         id="id_sSpouseGBID"
                         name="name_sSpouseGBID"
                         label="Spouse GB No"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsSpouseGBID(e.target.value); }}
                         fullWidth
@@ -1354,6 +1571,16 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_TBUSpouseName"
                         label="བཟའ་ཟླའི་མིང་།"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.8rem'
+                          }
+                        }}
+                        inputProps={{
+                          style:{
+                            fontSize: '1.5rem'
+                          }
+                        }}
                         type="text"
                         onChange={(e) => { setTBUSpouseName(e.target.value); }}
                         fullWidth
@@ -1370,6 +1597,12 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_sSpouseID"
                         label="Spouse's Old GB No"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsSpouseID(e.target.value); }}
                         fullWidth
@@ -1390,6 +1623,12 @@ placeholder="DD-MM-YYYY"
                         id="id_sAddress1"
                         
                         label={<>Address 1 <span style={{color:'red'}}> *</span></>}
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsAddress1(e.target.value); }}
                         fullWidth
@@ -1414,6 +1653,12 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_sAddress2"
                         label="Address 2"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
+                        
                         type="text"
                         onChange={(e) => { setsAddress2(e.target.value); }}
                         fullWidth
@@ -1432,6 +1677,11 @@ placeholder="DD-MM-YYYY"
                         <TextField
                           id="id_sCity"
                           label="City"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => { setsCity(e.target.value); }}
                           fullWidth
@@ -1447,6 +1697,11 @@ placeholder="DD-MM-YYYY"
                           id="id_sState"
                           
                           label={<> State<span style={{color:'red'}}> *</span></>}
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => { setsState(e.target.value); }}
                           fullWidth
@@ -1537,6 +1792,11 @@ placeholder="DD-MM-YYYY"
                               <TextField
                                 {...params}
                                 label={<> Country<span style={{color:'red'}}> *</span></>}
+                                InputLabelProps={{
+                                  style:{
+                                    fontSize: '1.05rem'
+                                  }
+                                }}
                                 variant="standard"
                                 name="name_sCountryID"
                                 inputRef={register({
@@ -1576,6 +1836,11 @@ placeholder="DD-MM-YYYY"
                         <TextField
                           id="id_sPCode"
                           label="Pin Code"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => { setsPCode(e.target.value); }}
                           fullWidth
@@ -1591,6 +1856,11 @@ placeholder="DD-MM-YYYY"
                       <TextField
                         id="id_sEmail"
                         label="Email"
+                        InputLabelProps={{
+                          style:{
+                            fontSize: '1.05rem'
+                          }
+                        }}
                         type="email"
                         onChange={(e) => { setsEmail(e.target.value); }}
                         fullWidth
@@ -1688,6 +1958,11 @@ placeholder="DD-MM-YYYY"
                         <TextField
                           id="id_sPhone"
                           label="Phone Number"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => { setsPhone(e.target.value); }}
                           fullWidth
@@ -1702,6 +1977,11 @@ placeholder="DD-MM-YYYY"
                         <TextField
                           id="id_sFax"
                           label="Fax Number"
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           type="text"
                           onChange={(e) => { setsFax(e.target.value); }}
                           fullWidth
@@ -1719,13 +1999,19 @@ placeholder="DD-MM-YYYY"
                         <KeyboardDatePicker
                           placeholder="DD-MM-YYYY"
                           variant="dialog"
-                          openTo="year"
-                          views={["year", "month", "date"]}
+                          //openTo="year"
+                          //views={["year", "month", "date"]}
+                          autoOk
                           margin="dense"
                           id="id_dtApplicationDate"
                           name="name_dtApplicationDate"
                          
                           label={<>Application Date<span style={{color:'red'}}> *</span></>}
+                          InputLabelProps={{
+                            style:{
+                              fontSize: '1.05rem'
+                            }
+                          }}
                           format={sDateFormatMUIDatepicker}
                           onChange={date => { setdtFormDate(date) }}
                           value={dtFormDate}
@@ -1778,6 +2064,11 @@ placeholder="DD-MM-YYYY"
                             {...params}
                           
                             label={<>Authority Region<span style={{color:'red'}}> *</span></>}
+                            InputLabelProps={{
+                              style:{
+                                fontSize: '1.05rem'
+                              }
+                            }}
                             variant="standard"
                             inputProps={{
                               ...params.inputProps,

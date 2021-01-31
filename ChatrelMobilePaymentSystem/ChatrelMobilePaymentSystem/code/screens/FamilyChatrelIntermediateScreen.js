@@ -1,30 +1,38 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   View,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import {Platform} from 'react-native';
-import {Card, Button} from 'react-native-elements';
+import { Platform } from 'react-native';
+import { Card, Button } from 'react-native-elements';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import { Loader } from '../components/Loader';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {sDateFormat,sFontName} from '../constants/CommonConfig';
+import {
+  sDateFormat,
+  sFontName,
+  sFontNameBold,
+  oActivityIndicatorStyle,
+} from '../constants/CommonConfig';
 import Moment from 'moment';
-import {useSelector, useDispatch} from 'react-redux';
-import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
+import { useSelector, useDispatch } from 'react-redux';
+import { storeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
+import { useIsFocused } from '@react-navigation/native';
 
 export const FamilyChatrelIntermediateScreen = (props) => {
+  const isFocused = useIsFocused();
   // const aFamilyMembersHardCoded = [
   //   {
   //     sName: 'Jane Doe',
@@ -51,8 +59,10 @@ export const FamilyChatrelIntermediateScreen = (props) => {
   //     nChatrelDue: 225,
   //   },
   // ];
+
   const dispatch = useDispatch();
   const [aFamilyMembers, setaFamilyMembers] = useState([]);
+  const [bLoader, setbLoader] = useState(true);
   const oCurrentGBDetails = useSelector(
     (state) => state.GBDetailsReducer.oGBDetails,
   );
@@ -62,183 +72,194 @@ export const FamilyChatrelIntermediateScreen = (props) => {
       .then((resp) => {
         if (resp.status === 200) {
           setaFamilyMembers(resp.data);
-          //console.log(resp.data);
+          setbLoader(false);
+          console.log(resp.data);
         }
       })
       .catch((error) => {
+        setbLoader(false);
+        alert('Something went wrong, please try again later.');
         console.log(error.message);
         console.log(error.config);
       });
   };
 
   useEffect(() => {
-    getFamilyDetails();
-  }, []);
+    if (isFocused) {
+      setbLoader(true);
+      console.log('Fam Chatrel Called');
+      getFamilyDetails();
+    }
+  }, [isFocused]);
 
   const handleFamilyMemberPress = (member) => {
-    console.log(member);
-    let oCurrentGBDetails = {
-      sGBID: member.sGBIDRelation,
-      dtDOB: Moment(member.dtDOB).format(sDateFormat),
-    };
-    dispatch(storeCurrentGBDetails(oCurrentGBDetails));
-    props.navigation.navigate('FriendChatrel');
+    try {
+      setbLoader(true);
+      console.log(member);
+      let oCurrentGBDetails = {
+        sGBID: member.sGBIDRelation,
+        dtDOB: Moment(member.dtDOB).format(sDateFormat),
+      };
+      dispatch(storeCurrentGBDetails(oCurrentGBDetails));
+      props.navigation.navigate('FamilyChatrel');
+    } catch (e) {
+      setbLoader(false);
+      alert('Something went wrong, please try again later.');
+    }
   };
   return (
     <View style={styles.mainContainer}>
+      <Loader
+        loading={bLoader} />
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>FAMILY MEMBERS</Text>
   </View>*/}
       <ScrollView showsVerticalScrollIndicator={false}>
+        {aFamilyMembers.length === 0 && !bLoader && (
+          <View style={styles.zeroRecordContainer}>
+            <Text style={styles.zeroRecordComponent}>
+              No Family Members added, Contact the CTA Team to add Family
+              members
+            </Text>
+          </View>
+        )}
         {aFamilyMembers.map((member, index) => {
           return (
-            <View key={index}>
-              {/* <TouchableOpacity
-                style={styles.touchableOpacity}
-                onPress={() => { handleFamilyMemberPress(member) }}
-              > */}
-              <Card
-                containerStyle={styles.cardComponent}
-                title={
+            <Card
+              key={index}
+              containerStyle={styles.cardComponent}
+              title={
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginBottom: hp(1),
+                  }}>
+                  <Text style={styles.cardHeaderComponent}>
+                    {member.dPending?.sName || member.sName}
+                  </Text>
                   <View
                     style={{
                       display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginBottom: hp(1),
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      //marginBottom: hp(2),
                     }}>
-                    <Text style={styles.cardHeaderComponent}>
-                      {member.dPending?.sName || member.sName}
+                    <Text style={styles.chatrelLabelComponent}>
+                      {member.dPending?.chatrelPayment?.nChatrelTotalAmount
+                        ? `$${member.dPending?.chatrelPayment?.nChatrelTotalAmount}`
+                        : member.sGBIDRelation === null ? "NA" : "Paid"}
                     </Text>
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        //marginBottom: hp(2),
-                      }}>
-                      <Text style={styles.chatrelLabelComponent}>
-                        {member.dPending?.chatrelPayment?.nChatrelTotalAmount
-                          ? `$${member.dPending?.chatrelPayment?.nChatrelTotalAmount}`
-                          : 'NA'}
-                      </Text>
-                    </View>
                   </View>
-                }
-                titleStyle={{}}>
-                {/* <Card.Title style={styles.cardHeaderComponent}>
+                </View>
+              }
+              titleStyle={{}}>
+              {/* <Card.Title style={styles.cardHeaderComponent}>
                   {member.sName}
                 </Card.Title> */}
-                {/*Currency*/}
-                {/* <View style={styles.chatrelLabelContainer}>
+              {/*Currency*/}
+              {/* <View style={styles.chatrelLabelContainer}>
                   <Text style={styles.chatrelLabelComponent}>
                     USD {member.nChatrelDue}
                   </Text>
                 </View> */}
-                {/*<View style={styles.chatrelLabelContainer}>
+              {/*<View style={styles.chatrelLabelContainer}>
                     <Text style={styles.chatrelLabelComponent}>USD</Text>
                   </View>
                   <View style={styles.chatrelValueContainer}>
                     <Text style={styles.chatrelValueComponent}>{member.nChatrelDue}</Text>
                   </View>*/}
-                <Card.Divider style={styles.cardDividerComponent} />
-                {/*GBID*/}
+              <Card.Divider style={styles.cardDividerComponent} />
+              {/*GBID*/}
 
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginBottom: hp(1.25),
-                  }}>
-                  <View style={styles.gbidLabelContainer}>
-                    <Text style={styles.gbidLabelComponent}>GREEN BOOK ID</Text>
-                    <Text style={styles.gbidValueComponent}>
-                      {member.sGBIDRelation !== null
-                        ? member.sGBIDRelation
-                        : 'GB Id not present'}
-                    </Text>
-                  </View>
-                  {/* <View style={styles.gbidValueContainer}>
-                </View> */}
-                  {/*Age*/}
-                  <View style={styles.ageLabelContainer}>
-                    <Text style={styles.ageLabelComponent}>AGE</Text>
-                    <Text style={styles.ageValueComponent}>{member.nAge}</Text>
-                  </View>
-                  {/* <View style={styles.ageValueContainer}>
-                </View> */}
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginBottom: hp(1.25),
+                }}>
+                <View style={styles.labelContainer}>
+                  <Text style={styles.labelComponent}>GREEN BOOK ID</Text>
+                  <Text style={styles.valueComponent}>
+                    {member.sGBIDRelation !== null
+                      ? member.sGBIDRelation
+                      : 'Please Contact CTA'}
+                  </Text>
                 </View>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginBottom: hp(1.25),
-                  }}>
-                  {/*DOB*/}
-                  <View style={styles.dtDOBLabelContainer}>
-                    <Text style={styles.dtDOBLabelComponent}>
-                      DATE OF BIRTH
-                    </Text>
-                    <Text style={styles.dtDOBValueComponent}>
-                      {Moment(member.dtDOB).format(sDateFormat)}
-                    </Text>
-                  </View>
-                  {/* <View style={styles.dtDOBValueContainer}>
+                {/* <View style={styles.gbidValueContainer}>
                 </View> */}
-                  {/*Relation*/}
-                  <View style={styles.relationLabelContainer}>
-                    <Text style={styles.relationLabelComponent}>RELATION</Text>
-                    <Text style={styles.relationValueComponent}>
-                      {member.sRelation}
-                    </Text>
-                  </View>
-                  {/* <View style={styles.relationValueContainer}>
+                {/*Age*/}
+                <View style={styles.labelContainer}>
+                  <Text style={{ ...styles.labelComponent, textAlign: 'right' }}>
+                    AGE
+                  </Text>
+                  <Text style={{ ...styles.valueComponent, textAlign: 'right' }}>
+                    {member.nAge}
+                  </Text>
+                </View>
+                {/* <View style={styles.ageValueContainer}>
                 </View> */}
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginBottom: hp(1.25),
+                }}>
+                {/*DOB*/}
+                <View style={styles.labelContainer}>
+                  <Text style={styles.labelComponent}>DATE OF BIRTH</Text>
+                  <Text style={styles.valueComponent}>
+                    {Moment(member.dtDOB).format(sDateFormat)}
+                  </Text>
                 </View>
-                <View style={styles.payNowContainer}>
-                  <Button
-                    disabled={member.sGBIDRelation === null}
-                    title={'PAY NOW'}
-                    onPress={() => {
-                      handleFamilyMemberPress(member);
-                    }}
-                    iconRight
-                    icon={{
-                      type: 'font-awesome-5',
-                      name: 'donate',
-                      color: Colors.white,
-                    }}
-                    type="outline"
-                    titleStyle={{
-                      color: Colors.white,
-                      fontStyle: 'normal',
-                      fontWeight: '900',
-                      fontFamily: sFontName,
-                      fontSize:
-                        Dimensions.get('window').width <
-                        Resolution.nWidthBreakpoint
-                          ? 9
-                          : 15,
-                    }}
-                    buttonStyle={{
-                      height: hp(5),
-                      backgroundColor: Colors.buttonYellow,
-                      borderRadius: 20,
-                      borderWidth: 1,
-                      borderColor: Colors.buttonYellow,
-                      // marginBottom:
-                      //   Dimensions.get('window').height <
-                      //   Resolution.nHeightBreakpoint
-                      //     ? 3
-                      //     : 5,
-                    }}
-                  />
+                {/* <View style={styles.dtDOBValueContainer}>
+                </View> */}
+                {/*Relation*/}
+                <View style={styles.labelContainer}>
+                  <Text style={{ ...styles.labelComponent, textAlign: 'right' }}>
+                    RELATION
+                  </Text>
+                  <Text style={{ ...styles.valueComponent, textAlign: 'right' }}>
+                    {member.sRelation}
+                  </Text>
                 </View>
-              </Card>
-              {/* </TouchableOpacity> */}
-            </View>
+                {/* <View style={styles.relationValueContainer}>
+                </View> */}
+              </View>
+              <View style={styles.payNowContainer}>
+                <Button
+                  disabled={
+
+
+                    member.sGBIDRelation === null
+                  }
+                  onPress={() => {
+                    handleFamilyMemberPress(member);
+                  }}
+                  // iconRight
+                  // icon={{
+                  //   type: 'font-awesome-5',
+                  //   name: 'donate',
+                  //   color: Colors.white,
+                  // }}
+                  type="outline"
+                  title={'PAY NOW'}
+                  titleStyle={{
+                    color: Colors.white,
+                    fontStyle: 'normal',
+                    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                    fontFamily:
+                      Platform.OS === 'android' ? sFontNameBold : sFontName,
+                    fontSize: wp(4),
+                  }}
+                  buttonStyle={styles.buttonStyle}
+                />
+              </View>
+            </Card>
           );
         })}
       </ScrollView>
@@ -248,7 +269,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
 
 export const FamilyChatrelIntermediateScreenOptions = (navData) => {
   return {
-    headerTitle: 'Family Chatrel',
+    headerTitle: 'FAMILY CHATREL',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -264,7 +285,8 @@ export const FamilyChatrelIntermediateScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
+    // headerRight: CustomHeaderRightButton,
+    cardStyle: { backgroundColor: Colors.white },
   };
 };
 
@@ -272,8 +294,8 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     flexDirection: 'column',
-    marginHorizontal:
-      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     marginVertical:
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
     alignItems: 'flex-start',
@@ -293,50 +315,62 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
   },
-  touchableOpacity: {},
+
+  zeroRecordContainer: {},
+  zeroRecordComponent: {
+    textAlign: 'center',
+    fontSize: wp(5),
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: Colors.blackText,
+    fontFamily: sFontName,
+  },
+
   cardComponent: {
-    width: wp(80),
-    height: Platform.OS === 'ios' ? hp(28.25) : hp(30),
-    borderRadius: 15,
-    borderColor: Colors.white,
+    width: wp(92.5),
     backgroundColor: Colors.white,
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
+
+    //Border Stuff
+    borderRadius: 15,
+    // borderColor: Colors.black,
+    // borderStyle: 'solid',
+    // borderWidth: 0.25,
+
+    //For iOS
+    shadowRadius: 15,
+    shadowColor: Colors.lightBlueChatrelWebsite,
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 1,
+
+    //For Android
+    elevation: 15,
+    overflow: 'visible',
+
+    marginBottom: hp(2),
   },
   cardHeaderComponent: {
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint
-        ? 13.5
-        : 22.5,
+    fontSize: wp(6),
     fontStyle: 'normal',
-    fontWeight: '300',
+    fontWeight: 'normal',
     color: Colors.primary,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
-    // marginBottom:
-    //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
 
   chatrelLabelContainer: {
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
+
   chatrelLabelComponent: {
-    textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 8.4 : 14,
+    textAlign: 'right',
+    fontSize: wp(5.5),
     fontStyle: 'normal',
-    fontWeight: 'normal',
     color: Colors.darkYellowFamilyPage,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
 
   cardDividerComponent: {
@@ -344,130 +378,146 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.greenBG,
   },
 
-  gbidLabelContainer: {
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+  labelContainer: {
+    marginBottom: hp(1.25),
   },
-  gbidLabelComponent: {
+
+  labelComponent: {
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+    fontSize: wp(3.25),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
+    color: Colors.labelColorLight,
     fontFamily: sFontName,
+    marginBottom: hp(1),
   },
-  gbidValueContainer: {
+
+  valueContainer: {
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
   },
-  gbidValueComponent: {
+
+  valueComponent: {
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
+    fontSize: wp(5.25),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
   },
 
-  ageLabelContainer: {
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
-  },
-  ageLabelComponent: {
-    textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  ageValueContainer: {
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
-  },
-  ageValueComponent: {
-    textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
+  // gbidLabelContainer: {
 
-  dtDOBLabelContainer: {
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
-  },
-  dtDOBLabelComponent: {
-    textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  dtDOBValueContainer: {
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
-  },
-  dtDOBValueComponent: {
-    textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
+  // },
+  // gbidLabelComponent: {
 
-  relationLabelContainer: {
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
-  },
-  relationLabelComponent: {
-    textAlign: 'right',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  relationValueContainer: {
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
-  },
-  relationValueComponent: {
-    textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
+  // },
+  // gbidValueContainer: {
+
+  // },
+  // gbidValueComponent: {
+
+  // },
+
+  // ageLabelContainer: {
+  //   marginBottom:
+  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+  // },
+  // ageLabelComponent: {
+  //   textAlign: 'left',
+  //   fontSize:
+  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackText,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+  // ageValueContainer: {
+  //   marginBottom:
+  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
+  // },
+  // ageValueComponent: {
+  //   textAlign: 'left',
+  //   fontSize:
+  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackTextAPI,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+
+  // dtDOBLabelContainer: {
+  //   marginBottom:
+  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+  // },
+  // dtDOBLabelComponent: {
+  //   textAlign: 'left',
+  //   fontSize:
+  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackText,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+  // dtDOBValueContainer: {
+  //   marginBottom:
+  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
+  // },
+  // dtDOBValueComponent: {
+  //   textAlign: 'left',
+  //   fontSize:
+  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackTextAPI,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+
+  // relationLabelContainer: {
+  //   marginBottom:
+  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
+  // },
+  // relationLabelComponent: {
+  //   textAlign: 'right',
+  //   fontSize:
+  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackText,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+  // relationValueContainer: {
+  //   marginBottom:
+  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
+  // },
+  // relationValueComponent: {
+  //   textAlign: 'left',
+  //   fontSize:
+  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackTextAPI,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
   payNowContainer: {
-    marginTop: hp(0.25),
+    marginTop: hp(1),
+  },
+  buttonStyle: {
+    backgroundColor: Colors.buttonYellow,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: Colors.buttonYellow,
   },
 });

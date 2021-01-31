@@ -15,6 +15,8 @@ using System.Linq;
 using System.Reflection;
 using MailKit.Net.Smtp;
 using MimeKit;
+using System.Threading.Tasks;
+using TimeZoneConverter;
 
 namespace CTAWebAPI.Controllers
 {
@@ -292,7 +294,7 @@ namespace CTAWebAPI.Controllers
             message.To.Add(to);
             message.Subject = String.Format("Email from {0}, GreenBook Id: {1}", sName, sGBID);
             
-            message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+            message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
             message.Body = messageBody.ToMessageBody();
             // Message ready. Now to use smtp client to despatch message
             SmtpClient smtpClient = new SmtpClient();
@@ -307,7 +309,7 @@ namespace CTAWebAPI.Controllers
         [AuthorizeRole(FeatureID = 50)]
         [HttpGet]
         [Route("[action]")]
-        public IActionResult SearchUsers(string sGBID, string sFirstName = null, string sFathersName = null, string sMothersName = null)
+        public async Task<IActionResult> SearchUsers(string sGBID, string sFirstName = null, string sFathersName = null, string sMothersName = null)
         {
             if (String.IsNullOrEmpty(sGBID.Trim()))
             {
@@ -315,7 +317,7 @@ namespace CTAWebAPI.Controllers
             }
             try
             {
-                IEnumerable<object> result = _chatrelPaymentVMRepository.SearchUsers(sGBID, sFirstName, sFathersName, sMothersName);
+                IEnumerable<object> result = await _chatrelPaymentVMRepository.SearchUsers(sGBID, sFirstName, sFathersName, sMothersName);
                 if(result.Count() > 0)
                 {
                     #region Information Logging 

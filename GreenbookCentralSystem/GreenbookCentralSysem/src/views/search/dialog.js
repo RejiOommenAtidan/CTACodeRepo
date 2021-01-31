@@ -335,7 +335,7 @@ export const ViewDialog = (props) => {
                           Entered By: {data.sEnteredBy}
                         </Grid>
                         <Grid item sm={6}>
-                          Edited On: {data.greenBook.dtUpdated ? Moment(data.greenBook.dtUpdated).format('DD-MM-YYYY h:m:s a') : ''}
+                          {/* Edited On: {data.greenBook.dtUpdated ? Moment(data.greenBook.dtUpdated).format('DD-MM-YYYY h:m:s a') : ''} */}
                         </Grid>
                         <Grid item sm={6}>
                           {/* Edited By: {data.sUpdatedBy} */}
@@ -505,7 +505,7 @@ export const ViewDialog = (props) => {
 
                                 </Grid>
                                 <Grid item xs={12}>
-                                  ཕ་ཡུལ།: {data.greenBook.tbuPlaceOfBirth}
+                                 <span style={{fontSize: '1.68rem'}} >ཕ་ཡུལ།</span>:&nbsp; <span style={{fontSize: '1.68rem'}} >{data.greenBook.tbuPlaceOfBirth}</span>
 
                                 </Grid>
                                 <Grid item xs={12}>
@@ -588,7 +588,7 @@ export const ViewDialog = (props) => {
 
                                     </Grid>
                                     <Grid item xs={12}>
-                                      ཕ་མིང་། : {data.greenBook.tbuFathersName}
+                                    <span style={{fontSize: '1.68rem'}} >ཕ་མིང་།</span>:&nbsp; <span style={{fontSize: '1.68rem'}} >{data.greenBook.tbuFathersName}</span>
 
                                     </Grid>
                                     <Grid item xs={12}>
@@ -603,8 +603,7 @@ export const ViewDialog = (props) => {
                                       Mother's Name: {data.relations.sMothersName}
 
                                     </Grid>
-                                    <Grid item xs={12}>
-                                      མའི་མིང་།: {data.greenBook.tbuMothersName}
+                                    <Grid item xs={12}><span style={{fontSize: '1.68rem'}} >མའི་མིང་།</span>: &nbsp;<span style={{fontSize: '1.68rem'}} >{data.greenBook.tbuMothersName}</span>
 
                                     </Grid>
                                     <Grid item xs={12}>
@@ -631,7 +630,7 @@ export const ViewDialog = (props) => {
 
                                     </Grid>
                                     <Grid item xs={12}>
-                                      ཟ་ཟླའི་མིང་།: {data.greenBook.tbuSpouseName}
+                                    <span style={{fontSize: '1.68rem'}} >ཟ་ཟླའི་མིང་།</span>:&nbsp; <span style={{fontSize: '1.68rem'}} > {data.greenBook.tbuSpouseName}</span>
 
                                     </Grid>
                                     <Grid item xs={12}>

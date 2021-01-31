@@ -6,27 +6,44 @@ import {
   ScrollView,
   StyleSheet,
   Platform,
+  ActivityIndicator,
+  Linking,
 } from 'react-native';
-import {Picker} from '@react-native-picker/picker';
+import {Picker, PickerIOS} from '@react-native-picker/picker';
 import IOSPicker from 'react-native-ios-picker';
-import {sFontName} from '../constants/CommonConfig';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import {useIsFocused} from '@react-navigation/native';
+import {Loader} from '../components/Loader';
 // import DropDownPicker from 'react-native-dropdown-picker';
 // import Icon from 'react-native-vector-icons/Feather';
 // import ModalDropdown from 'react-native-modal-dropdown';
 
 import {useSelector} from 'react-redux';
-import {Input, Button, Card, PricingCard, Icon} from 'react-native-elements';
+import {
+  Input,
+  Button,
+  Card,
+  PricingCard,
+  Icon,
+  Badge,
+  withBadge,
+} from 'react-native-elements';
 import axios from 'axios';
 import Moment from 'moment';
 import Colors from '../constants/Colors';
 import RNPaypal from 'react-native-paypal-lib';
-import {sPayPalClientID} from '../constants/CommonConfig';
+import {
+  sPayPalClientID,
+  oActivityIndicatorStyle,
+} from '../constants/CommonConfig';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
 export const Chatrel = (props) => {
+  const isFocused = useIsFocused();
+  const [bLoader, setbLoader] = useState(true);
   const [bRender, setbRender] = useState(false);
   const [sName, setsName] = useState('');
   const [nPaidUntil, setnPaidUntil] = useState(0);
@@ -119,7 +136,7 @@ export const Chatrel = (props) => {
           calculateMethod(i);
         }
       }
-      setShouldRun(false);
+      setShouldRun(true);
     }
   };
 
@@ -287,7 +304,7 @@ export const Chatrel = (props) => {
     tempSummaryObj.sPayPal_Status = paypalObj.response.state;
     tempSummaryObj.sPayPal_ID = paypalObj.response.id;
     tempSummaryObj.sPayPal_Currency_Code = 'USD';
-    tempSummaryObj.sPayPal_Currency_Value = nGrandTotal;
+    tempSummaryObj.sPayPal_Currency_Value = nGrandTotal.toString();
     tempSummaryObj.sPayPal_Response_Object = JSON.stringify(paypalObj);
 
     if (gbChatrelsNull) {
@@ -305,32 +322,33 @@ export const Chatrel = (props) => {
 
     console.log('Final Obj:', finalObj);
 
-    // axios
-    //   .post(`/ChatrelPayment/AddNewChatrelPayment`, finalObj)
-    //   .then((resp) => {
-    //     if (resp.status === 200) {
-    //       //alert(resp.data);
-    //       console.log(resp.data);
-    //       resp.data.receipt.sGBID =
-    //         '0'.repeat(7 - resp.data.receipt.sGBID.length) +
-    //         resp.data.receipt.sGBID;
+    axios
+      .post(`/ChatrelPayment/AddNewChatrelPayment`, finalObj)
+      .then((resp) => {
+        if (resp.status === 200) {
+          setbLoader(false);
+          //alert(resp.data);
+          console.log(resp.data);
 
-    //       // setBackdrop(false);
-    //       // setAlertMessage('Chatrel recorded successfully.');
-    //       // setAlertType('success');
-    //       // snackbarOpen();
-    //       // setReceiptData(resp.data);
-    //       // setPaymentDiv(false);
-    //       // setSuccessDiv(true);
-    //       /* history.goBack();
-    //   console.log(resp.data); */
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.config);
-    //     console.log(error.message);
-    //     console.log(error.response);
-    //   });
+          // setBackdrop(false);
+          // setAlertMessage('Chatrel recorded successfully.');
+          // setAlertType('success');
+          // snackbarOpen();
+          // setReceiptData(resp.data);
+
+          // setPaymentDiv(false);
+          // setSuccessDiv(true);
+          /* history.goBack();
+      console.log(resp.data); */
+        }
+      })
+      .catch((error) => {
+        console.log(error.config);
+        console.log(error.message);
+        console.log(error.response);
+        setbLoader(false);
+        alert('Something went wrong, please try again later');
+      });
 
     // const {
     //     nonce,
@@ -356,8 +374,13 @@ export const Chatrel = (props) => {
   };
 
   useEffect(() => {
-    getChatrelDetails();
-  }, []);
+    if (isFocused) {
+      console.log('Chatrel Component Called');
+      setbRender(false);
+      setbLoader(true);
+      getChatrelDetails();
+    }
+  }, [isFocused]);
 
   const getChatrelDetails = () => {
     axios
@@ -368,11 +391,11 @@ export const Chatrel = (props) => {
           // resp.data.forEach(x=>x.label=x.sAuthRegion);
           setlAuthRegions(resp.data);
 
+          let myURL =
+            props.props === 'Self' ? oGBDetails.sGBID : oCurrentGBDetails.sGBID;
+
           axios
-            .get(
-              `/ChatrelPayment/DisplayChatrelPayment/?sGBID=` +
-                oCurrentGBDetails.sGBID,
-            )
+            .get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=` + myURL)
             .then((resp) => {
               if (resp.status === 200) {
                 console.log(resp.data);
@@ -388,6 +411,7 @@ export const Chatrel = (props) => {
                 setsGBID(resp.data.chatrelPayment.sGBId);
                 setDataAPI(resp.data);
                 setSummaryData(resp.data.chatrelPayment);
+                setDonationData(resp.data.gbChatrelDonation);
                 setnSelectedAuthregion(
                   lAuthRegions.find((x) => x.id === resp.data.nAuthRegionID),
                 );
@@ -396,6 +420,7 @@ export const Chatrel = (props) => {
                   nAdditionalDonation,
                   nBusinessDonation,
                 );
+                setbLoader(false);
                 setbRender(true);
                 fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
                   .then((response) => response.json())
@@ -418,18 +443,29 @@ export const Chatrel = (props) => {
   };
 
   useEffect(() => {
-    runOnce();
-  }, [dollarToRupees]);
+    if (isFocused) {
+      runOnce();
+    }
+  }, [isFocused, dollarToRupees]);
 
   useEffect(() => {
-    lAuthRegions &&
-      dataAPI &&
-      setnSelectedAuthregion(
-        lAuthRegions.find((x) => x.id === dataAPI.nAuthRegionID),
-      );
-  }, [lAuthRegions, dataAPI]);
+    if (isFocused) {
+      lAuthRegions &&
+        dataAPI &&
+        setnSelectedAuthregion(
+          lAuthRegions.find((x) => x.id === dataAPI.nAuthRegionID),
+        );
+    }
+  }, [lAuthRegions, dataAPI, isFocused]);
 
-  //console.log(props);
+  if (!bRender) {
+    return (
+      <>
+        <Loader loading={bLoader} />
+      </>
+    );
+  }
+
   return (
     <>
       {bRender && aGBChatrels && (
@@ -438,70 +474,202 @@ export const Chatrel = (props) => {
           showsHorizontalScrollIndicator={false}
           style={styles.mainContainer}>
           <View>
-            <Text style={styles.headerComponent}>PERSONAL INFORMATION</Text>
+            <Text style={styles.headerComponent}>PERSONAL DETAILS</Text>
           </View>
-          <View>
-            <Text style={styles.textComponent}>GREEN BOOK ID</Text>
-          </View>
-          <View>
-            <Text style={styles.textComponentAPI}>{sGBID}</Text>
-          </View>
-          <View>
+          <Card
+            //key={year.nChatrelYear}
+            containerStyle={{
+              marginBottom: hp(2),
+              marginHorizontal: 0,
+              width: wp(87.5),
+              backgroundColor: Colors.white,
+
+              //Border Stuff
+              borderRadius: 15,
+              // borderColor: Colors.black,
+              // borderStyle: 'solid',
+              // borderWidth: 0.25,
+
+              //For iOS
+              shadowRadius: 15,
+              shadowColor: Colors.lightBlueChatrelWebsite,
+              shadowOffset: {width: 5, height: 5},
+              shadowOpacity: 1,
+
+              //For Android
+              elevation: 15,
+              overflow: 'visible',
+            }}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: hp(1),
+              }}>
+              <View style={styles.labelContainer}>
+                <Badge
+                  containerStyle={styles.badgeContainerStyle}
+                  badgeStyle={styles.badgeStyle}
+                  value={<Text style={styles.labelComponent}>NAME</Text>}
+                />
+                <View style={styles.valueContainer}>
+                  <Text style={styles.valueComponent}>{sName}</Text>
+                </View>
+              </View>
+              <View style={styles.labelContainer}>
+                <Badge
+                  containerStyle={styles.badgeContainerStyle}
+                  badgeStyle={styles.badgeStyle}
+                  value={
+                    <Text style={styles.labelComponent}>GREEN BOOK ID</Text>
+                  }
+                />
+                <View style={styles.valueContainer}>
+                  <Text style={{...styles.valueComponent, textAlign: 'right'}}>
+                    {sGBID}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: hp(1),
+              }}>
+              <View style={styles.labelContainer}>
+                <Badge
+                  containerStyle={styles.badgeContainerStyle}
+                  badgeStyle={styles.badgeStyle}
+                  value={<Text style={styles.labelComponent}>PAID UNTIL</Text>}
+                />
+                <View style={styles.valueContainer}>
+                  <Text style={{...styles.valueComponent, marginBottom: 0}}>
+                    {Moment(nPaidUntil).year()}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.labelContainer}>
+                <Badge
+                  containerStyle={styles.badgeContainerStyle}
+                  badgeStyle={styles.badgeStyle}
+                  value={<Text style={styles.labelComponent}>PAYING FOR</Text>}
+                />
+                <View style={styles.valueContainer}>
+                  <Text
+                    style={{
+                      ...styles.valueComponent,
+                      textAlign: 'right',
+                      marginBottom: 0,
+                    }}>
+                    {props.props}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Card>
+          {/* <View>
             <Text style={styles.textComponent}>DATE OF BIRTH</Text>
           </View>
           <View>
             <Text style={styles.textComponentAPI}>{oGBDetails.dtDOB}</Text>
-          </View>
-          <View>
-            <Text style={styles.textComponent}>NAME</Text>
-          </View>
-          <View>
-            <Text style={styles.textComponentAPI}>{sName}</Text>
-          </View>
-          <View>
-            <Text style={styles.textComponent}>YEAR OF LAST CHATREL</Text>
-          </View>
-          <View>
-            <Text style={styles.textComponentAPI}>
-              {Moment(nPaidUntil).year()}
-            </Text>
-          </View>
-          <View>
+          </View> */}
+          {/* <View>
             <Text style={styles.textComponent}>CHATREL OF YEARS DUE</Text>
           </View>
           <View>
             <Text style={styles.textComponentAPI}>
               {Moment().diff(nPaidUntil, 'years')} Years
             </Text>
-          </View>
+          </View> */}
           <View>
-            <Text style={styles.chatrelTextComponent}>Chatrel Information</Text>
+            <Text style={styles.headerComponent}>CHATREL BALANCE</Text>
           </View>
           {aGBChatrels.map((year, index) => {
             return (
-              <View>
+              <View key={year.nChatrelYear}>
                 <Card
-                  key={year.nChatrelYear}
+                  //key={year.nChatrelYear}
                   containerStyle={{
-                    //width: wp(90),
-                    borderRadius: 15,
-                    borderColor: Colors.blue,
+                    marginBottom: hp(2),
+                    marginHorizontal: 0,
+                    width: wp(87.5),
                     backgroundColor: Colors.white,
-                    //shadowColor: Colors.shadowColor,
-                    borderStyle: 'solid',
-                    borderWidth: 1,
-                    shadowOffset: {width: 0, height: 1},
-                    shadowOpacity: 0.2,
-                    elevation: 1,
-                    shadowRadius: 60,
-                    marginBottom: 10,
-                  }}>
-                  <View style={styles.yearContainer}>
-                    <View>
+
+                    //Border Stuff
+                    borderRadius: 15,
+                    // borderColor: Colors.black,
+                    // borderStyle: 'solid',
+                    // borderWidth: 0.25,
+
+                    //For iOS
+                    shadowRadius: 15,
+                    shadowColor: Colors.lightBlueChatrelWebsite,
+                    shadowOffset: {width: 5, height: 5},
+                    shadowOpacity: 1,
+
+                    //For Android
+                    elevation: 15,
+                    overflow: 'visible',
+                  }}
+                  title={
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginBottom: hp(1),
+                      }}>
                       <Text style={styles.chatrelYearComponent}>
                         {year.nChatrelYear}
                       </Text>
+                      <View
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          //marginBottom: hp(2),
+                        }}>
+                        <Badge
+                          //containerStyle={styles.badgeContainerStyle}
+                          badgeStyle={{
+                            ...styles.badgeStyleChip,
+                            backgroundColor:
+                              year.nChatrelLateFeesValue > 0
+                                ? Colors.red
+                                : year.nChatrelLateFeesValue === 0
+                                ? Colors.ChatrelYearGreen
+                                : Colors.buttonYellow,
+                          }}
+                          value={
+                            year.nChatrelLateFeesValue > 0 ? (
+                              <Text style={styles.labelComponentChip}>
+                                OVERDUE
+                              </Text>
+                            ) : year.nChatrelTotalAmount === 0 &&
+                              year.nChatrelLateFeesValue === 0 ? (
+                              <Text style={styles.labelComponentChip}>
+                                PAID
+                              </Text>
+                            ) : (
+                              <Text style={styles.labelComponentChip}>
+                                PENDING
+                              </Text>
+                            )
+                          }
+                        />
+                      </View>
                     </View>
+                  }
+                  titleStyle={{}}>
+                  <View style={styles.yearContainer}>
+                    {/* <View>
+                      <Text style={styles.chatrelYearComponent}>
+                        {year.nChatrelYear}
+                      </Text>
+                    </View> */}
                     <Card.Divider
                       style={{
                         height: 1,
@@ -517,14 +685,14 @@ export const Chatrel = (props) => {
                       }}>
                       <View style={styles.authorityRegionContainer}>
                         <Text style={styles.textComponent}>
-                          Authority Region
+                          AUTHORITY REGION
                         </Text>
                         {Platform.OS === 'android' && (
                           <Picker
-                            enabled={outstanding}
+                            //enabled={outstanding}
                             collapsable={true}
                             mode={'dialog'}
-                            prompt={'Authority Region'}
+                            prompt={'AUTHORITY REGION'}
                             key={index}
                             // itemStyle={{
                             //   //height: 50,
@@ -542,7 +710,6 @@ export const Chatrel = (props) => {
                             }>
                             {lAuthRegions.map((singleAuthregion, key) => (
                               <Picker.Item
-                                ite
                                 label={singleAuthregion.sAuthRegion}
                                 value={singleAuthregion}
                                 key={singleAuthregion.id}
@@ -556,18 +723,24 @@ export const Chatrel = (props) => {
                             //data={lAuthRegions}
                             mode={'modal'} //collapse
                             //key={index}
-                            itemStyle={{
-                              height: 50,
-                              width: 50,
-                              fontFamily: sFontName,
-                            }}
+                            // itemStyle={{
+                            //   height: 50,
+                            //   width: 50,
+                            //   fontFamily: sFontName,
+                            // }}
                             selectedValue={
                               lAuthRegions.find(
                                 (x) =>
                                   x.id === aGBChatrels[index].nAuthRegionID,
                               ).sAuthRegion
                             }
-                            style={styles.pickerComponent}
+                            itemStyle={{
+                              borderColor: Colors.black,
+                              borderWidth: 1,
+                              borderRadius: 15,
+                              borderStyle: 'solid',
+                            }}
+                            style={styles.pickerComponentIOS}
                             onValueChange={(itemValue, itemIndex) =>
                               updateAuthRegionIOS(index, itemValue)
                             }>
@@ -584,7 +757,7 @@ export const Chatrel = (props) => {
                         )}
                       </View>
                       <View>
-                        <Text
+                        {/* <Text
                           style={{
                             ...styles.textComponent,
                             textAlign: 'right',
@@ -597,7 +770,131 @@ export const Chatrel = (props) => {
                             textAlign: 'right',
                           }}>
                           {year.sAuthRegionCurrency}
-                        </Text>
+                        </Text> */}
+
+                        {year.sAuthRegionCurrency === 'INR' && (
+                          <View
+                            style={styles.employementStatusContainerForInput}>
+                            <Text
+                              style={{
+                                ...styles.textComponent,
+                                marginBottom: 0,
+                                // height: hp(5),
+                                // alignSelf: 'center',
+                                //marginRight: 2.5,
+                              }}>
+                              {/*Employment Status:{' '}*/}
+                              {/* {year.nCurrentChatrelSalaryAmt === 0
+                            ? 'Not Employed'
+                            : 'Employed'} */}
+                              {'EMPLOYED '}
+                            </Text>
+                            <View
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-start',
+                                //marginBottom: hp(2),
+                              }}>
+                              <Input
+                                // label="Business Donation"
+                                //placeholder="Business Donation"
+                                inputContainerStyle={{
+                                  //borderBottomWidth:0,
+                                  //borderTopWidth:0,
+                                  //width:wp(60),
+                                  //align
+                                  //padding:0
+                                  height: hp(2),
+                                  width: wp(10),
+                                  margin: 0,
+                                  padding: 0,
+                                  borderRightWidth: 0,
+                                  borderBottomWidth: 1,
+                                }}
+                                containerStyle={{
+                                  // height:hp(5),
+                                  margin: 0,
+                                  padding: 0,
+                                  borderRightWidth: 0,
+                                  // borderBottomWidth: 1,
+                                  // //height:hp(10)
+                                  //paddingHorizontal:0,
+                                  //borderTopWidth:0,
+                                  //borderBottomWidth:0
+                                }}
+                                style={{
+                                  textAlign: 'right',
+                                  fontStyle: 'normal',
+                                  fontWeight: 'normal',
+                                  fontFamily: sFontName,
+                                  //width:wp(1)
+                                }}
+                                //placeholder={''}
+                                //placeholderTextColor={Colors.grey}
+                                autoCorrect={false}
+                                clearButtonMode={'while-editing'}
+                                keyboardType={'number-pad'}
+                                keyboardAppearance={'default'}
+                                disableFullscreenUI={false}
+                                onChangeText={(value) => {
+                                  if (value !== '') {
+                                    modify(value, index);
+                                  }
+                                  if (value === '') {
+                                    modify('0', index);
+                                  }
+                                }}
+                                //value={nBusinessDonation}
+                              />
+                            </View>
+                          </View>
+                        )}
+                        {year.sAuthRegionCurrency === 'USD' && (
+                          <View style={styles.employementStatusContainer}>
+                            <Text
+                              style={{
+                                ...styles.textComponent,
+                                marginBottom: 0,
+                                //marginRight: 2.5,
+                              }}>
+                              {/*Employment Status:{' '}*/}
+                              {/* {year.nCurrentChatrelSalaryAmt === 0
+                            ? 'Not Employed'
+                            : 'Employed'} */}
+                              {'EMPLOYED '}
+                            </Text>
+                            <View
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-start',
+                                alignSelf: 'flex-start',
+                                alignItems: 'flex-start',
+                                // marginBottom: hp(1),
+                              }}>
+                              <Switch
+                                //style={{marginBottom:hp(10)}}
+                                key={year.nChatrelYear}
+                                trackColor={{
+                                  false: '#767577',
+                                  true: Colors.buttonYellow,
+                                }}
+                                thumbColor={
+                                  year.nCurrentChatrelSalaryAmt === 0
+                                    ? '#f4f3f4'
+                                    : Colors.blue
+                                }
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={(value) => {
+                                  modify(value, index);
+                                }}
+                                value={year.nCurrentChatrelSalaryAmt !== 0}
+                                disabled={year.isChild}
+                              />
+                            </View>
+                          </View>
+                        )}
                       </View>
                     </View>
 
@@ -616,14 +913,14 @@ export const Chatrel = (props) => {
                         <Text
                           style={{
                             ...styles.textComponent,
-                            textAlign: 'center',
+                            textAlign: 'left',
                           }}>
-                          Basic
+                          CHATREL
                         </Text>
                         <Text
                           style={{
                             ...styles.textComponentAPI,
-                            textAlign: 'right',
+                            textAlign: 'left',
                           }}>
                           {year.sAuthRegionCurrency === 'INR'
                             ? '\u20B9'
@@ -637,7 +934,7 @@ export const Chatrel = (props) => {
                             ...styles.textComponent,
                             textAlign: 'center',
                           }}>
-                          Meal
+                          MEAL
                         </Text>
                         <Text
                           style={{
@@ -651,6 +948,25 @@ export const Chatrel = (props) => {
                         </Text>
                       </View>
                       <View>
+                        <Text
+                          style={{
+                            ...styles.textComponent,
+                            textAlign: 'center',
+                          }}>
+                          SALARY
+                        </Text>
+                        <Text
+                          style={{
+                            ...styles.textComponentAPI,
+                            textAlign: 'center',
+                          }}>
+                          {year.sAuthRegionCurrency === 'INR'
+                            ? '\u20B9'
+                            : '\u0024'}
+                          {year.nCurrentChatrelSalaryAmt.toFixed(2)}
+                        </Text>
+                      </View>
+                      <View>
                         {year.lateFees !== 0 && (
                           <>
                             <Text
@@ -658,7 +974,7 @@ export const Chatrel = (props) => {
                                 ...styles.textComponent,
                                 textAlign: 'right',
                               }}>
-                              Late Fees
+                              PENALTY
                             </Text>
                             <Text
                               style={{
@@ -675,98 +991,6 @@ export const Chatrel = (props) => {
                       </View>
                     </View>
 
-                    {year.sAuthRegionCurrency === 'USD' && (
-                      <View style={styles.employementStatusContainer}>
-                        <Text style={styles.textComponentAPI}>
-                          {/*Employment Status:{' '}*/}
-                          {/* {year.nCurrentChatrelSalaryAmt === 0
-                            ? 'Not Employed'
-                            : 'Employed'} */}
-                          {'Employed'}
-                        </Text>
-                        <View
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'flex-start',
-                            //marginBottom: hp(2),
-                          }}>
-                          <Switch
-                            key={year.nChatrelYear}
-                            trackColor={{false: '#767577', true: '#81b0ff'}}
-                            thumbColor={
-                              year.nCurrentChatrelSalaryAmt === 0
-                                ? '#f4f3f4'
-                                : '#f5dd4b'
-                            }
-                            ios_backgroundColor="#3e3e3e"
-                            onValueChange={(value) => {
-                              modify(value, index);
-                            }}
-                            value={year.nCurrentChatrelSalaryAmt !== 0}
-                            disabled={year.isChild}
-                          />
-                        </View>
-                      </View>
-                    )}
-                    {year.sAuthRegionCurrency === 'INR' && (
-                      <View
-                        style={{
-                          marginBottom: hp(1),
-                        }}>
-                        <Input
-                          // label="Business Donation"
-                          //placeholder="Business Donation"
-                          inputContainerStyle={{
-                            //borderBottomWidth:0,
-                            //borderTopWidth:0,
-                            //width:wp(60),
-                            //align
-                            //padding:0
-                            paddingRight: 0,
-                            marginRight: 0,
-                            borderRightWidth: 0,
-                          }}
-                          containerStyle={{
-                            // height:hp(5),
-                            paddingRight: 0,
-                            marginRight: 0,
-                            borderRightWidth: 0,
-                            // //height:hp(10)
-                            //paddingHorizontal:0,
-                            //borderTopWidth:0,
-                            //borderBottomWidth:0
-                          }}
-                          style={{
-                            textAlign: 'right',
-                            // fontSize:
-                            //   Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                            //     ? 10.5
-                            //     : 17.5,
-                            fontStyle: 'normal',
-                            fontWeight: 'normal',
-                            fontFamily: sFontName,
-                            //width:wp(1)
-                          }}
-                          placeholder={'Employment Contribution'}
-                          placeholderTextColor={Colors.grey}
-                          autoCorrect={false}
-                          clearButtonMode={'while-editing'}
-                          keyboardType={'number-pad'}
-                          keyboardAppearance={'default'}
-                          disableFullscreenUI={false}
-                          onChangeText={(value) => {
-                            if (value !== '') {
-                              modify(value, index);
-                            }
-                            if (value === '') {
-                              modify('0', index);
-                            }
-                          }}
-                          //value={nBusinessDonation}
-                        />
-                      </View>
-                    )}
                     <Card.Divider
                       style={{
                         height: 1,
@@ -782,15 +1006,45 @@ export const Chatrel = (props) => {
 
                         marginBottom: hp(1.25),
                       }}>
+                      {year.sAuthRegionCurrency !== 'USD' && (
+                        <View
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            //marginBottom: hp(1.25),
+                          }}>
+                          <Text
+                            style={{
+                              ...styles.textComponentAPI,
+                              textAlign: 'left',
+                              color: Colors.grey,
+                              fontStyle: 'italic',
+                              fontSize: wp(4),
+                            }}>
+                            Rate &#8377;/$:{' '}
+                            {dollarToRupees &&
+                            year.sAuthRegionCurrency === 'INR'
+                              ? dollarToRupees.toFixed(4)
+                              : 'NA'}
+                          </Text>
+                        </View>
+                      )}
                       <Text
                         style={{
                           ...styles.textComponent,
-                          textAlign: 'left',
-                          fontSize: 20,
+                          //textAlign: 'left',
+                          fontSize: wp(5),
                           //fontStyle: 'normal',
                           //fontWeight: 'bold',
-                          color: Colors.ChatrelYearGreen,
-                          fontFamily: sFontName,
+                          color: Colors.blue,
+                          fontWeight:
+                            Platform.OS === 'android' ? 'normal' : 'bold',
+                          fontFamily:
+                            Platform.OS === 'android'
+                              ? sFontNameBold
+                              : sFontName,
+                          // marginLeft: wp(12.5),
                         }}>
                         TOTAL
                       </Text>
@@ -799,118 +1053,147 @@ export const Chatrel = (props) => {
                           ...styles.textComponentAPI,
                           textAlign: 'right',
                           //textAlign: 'center',
-                          fontSize: 24,
+                          fontSize: wp(5),
                           //fontStyle: 'normal',
-                          fontWeight: 'bold',
-                          color: Colors.ChatrelYearGreen,
-                          fontFamily: sFontName,
+                          fontWeight:
+                            Platform.OS === 'android' ? 'normal' : 'bold',
+                          fontFamily:
+                            Platform.OS === 'android'
+                              ? sFontNameBold
+                              : sFontName,
+                          color: Colors.blue,
                         }}>
                         ${year.nChatrelTotalAmount.toFixed(2)}
                       </Text>
-                    </View>
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        //marginBottom: hp(1.25),
-                      }}>
-                      {year.sAuthRegionCurrency !== 'USD' && (
-                        <View>
-                          <Text
-                            style={{
-                              ...styles.textComponentAPI,
-                              textAlign: 'right',
-                              color: Colors.grey,
-                              fontStyle: 'italic',
-                              fontSize: 12,
-                            }}>
-                            Conv. Rate &#8377;/$:{' '}
-                            {dollarToRupees &&
-                            year.sAuthRegionCurrency === 'INR'
-                              ? dollarToRupees.toFixed(4)
-                              : 'NA'}
-                          </Text>
-                          {/* <Text
-                          style={{
-                            ...styles.textComponentAPI,
-                            textAlign: 'right',
-                            color: Colors.grey,
-                            fontStyle: 'italic',
-                            fontSize:10
-                          }}>
-                          
-                        </Text> */}
-                        </View>
-                      )}
                     </View>
                   </View>
                 </Card>
               </View>
             );
           })}
-          <View style={styles.additionalDonationContainer}>
-            <Input
-              style={{
-                textAlign: 'right',
-                // fontSize:
-                //   Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                //     ? 10.5
-                //     : 17.5,
-                fontStyle: 'normal',
-                fontWeight: 'normal',
-                fontFamily: sFontName,
-              }}
-              placeholder="Additional Donation"
-              placeholderTextColor={Colors.grey}
-              autoCorrect={false}
-              clearButtonMode={'while-editing'}
-              keyboardType={'number-pad'}
-              keyboardAppearance={'default'}
-              disableFullscreenUI={true}
-              onChangeText={(value) => {
-                if (value === '') {
-                  calcTotal(aGBChatrels, 0, nBusinessDonation);
-                  setnAdditionalDonation(0);
-                } else {
-                  calcTotal(aGBChatrels, parseInt(value), nBusinessDonation);
-                  setnAdditionalDonation(parseInt(value));
-                }
-              }}
-              value={nAdditionalDonation}
-            />
+          <View>
+            <Text style={styles.headerComponent}>ADDITIONAL CHATREL</Text>
           </View>
-          <View style={styles.businessDonationContainer}>
-            <Input
-              style={{
-                textAlign: 'right',
-                // fontSize:
-                //   Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                //     ? 10.5
-                //     : 17.5,
-                fontStyle: 'normal',
-                fontWeight: 'normal',
-                fontFamily: sFontName,
-              }}
-              placeholder="Business Donation"
-              placeholderTextColor={Colors.grey}
-              autoCorrect={false}
-              clearButtonMode={'while-editing'}
-              keyboardType={'number-pad'}
-              keyboardAppearance={'default'}
-              disableFullscreenUI={true}
-              onChangeText={(value) => {
-                if (value === '') {
-                  calcTotal(aGBChatrels, nAdditionalDonation, 0);
-                  setnBusinessDonation(0);
-                } else {
-                  calcTotal(aGBChatrels, nAdditionalDonation, parseInt(value));
-                  setnBusinessDonation(parseInt(value));
+          <Card
+            //key={year.nChatrelYear}
+            containerStyle={{
+              marginBottom: hp(2),
+              marginHorizontal: 0,
+              width: wp(87.5),
+              backgroundColor: Colors.white,
+
+              //Border Stuff
+              borderRadius: 15,
+              // borderColor: Colors.black,
+              // borderStyle: 'solid',
+              // borderWidth: 0.25,
+
+              //For iOS
+              shadowRadius: 15,
+              shadowColor: Colors.lightBlueChatrelWebsite,
+              shadowOffset: {width: 5, height: 5},
+              shadowOpacity: 1,
+
+              //For Android
+              elevation: 15,
+              overflow: 'visible',
+            }}>
+            <View style={styles.businessDonationContainer}>
+              <Badge
+                containerStyle={styles.badgeContainerStyle}
+                badgeStyle={{
+                  ...styles.badgeStyle,
+                  alignSelf: 'flex-end',
+                  // height:hp(),
+                  width: wp(45),
+                }}
+                value={
+                  <Text style={styles.labelComponent}>
+                    BUSINESS DONATION ($)
+                  </Text>
                 }
-              }}
-              value={nBusinessDonation}
-            />
-          </View>
+              />
+              <Input
+                style={{
+                  textAlign: 'right',
+                  // fontSize:
+                  //   Dimensions.get('window').width < Resolution.nWidthBreakpoint
+                  //     ? 10.5
+                  //     : 17.5,
+                  fontStyle: 'normal',
+                  fontWeight: 'normal',
+                  fontFamily: sFontName,
+                }}
+                placeholder="Business Donation"
+                placeholderTextColor={Colors.grey}
+                autoCorrect={false}
+                clearButtonMode={'while-editing'}
+                keyboardType={'number-pad'}
+                keyboardAppearance={'default'}
+                disableFullscreenUI={true}
+                onChangeText={(value) => {
+                  if (value === '') {
+                    calcTotal(aGBChatrels, nAdditionalDonation, 0);
+                    setnBusinessDonation(0);
+                  } else {
+                    calcTotal(
+                      aGBChatrels,
+                      nAdditionalDonation,
+                      parseInt(value),
+                    );
+                    setnBusinessDonation(parseInt(value));
+                  }
+                }}
+                value={nBusinessDonation}
+              />
+            </View>
+            <View style={styles.additionalDonationContainer}>
+              <Badge
+                containerStyle={styles.badgeContainerStyle}
+                badgeStyle={{
+                  ...styles.badgeStyle,
+                  alignSelf: 'flex-end',
+                  // height:hp(),
+                  width: wp(45),
+                }}
+                value={
+                  <Text style={styles.labelComponent}>
+                    ADDITIONAL DONATION ($)
+                  </Text>
+                }
+              />
+              <Input
+                style={{
+                  textAlign: 'right',
+                  // fontSize:
+                  //   Dimensions.get('window').width < Resolution.nWidthBreakpoint
+                  //     ? 10.5
+                  //     : 17.5,
+                  fontStyle: 'normal',
+                  fontWeight: 'normal',
+                  fontFamily: sFontName,
+                }}
+                placeholder="Additional Donation"
+                placeholderTextColor={Colors.grey}
+                autoCorrect={false}
+                clearButtonMode={'while-editing'}
+                keyboardType={'number-pad'}
+                keyboardAppearance={'default'}
+                disableFullscreenUI={true}
+                onChangeText={(value) => {
+                  if (value === '') {
+                    calcTotal(aGBChatrels, 0, nBusinessDonation);
+                    setnAdditionalDonation(0);
+                  } else {
+                    calcTotal(aGBChatrels, parseInt(value), nBusinessDonation);
+                    setnAdditionalDonation(parseInt(value));
+                  }
+                }}
+                value={nAdditionalDonation}
+              />
+            </View>
+          </Card>
+
           <View style={styles.grandTotalContainer}>
             {/* <Text style={styles.grandTotalComponent}>
               {nGrandTotal.toFixed(2)}
@@ -919,45 +1202,71 @@ export const Chatrel = (props) => {
               color={Colors.buttonYellow}
               title="Grand Total"
               titleStyle={{
-                fontFamily: sFontName,
+                fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                fontFamily:
+                  Platform.OS === 'android' ? sFontNameBold : sFontName,
               }}
               containerStyle={{
-                borderRadius: 15,
-                borderColor: Colors.white,
+                marginBottom: hp(2),
+                marginHorizontal: 0,
+                width: wp(87.5),
                 backgroundColor: Colors.white,
+
+                //Border Stuff
+                borderRadius: 15,
+                // borderColor: Colors.black,
+                // borderStyle: 'solid',
+                // borderWidth: 0.25,
+
+                //For iOS
+                shadowRadius: 15,
+                shadowColor: Colors.lightBlueChatrelWebsite,
+                shadowOffset: {width: 5, height: 5},
+                shadowOpacity: 1,
+
+                //For Android
+                elevation: 15,
+                overflow: 'visible',
               }}
               price={'$ ' + parseFloat(nGrandTotal.toFixed(2))}
               button={{
-                title: 'MAKE PAYMENT',
+                title: 'PAY NOW',
                 titleStyle: {
-                  fontFamily: sFontName,
+                  fontStyle: 'normal',
+                  color: Colors.white,
+                  fontSize: wp(4),
+                  fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                  fontFamily:
+                    Platform.OS === 'android' ? sFontNameBold : sFontName,
                 },
                 buttonStyle: styles.paypalButtonComponent,
                 onPress: () => {
-                  RNPaypal.paymentRequest({
-                    clientId: sPayPalClientID,
-                    environment: RNPaypal.ENVIRONMENT.NO_NETWORK,
-                    intent: RNPaypal.INTENT.SALE,
-                    price: nGrandTotal,
-                    currency: 'USD',
-                    description: `CTA Chatrel`,
-                    acceptCreditCards: true,
-                  })
-                    .then((response) => {
-                      //alert(response);
-                      //console.log(response);
-                      //TODO: OUR CALLS
-                      handlSubmitAfterPayPal(response);
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                      if (err == RNPaypal.USER_CANCELLED) {
-                        // User didn't complete the payment
-                        console.info('User cancelled');
-                      } else if (err == RNPaypal.INVALID_CONFIG) {
-                        console.info('Invalid Details Sent to PayPal');
-                      }
-                    });
+                  // Linking.openURL('https://5f99d5ac2fc8.ngrok.io/PaypalTest');
+                  // RNPaypal.paymentRequest({
+                  //   clientId: sPayPalClientID,
+                  //   environment: RNPaypal.ENVIRONMENT.NO_NETWORK,
+                  //   intent: RNPaypal.INTENT.ORDER,
+                  //   price: nGrandTotal,
+                  //   currency: 'USD',
+                  //   description: `GRAND TOTAL`,
+                  //   acceptCreditCards: true,
+                  // })
+                  //   .then((response) => {
+                  //     setbLoader(true);
+                  //     //alert(response);
+                  //     console.log(response);
+                  //     //TODO: OUR CALLS
+                  //     handlSubmitAfterPayPal(response);
+                  //   })
+                  //   .catch((err) => {
+                  //     console.log(err);
+                  //     if (err == RNPaypal.USER_CANCELLED) {
+                  //       // User didn't complete the payment
+                  //       console.info('User cancelled');
+                  //     } else if (err == RNPaypal.INVALID_CONFIG) {
+                  //       console.info('Invalid Details Sent to PayPal');
+                  //     }
+                  //   });
                 },
               }}
             />
@@ -1010,27 +1319,27 @@ const styles = StyleSheet.create({
     //margin: 15
   },
   headerComponent: {
-    fontSize: 18,
+    fontSize: wp(5),
     fontStyle: 'normal',
-    fontWeight: 'normal',
-    marginBottom: 10,
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+    marginVertical: hp(1),
     color: Colors.blackText,
-    fontFamily: sFontName,
   },
   textComponent: {
-    fontSize: 16,
+    fontSize: wp(3.25),
     textAlign: 'left',
-    marginBottom: 5,
+    marginBottom: hp(1),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
+    color: Colors.labelColorLight,
     fontFamily: sFontName,
   },
 
   textComponentAPI: {
-    fontSize: 20,
+    fontSize: wp(4.25),
     textAlign: 'left',
-    marginBottom: 7.5,
+    marginBottom: hp(1),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
@@ -1041,30 +1350,29 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 24,
     fontStyle: 'normal',
-    fontWeight: 'normal',
     color: Colors.ChatrelInfoBlue,
     marginBottom: 10,
-    fontFamily: sFontName,
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
   chatrelYearComponent: {
-    marginBottom: 15,
-    fontSize: 28,
-    fontWeight: 'bold',
+    // marginBottom: 15,
+    fontSize: wp(7),
+
     fontStyle: 'normal',
     textAlign: 'left',
     color: Colors.ChatrelYearGreen,
-    fontFamily: sFontName,
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
   employementStatusContainer: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   employementStatusContainerForInput: {
-    //flex: 1,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     // marginBottom: 10,
   },
   employementStatusComponent: {},
@@ -1078,8 +1386,12 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   pickerComponent: {
-    height: 50,
-    width: 200,
+    height: hp(4),
+    width: wp(40),
+  },
+  pickerComponentIOS: {
+    height: 30,
+    width: wp(35),
   },
   yearContainer: {
     marginBottom: 5,
@@ -1113,5 +1425,68 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.buttonYellow,
     color: Colors.buttonYellow,
+  },
+  badgeContainerStyle: {
+    marginBottom: hp(1.25),
+  },
+  badgeStyle: {
+    alignSelf: 'flex-start',
+    textAlignVertical: 'center',
+    width: wp(29),
+    height: hp(3.5),
+    backgroundColor: Colors.websiteLightBlueColor,
+  },
+  labelContainer: {
+    // width: wp(75),
+    // height: hp(2),
+  },
+  valueContainer: {
+    // width: wp(75),
+    // height: hp(3),
+    // flexDirection: 'row',
+    // flexDirection:'row',
+    // flex:1
+    // flexDirection:'row'
+  },
+  labelComponent: {
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontSize: wp(3),
+    fontStyle: 'normal',
+    color: Colors.white,
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
+  },
+  valueComponent: {
+    // width: '100%',
+    // height: '100%',
+    textAlign: 'left',
+    fontSize: wp(4.25),
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: Colors.blackTextAPI,
+    fontFamily: sFontName,
+    marginBottom: wp(5),
+    // flex:1
+    // flexWrap: 'wrap',
+    // flexShrink: 1,
+    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    //letterSpacing: Resolution.nLetterSpacing,
+  },
+  badgeStyleChip: {
+    alignSelf: 'center',
+    textAlignVertical: 'center',
+    width: wp(20),
+    height: hp(2.75),
+    backgroundColor: Colors.ChatrelYearGreen,
+  },
+  labelComponentChip: {
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontSize: wp(3),
+    fontStyle: 'normal',
+    color: Colors.white,
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
 });

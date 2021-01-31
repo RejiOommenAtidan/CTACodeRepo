@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TimeZoneConverter;
 
 namespace CTAWebAPI.Controllers.Masters
 {
@@ -114,8 +115,8 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         return Problem(message, null, 403);
                     }
-                    province.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                    province.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    province.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    province.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
 
                     /* TO DO: Catch User ID and update the following properties
                      * nEnteredBy
@@ -181,7 +182,7 @@ namespace CTAWebAPI.Controllers.Masters
                         }
                         provinceToUpdate.nEnteredBy = province.nEnteredBy;
                         provinceToUpdate.dtEntered = province.dtEntered;
-                        provinceToUpdate.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        provinceToUpdate.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
 
                         //to uncomment later
                         //provinceToUpdate.nEnteredBy = //catch current user id here;

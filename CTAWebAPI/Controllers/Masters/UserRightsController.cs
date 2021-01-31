@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TimeZoneConverter;
+
 namespace CTAWebAPI.Controllers.Masters
 {
     [AuthorizeRole(FeatureID = 19)]
@@ -108,8 +110,8 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         return Problem(message, null, 403);
                     }
-                    userRights.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                    userRights.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    userRights.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    userRights.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
 
                     _userRightsRepository.Add(userRights);
 
@@ -131,7 +133,7 @@ namespace CTAWebAPI.Controllers.Masters
                                 nFeatureID = oFeature.Id,
                                 nUserRightsID = addedUserRight.Id,
                                 bRights = true,
-                                dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                                dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
                                 nEnteredBy = userRights.nEnteredBy
                             };
                             _featureUserrightsRepository.Add(lnkFeatureUserrights);
@@ -143,7 +145,7 @@ namespace CTAWebAPI.Controllers.Masters
                                 nFeatureID = oFeature.Id,
                                 nUserRightsID = addedUserRight.Id,
                                 bRights = false, //Making Rights Initially to False, let Admin Give Rights
-                                dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                                dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
                                 nEnteredBy = userRights.nEnteredBy
                             };
                             _featureUserrightsRepository.Add(lnkFeatureUserrights);
@@ -199,7 +201,7 @@ namespace CTAWebAPI.Controllers.Masters
                         UserRights fetcheduserRights = _userRightsRepository.GetUserRightsById(ID);
                         userRights.nEnteredBy = fetcheduserRights.nEnteredBy;
                         userRights.dtEntered = fetcheduserRights.dtEntered;
-                        userRights.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        userRights.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                         _userRightsRepository.Update(userRights);
 
                         #region Audit Log

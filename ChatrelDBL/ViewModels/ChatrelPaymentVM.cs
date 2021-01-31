@@ -13,6 +13,7 @@ namespace ChatrelDBL.ViewModels
         private ChatrelPayment _chatrelPayment;
         private GBChatrelDonation _gbChatrelDonation;
         private bool _bOutstanding = true;
+        //private string _sOrderId;
         #endregion
 
         #region Public properties
@@ -52,7 +53,6 @@ namespace ChatrelDBL.ViewModels
             }
         }
 
-
         public bool Outstanding
         {
             get
@@ -65,6 +65,7 @@ namespace ChatrelDBL.ViewModels
             }
         }
 
+        //public string sOrderId { get { return _sOrderId; } set { _sOrderId = value; } }
         #endregion
     }
 }

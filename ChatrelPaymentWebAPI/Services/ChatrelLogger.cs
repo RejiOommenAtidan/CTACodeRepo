@@ -3,6 +3,7 @@ using ChatrelDBL.BaseClassRepositories.Transactions;
 using ChatrelDBL.Entities;
 using System;
 using System.Runtime.InteropServices;
+using TimeZoneConverter;
 
 namespace ChatrelPaymentWebAPI.Services
 {
@@ -42,7 +43,7 @@ namespace ChatrelPaymentWebAPI.Services
                     sEventName = sEventName,
                     sDescription = sDescription,
                     sStackTrace = sStackTrace,
-                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time")),
                     nEnteredBy = nEnteredBy
                 };
                 _actionLoggerRepository.Add(actionLogger);
@@ -77,7 +78,7 @@ namespace ChatrelPaymentWebAPI.Services
                 {
                     AuditLog auditLogger = new AuditLog()
                     {
-                        dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                        dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time")),
                         nFeatureID = nFeatureID,
                         nRegionID = nRegionID,
                         nRecordID = nRecordID,

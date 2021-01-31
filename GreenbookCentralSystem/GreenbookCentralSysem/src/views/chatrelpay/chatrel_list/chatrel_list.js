@@ -20,9 +20,14 @@ import EmailIcon from '@material-ui/icons/Email';
 
 import { Alerts } from '../../alerts';
 //import { AddDialog, EditDialog } from './dialog';
-//import { ViewDialog } from '../../search/dialog';
+import { ViewDialog } from './dialog';
+
 import { oOptions, oTableIcons, sDateFormat, sButtonSize, modifyHeaders, sISODateFormat } from '../../../config/commonConfig';
+
+import AddSingleChatrel from 'views/chatrelhome/addchatrel';
+
 //import MyComp from '../../common/filtercomponent';
+
 
 const tableIcons = oTableIcons;
 
@@ -37,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(3)
     }
   },
+  
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
@@ -79,14 +85,18 @@ export default function ChatrelList(){
   const classes = useStyles();
   const history = useHistory();
   
+  
+  
 
-
+  const [profileGBID, setProfileGBID] = useState();
+  const [viewModal, setViewModal] = useState(false);
   const [editModal, setEditModal] = React.useState(false);
   const [dataAPI, setdataAPI] = useState([]);
   const [selectData, setSelectData] = useState([]);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
   const [isLoading, setisLoading] = React.useState(true);
+  const [addModal, setAddModal] = useState(false);
 
   //Alert
   const [alertMessage, setAlertMessage] = useState("");
@@ -103,8 +113,8 @@ export default function ChatrelList(){
     setSnackbar(false);
   };
   
-  const handleEditClickClose = () => {
-    setEditModal(false);
+  const handleAddClickClose = () => {
+    setAddModal(false);
   };
 
   const viewReceipt = (sReceiptNumber) => {
@@ -117,7 +127,14 @@ export default function ChatrelList(){
       },
     });
   };
-
+  const viewGb = (GBID) => {
+    console.log(GBID)
+    setProfileGBID(GBID);
+    setViewModal(true);
+  }
+  const handleViewClickClose = () => {
+    setViewModal(false);
+  };
   
 
   const columns = [
@@ -130,7 +147,7 @@ export default function ChatrelList(){
       field: "dtPayment",
       title: "PAYMENT DATE",
       type: 'date', 
-      render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
+      //render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
       //dateSetting: 'en-IN',
       headerStyle: {
         textAlign: "center",
@@ -143,7 +160,18 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      //render: rowData => rowData['dtPayment'] ? Moment(rowData['dtPayment']).format(sDateFormat) : undefined,
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtPayment){
+          return -1;
+        }
+        if(!b.dtPayment){
+          return 1;
+        }
+        a = a ? a.dtPayment.split('-').reverse().join('') : '';
+        b = b ? b.dtPayment.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
     {
       field: "sGBID",
@@ -158,6 +186,7 @@ export default function ChatrelList(){
         padding: '5px',
         borderRight: '1px solid grey'
       },
+      render: rowData =>  <Button className="m-2 btn-transparent btn-link btn-link-first" size={sButtonSize} onClick={() => { viewGb(rowData['sGBID']) }}><span><u>{rowData['sGBID']}</u></span></Button>
     },
     {
       field: "sChatrelReceiptNumber",
@@ -285,7 +314,19 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['dtCurrentChatrelFrom'] ? Moment(rowData['dtCurrentChatrelFrom']).format(sDateFormat) : undefined,
+      //render: rowData => rowData['dtCurrentChatrelFrom'] ? Moment(rowData['dtCurrentChatrelFrom']).format(sDateFormat) : undefined,
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtCurrentChatrelFrom){
+          return -1;
+        }
+        if(!b.dtCurrentChatrelFrom){
+          return 1;
+        }
+        a = a ? a.dtCurrentChatrelFrom.split('-').reverse().join('') : '';
+        b = b ? b.dtCurrentChatrelFrom.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
     {
       field: "dtCurrentChatrelTo",
@@ -301,7 +342,19 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['dtCurrentChatrelTo'] ? Moment(rowData['dtCurrentChatrelTo']).format(sDateFormat) : undefined,
+      //render: rowData => rowData['dtCurrentChatrelTo'] ? Moment(rowData['dtCurrentChatrelTo']).format(sDateFormat) : undefined,
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtCurrentChatrelTo){
+          return -1;
+        }
+        if(!b.dtCurrentChatrelTo){
+          return 1;
+        }
+        a = a ? a.dtCurrentChatrelTo.split('-').reverse().join('') : '';
+        b = b ? b.dtCurrentChatrelTo.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
 
     {
@@ -343,7 +396,19 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['dtArrearsFrom'] ? Moment(rowData['dtArrearsFrom']).format(sDateFormat) : undefined,
+      //render: rowData => rowData['dtArrearsFrom'] ? Moment(rowData['dtArrearsFrom']).format(sDateFormat) : undefined,
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtArrearsFrom){
+          return -1;
+        }
+        if(!b.dtArrearsFrom){
+          return 1;
+        }
+        a = a ? a.dtArrearsFrom.split('-').reverse().join('') : '';
+        b = b ? b.dtArrearsFrom.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
     {
       field: "dtArrearsTo",
@@ -359,7 +424,19 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
-      render: rowData => rowData['dtArrearsTo'] ? Moment(rowData['dtArrearsTo']).format(sDateFormat) : undefined,
+      //render: rowData => rowData['dtArrearsTo'] ? Moment(rowData['dtArrearsTo']).format(sDateFormat) : undefined,
+      customSort: (a, b) => {
+        //console(a, b);
+        if(!a.dtArrearsTo){
+          return -1;
+        }
+        if(!b.dtArrearsTo){
+          return 1;
+        }
+        a = a ? a.dtArrearsTo.split('-').reverse().join('') : '';
+        b = b ? b.dtArrearsTo.split('-').reverse().join('') : '';
+        return a.localeCompare(b);
+      },
     },
     {
       field: "nChatrelBusinessDonationAmt",
@@ -454,11 +531,11 @@ export default function ChatrelList(){
         console.log("Chatrel List", resp.data);
         var i = 1;
         resp.data.forEach((element) => {
-          element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sISODateFormat) : null;
-          element.dtCurrentChatrelFrom = element.dtCurrentChatrelFrom ? Moment(element.dtCurrentChatrelFrom).format(sISODateFormat) : null;
-          element.dtCurrentChatrelTo = element.dtCurrentChatrelTo ? Moment(element.dtCurrentChatrelTo).format(sISODateFormat) : null;
-          element.dtArrearsFrom = element.dtArrearsFrom ? Moment(element.dtArrearsFrom).format(sISODateFormat) : null;
-          element.dtArrearsTo = element.dtArrearsTo ? Moment(element.dtArrearsTo).format(sISODateFormat) : null;
+          element.dtPayment = element.dtPayment ? Moment(element.dtPayment).format(sDateFormat) : null;
+          element.dtCurrentChatrelFrom = element.dtCurrentChatrelFrom ? Moment(element.dtCurrentChatrelFrom).format(sDateFormat) : null;
+          element.dtCurrentChatrelTo = element.dtCurrentChatrelTo ? Moment(element.dtCurrentChatrelTo).format(sDateFormat) : null;
+          element.dtArrearsFrom = element.dtArrearsFrom ? Moment(element.dtArrearsFrom).format(sDateFormat) : null;
+          element.dtArrearsTo = element.dtArrearsTo ? Moment(element.dtArrearsTo).format(sDateFormat) : null;
           element.nSerialNo = i++;
         });
         setdataAPI(resp.data);
@@ -472,10 +549,12 @@ export default function ChatrelList(){
     });
     
   },[]);
-
+  
+  
   return (
   <>
       <Grid container spacing={1}>
+      
         <Grid item xs={12}>
          
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
@@ -487,12 +566,12 @@ export default function ChatrelList(){
             data={dataAPI}
             options={oOptions}
             actions={[
-              // {
-              //   icon: AddBox,
-              //   tooltip: 'Add a Payment',
-              //   isFreeAction: true,
-              //   onClick: () => history.push('/ChatrelPay')
-              // },
+              {
+                icon: AddBox,
+                tooltip: 'Add a Payment',
+                isFreeAction: true,
+                onClick: () => setAddModal(true)
+              },
               {
                 icon: Search,
                 tooltip: 'Toggle Filter',
@@ -509,11 +588,22 @@ export default function ChatrelList(){
             editAPICall={editAPICall}
             chatrelObj={chatrelObj}
           />} */}
+
+          {addModal && <AddSingleChatrel
+                      addModal={addModal}
+                      handleAddClickClose = {handleAddClickClose}
+                      ></AddSingleChatrel>}
           {snackbar && <Alerts
             alertObj={alertObj}
             snackbar={snackbar}
             snackbarClose={snackbarClose}
           />}
+          {viewModal && <ViewDialog
+              viewModal={viewModal}
+              classes={classes}
+              handleViewClickClose={handleViewClickClose}
+              sGBID={profileGBID}
+              />}
         </Grid>
       </Grid>
     </>

@@ -1,5 +1,9 @@
 import React from 'react';
 import {Platform} from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import {createStackNavigator} from '@react-navigation/stack';
 import {
   createDrawerNavigator,
@@ -45,12 +49,18 @@ import Colors from '../constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {sFontName} from '../constants/CommonConfig';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import {CustomSidebarMenu} from '../components/CustomSidebar';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {GLogout} from '../components/GLogout';
 
 const defaultStackNavOptions = {
+  headerMode: 'screen',
   headerStyle: {
     backgroundColor:
       Platform.OS === 'android' ? Colors.primary : Colors.primary,
@@ -234,7 +244,7 @@ export const MainNavigator = () => {
     <MainDrawerNavigator.Navigator
       drawerStyle={{
         backgroundColor: Colors.white,
-        width: 230,
+        width: wp(70),
       }}
       initialRouteName={'Login'}
       drawerPosition={'left'}
@@ -265,18 +275,188 @@ export const MainNavigator = () => {
             ),
           },
         };
-        return (
-          <DrawerContentScrollView {...filteredProps}>
-            <DrawerItemList {...filteredProps} />
-          </DrawerContentScrollView>
-        );
+        return <CustomSidebarMenu {...filteredProps} />;
       }}
       drawerContentOptions={{
-        activeTintColor: Colors.black,
+        itemStyle: {
+          // borderBottomWidth:0.75,
+          //borderBottomColor:Colors.black,
+          justifyContent: 'flex-start',
+          marginBottom: hp(1),
+          backgroundColor: Colors.white,
+          // borderBottomColor:Colors.black,
+          // borderBottomWidth:1,
+          marginHorizontal: 0,
+          // marginLeft:wp(2)
+          //alignContent:"center",
+          //alignSelf:"center"
+        },
+        // activeBackgroundColor:Colors.blue,
+        // inactiveTintColor:Colors.blue,
+        // contentContainerStyle:{
+        //
+        // },
+        activeTintColor: Colors.primary,
+        inactiveTintColor: Colors.black,
         labelStyle: {
           fontFamily: sFontName,
+          fontStyle: 'normal',
+          fontWeight: 'normal',
+          alignSelf: 'flex-start',
+          fontSize: wp(3.75),
+          // paddingLeft: 0,
+          // marginLeft: 0,
+          // marginLeft:0,
+          // paddingLeft:0
         },
       }}>
+      {/*Home*/}
+      <MainDrawerNavigator.Screen
+        name={'Home'}
+        component={HomeNavigator}
+        options={{
+          drawerIcon: ({focused, size}) => (
+            <AntDesign
+              name="home"
+              size={size}
+              color={focused ? Colors.primary : Colors.black}
+              style={{
+                justifyContent: 'flex-start',
+                marginLeft: wp(2.5),
+                // marginRight:0,
+                // paddingRight:0
+              }}
+            />
+          ),
+          drawerLabel: 'HOME',
+          //labelStyle:{fontfamily:sFontName},
+          gestureEnabled: true,
+          swipeEnabled: true,
+        }}></MainDrawerNavigator.Screen>
+      {/*SelfChatrel*/}
+      <MainDrawerNavigator.Screen
+        name={'SelfChatrel'}
+        component={SelfChatrelNavigator}
+        options={{
+          drawerIcon: ({focused, size}) => (
+            <Ionicons
+              name="wallet-outline"
+              size={size}
+              color={focused ? Colors.primary : Colors.black}
+              style={{
+                justifyContent: 'flex-start',
+                marginLeft: wp(2.5),
+              }}
+            />
+          ),
+          drawerLabel: 'SELF CHATREL',
+          gestureEnabled: true,
+          swipeEnabled: true,
+        }}></MainDrawerNavigator.Screen>
+      {/*FamilyChatrelIntermediate*/}
+      <MainDrawerNavigator.Screen
+        name={'FamilyChatrelIntermediate'}
+        component={FamilyChatrelIntermediateNavigator}
+        options={{
+          drawerIcon: ({focused, size}) => (
+            <AntDesign
+              name="hearto"
+              size={size}
+              color={focused ? Colors.primary : Colors.black}
+              style={{
+                justifyContent: 'flex-start',
+                marginLeft: wp(2.5),
+              }}
+            />
+          ),
+          drawerLabel: 'FAMILY CHATREL',
+          gestureEnabled: true,
+          swipeEnabled: true,
+        }}></MainDrawerNavigator.Screen>
+
+      {/*FriendChatrelIntermediate*/}
+      <MainDrawerNavigator.Screen
+        name={'FriendChatrelIntermediate'}
+        component={FriendChatrelIntermediateNavigator}
+        options={{
+          drawerIcon: ({focused, size}) => (
+            <Ionicons
+              name="leaf-outline"
+              size={size}
+              color={focused ? Colors.primary : Colors.black}
+              style={{
+                justifyContent: 'flex-start',
+                marginLeft: wp(2.5),
+              }}
+            />
+          ),
+          drawerLabel: 'FRIEND\'S CHATREL',
+          gestureEnabled: true,
+          swipeEnabled: true,
+        }}></MainDrawerNavigator.Screen>
+
+      {/*ChatrelHistory*/}
+      <MainDrawerNavigator.Screen
+        name={'ChatrelHistory'}
+        component={ChatrelHistoryNavigator}
+        options={{
+          drawerIcon: ({focused, size}) => (
+            <Entypo
+              name="list"
+              size={size}
+              color={focused ? Colors.primary : Colors.black}
+              style={{
+                justifyContent: 'flex-start',
+                marginLeft: wp(2.5),
+              }}
+            />
+          ),
+          drawerLabel: 'CHATREL HISTORY',
+          gestureEnabled: true,
+          swipeEnabled: true,
+        }}></MainDrawerNavigator.Screen>
+      {/*FileDispute*/}
+      <MainDrawerNavigator.Screen
+        draw
+        name={'FileDispute'}
+        component={FileDisputeNavigator}
+        options={{
+          drawerIcon: ({focused, size}) => (
+            <MaterialCommunityIcons
+              name="email-alert-outline"
+              size={size}
+              color={focused ? Colors.primary : Colors.black}
+              style={{
+                justifyContent: 'flex-start',
+                marginLeft: wp(2.5),
+              }}
+            />
+          ),
+          drawerLabel: 'FILE DISPUTE',
+          gestureEnabled: true,
+          swipeEnabled: true,
+        }}></MainDrawerNavigator.Screen>
+      {/*MyProfile*/}
+      <MainDrawerNavigator.Screen
+        name={'MyProfile'}
+        component={MyProfileNavigator}
+        options={{
+          drawerIcon: ({focused, size}) => (
+            <Ionicons
+              name="person-outline"
+              size={size}
+              color={focused ? Colors.primary : Colors.black}
+              style={{
+                justifyContent: 'flex-start',
+                marginLeft: wp(2.5),
+              }}
+            />
+          ),
+          drawerLabel: 'MY PROFILE',
+          gestureEnabled: true,
+          swipeEnabled: true,
+        }}></MainDrawerNavigator.Screen>
+      {/*non screen*/}
       {/*Login*/}
       <MainDrawerNavigator.Screen
         name={'Login'}
@@ -294,127 +474,14 @@ export const MainNavigator = () => {
           gestureEnabled: false,
           swipeEnabled: false,
         }}></MainDrawerNavigator.Screen>
-      {/*Home*/}
-      <MainDrawerNavigator.Screen
-        name={'Home'}
-        component={HomeNavigator}
-        options={{
-          drawerIcon: ({focused, size}) => (
-            <Ionicons
-              name="md-home"
-              size={size}
-              color={focused ? Colors.black : Colors.black}
-            />
-          ),
-          drawerLabel: 'Home',
-          gestureEnabled: true,
-          swipeEnabled: true,
-        }}></MainDrawerNavigator.Screen>
-      {/*SelfChatrel*/}
-      <MainDrawerNavigator.Screen
-        name={'SelfChatrel'}
-        component={SelfChatrelNavigator}
-        options={{
-          drawerIcon: ({focused, size}) => (
-            <FontAwesome5
-              name="donate"
-              size={size}
-              color={focused ? Colors.black : Colors.black}
-            />
-          ),
-          drawerLabel: 'Self Chatrel',
-          gestureEnabled: true,
-          swipeEnabled: true,
-        }}></MainDrawerNavigator.Screen>
-      {/*FamilyChatrelIntermediate*/}
-      <MainDrawerNavigator.Screen
-        name={'FamilyChatrelIntermediate'}
-        component={FamilyChatrelIntermediateNavigator}
-        options={{
-          drawerIcon: ({focused, size}) => (
-            <Ionicons
-              name="md-heart"
-              size={size}
-              color={focused ? Colors.black : Colors.black}
-            />
-          ),
-          drawerLabel: 'Family Chatrel',
-          gestureEnabled: true,
-          swipeEnabled: true,
-        }}></MainDrawerNavigator.Screen>
       {/*FamilyChatrel*/}
       <MainDrawerNavigator.Screen
         name={'FamilyChatrel'}
         component={FamilyChatrelNavigator}></MainDrawerNavigator.Screen>
-      {/*FriendChatrelIntermediate*/}
-      <MainDrawerNavigator.Screen
-        name={'FriendChatrelIntermediate'}
-        component={FriendChatrelIntermediateNavigator}
-        options={{
-          drawerIcon: ({focused, size}) => (
-            <Ionicons
-              name="md-people"
-              size={size}
-              color={focused ? Colors.black : Colors.black}
-            />
-          ),
-          drawerLabel: 'Friend Chatrel',
-          gestureEnabled: true,
-          swipeEnabled: true,
-        }}></MainDrawerNavigator.Screen>
       {/*FriendChatrel*/}
       <MainDrawerNavigator.Screen
         name={'FriendChatrel'}
         component={FriendChatrelNavigator}></MainDrawerNavigator.Screen>
-      {/*ChatrelHistory*/}
-      <MainDrawerNavigator.Screen
-        name={'ChatrelHistory'}
-        component={ChatrelHistoryNavigator}
-        options={{
-          drawerIcon: ({focused, size}) => (
-            <FontAwesome
-              name="history"
-              size={size}
-              color={focused ? Colors.black : Colors.black}
-            />
-          ),
-          drawerLabel: 'Chatrel History',
-          gestureEnabled: true,
-          swipeEnabled: true,
-        }}></MainDrawerNavigator.Screen>
-      {/*FileDispute*/}
-      <MainDrawerNavigator.Screen
-        draw
-        name={'FileDispute'}
-        component={FileDisputeNavigator}
-        options={{
-          drawerIcon: ({focused, size}) => (
-            <Ionicons
-              name="md-document"
-              size={size}
-              color={focused ? Colors.black : Colors.black}
-            />
-          ),
-          drawerLabel: 'File Dispute',
-          gestureEnabled: true,
-          swipeEnabled: true,
-        }}></MainDrawerNavigator.Screen>
-      {/*MyProfile*/}
-      <MainDrawerNavigator.Screen
-        name={'MyProfile'}
-        component={MyProfileNavigator}
-        options={{
-          drawerIcon: ({focused, size}) => (
-            <FontAwesome
-              name="user"
-              size={size}
-              color={focused ? Colors.black : Colors.black}
-            />
-          ),
-          drawerLabel: 'My Profile',
-          gestureEnabled: true,
-          swipeEnabled: true,
-        }}></MainDrawerNavigator.Screen>
     </MainDrawerNavigator.Navigator>
   );
 };

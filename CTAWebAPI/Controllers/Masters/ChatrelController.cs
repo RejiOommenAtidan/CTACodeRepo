@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TimeZoneConverter;
 
 namespace CTAWebAPI.Controllers.Masters
 {
@@ -98,8 +99,8 @@ namespace CTAWebAPI.Controllers.Masters
             {
                 if (ModelState.IsValid)
                 {
-                    chatrel.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                    chatrel.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    chatrel.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    chatrel.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
 
                     _chatrelRepository.Add(chatrel);
 
@@ -144,7 +145,7 @@ namespace CTAWebAPI.Controllers.Masters
                     {
                         Chatrel fetchedChatrel = _chatrelRepository.GetChatrelById(ID);
                         chatrel.dtEntered = fetchedChatrel.dtEntered;
-                        chatrel.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        chatrel.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                         _chatrelRepository.Update(chatrel);
 
                         #region Audit Log

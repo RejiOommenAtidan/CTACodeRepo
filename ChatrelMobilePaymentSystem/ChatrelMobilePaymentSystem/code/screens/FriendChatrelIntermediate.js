@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Switch,
   Text,
@@ -8,39 +8,47 @@ import {
   Dimensions,
   Alert,
   ToastAndroid,
+  ActivityIndicator,
 } from 'react-native';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import {Platform} from 'react-native';
-import {Input, Button} from 'react-native-elements';
+import { Platform } from 'react-native';
+import { Input, Button, Card, Icon } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Moment from 'moment';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
-import {useForm, Controller} from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import {
   errorComponent,
   errorContainer,
   sDateFormat,
   sDateFormatDatePicker,
   sISODateFormat,
+  oActivityIndicatorStyle,
+  oRequiredStyles,
 } from '../constants/CommonConfig';
-import {useSelector, useDispatch} from 'react-redux';
-import {storeGBDetails} from '../store/actions/GBDetailsAction';
-import {storeCurrentGBDetails} from '../store/actions/CurrentGBDetailsAction';
+import { storeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {sFontName} from '../constants/CommonConfig';
+import { sFontName, sFontNameBold } from '../constants/CommonConfig';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { Loader } from '../components/Loader';
+import { storeGBDetails } from '../store/actions/GBDetailsAction';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 
 export const FriendChatrelIntermediateScreen = (props) => {
   const dispatch = useDispatch();
-  const {control, handleSubmit, errors} = useForm();
+  const { control, handleSubmit, errors } = useForm();
+  const [bLoader, setbLoader] = useState(false);
   const onSubmit = () => {
+    setbLoader(true);
+
     console.log(dtFriendDOB);
+
     let oFriendGBDetails = {
       sFriendGBID: nFriendGBID,
       sFirstName: sFriendFirstname,
@@ -66,6 +74,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
           // .catch(error => {
           //   console.log(error.message);
           // });
+          setbLoader(false);
           let oGBDetails = {
             sGBID: nFriendGBID,
             dtDOB: dtFriendDOB,
@@ -78,16 +87,18 @@ export const FriendChatrelIntermediateScreen = (props) => {
           dispatch(storeCurrentGBDetails(oGBDetails));
           props.navigation.navigate('FriendChatrel');
         } else {
+          setbLoader(false);
           alert("Values don't match with database. Enter correct values.");
         }
       })
       .catch((error) => {
-        if (error.response.status === 400) {
-          alert('Missing Parameters...');
-        }
+        // if (error.response.status === 400) {
+        //   console.info('Missing Parameters...');
+        // }
+        setbLoader(false);
+        alert("Values don't match with database. Enter correct values.");
         console.log(error.message);
         console.log(error);
-        alert("Values don't match with database. Enter correct values.");
       });
   };
   const [nFriendGBID, setnFriendGBID] = useState('');
@@ -96,301 +107,331 @@ export const FriendChatrelIntermediateScreen = (props) => {
   const [bShowFriendGBID, setbShowFriendGBID] = useState(true);
   const [dtFriendDOB, setdtFriendDOB] = useState(null);
   const dtToday = Moment().format(sDateFormatDatePicker);
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}>
       <View style={styles.mainContainer}>
+        <Loader
+          loading={bLoader} />
         {/*<View style={styles.headingContainer}>
           <Text style={styles.headingComponent}>Chatrel For Friends</Text>
   </View>*/}
-        <View style={styles.firstNameLabelContainer}>
-          <Text style={styles.firstNameLabelComponent}>FIRST NAME</Text>
-        </View>
-        <View style={styles.firstNameValueContainer}>
-          <Controller
-            control={control}
-            render={({onChange, onBlur, value}) => (
-              <Input
-                inputContainerStyle={{borderBottomWidth: 0}}
-                inputStyle={{
+        <Card
+          title={
+            <View style={styles.titleStyleView}>
+              <Icon
+                color={Colors.white}
+                iconStyle={styles.iconStyles}
+                iconProps={{}}
+                backgroundColor={Colors.websiteLightBlueColor}
+                size={40}
+                type="font-awesome-5"
+                name="leaf"
+                containerStyle={styles.iconContainerStyles}
+              />
+            </View>
+          }
+          titleStyle={{}}
+          containerStyle={styles.cardContainerStyle}>
+          <View style={styles.labelContainer}>
+            <Text>
+              <Text style={styles.labelComponent}>FIRST NAME</Text>
+              <Text style={oRequiredStyles}>*</Text>
+            </Text>
+          </View>
+          <View style={styles.valueContainer}>
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  // inputContainerStyle={{borderBottomWidth: 0}}
+                  containerStyle={styles.valueContainerStyle}
+                  inputStyle={
+                    {
+                      // borderRadius: 10,
+                      // backgroundColor: Colors.white,
+                      // borderColor: Colors.white,
+                    }
+                  }
+                  style={styles.valueComponent}
+                  //label="Friend's Firstname"
+                  placeholder="Enter First Name of Friend"
+                  placeholderTextColor={Colors.grey}
+                  //autoFocus={true}
+                  //autoCapitalize={"characters"}
+                  autoCompleteType={'off'}
+                  autoCorrect={false}
+                  clearButtonMode={'while-editing'}
+                  //dataDetectorTypes={"phoneNumber"}
+                  //secureTextEntry={!bShowFriendGBID}
+                  keyboardType={'default'}
+                  keyboardAppearance={'default'}
+                  disableFullscreenUI={true}
+                  //maxLength={7}
+                  onBlur={onBlur}
+                  onChangeText={(value) => {
+                    onChange(value);
+                    setsFriendFirstname(value);
+                  }}
+                  value={sFriendFirstname}
+                />
+              )}
+              name="name_sFriendFirstName"
+              rules={{ required: true }}
+              defaultValue=""
+            />
+            {errors.name_sFriendFirstName && (
+              <View style={errorContainer}>
+                <Text style={errorComponent}>
+                  Please enter first name of friend
+                </Text>
+              </View>
+            )}
+          </View>
+          <View style={styles.labelContainer}>
+            <Text>
+              <Text style={styles.labelComponent}>LAST NAME</Text>
+              <Text style={oRequiredStyles}>*</Text>
+            </Text>
+          </View>
+          <View style={styles.valueContainer}>
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  //inputContainerStyle={{borderBottomWidth: 0}}
+                  inputStyle={
+                    {
+                      //height: hp(2.5),
+                      //marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
+                      //borderRadius: 10,
+                      // backgroundColor: Colors.white,
+                      // borderColor: Colors.white,
+                    }
+                  }
+                  containerStyle={styles.valueContainerStyle}
+                  style={styles.valueComponent}
+                  //label="Friend's Lastname"
+                  placeholder="Enter Last Name of Friend"
+                  placeholderTextColor={Colors.grey}
+                  //autoFocus={true}
+                  //autoCapitalize={"characters"}
+                  autoCompleteType={'off'}
+                  autoCorrect={false}
+                  clearButtonMode={'while-editing'}
+                  //dataDetectorTypes={"phoneNumber"}
+                  //secureTextEntry={!bShowFriendGBID}
+                  keyboardType={'default'}
+                  keyboardAppearance={'default'}
+                  disableFullscreenUI={true}
+                  //maxLength={7}
+                  onBlur={onBlur}
+                  onChangeText={(value) => {
+                    onChange(value);
+                    setsFriendLastname(value);
+                  }}
+                  value={sFriendLastname}
+                />
+              )}
+              name="name_sFriendLastName"
+              rules={{ required: true }}
+              defaultValue=""
+            />
+            {errors.name_sFriendLastName && (
+              <View style={errorContainer}>
+                <Text style={errorComponent}>
+                  Please enter last name of friend
+                </Text>
+              </View>
+            )}
+          </View>
+          {/*GBID*/}
+          <View style={styles.labelContainer}>
+            <Text>
+              <Text style={styles.labelComponent}>GREEN BOOK ID</Text>
+              <Text style={oRequiredStyles}>*</Text>
+            </Text>
+          </View>
+          <View style={styles.valueComponent}>
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  //inputContainerStyle={{borderBottomWidth: 0}}
+                  //inputStyle={{
                   //height: hp(2.5),
                   //marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
-                  borderRadius: 10,
-                  backgroundColor: Colors.white,
-                  borderColor: Colors.white,
-                }}
-                style={{
-                  textAlign: 'left',
-                  fontSize:
-                    Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                      ? 10.5
-                      : 17.5,
-                  fontStyle: 'normal',
-                  fontWeight: '300',
-                  fontFamily: sFontName,
-                }}
-                //label="Friend's Firstname"
-                placeholder=" Friend's First Name"
-                placeholderTextColor={Colors.grey}
-                //autoFocus={true}
-                //autoCapitalize={"characters"}
-                autoCompleteType={'off'}
-                autoCorrect={false}
-                clearButtonMode={'while-editing'}
-                //dataDetectorTypes={"phoneNumber"}
-                //secureTextEntry={!bShowFriendGBID}
-                keyboardType={'default'}
-                keyboardAppearance={'default'}
-                disableFullscreenUI={true}
-                //maxLength={7}
-                onBlur={onBlur}
-                onChangeText={(value) => {
-                  onChange(value);
-                  setsFriendFirstname(value);
-                }}
-                value={sFriendFirstname}
-              />
+                  //borderRadius: 10,
+                  // backgroundColor: Colors.white,
+                  // borderColor: Colors.white,
+                  //}}
+                  containerStyle={styles.valueContainerStyle}
+                  style={styles.valueComponent}
+                  //label="Friend's GBID"
+                  placeholder="Enter Green Book Number"
+                  placeholderTextColor={Colors.grey}
+                  //autoFocus={true}
+                  //autoCapitalize={"characters"}
+                  autoCompleteType={'off'}
+                  autoCorrect={false}
+                  clearButtonMode={'while-editing'}
+                  //dataDetectorTypes={"phoneNumber"}
+                  //secureTextEntry={!bShowFriendGBID}
+                  keyboardType={'number-pad'}
+                  keyboardAppearance={'default'}
+                  disableFullscreenUI={true}
+                  maxLength={7}
+                  onBlur={onBlur}
+                  onChangeText={(value) => {
+                    onChange(value);
+                    setnFriendGBID(value);
+                  }}
+                  value={nFriendGBID}
+                />
+              )}
+              name="name_nFriendGBID"
+              rules={{ required: true }}
+              defaultValue=""
+            />
+            {errors.name_nFriendGBID && (
+              <View style={errorContainer}>
+                <Text style={errorComponent}>
+                  Please enter Green Book Number
+                </Text>
+              </View>
             )}
-            name="name_sFriendFirstName"
-            rules={{required: true}}
-            defaultValue=""
-          />
-          {errors.name_sFriendFirstName && (
-            <View style={errorContainer}>
-              <Text style={errorComponent}>This is field required.</Text>
-            </View>
-          )}
-        </View>
-        <View style={styles.lastNameLabelContainer}>
-          <Text style={styles.lastNameLabelComponent}>LAST NAME</Text>
-        </View>
-        <View style={styles.lastNameValueContainer}>
-          <Controller
-            control={control}
-            render={({onChange, onBlur, value}) => (
-              <Input
-                inputContainerStyle={{borderBottomWidth: 0}}
-                inputStyle={{
-                  //height: hp(2.5),
-                  //marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
-                  borderRadius: 10,
-                  backgroundColor: Colors.white,
-                  borderColor: Colors.white,
-                }}
-                style={{
-                  textAlign: 'left',
-                  fontSize:
-                    Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                      ? 10.5
-                      : 17.5,
-                  fontStyle: 'normal',
-                  fontWeight: '300',
-                  fontFamily: sFontName,
-                }}
-                //label="Friend's Lastname"
-                placeholder=" Friend's Last Name"
-                placeholderTextColor={Colors.grey}
-                //autoFocus={true}
-                //autoCapitalize={"characters"}
-                autoCompleteType={'off'}
-                autoCorrect={false}
-                clearButtonMode={'while-editing'}
-                //dataDetectorTypes={"phoneNumber"}
-                //secureTextEntry={!bShowFriendGBID}
-                keyboardType={'default'}
-                keyboardAppearance={'default'}
-                disableFullscreenUI={true}
-                //maxLength={7}
-                onBlur={onBlur}
-                onChangeText={(value) => {
-                  onChange(value);
-                  setsFriendLastname(value);
-                }}
-                value={sFriendLastname}
-              />
-            )}
-            name="name_sFriendLastName"
-            rules={{required: true}}
-            defaultValue=""
-          />
-          {errors.name_sFriendLastName && (
-            <View style={errorContainer}>
-              <Text style={errorComponent}>This is field required.</Text>
-            </View>
-          )}
-        </View>
-        {/*GBID*/}
-        <View style={styles.gbidLabelContainer}>
-          <Text style={styles.gbidLabelComponent}>GREEN BOOK ID</Text>
-        </View>
-        <View style={styles.gbidValueContainer}>
-          <Controller
-            control={control}
-            render={({onChange, onBlur, value}) => (
-              <Input
-                inputContainerStyle={{borderBottomWidth: 0}}
-                inputStyle={{
-                  //height: hp(2.5),
-                  //marginBottom: Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
-                  borderRadius: 10,
-                  backgroundColor: Colors.white,
-                  borderColor: Colors.white,
-                }}
-                style={{
-                  //color:Colors.black,
-                  textAlign: 'left',
-                  fontSize:
-                    Dimensions.get('window').width < Resolution.nWidthBreakpoint
-                      ? 10.5
-                      : 17.5,
-                  fontStyle: 'normal',
-                  fontWeight: '300',
-                  fontFamily: sFontName,
-                }}
-                //label="Friend's GBID"
-                placeholder=" Friend's Green Book ID"
-                placeholderTextColor={Colors.grey}
-                //autoFocus={true}
-                //autoCapitalize={"characters"}
-                autoCompleteType={'off'}
-                autoCorrect={false}
-                clearButtonMode={'while-editing'}
-                //dataDetectorTypes={"phoneNumber"}
-                //secureTextEntry={!bShowFriendGBID}
-                keyboardType={'number-pad'}
-                keyboardAppearance={'default'}
-                disableFullscreenUI={true}
-                maxLength={7}
-                onBlur={onBlur}
-                onChangeText={(value) => {
-                  onChange(value);
-                  setnFriendGBID(value);
-                }}
-                value={nFriendGBID}
-              />
-            )}
-            name="name_nFriendGBID"
-            rules={{required: true}}
-            defaultValue=""
-          />
-          {errors.name_nFriendGBID && (
-            <View style={errorContainer}>
-              <Text style={errorComponent}>This is field required.</Text>
-            </View>
-          )}
-        </View>
-        {/*<View style={styles.container}>
+          </View>
+          {/*<View style={styles.container}>
           <Switch
             onValueChange={() => { setbShowFriendGBID(!bShowFriendGBID) }}
             value={bShowFriendGBID}
           />
           <Text>Show/Hide Friend's GBID</Text>
         </View>*/}
-        {/*First Name*/}
-        <View style={styles.dobLabelContainer}>
-          <Text style={styles.dobLabelComponent}>DATE OF BIRTH</Text>
-        </View>
-        <View style={styles.dobValueContainer}>
-          <Controller
-            control={control}
-            render={({onChange, onBlur, value}) => (
-              <DatePicker
-                useNativeDriver={true}
-                androidMode={'calendar'}
-                style={{
-                  width: Dimensions.get('window').width * 0.875,
-                  //backgroundColor: Colors.white,
-                  //borderColor: Colors.white
-                }}
-                date={dtFriendDOB}
-                mode="date"
-                placeholder=" Friend's Date Of Birth"
-                format={sDateFormatDatePicker}
-                //minDate={dtToday}
-                maxDate={dtToday}
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                showIcon={false}
-                customStyles={{
-                  // dateIcon: {
-                  //   position: 'absolute',
-                  //   left: 0,
-                  //   top: 4,
-                  //   marginLeft: 0
-                  // },
-                  dateText: {
-                    textAlign: 'left',
-                    fontSize:
-                      Dimensions.get('window').width <
-                      Resolution.nWidthBreakpoint
-                        ? 10.5
-                        : 17.5,
-                    fontStyle: 'normal',
-                    fontWeight: '300',
-                    fontFamily: sFontName,
-                  },
-                  placeholderText: {
-                    color: Colors.grey,
-                    textAlign: 'left',
-                    fontSize:
-                      Dimensions.get('window').width <
-                      Resolution.nWidthBreakpoint
-                        ? 10.5
-                        : 17.5,
-                    fontStyle: 'normal',
-                    fontWeight: '300',
-                    fontFamily: sFontName,
-                  },
-                  // dateIcon: {
-                  //   width:0,
-                  //   height:0,
-                  //   },
-                  dateInput: {
-                    //textAlign:'left',
-                    //height:hp(6),
-                    marginLeft: wp(2.75),
-                    flexGrow: 1,
-                    backgroundColor: Colors.white,
-                    borderRadius: 10,
-                    borderWidth: 1,
-                    //overflow: 'hidden',
-                    borderColor: Colors.white,
-                    //justifyContent: 'flex-start',
-                    alignItems: 'flex-start',
-                  },
-                }}
-                onBlur={onBlur}
-                onDateChange={(date) => {
-                  onChange(date);
-                  setdtFriendDOB(date);
-                }}
-              />
-            )}
-            name="name_dtFriendDOB"
-            rules={{required: true}}
-            defaultValue=""
-          />
+          {/*First Name*/}
+          <View style={styles.labelContainer}>
+            <Text>
+              <Text style={styles.labelComponent}>DATE OF BIRTH</Text>
+              <Text style={oRequiredStyles}>*</Text>
+            </Text>
+          </View>
+          <View style={styles.dobValueContainer}>
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <DatePicker
+                  useNativeDriver={true}
+                  androidMode={'calendar'}
+                  style={{
+                    width: wp(87.5),
+
+                    // width: wp(90 - 1),
+                    // backgroundColor: Colors.white,
+                    //borderColor: Colors.white
+                    // marginBottom:
+                    //   Dimensions.get('window').height <
+                    //   Resolution.nHeightBreakpoint
+                    //     ? 3.6
+                    //     : 6,
+                  }}
+                  date={dtFriendDOB}
+                  mode="date"
+                  placeholder="Enter Date of Birth"
+                  format={sDateFormatDatePicker}
+                  //minDate={dtToday}
+                  maxDate={dtToday}
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  showIcon={false}
+                  customStyles={{
+                    dateIcon: {
+                      borderWidth: 0,
+                      borderStyle: null,
+                      height: 0,
+                      width: 0,
+                    },
+                    dateText: {
+                      textAlign: 'left',
+                      fontSize: wp(5),
+                      fontStyle: 'normal',
+                      fontWeight: 'normal',
+                      fontFamily: sFontName,
+                    },
+                    placeholderText: {
+                      color: Colors.grey,
+                      textAlign: 'left',
+                      fontSize: wp(5),
+                      fontStyle: 'normal',
+                      fontWeight: 'normal',
+                      fontFamily: sFontName,
+                    },
+                    // dateIcon: {
+                    //   width:0,
+                    //   height:0,
+                    //   },
+                    dateInput: {
+                      //textAlign:'left',
+                      //height:hp(6),
+                      marginRight: wp(2.75),
+                      flexGrow: 1,
+                      // backgroundColor: Colors.white,
+                      borderLeftWidth: 0,
+                      borderRightWidth: 0,
+                      borderTopWidth: 0,
+                      borderRadius: 0,
+                      borderWidth: 1,
+                      borderTopRightRadius: 0,
+                      borderBottomRightRadius: 0,
+                      //overflow: 'hidden',
+                      // borderColor: Colors.white,
+                      //justifyContent: 'flex-start',
+                      alignItems: 'flex-start',
+                    },
+                  }}
+                  onBlur={onBlur}
+                  onDateChange={(date) => {
+                    onChange(date);
+                    setdtFriendDOB(date);
+                  }}
+                />
+              )}
+              name="name_dtFriendDOB"
+              rules={{ required: true }}
+              defaultValue=""
+            />
+          </View>
           {errors.name_dtFriendDOB && (
             <View style={errorContainer}>
-              <Text style={errorComponent}>This is field required.</Text>
+              <Text style={{ ...errorComponent, marginTop: hp(1) }}>
+                Please enter Date of Birth
+              </Text>
             </View>
           )}
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title="VERIFY & CONTINUE"
-            onPress={handleSubmit(onSubmit)}
-            titleStyle={{
-              color: Colors.white,
-              fontFamily: sFontName,
-            }}
-            buttonStyle={{
-              backgroundColor: Colors.primary,
-              borderRadius: 20,
-              borderWidth: 1,
-              borderColor: Colors.primary,
-            }}
-          />
-        </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="VERIFY AND PAY"
+              onPress={handleSubmit(onSubmit)}
+              titleStyle={{
+                color: Colors.white,
+                fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                fontFamily:
+                  Platform.OS === 'android' ? sFontNameBold : sFontName,
+              }}
+              containerStyle={{
+                marginTop: hp(3),
+                marginBottom: hp(1)
+              }}
+              buttonStyle={{
+                backgroundColor: Colors.primary,
+                borderRadius: 20,
+                borderWidth: 1,
+                borderColor: Colors.primary,
+              }}
+            />
+          </View>
+        </Card>
       </View>
     </ScrollView>
   );
@@ -398,7 +439,7 @@ export const FriendChatrelIntermediateScreen = (props) => {
 
 export const FriendChatrelIntermediateScreenOptions = (navData) => {
   return {
-    headerTitle: 'Chatrel for a Friend',
+    headerTitle: "FRIEND'S CHATREL",
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -414,16 +455,16 @@ export const FriendChatrelIntermediateScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
-    cardStyle: {backgroundColor: Colors.blueCardColor},
+    // headerRight: CustomHeaderRightButton,
+    cardStyle: { backgroundColor: Colors.white },
   };
 };
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    marginHorizontal:
-      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     marginVertical:
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
@@ -444,98 +485,152 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blue,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
   },
 
-  gbidLabelContainer: {
-    width: wp(22),
-    height: hp(2),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
+  labelContainer: {
+    marginBottom: hp(1),
   },
-  gbidLabelComponent: {
-    width: '100%',
-    height: '100%',
+  labelComponent: {
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+    fontSize: wp(3.75),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.primary,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
+    color: Colors.blackText,
     fontFamily: sFontName,
   },
-  gbidValueContainer: {},
+  valueContainer: {},
+  valueComponent: {
+    textAlign: 'left',
+    fontSize: wp(5),
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    fontFamily: sFontName,
+  },
 
-  firstNameLabelContainer: {
-    width: wp(22),
-    height: hp(2),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
-  },
-  firstNameLabelComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.primary,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  firstNameValueContainer: {},
+  // gbidLabelContainer: {},
+  // gbidLabelComponent: {
+  //   // width: '100%',
+  //   // height: '100%',
+  //   textAlign: 'left',
+  //   fontSize:
+  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.primary,
+  //   fontFamily: sFontName,
+  // },
+  // gbidValueContainer: {},
 
-  lastNameLabelContainer: {
-    width: wp(22),
-    height: hp(2),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
-  },
-  lastNameLabelComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.primary,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  lastNameValueContainer: {},
+  // firstNameLabelContainer: {
+  //   // width: wp(22),
+  //   // height: hp(2),
+  //   marginBottom:
+  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
+  // },
+  // firstNameLabelComponent: {
+  //   // width: '100%',
+  //   // height: '100%',
+  //   textAlign: 'left',
+  //   fontSize:
+  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.primary,
+  //   fontFamily: sFontName,
+  // },
+  // firstNameValueContainer: {},
 
-  dobLabelContainer: {
-    width: wp(22),
-    height: hp(2),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
-  },
-  dobLabelComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.primary,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
+  // lastNameLabelContainer: {
+  //   // width: wp(22),
+  //   // height: hp(2),
+  //   marginBottom:
+  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
+  // },
+  // lastNameLabelComponent: {
+  //   // width: '100%',
+  //   // height: '100%',
+  //   textAlign: 'left',
+  //   fontSize:
+  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.primary,
+  //   fontFamily: sFontName,
+  // },
+  // lastNameValueContainer: {},
+
+  // dobLabelContainer: {
+  //   marginBottom:
+  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
+  // },
+  // dobLabelComponent: {
+  //   // width: '100%',
+  //   // height: '100%',
+  //   textAlign: 'left',
+  //   fontSize:
+  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.primary,
+  //   fontFamily: sFontName,
+  // },
   dobValueContainer: {
-    //flexGrow:1,
-    //width: wp(85),
-    marginBottom:
-      Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 30 : 50,
+    // marginBottom:
+    //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 30 : 50,
+    marginBottom: hp(1),
   },
   buttonContainer: {},
+  cardContainerStyle: {
+    width: wp(92.5),
+    backgroundColor: Colors.white,
+    marginTop: hp(5),
+    //Border Stuff
+    borderRadius: 15,
+    // borderColor: Colors.black,
+    // borderStyle: 'solid',
+    // borderWidth: 0.25,
+
+    //For iOS
+    shadowRadius: 15,
+    shadowColor: Colors.lightBlueChatrelWebsite,
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 1,
+
+    //For Android
+    elevation: 15,
+    overflow: 'visible',
+  },
+  titleStyleView: {
+    marginBottom: hp(5.5),
+    shadowRadius: 15,
+    shadowColor: Colors.lightBlueChatrelWebsite,
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 1,
+  },
+  iconStyles: {
+    backgroundColor: Colors.websiteLightBlueColor,
+    margin: hp(2),
+  },
+  iconContainerStyles: {
+    // backgroundColor:Colors.white,
+    alignSelf: 'flex-start',
+    position: 'absolute',
+    top: -55,
+    // left:20,
+    //Border Stuff
+    borderRadius: 10,
+    // borderColor: Colors.black,
+    // borderStyle: 'solid',
+    // borderWidth: 0.25,
+
+    //For iOS
+
+    //For Android
+    elevation: 15,
+    // overflow: 'visible',
+  },
+  valueContainerStyle: {
+    paddingHorizontal: 0,
+  },
 });

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {storeGBDetails} from '../../../actions/transactions/GBDetailsAction';
+import {storeSession} from '../../../actions/transactions/SessionAction';
 import {
   Grid,
   InputAdornment,
@@ -18,6 +19,7 @@ import projectLogo from '../../../assets/images/CTALogo.png';
 import wallpaper from '../../../assets/images/wallpaper.jpg';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { storeCurrentGBDetails } from 'actions/transactions/CurrentGBDetailsAction';
+import {storeGoogleCreds} from 'actions/transactions/GLoginAction';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,6 +29,11 @@ import { dateTimePickerDefaultProps } from '@material-ui/pickers/constants/prop-
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { white } from '@material-ui/core/colors';
 import Moment from 'moment';
+//import cookieCheck from 'third-party-cookie-check';
+import { GoogleLogout } from 'react-google-login';
+//import { useDispatch } from 'react-redux';
+//import {  Button} from '@material-ui/core';
+import  {removeGoogleCreds} from '../../../actions/transactions/GLoginAction';
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
@@ -68,14 +75,22 @@ const MyTheme = createMuiTheme({
 });
 
 export default function LogingPage(props) {
-
+ 
   const classes = useStyles();
 
   let history = useHistory();
   const dispatch = useDispatch();
   
   
-  const userObj = useSelector(state => state.GLoginReducer.oGoogle);
+    const logout =() =>{
+      //  history.go(0);
+        dispatch(removeGoogleCreds()); //oGoogle null
+       // localStorage.removeItem("currentUser");
+        // window.location.replace('/login');
+        
+    }
+  //const userObj = useSelector(state => state.GLoginReducer.oGoogle);
+
   const responseGoogle = (response) => {
     console.log(response);
 
@@ -102,12 +117,23 @@ export default function LogingPage(props) {
    const [login,setLogin]=React.useState(false);
    const [nGBID,setGbID]=React.useState("");
    const [dtDob,setDob]=React.useState(null);
+   const [sGoogleCode,setGoogleCode]=React.useState("");
+   const [sEmail,setEmail]=React.useState("");
 
   //On Success of verifying info
 let oGBDetails={
   sGBID:nGBID,
   dtDob:dtDob
 };
+const test =(e)=>{
+
+  setLogin(true);
+  dispatch(storeGoogleCreds(e.profileObj));
+  setGoogleCode(e.tokenId);
+  setEmail(e.profileObj.email);
+
+
+}
   const submit = (e) => {
     //obj.user=JSON.parse(localStorage.getItem('currentUser')).name;
     //alert(JSON.stringify(obj));
@@ -133,25 +159,35 @@ let oGBDetails={
       sGBID:""+nGBID,
       dtDOB:Moment(dtDob).format("YYYY-MM-DD"),
       //dtDOB:dtDob,
-      sFirstName:userObj.givenName,
-      sLastName:userObj.familyName,
-      sEmail:userObj.email  
+      code:sGoogleCode,
+      sEmail:sEmail
+     
     }
     console.log(Obj);
     //dispatch(storeGBDetails(oGBDetails));
     //dispatch(storeCurrentGBDetails(oGBDetails));
     //history.push('/Home');
-    axios.post(`ChatrelPayment/AuthenticateGBID/`,Obj)
+    axios.post(`User/AuthenticateGBID/`,Obj)
     .then(resp => {
       if (resp.status === 200) {
+        console.log("Authentication resp", resp.data);
         //setPaymentHistory(resp.data);
-        if(resp.data=="Verified"){
+        if(resp.data.result ==="Verified"){
+          const token = resp.data.sJwtToken
+          const dt=new Date();
+          const oSession={
+            sJwtToken:token,
+            bSession: new Date(dt.getTime() + 1000*60*2).getTime(),
+
+          }
+          dispatch(storeSession(oSession));
           dispatch(storeGBDetails(oGBDetails));
           dispatch(storeCurrentGBDetails(oGBDetails));
           setBackdrop(false);
           setAlertMessage('Verification Successful');
           setAlertType('success');
           snackbarOpen();
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         //  history.push('/Home');
           setTimeout(() => history.push('/Home'), 3000);
         }
@@ -188,8 +224,19 @@ let oGBDetails={
   }
 
   }
- 
-   useEffect(() => {
+  const cookie= async () =>{
+    //const { supported, timedOut } = await cookieCheck();
+
+   // console.log("3rd party cookie's:",supported,timedOut);
+  }
+ useEffect(()=>{
+  /*document.cookie = "username=test";
+  var testCookie=document.cookie;
+  console.log("Test Cookie",testCookie);*/
+//  cookie();
+
+ },[]);
+ /*  useEffect(() => {
     
     if( userObj == null){
       setLogin(false);
@@ -199,16 +246,24 @@ let oGBDetails={
     }
   
    fetch('https://json.geoiplookup.io/')
+   //fetch('http://api.ipstack.com/check?access_key=aba3f72c6ce02b9645fb946f5b8c06fa')
    .then(response => response.json())
   .then(data => {
+
     console.log(data);
+    //alert(data.country_code);
       if(data.country_code!="IN"){
-        //  history.push('/AccessDenied')
+         // history.push('/AccessDenied')
+
         }
         console.log(data);
+  })
+  .catch(error => {
+console.log(error);
+
   });
 
-  }, [userObj]);
+  }, [userObj]);*/
 
   return (
     <>
@@ -227,15 +282,19 @@ let oGBDetails={
                         { !login &&             
                         <>
                         <h1  className="display-2 mb-1 font-weight-bold">eChatrel</h1>
-                        <h4 className="display-5 mb-1 ">Your go-to resource for supporting the Tibetan Government</h4>        
-                        <GoogleLoginPage/>
+                        <h4 className="display-5 mb-1 ">Your go-to resource for supporting the Tibetan Government</h4>     
+
+
+                        <GoogleLoginPage
+                        test={test}
+                        />
                         </>
                         }
                       
                         {
                           login &&
                         <>
-                          <h5 className="display-5 mb-1 " > Super! Thanks for logging in through Google. Just one more step now. </h5>  
+                          <h5 className="display-5 mb-1 " > Great! Thanks for logging in through Google. Just one more step now. </h5>  
                           <br/>
                           <Grid container spacing={2}>
                             <Grid item xs={12}>
@@ -315,6 +374,27 @@ let oGBDetails={
                             </Grid>
                             <Grid item xs={12}>
                             <Button variant="contained" className="w-50 " type = 'submit' disabled={!submitBtn} style={{   backgroundColor: 'rgb(42, 92, 255)', color:'white'}}>VERIFY DETAILS</Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                            { login &&<> Signed in with {sEmail}</> }
+                            </Grid>  
+                            <Grid item xs={12}>
+                              
+                            <GoogleLogout
+                            
+    clientId={"11153496233-ft9h6spf18pfshdlri865cm6d6eteqef.apps.googleusercontent.com"}
+   // buttonText="Logout"
+    onLogoutSuccess={() => {logout()}}
+    //onLogoutSuccess={logout}
+    render={renderProps => (
+           
+<Button  onClick={renderProps.onClick} className="p-0 btn-transparent btn-link btn-link-first"><span>Change Google Account?</span></Button>      
+     
+      )}
+    >
+       
+</GoogleLogout>
+                                  
                             </Grid>
                           </Grid>
                             

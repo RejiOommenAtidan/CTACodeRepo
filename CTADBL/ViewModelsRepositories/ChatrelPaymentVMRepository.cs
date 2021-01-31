@@ -12,7 +12,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using static CTADBL.BaseClasses.Transactions.ChatrelPayment;
+using System.Threading.Tasks;
+using TimeZoneConverter;
 
 namespace CTADBL.ViewModelsRepositories
 {
@@ -61,11 +62,11 @@ namespace CTADBL.ViewModelsRepositories
                 }
 
 
-                chatrelPayment.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                chatrelPayment.dtPayment = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                chatrelPayment.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                chatrelPayment.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                chatrelPayment.dtPayment = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                chatrelPayment.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                 chatrelPayment.sPaymentStatus = ChatrelPayment.Success;
-                greenbook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                greenbook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                 greenbook.sPaidUntil = chatrelPayment.nChatrelYear.ToString();
 
                 if(chatrels != null)
@@ -77,8 +78,8 @@ namespace CTADBL.ViewModelsRepositories
                         chatrel.sPaidByGBId = chatrelPayment.sPaidByGBId;
                         //chatrel.nChatrelLateFeesPercentage = chatrelPayment.nChatrelLateFeesPercentage;
                         chatrel.dtPayment = chatrelPayment.dtPayment;
-                        chatrel.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                        chatrel.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        chatrel.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                        chatrel.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     }
                 }
                 
@@ -164,32 +165,42 @@ namespace CTADBL.ViewModelsRepositories
 
 
         #region Search Users in Chatrel
-        public IEnumerable<Object> SearchUsers(string sGBID, string sFirstName, string sFathersName, string sMothersName)
+        public async Task<IEnumerable<Object>> SearchUsers(string sGBID, string sFirstName, string sFathersName, string sMothersName)
         {
+            // Set Limit of records
+            int records = 50;
             string parameters = "";
-            if (sFirstName != null && !String.IsNullOrEmpty(sFirstName.Trim()))
-            {
-                parameters += String.Format(@"t2.sFirstName = '{0}' AND ", sFirstName);
-            }
-            if (sFathersName != null && !String.IsNullOrEmpty(sFathersName.Trim()))
-            {
-                parameters += String.Format(@"t2.sFathersName = '{0}' AND ", sFathersName);
-            }
-            if (sMothersName != null && !String.IsNullOrEmpty(sMothersName.Trim()))
-            {
-                parameters += String.Format(@"t2.sMothersName = '{0}' AND ", sMothersName);
-            }
-            string sql = String.Format(@"set session sql_mode = '';SELECT t.sGBId, t2.sFirstName, t2.sLastName, CAST((date_format(curdate(), '%Y%m%d') -  date_format(t2.dtdob, '%Y%m%d'))/10000 AS UNSIGNED) AS nAge, l.sAuthRegion, l2.sCountry, if(t2.dtDeceased IS NULL, 'Alive', 'Deceased' ) AS sStatus, max(t.dtPayment) as dtPayment FROM tblchatrelpayment t INNER JOIN tblgreenbook t2 ON t.sGBId = t2.sGBID LEFT JOIN lstauthregion l ON t2.nAuthRegionID = l.ID LEFT JOIN lstcountry l2 ON t2.sCountryID = l2.sCountryID WHERE t.sGBId LIKE @sGBID AND {0} 1 = 1 GROUP BY t.sGBId;", parameters);
-
-            using (var command = new MySqlCommand(sql))
+            using (var command = new MySqlCommand())
             {
                 command.Parameters.AddWithValue("sGBID", sGBID + '%');
+                command.Parameters.AddWithValue("records", records);
+
+                if (sFirstName != null && !String.IsNullOrEmpty(sFirstName.Trim()))
+                {
+                    //name = String.Format(@"t2.sFirstName LIKE '{0}' AND ", sFirstName);
+                    parameters += $@" AND t2.sFirstName LIKE @sFirstName ";
+                    command.Parameters.AddWithValue("sFirstName", sFirstName+'%');
+                }
+                if (sFathersName != null && !String.IsNullOrEmpty(sFathersName.Trim()))
+                {
+                    parameters += $@" AND t2.sFathersName LIKE @sFathersName ";
+                    command.Parameters.AddWithValue("sFathersName", sFathersName + '%');
+                }
+                if (sMothersName != null && !String.IsNullOrEmpty(sMothersName.Trim()))
+                {
+                    parameters += $@" AND t2.sMothersName LIKE sMothersName ";
+                    command.Parameters.AddWithValue("sMothersName", sMothersName + '%');
+                }
+                string sql = String.Format(@"set session sql_mode = '';SELECT t.sGBId, t2.sFirstName, t2.sLastName, CAST((date_format(curdate(), '%Y%m%d') -  date_format(t2.dtdob, '%Y%m%d'))/10000 AS UNSIGNED) AS nAge, l.sAuthRegion, l2.sCountry, if(t2.dtDeceased IS NULL, 'Alive', 'Deceased' ) AS sStatus, max(t.dtPayment) as dtPayment FROM tblchatrelpayment t INNER JOIN tblgreenbook t2 ON t.sGBId = t2.sGBID LEFT JOIN lstauthregion l ON t2.nAuthRegionID = l.ID LEFT JOIN lstcountry l2 ON t2.sCountryID = l2.sCountryID WHERE t.sGBId LIKE @sGBID {0} GROUP BY t.sGBId LIMIT @records;", parameters);
+
+                command.CommandText = sql;
                 command.CommandType = CommandType.Text;
                 command.Connection = _connection;
                 MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
                 DataSet ds = new DataSet();
-                mySqlDataAdapter.Fill(ds);
+                await mySqlDataAdapter.FillAsync(ds);
                 DataTableCollection tables = ds.Tables;
+                
                 var result = tables[0].AsEnumerable().Select(row => new
                 {
                     sGBID = row.Field<string>("sGBID"),
@@ -254,7 +265,46 @@ namespace CTADBL.ViewModelsRepositories
         #endregion
 
 
-        #region Get Chatrel List
+        #region Get Chatrel List Quick (Chatrel List with Limited Columns + Search)
+
+        public IEnumerable<Object> GetQuickChatrelList(Dictionary<string, dynamic> searchParams = null)
+        {
+            string sql = @"SET session sql_mode = ''; SELECT t.sGBID, t.sChatrelReceiptNumber, concat(t.nChatrelYear, '-', (CAST(substring(t.nChatrelYear, 3) AS UNSIGNED)+1))  AS sFinancialYear, t.dtPayment, CONCAT(t2.sFirstName,' ',IFNULL(t2.sLastName, '')) AS sName,  t.sPaidByGBId, t.sPaymentCurrency, t.nChatrelTotalAmount, t.sPaymentMode, l.sAuthRegion, l3.sCountry FROM tblchatrelpayment t LEFT JOIN tblgreenbook t2 ON t2.sGBID = t.sGBId LEFT JOIN lnkgbchatrel l2 ON t.id = l2.chatrelpaymentID AND l2.nArrearsAmount IS NULL LEFT JOIN lnkgbchatreldonation l4 ON l4.chatrelpaymentID = t.Id  LEFT JOIN lstauthregion l ON l.ID = l2.nAuthRegionID OR l.ID = l4.nAuthRegionID LEFT JOIN lstcountry l3 ON l3.sCountryID = l2.sCountryID OR l3.sCountryID = l4.sCountryID  WHERE t.sChatrelReceiptNumber IS NOT NULL ORDER BY t.dtPayment DESC LIMIT @records;";
+
+            int records = 50;
+
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("records", records);
+                command.CommandType = CommandType.Text;
+                command.Connection = _connection;
+                MySqlDataAdapter mySqlDataAdapter = new MySqlDataAdapter(command);
+                DataSet ds = new DataSet();
+                mySqlDataAdapter.Fill(ds);
+                DataTableCollection tables = ds.Tables;
+                var result = tables[0].AsEnumerable().Select(row => new
+                {
+                    sGBID = row.Field<string>("sGBID"),
+                    sChatrelReceiptNumber = row.Field<string>("sChatrelReceiptNumber"),
+                    sFinancialYear = row.Field<string>("sFinancialYear"),
+                    dtPayment = row.Field<DateTime?>("dtPayment"),
+                    sName = row.Field<string>("sName"),
+                    sPaidByGBId = row.Field<string>("sPaidByGBId"),
+                    sPaymentCurrency = row.Field<string>("sPaymentCurrency"),
+                    nChatrelTotalAmount = row.Field<decimal>("nChatrelTotalAmount"),
+                    sPaymentMode = row.Field<string>("sPaymentMode"),
+                    sAuthRegion = row.Field<string>("sAuthRegion"),
+                    sCountry = row.Field<string>("sCountry"),
+                });
+
+                return result;
+            }
+        }
+
+        #endregion
+
+
+        #region Get Chatrel List (Chatrel List - All Columns)
         public IEnumerable<Object> GetAllChatrelPayments()
         {
             //string sql = @"SELECT l.sGBID, t3.sChatrelReceiptNumber, t3.dtPayment, t2.sFirstName,  l.sPaidByGBId, l.sPaymentCurrency, l.nChatrelAmount*l.nConversionRate AS nChatrelAmount, l.nChatrelMeal*l.nConversionRate AS nChatrelMeal, l.nCurrentChatrelSalaryAmt*l.nConversionRate AS nCurrentChatrelSalaryAmt, l.dtCurrentChatrelFrom, l.dtCurrentChatrelTo, concat(date_format(dtCurrentChatrelFrom, '%Y'), '-', date_format(dtCurrentChatrelTo, '%y')) AS sFinancialYear, l2.nArrears, l2.dtArrearsFrom, l2.dtArrearsTo, l4.nChatrelBusinessDonationAmt, l4.nChatrelAdditionalDonationAmt, t3.nChatrelTotalAmount, l5.sAuthRegion, t3.sPaymentMode FROM lnkgbchatrel l INNER JOIN (SELECT l3.chatrelpaymentID, sum(l3.nArrearsAmount*l3.nConversionRate) AS nArrears, min(l3.dtArrearsFrom) AS dtArrearsFrom, max(l3.dtArrearsTo) AS dtArrearsTo FROM lnkgbchatrel l3 WHERE l3.nArrearsAmount IS NOT NULL GROUP BY l3.sChatrelReceiptNumber ) AS l2 ON l.chatrelpaymentID = l2.chatrelpaymentID INNER JOIN tblchatrelpayment t3 ON t3.Id = l.chatrelpaymentID LEFT JOIN tblgreenbook t2 ON t2.sGBID = l.sGBId LEFT JOIN lnkgbchatreldonation l4 ON t3.Id = l4.chatrelpaymentID LEFT JOIN lstauthregion l5 ON l5.ID = l.nAuthRegionID WHERE l.nArrearsAmount IS NULL LIMIT @records;";
@@ -303,7 +353,7 @@ namespace CTADBL.ViewModelsRepositories
         }
         #endregion
 
-        #region Get Payment received breakup
+        #region Get Payment received breakup (Chatrel Receipt)
 
         public IEnumerable<Object> GetPaymentBreakup(string sChatrelReceiptNumber)
         {
@@ -347,7 +397,7 @@ namespace CTADBL.ViewModelsRepositories
         }
         #endregion
 
-        #region Chatrel Payment Report
+        #region Chatrel Payment Report (Chatrel Report)
         public IEnumerable<Object> GetChatrelPaymentReport(ChatrelReportVM chatrelReportVM)
         {
             

@@ -1126,9 +1126,10 @@ export default function EditEntry(props) {
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                           <KeyboardDatePicker
                             placeholder="DD-MM-YYYY"
+                            autoOk
                             variant="dialog"
-                            openTo="year"
-                            views={["year", "month", "date"]}
+                            //openTo="year"
+                            //views={["year", "month", "date"]}
                             margin="dense"
                             id="id_dtDOB"
                             name="name_dtDOB"
@@ -1423,8 +1424,8 @@ export default function EditEntry(props) {
                           placeholder="DD-MM-YYYY"
                           disabled={true}
                           variant="dialog"
-                          openTo="year"
-                          views={["year", "month", "date"]}
+                          //openTo="year"
+                          //views={["year", "month", "date"]}
                           margin="dense"
                           id="id_dtFormDate"
                           name="name_dtFormDate"
@@ -2085,8 +2086,9 @@ export default function EditEntry(props) {
                         <KeyboardDatePicker
                           placeholder="DD-MM-YYYY"
                           variant="dialog"
-                          openTo="year"
-                          views={["year", "month", "date"]}
+                          //openTo="year"
+                          //views={["year", "month", "date"]}
+                          autoOk
                           margin="dense"
                           id="id_dtValidityDate"
                           name="name_dtValidityDate"
@@ -2280,8 +2282,9 @@ export default function EditEntry(props) {
                         <KeyboardDatePicker
                           placeholder="DD-MM-YYYY"
                           variant="dialog"
-                          openTo="year"
-                          views={["year", "month", "date"]}
+                          //openTo="year"
+                          //views={["year", "month", "date"]}
+                          autoOk
                           margin="dense"
                           id="id_dtDeceased"
                           name="name_dtDeceased"

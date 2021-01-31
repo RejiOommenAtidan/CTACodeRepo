@@ -13,7 +13,7 @@ const GoogleLogoutButton = () => {
     const dispatch = useDispatch();
     let history = useHistory();
     const save =() =>{
-        history.push("/login");
+        history.push("/Login");
         dispatch(removeGoogleCreds()); //oGoogle null
        // localStorage.removeItem("currentUser");
         // window.location.replace('/login');

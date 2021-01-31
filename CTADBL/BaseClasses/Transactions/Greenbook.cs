@@ -65,6 +65,8 @@ namespace CTADBL.BaseClasses.Transactions
         private string _TBUMothersName;
         private string _TBUSpouseName;
         private string _sEnteredDateTime;
+        private string _sLoginGmail;
+        private DateTime? _dtLastSuccessfullLogin;
         #endregion
 
         #region Public Green Book Properties
@@ -175,6 +177,11 @@ namespace CTADBL.BaseClasses.Transactions
         public string TBUMothersName { get { return _TBUMothersName; } set { _TBUMothersName = value; } }
         [DisplayName("Spouse's Name Tibetan")]
         public string TBUSpouseName { get { return _TBUSpouseName; } set { _TBUSpouseName = value; } }
+        [DisplayName("Gmail Login Address")]
+        public string sLoginGmail { get { return _sLoginGmail; } set { _sLoginGmail = value; } }
+        [DisplayName("Last Successfull Login")]
+        public DateTime? dtLastSuccessfullLogin { get { return _dtLastSuccessfullLogin; } set { _dtLastSuccessfullLogin = value; } }
+
         [DisplayName("Entered Date")]
         public string sEnteredDateTime { get { return _sEnteredDateTime; } set { _sEnteredDateTime = value; } }
         #endregion

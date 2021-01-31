@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using TimeZoneConverter;
 
 namespace CTADBL.ViewModelsRepositories
 {
@@ -106,7 +107,7 @@ namespace CTADBL.ViewModelsRepositories
             string operation = "=";
             //value = parameter == "sGBID" ? value : value + "%";
 
-            string sql = String.Format(@"SELECT gb.sGBID, ar.sAuthRegion, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sFathersName, gb.sMothersName, gb.sGender, gb.dtDOB, gb.sDOBApprox, gb.sBirthPlace, gb.sBirthCountryID,  bctry.sCountry AS sBirthCountry, gb.sOriginVillage, pr.sProvince, l4.sMaritalStatusText AS sMarried, gb.sOtherDocuments, gb.sResidenceNumber, qu.sQualification, occ.sOccupationDesc , gb.sAliasName, gb.sOldGreenBKNo, gb.sFstGreenBkNo,  gb.dtFormDate, gb.nChildrenM, gb.nChildrenF, gb.sAddress1, gb.sAddress2, gb.sCity, gb.sState, gb.sPCode, gb.sCountryID, ctry.sCountry AS sCountry, gb.sEmail, gb.sPhone, gb.sfax, gb.dtDeceased, gb.sBookIssued, gb.dtValidityDate, gb.sPaidUntil, gb.TibetanName, gb.TBUPlaceOfBirth, gb.TBUOriginVillage, gb.TBUFathersName, gb.TBUMothersName, gb.TBUSpouseName, gb.sEnteredDateTime, us.sFullName AS sEnteredBy, us1.sFullName AS sUpdatedBy, doc.binFileDoc AS sPhoto, gb.dtEntered, gb.dtUpdated FROM tblgreenbook as gb LEFT JOIN lstcountry ctry ON ctry.sCountryID = gb.sCountryID LEFT JOIN lstcountry bctry ON bctry.sCountryID = gb.sBirthCountryID  LEFT JOIN tbluser AS us ON us.Id = gb.nEnteredBy LEFT JOIN tbluser AS us1 ON us1.Id = gb.nUpdatedBy LEFT JOIN lstauthregion AS ar ON ar.ID = gb.nAuthRegionID LEFT JOIN lstprovince AS pr ON pr.Id = gb.sOriginProvinceID LEFT JOIN lstmaritalstatus l4 ON l4.sMaritalStatusId = IF(gb.sMarried='Y', 'M', gb.sMarried) LEFT JOIN lstqualification AS qu ON qu.sQualificationID = gb.sQualificationID LEFT JOIN lstoccupation AS occ ON occ.Id = gb.sOccupationID LEFT JOIN lnkgbdocument AS doc ON gb.sGBId = doc.sGBId AND doc.sDocType = 'Photo Identity' WHERE gb.{0} {1} @value", parameter, operation);
+            string sql = String.Format(@"SELECT gb.sGBID, ar.sAuthRegion, gb.sFirstName, gb.sMiddleName, gb.sLastName, gb.sFamilyName, gb.sFathersName, gb.sMothersName, gb.sGender, gb.dtDOB, gb.sDOBApprox, gb.sBirthPlace, gb.sBirthCountryID,  bctry.sCountry AS sBirthCountry, gb.sOriginVillage, pr.sProvince, l4.sMaritalStatusText AS sMarried, gb.sOtherDocuments, gb.sResidenceNumber, qu.sQualification, occ.sOccupationDesc , gb.sAliasName, gb.sOldGreenBKNo, gb.sFstGreenBkNo,  gb.dtFormDate, gb.nChildrenM, gb.nChildrenF, gb.sAddress1, gb.sAddress2, gb.sCity, gb.sState, gb.sPCode, gb.sCountryID, ctry.sCountry AS sCountry, gb.sEmail, gb.sPhone, gb.sfax, gb.dtDeceased, gb.sBookIssued, gb.dtValidityDate, gb.sPaidUntil, gb.TibetanName, gb.TBUPlaceOfBirth, gb.TBUOriginVillage, gb.TBUFathersName, gb.TBUMothersName, gb.TBUSpouseName, gb.sEnteredDateTime, gb.sLoginGmail, gb.dtLastSuccessfullLogin, us.sFullName AS sEnteredBy, us1.sFullName AS sUpdatedBy, doc.binFileDoc AS sPhoto, gb.dtEntered, gb.dtUpdated FROM tblgreenbook as gb LEFT JOIN lstcountry ctry ON ctry.sCountryID = gb.sCountryID LEFT JOIN lstcountry bctry ON bctry.sCountryID = gb.sBirthCountryID  LEFT JOIN tbluser AS us ON us.Id = gb.nEnteredBy LEFT JOIN tbluser AS us1 ON us1.Id = gb.nUpdatedBy LEFT JOIN lstauthregion AS ar ON ar.ID = gb.nAuthRegionID LEFT JOIN lstprovince AS pr ON pr.Id = gb.sOriginProvinceID LEFT JOIN lstmaritalstatus l4 ON l4.sMaritalStatusId = IF(gb.sMarried='Y', 'M', gb.sMarried) LEFT JOIN lstqualification AS qu ON qu.sQualificationID = gb.sQualificationID LEFT JOIN lstoccupation AS occ ON occ.Id = gb.sOccupationID LEFT JOIN lnkgbdocument AS doc ON gb.sGBId = doc.sGBId AND doc.sDocType = 'Photo Identity' WHERE gb.{0} {1} @value", parameter, operation);
 
             try
             {
@@ -146,13 +147,13 @@ namespace CTADBL.ViewModelsRepositories
                 GreenBookVM greenBookVM = GetDetails(GetGreenbookVMRecord("sGBID", sGBID));
                 //RecentlySearchedGB recentlySearched = new RecentlySearchedGB
                 //{
-                //    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                //    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
                 //    nEnteredBy = nUserId,
                 //    nGBID = Convert.ToInt32(sGBID),
                 //    nUserID = nUserId
                 //};
                 RecentlySearchedGB recentlySearched = new RecentlySearchedGB();
-                recentlySearched.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                recentlySearched.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                 recentlySearched.nEnteredBy = nUserId;
                 recentlySearched.nGBID = Convert.ToInt32(sGBID);
                 recentlySearched.nUserID = nUserId;
@@ -260,7 +261,7 @@ namespace CTADBL.ViewModelsRepositories
 
                         if (item.Value > 0)
                         {
-                            int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Year - Convert.ToInt32(item.Value);
+                            int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")).Year - Convert.ToInt32(item.Value);
                             addToSql += String.Format(@"year(gb.dtDOB) <= {0} and ", year);
                         }
 
@@ -269,7 +270,7 @@ namespace CTADBL.ViewModelsRepositories
                     {
                         if (item.Value > 0)
                         {
-                            int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Year - Convert.ToInt32(item.Value);
+                            int year = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")).Year - Convert.ToInt32(item.Value);
                             addToSql += String.Format(@"year(gb.dtDOB) >= {0} and ", year);
                         }
 
@@ -396,40 +397,40 @@ namespace CTADBL.ViewModelsRepositories
 
                 var result = tables[0].AsEnumerable().Select(row => new
                 {
-                    AuthorityRegion = row.Field<string>("sAuthRegion"),
-                    FirstName = row.Field<string>("sFirstName"),
-                    MiddleName = row.Field<string>("sMiddleName"),
-                    LastName = row.Field<string>("sLastName"),
-                    FamilyName = row.Field<string>("sFamilyName"),
+                    Authority_Region = row.Field<string>("sAuthRegion"),
+                    First_Name = row.Field<string>("sFirstName"),
+                    Middle_Name = row.Field<string>("sMiddleName"),
+                    Last_Name = row.Field<string>("sLastName"),
+                    Family_Name = row.Field<string>("sFamilyName"),
                     Gender = row.Field<string>("sGender"),
-                    DateOfBirth = row.Field<DateTime?>("dtDOB"),
-                    DOBApprox = row.Field<string>("sDOBApprox"),
-                    PlaceOfBirth = row.Field<string>("sBirthPlace"),
-                    BirthCountry = row.Field<string>("sBirthCountry"),
-                    OriginVillage = row.Field<string>("sOriginVillage"),
+                    Date_Of_Birth = row.Field<DateTime?>("dtDOB").HasValue ? row.Field<DateTime?>("dtDOB").Value.ToString("yyyy-MM-dd") :  null,
+                    DOB_Approx = row.Field<string>("sDOBApprox"),
+                    Place_Of_Birth = row.Field<string>("sBirthPlace"),
+                    Birth_Country = row.Field<string>("sBirthCountry"),
+                    Origin_Village = row.Field<string>("sOriginVillage"),
                     Province = row.Field<string>("sProvince"),
-                    MaritalStatus = row.Field<string>("sMaritalStatusText"),
-                    OtherDocuments = row.Field<string>("sOtherDocuments"),
-                    RCNumber = row.Field<string>("sResidenceNumber"),
+                    Marital_Status = row.Field<string>("sMaritalStatusText"),
+                    Other_Documents = row.Field<string>("sOtherDocuments"),
+                    RC_Number = row.Field<string>("sResidenceNumber"),
                     Qualification = row.Field<string>("sQualification"),
 
 
-                    OccupationDescription = row.Field<string>("sOccupationDesc"),
+                    Occupation_Description = row.Field<string>("sOccupationDesc"),
                     Alias = row.Field<string>("sAliasName"),
-                    OldGreenBook = row.Field<string>("sOldGreenBKNo"),
-                    FstGreenBook = row.Field<string>("sFstGreenBkNo"),
-                    ApplicationDate = row.Field<DateTime?>("dtFormDate"),
-                    FathersName = row.Field<string>("sFathersName"),
-                    FathersID = row.Field<string>("sFathersID"),
-                    FathersGBID = row.Field<string>("sFathersGBID"),
-                    MothersName = row.Field<string>("sMothersName"),
-                    MothersID = row.Field<string>("sMothersID"),
-                    MothersGBID = row.Field<string>("sMothersGBID"),
-                    SpouseName = row.Field<string>("sSpouseName"),
-                    SpouseID = row.Field<string>("sSpouseID"),
-                    SpouseGBID = row.Field<string>("sSpouseGBID"),
-                    MaleChildren = row.Field<int>("nChildrenM"),
-                    FemaleChildren = row.Field<int>("nChildrenF"),
+                    Old_GreenBook = row.Field<string>("sOldGreenBKNo"),
+                    Fst_GreenBook = row.Field<string>("sFstGreenBkNo"),
+                    Application_Date = row.Field<DateTime?>("dtFormDate"),
+                    Fathers_Name = row.Field<string>("sFathersName"),
+                    Fathers_ID = row.Field<string>("sFathersID"),
+                    Fathers_GBID = row.Field<string>("sFathersGBID"),
+                    Mothers_Name = row.Field<string>("sMothersName"),
+                    Mothers_ID = row.Field<string>("sMothersID"),
+                    Mothers_GBID = row.Field<string>("sMothersGBID"),
+                    Spouse_Name = row.Field<string>("sSpouseName"),
+                    Spouse_ID = row.Field<string>("sSpouseID"),
+                    Spouse_GBID = row.Field<string>("sSpouseGBID"),
+                    Male_Children = row.Field<int>("nChildrenM"),
+                    Female_Children = row.Field<int>("nChildrenF"),
 
                     Address1 = row.Field<string>("sAddress1"),
                     Address2 = row.Field<string>("sAddress2"),
@@ -440,18 +441,18 @@ namespace CTADBL.ViewModelsRepositories
                     Email = row.Field<string>("sEmail"),
                     Phone = row.Field<string>("sPhone"),
                     Fax = row.Field<string>("sFax"),
-                    DeceasedDate = row.Field<DateTime?>("dtDeceased"),
+                    Deceased_Date = row.Field<DateTime?>("dtDeceased"),
                     BookIssued = row.Field<string>("sBookIssued"),
-                    VailidityDate = row.Field<DateTime?>("dtValidityDate"),
-                    PaidUntil = row.Field<string>("sPaidUntil"),
-                    TibetanName = row.Field<string>("TibetanName"),
-                    Tibetan_PlaceOfBirth = row.Field<string>("TBUPlaceOfBirth"),
-                    Tibetan_OriginVillage = row.Field<string>("TBUOriginVillage"),
+                    Vailidity_Date = row.Field<DateTime?>("dtValidityDate"),
+                    Paid_Until = row.Field<string>("sPaidUntil"),
+                    Tibetan_Name = row.Field<string>("TibetanName"),
+                    Tibetan_Place_Of_Birth = row.Field<string>("TBUPlaceOfBirth"),
+                    Tibetan_Origin_Village = row.Field<string>("TBUOriginVillage"),
 
 
-                    Tibetan_FathersName = row.Field<string>("TBUFathersName"),
-                    Tibetan_MothersName = row.Field<string>("TBUMothersName"),
-                    Tibetan_SpouseName = row.Field<string>("TBUSpouseName")
+                    Tibetan_Fathers_Name = row.Field<string>("TBUFathersName"),
+                    Tibetan_Mothers_Name = row.Field<string>("TBUMothersName"),
+                    Tibetan_Spouse_Name = row.Field<string>("TBUSpouseName")
                 });
                 BindingFlags publicAttributes = BindingFlags.Public | BindingFlags.Instance;
                 Dictionary<string, dynamic> dictionary = new Dictionary<string, object>();
@@ -530,6 +531,8 @@ namespace CTADBL.ViewModelsRepositories
                     TBUFathersName = (string)reader["TBUFathersName"],
                     TBUMothersName = (string)reader["TBUMothersName"],
                     TBUSpouseName = (string)reader["TBUSpouseName"],
+                    sLoginGmail = reader.IsDBNull("sLoginGmail") ? null : (string)reader["sLoginGmail"],
+                    dtLastSuccessfullLogin = reader.IsDBNull("dtLastSuccessfullLogin") ? null : (DateTime?)(reader["dtLastSuccessfullLogin"]),
                     sEnteredDateTime = reader.IsDBNull("sEnteredDateTime") ? null : (string)reader["sEnteredDateTime"],
                     dtEntered = (DateTime)(reader["dtEntered"]),
                     dtUpdated = (DateTime)(reader["dtUpdated"]),

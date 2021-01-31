@@ -190,25 +190,25 @@ export default function Report() {
 
       },
     },
-    {
-      field: "madebCancelled",
-      title: "MADEB CANCELLED",
+    // {
+    //   field: "madebCancelled",
+    //   title: "MADEB CANCELLED",
       
-      headerStyle: {
-        padding: '5px',
+    //   headerStyle: {
+    //     padding: '5px',
 
-        textAlign: 'center'
-      },
-      cellStyle: {
-        // padding:'0px',
-        padding: '5px',
+    //     textAlign: 'center'
+    //   },
+    //   cellStyle: {
+    //     // padding:'0px',
+    //     padding: '5px',
 
-        textAlign: 'center',
-        borderRight: '1px solid grey'
+    //     textAlign: 'center',
+    //     borderRight: '1px solid grey'
 
 
-      },
-    },
+    //   },
+    // },
 
     {
       field: "madebTotalReceived",

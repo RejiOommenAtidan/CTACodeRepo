@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TimeZoneConverter;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
@@ -113,8 +114,8 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
-                    issueBook.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                    issueBook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    issueBook.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    issueBook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     issueBook.sFormNumber = issueBook.nFormNumber.ToString();
                     _issueBookRepository.Add(issueBook);
                     _madebRepository.UpdateTypeIssued(MadebId, nIssuedOrNotID , dtIssuedDate);
@@ -181,7 +182,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         IssueBook fetchedIssueBook = _issueBookRepository.GetIssueBookById(Id);
                         issueBook.nEnteredBy = fetchedIssueBook.nEnteredBy;
                         issueBook.dtEntered = fetchedIssueBook.dtEntered;
-                        issueBook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        issueBook.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                         _issueBookRepository.Update(issueBook);
 
                         #region Audit Log

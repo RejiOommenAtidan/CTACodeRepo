@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TimeZoneConverter;
 
 namespace CTAWebAPI.Controllers.Transactions
 {
@@ -362,8 +363,8 @@ namespace CTAWebAPI.Controllers.Transactions
             {
                 if (ModelState.IsValid)
                 {
-                    madeb.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                    madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    madeb.dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
+                    madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                     string result = _madebRepository.Add(madeb);
                     if (result == "GBID does not exist.")
                     {
@@ -435,7 +436,7 @@ namespace CTAWebAPI.Controllers.Transactions
                     {
                         Madeb fetchedMadeb = _madebRepository.GetMadebById(Id);
                         madeb.dtEntered = fetchedMadeb.dtEntered;
-                        madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                         string result = _madebRepository.Update(madeb);
                         if (result == "GBID does not exist.")
                         {
@@ -595,7 +596,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         message.Cc.Add(toCC);
                         message.Subject = email.sSubject;
                         message.Body = messageBody.ToMessageBody();
-                        message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
 
                         // Message ready. Now to use smtp client to despatch message
 
@@ -609,7 +610,7 @@ namespace CTAWebAPI.Controllers.Transactions
                         smtpClient.Disconnect(true);
                         smtpClient.Dispose();
                         Madeb madeb = _madebRepository.GetMadebByFormNumber(email.nFormNumber, email.nMadebTypeId);
-                        madeb.dtReject = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                        madeb.dtReject = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                         _madebRepository.Update(madeb);
                         return Ok("Email sent successfully.");
                     }

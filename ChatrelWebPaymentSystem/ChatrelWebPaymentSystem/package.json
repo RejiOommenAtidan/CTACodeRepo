@@ -80,6 +80,7 @@
     "react-sparklines": "1.7.0",
     "react-spinners": "0.8.3",
     "react-super-responsive-table": "^5.2.0",
+    "react-switch": "^6.0.0",
     "react-text-mask": "5.4.3",
     "react-to-pdf": "0.0.13",
     "react-trend": "1.2.5",

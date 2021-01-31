@@ -31,6 +31,11 @@ export const sSnackbarUpdateMessage = "Record updated successfully";
 export const sDateFormat = "DD-MM-YYYY";
 export const sISODateFormat = "YYYY-MM-DD";
 export const sDateFormatMUIDatepicker = "dd-MM-yyyy";
+export const sDateFormatChatrel = "dd/MM/yyyy";
+export const sDateFormatChatrelMoment = "DD/MM/YYYY";
+export const errorText=<span style={{ color: "red" }}>
+This field is required
+</span>
 export const asterisk=<span style={{ color: 'red' }}> *</span>;
 export const aPageSizeArray = [5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 100];
 export const nPageSize = 10;
@@ -64,10 +69,10 @@ export const oOptions = {
   pageSizeOptions: aPageSizeArray,
   rowStyle: x => {
     if (x.tableData.id % 2) {
-      return { backgroundColor: "#f2f2f2", padding: '0' }
+      return { color: "#000000" ,  backgroundColor: "#f2f2f2", padding: '0' }
     }
     else {
-      return { padding: '0' }
+      return { color: "#000000" ,  padding: '0' }
     }
   }
 };

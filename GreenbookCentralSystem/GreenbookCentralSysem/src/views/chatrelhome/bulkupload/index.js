@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Grid, FormControl, Button, Typography} from '@material-ui/core';
+import { Grid, FormControl, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
-import {useHistory, NavLink, useLocation} from 'react-router-dom';
+import { useHistory, NavLink, useLocation } from 'react-router-dom';
 import { isText, isBinary, getEncoding } from 'istextorbinary'
 import { red } from '@material-ui/core/colors';
 import SampleForBulkUpload from '../../../assets/files/SampleForBulkUpload.csv';
@@ -71,14 +71,14 @@ const useStyles = makeStyles((theme) => ({
       main: '#11cb5f',
     },
   },
-  paragraph:{
+  paragraph: {
     paddingBottom: '0px',
     marginBottom: '0px'
   }
 
 }));
 
-export default function BulkUpload (props) {
+export default function BulkUpload(props) {
 
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
@@ -99,7 +99,7 @@ export default function BulkUpload (props) {
   };
 
 
- 
+
   const defaultHeader = [
     "GBID",
     "Name",
@@ -552,12 +552,13 @@ export default function BulkUpload (props) {
   const [sAccept, setsAccept] = useState(".csv");
   const [csvFile, setCSVFile] = useState();
   const [sTitle, setTitle] = useState("");
-  const [message, setMessage] = useState();
+  const [headerOK, setHeaderOK] = useState(false);
+
   const [displayUpload, setDisplayUpload] = useState(false);
   const [jsonObj, setJsonObj] = useState();
   const [showTable, setShowTable] = useState(false);
   const [sBatchNumber, setBatchNumber] = useState();
-  
+
   //Table 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -578,24 +579,24 @@ export default function BulkUpload (props) {
 
 
   reader.addEventListener("load", function () {
-    
+
     const data = reader.result;
     var text = isText(null, data);
-    if(!text){
+    if (!text) {
       setAlertMessage("Not a Text File");
       setAlertType('error');
       snackbarOpen();
       return;
     }
     setCSVFile(reader.result);
-    
+
     //console.log(data);
-    let char ='';
-    if(data.indexOf('\r') > -1){
+    let char = '';
+    if (data.indexOf('\r') > -1) {
       char = '\r';
       console.log("character is '\\r'");
     }
-    if(data.indexOf('\r\n') > -1){
+    if (data.indexOf('\r\n') > -1) {
       char = '\r\n';
       console.log("character is '\\r\\n'");
     }
@@ -603,172 +604,176 @@ export default function BulkUpload (props) {
     //header = header[0].slice(0, -1);
     header = header[0].split(',');
     console.log('Headers', header);
-    if(JSON.stringify(header) === JSON.stringify(defaultHeader)){
+    if (JSON.stringify(header) === JSON.stringify(defaultHeader)) {
       console.log("Headers match");
       const converter = csvTojson({
         delimiter: ',',
       });
       converter.fromString(data).then((obj) => {
         console.log("Json: ", obj);
-        if(obj){
+        if (obj) {
           obj.forEach(element => {
-            element.nEnteredBy= userId;
-            element.nUpdatedBy= userId;
+            element.nEnteredBy = userId;
+            element.nUpdatedBy = userId;
           });
           setJsonObj(obj);
           setAlertMessage("File Header structure OK. Click 'Upload' Button to verify contents.");
           setAlertType('success');
+          setHeaderOK(true);
           snackbarOpen();
           setDisplayUpload(true);
         }
-        else{
+        else {
           alert("Something went wrong in converting csv file to json");
           return;
         }
       });
-      
+
     }
-    else{
+    else {
       console.log("Headers don't match");
       setAlertMessage("Headers don't match");
       setAlertType('error');
+      setHeaderOK(false);
       snackbarOpen();
       setDisplayUpload(false);
       setTitle('');
     }
-    
+
   }, false);
 
-  
+
 
 
   const handleUpload = (e) => {
     //e.preventDefault();
     setBackdrop(true);
     axios.post(`ChatrelBulkData/VerifyBulkImport`, jsonObj)
-    .then(resp => {
-      setBackdrop(false);
-      if(resp.status === 200){
-        console.log(resp.data);
-        setBatchNumber(resp.data[0].sBatchNumber);
-        setDataAPI(resp.data);
-        setShowTable(true);
-        setDisplayUpload(false);
-        //alert("Success");
-      }
-    })
-    .catch(error =>{
-      setBackdrop(false);
-      setDataAPI([]);
-      setShowTable(false)
-      if(error.response.status === 400){
-        setAlertMessage("Invalid or Empty File");
+      .then(resp => {
+        setBackdrop(false);
+        if (resp.status === 200) {
+          console.log(resp.data);
+          setBatchNumber(resp.data[0].sBatchNumber);
+          setDataAPI(resp.data);
+          setShowTable(true);
+          setDisplayUpload(false);
+          //alert("Success");
+        }
+      })
+      .catch(error => {
+        setHeaderOK(false);
+        setBackdrop(false);
+        setDataAPI([]);
+        setShowTable(false)
+        if (error.response.status === 400) {
+          setAlertMessage("Invalid or Empty File");
+          setAlertType('error');
+          snackbarOpen();
+        }
+        ;
+        setAlertMessage("Error while verifying CSV file with server.\n" + error.response.data);
         setAlertType('error');
         snackbarOpen();
-      }
-      ;
-      setAlertMessage("Error while verifying CSV file with server.\n"+ error.response.data);
-      setAlertType('error');
-      snackbarOpen();
-      console.log(error.response);
+        console.log(error.response);
 
-    });
-};
-  
+      });
+  };
+
 
   const handleUploadChange = (event) => {
+    setHeaderOK(false);
     setDataAPI([]);
-      setShowTable(false);
-      let file = document.getElementById("csv").files;
-      console.log("File in input is:", file);
-       if (file) {
-         reader.readAsText(file[0]);
-         setTitle(file[0].name);
-         
-       }
+    setShowTable(false);
+    let file = document.getElementById("csv").files;
+    console.log("File in input is:", file);
+    if (file) {
+      reader.readAsText(file[0]);
+      setTitle(file[0].name);
+
+    }
   }
 
   const handleSubmit = () => {
     console.log("Batch Number ", sBatchNumber);
     setBackdrop(true);
     axios.post(`ChatrelBulkData/SubmitBulkData/?sBatchNumber=${sBatchNumber}`)
-    .then(resp => {
-      setBackdrop(false);
-      if(resp.status === 200){
-        if(resp.data > 0){
-          setAlertMessage('Successfully inserted: '+resp.data+' records');
-          setAlertType('success');
-          snackbarOpen();
-        }
-        if(resp.data === 0){
-          setAlertMessage("NO Records were inserted");
-          setAlertType('warning');
-          snackbarOpen();
-        }
-        
-          setDataAPI([]);
-        
-      }
-    })
-    .catch(error =>{
-      setBackdrop(false);
-      setAlertMessage("Error while submitting Bulk Data\n"+ error.response.data);
-      setAlertType('error');
-      snackbarOpen();
-      console.log(error.response);
+      .then(resp => {
+        setBackdrop(false);
+        if (resp.status === 200) {
+          if (resp.data > 0) {
+            setAlertMessage('Successfully inserted: ' + resp.data + ' records');
+            setAlertType('success');
+            snackbarOpen();
+          }
+          if (resp.data === 0) {
+            setAlertMessage("NO Records were inserted");
+            setAlertType('warning');
+            snackbarOpen();
+          }
 
-    })
+          setDataAPI([]);
+
+        }
+      })
+      .catch(error => {
+        setBackdrop(false);
+        setAlertMessage("Error while submitting Bulk Data\n" + error.response.data);
+        setAlertType('error');
+        snackbarOpen();
+        console.log(error.response);
+
+      })
   };
 
-    return (
-      <>
-        <Grid container justify='center' alignItems='center' direction='column'>
-          <Typography paragraph variant='h5' >Chatrel Bulk Import</Typography>
-          <Typography paragraph variant='subtitle1'>Instructions: <p className={classes.paragraph}>1. Choose a CSV File by clicking on 'Choose File' button.</p><p className={classes.paragraph}>2. After selecting the file, the file will be verified for correct headers.</p><p className={classes.paragraph}>3. If the headers are as per system requirement, the file can be uploaded for verification.</p>
+  return (
+    <>
+      <Grid container justify='center' alignItems='center' direction='column'>
+        <Typography paragraph variant='h5' >Chatrel Bulk Import</Typography>
+        <Typography paragraph variant='subtitle1'>Instructions: <p className={classes.paragraph}>1. Choose a CSV File by clicking on 'Choose File' button.</p><p className={classes.paragraph}>2. After selecting the file, the file will be verified for correct headers.</p><p className={classes.paragraph}>3. If the headers are as per system requirement, the file can be uploaded for verification.</p>
           <p className={classes.paragraph}>4. During verification, file will be checked for valid data.</p><p className={classes.paragraph}> 5. A table will be populated below displaying Success or Failed status of each row.</p>
-          <p className={classes.paragraph}>6. <a style={{color: 'blue'}} download href={SampleForBulkUpload}><u>Click Here </u></a> to download a sample CSV file</p> 
-           </Typography>
-          <Grid container direction='row' justify='center' alignItems='center' spacing={2}>
-            {/* <Grid item xs={12} lg={12}>
+          <p className={classes.paragraph}>6. <a style={{ color: 'blue' }} download href={SampleForBulkUpload}><u>Click Here </u></a> to download a sample CSV file</p>
+        </Typography>
+        <Grid container direction='row' justify='center' alignItems='center' spacing={2}>
+          {/* <Grid item xs={12} lg={12}>
             {message && <span>File Selected ---&gt; {sTitle}  &nbsp; &nbsp; &nbsp;{message}</span>}
             
             {message && <span></span>}  
             </Grid> */}
           <Grid item xs={6} lg={2}>
             <FormControl className={classes.formControl}>
-                <label htmlFor="csv">
-                    <input
-                        id="csv"
-                        accept={sAccept}
-                        className={classes.textField}
-                        style={{ display: 'none' }}
-                        type="file"
-                        onChange={(event) => { handleUploadChange(event) }}
-                    />
-                    <Button color="secondary" variant="contained" component="span">
-                        Choose File
+              <label htmlFor="csv">
+                <input
+                  id="csv"
+                  accept={sAccept}
+                  className={classes.textField}
+                  style={{ display: 'none' }}
+                  type="file"
+                  onChange={(event) => { handleUploadChange(event) }}
+                />
+                <Button color="secondary" variant="contained" component="span">
+                  Choose File
                     </Button>
-                </label>
-                
+              </label>
+
             </FormControl>
           </Grid>
           <Grid item xs={6} lg={2}>
-            
-            
-            
-                <Button disabled={!displayUpload} onClick={(e) => handleUpload(e)} color="primary" variant="contained" component="span">
-                  Upload
+
+
+
+            <Button disabled={!displayUpload} onClick={(e) => handleUpload(e)} color="primary" variant="contained" component="span">
+              Upload
                 </Button>
-            
-            
+
+
           </Grid>
-          
-          </Grid>
-          <Grid item xs={12} sm={6} lg={2}>
-            {sTitle && <Typography paragraph variant='body1' style={{color: 'green'}}>File: {sTitle} <span style={{fontSize: '1.5rem', fontWeight: 'bold'}}>&#10003;</span></Typography>}
-          </Grid>
-          <Grid item xs={12}>
-            {/* { showTable &&
+
+        </Grid>
+        <Grid item xs={12} sm={6} lg={2}>
+          {headerOK && <Typography paragraph variant='body1' style={{ color: 'green' }}>File: {sTitle}<span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>&#10003;</span></Typography>} 
+        </Grid>
+        <Grid item xs={12}>
+          {/* { showTable &&
           <Paper className={classes.root}>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
@@ -812,50 +817,50 @@ export default function BulkUpload (props) {
       />
       
     </Paper>} */}
-    
-          </Grid>
+
         </Grid>
-        
-        { 
-    <Grid container justify='center' alignItems='center' direction='column'>
+      </Grid>
 
-    <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
-    icons={oTableIcons}
-    title="BULK DATA IMPORT"
-    columns={columns}
-    data={dataAPI}
-    options={{
-      ...oOptions,
-      
-    }}
-    actions={[
-      {
-        icon: oTableIcons.Search,
-        tooltip: 'Toggle Filter',
-        isFreeAction: true,
-        onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
-      }
-    ]}
-  />
-  <br />
-  <Button style={{marginTop: '10px'}}  onClick={() => handleSubmit()} color="primary" variant="contained" component="span">
-  Submit
+      { showTable &&
+        <Grid container justify='center' alignItems='center' direction='column'>
+
+          <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px' }}
+            icons={oTableIcons}
+            title="BULK DATA IMPORT"
+            columns={columns}
+            data={dataAPI}
+            options={{
+              ...oOptions,
+
+            }}
+            actions={[
+              {
+                icon: oTableIcons.Search,
+                tooltip: 'Toggle Filter',
+                isFreeAction: true,
+                onClick: (event) => { setFiltering(currentFilter => !currentFilter) }
+              }
+            ]}
+          />
+          <br />
+          <Button style={{ marginTop: '10px' }} onClick={() => handleSubmit()} color="primary" variant="contained" component="span">
+            Submit
 </Button>
-<span style={{color: 'red'}}>*Note: Only records with status 'Validate Success' will be submitted.</span>
-   
-    
-        
-</Grid>}
-        {snackbar && <Alerts
-            alertObj={alertObj}
-            snackbar={snackbar}
-            snackbarClose={snackbarClose}
-          />}
-          {backdrop && <BackdropComponent
-            backdrop={backdrop}
-        />}
-      </>
+          <span style={{ color: 'red' }}>*Note: Only records with status 'Validate Success' will be submitted.</span>
 
-    );
+
+
+        </Grid>}
+      {snackbar && <Alerts
+        alertObj={alertObj}
+        snackbar={snackbar}
+        snackbarClose={snackbarClose}
+      />}
+      {backdrop && <BackdropComponent
+        backdrop={backdrop}
+      />}
+    </>
+
+  );
 }
 

@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using TimeZoneConverter;
 
 namespace CTAWebAPI.Services
 {
@@ -44,7 +45,7 @@ namespace CTAWebAPI.Services
                     sEventName = sEventName,
                     sDescription = sDescription,
                     sStackTrace = sStackTrace,
-                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
                     nEnteredBy = nEnteredBy
                 };
                 _actionLoggerRepository.Add(actionLogger);
@@ -80,7 +81,7 @@ namespace CTAWebAPI.Services
                 {
                     AuditLog auditLogger = new AuditLog()
                     {
-                        dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                        dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
                         nFeatureID = nFeatureID,
                         nRegionID = nRegionID,
                         nRecordID = nRecordID,
@@ -108,7 +109,7 @@ namespace CTAWebAPI.Services
             {
                 var oldValue = dict1[item.Key];
                 var newValue = dict2[item.Key];
-                var change = new { Field = item.Key, PreviousValue = oldValue, NewValue = newValue };
+                var change = new { Field = item.Key.Replace("_"," "), PreviousValue = oldValue, NewValue = newValue };
                 changes.Add(change);
             }
             string changesStr = JsonConvert.SerializeObject(changes);
@@ -116,7 +117,7 @@ namespace CTAWebAPI.Services
             {
                 AuditLog auditLogger = new AuditLog()
                 {
-                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")),
+                    dtEntered = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time")),
                     nFeatureID = nFeatureID,
                     nRegionID = nRegionID,
                     nRecordID = nRecordID,

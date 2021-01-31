@@ -11,11 +11,17 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import MaterialTable from 'material-table';
-import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders } from '../../../config/commonConfig';
+import { oOptions, oTableIcons, sDateFormat, sButtonColor, sButtonSize, sButtonVariant, modifyHeaders, sDDMMYYYYRegex, sDateFormatMUIDatepicker, sISODateFormat } from '../../../config/commonConfig';
 import Search from '@material-ui/icons/Search';
+import { useForm, Controller } from "react-hook-form";
 import { Alerts } from '../../alerts';
 import _ from "lodash/fp";
 import { BackdropComponent } from '../../backdrop/index';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -39,13 +45,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Report() {
 
+  const { register, handleSubmit, watch, errors, clearErrors, control, setValue, formState } = useForm();
+
   let history = useHistory();
 
   const classes = useStyles();
   const [changesLogData, SetChangesLogData] = React.useState([]);
 
-  const [dtFrom, SetdtFrom] = React.useState('');
-
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [filtering, setFiltering] = React.useState(false);
   oOptions.filtering = filtering;
   const [backdrop, setBackdrop] = React.useState(false);
@@ -86,6 +94,7 @@ export default function Report() {
       },
     },
     {
+      width: '5%',
       field: "GBId",
       title: "GB ID",
       
@@ -177,6 +186,7 @@ export default function Report() {
       },
     },
     {
+      width: '7%',
       field: "changedBy",
       title: "CHANGED BY",
       
@@ -195,6 +205,7 @@ export default function Report() {
       },
     },
     {
+      width: '15%',
       field: "changedAt",
       title: "CHANGED AT",
       // render: rowData => rowData.dtEntered ? Moment(rowData.dtEntered).format('DD-MM-YYYY') : '',
@@ -214,8 +225,9 @@ export default function Report() {
       },
     },
   ]
-  const changesLog = () => {
-    if (dtFrom === '') {
+  const changesLog = (e) => {
+    e.preventDefault();
+    if (startDate === '' || startDate === null || endDate === '' || endDate === null ) {
       setAlertMessage('Date field is required !');
       setAlertType('error');
       snackbarOpen();
@@ -223,11 +235,13 @@ export default function Report() {
     }
     else {
       setBackdrop(true);
-      axios.get(`/Report/GetReportCTAChangesLog/?&dtRecordFrom=` + dtFrom)
+
+      axios.get(`/Report/GetReportCTAChangesLog/?dtRecordFrom=${startDate}&dtRecordTo=${endDate}`)
         .then(resp => {
 
           if (resp.status === 200) {
             setBackdrop(false);
+            console.log(resp.data);
             if (resp.data.length == 0) {
               setAlertMessage('No Records to display');
               setAlertType('info');
@@ -253,7 +267,7 @@ export default function Report() {
                   row.previous=element2.PreviousValue;
                   row.new=element2.NewValue;
                   row.changedBy=element1.sFullName;
-                  row.changedAt=element1.dtEntered ? Moment(element1.dtEntered).format(sDateFormat) : null;
+                  row.changedAt=element1.dtEntered ? Moment(element1.dtEntered).format("DD-MM-YY HH:mm") : null;
                   arr.push(row);
                   
                   x = x + 1;
@@ -268,6 +282,7 @@ export default function Report() {
           }
         })
         .catch(error => {
+          setBackdrop(false);
           if (error.response) {
             console.error(error.response.data);
             console.error(error.response.status);
@@ -291,11 +306,55 @@ export default function Report() {
   return (
     <>
       <Paper style={{ padding: '30px', textAlign: 'center' }} >
-        <h1>Changes Log Report</h1>
-
+        <h3>Changes Log Report</h3>
+      <form onSubmit = {(e) => handleSubmit(changesLog(e))}>
         <FormControl className={classes.formControl}>
 
-          <TextField
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  variant="dialog"
+                  //openTo="year"
+                  //views={["year", "month", "date"]}
+                  margin="dense"
+                  id="startDate"
+                  name="startDate"
+                  autoFocus
+                  label={<> Date From<span style={{ color: 'red' }}> *</span></>}
+                  format={sDateFormatMUIDatepicker}
+                  returnMoment={true}
+                  onChange={(date) => {
+                    if (date) {
+                      setStartDate(Moment(date).format(sISODateFormat));
+                      setValue('startDate', date, { shouldValidate: true });
+                    };
+                  }}
+                  value={startDate}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                  // fullWidth
+                  //className={classes.dateField}
+                  inputRef={register({
+                    required: true,
+                    pattern:
+                    {
+                      value: new RegExp(sDDMMYYYYRegex),
+                      message: "Invalid Date"
+                    }
+                  })}
+                />
+              </MuiPickersUtilsProvider>
+              {/*{errors.startDate && <span style={{ color: 'red' }}>Date From is required</span>}*/}
+              {_.get("startDate.type", errors) === "required" && (
+                <span style={{ color: 'red' }}>Date From is required</span>
+              )}
+
+
+
+
+
+
+          {/* <TextField
             type="date"
             id='dtFrom'
             name='dtFrom'
@@ -307,28 +366,69 @@ export default function Report() {
               shrink: true,
             }}
 
-          />
+          /> */}
 
         </FormControl>
         <FormControl className={classes.formControl}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils} >
+                <KeyboardDatePicker
+                  variant="dialog"
+                  //openTo="year"
+                  //views={["year", "month", "date"]}
+                  margin="dense"
+                  id="endDate"
+                  name="endDate"
+
+                  label={<> Date To<span style={{ color: 'red' }}> *</span></>}
+                  format={sDateFormatMUIDatepicker}
+                  returnMoment={true}
+                  onChange={(date) => {
+                    if (date) {
+                      setEndDate(Moment(date).format(sISODateFormat));
+                      setValue('endDate', date, { shouldValidate: true });
+                    }
+                  }}
+                  value={endDate}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                  // fullWidth
+                  //className={classes.dateField}
+                  inputRef={register({
+                    required: true,
+                    pattern:
+                    {
+                      value: new RegExp(sDDMMYYYYRegex),
+                      message: "Invalid Date"
+                    }
+                  })}
+                />
+              </MuiPickersUtilsProvider>
+              {_.get("endDate.type", errors) === "required" && (
+                <span style={{ color: 'red' }}>Date To is required</span>
+              )}
+            </FormControl>
+        <FormControl >
           <Button
-            type="button"
+            type="submit"
+            style={{marginTop: '25px', marginLeft:'8px'}}
             size={sButtonSize}
             color={sButtonColor}
             variant={sButtonVariant}
-            value="Report" onClick={() => { changesLog(); }} >Show</Button>
+             >Show</Button>
         </FormControl>
-        <FormControl className={classes.formControl}>
+        <FormControl >
           {changesLogData.length > 0 &&
             <Button
               type="button"
+              style={{marginTop: '25px', marginLeft:'8px'}}
               size={sButtonSize}
               color={sButtonColor}
               variant={sButtonVariant}
-              onClick={() => { history.go(0); }} >Clear</Button>
+              onClick={() => { setStartDate(null); setEndDate(null); SetChangesLogData([]); }} >Clear</Button>
           }
         </FormControl>
-
+        </form>
 
         {
           changesLogData.length > 0 &&
@@ -336,7 +436,7 @@ export default function Report() {
           <MaterialTable style={{ padding: '10px', width: '100%', border: '2px solid grey', borderRadius: '10px', color: 'black', fontSize:'1.05rem' }}
             //isLoading={isLoading}
             icons={oTableIcons}
-            title={`Changes Log for Date: ${dtFrom}`}
+            title={`Changes Log from ${Moment(startDate).format(sDateFormat)} To ${Moment(endDate).format(sDateFormat)}`}
             columns={columns}
             data={changesLogData}
             /*options={{

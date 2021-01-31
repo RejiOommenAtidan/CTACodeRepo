@@ -1,22 +1,38 @@
 import React from 'react';
-import {Text, View, StyleSheet, PermissionsAndroid} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import {Dimensions} from 'react-native';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../../code/constants/Colors';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useSelector} from 'react-redux';
-import RNHTMLtoPDF from 'react-native-html-to-pdf';
+// import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import CTALogo from '../../code/assets/CTALogo.png';
-import {sFontName} from '../constants/CommonConfig';
-import {Avatar} from 'react-native-elements';
+import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import {Avatar, Badge, Icon, withBadge, Card} from 'react-native-elements';
+import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+import {BoxShadow, BorderShadow} from 'react-native-shadow';
 
 export const MyProfileScreen = (props) => {
+  // const oUserHardcodedMyProfile = {
+  //   sGBID: '7654321',
+  //   sName: '12345678901234567890123456789',
+  //   nAge: 22,
+  //   dtDOB: '01-01-2001',
+  //   sEmailAddress: 'a.b@gmail.com',
+  //   sAuthorityRegion: 'Thimpu',
+  // };
+
   const isPermitted = async () => {
     if (Platform.OS === 'android') {
       try {
@@ -634,34 +650,39 @@ export const MyProfileScreen = (props) => {
                       <td width="20"></td>
                     </tr>
                   </table>`;
-      try {
-        let file = await RNHTMLtoPDF.convert({
-          html: sMyHTML,
-          fileName: 'Test',
-          directory: 'Download',
-          fonts: ['../../code/assets/fonts/Microsoft Himalaya.ttf'],
-        });
-        alert(file.filePath);
-      } catch (err) {
-        console.error(err);
-      }
+      //try {
+        //let file = await RNHTMLtoPDF.convert({
+          //html: sMyHTML,
+         // fileName: 'Test',
+         // directory: 'Download',
+          //fonts: ['../../code/assets/fonts/Microsoft Himalaya.ttf'],
+        //});
+        //alert(file.filePath);
+      //} catch (err) {
+        //console.error(err);
+      //}
     }
-
-    //let file;
-    // console.log(file.filePath);
   };
 
   const oGBDetails = useSelector((state) => state.GBDetailsReducer.oGBDetails);
 
   const oGoogle = useSelector((state) => state.GLoginReducer.oGoogle);
 
-  // const oUserHardcodedMyProfile = {
-  //   sGBID: '7654321',
-  //   sName: 'ABCD DEFG',
-  //   nAge: 22,
-  //   dtDOB: '01-01-2001',
-  //   sEmailAddress: 'a.b@gmail.com',
-  //   sAuthorityRegion: 'Thimpu',
+  ////for large
+  const nBadgeSize = 12.5;
+
+  // //for xlarge
+  // const nBadgeSize = 25;
+
+  // const shadowOpt = {
+  //   width:wp(90),
+  //   height:hp(92),
+  //   color: Colors.lightBlueChatrelWebsite,
+  //   border: 1,
+  //   radius: 15,
+  //   opacity: 1,
+  //   x: 5,
+  //   y: 5,
   // };
 
   return (
@@ -672,76 +693,185 @@ export const MyProfileScreen = (props) => {
                 </Text>
     </View>*/}
       {/*Avatar*/}
-      <Avatar
-        rounded
-        size="xlarge"
-        containerStyle={{
-          alignSelf: 'center',
-          marginTop: hp(2.5),
-          marginBottom: hp(5),
-        }}
-        source={{
-          uri: oGoogle.photo,
-        }}
-      />
-      {/*FULL NAME*/}
-      <View style={styles.nameLabelContainer}>
-        <Text style={styles.nameLabelComponent}>FULL NAME</Text>
-      </View>
-      <View style={styles.nameValueContainer}>
-        <Text style={styles.nameValueComponent}>
-          {oGoogle.givenName + ' ' + oGoogle.familyName}
-        </Text>
-      </View>
-      {/*GBID*/}
-      <View style={styles.gbidLabelContainer}>
-        <Text style={styles.gbidLabelComponent}>GREEN BOOK ID</Text>
-      </View>
-      <View style={styles.gbidValueContainer}>
-        <Text style={styles.gbidValueComponent}>{oGBDetails.sGBID}</Text>
-      </View>
-      {/*DOB*/}
-      <View style={styles.dtDOBLabelContainer}>
-        <Text style={styles.dtDOBLabelComponent}>DATE OF BIRTH</Text>
-      </View>
-      <View style={styles.dtDOBValueContainer}>
-        <Text style={styles.dtDOBValueComponent}>{oGBDetails.dtDOB}</Text>
-      </View>
-      {/*AGE*/}
-      {/*<View style={styles.ageLabelContainer}>
-        <Text style={styles.ageLabelComponent}>AGE</Text>
-      </View>
-      <View style={styles.ageValueContainer}>
-        <Text style={styles.ageValueComponent}>
-          {oUserHardcodedMyProfile.nAge}
-        </Text>
-  </View>*/}
-      {/*AUTHREGION*/}
-      {/*<View style={styles.sAuthRegionLabelContainer}>
-        <Text style={styles.sAuthRegionLabelComponent}>AUTHORITY REGION</Text>
-      </View>
-      <View style={styles.sAuthRegionValueContainer}>
-        <Text style={styles.sAuthRegionValueComponent}>
-          {oUserHardcodedMyProfile.sAuthorityRegion}
-        </Text>
+      {/*{Platform.OS === 'android' && (
+        <BoxShadow setting={shadowOpt}>
+          <Card
+            containerStyle={{
+              backgroundColor: Colors.white,
+              // width:wp(90),
+              // height:hp(80),
+              //Border Stuff
+              borderRadius: 15,
+              // borderColor: Colors.black,
+              // borderStyle: 'solid',
+              // borderWidth: 1,
+            }}>
+            <View>
+              <Avatar
+                rounded
+                size="xlarge"
+                containerStyle={{
+                  alignSelf: 'center',
+                  marginTop: hp(1),
+                  marginBottom: hp(5),
+                }}
+                source={{
+                  uri: oGoogle.photo,
+                }}
+              />
+              <Badge
+                badgeStyle={{
+                  width: nBadgeSize,
+                  height: nBadgeSize,
+                  borderRadius: nBadgeSize / 2,
+                }}
+                status="success"
+                containerStyle={{
+                  position: 'absolute',
+                  top: 130,
+                  right: 97.5,
+                }}
+              />
+            </View>
+            <View style={styles.labelContainer}>
+              <Text style={styles.labelComponent}>FULL NAME</Text>
+            </View>
+            <View style={styles.valueContainer}>
+              <Text style={styles.valueComponent}>
+                {oGoogle.givenName + ' ' + oGoogle.familyName}
+              </Text>
+            </View>
+            <View style={styles.labelContainer}>
+              <Text style={styles.labelComponent}>GREEN BOOK ID</Text>
+            </View>
+            <View style={styles.valueContainer}>
+              <Text style={styles.valueComponent}>{oGBDetails.sGBID}</Text>
+            </View>
+            <View style={styles.labelContainer}>
+              <Text style={styles.labelComponent}>DATE OF BIRTH</Text>
+            </View>
+            <View style={styles.valueContainer}>
+              <Text style={styles.valueComponent}>{oGBDetails.dtDOB}</Text>
+            </View>
+            <View style={styles.labelContainer}>
+              <Text style={styles.labelComponent}>EMAIL ADDRESS</Text>
+            </View>
+            <View
+              style={styles.valueContainer}
+            >
+              <Text style={styles.valueComponent}>{oGoogle.email}</Text>
+            </View>
+          </Card>
+        </BoxShadow>
+              )}*/}
+
+      <Card
+        containerStyle={styles.cardContainerStyle}
+        title={
+          <View style={styles.titleViewStyle}>
+            <Avatar
+              // overlayContainerStyle={{
+              //   padding:0,
+              //   margin:0,
+              // }}
+
+              //   icon={()=>{
+              //     return(           <Badge
+              //     status="success"
+              //     containerStyle={{position: 'absolute', top: 0, right: 0}}
+              //   />)
+              //   }}
+
+              //icon={{name: 'user', type: 'font-awesome'}}
+
+              rounded
+              size="large"
+              containerStyle={styles.avatarContainerStyle}
+              source={{
+                uri: oGoogle.user.photo,
+              }}
+            />
+            {/*<Badge
+              badgeStyle={{
+                width: nBadgeSize,
+                height: nBadgeSize,
+                borderRadius: nBadgeSize / 2,
+              }}
+              status="success"
+              containerStyle={styles.badgeContainerStyle}
+            />*/}
+          </View>
+        }
+        titleStyle={{}}>
+        <Card.Divider style={styles.cardDividerStyle} />
+        <View style={styles.coverViewStyles}>
+          <View style={styles.labelContainer}>
+            <Text style={styles.labelComponent}>FULL NAME</Text>
+            <Text style={styles.valueComponent}>
+              {oGoogle.user.givenName + ' ' + oGoogle.user.familyName}
+            </Text>
+          </View>
+          <View style={styles.labelContainer}>
+            <Text style={{...styles.labelComponent, textAlign: 'right'}}>
+              GREEN BOOK ID
+            </Text>
+            <Text style={{...styles.valueComponent, textAlign: 'right'}}>
+              {oGBDetails.sGBID}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.coverViewStyles}>
+          <View style={styles.labelContainer}>
+            <Text style={styles.labelComponent}>DATE OF BIRTH</Text>
+            <Text style={{...styles.valueComponent, marginBottom: 0}}>
+              {oGBDetails.dtDOB}
+            </Text>
+          </View>
+          <View style={styles.labelContainer}>
+            <Text
+              style={{
+                ...styles.labelComponent,
+                textAlign: 'right',
+              }}>
+              EMAIL ADDRESS
+            </Text>
+            <Text
+              style={{
+                ...styles.valueComponent,
+                textAlign: 'right',
+                marginBottom: 0,
+              }}>
+              {oGoogle.user.email}
+              {/* {oUserHardcodedMyProfile.sName} */}
+            </Text>
+          </View>
+        </View>
+        {/*<View style={styles.ageLabelContainer}>
+      <Text style={styles.ageLabelComponent}>AGE</Text>
+    </View>
+    <View style={styles.ageValueContainer}>
+      <Text style={styles.ageValueComponent}>
+        {oUserHardcodedMyProfile.nAge}
+      </Text>
 </View>*/}
-      {/*EMAIL ADDRESS*/}
-      <View style={styles.emailIDLabelContainer}>
-        <Text style={styles.emailIDLabelComponent}>EMAIL ADDRESS</Text>
-      </View>
-      <View
-        style={styles.emailIDValueContainer}
-        //onPress={createPDF}
-      >
-        <Text style={styles.emailIDValueComponent}>{oGoogle.email}</Text>
-      </View>
+
+        {/*<View style={styles.sAuthRegionLabelContainer}>
+      <Text style={styles.sAuthRegionLabelComponent}>AUTHORITY REGION</Text>
+    </View>
+    <View style={styles.sAuthRegionValueContainer}>
+      <Text style={styles.sAuthRegionValueComponent}>
+        {oUserHardcodedMyProfile.sAuthorityRegion}
+      </Text>
+</View>*/}
+      </Card>
     </View>
   );
 };
 
 export const MyProfileScreenOptions = (navData) => {
   return {
-    headerTitle: 'My Profile',
+    headerTitle: 'MY PROFILE',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -757,15 +887,16 @@ export const MyProfileScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
+    // headerRight: CustomHeaderRightButton,
+    cardStyle: {backgroundColor: Colors.white},
   };
 };
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    marginHorizontal:
-      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     marginVertical:
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
@@ -784,216 +915,295 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blue,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
   },
-  nameLabelContainer: {
-    width: wp(75),
-    height: hp(2),
-    marginBottom: hp(1.5),
+  badgeContainerStyle: {
+    position: 'absolute',
+    //for large
+    top: 67.5,
+    right: 145,
+
+    ////for xlarge
+    // top: 130,
+    // right: 120,
   },
-  nameLabelComponent: {
-    width: '100%',
-    height: '100%',
+  badgeStyle: {
+    alignSelf: 'flex-start',
+    textAlignVertical: 'center',
+    width: wp(29.5),
+    height: hp(4),
+    backgroundColor: Colors.websiteLightBlueColor,
+  },
+  labelContainer: {
+    marginBottom: hp(1.25),
+  },
+  labelComponent: {
+    fontSize: wp(3.5),
     textAlign: 'left',
-    fontSize: wp(3),
     fontStyle: 'normal',
     fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
+    color: Colors.labelColorLight,
     fontFamily: sFontName,
+    marginBottom: hp(1),
   },
-  nameValueContainer: {
-    width: wp(75),
-    height: hp(3),
-    marginBottom: wp(6),
+  valueContainer: {
+    // width: wp(75),
+    // height: hp(3),
+    // flexDirection: 'row',
+    // flexDirection:'row',
+    // flex:1
+    // flexDirection:'row'
   },
-  nameValueComponent: {
-    width: '100%',
-    height: '100%',
+  valueComponent: {
     textAlign: 'left',
-    fontSize: wp(4.5),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  gbidLabelContainer: {
-    width: wp(75),
-    height: hp(2),
-    marginBottom: hp(1.5),
-  },
-  gbidLabelComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(3),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  gbidValueContainer: {
-    width: wp(75),
-    height: hp(3),
-    marginBottom: wp(6),
-  },
-  gbidValueComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(4.5),
+    fontSize: wp(4.75),
     fontStyle: 'normal',
     fontWeight: 'normal',
     color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
+    marginBottom: wp(5),
+    // flex:1
+    // flexWrap: 'wrap',
+    // flexShrink: 1,
   },
 
-  ageLabelContainer: {
-    width: wp(75),
-    height: hp(2),
-    marginBottom: hp(1.5),
-  },
-  ageLabelComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(3),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  ageValueContainer: {
-    width: wp(75),
-    height: hp(3),
-    marginBottom: wp(6),
-  },
-  ageValueComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(4.5),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
+  cardContainerStyle: {
+    width: wp(92.5),
+    backgroundColor: Colors.white,
+
+    //Border Stuff
+    borderRadius: 15,
+    // borderColor: Colors.black,
+    // borderStyle: 'solid',
+    // borderWidth: 0.25,
+
+    //For iOS
+    shadowRadius: 25,
+    shadowColor: Colors.lightBlueChatrelWebsite,
+    shadowOffset: {width: 5, height: 5},
+    shadowOpacity: 1,
+
+    //For Android
+    elevation: 25,
+    overflow: 'visible',
   },
 
-  dtDOBLabelContainer: {
-    width: wp(75),
-    height: hp(2),
-    marginBottom: hp(1.5),
-  },
-  dtDOBLabelComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(3),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  dtDOBValueContainer: {
-    width: wp(75),
-    height: hp(3),
-    marginBottom: wp(6),
-  },
-  dtDOBValueComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(4.5),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
+  titleViewStyle: {
+    marginBottom: hp(2),
   },
 
-  emailIDLabelContainer: {
-    width: wp(75),
-    height: hp(2),
-    marginBottom: hp(1.5),
-  },
-  emailIDLabelComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(3),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
-  emailIDValueContainer: {
-    width: wp(75),
-    height: hp(3),
-    marginBottom: wp(6),
-  },
-  emailIDValueComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(4.5),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
+  avatarContainerStyle: {
+    alignSelf: 'center',
+    marginTop: hp(1),
+
+    // backgroundColor: Colors.white,
+
+    //Border Stuff
+    // borderRadius: 15,
+    // borderColor: Colors.black,
+    // borderStyle: 'solid',
+    // borderWidth: 0.25,
+
+    // //For iOS
+    // shadowRadius: 25,
+    // shadowColor: Colors.lightBlueChatrelWebsite,
+    // shadowOffset: {width: 5, height: 5},
+    // shadowOpacity: 1,
+
+    // //For Android
+    // elevation: 25,
+    // overflow: 'visible',
   },
 
-  sAuthRegionLabelContainer: {
-    width: wp(75),
-    height: hp(2),
-    marginBottom: hp(1.5),
+  cardDividerStyle: {
+    height: 1,
+    backgroundColor: Colors.buttonYellow,
+    marginBottom: hp(3),
   },
-  sAuthRegionLabelComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(3),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackText,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
+
+  coverViewStyles: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: hp(1),
   },
-  sAuthRegionValueContainer: {
-    width: wp(75),
-    height: hp(3),
-    marginBottom: wp(6),
-  },
-  sAuthRegionValueComponent: {
-    width: '100%',
-    height: '100%',
-    textAlign: 'left',
-    fontSize: wp(4.5),
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    color: Colors.blackTextAPI,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
-  },
+
+  // nameLabelContainer: {},
+  // nameLabelComponent: {},
+  // nameValueContainer: {},
+  // nameValueComponent: {},
+  // gbidLabelContainer: {
+  //   width: wp(75),
+  //   height: hp(2),
+  //   marginBottom: hp(1.5),
+  // },
+  // gbidLabelComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(3),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackText,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+  // gbidValueContainer: {
+  //   width: wp(75),
+  //   height: hp(3),
+  //   marginBottom: wp(6),
+  // },
+  // gbidValueComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(4.5),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackTextAPI,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+
+  // ageLabelContainer: {
+  //   width: wp(75),
+  //   height: hp(2),
+  //   marginBottom: hp(1.5),
+  // },
+  // ageLabelComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(3),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackText,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+  // ageValueContainer: {
+  //   width: wp(75),
+  //   height: hp(3),
+  //   marginBottom: wp(6),
+  // },
+  // ageValueComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(4.5),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackTextAPI,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+
+  // dtDOBLabelContainer: {
+  //   width: wp(75),
+  //   height: hp(2),
+  //   marginBottom: hp(1.5),
+  // },
+  // dtDOBLabelComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(3),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackText,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+  // dtDOBValueContainer: {
+  //   width: wp(75),
+  //   height: hp(3),
+  //   marginBottom: wp(6),
+  // },
+  // dtDOBValueComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(4.5),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackTextAPI,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+
+  // emailIDLabelContainer: {
+  //   width: wp(75),
+  //   height: hp(2),
+  //   marginBottom: hp(1.5),
+  // },
+  // emailIDLabelComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(3),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackText,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+  // emailIDValueContainer: {
+  //   width: wp(75),
+  //   height: hp(3),
+  //   marginBottom: wp(6),
+  // },
+  // emailIDValueComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(4.5),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackTextAPI,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+
+  // sAuthRegionLabelContainer: {
+  //   width: wp(75),
+  //   height: hp(2),
+  //   marginBottom: hp(1.5),
+  // },
+  // sAuthRegionLabelComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(3),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackText,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
+  // sAuthRegionValueContainer: {
+  //   width: wp(75),
+  //   height: hp(3),
+  //   marginBottom: wp(6),
+  // },
+  // sAuthRegionValueComponent: {
+  //   width: '100%',
+  //   height: '100%',
+  //   textAlign: 'left',
+  //   fontSize: wp(4.5),
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   color: Colors.blackTextAPI,
+  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+  //   //letterSpacing: Resolution.nLetterSpacing,
+  //   fontFamily: sFontName,
+  // },
 });

@@ -115,7 +115,7 @@ export default function ChatrelReceipt(props){
   const columns = [
     {
       field: "id",
-      title: "Sr No.",
+      title: "SR NO.",
       hidden: true,
     },
     // {
@@ -146,7 +146,7 @@ export default function ChatrelReceipt(props){
     // },
     {
       field: "sFinancialYear",
-      title: "Year",
+      title: "YEAR",
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -163,7 +163,7 @@ export default function ChatrelReceipt(props){
     
     {
       field: "sPaymentCurrency",
-      title: "Currency",
+      title: "CURRENCY",
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -172,7 +172,7 @@ export default function ChatrelReceipt(props){
     },
     {
       field: "nChatrelAmount",
-      title: "Chatrel",
+      title: "CHATREL",
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -182,7 +182,7 @@ export default function ChatrelReceipt(props){
     },
     {
       field: "nChatrelMeal",
-      title: "Meal",
+      title: "MEAL",
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -192,7 +192,7 @@ export default function ChatrelReceipt(props){
     },
     {
       field: "nCurrentChatrelSalaryAmt",
-      title: "Employment",
+      title: "EMPLOYMENT",
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -202,7 +202,7 @@ export default function ChatrelReceipt(props){
     },
     {
       field: "nChatrelLateFeesValue",
-      title: "Late Fees",
+      title: "LATE FEES",
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -233,7 +233,7 @@ export default function ChatrelReceipt(props){
 
     {
       field: "nArrears",
-      title: "Arrears + LateFees",
+      title: "ARREARS + LATEFEES",
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -243,7 +243,7 @@ export default function ChatrelReceipt(props){
 
     {
       field: "dtArrearsFrom",
-      title: "Arrears From",
+      title: "ARREARS FROM",
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -253,7 +253,7 @@ export default function ChatrelReceipt(props){
     },
     {
       field: "dtArrearsTo",
-      title: "Arrears To",
+      title: "ARREARS TO",
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -263,7 +263,7 @@ export default function ChatrelReceipt(props){
     },
     {
       field: "nChatrelBusinessDonationAmt",
-      title: "Business Donation",
+      title: "BUSINESS DONATION",
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -273,7 +273,7 @@ export default function ChatrelReceipt(props){
     },
     {
       field: "nChatrelAdditionalDonationAmt",
-      title: "Additional Donation",
+      title: "ADDITIONAL DONATION",
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -283,7 +283,7 @@ export default function ChatrelReceipt(props){
     },
     {
       field: "nChatrelTotalAmount",
-      title: "Total",
+      title: "TOTAL",
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -293,7 +293,7 @@ export default function ChatrelReceipt(props){
     },
     {
       field: "sAuthRegion",
-      title: "Authority Region",
+      title: "AUTHORITY REGION",
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'
@@ -302,7 +302,7 @@ export default function ChatrelReceipt(props){
     
     {
       field: "sPaymentMode",
-      title: "Payment Mode",
+      title: "PAYMENT MODE",
       cellStyle: {
         padding: '5px',
         borderRight: '1px solid grey'

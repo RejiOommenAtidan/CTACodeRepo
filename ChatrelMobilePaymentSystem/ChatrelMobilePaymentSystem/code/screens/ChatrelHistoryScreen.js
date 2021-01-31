@@ -1,21 +1,42 @@
-import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, ScrollView, Dimensions} from 'react-native';
-import {Card, Button} from 'react-native-elements';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import React, { useState, useEffect } from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  ActivityIndicator,
+  PermissionsAndroid,
+  ToastAndroid
+} from 'react-native';
+import { Card, Button } from 'react-native-elements';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
+import { Loader } from '../components/Loader';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Moment from 'moment';
-import {sDateFormat,sFontName} from '../constants/CommonConfig';
+import {
+  sDateFormat,
+  sFontName,
+  sFontNameBold,
+  oActivityIndicatorStyle,
+  sAPIBASEURL,
+} from '../constants/CommonConfig';
+import { useIsFocused } from '@react-navigation/native';
+// import { DownloadDirectoryPath } from 'react-native-fs';
+import RNFetchBlob from 'react-native-fetch-blob'
 
 export const ChatrelHistoryScreen = (props) => {
+  const [bLoader, setbLoader] = useState(true);
+  const isFocused = useIsFocused();
   // const DATA = [
   //   {
   //     sChatrelRecieptNumber: 'W1',
@@ -53,6 +74,101 @@ export const ChatrelHistoryScreen = (props) => {
     (state) => state.CurrentGBDetailsReducer.oCurrentGBDetails,
   );
 
+  const oGBDetails = useSelector((state) => state.GBDetailsReducer.oGBDetails);
+  const sJwtToken = useSelector((state) => state.GBDetailsReducer.sJwtToken);
+
+  const downloadFile = async (singleHistory) => {
+    try {
+      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        handleDownloadReceiptOnPress(singleHistory);
+      } else {
+        Alert.alert('Permission Denied!', 'You need to give storage permission to download the file');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+
+  const handleDownloadReceiptOnPress = (singleHistory) => {
+    console.log(singleHistory.sChatrelReceiptNumber);
+    // console.log("Receipt Number", sChatrelReceiptNumber);
+    // axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=` + singleHistory.sChatrelReceiptNumber, { responseType: 'blob' })
+    //   .then(resp => {
+    //     if (resp.status === 200) {
+    //       console.log("Response", resp);
+
+    const { dirs } = RNFetchBlob.fs;
+
+    RNFetchBlob.config({
+      fileCache: true,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        mediaScannable: true,
+        title: `Receipt.pdf`,
+        path: `${dirs.DownloadDir}/Receipt.pdf`,
+      },
+    })
+      .fetch('GET', sAPIBASEURL + '/ChatrelPayment/GetReceipt/?sReceiptNumber=' + singleHistory.sChatrelReceiptNumber, {
+        Authorization: 'Bearer ' + sJwtToken,
+      })
+      .then(
+        resp => {
+          //if (resp.status === 200) {
+          ToastAndroid.show(
+            'Receipt Downloaded Successfully',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+          );
+          //}
+        }
+      ).catch(error => {
+        console.log("Error ", error.response);
+        if (error.response) {
+          console.error(error.response);
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        } else if (error.request) {
+          console.warn(error.request);
+        } else {
+          console.error('Error', error.message);
+        }
+        console.log(error.config);
+      })
+      .then(release => {
+        //console.log(release); => udefined
+      });
+
+
+    // const url = URL.createObjectURL(new Blob([resp.data]));
+    // const link = document.createElement("a");
+    // link.href = url;
+    // link.setAttribute("download", "ChatrelReceipt.pdf");
+    // document.body.appendChild(link);
+    // link.click();
+    //   }
+    // })
+    // .catch(error => {
+    //   console.log("Error ", error.response);
+    //   if (error.response) {
+    //     console.error(error.response);
+    //     console.error(error.response.data);
+    //     console.error(error.response.status);
+    //     console.error(error.response.headers);
+    //   } else if (error.request) {
+    //     console.warn(error.request);
+    //   } else {
+    //     console.error('Error', error.message);
+    //   }
+    //   console.log(error.config);
+    // })
+    // .then(release => {
+    //   //console.log(release); => udefined
+    // });
+  };
+
   const getChatrelHistoryDetails = () => {
     axios
       .get(
@@ -61,35 +177,44 @@ export const ChatrelHistoryScreen = (props) => {
       .then((resp) => {
         if (resp.status === 200) {
           setPaymentHistory(resp.data);
-          console.log(resp.data);
+          setbLoader(false);
+          //console.log(resp.data);
         }
       })
       .catch((error) => {
+        setbLoader(false);
+        alert('Something went wrong, please try again later.');
         console.log(error.message);
         console.log(error.config);
       });
   };
 
   useEffect(() => {
-    getChatrelHistoryDetails();
-  }, []);
+    if (isFocused) {
+      setbLoader(true);
+      console.log('Chatrel History Called');
+      getChatrelHistoryDetails();
+    }
+  }, [isFocused]);
 
   const [paymentHistory, setPaymentHistory] = useState([]);
 
-  const handleDownloadReceiptOnPress = (singleHistory) => {
-    console.log(singleHistory);
-    //TODO: OR CODE GEN & RECEIPT GEN & SAVE TO PHONE
-  };
-
   return (
     <View style={styles.mainContainer}>
+      <Loader
+        loading={bLoader} />
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>CHATREL HISTORY</Text>
   </View>*/}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {paymentHistory.length === 0 && (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}>
+        {paymentHistory.length === 0 && !bLoader && (
           <View style={styles.zeroRecordContainer}>
-            <Text style={styles.zeroRecordComponent}>No Records Available</Text>
+            <Text style={styles.zeroRecordComponent}>
+              No Chatrel Payments Done So Far, Please pay your outstanding
+              Chatrel Amount
+            </Text>
           </View>
         )}
         {paymentHistory.length !== 0 &&
@@ -139,13 +264,11 @@ export const ChatrelHistoryScreen = (props) => {
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    marginBottom: hp(1.25),
+                    marginBottom: hp(1),
                   }}>
-                  <View style={styles.receiptNumberLabelContainer}>
-                    <Text style={styles.receiptNumberLabelComponent}>
-                      RECEIPT NUMBER
-                    </Text>
-                    <Text style={styles.receiptNumberValueComponent}>
+                  <View style={styles.labelContainer}>
+                    <Text style={styles.labelComponent}>RECEIPT NUMBER</Text>
+                    <Text style={styles.valueComponent}>
                       {singleHistory.sChatrelReceiptNumber}
                     </Text>
                   </View>
@@ -153,9 +276,13 @@ export const ChatrelHistoryScreen = (props) => {
                   {/* <View style={styles.receiptNumberValueContainer}>
                 </View> */}
 
-                  <View style={styles.dateLabelContainer}>
-                    <Text style={styles.dateLabelComponent}>CHATREL DATE</Text>
-                    <Text style={styles.dateValueComponent}>
+                  <View style={styles.labelContainer}>
+                    <Text
+                      style={{ ...styles.labelComponent, textAlign: 'right' }}>
+                      CHATREL DATE
+                    </Text>
+                    <Text
+                      style={{ ...styles.valueComponent, textAlign: 'right' }}>
                       {Moment(singleHistory.dtPayment).format(sDateFormat)}
                     </Text>
                   </View>
@@ -169,26 +296,58 @@ export const ChatrelHistoryScreen = (props) => {
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    marginBottom: hp(1.25),
+                    marginBottom: hp(1),
                   }}>
-                  <View style={styles.totalChatrelLabelContainer}>
-                    <Text style={styles.totalChatrelLabelComponent}>
-                      TOTAL CHATREL
-                    </Text>
-                    <Text style={styles.totalChatrelValueComponent}>
-                      {singleHistory.nChatrelTotalAmount}
+                  <View style={styles.labelContainer}>
+                    <Text style={styles.labelComponent}>AMOUNT</Text>
+                    <Text style={styles.valueComponent}>
+                      ${singleHistory.nChatrelTotalAmount}
                     </Text>
                   </View>
 
                   {/* <View style={styles.totalChatrelValueContainer}>
                   </View> */}
 
-                  <View style={styles.chatrelModeLabelContainer}>
-                    <Text style={styles.chatrelModeLabelComponent}>
+                  <View style={styles.labelContainer}>
+                    <Text
+                      style={{ ...styles.labelComponent, textAlign: 'right' }}>
                       PAYMENT MODE
                     </Text>
-                    <Text style={styles.chatrelModeValueComponent}>
+                    <Text
+                      style={{ ...styles.valueComponent, textAlign: 'right' }}>
                       {singleHistory.sPaymentMode}
+                    </Text>
+                  </View>
+
+                  {/* <View style={styles.chatrelStatusValueContainer}>
+                </View> */}
+                </View>
+
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginBottom: hp(1),
+                  }}>
+                  <View style={styles.labelContainer}>
+                    <Text style={styles.labelComponent}>GREEN BOOK ID</Text>
+                    <Text style={styles.valueComponent}>
+                      {singleHistory.sGBIDPaidFor}
+                    </Text>
+                  </View>
+
+                  {/* <View style={styles.totalChatrelValueContainer}>
+                  </View> */}
+
+                  <View style={styles.labelContainer}>
+                    <Text
+                      style={{ ...styles.labelComponent, textAlign: 'right' }}>
+                      PAID BY GREEN BOOK ID
+                    </Text>
+                    <Text
+                      style={{ ...styles.valueComponent, textAlign: 'right' }}>
+                      {oGBDetails.sGBID}
                     </Text>
                   </View>
 
@@ -210,7 +369,8 @@ export const ChatrelHistoryScreen = (props) => {
                   <Button
                     title={'DOWNLOAD RECEIPT'}
                     onPress={() => {
-                      handleDownloadReceiptOnPress(singleHistory);
+                      downloadFile(singleHistory);
+                      //handleDownloadReceiptOnPress(singleHistory);
                     }}
                     iconRight
                     icon={{
@@ -222,16 +382,13 @@ export const ChatrelHistoryScreen = (props) => {
                     titleStyle={{
                       color: Colors.white,
                       fontStyle: 'normal',
-                      fontWeight: '900',
-                      fontFamily: sFontName,
-                      fontSize:
-                        Dimensions.get('window').width <
-                        Resolution.nWidthBreakpoint
-                          ? 9
-                          : 15,
+                      fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                      fontFamily:
+                        Platform.OS === 'android' ? sFontNameBold : sFontName,
+                      fontSize: wp(4),
                     }}
                     buttonStyle={{
-                      height: hp(5),
+                      // height: hp(5),
                       backgroundColor: Colors.buttonYellow,
                       borderRadius: 20,
                       borderWidth: 1,
@@ -254,7 +411,7 @@ export const ChatrelHistoryScreen = (props) => {
 console.log(Dimensions.get('window').height);
 export const ChatrelHistoryScreenOptions = (navData) => {
   return {
-    headerTitle: 'Chatrel History',
+    headerTitle: 'CHATREL HISTORY',
     headerStyle: {
       backgroundColor: Colors.primary,
     },
@@ -270,7 +427,8 @@ export const ChatrelHistoryScreenOptions = (navData) => {
         />
       </HeaderButtons>
     ),
-    headerRight: CustomHeaderRightButton,
+    // headerRight: CustomHeaderRightButton,
+    cardStyle: { backgroundColor: Colors.white },
   };
 };
 
@@ -278,8 +436,8 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     //flexDirection: "column",
-    marginHorizontal:
-      Dimensions.get('window').width * Resolution.nWidthScreenMargin,
+    // marginHorizontal:
+    //   Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     marginVertical:
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
     //alignItems: "flex-start"
@@ -303,30 +461,73 @@ const styles = StyleSheet.create({
     //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
   },
+  zeroRecordContainer: {},
+  zeroRecordComponent: {
+    textAlign: 'center',
+    fontSize: wp(5),
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: Colors.blackText,
+    fontFamily: sFontName,
+  },
   cardComponent: {
-    width: wp(80),
-    height: Platform.OS === 'ios' ? hp(28.25) : hp(30),
-    borderRadius: 15,
-    borderColor: Colors.white,
+    width: wp(92.5),
     backgroundColor: Colors.white,
+
+    //Border Stuff
+    borderRadius: 15,
+    // borderColor: Colors.black,
+    // borderStyle: 'solid',
+    // borderWidth: 0.25,
+
+    //For iOS
+    shadowRadius: 15,
+    shadowColor: Colors.lightBlueChatrelWebsite,
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 1,
+
+    //For Android
+    elevation: 15,
+    overflow: 'visible',
+
+    marginBottom: hp(2),
   },
   cardHeaderComponent: {
     textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint
-        ? 13.5
-        : 22.5,
+    fontSize: wp(6),
     fontStyle: 'normal',
-    fontWeight: '300',
+    fontWeight: 'normal',
     color: Colors.primary,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
   },
   cardDividerComponent: {
     height: 0.75,
     backgroundColor: Colors.greenBG,
   },
+
+  labelContainer: {
+    marginBottom: hp(1.25),
+  },
+  labelComponent: {
+    textAlign: 'left',
+    fontSize: wp(3.25),
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: Colors.labelColorLight,
+    fontFamily: sFontName,
+    marginBottom: hp(1),
+  },
+  valueComponent: {
+    textAlign: 'left',
+    fontSize: wp(5.25),
+    fontStyle: 'normal',
+    fontWeight: 'normal',
+    color: Colors.blackTextAPI,
+    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
+    //letterSpacing: Resolution.nLetterSpacing,
+    fontFamily: sFontName,
+  },
+
   receiptNumberLabelContainer: {
     // marginBottom:
     //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
@@ -486,15 +687,12 @@ const styles = StyleSheet.create({
     //Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
   relationComponent: {
-    //textAlign: 'left',
-    fontSize:
-      Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 8.4 : 14,
+    textAlign: 'right',
+    fontSize: wp(5.5),
     fontStyle: 'normal',
-    fontWeight: 'normal',
     color: Colors.darkYellowFamilyPage,
-    //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    //letterSpacing: Resolution.nLetterSpacing,
-    fontFamily: sFontName,
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
   downloadReceiptContainer: {
     marginTop: hp(0.25),

@@ -10,8 +10,8 @@ namespace ChatrelDBL.BaseClasses.Transactions
         #region Private  Properties 
         private int _Id;
         private int _nChatrelYear;
-        private string? _sGBId;
-        private decimal? _nChatrelTotalAmount;
+        private string _sGBId;
+        private decimal _nChatrelTotalAmount;
         private string _sChatrelReceiptNumber;
         private string? _sPaymentStatus;
         private string? _sPaymentMode;
@@ -44,9 +44,9 @@ namespace ChatrelDBL.BaseClasses.Transactions
 
         #region Public Properties
         public int Id { get { return _Id; } set { _Id = value; } }
-        public string? sGBId { get { return _sGBId; } set { _sGBId = value; } }
+        public string sGBId { get { return _sGBId; } set { _sGBId = value; } }
         public int nChatrelYear { get { return _nChatrelYear; } set { _nChatrelYear = value; } }
-        public decimal? nChatrelTotalAmount { get { return _nChatrelTotalAmount; } set { _nChatrelTotalAmount = value; } }
+        public decimal nChatrelTotalAmount { get { return _nChatrelTotalAmount; } set { _nChatrelTotalAmount = value; } }
         public string sChatrelReceiptNumber { get { return _sChatrelReceiptNumber; } set { _sChatrelReceiptNumber = value; } }
 
         public string? sPaymentStatus { get { return _sPaymentStatus; } set { _sPaymentStatus = value; } }

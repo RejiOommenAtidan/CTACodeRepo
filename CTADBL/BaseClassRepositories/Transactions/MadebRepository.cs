@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using TimeZoneConverter;
 
 namespace CTADBL.BaseClassRepositories.Transactions
 {
@@ -94,7 +95,7 @@ namespace CTADBL.BaseClassRepositories.Transactions
             //}
             madeb.sGBID = sGBID;
             madeb.nIssuedOrNotID = 1;
-            madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+            madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
             madeb.dtIssueAction = dtReceived;
             this.Update(madeb);
             return true;
@@ -108,13 +109,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
             if (madeb.nMadebTypeID == 1)
             {
                 madeb.nIssuedOrNotID = nIssuedOrNotID;
-                madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                 
                 this.Update(madeb);
             }
             else {
                 madeb.nIssuedOrNotID = nIssuedOrNotID;
-                madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                madeb.dtUpdated = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("India Standard Time"));
                 madeb.dtIssueAction = dtIssuedDate;
                 this.Update(madeb);
             }

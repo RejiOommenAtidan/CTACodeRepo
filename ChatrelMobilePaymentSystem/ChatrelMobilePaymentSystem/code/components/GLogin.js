@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Platform, StyleSheet, View } from 'react-native';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-community/google-signin';
-import {sClientIDAndroid} from '../constants/CommonConfig';
-import {useSelector, useDispatch} from 'react-redux';
-import {storeGoogleCreds} from '../store/actions/GLoginAction';
+import { sClientIDAndroid, sClientIDIOS } from '../constants/CommonConfig';
+import { useSelector, useDispatch } from 'react-redux';
+import { storeGoogleCreds } from '../store/actions/GLoginAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   widthPercentageToDP as wp,
@@ -24,7 +24,7 @@ export const GLogin = (props) => {
       webClientId: sClientIDAndroid,
       offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
       forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-      //iosClientId: '', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+      iosClientId: sClientIDIOS, // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
     });
 
     isSignedIn();
@@ -38,6 +38,7 @@ export const GLogin = (props) => {
     //     props.props.navigation.navigate("GBDetail");
     //   }
     // });
+
   }, []);
 
   // const getUserDataFromAsnycStorage = async () => {
@@ -54,31 +55,40 @@ export const GLogin = (props) => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+
       // console.info(userInfo.user.email);
       // console.info(userInfo.user.givenName);
       // console.info(userInfo.user.familyName);
       // console.info(userInfo.user.name);//full name by google api
       // console.info(userInfo.user.photo);
+      //console.info(userInfo)
 
-      setUser(userInfo.user);
-      dispatch(storeGoogleCreds(userInfo.user));
-      const jsonUserInfoValue = JSON.stringify(userInfo.user);
+      //Store User Info
+      setUser(userInfo);
+      //Store Google Creds
+      dispatch(storeGoogleCreds(userInfo));
+
+      const jsonUserInfoValue = JSON.stringify(userInfo);
       await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
+
+      //Navigate to GBDetail Screen
       props.props.navigation.navigate('GBDetail');
+
     } catch (error) {
-      //alert('Error Message: '+ error.message);
+      //console.info('Error Message: '+ error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        //alert('User Cancelled the Login Flow');
+        //console.info('User Cancelled the Login Flow');
       } else if (error.code === statusCodes.IN_PROGRESS) {
         //alert('Signing In');
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        //alert('Play Services Not Available or Outdated');
+        //console.info('Play Services Not Available or Outdated');
       } else {
-        //alert('Some Other Error Happened');
+        //console.info('Some Other Error Happened');
       }
     }
   };
 
+  //useEffect Call
   const isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (!!isSignedIn) {
@@ -91,16 +101,22 @@ export const GLogin = (props) => {
   const getCurrentUserInfo = async () => {
     try {
       const userInfo = await GoogleSignin.getCurrentUser();
-      setUser(userInfo.user);
-      dispatch(storeGoogleCreds(userInfo.user));
-      const jsonUserInfoValue = JSON.stringify(userInfo.user);
+      //Store User Info
+      setUser(userInfo);
+      //Store Google Creds
+      dispatch(storeGoogleCreds(userInfo));
+
+      const jsonUserInfoValue = JSON.stringify(userInfo);
       await AsyncStorage.setItem('oUserInfo', jsonUserInfoValue);
+
+      //Navigate to GBDetail Screen
       props.props.navigation.navigate('GBDetail');
+
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-        //alert('User has not signed in yet');
+        //console.info('User has not signed in yet');
       } else {
-        //alert("Something went wrong. Unable to get user's info");
+        //console.info("Something went wrong. Unable to get user's info");
       }
     }
   };
@@ -123,7 +139,7 @@ export const GLogin = (props) => {
       <GoogleSigninButton
         style={styles.gSignInComponent}
         size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Light}
+        color={GoogleSigninButton.Color.Dark}
         onPress={signIn}
       />
     </View>
@@ -137,7 +153,12 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
   },
   gSignInComponent: {
-    width: Platform.OS === 'android' ? wp(50) : wp(47.5),
-    height: hp(5.75),
+    // width: Platform.OS === 'android' ? wp(50) : wp(47.5),
+    // height: Platform.OS === 'android' ? hp(5.75) : hp(4.75),
+
+    //Values Coded
+
+    width: 192,
+    height: 48,
   },
 });

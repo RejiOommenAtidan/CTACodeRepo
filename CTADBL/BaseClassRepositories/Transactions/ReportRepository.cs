@@ -130,13 +130,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
                 return null;
             }
         }
-        public IEnumerable<Object> GetReportCTANewEntryFromDay(DateTime dtRecordFrom)
+        public IEnumerable<Object> GetReportCTANewEntryFromDay(DateTime dtRecordFrom, DateTime dtRecordTo)
         {
 
             using (var command = new MySqlCommand("spReportCTANewEntryFromDay"))
             {
                 command.Parameters.AddWithValue("dtRecordFrom", dtRecordFrom);
-
+                command.Parameters.AddWithValue("dtRecordTo", dtRecordTo);
 
                 command.Connection = _connection;
                 command.CommandType = CommandType.StoredProcedure;
@@ -163,13 +163,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
         }
 
 
-        public IEnumerable<Object> GetReportCTAChangesLogForChildren(DateTime dtRecordFrom)
+        public IEnumerable<Object> GetReportCTAChangesLogForChildren(DateTime dtRecordFrom, DateTime dtRecordTo)
         {
 
             using (var command = new MySqlCommand("spReportCTAChangesLogForChildren"))
             {
                 command.Parameters.AddWithValue("dtRecordFrom", dtRecordFrom);
-
+                command.Parameters.AddWithValue("dtRecordTo", dtRecordTo);
 
                 command.Connection = _connection;
                 command.CommandType = CommandType.StoredProcedure;
@@ -196,13 +196,13 @@ namespace CTADBL.BaseClassRepositories.Transactions
             }
         }
 
-        public IEnumerable<Object> GetReportCTAChangesLog(DateTime dtRecordFrom)
+        public IEnumerable<Object> GetReportCTAChangesLog(DateTime dtRecordFrom, DateTime dtRecordTo)
         {
 
             using (var command = new MySqlCommand("spReportCTAChangesLog"))
             {
                 command.Parameters.AddWithValue("dtRecordFrom", dtRecordFrom);
-
+                command.Parameters.AddWithValue("dtRecordTo", dtRecordTo);
 
                 command.Connection = _connection;
                 command.CommandType = CommandType.StoredProcedure;

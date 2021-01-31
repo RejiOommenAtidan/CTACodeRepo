@@ -16,6 +16,7 @@ namespace ChatrelDBL.BaseClasses.Transactions
         private string _sMiddleName;
         private string _sLastName;
         private string _sFamilyName;
+        private string _sGender;
         private DateTime? _dtDOB;
         private string _sMarried;
         private string _sFathersName;
@@ -32,8 +33,11 @@ namespace ChatrelDBL.BaseClasses.Transactions
         private string _sEmail;
         private string _sPhone;
         private string _sFax;
+        private DateTime? _dtDeceased;
+        private string _sCountryID;
         private string _sPaidUntil;
-        private string _sEnteredDateTime;
+        private string _sLoginGmail;
+        private DateTime? _dtLastSuccessfullLogin;
         #endregion
 
         #region Public Greenbook Properties
@@ -45,6 +49,7 @@ namespace ChatrelDBL.BaseClasses.Transactions
         public string sMiddleName { get { return _sMiddleName; } set { _sMiddleName = value; } }
         public string sLastName { get { return _sLastName; } set { _sLastName = value; } }
         public string sFamilyName { get { return _sFamilyName; } set { _sFamilyName = value; } }
+        public string sGender { get { return _sGender; } set { _sGender = value; } }
         public DateTime? dtDOB { get { return _dtDOB; } set { _dtDOB = value; } }
         public string sMarried { get { return _sMarried; } set { _sMarried = value; } }
         public string sFathersName { get { return _sFathersName; } set { _sFathersName = value; } }
@@ -61,8 +66,12 @@ namespace ChatrelDBL.BaseClasses.Transactions
         public string sEmail { get { return _sEmail; } set { _sEmail = value; } }
         public string sPhone { get { return _sPhone; } set { _sPhone = value; } }
         public string sFax { get { return _sFax; } set { _sFax = value; } }
+        public DateTime? dtDeceased { get { return _dtDeceased; } set { _dtDeceased = value; } }
+        public string sCountryID { get { return _sCountryID; } set { _sCountryID = value; } }
         public string sPaidUntil { get { return _sPaidUntil; } set { _sPaidUntil = value; } }
-       // public string sEnteredDateTime { get { return _sEnteredDateTime; } set { _sEnteredDateTime = value; } }
+        public string sLoginGmail { get { return _sLoginGmail; } set { _sLoginGmail = value; } }
+        public DateTime? dtLastSuccessfullLogin { get { return _dtLastSuccessfullLogin; } set { _dtLastSuccessfullLogin = value; } }
+        
         #endregion
     }
 }

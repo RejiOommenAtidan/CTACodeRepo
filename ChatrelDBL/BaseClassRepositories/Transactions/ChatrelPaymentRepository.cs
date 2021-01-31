@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using TimeZoneConverter;
 
 namespace ChatrelDBL.BaseClassRepositories.Transactions
 {
@@ -31,8 +32,8 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
         private int _FYStartDate = 1;
         private int _FYEndMonth = 3;
         private int _FYEndDate = 31;
-        private int _currentYear = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Month <= 3 ? TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Year - 1 : TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Year;
-        private bool inGracePeriod = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Month > 3 && TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time")).Month < 5;
+        private int _currentYear = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time")).Month <= 3 ? TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time")).Year - 1 : TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time")).Year;
+        private bool inGracePeriod = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time")).Month > 3 && TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time")).Month < 5;
         private decimal _nPending;
         private Dictionary<int, dynamic> _chatrelAmountUSD;
         private Dictionary<int, dynamic> _chatrelMealUSD;
@@ -978,7 +979,7 @@ namespace ChatrelDBL.BaseClassRepositories.Transactions
                 Id = (int)reader["Id"],
                 sGBId = reader.IsDBNull("sGBId") ? null : (string)reader["sGBId"],
                 nChatrelYear = (int)reader["nChatrelYear"],
-                nChatrelTotalAmount = reader.IsDBNull("nchatrelTotalAmount") ? null : (decimal?)reader["nchatrelTotalAmount"],
+                nChatrelTotalAmount = (decimal)reader["nchatrelTotalAmount"],
                 sChatrelReceiptNumber = (string)reader["sChatrelReceiptNumber"],
                 sPaidByGBId = reader.IsDBNull("sPaidByGBId") ? null : (string)reader["sPaidByGBId"],
                 sPaymentStatus = reader.IsDBNull("sPaymentStatus") ? null : (string)reader["sPaymentStatus"],

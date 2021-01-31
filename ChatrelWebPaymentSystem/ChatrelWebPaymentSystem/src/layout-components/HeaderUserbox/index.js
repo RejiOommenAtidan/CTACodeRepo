@@ -181,10 +181,10 @@ const selfPayment=() => {
               Self Chatrel
              </ListItem>}
             <ListItem button onClick={()=>{handleClose();history.push('/Family');}} className="d-block text-left">
-              Chatrel for Family
+               Family Chatrel
             </ListItem>
             <ListItem button  onClick={()=>{handleClose();history.push('/Friends');}} className="d-block text-left">
-            Chatrel for Friends
+            Friend's Chatrel
             </ListItem>
             <ListItem button onClick={()=>{handleClose();history.push('/PaymentHistory');}} className="d-block text-left">
               Chatrel History
@@ -193,7 +193,7 @@ const selfPayment=() => {
               File Dispute
             </ListItem>
             <ListItem button onClick={()=>{handleClose();history.push('/Profile');}}  className="d-block text-left">
-              Profile
+              My Profile
             </ListItem>
             
           </List>

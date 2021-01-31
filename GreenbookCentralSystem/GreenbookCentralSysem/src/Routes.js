@@ -85,12 +85,11 @@ const ChatrelPay = lazy(() => import('./views/chatrelpay'));
 const MainPage = lazy(() => import('./views/chatrelpay/mainpage'));
 const PaymentPage = lazy(() => import('./views/chatrelpay/paymentpage'));
 const ChatrelList = lazy(() => import('./views/chatrelpay/chatrel_list'));
-const ChatrelSearchUsers = lazy(() =>
-  import('./views/chatrelhome/searchusers')
-);
+const ChatrelSearchUsers = lazy(() =>  import('./views/chatrelhome/searchusers'));
 const ChatrelReceipt = lazy(() => import('./views/chatrelpay/chatrelreceipt'));
 const ChatrelBulkUpload = lazy(() => import('./views/chatrelhome/bulkupload'));
 const ChatrelReport = lazy(() => import('./views/chatrelhome/reports'));
+const ChatrelAddSingle = lazy(() => import('./views/chatrelhome/addchatrel'));
 
 //Report
 
