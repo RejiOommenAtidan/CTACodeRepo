@@ -3,12 +3,10 @@ import {
   View,
   StyleSheet,
   Text,
-  Switch,
   BackHandler,
   ImageBackground,
   Dimensions,
   ActivityIndicator,
-  Image,
 } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
@@ -30,7 +28,7 @@ import { useNavigation } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { removeGoogleCreds } from '../store/actions/GLoginAction';
 import { removeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
-import { removeGBDetails } from '../store/actions/GBDetailsAction';
+import { removeGBDetails, removeJWTToken } from '../store/actions/GBDetailsAction';
 import { useForm, Controller } from 'react-hook-form';
 import {
   errorComponent,
@@ -41,31 +39,43 @@ import {
 } from '../constants/CommonConfig';
 import axios from 'axios';
 import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 
 export const GBDetailScreen = (props) => {
 
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        return true;
+      };
 
-  useEffect(() => {
-    if (isFocused) {
-      BackHandler.addEventListener('hardwareBackPress', () => true);
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
-      // getUserDataFromAsnycStorage().then(oUserInfo => {
-      //   if (oUserInfo) {
-      //     getGBDataFromAsnycStorage().then(oGBInfo => {
-      //       if (oGBInfo) {
-      //         let oUserCompleteDetails = {...oUserInfo,...oGBInfo}
-      //         verifyAllDetails(oUserCompleteDetails);
-      //       }
-      //     });
-      //   }
-      // });
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
 
+  // useEffect(() => {
+  //   if (isFocused) {
+  //     BackHandler.addEventListener('hardwareBackPress', () => true);
 
-    }
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', () => true);
-    };
-  }, [isFocused]);
+  //     // getUserDataFromAsnycStorage().then(oUserInfo => {
+  //     //   if (oUserInfo) {
+  //     //     getGBDataFromAsnycStorage().then(oGBInfo => {
+  //     //       if (oGBInfo) {
+  //     //         let oUserCompleteDetails = {...oUserInfo,...oGBInfo}
+  //     //         verifyAllDetails(oUserCompleteDetails);
+  //     //       }
+  //     //     });
+  //     //   }
+  //     // });
+
+  //   }
+  //   return () => {
+  //     BackHandler.removeEventListener('hardwareBackPress', () => true);
+  //   };
+  // }, [isFocused]);
 
   // useEffect(() => {
   //   BackHandler.addEventListener('hardwareBackPress', () => true);
@@ -135,7 +145,6 @@ export const GBDetailScreen = (props) => {
   let keysToRemove = ['oUserInfo', 'oGBInfo'];
   const navigation = useNavigation();
   const [sGBID, setsGBID] = useState('');
-  const [bShowGBID, setbShowGBID] = useState(true);
   const [dtDOB, setdtDOB] = useState(null);
   const dtToday = Moment().format(sDateFormatDatePicker);
   const [bLoader, setbLoader] = useState(false);
@@ -146,6 +155,7 @@ export const GBDetailScreen = (props) => {
       await AsyncStorage.multiRemove(keysToRemove, (err) => {
         dispatch(removeGoogleCreds);
         dispatch(removeGBDetails);
+        dispatch(removeJWTToken);
         dispatch(removeCurrentGBDetails);
         navigation.navigate('Login');
       });
@@ -179,11 +189,12 @@ export const GBDetailScreen = (props) => {
       .then((response) => {
         if (response.status === 200) {
           if (response.data.result == 'Verified') {
-            console.log(response.data.sJwtToken)
-            axios.defaults.headers.common[
-              'Authorization'
-            ] = `Bearer ${response.data.sJwtToken}`;
-            dispatch(storeJWTToken(response.data.sJwtToken));
+            // const oSession={
+            //   sJwtToken:resp.data.token,
+            //   bSession: new Date().getTime(),
+            // }
+            const token = response.data.sJwtToken;
+            dispatch(storeJWTToken(token));
             dispatch(storeGBDetails(oGBDetails));
             dispatch(storeCurrentGBDetails(oGBDetails));
             try {
@@ -216,18 +227,6 @@ export const GBDetailScreen = (props) => {
         }
       })
       .catch((error) => {
-        //debugger;
-        // if (error.response) {
-        //   // Not 2xx
-        //   console.log(error.response.data);
-        //   console.log(error.response.status);
-        //   console.log(error.response.headers);
-        // } else if (error.request) {
-        //   console.log(error.request);
-        // } else {
-        //   console.log('Error', error.message);
-        // }
-
         setbLoader(false);
         Alert.alert(
           'Verification failed!',
@@ -339,14 +338,6 @@ export const GBDetailScreen = (props) => {
               </Text>
             </View>
           )}
-          {/*<View style={styles.showGBIDContainer}>
-        <Switch
-          style={styles.showGBIDComponent}
-          onValueChange={() => { setbShowGBID(!bShowGBID) }}
-          value={bShowGBID}
-        />
-        <Text>Show/Hide GBID</Text>
-      </View>*/}
         </View>
         <View style={styles.dobContainer}>
           <Controller
@@ -443,13 +434,9 @@ export const GBDetailScreen = (props) => {
             title="VERIFY"
             titleStyle={{
               color: Colors.black,
-              //fontWeight: 'bold',
-              // fontFamily: sFontName,
-              // fontWeight: 'normal',
+              fontStyle: 'normal',
               fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
               fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
-              //fontStyle: 'normal',
-              //fontWeight: 'normal',
               textAlign: 'center',
             }}
             onPress={handleSubmit(handleVerifyDetailsPress)}
@@ -521,15 +508,16 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: hp(3.5),
     fontStyle: 'normal',
-    fontWeight: 'normal',
+
     color: Colors.white,
-    fontFamily: sFontName,
+
     marginHorizontal:
       Dimensions.get('window').width * Resolution.nWidthScreenMargin,
     marginTop: hp(22),
     marginBottom: hp(6),
     lineHeight: hp(4.75),
-
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
     //letterSpacing: Resolution.nLetterSpacing,
   },
   textContainer: {

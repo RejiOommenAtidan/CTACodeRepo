@@ -1023,7 +1023,7 @@ export default function EditEntry(props) {
                         }}
                         inputProps={{
                           style:{
-                            fontSize: '1.5rem'
+                            fontSize: '1.4rem'
                           }
                         }}
                         onChange={(e) => {
@@ -1059,7 +1059,7 @@ export default function EditEntry(props) {
                           }}
                           inputProps={{
                             style:{
-                              fontSize: '1.5rem'
+                              fontSize: '1.4rem'
                             }
                           }}
                           type="text"
@@ -1095,7 +1095,7 @@ export default function EditEntry(props) {
                             }
                           }}inputProps={{
                             style:{
-                              fontSize: '1.5rem'
+                              fontSize: '1.4rem'
                             }
                           }}
                           type="text"
@@ -1555,7 +1555,7 @@ export default function EditEntry(props) {
                         }}
                         inputProps={{
                           style:{
-                            fontSize: '1.5rem'
+                            fontSize: '1.4rem'
                           }
                         }}
                         fullWidth
@@ -1664,7 +1664,7 @@ export default function EditEntry(props) {
                         }}
                         inputProps={{
                           style:{
-                            fontSize: '1.5rem'
+                            fontSize: '1.4rem'
                           }
                         }}
                         fullWidth
@@ -2447,7 +2447,7 @@ export default function EditEntry(props) {
                           }}
                           inputProps={{
                             style:{
-                              fontSize: '1.5rem'
+                              fontSize: '1.4rem'
                             }
                           }}
                           type="text"

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Platform, StyleSheet, View} from 'react-native';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-community/google-signin';
-import { sClientIDAndroid, sClientIDIOS } from '../constants/CommonConfig';
-import { useSelector, useDispatch } from 'react-redux';
-import { storeGoogleCreds } from '../store/actions/GLoginAction';
+import {sClientIDAndroid, sClientIDIOS} from '../constants/CommonConfig';
+import {useSelector, useDispatch} from 'react-redux';
+import {storeGoogleCreds} from '../store/actions/GLoginAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   widthPercentageToDP as wp,
@@ -27,7 +27,7 @@ export const GLogin = (props) => {
       iosClientId: sClientIDIOS, // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
     });
 
-    isSignedIn();
+    //isSignedIn();
 
     // getUserDataFromAsnycStorage().then(data => {
     //   //console.info(data);
@@ -38,7 +38,6 @@ export const GLogin = (props) => {
     //     props.props.navigation.navigate("GBDetail");
     //   }
     // });
-
   }, []);
 
   // const getUserDataFromAsnycStorage = async () => {
@@ -73,7 +72,6 @@ export const GLogin = (props) => {
 
       //Navigate to GBDetail Screen
       props.props.navigation.navigate('GBDetail');
-
     } catch (error) {
       //console.info('Error Message: '+ error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -111,7 +109,6 @@ export const GLogin = (props) => {
 
       //Navigate to GBDetail Screen
       props.props.navigation.navigate('GBDetail');
-
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         //console.info('User has not signed in yet');

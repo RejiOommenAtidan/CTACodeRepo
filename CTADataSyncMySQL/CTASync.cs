@@ -59,15 +59,13 @@ namespace CTADataSyncMySQL
             try
             {
                 cnnDB1 = new MySqlConnection(connetionStringDB1);
-                //cnnDB2 = new MySqlConnection(connetionStringDB2);
-
                 cnnDB1.Open();
 
 
                 cnnDB2 = new MySqlConnection(connetionStringDB2);
                 cnnDB2.Open();
 
-                labelSyncReport.Text = "lstChatrel - Syncing Process....";
+                //labelSyncReport.Text = "lstChatrel - Syncing Process....";
                 //1. Sync Datatable - lstChatrel
                 strQuery = Sync_lstChatrel_Table(cnnDB1, cnnDB2, DB1Name, DB2Name);
                 ProgressBarOneStep();
@@ -99,12 +97,7 @@ namespace CTADataSyncMySQL
                 this.Refresh();
                 Application.DoEvents();
 
-                // labelSyncReport.Text = "tblGreenbook - Syncing Process....";
-                //5. Sync Datatable - tblGreenbook
-                // strQuery = Sync_tblGreenbook_Table(cnnDB1, cnnDB2, DB1Name, DB2Name);
-                // ProgressBarOneStep();
-                // if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
-                // strQuery = string.Empty;
+
 
                 //labelSyncReport.Text = "lnkGBChildren - Syncing Process....";
                 ////6. Sync Datatable - lnkGBChildren
@@ -119,10 +112,20 @@ namespace CTADataSyncMySQL
                 //ProgressBarOneStep();
                 //if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
                 //strQuery = string.Empty;
+                //ProgressBarOneStep();
+                //ProgressBarOneStep();
+                //ProgressBarOneStep();
+                //ProgressBarOneStep();
+                ProgressBarOneStep();
+                ProgressBarOneStep();
+                ProgressBarOneStep();
 
-                ProgressBarOneStep();
-                ProgressBarOneStep();
-                ProgressBarOneStep();
+                //labelSyncReport.Text = "tblGreenbook - Syncing Process....";
+                ////5. Sync Datatable - tblGreenbook
+                //strQuery = Sync_tblGreenbook_Table(cnnDB1, cnnDB2, DB1Name, DB2Name);
+                //ProgressBarOneStep();
+                //if (strQuery != string.Empty) { stringBuilderQuery.AppendLine(strQuery); }
+                //strQuery = string.Empty;
 
                 labelSyncReport.Text = "lnkGBChatrel - Syncing Process....";
                 //8. Sync Datatable - lnkGBChatrel
@@ -248,14 +251,15 @@ namespace CTADataSyncMySQL
         public string Sync_tblGreenbook_Table(MySqlConnection cnnDB1, MySqlConnection cnnDB2, string db1Name, string db2Name)
         {
             string queryLabelTableName = "tblgreenbook";
-            string queryLabelColumnNames = "`tblgreenbook`.`Id`,`tblgreenbook`.`sGBID`,`tblgreenbook`.`nAuthRegionID`,`tblgreenbook`.`sFirstName`,`tblgreenbook`.`sMiddleName`,`tblgreenbook`.`sLastName`"
-                    + ",`tblgreenbook`.`sFamilyName`,`tblgreenbook`.`sGender`,`tblgreenbook`.`dtDOB`,`tblgreenbook`.`sMarried`,`tblgreenbook`.`sFathersName`,`tblgreenbook`.`sFathersID`"
-                    + ",`tblgreenbook`.`sFathersGBID`,`tblgreenbook`.`sMothersName`,`tblgreenbook`.`sMothersID`,`tblgreenbook`.`sMothersGBID`,`tblgreenbook`.`sSpouseName`,`tblgreenbook`.`sSpouseID`"
-                    + ",`tblgreenbook`.`sSpouseGBID`,`tblgreenbook`.`nChildrenM`,`tblgreenbook`.`nChildrenF`,`tblgreenbook`.`sEmail`,`tblgreenbook`.`sPhone`,`tblgreenbook`.`sFax`,`tblgreenbook`.`sPaidUntil`"
-                    + ",`tblgreenbook`.`sLoginGmail`,`tblgreenbook`.`dtLastSuccessfullLogin`,`tblgreenbook`.`dtEntered`,`tblgreenbook`.`nEnteredBy`,`tblgreenbook`.`dtUpdated`,`tblgreenbook`.`nUpdatedBy`";
+            string queryLabelColumnNames = "`tblgreenbook`.`Id`,`tblgreenbook`.`sGBID`,`tblgreenbook`.`nAuthRegionID`,`tblgreenbook`.`sFirstName`,`tblgreenbook`.`sLastName`," +
+                "`tblgreenbook`.`dtDOB`,`tblgreenbook`.`sEmail`,`tblgreenbook`.`sPhone`,`tblgreenbook`.`dtDeceased`,`tblgreenbook`.`sCountryID`,`tblgreenbook`.`sPaidUntil`," +
+                "`tblgreenbook`.`sLoginGmail`,`tblgreenbook`.`dtLastSuccessfullLogin`,`tblgreenbook`.`dtEntered`,`tblgreenbook`.`nEnteredBy`,`tblgreenbook`.`dtUpdated`," +
+                "`tblgreenbook`.`nUpdatedBy`";
+            //string strWhereclause = " where dtUpdated > DATE_SUB(now(), INTERVAL 3 DAY)";
+            string strWhereclause = " where sgbid='86'";
 
             //GenerateQueryAndExecute
-            return GenerateQueryAndExecute(cnnDB1, cnnDB2, queryLabelColumnNames, queryLabelTableName, db1Name, db2Name);
+            return GenerateUpdateQueryAndExecuteBothDB(cnnDB1, cnnDB2, queryLabelColumnNames, queryLabelTableName, db1Name, db2Name, strWhereclause);
 
         }
         #endregion
@@ -340,6 +344,9 @@ namespace CTADataSyncMySQL
                     + "`tblchatrelpayment`.`dtEntered`,`tblchatrelpayment`.`nEnteredBy`,`tblchatrelpayment`.`dtUpdated`,`tblchatrelpayment`.`nUpdatedBy`";
             string strWhereclause = " Where sPaymentMode = '" + sPaymentMode + "'";
 
+            //ExecuteForUpdateTblGreenbook
+            ExecuteForUpdateTblGreenbook(cnnDB1, cnnDB2, queryLabelColumnNames, queryLabelTableName, db1Name, db2Name, strWhereclause);
+
             //GenerateQueryAndExecute
             return GenerateQueryAndExecute(cnnDB1, cnnDB2, queryLabelColumnNames, queryLabelTableName, db1Name, db2Name, strWhereclause);
 
@@ -348,6 +355,63 @@ namespace CTADataSyncMySQL
         #endregion
 
         #endregion
+
+        public string ExecuteForUpdateTblGreenbook(MySqlConnection cnnDB1, MySqlConnection cnnDB2, string queryLabelColumnNames, string queryLabelTableName, string db1Name, string db2Name, string optionalWhereClause = "No WhereClause")
+        {
+            string insertIdsCommaSeperated = string.Empty;
+            string updateIdsCommaSeperated = string.Empty;
+            string deleteIdsCommaSeperated = string.Empty;
+            string insertQuery = string.Empty;
+            string updateQuery = string.Empty;
+            string deleteQuery = string.Empty;
+            string strQuerys = string.Empty;
+            //string DB1Name = textBoxAdminDBName.Text;
+            //string DB2Name = textBoxChatrelDBName.Text;
+
+            string queryDB1 = "SELECT " + queryLabelColumnNames + " FROM `" + queryLabelTableName + "` ";
+            if (optionalWhereClause != "No WhereClause") { queryDB1 += optionalWhereClause; }
+            MySqlDataAdapter returnValDB1 = new MySqlDataAdapter(queryDB1, cnnDB1);
+            DataTable dtDB1 = new DataTable(queryLabelTableName);
+            returnValDB1.Fill(dtDB1);
+
+            string queryDB2 = "SELECT " + queryLabelColumnNames + " FROM `" + queryLabelTableName + "` ";
+            if (optionalWhereClause != "No WhereClause") { queryDB2 += optionalWhereClause; }
+            MySqlDataAdapter returnValDB2 = new MySqlDataAdapter(queryDB2, cnnDB2);
+            DataTable dtDB2 = new DataTable("c" + queryLabelTableName);
+            returnValDB2.Fill(dtDB2);
+
+            if (AreTablesTheSame(dtDB1, dtDB2))
+            {
+                //log with no changes
+            }
+            else
+            {
+
+                //getDifferentRecords(string resultName, DataTable FirstDataTable, DataTable SecondDataTable, bool Return1st)
+                //When Return1st is true: ResultDataTable contains Adds Or Updates found in SecondDataTable as compared to FirstDataTable
+                //When Return1st is false: ResultDataTable contains Deletes Or Updates found in FirstDataTable as compared to SecondDataTable
+
+                DataTable dtAddedEditedRecords = getDifferentRecords("ResultSet", dtDB1, dtDB2, true);
+               
+
+                //log the difference in records
+                //create database script for changing in Chatrel Database
+                if (dtAddedEditedRecords != null && dtAddedEditedRecords.Rows.Count > 0)
+                {
+                    insertIdsCommaSeperated = getIdsAndUpdateTblGreenBook(cnnDB2, dtAddedEditedRecords, db2Name, queryLabelTableName, queryLabelColumnNames);
+                    
+                }
+
+                //Execute Database Script
+                if (insertIdsCommaSeperated != string.Empty)
+                {
+                    strQuerys += executeInsertQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, db1Name, insertIdsCommaSeperated);
+                }
+                
+
+            }
+            return strQuerys;
+        }
 
 
         public string GenerateQueryAndExecute(MySqlConnection cnnDB1, MySqlConnection cnnDB2, string queryLabelColumnNames, string queryLabelTableName, string db1Name, string db2Name, string optionalWhereClause = "No WhereClause")
@@ -611,6 +675,62 @@ namespace CTADataSyncMySQL
             MyReader2.Close();
         }
 
+        #region getIdsAndUpdateTblGreenBook
+        public string getIdsAndUpdateTblGreenBook(MySqlConnection dbConn, DataTable addEditRecords, string dbName, string queryLabelTableName, string queryLabelColumnNames)
+        {
+            
+            string Ids = getIDsCommaSeperated(addEditRecords);
+            string insertIds = string.Empty;
+
+            string queryDB = "SELECT " + queryLabelColumnNames + " FROM `" + queryLabelTableName + "` where `Id` in (" + Ids + ")";
+            MySqlDataAdapter returnValDB1 = new MySqlDataAdapter(queryDB, dbConn);
+            DataTable dtDB = new DataTable("TableUpdatedRecords");
+            returnValDB1.Fill(dtDB);
+
+            string updateIds = getIDsCommaSeperated(dtDB);
+
+            if (updateIds != "")
+            {
+                DataView dv = new DataView(addEditRecords);
+                dv.RowFilter = "Id not in (" + updateIds + ")";
+
+                insertIds = getIDsCommaSeperated(dv.ToTable());
+            }
+            else
+            {
+                if (dtDB != null && dtDB.Rows.Count > 0)
+                {
+                    insertIds = getIDsCommaSeperated(dtDB);
+                }
+                else
+                {
+                    insertIds = Ids;
+                }
+            }
+
+            if (insertIds != "")
+            {
+                DataView dvInsert = new DataView(addEditRecords);
+                dvInsert.RowFilter = "Id in (" + insertIds + ")";
+                DataTable dtInsertingRecords = dvInsert.ToTable();
+
+                foreach (DataRow item in dtInsertingRecords.Rows)
+                {
+                    string sgbId = item["sGBId"].ToString();
+                    string Querystring = "update tblGreenbook " +
+                                            "set spaiduntil = if (month(now()) > 3 , year(now()), year(now()) - 1  )" +
+                                             "where sgbid = '" + sgbId + "';";
+
+                    executeQueryInDB(dbConn, Querystring);
+                }
+            }
+
+
+
+            return insertIds;
+        }
+        #endregion
+
         #region getInsertIds
         public string getInsertIdsCommaSeprated(MySqlConnection dbConn, DataTable addEditRecords, string dbName, string queryLabelTableName, string queryLabelColumnNames)
         {
@@ -714,6 +834,60 @@ namespace CTADataSyncMySQL
                 }
             }
             return Ids;
+        }
+
+        public string GenerateUpdateQueryAndExecuteBothDB(MySqlConnection cnnDB1, MySqlConnection cnnDB2, string queryLabelColumnNames, string queryLabelTableName, string db1Name, string db2Name, string optionalWhereClause = "No WhereClause")
+        {
+            string insertIdsCommaSeperated = string.Empty;
+            string updateIdsCommaSeperated = string.Empty;
+            string deleteIdsCommaSeperated = string.Empty;
+            string insertQuery = string.Empty;
+            string updateQuery = string.Empty;
+            string deleteQuery = string.Empty;
+            string strQuerys = string.Empty;
+            //string DB1Name = textBoxAdminDBName.Text;
+            //string DB2Name = textBoxChatrelDBName.Text;
+
+            string queryDB1 = "SELECT " + queryLabelColumnNames + " FROM `" + queryLabelTableName + "` ";
+            if (optionalWhereClause != "No WhereClause") { queryDB1 += optionalWhereClause; }
+            MySqlDataAdapter returnValDB1 = new MySqlDataAdapter(queryDB1, cnnDB1);
+            DataTable dtDB1 = new DataTable(queryLabelTableName);
+            returnValDB1.Fill(dtDB1);
+
+            string queryDB2 = "SELECT " + queryLabelColumnNames + " FROM `" + queryLabelTableName + "` ";
+            if (optionalWhereClause != "No WhereClause") { queryDB2 += optionalWhereClause; }
+            MySqlDataAdapter returnValDB2 = new MySqlDataAdapter(queryDB2, cnnDB2);
+            DataTable dtDB2 = new DataTable("c" + queryLabelTableName);
+            returnValDB2.Fill(dtDB2);
+
+            if (AreTablesTheSame(dtDB1, dtDB2))
+            {
+                //log with no changes
+            }
+            else
+            {
+
+                //getDifferentRecords(string resultName, DataTable FirstDataTable, DataTable SecondDataTable, bool Return1st)
+                //When Return1st is true: ResultDataTable contains Adds Or Updates found in SecondDataTable as compared to FirstDataTable
+                //When Return1st is false: ResultDataTable contains Deletes Or Updates found in FirstDataTable as compared to SecondDataTable
+
+                DataTable dtAddedEditedRecords = getDifferentRecords("ResultSet", dtDB1, dtDB2, true);
+                //DataTable dtDeletedRecords = getDifferentRecords("ResultSet", dtDB1, dtDB2, false);
+
+                //log the difference in records
+                //create database script for changing in Chatrel Database
+                if (dtAddedEditedRecords != null && dtAddedEditedRecords.Rows.Count > 0)
+                {
+                    updateIdsCommaSeperated = getUpdateIdsCommaSeprated(cnnDB2, dtAddedEditedRecords, db2Name, queryLabelTableName, queryLabelColumnNames);
+                }
+
+                if (updateIdsCommaSeperated != string.Empty)
+                {
+                    strQuerys += executeUpdateQueryByIds(cnnDB2, queryLabelTableName, queryLabelColumnNames, db1Name, updateIdsCommaSeperated);
+                }
+
+            }
+            return strQuerys;
         }
     }
 }

@@ -32,10 +32,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
-
+import {storeSession} from '../../actions/transactions/SessionAction';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import Flag from 'react-flagkit';
+import { useDispatch } from 'react-redux';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -69,18 +70,24 @@ export default function Family () {
   const handleClose = () => {
     setOpen(false);
   };
-
+  const dispatch = useDispatch();
 
   const getReceipt = (sChatrelReceiptNumber) => {
     setBackdrop(true);
     console.log("Receipt Number", sChatrelReceiptNumber);
-    axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=`+sChatrelReceiptNumber,  { responseType: 'blob' })
+    axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=`+sChatrelReceiptNumber/*,  { responseType: 'blob' }*/)
     .then(resp => {
-      console.log("Response", resp);
+      console.log("Response", resp.data);
       
       if (resp.status === 200) {
+        const oSession={
+          sJwtToken:resp.data.token,
+          bSession:true
+        }
+        dispatch(storeSession(oSession));
         setBackdrop(false);
-        const url = window.URL.createObjectURL(new Blob([resp.data]));
+ //       const url = window.URL.createObjectURL(base64);
+        const url = `data:application/pdf;base64,${resp.data.receipt}`;
         const link = document.createElement("a");
         link.href = url;
         link.setAttribute("download", "ChatrelReceipt.pdf");
@@ -116,41 +123,51 @@ export default function Family () {
 
   }
 
-  const printPDF = () => {
-    const domElement = document.getElementById("mytable");
-    html2canvas(domElement,{
-      allowTaint: true,
-      scrollX: 0,
-      scrollY: -window.scrollY,
-     /* onclone: (clonedDomElement)=> {
+  // const printPDF = () => {
+  //   const domElement = document.getElementById("mytable");
+  //   html2canvas(domElement,{
+  //     allowTaint: true,
+  //     scrollX: 0,
+  //     scrollY: -window.scrollY,
+  //    /* onclone: (clonedDomElement)=> {
 
-        // I made the div hidden and here I am changing it to visible
-        clonedDomElement.getElementById('mytable').style.display = 'block';
-      //  clonedDomElement.getElementById('mytable').style.visibility = 'visible';
-     }*/
-    }).then(canvas => {
-      const imgData = canvas.toDataURL("image/png");
-      console.log(imgData);
-      //imgData.save();
-      const pdf = new jsPdf();
-      pdf.addImage(imgData, "PNG",10,10);
-      pdf.save('eChatrel-Receipt.pdf');
-    });
+  //       // I made the div hidden and here I am changing it to visible
+  //       clonedDomElement.getElementById('mytable').style.display = 'block';
+  //     //  clonedDomElement.getElementById('mytable').style.visibility = 'visible';
+  //    }*/
+  //   }).then(canvas => {
+  //     const imgData = canvas.toDataURL("image/png");
+  //     console.log(imgData);
+  //     //imgData.save();
+  //     const pdf = new jsPdf();
+  //     pdf.addImage(imgData, "PNG",10,10);
+  //     pdf.save('eChatrel-Receipt.pdf');
+  //   });
 
-  };
+  // };
 
   useEffect(() => {
     //setPaymentData(payObj);
     axios.get(`/ChatrelPayment/GetPaymentHistory/?sGBID=`+sGBID)
       .then(resp => {
         if (resp.status === 200) {
-         setPaymentHistory(resp.data);
+          const oSession={ sJwtToken:resp.data.token,bSession:true }
+          dispatch(storeSession(oSession));
+         setPaymentHistory(resp.data.paymentHistory);
          console.log(resp.data.length);
          setBackdrop(false);
          
         }
       })
       .catch(error => {
+        if (error.response.status === 401) {
+   
+          const oSession={
+            sJwtToken:"",
+            bSession:false
+          }
+          dispatch(storeSession(oSession));
+        }
         if (error.response) {
           console.error(error.response.data);
           console.error(error.response.status);
@@ -299,7 +316,7 @@ export default function Family () {
     <Backdrop className={classes.backdrop} open={backdrop} >
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Dialog
+      {/* <Dialog
         open={open}
         TransitionComponent={Transition}
         keepMounted
@@ -308,11 +325,11 @@ export default function Family () {
        // aria-labelledby="alert-dialog-slide-title"
         //aria-describedby="alert-dialog-slide-description"
       >
-        {/*<DialogTitle id="alert-dialog-slide-title">{}</DialogTitle>*/}
+      
         <DialogContent>
           <DialogContentText >
           { receiptData &&
-          <table /*ref={ref}*/  id="mytable" className="mytable" cellspacing="0" style={{ border: "3px solid #000000",background:`linear-gradient(rgba(255,255,255,.9), rgba(255,255,255,.9)),url(${CTALogo}) no-repeat center ` }}>
+          <table id="mytable" className="mytable" cellspacing="0" style={{ border: "3px solid #000000",background:`linear-gradient(rgba(255,255,255,.9), rgba(255,255,255,.9)),url(${CTALogo}) no-repeat center ` }}>
       <tr>
           <td width="20"></td>
           <td width="200"></td>
@@ -336,7 +353,7 @@ export default function Family () {
         </tr>
         <tr>
           
-          <td colspan="5"/* style={{borderRight:"3px solid #000000"}}*/   height="27" align="left" valign="top" > 
+          <td colspan="5"   height="27" align="left" valign="top" > 
             
             <table >
               <tr>
@@ -466,7 +483,7 @@ export default function Family () {
             Close
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
      
 
     </>

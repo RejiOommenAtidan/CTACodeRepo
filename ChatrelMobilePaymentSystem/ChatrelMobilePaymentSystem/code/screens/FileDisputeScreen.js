@@ -8,6 +8,7 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
+import { storeJWTToken } from '../store/actions/GBDetailsAction';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
@@ -31,13 +32,14 @@ import {
   oRequiredStyles,
 } from '../constants/CommonConfig';
 import { useIsFocused } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Loader } from '../components/Loader';
 import axios from 'axios';
 import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const FileDisputeScreen = (props) => {
+  const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [bLoader, setbLoader] = useState(false);
   const { control, handleSubmit, errors } = useForm();
@@ -95,6 +97,8 @@ export const FileDisputeScreen = (props) => {
           setsFileName(null);
           setsDisputeSingleFile("");
           setbLoader(false);
+          const token = resp.data.token;
+          dispatch(storeJWTToken(token));
           Alert.alert(
             'Success',
             'Thanks for uploading. Your details are sent to the CTA Team & they shall get in touch with you soon.',
@@ -115,7 +119,6 @@ export const FileDisputeScreen = (props) => {
       .catch((error) => {
         setbLoader(false);
         alert('Something went wrong, please try again later');
-        //alert(error.message)
         console.log(error);
       });
   };
@@ -148,10 +151,10 @@ export const FileDisputeScreen = (props) => {
         setsDisputeSingleFile(result);
       });
       //setsFileType(res.type);
-      
+
       setsFileType(res.name.split('.').pop());
       setsFileName(res.name);
-      
+
     } catch (err) {
       //Handling any exception (If any)
       if (DocumentPicker.isCancel(err)) {
@@ -165,36 +168,6 @@ export const FileDisputeScreen = (props) => {
       }
     }
   };
-
-  // const selectMultipleFile = async () => {
-  //   //Opening Document Picker for selection of multiple file
-  //   try {
-  //     const results = await DocumentPicker.pickMultiple({
-  //       type: [DocumentPicker.types.images],
-  //       //There can me more options as well find above
-  //     });
-  //     for (const res of results) {
-  //       //Printing the log realted to the file
-  //       console.log('res : ' + JSON.stringify(res));
-  //       console.log('URI : ' + res.uri);
-  //       console.log('Type : ' + res.type);
-  //       console.log('File Name : ' + res.name);
-  //       console.log('File Size : ' + res.size);
-  //     }
-  //     //Setting the state to show multiple file attributes
-  //     setsDisputeMultipleFiles(results);
-  //   } catch (err) {
-  //     //Handling any exception (If any)
-  //     if (DocumentPicker.isCancel(err)) {
-  //       //If user canceled the document selection
-  //       alert('Canceled from multiple doc picker');
-  //     } else {
-  //       //For Unknown Error
-  //       alert('Unknown Error: ' + JSON.stringify(err));
-  //       throw err;
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     if (isFocused) {
@@ -380,12 +353,12 @@ export const FileDisputeScreen = (props) => {
               </Text>
             </View>
           )}
-          {/* <View style={styles.infoContainer}>
+          {/*<View style={styles.infoContainer}>
               <Text style={styles.infoComponent}>
                 The response to the dispute will be addressed through an email
                 sent to your registered email address.
               </Text>
-            </View> */}
+            </View>*/}
           <View style={styles.submitDisputeContainer}>
             <Button
               // iconRight
@@ -449,8 +422,6 @@ const styles = StyleSheet.create({
       Dimensions.get('window').height * Resolution.nHeightScreenMargin,
   },
   headingContainer: {
-    // width: wp(55),
-    // height: hp(4),
     marginTop:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
     marginBottom:
@@ -459,8 +430,6 @@ const styles = StyleSheet.create({
         : 28,
   },
   headingComponent: {
-    // width: '100%',
-    // height: '100%',
     textAlign: 'left',
     fontSize:
       Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 14.4 : 24,
@@ -470,13 +439,9 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   enterSubjectContainer: {
-    // width: wp(22),
-    // height: hp(2),
     marginBottom: hp(2),
   },
   enterSubjectComponent: {
-    // width: '100%',
-    // height: '100%',
     textAlign: 'left',
     fontSize: wp(3),
     fontStyle: 'normal',
@@ -485,16 +450,12 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   enterMessageLabelContainer: {
-    // width: wp(22),
-    // height: hp(2),
     marginBottom: hp(2),
   },
   enterMessagelabelComponent: {
-    // width: '100%',
     // minHeight: hp(5),
     // height: 'auto',
     // textAlignVertical: 'top',
-    // height: '100%',
     textAlign: 'auto',
     fontSize: wp(3.5),
     fontStyle: 'normal',
@@ -507,14 +468,10 @@ const styles = StyleSheet.create({
   },
   subjectContainer: {},
   attachImageContainer: {
-    // width: wp(22),
-    // height: hp(2),
     marginTop: hp(1),
     marginBottom: hp(1),
   },
   attachImageLabelComponent: {
-    // width: '100%',
-    // height: '100%',
     textAlign: 'left',
     fontSize: wp(3.5),
     fontStyle: 'normal',
@@ -523,13 +480,9 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
   },
   selectedFileContainer: {
-    // width: wp(80),
-    // height: hp(3.75),
     marginBottom: hp(1),
   },
   selectedFileComponent: {
-    // width: '100%',
-    // height: '100%',
     textAlign: 'left',
     fontSize: wp(3.25),
     fontStyle: 'normal',
@@ -538,13 +491,9 @@ const styles = StyleSheet.create({
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
   infoContainer: {
-    // width: wp(80),
-    // height: hp(5),
     marginBottom: hp(2),
   },
   infoComponent: {
-    // width: '100%',
-    // height: '100%',
     textAlign: 'center',
     fontSize: wp(3.5),
     fontStyle: 'normal',

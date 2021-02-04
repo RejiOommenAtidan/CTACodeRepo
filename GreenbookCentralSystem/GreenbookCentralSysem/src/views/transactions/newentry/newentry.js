@@ -550,7 +550,7 @@ const addChildAPICall = (childObj) => {
                         }}
                         inputProps={{
                           style:{
-                            fontSize: '1.5rem'
+                            fontSize: '1.4rem'
                           }
                         }}
                         type="text"
@@ -582,7 +582,7 @@ const addChildAPICall = (childObj) => {
                         }}
                         inputProps={{
                           style:{
-                            fontSize: '1.5rem'
+                            fontSize: '1.4rem'
                           }
                         }}
                         type="text"
@@ -939,7 +939,7 @@ placeholder="DD-MM-YYYY"
                         }}
                         inputProps={{
                           style:{
-                            fontSize: '1.5rem'
+                            fontSize: '1.4rem'
                           }
                         }}
                         type="text"
@@ -1327,7 +1327,7 @@ placeholder="DD-MM-YYYY"
                         }}
                         inputProps={{
                           style:{
-                            fontSize: '1.5rem'
+                            fontSize: '1.4rem'
                           }
                         }}
                         type="text"
@@ -1444,7 +1444,7 @@ placeholder="DD-MM-YYYY"
                         }}
                         inputProps={{
                           style:{
-                            fontSize: '1.5rem'
+                            fontSize: '1.4rem'
                           }
                         }}
                         onChange={(e) => { setTBUMothersName(e.target.value); }}
@@ -1578,7 +1578,7 @@ placeholder="DD-MM-YYYY"
                         }}
                         inputProps={{
                           style:{
-                            fontSize: '1.5rem'
+                            fontSize: '1.4rem'
                           }
                         }}
                         type="text"

@@ -108,6 +108,7 @@ export default function AddSingleChatrel(props) {
   console.log("Region set in 'authRegion'", authRegion);
 
   useEffect(() => {
+    setBackdrop(true);
     axios.get(`/AuthRegion/GetAuthRegionsForAddNewChatrel`)
       .then(resp => {
         if (resp.status === 200) {
@@ -118,14 +119,17 @@ export default function AddSingleChatrel(props) {
               if (resp.status === 200) {
                 console.log(resp.data);
                 setCountries(resp.data);
+                setBackdrop(false);
               }
             })
             .catch(error => {
+              setBackdrop(false);
               console.log(error.response.data);
             });
         }
       })
       .catch(error => {
+        setBackdrop(false);
         console.log(error.response.data);
       });
   }, []);
@@ -138,7 +142,7 @@ export default function AddSingleChatrel(props) {
   const [sPaidByGBID, setPaidByGBID] = useState();
 
   // GBID for Chatrel
-  const [sGBID, setGBID] = useState(null);
+  const [sGBID, setGBID] = useState();
   const [dtPaymentDate, setPaymentDate] = useState(null);
   const [sCurrency, setCurrency] = React.useState('INR');
   const [nChatrel, setChatrel] = useState(null);
@@ -158,9 +162,24 @@ export default function AddSingleChatrel(props) {
   const [sPaymentMode, setPaymentMode] = useState('Offline');
 
   const handleChangeGBID = (value) => {
+    var len = 7 - value.length;
+    for(var i = 0; i < len ; i++){
+      console.log("gbid value:", value);
+      value = '0' + value;
+    }
+    console.log("gbid value:", value);
     setGBID(value);
 
-    setAuthRegion([]);
+    
+  }
+  const handleChangePaidByGBID = (value) => {
+    var len = 7 - value.length;
+    for(var i = 0; i < len ; i++){
+      value = '0' + value;
+    }
+    
+    setPaidByGBID(value);
+
   }
   const formPopulate = (value) => {
     if (value === '') {
@@ -245,7 +264,7 @@ export default function AddSingleChatrel(props) {
   const chatrel = [{
     GBID: `${countryID}${sGBID}`,
     Name: sName,
-    PaidByGBID: sPaidByGBID,
+    PaidByGBID: `${countryID}${sPaidByGBID}`,
     Currency: sCurrency,
     Chatrel: nChatrel?.toString(),
     Meal: nMeal?.toString(),
@@ -262,7 +281,7 @@ export default function AddSingleChatrel(props) {
     ReceiptNo: sReceiptNumber,
     PaymentDate: Moment(dtPaymentDate).format('YYYY-MM-DD') !== 'Invalid date' ? Moment(dtPaymentDate).format(sDateFormatChatrelMoment) : null,
     Region: sAuthRegion,
-    Country: countryID,
+    Country: country?.sCountry,
     PaymentMode: sPaymentMode,
     nEnteredBy: userId,
     nUpdatedBy: userId
@@ -276,18 +295,24 @@ export default function AddSingleChatrel(props) {
     axios.post(`ChatrelBulkData/VerifyBulkImport`, chatrel).then(resp => {
       if(resp.status === 200){
         console.log("Verification Response: ", resp.data);
-        if(resp.data[0].sStatus === 'Validate Sucess'){
+        if(resp.data[0].sStatus === 'Validate Success'){
           console.log("Validation successful", resp.data[0].sBatchNumber);
           axios.post(`ChatrelBulkData/SubmitBulkData/?sBatchNumber=${resp.data[0].sBatchNumber}`)
           .then(resp => {
             if(resp.status === 200){
               console.log("Submit success result integer",resp.data);
               setBackdrop(false);
-              props.handleAddClickClose();
+              setAlertMessage('Record added successfully.');
+              setAlertType('success');
+              snackbarOpen();
+              setTimeout(() => props.handleAddClickClose(), 3000);
             }
           })
           .catch(error => {
             setBackdrop(false);
+            setAlertMessage(`Record adding failed.`);
+            setAlertType('error');
+            snackbarOpen();
             console.log("Error Status:", error.response.status);
             console.log("Error Message:", error.message);
             console.log("Error Data:", error.response.data);
@@ -493,7 +518,7 @@ export default function AddSingleChatrel(props) {
                             currencySymbol=""
                             //decimalCharacter="."
                             decimalPlaces={0}
-                            //outputFormat='string'
+                            outputFormat='string'
                             //maximumValue={2099}
                             //minimumValue={1950}
                             digitGroupSeparator=""
@@ -618,12 +643,12 @@ export default function AddSingleChatrel(props) {
                             currencySymbol=""
                             //decimalCharacter="."
                             decimalPlaces={0}
-                            //outputFormat='string'
+                            outputFormat='string'
                             //maximumValue={2099}
                             //minimumValue={1950}
                             digitGroupSeparator=""
                             onChange={(event, value) => {
-                              props.onChange(value); setPaidByGBID(value);
+                              props.onChange(value); handleChangePaidByGBID(value);
                             }}
                           />
                         )}
@@ -673,6 +698,7 @@ export default function AddSingleChatrel(props) {
                             onChange={(event, value) => {
                               props.onChange(value);
                               setChatrel(value);
+                              setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation );
                             }}
 
                           />
@@ -708,7 +734,8 @@ export default function AddSingleChatrel(props) {
                             //outputFormat='string'
                             digitGroupSeparator=","
                             onChange={(event, value) => {
-                              props.onChange(value); setMeal(value)
+                              props.onChange(value); setMeal(value);
+                              setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation );
                             }}
                           />
                         )}
@@ -732,7 +759,10 @@ export default function AddSingleChatrel(props) {
                         decimalPlaces={2}
                         //outputFormat='string'
                         digitGroupSeparator=","
-                        onChange={(event, value) => setSalary(value)}
+                        onChange={(event, value) => {
+                          setSalary(value);
+                          setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation );
+                        }}
                       />
                     </FormControl>
                   </Grid>
@@ -884,7 +914,10 @@ export default function AddSingleChatrel(props) {
                         decimalCharacter="."
                         decimalPlaces={2}
                         digitGroupSeparator=","
-                        onChange={(event, value) => setArrearPlusLateFees(value)}
+                        onChange={(event, value) => {
+                          setArrearPlusLateFees(value);
+                          setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation );
+                        }}
                       />
 
                     </FormControl>
@@ -991,7 +1024,10 @@ export default function AddSingleChatrel(props) {
                         //outputFormat='string'
                         decimalPlaces={2}
                         digitGroupSeparator=","
-                        onChange={(event, value) => setBusinessDonation(value)}
+                        onChange={(event, value) => {
+                          setBusinessDonation(value);
+                          setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation );
+                        }}
                       />
 
                     </FormControl>
@@ -1007,7 +1043,11 @@ export default function AddSingleChatrel(props) {
                         decimalCharacter="."
                         decimalPlaces={2}
                         digitGroupSeparator=","
-                        onChange={(event, value) => setAdditionalDonation(value)}
+                        onChange={(event, value) => {
+                          setAdditionalDonation(value);
+                          setChatrelTotalAmount(nChatrel+nMeal+nSalary+nArrearsPlusLateFees+nBusinessDonation+nAdditionalDonation);
+                        }
+                        }
                       />
 
                     </FormControl>
@@ -1074,6 +1114,15 @@ export default function AddSingleChatrel(props) {
             >Save</Button>
           </DialogActions>
         </form>
+        {snackbar && <Alerts
+            alertObj={alertObj}
+            snackbar={snackbar}
+            snackbarClose={snackbarClose}
+          />
+          }
+        {backdrop && <BackdropComponent
+            backdrop={backdrop}
+          />}
       </Dialog>
 
     </>

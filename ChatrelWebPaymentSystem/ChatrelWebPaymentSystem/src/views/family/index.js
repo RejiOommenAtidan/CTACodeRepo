@@ -25,6 +25,10 @@ import Alert from '@material-ui/lab/Alert';
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
+
+
+import {storeSession} from '../../actions/transactions/SessionAction';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -77,15 +81,26 @@ export default function MainPage () {
     .then(resp => {
       if (resp.status === 200) {
         console.log(resp.data);
-       
-        setFamilyData(resp.data);
+        const oSession={
+          sJwtToken:resp.data.token,
+          bSession:true
+        }
+dispatch(storeSession(oSession));
+        setFamilyData(resp.data.chatrel);
   
       }
     })
     .catch(error => {
       console.log(error.config);
       console.log(error.message);
-  
+      if (error.response.status === 401) {
+   
+        const oSession={
+          sJwtToken:"",
+          bSession:false
+        }
+        dispatch(storeSession(oSession));
+      }
     })
   
   }, []);
@@ -160,7 +175,7 @@ export default function MainPage () {
                   }
                   {row.sGBIDRelation != null && 
                   <Td align="center">
-                  <Button className="btn-success border-1 m-2 pt-1 pb-1" disabled={row.dPending.chatrelPayment.nChatrelTotalAmount===0}  onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' }, row.dPending, row.dPending.chatrelPayment.nChatrelTotalAmount)}} variant="outlined">Pay</Button>
+                  <Button className="btn-success border-1 m-2 pt-1 pb-1" disabled={row.dPending.chatrelPayment.nChatrelTotalAmount===0}  onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' })}} variant="outlined">Pay</Button>
                     </Td>}
                   
             </Tr>
@@ -210,7 +225,7 @@ export default function MainPage () {
                   }
                   {row.sGBIDRelation != null && 
                   <Td align="center">
-                  <Button className="btn-success border-1 m-2 pt-1 pb-1" disabled={row.dPending.chatrelPayment.nChatrelTotalAmount===0}  onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' }, row.dPending, row.dPending.chatrelPayment.nChatrelTotalAmount)}} variant="outlined">Pay</Button>
+                  <Button className="btn-success border-1 m-2 pt-1 pb-1" disabled={row.dPending.chatrelPayment.nChatrelTotalAmount===0}  onClick={()=>{makePayment({sGBID: row.sGBIDRelation, sName: row.sName, sRelation: row.sRelation, from:'Chatrel for Family' })}} variant="outlined">Pay</Button>
                     </Td>}
                   
             </Tr>

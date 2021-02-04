@@ -1,10 +1,10 @@
 import React from 'react';
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -22,8 +22,8 @@ import {
   MyProfileScreen,
   MyProfileScreenOptions,
 } from '../screens/MyProfileScreen';
-import {GBDetailScreen, GBDetailScreenOptions} from '../screens/GBDetailScreen';
-import HomeScreen, {HomeScreenOptions} from '../screens/HomeScreen';
+import { GBDetailScreen, GBDetailScreenOptions } from '../screens/GBDetailScreen';
+import HomeScreen, { HomeScreenOptions } from '../screens/HomeScreen';
 import {
   SelfChatrelScreen,
   SelfChatrelScreenOptions,
@@ -44,7 +44,7 @@ import {
   FamilyChatrelIntermediateScreen,
   FamilyChatrelIntermediateScreenOptions,
 } from '../screens/FamilyChatrelIntermediateScreen';
-import {LoginScreen, LoginScreenOptions} from '../screens/LoginScreen';
+import { LoginScreen, LoginScreenOptions } from '../screens/LoginScreen';
 import Colors from '../constants/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -52,12 +52,12 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import {sFontName, sFontNameBold} from '../constants/CommonConfig';
-import {CustomSidebarMenu} from '../components/CustomSidebar';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import { sFontName, sFontNameBold } from '../constants/CommonConfig';
+import { CustomSidebarMenu } from '../components/CustomSidebar';
+import { MyWebView, MyWebViewOptions } from '../components/MyWebView';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import {GLogout} from '../components/GLogout';
+import { GLogout } from '../components/GLogout';
 
 const defaultStackNavOptions = {
   headerMode: 'screen',
@@ -237,6 +237,19 @@ const FileDisputeNavigator = () => {
   );
 };
 
+const MyWebViewStackNavigator = createStackNavigator();
+
+const MyWebViewNavigator = () => {
+  return (
+    <MyWebViewStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <MyWebViewStackNavigator.Screen
+        name="MyWebView"
+        component={MyWebView}
+        options={MyWebViewOptions}></MyWebViewStackNavigator.Screen>
+    </MyWebViewStackNavigator.Navigator>
+  );
+};
+
 const MainDrawerNavigator = createDrawerNavigator();
 
 export const MainNavigator = () => {
@@ -315,7 +328,7 @@ export const MainNavigator = () => {
         name={'Home'}
         component={HomeNavigator}
         options={{
-          drawerIcon: ({focused, size}) => (
+          drawerIcon: ({ focused, size }) => (
             <AntDesign
               name="home"
               size={size}
@@ -338,7 +351,7 @@ export const MainNavigator = () => {
         name={'SelfChatrel'}
         component={SelfChatrelNavigator}
         options={{
-          drawerIcon: ({focused, size}) => (
+          drawerIcon: ({ focused, size }) => (
             <Ionicons
               name="wallet-outline"
               size={size}
@@ -358,7 +371,7 @@ export const MainNavigator = () => {
         name={'FamilyChatrelIntermediate'}
         component={FamilyChatrelIntermediateNavigator}
         options={{
-          drawerIcon: ({focused, size}) => (
+          drawerIcon: ({ focused, size }) => (
             <AntDesign
               name="hearto"
               size={size}
@@ -379,7 +392,7 @@ export const MainNavigator = () => {
         name={'FriendChatrelIntermediate'}
         component={FriendChatrelIntermediateNavigator}
         options={{
-          drawerIcon: ({focused, size}) => (
+          drawerIcon: ({ focused, size }) => (
             <Ionicons
               name="leaf-outline"
               size={size}
@@ -400,7 +413,7 @@ export const MainNavigator = () => {
         name={'ChatrelHistory'}
         component={ChatrelHistoryNavigator}
         options={{
-          drawerIcon: ({focused, size}) => (
+          drawerIcon: ({ focused, size }) => (
             <Entypo
               name="list"
               size={size}
@@ -417,11 +430,10 @@ export const MainNavigator = () => {
         }}></MainDrawerNavigator.Screen>
       {/*FileDispute*/}
       <MainDrawerNavigator.Screen
-        draw
         name={'FileDispute'}
         component={FileDisputeNavigator}
         options={{
-          drawerIcon: ({focused, size}) => (
+          drawerIcon: ({ focused, size }) => (
             <MaterialCommunityIcons
               name="email-alert-outline"
               size={size}
@@ -441,7 +453,7 @@ export const MainNavigator = () => {
         name={'MyProfile'}
         component={MyProfileNavigator}
         options={{
-          drawerIcon: ({focused, size}) => (
+          drawerIcon: ({ focused, size }) => (
             <Ionicons
               name="person-outline"
               size={size}
@@ -463,8 +475,8 @@ export const MainNavigator = () => {
         component={LoginNavigator}
         options={{
           //Make it false after dev ends
-          gestureEnabled: false,
-          swipeEnabled: false,
+          gestureEnabled: true,
+          swipeEnabled: true,
         }}></MainDrawerNavigator.Screen>
       {/*GBDetails*/}
       <MainDrawerNavigator.Screen
@@ -482,7 +494,21 @@ export const MainNavigator = () => {
       <MainDrawerNavigator.Screen
         name={'FriendChatrel'}
         component={FriendChatrelNavigator}></MainDrawerNavigator.Screen>
+      {/*Web View */}
+      {/*<MainDrawerNavigator.Screen
+        initialParams={{
+          approvalUrl: null,
+          payerId: null,
+          sAccessToken: null
+        }}
+        name={'MyWebView'}
+        component={MyWebViewNavigator}
+        options={{
+          gestureEnabled: false,
+          swipeEnabled: false,
+        }}></MainDrawerNavigator.Screen>*/}
     </MainDrawerNavigator.Navigator>
+
   );
 };
 

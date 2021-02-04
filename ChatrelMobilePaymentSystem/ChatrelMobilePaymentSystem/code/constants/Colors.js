@@ -21,9 +21,9 @@ export default {
   separatorColor: '#DCDCDC',
   spinnerColor: '#ebcb45',
   labelColorLight: "#6e6e6e",
-  websiteLightBlueColor:"#3e8efb",
-  faqButtonColor:"#f57736",
-  Opacity40Color:"#00000040"
+  websiteLightBlueColor: "#3e8efb",
+  faqButtonColor: "#f57736",
+  Opacity40Color: "#00000040"
 };
 
 //old green -#298851

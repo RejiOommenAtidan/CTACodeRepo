@@ -17,10 +17,10 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
 //Local
-export const sAPIBASEURL = "http://localhost:52013/api";
+//export const sAPIBASEURL = "http://localhost:52013/api";
 
 //QA
-// export const sAPIBASEURL = "https://cta-portal-webapi.azurewebsites.net/api";
+export const sAPIBASEURL = "https://cta-portal-webapi.azurewebsites.net/api";
 
 //UAT
 // export const sAPIBASEURL = "https://cta-portal-webapi-uat.azurewebsites.net/api";

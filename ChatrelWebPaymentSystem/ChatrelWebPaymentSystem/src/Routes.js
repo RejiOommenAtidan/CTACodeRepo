@@ -2,11 +2,20 @@ import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ClimbingBoxLoader,MoonLoader } from 'react-spinners';
-
+import {Button,List,ListItem,Dialog} from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import axios from 'axios';
 import MuiTheme from './theme';
+import { useHistory } from 'react-router-dom';
+import { useSelector,useDispatch} from 'react-redux';
+//import { useSelector,useDispatch} from 'react-redux';
+import { storeCurrentGBDetails } from 'actions/transactions/CurrentGBDetailsAction';
 
+import  {removeGoogleCreds} from 'actions/transactions/GLoginAction';
+import  {removeGBDetails} from 'actions/transactions/GBDetailsAction';
+import  {removeCurrentGBDetails} from 'actions/transactions/CurrentGBDetailsAction';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // Layout Blueprints
 
 import {
@@ -17,11 +26,15 @@ import {
 } from './layout-blueprints';
 
 
-import { useSelector,useDispatch} from 'react-redux';
+//import { useSelector,useDispatch} from 'react-redux';
+
+const Failure = lazy(() => import('./views/app/failure.js'));
+const Success = lazy(() => import('./views/app/success.js'));
 
 
 const Home = lazy(() => import('./views/home/home.js'));
 const Test = lazy(() => import('./views/test'));
+const PaypalTest = lazy(() => import('./views/test/paypaltest.js'));
 const Login = lazy(() => import('./views/login'));
 const AccessDenied = lazy(() => import('./views/error/locationerror.js'));
 const Profile = lazy(() => import("./views/profile/index.js"));
@@ -37,13 +50,65 @@ const SelfPayment = lazy(() => import('./views/paymentpage/selfpayment.js'));
 
 const Routes = () => {
   const location = useLocation();
-
+  let history = useHistory();
+  let dispatch = useDispatch();
   const oSession = useSelector(
     (state) => state.SessionReducer.oSession
   );
+ 
+  //const toggleSignoutModal = () => setSessionTimeout(!signoutModal);
+  const logout =() =>{
+    //alert('logout');
+    
+     
+    dispatch(removeGoogleCreds());
+    dispatch(removeCurrentGBDetails());
+    dispatch(removeGBDetails());
+    setSessionTimeout(false);
+    history.push('/Login');
+      
+  }
+
+  const [sessionTimeout,setSessionTimeout]=React.useState(false);
+  const [timerId,setTimerId]=React.useState(null);
+  //const timerId = null;
   if (oSession !== null)
-    axios.defaults.headers.common['Authorization'] =
-      'Bearer ' + oSession.sJwtToken;
+    {
+      if(!oSession.bSession){
+        console.log('bSession');
+        setSessionTimeout(true);
+        //alert('logout');
+      }
+      let oldToken=axios.defaults.headers.common['Authorization'];
+      console.log('old',oldToken);
+      console.log('new','Bearer ' + oSession.sJwtToken);
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + oSession.sJwtToken;
+      if(oldToken !== 'Bearer ' + oSession.sJwtToken){
+        console.log('Timer Reset',timerId);
+
+       if(timerId){
+        clearTimeout(timerId);
+       }
+      const timer = () => setTimeout(()=>{setSessionTimeout(true);},1000*60*15);
+      setTimerId(timer());
+       
+       
+       
+      }
+      
+
+
+      console.log("Token changed:",oSession.sJwtToken);
+   
+    }
+    // if(sessionTimeout)
+    //  { 
+    //    alert('logout');
+    //    setSessionTimeout(false);
+    // }
+
+
+
   const pageVariants = {
     initial: {
       opacity: 0
@@ -92,26 +157,26 @@ const Routes = () => {
       setTimeout(() => console.log('hi'), 1000*60);
     }*/
    
-    console.log("Location:",window.location.pathname);
-    const[timer,setTimer]=useState(false);
-   /* setTimer(window.location.pathname !=="/Login");*/
-    useEffect(() => {
-     /* var d = new Date();
-      var time= d.getTime() + 1000*60*10;*/
-      //document.cookie = "timeout=hi;" + expires;  
-     // document.cookie = "session=Active;";
-      //document.cookie = "session2=Active;"+time+";";
-    }, []);
-    /*var username = getCookie("username");
-    alert(username);*/
-    var timeout=document.cookie;
-    if(timeout.includes("session=Active")){
-      //alert('yes');
-    }
-    else{
-     // alert('no');
-    }
-    console.log(timeout);
+  //   console.log("Location:",window.location.pathname);
+  //   const[timer,setTimer]=useState(false);
+  //  /* setTimer(window.location.pathname !=="/Login");*/
+  //   useEffect(() => {
+  //    /* var d = new Date();
+  //     var time= d.getTime() + 1000*60*10;*/
+  //     //document.cookie = "timeout=hi;" + expires;  
+  //    // document.cookie = "session=Active;";
+  //     //document.cookie = "session2=Active;"+time+";";
+  //   }, []);
+  //   /*var username = getCookie("username");
+  //   alert(username);*/
+  //   var timeout=document.cookie;
+  //   if(timeout.includes("session=Active")){
+  //     //alert('yes');
+  //   }
+  //   else{
+  //    // alert('no');
+  //   }
+  //   console.log(timeout);
     
 
     return (
@@ -145,7 +210,10 @@ const Routes = () => {
             <Route path={[
               '/Login',
               '/AccessDenied',
-              '/Test'
+              '/Test',
+              '/PaypalTest',
+              '/Failure',
+              '/Success'
                
           
           
@@ -161,6 +229,9 @@ const Routes = () => {
                     <Route path="/Login" component={Login} />
                     <Route path="/AccessDenied" component={AccessDenied} />
                     <Route path="/Test" component={Test} ></Route>
+                    <Route path="/PaypalTest" component={PaypalTest} ></Route>
+                    <Route path="/Failure" component={Failure} ></Route>
+                    <Route path="/Success" component={Success} ></Route>
                   </motion.div>
                 </Switch>
               </PresentationLayout>
@@ -279,6 +350,25 @@ const Routes = () => {
               </CollapsedSidebar>
             </Route>
           </Switch>
+          <Dialog open={sessionTimeout} onClose={logout} classes={{ paper: 'shadow-xl-first rounded' }}>
+                            <div className="text-center p-5">
+                                <div className="avatar-icon-wrapper rounded-circle m-0">
+                                    <div className="d-inline-flex justify-content-center p-0 rounded-circle btn-icon avatar-icon-wrapper bg-neutral-first text-first m-0 d-130">
+                                        <FontAwesomeIcon icon={['fas', 'hourglass-end']} className="d-flex align-self-center display-3"/>
+                                    </div>
+                                </div>
+                                <h4 className="font-weight-bold mt-4">Session Timeout</h4>
+                                <p className="mb-0 text-black-50">Your session has timed out. Please signin again.</p>
+                                <div className="pt-4">
+                                    <Button onClick={logout} className="btn-outline-first border-1 m-2" variant="outlined">
+                                        <span className="btn-wrapper--label">
+                                            Close
+                    </span>
+                                    </Button>
+                                   
+                                </div>
+                            </div>
+                        </Dialog>
         </Suspense>
       </AnimatePresence>
     </ThemeProvider>

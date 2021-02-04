@@ -16,7 +16,7 @@ namespace ChatrelPaymentWebAPI.Services
          */
         public static PayPalEnvironment environment()
         {
-            return new SandboxEnvironment("AeIfCd7BHacsWwdqkIYfxmPQrN8UZU2Sap_dor00t7Z8Y9pLLJiwK_v2-lNy8vIhaSU9AFAiC5l8l7Gx", "EG24EW1m5DMtdT9d0OQ0R5IiMUTJ4wM2mixJ0IJCH6GC5J72EyMcGEkvlsIGxuY1TIU8a5iAlfiLdXQ6");
+            return new SandboxEnvironment("AdqxwGp5tKswa3OfXdw5dcCp5SQNtAEkDmPI9InDri3FcXnGCfWfpwhBsLRenYqMwrUrUTLLbnGTOM14", "ECrAFFlN_jB_Z62_rc9Ukt2Mv7Yeov2saaDbNCT3Ef_bP9JS2ke9y_G-8VGqQiTB7o3sGJRGFeBF-QKD");
         }
 
         /**

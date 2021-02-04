@@ -24,6 +24,9 @@ export const sAPIBASEURL = "http://localhost:49700/api";
 //UAT
 // export const sAPIBASEURL = "https://chatrel-webapi-uat.azurewebsites.net/api";
 
+export const sPayPal_ClientID = "AdqxwGp5tKswa3OfXdw5dcCp5SQNtAEkDmPI9InDri3FcXnGCfWfpwhBsLRenYqMwrUrUTLLbnGTOM14";
+export const sGoogleAuth_ClientID = "176037070348-10livm7g5iehb6mrl72bjv29b4bdmavu.apps.googleusercontent.com";
+
 export const sAdminEmail = "admin@CTA.com";
 export const sSnackbarAddMessage = "Record added successfully";
 export const sSnackbarUpdateMessage = "Record updated successfully";

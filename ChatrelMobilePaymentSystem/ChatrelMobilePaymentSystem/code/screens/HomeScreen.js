@@ -33,12 +33,13 @@ import { useNavigation } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { removeGoogleCreds } from '../store/actions/GLoginAction';
 import { removeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
-import { removeGBDetails } from '../store/actions/GBDetailsAction';
+import { removeGBDetails, removeJWTToken, storeJWTToken } from '../store/actions/GBDetailsAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import { Icon } from 'react-native-elements';
 import Accordion from 'react-native-collapsible/Accordion';
 import { Loader } from '../components/Loader';
+import { useFocusEffect } from '@react-navigation/native';
 import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -48,26 +49,38 @@ import { useCollapsibleHeader } from 'react-navigation-collapsible';
 //import CustomHeaderButton from '../components/HeaderButton';
 
 const HomeScreen = (props) => {
-  // const backAction = () => {
-  //   if (props.isFocused) {
-  //     Alert.alert("Hold on!", "Are you sure you want to exit?", [
-  //       {
-  //         text: "Cancel",
-  //         onPress: () => null,
-  //         style: "cancel"
-  //       },
-  //       {
-  //         text: "YES", onPress: () => BackHandler.exitApp()
-  //       }
-  //       // {
-  //       //   cancelable: false
-  //       // }
-  //     ]);
-  //   }
-  //   return true;
-  // };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        Alert.alert(
+          'Logout',
+          'Are you sure you want to logout?',
+          [
+            {
+              text: 'No',
+              onPress: () => true,
+              style: 'cancel',
+            },
+            { text: 'Yes', onPress: () => removeCompleteDetailsAndNavigateToLogin() },
+          ],
+          { cancelable: false },
+        );
+
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
+
+  const [paidUnitlMissing, setpaidUntilMissing] = useState(false);
   const [dollarToRupees, setDollarToRupees] = React.useState(0.0);
   const [nChatrelTotalAmount, setnChatrelTotalAmount] = useState(0);
+  const [nCurrentChatrelSalaryAmt, setnCurrentChatrelSalaryAmt] = useState(0);
   const [bLoader, setbLoader] = useState(true);
   const [activeSections, setactiveSections] = useState([0]);
   const isFocused = useIsFocused();
@@ -125,6 +138,7 @@ const HomeScreen = (props) => {
       await AsyncStorage.multiRemove(keysToRemove, (err) => {
         dispatch(removeGoogleCreds);
         dispatch(removeGBDetails);
+        dispatch(removeJWTToken);
         dispatch(removeCurrentGBDetails);
         navigation.navigate('Login');
       });
@@ -142,21 +156,28 @@ const HomeScreen = (props) => {
       )
       .then((resp) => {
         if (resp.status === 200) {
-          debugger;
-          fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
-            .then((response) => response.json())
-            .then((data) => {
-              setDollarToRupees(data.rates.USD);
-            });
-          setnChatrelTotalAmount(
-            parseFloat(resp.data.chatrelPayment.nChatrelTotalAmount) *
-            dollarToRupees.toFixed(4),
-          );
+          console.log(resp);
+          if (resp.data.chatrel.chatrelPayment) {
+            if (resp.data.message === "Paid Until Missing") {
+              setpaidUntilMissing(true);
+            }
+            fetch('https://api.ratesapi.io/api/latest?base=INR&symbols=USD')
+              .then((response) => response.json())
+              .then((data) => {
+                setDollarToRupees(data.rates.USD);
+              });
+            setnChatrelTotalAmount(
+              parseFloat(resp.data.chatrel.chatrelPayment.nChatrelTotalAmount) *
+              dollarToRupees.toFixed(4),
+            );
+            setnCurrentChatrelSalaryAmt(resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt);
+            const token = resp.data.token;
+            dispatch(storeJWTToken(token));
+          }
         }
         setbLoader(false);
       })
       .catch((error) => {
-        debugger;
         console.log('Error Message: ' + error.message);
         console.log(error.config);
         setbLoader(false);
@@ -164,11 +185,6 @@ const HomeScreen = (props) => {
           'Invalid details for Chatrel',
           'Please Contact CTA',
           [
-            // {
-            //     text: 'Okay',
-            //     onPress: () => true,
-            //     style: 'cancel'
-            // },
             {
               text: 'Logout',
               onPress: () => removeCompleteDetailsAndNavigateToLogin(),
@@ -213,7 +229,6 @@ const HomeScreen = (props) => {
         <View>
           <TouchableWithoutFeedback
             onPress={() => {
-              //console.log(section.sRouteName)
               props.navigation.navigate(section.sRouteName);
             }}
 
@@ -236,7 +251,6 @@ const HomeScreen = (props) => {
           //color={focused ? Colors.black : Colors.black}
           />*/}
         </View>
-
       </View>
     );
   };
@@ -254,13 +268,13 @@ const HomeScreen = (props) => {
     }
   }, [isFocused]);
 
-  useEffect(() => {
-    //getChatrelDetails();
-    // BackHandler.addEventListener('hardwareBackPress', () => true);
-    // return () => {
-    //   BackHandler.removeEventListener('hardwareBackPress', () => true);
-    // };
-  }, []);
+  // useEffect(() => {
+  //   //getChatrelDetails();
+  //   // BackHandler.addEventListener('hardwareBackPress', () => true);
+  //   // return () => {
+  //   //   BackHandler.removeEventListener('hardwareBackPress', () => true);
+  //   // };
+  // }, []);
 
   // const {
   //   onScroll /* Event handler */,
@@ -279,6 +293,22 @@ const HomeScreen = (props) => {
       showsHorizontalScrollIndicator={false}>
       <View style={styles.mainContainer}>
         <Loader loading={bLoader} />
+        {/*Paid Until Missing*/}
+        {paidUnitlMissing && (
+          Alert.alert(
+            'Attention Required',
+            'Last Paid Chatrel Date not available in system. Please Contact CTA or file a dispute.',
+            [
+              {
+                text: 'File a Dispute',
+                onPress: () => props.navigation.navigate("FileDispute"),
+                style: 'cancel',
+              }
+            ],
+            { cancelable: false },
+          )
+        )
+        }
         {/* <Animated.FlatList
        onScroll={onScroll}
          contentContainerStyle={{ paddingTop: containerPaddingTop }}
@@ -426,76 +456,9 @@ const HomeScreen = (props) => {
             renderContent={renderContent}
             onChange={updateSections}
           />
-
-          {/* <Collapse style={{borderBottomWidth: 1, borderTopWidth: 1}}>
-              <CollapseHeader
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  padding: 10,
-                  backgroundColor: '#E6E6E6',
-                }}>
-                <View style={{width: '25%', alignItems: 'center'}}>
-                  <Image
-                    source={{
-                      uri:
-                        'https://www.biography.com/.image/t_share/MTQ3NjYxMzk4NjkwNzY4NDkz/muhammad_ali_photo_by_stanley_weston_archive_photos_getty_482857506.jpg',
-                    }}
-                  />
-                </View>
-                <View style={{width: '60%'}}>
-                  <Text>Name : Mohammed Ali Kley</Text>
-                  <Text>Profession: Boxer</Text>
-                </View>
-              </CollapseHeader>
-              <CollapseBody
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                  backgroundColor: '#EDEDED',
-                }}>
-                <Collapse style={{flexDirection: 'row'}}>
-                  <CollapseHeader>
-                    <Image
-                      source={{
-                        uri:
-                          'https://cdn3.iconfinder.com/data/icons/trico-circles-solid/24/Circle-Solid-Phone-512.png',
-                      }}
-                    />
-                  </CollapseHeader>
-                  <CollapseBody
-                    style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      padding: 10,
-                    }}>
-                    <Text>+1 310 346 0018</Text>
-                  </CollapseBody>
-                </Collapse>
-                <Collapse style={{flexDirection: 'row'}}>
-                  <CollapseHeader>
-                    <Image
-                      source={{
-                        uri:
-                          'https://d30y9cdsu7xlg0.cloudfront.net/png/1674-200.png',
-                      }}
-                    />
-                  </CollapseHeader>
-                  <CollapseBody
-                    style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      padding: 10,
-                    }}>
-                    <Text>sample@sample.ma</Text>
-                  </CollapseBody>
-                </Collapse>
-              </CollapseBody>
-            </Collapse> */}
         </View>
         {/*New Job Contribution*/}
-        {nChatrelTotalAmount === 0 && !bLoader && (
+        {nChatrelTotalAmount === 0 && nCurrentChatrelSalaryAmt !== 0 && !bLoader && (
           <Card
             title={
               <View style={styles.titleStyleView}>
@@ -546,6 +509,57 @@ const HomeScreen = (props) => {
             />
           </Card>
         )}
+        {/*Additional Donation Card*/}
+        {nChatrelTotalAmount === 0 && nCurrentChatrelSalaryAmt === 0 && !bLoader && (
+          <Card
+            title={
+              <View style={styles.titleStyleView}>
+                <Icon
+                  color={Colors.white}
+                  iconStyle={styles.iconStyles}
+                  iconProps={{}}
+                  //underlayColor={Colors.websiteLightBlueColor}
+                  backgroundColor={Colors.websiteLightBlueColor}
+                  size={40}
+                  type="font-awesome-5"
+                  name="donate"
+                  containerStyle={styles.iconContainerStyles}
+                />
+              </View>
+            }
+            titleStyle={{}}
+            containerStyle={styles.newJobContribCardContainer}>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.boldTextComponent}>
+                Make Additional Donation
+              </Text>
+            </View>
+            <View style={styles.viewMarginComponent}>
+              <Text style={styles.greyTextComponent}>
+                Contribute more by paying additional donation towards the Tibetan Government.
+              </Text>
+            </View>
+            <Button
+              title="DONATE"
+              titleStyle={{
+                color: Colors.white,
+                textAlign: 'center',
+                fontStyle: 'normal',
+                fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+                fontFamily:
+                  Platform.OS === 'android' ? sFontNameBold : sFontName,
+              }}
+              buttonStyle={{
+                backgroundColor: Colors.websiteLightBlueColor,
+                borderRadius: 15,
+              }}
+              onPress={() => {
+                setbLoader(true);
+                props.navigation.navigate('SelfChatrel');
+              }}
+            />
+          </Card>
+        )}
         {/*Chatrel President*/}
         <Card
           containerStyle={{
@@ -575,7 +589,7 @@ const HomeScreen = (props) => {
             />
           }
           titleStyle={{}}>
-          {/* <Card.Divider style={styles.presidentCardDividerStyle} /> */}
+          {/*<Card.Divider style={styles.presidentCardDividerStyle} />*/}
           <View style={{ marginTop: hp(5) }}>
             <View style={styles.viewMarginComponent}>
               <Text style={styles.greyTextComponent}>
@@ -597,7 +611,7 @@ const HomeScreen = (props) => {
             ...styles.presidentCardContainerStyle,
             marginBottom: hp(1),
           }}>
-          {/* <Card.Divider style={styles.cardDividerStyle} /> */}
+          {/*<Card.Divider style={styles.cardDividerStyle} />*/}
           <View>
             <View style={styles.viewMarginComponent}>
               <Text style={styles.boldTextComponent}>
@@ -687,8 +701,6 @@ const styles = StyleSheet.create({
   },
   headerContainer: {},
   headerComponent: {
-    // width: '100%',
-    // height: '100%',
     width: wp(60),
     // height: hp(4),
     marginBottom: hp(2),
@@ -735,7 +747,7 @@ const styles = StyleSheet.create({
     color: Colors.black,
     marginBottom: hp(2),
     //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-    // letterSpacing: Resolution.nLetterSpacing,
+    //letterSpacing: Resolution.nLetterSpacing,
   },
   newJobContribCardContainer: {
     width: wp(92.5),

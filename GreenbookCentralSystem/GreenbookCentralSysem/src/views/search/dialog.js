@@ -505,7 +505,7 @@ export const ViewDialog = (props) => {
 
                                 </Grid>
                                 <Grid item xs={12}>
-                                 <span style={{fontSize: '1.68rem'}} >ཕ་ཡུལ།</span>:&nbsp; <span style={{fontSize: '1.68rem'}} >{data.greenBook.tbuPlaceOfBirth}</span>
+                                 <span style={{fontSize: '1.55rem'}} >ཕ་ཡུལ།</span>:&nbsp; <span style={{fontSize: '1.55rem'}} >{data.greenBook.tbuPlaceOfBirth}</span>
 
                                 </Grid>
                                 <Grid item xs={12}>
@@ -588,7 +588,7 @@ export const ViewDialog = (props) => {
 
                                     </Grid>
                                     <Grid item xs={12}>
-                                    <span style={{fontSize: '1.68rem'}} >ཕ་མིང་།</span>:&nbsp; <span style={{fontSize: '1.68rem'}} >{data.greenBook.tbuFathersName}</span>
+                                    <span style={{fontSize: '1.55rem'}} >ཕ་མིང་།</span>:&nbsp; <span style={{fontSize: '1.55rem'}} >{data.greenBook.tbuFathersName}</span>
 
                                     </Grid>
                                     <Grid item xs={12}>
@@ -603,7 +603,7 @@ export const ViewDialog = (props) => {
                                       Mother's Name: {data.relations.sMothersName}
 
                                     </Grid>
-                                    <Grid item xs={12}><span style={{fontSize: '1.68rem'}} >མའི་མིང་།</span>: &nbsp;<span style={{fontSize: '1.68rem'}} >{data.greenBook.tbuMothersName}</span>
+                                    <Grid item xs={12}><span style={{fontSize: '1.55rem'}} >མའི་མིང་།</span>: &nbsp;<span style={{fontSize: '1.55rem'}} >{data.greenBook.tbuMothersName}</span>
 
                                     </Grid>
                                     <Grid item xs={12}>
@@ -630,7 +630,7 @@ export const ViewDialog = (props) => {
 
                                     </Grid>
                                     <Grid item xs={12}>
-                                    <span style={{fontSize: '1.68rem'}} >ཟ་ཟླའི་མིང་།</span>:&nbsp; <span style={{fontSize: '1.68rem'}} > {data.greenBook.tbuSpouseName}</span>
+                                    <span style={{fontSize: '1.55rem'}} >ཟ་ཟླའི་མིང་།</span>:&nbsp; <span style={{fontSize: '1.55rem'}} > {data.greenBook.tbuSpouseName}</span>
 
                                     </Grid>
                                     <Grid item xs={12}>

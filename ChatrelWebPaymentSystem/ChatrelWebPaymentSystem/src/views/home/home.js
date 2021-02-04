@@ -13,7 +13,7 @@ import axios from 'axios';
 import img from '../../assets/images/home_pending.jpg';
 import {useHistory} from 'react-router-dom';
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
-
+import {storeSession} from '../../actions/transactions/SessionAction';
 import logo1 from '../../assets/images/stock-logos/discord-icon.svg';
 
 import logo2 from '../../assets/images/stock-logos/google-icon.svg';
@@ -48,6 +48,7 @@ export default function Home() {
   const [currencySymbol, setCurrencySymbol] = React.useState();
   const [paymentData, setPaymentData] = React.useState();
   const [outstanding, setOutstanding] = useState(false);
+  const [donationDiv, setDonationDiv] = useState(false);
   const [empty, setEmpty] = useState(false);
   let history = useHistory();
   let dispatch = useDispatch();
@@ -57,25 +58,40 @@ export default function Home() {
   axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+paidByGBID)
   .then(resp => {
     if (resp.status === 200) {
-      //console.log("Self Chatrel Payment data:", resp.data);
-      if(resp.data.chatrelPayment)
+      console.log("Self Chatrel Payment data:", resp.data);
+      
+      
+      //Store New Token
+      const oSession={
+        sJwtToken:resp.data.token,
+        bSession:true
+      }
+      dispatch(storeSession(oSession));
+      
+      if(resp.data.chatrel.chatrelPayment)
       {
-      if(resp.data.chatrelPayment.nChatrelTotalAmount === 0){
+      if(resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0){
         setChatrelPending('0');
-        setOutstanding(false);
+        if(resp.data.chatrel.gbChatrels[0].nCurrentChatrelSalaryAmt===0){
+          setOutstanding(false);
+        }
+        else{
+          setDonationDiv(true);
+        }
+        
         // setCurrencySymbol(resp.data.currency === 'INR' ? '₹' : '$' );
         // element.disabled = false;
         // return;
       }
       else{
-        setChatrelPending(resp.data.chatrelPayment.nChatrelTotalAmount);
+        setChatrelPending(resp.data.chatrel.chatrelPayment.nChatrelTotalAmount);
         setOutstanding(true);
       }
-      setPaymentData(resp.data);
-      console.log(resp.data);
+      setPaymentData(resp.data.chatrel);
+      console.log(resp.data.chatrel);
       
       
-      if(resp.data.gbChatrels[0].sAuthRegionCurrency === 'USD'){
+      if(resp.data.chatrel.gbChatrels[0].sAuthRegionCurrency === 'USD'){
         setCurrencySymbol('$');
       }
       else{
@@ -92,17 +108,25 @@ export default function Home() {
   })
   .catch(error => {
     console.log(error.message);
-    console.log(error.response);
+    console.log(error.response.status);
+    if (error.response.status === 401) {
+   
+      const oSession={
+        sJwtToken:"",
+        bSession:false
+      }
+      dispatch(storeSession(oSession));
+    }
   });
 
 }, []);
 
  
 
- const makePayment = (obj, data, outstanding)=> {
-  console.log("Inside Make payment method for " , obj, data)
+ const makePayment = (obj)=> {
+ 
   dispatch(storeCurrentGBDetails(obj));
-  history.push('/PaymentPage', {pymtData: data, outstanding});
+  history.push('/PaymentPage');
 }
 
 
@@ -123,7 +147,7 @@ export default function Home() {
      
         {!responsive &&      <Card className="bg-secondary m-5 m-lg-0 object-skew hover-scale-lg shadow-xxl w-100 card-box">
                                                 <List component="div" className="list-group-flush">
-                                                    <ListItem component="a" button  onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' }, paymentData, outstanding)}} className="d-flex rounded-top align-items-center py-3">
+                                                    <ListItem component="a" button  onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' })}} className="d-flex rounded-top align-items-center py-3">
                                                         <div className="d-flex align-items-center">
                                                         <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-warning text-white btn-icon mx-auto text-center shadow-warning " >
                                                            <FontAwesomeIcon icon={['fas', 'wallet']} className="display-4" />
@@ -177,7 +201,7 @@ export default function Home() {
                                             </Card>}
                         {responsive &&  <Card className="bg-secondary m-2   shadow-xxl w-100 card-box">
                                                 <List component="div" className="list-group-flush">
-                                                    <ListItem component="a" button  onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' }, paymentData, outstanding)}} className="d-flex rounded-top align-items-center py-3">
+                                                    <ListItem component="a" button  onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' })}} className="d-flex rounded-top align-items-center py-3">
                                                         <div className="d-flex align-items-center">
                                                         <div  className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-warning text-white btn-icon mx-auto text-center shadow-warning " >
                                                            <FontAwesomeIcon icon={['fas', 'wallet']} className="display-4" />
@@ -279,14 +303,14 @@ export default function Home() {
                                     <div className="divider mx-4 my-4" />
                                     <div className="text-center">
                                         <Button className="p-0 text-uppercase btn-link-success font-weight-bold font-size-sm btn-link" variant="text"
-                                        onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' }, paymentData, outstanding)}}
+                                        onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' })}}
                                         >
                                             <span>PAY NOW</span>
                                         </Button>
                                     </div>
                                 </div>
                             </Card>}
-                           { (!outstanding && !empty )&&
+                           { (!outstanding && !empty && !donationDiv )&&
                             <Card className="card-box card-box-alt  shadow-xxl  p-2 ">
                                 <div className="card-content-overlay text-center pb-4">
                                     <div className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-primary text-white btn-icon mx-auto text-center shadow-primary">
@@ -299,9 +323,29 @@ export default function Home() {
                                     <div className="divider mx-4 my-4" />
                                     <div className="text-center">
                                         <Button className="p-0 text-uppercase btn-link-primary font-weight-bold font-size-sm btn-link" variant="text"
-                                        onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' }, paymentData, outstanding)}}
+                                        onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' })}}
                                         >
                                             <span>UPDATE EMPLOYMENT STATUS</span>
+                                        </Button>
+                                    </div>
+                                </div>
+                            </Card>}
+                            { (donationDiv && !empty )&&
+                            <Card className="card-box card-box-alt  shadow-xxl  p-2 ">
+                                <div className="card-content-overlay text-center pb-4">
+                                    <div className="d-50 rounded border-0 mb-1 card-icon-wrapper bg-primary text-white btn-icon mx-auto text-center shadow-primary">
+                                        <FontAwesomeIcon icon={['fas', 'donate']} className="display-3" />
+                                    </div>
+                                    <div className="font-weight-bold text-black display-4 mt-4 mb-1">
+                                    Make Additional Donation
+                                    </div>
+                                    <div className="font-size-lg text-dark opacity-8">Contribute more by paying additional donation towards the Tibetan Government.</div>
+                                    <div className="divider mx-4 my-4" />
+                                    <div className="text-center">
+                                        <Button className="p-0 text-uppercase btn-link-primary font-weight-bold font-size-sm btn-link" variant="text"
+                                        onClick={()=>{makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' })}}
+                                        >
+                                            <span>DONATE</span>
                                         </Button>
                                     </div>
                                 </div>

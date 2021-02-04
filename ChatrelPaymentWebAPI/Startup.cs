@@ -78,6 +78,7 @@ namespace ChatrelPaymentWebAPI
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
+            
 
             // Configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
@@ -105,7 +106,7 @@ namespace ChatrelPaymentWebAPI
 
             //DinkToPDF
             var context = new CustomAssemblyLoadContext();
-            context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), @"libwkhtmltox.dll"));
+            //context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), @"libwkhtmltox.dll"));
             services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
             services.AddControllers();
 

@@ -360,6 +360,12 @@ export default function ChatrelList(){
     {
       field: "sFinancialYear",
       title: "YEAR",
+      headerStyle: {
+        textAlign: "center",
+        textAlignLast: "center",
+        verticalAlign: "middle",
+        
+      },
       cellStyle: {
         padding: '5px',
         textAlign: "right",
@@ -380,6 +386,7 @@ export default function ChatrelList(){
         textAlign: "right",
         borderRight: '1px solid grey'
       },
+      render : rowData => rowData['nArrears'] ? rowData['sPaymentCurrency'] === 'INR' ? `₹ ${rowData['nArrears']}` : `$ ${rowData['nArrears']}` : ''
     },
 
     {

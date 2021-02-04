@@ -28,6 +28,7 @@ import {
   oActivityIndicatorStyle,
   oRequiredStyles,
 } from '../constants/CommonConfig';
+
 import { storeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
 import {
   widthPercentageToDP as wp,
@@ -37,7 +38,7 @@ import { sFontName, sFontNameBold } from '../constants/CommonConfig';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { Loader } from '../components/Loader';
-import { storeGBDetails } from '../store/actions/GBDetailsAction';
+import { storeGBDetails, removeGBDetails, removeJWTToken, storeJWTToken } from '../store/actions/GBDetailsAction';
 import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 
 export const FriendChatrelIntermediateScreen = (props) => {
@@ -46,9 +47,6 @@ export const FriendChatrelIntermediateScreen = (props) => {
   const [bLoader, setbLoader] = useState(false);
   const onSubmit = () => {
     setbLoader(true);
-
-    console.log(dtFriendDOB);
-
     let oFriendGBDetails = {
       sFriendGBID: nFriendGBID,
       sFirstName: sFriendFirstname,
@@ -74,6 +72,8 @@ export const FriendChatrelIntermediateScreen = (props) => {
           // .catch(error => {
           //   console.log(error.message);
           // });
+          const token = resp.data.token;
+          dispatch(storeJWTToken(token));
           setbLoader(false);
           let oGBDetails = {
             sGBID: nFriendGBID,
@@ -85,6 +85,10 @@ export const FriendChatrelIntermediateScreen = (props) => {
             ToastAndroid.BOTTOM,
           );
           dispatch(storeCurrentGBDetails(oGBDetails));
+          setsFriendFirstname("");
+          setsFriendLastname("");
+          setnFriendGBID("");
+          setdtFriendDOB(null);
           props.navigation.navigate('FriendChatrel');
         } else {
           setbLoader(false);
@@ -326,7 +330,6 @@ export const FriendChatrelIntermediateScreen = (props) => {
                   androidMode={'calendar'}
                   style={{
                     width: wp(87.5),
-
                     // width: wp(90 - 1),
                     // backgroundColor: Colors.white,
                     //borderColor: Colors.white
@@ -507,74 +510,6 @@ const styles = StyleSheet.create({
     fontWeight: 'normal',
     fontFamily: sFontName,
   },
-
-  // gbidLabelContainer: {},
-  // gbidLabelComponent: {
-  //   // width: '100%',
-  //   // height: '100%',
-  //   textAlign: 'left',
-  //   fontSize:
-  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.primary,
-  //   fontFamily: sFontName,
-  // },
-  // gbidValueContainer: {},
-
-  // firstNameLabelContainer: {
-  //   // width: wp(22),
-  //   // height: hp(2),
-  //   marginBottom:
-  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
-  // },
-  // firstNameLabelComponent: {
-  //   // width: '100%',
-  //   // height: '100%',
-  //   textAlign: 'left',
-  //   fontSize:
-  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.primary,
-  //   fontFamily: sFontName,
-  // },
-  // firstNameValueContainer: {},
-
-  // lastNameLabelContainer: {
-  //   // width: wp(22),
-  //   // height: hp(2),
-  //   marginBottom:
-  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
-  // },
-  // lastNameLabelComponent: {
-  //   // width: '100%',
-  //   // height: '100%',
-  //   textAlign: 'left',
-  //   fontSize:
-  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.primary,
-  //   fontFamily: sFontName,
-  // },
-  // lastNameValueContainer: {},
-
-  // dobLabelContainer: {
-  //   marginBottom:
-  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 3.6 : 6,
-  // },
-  // dobLabelComponent: {
-  //   // width: '100%',
-  //   // height: '100%',
-  //   textAlign: 'left',
-  //   fontSize:
-  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.primary,
-  //   fontFamily: sFontName,
-  // },
   dobValueContainer: {
     // marginBottom:
     //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 30 : 50,

@@ -1,28 +1,38 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, ScrollView, Platform} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import React, { useEffect } from 'react';
+import { StyleSheet, ScrollView, Platform } from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import SplashScreen from 'react-native-splash-screen';
 import axios from 'axios';
-import {MainNavigator} from './code/navigation/MainNavigator';
-import {Provider} from 'react-redux';
-import {store} from './code/store/configureStore';
-import {sAPIBASEURL} from './code/constants/CommonConfig';
-import {NavigationContainer} from '@react-navigation/native';
+import { MainNavigator } from './code/navigation/MainNavigator';
+import { Provider, useSelector } from 'react-redux';
+import { store } from './code/store/configureStore';
+import { sAPIBASEURL } from './code/constants/CommonConfig';
+import { NavigationContainer } from '@react-navigation/native';
+
+const AppWrapper = () => {
+  return (
+    <Provider store={store}><App></App></Provider>
+  )
+};
 
 const App: () => React$Node = () => {
   axios.defaults.baseURL = sAPIBASEURL;
+  const sJwtToken = useSelector((state) => state.GBDetailsReducer.sJwtToken);
+  if (sJwtToken !== null) {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${sJwtToken}`;
+  }
   useEffect(() => {
     SplashScreen.hide();
   }, []);
   return (
     <>
-      <Provider store={store}>
-        {/*<ScrollView>*/}
-        <NavigationContainer>
-          <MainNavigator />
-        </NavigationContainer>
-        {/*</ScrollView>*/}
-      </Provider>
+      {/*<ScrollView>*/}
+      <NavigationContainer>
+        <MainNavigator />
+      </NavigationContainer>
+      {/*</ScrollView>*/}
     </>
   );
 };
@@ -66,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default AppWrapper;

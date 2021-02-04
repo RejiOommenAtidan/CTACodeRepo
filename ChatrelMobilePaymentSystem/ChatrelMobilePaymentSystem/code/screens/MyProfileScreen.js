@@ -6,22 +6,22 @@ import {
   PermissionsAndroid,
   Platform,
 } from 'react-native';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../../code/constants/Colors';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useSelector} from 'react-redux';
-// import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import { useSelector } from 'react-redux';
 import CTALogo from '../../code/assets/CTALogo.png';
-import {sFontName, sFontNameBold} from '../constants/CommonConfig';
-import {Avatar, Badge, Icon, withBadge, Card} from 'react-native-elements';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
-import {BoxShadow, BorderShadow} from 'react-native-shadow';
+import { sFontName, sFontNameBold } from '../constants/CommonConfig';
+import { Avatar, Badge, Icon, withBadge, Card } from 'react-native-elements';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
+import { BoxShadow, BorderShadow } from 'react-native-shadow';
+// import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
 export const MyProfileScreen = (props) => {
   // const oUserHardcodedMyProfile = {
@@ -651,15 +651,15 @@ export const MyProfileScreen = (props) => {
                     </tr>
                   </table>`;
       //try {
-        //let file = await RNHTMLtoPDF.convert({
-          //html: sMyHTML,
-         // fileName: 'Test',
-         // directory: 'Download',
-          //fonts: ['../../code/assets/fonts/Microsoft Himalaya.ttf'],
-        //});
-        //alert(file.filePath);
+      //let file = await RNHTMLtoPDF.convert({
+      //html: sMyHTML,
+      // fileName: 'Test',
+      // directory: 'Download',
+      //fonts: ['../../code/assets/fonts/Microsoft Himalaya.ttf'],
+      //});
+      //alert(file.filePath);
       //} catch (err) {
-        //console.error(err);
+      //console.error(err);
       //}
     }
   };
@@ -673,17 +673,6 @@ export const MyProfileScreen = (props) => {
 
   // //for xlarge
   // const nBadgeSize = 25;
-
-  // const shadowOpt = {
-  //   width:wp(90),
-  //   height:hp(92),
-  //   color: Colors.lightBlueChatrelWebsite,
-  //   border: 1,
-  //   radius: 15,
-  //   opacity: 1,
-  //   x: 5,
-  //   y: 5,
-  // };
 
   return (
     <View style={styles.mainContainer}>
@@ -770,20 +759,6 @@ export const MyProfileScreen = (props) => {
         title={
           <View style={styles.titleViewStyle}>
             <Avatar
-              // overlayContainerStyle={{
-              //   padding:0,
-              //   margin:0,
-              // }}
-
-              //   icon={()=>{
-              //     return(           <Badge
-              //     status="success"
-              //     containerStyle={{position: 'absolute', top: 0, right: 0}}
-              //   />)
-              //   }}
-
-              //icon={{name: 'user', type: 'font-awesome'}}
-
               rounded
               size="large"
               containerStyle={styles.avatarContainerStyle}
@@ -812,10 +787,10 @@ export const MyProfileScreen = (props) => {
             </Text>
           </View>
           <View style={styles.labelContainer}>
-            <Text style={{...styles.labelComponent, textAlign: 'right'}}>
+            <Text style={{ ...styles.labelComponent, textAlign: 'right' }}>
               GREEN BOOK ID
             </Text>
-            <Text style={{...styles.valueComponent, textAlign: 'right'}}>
+            <Text style={{ ...styles.valueComponent, textAlign: 'right' }}>
               {oGBDetails.sGBID}
             </Text>
           </View>
@@ -824,7 +799,7 @@ export const MyProfileScreen = (props) => {
         <View style={styles.coverViewStyles}>
           <View style={styles.labelContainer}>
             <Text style={styles.labelComponent}>DATE OF BIRTH</Text>
-            <Text style={{...styles.valueComponent, marginBottom: 0}}>
+            <Text style={{ ...styles.valueComponent, marginBottom: 0 }}>
               {oGBDetails.dtDOB}
             </Text>
           </View>
@@ -888,7 +863,7 @@ export const MyProfileScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: {backgroundColor: Colors.white},
+    cardStyle: { backgroundColor: Colors.white },
   };
 };
 
@@ -980,7 +955,7 @@ const styles = StyleSheet.create({
     //For iOS
     shadowRadius: 25,
     shadowColor: Colors.lightBlueChatrelWebsite,
-    shadowOffset: {width: 5, height: 5},
+    shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 1,
 
     //For Android
@@ -1014,196 +989,15 @@ const styles = StyleSheet.create({
     // elevation: 25,
     // overflow: 'visible',
   },
-
   cardDividerStyle: {
     height: 1,
     backgroundColor: Colors.buttonYellow,
     marginBottom: hp(3),
   },
-
   coverViewStyles: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: hp(1),
   },
-
-  // nameLabelContainer: {},
-  // nameLabelComponent: {},
-  // nameValueContainer: {},
-  // nameValueComponent: {},
-  // gbidLabelContainer: {
-  //   width: wp(75),
-  //   height: hp(2),
-  //   marginBottom: hp(1.5),
-  // },
-  // gbidLabelComponent: {
-  //   width: '100%',
-  //   height: '100%',
-  //   textAlign: 'left',
-  //   fontSize: wp(3),
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackText,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-  // gbidValueContainer: {
-  //   width: wp(75),
-  //   height: hp(3),
-  //   marginBottom: wp(6),
-  // },
-  // gbidValueComponent: {
-  //   width: '100%',
-  //   height: '100%',
-  //   textAlign: 'left',
-  //   fontSize: wp(4.5),
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackTextAPI,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-
-  // ageLabelContainer: {
-  //   width: wp(75),
-  //   height: hp(2),
-  //   marginBottom: hp(1.5),
-  // },
-  // ageLabelComponent: {
-  //   width: '100%',
-  //   height: '100%',
-  //   textAlign: 'left',
-  //   fontSize: wp(3),
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackText,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-  // ageValueContainer: {
-  //   width: wp(75),
-  //   height: hp(3),
-  //   marginBottom: wp(6),
-  // },
-  // ageValueComponent: {
-  //   width: '100%',
-  //   height: '100%',
-  //   textAlign: 'left',
-  //   fontSize: wp(4.5),
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackTextAPI,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-
-  // dtDOBLabelContainer: {
-  //   width: wp(75),
-  //   height: hp(2),
-  //   marginBottom: hp(1.5),
-  // },
-  // dtDOBLabelComponent: {
-  //   width: '100%',
-  //   height: '100%',
-  //   textAlign: 'left',
-  //   fontSize: wp(3),
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackText,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-  // dtDOBValueContainer: {
-  //   width: wp(75),
-  //   height: hp(3),
-  //   marginBottom: wp(6),
-  // },
-  // dtDOBValueComponent: {
-  //   width: '100%',
-  //   height: '100%',
-  //   textAlign: 'left',
-  //   fontSize: wp(4.5),
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackTextAPI,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-
-  // emailIDLabelContainer: {
-  //   width: wp(75),
-  //   height: hp(2),
-  //   marginBottom: hp(1.5),
-  // },
-  // emailIDLabelComponent: {
-  //   width: '100%',
-  //   height: '100%',
-  //   textAlign: 'left',
-  //   fontSize: wp(3),
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackText,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-  // emailIDValueContainer: {
-  //   width: wp(75),
-  //   height: hp(3),
-  //   marginBottom: wp(6),
-  // },
-  // emailIDValueComponent: {
-  //   width: '100%',
-  //   height: '100%',
-  //   textAlign: 'left',
-  //   fontSize: wp(4.5),
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackTextAPI,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-
-  // sAuthRegionLabelContainer: {
-  //   width: wp(75),
-  //   height: hp(2),
-  //   marginBottom: hp(1.5),
-  // },
-  // sAuthRegionLabelComponent: {
-  //   width: '100%',
-  //   height: '100%',
-  //   textAlign: 'left',
-  //   fontSize: wp(3),
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackText,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-  // sAuthRegionValueContainer: {
-  //   width: wp(75),
-  //   height: hp(3),
-  //   marginBottom: wp(6),
-  // },
-  // sAuthRegionValueComponent: {
-  //   width: '100%',
-  //   height: '100%',
-  //   textAlign: 'left',
-  //   fontSize: wp(4.5),
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackTextAPI,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
 });

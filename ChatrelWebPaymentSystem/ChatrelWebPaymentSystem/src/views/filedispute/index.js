@@ -29,6 +29,8 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 
+import {storeSession} from '../../actions/transactions/SessionAction';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -52,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Friends () {
   const classes = useStyles();
   const theme = useTheme();
- 
+  const dispatch = useDispatch();
   
   //const [sAccept, setsAccept] = useState("audio/*,video/*,image/*,*.doc, *.docx, *.pdf, *.xls, *.xlsx");
   const [sAccept, setsAccept] = useState("*.png,*.jpg,*.jpeg,*.doc, *.docx, *.pdf");
@@ -149,9 +151,13 @@ else if (binFileDoc !== "" && disputeDescription !== "")
    axios.post(`/ChatrelPayment/SubmitDispute`, submit)
    .then((resp) => {
     if (resp.status === 200) {
-
+      const oSession={
+        sJwtToken:resp.data.token,
+        bSession:true
+      }
+dispatch(storeSession(oSession));
       setBackdrop(false);
-      setAlertMessage('File Dispute Submitted successfully.');
+      setAlertMessage('Thanks for uploading. Your details are sent to the CTA Team & they shall get in touch with you soon.');
       setAlertType('success');
       snackbarOpen();
       

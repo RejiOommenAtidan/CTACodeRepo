@@ -6,7 +6,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 ////Local Windows
-// export const sAPIBASEURL = "http://10.0.2.2:49700/api";
+export const sAPIBASEURL = "http://10.0.2.2:49700/api";
 
 ////Local mac
 // export const sAPIBASEURL = "http://10.0.2.2:5000/api";
@@ -15,7 +15,7 @@ import {
 // export const sAPIBASEURL = 'https://chatrel-webapi.azurewebsites.net/api';
 
 ////Dev Azure (For Mobile App)
-export const sAPIBASEURL = 'https://chatrel-webapi-dev.azurewebsites.net/api';
+// export const sAPIBASEURL = 'https://chatrel-webapi-dev.azurewebsites.net/api';
 
 
 export const sAdminEmail = 'admin@CTA.com';
@@ -25,10 +25,12 @@ export const sDateFormat = 'DD-MM-YYYY';
 export const sDateFormatDatePicker = 'MM/DD/YYYY';
 export const sISODateFormat = 'YYYY-MM-DD';
 export const sClientIDAndroid =
-  '1071046831303-1naot2q7pull58cpifp3rosfn65bdrsc.apps.googleusercontent.com';
+  '987929460767-jf4d713glngd3o109vdqj6mt3c2e0fju.apps.googleusercontent.com';
 export const sClientIDIOS = '1071046831303-84cupk037kmsgsdu94v1c79c069kv9ki.apps.googleusercontent.com';
+export const sPayPalBASEURL = "https://api.sandbox.paypal.com";
 export const sPayPalClientID =
   'AeIfCd7BHacsWwdqkIYfxmPQrN8UZU2Sap_dor00t7Z8Y9pLLJiwK_v2-lNy8vIhaSU9AFAiC5l8l7Gx';
+export const sClientSecret = "EG24EW1m5DMtdT9d0OQ0R5IiMUTJ4wM2mixJ0IJCH6GC5J72EyMcGEkvlsIGxuY1TIU8a5iAlfiLdXQ6";
 export const sFontName = 'JosefinSans-Regular';
 export const sFontNameBold = 'JosefinSans-Bold';
 export const errorContainer = {

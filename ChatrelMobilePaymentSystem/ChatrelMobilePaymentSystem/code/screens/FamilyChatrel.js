@@ -1,16 +1,16 @@
 import React from 'react';
-import {Text, View, StyleSheet, Dimensions, Platform} from 'react-native';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import { Text, View, StyleSheet, Dimensions, Platform } from 'react-native';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import {Chatrel} from '../components/Chatrel';
+import { Chatrel } from '../components/Chatrel';
 import Colors from '../constants/Colors';
-import {CustomHeaderRightButton} from '../components/HeaderRightButton';
 import Resolution from '../constants/ResolutionBreakpoint';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import { sFontName, sFontNameBold } from '../constants/CommonConfig';
+import { CustomHeaderRightButton } from '../components/HeaderRightButton';
 
 export const FamilyChatrelScreen = (props) => {
   return (
@@ -42,7 +42,7 @@ export const FamilyChatrelScreenOptions = (navData) => {
       </HeaderButtons>
     ),
     // headerRight: CustomHeaderRightButton,
-    cardStyle: {backgroundColor: Colors.white},
+    cardStyle: { backgroundColor: Colors.white },
   };
 };
 

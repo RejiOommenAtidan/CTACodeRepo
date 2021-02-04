@@ -1,7 +1,7 @@
 import React from 'react';
-import {Text, View, StyleSheet, Dimensions, Platform} from 'react-native';
-import {GLogin} from '../components/GLogin';
-import {ActivityIndicator} from 'react-native';
+import { Text, View, StyleSheet, Dimensions, Platform } from 'react-native';
+import { GLogin } from '../components/GLogin';
+import { ActivityIndicator } from 'react-native';
 import Colors from '../constants/Colors';
 import Resolution from '../constants/ResolutionBreakpoint';
 import {
@@ -9,7 +9,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import ResponsiveImage from 'react-native-responsive-image';
-import {sFontName, sFontNameBold} from '../constants/CommonConfig';
+import { sFontName, sFontNameBold } from '../constants/CommonConfig';
 
 export const LoginScreen = (props) => {
   return (
@@ -21,7 +21,10 @@ export const LoginScreen = (props) => {
           initHeight="320"
           source={require('../assets/CTALogo.png')}
           PlaceholderContent={
-            <ActivityIndicator size={Platform.OS === 'ios' ? 0 : 'large'} />
+            <ActivityIndicator
+              //animating={true}
+              size={Platform.OS === 'ios' ? 0 : 'large'}
+            />
           }
         />
       </View>
@@ -44,7 +47,7 @@ export const LoginScreenOptions = (navData) => {
     headerLeft: null,
     headerRight: null,
     headerBackTitleVisible: false,
-    cardStyle: {backgroundColor: Colors.greenBG},
+    cardStyle: { backgroundColor: Colors.greenBG },
   };
 };
 
@@ -60,22 +63,18 @@ const styles = StyleSheet.create({
     marginBottom: hp(7.5),
   },
   imgContainer: {
-    // marginTop: hp(10),
+    //marginTop: hp(10),
     marginBottom: hp(2.5),
   },
   headerContainer: {
-    // width: wp(75),
-    // height: hp(5),
     // marginBottom: hp(2.5),
   },
   headerComponent: {
-    // width: '100%',
-    // height: '100%',
     textAlign: 'center',
     fontSize: wp(8),
     fontStyle: 'normal',
-    fontWeight: 'normal',
-    fontFamily: sFontName,
+    fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
+    fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
     color: Colors.white,
     marginBottom: hp(2.5),
     // lineHeight:
@@ -83,14 +82,10 @@ const styles = StyleSheet.create({
     // letterSpacing: Resolution.nLetterSpacing,
   },
   textContainer: {
-    // width: wp(75),
-    // height: hp(10),
     // marginBottom: hp(6),
     // alignContent:"space-between"
   },
   textComponent: {
-    // width: '100%',
-    // height: '100%',
     textAlign: 'center',
     fontSize: wp(4.25),
     fontStyle: 'normal',
@@ -104,7 +99,7 @@ const styles = StyleSheet.create({
     // letterSpacing: Resolution.nLetterSpacing / 2,
 
     ////FONT BOLD EG
-    // // fontWeight: Platform.OS==="android"?"normal":"bold",
-    // // fontFamily: Platform.OS==="android"?sFontNameBold:sFontName,
+    //fontWeight: Platform.OS==="android"?"normal":"bold",
+    //fontFamily: Platform.OS==="android"?sFontNameBold:sFontName,
   },
 });

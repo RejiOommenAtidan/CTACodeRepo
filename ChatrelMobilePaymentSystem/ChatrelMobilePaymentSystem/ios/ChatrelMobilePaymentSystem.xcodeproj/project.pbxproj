@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ChatrelMobilePaymentSystemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChatrelMobilePaymentSystemTests.m */; };
+		0BFF9A9D69EAE92278DB6F65 /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 946E7D738566C3553C66E797 /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a */; };
 		0FABE4B5667446278E11CA8C /* SF Pro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D75BF48495144774979759C4 /* SF Pro.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -17,16 +18,15 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* ChatrelMobilePaymentSystemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChatrelMobilePaymentSystemTests.m */; };
-		458ADC0B29D1EBCCAB56D172 /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA565F1F14A1EC2418984D1F /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a */; };
+		6B19BC3444A649188F235864 /* libPods-ChatrelMobilePaymentSystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6102C9CCC66779CB2063F33D /* libPods-ChatrelMobilePaymentSystem.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9CF562CA878D4EC3A0F7FDD1 /* Cairo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 983C7858A7184A669CA72AF7 /* Cairo-Regular.ttf */; };
-		CB01AD5E417C91897E1C3EB7 /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FC117D85A94A59A8F609AE1 /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a */; };
+		C39CBD2316000E2B744A5E5C /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9769228F034D7DC46BCFA25F /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a */; };
 		D9420E2925ADD99C00B379B4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D9420E2825ADD99C00B379B4 /* GoogleService-Info.plist */; };
 		D99CBFF425A43C9800D92A65 /* Kanit-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC7E5F4676924E4C8F87C39C /* Kanit-Regular.ttf */; };
-		D9F2F449E1E7AE1E6C3984DA /* libPods-ChatrelMobilePaymentSystem-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7A86FC89F58152E57BBAFB /* libPods-ChatrelMobilePaymentSystem-tvOS.a */; };
+		DA277F5029BB23994C476D77 /* libPods-ChatrelMobilePaymentSystem-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29F4C0E188EDDF3B779A3E2B /* libPods-ChatrelMobilePaymentSystem-tvOS.a */; };
 		DFF6347A81334CDDA2DED5D2 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62328917392B4500AF908815 /* Poppins-Regular.ttf */; };
 		E1D300F5FED845E684113D06 /* JosefinSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 47BC2B204C75499ABE9DE727 /* JosefinSans-Bold.ttf */; };
-		F1C018ADB84E9914BEC96710 /* libPods-ChatrelMobilePaymentSystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81D7505F24EED4915D3556B2 /* libPods-ChatrelMobilePaymentSystem.a */; };
 		FC358B10EFB340A1A230308C /* JosefinSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 167CEB9EA7E149B3944E3CC1 /* JosefinSans-Regular.ttf */; };
 /* End PBXBuildFile section */
 
@@ -59,34 +59,36 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ChatrelMobilePaymentSystem/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ChatrelMobilePaymentSystem/main.m; sourceTree = "<group>"; };
 		167CEB9EA7E149B3944E3CC1 /* JosefinSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "JosefinSans-Regular.ttf"; path = "../code/assets/fonts/JosefinSans-Regular.ttf"; sourceTree = "<group>"; };
+		1BDDF6582D14D9E62A3F3B06 /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.debug.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1D2974F779A44A07AA6A8A52 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		1DB1A05359C649D285BE5670 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		26B054D009F8E1CFAB521DFA /* Pods-ChatrelMobilePaymentSystem.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem.release.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem/Pods-ChatrelMobilePaymentSystem.release.xcconfig"; sourceTree = "<group>"; };
+		29F4C0E188EDDF3B779A3E2B /* libPods-ChatrelMobilePaymentSystem-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C89B90AC804400FA9684E5D /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* ChatrelMobilePaymentSystem-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ChatrelMobilePaymentSystem-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* ChatrelMobilePaymentSystem-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ChatrelMobilePaymentSystem-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2E7A86FC89F58152E57BBAFB /* libPods-ChatrelMobilePaymentSystem-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		32EC0F33D3822E82F1C10693 /* Pods-ChatrelMobilePaymentSystem.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem.debug.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem/Pods-ChatrelMobilePaymentSystem.debug.xcconfig"; sourceTree = "<group>"; };
+		334EBA09579FE92DD8AC9F38 /* Pods-ChatrelMobilePaymentSystem-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-tvOS/Pods-ChatrelMobilePaymentSystem-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		35BC319AEEE04076BCB6AFA7 /* Microsoft Himalaya.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Microsoft Himalaya.ttf"; path = "../code/assets/fonts/Microsoft Himalaya.ttf"; sourceTree = "<group>"; };
-		375604209653C1E9FE8A6B4D /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.release.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.release.xcconfig"; sourceTree = "<group>"; };
 		3DE321D67C1A41D8BC2D763A /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		3F3FC8223C09768EBA7090A1 /* Pods-ChatrelMobilePaymentSystem.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem.debug.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem/Pods-ChatrelMobilePaymentSystem.debug.xcconfig"; sourceTree = "<group>"; };
 		3FDFAEC995F6474AAD3B6893 /* Oxygen-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oxygen-Regular.ttf"; path = "../code/assets/fonts/Oxygen-Regular.ttf"; sourceTree = "<group>"; };
 		40A3D592C5C3471F97BE7792 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
-		46BFBE50000D7B1CAB8BA4D9 /* Pods-ChatrelMobilePaymentSystem-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-tvOS/Pods-ChatrelMobilePaymentSystem-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		42E473228BEC701AA86935DC /* Pods-ChatrelMobilePaymentSystem-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-tvOSTests/Pods-ChatrelMobilePaymentSystem-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		47BC2B204C75499ABE9DE727 /* JosefinSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "JosefinSans-Bold.ttf"; path = "../code/assets/fonts/JosefinSans-Bold.ttf"; sourceTree = "<group>"; };
 		4E65774534B54B808A4F3D18 /* Kanit-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-BlackItalic.ttf"; path = "../code/assets/fonts/Kanit-BlackItalic.ttf"; sourceTree = "<group>"; };
 		5FE66082C02C4091A10AB72A /* Kanit-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-BoldItalic.ttf"; path = "../code/assets/fonts/Kanit-BoldItalic.ttf"; sourceTree = "<group>"; };
+		6102C9CCC66779CB2063F33D /* libPods-ChatrelMobilePaymentSystem.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62328917392B4500AF908815 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../code/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		635B2A4E4E814B8FB7DB85E5 /* Kanit-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-MediumItalic.ttf"; path = "../code/assets/fonts/Kanit-MediumItalic.ttf"; sourceTree = "<group>"; };
-		6653D6F5E736B08E8BFC75B5 /* Pods-ChatrelMobilePaymentSystem-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-tvOSTests/Pods-ChatrelMobilePaymentSystem-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		66971CFE27344491BDA5900B /* Kanit-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Medium.ttf"; path = "../code/assets/fonts/Kanit-Medium.ttf"; sourceTree = "<group>"; };
-		758C8E9753451668E8A2E691 /* Pods-ChatrelMobilePaymentSystem.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem.release.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem/Pods-ChatrelMobilePaymentSystem.release.xcconfig"; sourceTree = "<group>"; };
 		767F527E26E84E28B3B3EDB2 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		7F6B43791D13423395F24702 /* Kanit-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-SemiBold.ttf"; path = "../code/assets/fonts/Kanit-SemiBold.ttf"; sourceTree = "<group>"; };
-		7FC117D85A94A59A8F609AE1 /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ChatrelMobilePaymentSystem/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		81D7505F24EED4915D3556B2 /* libPods-ChatrelMobilePaymentSystem.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8861C61AE0154521B9A36E96 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		8EBF4792830E4AC1849511CB /* Kanit-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-ThinItalic.ttf"; path = "../code/assets/fonts/Kanit-ThinItalic.ttf"; sourceTree = "<group>"; };
+		93B97AE0B910639A2B7FE441 /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.release.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.release.xcconfig"; sourceTree = "<group>"; };
+		946E7D738566C3553C66E797 /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9769228F034D7DC46BCFA25F /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		983C7858A7184A669CA72AF7 /* Cairo-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Cairo-Regular.ttf"; path = "../code/assets/fonts/Cairo-Regular.ttf"; sourceTree = "<group>"; };
 		9B8BF06C112C4667850CD04C /* Kanit-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Thin.ttf"; path = "../code/assets/fonts/Kanit-Thin.ttf"; sourceTree = "<group>"; };
 		9C601274195747F99288E405 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
@@ -96,7 +98,6 @@
 		A3317D9C5E67481DBDF784A2 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		A8F6146B24F044F1AA6EAE1B /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		ACEFF53567F948A981F59EC5 /* Kanit-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Black.ttf"; path = "../code/assets/fonts/Kanit-Black.ttf"; sourceTree = "<group>"; };
-		C44B001807FC67DC92FA2F46 /* Pods-ChatrelMobilePaymentSystem-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-tvOS/Pods-ChatrelMobilePaymentSystem-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		CC7E5F4676924E4C8F87C39C /* Kanit-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Regular.ttf"; path = "../code/assets/fonts/Kanit-Regular.ttf"; sourceTree = "<group>"; };
 		CE488632C9754B0185C4E5D6 /* Kanit-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-Italic.ttf"; path = "../code/assets/fonts/Kanit-Italic.ttf"; sourceTree = "<group>"; };
 		D334837244184698A3DB2809 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
@@ -106,14 +107,13 @@
 		D9420E2825ADD99C00B379B4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DE02E00EA54B4A55A05C6EF1 /* Kanit-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-ExtraBoldItalic.ttf"; path = "../code/assets/fonts/Kanit-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		DED8F91AE1B3491AAA07FD30 /* Kanit-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-SemiBoldItalic.ttf"; path = "../code/assets/fonts/Kanit-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
-		E1277051FBB7517D3784D2C3 /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.debug.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E51F2A68B153454BBCEB34EA /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		E9D1CF0F00FA4A399E10C89E /* Kanit-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Kanit-ExtraBold.ttf"; path = "../code/assets/fonts/Kanit-ExtraBold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		F118E2CF1C1F444268D70395 /* Pods-ChatrelMobilePaymentSystem-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-tvOS/Pods-ChatrelMobilePaymentSystem-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		F2BB1E3C87300100E1BBEC33 /* Pods-ChatrelMobilePaymentSystem-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-tvOSTests/Pods-ChatrelMobilePaymentSystem-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F4F4E96EE0C24CAF82AF05D2 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		FA565F1F14A1EC2418984D1F /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChatrelMobilePaymentSystem-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FB7711554CD2AA1F571CDF58 /* Pods-ChatrelMobilePaymentSystem-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatrelMobilePaymentSystem-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ChatrelMobilePaymentSystem-tvOSTests/Pods-ChatrelMobilePaymentSystem-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,7 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB01AD5E417C91897E1C3EB7 /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a in Frameworks */,
+				C39CBD2316000E2B744A5E5C /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,7 +129,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F1C018ADB84E9914BEC96710 /* libPods-ChatrelMobilePaymentSystem.a in Frameworks */,
+				6B19BC3444A649188F235864 /* libPods-ChatrelMobilePaymentSystem.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,7 +137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9F2F449E1E7AE1E6C3984DA /* libPods-ChatrelMobilePaymentSystem-tvOS.a in Frameworks */,
+				DA277F5029BB23994C476D77 /* libPods-ChatrelMobilePaymentSystem-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,7 +145,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				458ADC0B29D1EBCCAB56D172 /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a in Frameworks */,
+				0BFF9A9D69EAE92278DB6F65 /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,10 +189,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				81D7505F24EED4915D3556B2 /* libPods-ChatrelMobilePaymentSystem.a */,
-				7FC117D85A94A59A8F609AE1 /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a */,
-				2E7A86FC89F58152E57BBAFB /* libPods-ChatrelMobilePaymentSystem-tvOS.a */,
-				FA565F1F14A1EC2418984D1F /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a */,
+				6102C9CCC66779CB2063F33D /* libPods-ChatrelMobilePaymentSystem.a */,
+				9769228F034D7DC46BCFA25F /* libPods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.a */,
+				29F4C0E188EDDF3B779A3E2B /* libPods-ChatrelMobilePaymentSystem-tvOS.a */,
+				946E7D738566C3553C66E797 /* libPods-ChatrelMobilePaymentSystem-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -200,14 +200,14 @@
 		5EBBBB62591CEEBE92C3886E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3F3FC8223C09768EBA7090A1 /* Pods-ChatrelMobilePaymentSystem.debug.xcconfig */,
-				758C8E9753451668E8A2E691 /* Pods-ChatrelMobilePaymentSystem.release.xcconfig */,
-				E1277051FBB7517D3784D2C3 /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.debug.xcconfig */,
-				375604209653C1E9FE8A6B4D /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.release.xcconfig */,
-				C44B001807FC67DC92FA2F46 /* Pods-ChatrelMobilePaymentSystem-tvOS.debug.xcconfig */,
-				46BFBE50000D7B1CAB8BA4D9 /* Pods-ChatrelMobilePaymentSystem-tvOS.release.xcconfig */,
-				FB7711554CD2AA1F571CDF58 /* Pods-ChatrelMobilePaymentSystem-tvOSTests.debug.xcconfig */,
-				6653D6F5E736B08E8BFC75B5 /* Pods-ChatrelMobilePaymentSystem-tvOSTests.release.xcconfig */,
+				32EC0F33D3822E82F1C10693 /* Pods-ChatrelMobilePaymentSystem.debug.xcconfig */,
+				26B054D009F8E1CFAB521DFA /* Pods-ChatrelMobilePaymentSystem.release.xcconfig */,
+				1BDDF6582D14D9E62A3F3B06 /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.debug.xcconfig */,
+				93B97AE0B910639A2B7FE441 /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.release.xcconfig */,
+				334EBA09579FE92DD8AC9F38 /* Pods-ChatrelMobilePaymentSystem-tvOS.debug.xcconfig */,
+				F118E2CF1C1F444268D70395 /* Pods-ChatrelMobilePaymentSystem-tvOS.release.xcconfig */,
+				F2BB1E3C87300100E1BBEC33 /* Pods-ChatrelMobilePaymentSystem-tvOSTests.debug.xcconfig */,
+				42E473228BEC701AA86935DC /* Pods-ChatrelMobilePaymentSystem-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -298,11 +298,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ChatrelMobilePaymentSystemTests" */;
 			buildPhases = (
-				510959CD0491D8788E3F4461 /* [CP] Check Pods Manifest.lock */,
+				7DFDAC8DF3BAB9C975BCD309 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				2CCD2D528EA8361330FBCB30 /* [CP] Copy Pods Resources */,
+				D8823814A531DCF8FC8B75DF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -318,13 +318,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ChatrelMobilePaymentSystem" */;
 			buildPhases = (
-				5284707275EEE5F69327F290 /* [CP] Check Pods Manifest.lock */,
+				702DD0ABF159C128A049B635 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				F0C67BA44F3816959D74EF7D /* [CP] Copy Pods Resources */,
+				4ED4F4D9F055543885792D0B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -339,7 +339,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "ChatrelMobilePaymentSystem-tvOS" */;
 			buildPhases = (
-				AEEC23C21B7EBAC04201C80B /* [CP] Check Pods Manifest.lock */,
+				F620C13C99CE30131AC85EF2 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -359,7 +359,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "ChatrelMobilePaymentSystem-tvOSTests" */;
 			buildPhases = (
-				C4EE4348A86B48F0F001DFB3 /* [CP] Check Pods Manifest.lock */,
+				009838ED8D6AB0E70EB33245 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -387,8 +387,9 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 989R72X9N6;
+						DevelopmentTeam = X4T7928XHG;
 						LastSwiftMigration = 1120;
+						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -465,6 +466,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		009838ED8D6AB0E70EB33245 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ChatrelMobilePaymentSystem-tvOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -479,7 +502,117 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		2CCD2D528EA8361330FBCB30 /* [CP] Copy Pods Resources */ = {
+		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native Code And Images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		4ED4F4D9F055543885792D0B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ChatrelMobilePaymentSystem/Pods-ChatrelMobilePaymentSystem-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChatrelMobilePaymentSystem/Pods-ChatrelMobilePaymentSystem-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		702DD0ABF159C128A049B635 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ChatrelMobilePaymentSystem-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7DFDAC8DF3BAB9C975BCD309 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D8823814A531DCF8FC8B75DF /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -531,65 +664,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native Code And Images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		510959CD0491D8788E3F4461 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5284707275EEE5F69327F290 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ChatrelMobilePaymentSystem-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AEEC23C21B7EBAC04201C80B /* [CP] Check Pods Manifest.lock */ = {
+		F620C13C99CE30131AC85EF2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -609,80 +684,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C4EE4348A86B48F0F001DFB3 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ChatrelMobilePaymentSystem-tvOSTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F0C67BA44F3816959D74EF7D /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ChatrelMobilePaymentSystem/Pods-ChatrelMobilePaymentSystem-resources.sh",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChatrelMobilePaymentSystem/Pods-ChatrelMobilePaymentSystem-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -778,7 +779,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E1277051FBB7517D3784D2C3 /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.debug.xcconfig */;
+			baseConfigurationReference = 1BDDF6582D14D9E62A3F3B06 /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -801,7 +802,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 375604209653C1E9FE8A6B4D /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.release.xcconfig */;
+			baseConfigurationReference = 93B97AE0B910639A2B7FE441 /* Pods-ChatrelMobilePaymentSystem-ChatrelMobilePaymentSystemTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -821,12 +822,14 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3F3FC8223C09768EBA7090A1 /* Pods-ChatrelMobilePaymentSystem.debug.xcconfig */;
+			baseConfigurationReference = 32EC0F33D3822E82F1C10693 /* Pods-ChatrelMobilePaymentSystem.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 989R72X9N6;
+				DEVELOPMENT_TEAM = X4T7928XHG;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ChatrelMobilePaymentSystem/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -835,8 +838,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.CTA.eChatrel;
 				PRODUCT_NAME = ChatrelMobilePaymentSystem;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -845,11 +849,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 758C8E9753451668E8A2E691 /* Pods-ChatrelMobilePaymentSystem.release.xcconfig */;
+			baseConfigurationReference = 26B054D009F8E1CFAB521DFA /* Pods-ChatrelMobilePaymentSystem.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X4T7928XHG;
 				INFOPLIST_FILE = ChatrelMobilePaymentSystem/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -857,7 +862,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.CTA.eChatrel;
 				PRODUCT_NAME = ChatrelMobilePaymentSystem;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -866,7 +871,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C44B001807FC67DC92FA2F46 /* Pods-ChatrelMobilePaymentSystem-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 334EBA09579FE92DD8AC9F38 /* Pods-ChatrelMobilePaymentSystem-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -894,7 +899,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46BFBE50000D7B1CAB8BA4D9 /* Pods-ChatrelMobilePaymentSystem-tvOS.release.xcconfig */;
+			baseConfigurationReference = F118E2CF1C1F444268D70395 /* Pods-ChatrelMobilePaymentSystem-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -922,7 +927,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB7711554CD2AA1F571CDF58 /* Pods-ChatrelMobilePaymentSystem-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = F2BB1E3C87300100E1BBEC33 /* Pods-ChatrelMobilePaymentSystem-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -949,7 +954,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6653D6F5E736B08E8BFC75B5 /* Pods-ChatrelMobilePaymentSystem-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 42E473228BEC701AA86935DC /* Pods-ChatrelMobilePaymentSystem-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;

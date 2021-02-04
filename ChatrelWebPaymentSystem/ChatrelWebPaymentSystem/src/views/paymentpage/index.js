@@ -68,6 +68,12 @@ import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import projectLogo from '../../assets/images/CTALogo.png';
 import { useMediaQuery } from 'react-responsive'
 
+import {sPayPal_ClientID} from '../../config/commonConfig';
+
+
+import { useDispatch } from 'react-redux';
+import {storeSession} from '../../actions/transactions/SessionAction';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -90,6 +96,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function PaymentPage(props) {
   let history = useHistory();
+  const dispatch = useDispatch();
   //const userId = useSelector(state => state.UserAuthenticationReducer.oUserAuth.oUser.id);
   const responsive = useMediaQuery({query: '(max-width: 1100px)'})
   const fontName = 'Poppins';
@@ -476,12 +483,16 @@ export default function PaymentPage(props) {
           //alert(resp.data);
           console.log(resp.data);
          
-
+          const oSession={
+            sJwtToken:resp.data.token,
+            bSession:true
+          }
+          dispatch(storeSession(oSession));
           setBackdrop(false);
           setAlertMessage('Chatrel recorded successfully.');
           setAlertType('success');
           snackbarOpen();
-          setReceiptData(resp.data);
+          setReceiptData(resp.data.message);
           
           setPaymentDiv(false);
           setSuccessDiv(true);
@@ -498,13 +509,19 @@ export default function PaymentPage(props) {
   const getReceipt = (sChatrelReceiptNumber) => {
     setBackdrop(true);
     console.log("Receipt Number", sChatrelReceiptNumber);
-    axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=`+sChatrelReceiptNumber,  { responseType: 'blob' })
+    axios.get(`/ChatrelPayment/GetReceipt/?sReceiptNumber=`+sChatrelReceiptNumber)
     .then(resp => {
       console.log("Response", resp);
       
       if (resp.status === 200) {
+        const oSession={
+          sJwtToken:resp.data.token,
+          bSession:true
+        }
+        dispatch(storeSession(oSession));
         setBackdrop(false);
-        const url = window.URL.createObjectURL(new Blob([resp.data]));
+    //    const url = window.URL.createObjectURL(new Blob([resp.data.receipt]));
+        const url = `data:application/pdf;base64,${resp.data.receipt}`;
         const link = document.createElement("a");
         link.href = url;
         link.setAttribute("download", "ChatrelReceipt.pdf");
@@ -545,6 +562,7 @@ export default function PaymentPage(props) {
       .get(`/AuthRegion/GetAuthRegions`)
       .then((resp) => {
         if (resp.status === 200) {
+          
           console.log('AuthRegions fetched:', resp.data);
           setAuthRegions(resp.data);
       /*    if (props.location.state.pymtData) {
@@ -583,24 +601,29 @@ export default function PaymentPage(props) {
           axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=` + sGBID)
             .then((resp) => {
               if (resp.status === 200) {
+                const oSession={
+                  sJwtToken:resp.data.token,
+                  bSession:true
+                }
+                dispatch(storeSession(oSession));
                 console.log("test",resp.data);
-                if(resp.data==="Paid Until Missing"){
+                if(resp.data.message==="Paid Until Missing"){
                   console.log("Inside File Dispute Condition");
                   setDisplayFileDispute(true);
                 }
                 else{
              
                   
-                  if (resp.data.chatrelPayment.nChatrelTotalAmount === 0) {
+                  if (resp.data.chatrel.chatrelPayment.nChatrelTotalAmount === 0) {
                     setOutstanding(false);
                  
                   }
-                  setDataAPI(resp.data);
-                  setSummaryData(resp.data.chatrelPayment);
-                  setPaymentData(resp.data.gbChatrels);
-                  setDonationData(resp.data.gbChatrelDonation);
+                  setDataAPI(resp.data.chatrel);
+                  setSummaryData(resp.data.chatrel.chatrelPayment);
+                  setPaymentData(resp.data.chatrel.gbChatrels);
+                  setDonationData(resp.data.chatrel.gbChatrelDonation);
                   calcTotal(
-                    resp.data.gbChatrels,
+                    resp.data.chatrel.gbChatrels,
                     adonation,
                     bdonation
                   );
@@ -1613,8 +1636,7 @@ export default function PaymentPage(props) {
                         amount={total.toFixed(2)}
                         style={{ label: 'pay' }}
                         options={{
-                          clientId:
-                            'AeIfCd7BHacsWwdqkIYfxmPQrN8UZU2Sap_dor00t7Z8Y9pLLJiwK_v2-lNy8vIhaSU9AFAiC5l8l7Gx',
+                          clientId:sPayPal_ClientID,
                           currency: 'USD'
                         }}
                         shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"

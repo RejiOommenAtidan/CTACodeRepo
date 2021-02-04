@@ -7,6 +7,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
+import { storeJWTToken } from '../store/actions/GBDetailsAction';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import { Platform } from 'react-native';
@@ -71,9 +72,11 @@ export const FamilyChatrelIntermediateScreen = (props) => {
       .get(`/ChatrelPayment/GetFamilyDetails/?sGBID=` + oCurrentGBDetails.sGBID)
       .then((resp) => {
         if (resp.status === 200) {
-          setaFamilyMembers(resp.data);
+          const token = resp.data.token;
+          dispatch(storeJWTToken(token));
+          setaFamilyMembers(resp.data.chatrel);
           setbLoader(false);
-          console.log(resp.data);
+          //console.log(resp.data);
         }
       })
       .catch((error) => {
@@ -95,7 +98,7 @@ export const FamilyChatrelIntermediateScreen = (props) => {
   const handleFamilyMemberPress = (member) => {
     try {
       setbLoader(true);
-      console.log(member);
+      //console.log(member);
       let oCurrentGBDetails = {
         sGBID: member.sGBIDRelation,
         dtDOB: Moment(member.dtDOB).format(sDateFormat),
@@ -233,8 +236,6 @@ export const FamilyChatrelIntermediateScreen = (props) => {
               <View style={styles.payNowContainer}>
                 <Button
                   disabled={
-
-
                     member.sGBIDRelation === null
                   }
                   onPress={() => {
@@ -317,7 +318,6 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     fontFamily: sFontName,
   },
-
   zeroRecordContainer: {},
   zeroRecordComponent: {
     textAlign: 'center',
@@ -327,7 +327,6 @@ const styles = StyleSheet.create({
     color: Colors.blackText,
     fontFamily: sFontName,
   },
-
   cardComponent: {
     width: wp(92.5),
     backgroundColor: Colors.white,
@@ -358,12 +357,10 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     fontFamily: sFontName,
   },
-
   chatrelLabelContainer: {
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 6 : 10,
   },
-
   chatrelLabelComponent: {
     textAlign: 'right',
     fontSize: wp(5.5),
@@ -372,16 +369,13 @@ const styles = StyleSheet.create({
     fontWeight: Platform.OS === 'android' ? 'normal' : 'bold',
     fontFamily: Platform.OS === 'android' ? sFontNameBold : sFontName,
   },
-
   cardDividerComponent: {
     height: 0.75,
     backgroundColor: Colors.greenBG,
   },
-
   labelContainer: {
     marginBottom: hp(1.25),
   },
-
   labelComponent: {
     textAlign: 'left',
     fontSize: wp(3.25),
@@ -391,12 +385,10 @@ const styles = StyleSheet.create({
     fontFamily: sFontName,
     marginBottom: hp(1),
   },
-
   valueContainer: {
     marginBottom:
       Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
   },
-
   valueComponent: {
     textAlign: 'left',
     fontSize: wp(5.25),
@@ -405,112 +397,6 @@ const styles = StyleSheet.create({
     color: Colors.blackTextAPI,
     fontFamily: sFontName,
   },
-
-  // gbidLabelContainer: {
-
-  // },
-  // gbidLabelComponent: {
-
-  // },
-  // gbidValueContainer: {
-
-  // },
-  // gbidValueComponent: {
-
-  // },
-
-  // ageLabelContainer: {
-  //   marginBottom:
-  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
-  // },
-  // ageLabelComponent: {
-  //   textAlign: 'left',
-  //   fontSize:
-  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackText,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-  // ageValueContainer: {
-  //   marginBottom:
-  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
-  // },
-  // ageValueComponent: {
-  //   textAlign: 'left',
-  //   fontSize:
-  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackTextAPI,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-
-  // dtDOBLabelContainer: {
-  //   marginBottom:
-  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
-  // },
-  // dtDOBLabelComponent: {
-  //   textAlign: 'left',
-  //   fontSize:
-  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackText,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-  // dtDOBValueContainer: {
-  //   marginBottom:
-  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
-  // },
-  // dtDOBValueComponent: {
-  //   textAlign: 'left',
-  //   fontSize:
-  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackTextAPI,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-
-  // relationLabelContainer: {
-  //   marginBottom:
-  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,
-  // },
-  // relationLabelComponent: {
-  //   textAlign: 'right',
-  //   fontSize:
-  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 6 : 10,
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackText,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
-  // relationValueContainer: {
-  //   marginBottom:
-  //     Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 9 : 15,
-  // },
-  // relationValueComponent: {
-  //   textAlign: 'left',
-  //   fontSize:
-  //     Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 9.6 : 16,
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   color: Colors.blackTextAPI,
-  //   //lineHeight: Dimensions.get('window').width < Resolution.nWidthBreakpoint ? 21 : 35,
-  //   //letterSpacing: Resolution.nLetterSpacing,
-  //   fontFamily: sFontName,
-  // },
   payNowContainer: {
     marginTop: hp(1),
   },

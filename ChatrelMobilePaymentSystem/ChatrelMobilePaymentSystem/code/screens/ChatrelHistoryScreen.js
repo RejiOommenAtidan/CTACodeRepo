@@ -7,12 +7,14 @@ import {
   Dimensions,
   ActivityIndicator,
   PermissionsAndroid,
-  ToastAndroid
+  ToastAndroid,
+  Alert,
+  Platform,
 } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import Resolution from '../constants/ResolutionBreakpoint';
 import Colors from '../constants/Colors';
@@ -31,11 +33,13 @@ import {
   sAPIBASEURL,
 } from '../constants/CommonConfig';
 import { useIsFocused } from '@react-navigation/native';
+import RNFetchBlob from 'react-native-fetch-blob';
+import { storeJWTToken } from '../store/actions/GBDetailsAction';
 // import { DownloadDirectoryPath } from 'react-native-fs';
-import RNFetchBlob from 'react-native-fetch-blob'
 
 export const ChatrelHistoryScreen = (props) => {
   const [bLoader, setbLoader] = useState(true);
+  const dispatch = useDispatch();
   const isFocused = useIsFocused();
   // const DATA = [
   //   {
@@ -79,16 +83,21 @@ export const ChatrelHistoryScreen = (props) => {
 
   const downloadFile = async (singleHistory) => {
     try {
-      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         handleDownloadReceiptOnPress(singleHistory);
       } else {
-        Alert.alert('Permission Denied!', 'You need to give storage permission to download the file');
+        Alert.alert(
+          'Permission Denied!',
+          'You need to give storage permission to download the file',
+        );
       }
     } catch (err) {
       console.warn(err);
     }
-  }
+  };
 
   const handleDownloadReceiptOnPress = (singleHistory) => {
     console.log(singleHistory.sChatrelReceiptNumber);
@@ -106,25 +115,33 @@ export const ChatrelHistoryScreen = (props) => {
         useDownloadManager: true,
         notification: true,
         mediaScannable: true,
-        title: `Receipt.pdf`,
-        path: `${dirs.DownloadDir}/Receipt.pdf`,
+        title: `Chatrel Receipt.pdf`,
+        path: `${dirs.DownloadDir}/Chatrel Receipt.pdf`,
       },
     })
-      .fetch('GET', sAPIBASEURL + '/ChatrelPayment/GetReceipt/?sReceiptNumber=' + singleHistory.sChatrelReceiptNumber, {
-        Authorization: 'Bearer ' + sJwtToken,
-      })
-      .then(
-        resp => {
-          //if (resp.status === 200) {
+      .fetch(
+        'GET',
+        sAPIBASEURL +
+        '/ChatrelPayment/GetReceipt/?sReceiptNumber=' +
+        singleHistory.sChatrelReceiptNumber,
+        {
+          Authorization: 'Bearer ' + sJwtToken,
+        },
+      )
+      .then((resp) => {
+        console.log(resp);
+        //if (resp.status === 200) {
+        //TODO: iOS
+        Platform.OS === "android" ?
           ToastAndroid.show(
             'Receipt Downloaded Successfully',
             ToastAndroid.SHORT,
             ToastAndroid.CENTER,
-          );
-          //}
-        }
-      ).catch(error => {
-        console.log("Error ", error.response);
+          ) : null;
+        //}
+      })
+      .catch((error) => {
+        console.log('Error ', error.response);
         if (error.response) {
           console.error(error.response);
           console.error(error.response.data);
@@ -136,11 +153,7 @@ export const ChatrelHistoryScreen = (props) => {
           console.error('Error', error.message);
         }
         console.log(error.config);
-      })
-      .then(release => {
-        //console.log(release); => udefined
       });
-
 
     // const url = URL.createObjectURL(new Blob([resp.data]));
     // const link = document.createElement("a");
@@ -176,14 +189,20 @@ export const ChatrelHistoryScreen = (props) => {
       )
       .then((resp) => {
         if (resp.status === 200) {
-          setPaymentHistory(resp.data);
-          setbLoader(false);
-          //console.log(resp.data);
+          dispatch(storeJWTToken(resp.data.token));
+          if (resp.data.message === "Payment History Found") {
+            setPaymentHistory(resp.data.paymentHistory);
+            setbLoader(false);
+          }
+          else {
+            setPaymentHistory([]);
+            setbLoader(false);
+          }
         }
       })
       .catch((error) => {
         setbLoader(false);
-        alert('Something went wrong, please try again later.');
+        Alert.alert('Something went wrong, please try again later.');
         console.log(error.message);
         console.log(error.config);
       });
@@ -201,8 +220,7 @@ export const ChatrelHistoryScreen = (props) => {
 
   return (
     <View style={styles.mainContainer}>
-      <Loader
-        loading={bLoader} />
+      <Loader loading={bLoader} />
       {/*<View style={styles.headingContainer}>
         <Text style={styles.headingComponent}>CHATREL HISTORY</Text>
   </View>*/}
@@ -367,9 +385,12 @@ export const ChatrelHistoryScreen = (props) => {
                 </View> */}
                 <View style={styles.downloadReceiptContainer}>
                   <Button
+                    disabled={true}
                     title={'DOWNLOAD RECEIPT'}
                     onPress={() => {
-                      downloadFile(singleHistory);
+                      Platform.OS === 'android'
+                        ? downloadFile(singleHistory)
+                        : handleDownloadReceiptOnPress(singleHistory);
                       //handleDownloadReceiptOnPress(singleHistory);
                     }}
                     iconRight
@@ -408,7 +429,7 @@ export const ChatrelHistoryScreen = (props) => {
     </View>
   );
 };
-console.log(Dimensions.get('window').height);
+
 export const ChatrelHistoryScreenOptions = (navData) => {
   return {
     headerTitle: 'CHATREL HISTORY',
@@ -527,7 +548,6 @@ const styles = StyleSheet.create({
     //letterSpacing: Resolution.nLetterSpacing,
     fontFamily: sFontName,
   },
-
   receiptNumberLabelContainer: {
     // marginBottom:
     //   Dimensions.get('window').height < Resolution.nHeightBreakpoint ? 1.2 : 2,

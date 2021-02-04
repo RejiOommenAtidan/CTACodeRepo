@@ -9,9 +9,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -29,7 +27,7 @@ import { GoogleSignin } from '@react-native-community/google-signin';
 import { useDispatch } from 'react-redux';
 import { removeGoogleCreds } from '../store/actions/GLoginAction';
 import { removeCurrentGBDetails } from '../store/actions/CurrentGBDetailsAction';
-import { removeGBDetails } from '../store/actions/GBDetailsAction';
+import { removeGBDetails, removeJWTToken } from '../store/actions/GBDetailsAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {useNavigation} from '@react-navigation/native';
 
@@ -71,6 +69,7 @@ export const CustomSidebarMenu = (props) => {
         await AsyncStorage.multiRemove(keysToRemove, (err) => {
           dispatch(removeGoogleCreds);
           dispatch(removeGBDetails);
+          dispatch(removeJWTToken);
           dispatch(removeCurrentGBDetails);
           navigation.navigate('Login');
         });
@@ -169,18 +168,6 @@ export const CustomSidebarMenu = (props) => {
       <DrawerContentScrollView {...props}>
         {/* {console.log(props)} */}
         {/* <DrawerItemList {...props} /> */}
-        {/*<View style={styles.customItem}>
-          <Text
-            onPress={() => {
-              Linking.openURL('https://cta-portal-webapi.azurewebsites.net/weatherforecast');
-            }}>
-            Rate Us
-          </Text>
-          <Image
-            source={{uri: BASE_PATH + 'star_filled.png'}}
-            style={styles.iconStyle}
-          />
-        </View>*/}
         {state.routes.map((route) => {
           const {
             drawerLabel,
@@ -188,8 +175,6 @@ export const CustomSidebarMenu = (props) => {
             groupName,
             drawerIcon,
           } = descriptors[route.key].options;
-          // console.log(route);
-          // console.log(activeTintColor);
           if (lastGroupName !== groupName) {
             newGroup = true;
             lastGroupName = groupName;
@@ -248,7 +233,7 @@ export const CustomSidebarMenu = (props) => {
             width: '100%',
             height: 1,
             backgroundColor: Colors.separatorColor,
-            marginTop: hp(1),
+            //marginTop: hp(1),
           }}
         />
         <DrawerItem
@@ -277,6 +262,18 @@ export const CustomSidebarMenu = (props) => {
           )}
         />
       </DrawerContentScrollView>
+      {/*<View style={styles.customItem}>
+          <Text
+            onPress={() => {
+              Linking.openURL('https://cta-portal-webapi.azurewebsites.net/weatherforecast');
+            }}>
+            Rate Us
+          </Text>
+          <Image
+            source={{uri: BASE_PATH + 'star_filled.png'}}
+            style={styles.iconStyle}
+          />
+          </View>*/}
       {/* <Text
         style={{
           fontSize: 16,
@@ -288,26 +285,6 @@ export const CustomSidebarMenu = (props) => {
     </SafeAreaView>
   );
 };
-
-// const styles = StyleSheet.create({
-//   sideMenuProfileIcon: {
-//     resizeMode: 'center',
-//     width: 100,
-//     height: 100,
-//     borderRadius: 100 / 2,
-//     alignSelf: 'center',
-//   },
-//   iconStyle: {
-//     width: 15,
-//     height: 15,
-//     marginHorizontal: 5,
-//   },
-//   customItem: {
-//     padding: 16,
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//   },
-// });
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -335,8 +312,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginBottom: hp(1),
     //backgroundColor: Colors.white,
-    // borderBottomColor:Colors.black,
-    // borderBottomWidth:1,
+    //borderBottomColor:Colors.black,
+    //borderBottomWidth:1,
     marginHorizontal: 0,
   },
 });

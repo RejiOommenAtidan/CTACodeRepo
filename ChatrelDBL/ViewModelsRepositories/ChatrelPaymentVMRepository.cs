@@ -5,6 +5,8 @@ using ChatrelDBL.Repository;
 using ChatrelDBL.ViewModels;
 using DinkToPdf;
 using DinkToPdf.Contracts;
+using MimeKit;
+using MailKit.Net.Smtp;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -15,6 +17,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+//using System.Net.Mail;
 using System.Text;
 using TimeZoneConverter;
 
@@ -138,10 +141,52 @@ namespace ChatrelDBL.ViewModelsRepositories
                     command.CommandText = gbuilder.GetUpdateCommand().CommandText;
                     command.ExecuteNonQuery();
                     transaction.Commit();
+
+
                     //To do: Update GreenBook "sPaidUntil" column to reflect current paid upto status.
 
-                   // Object receipt = GetReceipt(chatrelPayment.sChatrelReceiptNumber);
+                    // Object receipt = GetReceipt(chatrelPayment.sChatrelReceiptNumber);
                     //return ("Records inserted successfully.");
+                    #region Receipt Email
+                   
+                    var emailFrom = "chatrelcta@gmail.com";
+                    var emailTo = greenbook.sLoginGmail;
+
+                    var mailText = String.Format("Chatrel Donation Receipt");
+
+                    //attachment = attachment.Substring(attachment.IndexOf("base64,") + 7);
+
+                    var attach = GetReceipt(chatrelPayment.sChatrelReceiptNumber);
+
+                    MimeMessage message = new MimeMessage();
+                    MailboxAddress from = new MailboxAddress("CTA Team", emailFrom);
+                    MailboxAddress to = new MailboxAddress(greenbook.sFirstName+" "+greenbook.sLastName , emailTo);
+
+                    BodyBuilder messageBody = new BodyBuilder();
+                    messageBody.TextBody = mailText;
+                    messageBody.Attachments.Add("ChatrelReceipt.pdf" , (byte[])attach);
+
+
+                    message.From.Add(from);
+                    message.To.Add(to);
+                    //message.Subject = String.Format("Email from {0}, Green Book Id: {1}", sName, sGBID);
+
+                    message.Subject = String.Format("Chatrel Receipt - {0}", chatrelPayment.sChatrelReceiptNumber);
+
+
+
+                    message.Date = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TZConvert.GetTimeZoneInfo("Eastern Standard Time"));
+                    message.Body = messageBody.ToMessageBody();
+                    // Message ready. Now to use smtp client to despatch message
+                   SmtpClient smtpClient = new SmtpClient();
+                    smtpClient.AuthenticationMechanisms.Remove("XOAUTH2");
+                    smtpClient.Connect("smtp.gmail.com", 465, true);
+                    smtpClient.Authenticate("chatrelcta@gmail.com", "hjmzfrcillpuvsxv");
+                    smtpClient.Send(message);
+                    smtpClient.Disconnect(true);
+                    smtpClient.Dispose();
+                    #endregion
+
                     return chatrelPayment.sChatrelReceiptNumber;
 
                 }
@@ -271,7 +316,7 @@ namespace ChatrelDBL.ViewModelsRepositories
                 nChatrelAdditionalDonationAmt = 0.00m,
                 nChatrelTotalAmount = 0.00m
             };
-           dynamic receipt = JObject.Parse(result);
+            dynamic receipt = JObject.Parse(result);
             var x = receipt.nAge;
             var zeros = string.Concat(Enumerable.Repeat("0", 7 - (receipt.sGBID.Value.Length)));
             var gbid = zeros + receipt.sGBID.Value;
@@ -283,15 +328,16 @@ namespace ChatrelDBL.ViewModelsRepositories
                 PaperSize = PaperKind.A4,
                 Margins = new MarginSettings { Top = 10 },
                 DocumentTitle = "PDF Report",
-              //  Out = @"E:\Employee_Report.pdf"
+                //  Out = @"E:\Employee_Report.pdf"
             };
+            //string path = "/"CTABackground.PNG/"";
             string sb = $@"
                         <html>
                             <head>
                             </head>
                             <body>
-                                <table id='mytable' class='mytable' cellspacing='0' style='border:2px solid #000000' data-reactroot=''>
-  <tr>
+                                <table id='mytable' class='mytable' cellspacing='0' style='border: 3px solid #000000;background:linear-gradient(rgba(255,255,255,.9), rgba(255,255,255,.9)),url('CTABackground.PNG') no-repeat center' data-reactroot=''>
+< tr>
     <td width='20'></td>
     <td width='300'></td>
     <td width='225'></td>
@@ -339,7 +385,7 @@ namespace ChatrelDBL.ViewModelsRepositories
     <td style='border-bottom:2px solid #000000' align='left' valign='bottom'>
       <b>
         <font face='Microsoft Himalaya' size='4' color='#000000'>
-          སྒོར།<!-- --> <!-- -->{receipt.nChatrelAmount.Value}
+          སྒོར།<!-- --> <!-- -->{receipt.nChatrelAmount?.Value}
         </font>
       </b>
     </td>
@@ -348,7 +394,7 @@ namespace ChatrelDBL.ViewModelsRepositories
   <tr>
     <td width='20' style='border-bottom:1px solid #000000' height='26'></td>
     <td colspan='2' style='border-bottom:1px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>༢། ཟས་བཅད་དོད།</font></b></td>
-    <td style='border-bottom:2px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>སྒོར། {receipt.nChatrelMeal.Value} </font></b></td>
+    <td style='border-bottom:2px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>སྒོར། {receipt.nChatrelMeal?.Value} </font></b></td>
     <td width='20' style='border-bottom:2px solid #000000'></td>
   </tr>
   <tr>
@@ -357,7 +403,7 @@ namespace ChatrelDBL.ViewModelsRepositories
     <td style='border-bottom:2px solid #000000' align='left' valign='bottom'>
       <b>
         <font face='Microsoft Himalaya' size='4' color='#000000'>
-          སྒོར།<!-- --> <!-- -->{receipt.nCurrentChatrelSalaryAmt.Value} 
+          སྒོར།<!-- --> <!-- -->{receipt.nCurrentChatrelSalaryAmt?.Value} 
         </font>
       </b>
     </td>
@@ -379,7 +425,7 @@ namespace ChatrelDBL.ViewModelsRepositories
     <td width='20' style='border-bottom:1px solid #000000' height='26'></td>
     <td colspan='2' style='border-bottom:1px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>༥། དཔྱ་དངུལ་འབུལ་ཆད་འབབ།</font></b></td>
     <td style='border-bottom:2px solid #000000' align='left' valign='bottom'><b><font face='Microsoft Himalaya' size='4' color='#000000'>སྒོར །<!-- --> <!-- -->
-  {receipt.nArrears.Value}<!-- --> <!-- -->  ({receipt.dtArrearsFrom.Value.Year }-{receipt.dtArrearsTo.Value.Year } )</font></b></td>
+  {(receipt.nArrears.Value != null ? receipt.nArrears.Value : "")} <!-- --> <!-- -->  ()</font></b></td>
     <td width='20' style='border-bottom:2px solid #000000'></td>
   </tr>
   <tr>

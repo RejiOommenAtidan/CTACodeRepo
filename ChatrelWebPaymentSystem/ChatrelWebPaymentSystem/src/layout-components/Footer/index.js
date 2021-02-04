@@ -7,11 +7,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import projectLogo from '../../assets/images/CTALogo.png';
+import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
+import { useSelector,useDispatch} from 'react-redux';
 const Footer = (props) => {
 
 
   let history = useHistory();
+  let dispatch = useDispatch();
   const { footerShadow, footerBgTransparent } = props;
+  const paidByGBID=useSelector(state => state.GBDetailsReducer.oGBDetails.sGBID);
+  const paidByName= useSelector(state => state.GBDetailsReducer.oGBDetails.sName);
+
+  const makePayment = (obj)=> {
+    // console.log("Inside Make payment method for " , obj, data)
+     dispatch(storeCurrentGBDetails(obj));
+     history.push('/PaymentPage');
+   }
+   const selfPayment=() => {
+    
+     makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' });
+   }
+
+
   return (
     <>
       <div 
@@ -111,8 +128,8 @@ const Footer = (props) => {
                         <ListItem
                           component="a"
                           button
-                          href="#/"
-                          onClick={(e) => e.preventDefault()}
+                        //  href="#/"
+                          onClick={()=>{selfPayment();}}
                           className="px-0 d-block d-xl-flex py-1">
                           Self Chatrel
                         </ListItem>

@@ -32,7 +32,7 @@ namespace ChatrelPaymentWebAPI.Controllers
     {
         #region Constructor
         private readonly DBConnectionInfo _info;
-        private readonly double dTimeout = 10;
+        private readonly double dTimeout = 15;
         private readonly GreenbookRepository _greenbookRepository;
         private readonly ChatrelLogger _chatrelLogger;
         private readonly AppSettings _appSettings;
@@ -80,7 +80,7 @@ namespace ChatrelPaymentWebAPI.Controllers
             //var response = await flow.ExchangeCodeForTokenAsync(string.Empty, code, redirectUrl, CancellationToken.None);
 
             GoogleJsonWebSignature.ValidationSettings settings = new GoogleJsonWebSignature.ValidationSettings();
-            settings.Audience = new List<string>() { "11153496233-ft9h6spf18pfshdlri865cm6d6eteqef.apps.googleusercontent.com", "1071046831303-1naot2q7pull58cpifp3rosfn65bdrsc.apps.googleusercontent.com" };
+            settings.Audience = new List<string>() { "176037070348-10livm7g5iehb6mrl72bjv29b4bdmavu.apps.googleusercontent.com", "987929460767-jf4d713glngd3o109vdqj6mt3c2e0fju.apps.googleusercontent.com" };
             GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(code, settings);
 
             return payload;
@@ -131,22 +131,9 @@ namespace ChatrelPaymentWebAPI.Controllers
 
                             #region JWT
                             UserVM user = new UserVM { User = greenbook, sJwtToken = String.Empty };
-                            var tokenHandler = new JwtSecurityTokenHandler();
-                            var key = Encoding.ASCII.GetBytes(_appSettings.sSecret);
-                            var tokenDescriptor = new SecurityTokenDescriptor
-                            {
-                                Subject = new ClaimsIdentity(new Claim[]
-                                {
-                                 new Claim(ClaimTypes.NameIdentifier, user.User.sGBID),
-                                 new Claim(ClaimTypes.DateOfBirth, user.User.dtDOB.ToString()),
 
-                                }),
-                                Expires = DateTime.UtcNow.AddDays(dTimeout),
-                                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                            };
-                            var token = tokenHandler.CreateToken(tokenDescriptor);
                             //WriteToken
-                            user.sJwtToken = tokenHandler.WriteToken(token);
+                            user.sJwtToken = JwT.GenerateNewToken(user, _appSettings);
 
 
                             //   userVMFromDB.nTimeoutInDays = dTimeout;
@@ -237,5 +224,10 @@ namespace ChatrelPaymentWebAPI.Controllers
             #endregion
         }
         #endregion*/
+
+
+
     }
+
+
 }

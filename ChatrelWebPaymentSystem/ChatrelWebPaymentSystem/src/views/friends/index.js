@@ -7,6 +7,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+import {storeSession} from '../../actions/transactions/SessionAction';
+
 import { storeCurrentGBDetails } from '../../actions/transactions/CurrentGBDetailsAction';
 import axios from 'axios';
 import { Alerts } from '../alerts';
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Friends () {
   let history = useHistory();
-  let dispatch = useDispatch();
+  const dispatch = useDispatch();
   
   const classes = useStyles();
   const theme = useTheme();
@@ -60,10 +62,10 @@ export default function Friends () {
   
     const [backdrop, setBackdrop] = React.useState(false);
   
-  const makePayment = (obj, data, outstanding)=> {
-    console.log("Inside Make payment method for " , obj, data)
+  const makePayment = (obj)=> {
+  
     dispatch(storeCurrentGBDetails(obj));
-    history.push('/PaymentPage', {pymtData: data, outstanding});
+    history.push('/PaymentPage');
   }
   const [check, setCheck] = React.useState(false);
 
@@ -77,23 +79,16 @@ export default function Friends () {
       .then(resp => {
         
         if(resp.status === 200){
+          const oSession={
+            sJwtToken:resp.data.token,
+            bSession:true
+          }
+dispatch(storeSession(oSession));
           console.log(resp.data);
-          if(resp.data === true){
-            axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+sFriendGBID)
-            .then(resp => {
-              setBackdrop(false);
-              if (resp.status === 200) {
-                if(resp.data === "Paid Until Missing"){
-                  setAlertMessage('Last Paid Chatrel Date not available in system. Please Contact CTA.');
-                  setAlertType('warning');
-                  snackbarOpen();
-                }
-                makePayment({sGBID: sFriendGBID, sName: `${sFirstName} ${sLastName}`, sRelation: `Friend`, from:'Chatrel for Friend' }, resp.data, resp.data.chatrelPayment.nChatrelTotalAmount)
-              }
-            })
-            .catch(error => {
-              console.log(error.message);
-            });
+          if(resp.data.verified === true){
+          
+                makePayment({sGBID: sFriendGBID, sName: `${sFirstName} ${sLastName}`, sRelation: `Friend`, from:'Chatrel for Friend' })
+           
           }
           else{
             setBackdrop(false);

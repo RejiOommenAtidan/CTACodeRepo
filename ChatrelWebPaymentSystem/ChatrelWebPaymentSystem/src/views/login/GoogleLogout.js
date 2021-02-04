@@ -3,7 +3,7 @@ import { GoogleLogout } from 'react-google-login';
 import { useDispatch } from 'react-redux';
 import {  Button} from '@material-ui/core';
 import  {removeGoogleCreds} from '../../actions/transactions/GLoginAction';
- 
+import {sGoogleAuth_ClientID} from '../../config/commonConfig'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {useHistory} from 'react-router-dom';
 
@@ -21,7 +21,7 @@ const GoogleLogoutButton = () => {
     }
     return (
 <GoogleLogout
-    clientId={"11153496233-ft9h6spf18pfshdlri865cm6d6eteqef.apps.googleusercontent.com"}
+    clientId={sGoogleAuth_ClientID}
    // buttonText="Logout"
     onLogoutSuccess={() => {save()}}
     //onLogoutSuccess={logout}

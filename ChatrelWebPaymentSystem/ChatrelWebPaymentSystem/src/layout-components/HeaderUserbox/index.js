@@ -78,45 +78,15 @@ const [currencySymbol, setCurrencySymbol] = React.useState();
 const [paymentData, setPaymentData] = React.useState();
 const [outstanding, setOutstanding] = useState(true);
  
-const makePayment = (obj, data, outstanding)=> {
-  console.log("Inside Make payment method for " , obj, data)
+const makePayment = (obj)=> {
+  
   dispatch(storeCurrentGBDetails(obj));
-  history.push('/PaymentPage', {pymtData: data, outstanding});
+  history.push('/PaymentPage');
 }
 const selfPayment=() => {
-  axios.get(`/ChatrelPayment/DisplayChatrelPayment/?sGBID=`+paidByGBID)
-  .then(resp => {
-    if (resp.status === 200) {
-      //console.log("Self Chatrel Payment data:", resp.data);
-      if(resp.data.chatrelPayment.nChatrelTotalAmount === 0){
-        setChatrelPending('0');
-        setOutstanding(false);
-        // setCurrencySymbol(resp.data.currency === 'INR' ? '₹' : '$' );
-        // element.disabled = false;
-        // return;
-      }
-      else{
-        setChatrelPending(resp.data.chatrelPayment.nChatrelTotalAmount);
-      }
-      setPaymentData(resp.data);
-      console.log(resp.data);
-      
-      
-      if(resp.data.gbChatrels[0].sAuthRegionCurrency === 'USD'){
-        setCurrencySymbol('$');
-      }
-      else{
-        setCurrencySymbol('₹');
-      }
-      
-      console.log("Data fetched...", resp.data);
-      makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' }, paymentData, outstanding);
-    }
-  })
-  .catch(error => {
-    console.log(error.message);
-    console.log(error.response);
-  });
+ 
+      makePayment({sGBID: paidByGBID, sName: paidByName, sRelation: 'Self', from:'Self Chatrel' });
+    
 
 }
 
